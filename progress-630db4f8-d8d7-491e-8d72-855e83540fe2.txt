@@ -7,3 +7,16 @@ Started: 2026-02-26 05:12 AM
 (add patterns here as you discover them)
 
 ---
+
+## 2026-02-26 05:12 AM - US-001: Setup project structure and dependencies
+- Created pyproject.toml with all required dependencies (fastapi, uvicorn, pydantic, aiosqlite, pytest, httpx)
+- Created Makefile with venv, run, test, demo targets
+- Created complete directory structure: emotiond/, tests/, scripts/, data/, deploy/systemd/user/, openclaw_skill/emotion_core/
+- Created README.md with project overview and runbook
+- Created OpenClaw skill stub with SKILL.md, skill.py, and install.sh
+- Created systemd service file example
+- Created test file for project structure verification
+- Created verification scripts for structure and typecheck
+- Added .gitignore to exclude venv and other temporary files
+- **Learnings:** Project uses Python 3.12, needs python3-venv package for virtual environments
+---
