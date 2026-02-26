@@ -7,7 +7,7 @@ import asyncio
 from emotiond.api import app
 from fastapi.testclient import TestClient
 from emotiond.models import Event
-from emotiond.db import init_db, get_state, get_relationships, get_events
+from emotiond.db import init_db, get_state, get_relationships
 from emotiond.config import DB_PATH
 
 

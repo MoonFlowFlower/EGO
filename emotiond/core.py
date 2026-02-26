@@ -5,7 +5,8 @@ import asyncio
 import time
 from typing import Dict, Any, Optional
 from emotiond.models import Event, PlanRequest, PlanResponse
-from emotiond.db import get_state, update_state, add_event, get_relationships, update_relationship
+from emotiond.db import get_state, update_state, add_event, get_relationships, update_relationship, update_meaningful_contact_time
+from emotiond.config import K_AROUSAL
 
 
 class EmotionState:
@@ -15,9 +16,14 @@ class EmotionState:
         self.valence = 0.0  # -1.0 to 1.0 (negative to positive)
         self.arousal = 0.3  # 0.0 to 1.0 (calm to excited)
         self.subjective_time = 0
+        self.last_meaningful_contact = time.time()  # Track time since meaningful interaction
     
     def update_from_event(self, event: Event) -> None:
         """Update emotional state based on event type and content"""
+        # Update meaningful contact time for user interactions
+        if event.type == "user_message" and event.text:
+            self.last_meaningful_contact = time.time()
+        
         # Base emotional impact based on event type
         if event.type == "user_message":
             # Positive user messages increase valence
@@ -42,19 +48,33 @@ class EmotionState:
                 self.valence = max(-1.0, self.valence - 0.2)
                 self.arousal = min(1.0, self.arousal + 0.15)
     
-    def apply_homeostasis_drift(self) -> None:
-        """Apply natural drift toward neutral state"""
-        # Valence slowly drifts toward neutral
-        if self.valence > 0:
-            self.valence = max(0, self.valence - 0.01)
-        elif self.valence < 0:
-            self.valence = min(0, self.valence + 0.01)
+    def calculate_subjective_time_delta(self, real_dt: float) -> float:
+        """Calculate subjective time delta based on arousal: subjective_dt = real_dt / (1 + k * arousal)"""
+        return real_dt / (1 + K_AROUSAL * self.arousal)
+    
+    def apply_homeostasis_drift(self, real_dt: float = 1.0) -> None:
+        """Apply natural drift toward neutral state with subjective time"""
+        # Calculate subjective time delta
+        subjective_dt = self.calculate_subjective_time_delta(real_dt)
         
-        # Arousal slowly drifts toward calm
-        self.arousal = self.arousal * 0.99
+        # Valence slowly drifts toward neutral (influenced by subjective time)
+        valence_drift = 0.01 * subjective_dt
+        if self.valence > 0:
+            self.valence = max(0, self.valence - valence_drift)
+        elif self.valence < 0:
+            self.valence = min(0, self.valence + valence_drift)
+        
+        # Arousal slowly drifts toward calm (influenced by subjective time)
+        self.arousal = self.arousal * (0.99 ** subjective_dt)
         
         # Update subjective time
-        self.subjective_time += 1
+        self.subjective_time += subjective_dt
+        
+        # Calculate loneliness based on time since meaningful contact
+        time_since_contact = time.time() - self.last_meaningful_contact
+        if time_since_contact > 3600:  # 1 hour
+            loneliness_factor = min(0.5, (time_since_contact - 3600) / 7200)  # Max 0.5 after 3 hours
+            self.valence = max(-1.0, self.valence - loneliness_factor * 0.01 * subjective_dt)
 
 
 class RelationshipManager:
@@ -114,6 +134,7 @@ async def load_initial_state():
     emotion_state.valence = db_state["valence"]
     emotion_state.arousal = db_state["arousal"]
     emotion_state.subjective_time = db_state["subjective_time"]
+    emotion_state.last_meaningful_contact = db_state["last_meaningful_contact"]
     
     # Load relationships
     db_relationships = await get_relationships()
@@ -128,6 +149,10 @@ async def process_event(event: Event) -> Dict[str, Any]:
     """Process incoming events and update emotional state"""
     # Store event
     await add_event(event.model_dump())
+    
+    # Update meaningful contact time for user interactions
+    if event.type == "user_message" and event.text:
+        await update_meaningful_contact_time()
     
     # Update emotional state based on event
     emotion_state.update_from_event(event)
@@ -213,9 +238,16 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
 
 async def homeostasis_loop():
     """Loop A: homeostasis drift + emotion inertia + subjective time update (1-2s)"""
+    last_time = time.time()
+    
     while True:
-        # Update emotional state drift
-        emotion_state.apply_homeostasis_drift()
+        # Calculate real time delta
+        current_time = time.time()
+        real_dt = current_time - last_time
+        last_time = current_time
+        
+        # Update emotional state drift with real time delta
+        emotion_state.apply_homeostasis_drift(real_dt)
         
         # Persist state to database
         await update_state(

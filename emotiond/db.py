@@ -3,6 +3,7 @@ Database operations for emotiond
 """
 import aiosqlite
 import os
+import time
 from typing import Dict, Any, List
 from emotiond.config import DB_PATH
 
@@ -17,6 +18,7 @@ async def init_db():
                 valence REAL DEFAULT 0.0,
                 arousal REAL DEFAULT 0.0,
                 subjective_time INTEGER DEFAULT 0,
+                last_meaningful_contact REAL DEFAULT 0.0,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
@@ -47,9 +49,9 @@ async def init_db():
         
         # Insert initial state if not exists
         await db.execute("""
-            INSERT OR IGNORE INTO state (id, valence, arousal, subjective_time)
-            VALUES (1, 0.0, 0.0, 0)
-        """)
+            INSERT OR IGNORE INTO state (id, valence, arousal, subjective_time, last_meaningful_contact)
+            VALUES (1, 0.0, 0.0, 0, ?)
+        """, (time.time(),))
         
         await db.commit()
 
@@ -57,12 +59,12 @@ async def init_db():
 async def get_state() -> Dict[str, Any]:
     """Get current emotional state"""
     async with aiosqlite.connect(DB_PATH) as db:
-        cursor = await db.execute("SELECT valence, arousal, subjective_time FROM state WHERE id = 1")
+        cursor = await db.execute("SELECT valence, arousal, subjective_time, last_meaningful_contact FROM state WHERE id = 1")
         row = await cursor.fetchone()
         if row is None:
             # This should not happen as we always insert initial state
-            return {"valence": 0.0, "arousal": 0.0, "subjective_time": 0}
-        return {"valence": row[0], "arousal": row[1], "subjective_time": row[2]}
+            return {"valence": 0.0, "arousal": 0.0, "subjective_time": 0, "last_meaningful_contact": time.time()}
+        return {"valence": row[0], "arousal": row[1], "subjective_time": row[2], "last_meaningful_contact": row[3]}
 
 
 async def update_state(valence: float, arousal: float, subjective_time: int):
@@ -71,6 +73,16 @@ async def update_state(valence: float, arousal: float, subjective_time: int):
         await db.execute(
             "UPDATE state SET valence = ?, arousal = ?, subjective_time = ? WHERE id = 1",
             (valence, arousal, subjective_time)
+        )
+        await db.commit()
+
+
+async def update_meaningful_contact_time():
+    """Update the last meaningful contact time to current time"""
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "UPDATE state SET last_meaningful_contact = ? WHERE id = 1",
+            (time.time(),)
         )
         await db.commit()
 
