@@ -11,26 +11,33 @@ from emotiond.config import DB_PATH
 import os
 
 
+@pytest.fixture(scope="session")
+def client():
+    """Create test client"""
+    return TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def setup_db():
+    """Setup database for tests"""
+    # Ensure data directory exists
+    os.makedirs("data", exist_ok=True)
+    
+    # Initialize database
+    import asyncio
+    asyncio.run(init_db())
+    
+    # Clean up after tests
+    yield
+    if os.path.exists(DB_PATH):
+        os.remove(DB_PATH)
+
+
 class TestPredictionError:
     """Test prediction error calculation and modulation"""
     
-    @pytest.fixture(autouse=True)
-    async def setup_db(self):
-        """Setup database for tests"""
-        # Ensure data directory exists
-        os.makedirs("data", exist_ok=True)
-        
-        # Initialize database
-        await init_db()
-        
-        # Clean up after tests
-        yield
-        if os.path.exists(DB_PATH):
-            os.remove(DB_PATH)
-    
-    def test_prediction_error_calculation_for_positive_message(self):
+    def test_prediction_error_calculation_for_positive_message(self, client):
         """Test prediction error calculation for positive user message"""
-        client = TestClient(app)
         
         # Positive message should create prediction error
         response = client.post("/event", json={
@@ -45,9 +52,8 @@ class TestPredictionError:
         # Prediction error should be calculated (not zero)
         assert isinstance(data["prediction_error"], (int, float))
         
-    def test_prediction_error_calculation_for_negative_message(self):
+    def test_prediction_error_calculation_for_negative_message(self, client):
         """Test prediction error calculation for negative user message"""
-        client = TestClient(app)
         
         # Negative message should create prediction error
         response = client.post("/event", json={
@@ -61,9 +67,8 @@ class TestPredictionError:
         assert "prediction_error" in data
         assert isinstance(data["prediction_error"], (int, float))
         
-    def test_prediction_error_modulates_arousal(self):
+    def test_prediction_error_modulates_arousal(self, client):
         """Test that prediction error modulates arousal"""
-        client = TestClient(app)
         
         # Get initial arousal
         response1 = client.post("/event", json={
@@ -81,7 +86,7 @@ class TestPredictionError:
             "type": "user_message",
             "actor": "user",
             "target": "agent",
-            "text": "This is amazing! Wonderful! Fantastic!"
+            "text": "This is great! I love it!"
         })
         data2 = response2.json()
         final_arousal = data2["arousal"]
@@ -92,9 +97,8 @@ class TestPredictionError:
         assert final_prediction_error > initial_prediction_error
         assert final_arousal > initial_arousal
         
-    def test_prediction_error_for_world_events(self):
+    def test_prediction_error_for_world_events(self, client):
         """Test prediction error calculation for world events"""
-        client = TestClient(app)
         
         # Positive world event
         response = client.post("/event", json={
@@ -109,9 +113,8 @@ class TestPredictionError:
         assert "prediction_error" in data
         assert isinstance(data["prediction_error"], (int, float))
         
-    def test_prediction_error_stored_in_database(self):
+    def test_prediction_error_stored_in_database(self, client):
         """Test that prediction error is stored in database"""
-        client = TestClient(app)
         
         # Send multiple events and check prediction error persistence
         events = [
@@ -140,9 +143,8 @@ class TestPredictionError:
         assert len(prediction_errors) == 2
         assert all(isinstance(pe, (int, float)) for pe in prediction_errors)
         
-    def test_prediction_model_learning_mechanism(self):
+    def test_prediction_model_learning_mechanism(self, client):
         """Test that prediction error could be used for model learning (future enhancement)"""
-        client = TestClient(app)
         
         # Send similar events multiple times
         for i in range(3):
