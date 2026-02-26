@@ -112,6 +112,21 @@ class TestAPI:
     
     async def test_health_endpoint(self):
         """Test /health endpoint returns required fields"""
-        # This would test the actual API once it's running
-        # For now, we just verify the endpoint exists in the code
-        pass
+        # Import the app directly to test the endpoint
+        from emotiond.api import app
+        from fastapi.testclient import TestClient
+        
+        client = TestClient(app)
+        response = client.get("/health")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert "ok" in data
+        assert "ts" in data
+        assert data["ok"] is True
+        # Check that ts is a valid ISO timestamp
+        assert isinstance(data["ts"], str)
+        # Should be able to parse as datetime
+        import datetime
+        parsed_time = datetime.datetime.fromisoformat(data["ts"])
+        assert isinstance(parsed_time, datetime.datetime)

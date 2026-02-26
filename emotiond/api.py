@@ -2,6 +2,7 @@
 FastAPI application for emotiond daemon
 """
 from fastapi import FastAPI
+import datetime
 from emotiond.models import Event, PlanRequest
 from emotiond.core import process_event, generate_plan, load_initial_state
 from emotiond.db import init_db
@@ -19,7 +20,7 @@ async def startup_event():
 @app.get("/health")
 async def health():
     """Health check endpoint"""
-    return {"ok": True, "ts": "..."}
+    return {"ok": True, "ts": datetime.datetime.now().isoformat()}
 
 
 @app.post("/event")
