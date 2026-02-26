@@ -40,8 +40,8 @@ class TestSystemdService:
         assert "OpenEmotion daemon" in content, "Service should have correct description"
         assert "WorkingDirectory=/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion" in content, \
             "Service should have correct working directory"
-        assert "uvicorn emotiond.api:app --host 127.0.0.1 --port 18080" in content, \
-            "Service should have correct ExecStart command"
+        assert "python -m emotiond.main" in content, \
+            "Service should use main entry point with configuration system"
         assert "Restart=always" in content, "Service should restart always"
         assert "RestartSec=10" in content, "Service should have restart delay"
 
@@ -98,9 +98,11 @@ class TestSystemdService:
         content = service_path.read_text()
         
         # The service should work with environment variables
-        # Check that the service doesn't hardcode values that should be configurable
-        assert "127.0.0.1" in content, "Service should bind to localhost only"
-        assert "18080" in content, "Service should use default port"
+        # Check that the service uses the configuration system instead of hardcoded values
+        assert "python -m emotiond.main" in content, \
+            "Service should use main entry point that respects environment variables"
+        assert "uvicorn emotiond.api:app --host" not in content, \
+            "Service should not hardcode host and port values"
 
     def test_service_restart_configuration(self):
         """Test that service has proper restart configuration."""

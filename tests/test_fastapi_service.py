@@ -49,8 +49,8 @@ class TestFastAPIService:
         from importlib import reload
         
         # Test with custom environment variables
-        os.environ["OPENEMOTION_HOST"] = "127.0.0.1"
-        os.environ["OPENEMOTION_PORT"] = "18080"
+        os.environ["EMOTIOND_HOST"] = "127.0.0.1"
+        os.environ["EMOTIOND_PORT"] = "18080"
         
         # Reload config to pick up environment variables
         from emotiond import config
@@ -60,12 +60,21 @@ class TestFastAPIService:
         assert config.PORT == 18080
         
         # Clean up
-        del os.environ["OPENEMOTION_HOST"]
-        del os.environ["OPENEMOTION_PORT"]
+        del os.environ["EMOTIOND_HOST"]
+        del os.environ["EMOTIOND_PORT"]
         reload(config)
     
     def test_all_endpoints_exist(self):
         """Test that all required endpoints exist"""
+        # Initialize database first
+        import asyncio
+        from emotiond.db import init_db
+        
+        async def setup_db():
+            await init_db()
+        
+        asyncio.run(setup_db())
+        
         client = TestClient(app)
         
         # Test health endpoint

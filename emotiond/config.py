@@ -5,11 +5,13 @@ import os
 import logging
 
 # Environment variables with defaults
-DB_PATH = os.getenv("OPENEMOTION_DB_PATH", "./data/openemotion.db")
-PORT = int(os.getenv("OPENEMOTION_PORT", "18080"))
-HOST = os.getenv("OPENEMOTION_HOST", "127.0.0.1")
+DB_PATH = os.getenv("EMOTIOND_DB_PATH", "./data/emotiond.db")
+PORT = int(os.getenv("EMOTIOND_PORT", "18080"))
+HOST = os.getenv("EMOTIOND_HOST", "127.0.0.1")
 # Subjective time constant: subjective_dt = real_dt / (1 + k * arousal)
-K_AROUSAL = float(os.getenv("OPENEMOTION_K_AROUSAL", "2.0"))
+K_AROUSAL = float(os.getenv("EMOTIOND_K_AROUSAL", "2.0"))
+# Core functionality disable flag for ablation baseline
+DISABLE_CORE = bool(os.getenv("EMOTIOND_DISABLE_CORE", "").strip().lower() in ["1", "true", "yes", "on"])
 
 
 def setup_logging():

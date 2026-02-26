@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion
-ExecStart=/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion/venv/bin/uvicorn emotiond.api:app --host 127.0.0.1 --port 18080
+ExecStart=/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion/venv/bin/python -m emotiond.main
 Restart=always
 RestartSec=10
 

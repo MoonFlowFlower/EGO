@@ -6,7 +6,7 @@ import time
 from typing import Dict, Any, Optional
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.db import get_state, update_state, add_event, get_relationships, update_relationship, update_meaningful_contact_time
-from emotiond.config import K_AROUSAL
+from emotiond.config import K_AROUSAL, DISABLE_CORE
 
 
 class EmotionState:
@@ -42,6 +42,10 @@ class EmotionState:
         """Update emotional state based on event type and content
         Returns the actual valence change for prediction error calculation
         """
+        # If core is disabled, return no change
+        if DISABLE_CORE:
+            return 0.0
+            
         # Store initial valence for prediction error calculation
         initial_valence = self.valence
         
@@ -83,6 +87,10 @@ class EmotionState:
 
     def calculate_prediction_error(self, event: Event, actual_valence_change: float) -> float:
         """Calculate prediction error based on expected vs actual valence change"""
+        # If core is disabled, no prediction error is calculated
+        if DISABLE_CORE:
+            return 0.0
+            
         # Determine expected outcome based on event type and content
         if event.type == "user_message":
             if event.text and any(word in event.text.lower() for word in ["good", "great", "thanks", "love", "happy"]):
@@ -109,6 +117,10 @@ class EmotionState:
     
     def apply_homeostasis_drift(self, real_dt: float = 1.0) -> None:
         """Apply natural drift toward neutral state with subjective time"""
+        # If core is disabled, no drift occurs
+        if DISABLE_CORE:
+            return
+            
         # Calculate subjective time delta
         subjective_dt = self.calculate_subjective_time_delta(real_dt)
         
@@ -140,6 +152,10 @@ class RelationshipManager:
     
     def update_from_event(self, event: Event) -> None:
         """Update relationships based on event"""
+        # If core is disabled, no relationship updates occur
+        if DISABLE_CORE:
+            return
+            
         target = event.target
         
         # Initialize relationship if it doesn't exist
@@ -167,6 +183,10 @@ class RelationshipManager:
     
     def apply_consolidation_drift(self) -> None:
         """Apply slow decay to relationships"""
+        # If core is disabled, no consolidation drift occurs
+        if DISABLE_CORE:
+            return
+            
         for target in self.relationships:
             # Bond slowly decays
             self.relationships[target]["bond"] = self.relationships[target]["bond"] * 0.995
