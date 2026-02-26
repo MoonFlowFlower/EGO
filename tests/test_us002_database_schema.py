@@ -5,6 +5,7 @@ import os
 import asyncio
 import tempfile
 import json
+import pytest
 from emotiond.db import init_db, get_state, update_state, get_relationships, update_relationship, add_event
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.config import DB_PATH
@@ -14,22 +15,23 @@ class TestDatabaseSchema:
     """Test database schema creation and operations"""
 
     def test_env_var_db_path(self):
-        """Test that OPENEMOTION_DB_PATH env var is respected"""
+        """Test that EMOTIOND_DB_PATH env var is respected"""
         # Test default path
-        assert DB_PATH == "./data/openemotion.db"
+        assert DB_PATH == "./data/emotiond.db"
 
         # Test with custom path (simulated)
-        test_path = "/tmp/test_openemotion.db"
-        os.environ["OPENEMOTION_DB_PATH"] = test_path
+        test_path = "/tmp/test_emotiond.db"
+        os.environ["EMOTIOND_DB_PATH"] = test_path
         # Reload the config module to pick up the environment variable
         import importlib
         import emotiond.config
         importlib.reload(emotiond.config)
         assert emotiond.config.DB_PATH == test_path
-        del os.environ["OPENEMOTION_DB_PATH"]
+        del os.environ["EMOTIOND_DB_PATH"]
         # Reload again to restore default
         importlib.reload(emotiond.config)
 
+    @pytest.mark.asyncio
     async def test_tables_created(self):
         """Test that all required tables are created"""
         # Create temporary database
@@ -38,7 +40,7 @@ class TestDatabaseSchema:
 
         try:
             # Initialize with temp path
-            os.environ["OPENEMOTION_DB_PATH"] = temp_db_path
+            os.environ["EMOTIOND_DB_PATH"] = temp_db_path
             # Reload config and db modules to pick up the new environment variable
             import importlib
             import emotiond.config
@@ -74,9 +76,10 @@ class TestDatabaseSchema:
             # Cleanup
             if os.path.exists(temp_db_path):
                 os.remove(temp_db_path)
-            if "OPENEMOTION_DB_PATH" in os.environ:
-                del os.environ["OPENEMOTION_DB_PATH"]
+            if "EMOTIOND_DB_PATH" in os.environ:
+                del os.environ["EMOTIOND_DB_PATH"]
 
+    @pytest.mark.asyncio
     async def test_state_table_single_row(self):
         """Test state table maintains single row constraint"""
         # Initialize fresh database
@@ -84,7 +87,7 @@ class TestDatabaseSchema:
             temp_db_path = tmp.name
 
         try:
-            os.environ["OPENEMOTION_DB_PATH"] = temp_db_path
+            os.environ["EMOTIOND_DB_PATH"] = temp_db_path
             # Reload config and db modules to pick up the new environment variable
             import importlib
             import emotiond.config
@@ -117,16 +120,17 @@ class TestDatabaseSchema:
         finally:
             if os.path.exists(temp_db_path):
                 os.remove(temp_db_path)
-            if "OPENEMOTION_DB_PATH" in os.environ:
-                del os.environ["OPENEMOTION_DB_PATH"]
+            if "EMOTIOND_DB_PATH" in os.environ:
+                del os.environ["EMOTIOND_DB_PATH"]
 
+    @pytest.mark.asyncio
     async def test_relationships_target_specific(self):
         """Test relationships are target-specific"""
         with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as tmp:
             temp_db_path = tmp.name
 
         try:
-            os.environ["OPENEMOTION_DB_PATH"] = temp_db_path
+            os.environ["EMOTIOND_DB_PATH"] = temp_db_path
             # Reload config and db modules to pick up the new environment variable
             import importlib
             import emotiond.config
@@ -164,16 +168,17 @@ class TestDatabaseSchema:
         finally:
             if os.path.exists(temp_db_path):
                 os.remove(temp_db_path)
-            if "OPENEMOTION_DB_PATH" in os.environ:
-                del os.environ["OPENEMOTION_DB_PATH"]
+            if "EMOTIOND_DB_PATH" in os.environ:
+                del os.environ["EMOTIOND_DB_PATH"]
 
+    @pytest.mark.asyncio
     async def test_events_append_only(self):
         """Test events table is append-only"""
         with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as tmp:
             temp_db_path = tmp.name
 
         try:
-            os.environ["OPENEMOTION_DB_PATH"] = temp_db_path
+            os.environ["EMOTIOND_DB_PATH"] = temp_db_path
             from emotiond.config import DB_PATH as TestDBPath
             from emotiond.db import init_db, add_event
 
@@ -195,8 +200,8 @@ class TestDatabaseSchema:
         finally:
             if os.path.exists(temp_db_path):
                 os.remove(temp_db_path)
-            if "OPENEMOTION_DB_PATH" in os.environ:
-                del os.environ["OPENEMOTION_DB_PATH"]
+            if "EMOTIOND_DB_PATH" in os.environ:
+                del os.environ["EMOTIOND_DB_PATH"]
 
 
 class TestPydanticModels:
@@ -287,7 +292,7 @@ async def run_tests():
 
     # Run schema tests
     await test_schema.test_env_var_db_path()
-    print("✓ OPENEMOTION_DB_PATH env var respected")
+    print("✓ EMOTIOND_DB_PATH env var respected")
 
     await test_schema.test_tables_created()
     print("✓ All required tables created")
