@@ -5,8 +5,8 @@ from fastapi import FastAPI
 import datetime
 import asyncio
 from emotiond.models import Event, PlanRequest
-from emotiond.core import process_event, generate_plan, load_initial_state, homeostasis_loop, consolidation_loop
-from emotiond.db import init_db
+from emotiond.core import process_event, generate_plan, load_initial_state
+from emotiond.daemon import daemon_manager
 
 app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
 
@@ -14,12 +14,8 @@ app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
 @app.on_event("startup")
 async def startup_event():
     """Initialize database and load state on startup"""
-    await init_db()
+    await daemon_manager.start()
     await load_initial_state()
-    
-    # Start background loops
-    asyncio.create_task(homeostasis_loop())
-    asyncio.create_task(consolidation_loop())
 
 
 @app.get("/health")

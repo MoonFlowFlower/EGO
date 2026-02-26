@@ -115,3 +115,10 @@ async def add_event(event: Dict[str, Any]):
              event.get("text"), str(event.get("meta", {})))
         )
         await db.commit()
+
+
+async def close_db():
+    """Close any active database connections (placeholder for future connection pooling)"""
+    # Currently using context managers so connections are auto-closed
+    # This is a placeholder for when we implement connection pooling
+    pass
