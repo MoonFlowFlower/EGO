@@ -95,3 +95,16 @@ Started: 2026-02-26 05:12 AM
 - All tests now pass including core emotion state and database schema tests
 - Type checking passes without issues
 - **Learnings:** Global state management requires careful test isolation, environment variables need module reloading in tests, Pydantic v2 uses model_dump() instead of dict()
+
+---
+
+## 2026-02-26 09:45 AM - US-003: Tick loop for homeostasis and emotion drift
+- Added subjective time calculation: subjective_dt = real_dt / (1 + k * arousal) with K_AROUSAL config
+- Enhanced EmotionState.apply_homeostasis_drift() to use real time delta and subjective time
+- Added last_meaningful_contact tracking to database for loneliness calculation
+- Updated database schema to include last_meaningful_contact field
+- Improved homeostasis_loop to track real time between iterations
+- Added loneliness calculation that increases valence drift when time since contact > 1 hour
+- Created comprehensive test suite (test_tick_loop.py) with 8 passing tests
+- All new tests pass and type checking succeeds
+- **Learnings:** Subjective time creates realistic emotion drift patterns, loneliness mechanism adds emotional depth, database persistence requires careful schema updates

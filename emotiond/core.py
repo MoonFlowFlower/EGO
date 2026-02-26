@@ -117,7 +117,7 @@ class RelationshipManager:
             self.relationships[target]["bond"] = self.relationships[target]["bond"] * 0.995
             
             # Grudge slowly decays (slower than bond)
-            self.relationships[target]["grudge"] = self.relationships[target]["grudge"] * 0.99
+            self.relationships[target]["grudge"] = self.relationships[target]["grudge"] * 0.998
 
 
 # Global state instances
