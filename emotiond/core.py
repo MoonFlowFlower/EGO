@@ -77,7 +77,7 @@ class RelationshipManager:
             if event.text and any(word in event.text.lower() for word in ["good", "great", "thanks", "love", "happy"]):
                 self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.1)
             # Negative interactions build grudge
-            elif event.text and any(word in event.text.lower() for word in ["bad", "hate", "stupid", "wrong", "angry"]):
+            elif event.text and any(word in event.text.lower() for word in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"]):
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.1)
         
         elif event.type == "assistant_reply":
@@ -127,7 +127,7 @@ async def load_initial_state():
 async def process_event(event: Event) -> Dict[str, Any]:
     """Process incoming events and update emotional state"""
     # Store event
-    await add_event(event.dict())
+    await add_event(event.model_dump())
     
     # Update emotional state based on event
     emotion_state.update_from_event(event)

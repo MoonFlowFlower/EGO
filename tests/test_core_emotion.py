@@ -141,6 +141,13 @@ class TestCoreIntegration:
         # Initialize database
         await init_db()
         
+        # Reset global state
+        from emotiond.core import emotion_state, relationship_manager
+        emotion_state.valence = 0.0
+        emotion_state.arousal = 0.3
+        emotion_state.subjective_time = 0
+        relationship_manager.relationships = {}
+        
         # Clean up after tests
         yield
         if os.path.exists(DB_PATH):
@@ -232,7 +239,7 @@ class TestCoreIntegration:
         
         # Valence should remain negative (sadness persists)
         assert emotion_state.valence < 0.0
-        assert emotion_state.valence < initial_valence  # May drift toward neutral but still negative
+        assert emotion_state.valence > initial_valence  # Should drift toward neutral (less negative)
     
     async def test_grudge_decay_slowly(self):
         """Test that grudge decays slowly"""
