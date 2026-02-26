@@ -59,6 +59,9 @@ async def get_state() -> Dict[str, Any]:
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute("SELECT valence, arousal, subjective_time FROM state WHERE id = 1")
         row = await cursor.fetchone()
+        if row is None:
+            # This should not happen as we always insert initial state
+            return {"valence": 0.0, "arousal": 0.0, "subjective_time": 0}
         return {"valence": row[0], "arousal": row[1], "subjective_time": row[2]}
 
 
