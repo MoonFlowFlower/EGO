@@ -3,9 +3,17 @@ FastAPI application for emotiond daemon
 """
 from fastapi import FastAPI
 from emotiond.models import Event, PlanRequest
-from emotiond.core import process_event, generate_plan
+from emotiond.core import process_event, generate_plan, load_initial_state
+from emotiond.db import init_db
 
 app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and load state on startup"""
+    await init_db()
+    await load_initial_state()
 
 
 @app.get("/health")
