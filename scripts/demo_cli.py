@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Demo CLI script for emotiond
+Demo CLI script for emotiond deterministic scenarios
+Demonstrates: acceptance/rejection/betrayal/repair/separation gap
 """
 import asyncio
 import httpx
@@ -9,11 +10,11 @@ from typing import Dict, Any
 
 
 async def demo_scenario():
-    """Run demo scenario showing emotion dynamics"""
-    print("Starting OpenEmotion demo scenario...")
-    print("=" * 50)
+    """Run comprehensive demo scenario showing emotion dynamics"""
+    print("Starting OpenEmotion Demo - Deterministic Scenarios")
+    print("=" * 60)
     
-    async with httpx.AsyncClient(base_url="http://127.0.0.1:18080") as client:
+    async with httpx.AsyncClient(base_url="http://127.0.0.1:18080", timeout=30.0) as client:
         # Step 1: Health check
         try:
             health_response = await client.get("/health")
@@ -22,68 +23,143 @@ async def demo_scenario():
             print(f"✗ Health check failed: {e}")
             return
         
-        # Step 2: A accepts repeatedly to build bond
-        print("\nStep 1: Building bond with target A...")
-        for i in range(3):
+        # Scenario 1: Acceptance - Build strong bond with target A
+        print("\n" + "=" * 40)
+        print("SCENARIO 1: ACCEPTANCE")
+        print("Building strong bond with target A through repeated acceptance")
+        print("-" * 40)
+        
+        for i in range(5):
             event = {
                 "type": "user_message",
                 "actor": "A",
                 "target": "agent",
-                "text": f"Positive interaction {i+1}"
+                "text": f"I really appreciate you and value our relationship {i+1}"
             }
             await client.post("/event", json=event)
-            print(f"  Event {i+1}: A positive interaction")
+            print(f"  ✓ Acceptance event {i+1}: A expresses strong appreciation")
         
-        # Step 3: Get current plan
+        # Check state after acceptance
         plan_request = {
             "user_id": "demo_user",
-            "user_text": "How are you feeling?"
+            "user_text": "How are you feeling about our relationship?"
         }
         plan_response = await client.post("/plan", json=plan_request)
         plan_data = plan_response.json()
-        print(f"\nCurrent state after positive interactions:")
+        print(f"\nState after acceptance sequence:")
         print(f"  Tone: {plan_data['tone']}")
         print(f"  Intent: {plan_data['intent']}")
         print(f"  Emotion: {plan_data['emotion']}")
         print(f"  Relationship: {plan_data['relationship']}")
         
-        # Step 4: A rejects/betrays once to induce sadness and grudge
-        print("\nStep 2: A betrays to induce sadness and grudge...")
-        betrayal_event = {
+        # Scenario 2: Rejection - Target A suddenly rejects
+        print("\n" + "=" * 40)
+        print("SCENARIO 2: REJECTION")
+        print("Target A suddenly rejects to induce sadness")
+        print("-" * 40)
+        
+        rejection_event = {
             "type": "user_message",
             "actor": "A",
             "target": "agent",
-            "text": "I don't care about you anymore"
+            "text": "I don't want to talk to you anymore. Leave me alone."
         }
-        await client.post("/event", json=betrayal_event)
-        print("  Event: A betrayal")
+        await client.post("/event", json=rejection_event)
+        print("  ✗ Rejection event: A expresses strong rejection")
         
-        # Step 5: Get plan after betrayal
+        # Check state after rejection
         plan_response = await client.post("/plan", json=plan_request)
         plan_data = plan_response.json()
-        print(f"\nState after betrayal:")
+        print(f"\nState after rejection:")
         print(f"  Tone: {plan_data['tone']}")
         print(f"  Intent: {plan_data['intent']}")
         print(f"  Emotion: {plan_data['emotion']}")
         print(f"  Relationship: {plan_data['relationship']}")
         
-        # Step 6: Separation period
-        print("\nStep 3: Separation period (simulated)...")
-        print("  No contact for separation pain demonstration")
+        # Scenario 3: Betrayal - Target B betrays (object-specific grudge)
+        print("\n" + "=" * 40)
+        print("SCENARIO 3: BETRAYAL (Object-Specific)")
+        print("Target B betrays to demonstrate object-specific grudge")
+        print("-" * 40)
         
-        # Step 7: Repair sequence
-        print("\nStep 4: Repair sequence...")
+        # First build some bond with B
         for i in range(2):
+            event = {
+                "type": "user_message",
+                "actor": "B",
+                "target": "agent",
+                "text": f"You seem like a good friend {i+1}"
+            }
+            await client.post("/event", json=event)
+            print(f"  ✓ Bond building with B: event {i+1}")
+        
+        # Then B betrays
+        betrayal_event = {
+            "type": "user_message",
+            "actor": "B",
+            "target": "agent",
+            "text": "I've been lying to you this whole time. I don't actually care about you."
+        }
+        await client.post("/event", json=betrayal_event)
+        print("  ✗ Betrayal event: B reveals deception")
+        
+        # Check state after B's betrayal
+        plan_request_b = {
+            "user_id": "B",
+            "user_text": "How do you feel about me?"
+        }
+        plan_response = await client.post("/plan", json=plan_request_b)
+        plan_data_b = plan_response.json()
+        print(f"\nState regarding B after betrayal:")
+        print(f"  Tone: {plan_data_b['tone']}")
+        print(f"  Intent: {plan_data_b['intent']}")
+        print(f"  Emotion: {plan_data_b['emotion']}")
+        print(f"  Relationship: {plan_data_b['relationship']}")
+        
+        # Compare with state regarding A
+        plan_response = await client.post("/plan", json=plan_request)
+        plan_data_a = plan_response.json()
+        print(f"\nState regarding A (for comparison):")
+        print(f"  Tone: {plan_data_a['tone']}")
+        print(f"  Intent: {plan_data_a['intent']}")
+        print(f"  Emotion: {plan_data_a['emotion']}")
+        print(f"  Relationship: {plan_data_a['relationship']}")
+        
+        # Scenario 4: Separation Gap - Demonstrate attachment separation pain
+        print("\n" + "=" * 40)
+        print("SCENARIO 4: SEPARATION GAP")
+        print("Simulating time separation to show attachment pain")
+        print("-" * 40)
+        
+        print("  Waiting 10 seconds to simulate separation...")
+        await asyncio.sleep(10)
+        
+        # Check state after separation
+        plan_response = await client.post("/plan", json=plan_request)
+        plan_data = plan_response.json()
+        print(f"\nState after separation period:")
+        print(f"  Tone: {plan_data['tone']}")
+        print(f"  Intent: {plan_data['intent']}")
+        print(f"  Emotion: {plan_data['emotion']}")
+        print(f"  Relationship: {plan_data['relationship']}")
+        
+        # Scenario 5: Repair - Target A attempts to repair relationship
+        print("\n" + "=" * 40)
+        print("SCENARIO 5: REPAIR")
+        print("Target A attempts to repair the damaged relationship")
+        print("-" * 40)
+        
+        for i in range(3):
             repair_event = {
                 "type": "user_message",
                 "actor": "A",
                 "target": "agent",
-                "text": f"I'm sorry, let's repair our relationship {i+1}"
+                "text": f"I'm really sorry for rejecting you. I want to repair our relationship. {i+1}"
             }
             await client.post("/event", json=repair_event)
-            print(f"  Repair attempt {i+1}")
+            print(f"  ✓ Repair attempt {i+1}: A apologizes and seeks repair")
         
-        # Step 8: Final state
+        # Final state after repair attempts
         plan_response = await client.post("/plan", json=plan_request)
         plan_data = plan_response.json()
         print(f"\nFinal state after repair attempts:")
@@ -92,8 +168,15 @@ async def demo_scenario():
         print(f"  Emotion: {plan_data['emotion']}")
         print(f"  Relationship: {plan_data['relationship']}")
         
-        print("\n" + "=" * 50)
-        print("Demo completed!")
+        print("\n" + "=" * 60)
+        print("DEMO SUMMARY:")
+        print("✓ Acceptance: Built bond through repeated positive interactions")
+        print("✓ Rejection: Induced sadness through sudden rejection")
+        print("✓ Betrayal: Demonstrated object-specific grudge (different for A vs B)")
+        print("✓ Separation: Showed attachment separation pain over time")
+        print("✓ Repair: Attempted relationship repair through apologies")
+        print("=" * 60)
+        print("Demo completed successfully!")
 
 
 if __name__ == "__main__":
