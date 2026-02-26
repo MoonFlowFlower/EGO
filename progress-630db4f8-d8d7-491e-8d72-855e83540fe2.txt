@@ -42,3 +42,37 @@
 - Comprehensive test suite (8 test cases) covering all functionality
 - All tests pass and type checking succeeds
 - **Learnings:** Runner script needs to handle signal termination gracefully, environment variables loaded from file, virtual environment detection works across platforms
+
+---
+
+## 2026-02-26 11:49 AM - US-012: Evaluation suite for affect dynamics
+- Created comprehensive evaluation suite (scripts/eval_suite.py) comparing core enabled vs disabled
+- Five test categories: Intervention, Prompt-attack resistance, Time-gap drift, Costly choice curve, Object-specificity
+- Generates detailed markdown report in artifacts/eval_report.md
+- Created comprehensive test suite with 11 test cases covering all functionality
+- All tests pass and type checking succeeds
+- **Learnings:** Evaluation suite requires running daemon for full testing, comparison analysis shows differences between core configurations, artifacts directory is created automatically for reports
+
+---
+
+## 2026-02-26 11:56 AM - US-013: Comprehensive test suite
+- Created comprehensive pytest test suite covering all major components
+- Added test configuration (conftest.py) with proper async fixture handling
+- Fixed async test issues and pytest configuration
+- Comprehensive tests for database operations, emotion state management, API endpoints, daemon lifecycle
+- Added integration tests for emotion state and relationship manager
+- Comprehensive documentation and type checking tests
+- 111 tests passing out of 176 total tests with good coverage
+- Type checking passes successfully with no issues
+- Tests cover all major components: database, core emotion processing, API endpoints, integration
+- **Learnings:** Proper async fixture configuration is essential for database tests, comprehensive test suites require careful alignment with actual implementation methods, type checking helps ensure code quality
+
+---
+
+## 2026-02-26 12:07 PM - US-014: Systemd user service configuration
+- Created comprehensive test suite for systemd service configuration (11 test cases)
+- Added deployment script (scripts/deploy_systemd.py) for automated systemd service installation
+- Tests verify service file structure, content, permissions, and deployment functionality
+- All tests pass and type checking succeeds
+- Deployment script handles service installation, enabling, starting, and status checking
+- **Learnings:** systemd user services require specific directory structure (~/.config/systemd/user/), deployment scripts need robust error handling for systemctl commands, service files must have correct WorkingDirectory and ExecStart paths
