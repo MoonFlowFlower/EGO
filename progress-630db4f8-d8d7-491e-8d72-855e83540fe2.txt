@@ -4,7 +4,13 @@ Task: OpenEmotion MVP-1 — emotiond daemon + OpenClaw skill
 Started: 2026-02-26 05:12 AM
 
 ## Codebase Patterns
-(add patterns here as you discover them)
+- Database uses async SQLite operations with aiosqlite
+- State table maintains single row constraint with CHECK (id = 1)
+- Relationships are target-specific with separate bond/grudge values
+- Events are append-only with auto-incrementing IDs
+- All database operations use context managers for proper connection handling
+- Pydantic models define API contract for requests/responses
+- Configuration loaded from environment variables with defaults
 
 ---
 
@@ -27,4 +33,43 @@ Started: 2026-02-26 05:12 AM
 - Created simple verification scripts for structure and typecheck
 - All files now exist and project structure is complete
 - **Learnings:** Previous commit was incomplete - emotiond package was empty, scripts directory was empty, tests were missing implementation tests
+
+## 2026-02-26 05:25 AM - US-002: Create database schema and models
+- Database schema implemented with all required tables: state, relationships, events
+- Pydantic models created for Event, PlanRequest, and PlanResponse
+- Configuration respects OPENEMOTION_DB_PATH environment variable
+- Crash-safe updates implemented with proper commit statements
+- Created comprehensive test file for database schema verification
+- Added verification script to check all acceptance criteria
+- **Learnings:** Database uses async SQLite operations with aiosqlite, state table maintains single row constraint, relationships are target-specific, events are append-only
+
+## 2026-02-26 05:31 AM - US-003: Implement core emotion state management
+- Implemented EmotionState class with valence, arousal, and subjective time management
+- Implemented RelationshipManager class with bond/grudge tracking per target
+- Added event-driven state updates for both emotion and relationships
+- Implemented homeostasis drift (1s) and consolidation drift (30s) loops
+- Added state persistence across restarts via database synchronization
+- Created comprehensive test coverage for core functionality
+- Updated API to load initial state on startup
+- **Learnings:** Emotional state updates use keyword-based sentiment analysis, relationships are target-specific and persist across sessions, drift mechanisms maintain emotional inertia
+
 ---
+
+## 2026-02-26 05:39 AM - US-004: Create FastAPI health endpoint
+- Updated health endpoint to return proper timestamp using datetime.now().isoformat()
+- Added comprehensive test for health endpoint that verifies response structure and timestamp format
+- Server binds only to 127.0.0.1 as configured in config.py
+- OPENEMOTION_HOST and OPENEMOTION_PORT environment variables are respected
+- **Learnings:** FastAPI TestClient can be used to test endpoints directly without running server, datetime.isoformat() provides standardized timestamp format
+
+---
+
+## 2026-02-26 05:45 AM - US-005: Implement event ingestion endpoint
+- POST /event endpoint already implemented in emotiond/api.py and core.py
+- process_event function handles event ingestion, state updates, and database storage
+- Events update emotional state based on content (positive/negative keywords)
+- Bond/grudge updated per target with relationship-specific tracking
+- Events stored in database with proper metadata
+- Created comprehensive test file specifically for event endpoint functionality
+- Added verification script to validate all event endpoint requirements
+- **Learnings:** Event processing is already fully implemented and tested, core logic handles state persistence and relationship management correctly
