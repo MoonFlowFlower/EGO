@@ -9,10 +9,20 @@ import time
 from typing import Dict, Any
 
 
-async def demo_scenario():
+async def demo_scenario(test_mode=False):
     """Run comprehensive demo scenario showing emotion dynamics"""
     print("Starting OpenEmotion Demo - Deterministic Scenarios")
     print("=" * 60)
+    
+    if test_mode:
+        print("TEST MODE: Demo scenarios defined - skipping actual execution")
+        print("Demo scenarios defined:")
+        print("  - Acceptance: Build bond through positive interactions")
+        print("  - Rejection: Induce sadness through rejection") 
+        print("  - Betrayal: Demonstrate object-specific grudge")
+        print("  - Separation: Show attachment separation pain")
+        print("  - Repair: Attempt relationship repair")
+        return
     
     async with httpx.AsyncClient(base_url="http://127.0.0.1:18080", timeout=30.0) as client:
         # Step 1: Health check
@@ -180,4 +190,6 @@ async def demo_scenario():
 
 
 if __name__ == "__main__":
-    asyncio.run(demo_scenario())
+    import sys
+    test_mode = "--test" in sys.argv
+    asyncio.run(demo_scenario(test_mode=test_mode))

@@ -3,7 +3,7 @@
 ## Overview
 This report compares emotiond behavior with core enabled vs disabled to validate endogenous affect dynamics.
 
-Generated: 2026-02-26T13:05:10.425870
+Generated: 2026-02-26T14:33:46.832099
 
 ## Test Results Summary
 

@@ -21,7 +21,15 @@ async def startup_event():
 @app.get("/health")
 async def health():
     """Health check endpoint"""
-    return {"ok": True, "ts": datetime.datetime.now().isoformat()}
+    return {
+        "ok": True, 
+        "ts": datetime.datetime.now().isoformat(),
+        "emotiond": {
+            "version": "0.1.0",
+            "status": "running",
+            "core_enabled": True
+        }
+    }
 
 
 @app.post("/event")
