@@ -7,6 +7,7 @@ from typing import Dict, Any, Optional
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.db import get_state, update_state, add_event, get_relationships, update_relationship, update_meaningful_contact_time
 from emotiond.config import K_AROUSAL, DISABLE_CORE
+from emotiond.memory import memory_system, initialize_memory_system
 
 
 class EmotionState:
@@ -162,14 +163,21 @@ class RelationshipManager:
         if target not in self.relationships:
             self.relationships[target] = {"bond": 0.0, "grudge": 0.0}
         
+        # Get memory impact for historical context
+        memory_impact = memory_system.get_memory_impact_on_relationship(target)
+        
         # Update based on event type
         if event.type == "user_message":
             # Positive interactions build bond
             if event.text and any(word in event.text.lower() for word in ["good", "great", "thanks", "love", "happy"]):
-                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.1)
+                base_bond_increase = 0.1
+                bond_increase = base_bond_increase + memory_impact["bond_modifier"]
+                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + bond_increase)
             # Negative interactions build grudge
             elif event.text and any(word in event.text.lower() for word in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"]):
-                self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.1)
+                base_grudge_increase = 0.1
+                grudge_increase = base_grudge_increase + memory_impact["grudge_modifier"]
+                self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + grudge_increase)
         
         elif event.type == "assistant_reply":
             # Replies maintain existing relationships
@@ -219,6 +227,9 @@ async def load_initial_state():
             "bond": rel["bond"],
             "grudge": rel["grudge"]
         }
+    
+    # Initialize memory system
+    await initialize_memory_system()
 
 
 async def process_event(event: Event) -> Dict[str, Any]:
@@ -238,6 +249,9 @@ async def process_event(event: Event) -> Dict[str, Any]:
     emotion_state.prediction_error = prediction_error
     emotion_state.arousal = min(1.0, emotion_state.arousal + prediction_error * 0.5)
     
+    # Calculate memory strength based on prediction error and arousal
+    memory_strength = memory_system.calculate_memory_strength(prediction_error, emotion_state.arousal)
+    
     relationship_manager.update_from_event(event)
     
     # Persist state to database with prediction error
@@ -256,7 +270,8 @@ async def process_event(event: Event) -> Dict[str, Any]:
         "status": "processed", 
         "valence": emotion_state.valence, 
         "arousal": emotion_state.arousal,
-        "prediction_error": emotion_state.prediction_error
+        "prediction_error": emotion_state.prediction_error,
+        "memory_strength": memory_strength
     }
 
 
@@ -349,10 +364,13 @@ async def homeostasis_loop():
 
 
 async def consolidation_loop():
-    """Loop B: consolidation (slow variable drift: bond/grudge decay) (30-120s)"""
+    """Loop B: consolidation (slow variable drift: bond/grudge decay + memory summarization) (30-120s)"""
     while True:
         # Update bond/grudge decay
         relationship_manager.apply_consolidation_drift()
+        
+        # Perform memory summarization
+        await memory_system.summarize_memories()
         
         # Persist relationships to database
         for target, rel_data in relationship_manager.relationships.items():

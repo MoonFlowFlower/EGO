@@ -117,6 +117,60 @@ async def add_event(event: Dict[str, Any]):
         await db.commit()
 
 
+async def get_recent_events(limit: int = 100) -> List[Dict[str, Any]]:
+    """Get recent events ordered by creation time"""
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT type, actor, target, text, meta, created_at FROM events ORDER BY created_at DESC LIMIT ?",
+            (limit,)
+        )
+        rows = await cursor.fetchall()
+        return [{
+            "type": row[0],
+            "actor": row[1],
+            "target": row[2],
+            "text": row[3],
+            "meta": eval(row[4]) if row[4] else {},
+            "created_at": row[5]
+        } for row in rows]
+
+
+async def get_events_by_target(target: str, limit: int = 50) -> List[Dict[str, Any]]:
+    """Get events for a specific target"""
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT type, actor, target, text, meta, created_at FROM events WHERE target = ? ORDER BY created_at DESC LIMIT ?",
+            (target, limit)
+        )
+        rows = await cursor.fetchall()
+        return [{
+            "type": row[0],
+            "actor": row[1],
+            "target": row[2],
+            "text": row[3],
+            "meta": eval(row[4]) if row[4] else {},
+            "created_at": row[5]
+        } for row in rows]
+
+
+async def get_events_by_type(event_type: str, limit: int = 50) -> List[Dict[str, Any]]:
+    """Get events of a specific type"""
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT type, actor, target, text, meta, created_at FROM events WHERE type = ? ORDER BY created_at DESC LIMIT ?",
+            (event_type, limit)
+        )
+        rows = await cursor.fetchall()
+        return [{
+            "type": row[0],
+            "actor": row[1],
+            "target": row[2],
+            "text": row[3],
+            "meta": eval(row[4]) if row[4] else {},
+            "created_at": row[5]
+        } for row in rows]
+
+
 async def close_db():
     """Close any active database connections (placeholder for future connection pooling)"""
     # Currently using context managers so connections are auto-closed
