@@ -14,12 +14,37 @@ class EmotionState:
     
     def __init__(self):
         self.valence = 0.0  # -1.0 to 1.0 (negative to positive)
-        self.arousal = 0.3  # 0.0 to 1.0 (calm to excited)
+        self.arousal = 0.3  # -1.0 to 1.0 (calm to excited)
         self.subjective_time = 0
         self.last_meaningful_contact = time.time()  # Track time since meaningful interaction
+        self.prediction_error = 0.0  # Expected vs actual outcome difference
+        # Tiny predictive model: expected valence change by event type
+        # These are slightly different from actual values to create prediction errors
+        self.prediction_model = {
+            "user_message": {
+                "positive": 0.08,  # Slightly less than actual 0.1
+                "negative": -0.12,  # Slightly more than actual -0.1
+                "neutral": 0.0
+            },
+            "assistant_reply": {
+                "positive": 0.0,
+                "negative": 0.0,
+                "neutral": -0.03  # Slightly less than actual -0.05
+            },
+            "world_event": {
+                "positive": 0.15,  # Slightly less than actual 0.2
+                "negative": -0.25,  # Slightly more than actual -0.2
+                "neutral": 0.0
+            }
+        }
     
-    def update_from_event(self, event: Event) -> None:
-        """Update emotional state based on event type and content"""
+    def update_from_event(self, event: Event) -> float:
+        """Update emotional state based on event type and content
+        Returns the actual valence change for prediction error calculation
+        """
+        # Store initial valence for prediction error calculation
+        initial_valence = self.valence
+        
         # Update meaningful contact time for user interactions
         if event.type == "user_message" and event.text:
             self.last_meaningful_contact = time.time()
@@ -47,10 +72,40 @@ class EmotionState:
             elif event.meta and event.meta.get("negative", False):
                 self.valence = max(-1.0, self.valence - 0.2)
                 self.arousal = min(1.0, self.arousal + 0.15)
+        
+        # Calculate actual valence change for prediction error
+        actual_valence_change = self.valence - initial_valence
+        return actual_valence_change
     
     def calculate_subjective_time_delta(self, real_dt: float) -> float:
         """Calculate subjective time delta based on arousal: subjective_dt = real_dt / (1 + k * arousal)"""
         return real_dt / (1 + K_AROUSAL * self.arousal)
+
+    def calculate_prediction_error(self, event: Event, actual_valence_change: float) -> float:
+        """Calculate prediction error based on expected vs actual valence change"""
+        # Determine expected outcome based on event type and content
+        if event.type == "user_message":
+            if event.text and any(word in event.text.lower() for word in ["good", "great", "thanks", "love", "happy"]):
+                expected = self.prediction_model["user_message"]["positive"]
+            elif event.text and any(word in event.text.lower() for word in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"]):
+                expected = self.prediction_model["user_message"]["negative"]
+            else:
+                expected = self.prediction_model["user_message"]["neutral"]
+        elif event.type == "assistant_reply":
+            expected = self.prediction_model["assistant_reply"]["neutral"]
+        elif event.type == "world_event":
+            if event.meta and event.meta.get("positive", False):
+                expected = self.prediction_model["world_event"]["positive"]
+            elif event.meta and event.meta.get("negative", False):
+                expected = self.prediction_model["world_event"]["negative"]
+            else:
+                expected = self.prediction_model["world_event"]["neutral"]
+        else:
+            expected = 0.0
+        
+        # Calculate prediction error (absolute difference)
+        prediction_error = abs(expected - actual_valence_change)
+        return prediction_error
     
     def apply_homeostasis_drift(self, real_dt: float = 1.0) -> None:
         """Apply natural drift toward neutral state with subjective time"""
@@ -135,6 +190,7 @@ async def load_initial_state():
     emotion_state.arousal = db_state["arousal"]
     emotion_state.subjective_time = db_state["subjective_time"]
     emotion_state.last_meaningful_contact = db_state["last_meaningful_contact"]
+    emotion_state.prediction_error = db_state["prediction_error"]
     
     # Load relationships
     db_relationships = await get_relationships()
@@ -154,22 +210,34 @@ async def process_event(event: Event) -> Dict[str, Any]:
     if event.type == "user_message" and event.text:
         await update_meaningful_contact_time()
     
-    # Update emotional state based on event
-    emotion_state.update_from_event(event)
+    # Update emotional state based on event and calculate prediction error
+    actual_valence_change = emotion_state.update_from_event(event)
+    prediction_error = emotion_state.calculate_prediction_error(event, actual_valence_change)
+    
+    # Update prediction error and modulate arousal based on prediction error
+    emotion_state.prediction_error = prediction_error
+    emotion_state.arousal = min(1.0, emotion_state.arousal + prediction_error * 0.5)
+    
     relationship_manager.update_from_event(event)
     
-    # Persist state to database
+    # Persist state to database with prediction error
     await update_state(
         emotion_state.valence,
         emotion_state.arousal,
-        emotion_state.subjective_time
+        emotion_state.subjective_time,
+        emotion_state.prediction_error
     )
     
     # Persist relationships to database
     for target, rel_data in relationship_manager.relationships.items():
         await update_relationship(target, rel_data["bond"], rel_data["grudge"])
     
-    return {"status": "processed", "valence": emotion_state.valence, "arousal": emotion_state.arousal}
+    return {
+        "status": "processed", 
+        "valence": emotion_state.valence, 
+        "arousal": emotion_state.arousal,
+        "prediction_error": emotion_state.prediction_error
+    }
 
 
 async def generate_plan(request: PlanRequest) -> PlanResponse:
@@ -253,7 +321,8 @@ async def homeostasis_loop():
         await update_state(
             emotion_state.valence,
             emotion_state.arousal,
-            emotion_state.subjective_time
+            emotion_state.subjective_time,
+            emotion_state.prediction_error
         )
         
         await asyncio.sleep(1)
