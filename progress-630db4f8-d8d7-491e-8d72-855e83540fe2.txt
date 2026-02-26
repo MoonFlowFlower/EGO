@@ -84,3 +84,14 @@ Started: 2026-02-26 05:12 AM
 - Tests exist and pass verification
 - Type checking now passes without errors
 - **Learnings:** Database schema was already implemented in US-002, this session focused on verification and fixing minor type issues
+
+---
+
+## 2026-02-26 09:31 AM - US-002: Core emotion state management improvements
+- Fixed negative word detection in RelationshipManager (added 'terrible', 'awful', 'horrible')
+- Fixed Pydantic deprecation warning by using model_dump() instead of dict()
+- Fixed test isolation issues by resetting global state in test setup
+- Fixed environment variable handling in database tests
+- All tests now pass including core emotion state and database schema tests
+- Type checking passes without issues
+- **Learnings:** Global state management requires careful test isolation, environment variables need module reloading in tests, Pydantic v2 uses model_dump() instead of dict()
