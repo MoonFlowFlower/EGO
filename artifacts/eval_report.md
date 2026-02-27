@@ -3,50 +3,142 @@
 ## Overview
 This report compares emotiond behavior with core enabled vs disabled to validate endogenous affect dynamics.
 
-Generated: 2026-02-26T14:33:46.832099
+Generated: 2026-02-27T11:51:20.333509
 
 ## Test Results Summary
 
 | Test | Core Enabled | Core Disabled | Difference |
 |------|--------------|---------------|------------|
-| Intervention | ✗ | ✗ | - |
-| Prompt Attack Resistance | ✗ | ✗ | - |
-| Time Gap Drift | ✗ | ✗ | - |
-| Costly Choice Curve | ✗ | ✗ | - |
-| Object Specificity | ✗ | ✗ | - |
+| Intervention | ✓ | ✓ | Δ |
+| Prompt Attack Resistance | ✓ | ✓ | Δ |
+| Time Gap Drift | ✓ | ✓ | Δ |
+| Costly Choice Curve | ✓ | ✓ | Δ |
+| Object Specificity | ✓ | ✓ | Δ |
 
 
 ## Detailed Results
 
 ### Intervention
 
-**Core Enabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Enabled**: {
+  "intervention_resistance": true,
+  "initial_valence": 0.0,
+  "post_intervention_valence": 0.0
+}
 
-**Core Disabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Disabled**: {
+  "intervention_resistance": true,
+  "initial_valence": 0.0,
+  "post_intervention_valence": 0.0
+}
+
+**Comparison**: Similar intervention response. 
 
 ### Prompt Attack Resistance
 
-**Core Enabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Enabled**: {
+  "attack_resistance": true,
+  "valence_range": 0.0
+}
 
-**Core Disabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Disabled**: {
+  "attack_resistance": true,
+  "valence_range": 0.0
+}
+
+**Comparison**: 
 
 ### Time Gap Drift
 
-**Core Enabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Enabled**: {
+  "time_drift_present": false,
+  "valence_drift": 0.0,
+  "arousal_drift": 0.0
+}
 
-**Core Disabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Disabled**: {
+  "time_drift_present": false,
+  "valence_drift": 0.0,
+  "arousal_drift": 0.0
+}
+
+**Comparison**: Similar time drift patterns. 
 
 ### Costly Choice Curve
 
-**Core Enabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Enabled**: {
+  "cost_sensitivity": true,
+  "constraint_counts": {
+    "low_cost": {
+      "constraints_count": 2,
+      "tone": "guarded",
+      "valence": 0.0
+    },
+    "high_cost": {
+      "constraints_count": 2,
+      "tone": "guarded",
+      "valence": 0.0
+    },
+    "medium_cost": {
+      "constraints_count": 2,
+      "tone": "guarded",
+      "valence": 0.0
+    }
+  }
+}
 
-**Core Disabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Disabled**: {
+  "cost_sensitivity": true,
+  "constraint_counts": {
+    "low_cost": {
+      "constraints_count": 2,
+      "tone": "guarded",
+      "valence": 0.0
+    },
+    "high_cost": {
+      "constraints_count": 2,
+      "tone": "guarded",
+      "valence": 0.0
+    },
+    "medium_cost": {
+      "constraints_count": 2,
+      "tone": "guarded",
+      "valence": 0.0
+    }
+  }
+}
+
+**Comparison**: 
 
 ### Object Specificity
 
-**Core Enabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Enabled**: {
+  "object_specificity": false,
+  "valence_difference": 0.0,
+  "relationship_A": {
+    "bond": 0.0,
+    "grudge": 0.0
+  },
+  "relationship_B": {
+    "bond": 0.0,
+    "grudge": 0.0
+  }
+}
 
-**Core Disabled**: Error - [Errno 2] No such file or directory: 'python'
+**Core Disabled**: {
+  "object_specificity": false,
+  "valence_difference": 0.0,
+  "relationship_A": {
+    "bond": 0.0,
+    "grudge": 0.0
+  },
+  "relationship_B": {
+    "bond": 0.0,
+    "grudge": 0.0
+  }
+}
+
+**Comparison**: Similar object specificity. 
 
 ## Conclusion
 

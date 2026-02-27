@@ -55,9 +55,9 @@ class TestDemoCLI:
             content = f.read()
         
         # Check for required functions and structure
-        assert "async def demo_scenario():" in content, "Script should have demo_scenario function"
+        assert "async def demo_scenario(test_mode=False):" in content, "Script should have demo_scenario function"
         assert "if __name__ == \"__main__\":" in content, "Script should have main guard"
-        assert "asyncio.run(demo_scenario())" in content, "Script should run demo_scenario"
+        assert "asyncio.run(demo_scenario(test_mode=test_mode))" in content, "Script should run demo_scenario"
     
     def test_demo_scenarios_defined(self):
         """Test that all required scenarios are defined in demo"""
