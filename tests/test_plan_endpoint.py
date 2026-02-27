@@ -14,27 +14,29 @@ class TestPlanGeneration:
     """Test plan generation functionality"""
     
     @pytest.fixture(autouse=True)
-    async def setup_db(self):
+    def setup_db(self):
         """Setup database for tests"""
         # Ensure data directory exists
         os.makedirs("data", exist_ok=True)
         
         # Initialize database
-        await init_db()
+        import asyncio
+        asyncio.run(init_db())
         
         # Clean up after tests
         yield
         if os.path.exists(DB_PATH):
             os.remove(DB_PATH)
     
-    async def test_plan_generation_returns_valid_response(self):
+    def test_plan_generation_returns_valid_response(self):
         """Test that generate_plan returns valid Response Plan JSON"""
         # Set up initial state
-        await update_state(0.5, 0.3, 100)
-        await update_relationship("test_user", 0.7, 0.1)
+        import asyncio
+        asyncio.run(update_state(0.5, 0.3, 100))
+        asyncio.run(update_relationship("test_user", 0.7, 0.1))
         
         # Load state into memory
-        await asyncio.sleep(0.1)  # Allow state to load
+        asyncio.run(asyncio.sleep(0.1))  # Allow state to load
         
         # Generate plan
         request = PlanRequest(
@@ -42,7 +44,7 @@ class TestPlanGeneration:
             user_text="How are you?"
         )
         
-        response = await generate_plan(request)
+        response = asyncio.run(generate_plan(request))
         
         # Verify response structure
         assert isinstance(response, PlanResponse)
@@ -54,14 +56,15 @@ class TestPlanGeneration:
         assert hasattr(response, "emotion")
         assert hasattr(response, "relationship")
     
-    async def test_plan_includes_all_required_fields(self):
+    def test_plan_includes_all_required_fields(self):
         """Test that plan response includes all required fields"""
         # Set up initial state
-        await update_state(0.2, 0.4, 100)
-        await update_relationship("user_a", 0.5, 0.2)
+        import asyncio
+        asyncio.run(update_state(0.2, 0.4, 100))
+        asyncio.run(update_relationship("user_a", 0.5, 0.2))
         
         # Load state into memory
-        await asyncio.sleep(0.1)
+        asyncio.run(asyncio.sleep(0.1))
         
         # Generate plan
         request = PlanRequest(
@@ -69,7 +72,7 @@ class TestPlanGeneration:
             user_text="What do you think?"
         )
         
-        response = await generate_plan(request)
+        response = asyncio.run(generate_plan(request))
         
         # Check all required fields
         assert response.tone in ["soft", "warm", "guarded", "cold"]
@@ -84,7 +87,7 @@ class TestPlanGeneration:
         assert "bond" in response.relationship
         assert "grudge" in response.relationship
     
-    async def test_plan_tone_values(self):
+    def test_plan_tone_values(self):
         """Test that tone values are valid"""
         valid_tones = {"soft", "warm", "guarded", "cold"}
         
@@ -96,22 +99,23 @@ class TestPlanGeneration:
             (-0.5, 0.6, 0.3, 0.8, "cold"),   # Very negative, high grudge
         ]
         
+        import asyncio
         for valence, arousal, bond, grudge, expected_tone in test_scenarios:
-            await update_state(valence, arousal, 100)
-            await update_relationship("test_user", bond, grudge)
+            asyncio.run(update_state(valence, arousal, 100))
+            asyncio.run(update_relationship("test_user", bond, grudge))
             
             # Load state into memory
-            await asyncio.sleep(0.1)
+            asyncio.run(asyncio.sleep(0.1))
             
             request = PlanRequest(
                 user_id="test_user",
                 user_text="Test"
             )
             
-            response = await generate_plan(request)
+            response = asyncio.run(generate_plan(request))
             assert response.tone in valid_tones
     
-    async def test_plan_intent_values(self):
+    def test_plan_intent_values(self):
         """Test that intent values are valid"""
         valid_intents = {"repair", "distance", "seek", "set_boundary", "retaliate"}
         
@@ -123,35 +127,37 @@ class TestPlanGeneration:
             (0.1, 0.4, 0.3, "set_boundary"),  # Default case
         ]
         
+        import asyncio
         for valence, grudge, bond, expected_intent in test_scenarios:
-            await update_state(valence, 0.4, 100)
-            await update_relationship("test_user", bond, grudge)
+            asyncio.run(update_state(valence, 0.4, 100))
+            asyncio.run(update_relationship("test_user", bond, grudge))
             
             # Load state into memory
-            await asyncio.sleep(0.1)
+            asyncio.run(asyncio.sleep(0.1))
             
             request = PlanRequest(
                 user_id="test_user",
                 user_text="Test"
             )
             
-            response = await generate_plan(request)
+            response = asyncio.run(generate_plan(request))
             assert response.intent in valid_intents
     
-    async def test_plan_emotion_range(self):
+    def test_plan_emotion_range(self):
         """Test that emotion values are within valid ranges"""
-        await update_state(-0.7, 0.9, 100)
-        await update_relationship("test_user", 0.2, 0.8)
+        import asyncio
+        asyncio.run(update_state(-0.7, 0.9, 100))
+        asyncio.run(update_relationship("test_user", 0.2, 0.8))
         
         # Load state into memory
-        await asyncio.sleep(0.1)
+        asyncio.run(asyncio.sleep(0.1))
         
         request = PlanRequest(
             user_id="test_user",
             user_text="Test"
         )
         
-        response = await generate_plan(request)
+        response = asyncio.run(generate_plan(request))
         
         # Check emotion ranges
         assert -1.0 <= response.emotion["valence"] <= 1.0
@@ -161,20 +167,21 @@ class TestPlanGeneration:
         assert 0.0 <= response.relationship["bond"] <= 1.0
         assert 0.0 <= response.relationship["grudge"] <= 1.0
     
-    async def test_plan_key_points_and_constraints(self):
+    def test_plan_key_points_and_constraints(self):
         """Test that key_points and constraints are generated"""
-        await update_state(0.3, 0.4, 100)
-        await update_relationship("test_user", 0.6, 0.2)
+        import asyncio
+        asyncio.run(update_state(0.3, 0.4, 100))
+        asyncio.run(update_relationship("test_user", 0.6, 0.2))
         
         # Load state into memory
-        await asyncio.sleep(0.1)
+        asyncio.run(asyncio.sleep(0.1))
         
         request = PlanRequest(
             user_id="test_user",
             user_text="Test"
         )
         
-        response = await generate_plan(request)
+        response = asyncio.run(generate_plan(request))
         
         # Verify key_points and constraints exist
         assert isinstance(response.key_points, list)

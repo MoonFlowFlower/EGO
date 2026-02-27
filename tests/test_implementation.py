@@ -110,7 +110,7 @@ class TestModels:
 class TestAPI:
     """Test API endpoints"""
     
-    async def test_health_endpoint(self):
+    def test_health_endpoint(self):
         """Test /health endpoint returns required fields"""
         # Import the app directly to test the endpoint
         from emotiond.api import app
