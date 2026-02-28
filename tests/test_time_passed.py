@@ -68,7 +68,7 @@ async def test_core_disabled_remains_neutral(isolated_db, monkeypatch):
             "type": "world_event",
             "actor": "user_Z",
             "target": "assistant",
-            "meta": {"subtype": "betrayal"}
+            "meta": {"subtype": "betrayal", "source": "system"}
         })
         
         response = await client.post("/plan", json={"user_id": "user_Z", "user_text": "test"})

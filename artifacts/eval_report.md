@@ -5,7 +5,7 @@ This report compares emotiond behavior with core enabled vs disabled.
 
 **Key Principle:** All state changes from event ingestion + time updates, not direct mutations.
 
-Generated: 2026-02-28T04:14:58.696248
+Generated: 2026-02-28T05:00:42.766046
 
 ## Significance Thresholds (Theory-Meaningful)
 

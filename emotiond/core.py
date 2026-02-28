@@ -263,6 +263,39 @@ async def load_initial_state():
 
 
 async def process_event(event: Event) -> Dict[str, Any]:
+    # === MVP-2.1 Auth Gate ===
+    if event.type == "world_event":
+        source = event.meta.get("source", "user") if event.meta else "user"
+        subtype = event.meta.get("subtype") if event.meta else None
+        
+        # High-impact subtypes that require system/openclaw source
+        restricted_subtypes = {"betrayal", "repair_success"}
+        
+        if subtype in restricted_subtypes and source == "user":
+            # Audit: record denial
+            await add_event({
+                "type": "world_event_denied",
+                "actor": event.actor,
+                "target": event.target,
+                "text": event.text,
+                "meta": {
+                    "original_subtype": subtype,
+                    "source": source,
+                    "decision": "deny",
+                    "reason": f"user source not allowed for {subtype}",
+                    "allowed_subtypes": ["care", "rejection", "ignored", "apology", "time_passed"]
+                }
+            })
+            # Return structured error (not HTTPException, since api.py catches exceptions)
+            return {
+                "status": "denied",
+                "error": "forbidden_event_type",
+                "reason": f"user source not allowed for {subtype}",
+                "allowed_subtypes": ["care", "rejection", "ignored", "apology", "time_passed"],
+                "hint": "Use source=system or source=openclaw for high-impact events"
+            }
+    # === End Auth Gate ===
+    
     await add_event(event.model_dump())
     if event.type == "user_message" and event.text:
         await update_meaningful_contact_time()

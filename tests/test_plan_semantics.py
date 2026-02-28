@@ -40,7 +40,7 @@ async def test_plan_explicit_focus_target(isolated_db):
             "type": "world_event",
             "actor": "user_Y",
             "target": "assistant",
-            "meta": {"subtype": "betrayal"}
+            "meta": {"subtype": "betrayal", "source": "system"}
         })
         
         # Request plan for user_X but with focus_target=user_Y

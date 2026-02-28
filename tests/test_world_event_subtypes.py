@@ -33,7 +33,7 @@ async def test_betrayal_increases_grudge(isolated_db):
             "type": "world_event",
             "actor": "user_B",
             "target": "assistant",
-            "meta": {"subtype": "betrayal"}
+            "meta": {"subtype": "betrayal", "source": "system"}
         })
         
         response = await client.post("/plan", json={
@@ -84,7 +84,7 @@ async def test_repair_success_reduces_grudge(isolated_db):
             "type": "world_event",
             "actor": "user_D",
             "target": "assistant",
-            "meta": {"subtype": "betrayal"}
+            "meta": {"subtype": "betrayal", "source": "system"}
         })
         
         # Check baseline grudge
@@ -96,7 +96,7 @@ async def test_repair_success_reduces_grudge(isolated_db):
             "type": "world_event",
             "actor": "user_D",
             "target": "assistant",
-            "meta": {"subtype": "repair_success"}
+            "meta": {"subtype": "repair_success", "source": "system"}
         })
         
         r2 = await client.post("/plan", json={"user_id": "user_D", "user_text": "test"})

@@ -1,7 +1,7 @@
 """
 FastAPI application for emotiond daemon
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import datetime
 import asyncio
 import traceback

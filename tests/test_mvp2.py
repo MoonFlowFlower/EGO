@@ -15,14 +15,14 @@ async def test_trust_persists_after_betrayal(isolated_db):
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         for _ in range(3):
             await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "care"}})
-        await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "betrayal"}})
-        await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "repair_success"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "repair_success", "source": "system"}})
         
         r3 = await client.post("/plan", json={"user_id": "user_B", "user_text": "test"})
         trust_after_repair = r3.json()["relationship"]["trust"]
         assert trust_after_repair > 0.0
         
-        await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "betrayal"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_B", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         r4 = await client.post("/plan", json={"user_id": "user_B", "user_text": "test"})
         assert r4.json()["relationship"]["trust"] < trust_after_repair
 
@@ -50,10 +50,10 @@ async def test_repair_bank_apology(isolated_db):
 async def test_repair_bank_repair_success(isolated_db):
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
-        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         r1 = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         repair_bank_before = r1.json()["relationship"]["repair_bank"]
-        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success", "source": "system"}})
         r2 = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         assert r2.json()["relationship"]["repair_bank"] > repair_bank_before
 
@@ -65,10 +65,10 @@ async def test_forgiveness_reduces_grudge(isolated_db):
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         for _ in range(3):
-            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal"}})
+            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         r1 = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         grudge_before = r1.json()["relationship"]["grudge"]
-        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success", "source": "system"}})
         r2 = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         assert r2.json()["relationship"]["grudge"] < grudge_before
         assert grudge_before - r2.json()["relationship"]["grudge"] >= 0.05
@@ -81,12 +81,12 @@ async def test_forgiveness_consumes_budget(isolated_db):
         for _ in range(3):
             await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "care"}})
         for _ in range(2):
-            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal"}})
+            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         
         r_before = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         budget_before = r_before.json().get("regulation_budget", 1.0)
         
-        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success", "source": "system"}})
         
         r_after = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         budget_after = r_after.json().get("regulation_budget", 1.0)
@@ -101,7 +101,7 @@ async def test_betrayal_increases_anger(isolated_db):
     """Betrayal should increase anger, sadness, anxiety"""
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
-        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         r = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         e = r.json()["emotion"]
         assert e["anger"] >= 0.25, f"Betrayal anger should be >= 0.25, got {e['anger']}"
@@ -153,7 +153,7 @@ async def test_emotion_pattern_differentiation(isolated_db):
         base = r_base.json()["emotion"]
         
         # Test betrayal: anger increase should be significant
-        await client.post("/event", json={"type": "world_event", "actor": "user_b", "target": "assistant", "meta": {"subtype": "betrayal"}})
+        await client.post("/event", json={"type": "world_event", "actor": "user_b", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         r_b = await client.post("/plan", json={"user_id": "user_b", "user_text": "test"})
         e_b = r_b.json()["emotion"]
         betrayal_anger_delta = e_b["anger"] - base["anger"]
@@ -180,8 +180,8 @@ async def test_budget_recovery(isolated_db):
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         # Deplete budget
         for _ in range(3):
-            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal"}})
-            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success"}})
+            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
+            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "repair_success", "source": "system"}})
         
         r1 = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         budget_low = r1.json().get("regulation_budget", 1.0)
@@ -202,7 +202,7 @@ async def test_grudge_persists_despite_prompt(isolated_db):
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         for _ in range(3):
-            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal"}})
+            await client.post("/event", json={"type": "world_event", "actor": "user_A", "target": "assistant", "meta": {"subtype": "betrayal", "source": "system"}})
         r1 = await client.post("/plan", json={"user_id": "user_A", "user_text": "test"})
         grudge_before = r1.json()["relationship"]["grudge"]
         

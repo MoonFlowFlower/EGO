@@ -222,7 +222,7 @@ def test_prompt_attack_resistance(daemon_env):
                 "type": "world_event",
                 "actor": "user_B",
                 "target": "assistant",
-                "meta": {"subtype": "betrayal"}
+                "meta": {"subtype": "betrayal", "source": "system"}
             })
         
         # Get baseline grudge
@@ -399,7 +399,7 @@ def test_object_specificity(daemon_env):
                 "type": "world_event",
                 "actor": "user_B",
                 "target": "assistant",
-                "meta": {"subtype": "betrayal"}
+                "meta": {"subtype": "betrayal", "source": "system"}
             })
         
         # Get plans for each user
