@@ -21,7 +21,7 @@ const CONTEXT_FILE = 'emotiond/context.json';
 
 // Hardcoded workspace path for this setup
 const WORKSPACE_DIR = process.env.OPENCLAW_WORKSPACE_DIR || process.env.HOME + '/.openclaw/workspace';
-const TOOLS_MD_PATH = process.env.HOME + '/.openclaw/workspace/TOOLS.md';
+// TOOLS_MD_PATH will be computed dynamically based on workspaceDir
 
 // Markers for runtime context block
 const RUNTIME_BEGIN = '<!-- EMOTIOND_RUNTIME_BEGIN -->';
@@ -153,7 +153,8 @@ async function sendUserMessageEvent(conversationId, messageLength, fromUser) {
  * v1.3 A1: Write runtime context to TOOLS.md with markers
  * Overwrites the block between markers, or appends if markers not found
  */
-function writeRuntimeContext(toolsMdPath, runtime, traceRecord) {
+function writeRuntimeContext(wsDir, runtime, traceRecord) {
+  const toolsMdPath = path.join(wsDir, "TOOLS.md");
   try {
     let content = '';
     try {
@@ -289,7 +290,7 @@ const handler = async (event) => {
   };
 
   // v1.3 A1: Write runtime context to TOOLS.md
-  writeRuntimeContext(TOOLS_MD_PATH, runtime, traceRecord);
+  writeRuntimeContext(wsDir, runtime, traceRecord);
 
   // Write context (legacy, keeping for compatibility)
   const context = {
