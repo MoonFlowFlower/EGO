@@ -17,6 +17,7 @@ from emotiond.core import (
 from emotiond.daemon import daemon_manager
 from emotiond.config import is_core_disabled
 from emotiond.security import (
+    init_tokens,
     resolve_server_source,
     validate_event_for_source
 )
@@ -27,7 +28,8 @@ app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize database and load state on startup"""
+    """Initialize tokens, database and load state on startup"""
+    init_tokens()  # Initialize tokens on startup
     await daemon_manager.start()
     await load_initial_state()
 

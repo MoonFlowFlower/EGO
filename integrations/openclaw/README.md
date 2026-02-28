@@ -228,3 +228,59 @@ integrations/openclaw/
         ├── HOOK.md              # Hook documentation
         └── handler.js           # Hook implementation
 ```
+
+---
+
+## Token Security
+
+### Secure Token Setup
+
+Tokens are now managed securely with the following priority order:
+
+1. **Environment variable** (`EMOTIOND_OPENCLAW_TOKEN`) - Recommended for production
+2. **User config file** (`~/.config/openemotion/emotiond_token`)
+3. **Auto-generation** - If no token exists, one is generated automatically
+
+### Quick Token Setup
+
+```bash
+# Option 1: Environment variable (recommended)
+export EMOTIOND_OPENCLAW_TOKEN=$(openssl rand -hex 32)
+
+# Option 2: Let emotiond auto-generate
+python -m emotiond.api
+# Check logs for token location: tail -f /tmp/emotiond.log | grep token
+```
+
+### Never Commit Tokens
+
+Token files are now excluded via `.gitignore`:
+```
+.emotiond_token
+**/.emotiond_token
+emotiond_token
+```
+
+### Token Rotation
+
+To rotate a compromised or stale token:
+
+```bash
+# Generate new token
+openssl rand -hex 32 > ~/.config/openemotion/emotiond_token
+chmod 600 ~/.config/openemotion/emotiond_token
+
+# Update OpenClaw config
+# Edit ~/.openclaw/openclaw.json with the new EMOTIOND_OPENCLAW_TOKEN
+
+# Restart services
+openclaw gateway restart
+```
+
+### If Token Was Committed to Git
+
+See `docs/SECURITY.md` for instructions on cleaning git history using `git filter-branch` or BFG Repo-Cleaner.
+
+**Important**: Always rotate a token that was ever committed to version control.
+
+For comprehensive security documentation, see [`docs/SECURITY.md`](../../docs/SECURITY.md).

@@ -1,17 +1,20 @@
 /**
- * Emotiond Bridge Hook v1.3
+ * Emotiond Bridge Hook v1.5
  * 
- * Integration-2: Sends user_message world_event for behavior learning
+ * Integration-3: Security + Reliability + User Affect v0
  * 
- * v1.3 features:
- * - A1: Runtime Context 覆盖写入 TOOLS.md (marker-based)
- * - A3: 轨迹日志 (traces/<target_id>.jsonl)
+ * v1.5 features:
+ * - Injection size limit (3KB hard limit)
+ * - Degradation strategy (emotiond unavailable → minimal marker)
+ * - Safe API wrappers (never throw)
+ * - Date-based trace rotation + retention
  */
 
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const crypto = require('crypto');
+const traceManager = require('./traceManager');
 
 const EMOTIOND_BASE_URL = process.env.EMOTIOND_BASE_URL || 'http://127.0.0.1:18080';
 const EMOTIOND_OPENCLAW_TOKEN = process.env.EMOTIOND_OPENCLAW_TOKEN || '';
@@ -19,23 +22,33 @@ const TIME_PASSED_MIN_DELTA = parseInt(process.env.EMOTIOND_TIME_PASSED_MIN_DELT
 const TIME_PASSED_MAX_SECONDS = parseInt(process.env.EMOTIOND_TIME_PASSED_MAX_SECONDS || '300', 10);
 const CONTEXT_FILE = 'emotiond/context.json';
 
+// Injection size limits (Integration-3 D2)
+const INJECTION_MAX_SIZE = 3072; // 3KB hard limit
+const INJECTION_MIN_SIZE = 2048; // 2KB target minimum
+
+// Trace configuration
+const TRACE_RETENTION_DAYS = parseInt(process.env.EMOTIOND_TRACE_RETENTION_DAYS || '7', 10);
+const TRACE_CLEANUP_INTERVAL_MS = parseInt(process.env.EMOTIOND_TRACE_CLEANUP_INTERVAL_MS || '3600000', 10);
+
 // Hardcoded workspace path for this setup
 const WORKSPACE_DIR = process.env.OPENCLAW_WORKSPACE_DIR || process.env.HOME + '/.openclaw/workspace';
-// TOOLS_MD_PATH will be computed dynamically based on workspaceDir
 
 // Markers for runtime context block
 const RUNTIME_BEGIN = '<!-- EMOTIOND_RUNTIME_BEGIN -->';
 const RUNTIME_END = '<!-- EMOTIOND_RUNTIME_END -->';
 
-// v1.3: Per-target_id timestamp tracking (was using convId, now explicit target_id)
+// v1.3: Per-target_id timestamp tracking
 const lastMessageTimestamps = new Map();
+
+// Track last cleanup time
+let lastCleanupTime = 0;
 
 function clampSeconds(seconds) {
   return Math.max(1, Math.min(TIME_PASSED_MAX_SECONDS, Math.floor(seconds)));
 }
 
 /**
- * v1.3 A3: Hash text for trace logging (first 8 chars of sha256)
+ * v1.3 A3: Hash text for trace logging
  */
 function hashText(text) {
   if (!text) return null;
@@ -54,8 +67,15 @@ function getActionGuidance(action) {
   return g[action] || g.observe;
 }
 
-async function fetchDecision(targetId) {
-  return new Promise((resolve, reject) => {
+// ============================================
+// Integration-3 D2: Safe API Wrappers (never throw)
+// ============================================
+
+/**
+ * Safe fetch decision - returns { success, data, error }
+ */
+async function safeFetchDecision(targetId) {
+  return new Promise((resolve) => {
     const url = new URL('/decision/target/' + encodeURIComponent(targetId), EMOTIOND_BASE_URL);
     const req = http.request(url, {
       method: 'GET',
@@ -66,18 +86,30 @@ async function fetchDecision(targetId) {
       res.on('data', c => data += c);
       res.on('end', () => {
         if (res.statusCode < 400) {
-          try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
-        } else { reject(new Error('HTTP ' + res.statusCode)); }
+          try { 
+            resolve({ success: true, data: JSON.parse(data), error: null }); 
+          } catch (e) { 
+            resolve({ success: false, data: null, error: 'parse_error: ' + e.message }); 
+          }
+        } else { 
+          resolve({ success: false, data: null, error: 'HTTP ' + res.statusCode }); 
+        }
       });
     });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+    req.on('error', (e) => resolve({ success: false, data: null, error: e.message }));
+    req.on('timeout', () => { 
+      req.destroy(); 
+      resolve({ success: false, data: null, error: 'timeout' }); 
+    });
     req.end();
   });
 }
 
-async function sendTimePassed(targetId, seconds, reqId) {
-  return new Promise((resolve, reject) => {
+/**
+ * Safe send time_passed - returns { success, error }
+ */
+async function safeSendTimePassed(targetId, seconds, reqId) {
+  return new Promise((resolve) => {
     const url = new URL('/event', EMOTIOND_BASE_URL);
     const body = JSON.stringify({
       type: 'world_event',
@@ -96,21 +128,20 @@ async function sendTimePassed(targetId, seconds, reqId) {
     }, (res) => {
       let data = '';
       res.on('data', c => data += c);
-      res.on('end', () => resolve(data));
+      res.on('end', () => resolve({ success: res.statusCode < 400, error: res.statusCode >= 400 ? 'HTTP ' + res.statusCode : null }));
     });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+    req.on('error', (e) => resolve({ success: false, error: e.message }));
+    req.on('timeout', () => { req.destroy(); resolve({ success: false, error: 'timeout' }); });
     req.write(body);
     req.end();
   });
 }
 
 /**
- * Send user_message world_event to emotiond for behavior learning.
- * This allows emotiond to learn user patterns (message length, frequency, etc.)
+ * Safe send user_message event - returns { success, error }
  */
-async function sendUserMessageEvent(conversationId, messageLength, fromUser) {
-  return new Promise((resolve, reject) => {
+async function safeSendUserMessageEvent(conversationId, messageLength, fromUser) {
+  return new Promise((resolve) => {
     const url = new URL('/event', EMOTIOND_BASE_URL);
     const body = JSON.stringify({
       type: 'world_event',
@@ -134,24 +165,73 @@ async function sendUserMessageEvent(conversationId, messageLength, fromUser) {
     }, (res) => {
       let data = '';
       res.on('data', c => data += c);
-      res.on('end', () => {
-        if (res.statusCode < 400) {
-          resolve(data);
-        } else {
-          reject(new Error('HTTP ' + res.statusCode + ': ' + data));
-        }
-      });
+      res.on('end', () => resolve({ success: res.statusCode < 400, error: res.statusCode >= 400 ? 'HTTP ' + res.statusCode : null }));
     });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+    req.on('error', (e) => resolve({ success: false, error: e.message }));
+    req.on('timeout', () => { req.destroy(); resolve({ success: false, error: 'timeout' }); });
     req.write(body);
     req.end();
   });
 }
 
+// ============================================
+// Integration-3 D2: Injection Size Limit + Degradation
+// ============================================
+
 /**
- * v1.3 A1: Write runtime context to TOOLS.md with markers
- * Overwrites the block between markers, or appends if markers not found
+ * Build minimal runtime context (for when emotiond unavailable or injection too large)
+ */
+function buildMinimalRuntimeContext(targetId, chan, msgId, ts, deltaSeconds, tracePath) {
+  return {
+    target_id: targetId,
+    ts: ts,
+    dt_seconds: deltaSeconds,
+    emotiond: 'unavailable',
+    trace: tracePath
+  };
+}
+
+/**
+ * Build full runtime context with size check
+ * Returns { runtime, truncated } where truncated is true if size exceeded
+ */
+function buildRuntimeContext(targetId, chan, from, convId, msgId, ts, deltaSeconds, decision) {
+  const runtime = {
+    target_id: targetId,
+    channel: chan,
+    from: from,
+    conversation_id: convId,
+    message_id: msgId,
+    ts: ts,
+    dt_seconds: deltaSeconds,
+    request_id_base: chan + ':' + msgId,
+    pre_decision: decision ? {
+      action: decision.action,
+      decision_id: decision.decision_id
+    } : null,
+    allowed_subtypes_infer: ["care","apology","ignored","rejection","betrayal","neutral","uncertain"]
+  };
+
+  const blockStr = JSON.stringify(runtime);
+  const size = Buffer.byteLength(blockStr, 'utf8');
+  
+  if (size > INJECTION_MAX_SIZE) {
+    // Truncate to minimal
+    const minimal = {
+      target_id: targetId,
+      ts: ts,
+      decision: decision ? { action: decision.action, id: decision.decision_id } : null,
+      dt_seconds: deltaSeconds
+    };
+    console.error('[emotiond-bridge] Injection block size ' + size + ' bytes exceeds limit ' + INJECTION_MAX_SIZE + ', truncating to minimal');
+    return { runtime: minimal, truncated: true, size: Buffer.byteLength(JSON.stringify(minimal), 'utf8') };
+  }
+  
+  return { runtime, truncated: false, size };
+}
+
+/**
+ * v1.3 A1: Write runtime context to TOOLS.md with markers and size limit
  */
 function writeRuntimeContext(wsDir, runtime, traceRecord) {
   const toolsMdPath = path.join(wsDir, "TOOLS.md");
@@ -160,26 +240,31 @@ function writeRuntimeContext(wsDir, runtime, traceRecord) {
     try {
       content = fs.readFileSync(toolsMdPath, 'utf8');
     } catch (e) {
-      // File doesn't exist, will create
       content = '';
     }
 
     const runtimeBlock = RUNTIME_BEGIN + '\n```json\n' + JSON.stringify(runtime, null, 2) + '\n```\n' + RUNTIME_END;
+    const blockSize = Buffer.byteLength(runtimeBlock, 'utf8');
+    
+    // Size check
+    if (blockSize > INJECTION_MAX_SIZE) {
+      console.error('[emotiond-bridge] Injection block size ' + blockSize + ' exceeds limit, skipping');
+      traceRecord.errors.push({ operation: 'injection_size_check', error: 'block_size_' + blockSize + '_exceeds_' + INJECTION_MAX_SIZE });
+      return false;
+    }
 
     const beginIdx = content.indexOf(RUNTIME_BEGIN);
     const endIdx = content.indexOf(RUNTIME_END);
 
     let newContent;
     if (beginIdx !== -1 && endIdx !== -1 && endIdx > beginIdx) {
-      // Markers exist, replace the block
       newContent = content.slice(0, beginIdx) + runtimeBlock + content.slice(endIdx + RUNTIME_END.length);
     } else {
-      // Markers don't exist, append to end
       newContent = content.trimEnd() + '\n\n' + runtimeBlock + '\n';
     }
 
     fs.writeFileSync(toolsMdPath, newContent, 'utf8');
-    console.log('[emotiond-bridge] Runtime context written to TOOLS.md');
+    console.log('[emotiond-bridge] Runtime context written to TOOLS.md (' + blockSize + ' bytes)');
     return true;
   } catch (e) {
     console.error('[emotiond-bridge] TOOLS.md write error: ' + e.message);
@@ -189,150 +274,213 @@ function writeRuntimeContext(wsDir, runtime, traceRecord) {
 }
 
 /**
- * v1.3 A3: Append trace record to traces/<target_id>.jsonl
+ * Write unavailable marker when emotiond is down
  */
-function appendTrace(tracesDir, targetId, traceRecord) {
+function writeUnavailableMarker(wsDir, targetId, ts, error, traceRecord) {
+  const toolsMdPath = path.join(wsDir, "TOOLS.md");
   try {
-    if (!fs.existsSync(tracesDir)) {
-      fs.mkdirSync(tracesDir, { recursive: true });
+    let content = '';
+    try {
+      content = fs.readFileSync(toolsMdPath, 'utf8');
+    } catch (e) {
+      content = '';
     }
-    const tracePath = path.join(tracesDir, targetId + '.jsonl');
-    fs.appendFileSync(tracePath, JSON.stringify(traceRecord) + '\n', 'utf8');
-    console.log('[emotiond-bridge] Trace appended to: ' + tracePath);
+
+    const minimal = {
+      target_id: targetId,
+      ts: ts,
+      emotiond: 'unavailable',
+      error: error
+    };
+    
+    const runtimeBlock = RUNTIME_BEGIN + '\n```json\n' + JSON.stringify(minimal, null, 2) + '\n```\n' + RUNTIME_END;
+
+    const beginIdx = content.indexOf(RUNTIME_BEGIN);
+    const endIdx = content.indexOf(RUNTIME_END);
+
+    let newContent;
+    if (beginIdx !== -1 && endIdx !== -1 && endIdx > beginIdx) {
+      newContent = content.slice(0, beginIdx) + runtimeBlock + content.slice(endIdx + RUNTIME_END.length);
+    } else {
+      newContent = content.trimEnd() + '\n\n' + runtimeBlock + '\n';
+    }
+
+    fs.writeFileSync(toolsMdPath, newContent, 'utf8');
+    console.log('[emotiond-bridge] Unavailable marker written to TOOLS.md');
     return true;
   } catch (e) {
-    console.error('[emotiond-bridge] Trace write error: ' + e.message);
+    console.error('[emotiond-bridge] Unavailable marker write error: ' + e.message);
     return false;
   }
 }
 
-const handler = async (event) => {
-  if (event.type !== 'message' || event.action !== 'received') return;
-
-  const ctx = event.context || {};
-  const wsDir = ctx.workspaceDir || WORKSPACE_DIR;
-  const convId = ctx.conversationId || ctx.channelId || 'default';
-  const msgId = ctx.messageId || 'msg_' + Date.now();
-  const ts = ctx.timestamp || Date.now() / 1000;
-  const from = ctx.from || 'unknown';
-  const chan = ctx.channelId || 'unknown';
+/**
+ * v1.4: Perform trace cleanup with throttling
+ */
+function performTraceCleanup(tracesDir) {
+  const now = Date.now();
+  if (now - lastCleanupTime < TRACE_CLEANUP_INTERVAL_MS) {
+    return null;
+  }
   
-  // Extract message content for user_message event
-  const messageText = ctx.text || ctx.message || '';
-  const messageLength = messageText.length;
-
-  // v1.3: Use convId as target_id (consistent with emotiond)
-  const targetId = convId;
-
-  // v1.3 A3: Initialize trace record
-  const traceRecord = {
-    timestamp: new Date().toISOString(),
-    inbound: {
-      messageId: msgId,
-      ts: ts,
-      text_hash: hashText(messageText),
-      dt_seconds: null // Will be set after time calculation
-    },
-    sent_events: [],
-    errors: []
-  };
-
-  const lastTs = lastMessageTimestamps.get(targetId) || ts;
-  const delta = ts - lastTs;
-
-  // Update trace with dt_seconds
-  traceRecord.inbound.dt_seconds = delta >= TIME_PASSED_MIN_DELTA ? clampSeconds(delta) : null;
-
-  // Time passed
-  if (delta >= TIME_PASSED_MIN_DELTA) {
-    const secs = clampSeconds(delta);
-    const reqId = chan + ':' + msgId + ':tp';
-    try {
-      await sendTimePassed(targetId, secs, reqId);
-      console.log('[emotiond-bridge] time_passed: ' + secs + 's -> ' + targetId);
-      traceRecord.sent_events.push({ type: 'time_passed', seconds: secs, request_id: reqId });
-    } catch (e) {
-      console.error('[emotiond-bridge] time_passed error: ' + e.message);
-      traceRecord.errors.push({ operation: 'send_time_passed', error: e.message });
+  lastCleanupTime = now;
+  const result = traceManager.cleanupOldTraces(tracesDir, { retentionDays: TRACE_RETENTION_DAYS });
+  
+  if (result.deleted.length > 0 || result.errors.length > 0) {
+    console.log('[emotiond-bridge] Trace cleanup: deleted ' + result.deleted.length + ' files, kept ' + result.kept.length);
+    if (result.errors.length > 0) {
+      console.error('[emotiond-bridge] Trace cleanup errors: ' + result.errors.join(', '));
     }
   }
-  lastMessageTimestamps.set(targetId, ts);
+  
+  return result;
+}
 
-  // Fetch decision
-  let decision = null;
-  let guidance = null;
+// ============================================
+// Main Handler (with degradation)
+// ============================================
+
+const handler = async (event) => {
+  // Top-level try-catch: never let handler throw
   try {
-    decision = await fetchDecision(targetId);
-    if (decision && decision.action) {
+    if (event.type !== 'message' || event.action !== 'received') return;
+
+    const ctx = event.context || {};
+    const wsDir = ctx.workspaceDir || WORKSPACE_DIR;
+    const convId = ctx.conversationId || ctx.channelId || 'default';
+    const msgId = ctx.messageId || 'msg_' + Date.now();
+    const ts = ctx.timestamp || Date.now() / 1000;
+    const from = ctx.from || 'unknown';
+    const chan = ctx.channelId || 'unknown';
+    const messageText = ctx.text || ctx.message || '';
+    const messageLength = messageText.length;
+
+    const targetId = convId;
+
+    // Initialize trace record
+    const traceRecord = {
+      timestamp: new Date().toISOString(),
+      inbound: {
+        messageId: msgId,
+        ts: ts,
+        text_hash: hashText(messageText),
+        dt_seconds: null
+      },
+      sent_events: [],
+      errors: []
+    };
+
+    const lastTs = lastMessageTimestamps.get(targetId) || ts;
+    const delta = ts - lastTs;
+    traceRecord.inbound.dt_seconds = delta >= TIME_PASSED_MIN_DELTA ? clampSeconds(delta) : null;
+
+    // Time passed (with safe wrapper)
+    if (delta >= TIME_PASSED_MIN_DELTA) {
+      const secs = clampSeconds(delta);
+      const reqId = chan + ':' + msgId + ':tp';
+      const result = await safeSendTimePassed(targetId, secs, reqId);
+      if (result.success) {
+        console.log('[emotiond-bridge] time_passed: ' + secs + 's -> ' + targetId);
+        traceRecord.sent_events.push({ type: 'time_passed', seconds: secs, request_id: reqId });
+      } else {
+        console.error('[emotiond-bridge] time_passed error: ' + result.error);
+        traceRecord.errors.push({ operation: 'send_time_passed', error: result.error });
+      }
+    }
+    lastMessageTimestamps.set(targetId, ts);
+
+    // Fetch decision (with safe wrapper)
+    const decisionResult = await safeFetchDecision(targetId);
+    let decision = null;
+    let guidance = null;
+    let emotiondAvailable = decisionResult.success;
+    
+    if (decisionResult.success && decisionResult.data && decisionResult.data.action) {
+      decision = decisionResult.data;
       guidance = getActionGuidance(decision.action);
       console.log('[emotiond-bridge] Decision: ' + decision.action + ' for ' + targetId);
+    } else if (!decisionResult.success) {
+      console.error('[emotiond-bridge] Decision fetch error: ' + decisionResult.error);
+      traceRecord.errors.push({ operation: 'fetch_decision', error: decisionResult.error });
     }
-  } catch (e) {
-    console.error('[emotiond-bridge] Decision fetch error: ' + e.message);
-    traceRecord.errors.push({ operation: 'fetch_decision', error: e.message });
-  }
 
-  // v1.3 A1: Build runtime context for TOOLS.md
-  const runtime = {
-    target_id: targetId,
-    channel: chan,
-    from: from,
-    conversation_id: convId,
-    message_id: msgId,
-    ts: ts,
-    dt_seconds: delta >= TIME_PASSED_MIN_DELTA ? clampSeconds(delta) : null,
-    request_id_base: chan + ':' + msgId,
-    pre_decision: decision ? {
-      action: decision.action,
-      decision_id: decision.decision_id
-    } : null,
-    allowed_subtypes_infer: ["care","apology","ignored","rejection","betrayal","neutral","uncertain"]
-  };
+    // Write runtime context (with size limit and degradation)
+    if (emotiondAvailable) {
+      const { runtime } = buildRuntimeContext(
+        targetId, chan, from, convId, msgId, ts,
+        delta >= TIME_PASSED_MIN_DELTA ? clampSeconds(delta) : null,
+        decision
+      );
+      writeRuntimeContext(wsDir, runtime, traceRecord);
+    } else {
+      // Degradation: write unavailable marker
+      writeUnavailableMarker(wsDir, targetId, ts, decisionResult.error, traceRecord);
+    }
 
-  // v1.3 A1: Write runtime context to TOOLS.md
-  writeRuntimeContext(wsDir, runtime, traceRecord);
+    // Write context file (legacy compatibility)
+    const context = {
+      target_id: targetId,
+      channel_id: chan,
+      conversation_id: convId,
+      message_id: msgId,
+      from: from,
+      timestamp: ts,
+      decision: decision ? { action: decision.action, decision_id: decision.decision_id, explanation: decision.explanation } : null,
+      guidance: guidance,
+      emotiond_available: emotiondAvailable,
+      generated_at: new Date().toISOString()
+    };
 
-  // Write context (legacy, keeping for compatibility)
-  const context = {
-    target_id: targetId,
-    channel_id: chan,
-    conversation_id: convId,
-    message_id: msgId,
-    from: from,
-    timestamp: ts,
-    decision: decision ? { action: decision.action, decision_id: decision.decision_id, explanation: decision.explanation } : null,
-    guidance: guidance,
-    generated_at: new Date().toISOString()
-  };
-
-  const ctxPath = path.join(wsDir, CONTEXT_FILE);
-  const ctxDir = path.dirname(ctxPath);
-  try {
-    if (!fs.existsSync(ctxDir)) fs.mkdirSync(ctxDir, { recursive: true });
-    fs.writeFileSync(ctxPath, JSON.stringify(context, null, 2));
-    console.log('[emotiond-bridge] Context written to: ' + ctxPath);
-  } catch (e) {
-    console.error('[emotiond-bridge] Context write error: ' + e.message);
-    traceRecord.errors.push({ operation: 'write_context_json', error: e.message });
-  }
-
-  // Integration-2: Send user_message world_event for behavior learning
-  if (messageLength > 0) {
+    const ctxPath = path.join(wsDir, CONTEXT_FILE);
+    const ctxDir = path.dirname(ctxPath);
     try {
-      await sendUserMessageEvent(targetId, messageLength, from);
-      console.log('[emotiond-bridge] user_message event sent: len=' + messageLength + ' -> ' + targetId);
-      traceRecord.sent_events.push({ type: 'user_message', message_length: messageLength });
+      if (!fs.existsSync(ctxDir)) fs.mkdirSync(ctxDir, { recursive: true });
+      fs.writeFileSync(ctxPath, JSON.stringify(context, null, 2));
+      console.log('[emotiond-bridge] Context written to: ' + ctxPath);
     } catch (e) {
-      console.error('[emotiond-bridge] user_message event error: ' + e.message);
-      traceRecord.errors.push({ operation: 'send_user_message', error: e.message });
+      console.error('[emotiond-bridge] Context write error: ' + e.message);
+      traceRecord.errors.push({ operation: 'write_context_json', error: e.message });
     }
+
+    // Send user_message event (with safe wrapper)
+    if (messageLength > 0) {
+      const result = await safeSendUserMessageEvent(targetId, messageLength, from);
+      if (result.success) {
+        console.log('[emotiond-bridge] user_message event sent: len=' + messageLength + ' -> ' + targetId);
+        traceRecord.sent_events.push({ type: 'user_message', message_length: messageLength });
+      } else {
+        console.error('[emotiond-bridge] user_message event error: ' + result.error);
+        traceRecord.errors.push({ operation: 'send_user_message', error: result.error });
+      }
+    }
+
+    // Write trace record
+    const tracesDir = path.join(wsDir, 'integrations/openclaw/traces');
+    const traceResult = traceManager.appendTrace(tracesDir, targetId, traceRecord);
+    
+    if (traceResult.success) {
+      console.log('[emotiond-bridge] Trace appended to: ' + traceResult.path);
+    } else {
+      console.error('[emotiond-bridge] Trace write failed: ' + traceResult.error);
+    }
+
+    // Perform cleanup
+    performTraceCleanup(tracesDir);
+
+    console.log('[emotiond-bridge] Processed: ' + msgId + ' -> ' + (decision?.action || 'unavailable'));
+    
+  } catch (e) {
+    // Top-level catch: never throw
+    console.error('[emotiond-bridge] Handler error (caught): ' + e.message);
   }
-
-  // v1.3 A3: Write trace record
-  const tracesDir = path.join(wsDir, 'integrations/openclaw/traces');
-  appendTrace(tracesDir, targetId, traceRecord);
-
-  console.log('[emotiond-bridge] Processed: ' + msgId + ' -> ' + (decision?.action || 'none'));
 };
 
 module.exports = handler;
+module.exports.traceManager = traceManager;
+module.exports.performTraceCleanup = performTraceCleanup;
+module.exports.buildRuntimeContext = buildRuntimeContext;
+module.exports.buildMinimalRuntimeContext = buildMinimalRuntimeContext;
+module.exports.safeFetchDecision = safeFetchDecision;
+module.exports.safeSendTimePassed = safeSendTimePassed;
+module.exports.safeSendUserMessageEvent = safeSendUserMessageEvent;
+module.exports.INJECTION_MAX_SIZE = INJECTION_MAX_SIZE;
