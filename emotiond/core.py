@@ -27,6 +27,12 @@ from emotiond.config import (
 from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
+# MVP-4 D5: Meta-cognition
+from emotiond.meta_cognition import (
+    get_meta_cognition_engine,
+    apply_meta_cognition_to_decision,
+    soften_decision_tone
+)
 
 
 class EmotionState:
@@ -309,6 +315,21 @@ _predictions: Dict[str, Dict[str, float]] = {}
 # Structure: {target_id: {action: {social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error}}}
 _target_predictions: Dict[str, Dict[str, Dict[str, Any]]] = {}
 
+
+
+# MVP-4 D5: Helper function for meta-cognition context
+def _build_meta_cognition_context(target: str) -> Dict[str, Any]:
+    """Build context for meta-cognition evaluation."""
+    relationship = relationship_manager.relationships.get(
+        target,
+        {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0}
+    )
+    return {
+        "consecutive_prediction_errors": getattr(emotion_state, '_consecutive_prediction_errors', 0),
+        "recent_events": [],
+        "relationship": relationship,
+        "language": "zh"
+    }
 
 emotion_state = EmotionState()
 relationship_manager = RelationshipManager()
@@ -636,6 +657,20 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         uncertainty=mood_data["uncertainty"]
     )
     
+    # MVP-4 D5: Meta-cognition integration
+    meta_cognition = get_meta_cognition_engine()
+    meta_context = _build_meta_cognition_context(focus_target)
+    meta_action = meta_cognition.evaluate(emotion_state, meta_context)
+    
+    if meta_action:
+        if meta_action.action_type == "ask_clarify":
+            key_points.insert(0, meta_action.suggested_response)
+        elif meta_action.action_type == "reflect":
+            constraints.append(f"Internal note: {meta_action.suggested_response}")
+        elif meta_action.action_type == "slow_down":
+            tone = soften_decision_tone(tone)
+            key_points.insert(0, "Proceeding with caution due to uncertainty")
+    
     return PlanResponse(
         tone=tone, intent=intent, focus_target=focus_target, key_points=key_points, 
         constraints=constraints, emotion=emotion_dict, relationship=relationship_dict, 
@@ -647,7 +682,6 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
     )
 
 
-async def homeostasis_loop():
     last_time = time.time()
     while True:
         current_time = time.time()
