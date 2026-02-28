@@ -215,6 +215,37 @@ async def init_db():
             if "duplicate column name" not in str(e):
                 raise
         
+        # MVP-4 D4: Promise/Contract Ledger for Betrayal Detection
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS promises (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                promise_id TEXT UNIQUE NOT NULL,
+                promiser TEXT NOT NULL,
+                promisee TEXT NOT NULL,
+                content TEXT NOT NULL,
+                created_at REAL NOT NULL,
+                deadline REAL,
+                conditions TEXT,
+                confidence REAL DEFAULT 0.5,
+                evidence TEXT,
+                status TEXT DEFAULT 'active',
+                fulfilled_at REAL,
+                broken_at REAL,
+                broken_evidence TEXT
+            )
+        """)
+        
+        # Indexes for efficient querying
+        await db.execute("""
+            CREATE INDEX IF NOT EXISTS idx_promise_status ON promises(status)
+        """)
+        await db.execute("""
+            CREATE INDEX IF NOT EXISTS idx_promise_promisee ON promises(promisee)
+        """)
+        await db.execute("""
+            CREATE INDEX IF NOT EXISTS idx_promise_promiser ON promises(promiser)
+        """)
+        
         await db.commit()
 
 
