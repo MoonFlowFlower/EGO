@@ -276,7 +276,7 @@ class TestAllowedSubtypesAndKeys:
     
     def test_user_allowed_meta_keys_complete(self):
         """Verify all user-allowed meta keys are defined (source is server-controlled)"""
-        expected = {"subtype", "seconds", "client_source"}
+        expected = {"subtype", "seconds", "client_source", "request_id"}
         assert USER_ALLOWED_META_KEYS == expected
     
     def test_time_passed_bounds(self):

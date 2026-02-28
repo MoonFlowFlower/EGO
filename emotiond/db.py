@@ -81,6 +81,29 @@ async def init_db():
             if "duplicate column name" not in str(e):
                 raise
         
+        # MVP-3: Request deduplication table
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS request_dedupe (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                source TEXT NOT NULL,
+                request_id TEXT NOT NULL,
+                event_id INTEGER,
+                decision_id INTEGER,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(source, request_id)
+            )
+        """)
+        
+        # MVP-3: Time passed tracking for cumulative rate limiting
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS time_passed_tracking (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                source TEXT NOT NULL,
+                seconds REAL NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
         await db.commit()
 
 
@@ -236,3 +259,96 @@ async def get_events_by_type(event_type: str, limit: int = 50) -> List[Dict[str,
             "meta": json.loads(row[4]) if row[4] else {},
             "created_at": row[5]
         } for row in rows]
+
+
+# MVP-3: Request deduplication functions
+async def check_and_record_duplicate(source: str, request_id: str) -> dict:
+    """
+    Check if request_id already exists for source, and record it if not.
+    
+    Returns:
+        dict with keys:
+        - is_duplicate: bool
+        - event_id: int or None (if duplicate)
+        - decision_id: int or None (if duplicate)
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        # Check if exists
+        cursor = await db.execute(
+            "SELECT event_id, decision_id FROM request_dedupe WHERE source = ? AND request_id = ?",
+            (source, request_id)
+        )
+        existing = await cursor.fetchone()
+        
+        if existing:
+            return {
+                "is_duplicate": True,
+                "event_id": existing[0],
+                "decision_id": existing[1]
+            }
+        
+        # Not a duplicate, record it
+        await db.execute(
+            "INSERT INTO request_dedupe (source, request_id) VALUES (?, ?)",
+            (source, request_id)
+        )
+        await db.commit()
+        
+        return {
+            "is_duplicate": False,
+            "event_id": None,
+            "decision_id": None
+        }
+
+
+async def update_dedupe_event_id(source: str, request_id: str, event_id: int):
+    """Update the event_id for a dedupe record after event is created."""
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            "UPDATE request_dedupe SET event_id = ? WHERE source = ? AND request_id = ?",
+            (event_id, source, request_id)
+        )
+        await db.commit()
+
+
+# MVP-3: Time passed cumulative rate limiting functions
+async def get_time_passed_window_sum(source: str, window_seconds: float = 10.0) -> float:
+    """
+    Get the sum of time_passed seconds for a source within the window.
+    
+    Args:
+        source: The source identifier
+        window_seconds: Time window in seconds (default 10)
+    
+    Returns:
+        Sum of seconds within the window
+    """
+    cutoff_time = time.time() - window_seconds
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            "SELECT COALESCE(SUM(seconds), 0.0) FROM time_passed_tracking WHERE source = ? AND created_at >= datetime(?, 'unixepoch')",
+            (source, cutoff_time)
+        )
+        row = await cursor.fetchone()
+        return row[0] if row else 0.0
+
+
+async def record_time_passed(source: str, seconds: float):
+    """Record a time_passed event for cumulative rate limiting."""
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            "INSERT INTO time_passed_tracking (source, seconds) VALUES (?, ?)",
+            (source, seconds)
+        )
+        await db.commit()
+
+
+async def cleanup_old_time_passed_records(max_age_seconds: float = 3600.0):
+    """Clean up old time_passed tracking records (default: older than 1 hour)."""
+    cutoff_time = time.time() - max_age_seconds
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            "DELETE FROM time_passed_tracking WHERE created_at < datetime(?, 'unixepoch')",
+            (cutoff_time,)
+        )
+        await db.commit()

@@ -6,8 +6,15 @@ import asyncio
 import time
 from typing import Dict, Any, Optional
 from emotiond.models import Event, PlanRequest, PlanResponse
-from emotiond.db import get_state, update_state, add_event, get_relationships, update_relationship, update_meaningful_contact_time
-from emotiond.config import K_AROUSAL, is_core_disabled
+from emotiond.db import (
+    get_state, update_state, add_event, get_relationships, update_relationship,
+    update_meaningful_contact_time,
+    check_and_record_duplicate, update_dedupe_event_id,
+    get_time_passed_window_sum, record_time_passed,
+    get_db_path
+)
+from emotiond.config import K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE
+from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
 
 
@@ -266,10 +273,44 @@ async def process_event(event: Event) -> Dict[str, Any]:
     """Process an event after security validation (handled in api.py).
     
     MVP-2.1.1: Also validates source for direct calls (backward compatibility).
+    MVP-3: Added request_id idempotency and time_passed cumulative rate limiting.
     """
+    # === MVP-3: Request Idempotency Check ===
+    request_id = None
+    source = "user"
+    
+    if event.type == "world_event" and event.meta:
+        request_id = event.meta.get("request_id")
+        source = event.meta.get("source", "user")
+    
+    if request_id:
+        dedupe_result = await check_and_record_duplicate(source, request_id)
+        if dedupe_result["is_duplicate"]:
+            # Audit: record duplicate rejection
+            await add_event({
+                "type": "world_event_duplicate",
+                "actor": event.actor,
+                "target": event.target,
+                "text": event.text,
+                "meta": {
+                    "original_request_id": request_id,
+                    "source": source,
+                    "decision": "duplicate_ignored",
+                    "reason": "request_id already processed",
+                    "original_event_id": dedupe_result.get("event_id"),
+                    "original_decision_id": dedupe_result.get("decision_id")
+                }
+            })
+            return {
+                "status": "duplicate_ignored",
+                "request_id": request_id,
+                "source": source,
+                "original_event_id": dedupe_result.get("event_id"),
+                "reason": "request_id already processed"
+            }
+    
     # === MVP-2.1.1 Auth Gate (for direct calls, api.py handles HTTP) ===
     if event.type == "world_event":
-        source = event.meta.get("source", "user") if event.meta else "user"
         subtype = event.meta.get("subtype") if event.meta else None
         
         # High-impact subtypes that require system/openclaw source
@@ -300,7 +341,42 @@ async def process_event(event: Event) -> Dict[str, Any]:
             }
     # === End Auth Gate ===
     
+    # === MVP-3: Time Passed Cumulative Rate Limiting ===
+    time_passed_audit = None
+    if event.type == "world_event" and event.meta and event.meta.get("subtype") == "time_passed":
+        requested_seconds = event.meta.get("seconds", 60)
+        
+        # Get current window sum for this source
+        window_sum = await get_time_passed_window_sum(source, TIME_PASSED_WINDOW_SECONDS)
+        
+        # Validate against cumulative limit
+        clamped_seconds, time_passed_audit = validate_time_passed_cumulative(
+            requested_seconds,
+            window_sum,
+            TIME_PASSED_MAX_CUMULATIVE
+        )
+        
+        # Update event meta with clamped value
+        event.meta["seconds"] = clamped_seconds
+        event.meta["time_passed_audit"] = time_passed_audit
+        
+        # Record for future cumulative checks (only if > 0)
+        if clamped_seconds > 0:
+            await record_time_passed(source, clamped_seconds)
+    # === End Rate Limiting ===
+    
     await add_event(event.model_dump())
+    
+    # Update dedupe record with event_id if request_id was provided
+    if request_id:
+        # Get the last inserted event id using the already imported module
+        import aiosqlite
+        async with aiosqlite.connect(get_db_path()) as db:
+            cursor = await db.execute("SELECT last_insert_rowid()")
+            row = await cursor.fetchone()
+            if row:
+                await update_dedupe_event_id(source, request_id, row[0])
+    
     if event.type == "user_message" and event.text:
         await update_meaningful_contact_time()
     actual_valence_change = emotion_state.update_from_event(event)
@@ -312,7 +388,21 @@ async def process_event(event: Event) -> Dict[str, Any]:
     await update_state(emotion_state.valence, emotion_state.arousal, emotion_state.subjective_time, emotion_state.prediction_error, emotion_state.regulation_budget)
     for target, rel_data in relationship_manager.relationships.items():
         await update_relationship(target, rel_data["bond"], rel_data["grudge"], rel_data.get("trust", 0.0), rel_data.get("repair_bank", 0.0))
-    return {"status": "processed", "valence": emotion_state.valence, "arousal": emotion_state.arousal, "prediction_error": emotion_state.prediction_error, "memory_strength": memory_strength, "regulation_budget": emotion_state.regulation_budget}
+    
+    result = {
+        "status": "processed",
+        "valence": emotion_state.valence,
+        "arousal": emotion_state.arousal,
+        "prediction_error": emotion_state.prediction_error,
+        "memory_strength": memory_strength,
+        "regulation_budget": emotion_state.regulation_budget
+    }
+    
+    # Include time_passed audit info in response if applicable
+    if time_passed_audit:
+        result["time_passed_audit"] = time_passed_audit
+    
+    return result
 
 
 async def generate_plan(request: PlanRequest) -> PlanResponse:

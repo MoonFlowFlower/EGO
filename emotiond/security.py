@@ -18,7 +18,7 @@ OPENCLAW_TOKEN_ENV = "EMOTIOND_OPENCLAW_TOKEN"
 USER_ALLOWED_SUBTYPES = {"care", "rejection", "ignored", "apology", "time_passed"}
 
 # User-allowed meta keys for world_event WITH subtype (source is server-controlled)
-USER_ALLOWED_META_KEYS = {"subtype", "seconds", "client_source"}
+USER_ALLOWED_META_KEYS = {"subtype", "seconds", "client_source", "request_id"}
 
 # Time_passed clamp bounds for user sources
 TIME_PASSED_MIN_SECONDS = 1
@@ -170,6 +170,54 @@ def sanitize_meta_for_user(
             }
     
     return result, None, audit_info
+
+
+
+def validate_time_passed_cumulative(
+    seconds: float,
+    current_window_sum: float,
+    max_cumulative: float = 60.0
+) -> Tuple[float, Dict[str, Any]]:
+    """
+    Validate time_passed against cumulative rate limit.
+    
+    Args:
+        seconds: Requested seconds
+        current_window_sum: Current sum of seconds in the window
+        max_cumulative: Maximum allowed cumulative seconds (default 60)
+    
+    Returns:
+        Tuple of (clamped_seconds, audit_info)
+        - clamped_seconds: Allowed seconds (may be clamped)
+        - audit_info: Details about clamping decision
+    """
+    remaining_budget = max_cumulative - current_window_sum
+    
+    if remaining_budget <= 0:
+        # Budget exhausted, reject entirely
+        return 0.0, {
+            "window_sum": current_window_sum,
+            "requested": seconds,
+            "clamped_to": 0.0,
+            "reason": "cumulative_budget_exhausted"
+        }
+    
+    if seconds <= remaining_budget:
+        # Within budget, allow fully
+        return seconds, {
+            "window_sum": current_window_sum,
+            "requested": seconds,
+            "clamped_to": seconds,
+            "reason": "within_budget"
+        }
+    
+    # Partial budget available, clamp to remaining
+    return remaining_budget, {
+        "window_sum": current_window_sum,
+        "requested": seconds,
+        "clamped_to": remaining_budget,
+        "reason": "clamped_to_remaining_budget"
+    }
 
 
 def validate_event_for_source(
