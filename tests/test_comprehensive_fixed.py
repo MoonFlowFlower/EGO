@@ -186,7 +186,7 @@ class TestRelationshipManagerComprehensive:
         
         # Should have relationships now
         assert len(manager.relationships) > 0
-        assert "assistant" in manager.relationships
+        assert "user" in manager.relationships  # relationship is with actor (sender)
     
     def test_consolidation_drift(self):
         """Test relationship consolidation drift"""
@@ -201,18 +201,18 @@ class TestRelationshipManagerComprehensive:
             meta={"sentiment": "positive"}
         )
         manager.update_from_event(event)
-        manager.relationships["assistant"]["bond"] = 0.9
-        manager.relationships["assistant"]["grudge"] = 0.8
+        manager.relationships["user"]["bond"] = 0.9
+        manager.relationships["user"]["grudge"] = 0.8
         
-        initial_bond = manager.relationships["assistant"]["bond"]
-        initial_grudge = manager.relationships["assistant"]["grudge"]
+        initial_bond = manager.relationships["user"]["bond"]
+        initial_grudge = manager.relationships["user"]["grudge"]
         
         # Apply consolidation drift
         manager.apply_consolidation_drift()
         
         # Values should drift toward neutral
-        assert manager.relationships["assistant"]["bond"] < initial_bond
-        assert manager.relationships["assistant"]["grudge"] < initial_grudge
+        assert manager.relationships["user"]["bond"] < initial_bond
+        assert manager.relationships["user"]["grudge"] < initial_grudge
 
 
 class TestAPIComprehensive:

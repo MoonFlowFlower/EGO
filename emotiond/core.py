@@ -6,7 +6,7 @@ import time
 from typing import Dict, Any, Optional
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.db import get_state, update_state, add_event, get_relationships, update_relationship, update_meaningful_contact_time
-from emotiond.config import K_AROUSAL, DISABLE_CORE
+from emotiond.config import K_AROUSAL, is_core_disabled
 from emotiond.memory import memory_system, initialize_memory_system
 
 
@@ -44,7 +44,7 @@ class EmotionState:
         Returns the actual valence change for prediction error calculation
         """
         # If core is disabled, return no change
-        if DISABLE_CORE:
+        if is_core_disabled():
             return 0.0
             
         # Store initial valence for prediction error calculation
@@ -89,7 +89,7 @@ class EmotionState:
     def calculate_prediction_error(self, event: Event, actual_valence_change: float) -> float:
         """Calculate prediction error based on expected vs actual valence change"""
         # If core is disabled, no prediction error is calculated
-        if DISABLE_CORE:
+        if is_core_disabled():
             return 0.0
             
         # Determine expected outcome based on event type and content
@@ -119,7 +119,7 @@ class EmotionState:
     def apply_homeostasis_drift(self, real_dt: float = 1.0) -> None:
         """Apply natural drift toward neutral state with subjective time"""
         # If core is disabled, no drift occurs
-        if DISABLE_CORE:
+        if is_core_disabled():
             return
             
         # Calculate subjective time delta
@@ -154,10 +154,16 @@ class RelationshipManager:
     def update_from_event(self, event: Event) -> None:
         """Update relationships based on event"""
         # If core is disabled, no relationship updates occur
-        if DISABLE_CORE:
+        if is_core_disabled():
             return
             
-        target = event.target
+        # Use actor (sender) for relationship tracking
+        if event.type == "user_message":
+            target = event.actor
+        elif event.type == "assistant_reply":
+            target = event.target
+        else:
+            target = event.actor
         
         # Initialize relationship if it doesn't exist
         if target not in self.relationships:
@@ -192,7 +198,7 @@ class RelationshipManager:
     def apply_consolidation_drift(self) -> None:
         """Apply slow decay to relationships"""
         # If core is disabled, no consolidation drift occurs
-        if DISABLE_CORE:
+        if is_core_disabled():
             return
             
         for target in self.relationships:

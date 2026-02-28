@@ -24,8 +24,8 @@ class TestRelationshipManagement:
         """Test relationship is created for new target on first event"""
         event = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Hello, this is a positive message"
         )
         
@@ -41,8 +41,8 @@ class TestRelationshipManagement:
         """Test positive user message increases bond"""
         event = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="This is great! I love it!"
         )
         
@@ -57,8 +57,8 @@ class TestRelationshipManagement:
         """Test negative user message increases grudge"""
         event = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="This is terrible and awful!"
         )
         
@@ -74,8 +74,8 @@ class TestRelationshipManagement:
         # Positive event for user_A
         event1 = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Great job!"
         )
         self.manager.update_from_event(event1)
@@ -83,8 +83,8 @@ class TestRelationshipManagement:
         # Negative event for user_B
         event2 = Event(
             type="user_message",
-            actor="user",
-            target="user_B",
+            actor="user_B",
+            target="assistant",
             text="Terrible work!"
         )
         self.manager.update_from_event(event2)
@@ -102,8 +102,8 @@ class TestRelationshipManagement:
         # First establish some bond
         event1 = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Good work!"
         )
         self.manager.update_from_event(event1)
@@ -129,8 +129,8 @@ class TestRelationshipManagement:
         # Establish bond
         event = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Great work!"
         )
         self.manager.update_from_event(event)
@@ -148,8 +148,8 @@ class TestRelationshipManagement:
         # Establish grudge
         event = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Terrible!"
         )
         self.manager.update_from_event(event)
@@ -168,8 +168,8 @@ class TestRelationshipManagement:
         for _ in range(20):
             event = Event(
                 type="user_message",
-                actor="user",
-                target="user_A",
+                actor="user_A",
+            target="assistant",
                 text="Excellent!"
             )
             self.manager.update_from_event(event)
@@ -181,8 +181,8 @@ class TestRelationshipManagement:
         for _ in range(20):
             event = Event(
                 type="user_message",
-                actor="user",
-                target="user_B",
+                actor="user_B",
+            target="assistant",
                 text="Horrible!"
             )
             self.manager.update_from_event(event)
@@ -195,8 +195,8 @@ class TestRelationshipManagement:
         # First establish some relationship
         event1 = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Good work!"
         )
         self.manager.update_from_event(event1)
@@ -238,8 +238,8 @@ class TestRelationshipManagement:
         # Neutral message
         event = Event(
             type="user_message",
-            actor="user",
-            target="user_A",
+            actor="user_A",
+            target="assistant",
             text="Hello, how are you?"
         )
         self.manager.update_from_event(event)

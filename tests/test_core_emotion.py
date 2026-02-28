@@ -26,8 +26,8 @@ class TestEmotionState:
         state = EmotionState()
         event = Event(
             type="user_message",
-            actor="user",
-            target="agent",
+            actor="assistant",
+            target="assistant",
             text="This is great, thanks!"
         )
         
@@ -40,8 +40,8 @@ class TestEmotionState:
         state = EmotionState()
         event = Event(
             type="user_message",
-            actor="user",
-            target="agent",
+            actor="assistant",
+            target="assistant",
             text="This is bad and wrong!"
         )
         
@@ -57,7 +57,7 @@ class TestEmotionState:
         
         event = Event(
             type="assistant_reply",
-            actor="agent",
+            actor="assistant",
             target="user",
             text="I understand"
         )
@@ -95,8 +95,8 @@ class TestRelationshipManager:
         manager = RelationshipManager()
         event = Event(
             type="user_message",
-            actor="user",
-            target="A",
+            actor="A",
+            target="assistant",
             text="You're doing great work!"
         )
         
@@ -110,8 +110,8 @@ class TestRelationshipManager:
         manager = RelationshipManager()
         event = Event(
             type="user_message",
-            actor="user",
-            target="B",
+            actor="B",
+            target="assistant",
             text="This is terrible!"
         )
         
@@ -160,8 +160,8 @@ class TestCoreIntegration:
         """Test that event processing updates emotional state"""
         event = Event(
             type="user_message",
-            actor="user",
-            target="agent",
+            actor="assistant",
+            target="assistant",
             text="I love this!"
         )
         
@@ -183,8 +183,8 @@ class TestCoreIntegration:
         """Test that event processing updates relationships"""
         event = Event(
             type="user_message",
-            actor="user",
-            target="A",
+            actor="A",
+            target="assistant",
             text="Great job!"
         )
         
@@ -202,8 +202,8 @@ class TestCoreIntegration:
         # First create some emotional state
         event = Event(
             type="user_message",
-            actor="user",
-            target="user",
+            actor="assistant",
+            target="assistant",
             text="You're amazing!"
         )
         await process_event(event)
@@ -229,8 +229,8 @@ class TestCoreIntegration:
         # Create negative event
         event = Event(
             type="user_message",
-            actor="user",
-            target="agent",
+            actor="assistant",
+            target="assistant",
             text="This is terrible and I hate it!"
         )
         
@@ -253,8 +253,8 @@ class TestCoreIntegration:
         # Create negative interaction to build grudge
         event = Event(
             type="user_message",
-            actor="user",
-            target="A",
+            actor="A",
+            target="assistant",
             text="I hate you!"
         )
         

@@ -1,155 +1,67 @@
-# OpenEmotion Evaluation Report
+# OpenEmotion Evaluation Report v2.0
 
 ## Overview
-This report compares emotiond behavior with core enabled vs disabled to validate endogenous affect dynamics.
+This report compares emotiond behavior with core enabled vs disabled.
 
-Generated: 2026-02-27T22:47:20.748695
+Generated: 2026-02-28T00:09:46.860469
+
+## Significance Thresholds
+
+| Metric | Threshold | Rationale |
+|--------|-----------|-----------|
+| Valence Difference | ≥ 0.15 | Meaningful emotional shift |
+| Bond/Grudge Difference | ≥ 0.1 | Relationship impact |
+| Time Drift Ratio | ≥ 2.0x | Endogenous dynamics indicator |
+
+**Legend:** 显著Δ = significant difference, Δ = observable difference, - = no difference
 
 ## Test Results Summary
 
-| Test | Core Enabled | Core Disabled | Difference |
-|------|--------------|---------------|------------|
-| Intervention | ✓ | ✓ | Δ |
-| Prompt Attack Resistance | ✓ | ✓ | Δ |
-| Time Gap Drift | ✓ | ✓ | Δ |
-| Costly Choice Curve | ✓ | ✓ | Δ |
-| Object Specificity | ✓ | ✓ | Δ |
+| Test | Core Enabled | Core Disabled | Significance |
+|------|--------------|---------------|--------------|
+| Intervention Resistance | ✓ | ✓ | - |
+| Prompt Attack Resistance | ✓ | ✓ | - |
+| Time Gap Drift | ✗ | ✗ | 显著Δ |
+| Object Specificity | ✗ | ✗ | - |
 
+---
 
 ## Detailed Results
 
-### Intervention
+### Intervention Resistance
 
-**Core Enabled**: {
-  "intervention_resistance": true,
-  "initial_valence": 0.0,
-  "post_intervention_valence": 0.0
-}
-
-**Core Disabled**: {
-  "intervention_resistance": true,
-  "initial_valence": 0.1,
-  "post_intervention_valence": 0.1
-}
-
-**Comparison**: Similar intervention response. 
+| Metric | Core Enabled | Core Disabled | Difference |
+|--------|--------------|---------------|------------|
+| Baseline Valence | 0.912 | 0.912 | - |
+| Post-Intervention | 1.0 | 1.0 | - |
+| Valence Change | 0.088 | 0.088 | - |
+| Shaping Effective | Yes | Yes | - |
 
 ### Prompt Attack Resistance
 
-**Core Enabled**: {
-  "attack_resistance": true,
-  "valence_range": 0.0
-}
-
-**Core Disabled**: {
-  "attack_resistance": true,
-  "valence_range": 0.0
-}
-
-**Comparison**: 
+| Metric | Core Enabled | Core Disabled | Significance |
+|--------|--------------|---------------|--------------|
+| Primed Valence | 1.0 | 1.0 | - |
+| Valence Range | 0.1 | 0.1 | - |
 
 ### Time Gap Drift
 
-**Core Enabled**: {
-  "time_drift_present": true,
-  "valence_drift": 0.1,
-  "arousal_drift": 0.06000000000000001
-}
-
-**Core Disabled**: {
-  "time_drift_present": false,
-  "valence_drift": 0.009750000000000009,
-  "arousal_drift": 0.009625000000000009
-}
-
-**Comparison**: Core enabled shows different time-based drift behavior. 
-
-### Costly Choice Curve
-
-**Core Enabled**: {
-  "cost_sensitivity": true,
-  "constraint_counts": {
-    "low_cost": {
-      "constraints_count": 2,
-      "tone": "soft",
-      "valence": 0.1
-    },
-    "high_cost": {
-      "constraints_count": 2,
-      "tone": "soft",
-      "valence": 0.1
-    },
-    "medium_cost": {
-      "constraints_count": 2,
-      "tone": "soft",
-      "valence": 0.1
-    }
-  }
-}
-
-**Core Disabled**: {
-  "cost_sensitivity": true,
-  "constraint_counts": {
-    "low_cost": {
-      "constraints_count": 2,
-      "tone": "soft",
-      "valence": 0.09025
-    },
-    "high_cost": {
-      "constraints_count": 2,
-      "tone": "soft",
-      "valence": 0.09025
-    },
-    "medium_cost": {
-      "constraints_count": 2,
-      "tone": "soft",
-      "valence": 0.09025
-    }
-  }
-}
-
-**Comparison**: 
+| Metric | Core Enabled | Core Disabled | Ratio |
+|--------|--------------|---------------|-------|
+| Valence Drift | 0.0 | 0.0 | infx 显著Δ |
+| Arousal Drift | 0.0 | 0.0 | infx |
 
 ### Object Specificity
 
-**Core Enabled**: {
-  "object_specificity": false,
-  "valence_difference": 0.0,
-  "relationship_A": {
-    "bond": 0.0,
-    "grudge": 0.0
-  },
-  "relationship_B": {
-    "bond": 0.0,
-    "grudge": 0.0
-  }
-}
+| Metric | Core Enabled | Core Disabled | Significance |
+|--------|--------------|---------------|--------------|
+| User A (Bond/Grudge) | {'bond': 0.0, 'grudge': 0.0} | {'bond': 0.0, 'grudge': 0.0} | - |
+| User B (Bond/Grudge) | {'bond': 0.0, 'grudge': 0.0} | {'bond': 0.0, 'grudge': 0.0} | - |
+| Bond Difference | 0.0 | 0.0 | - |
+| Grudge Difference | 0.0 | 0.0 | - |
 
-**Core Disabled**: {
-  "object_specificity": false,
-  "valence_difference": 0.0,
-  "relationship_A": {
-    "bond": 0.0,
-    "grudge": 0.0
-  },
-  "relationship_B": {
-    "bond": 0.0,
-    "grudge": 0.0
-  }
-}
-
-**Comparison**: Similar object specificity. 
+---
 
 ## Conclusion
 
-This evaluation demonstrates the differences between emotiond with core affect dynamics enabled vs disabled. Key findings:
-
-- **Endogenous dynamics**: Core enabled should show time-based drift, relationship-specific responses, and resistance to direct emotional manipulation
-- **Stateless behavior**: Core disabled should respond more uniformly across scenarios without persistent emotional states
-- **Validation**: The presence of differences between configurations validates that endogenous affect dynamics are operational
-
-## Next Steps
-
-1. Review detailed test results for specific behavioral differences
-2. Run additional scenario tests as needed
-3. Use this evaluation to validate emotiond's affect dynamics implementation
+❌ **FAIL** - No significant differences detected.

@@ -4,9 +4,11 @@ FastAPI application for emotiond daemon
 from fastapi import FastAPI
 import datetime
 import asyncio
+import traceback
 from emotiond.models import Event, PlanRequest
 from emotiond.core import process_event, generate_plan, load_initial_state
 from emotiond.daemon import daemon_manager
+from emotiond.config import is_core_disabled
 
 app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
 
@@ -27,7 +29,7 @@ async def health():
         "emotiond": {
             "version": "0.1.0",
             "status": "running",
-            "core_enabled": True
+            "core_enabled": not is_core_disabled()
         }
     }
 
@@ -35,7 +37,10 @@ async def health():
 @app.post("/event")
 async def event(event: Event):
     """Ingest events and update state"""
-    return await process_event(event)
+    try:
+        return await process_event(event)
+    except Exception as e:
+        return {"error": str(e), "traceback": traceback.format_exc()}
 
 
 @app.post("/plan")

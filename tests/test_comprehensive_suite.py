@@ -271,7 +271,7 @@ class TestRelationshipManagerComprehensive:
         # Create relationships with different targets
         event = Event(
             type="user_message",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="Hello",
             meta={"sentiment": "positive"}
@@ -289,7 +289,7 @@ class TestRelationshipManagerComprehensive:
         # Test positive interaction increases bond
         event = Event(
             type="user_message",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="Hello",
             meta={"sentiment": "positive"}
@@ -300,7 +300,7 @@ class TestRelationshipManagerComprehensive:
         # Send another positive event
         event2 = Event(
             type="user_message",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="Great work!",
             meta={"sentiment": "positive"}
@@ -312,7 +312,7 @@ class TestRelationshipManagerComprehensive:
         # Test negative interaction increases grudge
         event3 = Event(
             type="user_message",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="This is terrible!",
             meta={"sentiment": "negative"}
@@ -328,7 +328,7 @@ class TestRelationshipManagerComprehensive:
         # Set up relationships with high values
         event = Event(
             type="user_message",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="Hello",
             meta={"sentiment": "positive"}
@@ -537,7 +537,7 @@ class TestModelValidationComprehensive:
         # Valid event
         valid_event = Event(
             type="user_message",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="Hello",
             meta={}
@@ -548,7 +548,7 @@ class TestModelValidationComprehensive:
         # The Event model doesn't validate specific event types
         invalid_event = Event(
             type="invalid_type",
-            actor="user",
+            actor="assistant",
             target="assistant",
             text="Hello"
         )

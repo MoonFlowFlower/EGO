@@ -4,7 +4,7 @@ Memory system for storing and recalling events with summarization
 import time
 from typing import Dict, Any, List
 from emotiond.db import get_recent_events, get_events_by_target, add_event
-from emotiond.config import DISABLE_CORE
+from emotiond.config import is_core_disabled
 
 
 class MemorySystem:
@@ -18,7 +18,7 @@ class MemorySystem:
     
     def calculate_memory_strength(self, prediction_error: float, arousal: float) -> float:
         """Calculate memory strength based on prediction error and arousal"""
-        if DISABLE_CORE:
+        if is_core_disabled():
             return 1.0
         
         # Memory strength increases with prediction error and arousal
@@ -27,7 +27,7 @@ class MemorySystem:
     
     async def summarize_memories(self) -> Dict[str, Any]:
         """Summarize recent events and update target memories"""
-        if DISABLE_CORE:
+        if is_core_disabled():
             return {"status": "disabled"}
         
         current_time = time.time()
@@ -122,7 +122,7 @@ class MemorySystem:
     
     def get_memory_impact_on_relationship(self, target: str) -> Dict[str, float]:
         """Calculate how historical memories should affect current relationships"""
-        if DISABLE_CORE or target not in self.target_memories:
+        if is_core_disabled() or target not in self.target_memories:
             return {"bond_modifier": 0.0, "grudge_modifier": 0.0}
         
         memory = self.target_memories[target]

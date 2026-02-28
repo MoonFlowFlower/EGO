@@ -4,14 +4,23 @@ Configuration for emotiond
 import os
 import logging
 
-# Environment variables with defaults
-DB_PATH = os.getenv("EMOTIOND_DB_PATH", "./data/emotiond.db")
+
+def get_db_path():
+    """Get database path from environment (dynamic, not cached)"""
+    return os.getenv("EMOTIOND_DB_PATH", "./data/emotiond.db")
+
+
+def is_core_disabled():
+    """Check if core functionality is disabled (dynamic, checked at runtime)"""
+    return os.getenv("EMOTIOND_DISABLE_CORE", "").strip().lower() in ["1", "true", "yes", "on"]
+
+
+# Static values for backward compatibility
+DB_PATH = get_db_path()
 PORT = int(os.getenv("EMOTIOND_PORT", "18080"))
 HOST = os.getenv("EMOTIOND_HOST", "127.0.0.1")
-# Subjective time constant: subjective_dt = real_dt / (1 + k * arousal)
 K_AROUSAL = float(os.getenv("EMOTIOND_K_AROUSAL", "2.0"))
-# Core functionality disable flag for ablation baseline
-DISABLE_CORE = bool(os.getenv("EMOTIOND_DISABLE_CORE", "").strip().lower() in ["1", "true", "yes", "on"])
+DISABLE_CORE = is_core_disabled()
 
 
 def setup_logging():
