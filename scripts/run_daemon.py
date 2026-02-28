@@ -31,16 +31,17 @@ def load_env_file(env_file_path="emotiond.env"):
 
 def find_venv_python():
     """Find the Python executable in the virtual environment."""
-    # Check for venv directory
-    venv_dir = Path("venv")
-    if venv_dir.exists():
-        if sys.platform == "win32":
-            python_exe = venv_dir / "Scripts" / "python.exe"
-        else:
-            python_exe = venv_dir / "bin" / "python"
-        
-        if python_exe.exists():
-            return str(python_exe)
+    # Check for venv2 directory first (preferred for testing)
+    for venv_name in ["venv2", "venv"]:
+        venv_dir = Path(venv_name)
+        if venv_dir.exists():
+            if sys.platform == "win32":
+                python_exe = venv_dir / "Scripts" / "python.exe"
+            else:
+                python_exe = venv_dir / "bin" / "python"
+            
+            if python_exe.exists():
+                return str(python_exe)
     
     # Fallback to system Python
     return sys.executable

@@ -3,7 +3,7 @@
 ## Overview
 This report compares emotiond behavior with core enabled vs disabled to validate endogenous affect dynamics.
 
-Generated: 2026-02-27T11:51:20.333509
+Generated: 2026-02-27T22:47:20.748695
 
 ## Test Results Summary
 
@@ -28,8 +28,8 @@ Generated: 2026-02-27T11:51:20.333509
 
 **Core Disabled**: {
   "intervention_resistance": true,
-  "initial_valence": 0.0,
-  "post_intervention_valence": 0.0
+  "initial_valence": 0.1,
+  "post_intervention_valence": 0.1
 }
 
 **Comparison**: Similar intervention response. 
@@ -51,18 +51,18 @@ Generated: 2026-02-27T11:51:20.333509
 ### Time Gap Drift
 
 **Core Enabled**: {
-  "time_drift_present": false,
-  "valence_drift": 0.0,
-  "arousal_drift": 0.0
+  "time_drift_present": true,
+  "valence_drift": 0.1,
+  "arousal_drift": 0.06000000000000001
 }
 
 **Core Disabled**: {
   "time_drift_present": false,
-  "valence_drift": 0.0,
-  "arousal_drift": 0.0
+  "valence_drift": 0.009750000000000009,
+  "arousal_drift": 0.009625000000000009
 }
 
-**Comparison**: Similar time drift patterns. 
+**Comparison**: Core enabled shows different time-based drift behavior. 
 
 ### Costly Choice Curve
 
@@ -71,18 +71,18 @@ Generated: 2026-02-27T11:51:20.333509
   "constraint_counts": {
     "low_cost": {
       "constraints_count": 2,
-      "tone": "guarded",
-      "valence": 0.0
+      "tone": "soft",
+      "valence": 0.1
     },
     "high_cost": {
       "constraints_count": 2,
-      "tone": "guarded",
-      "valence": 0.0
+      "tone": "soft",
+      "valence": 0.1
     },
     "medium_cost": {
       "constraints_count": 2,
-      "tone": "guarded",
-      "valence": 0.0
+      "tone": "soft",
+      "valence": 0.1
     }
   }
 }
@@ -92,18 +92,18 @@ Generated: 2026-02-27T11:51:20.333509
   "constraint_counts": {
     "low_cost": {
       "constraints_count": 2,
-      "tone": "guarded",
-      "valence": 0.0
+      "tone": "soft",
+      "valence": 0.09025
     },
     "high_cost": {
       "constraints_count": 2,
-      "tone": "guarded",
-      "valence": 0.0
+      "tone": "soft",
+      "valence": 0.09025
     },
     "medium_cost": {
       "constraints_count": 2,
-      "tone": "guarded",
-      "valence": 0.0
+      "tone": "soft",
+      "valence": 0.09025
     }
   }
 }

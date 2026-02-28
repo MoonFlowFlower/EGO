@@ -85,8 +85,8 @@ class TestDatabaseComprehensive:
             meta={"length": 25}
         )
         
-        await add_event(event1)
-        await add_event(event2)
+        await add_event(event1.model_dump())
+        await add_event(event2.model_dump())
         
         # Verify events are stored (checking database directly would require more complex queries)
         # For now, we just ensure no errors occurred

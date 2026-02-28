@@ -3,16 +3,21 @@ Pytest configuration for OpenEmotion tests
 """
 import os
 import pytest
+import pytest_asyncio
 import asyncio
 from emotiond.db import init_db
 from emotiond.config import DB_PATH
 
 
-@pytest.fixture(scope="function")
+@pytest_asyncio.fixture(scope="function")
 async def setup_db():
     """Setup database for tests"""
     # Ensure data directory exists
     os.makedirs("data", exist_ok=True)
+    
+    # Remove existing test database to ensure isolation
+    if os.path.exists(DB_PATH):
+        os.remove(DB_PATH)
     
     # Initialize database
     await init_db()

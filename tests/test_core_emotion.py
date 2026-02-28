@@ -3,6 +3,7 @@ Test core emotion state management functionality
 """
 import os
 import pytest
+import pytest_asyncio
 import asyncio
 from emotiond.core import EmotionState, RelationshipManager, process_event, generate_plan
 from emotiond.models import Event, PlanRequest
@@ -133,7 +134,7 @@ class TestRelationshipManager:
 class TestCoreIntegration:
     """Test core integration with database"""
     
-    @pytest.fixture(autouse=True)
+    @pytest_asyncio.fixture(autouse=True)
     async def setup_db(self):
         """Setup database for tests"""
         # Ensure data directory exists
@@ -154,6 +155,7 @@ class TestCoreIntegration:
         if os.path.exists(DB_PATH):
             os.remove(DB_PATH)
     
+    @pytest.mark.asyncio
     async def test_event_processing_updates_state(self):
         """Test that event processing updates emotional state"""
         event = Event(
@@ -176,6 +178,7 @@ class TestCoreIntegration:
         assert state["valence"] == result["valence"]
         assert state["arousal"] == result["arousal"]
     
+    @pytest.mark.asyncio
     async def test_event_processing_updates_relationships(self):
         """Test that event processing updates relationships"""
         event = Event(
@@ -193,6 +196,7 @@ class TestCoreIntegration:
         assert len(target_a_relationships) == 1
         assert target_a_relationships[0]["bond"] > 0.0
     
+    @pytest.mark.asyncio
     async def test_plan_generation_with_emotional_state(self):
         """Test plan generation based on emotional state"""
         # First create some emotional state
@@ -219,6 +223,7 @@ class TestCoreIntegration:
         assert "bond" in plan.relationship
         assert "grudge" in plan.relationship
     
+    @pytest.mark.asyncio
     async def test_sadness_persistence(self):
         """Test that sadness persists over time"""
         # Create negative event
@@ -242,6 +247,7 @@ class TestCoreIntegration:
         assert emotion_state.valence < 0.0
         assert emotion_state.valence > initial_valence  # Should drift toward neutral (less negative)
     
+    @pytest.mark.asyncio
     async def test_grudge_decay_slowly(self):
         """Test that grudge decays slowly"""
         # Create negative interaction to build grudge

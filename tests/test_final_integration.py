@@ -25,7 +25,7 @@ class TestFinalIntegration:
         """Test that the daemon starts successfully and health endpoint works."""
         # Start daemon in background
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -51,7 +51,7 @@ class TestFinalIntegration:
     def test_api_endpoints_accessible(self):
         """Test that all API endpoints are accessible."""
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -96,7 +96,7 @@ class TestFinalIntegration:
     def test_openclaw_skill_integration(self):
         """Test OpenClaw skill integration with the daemon."""
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -127,7 +127,7 @@ class TestFinalIntegration:
         """Test that emotion state persists across daemon restarts."""
         # Start daemon and send event
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -160,7 +160,7 @@ class TestFinalIntegration:
         
         # Restart daemon
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -189,7 +189,7 @@ class TestFinalIntegration:
         """Test that the demo CLI script works correctly."""
         # Run demo script in test mode (no actual daemon startup)
         result = subprocess.run(
-            ["venv/bin/python", "scripts/demo_cli.py", "--test"],
+            ["venv2/bin/python", "scripts/demo_cli.py", "--test"],
             capture_output=True,
             text=True,
             cwd=Path(__file__).parent.parent
@@ -203,7 +203,7 @@ class TestFinalIntegration:
         """Test that the evaluation suite can generate reports."""
         # Run eval suite in test mode
         result = subprocess.run(
-            ["venv/bin/python", "scripts/eval_suite.py", "--test"],
+            ["venv2/bin/python", "scripts/eval_suite.py", "--test"],
             capture_output=True,
             text=True,
             cwd=Path(__file__).parent.parent
@@ -220,7 +220,7 @@ class TestFinalIntegration:
         
         # Check script syntax
         result = subprocess.run(
-            ["venv/bin/python", "-m", "py_compile", str(deployment_script)],
+            ["venv2/bin/python", "-m", "py_compile", str(deployment_script)],
             capture_output=True,
             cwd=Path(__file__).parent.parent
         )
@@ -229,7 +229,7 @@ class TestFinalIntegration:
     def test_complete_workflow(self):
         """Test complete workflow: daemon startup -> user interaction -> plan generation."""
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -287,7 +287,7 @@ class TestPerformanceAndStability:
     def test_daemon_stability_under_load(self):
         """Test that the daemon remains stable under moderate load."""
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent
@@ -326,7 +326,7 @@ class TestPerformanceAndStability:
         """Test that memory usage doesn't grow excessively."""
         # This is a basic test - in production you'd want more sophisticated monitoring
         daemon_process = subprocess.Popen(
-            ["venv/bin/python", "scripts/run_daemon.py"],
+            ["venv2/bin/python", "scripts/run_daemon.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=Path(__file__).parent.parent

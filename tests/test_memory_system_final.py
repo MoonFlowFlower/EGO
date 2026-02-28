@@ -2,6 +2,7 @@
 Tests for the memory system and event storage
 """
 import pytest
+import pytest_asyncio
 import asyncio
 import os
 import tempfile
@@ -10,6 +11,17 @@ from emotiond.db import add_event, init_db, get_recent_events, get_events_by_tar
 from emotiond.models import Event
 from emotiond.config import DB_PATH
 
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def setup_db():
+    """Clean database before each test"""
+    if os.path.exists(DB_PATH):
+        os.remove(DB_PATH)
+    await init_db()
+    yield
+    if os.path.exists(DB_PATH):
+        os.remove(DB_PATH)
 
 @pytest.mark.asyncio
 async def test_memory_system_initialization():

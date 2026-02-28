@@ -13,7 +13,7 @@ class MemorySystem:
     def __init__(self):
         self.memory_strength = 1.0  # Base memory strength
         self.summarization_interval = 120  # Summarize every 2 minutes
-        self.last_summarization = time.time()
+        self.last_summarization = 0  # Initialize to 0 so first summarization can run immediately
         self.target_memories: Dict[str, Dict[str, Any]] = {}
     
     def calculate_memory_strength(self, prediction_error: float, arousal: float) -> float:
@@ -56,7 +56,7 @@ class MemorySystem:
             
             # Classify events as positive or negative
             if event["type"] == "user_message":
-                if event["text"] and any(word in event["text"].lower() for word in ["good", "great", "thanks", "love", "happy"]):
+                if event["text"] and any(word in event["text"].lower() for word in ["good", "great", "thanks", "love", "happy", "wonderful", "amazing", "excellent", "fantastic", "awesome", "beautiful", "nice", "best"]):
                     target_summaries[target]["positive_count"] += 1
                 elif event["text"] and any(word in event["text"].lower() for word in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"]):
                     target_summaries[target]["negative_count"] += 1
@@ -109,7 +109,7 @@ class MemorySystem:
         
         for event in target_events:
             if event["type"] == "user_message":
-                if event["text"] and any(word in event["text"].lower() for word in ["good", "great", "thanks", "love", "happy"]):
+                if event["text"] and any(word in event["text"].lower() for word in ["good", "great", "thanks", "love", "happy", "wonderful", "amazing", "excellent", "fantastic", "awesome", "beautiful", "nice", "best"]):
                     summary["positive_count"] += 1
                 elif event["text"] and any(word in event["text"].lower() for word in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"]):
                     summary["negative_count"] += 1

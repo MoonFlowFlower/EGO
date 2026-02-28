@@ -3,6 +3,7 @@ Test consolidation loop functionality
 """
 import os
 import pytest
+import pytest_asyncio
 import asyncio
 import time
 from emotiond.core import RelationshipManager, consolidation_loop
@@ -10,11 +11,15 @@ from emotiond.db import init_db, get_relationships, update_relationship
 from emotiond.config import DB_PATH
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def setup_db():
     """Setup database for tests"""
     # Ensure data directory exists
     os.makedirs("data", exist_ok=True)
+    
+    # Remove existing database for test isolation
+    if os.path.exists(DB_PATH):
+        os.remove(DB_PATH)
     
     # Initialize database
     await init_db()

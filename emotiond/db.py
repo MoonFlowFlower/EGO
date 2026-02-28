@@ -1,3 +1,4 @@
+import json
 """
 Database operations for emotiond
 """
@@ -99,10 +100,17 @@ async def get_relationships() -> List[Dict[str, Any]]:
 async def update_relationship(target: str, bond: float, grudge: float):
     """Update relationship for a specific target"""
     async with aiosqlite.connect(DB_PATH) as db:
-        await db.execute(
-            "INSERT OR REPLACE INTO relationships (target, bond, grudge) VALUES (?, ?, ?)",
-            (target, bond, grudge)
+        # Try to update existing record first
+        cursor = await db.execute(
+            "UPDATE relationships SET bond = ?, grudge = ? WHERE target = ?",
+            (bond, grudge, target)
         )
+        if cursor.rowcount == 0:
+            # No existing record, insert new one
+            await db.execute(
+                "INSERT INTO relationships (target, bond, grudge) VALUES (?, ?, ?)",
+                (target, bond, grudge)
+            )
         await db.commit()
 
 
@@ -112,7 +120,7 @@ async def add_event(event: Dict[str, Any]):
         await db.execute(
             "INSERT INTO events (type, actor, target, text, meta) VALUES (?, ?, ?, ?, ?)",
             (event.get("type"), event.get("actor"), event.get("target"), 
-             event.get("text"), str(event.get("meta", {})))
+             event.get("text"), json.dumps(event.get("meta", {})))
         )
         await db.commit()
 
@@ -121,7 +129,7 @@ async def get_recent_events(limit: int = 100) -> List[Dict[str, Any]]:
     """Get recent events ordered by creation time"""
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
-            "SELECT type, actor, target, text, meta, created_at FROM events ORDER BY created_at DESC LIMIT ?",
+            "SELECT type, actor, target, text, meta, created_at FROM events ORDER BY id DESC LIMIT ?",
             (limit,)
         )
         rows = await cursor.fetchall()
@@ -130,7 +138,7 @@ async def get_recent_events(limit: int = 100) -> List[Dict[str, Any]]:
             "actor": row[1],
             "target": row[2],
             "text": row[3],
-            "meta": eval(row[4]) if row[4] else {},
+            "meta": json.loads(row[4]) if row[4] else {},
             "created_at": row[5]
         } for row in rows]
 
@@ -139,7 +147,7 @@ async def get_events_by_target(target: str, limit: int = 50) -> List[Dict[str, A
     """Get events for a specific target"""
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
-            "SELECT type, actor, target, text, meta, created_at FROM events WHERE target = ? ORDER BY created_at DESC LIMIT ?",
+            "SELECT type, actor, target, text, meta, created_at FROM events WHERE target = ? ORDER BY id DESC LIMIT ?",
             (target, limit)
         )
         rows = await cursor.fetchall()
@@ -148,7 +156,7 @@ async def get_events_by_target(target: str, limit: int = 50) -> List[Dict[str, A
             "actor": row[1],
             "target": row[2],
             "text": row[3],
-            "meta": eval(row[4]) if row[4] else {},
+            "meta": json.loads(row[4]) if row[4] else {},
             "created_at": row[5]
         } for row in rows]
 
@@ -157,7 +165,7 @@ async def get_events_by_type(event_type: str, limit: int = 50) -> List[Dict[str,
     """Get events of a specific type"""
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
-            "SELECT type, actor, target, text, meta, created_at FROM events WHERE type = ? ORDER BY created_at DESC LIMIT ?",
+            "SELECT type, actor, target, text, meta, created_at FROM events WHERE type = ? ORDER BY id DESC LIMIT ?",
             (event_type, limit)
         )
         rows = await cursor.fetchall()
@@ -166,7 +174,7 @@ async def get_events_by_type(event_type: str, limit: int = 50) -> List[Dict[str,
             "actor": row[1],
             "target": row[2],
             "text": row[3],
-            "meta": eval(row[4]) if row[4] else {},
+            "meta": json.loads(row[4]) if row[4] else {},
             "created_at": row[5]
         } for row in rows]
 
