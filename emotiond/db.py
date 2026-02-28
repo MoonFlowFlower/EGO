@@ -151,9 +151,17 @@ async def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 action TEXT NOT NULL,
                 explanation TEXT,
+                target_id TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        
+        # Migration: Add target_id column to decisions if it doesn't exist
+        try:
+            await db.execute("ALTER TABLE decisions ADD COLUMN target_id TEXT")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
         
         # MVP-3.1: Target-specific prediction residuals
         await db.execute("""
@@ -530,17 +538,22 @@ async def update_prediction(action: str, predicted: Dict[str, float], observed: 
 
 
 # MVP-3 C1: Decision storage functions
-async def save_decision(action: str, explanation: Dict[str, Any]) -> int:
+async def save_decision(action: str, explanation: Dict[str, Any], target_id: Optional[str] = None) -> int:
     """
-    Save a decision with its explanation.
+    Save a decision with its explanation and optional target_id.
+    
+    Args:
+        action: The selected action
+        explanation: The explanation dict
+        target_id: Optional target identifier for target-specific queries
     
     Returns:
         The decision id
     """
     async with aiosqlite.connect(get_db_path()) as db:
         cursor = await db.execute(
-            "INSERT INTO decisions (action, explanation) VALUES (?, ?)",
-            (action, json.dumps(explanation))
+            "INSERT INTO decisions (action, explanation, target_id) VALUES (?, ?, ?)",
+            (action, json.dumps(explanation), target_id)
         )
         await db.commit()
         return cursor.lastrowid
@@ -551,11 +564,11 @@ async def get_last_decision() -> Optional[Dict[str, Any]]:
     Get the most recent decision with its explanation.
     
     Returns:
-        dict with id, action, explanation (parsed JSON), created_at or None if no decisions
+        dict with id, action, explanation (parsed JSON), target_id, created_at or None if no decisions
     """
     async with aiosqlite.connect(get_db_path()) as db:
         cursor = await db.execute(
-            "SELECT id, action, explanation, created_at FROM decisions ORDER BY id DESC LIMIT 1"
+            "SELECT id, action, explanation, target_id, created_at FROM decisions ORDER BY id DESC LIMIT 1"
         )
         row = await cursor.fetchone()
         
@@ -566,7 +579,8 @@ async def get_last_decision() -> Optional[Dict[str, Any]]:
             "id": row[0],
             "action": row[1],
             "explanation": json.loads(row[2]) if row[2] else {},
-            "created_at": row[3]
+            "target_id": row[3],
+            "created_at": row[4]
         }
 
 
@@ -575,11 +589,11 @@ async def get_decision_by_id(decision_id: int) -> Optional[Dict[str, Any]]:
     Get a specific decision by id.
     
     Returns:
-        dict with id, action, explanation (parsed JSON), created_at or None if not found
+        dict with id, action, explanation (parsed JSON), target_id, created_at or None if not found
     """
     async with aiosqlite.connect(get_db_path()) as db:
         cursor = await db.execute(
-            "SELECT id, action, explanation, created_at FROM decisions WHERE id = ?",
+            "SELECT id, action, explanation, target_id, created_at FROM decisions WHERE id = ?",
             (decision_id,)
         )
         row = await cursor.fetchone()
@@ -591,7 +605,37 @@ async def get_decision_by_id(decision_id: int) -> Optional[Dict[str, Any]]:
             "id": row[0],
             "action": row[1],
             "explanation": json.loads(row[2]) if row[2] else {},
-            "created_at": row[3]
+            "target_id": row[3],
+            "created_at": row[4]
+        }
+
+
+async def get_latest_decision_for_target(target_id: str) -> Optional[Dict[str, Any]]:
+    """
+    Get the most recent decision for a specific target_id.
+    
+    Args:
+        target_id: The target identifier to filter by
+    
+    Returns:
+        dict with id, action, explanation (parsed JSON), target_id, created_at or None if no decisions for target
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            "SELECT id, action, explanation, target_id, created_at FROM decisions WHERE target_id = ? ORDER BY created_at DESC, id DESC LIMIT 1",
+            (target_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if row is None:
+            return None
+        
+        return {
+            "id": row[0],
+            "action": row[1],
+            "explanation": json.loads(row[2]) if row[2] else {},
+            "target_id": row[3],
+            "created_at": row[4]
         }
 
 

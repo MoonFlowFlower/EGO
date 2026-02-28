@@ -912,7 +912,7 @@ async def select_action_with_explanation(
     selected_action = explanation["selected"]
     
     # Save decision to database
-    decision_id = await save_decision(selected_action, explanation)
+    decision_id = await save_decision(selected_action, explanation, target_id=target)
     
     # Update relationship with last action
     relationship_manager.set_last_action(target, selected_action)
@@ -1477,7 +1477,7 @@ async def select_action_with_explanation_v31(
     selected_action = explanation["selected"]
     
     # Save decision to database
-    decision_id = await save_decision(selected_action, explanation)
+    decision_id = await save_decision(selected_action, explanation, target_id=target)
     
     # Update relationship with last action
     relationship_manager.set_last_action(target, selected_action)

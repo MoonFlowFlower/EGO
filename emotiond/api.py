@@ -20,7 +20,7 @@ from emotiond.security import (
     resolve_server_source,
     validate_event_for_source
 )
-from emotiond.db import add_event, get_last_decision
+from emotiond.db import add_event, get_last_decision, get_latest_decision_for_target
 
 app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
 
@@ -138,12 +138,29 @@ async def plan(request: PlanRequest):
 
 # MVP-3 C2: New /decision endpoint
 @app.get("/decision")
-async def get_decision():
-    """MVP-3 C2: Get the most recent decision with explanation"""
-    decision = await get_last_decision()
+async def get_decision(target_id: Optional[str] = Query(None, description="Filter by target_id")):
+    """
+    Get the most recent decision with explanation.
+    
+    If target_id is provided, returns the latest decision for that target.
+    Otherwise returns the global latest decision.
+    """
+    if target_id:
+        decision = await get_latest_decision_for_target(target_id)
+    else:
+        decision = await get_last_decision()
+    
     if decision is None:
-        return {"status": "no_decisions", "decision": None}
-    return {"status": "ok", "decision": decision}
+        return {"status": "no_decision", "decision": None}
+    
+    return {
+        "status": "ok",
+        "decision_id": decision["id"],
+        "action": decision["action"],
+        "explanation": decision.get("explanation"),
+        "target_id": decision.get("target_id"),
+        "created_at": decision.get("created_at")
+    }
 
 
 @app.post("/decision")

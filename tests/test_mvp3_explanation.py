@@ -402,5 +402,6 @@ class TestAPIIntegration:
         
         assert response.status_code == 200
         data = response.json()
-        assert data["decision"] is not None
-        assert data["decision"]["action"] == "approach"
+        # API returns action directly at top level when decision exists
+        assert data["status"] == "ok"
+        assert data["action"] == "approach"
