@@ -5,7 +5,7 @@ import json
 import aiosqlite
 import os
 import time
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 
 def get_db_path():
@@ -64,26 +64,56 @@ async def init_db():
             VALUES (1, 0.0, 0.0, 0, ?, 0.0)
         """, (time.time(),))
         
+        # Add new columns if they don't exist (migration-safe)
+        try:
+            await db.execute("ALTER TABLE relationships ADD COLUMN trust REAL DEFAULT 0.0")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
+        try:
+            await db.execute("ALTER TABLE relationships ADD COLUMN repair_bank REAL DEFAULT 0.0")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
+        try:
+            await db.execute("ALTER TABLE state ADD COLUMN regulation_budget REAL DEFAULT 1.0")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
+        
         await db.commit()
 
 
 async def get_state() -> Dict[str, Any]:
     """Get current emotional state"""
     async with aiosqlite.connect(get_db_path()) as db:
-        cursor = await db.execute("SELECT valence, arousal, subjective_time, last_meaningful_contact, prediction_error FROM state WHERE id = 1")
+        cursor = await db.execute("SELECT valence, arousal, subjective_time, last_meaningful_contact, prediction_error, regulation_budget FROM state WHERE id = 1")
         row = await cursor.fetchone()
         if row is None:
-            return {"valence": 0.0, "arousal": 0.0, "subjective_time": 0, "last_meaningful_contact": time.time(), "prediction_error": 0.0}
-        return {"valence": row[0], "arousal": row[1], "subjective_time": row[2], "last_meaningful_contact": row[3], "prediction_error": row[4]}
+            return {"valence": 0.0, "arousal": 0.0, "subjective_time": 0, "last_meaningful_contact": time.time(), "prediction_error": 0.0, "regulation_budget": 1.0}
+        return {
+            "valence": row[0], 
+            "arousal": row[1], 
+            "subjective_time": row[2], 
+            "last_meaningful_contact": row[3], 
+            "prediction_error": row[4],
+            "regulation_budget": row[5] if len(row) > 5 else 1.0
+        }
 
 
-async def update_state(valence: float, arousal: float, subjective_time: int, prediction_error: float = 0.0):
+async def update_state(valence: float, arousal: float, subjective_time: int, prediction_error: float = 0.0, regulation_budget: Optional[float] = None):
     """Update emotional state"""
     async with aiosqlite.connect(get_db_path()) as db:
-        await db.execute(
-            "UPDATE state SET valence = ?, arousal = ?, subjective_time = ?, prediction_error = ? WHERE id = 1",
-            (valence, arousal, subjective_time, prediction_error)
-        )
+        if regulation_budget is not None:
+            await db.execute(
+                "UPDATE state SET valence = ?, arousal = ?, subjective_time = ?, prediction_error = ?, regulation_budget = ? WHERE id = 1",
+                (valence, arousal, subjective_time, prediction_error, regulation_budget)
+            )
+        else:
+            await db.execute(
+                "UPDATE state SET valence = ?, arousal = ?, subjective_time = ?, prediction_error = ? WHERE id = 1",
+                (valence, arousal, subjective_time, prediction_error)
+            )
         await db.commit()
 
 
@@ -100,22 +130,40 @@ async def update_meaningful_contact_time():
 async def get_relationships() -> List[Dict[str, Any]]:
     """Get all relationships"""
     async with aiosqlite.connect(get_db_path()) as db:
-        cursor = await db.execute("SELECT target, bond, grudge FROM relationships")
+        cursor = await db.execute("SELECT target, bond, grudge, trust, repair_bank FROM relationships")
         rows = await cursor.fetchall()
-        return [{"target": row[0], "bond": row[1], "grudge": row[2]} for row in rows]
+        return [{
+            "target": row[0], 
+            "bond": row[1], 
+            "grudge": row[2],
+            "trust": row[3] if len(row) > 3 else 0.0,
+            "repair_bank": row[4] if len(row) > 4 else 0.0
+        } for row in rows]
 
 
-async def update_relationship(target: str, bond: float, grudge: float):
+async def update_relationship(target: str, bond: float, grudge: float, trust: Optional[float] = None, repair_bank: Optional[float] = None):
     """Update relationship for a specific target"""
     async with aiosqlite.connect(get_db_path()) as db:
+        # Check if relationship exists and get current values
         cursor = await db.execute(
-            "UPDATE relationships SET bond = ?, grudge = ? WHERE target = ?",
-            (bond, grudge, target)
+            "SELECT trust, repair_bank FROM relationships WHERE target = ?",
+            (target,)
         )
-        if cursor.rowcount == 0:
+        existing = await cursor.fetchone()
+        
+        if existing:
+            current_trust = trust if trust is not None else (existing[0] if existing[0] is not None else 0.0)
+            current_repair_bank = repair_bank if repair_bank is not None else (existing[1] if existing[1] is not None else 0.0)
             await db.execute(
-                "INSERT INTO relationships (target, bond, grudge) VALUES (?, ?, ?)",
-                (target, bond, grudge)
+                "UPDATE relationships SET bond = ?, grudge = ?, trust = ?, repair_bank = ? WHERE target = ?",
+                (bond, grudge, current_trust, current_repair_bank, target)
+            )
+        else:
+            current_trust = trust if trust is not None else 0.0
+            current_repair_bank = repair_bank if repair_bank is not None else 0.0
+            await db.execute(
+                "INSERT INTO relationships (target, bond, grudge, trust, repair_bank) VALUES (?, ?, ?, ?, ?)",
+                (target, bond, grudge, current_trust, current_repair_bank)
             )
         await db.commit()
 
