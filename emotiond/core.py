@@ -6,7 +6,7 @@ import asyncio
 import time
 import math
 from typing import Dict, Any, Optional, List, Tuple
-from emotiond.models import Event, PlanRequest, PlanResponse
+from emotiond.models import Event, PlanRequest, PlanResponse, MoodResponse
 from emotiond.db import (
     get_state, update_state, add_event, get_relationships, update_relationship,
     update_meaningful_contact_time,
@@ -14,13 +14,16 @@ from emotiond.db import (
     get_time_passed_window_sum, record_time_passed,
     get_db_path,
     load_predictions, save_predictions, update_prediction,
-    get_or_create_target_predictions, update_target_prediction, load_target_predictions
+    get_or_create_target_predictions, update_target_prediction, load_target_predictions,
+    get_mood_state, update_mood_state, get_relationship_with_uncertainty, update_relationship_uncertainty
 )
 from emotiond.config import (
     K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE,
     ACTION_SPACE, TEST_MODE, ACTION_PRIORS, OBSERVATION_MAP, get_observed_delta,
-    ACTION_SCORE_WEIGHTS, SOFTMAX_TEMPERATURE, PREDICTION_LEARNING_RATE
+    ACTION_SCORE_WEIGHTS, SOFTMAX_TEMPERATURE, PREDICTION_LEARNING_RATE,
+    AFFECT_DECAY_TAU, MOOD_DECAY_TAU, BOND_CHANGE_RATE, AFFECT_TO_MOOD_RATE
 )
+from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
 
@@ -48,6 +51,9 @@ class EmotionState:
         # MVP-3 B1: Interoceptive states
         self.social_safety = 0.6  # [0, 1], default 0.6
         self.energy = 0.7  # [0, 1], default 0.7
+        
+        # MVP-4 D1: Uncertainty tracking
+        self.uncertainty = 0.5  # How uncertain current state is
         
         self.prediction_model = {
             "user_message": {"positive": 0.08, "negative": -0.12, "neutral": 0.0},
@@ -208,13 +214,16 @@ class RelationshipManager:
     
     def _ensure_relationship_fields(self, target: str) -> None:
         if target not in self.relationships:
-            self.relationships[target] = {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0}
+            self.relationships[target] = {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0, "uncertainty": 0.5}
         else:
             rel = self.relationships[target]
             if "trust" not in rel:
                 rel["trust"] = 0.0
             if "repair_bank" not in rel:
                 rel["repair_bank"] = 0.0
+            # MVP-4 D1: Add uncertainty if not present
+            if "uncertainty" not in rel:
+                rel["uncertainty"] = 0.5
     
     def update_from_event(self, event: Event, emotion_state: Optional[EmotionState] = None) -> None:
         if is_core_disabled():
@@ -276,6 +285,8 @@ class RelationshipManager:
             self.relationships[target]["bond"] *= 0.995
             self.relationships[target]["grudge"] *= 0.998
             self.relationships[target]["repair_bank"] *= 0.99
+            # MVP-4 D1: Uncertainty slowly grows (less certain over time)
+            self.relationships[target]["uncertainty"] = min(1.0, self.relationships[target]["uncertainty"] + 0.0001)
             if self.relationships[target]["trust"] > 0.5:
                 self.relationships[target]["trust"] -= 0.001
             elif self.relationships[target]["trust"] < 0.5:
@@ -314,13 +325,18 @@ async def load_initial_state():
     # MVP-3 B1: Load interoceptive states
     emotion_state.social_safety = db_state.get("social_safety", 0.6)
     emotion_state.energy = db_state.get("energy", 0.7)
+    # MVP-4 D1: Load affect uncertainty (default 0.5)
+    emotion_state.uncertainty = db_state.get("uncertainty", 0.5)
+    
     db_relationships = await get_relationships()
     for rel in db_relationships:
         relationship_manager.relationships[rel["target"]] = {
             "bond": rel["bond"],
             "grudge": rel["grudge"],
             "trust": rel.get("trust", 0.0),
-            "repair_bank": rel.get("repair_bank", 0.0)
+            "repair_bank": rel.get("repair_bank", 0.0),
+            # MVP-4 D1: Load bond uncertainty
+            "uncertainty": rel.get("uncertainty", 0.5)
         }
         # MVP-3 B2: Load last action
         if rel.get("last_action"):
@@ -448,6 +464,9 @@ async def process_event(event: Event) -> Dict[str, Any]:
     emotion_state.arousal = min(1.0, emotion_state.arousal + prediction_error * 0.5)
     memory_strength = memory_system.calculate_memory_strength(prediction_error, emotion_state.arousal)
     relationship_manager.update_from_event(event, emotion_state)
+    # MVP-4 D1: Reduce uncertainty on observation
+    emotion_state.uncertainty = max(0.0, emotion_state.uncertainty - 0.05)
+    
     await update_state(
         emotion_state.valence, 
         emotion_state.arousal, 
@@ -457,8 +476,33 @@ async def process_event(event: Event) -> Dict[str, Any]:
         emotion_state.social_safety,
         emotion_state.energy
     )
+    
+    # MVP-4 D1: Update mood state based on affect
+    mood_data = await get_mood_state()
+    mood_data["valence"] += (emotion_state.valence - mood_data["valence"]) * AFFECT_TO_MOOD_RATE
+    mood_data["arousal"] += (emotion_state.arousal - mood_data["arousal"]) * AFFECT_TO_MOOD_RATE
+    mood_data["anxiety"] += (emotion_state.anxiety - mood_data["anxiety"]) * AFFECT_TO_MOOD_RATE
+    mood_data["joy"] += (emotion_state.joy - mood_data["joy"]) * AFFECT_TO_MOOD_RATE
+    mood_data["sadness"] += (emotion_state.sadness - mood_data["sadness"]) * AFFECT_TO_MOOD_RATE
+    mood_data["anger"] += (emotion_state.anger - mood_data["anger"]) * AFFECT_TO_MOOD_RATE
+    mood_data["loneliness"] += (emotion_state.loneliness - mood_data["loneliness"]) * AFFECT_TO_MOOD_RATE
+    mood_data["uncertainty"] = max(0.0, mood_data["uncertainty"] - 0.01)
+    await update_mood_state(
+        valence=mood_data["valence"],
+        arousal=mood_data["arousal"],
+        anxiety=mood_data["anxiety"],
+        joy=mood_data["joy"],
+        sadness=mood_data["sadness"],
+        anger=mood_data["anger"],
+        loneliness=mood_data["loneliness"],
+        uncertainty=mood_data["uncertainty"]
+    )
+    
     for target, rel_data in relationship_manager.relationships.items():
         await update_relationship(target, rel_data["bond"], rel_data["grudge"], rel_data.get("trust", 0.0), rel_data.get("repair_bank", 0.0))
+        # MVP-4 D1: Reduce relationship uncertainty on interaction
+        if target == (event.actor if event.type == "user_message" else event.target):
+            rel_data["uncertainty"] = max(0.0, rel_data.get("uncertainty", 0.5) - 0.05)
     
     result = {
         "status": "processed",
@@ -468,7 +512,8 @@ async def process_event(event: Event) -> Dict[str, Any]:
         "memory_strength": memory_strength,
         "regulation_budget": emotion_state.regulation_budget,
         "social_safety": emotion_state.social_safety,  # MVP-3 B1
-        "energy": emotion_state.energy  # MVP-3 B1
+        "energy": emotion_state.energy,  # MVP-3 B1
+        "uncertainty": emotion_state.uncertainty  # MVP-4 D1
     }
     
     # Include time_passed audit info in response if applicable
@@ -479,10 +524,12 @@ async def process_event(event: Event) -> Dict[str, Any]:
 
 
 async def generate_plan(request: PlanRequest) -> PlanResponse:
+    from emotiond.db import get_mood_state
+    
     current_valence = emotion_state.valence
     current_arousal = emotion_state.arousal
     focus_target = request.focus_target if request.focus_target is not None else request.user_id
-    target_relationship = relationship_manager.relationships.get(focus_target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+    target_relationship = relationship_manager.relationships.get(focus_target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0, "uncertainty": 0.5})
     
     if current_valence > 0.3 and current_arousal < 0.5:
         tone = "warm"
@@ -525,7 +572,28 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
     
     emotion_dict = {"valence": current_valence, "arousal": current_arousal, "anger": emotion_state.anger, "sadness": emotion_state.sadness, "anxiety": emotion_state.anxiety, "joy": emotion_state.joy, "loneliness": emotion_state.loneliness}
     
-    return PlanResponse(tone=tone, intent=intent, focus_target=focus_target, key_points=key_points, constraints=constraints, emotion=emotion_dict, relationship=relationship_dict, relationships=all_relationships, regulation_budget=emotion_state.regulation_budget)
+    # MVP-4 D1: Get mood state
+    mood_data = await get_mood_state()
+    mood_response = MoodResponse(
+        valence=mood_data["valence"],
+        arousal=mood_data["arousal"],
+        anxiety=mood_data["anxiety"],
+        joy=mood_data["joy"],
+        sadness=mood_data["sadness"],
+        anger=mood_data["anger"],
+        loneliness=mood_data["loneliness"],
+        uncertainty=mood_data["uncertainty"]
+    )
+    
+    return PlanResponse(
+        tone=tone, intent=intent, focus_target=focus_target, key_points=key_points, 
+        constraints=constraints, emotion=emotion_dict, relationship=relationship_dict, 
+        relationships=all_relationships, regulation_budget=emotion_state.regulation_budget,
+        # MVP-4 D1: Hierarchical state system
+        mood=mood_response,
+        uncertainty=emotion_state.uncertainty,
+        bond_uncertainty=target_relationship.get("uncertainty", 0.5)
+    )
 
 
 async def homeostasis_loop():

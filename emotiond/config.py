@@ -106,3 +106,25 @@ EMA_DECAY = float(os.getenv("EMOTIOND_EMA_DECAY", "0.1"))
 # MVP-3.1: Delta clamping range
 DELTA_CLAMP_MAX = float(os.getenv("EMOTIOND_DELTA_CLAMP_MAX", "0.2"))
 DELTA_CLAMP_MIN = float(os.getenv("EMOTIOND_DELTA_CLAMP_MIN", "-0.2"))
+
+# MVP-4 D1: Hierarchical State System - Time Constants (in seconds of subjective time)
+# Affect changes in seconds/minutes
+AFFECT_DECAY_TAU = float(os.getenv("EMOTIOND_AFFECT_DECAY_TAU", "300.0"))  # 5 minutes
+
+# Mood changes in hours
+MOOD_DECAY_TAU = float(os.getenv("EMOTIOND_MOOD_DECAY_TAU", "86400.0"))  # 24 hours
+
+# Bond/Trust changes in days/weeks
+BOND_CHANGE_RATE = float(os.getenv("EMOTIOND_BOND_CHANGE_RATE", "0.001"))  # Very slow
+
+# MVP-4 D1: Mood baseline values (where mood returns to when no events)
+MOOD_BASELINE_VALENCE = 0.0
+MOOD_BASELINE_AROUSAL = 0.3
+
+# MVP-4 D1: Affect -> Mood integration rate
+# How much affect influences mood (0-1)
+AFFECT_TO_MOOD_RATE = float(os.getenv("EMOTIOND_AFFECT_TO_MOOD_RATE", "0.01"))
+
+# MVP-4 D1: Uncertainty dynamics
+UNCERTAINTY_DECAY = float(os.getenv("EMOTIOND_UNCERTAINTY_DECAY", "0.001"))  # Uncertainty slowly increases
+UNCERTAINTY_REDUCTION_ON_OBSERVATION = float(os.getenv("EMOTIOND_UNCERTAINTY_REDUCTION_ON_OBSERVATION", "0.1"))

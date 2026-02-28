@@ -179,6 +179,42 @@ async def init_db():
             )
         """)
         
+        # MVP-4 D1: Mood state (global, slow-changing baseline)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS mood_state (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                valence REAL DEFAULT 0.0,
+                arousal REAL DEFAULT 0.3,
+                anxiety REAL DEFAULT 0.0,
+                joy REAL DEFAULT 0.0,
+                sadness REAL DEFAULT 0.0,
+                anger REAL DEFAULT 0.0,
+                loneliness REAL DEFAULT 0.0,
+                uncertainty REAL DEFAULT 0.5,
+                last_updated REAL
+            )
+        """)
+        
+        # Initialize mood state if not exists
+        await db.execute("""
+            INSERT OR IGNORE INTO mood_state (id, valence, arousal, anxiety, joy, sadness, anger, loneliness, uncertainty, last_updated)
+            VALUES (1, 0.0, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, ?)
+        """, (time.time(),))
+        
+        # MVP-4 D1: Add uncertainty column to relationships
+        try:
+            await db.execute("ALTER TABLE relationships ADD COLUMN uncertainty REAL DEFAULT 0.5")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
+        
+        # MVP-4 D1: Add last_updated column to relationships if not exists
+        try:
+            await db.execute("ALTER TABLE relationships ADD COLUMN last_updated REAL")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
+        
         await db.commit()
 
 
@@ -720,3 +756,122 @@ async def load_target_predictions(target_id: str) -> Dict[str, Dict[str, Any]]:
     """
     from emotiond.config import ACTION_SPACE
     return await get_or_create_target_predictions(target_id, ACTION_SPACE)
+
+
+# MVP-4 D1: Mood state functions
+async def get_mood_state() -> Dict[str, Any]:
+    """
+    Get current mood state (global baseline).
+    
+    Returns:
+        dict with valence, arousal, anxiety, joy, sadness, anger, loneliness, uncertainty, last_updated
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            """SELECT valence, arousal, anxiety, joy, sadness, anger, loneliness, uncertainty, last_updated 
+               FROM mood_state WHERE id = 1"""
+        )
+        row = await cursor.fetchone()
+        if row is None:
+            return {
+                "valence": 0.0,
+                "arousal": 0.3,
+                "anxiety": 0.0,
+                "joy": 0.0,
+                "sadness": 0.0,
+                "anger": 0.0,
+                "loneliness": 0.0,
+                "uncertainty": 0.5,
+                "last_updated": time.time()
+            }
+        return {
+            "valence": row[0],
+            "arousal": row[1],
+            "anxiety": row[2],
+            "joy": row[3],
+            "sadness": row[4],
+            "anger": row[5],
+            "loneliness": row[6],
+            "uncertainty": row[7],
+            "last_updated": row[8] if row[8] else time.time()
+        }
+
+
+async def update_mood_state(
+    valence: float = None,
+    arousal: float = None,
+    anxiety: float = None,
+    joy: float = None,
+    sadness: float = None,
+    anger: float = None,
+    loneliness: float = None,
+    uncertainty: float = None
+):
+    """
+    Update mood state fields. Only provided fields are updated.
+    
+    Automatically sets last_updated to current time.
+    """
+    # Get current state first
+    current = await get_mood_state()
+    
+    # Merge with provided values
+    new_valence = valence if valence is not None else current["valence"]
+    new_arousal = arousal if arousal is not None else current["arousal"]
+    new_anxiety = anxiety if anxiety is not None else current["anxiety"]
+    new_joy = joy if joy is not None else current["joy"]
+    new_sadness = sadness if sadness is not None else current["sadness"]
+    new_anger = anger if anger is not None else current["anger"]
+    new_loneliness = loneliness if loneliness is not None else current["loneliness"]
+    new_uncertainty = uncertainty if uncertainty is not None else current["uncertainty"]
+    new_last_updated = time.time()
+    
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            """UPDATE mood_state 
+               SET valence = ?, arousal = ?, anxiety = ?, joy = ?, sadness = ?, 
+                   anger = ?, loneliness = ?, uncertainty = ?, last_updated = ?
+               WHERE id = 1""",
+            (new_valence, new_arousal, new_anxiety, new_joy, new_sadness,
+             new_anger, new_loneliness, new_uncertainty, new_last_updated)
+        )
+        await db.commit()
+
+
+async def get_relationship_with_uncertainty(target: str) -> Optional[Dict[str, Any]]:
+    """
+    Get relationship for a specific target including uncertainty.
+    
+    Returns:
+        dict with bond, grudge, trust, repair_bank, uncertainty, last_updated or None if not found
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            """SELECT bond, grudge, trust, repair_bank, last_action, uncertainty, last_updated 
+               FROM relationships WHERE target = ?""",
+            (target,)
+        )
+        row = await cursor.fetchone()
+        if row is None:
+            return None
+        return {
+            "bond": row[0],
+            "grudge": row[1],
+            "trust": row[2] if row[2] is not None else 0.0,
+            "repair_bank": row[3] if row[3] is not None else 0.0,
+            "last_action": row[4],
+            "uncertainty": row[5] if row[5] is not None else 0.5,
+            "last_updated": row[6] if row[6] is not None else time.time()
+        }
+
+
+async def update_relationship_uncertainty(target: str, uncertainty: float):
+    """
+    Update uncertainty for a specific relationship.
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            "UPDATE relationships SET uncertainty = ?, last_updated = ? WHERE target = ?",
+            (uncertainty, time.time(), target)
+        )
+        await db.commit()

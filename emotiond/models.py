@@ -21,6 +21,18 @@ class PlanRequest(BaseModel):
     focus_target: Optional[str] = None  # Optional, defaults to user_id
 
 
+class MoodResponse(BaseModel):
+    """MVP-4 D1: Mood state in plan response"""
+    valence: float = 0.0
+    arousal: float = 0.3
+    anxiety: float = 0.0
+    joy: float = 0.0
+    sadness: float = 0.0
+    anger: float = 0.0
+    loneliness: float = 0.0
+    uncertainty: float = 0.5
+
+
 class PlanResponse(BaseModel):
     """Response model for POST /plan"""
     tone: str  # soft|warm|guarded|cold
@@ -33,3 +45,7 @@ class PlanResponse(BaseModel):
     relationships: Optional[Dict[str, Dict[str, float]]] = None  # All relationships if EMOTIOND_PLAN_INCLUDE_RELATIONSHIPS=1
     regulation_budget: Optional[float] = None  # MVP-2: cost mechanism state
     last_decision: Optional[Dict[str, Any]] = None  # MVP-3 C2: most recent decision with explanation
+    # MVP-4 D1: Hierarchical state system
+    mood: Optional[MoodResponse] = None  # Global mood baseline
+    uncertainty: Optional[float] = None  # Current affect uncertainty
+    bond_uncertainty: Optional[float] = None  # Per-target bond uncertainty
