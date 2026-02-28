@@ -49,6 +49,11 @@ class PlanResponse(BaseModel):
     mood: Optional[MoodResponse] = None  # Global mood baseline
     uncertainty: Optional[float] = None  # Current affect uncertainty
     bond_uncertainty: Optional[float] = None  # Per-target bond uncertainty
+    # MVP-5 D2: Energy budget guidance
+    energy_budget: Optional[float] = None  # Current energy budget [0, 1]
+    language_guidance: Optional[Dict[str, Any]] = None  # Guidance for language generation
+    w_explore: Optional[float] = None  # Adjusted exploration weight
+    learning_rate_multiplier: Optional[float] = None  # Adjusted learning rate
 
 
 class AppraisalResult(BaseModel):

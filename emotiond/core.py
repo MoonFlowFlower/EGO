@@ -22,17 +22,54 @@ from emotiond.config import (
     K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE,
     ACTION_SPACE, TEST_MODE, ACTION_PRIORS, OBSERVATION_MAP, get_observed_delta,
     ACTION_SCORE_WEIGHTS, SOFTMAX_TEMPERATURE, PREDICTION_LEARNING_RATE,
-    AFFECT_DECAY_TAU, MOOD_DECAY_TAU, BOND_CHANGE_RATE, AFFECT_TO_MOOD_RATE
+    AFFECT_DECAY_TAU, MOOD_DECAY_TAU, BOND_CHANGE_RATE, AFFECT_TO_MOOD_RATE,
+    # MVP-5 D2: Allostasis Budget
+    ALLOSTASIS_RECOVERY_RATE, ALLOSTASIS_CONFLICT_DEPLETION,
+    ALLOSTASIS_UNCERTAINTY_DEPLETION, ALLOSTASIS_ERROR_DEPLETION,
+    ALLOSTASIS_CONSECUTIVE_ERROR_MULTIPLIER
 )
 from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
-# MVP-4 D5: Meta-cognition
-from emotiond.meta_cognition import (
-    get_meta_cognition_engine,
-    apply_meta_cognition_to_decision,
-    soften_decision_tone
+# MVP-5 D2: Allostasis Budget
+from emotiond.allostasis import (
+    AllostasisBudget, get_budget, reset_budget,
+    BudgetChangeReason, BudgetDelta
 )
+# MVP-5 D1: Precision Controller
+from emotiond.precision import (
+    get_precision_controller,
+    build_precision_context,
+    apply_precision_to_meta_cognition,
+    apply_precision_to_action_selection,
+    format_precision_summary,
+    get_precision_evidence_source_note,
+    PrecisionWeights,
+    PrecisionContext
+)
+
+# Global allostasis budget instance
+_allostasis_budget: Optional[AllostasisBudget] = None
+
+def get_allostasis_budget() -> AllostasisBudget:
+    """Get or create the global allostasis budget instance."""
+    global _allostasis_budget
+    if _allostasis_budget is None:
+        _allostasis_budget = AllostasisBudget(
+            initial_budget=1.0,
+            recovery_rate=ALLOSTASIS_RECOVERY_RATE,
+            conflict_depletion=ALLOSTASIS_CONFLICT_DEPLETION,
+            uncertainty_depletion=ALLOSTASIS_UNCERTAINTY_DEPLETION,
+            error_depletion=ALLOSTASIS_ERROR_DEPLETION,
+            consecutive_error_multiplier=ALLOSTASIS_CONSECUTIVE_ERROR_MULTIPLIER
+        )
+    return _allostasis_budget
+
+
+def reset_allostasis_budget():
+    """Reset the global allostasis budget (for testing)."""
+    global _allostasis_budget
+    _allostasis_budget = None
 
 
 class EmotionState:
@@ -61,6 +98,10 @@ class EmotionState:
         
         # MVP-4 D1: Uncertainty tracking
         self.uncertainty = 0.5  # How uncertain current state is
+        
+        # MVP-5 D2: Energy budget for allostasis
+        self.energy_budget = 1.0  # [0, 1], starts fully energized
+        self._consecutive_prediction_errors = 0
         
         self.prediction_model = {
             "user_message": {"positive": 0.08, "negative": -0.12, "neutral": 0.0},
@@ -316,21 +357,6 @@ _predictions: Dict[str, Dict[str, float]] = {}
 _target_predictions: Dict[str, Dict[str, Dict[str, Any]]] = {}
 
 
-
-# MVP-4 D5: Helper function for meta-cognition context
-def _build_meta_cognition_context(target: str) -> Dict[str, Any]:
-    """Build context for meta-cognition evaluation."""
-    relationship = relationship_manager.relationships.get(
-        target,
-        {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0}
-    )
-    return {
-        "consecutive_prediction_errors": getattr(emotion_state, '_consecutive_prediction_errors', 0),
-        "recent_events": [],
-        "relationship": relationship,
-        "language": "zh"
-    }
-
 emotion_state = EmotionState()
 relationship_manager = RelationshipManager()
 
@@ -574,6 +600,61 @@ async def process_event(event: Event) -> Dict[str, Any]:
         bond=bond_state
     )
     
+    # MVP-5 D2: Update allostasis budget
+    budget = get_allostasis_budget()
+    budget_deltas = []
+    
+    # Handle time_passed recovery
+    if event.type == "world_event" and event.meta and event.meta.get("subtype") == "time_passed":
+        seconds = event.meta.get("seconds", 60)
+        delta = budget.apply_time_passed(seconds)
+        budget_deltas.append(delta.to_dict())
+    
+    # Handle prediction error depletion
+    if prediction_error > 0.1:
+        # Check if consecutive
+        is_consecutive = emotion_state._consecutive_prediction_errors >= 2
+        delta = budget.on_prediction_error(prediction_error, is_consecutive)
+        budget_deltas.append(delta.to_dict())
+        emotion_state._consecutive_prediction_errors += 1
+    else:
+        emotion_state._consecutive_prediction_errors = 0
+    
+    # Handle high uncertainty depletion
+    if emotion_state.uncertainty > 0.6:
+        delta = budget.on_high_uncertainty(emotion_state.uncertainty)
+        if delta:
+            budget_deltas.append(delta.to_dict())
+    
+    # Handle event subtype impacts
+    if event.type == "world_event" and event.meta:
+        subtype = event.meta.get("subtype")
+        if subtype:
+            delta = budget.on_event_subtype(subtype)
+            if delta:
+                budget_deltas.append(delta.to_dict())
+    
+    # Handle user message impacts
+    if event.type == "user_message" and event.text:
+        is_negative = any(w in event.text.lower() for w in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"])
+        is_positive = any(w in event.text.lower() for w in ["good", "great", "thanks", "love", "happy"])
+        delta = budget.on_user_message(is_negative=is_negative, is_positive=is_positive)
+        if delta:
+            budget_deltas.append(delta.to_dict())
+    
+    # Update emotion_state energy_budget
+    emotion_state.energy_budget = budget.budget
+    
+    # Record budget trace to database
+    from emotiond.db import record_budget_trace
+    for delta_dict in budget_deltas:
+        await record_budget_trace(
+            budget_value=delta_dict["new_value"],
+            delta=delta_dict["delta"],
+            reason=delta_dict["reason"],
+            metadata=delta_dict.get("metadata", {})
+        )
+    
     result = {
         "status": "processed",
         "valence": emotion_state.valence,
@@ -584,6 +665,10 @@ async def process_event(event: Event) -> Dict[str, Any]:
         "social_safety": emotion_state.social_safety,  # MVP-3 B1
         "energy": emotion_state.energy,  # MVP-3 B1
         "uncertainty": emotion_state.uncertainty,  # MVP-4 D1
+        # MVP-5 D2: Energy budget
+        "energy_budget": emotion_state.energy_budget,
+        "budget_deltas": budget_deltas,
+        "fatigue_level": budget.fatigue_level,
         # MVP-4 D2: Appraisal result
         "appraisal": appraisal_result.model_dump()
     }
@@ -657,19 +742,16 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         uncertainty=mood_data["uncertainty"]
     )
     
-    # MVP-4 D5: Meta-cognition integration
-    meta_cognition = get_meta_cognition_engine()
-    meta_context = _build_meta_cognition_context(focus_target)
-    meta_action = meta_cognition.evaluate(emotion_state, meta_context)
+    # MVP-5 D2: Get energy budget guidance
+    budget = get_allostasis_budget()
+    language_guidance = budget.get_language_guidance()
+    w_explore_adjusted = budget.get_explore_weight(0.5)
+    learning_rate_multiplier = budget.get_learning_rate_multiplier()
     
-    if meta_action:
-        if meta_action.action_type == "ask_clarify":
-            key_points.insert(0, meta_action.suggested_response)
-        elif meta_action.action_type == "reflect":
-            constraints.append(f"Internal note: {meta_action.suggested_response}")
-        elif meta_action.action_type == "slow_down":
-            tone = soften_decision_tone(tone)
-            key_points.insert(0, "Proceeding with caution due to uncertainty")
+    # Adjust key_points based on fatigue
+    if budget.is_low:
+        key_points.append(f"Note: Low energy budget ({budget.budget:.2f}) - using concise responses")
+        constraints.append("Keep response brief due to fatigue")
     
     return PlanResponse(
         tone=tone, intent=intent, focus_target=focus_target, key_points=key_points, 
@@ -678,10 +760,16 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         # MVP-4 D1: Hierarchical state system
         mood=mood_response,
         uncertainty=emotion_state.uncertainty,
-        bond_uncertainty=target_relationship.get("uncertainty", 0.5)
+        bond_uncertainty=target_relationship.get("uncertainty", 0.5),
+        # MVP-5 D2: Energy budget guidance
+        energy_budget=emotion_state.energy_budget,
+        language_guidance=language_guidance,
+        w_explore=w_explore_adjusted,
+        learning_rate_multiplier=learning_rate_multiplier
     )
 
 
+async def homeostasis_loop():
     last_time = time.time()
     while True:
         current_time = time.time()

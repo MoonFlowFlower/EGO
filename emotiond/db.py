@@ -246,6 +246,29 @@ async def init_db():
             CREATE INDEX IF NOT EXISTS idx_promise_promiser ON promises(promiser)
         """)
         
+        # MVP-5 D2: Allostasis Budget tracking table
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS budget_trace (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                budget_value REAL NOT NULL,
+                delta REAL NOT NULL,
+                reason TEXT NOT NULL,
+                metadata TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        # Add energy_budget column to state if not exists
+        try:
+            await db.execute("ALTER TABLE state ADD COLUMN energy_budget REAL DEFAULT 1.0")
+        except aiosqlite.OperationalError as e:
+            if "duplicate column name" not in str(e):
+                raise
+        
+        await db.execute("""
+            CREATE INDEX IF NOT EXISTS idx_budget_trace_created ON budget_trace(created_at)
+        """)
+        
         await db.commit()
 
 
@@ -904,5 +927,99 @@ async def update_relationship_uncertainty(target: str, uncertainty: float):
         await db.execute(
             "UPDATE relationships SET uncertainty = ?, last_updated = ? WHERE target = ?",
             (uncertainty, time.time(), target)
+        )
+        await db.commit()
+
+
+# MVP-5 D2: Allostasis Budget functions
+async def record_budget_trace(budget_value: float, delta: float, reason: str, metadata: Dict[str, Any] = None):
+    """
+    Record a budget change to the trace.
+
+    Args:
+        budget_value: Current budget value after change
+        delta: Change amount (positive or negative)
+        reason: Reason for the change
+        metadata: Optional additional context
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            """INSERT INTO budget_trace (budget_value, delta, reason, metadata)
+               VALUES (?, ?, ?, ?)""",
+            (budget_value, delta, reason, json.dumps(metadata) if metadata else None)
+        )
+        await db.commit()
+
+
+async def get_recent_budget_trace(limit: int = 100) -> List[Dict[str, Any]]:
+    """
+    Get recent budget trace entries.
+
+    Args:
+        limit: Maximum number of entries to return
+
+    Returns:
+        List of budget trace entries
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            """SELECT budget_value, delta, reason, metadata, created_at
+               FROM budget_trace
+               ORDER BY id DESC
+               LIMIT ?""",
+            (limit,)
+        )
+        rows = await cursor.fetchall()
+        return [{
+            "budget_value": row[0],
+            "delta": row[1],
+            "reason": row[2],
+            "metadata": json.loads(row[3]) if row[3] else {},
+            "created_at": row[4]
+        } for row in rows]
+
+
+async def get_budget_trace_by_reason(reason: str, limit: int = 50) -> List[Dict[str, Any]]:
+    """
+    Get budget trace entries filtered by reason.
+
+    Args:
+        reason: Reason to filter by
+        limit: Maximum number of entries to return
+
+    Returns:
+        List of budget trace entries
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            """SELECT budget_value, delta, reason, metadata, created_at
+               FROM budget_trace
+               WHERE reason = ?
+               ORDER BY id DESC
+               LIMIT ?""",
+            (reason, limit)
+        )
+        rows = await cursor.fetchall()
+        return [{
+            "budget_value": row[0],
+            "delta": row[1],
+            "reason": row[2],
+            "metadata": json.loads(row[3]) if row[3] else {},
+            "created_at": row[4]
+        } for row in rows]
+
+
+async def cleanup_old_budget_trace(max_age_days: int = 7):
+    """
+    Clean up old budget trace entries.
+
+    Args:
+        max_age_days: Maximum age in days to keep
+    """
+    cutoff = time.time() - (max_age_days * 86400)
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            "DELETE FROM budget_trace WHERE created_at < datetime(?, 'unixepoch')",
+            (cutoff,)
         )
         await db.commit()
