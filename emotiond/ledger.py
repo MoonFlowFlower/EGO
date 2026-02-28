@@ -247,7 +247,7 @@ class PromiseLedger:
     
     async def _get_db(self):
         """Get database connection."""
-        return await aiosqlite.connect(self.db_path)
+        return aiosqlite.connect(self.db_path)
     
     async def record_promise(self, promise: Promise) -> str:
         """
@@ -530,22 +530,23 @@ class PromiseLedger:
         text_lower = text.lower()
         content_lower = promise_content.lower()
         
-        # Check for negation patterns
-        negation_patterns = [
-            r"不.+" + re.escape(content_lower[:10]) if len(content_lower) >= 10 else r"不",
-            r"can'?t\s+" + re.escape(content_lower[:10]) if len(content_lower) >= 10 else r"can'?t",
-            r"won'?t\s+" + re.escape(content_lower[:10]) if len(content_lower) >= 10 else r"won'?t",
-        ]
-        
-        for pattern in negation_patterns:
-            if re.search(pattern, text_lower):
-                return True
-        
-        # Check for "算了" or similar dismissive patterns
-        dismissive = ["算了", "不用了", "forget it", "never mind"]
+        # Check for "算了" or similar dismissive patterns - always indicates contradiction
+        dismissive = ["算了", "不用了", "forget it", "never mind", "不能", "can't", "won't", "做不到"]
         for d in dismissive:
             if d in text_lower:
                 return True
+        
+        # Check for negation patterns
+        if len(content_lower) >= 5:
+            negation_patterns = [
+                r"不.+" + re.escape(content_lower[:8]),
+                r"can'?t\s+.*" + re.escape(content_lower[:8]),
+                r"won'?t\s+.*" + re.escape(content_lower[:8]),
+            ]
+            
+            for pattern in negation_patterns:
+                if re.search(pattern, text_lower):
+                    return True
         
         return False
     
