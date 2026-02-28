@@ -1,164 +1,152 @@
 /**
- * Emotiond Bridge Hook
- *
- * Bridges OpenClaw message:received events to the emotiond daemon.
- * - Extracts conversationId as target_id for MVP-3.1 isolation
- * - Sends time_passed events when elapsed time > threshold
- * - Writes context file for skill consumption
+ * Emotiond Bridge Hook v1.2
  */
 
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 
-// Configuration
 const EMOTIOND_BASE_URL = process.env.EMOTIOND_BASE_URL || 'http://127.0.0.1:18080';
 const EMOTIOND_OPENCLAW_TOKEN = process.env.EMOTIOND_OPENCLAW_TOKEN || '';
 const TIME_PASSED_MIN_DELTA = parseInt(process.env.EMOTIOND_TIME_PASSED_MIN_DELTA || '10', 10);
 const TIME_PASSED_MAX_SECONDS = parseInt(process.env.EMOTIOND_TIME_PASSED_MAX_SECONDS || '300', 10);
-
-// Context file path (relative to workspace)
 const CONTEXT_FILE = 'emotiond/context.json';
 
-// In-memory state for time tracking (per target_id)
+// Hardcoded workspace path for this setup
+const WORKSPACE_DIR = process.env.OPENCLAW_WORKSPACE_DIR || process.env.HOME + '/.openclaw/workspace';
+
 const lastMessageTimestamps = new Map();
 
-/**
- * Send event to emotiond
- */
-async function sendToEmotiond(event) {
-  const url = new URL('/event', EMOTIOND_BASE_URL);
+function clampSeconds(seconds) {
+  return Math.max(1, Math.min(TIME_PASSED_MAX_SECONDS, Math.floor(seconds)));
+}
 
-  const body = JSON.stringify(event);
+function getActionGuidance(action) {
+  const g = {
+    approach: { tone: 'warm, open, friendly', intent: 'engage warmly', phrases: ['glad to hear', 'I appreciate'] },
+    withdraw: { tone: 'brief, neutral', intent: 'conserve energy', phrases: ['I understand', 'noted'] },
+    boundary: { tone: 'clear, firm', intent: 'establish limits', phrases: ['I need to be clear', 'not comfortable'] },
+    repair_offer: { tone: 'gentle, conciliatory', intent: 'rebuild trust', phrases: ['I value our connection', 'let me make this right'] },
+    observe: { tone: 'curious, neutral', intent: 'gather info', phrases: ['tell me more', 'help me understand'] },
+    attack: { tone: 'defensive, sharp', intent: 'push back', phrases: ['I have to push back', 'not acceptable'] }
+  };
+  return g[action] || g.observe;
+}
 
+async function fetchDecision(targetId) {
   return new Promise((resolve, reject) => {
+    const url = new URL('/decision/target/' + encodeURIComponent(targetId), EMOTIOND_BASE_URL);
+    const req = http.request(url, {
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + EMOTIOND_OPENCLAW_TOKEN },
+      timeout: 3000
+    }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode < 400) {
+          try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
+        } else { reject(new Error('HTTP ' + res.statusCode)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+    req.end();
+  });
+}
+
+async function sendTimePassed(targetId, seconds, reqId) {
+  return new Promise((resolve, reject) => {
+    const url = new URL('/event', EMOTIOND_BASE_URL);
+    const body = JSON.stringify({
+      type: 'world_event',
+      actor: 'system',
+      target: 'assistant',
+      text: null,
+      meta: { subtype: 'time_passed', seconds, source: 'openclaw', target_id: targetId, request_id: reqId }
+    });
     const req = http.request(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${EMOTIOND_OPENCLAW_TOKEN}`,
-        'X-Emotiond-Token': EMOTIOND_OPENCLAW_TOKEN,
+        'Authorization': 'Bearer ' + EMOTIOND_OPENCLAW_TOKEN
       },
-      timeout: 5000,
+      timeout: 3000
     }, (res) => {
       let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode && res.statusCode < 400) {
-          resolve(JSON.parse(data));
-        } else {
-          reject(new Error(`emotiond returned ${res.statusCode}: ${data}`));
-        }
-      });
+      res.on('data', c => data += c);
+      res.on('end', () => resolve(data));
     });
-
     req.on('error', reject);
-    req.on('timeout', () => {
-      req.destroy();
-      reject(new Error('emotiond request timeout'));
-    });
-
+    req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
     req.write(body);
     req.end();
   });
 }
 
-/**
- * Write context file to workspace
- */
-function writeContext(workspaceDir, context) {
-  const contextPath = path.join(workspaceDir, CONTEXT_FILE);
-  const contextDir = path.dirname(contextPath);
-
-  // Ensure directory exists
-  if (!fs.existsSync(contextDir)) {
-    fs.mkdirSync(contextDir, { recursive: true });
-  }
-
-  fs.writeFileSync(contextPath, JSON.stringify(context, null, 2));
-}
-
-/**
- * Calculate clamped seconds for time_passed
- */
-function clampSeconds(seconds) {
-  return Math.max(1, Math.min(TIME_PASSED_MAX_SECONDS, Math.floor(seconds)));
-}
-
-/**
- * Main hook handler
- */
 const handler = async (event) => {
-  // Only handle message:received events
-  if (event.type !== 'message' || event.action !== 'received') {
-    return;
-  }
+  if (event.type !== 'message' || event.action !== 'received') return;
 
   const ctx = event.context || {};
-  const workspaceDir = ctx.workspaceDir || process.env.OPENCLAW_WORKSPACE_DIR || process.cwd();
-
-  // Extract key fields
-  const conversationId = ctx.conversationId || ctx.channelId || 'default';
-  const messageId = ctx.messageId || `msg_${Date.now()}`;
-  const timestamp = ctx.timestamp || Date.now() / 1000;
+  const wsDir = ctx.workspaceDir || WORKSPACE_DIR;
+  const convId = ctx.conversationId || ctx.channelId || 'default';
+  const msgId = ctx.messageId || 'msg_' + Date.now();
+  const ts = ctx.timestamp || Date.now() / 1000;
   const from = ctx.from || 'unknown';
-  const channelId = ctx.channelId || 'unknown';
+  const chan = ctx.channelId || 'unknown';
 
-  // Build context object
-  const contextData = {
-    target_id: conversationId,
-    channel_id: channelId,
-    conversation_id: conversationId,
-    message_id: messageId,
-    from: from,
-    timestamp: timestamp,
-  };
+  const lastTs = lastMessageTimestamps.get(convId) || ts;
+  const delta = ts - lastTs;
 
-  // Get last timestamp for this target
-  const lastTimestamp = lastMessageTimestamps.get(conversationId) || timestamp;
-  const timeDelta = timestamp - lastTimestamp;
-
-  // Check if we should send time_passed
-  if (timeDelta >= TIME_PASSED_MIN_DELTA) {
-    const clampedSeconds = clampSeconds(timeDelta);
-
-    contextData.last_time_passed = timestamp;
-
-    // Send time_passed event
-    const timePassedEvent = {
-      type: 'world_event',
-      actor: 'system',
-      target: 'assistant',
-      text: null,
-      meta: {
-        subtype: 'time_passed',
-        seconds: clampedSeconds,
-        source: 'openclaw',
-        target_id: conversationId,
-        request_id: `${messageId}:tp`,
-      },
-    };
-
+  // Time passed
+  if (delta >= TIME_PASSED_MIN_DELTA) {
+    const secs = clampSeconds(delta);
     try {
-      await sendToEmotiond(timePassedEvent);
-      console.log(`[emotiond-bridge] Sent time_passed: ${clampedSeconds}s to target ${conversationId}`);
-    } catch (err) {
-      console.error(`[emotiond-bridge] Failed to send time_passed: ${err instanceof Error ? err.message : String(err)}`);
-      // Continue - don't block message processing
+      await sendTimePassed(convId, secs, msgId + ':tp');
+      console.log('[emotiond-bridge] time_passed: ' + secs + 's -> ' + convId);
+    } catch (e) {
+      console.error('[emotiond-bridge] time_passed error: ' + e.message);
     }
   }
+  lastMessageTimestamps.set(convId, ts);
 
-  // Update last timestamp
-  lastMessageTimestamps.set(conversationId, timestamp);
-
-  // Write context file
+  // Fetch decision
+  let decision = null;
+  let guidance = null;
   try {
-    writeContext(workspaceDir, contextData);
-  } catch (err) {
-    console.error(`[emotiond-bridge] Failed to write context: ${err instanceof Error ? err.message : String(err)}`);
+    decision = await fetchDecision(convId);
+    if (decision && decision.action) {
+      guidance = getActionGuidance(decision.action);
+      console.log('[emotiond-bridge] Decision: ' + decision.action + ' for ' + convId);
+    }
+  } catch (e) {
+    console.error('[emotiond-bridge] Decision fetch error: ' + e.message);
   }
 
-  console.log(`[emotiond-bridge] Processed message: ${messageId} from ${conversationId}`);
+  // Write context
+  const context = {
+    target_id: convId,
+    channel_id: chan,
+    conversation_id: convId,
+    message_id: msgId,
+    from: from,
+    timestamp: ts,
+    decision: decision ? { action: decision.action, decision_id: decision.decision_id, explanation: decision.explanation } : null,
+    guidance: guidance,
+    generated_at: new Date().toISOString()
+  };
+
+  const ctxPath = path.join(wsDir, CONTEXT_FILE);
+  const ctxDir = path.dirname(ctxPath);
+  try {
+    if (!fs.existsSync(ctxDir)) fs.mkdirSync(ctxDir, { recursive: true });
+    fs.writeFileSync(ctxPath, JSON.stringify(context, null, 2));
+    console.log('[emotiond-bridge] Context written to: ' + ctxPath);
+  } catch (e) {
+    console.error('[emotiond-bridge] Context write error: ' + e.message);
+  }
+
+  console.log('[emotiond-bridge] Processed: ' + msgId + ' -> ' + (decision?.action || 'none'));
 };
 
 module.exports = handler;
