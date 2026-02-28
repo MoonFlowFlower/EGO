@@ -49,3 +49,30 @@ class PlanResponse(BaseModel):
     mood: Optional[MoodResponse] = None  # Global mood baseline
     uncertainty: Optional[float] = None  # Current affect uncertainty
     bond_uncertainty: Optional[float] = None  # Per-target bond uncertainty
+
+
+class AppraisalResult(BaseModel):
+    """MVP-4 D2: Structured appraisal result for an event"""
+    goal_progress: float = 0.0  # [-1, 1]
+    expectation_violation: float = 0.0  # [0, 1]
+    controllability: float = 0.5  # [0, 1]
+    social_threat: float = 0.0  # [0, 1]
+    novelty: float = 0.0  # [0, 1]
+    observed_delta: Dict[str, float] = {}  # safety, energy
+    emotion_label: str = "neutral"
+    intensity: float = 0.0  # [0, 1]
+    reasoning: List[str] = []
+
+
+class AppraisalRequest(BaseModel):
+    """MVP-4 D2: Request for appraisal endpoint"""
+    event: Event
+    include_context: bool = False  # Whether to include affect/mood/bond in response
+
+
+class AppraisalResponse(BaseModel):
+    """MVP-4 D2: Response for appraisal endpoint"""
+    appraisal: AppraisalResult
+    affect: Optional[Dict[str, float]] = None
+    mood: Optional[Dict[str, float]] = None
+    bond: Optional[Dict[str, float]] = None

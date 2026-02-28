@@ -17,6 +17,7 @@ from emotiond.db import (
     get_or_create_target_predictions, update_target_prediction, load_target_predictions,
     get_mood_state, update_mood_state, get_relationship_with_uncertainty, update_relationship_uncertainty
 )
+from emotiond.appraisal import appraise_event, create_context_from_state, AppraisalResult
 from emotiond.config import (
     K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE,
     ACTION_SPACE, TEST_MODE, ACTION_PRIORS, OBSERVATION_MAP, get_observed_delta,
@@ -504,6 +505,54 @@ async def process_event(event: Event) -> Dict[str, Any]:
         if target == (event.actor if event.type == "user_message" else event.target):
             rel_data["uncertainty"] = max(0.0, rel_data.get("uncertainty", 0.5) - 0.05)
     
+    # MVP-4 D2: Appraise the event
+    # Build context for appraisal
+    target = event.actor if event.type == "user_message" else event.target
+    bond_state = None
+    if target in relationship_manager.relationships:
+        rel = relationship_manager.relationships[target]
+        bond_state = BondState(
+            target=target,
+            bond=rel.get("bond", 0.0),
+            trust=rel.get("trust", 0.0),
+            grudge=rel.get("grudge", 0.0),
+            repair_bank=rel.get("repair_bank", 0.0)
+        )
+    
+    # Create affect state for appraisal
+    affect_state = AffectState(
+        valence=emotion_state.valence,
+        arousal=emotion_state.arousal,
+        anger=emotion_state.anger,
+        sadness=emotion_state.sadness,
+        anxiety=emotion_state.anxiety,
+        joy=emotion_state.joy,
+        loneliness=emotion_state.loneliness,
+        social_safety=emotion_state.social_safety,
+        energy=emotion_state.energy,
+        uncertainty=emotion_state.uncertainty
+    )
+    
+    # Create mood state for appraisal
+    mood_state = MoodState(
+        valence=mood_data["valence"],
+        arousal=mood_data["arousal"],
+        anxiety=mood_data["anxiety"],
+        joy=mood_data["joy"],
+        sadness=mood_data["sadness"],
+        anger=mood_data["anger"],
+        loneliness=mood_data["loneliness"],
+        uncertainty=mood_data["uncertainty"]
+    )
+    
+    # Perform appraisal
+    appraisal_result = appraise_event(
+        event=event,
+        affect=affect_state,
+        mood=mood_state,
+        bond=bond_state
+    )
+    
     result = {
         "status": "processed",
         "valence": emotion_state.valence,
@@ -513,7 +562,9 @@ async def process_event(event: Event) -> Dict[str, Any]:
         "regulation_budget": emotion_state.regulation_budget,
         "social_safety": emotion_state.social_safety,  # MVP-3 B1
         "energy": emotion_state.energy,  # MVP-3 B1
-        "uncertainty": emotion_state.uncertainty  # MVP-4 D1
+        "uncertainty": emotion_state.uncertainty,  # MVP-4 D1
+        # MVP-4 D2: Appraisal result
+        "appraisal": appraisal_result.model_dump()
     }
     
     # Include time_passed audit info in response if applicable

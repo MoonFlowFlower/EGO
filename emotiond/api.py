@@ -227,3 +227,85 @@ async def get_decision_by_target(
         "target": target_id,
         "target_id": result["target_id"]
     }
+
+
+# MVP-4 D2: Appraisal endpoint
+from emotiond.models import AppraisalRequest, AppraisalResponse, AppraisalResult
+from emotiond.appraisal import appraise_event, create_context_from_state
+from emotiond.state import AffectState, MoodState, BondState
+from emotiond.db import get_mood_state, get_relationships
+
+
+@app.post("/appraisal")
+async def get_appraisal(request: AppraisalRequest):
+    """
+    MVP-4 D2: Get appraisal for an event without modifying state.
+    
+    Returns the 5-dimensional appraisal vector and mapped emotion.
+    """
+    try:
+        # Get current mood state
+        mood_data = await get_mood_state()
+        mood_state = MoodState(
+            valence=mood_data["valence"],
+            arousal=mood_data["arousal"],
+            anxiety=mood_data["anxiety"],
+            joy=mood_data["joy"],
+            sadness=mood_data["sadness"],
+            anger=mood_data["anger"],
+            loneliness=mood_data["loneliness"],
+            uncertainty=mood_data["uncertainty"]
+        )
+        
+        # Get target relationship
+        target = request.event.actor if request.event.type == "user_message" else request.event.target
+        bond_state = None
+        
+        relationships = await get_relationships()
+        for rel in relationships:
+            if rel["target"] == target:
+                bond_state = BondState(
+                    target=target,
+                    bond=rel["bond"],
+                    trust=rel.get("trust", 0.0),
+                    grudge=rel["grudge"],
+                    repair_bank=rel.get("repair_bank", 0.0)
+                )
+                break
+        
+        # Create affect state from current emotion state
+        from emotiond.core import emotion_state
+        affect_state = AffectState(
+            valence=emotion_state.valence,
+            arousal=emotion_state.arousal,
+            anger=emotion_state.anger,
+            sadness=emotion_state.sadness,
+            anxiety=emotion_state.anxiety,
+            joy=emotion_state.joy,
+            loneliness=emotion_state.loneliness,
+            social_safety=emotion_state.social_safety,
+            energy=emotion_state.energy,
+            uncertainty=emotion_state.uncertainty
+        )
+        
+        # Perform appraisal
+        appraisal_result = appraise_event(
+            event=request.event,
+            affect=affect_state,
+            mood=mood_state,
+            bond=bond_state
+        )
+        
+        # Build response
+        response = AppraisalResponse(appraisal=appraisal_result)
+        
+        if request.include_context:
+            response.affect = affect_state.to_dict()
+            response.mood = mood_state.to_dict()
+            if bond_state:
+                response.bond = bond_state.to_dict()
+        
+        return response
+        
+    except Exception as e:
+        return {"error": str(e), "traceback": traceback.format_exc()}
