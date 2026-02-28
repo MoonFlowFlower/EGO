@@ -105,7 +105,7 @@ class EvalResult:
     aggregate_metrics: Dict[str, Any]
     telemetry_aggregate: Dict[str, Any] = field(default_factory=dict)
 
-def get_precision_weights() -> Dict[str, float]:
+def get_precision_weights():
     try:
         from emotiond.precision import get_precision_controller
         controller = get_precision_controller()
@@ -115,7 +115,7 @@ def get_precision_weights() -> Dict[str, float]:
         pass
     return {"w_external": 0.5, "w_internal": 0.3, "w_memory": 0.2, "w_action": 0.5, "w_explore": 0.3}
 
-def get_intrinsic_state() -> Dict[str, float]:
+def get_intrinsic_state():
     try:
         from emotiond.intrinsic_motivation import get_intrinsic_motivation_state
         state = get_intrinsic_motivation_state()
@@ -126,7 +126,7 @@ def get_intrinsic_state() -> Dict[str, float]:
         pass
     return {"expected_info_gain": 0.0, "boredom": 0.0, "curiosity": 0.0, "confusion": 0.0}
 
-def get_self_model_state() -> Dict[str, Any]:
+def get_self_model_state():
     try:
         from emotiond.self_model import get_self_model
         sm = get_self_model()
@@ -136,7 +136,7 @@ def get_self_model_state() -> Dict[str, Any]:
         pass
     return {"update_count": 0, "identity_stability": 1.0}
 
-def get_allostasis_budget() -> float:
+def get_allostasis_budget():
     try:
         budget = core.get_allostasis_budget()
         if budget:
@@ -146,13 +146,13 @@ def get_allostasis_budget() -> float:
     return getattr(core.emotion_state, 'energy_budget', 1.0)
 
 class ScenarioRunner:
-    def __init__(self, scenario_path: Path):
+    def __init__(self, scenario_path):
         self.scenario_path = scenario_path
         self.scenario_data = None
-        self.turn_results: List[TurnResult] = []
-        self.telemetry_history: List[TelemetrySnapshot] = []
+        self.turn_results = []
+        self.telemetry_history = []
         
-    def load(self) -> bool:
+    def load(self):
         try:
             with open(self.scenario_path, 'r') as f:
                 self.scenario_data = yaml.safe_load(f)
@@ -161,7 +161,7 @@ class ScenarioRunner:
             print(f"Error loading scenario {self.scenario_path}: {e}")
             return False
     
-    def get_emotion_snapshot(self) -> EmotionSnapshot:
+    def get_emotion_snapshot(self):
         return EmotionSnapshot(
             valence=core.emotion_state.valence, arousal=core.emotion_state.arousal,
             anger=core.emotion_state.anger, sadness=core.emotion_state.sadness,
@@ -170,7 +170,7 @@ class ScenarioRunner:
             energy=core.emotion_state.energy
         )
     
-    def get_telemetry_snapshot(self) -> TelemetrySnapshot:
+    def get_telemetry_snapshot(self):
         precision = get_precision_weights()
         intrinsic = get_intrinsic_state()
         self_model = get_self_model_state()
@@ -201,7 +201,7 @@ class ScenarioRunner:
                     "trust": initial.get("trust", 0.5), "repair_bank": initial.get("repair_bank", 0.0)
                 })
     
-    def detect_meta_cognition(self, emotion_after: EmotionSnapshot, event: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
+    def detect_meta_cognition(self, emotion_after, event):
         if emotion_after.anxiety > 0.2 and event.get("type") == "user_message":
             text = event.get("text", "").lower()
             ambiguous = ["maybe", "i don't know", "not sure", "whatever", "i guess", "fine", "whatever you want"]
@@ -213,7 +213,7 @@ class ScenarioRunner:
                 return True, "reflection"
         return False, None
     
-    async def process_turn(self, turn_data: Dict[str, Any]) -> TurnResult:
+    async def process_turn(self, turn_data):
         turn_id = turn_data["turn_id"]
         phase = turn_data.get("phase", "unknown")
         event_data = turn_data["event"]
@@ -248,7 +248,7 @@ class ScenarioRunner:
                             event_subtype=event_subtype, emotion_before=emotion_before, emotion_after=self.get_emotion_snapshot(),
                             meta_cognition_triggered=False, success=False, error=str(e), telemetry=telemetry_before)
     
-    def calculate_telemetry_summary(self) -> Dict[str, Any]:
+    def calculate_telemetry_summary(self):
         if not self.telemetry_history:
             return {}
         def calc_stats(values):
@@ -265,7 +265,7 @@ class ScenarioRunner:
             "self_model": {"identity_stability": calc_stats([t.identity_stability for t in self.telemetry_history])}
         }
     
-    def detect_failure_reasons(self, metrics: Dict[str, Any]) -> List[str]:
+    def detect_failure_reasons(self, metrics):
         reasons = []
         if self.telemetry_history:
             w_external_values = [t.w_external for t in self.telemetry_history]
@@ -283,7 +283,7 @@ class ScenarioRunner:
             reasons.append(FailureReason.FALSE_HIGH_IMPACT.value)
         return reasons
     
-    def calculate_metrics(self) -> Dict[str, Any]:
+    def calculate_metrics(self):
         metrics = {}
         valences = [t.emotion_after.valence for t in self.turn_results if t.success and t.emotion_after]
         arousals = [t.emotion_after.arousal for t in self.turn_results if t.success and t.emotion_after]
@@ -313,7 +313,7 @@ class ScenarioRunner:
         metrics["meta_cognition_trigger_rate"] = {"rate": trigger_rate, "triggered_count": meta_triggered, "total_turns": total_turns, "passed": 0.0 <= trigger_rate <= 0.6}
         return metrics
     
-    async def run(self) -> ScenarioResult:
+    async def run(self):
         start_time = datetime.now().isoformat()
         start = time.time()
         if not self.scenario_data:
@@ -354,7 +354,7 @@ class ScenarioRunner:
                             end_time=end_time, duration_seconds=end - start, turns=self.turn_results, metrics=metrics,
                             passed=passed, summary=summary, failure_reasons=failure_reasons, telemetry_summary=telemetry_summary)
 
-def result_to_dict(obj) -> Dict[str, Any]:
+def result_to_dict(obj):
     if hasattr(obj, '__dataclass_fields__'):
         return {field_name: result_to_dict(getattr(obj, field_name)) for field_name in obj.__dataclass_fields__}
     elif isinstance(obj, list):
@@ -367,14 +367,14 @@ def result_to_dict(obj) -> Dict[str, Any]:
         return obj
 
 class EvalSuiteV2_1:
-    def __init__(self, scenarios_dir: Path = None, output_format: str = "json", enable_telemetry: bool = True):
+    def __init__(self, scenarios_dir=None, output_format="json", enable_telemetry=True):
         self.base_path = Path(__file__).parent.parent
         self.scenarios_dir = scenarios_dir or self.base_path / "scenarios"
         self.output_format = output_format
         self.enable_telemetry = enable_telemetry
-        self.results: List[ScenarioResult] = []
+        self.results = []
         
-    def discover_scenarios(self) -> List[Path]:
+    def discover_scenarios(self):
         scenarios = []
         if self.scenarios_dir.exists():
             for ext in ["*.yaml", "*.yml", "*.json"]:
@@ -403,11 +403,11 @@ class EvalSuiteV2_1:
         except:
             pass
     
-    async def run_scenario(self, scenario_path: Path) -> ScenarioResult:
+    async def run_scenario(self, scenario_path):
         runner = ScenarioRunner(scenario_path)
         return await runner.run()
     
-    def calculate_aggregate_metrics(self) -> Dict[str, Any]:
+    def calculate_aggregate_metrics(self):
         if not self.results:
             return {}
         consistency_rates = [1.0 if r.metrics.get("emotion_consistency", {}).get("passed", False) else 0.0 for r in self.results]
@@ -428,7 +428,7 @@ class EvalSuiteV2_1:
             "failure_reason_counts": failure_reason_counts
         }
     
-    def calculate_telemetry_aggregate(self) -> Dict[str, Any]:
+    def calculate_telemetry_aggregate(self):
         if not self.results:
             return {}
         all_precision_w_external = []; all_energy_budgets = []; all_info_gains = []
@@ -446,7 +446,7 @@ class EvalSuiteV2_1:
             return {"mean": statistics.mean(values), "min": min(values), "max": max(values), "std": statistics.stdev(values) if len(values) > 1 else 0}
         return {"precision_w_external": calc_stats(all_precision_w_external), "energy_budget": calc_stats(all_energy_budgets), "expected_info_gain": calc_stats(all_info_gains)}
     
-    async def run_all(self, scenario_files: List[Path] = None) -> EvalResult:
+    async def run_all(self, scenario_files=None):
         start_time = datetime.now().isoformat()
         scenarios = scenario_files if scenario_files else self.discover_scenarios()
         if not scenarios:
@@ -459,7 +459,7 @@ class EvalSuiteV2_1:
                 print(f"\nRunning: {scenario_path.name}")
                 result = await self.run_scenario(scenario_path)
                 self.results.append(result)
-                status = "✓ PASSED" if result.passed else "✗ FAILED"
+                status = "PASSED" if result.passed else "FAILED"
                 print(f"  {status}: {result.summary}")
                 if result.failure_reasons:
                     print(f"    Failure reasons: {result.failure_reasons}")
@@ -472,7 +472,7 @@ class EvalSuiteV2_1:
         finally:
             self.teardown_environment()
     
-    def output_results(self, result: EvalResult) -> str:
+    def output_results(self, result):
         if self.output_format == "json":
             return json.dumps(result_to_dict(result), indent=2, default=str)
         else:
@@ -493,7 +493,7 @@ class EvalSuiteV2_1:
                     lines.append("")
             lines.extend(["## Scenario Results", ""])
             for scenario in result.scenarios:
-                status = "✓" if scenario.passed else "✗"
+                status = "OK" if scenario.passed else "FAIL"
                 lines.append(f"### {status} {scenario.scenario_name}")
                 lines.append(f"- **File:** {scenario.scenario_file}")
                 lines.append(f"- **Duration:** {scenario.duration_seconds:.2f}s")
@@ -505,14 +505,12 @@ class EvalSuiteV2_1:
                 lines.append("")
             return "\n".join(lines)
 
-async def run_parameter_sensitivity_smoke_test(scenarios_dir: Path = None, seed: int = 42) -> Dict[str, Any]:
+async def run_parameter_sensitivity_smoke_test(scenarios_dir=None, seed=42):
     import random
     random.seed(seed)
     print("\n" + "="*60)
     print("PARAMETER SENSITIVITY SMOKE TEST")
     print("="*60)
-    baseline_params = {"w_external": 0.5, "w_internal": 0.3, "w_memory": 0.2, "w_action": 0.5, "w_explore": 0.3, "energy_budget": 1.0}
-    modified_params = {"w_external": 0.8, "w_internal": 0.1, "w_memory": 0.1, "w_action": 0.2, "w_explore": 0.8, "energy_budget": 0.5}
     results = {"baseline": {}, "modified": {}, "sensitivity_detected": False, "changes": {}}
     print("\nRunning with BASELINE parameters...")
     suite_baseline = EvalSuiteV2_1(scenarios_dir=scenarios_dir, output_format="json")
@@ -585,4 +583,19 @@ async def main():
     else:
         scenario_files = None
     
-    suite = EvalSuite
+    suite = EvalSuiteV2_1(scenarios_dir=scenarios_dir, output_format=args.output, enable_telemetry=args.telemetry)
+    result = await suite.run_all(scenario_files)
+    output = suite.output_results(result)
+    
+    if args.output_file:
+        with open(args.output_file, 'w') as f:
+            f.write(output)
+        print(f"\nResults written to: {args.output_file}")
+    else:
+        print("\n" + output)
+    
+    return 0 if result.failed_scenarios == 0 else 1
+
+if __name__ == "__main__":
+    exit_code = asyncio.run(main())
+    sys.exit(exit_code)
