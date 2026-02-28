@@ -10,6 +10,16 @@ import shutil
 from emotiond.db import init_db
 
 
+def pytest_addoption(parser):
+    """Add custom command line options for live integration tests."""
+    parser.addoption(
+        "--no-live",
+        action="store_true",
+        default=False,
+        help="Disable live integration tests that auto-start emotiond"
+    )
+
+
 # Test tokens for MVP-2.1.1 security
 TEST_SYSTEM_TOKEN = "test-system-token-for-tests"
 TEST_OPENCLAW_TOKEN = "test-openclaw-token-for-tests"
