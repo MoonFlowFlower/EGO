@@ -5,7 +5,7 @@ import os
 import asyncio
 import time
 import math
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.db import (
     get_state, update_state, add_event, get_relationships, update_relationship,
@@ -13,7 +13,8 @@ from emotiond.db import (
     check_and_record_duplicate, update_dedupe_event_id,
     get_time_passed_window_sum, record_time_passed,
     get_db_path,
-    load_predictions, save_predictions, update_prediction
+    load_predictions, save_predictions, update_prediction,
+    get_or_create_target_predictions, update_target_prediction, load_target_predictions
 )
 from emotiond.config import (
     K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE,
@@ -292,13 +293,17 @@ class RelationshipManager:
 # MVP-3 B3+B5: Global prediction store
 _predictions: Dict[str, Dict[str, float]] = {}
 
+# MVP-3.1: Target-specific prediction residuals cache
+# Structure: {target_id: {action: {social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error}}}
+_target_predictions: Dict[str, Dict[str, Dict[str, Any]]] = {}
+
 
 emotion_state = EmotionState()
 relationship_manager = RelationshipManager()
 
 
 async def load_initial_state():
-    global emotion_state, relationship_manager, _predictions
+    global emotion_state, relationship_manager, _predictions, _target_predictions
     db_state = await get_state()
     emotion_state.valence = db_state["valence"]
     emotion_state.arousal = db_state["arousal"]
@@ -322,6 +327,8 @@ async def load_initial_state():
             relationship_manager.last_actions[rel["target"]] = rel["last_action"]
     # MVP-3 B3: Load predictions
     _predictions.update(await load_predictions())
+    # MVP-3.1: Load target predictions cache (lazy-loaded on demand)
+    _target_predictions = {}
     await initialize_memory_system()
 
 
@@ -922,4 +929,570 @@ async def select_action_with_explanation(
         "action": selected_action,
         "explanation": explanation,
         "decision_id": decision_id
+    }
+
+
+# MVP-3.1: Target ID resolution
+def resolve_target_id(event: 'Event') -> str:
+    """
+    MVP-3.1: Resolve target_id from event meta.
+    
+    Priority:
+    1. meta.target_id (if provided by system/openclaw)
+    2. meta.client_source (if provided)
+    3. "default"
+    
+    Args:
+        event: The event to extract target_id from
+    
+    Returns:
+        target_id string
+    """
+    if event.meta:
+        # Priority 1: explicit target_id
+        if "target_id" in event.meta:
+            return str(event.meta["target_id"])
+        # Priority 2: client_source
+        if "client_source" in event.meta:
+            return str(event.meta["client_source"])
+    return "default"
+
+
+def calculate_shrinkage_alpha(n: int, k: int = None) -> float:
+    """
+    MVP-3.1: Calculate shrinkage factor for partial pooling.
+    
+    α = n / (n + k)
+    
+    - n=0 → α=0 (fully trust global)
+    - n→∞ → α→1 (fully trust target-specific)
+    
+    Args:
+        n: Number of samples for this target/action
+        k: Shrinkage parameter (default from config)
+    
+    Returns:
+        float α in [0, 1)
+    """
+    if k is None:
+        from emotiond.config import SHRINKAGE_K
+        k = SHRINKAGE_K
+    
+    if n <= 0:
+        return 0.0
+    
+    return n / (n + k)
+
+
+# MVP-3.1: Target-specific prediction functions
+async def load_target_predictions_cache(target_id: str) -> Dict[str, Dict[str, Any]]:
+    """
+    MVP-3.1: Load target predictions into cache and return them.
+    """
+    global _target_predictions
+    
+    if target_id not in _target_predictions:
+        _target_predictions[target_id] = await load_target_predictions(target_id)
+    
+    return _target_predictions[target_id]
+
+
+def compute_combined_prediction(
+    global_pred: Dict[str, float],
+    target_pred: Dict[str, Any],
+    alpha: float
+) -> Dict[str, float]:
+    """
+    MVP-3.1: Compute combined prediction using shrinkage factor.
+    
+    pred_total = pred_global + α * pred_residual
+    
+    Args:
+        global_pred: Global prediction {social_safety_delta, energy_delta}
+        target_pred: Target prediction {social_safety_delta, energy_delta, n, ...}
+        alpha: Shrinkage factor [0, 1)
+    
+    Returns:
+        Combined prediction {safety, energy, alpha, global_safety, global_energy, residual_safety, residual_energy}
+    """
+    global_safety = global_pred.get("social_safety_delta", 0.0)
+    global_energy = global_pred.get("energy_delta", 0.0)
+    
+    residual_safety = target_pred.get("social_safety_delta", 0.0)
+    residual_energy = target_pred.get("energy_delta", 0.0)
+    
+    combined_safety = global_safety + alpha * residual_safety
+    combined_energy = global_energy + alpha * residual_energy
+    
+    # Clamp
+    from emotiond.config import DELTA_CLAMP_MIN, DELTA_CLAMP_MAX
+    combined_safety = max(DELTA_CLAMP_MIN, min(DELTA_CLAMP_MAX, combined_safety))
+    combined_energy = max(DELTA_CLAMP_MIN, min(DELTA_CLAMP_MAX, combined_energy))
+    
+    return {
+        "safety": combined_safety,
+        "energy": combined_energy,
+        "alpha": alpha,
+        "global_safety": global_safety,
+        "global_energy": global_energy,
+        "residual_safety": residual_safety,
+        "residual_energy": residual_energy
+    }
+
+
+def score_action_with_target(
+    action: str,
+    state: EmotionState,
+    relationship: Dict[str, float],
+    global_pred: Dict[str, float],
+    target_pred: Dict[str, Any],
+    alpha: float
+) -> Tuple[float, Dict[str, float]]:
+    """
+    MVP-3.1: Score an action using combined global + target-specific prediction.
+    
+    Args:
+        action: The action to score
+        state: Current emotional state
+        relationship: Relationship dict
+        global_pred: Global prediction for this action
+        target_pred: Target-specific prediction for this action
+        alpha: Shrinkage factor
+    
+    Returns:
+        Tuple of (score, combined_prediction_dict)
+    """
+    w = ACTION_SCORE_WEIGHTS
+    
+    # Relationship benefit
+    rel_score = (
+        w["bond"] * relationship.get("bond", 0.0) +
+        w["grudge"] * relationship.get("grudge", 0.0) +
+        w["trust"] * relationship.get("trust", 0.0)
+    )
+    
+    # Combined prediction
+    combined = compute_combined_prediction(global_pred, target_pred, alpha)
+    
+    # Predicted change score
+    pred_score = w["safety"] * combined["safety"] + w["energy"] * combined["energy"]
+    
+    # Uncertainty penalty (use target-specific if available, else global)
+    n = target_pred.get("n", 0)
+    ema_abs_error = target_pred.get("ema_abs_error", 0.0)
+    uncertainty_penalty = -w["uncertainty"] * ema_abs_error if n > 0 else 0.0
+    
+    total_score = rel_score + pred_score + uncertainty_penalty
+    
+    return total_score, combined
+
+
+async def select_action_with_target(
+    state: EmotionState,
+    target: str,
+    target_id: str,
+    test_mode: bool = False
+) -> Tuple[str, Dict[str, Any]]:
+    """
+    MVP-3.1: Select an action using target-specific predictions.
+    
+    Args:
+        state: Current emotional state
+        target: Target identifier (for relationship lookup)
+        target_id: Target ID for prediction lookup
+        test_mode: If True, use argmax
+    
+    Returns:
+        Tuple of (selected_action, all_combined_predictions)
+    """
+    global _predictions, _target_predictions
+    
+    relationship = relationship_manager.relationships.get(target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+    
+    # Load target predictions
+    target_preds = await load_target_predictions_cache(target_id)
+    
+    # Score all actions
+    scores = {}
+    combined_predictions = {}
+    
+    for action in ACTION_SPACE:
+        global_pred = _predictions.get(action, {
+            "social_safety_delta": 0.0,
+            "energy_delta": 0.0
+        })
+        target_pred = target_preds.get(action, {
+            "social_safety_delta": 0.0,
+            "energy_delta": 0.0,
+            "n": 0
+        })
+        
+        n = target_pred.get("n", 0)
+        alpha = calculate_shrinkage_alpha(n)
+        
+        score, combined = score_action_with_target(action, state, relationship, global_pred, target_pred, alpha)
+        scores[action] = score
+        combined_predictions[action] = combined
+    
+    if test_mode or TEST_MODE:
+        best_action = max(scores.keys(), key=lambda a: scores[a])
+    else:
+        temp = SOFTMAX_TEMPERATURE
+        max_score = max(scores.values())
+        exp_scores = {a: math.exp((s - max_score) / temp) for a, s in scores.items()}
+        sum_exp = sum(exp_scores.values())
+        probs = {a: e / sum_exp for a, e in exp_scores.items()}
+        
+        import random
+        r = random.random()
+        cumsum = 0.0
+        best_action = ACTION_SPACE[0]
+        for a, p in probs.items():
+            cumsum += p
+            if r <= cumsum:
+                best_action = a
+                break
+    
+    return best_action, combined_predictions
+
+
+async def update_predictions_with_target(
+    action: str,
+    target_id: str,
+    predicted: Dict[str, float],
+    observed: Dict[str, float],
+    alpha: float
+):
+    """
+    MVP-3.1: Update both global and target-specific predictions.
+    
+    Args:
+        action: The action taken
+        target_id: Target ID
+        predicted: Combined predicted deltas {safety, energy}
+        observed: Observed deltas {safety, energy}
+        alpha: Shrinkage factor used for this prediction
+    """
+    global _predictions, _target_predictions
+    
+    from emotiond.config import LR_TARGET, LR_GLOBAL_RATIO, EMA_DECAY, DELTA_CLAMP_MIN, DELTA_CLAMP_MAX
+    
+    # Calculate errors
+    safety_error = observed["safety"] - predicted["safety"]
+    energy_error = observed["energy"] - predicted["energy"]
+    
+    # Update target residual (main learning path)
+    target_preds = await load_target_predictions_cache(target_id)
+    target_pred = target_preds.get(action, {
+        "social_safety_delta": 0.0,
+        "energy_delta": 0.0,
+        "n": 0,
+        "ema_abs_error": 0.0,
+        "ema_sq_error": 0.0
+    })
+    
+    new_residual_safety = target_pred["social_safety_delta"] + LR_TARGET * safety_error
+    new_residual_energy = target_pred["energy_delta"] + LR_TARGET * energy_error
+    
+    # Clamp residuals
+    new_residual_safety = max(DELTA_CLAMP_MIN, min(DELTA_CLAMP_MAX, new_residual_safety))
+    new_residual_energy = max(DELTA_CLAMP_MIN, min(DELTA_CLAMP_MAX, new_residual_energy))
+    
+    # Update n
+    new_n = target_pred["n"] + 1
+    
+    # Update EMA error tracking
+    new_ema_abs_error = (1 - EMA_DECAY) * target_pred["ema_abs_error"] + EMA_DECAY * (abs(safety_error) + abs(energy_error))
+    new_ema_sq_error = (1 - EMA_DECAY) * target_pred["ema_sq_error"] + EMA_DECAY * (safety_error ** 2 + energy_error ** 2)
+    
+    # Update cache
+    if target_id not in _target_predictions:
+        _target_predictions[target_id] = {}
+    _target_predictions[target_id][action] = {
+        "social_safety_delta": new_residual_safety,
+        "energy_delta": new_residual_energy,
+        "n": new_n,
+        "ema_abs_error": new_ema_abs_error,
+        "ema_sq_error": new_ema_sq_error
+    }
+    
+    # Persist to database
+    await update_target_prediction(
+        target_id, action,
+        new_residual_safety, new_residual_energy,
+        new_n, new_ema_abs_error, new_ema_sq_error
+    )
+    
+    # Update global (slower learning)
+    lr_global = LR_TARGET * LR_GLOBAL_RATIO
+    global_pred = _predictions.get(action, {"social_safety_delta": 0.0, "energy_delta": 0.0})
+    
+    new_global_safety = global_pred["social_safety_delta"] + lr_global * safety_error
+    new_global_energy = global_pred["energy_delta"] + lr_global * energy_error
+    
+    # Clamp global
+    new_global_safety = max(DELTA_CLAMP_MIN, min(DELTA_CLAMP_MAX, new_global_safety))
+    new_global_energy = max(DELTA_CLAMP_MIN, min(DELTA_CLAMP_MAX, new_global_energy))
+    
+    _predictions[action]["social_safety_delta"] = new_global_safety
+    _predictions[action]["energy_delta"] = new_global_energy
+    
+    # Persist global
+    await save_predictions(_predictions)
+    
+    return {
+        "action": action,
+        "target_id": target_id,
+        "alpha": alpha,
+        "errors": {"safety": safety_error, "energy": energy_error},
+        "new_residual": {"safety": new_residual_safety, "energy": new_residual_energy},
+        "new_global": {"safety": new_global_safety, "energy": new_global_energy},
+        "n": new_n
+    }
+
+
+# MVP-3.1: Enhanced explanation with target-specific predictions
+async def generate_explanation_v31(
+    target: str,
+    target_id: str,
+    selected_action: Optional[str] = None,
+    test_mode: bool = False
+) -> Dict[str, Any]:
+    """
+    MVP-3.1: Generate structured explanation with target-specific predictions.
+    
+    Args:
+        target: Target identifier (for relationship lookup)
+        target_id: Target ID for prediction lookup
+        selected_action: Pre-selected action (if None, will select one)
+        test_mode: If True, use deterministic selection
+    
+    Returns:
+        dict with emotion, interoception, relationships, target_id, candidates, selected, selection_reasons
+    """
+    global _predictions, _target_predictions
+    
+    state = emotion_state
+    
+    # Build emotion section
+    emotion_values = {
+        "anger": state.anger,
+        "sadness": state.sadness,
+        "anxiety": state.anxiety,
+        "joy": state.joy,
+        "loneliness": state.loneliness
+    }
+    sorted_emotions = sorted(emotion_values.items(), key=lambda x: x[1], reverse=True)
+    top2 = [(name, value) for name, value in sorted_emotions[:2] if value > 0.0]
+    emotion_section = {"top2": top2, "all": emotion_values}
+    
+    # Build interoception section
+    interoception_section = {
+        "social_safety": state.social_safety,
+        "energy": state.energy
+    }
+    
+    # Build relationships section
+    relationship = relationship_manager.relationships.get(target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+    relationships_section = {
+        "bond": relationship.get("bond", 0.0),
+        "grudge": relationship.get("grudge", 0.0),
+        "trust": relationship.get("trust", 0.0),
+        "repair_bank": relationship.get("repair_bank", 0.0)
+    }
+    
+    # Load target predictions
+    target_preds = await load_target_predictions_cache(target_id)
+    
+    # Score all actions with target-specific predictions
+    scores = {}
+    all_combined = {}
+    for action in ACTION_SPACE:
+        global_pred = _predictions.get(action, {"social_safety_delta": 0.0, "energy_delta": 0.0})
+        target_pred = target_preds.get(action, {"social_safety_delta": 0.0, "energy_delta": 0.0, "n": 0})
+        n = target_pred.get("n", 0)
+        alpha = calculate_shrinkage_alpha(n)
+        score, combined = score_action_with_target(action, state, relationship, global_pred, target_pred, alpha)
+        scores[action] = score
+        all_combined[action] = combined
+    
+    # Get top 3 candidates
+    sorted_actions = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    top3 = sorted_actions[:3]
+    
+    # Build candidates with MVP-3.1 fields
+    candidates = []
+    for action, score in top3:
+        combined = all_combined[action]
+        reasons = _generate_action_reasons_v31(action, state, relationship, combined)
+        candidates.append({
+            "action": action,
+            "score": score,
+            "alpha": combined["alpha"],
+            "predicted_global": {
+                "safety": combined["global_safety"],
+                "energy": combined["global_energy"]
+            },
+            "predicted_residual": {
+                "safety": combined["residual_safety"],
+                "energy": combined["residual_energy"]
+            },
+            "predicted_total": {
+                "safety": combined["safety"],
+                "energy": combined["energy"]
+            },
+            "reasons": reasons
+        })
+    
+    # Select action if not provided
+    if selected_action is None:
+        selected_action, _ = await select_action_with_target(state, target, target_id, test_mode)
+    
+    # Generate selection reasons
+    selection_reasons = _generate_selection_reasons_v31(selected_action, state, relationship, scores, all_combined[selected_action])
+    
+    explanation = {
+        "emotion": emotion_section,
+        "interoception": interoception_section,
+        "relationships": relationships_section,
+        "target_id": target_id,
+        "candidates": candidates,
+        "selected": selected_action,
+        "selection_reasons": selection_reasons
+    }
+    
+    return explanation
+
+
+def _generate_action_reasons_v31(
+    action: str,
+    state: EmotionState,
+    relationship: Dict[str, float],
+    combined: Dict[str, float]
+) -> List[str]:
+    """MVP-3.1: Generate reasons including prediction breakdown."""
+    reasons = []
+    
+    # Relationship-based reasons
+    if relationship.get("bond", 0) > 0.5:
+        reasons.append("High bond with target")
+    if relationship.get("grudge", 0) > 0.5:
+        reasons.append("Existing grudge")
+    if relationship.get("trust", 0) < 0.3:
+        reasons.append("Low trust")
+    
+    # State-based reasons
+    if state.social_safety < 0.4:
+        reasons.append("Low social safety")
+    if state.energy < 0.4:
+        reasons.append("Low energy")
+    
+    # Prediction-based reasons with breakdown
+    alpha = combined.get("alpha", 0)
+    total_safety = combined.get("safety", 0)
+    residual_safety = combined.get("residual_safety", 0)
+    
+    if alpha > 0.5 and residual_safety != 0:
+        reasons.append(f"Target-specific learning (α={alpha:.2f})")
+    
+    if total_safety > 0.02:
+        reasons.append(f"Predicted to improve safety (+{total_safety:.2f})")
+    elif total_safety < -0.02:
+        reasons.append("Risk of safety reduction")
+    
+    # Action-specific reasons
+    if action == "approach" and state.social_safety > 0.5:
+        reasons.append("Safe to approach")
+    if action == "repair_offer" and relationship.get("grudge", 0) > 0.3:
+        reasons.append("Opportunity for repair")
+    if action == "boundary" and relationship.get("trust", 0) < 0.4:
+        reasons.append("Boundary needed for protection")
+    if action == "withdraw" and state.social_safety < 0.4:
+        reasons.append("Conservative choice for low safety")
+    if action == "attack" and relationship.get("grudge", 0) > 0.7:
+        reasons.append("Strong grudge motivates retaliation")
+    
+    if not reasons:
+        reasons.append("Neutral expected outcome")
+    
+    return reasons
+
+
+def _generate_selection_reasons_v31(
+    selected_action: str,
+    state: EmotionState,
+    relationship: Dict[str, float],
+    scores: Dict[str, float],
+    combined: Dict[str, float]
+) -> List[str]:
+    """MVP-3.1: Generate selection reasons with prediction breakdown."""
+    reasons = []
+    
+    max_score_action = max(scores.keys(), key=lambda a: scores[a])
+    if selected_action == max_score_action:
+        reasons.append("Highest score given current state")
+    else:
+        reasons.append(f"Selected via stochastic process (score: {scores[selected_action]:.3f})")
+    
+    alpha = combined.get("alpha", 0)
+    if alpha > 0.3:
+        reasons.append(f"Target-specific experience influences decision (α={alpha:.2f})")
+    else:
+        reasons.append("Relying primarily on general experience")
+    
+    if relationship.get("grudge", 0) > 0.5:
+        reasons.append("High grudge influences selection")
+    if relationship.get("trust", 0) < 0.3:
+        reasons.append("Low trust increases caution")
+    
+    return reasons[:3]
+
+
+async def select_action_with_explanation_v31(
+    target: str,
+    target_id: Optional[str] = None,
+    test_mode: bool = False
+) -> Dict[str, Any]:
+    """
+    MVP-3.1: Select action with target-specific explanation.
+    
+    Args:
+        target: Target identifier (for relationship lookup)
+        target_id: Target ID for prediction lookup (defaults to target)
+        test_mode: If True, use deterministic selection
+    
+    Returns:
+        dict with action, explanation, decision_id, target_id
+    """
+    from emotiond.db import save_decision
+    
+    if target_id is None:
+        target_id = target
+    
+    # Ensure relationship exists
+    relationship_manager._ensure_relationship_fields(target)
+    
+    # Generate explanation with target-specific predictions
+    explanation = await generate_explanation_v31(target, target_id, test_mode=test_mode)
+    selected_action = explanation["selected"]
+    
+    # Save decision to database
+    decision_id = await save_decision(selected_action, explanation)
+    
+    # Update relationship with last action
+    relationship_manager.set_last_action(target, selected_action)
+    await update_relationship(
+        target,
+        relationship_manager.relationships[target]["bond"],
+        relationship_manager.relationships[target]["grudge"],
+        relationship_manager.relationships[target].get("trust", 0.0),
+        relationship_manager.relationships[target].get("repair_bank", 0.0),
+        selected_action
+    )
+    
+    return {
+        "action": selected_action,
+        "explanation": explanation,
+        "decision_id": decision_id,
+        "target_id": target_id
     }

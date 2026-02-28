@@ -10,7 +10,9 @@ from typing import Optional
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.core import (
     process_event, generate_plan, load_initial_state,
-    select_action_with_explanation
+    select_action_with_explanation,
+    select_action_with_explanation_v31,
+    resolve_target_id
 )
 from emotiond.daemon import daemon_manager
 from emotiond.config import is_core_disabled
@@ -160,4 +162,49 @@ async def make_decision(
         "explanation": result["explanation"],
         "decision_id": result["decision_id"],
         "target": target
+    }
+
+# MVP-3.1: Target-specific decision endpoint
+@app.post("/decision/target")
+async def make_decision_target(
+    request: PlanRequest,
+    target_id: Optional[str] = Query(None, description="MVP-3.1: Target ID for prediction lookup (defaults to client_source or 'default')"),
+    test_mode: bool = Query(False, description="Use deterministic action selection")
+):
+    """MVP-3.1: Select an action using target-specific predictions with partial pooling."""
+    target = request.focus_target if request.focus_target else request.user_id
+    
+    # If target_id not provided, try to derive from request context
+    # In a real scenario, this would come from event meta
+    if target_id is None:
+        target_id = target  # Default to same as target
+    
+    result = await select_action_with_explanation_v31(target, target_id, test_mode=test_mode)
+    
+    return {
+        "status": "ok",
+        "action": result["action"],
+        "explanation": result["explanation"],
+        "decision_id": result["decision_id"],
+        "target": target,
+        "target_id": result["target_id"]
+    }
+
+
+@app.get("/decision/target/{target_id}")
+async def get_decision_by_target(
+    target_id: str,
+    test_mode: bool = Query(False, description="Use deterministic action selection")
+):
+    """MVP-3.1: Get or create a decision for a specific target_id."""
+    # Use target_id as both target and target_id for simplicity
+    result = await select_action_with_explanation_v31(target_id, target_id, test_mode=test_mode)
+    
+    return {
+        "status": "ok",
+        "action": result["action"],
+        "explanation": result["explanation"],
+        "decision_id": result["decision_id"],
+        "target": target_id,
+        "target_id": result["target_id"]
     }

@@ -155,6 +155,22 @@ async def init_db():
             )
         """)
         
+        # MVP-3.1: Target-specific prediction residuals
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS predicted_deltas_target (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                target_id TEXT NOT NULL,
+                action TEXT NOT NULL,
+                social_safety_delta REAL DEFAULT 0.0,
+                energy_delta REAL DEFAULT 0.0,
+                n INTEGER DEFAULT 0,
+                ema_abs_error REAL DEFAULT 0.0,
+                ema_sq_error REAL DEFAULT 0.0,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(target_id, action)
+            )
+        """)
+        
         await db.commit()
 
 
@@ -577,3 +593,86 @@ async def get_decision_by_id(decision_id: int) -> Optional[Dict[str, Any]]:
             "explanation": json.loads(row[2]) if row[2] else {},
             "created_at": row[3]
         }
+
+
+# MVP-3.1: Target-specific prediction functions
+async def get_or_create_target_predictions(target_id: str, actions: List[str]) -> Dict[str, Dict[str, Any]]:
+    """
+    MVP-3.1: Get or create prediction residuals for a specific target.
+    
+    Args:
+        target_id: The target identifier
+        actions: List of actions to ensure predictions for
+    
+    Returns:
+        dict mapping action -> {social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error}
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        # Get existing predictions
+        cursor = await db.execute(
+            """SELECT action, social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error 
+               FROM predicted_deltas_target WHERE target_id = ?""",
+            (target_id,)
+        )
+        rows = await cursor.fetchall()
+        
+        existing = {row[0]: {
+            "social_safety_delta": row[1],
+            "energy_delta": row[2],
+            "n": row[3],
+            "ema_abs_error": row[4],
+            "ema_sq_error": row[5]
+        } for row in rows}
+        
+        # Create missing actions
+        for action in actions:
+            if action not in existing:
+                await db.execute(
+                    """INSERT INTO predicted_deltas_target 
+                       (target_id, action, social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error)
+                       VALUES (?, ?, 0.0, 0.0, 0, 0.0, 0.0)""",
+                    (target_id, action)
+                )
+                existing[action] = {
+                    "social_safety_delta": 0.0,
+                    "energy_delta": 0.0,
+                    "n": 0,
+                    "ema_abs_error": 0.0,
+                    "ema_sq_error": 0.0
+                }
+        
+        await db.commit()
+        return existing
+
+
+async def update_target_prediction(
+    target_id: str,
+    action: str,
+    safety_delta: float,
+    energy_delta: float,
+    n: int,
+    ema_abs_error: float,
+    ema_sq_error: float
+):
+    """
+    MVP-3.1: Update a target-specific prediction residual.
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        await db.execute(
+            """UPDATE predicted_deltas_target 
+               SET social_safety_delta = ?, energy_delta = ?, n = ?, ema_abs_error = ?, ema_sq_error = ?, updated_at = CURRENT_TIMESTAMP
+               WHERE target_id = ? AND action = ?""",
+            (safety_delta, energy_delta, n, ema_abs_error, ema_sq_error, target_id, action)
+        )
+        await db.commit()
+
+
+async def load_target_predictions(target_id: str) -> Dict[str, Dict[str, Any]]:
+    """
+    MVP-3.1: Load all target-specific predictions for a target.
+    
+    Returns:
+        dict mapping action -> {social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error}
+    """
+    from emotiond.config import ACTION_SPACE
+    return await get_or_create_target_predictions(target_id, ACTION_SPACE)

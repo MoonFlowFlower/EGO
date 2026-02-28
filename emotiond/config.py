@@ -91,3 +91,18 @@ def get_observed_delta(event_subtype: str) -> dict:
     if event_subtype in OBSERVATION_MAP:
         return OBSERVATION_MAP[event_subtype].copy()
     return {"safety": 0.0, "energy": 0.0}
+
+# MVP-3.1: Shrinkage factor for partial pooling
+# α = n / (n + k), where k controls how quickly we trust target-specific data
+SHRINKAGE_K = int(os.getenv("EMOTIOND_SHRINKAGE_K", "20"))
+
+# MVP-3.1: Learning rates for residual vs global predictions
+LR_TARGET = float(os.getenv("EMOTIOND_LR_TARGET", "0.1"))
+LR_GLOBAL_RATIO = float(os.getenv("EMOTIOND_LR_GLOBAL_RATIO", "0.2"))  # lr_global = lr_target * ratio
+
+# MVP-3.1: EMA decay for uncertainty tracking
+EMA_DECAY = float(os.getenv("EMOTIOND_EMA_DECAY", "0.1"))
+
+# MVP-3.1: Delta clamping range
+DELTA_CLAMP_MAX = float(os.getenv("EMOTIOND_DELTA_CLAMP_MAX", "0.2"))
+DELTA_CLAMP_MIN = float(os.getenv("EMOTIOND_DELTA_CLAMP_MIN", "-0.2"))
