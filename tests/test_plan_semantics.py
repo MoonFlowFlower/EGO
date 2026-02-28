@@ -2,6 +2,7 @@
 import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
+from tests.conftest import get_system_headers
 from emotiond.api import app
 
 
@@ -40,8 +41,8 @@ async def test_plan_explicit_focus_target(isolated_db):
             "type": "world_event",
             "actor": "user_Y",
             "target": "assistant",
-            "meta": {"subtype": "betrayal", "source": "system"}
-        })
+            "meta": {"subtype": "betrayal"}
+        }, headers=get_system_headers())
         
         # Request plan for user_X but with focus_target=user_Y
         response = await client.post("/plan", json={

@@ -263,7 +263,11 @@ async def load_initial_state():
 
 
 async def process_event(event: Event) -> Dict[str, Any]:
-    # === MVP-2.1 Auth Gate ===
+    """Process an event after security validation (handled in api.py).
+    
+    MVP-2.1.1: Also validates source for direct calls (backward compatibility).
+    """
+    # === MVP-2.1.1 Auth Gate (for direct calls, api.py handles HTTP) ===
     if event.type == "world_event":
         source = event.meta.get("source", "user") if event.meta else "user"
         subtype = event.meta.get("subtype") if event.meta else None

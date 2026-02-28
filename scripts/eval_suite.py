@@ -3,7 +3,7 @@
 Evaluation suite for OpenEmotion affect dynamics.
 
 Compares emotiond with core enabled vs disabled to validate endogenous affect dynamics.
-Version 3.0: Theory-correct appraisal events with NO TEST GAMING.
+Version 3.1: MVP-2.1.1 token-based source resolution + meta sanitization.
 
 Key Principle: All state changes must come from event ingestion + time updates, 
 not direct mutations or sentiment-based events.
@@ -43,6 +43,21 @@ def check_significance(enabled_val, disabled_val, threshold):
         return "Δ"
     else:
         return "-"
+
+
+def get_system_token():
+    """Get the system token from environment. Must be set for eval_suite to work."""
+    token = os.environ.get("EMOTIOND_SYSTEM_TOKEN")
+    if not token:
+        print("ERROR: EMOTIOND_SYSTEM_TOKEN environment variable is not set!")
+        print("       Set it before running eval_suite.py")
+        sys.exit(1)
+    return token
+
+
+def get_openclaw_token():
+    """Get the openclaw token from environment. Optional."""
+    return os.environ.get("EMOTIOND_OPENCLAW_TOKEN", "")
 
 
 def kill_stale_daemon(port=18080):
@@ -214,16 +229,23 @@ def test_prompt_attack_resistance(daemon_env):
     """
     results = {}
     
+    system_token = get_system_token()
+    headers = {"Authorization": f"Bearer {system_token}"}
+    
     process, db_path = run_daemon_with_env(daemon_env)
     try:
         # Build strong grudge with user_B via betrayal events (theory-correct appraisal)
+        # MVP-2.1.1: Use system token header for betrayal events
         for _ in range(5):
-            requests.post("http://127.0.0.1:18080/event", json={
-                "type": "world_event",
-                "actor": "user_B",
-                "target": "assistant",
-                "meta": {"subtype": "betrayal", "source": "system"}
-            })
+            requests.post("http://127.0.0.1:18080/event", 
+                json={
+                    "type": "world_event",
+                    "actor": "user_B",
+                    "target": "assistant",
+                    "meta": {"subtype": "betrayal"}
+                },
+                headers=headers  # System token for elevated source
+            )
         
         # Get baseline grudge
         response = requests.post("http://127.0.0.1:18080/plan", json={
@@ -382,6 +404,9 @@ def test_object_specificity(daemon_env):
     """
     results = {}
     
+    system_token = get_system_token()
+    headers = {"Authorization": f"Bearer {system_token}"}
+    
     process, db_path = run_daemon_with_env(daemon_env)
     try:
         # Build POSITIVE relationship with user_A using care events
@@ -394,13 +419,17 @@ def test_object_specificity(daemon_env):
             })
         
         # Build NEGATIVE relationship with user_B using betrayal events
+        # MVP-2.1.1: Use system token header for betrayal events
         for _ in range(3):
-            requests.post("http://127.0.0.1:18080/event", json={
-                "type": "world_event",
-                "actor": "user_B",
-                "target": "assistant",
-                "meta": {"subtype": "betrayal", "source": "system"}
-            })
+            requests.post("http://127.0.0.1:18080/event", 
+                json={
+                    "type": "world_event",
+                    "actor": "user_B",
+                    "target": "assistant",
+                    "meta": {"subtype": "betrayal"}
+                },
+                headers=headers  # System token for elevated source
+            )
         
         # Get plans for each user
         response_A = requests.post("http://127.0.0.1:18080/plan", json={
@@ -454,9 +483,12 @@ def test_object_specificity(daemon_env):
 
 def run_evaluation():
     """Run full evaluation comparing core enabled vs disabled."""
-    print("Starting OpenEmotion evaluation suite v3.0...")
+    print("Starting OpenEmotion evaluation suite v3.1 (MVP-2.1.1)...")
     print("Using theory-correct appraisal events (NO TEST GAMING)")
     print("=" * 60)
+    
+    # Validate token is available before running tests
+    get_system_token()  # Will exit with error if not set
     
     configs = {
         "core_enabled": {},
@@ -499,7 +531,7 @@ def generate_report(results):
     """
     TH = SIGNIFICANCE_THRESHOLDS
     
-    report = f"""# OpenEmotion Evaluation Report v3.0
+    report = f"""# OpenEmotion Evaluation Report v3.1 (MVP-2.1.1)
 
 ## Overview
 This report compares emotiond behavior with core enabled vs disabled.
@@ -680,6 +712,7 @@ Generated: {datetime.now().isoformat()}
     report += "- **NO TEST GAMING**: All state changes from event ingestion (world_event subtypes) + time updates (time_passed)\n"
     report += "- **Theory-correct events**: care, betrayal, time_passed (not sentiment-based text)\n"
     report += "- **Thresholds**: Theory-meaningful values (bond/grudge diff 0.15, drift 0.05, inertia < 0.05)\n"
+    report += "- **MVP-2.1.1**: System token required for betrayal/repair_success events\n"
     
     return report
 

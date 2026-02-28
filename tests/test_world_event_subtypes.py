@@ -1,6 +1,7 @@
 """Tests for world_event subtypes driving relationship changes"""
 import pytest
 from httpx import AsyncClient, ASGITransport
+from tests.conftest import get_system_headers
 from emotiond.api import app
 
 
@@ -33,8 +34,8 @@ async def test_betrayal_increases_grudge(isolated_db):
             "type": "world_event",
             "actor": "user_B",
             "target": "assistant",
-            "meta": {"subtype": "betrayal", "source": "system"}
-        })
+            "meta": {"subtype": "betrayal"}
+        }, headers=get_system_headers())
         
         response = await client.post("/plan", json={
             "user_id": "user_B",
@@ -84,8 +85,8 @@ async def test_repair_success_reduces_grudge(isolated_db):
             "type": "world_event",
             "actor": "user_D",
             "target": "assistant",
-            "meta": {"subtype": "betrayal", "source": "system"}
-        })
+            "meta": {"subtype": "betrayal"}
+        }, headers=get_system_headers())
         
         # Check baseline grudge
         r1 = await client.post("/plan", json={"user_id": "user_D", "user_text": "test"})
@@ -96,8 +97,8 @@ async def test_repair_success_reduces_grudge(isolated_db):
             "type": "world_event",
             "actor": "user_D",
             "target": "assistant",
-            "meta": {"subtype": "repair_success", "source": "system"}
-        })
+            "meta": {"subtype": "repair_success"}
+        }, headers=get_system_headers())
         
         r2 = await client.post("/plan", json={"user_id": "user_D", "user_text": "test"})
         after_grudge = r2.json()["relationship"]["grudge"]

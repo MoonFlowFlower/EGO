@@ -26,7 +26,7 @@ def test_eval_suite_runs_without_crash():
     assert "Starting OpenEmotion evaluation suite" in result.stdout
     
     # Should provide meaningful output
-    assert "Testing" in result.stdout or "Error" in result.stdout or "failed" in result.stdout
+    assert "Testing" in result.stdout or "ERROR" in result.stdout or "Error" in result.stdout or "failed" in result.stdout
 
 
 def test_eval_suite_creates_report_file():

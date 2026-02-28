@@ -1,11 +1,11 @@
-# OpenEmotion Evaluation Report v3.0
+# OpenEmotion Evaluation Report v3.1 (MVP-2.1.1)
 
 ## Overview
 This report compares emotiond behavior with core enabled vs disabled.
 
 **Key Principle:** All state changes from event ingestion + time updates, not direct mutations.
 
-Generated: 2026-02-28T05:00:42.766046
+Generated: 2026-02-28T06:07:36.698134
 
 ## Significance Thresholds (Theory-Meaningful)
 
@@ -106,3 +106,4 @@ Generated: 2026-02-28T05:00:42.766046
 - **NO TEST GAMING**: All state changes from event ingestion (world_event subtypes) + time updates (time_passed)
 - **Theory-correct events**: care, betrayal, time_passed (not sentiment-based text)
 - **Thresholds**: Theory-meaningful values (bond/grudge diff 0.15, drift 0.05, inertia < 0.05)
+- **MVP-2.1.1**: System token required for betrayal/repair_success events

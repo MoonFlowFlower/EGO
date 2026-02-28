@@ -10,6 +10,11 @@ import shutil
 from emotiond.db import init_db
 
 
+# Test tokens for MVP-2.1.1 security
+TEST_SYSTEM_TOKEN = "test-system-token-for-tests"
+TEST_OPENCLAW_TOKEN = "test-openclaw-token-for-tests"
+
+
 @pytest.fixture(scope="session")
 def event_loop():
     """Create an instance of the default event loop for each test case."""
@@ -26,7 +31,12 @@ async def isolated_db():
     
     test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
     original_db_path = os.environ.get("EMOTIOND_DB_PATH")
+    original_system_token = os.environ.get("EMOTIOND_SYSTEM_TOKEN")
+    original_openclaw_token = os.environ.get("EMOTIOND_OPENCLAW_TOKEN")
+    
     os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
+    os.environ["EMOTIOND_SYSTEM_TOKEN"] = TEST_SYSTEM_TOKEN
+    os.environ["EMOTIOND_OPENCLAW_TOKEN"] = TEST_OPENCLAW_TOKEN
     
     importlib.reload(config)
     importlib.reload(db)
@@ -53,6 +63,16 @@ async def isolated_db():
         os.environ["EMOTIOND_DB_PATH"] = original_db_path
     else:
         os.environ.pop("EMOTIOND_DB_PATH", None)
+    
+    if original_system_token:
+        os.environ["EMOTIOND_SYSTEM_TOKEN"] = original_system_token
+    else:
+        os.environ.pop("EMOTIOND_SYSTEM_TOKEN", None)
+    
+    if original_openclaw_token:
+        os.environ["EMOTIOND_OPENCLAW_TOKEN"] = original_openclaw_token
+    else:
+        os.environ.pop("EMOTIOND_OPENCLAW_TOKEN", None)
     
     # Reset state after test
     core.emotion_state.valence = 0.0
@@ -83,7 +103,12 @@ async def setup_db():
     
     test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
     original_db_path = os.environ.get("EMOTIOND_DB_PATH")
+    original_system_token = os.environ.get("EMOTIOND_SYSTEM_TOKEN")
+    original_openclaw_token = os.environ.get("EMOTIOND_OPENCLAW_TOKEN")
+    
     os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
+    os.environ["EMOTIOND_SYSTEM_TOKEN"] = TEST_SYSTEM_TOKEN
+    os.environ["EMOTIOND_OPENCLAW_TOKEN"] = TEST_OPENCLAW_TOKEN
     
     importlib.reload(config)
     importlib.reload(db)
@@ -110,6 +135,16 @@ async def setup_db():
     else:
         os.environ.pop("EMOTIOND_DB_PATH", None)
     
+    if original_system_token:
+        os.environ["EMOTIOND_SYSTEM_TOKEN"] = original_system_token
+    else:
+        os.environ.pop("EMOTIOND_SYSTEM_TOKEN", None)
+    
+    if original_openclaw_token:
+        os.environ["EMOTIOND_OPENCLAW_TOKEN"] = original_openclaw_token
+    else:
+        os.environ.pop("EMOTIOND_OPENCLAW_TOKEN", None)
+    
     core.emotion_state.valence = 0.0
     core.emotion_state.arousal = 0.3
     core.emotion_state.subjective_time = 0
@@ -123,3 +158,13 @@ async def setup_db():
     core.relationship_manager.relationships = {}
     
     shutil.rmtree(test_data_dir, ignore_errors=True)
+
+
+def get_system_headers():
+    """Return headers for system-authenticated requests"""
+    return {"Authorization": f"Bearer {TEST_SYSTEM_TOKEN}"}
+
+
+def get_openclaw_headers():
+    """Return headers for openclaw-authenticated requests"""
+    return {"Authorization": f"Bearer {TEST_OPENCLAW_TOKEN}"}
