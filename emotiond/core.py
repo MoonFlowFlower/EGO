@@ -1,6 +1,7 @@
 """
 Core emotion processing and state management
 """
+import os
 import asyncio
 import time
 from typing import Dict, Any, Optional
@@ -35,7 +36,13 @@ class EmotionState:
             "world_event": {
                 "positive": 0.15,  # Slightly less than actual 0.2
                 "negative": -0.25,  # Slightly more than actual -0.2
-                "neutral": 0.0
+                "neutral": 0.0,
+                # New subtypes with expected valence changes
+                "care": 0.12,  # Slightly less than actual 0.15
+                "rejection": -0.25,  # Slightly more than actual -0.2
+                "betrayal": -0.35,  # Slightly more than actual -0.3
+                "repair_success": 0.08,  # Slightly less than actual 0.1
+                "time_passed": 0.0  # Time doesn't directly change valence
             }
         }
     
@@ -71,10 +78,39 @@ class EmotionState:
             self.arousal = self.arousal * 0.9
         
         elif event.type == "world_event":
-            # World events can have strong impacts
-            if event.meta and event.meta.get("positive", False):
+            subtype = event.meta.get("subtype") if event.meta else None
+            
+            if subtype == "care":
+                # Care events increase valence and arousal positively
+                self.valence = min(1.0, self.valence + 0.15)
+                self.arousal = max(-1.0, self.arousal + 0.1)
+            
+            elif subtype == "rejection":
+                # Rejection decreases valence, increases arousal negatively
+                self.valence = max(-1.0, self.valence - 0.2)
+                self.arousal = min(1.0, self.arousal + 0.15)
+            
+            elif subtype == "betrayal":
+                # Betrayal is severe negative
+                self.valence = max(-1.0, self.valence - 0.3)
+                self.arousal = min(1.0, self.arousal + 0.25)
+            
+            elif subtype == "repair_success":
+                # Repair improves valence moderately
+                self.valence = min(1.0, self.valence + 0.1)
+                self.arousal = self.arousal * 0.8  # Calming
+            
+            elif subtype == "time_passed":
+                # Legitimate time manipulation - advance subjective time
+                seconds = event.meta.get("seconds", 60) if event.meta else 60
+                # Apply homeostasis drift for the elapsed time
+                self.apply_homeostasis_drift(real_dt=seconds)
+            
+            elif event.meta and event.meta.get("positive", False):
+                # Legacy support
                 self.valence = min(1.0, self.valence + 0.2)
             elif event.meta and event.meta.get("negative", False):
+                # Legacy support
                 self.valence = max(-1.0, self.valence - 0.2)
                 self.arousal = min(1.0, self.arousal + 0.15)
         
@@ -103,7 +139,19 @@ class EmotionState:
         elif event.type == "assistant_reply":
             expected = self.prediction_model["assistant_reply"]["neutral"]
         elif event.type == "world_event":
-            if event.meta and event.meta.get("positive", False):
+            subtype = event.meta.get("subtype") if event.meta else None
+            
+            if subtype == "care":
+                expected = self.prediction_model["world_event"]["care"]
+            elif subtype == "rejection":
+                expected = self.prediction_model["world_event"]["rejection"]
+            elif subtype == "betrayal":
+                expected = self.prediction_model["world_event"]["betrayal"]
+            elif subtype == "repair_success":
+                expected = self.prediction_model["world_event"]["repair_success"]
+            elif subtype == "time_passed":
+                expected = self.prediction_model["world_event"]["time_passed"]
+            elif event.meta and event.meta.get("positive", False):
                 expected = self.prediction_model["world_event"]["positive"]
             elif event.meta and event.meta.get("negative", False):
                 expected = self.prediction_model["world_event"]["negative"]
@@ -190,8 +238,34 @@ class RelationshipManager:
             pass
         
         elif event.type == "world_event":
-            # World events can affect relationships
-            if event.meta and event.meta.get("betrayal", False):
+            subtype = event.meta.get("subtype") if event.meta else None
+            
+            if subtype == "care":
+                # Care builds bond
+                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.15)
+                self.relationships[target]["grudge"] = max(0.0, self.relationships[target]["grudge"] - 0.05)
+            
+            elif subtype == "rejection":
+                # Rejection damages bond, starts grudge
+                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.1)
+                self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.1)
+            
+            elif subtype == "betrayal":
+                # Betrayal severely damages relationship
+                self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.25)
+                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.2)
+            
+            elif subtype == "repair_success":
+                # Repair reduces grudge, slightly builds bond
+                self.relationships[target]["grudge"] = max(0.0, self.relationships[target]["grudge"] - 0.1)
+                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.05)
+            
+            elif subtype == "time_passed":
+                # Time passed doesn't directly affect relationships (handled by consolidation)
+                pass
+            
+            # Legacy support for existing meta.betrayal
+            elif event.meta and event.meta.get("betrayal", False):
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.3)
                 self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.2)
     
@@ -282,32 +356,41 @@ async def process_event(event: Event) -> Dict[str, Any]:
 
 
 async def generate_plan(request: PlanRequest) -> PlanResponse:
-    """Generate response plan based on current emotional state"""
+    """Generate response plan based on current emotional state
+    
+    The relationship returned is for the focus_target (defaults to user_id if not specified).
+    If EMOTIOND_PLAN_INCLUDE_RELATIONSHIPS=1, all relationships are included in the response.
+    """
     # Get current state from memory
     current_valence = emotion_state.valence
     current_arousal = emotion_state.arousal
     
-    # Get relationships for the user
-    user_relationship = relationship_manager.relationships.get(request.user_id, {"bond": 0.0, "grudge": 0.0})
+    # Determine focus_target: use provided value or default to user_id
+    focus_target = request.focus_target if request.focus_target is not None else request.user_id
+    
+    # Get relationship for the focus_target
+    target_relationship = relationship_manager.relationships.get(
+        focus_target, {"bond": 0.0, "grudge": 0.0}
+    )
     
     # Determine tone based on valence and arousal
     if current_valence > 0.3 and current_arousal < 0.5:
         tone = "warm"
     elif current_valence > 0:
         tone = "soft"
-    elif current_valence < -0.3 and user_relationship["grudge"] > 0.5:
+    elif current_valence < -0.3 and target_relationship["grudge"] > 0.5:
         tone = "cold"
     else:
         tone = "guarded"
     
     # Determine intent based on emotional state and relationships
-    if current_valence < -0.2 and user_relationship["grudge"] > 0.7:
+    if current_valence < -0.2 and target_relationship["grudge"] > 0.7:
         intent = "retaliate"
-    elif user_relationship["bond"] < 0.3 and user_relationship["grudge"] > 0.4:
+    elif target_relationship["bond"] < 0.3 and target_relationship["grudge"] > 0.4:
         intent = "distance"
     elif current_valence < -0.1:
         intent = "repair"
-    elif user_relationship["bond"] > 0.6:
+    elif target_relationship["bond"] > 0.6:
         intent = "seek"
     else:
         intent = "set_boundary"
@@ -332,14 +415,36 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         key_points = ["Establish clear expectations", "Communicate needs"]
         constraints = ["Be firm but respectful", "Avoid ambiguity"]
     
+    # Build relationship dict with trust field (trust not tracked yet, default to 0.0)
+    relationship_dict = {
+        "bond": target_relationship["bond"],
+        "grudge": target_relationship["grudge"],
+        "trust": target_relationship.get("trust", 0.0)
+    }
+    
+    # Check if we should include all relationships (behind env flag)
+    include_all_relationships = os.environ.get("EMOTIOND_PLAN_INCLUDE_RELATIONSHIPS", "0") == "1"
+    
+    all_relationships = None
+    if include_all_relationships:
+        # Build dict with all relationships, including trust field
+        all_relationships = {}
+        for target, rel in relationship_manager.relationships.items():
+            all_relationships[target] = {
+                "bond": rel["bond"],
+                "grudge": rel["grudge"],
+                "trust": rel.get("trust", 0.0)
+            }
+    
     plan = PlanResponse(
         tone=tone,
         intent=intent,
-        focus_target=request.user_id,
+        focus_target=focus_target,
         key_points=key_points,
         constraints=constraints,
         emotion={"valence": current_valence, "arousal": current_arousal},
-        relationship={"bond": user_relationship["bond"], "grudge": user_relationship["grudge"]}
+        relationship=relationship_dict,
+        relationships=all_relationships
     )
     
     return plan

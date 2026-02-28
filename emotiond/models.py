@@ -18,14 +18,16 @@ class PlanRequest(BaseModel):
     """Request model for POST /plan"""
     user_id: str
     user_text: str
+    focus_target: Optional[str] = None  # Optional, defaults to user_id
 
 
 class PlanResponse(BaseModel):
     """Response model for POST /plan"""
     tone: str  # soft|warm|guarded|cold
     intent: str  # repair|distance|seek|set_boundary|retaliate
-    focus_target: str  # user|A|B|C
+    focus_target: str  # user|A|B|C or any dynamic target
     key_points: List[str]
     constraints: List[str]
     emotion: Dict[str, float]  # valence: -1.0..1.0, arousal: 0.0..1.0
-    relationship: Dict[str, float]  # bond: 0.0..1.0, grudge: 0.0..1.0
+    relationship: Dict[str, float]  # bond: 0.0..1.0, grudge: 0.0..1.0, trust: 0.0..1.0
+    relationships: Optional[Dict[str, Dict[str, float]]] = None  # All relationships if EMOTIOND_PLAN_INCLUDE_RELATIONSHIPS=1
