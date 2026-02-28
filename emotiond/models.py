@@ -32,3 +32,4 @@ class PlanResponse(BaseModel):
     relationship: Dict[str, float]  # bond, grudge, trust, repair_bank
     relationships: Optional[Dict[str, Dict[str, float]]] = None  # All relationships if EMOTIOND_PLAN_INCLUDE_RELATIONSHIPS=1
     regulation_budget: Optional[float] = None  # MVP-2: cost mechanism state
+    last_decision: Optional[Dict[str, Any]] = None  # MVP-3 C2: most recent decision with explanation

@@ -145,6 +145,16 @@ async def init_db():
                     VALUES (?, ?, ?)
                 """, (action, ACTION_PRIORS[action]["safety"], ACTION_PRIORS[action]["energy"]))
         
+        # MVP-3 C1: Decisions table for structured explanations
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS decisions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                action TEXT NOT NULL,
+                explanation TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
         await db.commit()
 
 
@@ -500,4 +510,70 @@ async def update_prediction(action: str, predicted: Dict[str, float], observed: 
             "old_predicted": predicted,
             "observed": observed,
             "new_predicted": {"safety": new_safety_delta, "energy": new_energy_delta}
+        }
+
+
+# MVP-3 C1: Decision storage functions
+async def save_decision(action: str, explanation: Dict[str, Any]) -> int:
+    """
+    Save a decision with its explanation.
+    
+    Returns:
+        The decision id
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            "INSERT INTO decisions (action, explanation) VALUES (?, ?)",
+            (action, json.dumps(explanation))
+        )
+        await db.commit()
+        return cursor.lastrowid
+
+
+async def get_last_decision() -> Optional[Dict[str, Any]]:
+    """
+    Get the most recent decision with its explanation.
+    
+    Returns:
+        dict with id, action, explanation (parsed JSON), created_at or None if no decisions
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            "SELECT id, action, explanation, created_at FROM decisions ORDER BY id DESC LIMIT 1"
+        )
+        row = await cursor.fetchone()
+        
+        if row is None:
+            return None
+        
+        return {
+            "id": row[0],
+            "action": row[1],
+            "explanation": json.loads(row[2]) if row[2] else {},
+            "created_at": row[3]
+        }
+
+
+async def get_decision_by_id(decision_id: int) -> Optional[Dict[str, Any]]:
+    """
+    Get a specific decision by id.
+    
+    Returns:
+        dict with id, action, explanation (parsed JSON), created_at or None if not found
+    """
+    async with aiosqlite.connect(get_db_path()) as db:
+        cursor = await db.execute(
+            "SELECT id, action, explanation, created_at FROM decisions WHERE id = ?",
+            (decision_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if row is None:
+            return None
+        
+        return {
+            "id": row[0],
+            "action": row[1],
+            "explanation": json.loads(row[2]) if row[2] else {},
+            "created_at": row[3]
         }

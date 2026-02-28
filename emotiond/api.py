@@ -1,20 +1,24 @@
 """
 FastAPI application for emotiond daemon
 """
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.responses import JSONResponse
 import datetime
 import asyncio
 import traceback
-from emotiond.models import Event, PlanRequest
-from emotiond.core import process_event, generate_plan, load_initial_state
+from typing import Optional
+from emotiond.models import Event, PlanRequest, PlanResponse
+from emotiond.core import (
+    process_event, generate_plan, load_initial_state,
+    select_action_with_explanation
+)
 from emotiond.daemon import daemon_manager
 from emotiond.config import is_core_disabled
 from emotiond.security import (
     resolve_server_source,
     validate_event_for_source
 )
-from emotiond.db import add_event
+from emotiond.db import add_event, get_last_decision
 
 app = FastAPI(title="OpenEmotion Daemon", version="0.1.0")
 
@@ -41,7 +45,11 @@ async def health():
 
 
 @app.post("/event")
-async def event(event: Event, request: Request):
+async def event(
+    event: Event, 
+    request: Request,
+    include_explanation: bool = Query(False, description="MVP-3 C2: Include decision explanation in response")
+):
     """Ingest events and update state"""
     try:
         # MVP-2.1.1: Server-side source resolution
@@ -97,7 +105,16 @@ async def event(event: Event, request: Request):
         # Update event meta with sanitized version
         event.meta = sanitized_meta
         
-        return await process_event(event)
+        result = await process_event(event)
+        
+        # MVP-3 C2: Optionally include explanation in response
+        if include_explanation and result.get("status") == "processed":
+            target = event.target if event.target else event.actor
+            last_decision = await get_last_decision()
+            if last_decision:
+                result["last_decision"] = last_decision
+        
+        return result
     except Exception as e:
         return {"error": str(e), "traceback": traceback.format_exc()}
 
@@ -105,4 +122,42 @@ async def event(event: Event, request: Request):
 @app.post("/plan")
 async def plan(request: PlanRequest):
     """Generate response plan JSON"""
-    return await generate_plan(request)
+    result = await generate_plan(request)
+    
+    # MVP-3 C2: Add last_decision to /plan response
+    last_decision = await get_last_decision()
+    if last_decision:
+        result_dict = result.model_dump()
+        result_dict["last_decision"] = last_decision
+        return result_dict
+    
+    return result
+
+
+# MVP-3 C2: New /decision endpoint
+@app.get("/decision")
+async def get_decision():
+    """MVP-3 C2: Get the most recent decision with explanation"""
+    decision = await get_last_decision()
+    if decision is None:
+        return {"status": "no_decisions", "decision": None}
+    return {"status": "ok", "decision": decision}
+
+
+@app.post("/decision")
+async def make_decision(
+    request: PlanRequest,
+    test_mode: bool = Query(False, description="Use deterministic action selection")
+):
+    """MVP-3 C2: Select an action for a target and store the decision"""
+    target = request.focus_target if request.focus_target else request.user_id
+    
+    result = await select_action_with_explanation(target, test_mode=test_mode)
+    
+    return {
+        "status": "ok",
+        "action": result["action"],
+        "explanation": result["explanation"],
+        "decision_id": result["decision_id"],
+        "target": target
+    }

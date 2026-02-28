@@ -22,7 +22,7 @@ async def isolated_db():
     import os
     import tempfile
     import shutil
-    from emotiond import config, db, core
+    from emotiond import config, db, core, daemon
     import importlib
     
     test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
@@ -30,9 +30,9 @@ async def isolated_db():
     
     os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
     
-    importlib.reload(config)
-    importlib.reload(db)
-    importlib.reload(core)
+    # Reset daemon_manager state
+    daemon.daemon_manager.running = False
+    daemon.daemon_manager.loops = {}
     
     # Reset global state
     core.emotion_state.valence = 0.0

@@ -220,8 +220,79 @@ class TestAPIComprehensive:
     """Comprehensive API tests"""
     
     def setup_method(self):
-        """Setup test client"""
+        """Setup test client with isolated database"""
+        import tempfile
+        import shutil
+        import asyncio
+        from emotiond import db, core, daemon
+        
+        # Create isolated test database
+        self.test_data_dir = tempfile.mkdtemp(prefix="emotiond_api_test_")
+        self.original_db_path = os.environ.get("EMOTIOND_DB_PATH")
+        os.environ["EMOTIOND_DB_PATH"] = os.path.join(self.test_data_dir, "test_emotiond.db")
+        
+        # Reset daemon_manager state (so init_db runs again)
+        daemon.daemon_manager.running = False
+        daemon.daemon_manager.loops = {}
+        
+        # Explicitly initialize database with new path
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        loop.run_until_complete(db.init_db())
+        
+        # Reset global state directly (DON'T reload modules - it breaks import references)
+        core.emotion_state.valence = 0.0
+        core.emotion_state.arousal = 0.3
+        core.emotion_state.social_safety = 0.6
+        core.emotion_state.energy = 0.7
+        core.relationship_manager.relationships = {}
+        core.relationship_manager.last_actions = {}
+        
+        # Reset global state
+        core.emotion_state.valence = 0.0
+        core.emotion_state.arousal = 0.3
+        core.emotion_state.subjective_time = 0
+        core.emotion_state.prediction_error = 0.0
+        core.emotion_state.anger = 0.0
+        core.emotion_state.sadness = 0.0
+        core.emotion_state.anxiety = 0.0
+        core.emotion_state.joy = 0.0
+        core.emotion_state.loneliness = 0.0
+        core.emotion_state.regulation_budget = 1.0
+        core.emotion_state.social_safety = 0.6
+        core.emotion_state.energy = 0.7
+        core.relationship_manager.relationships = {}
+        core.relationship_manager.last_actions = {}
+        
         self.client = TestClient(app)
+    
+    def teardown_method(self):
+        """Cleanup test database"""
+        import shutil
+        from emotiond import core, daemon
+        
+        # Stop daemon_manager background tasks
+        daemon.daemon_manager.running = False
+        daemon.daemon_manager.loops = {}
+        
+        if hasattr(self, 'test_data_dir'):
+            shutil.rmtree(self.test_data_dir, ignore_errors=True)
+        
+        if hasattr(self, 'original_db_path') and self.original_db_path:
+            os.environ["EMOTIOND_DB_PATH"] = self.original_db_path
+        else:
+            os.environ.pop("EMOTIOND_DB_PATH", None)
+        
+        # Reset global state
+        core.emotion_state.valence = 0.0
+        core.emotion_state.arousal = 0.3
+        core.emotion_state.social_safety = 0.6
+        core.emotion_state.energy = 0.7
+        core.relationship_manager.relationships = {}
+        core.relationship_manager.last_actions = {}
     
     def test_health_endpoint(self):
         """Test health endpoint"""
@@ -395,24 +466,69 @@ class TestIntegrationComprehensive:
         assert len(manager.relationships) > 0  # Should have relationships
     
     def test_api_integration(self):
-        """Test API integration"""
-        client = TestClient(app)
+        """Test API integration with isolated database"""
+        import tempfile
+        import shutil
+        import asyncio
+        from emotiond import db, core, daemon
         
-        # Test health endpoint
-        health_response = client.get("/health")
-        assert health_response.status_code == 200
+        # Create isolated test database
+        test_data_dir = tempfile.mkdtemp(prefix="emotiond_integration_test_")
+        original_db_path = os.environ.get("EMOTIOND_DB_PATH")
+        os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
         
-        # Test plan endpoint
-        plan_request = {
-            "user_id": "test_user",
-            "user_text": "How are you?"
-        }
-        plan_response = client.post("/plan", json=plan_request)
-        assert plan_response.status_code == 200
-        
-        plan_data = plan_response.json()
-        assert "emotion" in plan_data
-        assert "relationship" in plan_data
+        try:
+            # Reset daemon_manager state
+            daemon.daemon_manager.running = False
+            daemon.daemon_manager.loops = {}
+            
+            # Explicitly initialize database
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            loop.run_until_complete(db.init_db())
+            
+            # Reset global state
+            core.emotion_state.valence = 0.0
+            core.emotion_state.arousal = 0.3
+            core.emotion_state.social_safety = 0.6
+            core.emotion_state.energy = 0.7
+            core.relationship_manager.relationships = {}
+            core.relationship_manager.last_actions = {}
+            
+            client = TestClient(app)
+            
+            # Test health endpoint
+            health_response = client.get("/health")
+            assert health_response.status_code == 200
+            
+            # Test plan endpoint
+            plan_request = {
+                "user_id": "test_user",
+                "user_text": "How are you?"
+            }
+            plan_response = client.post("/plan", json=plan_request)
+            assert plan_response.status_code == 200
+            
+            plan_data = plan_response.json()
+            assert "emotion" in plan_data
+            assert "relationship" in plan_data
+        finally:
+            # Cleanup
+            shutil.rmtree(test_data_dir, ignore_errors=True)
+            if original_db_path:
+                os.environ["EMOTIOND_DB_PATH"] = original_db_path
+            else:
+                os.environ.pop("EMOTIOND_DB_PATH", None)
+            # Reset global state
+            core.emotion_state.valence = 0.0
+            core.emotion_state.arousal = 0.3
+            core.emotion_state.social_safety = 0.6
+            core.emotion_state.energy = 0.7
+            core.relationship_manager.relationships = {}
+            core.relationship_manager.last_actions = {}
 
 
 class TestTestSuiteComprehensive:

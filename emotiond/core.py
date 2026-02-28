@@ -321,7 +321,7 @@ async def load_initial_state():
         if rel.get("last_action"):
             relationship_manager.last_actions[rel["target"]] = rel["last_action"]
     # MVP-3 B3: Load predictions
-    _predictions = await load_predictions()
+    _predictions.update(await load_predictions())
     await initialize_memory_system()
 
 
@@ -680,4 +680,246 @@ async def get_action_scores(target: str) -> Dict[str, Any]:
             "social_safety": emotion_state.social_safety,
             "energy": emotion_state.energy
         }
+    }
+
+
+# MVP-3 C1: Structured Explanation Generation
+async def generate_explanation(
+    target: str,
+    selected_action: Optional[str] = None,
+    test_mode: bool = False
+) -> Dict[str, Any]:
+    """
+    MVP-3 C1: Generate a structured explanation for action selection.
+    
+    Args:
+        target: Target identifier
+        selected_action: Pre-selected action (if None, will select one)
+        test_mode: If True, use deterministic selection
+    
+    Returns:
+        dict with emotion, interoception, relationships, candidates, selected, selection_reasons
+    """
+    global _predictions
+    
+    # Get current state
+    state = emotion_state
+    
+    # Build emotion section - top 2 emotions + all 5D
+    emotion_values = {
+        "anger": state.anger,
+        "sadness": state.sadness,
+        "anxiety": state.anxiety,
+        "joy": state.joy,
+        "loneliness": state.loneliness
+    }
+    
+    # Sort by value descending, get top 2
+    sorted_emotions = sorted(emotion_values.items(), key=lambda x: x[1], reverse=True)
+    top2 = [(name, value) for name, value in sorted_emotions[:2] if value > 0.0]
+    
+    emotion_section = {
+        "top2": top2,
+        "all": emotion_values
+    }
+    
+    # Build interoception section
+    interoception_section = {
+        "social_safety": state.social_safety,
+        "energy": state.energy
+    }
+    
+    # Build relationships section for target
+    relationship = relationship_manager.relationships.get(target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+    relationships_section = {
+        "bond": relationship.get("bond", 0.0),
+        "grudge": relationship.get("grudge", 0.0),
+        "trust": relationship.get("trust", 0.0),
+        "repair_bank": relationship.get("repair_bank", 0.0)
+    }
+    
+    # Build candidates section - score all actions
+    scores = {}
+    predicted_deltas = {}
+    for action in ACTION_SPACE:
+        pred = _predictions.get(action, {
+            "social_safety_delta": 0.0,
+            "energy_delta": 0.0,
+            "prediction_error_sum": 0.0,
+            "prediction_count": 0
+        })
+        scores[action] = score_action(action, state, relationship, pred)
+        predicted_deltas[action] = {
+            "safety": pred.get("social_safety_delta", 0.0),
+            "energy": pred.get("energy_delta", 0.0)
+        }
+    
+    # Get top 3 candidates by score
+    sorted_actions = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    top3 = sorted_actions[:3]
+    
+    # Generate reasons for each candidate
+    candidates = []
+    for action, score in top3:
+        reasons = _generate_action_reasons(action, state, relationship, predicted_deltas[action])
+        candidates.append({
+            "action": action,
+            "score": score,
+            "predicted_delta": predicted_deltas[action],
+            "reasons": reasons
+        })
+    
+    # Select action if not provided
+    if selected_action is None:
+        selected_action = select_action(state, target, test_mode)
+    
+    # Generate selection reasons
+    selection_reasons = _generate_selection_reasons(selected_action, state, relationship, scores)
+    
+    explanation = {
+        "emotion": emotion_section,
+        "interoception": interoception_section,
+        "relationships": relationships_section,
+        "candidates": candidates,
+        "selected": selected_action,
+        "selection_reasons": selection_reasons
+    }
+    
+    return explanation
+
+
+def _generate_action_reasons(
+    action: str,
+    state: EmotionState,
+    relationship: Dict[str, float],
+    predicted_delta: Dict[str, float]
+) -> List[str]:
+    """Generate human-readable reasons for an action's score."""
+    reasons = []
+    
+    # Relationship-based reasons
+    if relationship.get("bond", 0) > 0.5:
+        reasons.append("High bond with target")
+    if relationship.get("grudge", 0) > 0.5:
+        reasons.append("Existing grudge")
+    if relationship.get("trust", 0) < 0.3:
+        reasons.append("Low trust")
+    
+    # State-based reasons
+    if state.social_safety < 0.4:
+        reasons.append("Low social safety")
+    if state.energy < 0.4:
+        reasons.append("Low energy")
+    
+    # Prediction-based reasons
+    if predicted_delta.get("safety", 0) > 0.02:
+        reasons.append(f"Predicted to improve safety (+{predicted_delta['safety']:.2f})")
+    if predicted_delta.get("energy", 0) > 0.01:
+        reasons.append(f"Energy-preserving (+{predicted_delta['energy']:.2f})")
+    if predicted_delta.get("safety", 0) < -0.02:
+        reasons.append("Risk of safety reduction")
+    
+    # Action-specific reasons
+    if action == "approach" and state.social_safety > 0.5:
+        reasons.append("Safe to approach")
+    if action == "repair_offer" and relationship.get("grudge", 0) > 0.3:
+        reasons.append("Opportunity for repair")
+    if action == "boundary" and relationship.get("trust", 0) < 0.4:
+        reasons.append("Boundary needed for protection")
+    if action == "withdraw" and state.social_safety < 0.4:
+        reasons.append("Conservative choice for low safety")
+    if action == "attack" and relationship.get("grudge", 0) > 0.7:
+        reasons.append("Strong grudge motivates retaliation")
+    
+    # Default reason if none generated
+    if not reasons:
+        reasons.append(f"Neutral expected outcome")
+    
+    return reasons
+
+
+def _generate_selection_reasons(
+    selected_action: str,
+    state: EmotionState,
+    relationship: Dict[str, float],
+    scores: Dict[str, float]
+) -> List[str]:
+    """Generate reasons for why this action was selected."""
+    reasons = []
+    
+    # Check if selected has highest score
+    max_score_action = max(scores.keys(), key=lambda a: scores[a])
+    if selected_action == max_score_action:
+        reasons.append("Highest score given current state")
+    else:
+        reasons.append(f"Selected via stochastic process (score: {scores[selected_action]:.3f})")
+    
+    # State-based reasons
+    if state.social_safety < 0.4:
+        reasons.append("Low social safety favors conservative action")
+    if state.energy < 0.4:
+        reasons.append("Low energy favors efficient action")
+    
+    # Relationship-based reasons
+    if relationship.get("grudge", 0) > 0.5:
+        reasons.append("High grudge influences selection")
+    if relationship.get("trust", 0) < 0.3:
+        reasons.append("Low trust increases caution")
+    
+    # Action-specific reasons
+    if selected_action == "withdraw":
+        reasons.append("Withdrawal preserves safety and energy")
+    elif selected_action == "approach":
+        reasons.append("Approach builds connection")
+    elif selected_action == "repair_offer":
+        reasons.append("Repair attempt may reduce grudge")
+    elif selected_action == "boundary":
+        reasons.append("Boundary establishes protection")
+    elif selected_action == "attack":
+        reasons.append("Attack addresses perceived threat")
+    
+    return reasons[:3]  # Limit to top 3 reasons
+
+
+async def select_action_with_explanation(
+    target: str,
+    test_mode: bool = False
+) -> Dict[str, Any]:
+    """
+    MVP-3 C1: Select an action and generate explanation, storing it in DB.
+    
+    Args:
+        target: Target identifier
+        test_mode: If True, use deterministic selection
+    
+    Returns:
+        dict with action, explanation, and decision_id
+    """
+    from emotiond.db import save_decision
+    
+    # Ensure relationship exists
+    relationship_manager._ensure_relationship_fields(target)
+    
+    # Generate explanation (which includes action selection)
+    explanation = await generate_explanation(target, test_mode=test_mode)
+    selected_action = explanation["selected"]
+    
+    # Save decision to database
+    decision_id = await save_decision(selected_action, explanation)
+    
+    # Update relationship with last action
+    relationship_manager.set_last_action(target, selected_action)
+    await update_relationship(
+        target,
+        relationship_manager.relationships[target]["bond"],
+        relationship_manager.relationships[target]["grudge"],
+        relationship_manager.relationships[target].get("trust", 0.0),
+        relationship_manager.relationships[target].get("repair_bank", 0.0),
+        selected_action
+    )
+    
+    return {
+        "action": selected_action,
+        "explanation": explanation,
+        "decision_id": decision_id
     }

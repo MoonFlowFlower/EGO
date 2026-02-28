@@ -53,7 +53,10 @@ async def isolated_db():
     core.emotion_state.joy = 0.0
     core.emotion_state.loneliness = 0.0
     core.emotion_state.regulation_budget = 1.0
+    core.emotion_state.social_safety = 0.6
+    core.emotion_state.energy = 0.7
     core.relationship_manager.relationships = {}
+    core.relationship_manager.last_actions = {}
     
     await db.init_db()
     
@@ -85,7 +88,10 @@ async def isolated_db():
     core.emotion_state.joy = 0.0
     core.emotion_state.loneliness = 0.0
     core.emotion_state.regulation_budget = 1.0
+    core.emotion_state.social_safety = 0.6
+    core.emotion_state.energy = 0.7
     core.relationship_manager.relationships = {}
+    core.relationship_manager.last_actions = {}
     
     shutil.rmtree(test_data_dir, ignore_errors=True)
 
@@ -124,7 +130,10 @@ async def setup_db():
     core.emotion_state.joy = 0.0
     core.emotion_state.loneliness = 0.0
     core.emotion_state.regulation_budget = 1.0
+    core.emotion_state.social_safety = 0.6
+    core.emotion_state.energy = 0.7
     core.relationship_manager.relationships = {}
+    core.relationship_manager.last_actions = {}
     
     await db.init_db()
     
@@ -155,7 +164,10 @@ async def setup_db():
     core.emotion_state.joy = 0.0
     core.emotion_state.loneliness = 0.0
     core.emotion_state.regulation_budget = 1.0
+    core.emotion_state.social_safety = 0.6
+    core.emotion_state.energy = 0.7
     core.relationship_manager.relationships = {}
+    core.relationship_manager.last_actions = {}
     
     shutil.rmtree(test_data_dir, ignore_errors=True)
 
