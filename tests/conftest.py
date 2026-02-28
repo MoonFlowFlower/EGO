@@ -61,3 +61,42 @@ async def isolated_db():
 def test_db_path():
     """Provide test database path"""
     return "data/test_emotiond.db"
+
+
+# Alias for backward compatibility
+@pytest_asyncio.fixture(scope="function")
+async def setup_db():
+    """Alias for isolated_db - backward compatibility"""
+    # Create temp directory for this test
+    test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
+    
+    # Override DB_PATH for this test
+    original_db_path = os.environ.get("EMOTIOND_DB_PATH")
+    os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
+    
+    # Reimport config to pick up new DB path
+    import importlib
+    from emotiond import config, db, core
+    importlib.reload(config)
+    importlib.reload(db)
+    
+    # Reset global state
+    core.emotion_state.valence = 0.0
+    core.emotion_state.arousal = 0.3
+    core.emotion_state.subjective_time = 0
+    core.emotion_state.prediction_error = 0.0
+    core.relationship_manager.relationships = {}
+    
+    # Initialize database
+    await db.init_db()
+    
+    yield
+    
+    # Cleanup
+    if original_db_path:
+        os.environ["EMOTIOND_DB_PATH"] = original_db_path
+    else:
+        os.environ.pop("EMOTIOND_DB_PATH", None)
+    
+    # Remove temp directory
+    shutil.rmtree(test_data_dir, ignore_errors=True)

@@ -20,6 +20,7 @@ from datetime import datetime
 from emotiond.db import init_db, get_state, update_state, add_event, get_relationships
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.config import DB_PATH, PORT, HOST, K_AROUSAL
+from emotiond.db import get_db_path
 from emotiond.core import EmotionState, RelationshipManager
 from emotiond.api import app
 from fastapi.testclient import TestClient
@@ -32,7 +33,7 @@ class TestDatabaseComprehensive:
     async def test_database_initialization(self, setup_db):
         """Test database initialization and table creation"""
         # Database file should exist
-        assert os.path.exists(DB_PATH)
+        assert os.path.exists(get_db_path())  # Use dynamic path for test isolation
         
         # Should be able to retrieve initial state
         state = await get_state()

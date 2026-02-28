@@ -15,7 +15,7 @@ class TestPlanFocusTargetSemantics:
     """Test focus_target parameter and relationship semantics"""
     
     @pytest.fixture(autouse=True)
-    def setup_db(self):
+    def reset_state(self):
         """Setup database for tests"""
         # Ensure data directory exists
         os.makedirs("data", exist_ok=True)
@@ -230,7 +230,7 @@ class TestPlanAPIClient:
     """Test plan API with focus_target via HTTP client"""
     
     @pytest.fixture(autouse=True)
-    def setup_db(self):
+    def reset_state(self):
         """Setup database for tests"""
         os.makedirs("data", exist_ok=True)
         asyncio.run(init_db())
