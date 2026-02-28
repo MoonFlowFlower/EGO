@@ -26,6 +26,48 @@ DISABLE_CORE = is_core_disabled()
 TIME_PASSED_WINDOW_SECONDS = float(os.getenv("EMOTIOND_TIME_PASSED_WINDOW_SECONDS", "10.0"))
 TIME_PASSED_MAX_CUMULATIVE = float(os.getenv("EMOTIOND_TIME_PASSED_MAX_CUMULATIVE", "60.0"))
 
+# MVP-3 B2: Action Space
+ACTION_SPACE = ["approach", "repair_offer", "boundary", "withdraw", "attack"]
+
+# MVP-3 B6: Test mode for deterministic action selection
+TEST_MODE = os.getenv("EMOTIOND_TEST_MODE", "").strip().lower() in ["1", "true", "yes", "on"]
+
+# MVP-3 B3: Initial priors for action predictions
+ACTION_PRIORS = {
+    "approach": {"safety": 0.03, "energy": -0.02},
+    "repair_offer": {"safety": 0.05, "energy": -0.04},
+    "boundary": {"safety": 0.02, "energy": -0.03},
+    "withdraw": {"safety": 0.01, "energy": 0.02},
+    "attack": {"safety": -0.05, "energy": -0.05},
+}
+
+# MVP-3 B5: Learning rate for prediction updates
+PREDICTION_LEARNING_RATE = 0.1
+
+# MVP-3 B4: Observation mapping - event subtype to (safety_delta, energy_delta)
+OBSERVATION_MAP = {
+    "care": {"safety": 0.1, "energy": 0.05},
+    "apology": {"safety": 0.08, "energy": 0.02},
+    "repair_success": {"safety": 0.12, "energy": 0.05},
+    "rejection": {"safety": -0.15, "energy": -0.08},
+    "ignored": {"safety": -0.05, "energy": -0.03},
+    "betrayal": {"safety": -0.25, "energy": -0.15},
+    "time_passed": {"safety": 0.0, "energy": 0.01},  # per second base rate
+}
+
+# MVP-3 B6: Action scoring weights
+ACTION_SCORE_WEIGHTS = {
+    "bond": 0.3,
+    "grudge": -0.25,
+    "trust": 0.2,
+    "safety": 0.35,
+    "energy": 0.25,
+    "uncertainty": 0.1,
+}
+
+# MVP-3 B6: Softmax temperature for action selection
+SOFTMAX_TEMPERATURE = 0.5
+
 
 def setup_logging():
     """Setup logging configuration for the daemon"""
@@ -37,3 +79,15 @@ def setup_logging():
             logging.FileHandler('/tmp/emotiond.log')
         ]
     )
+
+
+def get_observed_delta(event_subtype: str) -> dict:
+    """
+    MVP-3 B4: Get observed delta for an event subtype.
+    
+    Returns:
+        dict with 'safety' and 'energy' keys, defaulting to 0.0 if subtype not found.
+    """
+    if event_subtype in OBSERVATION_MAP:
+        return OBSERVATION_MAP[event_subtype].copy()
+    return {"safety": 0.0, "energy": 0.0}

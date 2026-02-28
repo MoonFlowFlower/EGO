@@ -4,16 +4,22 @@ Core emotion processing and state management
 import os
 import asyncio
 import time
-from typing import Dict, Any, Optional
+import math
+from typing import Dict, Any, Optional, List
 from emotiond.models import Event, PlanRequest, PlanResponse
 from emotiond.db import (
     get_state, update_state, add_event, get_relationships, update_relationship,
     update_meaningful_contact_time,
     check_and_record_duplicate, update_dedupe_event_id,
     get_time_passed_window_sum, record_time_passed,
-    get_db_path
+    get_db_path,
+    load_predictions, save_predictions, update_prediction
 )
-from emotiond.config import K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE
+from emotiond.config import (
+    K_AROUSAL, is_core_disabled, TIME_PASSED_WINDOW_SECONDS, TIME_PASSED_MAX_CUMULATIVE,
+    ACTION_SPACE, TEST_MODE, ACTION_PRIORS, OBSERVATION_MAP, get_observed_delta,
+    ACTION_SCORE_WEIGHTS, SOFTMAX_TEMPERATURE, PREDICTION_LEARNING_RATE
+)
 from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
 
@@ -38,6 +44,10 @@ class EmotionState:
         # Cost mechanism
         self.regulation_budget = 1.0
         
+        # MVP-3 B1: Interoceptive states
+        self.social_safety = 0.6  # [0, 1], default 0.6
+        self.energy = 0.7  # [0, 1], default 0.7
+        
         self.prediction_model = {
             "user_message": {"positive": 0.08, "negative": -0.12, "neutral": 0.0},
             "assistant_reply": {"positive": 0.0, "negative": 0.0, "neutral": -0.03},
@@ -61,10 +71,14 @@ class EmotionState:
                 self.valence = min(1.0, self.valence + 0.1)
                 self.arousal = min(1.0, self.arousal + 0.05)
                 self.joy = min(1.0, self.joy + 0.05)
+                # MVP-3 B1: Positive user messages improve social safety
+                self.social_safety = min(1.0, self.social_safety + 0.02)
             elif event.text and any(w in event.text.lower() for w in ["bad", "hate", "stupid", "wrong", "angry"]):
                 self.valence = max(-1.0, self.valence - 0.1)
                 self.arousal = min(1.0, self.arousal + 0.1)
                 self.anger = min(1.0, self.anger + 0.05)
+                # MVP-3 B1: Negative user messages reduce social safety
+                self.social_safety = max(0.0, self.social_safety - 0.02)
         
         elif event.type == "assistant_reply":
             self.valence = self.valence * 0.95
@@ -73,18 +87,23 @@ class EmotionState:
         elif event.type == "world_event":
             subtype = event.meta.get("subtype") if event.meta else None
             
+            # MVP-3 B1: Update interoceptive states based on event subtype
             if subtype == "care":
                 self.valence = min(1.0, self.valence + 0.15)
                 self.arousal = max(-1.0, self.arousal + 0.1)
                 self.joy = min(1.0, self.joy + 0.15)
                 self.anxiety = max(0.0, self.anxiety - 0.1)
                 self.loneliness = max(0.0, self.loneliness - 0.1)
+                self.social_safety = min(1.0, self.social_safety + 0.1)
+                self.energy = min(1.0, self.energy + 0.05)
             elif subtype == "rejection":
                 self.valence = max(-1.0, self.valence - 0.2)
                 self.arousal = min(1.0, self.arousal + 0.15)
                 self.sadness = min(1.0, self.sadness + 0.2)
                 self.loneliness = min(1.0, self.loneliness + 0.15)
                 self.anger = min(1.0, self.anger + 0.1)
+                self.social_safety = max(0.0, self.social_safety - 0.15)
+                self.energy = max(0.0, self.energy - 0.08)
             elif subtype == "betrayal":
                 self.valence = max(-1.0, self.valence - 0.3)
                 self.arousal = min(1.0, self.arousal + 0.25)
@@ -92,22 +111,33 @@ class EmotionState:
                 self.sadness = min(1.0, self.sadness + 0.15)
                 self.anxiety = min(1.0, self.anxiety + 0.15)
                 self.joy = max(0.0, self.joy - 0.2)
+                self.social_safety = max(0.0, self.social_safety - 0.25)
+                self.energy = max(0.0, self.energy - 0.15)
             elif subtype == "repair_success":
                 self.valence = min(1.0, self.valence + 0.1)
                 self.arousal = self.arousal * 0.8
                 self.joy = min(1.0, self.joy + 0.1)
                 self.anxiety = max(0.0, self.anxiety - 0.1)
+                self.social_safety = min(1.0, self.social_safety + 0.12)
+                self.energy = min(1.0, self.energy + 0.05)
+            elif subtype == "apology":
+                self.social_safety = min(1.0, self.social_safety + 0.08)
+                self.energy = min(1.0, self.energy + 0.02)
             elif subtype == "ignored":
                 self.loneliness = min(1.0, self.loneliness + 0.1)
                 self.sadness = min(1.0, self.sadness + 0.05)
+                self.social_safety = max(0.0, self.social_safety - 0.05)
+                self.energy = max(0.0, self.energy - 0.03)
             elif subtype == "time_passed":
                 seconds = event.meta.get("seconds", 60) if event.meta else 60
                 self.apply_homeostasis_drift(real_dt=seconds)
             elif event.meta and event.meta.get("positive", False):
                 self.valence = min(1.0, self.valence + 0.2)
+                self.social_safety = min(1.0, self.social_safety + 0.05)
             elif event.meta and event.meta.get("negative", False):
                 self.valence = max(-1.0, self.valence - 0.2)
                 self.arousal = min(1.0, self.arousal + 0.15)
+                self.social_safety = max(0.0, self.social_safety - 0.05)
         
         return self.valence - initial_valence
     
@@ -158,6 +188,11 @@ class EmotionState:
         self.loneliness = max(0.0, self.loneliness - emotion_drift)
         self.regulation_budget = min(1.0, self.regulation_budget + 0.001 * subjective_dt)
         self.subjective_time += subjective_dt
+        
+        # MVP-3 B1: Energy recovery over time
+        energy_recovery = 0.001 * real_dt  # 0.1% per second
+        self.energy = min(1.0, self.energy + energy_recovery)
+        
         time_since_contact = time.time() - self.last_meaningful_contact
         if time_since_contact > 3600:
             loneliness_factor = min(0.5, (time_since_contact - 3600) / 7200)
@@ -168,6 +203,7 @@ class EmotionState:
 class RelationshipManager:
     def __init__(self):
         self.relationships: Dict[str, Dict[str, float]] = {}
+        self.last_actions: Dict[str, Optional[str]] = {}  # MVP-3 B2: Track last action per target
     
     def _ensure_relationship_fields(self, target: str) -> None:
         if target not in self.relationships:
@@ -243,6 +279,18 @@ class RelationshipManager:
                 self.relationships[target]["trust"] -= 0.001
             elif self.relationships[target]["trust"] < 0.5:
                 self.relationships[target]["trust"] += 0.001
+    
+    def set_last_action(self, target: str, action: str) -> None:
+        """MVP-3 B2: Set the last action taken toward a target."""
+        self.last_actions[target] = action
+    
+    def get_last_action(self, target: str) -> Optional[str]:
+        """MVP-3 B2: Get the last action taken toward a target."""
+        return self.last_actions.get(target)
+
+
+# MVP-3 B3+B5: Global prediction store
+_predictions: Dict[str, Dict[str, float]] = {}
 
 
 emotion_state = EmotionState()
@@ -250,7 +298,7 @@ relationship_manager = RelationshipManager()
 
 
 async def load_initial_state():
-    global emotion_state, relationship_manager
+    global emotion_state, relationship_manager, _predictions
     db_state = await get_state()
     emotion_state.valence = db_state["valence"]
     emotion_state.arousal = db_state["arousal"]
@@ -258,6 +306,9 @@ async def load_initial_state():
     emotion_state.last_meaningful_contact = db_state["last_meaningful_contact"]
     emotion_state.prediction_error = db_state["prediction_error"]
     emotion_state.regulation_budget = db_state.get("regulation_budget", 1.0)
+    # MVP-3 B1: Load interoceptive states
+    emotion_state.social_safety = db_state.get("social_safety", 0.6)
+    emotion_state.energy = db_state.get("energy", 0.7)
     db_relationships = await get_relationships()
     for rel in db_relationships:
         relationship_manager.relationships[rel["target"]] = {
@@ -266,6 +317,11 @@ async def load_initial_state():
             "trust": rel.get("trust", 0.0),
             "repair_bank": rel.get("repair_bank", 0.0)
         }
+        # MVP-3 B2: Load last action
+        if rel.get("last_action"):
+            relationship_manager.last_actions[rel["target"]] = rel["last_action"]
+    # MVP-3 B3: Load predictions
+    _predictions = await load_predictions()
     await initialize_memory_system()
 
 
@@ -385,7 +441,15 @@ async def process_event(event: Event) -> Dict[str, Any]:
     emotion_state.arousal = min(1.0, emotion_state.arousal + prediction_error * 0.5)
     memory_strength = memory_system.calculate_memory_strength(prediction_error, emotion_state.arousal)
     relationship_manager.update_from_event(event, emotion_state)
-    await update_state(emotion_state.valence, emotion_state.arousal, emotion_state.subjective_time, emotion_state.prediction_error, emotion_state.regulation_budget)
+    await update_state(
+        emotion_state.valence, 
+        emotion_state.arousal, 
+        emotion_state.subjective_time, 
+        emotion_state.prediction_error, 
+        emotion_state.regulation_budget,
+        emotion_state.social_safety,
+        emotion_state.energy
+    )
     for target, rel_data in relationship_manager.relationships.items():
         await update_relationship(target, rel_data["bond"], rel_data["grudge"], rel_data.get("trust", 0.0), rel_data.get("repair_bank", 0.0))
     
@@ -395,7 +459,9 @@ async def process_event(event: Event) -> Dict[str, Any]:
         "arousal": emotion_state.arousal,
         "prediction_error": emotion_state.prediction_error,
         "memory_strength": memory_strength,
-        "regulation_budget": emotion_state.regulation_budget
+        "regulation_budget": emotion_state.regulation_budget,
+        "social_safety": emotion_state.social_safety,  # MVP-3 B1
+        "energy": emotion_state.energy  # MVP-3 B1
     }
     
     # Include time_passed audit info in response if applicable
@@ -462,7 +528,15 @@ async def homeostasis_loop():
         real_dt = current_time - last_time
         last_time = current_time
         emotion_state.apply_homeostasis_drift(real_dt)
-        await update_state(emotion_state.valence, emotion_state.arousal, emotion_state.subjective_time, emotion_state.prediction_error, emotion_state.regulation_budget)
+        await update_state(
+            emotion_state.valence, 
+            emotion_state.arousal, 
+            emotion_state.subjective_time, 
+            emotion_state.prediction_error, 
+            emotion_state.regulation_budget,
+            emotion_state.social_safety,
+            emotion_state.energy
+        )
         await asyncio.sleep(1)
 
 
@@ -473,3 +547,137 @@ async def consolidation_loop():
         for target, rel_data in relationship_manager.relationships.items():
             await update_relationship(target, rel_data["bond"], rel_data["grudge"], rel_data.get("trust", 0.0), rel_data.get("repair_bank", 0.0))
         await asyncio.sleep(30)
+
+
+# MVP-3 B6: Action Selection Functions
+
+def score_action(
+    action: str,
+    state: EmotionState,
+    relationship: Dict[str, float],
+    predictions: Dict[str, Dict[str, float]]
+) -> float:
+    """
+    MVP-3 B6: Score an action based on relationship, prediction, and uncertainty.
+    
+    Args:
+        action: The action to score
+        state: Current emotional state
+        relationship: Relationship dict with bond, grudge, trust, repair_bank
+        predictions: Prediction dict for this action
+    
+    Returns:
+        Float score for the action
+    """
+    w = ACTION_SCORE_WEIGHTS
+    
+    # Relationship benefit
+    rel_score = (
+        w["bond"] * relationship.get("bond", 0.0) +
+        w["grudge"] * relationship.get("grudge", 0.0) +
+        w["trust"] * relationship.get("trust", 0.0)
+    )
+    
+    # Predicted change
+    pred_safety = predictions.get("social_safety_delta", 0.0)
+    pred_energy = predictions.get("energy_delta", 0.0)
+    pred_score = w["safety"] * pred_safety + w["energy"] * pred_energy
+    
+    # Uncertainty penalty
+    prediction_count = predictions.get("prediction_count", 0)
+    prediction_error_sum = predictions.get("prediction_error_sum", 0.0)
+    uncertainty = prediction_error_sum / prediction_count if prediction_count > 0 else 0.0
+    uncertainty_penalty = -w["uncertainty"] * abs(uncertainty)
+    
+    return rel_score + pred_score + uncertainty_penalty
+
+
+def select_action(
+    state: EmotionState,
+    target: str,
+    test_mode: bool = False
+) -> str:
+    """
+    MVP-3 B6: Select an action for a target.
+    
+    Args:
+        state: Current emotional state
+        target: Target identifier
+        test_mode: If True, use argmax; if False, use softmax
+    
+    Returns:
+        Selected action string
+    """
+    global _predictions
+    
+    relationship = relationship_manager.relationships.get(target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+    
+    # Score all actions
+    scores = {}
+    for action in ACTION_SPACE:
+        pred = _predictions.get(action, {
+            "social_safety_delta": 0.0,
+            "energy_delta": 0.0,
+            "prediction_error_sum": 0.0,
+            "prediction_count": 0
+        })
+        scores[action] = score_action(action, state, relationship, pred)
+    
+    if test_mode or TEST_MODE:
+        # Deterministic: argmax
+        best_action = max(scores.keys(), key=lambda a: scores[a])
+    else:
+        # Stochastic: softmax
+        temp = SOFTMAX_TEMPERATURE
+        max_score = max(scores.values())
+        exp_scores = {a: math.exp((s - max_score) / temp) for a, s in scores.items()}
+        sum_exp = sum(exp_scores.values())
+        probs = {a: e / sum_exp for a, e in exp_scores.items()}
+        
+        # Sample from distribution
+        import random
+        r = random.random()
+        cumsum = 0.0
+        best_action = ACTION_SPACE[0]
+        for a, p in probs.items():
+            cumsum += p
+            if r <= cumsum:
+                best_action = a
+                break
+    
+    return best_action
+
+
+async def get_action_scores(target: str) -> Dict[str, Any]:
+    """
+    Get action scores for a target (useful for debugging/explanation).
+    
+    Returns:
+        dict with scores and selected action
+    """
+    global _predictions
+    
+    relationship = relationship_manager.relationships.get(target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+    
+    scores = {}
+    for action in ACTION_SPACE:
+        pred = _predictions.get(action, {
+            "social_safety_delta": 0.0,
+            "energy_delta": 0.0,
+            "prediction_error_sum": 0.0,
+            "prediction_count": 0
+        })
+        scores[action] = score_action(action, emotion_state, relationship, pred)
+    
+    selected = select_action(emotion_state, target)
+    
+    return {
+        "target": target,
+        "scores": scores,
+        "selected": selected,
+        "relationship": relationship,
+        "interoception": {
+            "social_safety": emotion_state.social_safety,
+            "energy": emotion_state.energy
+        }
+    }
