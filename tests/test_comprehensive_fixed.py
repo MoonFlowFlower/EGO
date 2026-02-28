@@ -280,10 +280,29 @@ class TestConfigurationComprehensive:
     
     def test_environment_variables(self):
         """Test environment variable configuration"""
-        # Test default values
-        from emotiond.config import DB_PATH, PORT, HOST, K_AROUSAL
+        import os
+        from emotiond.config import get_db_path, PORT, HOST, K_AROUSAL
         
-        assert DB_PATH == "./data/emotiond.db"
+        # Test that get_db_path() respects environment variable
+        # Save original env
+        original = os.environ.get("EMOTIOND_DB_PATH")
+        
+        # Test default when not set
+        if "EMOTIOND_DB_PATH" in os.environ:
+            del os.environ["EMOTIOND_DB_PATH"]
+        assert get_db_path() == "./data/emotiond.db"
+        
+        # Test custom path when set
+        os.environ["EMOTIOND_DB_PATH"] = "/custom/path/test.db"
+        assert get_db_path() == "/custom/path/test.db"
+        
+        # Restore original
+        if original:
+            os.environ["EMOTIOND_DB_PATH"] = original
+        elif "EMOTIOND_DB_PATH" in os.environ:
+            del os.environ["EMOTIOND_DB_PATH"]
+        
+        # Test other config values (these are static defaults)
         assert PORT == 18080
         assert HOST == "127.0.0.1"
         assert K_AROUSAL == 2.0

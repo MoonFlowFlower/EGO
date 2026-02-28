@@ -5,25 +5,61 @@ import pytest
 import pytest_asyncio
 import os
 import asyncio
+import tempfile
+import shutil
 from emotiond.memory import MemorySystem
 from emotiond.db import add_event, init_db, get_recent_events, get_events_by_target
 from emotiond.models import Event
-from emotiond.config import DB_PATH
+from emotiond import config, db, core
 
 
-@pytest_asyncio.fixture(autouse=True)
-async def setup_db():
-    """Clean database before each test"""
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
-    await init_db()
+def reset_all_global_state():
+    """Reset all global state to ensure test isolation"""
+    core.emotion_state.valence = 0.0
+    core.emotion_state.arousal = 0.3
+    core.emotion_state.subjective_time = 0
+    core.emotion_state.prediction_error = 0.0
+    core.relationship_manager.relationships = {}
+
+
+@pytest_asyncio.fixture(scope="function")
+async def isolated_test_db():
+    """Setup isolated database for each test with proper cleanup"""
+    # Reset global state FIRST
+    reset_all_global_state()
+    
+    # Create temp directory for this test
+    test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
+    
+    # Override DB_PATH for this test
+    original_db_path = os.environ.get("EMOTIOND_DB_PATH")
+    os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
+    
+    # Reimport config to pick up new DB path
+    import importlib
+    importlib.reload(config)
+    importlib.reload(db)
+    
+    # Reset again after reload
+    reset_all_global_state()
+    
+    # Initialize database
+    await db.init_db()
+    
     yield
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
+    
+    # Cleanup
+    if original_db_path:
+        os.environ["EMOTIOND_DB_PATH"] = original_db_path
+    else:
+        os.environ.pop("EMOTIOND_DB_PATH", None)
+    
+    # Remove temp directory
+    shutil.rmtree(test_data_dir, ignore_errors=True)
 
 
 @pytest.mark.asyncio
-async def test_memory_system_initialization():
+async def test_memory_system_initialization(isolated_test_db):
     """Test memory system initializes correctly"""
     mem_system = MemorySystem()
     assert mem_system.memory_strength == 1.0
@@ -33,7 +69,7 @@ async def test_memory_system_initialization():
 
 
 @pytest.mark.asyncio
-async def test_calculate_memory_strength():
+async def test_calculate_memory_strength(isolated_test_db):
     """Test memory strength calculation"""
     mem_system = MemorySystem()
     
@@ -47,7 +83,7 @@ async def test_calculate_memory_strength():
 
 
 @pytest.mark.asyncio
-async def test_add_event():
+async def test_add_event(isolated_test_db):
     """Test adding events to database"""
     event = Event(
         type="user_message",
@@ -72,7 +108,7 @@ async def test_add_event():
 
 
 @pytest.mark.asyncio
-async def test_get_events_by_target():
+async def test_get_events_by_target(isolated_test_db):
     """Test retrieving events by target"""
     # Add events for different targets
     events = [
@@ -98,7 +134,7 @@ async def test_get_events_by_target():
 
 
 @pytest.mark.asyncio
-async def test_memory_summarization_with_events():
+async def test_memory_summarization_with_events(isolated_test_db):
     """Test memory summarization with events"""
     mem_system = MemorySystem()
     

@@ -14,7 +14,7 @@ def test_daemon_startup():
     
     # Start daemon
     process = subprocess.Popen(
-        ["venv/bin/python", "scripts/run_daemon.py"],
+        [".venv/bin/python", "scripts/run_daemon.py"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=Path(__file__).parent
@@ -79,7 +79,7 @@ def test_scripts():
     
     # Test demo script
     result = subprocess.run(
-        ["venv/bin/python", "scripts/demo_cli.py", "--test"],
+        [".venv/bin/python", "scripts/demo_cli.py", "--test"],
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent
@@ -90,7 +90,7 @@ def test_scripts():
     
     # Test eval script
     result = subprocess.run(
-        ["venv/bin/python", "scripts/eval_suite.py", "--test"],
+        [".venv/bin/python", "scripts/eval_suite.py", "--test"],
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent
@@ -101,7 +101,7 @@ def test_scripts():
     
     # Test deployment script syntax
     result = subprocess.run(
-        ["venv/bin/python", "-m", "py_compile", "scripts/deploy_systemd.py"],
+        [".venv/bin/python", "-m", "py_compile", "scripts/deploy_systemd.py"],
         capture_output=True,
         cwd=Path(__file__).parent
     )

@@ -8,7 +8,6 @@ import asyncio
 import tempfile
 import shutil
 from emotiond.db import init_db
-from emotiond.config import DB_PATH
 
 
 @pytest.fixture(scope="session")
@@ -22,6 +21,10 @@ def event_loop():
 @pytest_asyncio.fixture(scope="function")
 async def isolated_db():
     """Setup isolated database for tests with proper cleanup"""
+    # Import here to avoid circular imports
+    from emotiond import config, db, core
+    import importlib
+    
     # Create temp directory for this test
     test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
     
@@ -30,10 +33,9 @@ async def isolated_db():
     os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
     
     # Reimport config to pick up new DB path
-    import importlib
-    from emotiond import config, db, core
     importlib.reload(config)
     importlib.reload(db)
+    importlib.reload(core)  # Also reload core to pick up new db/config references
     
     # Reset global state
     core.emotion_state.valence = 0.0
@@ -52,6 +54,13 @@ async def isolated_db():
         os.environ["EMOTIOND_DB_PATH"] = original_db_path
     else:
         os.environ.pop("EMOTIOND_DB_PATH", None)
+    
+    # Reset state after test
+    core.emotion_state.valence = 0.0
+    core.emotion_state.arousal = 0.3
+    core.emotion_state.subjective_time = 0
+    core.emotion_state.prediction_error = 0.0
+    core.relationship_manager.relationships = {}
     
     # Remove temp directory
     shutil.rmtree(test_data_dir, ignore_errors=True)
@@ -67,6 +76,10 @@ def test_db_path():
 @pytest_asyncio.fixture(scope="function")
 async def setup_db():
     """Alias for isolated_db - backward compatibility"""
+    # Import here to avoid circular imports
+    from emotiond import config, db, core
+    import importlib
+    
     # Create temp directory for this test
     test_data_dir = tempfile.mkdtemp(prefix="emotiond_test_")
     
@@ -75,10 +88,9 @@ async def setup_db():
     os.environ["EMOTIOND_DB_PATH"] = os.path.join(test_data_dir, "test_emotiond.db")
     
     # Reimport config to pick up new DB path
-    import importlib
-    from emotiond import config, db, core
     importlib.reload(config)
     importlib.reload(db)
+    importlib.reload(core)  # Also reload core to pick up new db/config references
     
     # Reset global state
     core.emotion_state.valence = 0.0
@@ -97,6 +109,13 @@ async def setup_db():
         os.environ["EMOTIOND_DB_PATH"] = original_db_path
     else:
         os.environ.pop("EMOTIOND_DB_PATH", None)
+    
+    # Reset state after test
+    core.emotion_state.valence = 0.0
+    core.emotion_state.arousal = 0.3
+    core.emotion_state.subjective_time = 0
+    core.emotion_state.prediction_error = 0.0
+    core.relationship_manager.relationships = {}
     
     # Remove temp directory
     shutil.rmtree(test_data_dir, ignore_errors=True)
