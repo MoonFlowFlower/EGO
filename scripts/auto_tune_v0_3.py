@@ -10,6 +10,7 @@ import asyncio
 import time
 import statistics
 import copy
+import hashlib
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
@@ -18,7 +19,7 @@ from dataclasses import dataclass, field
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from scripts.eval_suite_v2_3 import EvalSuiteV2_3, EvalResult, result_to_dict
-from emotiond.config import set_auto_tune_param, clear_auto_tune_params
+from emotiond.config import set_auto_tune_params, clear_auto_tune_params, get_auto_tune_params_snapshot
 
 DEFAULT_TUNABLE_PARAMS = {
     "precision_temperature": {"default": 0.5, "min": 0.1, "max": 1.0, "category": "precision"},
@@ -197,6 +198,9 @@ class CandidateResult:
     params: Dict[str, float]
     fitness: LexicographicFitness
     eval_result: Dict[str, Any]
+    param_fingerprint: str = ""
+    effective_params_snapshot: Dict[str, Any] = field(default_factory=dict)
+    telemetry_hash: str = ""
     rank: int = 0
     lexicographic_level: Optional[str] = None
     
@@ -206,6 +210,9 @@ class CandidateResult:
             "params": self.params,
             "fitness": self.fitness.to_dict(),
             "eval_result": self.eval_result,
+            "param_fingerprint": self.param_fingerprint,
+            "effective_params_snapshot": self.effective_params_snapshot,
+            "telemetry_hash": self.telemetry_hash,
             "rank": self.rank,
             "lexicographic_level": self.lexicographic_level,
         }
@@ -395,6 +402,32 @@ class PerturbationGenerator:
         return candidates
 
 
+
+
+def _param_fingerprint(params: Dict[str, float]) -> str:
+    payload = json.dumps(params, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _eval_telemetry_hash(eval_result: EvalResult) -> str:
+    data = result_to_dict(eval_result)
+    agg = data.get("aggregate_metrics", {})
+    payload = json.dumps(agg, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _pick_smoke_scenarios(scenarios_dir: Path) -> List[Path]:
+    preferred = ["cross_target_isolation.yaml", "rewarded_progress.yaml"]
+    picked = []
+    for name in preferred:
+        p = scenarios_dir / name
+        if p.exists():
+            picked.append(p)
+    if not picked:
+        all_yaml = sorted(scenarios_dir.glob("*.yaml"))
+        picked = all_yaml[:2]
+    return picked
+
 class AutoTuneEngine:
     def __init__(self, scenarios_dir: Path, output_dir: Path, seed: int = 42):
         self.scenarios_dir = scenarios_dir
@@ -405,8 +438,7 @@ class AutoTuneEngine:
 
     def apply_parameters(self, params: Dict[str, float]):
         clear_auto_tune_params()
-        for k, v in params.items():
-            set_auto_tune_param(k, float(v))
+        set_auto_tune_params({k: float(v) for k, v in params.items()})
 
     async def run_eval(self, params: Dict[str, float],
                       scenarios: Optional[List[Path]] = None) -> EvalResult:
@@ -415,12 +447,45 @@ class AutoTuneEngine:
         result = await suite.run_all(scenarios)
         return result
 
+    async def assert_params_consumed(self, baseline_params: Dict[str, float]) -> None:
+        smoke = _pick_smoke_scenarios(self.scenarios_dir)
+        if not smoke:
+            return
+
+        probe_params = [
+            "precision_temperature",
+            "shrinkage_k",
+            "individualization_threshold_strict",
+            "individualization_threshold_relaxed",
+            "recovery_rate_energy",
+        ]
+        checked = 0
+        for probe_param in probe_params:
+            if probe_param not in baseline_params or probe_param not in DEFAULT_TUNABLE_PARAMS:
+                continue
+            checked += 1
+            low = dict(baseline_params)
+            high = dict(baseline_params)
+            low[probe_param] = DEFAULT_TUNABLE_PARAMS[probe_param]["min"]
+            high[probe_param] = DEFAULT_TUNABLE_PARAMS[probe_param]["max"]
+            low_res = await self.run_eval(low, smoke)
+            high_res = await self.run_eval(high, smoke)
+            low_hash = _eval_telemetry_hash(low_res)
+            high_hash = _eval_telemetry_hash(high_res)
+            if low_hash != high_hash:
+                return
+
+        if checked == 0:
+            raise RuntimeError("E_PARAM_NOT_CONSUMED: no valid probe parameter available")
+        raise RuntimeError("E_PARAM_NOT_CONSUMED: overrides not affecting eval execution")
+
     async def tune(self,
                    baseline_params: Optional[Dict[str, float]] = None,
                    candidate_params_list: Optional[List[Dict[str, float]]] = None,
                    scenarios: Optional[List[Path]] = None,
                    generate_candidates: bool = False,
-                   candidate_count: int = 200) -> AutoTuneResult:
+                   candidate_count: int = 200,
+                   skip_sentinel: bool = False) -> AutoTuneResult:
         if baseline_params is None:
             baseline_params = {name: defn["default"] for name, defn in DEFAULT_TUNABLE_PARAMS.items()}
         if candidate_params_list is None:
@@ -431,6 +496,9 @@ class AutoTuneEngine:
             else:
                 candidate_params_list = [self.perturbation_gen.perturb(
                     baseline_params, DEFAULT_TUNABLE_PARAMS, "random", 0.15)]
+        clear_auto_tune_params()
+        if not skip_sentinel:
+            await self.assert_params_consumed(baseline_params)
         print(f"Running baseline evaluation...")
         baseline_eval_result = await self.run_eval(baseline_params, scenarios)
         baseline_fitness = FitnessCalculator.calculate_all(baseline_eval_result)
@@ -451,7 +519,10 @@ class AutoTuneEngine:
                 candidate_id=f"candidate_{i+1}",
                 params=candidate_params,
                 fitness=candidate_fitness,
-                eval_result=result_to_dict(candidate_eval_result)
+                eval_result=result_to_dict(candidate_eval_result),
+                param_fingerprint=_param_fingerprint(candidate_params),
+                effective_params_snapshot=get_auto_tune_params_snapshot(),
+                telemetry_hash=_eval_telemetry_hash(candidate_eval_result),
             )
             candidates.append(candidate_result)
         candidates.sort(key=lambda c: c.fitness, reverse=True)
@@ -601,6 +672,7 @@ async def main():
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--strategy", choices=["random", "gaussian", "boundary", "focused"], default="random")
     parser.add_argument("--magnitude", type=float, default=0.2, help="Perturbation magnitude")
+    parser.add_argument("--skip-sentinel", action="store_true", help="Skip parameter consumption sentinel check")
     parser.add_argument("--list-params", action="store_true", help="List all tunable parameters")
     parser.add_argument("--generate-defaults", type=Path, metavar="OUTPUT_FILE", help="Generate default parameters file")
     args = parser.parse_args()
@@ -658,7 +730,8 @@ async def main():
         candidate_params_list=candidate_params_list,
         scenarios=scenarios,
         generate_candidates=(candidate_params_list is None),
-        candidate_count=args.candidates
+        candidate_count=args.candidates,
+        skip_sentinel=args.skip_sentinel
     )
 
     json_path, md_path = engine.save_report(result)

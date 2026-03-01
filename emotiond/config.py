@@ -3,6 +3,8 @@ Configuration for emotiond
 """
 import os
 import logging
+import threading
+from typing import Any, Mapping
 
 
 def get_db_path():
@@ -16,24 +18,39 @@ def is_core_disabled():
 
 
 # Global auto-tune parameter storage (set by auto_tune scripts)
-_auto_tune_params: dict = {}
+_lock = threading.RLock()
+_auto_tune_params: dict[str, Any] = {}
+
+
+def set_auto_tune_params(params: Mapping[str, Any]) -> None:
+    """Replace overrides atomically for deterministic tuning."""
+    with _lock:
+        _auto_tune_params.clear()
+        _auto_tune_params.update(dict(params))
 
 
 def set_auto_tune_param(name: str, value: float) -> None:
-    """Set an auto-tune parameter override."""
-    global _auto_tune_params
-    _auto_tune_params[name] = value
+    """Backward-compatible single-parameter setter."""
+    with _lock:
+        _auto_tune_params[name] = value
 
 
-def get_auto_tune_param(name: str, default: float) -> float:
+def get_auto_tune_param(name: str, default: Any = None) -> Any:
     """Get parameter value, checking auto-tune overrides first."""
-    return float(_auto_tune_params.get(name, default))
+    with _lock:
+        return _auto_tune_params.get(name, default)
+
+
+def get_auto_tune_params_snapshot() -> dict[str, Any]:
+    """Return a copy of effective auto-tune overrides for reporting/debugging."""
+    with _lock:
+        return dict(_auto_tune_params)
 
 
 def clear_auto_tune_params() -> None:
     """Clear all auto-tune parameter overrides."""
-    global _auto_tune_params
-    _auto_tune_params = {}
+    with _lock:
+        _auto_tune_params.clear()
 
 
 # Static values for backward compatibility
