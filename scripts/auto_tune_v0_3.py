@@ -412,12 +412,49 @@ def _param_fingerprint(params: Dict[str, float]) -> str:
 def _eval_telemetry_hash(eval_result: EvalResult) -> str:
     data = result_to_dict(eval_result)
     agg = data.get("aggregate_metrics", {})
-    payload = json.dumps(agg, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    scenarios = data.get("scenarios", [])
+
+    # Include scenario-level signal slices so param-consumption sentinel is not blind
+    scenario_slices = []
+    for sc in scenarios:
+        m = sc.get("metrics", {})
+        scenario_slices.append({
+            "scenario_name": sc.get("scenario_name"),
+            "submetric_trace": m.get("individualization_submetric_trace", {}),
+            "target_debug": m.get("target_isolation_debug", {}),
+        })
+
+    payload_obj = {
+        "aggregate_metrics": agg,
+        "scenario_slices": scenario_slices,
+    }
+    payload = json.dumps(payload_obj, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
 
 
+def _eval_probe_signature(eval_result: EvalResult) -> str:
+    data = result_to_dict(eval_result)
+    scenarios = data.get("scenarios", [])
+    compact = []
+    for sc in scenarios:
+        m = sc.get("metrics", {})
+        compact.append({
+            "name": sc.get("scenario_name"),
+            "recovery": m.get("recovery_score", {}),
+            "submetric": m.get("individualization_submetric_trace", {}),
+            "raw": m.get("individualization_raw_dump", {}),
+        })
+    payload = json.dumps(compact, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
 def _pick_smoke_scenarios(scenarios_dir: Path) -> List[Path]:
-    preferred = ["cross_target_isolation.yaml", "rewarded_progress.yaml"]
+    preferred = [
+        "smoke_precision_probe.yaml",
+        "smoke_residual_forced.yaml",
+        "smoke_ledger_forced.yaml",
+        "cross_target_isolation.yaml",
+        "rewarded_progress.yaml",
+    ]
     picked = []
     for name in preferred:
         p = scenarios_dir / name
@@ -426,7 +463,7 @@ def _pick_smoke_scenarios(scenarios_dir: Path) -> List[Path]:
     if not picked:
         all_yaml = sorted(scenarios_dir.glob("*.yaml"))
         picked = all_yaml[:2]
-    return picked
+    return picked[:2]
 
 class AutoTuneEngine:
     def __init__(self, scenarios_dir: Path, output_dir: Path, seed: int = 42):
@@ -472,7 +509,9 @@ class AutoTuneEngine:
             high_res = await self.run_eval(high, smoke)
             low_hash = _eval_telemetry_hash(low_res)
             high_hash = _eval_telemetry_hash(high_res)
-            if low_hash != high_hash:
+            low_probe = _eval_probe_signature(low_res)
+            high_probe = _eval_probe_signature(high_res)
+            if low_hash != high_hash or low_probe != high_probe:
                 return
 
         if checked == 0:
