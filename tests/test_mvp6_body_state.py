@@ -16,6 +16,7 @@ from dataclasses import dataclass
 
 # Import body state module
 from emotiond.body_state import (
+    RecoveryDynamics,
     BodyStateDimension,
     BodyStateVector,
     get_body_state,
@@ -44,17 +45,17 @@ class TestBodyStateDimension:
     
     def test_custom_initialization(self):
         """Test custom values on initialization"""
+        from emotiond.body_state import RecoveryDynamics
         dim = BodyStateDimension(
             value=0.7,
             uncertainty=0.3,
-            recovery_rate=0.002,
-            regression_rate=0.001,
+            recovery_dynamics=RecoveryDynamics(recovery_rate=0.002, decay_rate=0.001),
             baseline=0.6
         )
         assert dim.value == 0.7
         assert dim.uncertainty == 0.3
         assert dim.recovery_rate == 0.002
-        assert dim.regression_rate == 0.001
+        assert dim.decay_rate == 0.001
         assert dim.baseline == 0.6
     
     def test_clamp_on_initialization(self):
@@ -115,14 +116,14 @@ class TestBodyStateDimension:
     
     def test_apply_time_passed_recovery(self):
         """Test recovery when value is below baseline"""
-        dim = BodyStateDimension(value=0.3, baseline=0.5, recovery_rate=0.01)
+        dim = BodyStateDimension(value=0.3, baseline=0.5, recovery_dynamics=RecoveryDynamics(recovery_rate=0.01))
         dim.apply_time_passed(10)  # 10 seconds
         assert dim.value > 0.3  # Should recover toward baseline
         assert dim.value <= 0.5  # Should not exceed baseline
     
     def test_apply_time_passed_regression(self):
         """Test regression when value is above baseline"""
-        dim = BodyStateDimension(value=0.8, baseline=0.5, regression_rate=0.01)
+        dim = BodyStateDimension(value=0.8, baseline=0.5, recovery_dynamics=RecoveryDynamics(decay_rate=0.01))
         dim.apply_time_passed(10)  # 10 seconds
         assert dim.value < 0.8  # Should regress toward baseline
         assert dim.value >= 0.5  # Should not go below baseline
@@ -146,7 +147,7 @@ class TestBodyStateDimension:
         assert data["value"] == 0.7
         assert data["uncertainty"] == 0.3
         assert "last_updated" in data
-        assert "recovery_rate" in data
+        assert "recovery_dynamics" in data
     
     def test_from_dict(self):
         """Test deserialization from dict"""
@@ -154,8 +155,11 @@ class TestBodyStateDimension:
             "value": 0.8,
             "uncertainty": 0.2,
             "last_updated": time.time(),
-            "recovery_rate": 0.002,
-            "regression_rate": 0.001,
+            "recovery_dynamics": {
+                "recovery_rate": 0.002,
+                "decay_rate": 0.001,
+                "half_life_seconds": 600.0
+            },
             "baseline": 0.6
         }
         dim = BodyStateDimension.from_dict(data)
@@ -224,7 +228,8 @@ class TestBodyStateVector:
         initial_energy = bsv.energy.value
         initial_focus = bsv.focus_fatigue.value
         
-        deltas = bsv.update_from_event("user_message")
+        trace = bsv.update_from_event("user_message")
+        deltas = trace["global_body_delta"]
         
         assert deltas["energy"] < 0  # Energy decreases
         assert deltas["focus_fatigue"] > 0  # Fatigue increases
@@ -237,7 +242,8 @@ class TestBodyStateVector:
         bsv = BodyStateVector()
         initial_energy = bsv.energy.value
         
-        deltas = bsv.update_from_event("assistant_reply")
+        trace = bsv.update_from_event("assistant_reply")
+        deltas = trace["global_body_delta"]
         
         assert deltas["energy"] < 0
         assert deltas["focus_fatigue"] > 0
@@ -249,7 +255,8 @@ class TestBodyStateVector:
         initial_safety = bsv.safety_stress.value
         initial_energy = bsv.energy.value
         
-        deltas = bsv.update_from_event("world_event", "care")
+        trace = bsv.update_from_event("world_event", "care")
+        deltas = trace["global_body_delta"]
         
         assert deltas["safety_stress"] > 0
         assert deltas["energy"] > 0
@@ -261,7 +268,8 @@ class TestBodyStateVector:
         bsv = BodyStateVector()
         initial_safety = bsv.safety_stress.value
         
-        deltas = bsv.update_from_event("world_event", "rejection")
+        trace = bsv.update_from_event("world_event", "rejection")
+        deltas = trace["global_body_delta"]
         
         assert deltas["safety_stress"] < 0
         assert bsv.safety_stress.value < initial_safety
@@ -272,7 +280,8 @@ class TestBodyStateVector:
         initial_safety = bsv.safety_stress.value
         initial_energy = bsv.energy.value
         
-        deltas = bsv.update_from_event("world_event", "betrayal")
+        trace = bsv.update_from_event("world_event", "betrayal")
+        deltas = trace["global_body_delta"]
         
         assert deltas["safety_stress"] < 0
         assert deltas["energy"] < 0
@@ -292,7 +301,8 @@ class TestBodyStateVector:
     def test_update_from_event_unknown_subtype(self):
         """Test update with unknown subtype returns zero deltas"""
         bsv = BodyStateVector()
-        deltas = bsv.update_from_event("world_event", "unknown_subtype")
+        trace = bsv.update_from_event("world_event", "unknown_subtype")
+        deltas = trace["global_body_delta"]
         
         assert all(v == 0 for v in deltas.values())
     
@@ -473,7 +483,7 @@ class TestRecoveryRegression:
         dim = BodyStateDimension(
             value=0.3,
             baseline=0.7,
-            recovery_rate=0.001
+            recovery_dynamics=RecoveryDynamics(recovery_rate=0.001)
         )
         dim.apply_time_passed(1000)  # 1000 seconds
         expected_recovery = 0.3 + (0.001 * 1000)  # 1.3, clamped to 0.7
@@ -484,7 +494,7 @@ class TestRecoveryRegression:
         dim = BodyStateDimension(
             value=0.8,
             baseline=0.3,
-            regression_rate=0.001
+            recovery_dynamics=RecoveryDynamics(decay_rate=0.001)
         )
         dim.apply_time_passed(100)  # 100 seconds
         expected = 0.8 - (0.001 * 100)  # 0.7
@@ -557,7 +567,7 @@ class TestStability:
     
     def test_long_time_passed_stability(self):
         """Test stability with very long time passed"""
-        dim = BodyStateDimension(value=0.1, baseline=0.5, recovery_rate=0.001)
+        dim = BodyStateDimension(value=0.1, baseline=0.5, recovery_dynamics=RecoveryDynamics(recovery_rate=0.001))
         dim.apply_time_passed(1000000)  # Very long time
         assert dim.value == 0.5  # Should reach baseline, not overflow
     
@@ -640,8 +650,7 @@ class TestSerialization:
         """Test that serialization preserves configuration"""
         dim = BodyStateDimension(
             value=0.7,
-            recovery_rate=0.002,
-            regression_rate=0.001,
+            recovery_dynamics=RecoveryDynamics(recovery_rate=0.002, decay_rate=0.001),
             baseline=0.6
         )
         
@@ -649,7 +658,7 @@ class TestSerialization:
         restored = BodyStateDimension.from_dict(data)
         
         assert restored.recovery_rate == 0.002
-        assert restored.regression_rate == 0.001
+        assert restored.decay_rate == 0.001
         assert restored.baseline == 0.6
 
 
