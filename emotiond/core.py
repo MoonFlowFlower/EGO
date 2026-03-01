@@ -31,7 +31,11 @@ from emotiond.config import (
 from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
+from emotiond.episodic_memory import episodic_memory_manager
 from emotiond.body_state import BodyStateVector
+from emotiond.persistence import get_persistence_constraint
+from emotiond.other_minds import get_other_minds_model, apply_other_minds_to_intent_scores
+from emotiond.ledger import get_ledger, detect_promise
 # MVP-5 D2: Allostasis Budget
 from emotiond.allostasis import (
     AllostasisBudget, get_budget, reset_budget,
@@ -372,10 +376,12 @@ _predictions: Dict[str, Dict[str, float]] = {}
 # MVP-3.1: Target-specific prediction residuals cache
 # Structure: {target_id: {action: {social_safety_delta, energy_delta, n, ema_abs_error, ema_sq_error}}}
 _target_predictions: Dict[str, Dict[str, Dict[str, Any]]] = {}
-
+_latest_precision_by_target: Dict[str, Dict[str, float]] = {}
+_last_ledger_error: Optional[str] = None
 
 emotion_state = EmotionState()
 relationship_manager = RelationshipManager()
+other_minds_model = get_other_minds_model()
 
 
 async def load_initial_state():
@@ -411,6 +417,7 @@ async def load_initial_state():
     # MVP-3.1: Load target predictions cache (lazy-loaded on demand)
     _target_predictions = {}
     await initialize_memory_system()
+    await episodic_memory_manager.init_db()
 
 
 async def process_event(event: Event) -> Dict[str, Any]:
@@ -509,7 +516,13 @@ async def process_event(event: Event) -> Dict[str, Any]:
             await record_time_passed(source, clamped_seconds)
     # === End Rate Limiting ===
     
-    await add_event(event.model_dump())
+    event_dict = event.model_dump()
+    await add_event(event_dict)
+    # MVP-6.2 D2: Episodic memory capture (best-effort, non-blocking core)
+    try:
+        await episodic_memory_manager.observe_event(event_dict)
+    except Exception as e:
+        globals()["_last_ledger_error"] = str(e)
     
     # Update dedupe record with event_id if request_id was provided
     if request_id:
@@ -529,6 +542,56 @@ async def process_event(event: Event) -> Dict[str, Any]:
     emotion_state.arousal = min(1.0, emotion_state.arousal + prediction_error * 0.5)
     memory_strength = memory_system.calculate_memory_strength(prediction_error, emotion_state.arousal)
     relationship_manager.update_from_event(event, emotion_state)
+
+    # MVP-6.2 wiring: update body_state (including target residual) from real event stream
+    event_subtype = event.meta.get("subtype") if event.meta else None
+    body_meta = dict(event.meta or {})
+    event_target = event.actor if event.type == "user_message" else event.target
+    if event_target:
+        body_meta.setdefault("target_id", event_target)
+    body_trace = emotion_state.body_state.update_from_event(event.type, event_subtype, body_meta)
+
+    # MVP-6.2 wiring: ledger write path (promise + violation)
+    try:
+        ledger = get_ledger()
+        if event.type == "user_message" and event.text and event_target:
+            promise = detect_promise(event.text, event.actor, event_target)
+            if promise is not None:
+                await ledger.record_promise(promise)
+        violation = await ledger.detect_violation(event)
+        if violation is not None:
+            await ledger.mark_broken(violation.promise.promise_id, violation.evidence)
+    except Exception as e:
+        globals()["_last_ledger_error"] = str(e)
+
+    # MVP-6.2 wiring: per-target precision snapshot
+    if event_target:
+        try:
+            rel = relationship_manager.relationships.get(event_target, {})
+            ledger = get_ledger()
+            active_promises = await ledger.get_active_promises(event_target)
+            ledger_strength = 0.8 if active_promises else 0.0
+            pctx = build_precision_context(
+                uncertainty=emotion_state.uncertainty,
+                prediction_error=emotion_state.prediction_error,
+                consecutive_prediction_errors=emotion_state._consecutive_prediction_errors,
+                ledger_evidence_strength=ledger_strength,
+                social_threat=max(0.0, 1.0 - emotion_state.social_safety),
+                bond_strength=rel.get("bond", 0.0),
+                energy=emotion_state.energy,
+                social_safety=emotion_state.social_safety,
+                has_promise_context=bool(active_promises),
+            )
+            pc = get_precision_controller()
+            weights, _ = pc.compute_weights(pctx)
+            _latest_precision_by_target[event_target] = {
+                "w_action": float(weights.w_action),
+                "w_memory": float(weights.w_memory),
+                "w_explore": float(weights.w_explore),
+            }
+        except Exception:
+            pass
+
     # MVP-4 D1: Reduce uncertainty on observation
     emotion_state.uncertainty = max(0.0, emotion_state.uncertainty - 0.05)
     
@@ -583,6 +646,28 @@ async def process_event(event: Event) -> Dict[str, Any]:
             repair_bank=rel.get("repair_bank", 0.0)
         )
     
+    # MVP-6.2 D5: Update other-minds model from observed signals
+    if target:
+        if event.type == "world_event" and event.meta:
+            subtype = event.meta.get("subtype", "")
+            outcome_map = {
+                "care": "care",
+                "repair_success": "repair_success",
+                "apology": "apology",
+                "ignored": "ignored",
+                "rejection": "rejection",
+                "betrayal": "betrayal",
+                "time_passed": "unclear",
+            }
+            if subtype in outcome_map:
+                other_minds_model.update_from_interaction(target, outcome_map[subtype])
+            if subtype == "repair_success":
+                other_minds_model.update_from_ledger(target, "promise_kept", severity=1.0)
+            elif subtype == "betrayal":
+                other_minds_model.update_from_ledger(target, "promise_broken", severity=1.0)
+        elif event.type == "user_message":
+            other_minds_model.update_from_interaction(target, "continue", strength=0.4)
+
     # Create affect state for appraisal
     affect_state = AffectState(
         valence=emotion_state.valence,
@@ -614,7 +699,8 @@ async def process_event(event: Event) -> Dict[str, Any]:
         event=event,
         affect=affect_state,
         mood=mood_state,
-        bond=bond_state
+        bond=bond_state,
+        target=target
     )
     
     # MVP-5 D2: Update allostasis budget
@@ -687,7 +773,9 @@ async def process_event(event: Event) -> Dict[str, Any]:
         "budget_deltas": budget_deltas,
         "fatigue_level": budget.fatigue_level,
         # MVP-4 D2: Appraisal result
-        "appraisal": appraisal_result.model_dump()
+        "appraisal": appraisal_result.model_dump(),
+        "body_trace": body_trace,
+        "precision_snapshot": _latest_precision_by_target.get(target, {})
     }
     
     # Include time_passed audit info in response if applicable
@@ -724,6 +812,18 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         intent = "seek"
     else:
         intent = "set_boundary"
+
+    # MVP-6.2 D5: other-minds strategy bias (no direct high-impact escalation)
+    base_scores = {
+        "repair": 0.4 + (0.2 if current_valence < -0.05 else 0.0),
+        "seek": 0.35 + (0.25 if target_relationship["bond"] > 0.6 else 0.0),
+        "withdraw": 0.25 + (0.2 if target_relationship["grudge"] > 0.5 else 0.0),
+        "set_boundary": 0.3 + (0.15 if target_relationship["grudge"] > 0.4 else 0.0),
+        "retaliate": 0.2 + (0.2 if current_valence < -0.25 and target_relationship["grudge"] > 0.7 else 0.0),
+    }
+    biased = apply_other_minds_to_intent_scores(focus_target, base_scores)
+    best = max(biased.items(), key=lambda kv: kv[1])[0]
+    intent = {"withdraw": "distance"}.get(best, best)
     
     key_points, constraints = [], []
     if intent == "repair":
@@ -1037,17 +1137,57 @@ async def generate_explanation(
     # Select action if not provided
     if selected_action is None:
         selected_action = select_action(state, target, test_mode)
-    
+
+    # Persistence objective/tradeoff integration (MVP-6.2 D4)
+    persistence = get_persistence_constraint()
+    focus_fatigue_proxy = max(0.0, min(1.0, 0.5 * state.anxiety + 0.5 * (1.0 - state.energy)))
+    persistence.update_body_state(energy=state.energy, safety_stress=1.0 - state.social_safety, focus_fatigue=focus_fatigue_proxy)
+    persistence.update_relationship(target, bond=relationship.get("bond", 0.0), reliability=relationship.get("trust", 0.5), trust=relationship.get("trust", 0.5))
+
+    prediction_uncertainty = []
+    for action in ACTION_SPACE:
+        pred = _predictions.get(action, {})
+        n = pred.get("prediction_count", 0)
+        err = pred.get("prediction_error_sum", 0.0)
+        prediction_uncertainty.append((err / n) if n > 0 else 0.0)
+    ambiguity = max(0.0, min(1.0, sum(abs(x) for x in prediction_uncertainty) / max(1, len(prediction_uncertainty))))
+    risk = max(0.0, min(1.0, relationship.get("grudge", 0.0) * 0.7 + (1.0 - relationship.get("trust", 0.0)) * 0.3))
+    expected_info_gain = max(0.0, 1.0 - ambiguity)
+
+    p_strategy, p_reason, p_trace = persistence.select_strategy_with_tradeoff(
+        target_id=target,
+        risk=risk,
+        ambiguity=ambiguity,
+        expected_info_gain=expected_info_gain,
+    )
+
+    policy_override = None
+    if p_strategy.value == "retreat" and selected_action != "withdraw":
+        policy_override = f"retreat_override:{selected_action}->withdraw"
+        selected_action = "withdraw"
+    elif p_strategy.value == "conservative" and selected_action == "attack":
+        policy_override = "conservative_override:attack->boundary"
+        selected_action = "boundary"
+    elif p_strategy.value == "repair" and selected_action in ["attack", "withdraw"]:
+        policy_override = f"repair_override:{selected_action}->repair_offer"
+        selected_action = "repair_offer"
+
     # Generate selection reasons
     selection_reasons = _generate_selection_reasons(selected_action, state, relationship, scores)
-    
+
     explanation = {
         "emotion": emotion_section,
         "interoception": interoception_section,
         "relationships": relationships_section,
         "candidates": candidates,
         "selected": selected_action,
-        "selection_reasons": selection_reasons
+        "selection_reasons": selection_reasons,
+        "persistence": {
+            "strategy": p_strategy.value,
+            "reason": p_reason,
+            "trace": p_trace.to_dict(),
+            "policy_override": policy_override,
+        }
     }
     
     return explanation
@@ -1605,10 +1745,38 @@ async def generate_explanation_v31(
     # Select action if not provided
     if selected_action is None:
         selected_action, _ = await select_action_with_target(state, target, target_id, test_mode)
-    
+
+    # Persistence objective/tradeoff integration (MVP-6.2 D4)
+    persistence = get_persistence_constraint()
+    focus_fatigue_proxy = max(0.0, min(1.0, 0.5 * state.anxiety + 0.5 * (1.0 - state.energy)))
+    persistence.update_body_state(energy=state.energy, safety_stress=1.0 - state.social_safety, focus_fatigue=focus_fatigue_proxy)
+    persistence.update_relationship(target, bond=relationship.get("bond", 0.0), reliability=relationship.get("trust", 0.5), trust=relationship.get("trust", 0.5))
+
+    ambiguity = max(0.0, min(1.0, sum(abs(all_combined[a].get("residual_safety", 0.0)) for a in ACTION_SPACE) / max(1, len(ACTION_SPACE))))
+    risk = max(0.0, min(1.0, relationship.get("grudge", 0.0) * 0.7 + (1.0 - relationship.get("trust", 0.0)) * 0.3))
+    expected_info_gain = max(0.0, 1.0 - ambiguity)
+
+    p_strategy, p_reason, p_trace = persistence.select_strategy_with_tradeoff(
+        target_id=target,
+        risk=risk,
+        ambiguity=ambiguity,
+        expected_info_gain=expected_info_gain,
+    )
+
+    policy_override = None
+    if p_strategy.value == "retreat" and selected_action != "withdraw":
+        policy_override = f"retreat_override:{selected_action}->withdraw"
+        selected_action = "withdraw"
+    elif p_strategy.value == "conservative" and selected_action == "attack":
+        policy_override = "conservative_override:attack->boundary"
+        selected_action = "boundary"
+    elif p_strategy.value == "repair" and selected_action in ["attack", "withdraw"]:
+        policy_override = f"repair_override:{selected_action}->repair_offer"
+        selected_action = "repair_offer"
+
     # Generate selection reasons
     selection_reasons = _generate_selection_reasons_v31(selected_action, state, relationship, scores, all_combined[selected_action])
-    
+
     explanation = {
         "emotion": emotion_section,
         "interoception": interoception_section,
@@ -1616,7 +1784,13 @@ async def generate_explanation_v31(
         "target_id": target_id,
         "candidates": candidates,
         "selected": selected_action,
-        "selection_reasons": selection_reasons
+        "selection_reasons": selection_reasons,
+        "persistence": {
+            "strategy": p_strategy.value,
+            "reason": p_reason,
+            "trace": p_trace.to_dict(),
+            "policy_override": policy_override,
+        }
     }
     
     return explanation
