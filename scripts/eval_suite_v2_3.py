@@ -37,7 +37,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple, Set
 from dataclasses import dataclass, field, asdict
 from enum import Enum
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 # Add parent directory to path for imports
@@ -1111,6 +1111,99 @@ class ScenarioRunner:
         
         if not subscores.all_passed():
             failure_reasons.extend(subscores.failure_reasons)
+
+        # Raw dump + submetric trace for diagnostics
+        target_ids = sorted(set(self.individualization_analyzer.target_n_obs.keys()) |
+                            set(self.individualization_analyzer.target_bonds.keys()) |
+                            set(self.individualization_analyzer.target_ledgers.keys()) |
+                            set(self.individualization_analyzer.target_precision.keys()))
+
+        def _safe_mean(vals):
+            return statistics.mean(vals) if vals else 0.0
+
+        per_target_raw = {}
+        for tid in target_ids:
+            rel = core.relationship_manager.relationships.get(tid, {}) if hasattr(core, 'relationship_manager') else {}
+            bonds = self.individualization_analyzer.target_bonds.get(tid, [])
+            ledger = self.individualization_analyzer.target_ledgers.get(tid, {"promises": [], "violations": []})
+            prec = self.individualization_analyzer.target_precision.get(tid, {})
+            som = self.individualization_analyzer.target_somatic_residuals.get(tid, {})
+
+            per_target_raw[tid] = {
+                "relationship": {
+                    "bond": rel.get("bond", _safe_mean(bonds)),
+                    "trust": rel.get("trust", 0.0),
+                    "bond_n_obs": self.individualization_analyzer.target_n_obs.get(tid, 0),
+                    "relationship_events_count": len(bonds),
+                },
+                "ledger": {
+                    "promise_count": len(ledger.get("promises", [])),
+                    "violation_count": len(ledger.get("violations", [])),
+                    "active_promises_count": len(ledger.get("promises", [])),
+                },
+                "somatic_residual": {
+                    "residual_raw": {k: _safe_mean(v) for k, v in som.items()},
+                    "n_obs": self.individualization_analyzer.target_n_obs.get(tid, 0),
+                    "shrink_weight": (
+                        float(self.individualization_analyzer.target_n_obs.get(tid, 0)) /
+                        (float(self.individualization_analyzer.target_n_obs.get(tid, 0)) +
+                         max(0.1, float(config.get_auto_tune_param("shrinkage_k", 10.0))))
+                        if self.individualization_analyzer.target_n_obs.get(tid, 0) >= 0 else 0.0
+                    ),
+                    "residual_effective": {k: _safe_mean(v) for k, v in som.items()},
+                },
+                "precision": {
+                    "mean_w_action": _safe_mean(prec.get("w_action", [])),
+                    "mean_w_memory": _safe_mean(prec.get("w_memory", [])),
+                    "mean_w_explore": 0.0,
+                },
+                "policy": {
+                    "histogram": dict(Counter(self.individualization_analyzer.target_policies.get(tid, []))),
+                },
+            }
+
+        n_obs_values = list(subscores.target_n_obs.values())
+        n_obs_avg = int(statistics.mean(n_obs_values)) if n_obs_values else 0
+        n_obs_min = min(n_obs_values) if n_obs_values else 0
+
+        submetric_trace = {
+            "bond_diff": {
+                "computed_diff": subscores.bond_diff,
+                "threshold": DYNAMIC_THRESHOLDS["bond_diff"].get_threshold(n_obs_avg),
+                "n_obs_min": n_obs_min,
+                "pass": subscores.bond_diff_passed,
+            },
+            "ledger_diff": {
+                "computed_diff": subscores.ledger_diff,
+                "threshold": DYNAMIC_THRESHOLDS["ledger_diff"].get_threshold(n_obs_avg),
+                "n_obs_min": n_obs_min,
+                "pass": subscores.ledger_diff_passed,
+            },
+            "somatic_residual_diff": {
+                "computed_diff": subscores.somatic_residual_diff,
+                "threshold": DYNAMIC_THRESHOLDS["somatic_residual_diff"].get_threshold(n_obs_avg),
+                "n_obs_min": n_obs_min,
+                "pass": subscores.somatic_residual_diff_passed,
+            },
+            "policy_diff": {
+                "computed_diff": subscores.policy_diff,
+                "threshold": DYNAMIC_THRESHOLDS["policy_diff"].get_threshold(n_obs_avg),
+                "n_obs_min": n_obs_min,
+                "pass": subscores.policy_diff_passed,
+            },
+            "precision_diff": {
+                "computed_diff": subscores.precision_diff,
+                "threshold": DYNAMIC_THRESHOLDS["precision_diff"].get_threshold(n_obs_avg),
+                "n_obs_min": n_obs_min,
+                "pass": subscores.precision_diff_passed,
+            },
+        }
+
+        metrics["individualization_raw_dump"] = {
+            "targets": target_ids,
+            "per_target": per_target_raw,
+        }
+        metrics["individualization_submetric_trace"] = submetric_trace
         
         # Legacy individualization for backwards compatibility
         actor_emotions = {}
