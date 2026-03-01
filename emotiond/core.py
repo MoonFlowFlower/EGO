@@ -194,10 +194,20 @@ class EmotionState:
                 self.arousal = min(1.0, self.arousal + 0.15)
                 self.social_safety = max(0.0, self.social_safety - 0.05)
         
+        # MVP-5.1: Apply emotion_scale parameter if set
+        from emotiond import config
+        emotion_scale = config.get_auto_tune_param("emotion_scale", 1.0)
+        if emotion_scale != 1.0:
+            # Scale the valence change relative to initial
+            valence_change = self.valence - initial_valence
+            self.valence = initial_valence + valence_change * emotion_scale
         return self.valence - initial_valence
     
     def calculate_subjective_time_delta(self, real_dt: float) -> float:
-        return real_dt / (1 + K_AROUSAL * self.arousal)
+        # MVP-5.1: Use auto-tune param for K_AROUSAL if available
+        from emotiond import config
+        k_arousal = config.get_auto_tune_param("k_arousal", K_AROUSAL)
+        return real_dt / (1 + k_arousal * self.arousal)
 
     def calculate_prediction_error(self, event: Event, actual_valence_change: float) -> float:
         if is_core_disabled():

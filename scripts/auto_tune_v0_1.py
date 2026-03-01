@@ -65,6 +65,8 @@ DEFAULT_TUNABLE_PARAMS = {
     "value_conflict_resolution_rate": {"default": 0.05, "min": 0.01, "max": 0.2, "category": "self_model"},
     "clarification_trigger_threshold": {"default": 0.4, "min": 0.2, "max": 0.7, "category": "meta_cognition"},
     "reflection_trigger_threshold": {"default": 0.5, "min": 0.3, "max": 0.8, "category": "meta_cognition"},
+    "k_arousal": {"default": 2.0, "min": 0.5, "max": 5.0, "category": "timing"},
+    "emotion_scale": {"default": 1.0, "min": 0.5, "max": 1.5, "category": "emotion"},
 }
 
 DEFAULT_FITNESS_WEIGHTS = {
@@ -334,6 +336,13 @@ class AutoTuneV1Engine:
         return "unknown"
 
     def apply_parameters(self, params: Dict[str, float]):
+        """Apply parameters to config module for dynamic override during evaluation."""
+        # MVP-5.1: Set params in config module (not just core)
+        from emotiond import config
+        config.clear_auto_tune_params()
+        for name, value in params.items():
+            config.set_auto_tune_param(name, value)
+        # Also set on core for backward compatibility
         core._auto_tune_params = getattr(core, '_auto_tune_params', {})
         core._auto_tune_params.update(params)
 

@@ -15,6 +15,27 @@ def is_core_disabled():
     return os.getenv("EMOTIOND_DISABLE_CORE", "").strip().lower() in ["1", "true", "yes", "on"]
 
 
+# Global auto-tune parameter storage (set by auto_tune scripts)
+_auto_tune_params: dict = {}
+
+
+def set_auto_tune_param(name: str, value: float) -> None:
+    """Set an auto-tune parameter override."""
+    global _auto_tune_params
+    _auto_tune_params[name] = value
+
+
+def get_auto_tune_param(name: str, default: float) -> float:
+    """Get parameter value, checking auto-tune overrides first."""
+    return float(_auto_tune_params.get(name, default))
+
+
+def clear_auto_tune_params() -> None:
+    """Clear all auto-tune parameter overrides."""
+    global _auto_tune_params
+    _auto_tune_params = {}
+
+
 # Static values for backward compatibility
 DB_PATH = get_db_path()
 PORT = int(os.getenv("EMOTIOND_PORT", "18080"))

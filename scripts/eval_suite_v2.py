@@ -198,8 +198,12 @@ class ScenarioRunner:
                               emotion_after: EmotionSnapshot,
                               event: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
         """Detect if meta-cognition was triggered"""
+        # MVP-5.1: Use configurable threshold from auto-tune params
+        from emotiond import config
+        anxiety_threshold = config.get_auto_tune_param("clarification_trigger_threshold", 0.2)
+        
         # High anxiety + ambiguous event
-        if emotion_after.anxiety > 0.2:
+        if emotion_after.anxiety > anxiety_threshold:
             if event.get("type") == "user_message":
                 text = event.get("text", "").lower()
                 ambiguous_indicators = ["maybe", "i don't know", "not sure", "whatever", 
@@ -522,11 +526,19 @@ class EvalSuiteV2:
             self.original_env[key] = os.environ.get(key)
             os.environ[key] = value
         
+        # MVP-5.1: Preserve auto-tune params before reload
+        from emotiond import config
+        preserved_auto_tune_params = getattr(config, '_auto_tune_params', {}).copy()
+        
         # Reload modules
         import importlib
         importlib.reload(config)
         importlib.reload(db)
         importlib.reload(core)
+        
+        # MVP-5.1: Restore auto-tune params after reload
+        for name, value in preserved_auto_tune_params.items():
+            config.set_auto_tune_param(name, value)
         
         # Initialize database
         await init_db()
