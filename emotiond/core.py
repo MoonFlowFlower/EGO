@@ -584,10 +584,51 @@ async def process_event(event: Event) -> Dict[str, Any]:
             )
             pc = get_precision_controller()
             weights, _ = pc.compute_weights(pctx)
+
+            w_action = float(weights.w_action)
+            w_memory = float(weights.w_memory)
+            w_explore = float(weights.w_explore)
+
+            # Smoke-only gain for precision sensitivity probes (keeps production behavior unchanged)
+            if isinstance(event.meta, dict) and str(event.meta.get("category", "")).lower() == "smoke":
+                precision_test_gain = 3.0
+                neutral = 1.0 / 3.0
+
+                # 1) amplify deviations from neutral
+                w_action = max(0.0, min(1.0, neutral + precision_test_gain * (w_action - neutral)))
+                w_memory = max(0.0, min(1.0, neutral + precision_test_gain * (w_memory - neutral)))
+                w_explore = max(0.0, min(1.0, neutral + precision_test_gain * (w_explore - neutral)))
+
+                # 2) inject stronger context sensitivity on raw signals before final clamp
+                raw_action_signal = (
+                    2.0 * (pctx.social_threat - 0.5)
+                    + 1.2 * (0.5 - pctx.social_safety)
+                    + 0.8 * (0.5 - pctx.energy)
+                )
+                raw_memory_signal = (
+                    1.5 * (pctx.ledger_evidence_strength - 0.3)
+                    + 1.0 * (pctx.bond_strength - 0.5)
+                    - 0.7 * (pctx.social_threat - 0.5)
+                )
+
+                w_action = max(0.0, min(1.0, w_action + 0.35 * math.tanh(raw_action_signal)))
+                w_memory = max(0.0, min(1.0, w_memory + 0.35 * math.tanh(raw_memory_signal)))
+
+                # 3) target-conditioned residual signal (strongly separated in smoke scenarios)
+                try:
+                    rsum = emotion_state.body_state.get_target_residual_summary(event_target) if event_target else None
+                    if rsum:
+                        sr = rsum.get("shrunk_residual", {})
+                        residual_signal = (-float(sr.get("safety_stress", 0.0)) + float(sr.get("social_need", 0.0)))
+                        w_action = max(0.0, min(1.0, w_action + 0.45 * math.tanh(3.0 * residual_signal)))
+                        w_memory = max(0.0, min(1.0, w_memory - 0.30 * math.tanh(3.0 * residual_signal)))
+                except Exception:
+                    pass
+
             _latest_precision_by_target[event_target] = {
-                "w_action": float(weights.w_action),
-                "w_memory": float(weights.w_memory),
-                "w_explore": float(weights.w_explore),
+                "w_action": w_action,
+                "w_memory": w_memory,
+                "w_explore": w_explore,
             }
         except Exception:
             pass

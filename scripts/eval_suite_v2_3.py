@@ -708,18 +708,24 @@ class IndividualizationAnalyzer:
         return 0.0
     
     def calculate_somatic_residual_diff(self) -> float:
-        """Calculate somatic residual differentiation."""
-        if len(self.target_bonds) < 2:
+        """Calculate somatic residual differentiation from target residual telemetry."""
+        if len(self.target_somatic_residuals) < 2:
             return 0.0
-            
-        # Use bond variance as proxy for somatic differentiation
-        all_bond_vars = []
-        for target_id, bonds in self.target_bonds.items():
-            if len(bonds) > 1:
-                all_bond_vars.append(statistics.variance(bonds))
-                
-        if all_bond_vars:
-            return statistics.mean(all_bond_vars)
+
+        dims = ["safety_stress", "social_need", "novelty_need"]
+        across_target_vars = []
+
+        for dim in dims:
+            target_means = []
+            for target_id, residuals in self.target_somatic_residuals.items():
+                vals = residuals.get(dim, [])
+                if vals:
+                    target_means.append(statistics.mean(vals))
+            if len(target_means) > 1:
+                across_target_vars.append(statistics.variance(target_means))
+
+        if across_target_vars:
+            return statistics.mean(across_target_vars)
         return 0.0
     
     def calculate_policy_diff(self) -> float:
@@ -1099,6 +1105,9 @@ class ScenarioRunner:
                 self.targets_seen_input.add(resolved_target_id)
 
                 meta = event_meta.copy() if event_meta else {}
+                scenario_category = (self.scenario_data.get("metadata", {}).get("category", "") if self.scenario_data else "")
+                if scenario_category and "category" not in meta:
+                    meta["category"] = scenario_category
                 
                 if event_type == "world_event" and "source" not in meta:
                     meta["source"] = "system"

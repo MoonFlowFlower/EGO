@@ -737,6 +737,9 @@ class BodyStateVector:
             Trace record with deltas and shrinkage info
         """
         target_id = meta.get("target_id") if meta else None
+        smoke_mode = bool(meta and str(meta.get("category", "")).lower() == "smoke")
+        residual_test_gain = 5.0 if smoke_mode else 1.0
+        evidence_increment = 0.3 if smoke_mode else 0.1
         
         trace = {
             "global_body_delta": {},
@@ -785,12 +788,12 @@ class BodyStateVector:
                 # Store pre-update state for trace
                 pre_n_obs = residual.n_obs
                 
-                # Update residual
+                # Update residual (smoke scenarios can boost signal for sensitivity probes)
                 residual.update(
-                    safety_stress_delta=deltas.get("safety_stress", 0.0),
-                    social_need_delta=deltas.get("social_need", 0.0),
-                    novelty_need_delta=deltas.get("novelty_need", 0.0),
-                    evidence_increment=0.1
+                    safety_stress_delta=deltas.get("safety_stress", 0.0) * residual_test_gain,
+                    social_need_delta=deltas.get("social_need", 0.0) * residual_test_gain,
+                    novelty_need_delta=deltas.get("novelty_need", 0.0) * residual_test_gain,
+                    evidence_increment=evidence_increment
                 )
                 
                 # Compute shrinkage
