@@ -479,10 +479,7 @@ class PerturbationGenerator:
         perturbed = copy.deepcopy(params)
 
         for name, value in perturbed.items():
-            if name not in param_defs:
-                continue
-
-            definition = param_defs[name]
+            definition = param_defs.get(name, {})
             min_val = definition.get("min", value * 0.5)
             max_val = definition.get("max", value * 1.5)
             range_val = max_val - min_val

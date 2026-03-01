@@ -61,6 +61,7 @@ class MetricType(Enum):
 @dataclass
 class BodyTelemetrySnapshot:
     """Body state telemetry at a point in time"""
+    turn_id: int
     timestamp: float
     valence: float
     arousal: float
@@ -179,6 +180,7 @@ class BodyTelemetryTracker:
     def record(self, turn_id: int, emotion_state):
         """Record a telemetry snapshot"""
         snapshot = BodyTelemetrySnapshot(
+            turn_id=turn_id,
             timestamp=time.time(),
             valence=emotion_state.valence,
             arousal=emotion_state.arousal,
@@ -207,7 +209,7 @@ class BodyTelemetryTracker:
                 "mean": statistics.mean(energies),
                 "min": min(energies),
                 "max": max(energies),
-                "range": max(energies) - min(energies),
+                "range": round(max(energies) - min(energies), 6),
                 "final": energies[-1],
                 "trend": energies[-1] - energies[0] if len(energies) > 1 else 0
             },
@@ -215,7 +217,7 @@ class BodyTelemetryTracker:
                 "mean": statistics.mean(social_safeties),
                 "min": min(social_safeties),
                 "max": max(social_safeties),
-                "range": max(social_safeties) - min(social_safeties),
+                "range": round(max(social_safeties) - min(social_safeties), 6),
                 "final": social_safeties[-1],
                 "trend": social_safeties[-1] - social_safeties[0] if len(social_safeties) > 1 else 0
             },
@@ -294,7 +296,7 @@ class ConsequenceTagger:
     def calculate_distribution(self, all_tags: List[ConsequenceTag]) -> Dict[str, Any]:
         """Calculate consequence tag distribution"""
         if not all_tags:
-            return {"total": 0, "by_tag": {}, "by_severity": {"low": 0, "medium": 0, "high": 0}}
+            return {"total": 0, "by_tag": {}, "by_severity": {"low": 0, "medium": 0, "high": 0}, "unique_tags": 0}
             
         by_tag = defaultdict(int)
         by_severity = {"low": 0, "medium": 0, "high": 0}
