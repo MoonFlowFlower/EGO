@@ -31,6 +31,7 @@ from emotiond.config import (
 from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
 from emotiond.memory import memory_system, initialize_memory_system
+from emotiond.body_state import BodyStateVector
 # MVP-5 D2: Allostasis Budget
 from emotiond.allostasis import (
     AllostasisBudget, get_budget, reset_budget,
@@ -95,6 +96,10 @@ class EmotionState:
         # MVP-3 B1: Interoceptive states
         self.social_safety = 0.6  # [0, 1], default 0.6
         self.energy = 0.7  # [0, 1], default 0.7
+
+        # MVP-6 D1: Virtual body state (compatibility-first)
+        self.body_state = BodyStateVector()
+        self.body_state.energy.value = self.energy
         
         # MVP-4 D1: Uncertainty tracking
         self.uncertainty = 0.5  # How uncertain current state is
@@ -257,6 +262,8 @@ class EmotionState:
         # MVP-3 B1: Energy recovery over time
         energy_recovery = 0.001 * real_dt  # 0.1% per second
         self.energy = min(1.0, self.energy + energy_recovery)
+        if hasattr(self, "body_state"):
+            self.body_state.energy.value = self.energy
         
         time_since_contact = time.time() - self.last_meaningful_contact
         if time_since_contact > 3600:
