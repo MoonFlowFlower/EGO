@@ -804,6 +804,18 @@ class ScenarioRunner:
         self.consequence_tagger = ConsequenceTagger()
         self.recovery_analyzer = RecoveryAnalyzer()
         self.individualization_analyzer = IndividualizationAnalyzer()
+        self.targets_seen_input: set[str] = set()
+
+    @staticmethod
+    def _resolve_target_id(event_data: Dict[str, Any]) -> Optional[str]:
+        """Resolve target id from scenario event payload without silent fallback collapse."""
+        raw = event_data.get("target_id", event_data.get("target"))
+        if raw is None:
+            return None
+        target_id = str(raw).strip()
+        if not target_id or target_id.lower() in {"none", "null"}:
+            return None
+        return target_id
         
     def load(self) -> bool:
         """Load scenario from YAML file"""
@@ -950,7 +962,8 @@ class ScenarioRunner:
         
         event_type = event_data.get("type", "user_message")
         actor = event_data.get("actor", "unknown")
-        target = event_data.get("target", "assistant")
+        resolved_target_id = self._resolve_target_id(event_data)
+        target = resolved_target_id or event_data.get("target", "assistant")
         event_meta = event_data.get("meta", {})
         event_subtype = event_meta.get("subtype") if event_meta else None
         
@@ -970,6 +983,12 @@ class ScenarioRunner:
                 gain = 1.0 - math.exp(-rr * dt)
                 core.emotion_state.energy = _clamp(core.emotion_state.energy + (1.0 - core.emotion_state.energy) * gain, 0.0, 1.0)
             else:
+                if resolved_target_id is None:
+                    raise RuntimeError(
+                        f"E_TARGET_ID_MISSING: turn={turn_id} event_type={event_type} actor={actor}"
+                    )
+                self.targets_seen_input.add(resolved_target_id)
+
                 meta = event_meta.copy() if event_meta else {}
                 
                 if event_type == "world_event" and "source" not in meta:
@@ -978,7 +997,7 @@ class ScenarioRunner:
                 event = Event(
                     type=event_type,
                     actor=actor,
-                    target=target,
+                    target=resolved_target_id,
                     text=event_data.get("text"),
                     meta=meta if meta else None
                 )
@@ -1028,6 +1047,8 @@ class ScenarioRunner:
             )
             
         except Exception as e:
+            if str(e).startswith("E_TARGET_"):
+                raise
             return TurnResult(
                 turn_id=turn_id,
                 phase=phase,
@@ -1216,6 +1237,7 @@ class ScenarioRunner:
         # Process all turns
         self.turn_results = []
         all_consequence_tags = []
+        self.targets_seen_input = set()
         
         for turn_data in turns:
             result = await self.process_turn(turn_data)
@@ -1234,9 +1256,38 @@ class ScenarioRunner:
             
             # Analyze recovery
             self.recovery_analyzer.process_turn(result)
+
+        # A/B/C debug counters for target isolation breakpoints
+        targets_seen_count = len(self.targets_seen_input)
+        relationship_targets = sorted(list((getattr(core.relationship_manager, "relationships", {}) or {}).keys()))
+        relationship_targets_count = len(relationship_targets)
+        ledger_targets = sorted(list(self.individualization_analyzer.target_ledgers.keys()))
+        ledger_targets_count = len(ledger_targets)
+
+        # Hard-stop on target collapse (infra failure, not metric failure)
+        if targets_seen_count < 2:
+            raise RuntimeError(
+                f"E_TARGET_COLLAPSE: scenario={scenario_name} "
+                f"A.targets_seen={targets_seen_count}:{sorted(self.targets_seen_input)} "
+                f"B.relationship_targets={relationship_targets_count}:{relationship_targets} "
+                f"C.ledger_targets={ledger_targets_count}:{ledger_targets}"
+            )
         
         # Calculate metrics
         metrics, failure_reasons = self.calculate_metrics()
+        metrics["target_isolation_debug"] = {
+            "targets_seen_count": targets_seen_count,
+            "targets_seen": sorted(self.targets_seen_input),
+            "relationship_targets_count": relationship_targets_count,
+            "relationship_targets": relationship_targets,
+            "ledger_targets_count": ledger_targets_count,
+            "ledger_targets": ledger_targets,
+            "passed": (
+                targets_seen_count >= 2 and
+                relationship_targets_count >= 2 and
+                ledger_targets_count >= 2
+            ),
+        }
         
         # Calculate consequence distribution
         consequence_dist = self.consequence_tagger.calculate_distribution(all_consequence_tags)
