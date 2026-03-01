@@ -81,3 +81,50 @@ class AppraisalResponse(BaseModel):
     affect: Optional[Dict[str, float]] = None
     mood: Optional[Dict[str, float]] = None
     bond: Optional[Dict[str, float]] = None
+
+
+# MVP-6 D3: External Event models
+class ExternalEventPayload(BaseModel):
+    """Base payload for external events"""
+    pass
+
+
+class UserMessagePayload(ExternalEventPayload):
+    """Payload for user_message type"""
+    sentiment: Optional[str] = None  # positive|negative|neutral
+    urgency: Optional[float] = None  # [0, 1]
+    entities: Optional[List[str]] = None
+
+
+class AssistantReplyPayload(ExternalEventPayload):
+    """Payload for assistant_reply type"""
+    tone: Optional[str] = None  # soft|warm|guarded|cold|neutral
+    intent: Optional[str] = None  # repair|distance|seek|set_boundary|retaliate|inform
+    confidence: Optional[float] = None  # [0, 1]
+
+
+class WorldEventPayload(ExternalEventPayload):
+    """Payload for world_event type"""
+    subtype: str  # care|apology|ignored|rejection|betrayal|neutral|uncertain|repair_success|time_passed
+    severity: Optional[float] = None  # [0, 1]
+    context: Optional[Dict[str, Any]] = None
+
+
+class ExternalEventRequest(BaseModel):
+    """MVP-6 D3: Request model for POST /events/external"""
+    event_id: Optional[str] = None  # Optional idempotency key
+    type: str  # user_message|assistant_reply|world_event
+    target_id: str  # Required for anti-forgery
+    actor: Optional[str] = None  # Defaults to target_id
+    text: Optional[str] = None
+    payload: Optional[Dict[str, Any]] = None  # Type-specific payload
+    meta: Optional[Dict[str, Any]] = None
+
+
+class ExternalEventResponse(BaseModel):
+    """MVP-6 D3: Response model for POST /events/external"""
+    status: str  # accepted|rejected|duplicate|error
+    event_id: Optional[str] = None
+    internal_event_id: Optional[str] = None
+    message: Optional[str] = None
+    degraded: bool = False  # True if graceful degradation was applied

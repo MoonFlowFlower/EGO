@@ -309,3 +309,316 @@ async def get_appraisal(request: AppraisalRequest):
         
     except Exception as e:
         return {"error": str(e), "traceback": traceback.format_exc()}
+
+
+# MVP-6 D3: External Events Endpoint
+import json
+import hashlib
+import time
+from pathlib import Path
+from emotiond.models import ExternalEventRequest, ExternalEventResponse
+from emotiond.db import check_and_record_duplicate
+
+# Load JSON schema for external events
+_SCHEMA_PATH = Path(__file__).parent.parent / "schemas" / "external_event.schema.json"
+_EXTERNAL_EVENT_SCHEMA = None
+
+def get_external_event_schema() -> dict:
+    """Load and cache the external event JSON schema."""
+    global _EXTERNAL_EVENT_SCHEMA
+    if _EXTERNAL_EVENT_SCHEMA is None:
+        try:
+            with open(_SCHEMA_PATH, 'r') as f:
+                _EXTERNAL_EVENT_SCHEMA = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            # Schema not available - will use Pydantic validation only
+            _EXTERNAL_EVENT_SCHEMA = {}
+    return _EXTERNAL_EVENT_SCHEMA
+
+
+# Valid event types
+VALID_EVENT_TYPES = {"user_message", "assistant_reply", "world_event"}
+
+# Valid payload subtypes for world_event
+VALID_WORLD_SUBTYPES = {"care", "apology", "ignored", "rejection", "betrayal", "neutral", "uncertain", "repair_success", "time_passed"}
+
+# Valid payload fields per type
+VALID_PAYLOAD_FIELDS = {
+    "user_message": {"sentiment", "urgency", "entities"},
+    "assistant_reply": {"tone", "intent", "confidence"},
+    "world_event": {"subtype", "severity", "context"}
+}
+
+# Valid enum values
+VALID_SENTIMENTS = {"positive", "negative", "neutral"}
+VALID_TONES = {"soft", "warm", "guarded", "cold", "neutral"}
+VALID_INTENTS = {"repair", "distance", "seek", "set_boundary", "retaliate", "inform"}
+
+
+def validate_external_event_payload(event_type: str, payload: dict) -> tuple[bool, Optional[str]]:
+    """
+    Validate payload structure based on event type.
+    Returns (is_valid, error_message).
+    """
+    if payload is None:
+        if event_type == "world_event":
+            return False, "world_event requires payload with subtype"
+        return True, None
+    
+    if not isinstance(payload, dict):
+        return False, f"payload must be an object, got {type(payload).__name__}"
+    
+    # Check for unknown fields
+    allowed_fields = VALID_PAYLOAD_FIELDS.get(event_type, set())
+    unknown_fields = set(payload.keys()) - allowed_fields
+    if unknown_fields:
+        return False, f"unknown payload fields for {event_type}: {sorted(unknown_fields)}"
+    
+    # Type-specific validation
+    if event_type == "user_message":
+        if "sentiment" in payload:
+            if payload["sentiment"] not in VALID_SENTIMENTS:
+                return False, f"invalid sentiment: {payload['sentiment']}"
+        if "urgency" in payload:
+            u = payload["urgency"]
+            if not isinstance(u, (int, float)) or u < 0 or u > 1:
+                return False, f"urgency must be in [0, 1], got {u}"
+        if "entities" in payload:
+            if not isinstance(payload["entities"], list):
+                return False, "entities must be an array"
+            if len(payload["entities"]) > 100:
+                return False, "entities array exceeds max 100 items"
+    
+    elif event_type == "assistant_reply":
+        if "tone" in payload:
+            if payload["tone"] not in VALID_TONES:
+                return False, f"invalid tone: {payload['tone']}"
+        if "intent" in payload:
+            if payload["intent"] not in VALID_INTENTS:
+                return False, f"invalid intent: {payload['intent']}"
+        if "confidence" in payload:
+            c = payload["confidence"]
+            if not isinstance(c, (int, float)) or c < 0 or c > 1:
+                return False, f"confidence must be in [0, 1], got {c}"
+    
+    elif event_type == "world_event":
+        if "subtype" not in payload:
+            return False, "world_event payload requires subtype"
+        if payload["subtype"] not in VALID_WORLD_SUBTYPES:
+            return False, f"invalid subtype: {payload['subtype']}"
+        if "severity" in payload:
+            s = payload["severity"]
+            if not isinstance(s, (int, float)) or s < 0 or s > 1:
+                return False, f"severity must be in [0, 1], got {s}"
+        if "context" in payload:
+            if not isinstance(payload["context"], dict):
+                return False, "context must be an object"
+    
+    return True, None
+
+
+def sanitize_event_id(event_id: Optional[str]) -> Optional[str]:
+    """Sanitize event_id for idempotency key."""
+    if event_id is None:
+        return None
+    # Limit length and allow only safe characters
+    event_id = event_id.strip()
+    if len(event_id) > 128:
+        event_id = event_id[:128]
+    # Allow alphanumeric, underscore, hyphen
+    import re
+    if not re.match(r'^[a-zA-Z0-9_-]+$', event_id):
+        return None
+    return event_id
+
+
+@app.post("/events/external")
+async def post_events_external(
+    request: ExternalEventRequest,
+    http_request: Request
+):
+    """
+    MVP-6 D3: External events endpoint with strict validation.
+    
+    - Validates type enum and payload structure
+    - Requires target_id for anti-forgery
+    - Supports optional event_id for idempotency
+    - Graceful degradation on timeout/errors
+    - Minimal trace logging (no payload bloat)
+    """
+    start_time = time.time()
+    degraded = False
+    trace_info = {
+        "endpoint": "/events/external",
+        "client_host": http_request.client.host if http_request.client else "unknown",
+    }
+    
+    try:
+        # Validate event_id format if provided
+        event_id = sanitize_event_id(request.event_id)
+        if request.event_id and event_id is None:
+            trace_info["validation_error"] = "invalid_event_id_format"
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "rejected",
+                    "event_id": request.event_id,
+                    "message": "event_id must be alphanumeric with underscores/hyphens only, max 128 chars",
+                    "degraded": False
+                }
+            )
+        
+        # Check idempotency if event_id provided
+        if event_id:
+            is_duplicate = await check_and_record_duplicate(event_id, window_hours=24)
+            if is_duplicate:
+                trace_info["idempotency"] = "duplicate_detected"
+                return {
+                    "status": "duplicate",
+                    "event_id": event_id,
+                    "message": "event with this event_id already processed within 24h",
+                    "degraded": False
+                }
+        
+        # Validate required fields
+        if not request.type:
+            trace_info["validation_error"] = "missing_type"
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "rejected",
+                    "event_id": event_id,
+                    "message": "type is required",
+                    "degraded": False
+                }
+            )
+        
+        if not request.target_id:
+            trace_info["validation_error"] = "missing_target_id"
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "rejected",
+                    "event_id": event_id,
+                    "message": "target_id is required for anti-forgery",
+                    "degraded": False
+                }
+            )
+        
+        # Validate type enum
+        if request.type not in VALID_EVENT_TYPES:
+            trace_info["validation_error"] = f"invalid_type: {request.type}"
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "rejected",
+                    "event_id": event_id,
+                    "message": f"invalid type: {request.type}. Must be one of: {sorted(VALID_EVENT_TYPES)}",
+                    "degraded": False
+                }
+            )
+        
+        # Validate payload structure
+        payload_valid, payload_error = validate_external_event_payload(
+            request.type,
+            request.payload
+        )
+        if not payload_valid:
+            trace_info["validation_error"] = payload_error
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "rejected",
+                    "event_id": event_id,
+                    "message": payload_error,
+                    "degraded": False
+                }
+            )
+        
+        # Build internal event
+        actor = request.actor if request.actor else request.target_id
+        
+        # Merge payload into meta for internal processing
+        meta = dict(request.meta) if request.meta else {}
+        if request.payload:
+            # For world_event, extract subtype to meta
+            if request.type == "world_event":
+                meta["subtype"] = request.payload.get("subtype")
+                if "severity" in request.payload:
+                    meta["severity"] = request.payload["severity"]
+                if "context" in request.payload:
+                    meta["context"] = request.payload["context"]
+            # For user_message, extract sentiment
+            elif request.type == "user_message":
+                if "sentiment" in request.payload:
+                    meta["sentiment"] = request.payload["sentiment"]
+                if "urgency" in request.payload:
+                    meta["urgency"] = request.payload["urgency"]
+            # For assistant_reply, extract tone/intent
+            elif request.type == "assistant_reply":
+                if "tone" in request.payload:
+                    meta["tone"] = request.payload["tone"]
+                if "intent" in request.payload:
+                    meta["intent"] = request.payload["intent"]
+        
+        # Create internal Event
+        internal_event = Event(
+            type=request.type,
+            actor=actor,
+            target=request.target_id,
+            text=request.text,
+            meta=meta
+        )
+        
+        # Process with timeout for graceful degradation
+        try:
+            # 5 second timeout for processing
+            result = await asyncio.wait_for(
+                process_event(internal_event),
+                timeout=5.0
+            )
+        except asyncio.TimeoutError:
+            trace_info["degradation"] = "timeout"
+            degraded = True
+            # Accept event but mark as degraded
+            result = {"status": "accepted_degraded", "reason": "processing_timeout"}
+        
+        # Generate internal event ID
+        internal_event_id = hashlib.sha256(
+            f"{request.type}:{request.target_id}:{time.time()}".encode()
+        ).hexdigest()[:16]
+        
+        trace_info["duration_ms"] = round((time.time() - start_time) * 1000, 2)
+        trace_info["result_status"] = result.get("status", "unknown")
+        
+        response_status = "accepted"
+        if degraded:
+            response_status = "accepted"
+        elif result.get("status") == "error":
+            response_status = "error"
+        
+        return {
+            "status": response_status,
+            "event_id": event_id,
+            "internal_event_id": internal_event_id,
+            "message": result.get("message") if degraded else None,
+            "degraded": degraded
+        }
+        
+    except Exception as e:
+        trace_info["error"] = str(e)
+        trace_info["error_type"] = type(e).__name__
+        # Log minimal trace (no payload)
+        import logging
+        logger = logging.getLogger("emotiond.api.external")
+        logger.warning(f"External event error: {trace_info}")
+        
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "event_id": event_id if 'event_id' in locals() else None,
+                "message": "internal error processing event",
+                "degraded": True
+            }
+        )
