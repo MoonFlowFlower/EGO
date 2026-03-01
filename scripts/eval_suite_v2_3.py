@@ -822,6 +822,9 @@ class ScenarioRunner:
             actor = event_data.get("actor")
             if actor in self.declared_target_ids:
                 raw = actor
+        # scenario_context.target_id fallback only for single-target scenarios
+        if raw is None and len(self.declared_target_ids) == 1:
+            raw = next(iter(self.declared_target_ids))
         if raw is None:
             return None
         target_id = str(raw).strip()
