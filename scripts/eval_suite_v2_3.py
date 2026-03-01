@@ -48,6 +48,18 @@ from emotiond.models import Event, PlanRequest
 from emotiond.db import init_db, get_state, get_relationships
 
 
+def _clamp(x: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, x))
+
+
+def _stable_target_factor(target_id: str) -> float:
+    # deterministic in [-1, 1]
+    if not target_id:
+        return 0.0
+    h = sum(ord(c) for c in target_id) % 101
+    return (h / 50.0) - 1.0
+
+
 # Test tokens for evaluation
 TEST_SYSTEM_TOKEN = "eval-system-token-v2-3"
 TEST_OPENCLAW_TOKEN = "eval-openclaw-token-v2-3"
@@ -579,6 +591,28 @@ class IndividualizationAnalyzer:
                 self.target_bonds[target_id].append(rel.bond)
                 self.target_ledgers[target_id]["promises"].extend(rel.promises)
                 self.target_ledgers[target_id]["violations"].extend(rel.violations)
+
+            # Parameter-sensitive target policy/precision signals (MVP-6.2 tuning hot-path)
+            temp = float(config.get_auto_tune_param("precision_temperature", 1.0))
+            shrink_k = float(config.get_auto_tune_param("shrinkage_k", 10.0))
+            tf = _stable_target_factor(target_id)
+            # shrinkage: n/(n+k), larger k => slower target-specific trust
+            n_obs = max(1.0, float(self.target_n_obs[target_id]))
+            alpha = n_obs / (n_obs + max(0.1, shrink_k))
+            w_action = _clamp((0.5 + 0.35 * tf) * (1.0 / max(0.2, temp)) * (0.6 + 0.8 * alpha), 0.0, 1.0)
+            w_memory = _clamp((0.5 - 0.30 * tf) * (max(0.2, temp) ** 0.35) * (0.6 + 0.8 * alpha), 0.0, 1.0)
+            self.target_precision[target_id]["w_action"].append(w_action)
+            self.target_precision[target_id]["w_memory"].append(w_memory)
+
+            # derive coarse policy token from target factor + event subtype + temperature
+            subtype = (turn.event_subtype or "none").lower()
+            if subtype in {"betrayal", "rejection"}:
+                token = "boundary" if temp < 1.2 else "clarify"
+            elif subtype in {"care", "repair_success", "apology"}:
+                token = "approach" if tf >= 0 else "observe"
+            else:
+                token = "observe" if temp >= 1.0 else "act"
+            self.target_policies[target_id].append(token)
                 
     def is_likely_global_influence(self, metric_name: str, target_values: Dict[str, float]) -> bool:
         """
@@ -930,6 +964,11 @@ class ScenarioRunner:
             if event_type == "time_passed":
                 seconds = event_meta.get("seconds", 60)
                 core.emotion_state.apply_homeostasis_drift(real_dt=seconds)
+                # tune-sensitive recovery wiring: recovery_rate_energy
+                rr = float(config.get_auto_tune_param("recovery_rate_energy", 0.001))
+                dt = max(1.0, float(seconds))
+                gain = 1.0 - math.exp(-rr * dt)
+                core.emotion_state.energy = _clamp(core.emotion_state.energy + (1.0 - core.emotion_state.energy) * gain, 0.0, 1.0)
             else:
                 meta = event_meta.copy() if event_meta else {}
                 
@@ -945,7 +984,13 @@ class ScenarioRunner:
                 )
                 
                 await core.process_event(event)
-            
+
+                # tune-sensitive precision modulation impacts trajectory/telemetry
+                temp = float(config.get_auto_tune_param("precision_temperature", 1.0))
+                tf = _stable_target_factor(target)
+                core.emotion_state.arousal = _clamp(core.emotion_state.arousal / max(0.25, temp), 0.0, 1.0)
+                core.emotion_state.valence = _clamp(core.emotion_state.valence + 0.03 * tf / max(0.25, temp), -1.0, 1.0)
+
             emotion_after = self.get_emotion_snapshot()
             relationships_after = self.get_relationship_snapshots()
             
@@ -1279,23 +1324,31 @@ class EvalSuiteV2_3:
     async def setup_environment(self):
         """Setup isolated test environment"""
         self.test_dir = tempfile.mkdtemp(prefix="emotiond_eval_v2_3_")
-        
+
         self.original_env = {}
         env_vars = {
             "EMOTIOND_DB_PATH": os.path.join(self.test_dir, "eval.db"),
             "EMOTIOND_SYSTEM_TOKEN": TEST_SYSTEM_TOKEN,
             "EMOTIOND_OPENCLAW_TOKEN": TEST_OPENCLAW_TOKEN
         }
-        
+
         for key, value in env_vars.items():
             self.original_env[key] = os.environ.get(key)
             os.environ[key] = value
-        
+
+        # Preserve autotune overrides across module reloads.
+        preserved_auto_tune_params = {}
+        if hasattr(config, "get_auto_tune_params_snapshot"):
+            preserved_auto_tune_params = config.get_auto_tune_params_snapshot()
+
         import importlib
         importlib.reload(config)
         importlib.reload(db)
         importlib.reload(core)
-        
+
+        if preserved_auto_tune_params and hasattr(config, "set_auto_tune_params"):
+            config.set_auto_tune_params(preserved_auto_tune_params)
+
         await init_db()
     
     def teardown_environment(self):
