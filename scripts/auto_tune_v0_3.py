@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Auto-Tune v0.3 for OpenEmotion MVP-6.1 (D5)"""
+"""Auto-Tune v0.3 for OpenEmotion MVP-6.x (D5+), fixed param injection."""
 
 import os
 import sys
@@ -17,8 +17,8 @@ from dataclasses import dataclass, field
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from scripts.eval_suite_v2_2 import EvalSuiteV2_2, EvalResult, result_to_dict
-from emotiond import core
+from scripts.eval_suite_v2_3 import EvalSuiteV2_3, EvalResult, result_to_dict
+from emotiond.config import set_auto_tune_param, clear_auto_tune_params
 
 DEFAULT_TUNABLE_PARAMS = {
     "precision_temperature": {"default": 0.5, "min": 0.1, "max": 1.0, "category": "precision"},
@@ -404,13 +404,14 @@ class AutoTuneEngine:
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     def apply_parameters(self, params: Dict[str, float]):
-        core._auto_tune_params = getattr(core, '_auto_tune_params', {})
-        core._auto_tune_params.update(params)
+        clear_auto_tune_params()
+        for k, v in params.items():
+            set_auto_tune_param(k, float(v))
 
     async def run_eval(self, params: Dict[str, float],
                       scenarios: Optional[List[Path]] = None) -> EvalResult:
         self.apply_parameters(params)
-        suite = EvalSuiteV2_2(scenarios_dir=self.scenarios_dir, output_format="json", seed=self.seed)
+        suite = EvalSuiteV2_3(scenarios_dir=self.scenarios_dir, output_format="json", seed=self.seed)
         result = await suite.run_all(scenarios)
         return result
 
