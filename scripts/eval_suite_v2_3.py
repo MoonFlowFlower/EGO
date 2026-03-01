@@ -1280,9 +1280,11 @@ class ScenarioRunner:
         ledger_targets_count = len(ledger_targets)
 
         # Hard-stop on target collapse (infra failure, not metric failure)
-        if targets_seen_count < 2:
+        expected_target_count = len(self.declared_target_ids)
+        if expected_target_count >= 2 and targets_seen_count < 2:
             raise RuntimeError(
                 f"E_TARGET_COLLAPSE: scenario={scenario_name} "
+                f"expected_targets={expected_target_count} "
                 f"A.targets_seen={targets_seen_count}:{sorted(self.targets_seen_input)} "
                 f"B.relationship_targets={relationship_targets_count}:{relationship_targets} "
                 f"C.ledger_targets={ledger_targets_count}:{ledger_targets}"
@@ -1297,10 +1299,10 @@ class ScenarioRunner:
             "relationship_targets": relationship_targets,
             "ledger_targets_count": ledger_targets_count,
             "ledger_targets": ledger_targets,
+            "expected_target_count": expected_target_count,
             "passed": (
-                targets_seen_count >= 2 and
-                relationship_targets_count >= 2 and
-                ledger_targets_count >= 2
+                (expected_target_count < 2) or
+                (targets_seen_count >= 2 and relationship_targets_count >= 2 and ledger_targets_count >= 2)
             ),
         }
         
