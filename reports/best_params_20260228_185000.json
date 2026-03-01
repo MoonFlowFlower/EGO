@@ -1,0 +1,39 @@
+{
+  "params": {
+    "precision_temperature": 0.6394977453347728,
+    "precision_uncertainty_threshold": 0.21167194822236637,
+    "w_external_default": 0.49439896251325094,
+    "w_internal_default": 0.3132898759868482,
+    "w_memory_default": 0.3525581975026162,
+    "w_action_default": 0.4276594594079401,
+    "w_explore_default": 0.22417996449201014,
+    "energy_recovery_rate": 0.005032157276478331,
+    "energy_depletion_conflict": 0.10984947816731258,
+    "energy_depletion_uncertainty": 0.07488270560657495,
+    "low_energy_explore_dampening": 0.6750507834458954,
+    "low_energy_learning_dampening": 0.3168637560945864,
+    "curiosity_info_gain_threshold": 0.18195969697817907,
+    "boredom_prediction_error_threshold": 0.1029973774056256,
+    "confusion_error_threshold": 0.19281208887924936,
+    "boredom_time_window": 153.38947736395508,
+    "self_model_update_rate": 0.2033198655144283,
+    "identity_stability_threshold": 0.5472428278119096,
+    "value_conflict_resolution_rate": 0.12149362515496348,
+    "clarification_trigger_threshold": 0.3738344115798915,
+    "reflection_trigger_threshold": 0.399990597510787
+  },
+  "metadata": {
+    "candidate_id": 1,
+    "fitness": -1.7920454545454545,
+    "metrics": {
+      "scenario_pass_rate": 0.5,
+      "high_impact_false_positive_rate": 0.041666666666666664,
+      "cross_target_interference": 0.5795454545454546,
+      "over_clarification_rate": 0.0,
+      "avg_tokens_per_turn": 21.5
+    },
+    "timestamp": "2026-02-28T18:50:00.709845",
+    "git_commit": "a8903cc",
+    "seed": 42
+  }
+}
