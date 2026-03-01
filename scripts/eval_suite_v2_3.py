@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from emotiond import config, db, core
 from emotiond.models import Event, PlanRequest
 from emotiond.db import init_db, get_state, get_relationships
+from emotiond.ledger import init_ledger
 
 
 def _clamp(x: float, lo: float, hi: float) -> float:
@@ -147,6 +148,7 @@ class IndividualizationSubscores:
     
     # Failure reasons
     failure_reasons: List[str] = field(default_factory=list)
+    runtime_signals: Dict[str, Any] = field(default_factory=dict)
     
     def calculate_aggregate(self) -> float:
         """Calculate aggregate individualization score."""
@@ -296,6 +298,7 @@ class TurnResult:
     success: bool = True
     error: Optional[str] = None
     failure_reasons: List[str] = field(default_factory=list)
+    runtime_signals: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -315,6 +318,7 @@ class ScenarioResult:
     consequence_tags: List[ConsequenceTag] = field(default_factory=list)
     recovery_windows: List[RecoveryWindow] = field(default_factory=list)
     failure_reasons: List[str] = field(default_factory=list)
+    runtime_signals: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -589,29 +593,39 @@ class IndividualizationAnalyzer:
             if turn.relationships and target_id in turn.relationships:
                 rel = turn.relationships[target_id]
                 self.target_bonds[target_id].append(rel.bond)
-                self.target_ledgers[target_id]["promises"].extend(rel.promises)
-                self.target_ledgers[target_id]["violations"].extend(rel.violations)
 
-            # Parameter-sensitive target policy/precision signals (MVP-6.2 tuning hot-path)
-            temp = float(config.get_auto_tune_param("precision_temperature", 1.0))
-            shrink_k = float(config.get_auto_tune_param("shrinkage_k", 10.0))
-            tf = _stable_target_factor(target_id)
-            # shrinkage: n/(n+k), larger k => slower target-specific trust
-            n_obs = max(1.0, float(self.target_n_obs[target_id]))
-            alpha = n_obs / (n_obs + max(0.1, shrink_k))
-            w_action = _clamp((0.5 + 0.35 * tf) * (1.0 / max(0.2, temp)) * (0.6 + 0.8 * alpha), 0.0, 1.0)
-            w_memory = _clamp((0.5 - 0.30 * tf) * (max(0.2, temp) ** 0.35) * (0.6 + 0.8 * alpha), 0.0, 1.0)
-            self.target_precision[target_id]["w_action"].append(w_action)
-            self.target_precision[target_id]["w_memory"].append(w_memory)
+            # Runtime signals from real sources (ledger/body_state/target_predictions)
+            rs = turn.runtime_signals or {}
+            ledger = rs.get("ledger", {})
+            if ledger.get("source") in {"ledger_db", "body_state", "target_predictions"}:
+                pcount = int(ledger.get("promise_count", 0))
+                vcount = int(ledger.get("violation_count", 0))
+                self.target_ledgers[target_id]["promises"] = [None] * max(0, pcount)
+                self.target_ledgers[target_id]["violations"] = [None] * max(0, vcount)
 
-            # derive coarse policy token from target factor + event subtype + temperature
+            residual = rs.get("residual", {})
+            eff = residual.get("residual_effective", {}) if isinstance(residual, dict) else {}
+            for dim in ("safety_stress", "social_need", "novelty_need"):
+                if dim in eff:
+                    self.target_somatic_residuals[target_id][dim].append(float(eff.get(dim, 0.0)))
+
+            prec = rs.get("precision", {})
+            if isinstance(prec, dict):
+                if "mean_w_action" in prec:
+                    self.target_precision[target_id]["w_action"].append(float(prec["mean_w_action"]))
+                if "mean_w_memory" in prec:
+                    self.target_precision[target_id]["w_memory"].append(float(prec["mean_w_memory"]))
+                if "mean_w_explore" in prec:
+                    self.target_precision[target_id]["w_explore"].append(float(prec["mean_w_explore"]))
+
+            # Policy token from actual event subtype
             subtype = (turn.event_subtype or "none").lower()
             if subtype in {"betrayal", "rejection"}:
-                token = "boundary" if temp < 1.2 else "clarify"
+                token = "boundary"
             elif subtype in {"care", "repair_success", "apology"}:
-                token = "approach" if tf >= 0 else "observe"
+                token = "approach"
             else:
-                token = "observe" if temp >= 1.0 else "act"
+                token = "observe"
             self.target_policies[target_id].append(token)
                 
     def is_likely_global_influence(self, metric_name: str, target_values: Dict[str, float]) -> bool:
@@ -930,6 +944,72 @@ class ScenarioRunner:
         
         return False, None
     
+    async def _collect_runtime_signals(self, target_id: Optional[str]) -> Dict[str, Any]:
+        signals = {"ledger": {"source": "missing"}, "residual": {"source": "missing"}, "precision": {"source": "missing"}}
+        if not target_id:
+            return signals
+
+        # Ledger snapshot (real source: promise ledger)
+        try:
+            from emotiond.ledger import get_ledger
+            ledger = get_ledger()
+            active = await ledger.get_active_promises(target_id)
+            all_promises = await ledger.get_all_promises(limit=500)
+            target_promises = [p for p in all_promises if p.promisee == target_id]
+            broken = [p for p in target_promises if p.status == "broken"]
+            signals["ledger"] = {
+                "source": "ledger_db",
+                "promise_count": len(target_promises),
+                "violation_count": len(broken),
+                "active_promises_count": len(active),
+            }
+        except Exception as e:
+            signals["ledger"] = {"source": "error", "error": str(e)}
+
+        # Residual snapshot (real source: body_state target residuals)
+        try:
+            bs = getattr(core.emotion_state, "body_state", None)
+            if bs and hasattr(bs, "get_target_residual_summary"):
+                summary = bs.get_target_residual_summary(target_id)
+                if summary:
+                    signals["residual"] = {
+                        "source": "body_state",
+                        "raw_residual": summary.get("raw_residual", {}),
+                        "residual_effective": summary.get("shrunk_residual", {}),
+                        "n_obs": summary.get("n_obs", 0),
+                        "shrink_weight": summary.get("shrinkage_weight", 0.0),
+                    }
+                else:
+                    signals["residual"] = {"source": "body_state", "raw_residual": {}, "residual_effective": {}, "n_obs": 0, "shrink_weight": 0.0}
+        except Exception as e:
+            signals["residual"] = {"source": "error", "error": str(e)}
+
+        # Precision proxy from real target prediction cache
+        try:
+            tp = getattr(core, "_target_predictions", {}) or {}
+            target_pred = tp.get(target_id, {})
+            if target_pred:
+                actions = list(target_pred.values())
+                n_vals = [float(a.get("n", 0.0)) for a in actions]
+                abs_err = [float(a.get("ema_abs_error", 0.0)) for a in actions]
+                sq_err = [float(a.get("ema_sq_error", 0.0)) for a in actions]
+                n_mean = statistics.mean(n_vals) if n_vals else 0.0
+                ae = statistics.mean(abs_err) if abs_err else 0.0
+                se = statistics.mean(sq_err) if sq_err else 0.0
+                w_memory = _clamp(1.0 / (1.0 + ae), 0.0, 1.0)
+                w_action = _clamp(1.0 - min(1.0, se), 0.0, 1.0)
+                w_explore = _clamp(1.0 / (1.0 + n_mean / 5.0), 0.0, 1.0)
+                signals["precision"] = {
+                    "source": "target_predictions",
+                    "mean_w_action": w_action,
+                    "mean_w_memory": w_memory,
+                    "mean_w_explore": w_explore,
+                }
+        except Exception as e:
+            signals["precision"] = {"source": "error", "error": str(e)}
+
+        return signals
+
     def detect_high_impact_candidate(self, event_data: Dict[str, Any], 
                                      emotion_before: EmotionSnapshot,
                                      emotion_after: EmotionSnapshot) -> Tuple[bool, bool, List[str]]:
@@ -990,6 +1070,7 @@ class ScenarioRunner:
         high_impact_event = turn_data.get("high_impact_event", False)
         high_impact_candidate = False
         failure_reasons = []
+        runtime_signals: Dict[str, Any] = {}
         
         try:
             if event_type == "time_passed":
@@ -1021,6 +1102,7 @@ class ScenarioRunner:
                 )
                 
                 await core.process_event(event)
+                runtime_signals = await self._collect_runtime_signals(resolved_target_id)
 
                 # tune-sensitive precision modulation impacts trajectory/telemetry
                 temp = float(config.get_auto_tune_param("precision_temperature", 1.0))
@@ -1061,7 +1143,8 @@ class ScenarioRunner:
                 high_impact_event=high_impact_event,
                 high_impact_candidate=high_impact_candidate,
                 success=True,
-                failure_reasons=failure_reasons
+                failure_reasons=failure_reasons,
+                runtime_signals=runtime_signals
             )
             
         except Exception as e:
@@ -1080,7 +1163,8 @@ class ScenarioRunner:
                 meta_cognition_triggered=False,
                 success=False,
                 error=str(e),
-                failure_reasons=[str(e)]
+                failure_reasons=[str(e)],
+                runtime_signals=runtime_signals
             )
     
     def calculate_metrics(self) -> Dict[str, Any]:
@@ -1401,6 +1485,28 @@ class ScenarioRunner:
                 (targets_seen_count >= 2 and relationship_targets_count >= 2 and ledger_targets_count >= 2)
             ),
         }
+
+        # Blocking sanity gates for smoke scenarios (prevent wasted autotune on dead pipelines)
+        scenario_category = (self.scenario_data.get("metadata", {}).get("category", "") if self.scenario_data else "")
+        if expected_target_count >= 2 and scenario_category == "smoke":
+            raw = metrics.get("individualization_raw_dump", {}).get("per_target", {})
+            ledger_total = sum((v.get("ledger", {}).get("promise_count", 0) + v.get("ledger", {}).get("violation_count", 0)) for v in raw.values())
+            residual_total = 0.0
+            precision_var = []
+            for v in raw.values():
+                reff = v.get("somatic_residual", {}).get("residual_effective", {}) or {}
+                residual_total += sum(abs(float(x)) for x in reff.values())
+                precision_var.append((
+                    float(v.get("precision", {}).get("mean_w_action", 0.0)),
+                    float(v.get("precision", {}).get("mean_w_memory", 0.0)),
+                    float(v.get("precision", {}).get("mean_w_explore", 0.0)),
+                ))
+            if ledger_total <= 0:
+                raise RuntimeError(f"E_LEDGER_NOT_WRITING: scenario={scenario_name} ledger_total={ledger_total}")
+            if residual_total <= 0.0:
+                raise RuntimeError(f"E_RESIDUAL_NOT_WRITING: scenario={scenario_name} residual_total={residual_total}")
+            if len(set(precision_var)) <= 1:
+                raise RuntimeError(f"E_PRECISION_NOT_OBSERVED: scenario={scenario_name} precision={precision_var}")
         
         # Calculate consequence distribution
         consequence_dist = self.consequence_tagger.calculate_distribution(all_consequence_tags)
@@ -1514,6 +1620,7 @@ class EvalSuiteV2_3:
             config.set_auto_tune_params(preserved_auto_tune_params)
 
         await init_db()
+        await init_ledger()
     
     def teardown_environment(self):
         """Cleanup test environment"""
