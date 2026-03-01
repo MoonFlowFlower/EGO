@@ -805,11 +805,23 @@ class ScenarioRunner:
         self.recovery_analyzer = RecoveryAnalyzer()
         self.individualization_analyzer = IndividualizationAnalyzer()
         self.targets_seen_input: set[str] = set()
+        self.declared_target_ids: set[str] = set()
 
-    @staticmethod
-    def _resolve_target_id(event_data: Dict[str, Any]) -> Optional[str]:
-        """Resolve target id from scenario event payload without silent fallback collapse."""
-        raw = event_data.get("target_id", event_data.get("target"))
+    def _resolve_target_id(self, event_data: Dict[str, Any]) -> Optional[str]:
+        """Resolve target_id via explicit fields only (+ declared-target actor mapping)."""
+        raw = event_data.get("target_id")
+        if raw is None:
+            raw = (event_data.get("meta") or {}).get("target_id")
+        # legacy alias: event.target only when not assistant/system
+        if raw is None:
+            t = event_data.get("target")
+            if t and str(t).strip() not in {"assistant", "system"}:
+                raw = t
+        # scenario-context mapping: actor is a declared target_id
+        if raw is None:
+            actor = event_data.get("actor")
+            if actor in self.declared_target_ids:
+                raw = actor
         if raw is None:
             return None
         target_id = str(raw).strip()
@@ -865,6 +877,9 @@ class ScenarioRunner:
             return
             
         targets = self.scenario_data.get("targets", [])
+        self.declared_target_ids = {
+            str(t.get("target_id")).strip() for t in targets if t.get("target_id")
+        }
         for target in targets:
             target_id = target["target_id"]
             initial = target.get("initial_relationship", {})
@@ -985,7 +1000,7 @@ class ScenarioRunner:
             else:
                 if resolved_target_id is None:
                     raise RuntimeError(
-                        f"E_TARGET_ID_MISSING: turn={turn_id} event_type={event_type} actor={actor}"
+                        f"E_TARGET_ID_MISSING: turn={turn_id} phase={phase} event_type={event_type} actor={actor}"
                     )
                 self.targets_seen_input.add(resolved_target_id)
 
