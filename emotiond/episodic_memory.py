@@ -64,11 +64,30 @@ class EpisodicMemoryManager:
                     kind TEXT NOT NULL,
                     utility TEXT NOT NULL,
                     score REAL DEFAULT 0,
+                    event_json TEXT DEFAULT '{}',
+                    appraisal_json TEXT DEFAULT '{}',
+                    state_delta_json TEXT DEFAULT '{}',
+                    action_taken TEXT DEFAULT '',
+                    outcome TEXT DEFAULT '',
+                    lesson TEXT DEFAULT '',
                     created_at REAL NOT NULL,
                     FOREIGN KEY(episode_id) REFERENCES episodic_episodes(id)
                 )
                 """
             )
+            # Backward-compatible schema upgrades (SQLite)
+            for ddl in [
+                "ALTER TABLE episodic_items ADD COLUMN event_json TEXT DEFAULT '{}'",
+                "ALTER TABLE episodic_items ADD COLUMN appraisal_json TEXT DEFAULT '{}'",
+                "ALTER TABLE episodic_items ADD COLUMN state_delta_json TEXT DEFAULT '{}'",
+                "ALTER TABLE episodic_items ADD COLUMN action_taken TEXT DEFAULT ''",
+                "ALTER TABLE episodic_items ADD COLUMN outcome TEXT DEFAULT ''",
+                "ALTER TABLE episodic_items ADD COLUMN lesson TEXT DEFAULT ''",
+            ]:
+                try:
+                    await db.execute(ddl)
+                except Exception:
+                    pass
             await db.execute("CREATE INDEX IF NOT EXISTS idx_epi_target_created ON episodic_items(target_id, created_at DESC)")
             await db.commit()
 
@@ -111,6 +130,7 @@ class EpisodicMemoryManager:
         memories = [
             {
                 "memory_id": r["id"],
+                "episode_ref": f"episode:{r['episode_id']}",
                 "q": r["q"],
                 "a": r["a"],
                 "kind": r["kind"],
@@ -167,8 +187,12 @@ class EpisodicMemoryManager:
                     utility = "clarify"
                 await db.execute(
                     """
-                    INSERT INTO episodic_items(episode_id, target_id, q, a, kind, utility, score, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO episodic_items(
+                        episode_id, target_id, q, a, kind, utility, score,
+                        event_json, appraisal_json, state_delta_json, action_taken, outcome, lesson,
+                        created_at
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         episode_id,
@@ -178,6 +202,12 @@ class EpisodicMemoryManager:
                         it["kind"][:64],
                         utility,
                         float(it.get("score", 0.0)),
+                        json.dumps(it.get("event", {}), ensure_ascii=False),
+                        json.dumps(it.get("appraisal", {}), ensure_ascii=False),
+                        json.dumps(it.get("state_delta", {}), ensure_ascii=False),
+                        str(it.get("action_taken", ""))[:120],
+                        str(it.get("outcome", ""))[:240],
+                        str(it.get("lesson", ""))[:240],
                         time.time(),
                     ),
                 )
@@ -258,19 +288,26 @@ class EpisodicMemoryManager:
     async def _get_items_for_target(self, target_id: str, limit: int = 200) -> List[Dict[str, Any]]:
         async with aiosqlite.connect(get_db_path()) as db:
             cur = await db.execute(
-                "SELECT id, q, a, kind, utility, score, created_at FROM episodic_items WHERE target_id = ? ORDER BY created_at DESC, id DESC LIMIT ?",
+                "SELECT id, episode_id, q, a, kind, utility, score, event_json, appraisal_json, state_delta_json, action_taken, outcome, lesson, created_at FROM episodic_items WHERE target_id = ? ORDER BY created_at DESC, id DESC LIMIT ?",
                 (target_id, limit),
             )
             rows = await cur.fetchall()
         return [
             {
                 "id": int(r[0]),
-                "q": r[1],
-                "a": r[2],
-                "kind": r[3],
-                "utility": r[4] if r[4] in SAFE_UTILITIES else "clarify",
-                "score": float(r[5] or 0.0),
-                "created_at": float(r[6] or 0.0),
+                "episode_id": int(r[1]),
+                "q": r[2],
+                "a": r[3],
+                "kind": r[4],
+                "utility": r[5] if r[5] in SAFE_UTILITIES else "clarify",
+                "score": float(r[6] or 0.0),
+                "event": json.loads(r[7] or "{}"),
+                "appraisal": json.loads(r[8] or "{}"),
+                "state_delta": json.loads(r[9] or "{}"),
+                "action_taken": r[10] or "",
+                "outcome": r[11] or "",
+                "lesson": r[12] or "",
+                "created_at": float(r[13] or 0.0),
             }
             for r in rows
         ]
