@@ -15,6 +15,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, field
+from collections import Counter
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -69,6 +70,68 @@ DEFAULT_TUNABLE_PARAMS = {
     "individualization_threshold_strict": {"default": 0.05, "min": 0.01, "max": 0.15, "category": "individualization"},
     "individualization_threshold_relaxed": {"default": 0.15, "min": 0.05, "max": 0.30, "category": "individualization"},
 }
+
+
+@dataclass
+class CandidateValidationResult:
+    accepted: bool
+    reason_code: Optional[str] = None
+    details: Optional[str] = None
+
+
+class KnobRegistry:
+    def __init__(self, registry_path: Optional[Path] = None):
+        base_dir = Path(__file__).parent
+        self.registry_path = registry_path or (base_dir / "knob_registry.json")
+        with open(self.registry_path, "r") as f:
+            raw = json.load(f)
+        self.version = str(raw.get("version", "unknown"))
+        allowlist_raw = raw.get("allowlist", [])
+        if isinstance(allowlist_raw, dict):
+            # Backward compatibility: grouped schema {group:{parameters:[...]}}
+            collected = []
+            for v in allowlist_raw.values():
+                if isinstance(v, dict) and isinstance(v.get("parameters"), list):
+                    collected.extend(v.get("parameters", []))
+                else:
+                    collected.append(str(v))
+            self.allowlist = set(collected)
+        else:
+            self.allowlist = set(allowlist_raw)
+        hard = raw.get("hard_freeze", {})
+        keys = hard.get("keys", [])
+        prefixes = hard.get("prefixes", [])
+        if isinstance(hard, dict) and not keys:
+            # Backward compatibility: grouped schema {group:{parameters:[...]}}
+            for v in hard.values():
+                if isinstance(v, dict) and isinstance(v.get("parameters"), list):
+                    keys.extend(v.get("parameters", []))
+        self.hard_freeze_keys = set(keys)
+        self.hard_freeze_prefixes = tuple(prefixes)
+        self.hard_freeze_reason_code = str(hard.get("reason_code", "HARD_FREEZE_VIOLATION"))
+
+    def validate_candidate(self, params: Dict[str, float]) -> CandidateValidationResult:
+        for key in params.keys():
+            if key in self.hard_freeze_keys:
+                return CandidateValidationResult(
+                    accepted=False,
+                    reason_code=self.hard_freeze_reason_code,
+                    details=f"key={key}",
+                )
+            if self.hard_freeze_prefixes and key.startswith(self.hard_freeze_prefixes):
+                return CandidateValidationResult(
+                    accepted=False,
+                    reason_code=self.hard_freeze_reason_code,
+                    details=f"prefix={key}",
+                )
+            if key not in self.allowlist:
+                return CandidateValidationResult(
+                    accepted=False,
+                    reason_code="KNOB_NOT_ALLOWLISTED",
+                    details=f"key={key}",
+                )
+        return CandidateValidationResult(accepted=True)
+
 
 
 @dataclass
@@ -213,6 +276,9 @@ class CandidateResult:
     threshold_config: Dict[str, Any] = field(default_factory=dict)
     rank: int = 0
     lexicographic_level: Optional[str] = None
+    rejected: bool = False
+    reason_code: Optional[str] = None
+    validation_details: Optional[str] = None
     
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -226,6 +292,9 @@ class CandidateResult:
             "threshold_config": self.threshold_config,
             "rank": self.rank,
             "lexicographic_level": self.lexicographic_level,
+            "rejected": self.rejected,
+            "reason_code": self.reason_code,
+            "validation_details": self.validation_details,
         }
 
 
@@ -242,6 +311,7 @@ class AutoTuneResult:
     lexicographic_improvement: Optional[str] = None
     recommendations: List[str] = field(default_factory=list)
     report_path: Optional[str] = None
+    rejection_stats: Dict[str, int] = field(default_factory=dict)
     
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -256,6 +326,7 @@ class AutoTuneResult:
             "lexicographic_improvement": self.lexicographic_improvement,
             "recommendations": self.recommendations,
             "report_path": self.report_path,
+            "rejection_stats": self.rejection_stats,
         }
 
 
@@ -562,8 +633,24 @@ class AutoTuneEngine:
         print(f"  - efficiency: {baseline_fitness.efficiency:.4f}")
         print(f"  - tie_breaker: {baseline_fitness.tie_breaker:.6f}")
         candidates = []
+        rejection_counter: Counter[str] = Counter()
         for i, candidate_params in enumerate(candidate_params_list):
             print(f"\nRunning candidate {i+1}/{len(candidate_params_list)}...")
+            validation = self.knob_registry.validate_candidate(candidate_params)
+            if not validation.accepted:
+                rejection_counter[validation.reason_code or "UNKNOWN"] += 1
+                print(f"  Candidate {i+1}: REJECTED ({validation.reason_code}) {validation.details or ''}")
+                candidates.append(CandidateResult(
+                    candidate_id=f"candidate_{i+1}",
+                    params=candidate_params,
+                    fitness=baseline_fitness,
+                    eval_result={"rejected": True},
+                    param_fingerprint=_param_fingerprint(candidate_params),
+                    rejected=True,
+                    reason_code=validation.reason_code,
+                    validation_details=validation.details,
+                ))
+                continue
             candidate_eval_result = await self.run_eval(candidate_params, scenarios)
             candidate_fitness = FitnessCalculator.calculate_all(candidate_eval_result)
             print(f"  Candidate {i+1}: passed={candidate_fitness.passed_scenarios}, fp_rate={candidate_fitness.high_impact_false_positive_rate:.4f}, tie_breaker={candidate_fitness.tie_breaker:.6f}")
@@ -578,15 +665,16 @@ class AutoTuneEngine:
                 threshold_config=(result_to_dict(candidate_eval_result).get("aggregate_metrics", {}).get("threshold_config", {})),
             )
             candidates.append(candidate_result)
-        candidates.sort(key=lambda c: c.fitness, reverse=True)
-        for i, c in enumerate(candidates):
+        valid_candidates = [c for c in candidates if not c.rejected]
+        valid_candidates.sort(key=lambda c: c.fitness, reverse=True)
+        for i, c in enumerate(valid_candidates):
             c.rank = i + 1
             if i == 0:
                 c.lexicographic_level = "best"
             else:
-                comparison = c.fitness.lexicographic_comparison(candidates[i-1].fitness)
+                comparison = c.fitness.lexicographic_comparison(valid_candidates[i-1].fitness)
                 c.lexicographic_level = comparison.get("decision_level", "unknown")
-        best_candidate = candidates[0] if candidates else None
+        best_candidate = valid_candidates[0] if valid_candidates else None
         overall_improvement = False
         lexicographic_improvement = None
         if best_candidate:
@@ -594,7 +682,7 @@ class AutoTuneEngine:
             if comparison["winner"] == "self":
                 overall_improvement = True
                 lexicographic_improvement = comparison["decision_level"]
-        recommendations = self._generate_recommendations(baseline_fitness, candidates, baseline_params)
+        recommendations = self._generate_recommendations(baseline_fitness, valid_candidates, baseline_params)
         result = AutoTuneResult(
             timestamp=datetime.now().isoformat(),
             seed=self.seed,
@@ -605,7 +693,8 @@ class AutoTuneEngine:
             best_candidate=best_candidate,
             overall_improvement=overall_improvement,
             lexicographic_improvement=lexicographic_improvement,
-            recommendations=recommendations
+            recommendations=recommendations,
+            rejection_stats=dict(rejection_counter)
         )
         return result
 
