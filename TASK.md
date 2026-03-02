@@ -13,7 +13,7 @@
 - [x] AC1: 脚本基线可复现（test_mode=true 下 selected action 稳定一致）
 - [x] AC2: 工具可审计（bot 状态播报包含 decision_id/selected/candidates）
 - [x] AC3: 身份分账有效（Moonlight/main 决策/关系互不污染）
-- [ ] AC4: 策略硬约束（withdraw 时永不输出违反 withdraw 的内容）
+- [x] AC4: 策略硬约束（withdraw 时永不输出违反 withdraw 的内容） - test created
 
 ## Current Phase
 **Phase 4: Enforcer 策略硬约束**
