@@ -8,6 +8,7 @@ import asyncio
 import tempfile
 import shutil
 from emotiond.db import init_db
+from emotiond import api
 
 
 def pytest_addoption(parser):
@@ -51,6 +52,7 @@ async def isolated_db():
     importlib.reload(config)
     importlib.reload(db)
     importlib.reload(core)
+    importlib.reload(api)
     
     # Reset global state (including MVP-2 fields)
     core.emotion_state.valence = 0.0
@@ -129,6 +131,7 @@ async def setup_db():
     importlib.reload(config)
     importlib.reload(db)
     importlib.reload(core)
+    importlib.reload(api)
     
     core.emotion_state.valence = 0.0
     core.emotion_state.arousal = 0.3

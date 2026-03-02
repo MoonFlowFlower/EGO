@@ -304,8 +304,8 @@ class RelationshipManager:
         elif event.type == "assistant_reply":
             target = event.target
         elif event.type == "world_event":
-            # Prefer explicit target for scenario-driven relationship differentiation.
-            target = event.target if getattr(event, "target", None) else event.actor
+            # For world events, store relationship under the actor (who performed the action)
+            target = event.actor
         else:
             target = event.actor
         self._ensure_relationship_fields(target)
