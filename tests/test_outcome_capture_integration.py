@@ -18,14 +18,6 @@ EMOTIOND_URL = os.environ.get('EMOTIOND_URL', 'http://127.0.0.1:18080')
 EMOTIOND_TOKEN = os.environ.get('EMOTIOND_OPENCLAW_TOKEN', '93e0a7a76de9e871b5c3ce658ce2c426b2ab69148b7b88b73100db0356ffcc72')
 
 
-@pytest.fixture(scope='module')
-def emotiond_available():
-    """Check if emotiond is running."""
-    try:
-        r = requests.get(f"{EMOTIOND_URL}/health", timeout=2)
-        return r.status_code == 200
-    except:
-        pytest.skip("emotiond not available at " + EMOTIOND_URL)
 
 
 class TestOutcomeCapture:

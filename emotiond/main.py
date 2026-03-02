@@ -9,6 +9,14 @@ import argparse
 import os
 import sys
 
+# Import config at module level for test access
+from emotiond.config import HOST as DEFAULT_HOST
+from emotiond.config import PORT as DEFAULT_PORT
+
+# Expose for tests
+HOST = DEFAULT_HOST
+PORT = DEFAULT_PORT
+
 
 def parse_args():
     """Parse command line arguments."""
@@ -31,14 +39,14 @@ Examples:
     parser.add_argument(
         "--host",
         type=str,
-        default=os.getenv("EMOTIOND_HOST", "127.0.0.1"),
-        help="Host to bind to (default: 127.0.0.1)"
+        default=os.getenv("EMOTIOND_HOST", HOST),
+        help=f"Host to bind to (default: {HOST})"
     )
     parser.add_argument(
         "--port",
         type=int,
-        default=int(os.getenv("EMOTIOND_PORT", "18080")),
-        help="Port to bind to (default: 18080)"
+        default=int(os.getenv("EMOTIOND_PORT", str(PORT))),
+        help=f"Port to bind to (default: {PORT})"
     )
     parser.add_argument(
         "--log-level",
@@ -60,11 +68,10 @@ def main():
     
     # Import after setting env vars so config picks them up
     import uvicorn
-    from emotiond.config import HOST, PORT
     
-    # Use CLI args if provided, else fall back to config defaults
-    host = args.host if args.host != "127.0.0.1" else HOST
-    port = args.port if args.port != 18080 else PORT
+    # Use CLI args
+    host = args.host
+    port = args.port
     
     uvicorn.run(
         "emotiond.api:app",

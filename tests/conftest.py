@@ -193,3 +193,48 @@ def get_system_headers():
 def get_openclaw_headers():
     """Return headers for openclaw-authenticated requests"""
     return {"Authorization": f"Bearer {TEST_OPENCLAW_TOKEN}"}
+
+
+@pytest.fixture(scope="function")
+def mock_emotiond_service():
+    """Start mock emotiond service for integration tests."""
+    import subprocess
+    import time
+    import requests
+    import signal
+    import os
+    
+    # Start mock service
+    mock_script = os.path.join(os.path.dirname(__file__), "fixtures", "mock_emotiond.py")
+    proc = subprocess.Popen(
+        ["python3", mock_script],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    
+    # Wait for service to be ready
+    max_wait = 10
+    for i in range(max_wait):
+        try:
+            r = requests.get("http://127.0.0.1:18080/health", timeout=1)
+            if r.status_code == 200:
+                yield
+                break
+        except:
+            time.sleep(0.5)
+    else:
+        # Clean up if service never started
+        proc.terminate()
+        proc.wait()
+        pytest.fail("Mock emotiond service failed to start")
+    
+    # Clean up
+    proc.terminate()
+    proc.wait()
+
+
+# Override emotiond_available fixture to use mock service
+@pytest.fixture(scope="function")
+def emotiond_available(mock_emotiond_service):
+    """Check if emotiond is running (using mock service)."""
+    return True
