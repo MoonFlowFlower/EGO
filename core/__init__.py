@@ -18,6 +18,15 @@ from .drive_homeostasis import (
     modulate_strategy,
     score_rollout_candidate,
 )
+from .self_model import (
+    Identity,
+    CapabilityBoundary,
+    OwnershipBoundary,
+    SelfModel,
+    BoundaryType,
+    render_self_report,
+    validate_self_report,
+)
 
 __all__ = [
     # Provenance
@@ -37,4 +46,12 @@ __all__ = [
     "emotion_from_drive",
     "modulate_strategy",
     "score_rollout_candidate",
+    # Self-Model
+    "Identity",
+    "CapabilityBoundary",
+    "OwnershipBoundary",
+    "SelfModel",
+    "BoundaryType",
+    "render_self_report",
+    "validate_self_report",
 ]
