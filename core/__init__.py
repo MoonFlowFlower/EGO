@@ -9,8 +9,18 @@ from .provenance import (
     is_internal_source,
     validate_provenance_for_write,
 )
+from .drive_homeostasis import (
+    DriveType,
+    DriveRange,
+    DriveState,
+    drive_error,
+    emotion_from_drive,
+    modulate_strategy,
+    score_rollout_candidate,
+)
 
 __all__ = [
+    # Provenance
     "Provenance",
     "Source",
     "sign_payload",
@@ -19,4 +29,12 @@ __all__ = [
     "verify_artifact",
     "is_internal_source",
     "validate_provenance_for_write",
+    # Drive
+    "DriveType",
+    "DriveRange",
+    "DriveState",
+    "drive_error",
+    "emotion_from_drive",
+    "modulate_strategy",
+    "score_rollout_candidate",
 ]
