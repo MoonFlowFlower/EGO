@@ -143,6 +143,7 @@ class IndividualizationSubscores:
     bond_diff_passed: bool = False
     ledger_diff_passed: bool = False
     ledger_diff_applicable: bool = True
+    ledger_diff_status: str = "applicable"
     ledger_event_count: int = 0
     somatic_residual_diff_passed: bool = False
     policy_diff_passed: bool = False
@@ -190,6 +191,7 @@ class IndividualizationSubscores:
                 "value": round(self.ledger_diff, 4),
                 "passed": self.ledger_diff_passed,
                 "applicable": self.ledger_diff_applicable,
+                "status": "applicable" if self.ledger_diff_applicable else "not_applicable",
                 "event_count": self.ledger_event_count,
             },
             "somatic_residual_diff": {
@@ -791,6 +793,7 @@ class IndividualizationAnalyzer:
             subscores.policy_diff_passed = True
             subscores.precision_diff_passed = True
             subscores.ledger_diff_applicable = False
+            subscores.ledger_diff_status = "not_applicable"
             subscores.failure_reasons = []
             return subscores
         
@@ -806,6 +809,7 @@ class IndividualizationAnalyzer:
             total_ledger_events += len(ledger.get("promises", [])) + len(ledger.get("violations", []))
         subscores.ledger_event_count = total_ledger_events
         subscores.ledger_diff_applicable = total_ledger_events > 0
+        subscores.ledger_diff_status = "applicable" if subscores.ledger_diff_applicable else "not_applicable"
 
         threshold = DYNAMIC_THRESHOLDS["ledger_diff"].get_threshold(n_obs_avg)
         if subscores.ledger_diff_applicable:
@@ -1311,6 +1315,7 @@ class ScenarioRunner:
                 "n_obs_min": n_obs_min,
                 "pass": subscores.ledger_diff_passed,
                 "applicable": subscores.ledger_diff_applicable,
+                "status": "applicable" if subscores.ledger_diff_applicable else "not_applicable",
                 "event_count": subscores.ledger_event_count,
             },
             "somatic_residual_diff": {
