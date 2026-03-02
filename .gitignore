@@ -52,3 +52,6 @@ logs/
 .emotiond_token
 **/.emotiond_token
 emotiond_token
+
+# Local evaluation outputs (not source)
+reports/
