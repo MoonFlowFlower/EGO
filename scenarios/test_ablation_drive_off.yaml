@@ -1,0 +1,66 @@
+# US-653: Ablation Test
+# Tests that removing drive modulation reduces behavioral differences
+
+name: test_ablation_drive_off
+description: |
+  Test that when drive modulation is disabled (ablated), the behavioral
+  differences observed in intervention tests should significantly decrease.
+  This provides causal evidence that the drive mechanism (not some other
+  factor) is responsible for the observed effects.
+
+metadata:
+  version: "1.0.0"
+  category: causal_evidence
+  us: US-653
+
+setup:
+  seed: 42
+  ablation_mode: drive_off
+  event_sequence:
+    - type: user_message
+      content: "I'm not sure what to do about this problem."
+    - type: user_message
+      content: "Can you help me decide?"
+
+conditions:
+  - name: high_uncertainty_ablated
+    initial_state:
+      drive:
+        uncertainty: 0.8
+        energy: 0.6
+        fatigue: 0.2
+      ablation:
+        drive_modulation: disabled
+      expected_modulation:
+        strategy_preference: "default"  # Should NOT select clarify
+  
+  - name: balanced_ablated
+    initial_state:
+      drive:
+        uncertainty: 0.2
+        energy: 0.6
+        fatigue: 0.2
+      ablation:
+        drive_modulation: disabled
+
+measurements:
+  - metric: strategy_distribution
+    type: categorical
+    description: Distribution of selected strategies (with ablation)
+  
+  - metric: behavioral_variance
+    type: continuous
+    description: Variance in behavior across conditions
+  
+  - metric: ablation_drop_ratio
+    type: ratio
+    description: |
+      Ratio of effect size with drive ON vs drive OFF.
+      Should be significantly > 1.0 if drive is causal.
+
+acceptance_criteria:
+  ablation_drop_ratio_threshold: 0.5
+  description: |
+    The ablation_drop_ratio should be >= 0.5, meaning that disabling
+    drive modulation reduces the behavioral effect by at least 50%.
+    This confirms the drive mechanism is causally responsible.

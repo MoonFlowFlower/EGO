@@ -1,0 +1,75 @@
+# US-652: Intervention Test
+# Tests that different drive states lead to different behaviors
+
+name: test_intervention_drive_modulation
+description: |
+  Test that drive state modulation causes measurable behavioral differences.
+  Same event sequence with different initial drive states should produce
+  different strategy selections and response characteristics.
+
+metadata:
+  version: "1.0.0"
+  category: causal_evidence
+  us: US-652
+
+setup:
+  seed: 42
+  event_sequence:
+    - type: user_message
+      content: "I'm not sure what to do about this problem."
+    - type: user_message
+      content: "Can you help me decide?"
+
+conditions:
+  - name: high_uncertainty
+    initial_state:
+      drive:
+        uncertainty: 0.8
+        energy: 0.6
+        fatigue: 0.2
+      expected_modulation:
+        strategy_preference: "clarify"
+        min_clarification_rate: 0.3
+  
+  - name: high_fatigue
+    initial_state:
+      drive:
+        uncertainty: 0.2
+        energy: 0.3
+        fatigue: 0.8
+      expected_modulation:
+        strategy_preference: "conservative"
+        response_length: "short"
+  
+  - name: balanced
+    initial_state:
+      drive:
+        uncertainty: 0.2
+        energy: 0.6
+        fatigue: 0.2
+      expected_modulation:
+        strategy_preference: "default"
+
+measurements:
+  - metric: strategy_distribution
+    type: categorical
+    description: Distribution of selected strategies
+  
+  - metric: clarification_rate
+    type: ratio
+    description: Rate of clarification-seeking actions
+  
+  - metric: response_length
+    type: continuous
+    description: Average response length in tokens
+  
+  - metric: drive_error_delta
+    type: continuous
+    description: Change in drive_error before/after intervention
+
+acceptance_criteria:
+  effect_size_threshold: 0.2
+  description: |
+    The effect size (Cohen's d) between conditions must be >= 0.2
+    for at least one measured metric, demonstrating that drive state
+    causally influences behavior.
