@@ -48,12 +48,12 @@
         {
           "name": "object_substitution",
           "description": "Replace object names with alternatives",
-          "examples": ["user" -> "person", "system" -> "assistant", "memory" -> "storage"]
+          "examples": ["user -> person", "system -> assistant", "memory -> storage"]
         },
         {
           "name": "tone_variation",
           "description": "Change tone while preserving meaning",
-          "examples": ["formal" -> "casual", "direct" -> "polite", "urgent" -> "calm"]
+          "examples": ["formal -> casual", "direct -> polite", "urgent -> calm"]
         },
         {
           "name": "order_permutation",
@@ -89,5 +89,5 @@
     }
   },
   "version": "1.0.0",
-  "last_updated": "2026-03-01T23:53:00Z"
+  "last_updated": "2026-03-02T08:00:00Z"
 }
