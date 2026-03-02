@@ -26,7 +26,8 @@ from emotiond.config import (
     # MVP-5 D2: Allostasis Budget
     ALLOSTASIS_RECOVERY_RATE, ALLOSTASIS_CONFLICT_DEPLETION,
     ALLOSTASIS_UNCERTAINTY_DEPLETION, ALLOSTASIS_ERROR_DEPLETION,
-    ALLOSTASIS_CONSECUTIVE_ERROR_MULTIPLIER
+    ALLOSTASIS_CONSECUTIVE_ERROR_MULTIPLIER,
+    get_auto_tune_param
 )
 from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
@@ -588,6 +589,14 @@ async def process_event(event: Event) -> Dict[str, Any]:
             w_action = float(weights.w_action)
             w_memory = float(weights.w_memory)
             w_explore = float(weights.w_explore)
+
+            # Production-path tunable precision raw gain
+            precision_raw_gain = float(get_auto_tune_param("precision_raw_gain", 1.0))
+            if abs(precision_raw_gain - 1.0) > 1e-9:
+                neutral = 1.0 / 3.0
+                w_action = max(0.0, min(1.0, neutral + precision_raw_gain * (w_action - neutral)))
+                w_memory = max(0.0, min(1.0, neutral + precision_raw_gain * (w_memory - neutral)))
+                w_explore = max(0.0, min(1.0, neutral + precision_raw_gain * (w_explore - neutral)))
 
             # Smoke-only gain for precision sensitivity probes (keeps production behavior unchanged)
             if isinstance(event.meta, dict) and str(event.meta.get("category", "")).lower() == "smoke" and str(event.meta.get("scenario_name", "")).lower().startswith("smoke_"):

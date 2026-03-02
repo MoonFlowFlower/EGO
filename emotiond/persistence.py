@@ -32,6 +32,37 @@ class PersistenceStrategy(Enum):
 
 
 @dataclass
+class PersistenceDecisionTrace:
+    """Explainability payload for persistence strategy decisions."""
+    strategy: str
+    reason: str
+    persistence_pressure: float
+    risk: float
+    ambiguity: float
+    expected_info_gain: float
+    tradeoff_score: float
+    dominant_drivers: List[str] = field(default_factory=list)
+    conservative_trigger: Optional[str] = None
+    repair_trigger: Optional[str] = None
+    retreat_trigger: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "strategy": self.strategy,
+            "reason": self.reason,
+            "persistence_pressure": round(self.persistence_pressure, 4),
+            "risk": round(self.risk, 4),
+            "ambiguity": round(self.ambiguity, 4),
+            "expected_info_gain": round(self.expected_info_gain, 4),
+            "tradeoff_score": round(self.tradeoff_score, 4),
+            "dominant_drivers": self.dominant_drivers,
+            "conservative_trigger": self.conservative_trigger,
+            "repair_trigger": self.repair_trigger,
+            "retreat_trigger": self.retreat_trigger,
+        }
+
+
+@dataclass
 class PersistenceCost:
     """
     Cost of an action from persistence perspective.
@@ -444,6 +475,14 @@ class PersistenceConstraint:
         
         # Strategy history
         self.strategy_history: List[Tuple[str, str]] = []
+        self.last_decision_trace: Optional[PersistenceDecisionTrace] = None
+
+        # Tradeoff weights: persistence must not dominate by itself
+        self.tradeoff_weights = {
+            "persistence": 0.55,
+            "risk": 0.25,
+            "ambiguity": 0.20,
+        }
     
     def update_body_state(self, energy: float, safety_stress: float, focus_fatigue: float) -> Dict[str, Any]:
         """Update body state metrics."""
@@ -504,62 +543,113 @@ class PersistenceConstraint:
         
         return cost
     
+    def _compute_persistence_pressure(self, target_id: Optional[str] = None) -> float:
+        """Compute aggregate persistence pressure from the 3 constraint groups."""
+        body_pressure = 1.0 - self.body_metrics.get_stability_score()
+        learning_pressure = 1.0 - self.learning_metrics.get_learning_score()
+
+        relationship_pressure = 0.0
+        if target_id:
+            bond = self.relationship_metrics.get_bond(target_id)
+            harm = self.relationship_metrics.harm_events.get(target_id, 0)
+            repair_sensitivity = self.relationship_metrics.get_repair_sensitivity(target_id)
+            relationship_pressure = min(1.0, bond * 0.4 + min(1.0, harm * 0.2) + repair_sensitivity * 0.3)
+
+        pressure = body_pressure * 0.45 + relationship_pressure * 0.30 + learning_pressure * 0.25
+        return max(0.0, min(1.0, pressure))
+
     def select_strategy(self, target_id: Optional[str] = None) -> Tuple[PersistenceStrategy, str]:
-        """
-        Select persistence strategy based on current state.
-        
-        Args:
-            target_id: Optional specific target to check for repair priority
-        
-        Returns:
-            (strategy, reason)
-        """
-        # Check for collapse - highest priority
+        """Backward-compatible strategy API (uses neutral risk/ambiguity defaults)."""
+        strategy, reason, _ = self.select_strategy_with_tradeoff(target_id=target_id)
+        return strategy, reason
+
+    def select_strategy_with_tradeoff(
+        self,
+        target_id: Optional[str] = None,
+        risk: float = 0.0,
+        ambiguity: float = 0.0,
+        expected_info_gain: Optional[float] = None,
+    ) -> Tuple[PersistenceStrategy, str, PersistenceDecisionTrace]:
+        """Persistence decision with explicit tradeoff against risk/ambiguity."""
+        risk = max(0.0, min(1.0, risk))
+        ambiguity = max(0.0, min(1.0, ambiguity))
+        if expected_info_gain is None:
+            expected_info_gain = self.learning_metrics.get_average_info_gain(last_n=10)
+        expected_info_gain = max(0.0, min(1.0, expected_info_gain))
+
         stability = self.body_metrics.get_stability_score()
-        if stability < self.collapse_strategy_threshold or self.body_metrics.is_in_collapse():
-            strategy = PersistenceStrategy.CONSERVATIVE
-            reason = f"body_instability({stability:.2f})"
-            self.record_strategy(strategy, reason)
-            return strategy, reason
-        
-        # Check for retreat condition (critical instability)
-        if stability < 0.15 or self.body_metrics.focus_fatigue_collapses >= 3:
+        persistence_pressure = self._compute_persistence_pressure(target_id)
+        tradeoff_score = (
+            persistence_pressure * self.tradeoff_weights["persistence"]
+            + risk * self.tradeoff_weights["risk"]
+            + ambiguity * self.tradeoff_weights["ambiguity"]
+        )
+
+        dominant_drivers = []
+        if persistence_pressure >= 0.4:
+            dominant_drivers.append("persistence_pressure")
+        if risk >= 0.4:
+            dominant_drivers.append("risk")
+        if ambiguity >= 0.4:
+            dominant_drivers.append("ambiguity")
+
+        conservative_trigger = None
+        repair_trigger = None
+        retreat_trigger = None
+
+        if stability < 0.08 or self.body_metrics.focus_fatigue_collapses >= 3:
             strategy = PersistenceStrategy.RETREAT
             reason = f"critical_instability({stability:.2f})"
-            self.record_strategy(strategy, reason)
-            return strategy, reason
-        
-        # Check for specific target repair priority first
-        if target_id and target_id in self.relationship_metrics.target_bonds:
-            should_repair, reason = self.relationship_metrics.should_prioritize_repair(target_id)
-            if should_repair:
+            retreat_trigger = reason
+        elif self.body_metrics.is_in_collapse() or stability < self.collapse_strategy_threshold or tradeoff_score >= 0.45:
+            strategy = PersistenceStrategy.CONSERVATIVE
+            conservative_trigger = (
+                f"collapse({self.body_metrics.is_in_collapse()})/stability({stability:.2f})/tradeoff({tradeoff_score:.2f})"
+            )
+            reason = f"conservative_pressure({tradeoff_score:.2f})"
+        else:
+            selected_repair_target = None
+            if target_id and target_id in self.relationship_metrics.target_bonds:
+                should_repair, repair_reason = self.relationship_metrics.should_prioritize_repair(target_id)
+                if should_repair and (risk + ambiguity) < 1.6:
+                    selected_repair_target = (target_id, repair_reason)
+            if selected_repair_target is None:
+                for tid in self.relationship_metrics.target_bonds:
+                    should_repair, repair_reason = self.relationship_metrics.should_prioritize_repair(tid)
+                    if should_repair and (risk + ambiguity) < 1.6:
+                        selected_repair_target = (tid, repair_reason)
+                        break
+
+            if selected_repair_target is not None:
                 strategy = PersistenceStrategy.REPAIR
-                reason = f"repair_needed:{target_id}({reason})"
-                self.record_strategy(strategy, reason)
-                return strategy, reason
-        
-        # Check for any high-bond targets needing repair
-        for tid in self.relationship_metrics.target_bonds:
-            should_repair, reason = self.relationship_metrics.should_prioritize_repair(tid)
-            if should_repair:
-                strategy = PersistenceStrategy.REPAIR
-                reason = f"repair_needed:{tid}({reason})"
-                self.record_strategy(strategy, reason)
-                return strategy, reason
-        
-        # Check for stagnation
-        is_stag, avg_gain = self.learning_metrics.is_stagnating()
-        if is_stag:
-            strategy = PersistenceStrategy.MAINTENANCE
-            reason = f"stagnation({avg_gain:.2f})"
-            self.record_strategy(strategy, reason)
-            return strategy, reason
-        
-        # Normal operation
-        strategy = PersistenceStrategy.NORMAL
-        reason = "normal_operation"
+                repair_trigger = f"repair_needed:{selected_repair_target[0]}({selected_repair_target[1]})"
+                reason = repair_trigger
+            else:
+                is_stag, avg_gain = self.learning_metrics.is_stagnating()
+                if is_stag and ambiguity < 0.75 and expected_info_gain < 0.2:
+                    strategy = PersistenceStrategy.MAINTENANCE
+                    reason = f"stagnation({avg_gain:.2f})"
+                else:
+                    strategy = PersistenceStrategy.NORMAL
+                    reason = "normal_operation"
+
+        trace = PersistenceDecisionTrace(
+            strategy=strategy.value,
+            reason=reason,
+            persistence_pressure=persistence_pressure,
+            risk=risk,
+            ambiguity=ambiguity,
+            expected_info_gain=expected_info_gain,
+            tradeoff_score=tradeoff_score,
+            dominant_drivers=dominant_drivers,
+            conservative_trigger=conservative_trigger,
+            repair_trigger=repair_trigger,
+            retreat_trigger=retreat_trigger,
+        )
+
+        self.last_decision_trace = trace
         self.record_strategy(strategy, reason)
-        return strategy, reason
+        return strategy, reason, trace
     
     def record_strategy(self, strategy: PersistenceStrategy, reason: str):
         """Record strategy selection to history."""
@@ -578,10 +668,11 @@ class PersistenceConstraint:
     
     def get_telemetry(self) -> Dict[str, Any]:
         """Get full telemetry for persistence state."""
-        strategy, reason = self.select_strategy()
+        strategy, reason, trace = self.select_strategy_with_tradeoff()
         return {
             "strategy": strategy.value,
             "strategy_reason": reason,
+            "strategy_trace": trace.to_dict(),
             "body_stability": self.body_metrics.to_dict(),
             "relationship_assets": self.relationship_metrics.to_dict(),
             "learning": self.learning_metrics.to_dict(),
@@ -591,10 +682,11 @@ class PersistenceConstraint:
     
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dict."""
-        strategy, reason = self.select_strategy()
+        strategy, reason, trace = self.select_strategy_with_tradeoff()
         return {
             "strategy": strategy.value,
             "strategy_reason": reason,
+            "strategy_trace": trace.to_dict(),
             "body_metrics": self.body_metrics.to_dict(),
             "relationship_metrics": self.relationship_metrics.to_dict(),
             "learning_metrics": self.learning_metrics.to_dict(),

@@ -622,3 +622,18 @@ async def post_events_external(
                 "degraded": True
             }
         )
+
+
+@app.get("/memory/episodic/{target_id}")
+async def get_episodic_memory(target_id: str, query: str = "", k: int = 3):
+    k = max(1, min(10, int(k)))
+    items = await episodic_memory_manager.retrieve(target_id=target_id, query=query, k=k)
+    telemetry = episodic_memory_manager.get_telemetry()
+    return {
+        "status": "ok",
+        "target_id": target_id,
+        "query": query,
+        "k": k,
+        "items": items,
+        "telemetry": telemetry,
+    }

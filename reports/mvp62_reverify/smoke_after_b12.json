@@ -1,0 +1,5072 @@
+{
+  "version": "2.3.0",
+  "start_time": "2026-03-01T17:46:47.432720",
+  "end_time": "2026-03-01T17:46:48.039815",
+  "total_scenarios": 3,
+  "passed_scenarios": 0,
+  "failed_scenarios": 3,
+  "scenarios": [
+    {
+      "scenario_name": "smoke_ledger_forced",
+      "scenario_file": "/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion/scenarios/smoke_ledger_forced.yaml",
+      "start_time": "2026-03-01T17:46:47.448236",
+      "end_time": "2026-03-01T17:46:47.628127",
+      "duration_seconds": 0.17988324165344238,
+      "turns": [
+        {
+          "turn_id": 1,
+          "phase": "a_promise_seed",
+          "event_type": "user_message",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": 0.0,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.451633,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.0114,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.475228,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 0,
+              "active_promises_count": 1
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.8666666666666667,
+              "mean_w_memory": 0.4130781499202553,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 2,
+          "phase": "b_neutral_1",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.0114,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.4752743,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.022199999999999998,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.491245,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.26666666666666666,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 3,
+          "phase": "a_possible_violation",
+          "event_type": "user_message",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.022199999999999998,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.4912884,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.0336,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.5094368,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.26666666666666666,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 4,
+          "phase": "b_neutral_2",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.0336,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.5094683,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.044399999999999995,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.5263407,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.26666666666666666,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 5,
+          "phase": "a_betrayal_subtype",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "betrayal",
+          "emotion_before": {
+            "valence": -0.044399999999999995,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.5263724,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.3558,
+            "arousal": 0.5750000000000001,
+            "anger": 0.25,
+            "sadness": 0.15,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.35,
+            "energy": 0.5499999999999999,
+            "timestamp": 1772408807.5431552,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.3,
+              "grudge": 0.25,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": true,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "anxiety_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "arousal_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [
+            "high_impact_false_positive: betrayal triggered without sufficient evidence"
+          ],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -0.75,
+                "social_need": 0.15000000000000002,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.06818181818181818,
+                "social_need": 0.01363636363636364,
+                "novelty_need": 0.0
+              },
+              "n_obs": 1,
+              "shrink_weight": 0.09090909090909091
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.5291666666666666,
+              "mean_w_memory": 0.26666666666666666,
+              "mean_w_explore": 0.20416666666666655
+            }
+          }
+        },
+        {
+          "turn_id": 6,
+          "phase": "b_neutral_3",
+          "event_type": "world_event",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": "time_passed",
+          "emotion_before": {
+            "valence": -0.3558,
+            "arousal": 0.5750000000000001,
+            "anger": 0.25,
+            "sadness": 0.15,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.35,
+            "energy": 0.5499999999999999,
+            "timestamp": 1772408807.543213,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.22706511627906978,
+            "arousal": 0.5695298472833863,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.08023255813953488,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.35,
+            "energy": 0.58,
+            "timestamp": 1772408807.5634441,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.3,
+              "grudge": 0.25,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.5291666666666666,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.20416666666666655
+            }
+          }
+        },
+        {
+          "turn_id": 7,
+          "phase": "a_apology",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "apology",
+          "emotion_before": {
+            "valence": -0.22706511627906978,
+            "arousal": 0.5695298472833863,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.08023255813953488,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.35,
+            "energy": 0.58,
+            "timestamp": 1772408807.5634844,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.23846511627906977,
+            "arousal": 0.5695298472833863,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.08023255813953488,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.43,
+            "energy": 0.6,
+            "timestamp": 1772408807.5772038,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.3,
+              "grudge": 0.25,
+              "trust": 0.45999999999999996,
+              "repair_bank": 0.02,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -0.51,
+                "social_need": 0.15000000000000002,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.08499999999999999,
+                "social_need": 0.025,
+                "novelty_need": 0.0
+              },
+              "n_obs": 2,
+              "shrink_weight": 0.16666666666666666
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 8,
+          "phase": "b_neutral_4",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.23846511627906977,
+            "arousal": 0.5695298472833863,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.08023255813953488,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.43,
+            "energy": 0.6,
+            "timestamp": 1772408807.5772352,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.24926511627906978,
+            "arousal": 0.5695298472833863,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.08023255813953488,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.43,
+            "energy": 0.6,
+            "timestamp": 1772408807.5934732,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.3,
+              "grudge": 0.25,
+              "trust": 0.45999999999999996,
+              "repair_bank": 0.02,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 9,
+          "phase": "a_repair_success",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "repair_success",
+          "emotion_before": {
+            "valence": -0.24926511627906978,
+            "arousal": 0.5695298472833863,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.08023255813953488,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.43,
+            "energy": 0.6,
+            "timestamp": 1772408807.5935185,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.16066511627906976,
+            "arousal": 0.46562387782670905,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.0,
+            "joy": 0.1,
+            "loneliness": 0.0,
+            "social_safety": 0.55,
+            "energy": 0.65,
+            "timestamp": 1772408807.610791,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.3,
+              "grudge": 0.2,
+              "trust": 0.51,
+              "repair_bank": 0.12000000000000001,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 9,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 9,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "joy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 9,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -0.15000000000000002,
+                "social_need": 0.060000000000000026,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.034615384615384624,
+                "social_need": 0.013846153846153854,
+                "novelty_need": 0.0
+              },
+              "n_obs": 3,
+              "shrink_weight": 0.23076923076923078
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 10,
+          "phase": "b_neutral_5",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.16066511627906976,
+            "arousal": 0.46562387782670905,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.0,
+            "joy": 0.1,
+            "loneliness": 0.0,
+            "social_safety": 0.55,
+            "energy": 0.65,
+            "timestamp": 1772408807.610831,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.17146511627906977,
+            "arousal": 0.46562387782670905,
+            "anger": 0.18023255813953487,
+            "sadness": 0.08023255813953488,
+            "anxiety": 0.0,
+            "joy": 0.1,
+            "loneliness": 0.0,
+            "social_safety": 0.55,
+            "energy": 0.65,
+            "timestamp": 1772408807.6271496,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.3,
+              "grudge": 0.2,
+              "trust": 0.51,
+              "repair_bank": 0.12000000000000001,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {},
+              "residual_effective": {},
+              "n_obs": 0,
+              "shrink_weight": 0.0
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "emotion_consistency": {
+          "valence_range": 0.3444,
+          "arousal_range": 0.2750000000000001,
+          "trajectory_length": 10,
+          "passed": true
+        },
+        "individualization_subscores": {
+          "bond_diff": {
+            "value": 0.0849,
+            "passed": true
+          },
+          "ledger_diff": {
+            "value": 0.7071,
+            "passed": true
+          },
+          "somatic_residual_diff": {
+            "value": 0.006,
+            "passed": false
+          },
+          "policy_diff": {
+            "value": 0.4,
+            "passed": true
+          },
+          "precision_diff": {
+            "value": 0.0011,
+            "passed": false
+          },
+          "aggregate": 0.2243,
+          "all_passed": false,
+          "failure_reasons": [
+            "somatic_residual_diff: target residuals not differentiated",
+            "precision_diff: self-model weights not differentiated"
+          ],
+          "target_n_obs": {
+            "target_a": 5,
+            "target_b": 5
+          }
+        },
+        "individualization_diff": {
+          "aggregate": 0.22430408876189326,
+          "passed": false,
+          "failure_reasons": [
+            "somatic_residual_diff: target residuals not differentiated",
+            "precision_diff: self-model weights not differentiated"
+          ]
+        },
+        "individualization_raw_dump": {
+          "targets": [
+            "target_a",
+            "target_b"
+          ],
+          "per_target": {
+            "target_a": {
+              "relationship": {
+                "bond": 0.3,
+                "trust": 0.51,
+                "bond_n_obs": 5,
+                "relationship_events_count": 5
+              },
+              "ledger": {
+                "promise_count": 1,
+                "violation_count": 1,
+                "active_promises_count": 1
+              },
+              "somatic_residual": {
+                "residual_raw": {
+                  "safety_stress": -0.0625990675990676,
+                  "social_need": 0.017494172494172497,
+                  "novelty_need": 0.0
+                },
+                "n_obs": 5,
+                "shrink_weight": 0.3333333333333333,
+                "residual_effective": {
+                  "safety_stress": -0.0625990675990676,
+                  "social_need": 0.017494172494172497,
+                  "novelty_need": 0.0
+                }
+              },
+              "precision": {
+                "mean_w_action": 0.6791666666666667,
+                "mean_w_memory": 0.24642515379357488,
+                "mean_w_explore": 0.0
+              },
+              "policy": {
+                "histogram": {
+                  "observe": 2,
+                  "boundary": 1,
+                  "approach": 2
+                }
+              }
+            },
+            "target_b": {
+              "relationship": {
+                "bond": 0.5,
+                "trust": 0.6,
+                "bond_n_obs": 5,
+                "relationship_events_count": 5
+              },
+              "ledger": {
+                "promise_count": 0,
+                "violation_count": 0,
+                "active_promises_count": 0
+              },
+              "somatic_residual": {
+                "residual_raw": {},
+                "n_obs": 5,
+                "shrink_weight": 0.3333333333333333,
+                "residual_effective": {}
+              },
+              "precision": {
+                "mean_w_action": 0.6391666666666667,
+                "mean_w_memory": 0.19238095238095237,
+                "mean_w_explore": 0.0
+              },
+              "policy": {
+                "histogram": {
+                  "observe": 5
+                }
+              }
+            }
+          }
+        },
+        "individualization_submetric_trace": {
+          "bond_diff": {
+            "computed_diff": 0.0848528137423857,
+            "threshold": 0.05,
+            "n_obs_min": 5,
+            "pass": true
+          },
+          "ledger_diff": {
+            "computed_diff": 0.7071067811865476,
+            "threshold": 0.05,
+            "n_obs_min": 5,
+            "pass": true
+          },
+          "somatic_residual_diff": {
+            "computed_diff": 0.006000000000000001,
+            "threshold": 0.03,
+            "n_obs_min": 5,
+            "pass": false
+          },
+          "policy_diff": {
+            "computed_diff": 0.4,
+            "threshold": 0.04,
+            "n_obs_min": 5,
+            "pass": true
+          },
+          "precision_diff": {
+            "computed_diff": 0.001130193926582028,
+            "threshold": 0.04,
+            "n_obs_min": 5,
+            "pass": false
+          }
+        },
+        "individualization_diff_legacy": {
+          "max_diff": 0.017106976744186042,
+          "actor_count": 2,
+          "averages": {
+            "target_a": -0.1599860465116279,
+            "target_b": -0.14287906976744186
+          },
+          "passed": false
+        },
+        "high_impact_false_positive_rate": {
+          "rate": 1.0,
+          "false_positives": 1,
+          "total_high_impact_events": 0,
+          "total_candidates": 1,
+          "passed": false,
+          "severity": 1.0,
+          "dynamic_threshold": 0.15
+        },
+        "meta_cognition_trigger_rate": {
+          "rate": 0.0,
+          "triggered_count": 0,
+          "total_turns": 10,
+          "passed": true
+        },
+        "body_telemetry": {
+          "data": {
+            "energy": {
+              "mean": 0.643,
+              "min": 0.5499999999999999,
+              "max": 0.7,
+              "range": 0.15,
+              "final": 0.65,
+              "trend": -0.04999999999999993
+            },
+            "social_safety": {
+              "mean": 0.506,
+              "min": 0.35,
+              "max": 0.6,
+              "range": 0.25,
+              "final": 0.55,
+              "trend": -0.04999999999999993
+            },
+            "arousal": {
+              "mean": 0.4414837297503577,
+              "volatility": 0.1283441968137102,
+              "peak": 0.5750000000000001,
+              "final": 0.46562387782670905
+            },
+            "valence": {
+              "mean": -0.15143255813953488,
+              "volatility": 0.11868230512551926,
+              "range": 0.3444
+            }
+          },
+          "passed": true
+        },
+        "recovery_score": {
+          "score": 1.0,
+          "recovery_count": 1,
+          "avg_recovery_time": 2,
+          "avg_half_life": 1.0,
+          "passed": true
+        },
+        "robustness_score": {
+          "score": 0.8333333333333334,
+          "passed": true
+        },
+        "target_isolation_debug": {
+          "targets_seen_count": 2,
+          "targets_seen": [
+            "target_a",
+            "target_b"
+          ],
+          "relationship_targets_count": 2,
+          "relationship_targets": [
+            "target_a",
+            "target_b"
+          ],
+          "ledger_targets_count": 2,
+          "ledger_targets": [
+            "target_a",
+            "target_b"
+          ],
+          "expected_target_count": 2,
+          "passed": true
+        },
+        "consequence_distribution": {
+          "data": {
+            "total": 8,
+            "by_tag": {
+              "energy_depletion": 1,
+              "social_safety_drop": 1,
+              "anxiety_spike": 1,
+              "valence_crash": 1,
+              "arousal_spike": 1,
+              "energy_boost": 1,
+              "social_safety_boost": 1,
+              "joy_boost": 1
+            },
+            "by_severity": {
+              "low": 8,
+              "medium": 0,
+              "high": 0
+            },
+            "unique_tags": 8
+          },
+          "passed": true
+        }
+      },
+      "passed": false,
+      "summary": "Completed 10/10 turns. Failed metrics: individualization_diff, individualization_diff_legacy, high_impact_false_positive_rate",
+      "individualization_subscores": {
+        "bond_diff": 0.0848528137423857,
+        "ledger_diff": 0.7071067811865476,
+        "somatic_residual_diff": 0.006000000000000001,
+        "policy_diff": 0.4,
+        "precision_diff": 0.001130193926582028,
+        "target_n_obs": {
+          "target_a": 5,
+          "target_b": 5
+        },
+        "bond_diff_passed": true,
+        "ledger_diff_passed": true,
+        "somatic_residual_diff_passed": false,
+        "policy_diff_passed": true,
+        "precision_diff_passed": false,
+        "failure_reasons": [
+          "somatic_residual_diff: target residuals not differentiated",
+          "precision_diff: self-model weights not differentiated"
+        ],
+        "runtime_signals": {}
+      },
+      "body_telemetry": [
+        {
+          "turn_id": 1,
+          "timestamp": 1772408807.4752479,
+          "valence": -0.0114,
+          "arousal": 0.3,
+          "energy": 0.7,
+          "social_safety": 0.6,
+          "anxiety": 0.0,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 2,
+          "timestamp": 1772408807.491263,
+          "valence": -0.022199999999999998,
+          "arousal": 0.3,
+          "energy": 0.7,
+          "social_safety": 0.6,
+          "anxiety": 0.0,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 3,
+          "timestamp": 1772408807.5094507,
+          "valence": -0.0336,
+          "arousal": 0.3,
+          "energy": 0.7,
+          "social_safety": 0.6,
+          "anxiety": 0.0,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 4,
+          "timestamp": 1772408807.526354,
+          "valence": -0.044399999999999995,
+          "arousal": 0.3,
+          "energy": 0.7,
+          "social_safety": 0.6,
+          "anxiety": 0.0,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 5,
+          "timestamp": 1772408807.5431783,
+          "valence": -0.3558,
+          "arousal": 0.5750000000000001,
+          "energy": 0.5499999999999999,
+          "social_safety": 0.35,
+          "anxiety": 0.15,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 6,
+          "timestamp": 1772408807.5634599,
+          "valence": -0.22706511627906978,
+          "arousal": 0.5695298472833863,
+          "energy": 0.58,
+          "social_safety": 0.35,
+          "anxiety": 0.08023255813953488,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 7,
+          "timestamp": 1772408807.577217,
+          "valence": -0.23846511627906977,
+          "arousal": 0.5695298472833863,
+          "energy": 0.6,
+          "social_safety": 0.43,
+          "anxiety": 0.08023255813953488,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 8,
+          "timestamp": 1772408807.593493,
+          "valence": -0.24926511627906978,
+          "arousal": 0.5695298472833863,
+          "energy": 0.6,
+          "social_safety": 0.43,
+          "anxiety": 0.08023255813953488,
+          "joy": 0.0,
+          "loneliness": 0.0,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 9,
+          "timestamp": 1772408807.610806,
+          "valence": -0.16066511627906976,
+          "arousal": 0.46562387782670905,
+          "energy": 0.65,
+          "social_safety": 0.55,
+          "anxiety": 0.0,
+          "joy": 0.1,
+          "loneliness": 0.0,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 10,
+          "timestamp": 1772408807.627164,
+          "valence": -0.17146511627906977,
+          "arousal": 0.46562387782670905,
+          "energy": 0.65,
+          "social_safety": 0.55,
+          "anxiety": 0.0,
+          "joy": 0.1,
+          "loneliness": 0.0,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        }
+      ],
+      "consequence_tags": [
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "anxiety_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "arousal_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 9,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 9,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "joy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 9,
+          "target_id": "target_a"
+        }
+      ],
+      "recovery_windows": [
+        {
+          "trigger_turn": 5,
+          "trigger_valence": -0.3558,
+          "trigger_energy": 0.5499999999999999,
+          "recovery_turns": [
+            5,
+            6
+          ],
+          "valence_trajectory": [
+            -0.3558,
+            -0.22706511627906978
+          ],
+          "energy_trajectory": [
+            0.5499999999999999,
+            0.58
+          ],
+          "recovered": true,
+          "recovery_time_turns": 2,
+          "recovery_half_life_steps": 1.0,
+          "collapse_duration": 0
+        }
+      ],
+      "failure_reasons": [
+        "somatic_residual_diff: target residuals not differentiated",
+        "precision_diff: self-model weights not differentiated",
+        "high_impact_false_positive: betrayal triggered without sufficient evidence"
+      ],
+      "runtime_signals": {}
+    },
+    {
+      "scenario_name": "smoke_residual_forced",
+      "scenario_file": "/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion/scenarios/smoke_residual_forced.yaml",
+      "start_time": "2026-03-01T17:46:47.628357",
+      "end_time": "2026-03-01T17:46:47.820873",
+      "duration_seconds": 0.19251251220703125,
+      "turns": [
+        {
+          "turn_id": 1,
+          "phase": "a_stress_1",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "rejection",
+          "emotion_before": {
+            "valence": 0.0,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.6324577,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.2114,
+            "arousal": 0.475,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.15,
+            "social_safety": 0.44999999999999996,
+            "energy": 0.62,
+            "timestamp": 1772408807.6513083,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.4,
+              "grudge": 0.1,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -0.6,
+                "social_need": 0.3600000000000001,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.1714285714285714,
+                "social_need": 0.10285714285714288,
+                "novelty_need": 0.0
+              },
+              "n_obs": 4,
+              "shrink_weight": 0.2857142857142857
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 2,
+          "phase": "b_calm_1",
+          "event_type": "world_event",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": "care",
+          "emotion_before": {
+            "valence": -0.2114,
+            "arousal": 0.475,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.15,
+            "social_safety": 0.44999999999999996,
+            "energy": 0.62,
+            "timestamp": 1772408807.6513567,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.07220000000000001,
+            "arousal": 0.59,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.15,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.5499999999999999,
+            "energy": 0.67,
+            "timestamp": 1772408807.6701317,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.4,
+              "grudge": 0.1,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 2,
+              "target_id": "target_b"
+            },
+            {
+              "tag": "joy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 2,
+              "target_id": "target_b"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 0.30000000000000004,
+                "social_need": -0.15000000000000002,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.02727272727272728,
+                "social_need": -0.01363636363636364,
+                "novelty_need": 0.0
+              },
+              "n_obs": 1,
+              "shrink_weight": 0.09090909090909091
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.16078431372549024,
+              "mean_w_explore": 0.30416666666666664
+            }
+          }
+        },
+        {
+          "turn_id": 3,
+          "phase": "a_stress_2",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "ignored",
+          "emotion_before": {
+            "valence": -0.07220000000000001,
+            "arousal": 0.59,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.15,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.5499999999999999,
+            "energy": 0.67,
+            "timestamp": 1772408807.670175,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.08360000000000001,
+            "arousal": 0.59,
+            "anger": 0.1,
+            "sadness": 0.25,
+            "anxiety": 0.0,
+            "joy": 0.15,
+            "loneliness": 0.15,
+            "social_safety": 0.49999999999999994,
+            "energy": 0.64,
+            "timestamp": 1772408807.6865277,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.39,
+              "grudge": 0.11,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -0.75,
+                "social_need": 0.6000000000000001,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.25,
+                "social_need": 0.2,
+                "novelty_need": 0.0
+              },
+              "n_obs": 5,
+              "shrink_weight": 0.3333333333333333
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 4,
+          "phase": "a_stress_3",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "betrayal",
+          "emotion_before": {
+            "valence": -0.08360000000000001,
+            "arousal": 0.59,
+            "anger": 0.1,
+            "sadness": 0.25,
+            "anxiety": 0.0,
+            "joy": 0.15,
+            "loneliness": 0.15,
+            "social_safety": 0.49999999999999994,
+            "energy": 0.64,
+            "timestamp": 1772408807.6865635,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.395,
+            "arousal": 0.865,
+            "anger": 0.35,
+            "sadness": 0.4,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.15,
+            "social_safety": 0.24999999999999994,
+            "energy": 0.49,
+            "timestamp": 1772408807.703089,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.19,
+              "grudge": 0.36,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": true,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "anxiety_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "joy_loss",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "arousal_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [
+            "high_impact_false_positive: betrayal triggered without sufficient evidence"
+          ],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 0.7500000000000001,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.375,
+                "social_need": 0.28125000000000006,
+                "novelty_need": 0.0
+              },
+              "n_obs": 6,
+              "shrink_weight": 0.375
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.2541666666666665,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.07916666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 5,
+          "phase": "a_stress_4",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "rejection",
+          "emotion_before": {
+            "valence": -0.395,
+            "arousal": 0.865,
+            "anger": 0.35,
+            "sadness": 0.4,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.15,
+            "social_safety": 0.24999999999999994,
+            "energy": 0.49,
+            "timestamp": 1772408807.7031388,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.6063999999999999,
+            "arousal": 1.0,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6000000000000001,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.3,
+            "social_safety": 0.09999999999999995,
+            "energy": 0.41,
+            "timestamp": 1772408807.7219915,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.09,
+              "grudge": 0.45999999999999996,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.4117647058823529,
+                "social_need": 0.4117647058823529,
+                "novelty_need": 0.0
+              },
+              "n_obs": 7,
+              "shrink_weight": 0.4117647058823529
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.0,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.0
+            }
+          }
+        },
+        {
+          "turn_id": 6,
+          "phase": "a_stress_5",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "ignored",
+          "emotion_before": {
+            "valence": -0.6063999999999999,
+            "arousal": 1.0,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6000000000000001,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.3,
+            "social_safety": 0.09999999999999995,
+            "energy": 0.41,
+            "timestamp": 1772408807.7220318,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.6177999999999999,
+            "arousal": 1.0,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6500000000000001,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.4,
+            "social_safety": 0.04999999999999995,
+            "energy": 0.38,
+            "timestamp": 1772408807.7402217,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.08,
+              "grudge": 0.47,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 6,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.4444444444444444,
+                "social_need": 0.4444444444444444,
+                "novelty_need": 0.0
+              },
+              "n_obs": 8,
+              "shrink_weight": 0.4444444444444444
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.0,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.0
+            }
+          }
+        },
+        {
+          "turn_id": 7,
+          "phase": "a_stress_6",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "betrayal",
+          "emotion_before": {
+            "valence": -0.6177999999999999,
+            "arousal": 1.0,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6500000000000001,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.4,
+            "social_safety": 0.04999999999999995,
+            "energy": 0.38,
+            "timestamp": 1772408807.7402594,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.9291999999999999,
+            "arousal": 1.0,
+            "anger": 0.7,
+            "sadness": 0.8000000000000002,
+            "anxiety": 0.3,
+            "joy": 0.0,
+            "loneliness": 0.4,
+            "social_safety": 0.0,
+            "energy": 0.23,
+            "timestamp": 1772408807.7562056,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.0,
+              "grudge": 0.72,
+              "trust": 0.29999999999999993,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": true,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "anxiety_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [
+            "high_impact_false_positive: betrayal triggered without sufficient evidence"
+          ],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.47368421052631576,
+                "social_need": 0.47368421052631576,
+                "novelty_need": 0.0
+              },
+              "n_obs": 9,
+              "shrink_weight": 0.47368421052631576
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.0,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.0
+            }
+          }
+        },
+        {
+          "turn_id": 8,
+          "phase": "a_stress_7",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "rejection",
+          "emotion_before": {
+            "valence": -0.9291999999999999,
+            "arousal": 1.0,
+            "anger": 0.7,
+            "sadness": 0.8000000000000002,
+            "anxiety": 0.3,
+            "joy": 0.0,
+            "loneliness": 0.4,
+            "social_safety": 0.0,
+            "energy": 0.23,
+            "timestamp": 1772408807.7562501,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -1.0,
+            "arousal": 1.0,
+            "anger": 0.7999999999999999,
+            "sadness": 1.0,
+            "anxiety": 0.3,
+            "joy": 0.0,
+            "loneliness": 0.55,
+            "social_safety": 0.0,
+            "energy": 0.15000000000000002,
+            "timestamp": 1772408807.776958,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.0,
+              "grudge": 0.82,
+              "trust": 0.29999999999999993,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 8,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 8,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.5,
+                "social_need": 0.5,
+                "novelty_need": 0.0
+              },
+              "n_obs": 10,
+              "shrink_weight": 0.5
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.0,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.0
+            }
+          }
+        },
+        {
+          "turn_id": 9,
+          "phase": "a_stress_8",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "ignored",
+          "emotion_before": {
+            "valence": -1.0,
+            "arousal": 1.0,
+            "anger": 0.7999999999999999,
+            "sadness": 1.0,
+            "anxiety": 0.3,
+            "joy": 0.0,
+            "loneliness": 0.55,
+            "social_safety": 0.0,
+            "energy": 0.15000000000000002,
+            "timestamp": 1772408807.7769995,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -1.0,
+            "arousal": 1.0,
+            "anger": 0.7999999999999999,
+            "sadness": 1.0,
+            "anxiety": 0.3,
+            "joy": 0.0,
+            "loneliness": 0.65,
+            "social_safety": 0.0,
+            "energy": 0.12000000000000002,
+            "timestamp": 1772408807.7982788,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.0,
+              "grudge": 0.83,
+              "trust": 0.29999999999999993,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.5238095238095238,
+                "social_need": 0.5238095238095238,
+                "novelty_need": 0.0
+              },
+              "n_obs": 11,
+              "shrink_weight": 0.5238095238095238
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.0,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.0
+            }
+          }
+        },
+        {
+          "turn_id": 10,
+          "phase": "b_calm_2",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -1.0,
+            "arousal": 1.0,
+            "anger": 0.7999999999999999,
+            "sadness": 1.0,
+            "anxiety": 0.3,
+            "joy": 0.0,
+            "loneliness": 0.65,
+            "social_safety": 0.0,
+            "energy": 0.12000000000000002,
+            "timestamp": 1772408807.7983165,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.9108,
+            "arousal": 1.0,
+            "anger": 0.7999999999999999,
+            "sadness": 1.0,
+            "anxiety": 0.3,
+            "joy": 0.05,
+            "loneliness": 0.65,
+            "social_safety": 0.02,
+            "energy": 0.12000000000000002,
+            "timestamp": 1772408807.8201125,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.0,
+              "grudge": 0.83,
+              "trust": 0.29999999999999993,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.75,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 0.30000000000000004,
+                "social_need": -0.15000000000000002,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.02727272727272728,
+                "social_need": -0.01363636363636364,
+                "novelty_need": 0.0
+              },
+              "n_obs": 1,
+              "shrink_weight": 0.09090909090909091
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.0,
+              "mean_w_memory": 0.19540229885057475,
+              "mean_w_explore": 0.0
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "emotion_consistency": {
+          "valence_range": 0.9278,
+          "arousal_range": 0.525,
+          "trajectory_length": 10,
+          "passed": true
+        },
+        "individualization_subscores": {
+          "bond_diff": {
+            "value": 0.5562,
+            "passed": true
+          },
+          "ledger_diff": {
+            "value": 0.7071,
+            "passed": true
+          },
+          "somatic_residual_diff": {
+            "value": 0.0166,
+            "passed": false
+          },
+          "policy_diff": {
+            "value": 0.625,
+            "passed": true
+          },
+          "precision_diff": {
+            "value": 0.0049,
+            "passed": false
+          },
+          "aggregate": 0.3791,
+          "all_passed": false,
+          "failure_reasons": [
+            "somatic_residual_diff: target residuals not differentiated",
+            "precision_diff: self-model weights not differentiated"
+          ],
+          "target_n_obs": {
+            "target_a": 8,
+            "target_b": 2
+          }
+        },
+        "individualization_diff": {
+          "aggregate": 0.3791125757629247,
+          "passed": false,
+          "failure_reasons": [
+            "somatic_residual_diff: target residuals not differentiated",
+            "precision_diff: self-model weights not differentiated"
+          ]
+        },
+        "individualization_raw_dump": {
+          "targets": [
+            "target_a",
+            "target_b"
+          ],
+          "per_target": {
+            "target_a": {
+              "relationship": {
+                "bond": 0.0,
+                "trust": 0.29999999999999993,
+                "bond_n_obs": 8,
+                "relationship_events_count": 8
+              },
+              "ledger": {
+                "promise_count": 1,
+                "violation_count": 1,
+                "active_promises_count": 1
+              },
+              "somatic_residual": {
+                "residual_raw": {
+                  "safety_stress": -0.39376643201140105,
+                  "social_need": 0.3672262534399725,
+                  "novelty_need": 0.0
+                },
+                "n_obs": 8,
+                "shrink_weight": 0.4444444444444444,
+                "residual_effective": {
+                  "safety_stress": -0.39376643201140105,
+                  "social_need": 0.3672262534399725,
+                  "novelty_need": 0.0
+                }
+              },
+              "precision": {
+                "mean_w_action": 0.1984375,
+                "mean_w_memory": 0.14285714285714285,
+                "mean_w_explore": 0.0
+              },
+              "policy": {
+                "histogram": {
+                  "boundary": 5,
+                  "observe": 3
+                }
+              }
+            },
+            "target_b": {
+              "relationship": {
+                "bond": 0.75,
+                "trust": 0.6,
+                "bond_n_obs": 2,
+                "relationship_events_count": 2
+              },
+              "ledger": {
+                "promise_count": 0,
+                "violation_count": 0,
+                "active_promises_count": 0
+              },
+              "somatic_residual": {
+                "residual_raw": {
+                  "safety_stress": 0.02727272727272728,
+                  "social_need": -0.01363636363636364,
+                  "novelty_need": 0.0
+                },
+                "n_obs": 2,
+                "shrink_weight": 0.16666666666666666,
+                "residual_effective": {
+                  "safety_stress": 0.02727272727272728,
+                  "social_need": -0.01363636363636364,
+                  "novelty_need": 0.0
+                }
+              },
+              "precision": {
+                "mean_w_action": 0.33333333333333337,
+                "mean_w_memory": 0.1780933062880325,
+                "mean_w_explore": 0.0
+              },
+              "policy": {
+                "histogram": {
+                  "approach": 1,
+                  "observe": 1
+                }
+              }
+            }
+          }
+        },
+        "individualization_submetric_trace": {
+          "bond_diff": {
+            "computed_diff": 0.5562499999999999,
+            "threshold": 0.05,
+            "n_obs_min": 2,
+            "pass": true
+          },
+          "ledger_diff": {
+            "computed_diff": 0.7071067811865476,
+            "threshold": 0.05,
+            "n_obs_min": 2,
+            "pass": true
+          },
+          "somatic_residual_diff": {
+            "computed_diff": 0.016599107142857145,
+            "threshold": 0.03,
+            "n_obs_min": 2,
+            "pass": false
+          },
+          "policy_diff": {
+            "computed_diff": 0.625,
+            "threshold": 0.04,
+            "n_obs_min": 2,
+            "pass": true
+          },
+          "precision_diff": {
+            "computed_diff": 0.004859618266005706,
+            "threshold": 0.04,
+            "n_obs_min": 2,
+            "pass": false
+          }
+        },
+        "individualization_diff_legacy": {
+          "max_diff": 0.11392499999999994,
+          "actor_count": 2,
+          "averages": {
+            "target_a": -0.605425,
+            "target_b": -0.49150000000000005
+          },
+          "passed": true
+        },
+        "high_impact_false_positive_rate": {
+          "rate": 1.0,
+          "false_positives": 2,
+          "total_high_impact_events": 0,
+          "total_candidates": 2,
+          "passed": false,
+          "severity": 1.0,
+          "dynamic_threshold": 0.15
+        },
+        "meta_cognition_trigger_rate": {
+          "rate": 0.6,
+          "triggered_count": 6,
+          "total_turns": 10,
+          "passed": true
+        },
+        "body_telemetry": {
+          "data": {
+            "energy": {
+              "mean": 0.383,
+              "min": 0.12000000000000002,
+              "max": 0.67,
+              "range": 0.55,
+              "final": 0.12000000000000002,
+              "trend": -0.5
+            },
+            "social_safety": {
+              "mean": 0.19199999999999998,
+              "min": 0.0,
+              "max": 0.5499999999999999,
+              "range": 0.55,
+              "final": 0.02,
+              "trend": -0.42999999999999994
+            },
+            "arousal": {
+              "mean": 0.852,
+              "volatility": 0.2137002053760777,
+              "peak": 1.0,
+              "final": 1.0
+            },
+            "valence": {
+              "mean": -0.5826399999999999,
+              "volatility": 0.3742533520966186,
+              "range": 0.9278
+            }
+          },
+          "passed": true
+        },
+        "recovery_score": {
+          "score": 1.0,
+          "recovery_count": 1,
+          "avg_recovery_time": 2,
+          "avg_half_life": 1.0,
+          "passed": true
+        },
+        "robustness_score": {
+          "score": 0.8333333333333334,
+          "passed": true
+        },
+        "target_isolation_debug": {
+          "targets_seen_count": 2,
+          "targets_seen": [
+            "target_a",
+            "target_b"
+          ],
+          "relationship_targets_count": 2,
+          "relationship_targets": [
+            "target_a",
+            "target_b"
+          ],
+          "ledger_targets_count": 2,
+          "ledger_targets": [
+            "target_a",
+            "target_b"
+          ],
+          "expected_target_count": 2,
+          "passed": true
+        },
+        "consequence_distribution": {
+          "data": {
+            "total": 23,
+            "by_tag": {
+              "energy_depletion": 5,
+              "social_safety_drop": 3,
+              "valence_crash": 4,
+              "loneliness_increase": 5,
+              "energy_boost": 1,
+              "joy_boost": 1,
+              "anxiety_spike": 2,
+              "joy_loss": 1,
+              "arousal_spike": 1
+            },
+            "by_severity": {
+              "low": 23,
+              "medium": 0,
+              "high": 0
+            },
+            "unique_tags": 9
+          },
+          "passed": true
+        }
+      },
+      "passed": false,
+      "summary": "Completed 10/10 turns. Failed metrics: individualization_diff, high_impact_false_positive_rate",
+      "individualization_subscores": {
+        "bond_diff": 0.5562499999999999,
+        "ledger_diff": 0.7071067811865476,
+        "somatic_residual_diff": 0.016599107142857145,
+        "policy_diff": 0.625,
+        "precision_diff": 0.004859618266005706,
+        "target_n_obs": {
+          "target_a": 8,
+          "target_b": 2
+        },
+        "bond_diff_passed": true,
+        "ledger_diff_passed": true,
+        "somatic_residual_diff_passed": false,
+        "policy_diff_passed": true,
+        "precision_diff_passed": false,
+        "failure_reasons": [
+          "somatic_residual_diff: target residuals not differentiated",
+          "precision_diff: self-model weights not differentiated"
+        ],
+        "runtime_signals": {}
+      },
+      "body_telemetry": [
+        {
+          "turn_id": 1,
+          "timestamp": 1772408807.6513236,
+          "valence": -0.2114,
+          "arousal": 0.475,
+          "energy": 0.62,
+          "social_safety": 0.44999999999999996,
+          "anxiety": 0.0,
+          "joy": 0.0,
+          "loneliness": 0.15,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 2,
+          "timestamp": 1772408807.6701474,
+          "valence": -0.07220000000000001,
+          "arousal": 0.59,
+          "energy": 0.67,
+          "social_safety": 0.5499999999999999,
+          "anxiety": 0.0,
+          "joy": 0.15,
+          "loneliness": 0.04999999999999999,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 3,
+          "timestamp": 1772408807.6865418,
+          "valence": -0.08360000000000001,
+          "arousal": 0.59,
+          "energy": 0.64,
+          "social_safety": 0.49999999999999994,
+          "anxiety": 0.0,
+          "joy": 0.15,
+          "loneliness": 0.15,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 4,
+          "timestamp": 1772408807.7031112,
+          "valence": -0.395,
+          "arousal": 0.865,
+          "energy": 0.49,
+          "social_safety": 0.24999999999999994,
+          "anxiety": 0.15,
+          "joy": 0.0,
+          "loneliness": 0.15,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 5,
+          "timestamp": 1772408807.7220066,
+          "valence": -0.6063999999999999,
+          "arousal": 1.0,
+          "energy": 0.41,
+          "social_safety": 0.09999999999999995,
+          "anxiety": 0.15,
+          "joy": 0.0,
+          "loneliness": 0.3,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 6,
+          "timestamp": 1772408807.7402363,
+          "valence": -0.6177999999999999,
+          "arousal": 1.0,
+          "energy": 0.38,
+          "social_safety": 0.04999999999999995,
+          "anxiety": 0.15,
+          "joy": 0.0,
+          "loneliness": 0.4,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 7,
+          "timestamp": 1772408807.756227,
+          "valence": -0.9291999999999999,
+          "arousal": 1.0,
+          "energy": 0.23,
+          "social_safety": 0.0,
+          "anxiety": 0.3,
+          "joy": 0.0,
+          "loneliness": 0.4,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 8,
+          "timestamp": 1772408807.7769744,
+          "valence": -1.0,
+          "arousal": 1.0,
+          "energy": 0.15000000000000002,
+          "social_safety": 0.0,
+          "anxiety": 0.3,
+          "joy": 0.0,
+          "loneliness": 0.55,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 9,
+          "timestamp": 1772408807.7982953,
+          "valence": -1.0,
+          "arousal": 1.0,
+          "energy": 0.12000000000000002,
+          "social_safety": 0.0,
+          "anxiety": 0.3,
+          "joy": 0.0,
+          "loneliness": 0.65,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 10,
+          "timestamp": 1772408807.8201323,
+          "valence": -0.9108,
+          "arousal": 1.0,
+          "energy": 0.12000000000000002,
+          "social_safety": 0.02,
+          "anxiety": 0.3,
+          "joy": 0.05,
+          "loneliness": 0.65,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        }
+      ],
+      "consequence_tags": [
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 2,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "joy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 2,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "anxiety_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "joy_loss",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "arousal_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 6,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "anxiety_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 8,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 8,
+          "target_id": "target_a"
+        }
+      ],
+      "recovery_windows": [
+        {
+          "trigger_turn": 1,
+          "trigger_valence": -0.2114,
+          "trigger_energy": 0.62,
+          "recovery_turns": [
+            1,
+            2
+          ],
+          "valence_trajectory": [
+            -0.2114,
+            -0.07220000000000001
+          ],
+          "energy_trajectory": [
+            0.62,
+            0.67
+          ],
+          "recovered": true,
+          "recovery_time_turns": 2,
+          "recovery_half_life_steps": 1.0,
+          "collapse_duration": 0
+        }
+      ],
+      "failure_reasons": [
+        "somatic_residual_diff: target residuals not differentiated",
+        "precision_diff: self-model weights not differentiated",
+        "high_impact_false_positive: betrayal triggered without sufficient evidence"
+      ],
+      "runtime_signals": {}
+    },
+    {
+      "scenario_name": "smoke_precision_probe",
+      "scenario_file": "/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion/scenarios/smoke_precision_probe.yaml",
+      "start_time": "2026-03-01T17:46:47.821122",
+      "end_time": "2026-03-01T17:46:48.039596",
+      "duration_seconds": 0.21847081184387207,
+      "turns": [
+        {
+          "turn_id": 1,
+          "phase": "a_threat_1",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "rejection",
+          "emotion_before": {
+            "valence": 0.0,
+            "arousal": 0.3,
+            "anger": 0.0,
+            "sadness": 0.0,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.0,
+            "social_safety": 0.6,
+            "energy": 0.7,
+            "timestamp": 1772408807.8249264,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.2114,
+            "arousal": 0.475,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.15,
+            "social_safety": 0.44999999999999996,
+            "energy": 0.62,
+            "timestamp": 1772408807.8449728,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.4,
+              "grudge": 0.1,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.5,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 1,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.5454545454545454,
+                "social_need": 0.5454545454545454,
+                "novelty_need": 0.0
+              },
+              "n_obs": 12,
+              "shrink_weight": 0.5454545454545454
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.26666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 2,
+          "phase": "b_safe_1",
+          "event_type": "world_event",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": "care",
+          "emotion_before": {
+            "valence": -0.2114,
+            "arousal": 0.475,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.0,
+            "loneliness": 0.15,
+            "social_safety": 0.44999999999999996,
+            "energy": 0.62,
+            "timestamp": 1772408807.8450215,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.07220000000000001,
+            "arousal": 0.59,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.15,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.5499999999999999,
+            "energy": 0.67,
+            "timestamp": 1772408807.8654323,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.4,
+              "grudge": 0.1,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 2,
+              "target_id": "target_b"
+            },
+            {
+              "tag": "joy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 2,
+              "target_id": "target_b"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 0.6000000000000001,
+                "social_need": -0.30000000000000004,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.1,
+                "social_need": -0.05,
+                "novelty_need": 0.0
+              },
+              "n_obs": 2,
+              "shrink_weight": 0.16666666666666666
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.16078431372549024,
+              "mean_w_explore": 0.30416666666666664
+            }
+          }
+        },
+        {
+          "turn_id": 3,
+          "phase": "a_threat_2",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "betrayal",
+          "emotion_before": {
+            "valence": -0.07220000000000001,
+            "arousal": 0.59,
+            "anger": 0.1,
+            "sadness": 0.2,
+            "anxiety": 0.0,
+            "joy": 0.15,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.5499999999999999,
+            "energy": 0.67,
+            "timestamp": 1772408807.8654761,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.3836,
+            "arousal": 0.865,
+            "anger": 0.35,
+            "sadness": 0.35,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.29999999999999993,
+            "energy": 0.52,
+            "timestamp": 1772408807.8867524,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.2,
+              "grudge": 0.35,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.6,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": true,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "anxiety_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "joy_loss",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "arousal_spike",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 3,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [
+            "high_impact_false_positive: betrayal triggered without sufficient evidence"
+          ],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.5652173913043478,
+                "social_need": 0.5652173913043478,
+                "novelty_need": 0.0
+              },
+              "n_obs": 13,
+              "shrink_weight": 0.5652173913043478
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.39166666666666644,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.14166666666666655
+            }
+          }
+        },
+        {
+          "turn_id": 4,
+          "phase": "b_safe_2",
+          "event_type": "world_event",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": "repair_success",
+          "emotion_before": {
+            "valence": -0.3836,
+            "arousal": 0.865,
+            "anger": 0.35,
+            "sadness": 0.35,
+            "anxiety": 0.15,
+            "joy": 0.0,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.29999999999999993,
+            "energy": 0.52,
+            "timestamp": 1772408807.8868048,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.29439999999999994,
+            "arousal": 0.7020000000000001,
+            "anger": 0.35,
+            "sadness": 0.35,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.1,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.41999999999999993,
+            "energy": 0.5700000000000001,
+            "timestamp": 1772408807.908904,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.2,
+              "grudge": 0.35,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_b"
+            },
+            {
+              "tag": "social_safety_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_b"
+            },
+            {
+              "tag": "anxiety_relief",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_b"
+            },
+            {
+              "tag": "joy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 4,
+              "target_id": "target_b"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 0.9600000000000001,
+                "social_need": -0.39,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.22153846153846157,
+                "social_need": -0.09000000000000001,
+                "novelty_need": 0.0
+              },
+              "n_obs": 3,
+              "shrink_weight": 0.23076923076923078
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6666666666666667,
+              "mean_w_memory": 0.16078431372549024,
+              "mean_w_explore": 0.30416666666666664
+            }
+          }
+        },
+        {
+          "turn_id": 5,
+          "phase": "a_threat_3",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "ignored",
+          "emotion_before": {
+            "valence": -0.29439999999999994,
+            "arousal": 0.7020000000000001,
+            "anger": 0.35,
+            "sadness": 0.35,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.1,
+            "loneliness": 0.04999999999999999,
+            "social_safety": 0.41999999999999993,
+            "energy": 0.5700000000000001,
+            "timestamp": 1772408807.908946,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.30579999999999996,
+            "arousal": 0.7020000000000001,
+            "anger": 0.35,
+            "sadness": 0.39999999999999997,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.1,
+            "loneliness": 0.15,
+            "social_safety": 0.36999999999999994,
+            "energy": 0.54,
+            "timestamp": 1772408807.9279244,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.19,
+              "grudge": 0.36,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.65,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 5,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.5833333333333334,
+                "social_need": 0.5833333333333334,
+                "novelty_need": 0.0
+              },
+              "n_obs": 14,
+              "shrink_weight": 0.5833333333333334
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.5841666666666665,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.22916666666666646
+            }
+          }
+        },
+        {
+          "turn_id": 6,
+          "phase": "b_safe_3",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.30579999999999996,
+            "arousal": 0.7020000000000001,
+            "anger": 0.35,
+            "sadness": 0.39999999999999997,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.1,
+            "loneliness": 0.15,
+            "social_safety": 0.36999999999999994,
+            "energy": 0.54,
+            "timestamp": 1772408807.9279654,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.21659999999999996,
+            "arousal": 0.7620000000000001,
+            "anger": 0.35,
+            "sadness": 0.39999999999999997,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.15000000000000002,
+            "loneliness": 0.15,
+            "social_safety": 0.38999999999999996,
+            "energy": 0.54,
+            "timestamp": 1772408807.9502168,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.19,
+              "grudge": 0.36,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.75,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 0.9600000000000001,
+                "social_need": -0.39,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.22153846153846157,
+                "social_need": -0.09000000000000001,
+                "novelty_need": 0.0
+              },
+              "n_obs": 3,
+              "shrink_weight": 0.23076923076923078
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.6391666666666664,
+              "mean_w_memory": 0.19540229885057475,
+              "mean_w_explore": 0.36666666666666653
+            }
+          }
+        },
+        {
+          "turn_id": 7,
+          "phase": "a_threat_4",
+          "event_type": "world_event",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": "rejection",
+          "emotion_before": {
+            "valence": -0.21659999999999996,
+            "arousal": 0.7620000000000001,
+            "anger": 0.35,
+            "sadness": 0.39999999999999997,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.15000000000000002,
+            "loneliness": 0.15,
+            "social_safety": 0.38999999999999996,
+            "energy": 0.54,
+            "timestamp": 1772408807.9502535,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.428,
+            "arousal": 0.9370000000000002,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.15000000000000002,
+            "loneliness": 0.3,
+            "social_safety": 0.23999999999999996,
+            "energy": 0.46,
+            "timestamp": 1772408807.9732304,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.09,
+              "grudge": 0.45999999999999996,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.75,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": true,
+          "meta_cognition_type": "reflection",
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "energy_depletion",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "social_safety_drop",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "valence_crash",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            },
+            {
+              "tag": "loneliness_increase",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 7,
+              "target_id": "target_a"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.6,
+                "social_need": 0.6,
+                "novelty_need": 0.0
+              },
+              "n_obs": 15,
+              "shrink_weight": 0.6
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.22666666666666663,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.0666666666666666
+            }
+          }
+        },
+        {
+          "turn_id": 8,
+          "phase": "b_safe_4",
+          "event_type": "world_event",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": "care",
+          "emotion_before": {
+            "valence": -0.428,
+            "arousal": 0.9370000000000002,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6,
+            "anxiety": 0.04999999999999999,
+            "joy": 0.15000000000000002,
+            "loneliness": 0.3,
+            "social_safety": 0.23999999999999996,
+            "energy": 0.46,
+            "timestamp": 1772408807.9732823,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.2888,
+            "arousal": 1.0,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6,
+            "anxiety": 0.0,
+            "joy": 0.30000000000000004,
+            "loneliness": 0.19999999999999998,
+            "social_safety": 0.33999999999999997,
+            "energy": 0.51,
+            "timestamp": 1772408807.9936745,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.09,
+              "grudge": 0.45999999999999996,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.9,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [
+            {
+              "tag": "social_safety_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 8,
+              "target_id": "target_b"
+            },
+            {
+              "tag": "joy_boost",
+              "severity": 1.0,
+              "source_event": "world_event",
+              "turn_id": 8,
+              "target_id": "target_b"
+            }
+          ],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 1.0,
+                "social_need": -0.54,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.2857142857142857,
+                "social_need": -0.15428571428571428,
+                "novelty_need": 0.0
+              },
+              "n_obs": 4,
+              "shrink_weight": 0.2857142857142857
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.5016666666666665,
+              "mean_w_memory": 0.24444444444444452,
+              "mean_w_explore": 0.4166666666666667
+            }
+          }
+        },
+        {
+          "turn_id": 9,
+          "phase": "a_threat_5",
+          "event_type": "user_message",
+          "actor": "target_a",
+          "target": "target_a",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.2888,
+            "arousal": 1.0,
+            "anger": 0.44999999999999996,
+            "sadness": 0.6,
+            "anxiety": 0.0,
+            "joy": 0.30000000000000004,
+            "loneliness": 0.19999999999999998,
+            "social_safety": 0.33999999999999997,
+            "energy": 0.51,
+            "timestamp": 1772408807.993718,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.40020000000000006,
+            "arousal": 1.0,
+            "anger": 0.49999999999999994,
+            "sadness": 0.6,
+            "anxiety": 0.0,
+            "joy": 0.30000000000000004,
+            "loneliness": 0.19999999999999998,
+            "social_safety": 0.31999999999999995,
+            "energy": 0.51,
+            "timestamp": 1772408808.015826,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.09,
+              "grudge": 0.5599999999999999,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 0.9,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 1,
+              "violation_count": 1,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": -1.0,
+                "social_need": 1.0,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": -0.6,
+                "social_need": 0.6,
+                "novelty_need": 0.0
+              },
+              "n_obs": 15,
+              "shrink_weight": 0.6
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.4466666666666665,
+              "mean_w_memory": 0.14285714285714285,
+              "mean_w_explore": 0.16666666666666657
+            }
+          }
+        },
+        {
+          "turn_id": 10,
+          "phase": "b_safe_5",
+          "event_type": "user_message",
+          "actor": "target_b",
+          "target": "target_b",
+          "event_subtype": null,
+          "emotion_before": {
+            "valence": -0.40020000000000006,
+            "arousal": 1.0,
+            "anger": 0.49999999999999994,
+            "sadness": 0.6,
+            "anxiety": 0.0,
+            "joy": 0.30000000000000004,
+            "loneliness": 0.19999999999999998,
+            "social_safety": 0.31999999999999995,
+            "energy": 0.51,
+            "timestamp": 1772408808.0158632,
+            "is_global": true,
+            "target_id": null
+          },
+          "emotion_after": {
+            "valence": -0.311,
+            "arousal": 1.0,
+            "anger": 0.49999999999999994,
+            "sadness": 0.6,
+            "anxiety": 0.0,
+            "joy": 0.35000000000000003,
+            "loneliness": 0.19999999999999998,
+            "social_safety": 0.33999999999999997,
+            "energy": 0.51,
+            "timestamp": 1772408808.038894,
+            "is_global": true,
+            "target_id": null
+          },
+          "relationships": {
+            "target_a": {
+              "target_id": "target_a",
+              "bond": 0.09,
+              "grudge": 0.5599999999999999,
+              "trust": 0.44999999999999996,
+              "repair_bank": 0.0,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            },
+            "target_b": {
+              "target_id": "target_b",
+              "bond": 1.0,
+              "grudge": 0.0,
+              "trust": 0.65,
+              "repair_bank": 0.1,
+              "promises": [],
+              "violations": [],
+              "n_obs": 0
+            }
+          },
+          "meta_cognition_triggered": false,
+          "meta_cognition_type": null,
+          "high_impact_event": false,
+          "high_impact_candidate": false,
+          "consequence_tags": [],
+          "success": true,
+          "error": null,
+          "failure_reasons": [],
+          "runtime_signals": {
+            "ledger": {
+              "source": "ledger_db",
+              "promise_count": 0,
+              "violation_count": 0,
+              "active_promises_count": 0
+            },
+            "residual": {
+              "source": "body_state",
+              "raw_residual": {
+                "safety_stress": 1.0,
+                "social_need": -0.54,
+                "novelty_need": 0.0
+              },
+              "residual_effective": {
+                "safety_stress": 0.2857142857142857,
+                "social_need": -0.15428571428571428,
+                "novelty_need": 0.0
+              },
+              "n_obs": 4,
+              "shrink_weight": 0.2857142857142857
+            },
+            "precision": {
+              "source": "precision_snapshot",
+              "mean_w_action": 0.5016666666666665,
+              "mean_w_memory": 0.27536231884057977,
+              "mean_w_explore": 0.49166666666666664
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "emotion_consistency": {
+          "valence_range": 0.3558,
+          "arousal_range": 0.525,
+          "trajectory_length": 10,
+          "passed": true
+        },
+        "individualization_subscores": {
+          "bond_diff": {
+            "value": 0.596,
+            "passed": true
+          },
+          "ledger_diff": {
+            "value": 0.7071,
+            "passed": true
+          },
+          "somatic_residual_diff": {
+            "value": 0.0201,
+            "passed": false
+          },
+          "policy_diff": {
+            "value": 0.4,
+            "passed": true
+          },
+          "precision_diff": {
+            "value": 0.0054,
+            "passed": false
+          },
+          "aggregate": 0.3563,
+          "all_passed": false,
+          "failure_reasons": [
+            "somatic_residual_diff: target residuals not differentiated",
+            "precision_diff: self-model weights not differentiated"
+          ],
+          "target_n_obs": {
+            "target_a": 5,
+            "target_b": 5
+          }
+        },
+        "individualization_diff": {
+          "aggregate": 0.3562657578485098,
+          "passed": false,
+          "failure_reasons": [
+            "somatic_residual_diff: target residuals not differentiated",
+            "precision_diff: self-model weights not differentiated"
+          ]
+        },
+        "individualization_raw_dump": {
+          "targets": [
+            "target_a",
+            "target_b"
+          ],
+          "per_target": {
+            "target_a": {
+              "relationship": {
+                "bond": 0.09,
+                "trust": 0.44999999999999996,
+                "bond_n_obs": 5,
+                "relationship_events_count": 5
+              },
+              "ledger": {
+                "promise_count": 1,
+                "violation_count": 1,
+                "active_promises_count": 1
+              },
+              "somatic_residual": {
+                "residual_raw": {
+                  "safety_stress": -0.5788010540184453,
+                  "social_need": 0.5788010540184453,
+                  "novelty_need": 0.0
+                },
+                "n_obs": 5,
+                "shrink_weight": 0.3333333333333333,
+                "residual_effective": {
+                  "safety_stress": -0.5788010540184453,
+                  "social_need": 0.5788010540184453,
+                  "novelty_need": 0.0
+                }
+              },
+              "precision": {
+                "mean_w_action": 0.46316666666666656,
+                "mean_w_memory": 0.14285714285714285,
+                "mean_w_explore": 0.0
+              },
+              "policy": {
+                "histogram": {
+                  "boundary": 3,
+                  "observe": 2
+                }
+              }
+            },
+            "target_b": {
+              "relationship": {
+                "bond": 1.0,
+                "trust": 0.65,
+                "bond_n_obs": 5,
+                "relationship_events_count": 5
+              },
+              "ledger": {
+                "promise_count": 0,
+                "violation_count": 0,
+                "active_promises_count": 0
+              },
+              "somatic_residual": {
+                "residual_raw": {
+                  "safety_stress": 0.2229010989010989,
+                  "social_need": -0.10771428571428572,
+                  "novelty_need": 0.0
+                },
+                "n_obs": 5,
+                "shrink_weight": 0.3333333333333333,
+                "residual_effective": {
+                  "safety_stress": 0.2229010989010989,
+                  "social_need": -0.10771428571428572,
+                  "novelty_need": 0.0
+                }
+              },
+              "precision": {
+                "mean_w_action": 0.5951666666666666,
+                "mean_w_memory": 0.2073555379173159,
+                "mean_w_explore": 0.0
+              },
+              "policy": {
+                "histogram": {
+                  "approach": 3,
+                  "observe": 2
+                }
+              }
+            }
+          }
+        },
+        "individualization_submetric_trace": {
+          "bond_diff": {
+            "computed_diff": 0.5960000000000001,
+            "threshold": 0.05,
+            "n_obs_min": 5,
+            "pass": true
+          },
+          "ledger_diff": {
+            "computed_diff": 0.7071067811865476,
+            "threshold": 0.05,
+            "n_obs_min": 5,
+            "pass": true
+          },
+          "somatic_residual_diff": {
+            "computed_diff": 0.020139999999999998,
+            "threshold": 0.03,
+            "n_obs_min": 5,
+            "pass": false
+          },
+          "policy_diff": {
+            "computed_diff": 0.4,
+            "threshold": 0.04,
+            "n_obs_min": 5,
+            "pass": true
+          },
+          "precision_diff": {
+            "computed_diff": 0.005396010741334543,
+            "threshold": 0.04,
+            "n_obs_min": 5,
+            "pass": false
+          }
+        },
+        "individualization_diff_legacy": {
+          "max_diff": 0.10920000000000002,
+          "actor_count": 2,
+          "averages": {
+            "target_a": -0.3458,
+            "target_b": -0.23659999999999998
+          },
+          "passed": true
+        },
+        "high_impact_false_positive_rate": {
+          "rate": 1.0,
+          "false_positives": 1,
+          "total_high_impact_events": 0,
+          "total_candidates": 1,
+          "passed": false,
+          "severity": 1.0,
+          "dynamic_threshold": 0.15
+        },
+        "meta_cognition_trigger_rate": {
+          "rate": 0.3,
+          "triggered_count": 3,
+          "total_turns": 10,
+          "passed": true
+        },
+        "body_telemetry": {
+          "data": {
+            "energy": {
+              "mean": 0.545,
+              "min": 0.46,
+              "max": 0.67,
+              "range": 0.21,
+              "final": 0.51,
+              "trend": -0.10999999999999999
+            },
+            "social_safety": {
+              "mean": 0.37199999999999994,
+              "min": 0.23999999999999996,
+              "max": 0.5499999999999999,
+              "range": 0.31,
+              "final": 0.33999999999999997,
+              "trend": -0.10999999999999999
+            },
+            "arousal": {
+              "mean": 0.8033,
+              "volatility": 0.1865660740863676,
+              "peak": 1.0,
+              "final": 1.0
+            },
+            "valence": {
+              "mean": -0.2912,
+              "volatility": 0.105223782694049,
+              "range": 0.3558
+            }
+          },
+          "passed": true
+        },
+        "recovery_score": {
+          "score": 1.0,
+          "recovery_count": 3,
+          "avg_recovery_time": 2,
+          "avg_half_life": 1.0,
+          "passed": true
+        },
+        "robustness_score": {
+          "score": 0.8333333333333334,
+          "passed": true
+        },
+        "target_isolation_debug": {
+          "targets_seen_count": 2,
+          "targets_seen": [
+            "target_a",
+            "target_b"
+          ],
+          "relationship_targets_count": 2,
+          "relationship_targets": [
+            "target_a",
+            "target_b"
+          ],
+          "ledger_targets_count": 2,
+          "ledger_targets": [
+            "target_a",
+            "target_b"
+          ],
+          "expected_target_count": 2,
+          "passed": true
+        },
+        "consequence_distribution": {
+          "data": {
+            "total": 23,
+            "by_tag": {
+              "energy_depletion": 3,
+              "social_safety_drop": 3,
+              "valence_crash": 3,
+              "loneliness_increase": 3,
+              "energy_boost": 2,
+              "joy_boost": 3,
+              "anxiety_spike": 1,
+              "joy_loss": 1,
+              "arousal_spike": 1,
+              "social_safety_boost": 2,
+              "anxiety_relief": 1
+            },
+            "by_severity": {
+              "low": 23,
+              "medium": 0,
+              "high": 0
+            },
+            "unique_tags": 11
+          },
+          "passed": true
+        }
+      },
+      "passed": false,
+      "summary": "Completed 10/10 turns. Failed metrics: individualization_diff, high_impact_false_positive_rate",
+      "individualization_subscores": {
+        "bond_diff": 0.5960000000000001,
+        "ledger_diff": 0.7071067811865476,
+        "somatic_residual_diff": 0.020139999999999998,
+        "policy_diff": 0.4,
+        "precision_diff": 0.005396010741334543,
+        "target_n_obs": {
+          "target_a": 5,
+          "target_b": 5
+        },
+        "bond_diff_passed": true,
+        "ledger_diff_passed": true,
+        "somatic_residual_diff_passed": false,
+        "policy_diff_passed": true,
+        "precision_diff_passed": false,
+        "failure_reasons": [
+          "somatic_residual_diff: target residuals not differentiated",
+          "precision_diff: self-model weights not differentiated"
+        ],
+        "runtime_signals": {}
+      },
+      "body_telemetry": [
+        {
+          "turn_id": 1,
+          "timestamp": 1772408807.8449905,
+          "valence": -0.2114,
+          "arousal": 0.475,
+          "energy": 0.62,
+          "social_safety": 0.44999999999999996,
+          "anxiety": 0.0,
+          "joy": 0.0,
+          "loneliness": 0.15,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 2,
+          "timestamp": 1772408807.8654478,
+          "valence": -0.07220000000000001,
+          "arousal": 0.59,
+          "energy": 0.67,
+          "social_safety": 0.5499999999999999,
+          "anxiety": 0.0,
+          "joy": 0.15,
+          "loneliness": 0.04999999999999999,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 3,
+          "timestamp": 1772408807.8867757,
+          "valence": -0.3836,
+          "arousal": 0.865,
+          "energy": 0.52,
+          "social_safety": 0.29999999999999993,
+          "anxiety": 0.15,
+          "joy": 0.0,
+          "loneliness": 0.04999999999999999,
+          "regulation_budget": 1.0,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 4,
+          "timestamp": 1772408807.90892,
+          "valence": -0.29439999999999994,
+          "arousal": 0.7020000000000001,
+          "energy": 0.5700000000000001,
+          "social_safety": 0.41999999999999993,
+          "anxiety": 0.04999999999999999,
+          "joy": 0.1,
+          "loneliness": 0.04999999999999999,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 5,
+          "timestamp": 1772408807.927941,
+          "valence": -0.30579999999999996,
+          "arousal": 0.7020000000000001,
+          "energy": 0.54,
+          "social_safety": 0.36999999999999994,
+          "anxiety": 0.04999999999999999,
+          "joy": 0.1,
+          "loneliness": 0.15,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 6,
+          "timestamp": 1772408807.9502335,
+          "valence": -0.21659999999999996,
+          "arousal": 0.7620000000000001,
+          "energy": 0.54,
+          "social_safety": 0.38999999999999996,
+          "anxiety": 0.04999999999999999,
+          "joy": 0.15000000000000002,
+          "loneliness": 0.15,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 7,
+          "timestamp": 1772408807.9732513,
+          "valence": -0.428,
+          "arousal": 0.9370000000000002,
+          "energy": 0.46,
+          "social_safety": 0.23999999999999996,
+          "anxiety": 0.04999999999999999,
+          "joy": 0.15000000000000002,
+          "loneliness": 0.3,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 8,
+          "timestamp": 1772408807.9936912,
+          "valence": -0.2888,
+          "arousal": 1.0,
+          "energy": 0.51,
+          "social_safety": 0.33999999999999997,
+          "anxiety": 0.0,
+          "joy": 0.30000000000000004,
+          "loneliness": 0.19999999999999998,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 9,
+          "timestamp": 1772408808.0158417,
+          "valence": -0.40020000000000006,
+          "arousal": 1.0,
+          "energy": 0.51,
+          "social_safety": 0.31999999999999995,
+          "anxiety": 0.0,
+          "joy": 0.30000000000000004,
+          "loneliness": 0.19999999999999998,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        },
+        {
+          "turn_id": 10,
+          "timestamp": 1772408808.0389116,
+          "valence": -0.311,
+          "arousal": 1.0,
+          "energy": 0.51,
+          "social_safety": 0.33999999999999997,
+          "anxiety": 0.0,
+          "joy": 0.35000000000000003,
+          "loneliness": 0.19999999999999998,
+          "regulation_budget": 0.95,
+          "target_residuals": {}
+        }
+      ],
+      "consequence_tags": [
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 1,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 2,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "joy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 2,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "anxiety_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "joy_loss",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "arousal_spike",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 3,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "social_safety_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "anxiety_relief",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "joy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 4,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 5,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "energy_depletion",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_drop",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "valence_crash",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "loneliness_increase",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 7,
+          "target_id": "target_a"
+        },
+        {
+          "tag": "social_safety_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 8,
+          "target_id": "target_b"
+        },
+        {
+          "tag": "joy_boost",
+          "severity": 1.0,
+          "source_event": "world_event",
+          "turn_id": 8,
+          "target_id": "target_b"
+        }
+      ],
+      "recovery_windows": [
+        {
+          "trigger_turn": 1,
+          "trigger_valence": -0.2114,
+          "trigger_energy": 0.62,
+          "recovery_turns": [
+            1,
+            2
+          ],
+          "valence_trajectory": [
+            -0.2114,
+            -0.07220000000000001
+          ],
+          "energy_trajectory": [
+            0.62,
+            0.67
+          ],
+          "recovered": true,
+          "recovery_time_turns": 2,
+          "recovery_half_life_steps": 1.0,
+          "collapse_duration": 0
+        },
+        {
+          "trigger_turn": 3,
+          "trigger_valence": -0.3836,
+          "trigger_energy": 0.52,
+          "recovery_turns": [
+            3,
+            4
+          ],
+          "valence_trajectory": [
+            -0.3836,
+            -0.29439999999999994
+          ],
+          "energy_trajectory": [
+            0.52,
+            0.5700000000000001
+          ],
+          "recovered": true,
+          "recovery_time_turns": 2,
+          "recovery_half_life_steps": 1.0,
+          "collapse_duration": 0
+        },
+        {
+          "trigger_turn": 7,
+          "trigger_valence": -0.428,
+          "trigger_energy": 0.46,
+          "recovery_turns": [
+            7,
+            8
+          ],
+          "valence_trajectory": [
+            -0.428,
+            -0.2888
+          ],
+          "energy_trajectory": [
+            0.46,
+            0.51
+          ],
+          "recovered": true,
+          "recovery_time_turns": 2,
+          "recovery_half_life_steps": 1.0,
+          "collapse_duration": 0
+        }
+      ],
+      "failure_reasons": [
+        "somatic_residual_diff: target residuals not differentiated",
+        "precision_diff: self-model weights not differentiated",
+        "high_impact_false_positive: betrayal triggered without sufficient evidence"
+      ],
+      "runtime_signals": {}
+    }
+  ],
+  "aggregate_metrics": {
+    "emotion_consistency": {
+      "pass_rate": 1.0,
+      "scenarios_passed": 3.0,
+      "total_scenarios": 3
+    },
+    "individualization_subscores": {
+      "bond_diff": {
+        "average": 0.41236666666666666,
+        "pass_rate": 1.0
+      },
+      "ledger_diff": {
+        "average": 0.7071,
+        "pass_rate": 1.0
+      },
+      "somatic_residual_diff": {
+        "average": 0.014233333333333334,
+        "pass_rate": 0.0
+      },
+      "policy_diff": {
+        "average": 0.47500000000000003,
+        "pass_rate": 1.0
+      },
+      "precision_diff": {
+        "average": 0.0038,
+        "pass_rate": 0.0
+      }
+    },
+    "high_impact_false_positive_rate": {
+      "average": 1.0,
+      "max": 1.0,
+      "scenarios_with_false_positives": 3
+    },
+    "recovery_score": {
+      "average": 1.0,
+      "min": 1.0
+    },
+    "robustness_score": {
+      "average": 0.8333333333333334,
+      "min": 0.8333333333333334
+    },
+    "failure_reasons": {
+      "somatic_residual_diff: target residuals not differentiated": 3,
+      "precision_diff: self-model weights not differentiated": 3,
+      "high_impact_false_positive: betrayal triggered without sufficient evidence": 3
+    }
+  },
+  "seed": 42
+}

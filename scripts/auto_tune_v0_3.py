@@ -46,6 +46,8 @@ DEFAULT_TUNABLE_PARAMS = {
     "shrinkage_k": {"default": 10.0, "min": 1.0, "max": 50.0, "category": "target_residual"},
     "residual_learning_rate": {"default": 0.1, "min": 0.01, "max": 0.5, "category": "target_residual"},
     "residual_evidence_increment": {"default": 0.1, "min": 0.01, "max": 0.3, "category": "target_residual"},
+    "residual_update_gain": {"default": 1.0, "min": 0.5, "max": 3.0, "category": "target_residual"},
+    "precision_raw_gain": {"default": 1.0, "min": 0.5, "max": 3.0, "category": "precision"},
     "betrayal_promise_strength_threshold": {"default": 0.5, "min": 0.2, "max": 0.9, "category": "betrayal_gating"},
     "betrayal_violation_strength_threshold": {"default": 0.6, "min": 0.2, "max": 0.9, "category": "betrayal_gating"},
     "betrayal_evidence_threshold": {"default": 0.4, "min": 0.1, "max": 0.8, "category": "betrayal_gating"},

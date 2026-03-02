@@ -14,6 +14,7 @@ Appraisal dimensions:
 from typing import Dict, Any, List, Optional, Tuple
 from pydantic import BaseModel, Field
 from emotiond.models import Event
+from emotiond.other_minds import apply_other_minds_to_appraisal
 from emotiond.state import AffectState, MoodState, BondState
 
 
@@ -85,6 +86,7 @@ class AppraisalContext(BaseModel):
     event_history: Optional[List[Dict[str, Any]]] = None
     promise_state: Optional[Dict[str, Any]] = None  # Track promises made
     cold_treatment_duration: float = 0.0  # How long the cold treatment has been going
+    target: Optional[str] = None  # target for other-minds modulation
 
 
 # Event subtype to appraisal dimension mappings
@@ -542,7 +544,8 @@ def appraise_event(
     context: Optional[AppraisalContext] = None,
     affect: Optional[AffectState] = None,
     mood: Optional[MoodState] = None,
-    bond: Optional[BondState] = None
+    bond: Optional[BondState] = None,
+    target: Optional[str] = None
 ) -> AppraisalResult:
     """
     Main appraisal function.
@@ -575,7 +578,8 @@ def appraise_event(
         context = AppraisalContext(
             affect=affect.to_dict() if affect else None,
             mood=mood.to_dict() if mood else None,
-            bond=bond_dict
+            bond=bond_dict,
+            target=(target or (bond.target if bond else None))
         )
     
     # Get base signature from event subtype
@@ -632,7 +636,8 @@ def create_context_from_state(
     bond: Optional[BondState] = None,
     event_history: Optional[List[Dict[str, Any]]] = None,
     promise_state: Optional[Dict[str, Any]] = None,
-    cold_treatment_duration: float = 0.0
+    cold_treatment_duration: float = 0.0,
+    target: Optional[str] = None
 ) -> AppraisalContext:
     """
     Helper to create an AppraisalContext from state components.
@@ -664,5 +669,6 @@ def create_context_from_state(
         bond=bond_dict,
         event_history=event_history,
         promise_state=promise_state,
-        cold_treatment_duration=cold_treatment_duration
+        cold_treatment_duration=cold_treatment_duration,
+        target=target
     )

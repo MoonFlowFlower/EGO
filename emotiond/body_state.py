@@ -738,8 +738,19 @@ class BodyStateVector:
         """
         target_id = meta.get("target_id") if meta else None
         smoke_mode = bool(meta and str(meta.get("category", "")).lower() == "smoke" and str(meta.get("scenario_name", "")).lower().startswith("smoke_"))
+
+        # Production-path tunables (autotune-visible)
+        try:
+            from emotiond import config as _cfg
+            residual_update_gain = float(_cfg.get_auto_tune_param("residual_update_gain", 1.0))
+            residual_evidence_increment = float(_cfg.get_auto_tune_param("residual_evidence_increment", 0.1))
+        except Exception:
+            residual_update_gain = 1.0
+            residual_evidence_increment = 0.1
+
+        # Smoke diagnostics boost (guarded by dual gate)
         residual_test_gain = 5.0 if smoke_mode else 1.0
-        evidence_increment = 0.3 if smoke_mode else 0.1
+        evidence_increment = 0.3 if smoke_mode else residual_evidence_increment
         
         trace = {
             "global_body_delta": {},
@@ -790,9 +801,9 @@ class BodyStateVector:
                 
                 # Update residual (smoke scenarios can boost signal for sensitivity probes)
                 residual.update(
-                    safety_stress_delta=deltas.get("safety_stress", 0.0) * residual_test_gain,
-                    social_need_delta=deltas.get("social_need", 0.0) * residual_test_gain,
-                    novelty_need_delta=deltas.get("novelty_need", 0.0) * residual_test_gain,
+                    safety_stress_delta=deltas.get("safety_stress", 0.0) * residual_update_gain * residual_test_gain,
+                    social_need_delta=deltas.get("social_need", 0.0) * residual_update_gain * residual_test_gain,
+                    novelty_need_delta=deltas.get("novelty_need", 0.0) * residual_update_gain * residual_test_gain,
                     evidence_increment=evidence_increment
                 )
                 

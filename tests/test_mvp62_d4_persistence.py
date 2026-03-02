@@ -869,3 +869,105 @@ class TestScenarioHighBondConflict:
         # Should have repair attempts recorded
         assert pc.relationship_metrics.repair_attempts["target_1"] == 1
         assert pc.relationship_metrics.repair_successes["target_1"] == 1
+
+
+# =============================================================================
+# Tradeoff + Explainability Tests (D4 hard requirements)
+# =============================================================================
+
+class TestPersistenceTradeoffAndTrace:
+    """Tradeoff with risk/ambiguity + trace explainability fields."""
+
+    def test_select_strategy_with_tradeoff_returns_trace(self):
+        pc = PersistenceConstraint()
+        pc.update_body_state(energy=0.5, safety_stress=0.5, focus_fatigue=0.5)
+
+        strategy, reason, trace = pc.select_strategy_with_tradeoff(
+            target_id=None,
+            risk=0.2,
+            ambiguity=0.3,
+            expected_info_gain=0.4,
+        )
+
+        assert strategy in list(PersistenceStrategy)
+        assert isinstance(trace.to_dict(), dict)
+        assert "tradeoff_score" in trace.to_dict()
+
+    def test_tradeoff_not_persistence_only_dominance(self):
+        pc = PersistenceConstraint()
+        pc.update_body_state(energy=0.55, safety_stress=0.45, focus_fatigue=0.45)
+
+        strategy_low, _, _ = pc.select_strategy_with_tradeoff(risk=0.0, ambiguity=0.0, expected_info_gain=0.6)
+        strategy_high, _, _ = pc.select_strategy_with_tradeoff(risk=0.95, ambiguity=0.95, expected_info_gain=0.05)
+
+        assert strategy_low in [PersistenceStrategy.NORMAL, PersistenceStrategy.REPAIR, PersistenceStrategy.MAINTENANCE]
+        assert strategy_high in [PersistenceStrategy.CONSERVATIVE, PersistenceStrategy.RETREAT]
+
+    def test_trace_has_conservative_trigger(self):
+        pc = PersistenceConstraint()
+        pc.update_body_state(energy=0.2, safety_stress=0.85, focus_fatigue=0.9)
+
+        strategy, _, trace = pc.select_strategy_with_tradeoff(risk=0.6, ambiguity=0.6)
+        assert strategy in [PersistenceStrategy.CONSERVATIVE, PersistenceStrategy.RETREAT]
+        if strategy == PersistenceStrategy.CONSERVATIVE:
+            assert trace.conservative_trigger is not None
+
+    def test_trace_has_repair_trigger(self):
+        pc = PersistenceConstraint(high_bond_threshold=0.7)
+        pc.update_body_state(energy=0.6, safety_stress=0.4, focus_fatigue=0.3)
+        pc.update_relationship("target_1", bond=0.85, reliability=0.9)
+        pc.record_harm("target_1")
+
+        strategy, _, trace = pc.select_strategy_with_tradeoff(target_id="target_1", risk=0.2, ambiguity=0.2)
+        assert strategy == PersistenceStrategy.REPAIR
+        assert trace.repair_trigger is not None
+
+    def test_trace_has_retreat_trigger(self):
+        pc = PersistenceConstraint()
+        for _ in range(4):
+            pc.update_body_state(energy=0.1, safety_stress=0.9, focus_fatigue=0.95)
+            pc.update_body_state(energy=0.6, safety_stress=0.4, focus_fatigue=0.2)
+
+        strategy, _, trace = pc.select_strategy_with_tradeoff(risk=0.4, ambiguity=0.4)
+        assert strategy == PersistenceStrategy.RETREAT
+        assert trace.retreat_trigger is not None
+
+    def test_last_decision_trace_saved(self):
+        pc = PersistenceConstraint()
+        pc.select_strategy_with_tradeoff(risk=0.3, ambiguity=0.2)
+        assert pc.last_decision_trace is not None
+        assert pc.last_decision_trace.strategy in {s.value for s in PersistenceStrategy}
+
+    def test_to_dict_includes_strategy_trace(self):
+        pc = PersistenceConstraint()
+        pc.update_body_state(energy=0.5, safety_stress=0.5, focus_fatigue=0.5)
+        data = pc.to_dict()
+
+        assert "strategy_trace" in data
+        assert "dominant_drivers" in data["strategy_trace"]
+
+    def test_telemetry_includes_strategy_trace(self):
+        pc = PersistenceConstraint()
+        telemetry = pc.get_telemetry()
+        assert "strategy_trace" in telemetry
+        assert "risk" in telemetry["strategy_trace"]
+
+    def test_maintenance_requires_low_expected_info_gain(self):
+        pc = PersistenceConstraint()
+        for _ in range(8):
+            pc.record_info_gain(0.03)
+
+        strategy, _, _ = pc.select_strategy_with_tradeoff(risk=0.2, ambiguity=0.2, expected_info_gain=0.05)
+        assert strategy in [PersistenceStrategy.MAINTENANCE, PersistenceStrategy.CONSERVATIVE]
+
+    def test_high_bond_conflict_more_cautious_than_low_bond(self):
+        pc = PersistenceConstraint(high_bond_threshold=0.7)
+        pc.update_body_state(energy=0.55, safety_stress=0.45, focus_fatigue=0.4)
+        pc.update_relationship("high", bond=0.9, reliability=0.9)
+        pc.update_relationship("low", bond=0.2, reliability=0.7)
+        pc.record_harm("high")
+
+        high_cost = pc.evaluate_action_cost("attack", target_id="high").relationship_cost
+        low_cost = pc.evaluate_action_cost("attack", target_id="low").relationship_cost
+        assert high_cost > low_cost
+
