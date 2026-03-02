@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
-from .drive_homeostasis import DriveState, drive_error
+from .drive_homeostasis import DriveState, get_drive
 
 
 class RolloutBranch(str, Enum):
@@ -223,7 +223,7 @@ class RolloutEngine:
         predicted_delta: Dict[str, float],
     ) -> float:
         """Compute drive-based score adjustment."""
-        current_error = drive_error(drive_state)
+        current_error = get_drive().drive_error()
         
         # Apply predicted delta (simplified)
         predicted_state = DriveState.from_dict(drive_state.to_dict())
@@ -231,7 +231,7 @@ class RolloutEngine:
             current = getattr(predicted_state, attr, 0.5)
             setattr(predicted_state, attr, max(0, min(1, current + delta)))
         
-        predicted_error = drive_error(predicted_state)
+        predicted_error = get_drive().drive_error()
         
         # Score improvement = error reduction
         return (current_error - predicted_error) * 0.5

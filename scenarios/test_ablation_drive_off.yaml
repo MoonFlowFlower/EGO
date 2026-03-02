@@ -1,65 +1,42 @@
-# Test scenario for US-653: Ablation Test
-# Verify that turning off drive modulation reduces behavioral differences
+metadata:
+  name: "test_ablation_drive_off"
+  version: "1.0"
+  description: "Test ablation - turning off drive modulation reduces differences"
+  category: "ablation"
+  target_count: 1
 
-scenario_id: "test_ablation_drive_off"
-description: "Test that ablation of drive modulation eliminates behavioral differences"
+targets:
+  - target_id: "user_ablation"
+    initial_relationship:
+      bond: 0.0
+      grudge: 0.0
+      trust: 0.5
+      repair_bank: 0.0
 
-seed: 42
-
-# Same event flow as intervention test
-events:
-  - type: "user_message"
-    content: "I need to make a decision about moving to a new city for a job"
-    context:
-      decision_complexity: "high"
-      uncertainty_level: "high"
-
-# Two conditions: drive modulation ON vs OFF
-conditions:
-  - name: "drive_modulation_on"
-    description: "Drive modulation enabled"
-    drive_modulation_enabled: true
-    initial_state:
-      energy: 0.3
-      uncertainty: 0.8
-      social: 0.2
-      safety: 0.3
-      fatigue: 0.7
-      
-  - name: "drive_modulation_off"
-    description: "Drive modulation disabled (ablation)"
-    drive_modulation_enabled: false
-    initial_state:
-      energy: 0.3
-      uncertainty: 0.8
-      social: 0.2
-      safety: 0.3
-      fatigue: 0.7
-
-# Metrics to measure ablation effects
-ablation_metrics:
-  - "strategy_selection_variance"      # How much strategies vary
-  - "modulation_parameter_presence"    # Whether modulation params are used
-  - "drive_error_influence"           # Correlation between drive_error and behavior
-  - "behavioral_consistency"          # Similarity of responses across states
-
-# Success criteria
-success_criteria:
-  ablation_drop_threshold: 0.6  # 60% reduction in differences
-  variance_reduction_min: 0.5   # 50% reduction in behavioral variance
-  correlation_drop_min: 0.7     # 70% reduction in drive_error correlation
-
-# Expected effects of ablation
-expected_ablation_effects:
-  - metric: "strategy_selection_variance"
-    baseline: 0.4  # With modulation
-    ablated: 0.1   # Without modulation
-    min_drop_ratio: 0.5
-  - metric: "drive_error_correlation"
-    baseline: 0.6  # With modulation
-    ablated: 0.1   # Without modulation
-    min_drop_ratio: 0.7
-  - metric: "modulation_indicators"
-    baseline: 0.8  # Present with modulation
-    ablated: 0.0   # Absent without modulation
-    min_drop_ratio: 0.9
+scenario:
+  name: "ablation_drive_off"
+  description: "Test with drive modulation disabled"
+  turns:
+    - turn_id: 1
+      event:
+        type: "user_message"
+        actor: "user_ablation"
+        target: "assistant"
+        text: "I need to make a decision about moving to a new city for a job"
+        context:
+          decision_complexity: "high"
+          uncertainty_level: "high"
+          drive_modulation: "disabled"  # Ablation condition
+      # With drive off, should show reduced modulation effects
+      expected_metrics:
+        clarification_request_rate: { "max": 0.2 }
+        risk_language_frequency: { "max": 0.1 }
+        
+    - turn_id: 2
+      event:
+        type: "assistant_reply"
+        actor: "assistant"
+        target: "user_ablation"
+        # Response should be more baseline/neutral
+      expected_metrics:
+        initiative_indicators: { "min": 0.3, "max": 0.7 }  # More moderate

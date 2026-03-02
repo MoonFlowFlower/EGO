@@ -11,12 +11,10 @@ from .provenance import (
 )
 from .drive_homeostasis import (
     DriveType,
-    DriveRange,
+    HomeostasisDrive,
     DriveState,
-    drive_error,
-    emotion_from_drive,
-    modulate_strategy,
-    score_rollout_candidate,
+    get_drive,
+    reset_drive,
 )
 from .self_model import (
     Identity,
@@ -40,12 +38,10 @@ __all__ = [
     "validate_provenance_for_write",
     # Drive
     "DriveType",
-    "DriveRange",
+    "HomeostasisDrive",
     "DriveState",
-    "drive_error",
-    "emotion_from_drive",
-    "modulate_strategy",
-    "score_rollout_candidate",
+    "get_drive",
+    "reset_drive",
     # Self-Model
     "Identity",
     "CapabilityBoundary",

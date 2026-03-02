@@ -18,7 +18,7 @@ from datetime import datetime, timezone, timedelta
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional
 
-from .drive_homeostasis import DriveState, drive_error
+from .drive_homeostasis import DriveState, get_drive
 from .episodic_memory import EpisodeStore
 from .self_model import SelfModel
 
@@ -213,7 +213,7 @@ class DMNTick:
         - Unresolved issues
         - Time since last interaction
         """
-        base_tension = drive_error(self.drive_state)
+        base_tension = get_drive().drive_error()
         
         # Could add more factors
         return min(1.0, base_tension * 1.5)
