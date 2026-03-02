@@ -6,12 +6,12 @@
 - [x] Milestone A complete (US-641~US-644)
 - [x] Milestone B complete (US-651~US-653)
 - [x] Milestone C complete (US-701~US-707)
-- [ ] Gates B1~B4 pass with reports
+- [x] Gates B1~B4 pass with reports
 
 ## Status
-- **Phase:** verify
-- **Current US:** Gate verification
-- **Last Update:** 2026-03-02 02:25 CST
+- **Phase:** done
+- **Current US:** Gate verification complete
+- **Last Update:** 2026-03-02 07:18 CST
 - **Blockers:** None
 
 ## Completed
@@ -32,7 +32,7 @@
 - [x] US-703~707 Phase 3 modules (commit: d93fc27)
 
 ## Next Action
-**next_action:** Run full test suite to verify gates B1~B4.
+**next_action:** Prepare B1~B4 audit bundle (hash/version/scenario_set/evidence) and publish summary.
 
 ## Evidence
 - Total commits: 9

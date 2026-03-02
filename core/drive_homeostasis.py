@@ -70,6 +70,27 @@ class DriveState:
         """Get setpoint range for a drive."""
         return getattr(self, f"{drive_type.value}_setpoint")
 
+    def to_dict(self) -> Dict[str, float]:
+        """Serialize current drive values for compatibility callers."""
+        return {
+            "energy": self.energy,
+            "uncertainty": self.uncertainty,
+            "social": self.social,
+            "safety": self.safety,
+            "fatigue": self.fatigue,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, float]) -> "DriveState":
+        """Construct DriveState from serialized dict."""
+        return cls(
+            energy=float(data.get("energy", 0.8)),
+            uncertainty=float(data.get("uncertainty", 0.3)),
+            social=float(data.get("social", 0.7)),
+            safety=float(data.get("safety", 0.9)),
+            fatigue=float(data.get("fatigue", 0.2)),
+        )
+
 
 class HomeostasisDrive:
     """Main homeostasis drive system."""

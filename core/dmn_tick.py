@@ -18,7 +18,7 @@ from datetime import datetime, timezone, timedelta
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional
 
-from .drive_homeostasis import DriveState, get_drive
+from .drive_homeostasis import DriveState, get_drive, drive_error
 from .episodic_memory import EpisodeStore
 from .self_model import SelfModel
 
