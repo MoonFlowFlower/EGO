@@ -302,31 +302,49 @@ class RelationshipManager:
             target = event.actor
         elif event.type == "assistant_reply":
             target = event.target
+        elif event.type == "world_event":
+            # Prefer explicit target for scenario-driven relationship differentiation.
+            target = event.target if getattr(event, "target", None) else event.actor
         else:
             target = event.actor
         self._ensure_relationship_fields(target)
         memory_impact = memory_system.get_memory_impact_on_relationship(target)
-        
+        bond_update_gain = float(get_auto_tune_param("bond_update_gain", 1.0))
+        # MVP-6.2.1 Step-1: event-sensitive residual-like bond deltas (10~30 turns visible)
+        bond_gain_user_positive = float(get_auto_tune_param("bond_gain_user_positive", 1.00))
+        bond_gain_care = float(get_auto_tune_param("bond_gain_care", 1.25))
+        bond_gain_apology = float(get_auto_tune_param("bond_gain_apology", 1.35))
+        bond_gain_rejection = float(get_auto_tune_param("bond_gain_rejection", 1.20))
+        bond_gain_ignored = float(get_auto_tune_param("bond_gain_ignored", 1.60))
+        # target-conditioned gain: same event can land differently per-relationship state
+        bond_target_sensitivity = float(get_auto_tune_param("bond_target_sensitivity", 0.35))
+        rel = self.relationships[target]
+        target_gain = max(0.6, min(1.6, 1.0 + bond_target_sensitivity * (rel.get("trust", 0.0) - rel.get("grudge", 0.0))))
+
         if event.type == "user_message":
             if event.text and any(w in event.text.lower() for w in ["good", "great", "thanks", "love", "happy"]):
-                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.1 + memory_impact["bond_modifier"])
+                self.relationships[target]["bond"] = min(
+                    1.0,
+                    self.relationships[target]["bond"] + (0.1 + memory_impact["bond_modifier"]) * bond_update_gain * bond_gain_user_positive * target_gain
+                )
             elif event.text and any(w in event.text.lower() for w in ["bad", "hate", "stupid", "wrong", "angry", "terrible", "awful", "horrible"]):
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.1 + memory_impact["grudge_modifier"])
         elif event.type == "world_event":
             subtype = event.meta.get("subtype") if event.meta else None
             if subtype == "care":
-                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.15)
+                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.15 * bond_update_gain * bond_gain_care * target_gain)
                 self.relationships[target]["grudge"] = max(0.0, self.relationships[target]["grudge"] - 0.05)
             elif subtype == "rejection":
-                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.1)
+                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.1 * bond_update_gain * bond_gain_rejection * target_gain)
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.1)
             elif subtype == "betrayal":
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.25)
-                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.2)
+                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.2 * bond_update_gain * target_gain)
                 self.relationships[target]["trust"] = max(0.0, self.relationships[target]["trust"] - 0.15)
             elif subtype == "apology":
                 self.relationships[target]["repair_bank"] = min(1.0, self.relationships[target]["repair_bank"] + 0.02)
                 self.relationships[target]["trust"] = min(1.0, self.relationships[target]["trust"] + 0.01)
+                self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.03 * bond_update_gain * bond_gain_apology * target_gain)
             elif subtype == "repair_success":
                 if emotion_state is not None:
                     current_trust = self.relationships[target]["trust"]
@@ -339,13 +357,13 @@ class RelationshipManager:
                     self.relationships[target]["trust"] = min(1.0, self.relationships[target]["trust"] + 0.05)
                 else:
                     self.relationships[target]["grudge"] = max(0.0, self.relationships[target]["grudge"] - 0.1)
-                    self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.05)
+                    self.relationships[target]["bond"] = min(1.0, self.relationships[target]["bond"] + 0.05 * bond_update_gain * target_gain)
             elif subtype == "ignored":
-                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.01)
+                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.01 * bond_update_gain * bond_gain_ignored * target_gain)
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.01)
             elif event.meta and event.meta.get("betrayal", False):
                 self.relationships[target]["grudge"] = min(1.0, self.relationships[target]["grudge"] + 0.3)
-                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.2)
+                self.relationships[target]["bond"] = max(0.0, self.relationships[target]["bond"] - 0.2 * bond_update_gain)
     
     def apply_consolidation_drift(self) -> None:
         if is_core_disabled():
@@ -597,6 +615,20 @@ async def process_event(event: Event) -> Dict[str, Any]:
                 w_action = max(0.0, min(1.0, neutral + precision_raw_gain * (w_action - neutral)))
                 w_memory = max(0.0, min(1.0, neutral + precision_raw_gain * (w_memory - neutral)))
                 w_explore = max(0.0, min(1.0, neutral + precision_raw_gain * (w_explore - neutral)))
+
+            # Production-path residual-conditioned gain (small by default, tunable)
+            residual_condition_gain = float(get_auto_tune_param("residual_condition_gain", 0.1))
+            if abs(residual_condition_gain) > 1e-9:
+                try:
+                    rsum = emotion_state.body_state.get_target_residual_summary(event_target) if event_target else None
+                    if rsum:
+                        sr = rsum.get("shrunk_residual", {})
+                        residual_signal = (-float(sr.get("safety_stress", 0.0)) + float(sr.get("social_need", 0.0)))
+                        w_action = max(0.0, min(1.0, w_action + 0.25 * residual_condition_gain * math.tanh(3.0 * residual_signal)))
+                        w_memory = max(0.0, min(1.0, w_memory - 0.18 * residual_condition_gain * math.tanh(3.0 * residual_signal)))
+                        w_explore = max(0.0, min(1.0, w_explore + 0.08 * residual_condition_gain * math.tanh(3.0 * residual_signal)))
+                except Exception:
+                    pass
 
             # Smoke-only gain for precision sensitivity probes (keeps production behavior unchanged)
             if isinstance(event.meta, dict) and str(event.meta.get("category", "")).lower() == "smoke" and str(event.meta.get("scenario_name", "")).lower().startswith("smoke_"):
@@ -1026,6 +1058,18 @@ def select_action(
     global _predictions
     
     relationship = relationship_manager.relationships.get(target, {"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0})
+
+    # Residual-conditioned policy bias (production-path, small default)
+    residual_condition_gain = float(get_auto_tune_param("residual_condition_gain", 0.1))
+    residual_signal = 0.0
+    try:
+        if hasattr(state, "body_state") and hasattr(state.body_state, "get_target_residual_summary"):
+            rsum = state.body_state.get_target_residual_summary(target)
+            if rsum:
+                sr = rsum.get("shrunk_residual", {})
+                residual_signal = (-float(sr.get("safety_stress", 0.0)) + float(sr.get("social_need", 0.0)))
+    except Exception:
+        residual_signal = 0.0
     
     # Score all actions
     scores = {}
@@ -1036,7 +1080,14 @@ def select_action(
             "prediction_error_sum": 0.0,
             "prediction_count": 0
         })
-        scores[action] = score_action(action, state, relationship, pred)
+        score = score_action(action, state, relationship, pred)
+        if abs(residual_condition_gain) > 1e-9 and abs(residual_signal) > 1e-9:
+            resid_bias = residual_condition_gain * 0.10 * math.tanh(3.0 * residual_signal)
+            if action in {"withdraw", "boundary"}:
+                score += resid_bias
+            elif action in {"approach", "repair_offer"}:
+                score -= resid_bias
+        scores[action] = score
     
     if test_mode or TEST_MODE:
         # Deterministic: argmax
