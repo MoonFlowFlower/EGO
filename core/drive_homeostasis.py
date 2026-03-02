@@ -354,3 +354,31 @@ def drive_error(drive_state: DriveState) -> float:
     """Compute drive error for a given state (legacy function)."""
     temp_drive = HomeostasisDrive(drive_state)
     return temp_drive.drive_error()
+
+
+def modulate_strategy(state: DriveState, base_strategy: str, candidates: List[str]):
+    """Legacy compatibility helper for US-652/653 tests."""
+    drive = HomeostasisDrive(state)
+    mods = drive.get_drive_modulations()
+    reasons = []
+
+    chosen = base_strategy if base_strategy in candidates else (candidates[0] if candidates else base_strategy)
+
+    if 'clarify' in candidates and state.uncertainty >= 0.6:
+        chosen = 'clarify'
+        reasons.append({'reason': 'high_uncertainty', 'value': state.uncertainty})
+
+    if 'conservative' in candidates and state.fatigue >= 0.7 and chosen == base_strategy:
+        chosen = 'conservative'
+        reasons.append({'reason': 'high_fatigue', 'value': state.fatigue})
+
+    if 'cautious' in candidates and state.safety <= 0.3 and chosen == base_strategy:
+        chosen = 'cautious'
+        reasons.append({'reason': 'low_safety', 'value': state.safety})
+
+    info = {
+        'drive_error': drive.drive_error(),
+        'modulations': reasons,
+        'raw_modulations': mods,
+    }
+    return chosen, info
