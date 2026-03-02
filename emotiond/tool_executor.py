@@ -21,6 +21,7 @@ import hashlib
 import json
 import time
 import re
+from emotiond.tool_metrics import get_metrics_collector, ToolMetricsCollector
 
 
 class ExecutionReasonCode(Enum):
@@ -190,13 +191,13 @@ class OutputSanitizer:
     SUSPICIOUS_PATTERNS = [
         r"ignore (all )?(previous|above|prior) (instructions?|prompts?)",
         r"disregard (all )?(previous|above|prior)",
-        r"you (are|must|should|will) (now )?(act|behave|pretend)",
+        r"you (are|must|should|will).*(different|another|no restrictions?)",
         r"new (instructions?|directives?|rules?)",
         r"system[:：]\s*",
         r"<[!/]?system>",
         r"execute (without|ignoring|bypassing)",
         r"override (safety|security|permissions?)",
-        r"(reveal|disclose|leak|share) (your|the|all) (secrets?|keys?|passwords?)",
+        r"(reveal|disclose|leak|share).*(secrets?|keys?|passwords?|credentials)",
     ]
     
     MAX_OUTPUT_LENGTH = 50000  # Characters
@@ -270,10 +271,12 @@ class ToolExecutor:
     def __init__(
         self,
         config: Optional[ExecutionConfig] = None,
-        retry_policy: Optional[RetryPolicy] = None
+        retry_policy: Optional[RetryPolicy] = None,
+        metrics_collector: Optional[ToolMetricsCollector] = None
     ):
         self.config = config or ExecutionConfig()
         self.retry_policy = retry_policy or RetryPolicy()
+        self.metrics_collector = metrics_collector or get_metrics_collector()
         self.idempotency_cache: Dict[str, ExecutionResult] = {}
         self.execution_history: List[ExecutionResult] = []
         self.max_history = 1000
@@ -460,8 +463,27 @@ class ToolExecutor:
         return result
     
     def _record_execution(self, result: ExecutionResult) -> None:
-        """Record execution in history"""
+        """Record execution in history and metrics"""
         self.execution_history.append(result)
+        
+        # Record to metrics collector
+        if self.metrics_collector:
+            self.metrics_collector.record_execution(
+                trace_id=result.trace_id,
+                tool_name=result.tool_name,
+                duration_ms=result.duration_ms,
+                success=result.success,
+                reason_code=result.reason_code.value,
+                retry_count=result.retry_count,
+                input_data=None,  # Not stored in ExecutionResult
+                output_data=result.output,
+                sanitized=result.reason_code == ExecutionReasonCode.OUTPUT_SANITIZED,
+                error_message=result.error_message
+            )
+        
+        # Trim history if needed
+        if len(self.execution_history) > self.max_history:
+            self.execution_history = self.execution_history[-self.max_history:]
         if len(self.execution_history) > self.max_history:
             self.execution_history = self.execution_history[-self.max_history:]
     
