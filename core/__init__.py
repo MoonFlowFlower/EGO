@@ -60,3 +60,21 @@ from .episodic_memory import (
     EpisodeStore,
 )
 __all__.extend(["Episode", "EpisodeStore"])
+from .offline_rollouts import (
+    RolloutEngine,
+    RolloutBranch,
+    RolloutCandidate,
+)
+from .dmn_tick import (
+    DMNTick,
+    ProactiveGate,
+    TickAction,
+)
+__all__.extend([
+    "RolloutEngine",
+    "RolloutBranch",
+    "RolloutCandidate",
+    "DMNTick",
+    "ProactiveGate",
+    "TickAction",
+])
