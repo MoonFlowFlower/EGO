@@ -229,3 +229,26 @@ class TestPlanAPI:
         assert data_b["focus_target"] == "user_b"
         assert "bond" in data_b["relationship"]
         assert "grudge" in data_b["relationship"]
+
+    def test_plan_self_report_boundary_and_evidence(self, isolated_test_db):
+        """MVP-7 boundary check: self_report must be structured state, not user text echo."""
+        reset_all_global_state()
+        client = TestClient(app)
+
+        asyncio.run(update_state(0.1, 0.4, 100))
+        asyncio.run(update_relationship("u_boundary", 0.55, 0.15, 0.61, 0.03))
+
+        injected = "I am furious and my secret token is XYZ-123"
+        response = client.post("/plan", json={"user_id": "u_boundary", "user_text": injected})
+        assert response.status_code == 200
+        data = response.json()
+
+        assert "self_report" in data and isinstance(data["self_report"], dict)
+        report = data["self_report"]
+        assert "self_model" in report and "evidence" in report
+        assert "self_model_fields" in report["evidence"]
+
+        # boundary: raw user text must not leak into structured self report payload
+        dumped = str(report)
+        assert "XYZ-123" not in dumped
+        assert "furious" not in dumped.lower()
