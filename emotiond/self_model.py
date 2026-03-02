@@ -890,3 +890,261 @@ def render_self_report(self_state: SelfModelV0, *, evidence: Optional[Dict[str, 
             "episode_refs": evidence.get("episode_refs", []),
         },
     }
+
+
+# ========================= MVP-Bugfix: Three-Layer State Reporting =========================
+# 三层状态报告：Self / Relation / Other
+# 解决混淆问题：
+# - Self: agent 自己的情绪/驱动/体征
+# - Relation: agent 对某个对象的关系账本
+# - Other: 对方情绪的"估计"（带置信度/证据）
+
+def render_three_layer_state(
+    *,
+    agent_id: str,
+    counterparty_id: str,
+    self_state,
+    relationship: dict,
+    other_estimate: Optional[dict] = None,
+) -> dict:
+    """
+    Render the three-layer state report with clear semantics.
+    
+    三层状态清晰区分：
+    - Self: agent 的自身状态（能量、安全感、认知确定度）
+    - Relation: agent 对 counterparty 的关系指标（信任、连接、怨恨）
+    - Other: agent 对 counterparty 情绪的推断（带置信度）
+    
+    Args:
+        agent_id: Who is the agent (e.g., "testbot")
+        counterparty_id: Who the relationship is with (e.g., "user")
+        self_state: SelfModelV0 or similar with bodily/relational/cognitive
+        relationship: Dict with bond/grudge/trust/repair_bank
+        other_estimate: Optional dict with estimated_other_state and confidence
+    
+    Returns:
+        Dict with three clear layers
+    """
+    # Layer 1: Self (agent's own state)
+    self_layer = {
+        "agent_id": agent_id,
+        "summary": {
+            "state": "stable" if getattr(self_state.cognitive, "uncertainty", 0.5) < 0.5 else "uncertain",
+            "tendency": _infer_tendency(self_state),
+            "evidence_fields": [
+                "bodily.energy",
+                "bodily.social_safety",
+                "cognitive.uncertainty",
+            ],
+        },
+        "bodily": {
+            "energy": round(getattr(self_state.bodily, "energy", 0.7), 3),
+            "social_safety": round(getattr(self_state.bodily, "social_safety", 0.6), 3),
+        },
+        "cognitive": {
+            "confidence": round(getattr(self_state.cognitive, "confidence", 0.5), 3),
+            "uncertainty": round(getattr(self_state.cognitive, "uncertainty", 0.5), 3),
+        },
+    }
+    
+    # Layer 2: Relation (agent's relationship with counterparty)
+    relation_layer = {
+        "agent_id": agent_id,
+        "counterparty_id": counterparty_id,
+        "summary": {
+            "bond_level": _classify_bond(relationship.get("bond", 0.5)),
+            "trust_level": _classify_trust(relationship.get("trust", 0.5)),
+            "repair_status": _classify_repair(relationship.get("repair_bank", 0.0), relationship.get("grudge", 0.0)),
+        },
+        "metrics": {
+            "bond": round(relationship.get("bond", 0.5), 3),
+            "grudge": round(relationship.get("grudge", 0.0), 3),
+            "trust": round(relationship.get("trust", 0.5), 3),
+            "repair_bank": round(relationship.get("repair_bank", 0.0), 3),
+        },
+        "note": f"我对{counterparty_id}的关系指标（不是{counterparty_id}自己的情绪）",
+    }
+    
+    # Layer 3: Other (inference about counterparty - with confidence)
+    other_layer = None
+    if other_estimate:
+        other_layer = {
+            "agent_id": agent_id,
+            "counterparty_id": counterparty_id,
+            "estimated_state": other_estimate.get("state", "unknown"),
+            "confidence": round(other_estimate.get("confidence", 0.0), 3),
+            "evidence": other_estimate.get("evidence", []),
+            "note": f"我对{counterparty_id}情绪状态的推断（带置信度）",
+        }
+    
+    return {
+        "three_layer_state": {
+            "self": self_layer,
+            "relation": relation_layer,
+            "other": other_layer,
+        },
+        "agent_id": agent_id,
+        "counterparty_id": counterparty_id,
+        "timestamp": time.time(),
+    }
+
+
+def _infer_tendency(self_state) -> str:
+    """从 self state 推断 agent 的倾向"""
+    energy = getattr(self_state.bodily, "energy", 0.7)
+    social_safety = getattr(self_state.bodily, "social_safety", 0.6)
+    uncertainty = getattr(self_state.cognitive, "uncertainty", 0.5)
+    
+    if social_safety < 0.3:
+        return "防御/撤退"
+    elif uncertainty > 0.7:
+        return "澄清/反思"
+    elif energy > 0.7 and social_safety > 0.6:
+        return "修复/连接"
+    else:
+        return "稳态维护"
+
+
+def _classify_bond(bond: float) -> str:
+    """分类连接等级"""
+    if bond >= 0.7:
+        return "强连接"
+    elif bond >= 0.4:
+        return "中等连接"
+    else:
+        return "弱连接"
+
+
+def _classify_trust(trust: float) -> str:
+    """分类信任等级"""
+    if trust >= 0.7:
+        return "高信任"
+    elif trust >= 0.4:
+        return "中等信任"
+    else:
+        return "低信任"
+
+
+def _classify_repair(repair_bank: float, grudge: float) -> str:
+    """分类修复状态"""
+    if grudge > 0.7:
+        return "需要修复（高怨恨）"
+    elif repair_bank > 0.5:
+        return "修复进行中"
+    elif grudge > 0.3:
+        return "轻微张力"
+    else:
+        return "健康"
+
+
+def render_self_report_v2(
+    self_state,
+    *,
+    counterparty_id: str = "user",
+    agent_id: str = "agent",
+    relationship: Optional[dict] = None,
+    other_estimate: Optional[dict] = None,
+    evidence: Optional[dict] = None,
+) -> dict:
+    """
+    Enhanced self report with three-layer separation.
+    
+    新版状态报告，清晰区分三层：
+    - Self: agent 自身状态
+    - Relation: agent 与 counterparty 的关系
+    - Other: agent 对 counterparty 情绪的推断
+    
+    Args:
+        self_state: SelfModelV0 instance
+        counterparty_id: Who the relationship is with
+        agent_id: Who is the agent
+        relationship: Relationship dict (bond/grudge/trust/repair_bank)
+        other_estimate: Inference about counterparty's state
+        evidence: Additional evidence dict
+    
+    Returns:
+        Dict with three-layer state report
+    """
+    evidence = evidence or {}
+    relationship = relationship or {}
+    
+    # Render three-layer state
+    three_layer = render_three_layer_state(
+        agent_id=agent_id,
+        counterparty_id=counterparty_id,
+        self_state=self_state,
+        relationship=relationship,
+        other_estimate=other_estimate,
+    )
+    
+    # Build full report
+    return {
+        "three_layer_state": three_layer["three_layer_state"],
+        "summary": three_layer["three_layer_state"]["self"]["summary"],
+        "agent_id": agent_id,
+        "counterparty_id": counterparty_id,
+        "evidence": {
+            "self_model_fields": [
+                "bodily.energy",
+                "bodily.social_safety",
+                "relational.bond",
+                "relational.grudge",
+                "cognitive.uncertainty",
+            ],
+            "ledger": evidence.get("ledger", {}),
+            "episode_refs": evidence.get("episode_refs", []),
+        },
+        "timestamp": time.time(),
+    }
+
+
+def render_three_layer_text(
+    *,
+    agent_id: str,
+    counterparty_id: str,
+    self_state,
+    relationship: dict,
+    other_estimate: Optional[dict] = None,
+) -> str:
+    """
+    Render three-layer state as human-readable text.
+    
+    用于向用户展示状态的文本格式。
+    """
+    three_layer = render_three_layer_state(
+        agent_id=agent_id,
+        counterparty_id=counterparty_id,
+        self_state=self_state,
+        relationship=relationship,
+        other_estimate=other_estimate,
+    )
+    
+    lines = []
+    
+    # Layer 1: Self
+    self_data = three_layer["three_layer_state"]["self"]
+    lines.append(f"【我的状态】({agent_id})")
+    lines.append(f"  倾向: {self_data['summary']['tendency']}")
+    lines.append(f"  能量: {self_data['bodily']['energy']:.2f}")
+    lines.append(f"  社交安全感: {self_data['bodily']['social_safety']:.2f}")
+    lines.append(f"  认知确定度: {self_data['cognitive']['confidence']:.2f}")
+    
+    # Layer 2: Relation
+    rel_data = three_layer["three_layer_state"]["relation"]
+    lines.append(f"\n【我对{counterparty_id}的关系】")
+    lines.append(f"  连接: {rel_data['summary']['bond_level']} ({rel_data['metrics']['bond']:.3f})")
+    lines.append(f"  信任: {rel_data['summary']['trust_level']} ({rel_data['metrics']['trust']:.3f})")
+    lines.append(f"  怨恨: {rel_data['metrics']['grudge']:.3f}")
+    lines.append(f"  修复账本: {rel_data['metrics']['repair_bank']:.3f}")
+    lines.append(f"  状态: {rel_data['summary']['repair_status']}")
+    
+    # Layer 3: Other (if available)
+    other_data = three_layer["three_layer_state"]["other"]
+    if other_data:
+        lines.append(f"\n【我对{counterparty_id}情绪的推断】")
+        lines.append(f"  推断状态: {other_data['estimated_state']}")
+        lines.append(f"  置信度: {other_data['confidence']:.2f}")
+        if other_data['evidence']:
+            lines.append(f"  依据: {', '.join(other_data['evidence'][:3])}")
+    
+    return "\n".join(lines)
