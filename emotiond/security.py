@@ -29,7 +29,7 @@ TOKEN_FILE_PATHS = [
 USER_ALLOWED_SUBTYPES = {"care", "rejection", "ignored", "apology", "time_passed"}
 
 # User-allowed meta keys for world_event WITH subtype (source is server-controlled)
-USER_ALLOWED_META_KEYS = {"subtype", "seconds", "client_source", "request_id"}
+USER_ALLOWED_META_KEYS = {"subtype", "seconds", "client_source", "request_id", "test", "severity"}
 
 # Time_passed clamp bounds for user sources
 TIME_PASSED_MIN_SECONDS = 1

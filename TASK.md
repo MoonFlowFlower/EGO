@@ -1,64 +1,42 @@
-# MVP-7.1 Goal: Self-Model Capability Boundary + Tool Routing
+# MVP-7.4: OpenEmotion ↔ OpenClaw Tool 集成与 Deterministic 测试
 
-**Status:** COMPLETE ✅
+## GOAL
+建立 tool 层面的 emotiond 集成 + deterministic 测试模式 + 身份分账，确保每次 bot 自报状态都来自真实 API 回包（可审计）。
 
-## Hard Gates (Must Pass)
+## Phase
+- [x] 1. 基线真值脚本（bash + curl）✅ 2026-03-02 16:28
+- [x] 2. OpenClaw emotiond Tool 插件（3 个工具函数）✅ 2026-03-02 16:42
+- [x] 3. 身份分账（Moonlight vs main）✅ 2026-03-02 16:46
+- [ ] 4. Enforcer 策略硬约束（可选）
 
-- [x] B1 回归：全量 tests 0 failed（允许 skipped 仅来自 quarantine registry）
-- [x] B2 追溯：reports 必含 commit/hash/scenario_set_id + tool_policy_version
-- [x] B3 防过拟合：holdout + ood 不退化
-- [x] B4 因果证据：tool availability intervention effect size 过阈值；ablation drop ratio 过阈值
+## DoD (Definition of Done)
+- [x] AC1: 脚本基线可复现（test_mode=true 下 selected action 稳定一致）
+- [x] AC2: 工具可审计（bot 状态播报包含 decision_id/selected/candidates）
+- [x] AC3: 身份分账有效（Moonlight/main 决策/关系互不污染）
+- [ ] AC4: 策略硬约束（withdraw 时永不输出违反 withdraw 的内容）
 
-## Deliverables
+## Current Phase
+**Phase 4: Enforcer 策略硬约束**
 
-### US-7101 ToolRegistry v0 ✅
-- `emotiond/tool_registry.py`: 工具定义、权限、冷却、成本模型
-- `emotiond/tool_policy.py`: is_tool_allowed(self_model, tool, context) -> (allowed, reason_code)
-- 结构化 reason codes（可聚合统计）
+## Next Action
+创建 emotiond-enforcer hook/middleware，确保 withdraw/boundary 决策不被违背
 
-### US-7102 Capability Router ✅
-- `emotiond/agent_router.py`: 任务意图分类 + 工具路由
-- 输入：task_intent + self_model + user_state + drive_state
-- 输出：plan = {steps, tool_calls, fallback}
-- Fallback 策略：clarify, degrade, request_human, decline
+## Blockers
+(none)
 
-### US-7103 Audit & Provenance ✅
-- 工具调用写入 episode/ledger 时带 provenance
-- Trace_id + policy_version 审计链
+## Evidence
+- 脚本路径: tools/test_emotiond_deterministic.sh ✅
+- 插件路径: ~/.openclaw/extensions/emotiond/index.ts ✅
+- 文档路径: integrations/openclaw/TESTING.md ✅
+- 身份测试: tools/test_identity_separation.sh ✅
 
-### US-7104 Causal Tests ✅
-- `scenarios/test_tool_availability_intervention.yaml`
-- `scenarios/test_tool_availability_ablation.yaml`
-- `tests/test_tool_system.py`: 36 tests (registry/policy/router/intervention/ablation)
+## Completed
+- [2026-03-02 16:28] Phase 1: 创建 tools/test_emotiond_deterministic.sh
+- [2026-03-02 16:42] Phase 2: 更新插件，增加 3 个工具函数
+- [2026-03-02 16:46] Phase 3: 创建 TESTING.md + test_identity_separation.sh，已验证身份分离
 
-### US-7105 DMN Integration ✅
-- `emotiond/dmn_tick.py`: 后台 tick 支持 tool-needed backlog
-- Tension + cooldown 门控防止刷屏
-
-## Test Results
-
-- **Total tests:** 2094 collected
-- **Passed:** 2084+ (full suite passing)
-- **Failed:** 0
-- **Skipped:** 0 (quarantine empty)
-
-## Commits
-
-```
-f4953ec feat(mvp71): US-7101/7102/7104 tool registry, policy, router + causal tests
-f18e980 feat(mvp7.1): remediate test_outcome_capture_integration.py
-c4867a0 feat(mvp7.1): remediate first 2 integration tests
-```
-
-## Architecture Principle
-
-**外部符号变量硬约束（B 路线）**
-- LLM 不决定"我能不能用工具"
-- LLM 只提出候选计划
-- ToolPolicy 决定并审计落盘
-
-## Next: MVP-7.2 Planning
-
-- Tool execution layer
-- Advanced fallback strategies
-- Multi-tool orchestration
+## Checkpoints
+- [2026-03-02 14:30] 任务启动
+- [2026-03-02 16:28] Phase 1 完成
+- [2026-03-02 16:42] Phase 2 完成
+- [2026-03-02 16:46] Phase 3 完成，commit efef3d9
