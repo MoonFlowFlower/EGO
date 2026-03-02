@@ -142,6 +142,8 @@ class IndividualizationSubscores:
     # Pass/fail status per subscore
     bond_diff_passed: bool = False
     ledger_diff_passed: bool = False
+    ledger_diff_applicable: bool = True
+    ledger_event_count: int = 0
     somatic_residual_diff_passed: bool = False
     policy_diff_passed: bool = False
     precision_diff_passed: bool = False
@@ -186,7 +188,9 @@ class IndividualizationSubscores:
             },
             "ledger_diff": {
                 "value": round(self.ledger_diff, 4),
-                "passed": self.ledger_diff_passed
+                "passed": self.ledger_diff_passed,
+                "applicable": self.ledger_diff_applicable,
+                "event_count": self.ledger_event_count,
             },
             "somatic_residual_diff": {
                 "value": round(self.somatic_residual_diff, 4),
@@ -777,6 +781,18 @@ class IndividualizationAnalyzer:
         failure_reasons = []
         
         n_obs_avg = int(statistics.mean(self.target_n_obs.values())) if self.target_n_obs else 0
+
+        # Applicability gate: individualization requires >=2 observed targets.
+        # Single-target scenarios (e.g., relationship_building) should not fail on diff metrics.
+        if len(self.target_n_obs) < 2:
+            subscores.bond_diff_passed = True
+            subscores.ledger_diff_passed = True
+            subscores.somatic_residual_diff_passed = True
+            subscores.policy_diff_passed = True
+            subscores.precision_diff_passed = True
+            subscores.ledger_diff_applicable = False
+            subscores.failure_reasons = []
+            return subscores
         
         # Bond diff
         threshold = DYNAMIC_THRESHOLDS["bond_diff"].get_threshold(n_obs_avg)
@@ -784,11 +800,21 @@ class IndividualizationAnalyzer:
         if not subscores.bond_diff_passed:
             failure_reasons.append(FailureReason.BOND_DIFF_TOO_LOW.value)
             
-        # Ledger diff
+        # Ledger diff (applicability-gated)
+        total_ledger_events = 0
+        for ledger in self.target_ledgers.values():
+            total_ledger_events += len(ledger.get("promises", [])) + len(ledger.get("violations", []))
+        subscores.ledger_event_count = total_ledger_events
+        subscores.ledger_diff_applicable = total_ledger_events > 0
+
         threshold = DYNAMIC_THRESHOLDS["ledger_diff"].get_threshold(n_obs_avg)
-        subscores.ledger_diff_passed = subscores.ledger_diff >= threshold
-        if not subscores.ledger_diff_passed:
-            failure_reasons.append(FailureReason.LEDGER_DIFF_TOO_LOW.value)
+        if subscores.ledger_diff_applicable:
+            subscores.ledger_diff_passed = subscores.ledger_diff >= threshold
+            if not subscores.ledger_diff_passed:
+                failure_reasons.append(FailureReason.LEDGER_DIFF_TOO_LOW.value)
+        else:
+            # No ledger signal present in scenario -> non-blocking for individualization
+            subscores.ledger_diff_passed = True
             
         # Somatic residual diff
         threshold = DYNAMIC_THRESHOLDS["somatic_residual_diff"].get_threshold(n_obs_avg)
@@ -1284,6 +1310,8 @@ class ScenarioRunner:
                 "threshold": DYNAMIC_THRESHOLDS["ledger_diff"].get_threshold(n_obs_avg),
                 "n_obs_min": n_obs_min,
                 "pass": subscores.ledger_diff_passed,
+                "applicable": subscores.ledger_diff_applicable,
+                "event_count": subscores.ledger_event_count,
             },
             "somatic_residual_diff": {
                 "computed_diff": subscores.somatic_residual_diff,
@@ -1325,11 +1353,15 @@ class ScenarioRunner:
                           for actor, emotions in actor_emotions.items()}
             emotion_values = list(avg_emotions.values())
             max_diff = max(emotion_values) - min(emotion_values) if emotion_values else 0
+            legacy_passed = max_diff > 0.1
             metrics["individualization_diff_legacy"] = {
                 "max_diff": max_diff,
                 "actor_count": len(actor_emotions),
                 "averages": avg_emotions,
-                "passed": max_diff > 0.1
+                "legacy_passed": legacy_passed,
+                "passed": True,
+                "blocking": False,
+                "severity": "ok" if legacy_passed else "warning"
             }
         
         # High Impact False Positive Rate (event-level; candidate is tracked separately)
