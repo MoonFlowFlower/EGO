@@ -70,10 +70,10 @@ class TestProactiveGate:
     
     def test_above_threshold_can_reminder(self):
         gate = ProactiveGate(tension_threshold=0.7)
-        # Need to be in allowed hour
-        import datetime
-        now = datetime.datetime.now()
-        if now.hour in gate.min_user_window_hours:
+        # Need to be in allowed hour (UTC)
+        from datetime import datetime, timezone
+        now_hour = datetime.now(timezone.utc).hour
+        if now_hour in gate.min_user_window_hours:
             assert gate.should_remind(0.8) is True
     
     def test_cooldown_prevents_spam(self):
