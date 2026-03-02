@@ -15,7 +15,7 @@ from emotiond.core import (
     resolve_target_id
 )
 from emotiond.daemon import daemon_manager
-from emotiond.config import is_core_disabled
+from emotiond.config import is_core_disabled, POLICY_VERSION, SCHEMA_VERSION
 from emotiond.security import (
     init_tokens,
     resolve_server_source,
@@ -140,7 +140,10 @@ async def plan(request: PlanRequest):
 
 # MVP-3 C2: New /decision endpoint
 @app.get("/decision")
-async def get_decision(target_id: Optional[str] = Query(None, description="Filter by target_id")):
+async def get_decision(
+    target_id: Optional[str] = Query(None, description="Filter by target_id"),
+    correlation_id: Optional[str] = Query(None, description="MVP-7.5: Trace ID for audit trail")
+):
     """
     Get the most recent decision with explanation.
     
@@ -153,7 +156,13 @@ async def get_decision(target_id: Optional[str] = Query(None, description="Filte
         decision = await get_last_decision()
     
     if decision is None:
-        return {"status": "no_decision", "decision": None}
+        return {
+            "status": "no_decision", 
+            "decision": None,
+            "correlation_id": correlation_id,
+            "policy_version": POLICY_VERSION,
+            "schema_version": SCHEMA_VERSION
+        }
     
     return {
         "status": "ok",
@@ -161,14 +170,18 @@ async def get_decision(target_id: Optional[str] = Query(None, description="Filte
         "action": decision["action"],
         "explanation": decision.get("explanation"),
         "target_id": decision.get("target_id"),
-        "created_at": decision.get("created_at")
+        "created_at": decision.get("created_at"),
+        "correlation_id": correlation_id,
+        "policy_version": POLICY_VERSION,
+        "schema_version": SCHEMA_VERSION
     }
 
 
 @app.post("/decision")
 async def make_decision(
     request: PlanRequest,
-    test_mode: bool = Query(False, description="Use deterministic action selection")
+    test_mode: bool = Query(False, description="Use deterministic action selection"),
+    correlation_id: Optional[str] = Query(None, description="MVP-7.5: Trace ID for audit trail")
 ):
     """MVP-3 C2: Select an action for a target and store the decision"""
     target = request.focus_target if request.focus_target else request.user_id
@@ -180,7 +193,10 @@ async def make_decision(
         "action": result["action"],
         "explanation": result["explanation"],
         "decision_id": result["decision_id"],
-        "target": target
+        "target": target,
+        "correlation_id": correlation_id,
+        "policy_version": POLICY_VERSION,
+        "schema_version": SCHEMA_VERSION
     }
 
 # MVP-3.1: Target-specific decision endpoint
@@ -188,7 +204,8 @@ async def make_decision(
 async def make_decision_target(
     request: PlanRequest,
     target_id: Optional[str] = Query(None, description="MVP-3.1: Target ID for prediction lookup (defaults to client_source or 'default')"),
-    test_mode: bool = Query(False, description="Use deterministic action selection")
+    test_mode: bool = Query(False, description="Use deterministic action selection"),
+    correlation_id: Optional[str] = Query(None, description="MVP-7.5: Trace ID for audit trail")
 ):
     """MVP-3.1: Select an action using target-specific predictions with partial pooling."""
     target = request.focus_target if request.focus_target else request.user_id
@@ -206,14 +223,18 @@ async def make_decision_target(
         "explanation": result["explanation"],
         "decision_id": result["decision_id"],
         "target": target,
-        "target_id": result["target_id"]
+        "target_id": result["target_id"],
+        "correlation_id": correlation_id,
+        "policy_version": POLICY_VERSION,
+        "schema_version": SCHEMA_VERSION
     }
 
 
 @app.get("/decision/target/{target_id}")
 async def get_decision_by_target(
     target_id: str,
-    test_mode: bool = Query(False, description="Use deterministic action selection")
+    test_mode: bool = Query(False, description="Use deterministic action selection"),
+    correlation_id: Optional[str] = Query(None, description="MVP-7.5: Trace ID for audit trail")
 ):
     """MVP-3.1: Get or create a decision for a specific target_id."""
     # Use target_id as both target and target_id for simplicity
@@ -225,7 +246,10 @@ async def get_decision_by_target(
         "explanation": result["explanation"],
         "decision_id": result["decision_id"],
         "target": target_id,
-        "target_id": result["target_id"]
+        "target_id": result["target_id"],
+        "correlation_id": correlation_id,
+        "policy_version": POLICY_VERSION,
+        "schema_version": SCHEMA_VERSION
     }
 
 

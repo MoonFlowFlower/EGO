@@ -280,3 +280,142 @@ tail -f ~/.openclaw/workspace/emotiond/enforcement_audit.jsonl
 # Verify hook is loaded
 ls -la ~/.openclaw/hooks/emotiond-enforcer/
 ```
+
+---
+
+## Audit Trail (MVP-7.5)
+
+### Overview
+All emotiond API responses now include machine-parseable audit fields for request tracing and replay compatibility.
+
+### Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `correlation_id` | string | Trace ID for request correlation across hook → tool → emotiond → enforcer |
+| `policy_version` | string | Policy version for replay compatibility (default: "7.5.0") |
+| `schema_version` | string | Response schema version for log parsing (default: "1.0") |
+
+### Correlation ID Format
+```
+corr_<timestamp>_<random_hex>
+```
+Example: `corr_1709123456789_a1b2c3d4`
+
+### Flow
+
+```
+┌─────────────────┐
+│  Hook Entry     │  → Generate correlation_id
+│  (handler.js)   │
+└────────┬────────┘
+         │
+         v
+┌─────────────────┐
+│  Tool Call      │  → Pass correlation_id to emotiond
+│  (index.ts)     │
+└────────┬────────┘
+         │
+         v
+┌─────────────────┐
+│  emotiond API   │  → Include in response + logs
+│  (api.py)       │
+└────────┬────────┘
+         │
+         v
+┌─────────────────┐
+│  Enforcer       │  → Include in audit log
+│  (handler.js)   │
+└─────────────────┘
+```
+
+### API Response Examples
+
+**Decision Response with Audit Fields:**
+```json
+{
+  "status": "ok",
+  "decision_id": 123,
+  "action": "approach",
+  "explanation": {...},
+  "target_id": "moonlight",
+  "created_at": "2026-03-02T17:00:00Z",
+  "correlation_id": "corr_1709123456789_a1b2c3d4",
+  "policy_version": "7.5.0",
+  "schema_version": "1.0"
+}
+```
+
+**Event with Correlation ID:**
+```json
+{
+  "type": "world_event",
+  "actor": "user",
+  "target": "agent",
+  "correlation_id": "corr_1709123456789_a1b2c3d4",
+  "meta": {
+    "subtype": "care",
+    "target_id": "moonlight"
+  }
+}
+```
+
+### Tool Parameters
+
+**emotiond_world_event:**
+```json
+{
+  "counterparty_id": "moonlight",
+  "subtype": "care",
+  "correlation_id": "corr_optional_custom_id"
+}
+```
+
+**emotiond_get_decision:**
+```json
+{
+  "counterparty_id": "moonlight",
+  "test_mode": true,
+  "correlation_id": "corr_optional_custom_id"
+}
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `EMOTIOND_POLICY_VERSION` | "7.5.0" | Override policy version |
+| `EMOTIOND_SCHEMA_VERSION` | "1.0" | Override schema version |
+
+### Testing Audit Trail
+
+```bash
+# Send event with correlation_id
+curl -s -X POST http://127.0.0.1:18080/event \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "world_event",
+    "actor": "moonlight",
+    "target": "agent",
+    "correlation_id": "corr_test_123",
+    "meta": {"subtype": "care"}
+  }' | python3 -m json.tool
+
+# Get decision with correlation_id
+curl -s "http://127.0.0.1:18080/decision/target/moonlight?test_mode=true&correlation_id=corr_test_456" | python3 -m json.tool
+```
+
+### Log Parsing
+
+Use `jq` to extract audit fields from logs:
+
+```bash
+# Extract all correlation IDs from enforcement audit
+jq '.correlation_id' ~/.openclaw/workspace/emotiond/enforcement_audit.jsonl
+
+# Filter by policy version
+jq 'select(.policy_version == "7.5.0")' /var/log/emotiond.log
+
+# Group by correlation_id for trace reconstruction
+jq -s 'group_by(.correlation_id)' traces/moonlight.jsonl
+```

@@ -21,6 +21,9 @@ class Event(BaseModel):
     Legacy fields (backward compatible):
     - actor: who initiated the event (for world_event, this is the counterparty)
     - target: who received the event
+    
+    Audit fields (MVP-7.5):
+    - correlation_id: trace ID for request tracing across hook → tool → emotiond → enforcer
     """
     type: str  # user_message|assistant_reply|world_event
     actor: str
@@ -30,6 +33,8 @@ class Event(BaseModel):
     # MVP-7.4: Explicit layer semantics
     agent_id: Optional[str] = None  # Whose emotion/relationship is updated
     counterparty_id: Optional[str] = None  # Who the relationship is with
+    # MVP-7.5: Audit trail
+    correlation_id: Optional[str] = None  # Trace ID for request tracing
     
     def get_agent_id(self) -> str:
         """Get agent_id with fallback."""
@@ -54,6 +59,24 @@ class Event(BaseModel):
         elif self.type == "world_event":
             return self.actor  # Who performed the action
         return self.actor
+
+
+class DecisionResponse(BaseModel):
+    """
+    MVP-7.5: Decision response with audit trail fields.
+    
+    Used by /decision endpoints to return action selections with
+    machine-parseable audit information for replay compatibility.
+    """
+    decision_id: int
+    action: str
+    explanation: Optional[Dict[str, Any]] = None
+    target_id: Optional[str] = None
+    created_at: Optional[str] = None
+    # MVP-7.5: Audit trail fields
+    correlation_id: Optional[str] = None  # Trace ID propagated from request
+    policy_version: str = "7.5.0"  # Policy version for replay compatibility
+    schema_version: str = "1.0"  # Response schema version for log parsing
 
 
 class PlanRequest(BaseModel):
