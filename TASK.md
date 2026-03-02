@@ -5,25 +5,29 @@
 ## DoD (Definition of Done)
 - [x] Step 1: Bond differentiation made more visible in 10~30 turns
 - [x] Step 2: Ledger diff gating (not_applicable when no ledger events)
-- [ ] Step 3: Residual-conditioned gain promoted to production-tunable path
+- [x] Step 3: Residual-conditioned gain promoted to production-tunable path
 - [ ] Re-run eval suite and capture before/after evidence
 
 ## Status
-- **Phase:** step-2-done
-- **Last Update:** 2026-03-01 20:27:00
+- **Phase:** step-3-done
+- **Last Update:** 2026-03-01 20:29:00
 - **Blockers:** None
 
 ## Next Action
-**next_action:** Implement Step 3 in production path, then run focused eval pack and compare before/after.
+**next_action:** Run full eval suite v2.3 before/after package and summarize deltas.
 
 ## Evidence
-- Step2 eval pack: `reports/mvp621_step2_eval_pack.json`
-- Ledger status examples:
-  - `relationship_building`: `ledger_diff_status=not_applicable`, `event_count=0`
-  - `promise_betrayal`: `ledger_diff_status=not_applicable`, `event_count=0`
-  - `cross_target_isolation`: `ledger_diff_status=applicable`, `event_count=1`
+- Step3 eval pack: `reports/mvp621_step3_eval_pack.json`
+- Production tunables added:
+  - `residual_condition_action_gain`
+  - `residual_condition_memory_gain`
+  - `residual_condition_explore_gain`
+  - `residual_condition_tanh_k`
+  - `residual_policy_bias_gain`
+- Files changed:
+  - `emotiond/core.py`
+  - `scripts/auto_tune_v0_3.py`
 
-## Notes
-Step 2 implemented in `scripts/eval_suite_v2_3.py`:
-- Single-target applicability gate for individualization diffs
-- Explicit `ledger_diff_status` field (`applicable` | `not_applicable`)
+## Validation
+- `PYTHONPATH=. uv run pytest -q tests/test_core_emotion.py tests/test_auto_tune_v0_3.py tests/test_eval_suite_v2_3.py`
+- Result: `73 passed`

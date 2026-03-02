@@ -618,15 +618,20 @@ async def process_event(event: Event) -> Dict[str, Any]:
 
             # Production-path residual-conditioned gain (small by default, tunable)
             residual_condition_gain = float(get_auto_tune_param("residual_condition_gain", 0.1))
+            residual_condition_action_gain = float(get_auto_tune_param("residual_condition_action_gain", 0.25))
+            residual_condition_memory_gain = float(get_auto_tune_param("residual_condition_memory_gain", 0.18))
+            residual_condition_explore_gain = float(get_auto_tune_param("residual_condition_explore_gain", 0.08))
+            residual_condition_tanh_k = float(get_auto_tune_param("residual_condition_tanh_k", 3.0))
             if abs(residual_condition_gain) > 1e-9:
                 try:
                     rsum = emotion_state.body_state.get_target_residual_summary(event_target) if event_target else None
                     if rsum:
                         sr = rsum.get("shrunk_residual", {})
                         residual_signal = (-float(sr.get("safety_stress", 0.0)) + float(sr.get("social_need", 0.0)))
-                        w_action = max(0.0, min(1.0, w_action + 0.25 * residual_condition_gain * math.tanh(3.0 * residual_signal)))
-                        w_memory = max(0.0, min(1.0, w_memory - 0.18 * residual_condition_gain * math.tanh(3.0 * residual_signal)))
-                        w_explore = max(0.0, min(1.0, w_explore + 0.08 * residual_condition_gain * math.tanh(3.0 * residual_signal)))
+                        residual_effect = math.tanh(residual_condition_tanh_k * residual_signal)
+                        w_action = max(0.0, min(1.0, w_action + residual_condition_action_gain * residual_condition_gain * residual_effect))
+                        w_memory = max(0.0, min(1.0, w_memory - residual_condition_memory_gain * residual_condition_gain * residual_effect))
+                        w_explore = max(0.0, min(1.0, w_explore + residual_condition_explore_gain * residual_condition_gain * residual_effect))
                 except Exception:
                     pass
 
@@ -1061,6 +1066,8 @@ def select_action(
 
     # Residual-conditioned policy bias (production-path, small default)
     residual_condition_gain = float(get_auto_tune_param("residual_condition_gain", 0.1))
+    residual_policy_bias_gain = float(get_auto_tune_param("residual_policy_bias_gain", 0.10))
+    residual_condition_tanh_k = float(get_auto_tune_param("residual_condition_tanh_k", 3.0))
     residual_signal = 0.0
     try:
         if hasattr(state, "body_state") and hasattr(state.body_state, "get_target_residual_summary"):
@@ -1082,7 +1089,7 @@ def select_action(
         })
         score = score_action(action, state, relationship, pred)
         if abs(residual_condition_gain) > 1e-9 and abs(residual_signal) > 1e-9:
-            resid_bias = residual_condition_gain * 0.10 * math.tanh(3.0 * residual_signal)
+            resid_bias = residual_condition_gain * residual_policy_bias_gain * math.tanh(residual_condition_tanh_k * residual_signal)
             if action in {"withdraw", "boundary"}:
                 score += resid_bias
             elif action in {"approach", "repair_offer"}:
