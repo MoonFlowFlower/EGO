@@ -1,3 +1,54 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b2661bb651e69f8a2f81149e99b9c16ee1a8e4da56ae79f617d2c416ed0bf32a
-size 1650
+[
+  {
+    "residual_condition_gain": 0.0,
+    "passed": false,
+    "policy_diff": 0.1875,
+    "precision_diff": 0.0,
+    "somatic_residual_diff": 0.0,
+    "failure_reasons": [
+      "bond_diff: insufficient bond differentiation between targets",
+      "somatic_residual_diff: target residuals not differentiated",
+      "precision_diff: self-model weights not differentiated"
+    ],
+    "runtime_signals": {}
+  },
+  {
+    "residual_condition_gain": 0.5,
+    "passed": false,
+    "policy_diff": 0.1875,
+    "precision_diff": 0.0,
+    "somatic_residual_diff": 0.0,
+    "failure_reasons": [
+      "bond_diff: insufficient bond differentiation between targets",
+      "somatic_residual_diff: target residuals not differentiated",
+      "precision_diff: self-model weights not differentiated"
+    ],
+    "runtime_signals": {}
+  },
+  {
+    "residual_condition_gain": 1.0,
+    "passed": false,
+    "policy_diff": 0.1875,
+    "precision_diff": 0.0,
+    "somatic_residual_diff": 0.0,
+    "failure_reasons": [
+      "bond_diff: insufficient bond differentiation between targets",
+      "somatic_residual_diff: target residuals not differentiated",
+      "precision_diff: self-model weights not differentiated"
+    ],
+    "runtime_signals": {}
+  },
+  {
+    "residual_condition_gain": 1.5,
+    "passed": false,
+    "policy_diff": 0.1875,
+    "precision_diff": 0.0,
+    "somatic_residual_diff": 0.0,
+    "failure_reasons": [
+      "bond_diff: insufficient bond differentiation between targets",
+      "somatic_residual_diff: target residuals not differentiated",
+      "precision_diff: self-model weights not differentiated"
+    ],
+    "runtime_signals": {}
+  }
+]
