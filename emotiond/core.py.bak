@@ -45,6 +45,8 @@ from emotiond.allostasis import (
 )
 # MVP-5 D1: Precision Controller
 from emotiond.precision import (
+    apply_precision_to_action_selection,
+from emotiond.precision import (
     get_precision_controller,
     build_precision_context,
     apply_precision_to_meta_cognition,
@@ -54,12 +56,17 @@ from emotiond.precision import (
     PrecisionWeights,
     PrecisionContext
 )
-
 # MVP-7 US-651: Homeostasis Drive
 from emotiond.drive_homeostasis import (
     DriveState, drive_error, emotion_from_drive,
     get_drive_modulation_params, get_state_hash
 )
+    format_precision_summary,
+    get_precision_evidence_source_note,
+    PrecisionWeights,
+    PrecisionContext
+)
+
 # Global allostasis budget instance
 _allostasis_budget: Optional[AllostasisBudget] = None
 

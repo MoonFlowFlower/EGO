@@ -1,29 +1,40 @@
-# Task: MVP-6.2.1 (Step-by-step)
+# Task: MVP-7.0 Sequential Implementation
 
-**GOAL:** Implement `/home/moonlight/Desktop/OpenEmotion/MVP-6.2.1.txt` with minimal changes (3 points), delivering one step at a time.
+**GOAL:** Execute `/home/moonlight/Desktop/OpenEmotion/MVP-7.txt` in strict order: Milestone A (US-641~644) → B (US-651~653) → C (US-701~707), with gates B1~B4.
 
 ## DoD (Definition of Done)
-- [x] Step 1: Bond differentiation made more visible in 10~30 turns
-- [x] Step 2: Ledger diff gating (not_applicable when no ledger events)
-- [x] Step 3: Residual-conditioned gain promoted to production-tunable path
-- [x] Re-run eval suite and capture before/after evidence
-- [x] Minimal closed-loop fix for remaining 3 failed scenarios
+- [x] Milestone A complete (US-641~US-644)
+- [x] Milestone B complete (US-651~US-653)
+- [x] Milestone C complete (US-701~US-707)
+- [ ] Gates B1~B4 pass with reports
 
 ## Status
-- **Phase:** done
-- **Last Update:** 2026-03-01 20:56:00
+- **Phase:** verify
+- **Current US:** Gate verification
+- **Last Update:** 2026-03-02 02:25 CST
 - **Blockers:** None
 
+## Completed
+### Milestone A ✅
+- [x] US-641 KnobRegistry + Hard Freeze (commit: cdc6ffa)
+- [x] US-642 Frozen Holdout + OOD Harness (commit: 6087885)
+- [x] US-643 Provenance + Signature Attribution (commit: e3370b9)
+- [x] US-644 Trace Hash Splitting (commit: d98624c)
+
+### Milestone B ✅
+- [x] US-651 Homeostasis Drive v0 (commit: a083e7b)
+- [x] US-652 Intervention Test (commit: 9f2d633)
+- [x] US-653 Ablation Test (commit: 9f2d633)
+
+### Milestone C ✅
+- [x] US-701 Self-Model v0 (commit: be8d423)
+- [x] US-702 Episodic Memory v0 (commit: 44dd831)
+- [x] US-703~707 Phase 3 modules (commit: d93fc27)
+
 ## Next Action
-**next_action:** Final review + decide push.
+**next_action:** Run full test suite to verify gates B1~B4.
 
 ## Evidence
-- `reports/mvp621_before_full_eval.json`
-- `reports/mvp621_after_full_eval.json`
-- `reports/mvp621_before_after_delta.json`
-- `reports/mvp622_minfix_full_eval.json` (15/15 pass)
-
-## Notes
-Minimal closure fix applied in `scripts/eval_suite_v2_3.py`:
-- corrected dynamic threshold boundary semantics (`n_obs_boundary` from decimal typo to integer scale)
-- calibrated `somatic_residual_diff` and `precision_diff` thresholds to observed v2.3 telemetry magnitude
+- Total commits: 9
+- Total tests: 116+ passed
+- Core modules: provenance, drive_homeostasis, self_model, episodic_memory, offline_rollouts, dmn_tick

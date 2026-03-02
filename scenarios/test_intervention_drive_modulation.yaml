@@ -1,75 +1,69 @@
-# US-652: Intervention Test
-# Tests that different drive states lead to different behaviors
+# Test scenario for US-652: Intervention Test
+# Verify that different internal states produce different behaviors
 
-name: test_intervention_drive_modulation
-description: |
-  Test that drive state modulation causes measurable behavioral differences.
-  Same event sequence with different initial drive states should produce
-  different strategy selections and response characteristics.
+scenario_id: "test_intervention_drive_modulation"
+description: "Test that drive modulation produces measurable behavior differences"
 
-metadata:
-  version: "1.0.0"
-  category: causal_evidence
-  us: US-652
+seed: 42
 
-setup:
-  seed: 42
-  event_sequence:
-    - type: user_message
-      content: "I'm not sure what to do about this problem."
-    - type: user_message
-      content: "Can you help me decide?"
+# Fixed event flow (same across conditions)
+events:
+  - type: "user_message"
+    content: "I need to make a decision about moving to a new city for a job"
+    context:
+      decision_complexity: "high"
+      uncertainty_level: "high"
 
+# Two conditions with different internal states
 conditions:
-  - name: high_uncertainty
+  - name: "low_drive_error"
+    description: "Low drive error (confident state)"
     initial_state:
-      drive:
-        uncertainty: 0.8
-        energy: 0.6
-        fatigue: 0.2
-      expected_modulation:
-        strategy_preference: "clarify"
-        min_clarification_rate: 0.3
-  
-  - name: high_fatigue
+      energy: 0.9
+      uncertainty: 0.1
+      social: 0.7
+      safety: 0.8
+      fatigue: 0.1
+    expected_modulations:
+      risk_aversion: "< 0.3"
+      clarification_need: "< 0.3"
+      initiative_level: "> 0.7"
+      
+  - name: "high_drive_error"
+    description: "High drive error (stressed state)"
     initial_state:
-      drive:
-        uncertainty: 0.2
-        energy: 0.3
-        fatigue: 0.8
-      expected_modulation:
-        strategy_preference: "conservative"
-        response_length: "short"
-  
-  - name: balanced
-    initial_state:
-      drive:
-        uncertainty: 0.2
-        energy: 0.6
-        fatigue: 0.2
-      expected_modulation:
-        strategy_preference: "default"
+      energy: 0.3
+      uncertainty: 0.8
+      social: 0.2
+      safety: 0.3
+      fatigue: 0.7
+    expected_modulations:
+      risk_aversion: "> 0.6"
+      clarification_need: "> 0.6"
+      initiative_level: "< 0.4"
 
-measurements:
-  - metric: strategy_distribution
-    type: categorical
-    description: Distribution of selected strategies
-  
-  - metric: clarification_rate
-    type: ratio
-    description: Rate of clarification-seeking actions
-  
-  - metric: response_length
-    type: continuous
-    description: Average response length in tokens
-  
-  - metric: drive_error_delta
-    type: continuous
-    description: Change in drive_error before/after intervention
+# Metrics to compare between conditions
+comparison_metrics:
+  - "strategy_selection_distribution"  # Which strategies are chosen
+  - "clarification_request_rate"      # How often clarification is sought
+  - "response_length"                 # Length of responses
+  - "initiative_indicators"           # Proactive suggestions
+  - "risk_language_frequency"         # Words indicating risk aversion
 
-acceptance_criteria:
-  effect_size_threshold: 0.2
-  description: |
-    The effect size (Cohen's d) between conditions must be >= 0.2
-    for at least one measured metric, demonstrating that drive state
-    causally influences behavior.
+# Success criteria
+success_criteria:
+  effect_size_threshold: 0.5  # Cohen's d
+  min_difference_clarification: 0.3  # 30% difference in clarification rate
+  strategy_distribution_difference: 0.4  # 40% difference in strategy choices
+
+# Expected statistical differences
+expected_differences:
+  - metric: "clarification_request_rate"
+    direction: "high_drive_error > low_drive_error"
+    min_effect_size: 0.5
+  - metric: "risk_aversion_indicators"
+    direction: "high_drive_error > low_drive_error"
+    min_effect_size: 0.5
+  - metric: "initiative_indicators"
+    direction: "low_drive_error > high_drive_error"
+    min_effect_size: 0.5

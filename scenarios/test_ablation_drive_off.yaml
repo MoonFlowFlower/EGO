@@ -1,66 +1,65 @@
-# US-653: Ablation Test
-# Tests that removing drive modulation reduces behavioral differences
+# Test scenario for US-653: Ablation Test
+# Verify that turning off drive modulation reduces behavioral differences
 
-name: test_ablation_drive_off
-description: |
-  Test that when drive modulation is disabled (ablated), the behavioral
-  differences observed in intervention tests should significantly decrease.
-  This provides causal evidence that the drive mechanism (not some other
-  factor) is responsible for the observed effects.
+scenario_id: "test_ablation_drive_off"
+description: "Test that ablation of drive modulation eliminates behavioral differences"
 
-metadata:
-  version: "1.0.0"
-  category: causal_evidence
-  us: US-653
+seed: 42
 
-setup:
-  seed: 42
-  ablation_mode: drive_off
-  event_sequence:
-    - type: user_message
-      content: "I'm not sure what to do about this problem."
-    - type: user_message
-      content: "Can you help me decide?"
+# Same event flow as intervention test
+events:
+  - type: "user_message"
+    content: "I need to make a decision about moving to a new city for a job"
+    context:
+      decision_complexity: "high"
+      uncertainty_level: "high"
 
+# Two conditions: drive modulation ON vs OFF
 conditions:
-  - name: high_uncertainty_ablated
+  - name: "drive_modulation_on"
+    description: "Drive modulation enabled"
+    drive_modulation_enabled: true
     initial_state:
-      drive:
-        uncertainty: 0.8
-        energy: 0.6
-        fatigue: 0.2
-      ablation:
-        drive_modulation: disabled
-      expected_modulation:
-        strategy_preference: "default"  # Should NOT select clarify
-  
-  - name: balanced_ablated
+      energy: 0.3
+      uncertainty: 0.8
+      social: 0.2
+      safety: 0.3
+      fatigue: 0.7
+      
+  - name: "drive_modulation_off"
+    description: "Drive modulation disabled (ablation)"
+    drive_modulation_enabled: false
     initial_state:
-      drive:
-        uncertainty: 0.2
-        energy: 0.6
-        fatigue: 0.2
-      ablation:
-        drive_modulation: disabled
+      energy: 0.3
+      uncertainty: 0.8
+      social: 0.2
+      safety: 0.3
+      fatigue: 0.7
 
-measurements:
-  - metric: strategy_distribution
-    type: categorical
-    description: Distribution of selected strategies (with ablation)
-  
-  - metric: behavioral_variance
-    type: continuous
-    description: Variance in behavior across conditions
-  
-  - metric: ablation_drop_ratio
-    type: ratio
-    description: |
-      Ratio of effect size with drive ON vs drive OFF.
-      Should be significantly > 1.0 if drive is causal.
+# Metrics to measure ablation effects
+ablation_metrics:
+  - "strategy_selection_variance"      # How much strategies vary
+  - "modulation_parameter_presence"    # Whether modulation params are used
+  - "drive_error_influence"           # Correlation between drive_error and behavior
+  - "behavioral_consistency"          # Similarity of responses across states
 
-acceptance_criteria:
-  ablation_drop_ratio_threshold: 0.5
-  description: |
-    The ablation_drop_ratio should be >= 0.5, meaning that disabling
-    drive modulation reduces the behavioral effect by at least 50%.
-    This confirms the drive mechanism is causally responsible.
+# Success criteria
+success_criteria:
+  ablation_drop_threshold: 0.6  # 60% reduction in differences
+  variance_reduction_min: 0.5   # 50% reduction in behavioral variance
+  correlation_drop_min: 0.7     # 70% reduction in drive_error correlation
+
+# Expected effects of ablation
+expected_ablation_effects:
+  - metric: "strategy_selection_variance"
+    baseline: 0.4  # With modulation
+    ablated: 0.1   # Without modulation
+    min_drop_ratio: 0.5
+  - metric: "drive_error_correlation"
+    baseline: 0.6  # With modulation
+    ablated: 0.1   # Without modulation
+    min_drop_ratio: 0.7
+  - metric: "modulation_indicators"
+    baseline: 0.8  # Present with modulation
+    ablated: 0.0   # Absent without modulation
+    min_drop_ratio: 0.9
