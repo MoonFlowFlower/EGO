@@ -17,6 +17,11 @@ def is_core_disabled():
     return os.getenv("EMOTIOND_DISABLE_CORE", "").strip().lower() in ["1", "true", "yes", "on"]
 
 
+def is_rollouts_enabled():
+    """Check if rollouts are enabled (dynamic, checked at runtime). Default: False."""
+    return os.getenv("EMOTIOND_ENABLE_ROLLOUTS", "").strip().lower() in ["1", "true", "yes", "on"]
+
+
 # Global auto-tune parameter storage (set by auto_tune scripts)
 _lock = threading.RLock()
 _auto_tune_params: dict[str, Any] = {}
