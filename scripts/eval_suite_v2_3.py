@@ -32,6 +32,7 @@ import time
 import statistics
 import random
 import math
+import hashlib
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple, Set
@@ -65,6 +66,41 @@ def _stable_target_factor(target_id: str) -> float:
 TEST_SYSTEM_TOKEN = "eval-system-token-v2-3"
 TEST_OPENCLAW_TOKEN = "eval-openclaw-token-v2-3"
 
+DEFAULT_THRESHOLD_CONFIG = {
+    "version": "2.3.0",
+    "n_obs_boundary": 10,
+    "metrics": {
+        "bond_diff": {"low_n_obs_threshold": 0.05, "high_n_obs_threshold": 0.15},
+        "ledger_diff": {"low_n_obs_threshold": 0.05, "high_n_obs_threshold": 0.15},
+        "somatic_residual_diff": {"low_n_obs_threshold": 0.00005, "high_n_obs_threshold": 0.003},
+        "policy_diff": {"low_n_obs_threshold": 0.04, "high_n_obs_threshold": 0.10},
+        "precision_diff": {"low_n_obs_threshold": 0.0001, "high_n_obs_threshold": 0.0015},
+        "high_impact_false_positive_rate": {"low_n_obs_threshold": 0.15, "high_n_obs_threshold": 0.05, "is_diff_metric": False},
+    },
+}
+
+
+def _load_threshold_config() -> Dict[str, Any]:
+    cfg_path = Path(__file__).with_name("eval_thresholds_v2_3.json")
+    if cfg_path.exists():
+        try:
+            with open(cfg_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, dict) and "metrics" in data:
+                    return data
+        except Exception:
+            pass
+    return DEFAULT_THRESHOLD_CONFIG
+
+
+def _threshold_config_hash(cfg: Dict[str, Any]) -> str:
+    payload = json.dumps(cfg, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+THRESHOLD_CONFIG = _load_threshold_config()
+THRESHOLD_CONFIG_HASH = _threshold_config_hash(THRESHOLD_CONFIG)
+
 
 class FailureReason(Enum):
     """Specific failure reasons for per-scenario diagnostics."""
@@ -83,14 +119,18 @@ class DynamicThreshold:
     """Dynamic threshold configuration based on n_obs."""
     metric_name: str
     base_threshold: float
-    low_n_obs_threshold: float  # n_obs < 10
-    high_n_obs_threshold: float  # n_obs >= 10
+    low_n_obs_threshold: float  # n_obs < n_obs_boundary
+    high_n_obs_threshold: float  # n_obs >= n_obs_boundary
     n_obs_boundary: int = 10
     is_diff_metric: bool = True
-    
+
+    def __post_init__(self):
+        self.n_obs_boundary = int(self.n_obs_boundary)
+
     def get_threshold(self, n_obs: int) -> float:
         """Get threshold for given n_obs."""
-        if n_obs < self.n_obs_boundary:
+        n_obs_i = int(n_obs)
+        if n_obs_i < self.n_obs_boundary:
             return self.low_n_obs_threshold
         return self.high_n_obs_threshold
     
@@ -114,17 +154,28 @@ class DynamicThreshold:
         return passed, severity
 
 
-# Dynamic thresholds for individualization sub-metrics
+# Dynamic thresholds for individualization sub-metrics (data-driven)
+_cfg_metrics = THRESHOLD_CONFIG.get("metrics", {})
+_n_obs_boundary = int(THRESHOLD_CONFIG.get("n_obs_boundary", 10))
+
+def _m(name: str, low: float, high: float, is_diff_metric: bool = True) -> DynamicThreshold:
+    m = _cfg_metrics.get(name, {})
+    return DynamicThreshold(
+        metric_name=name,
+        base_threshold=_n_obs_boundary,
+        low_n_obs_threshold=float(m.get("low_n_obs_threshold", low)),
+        high_n_obs_threshold=float(m.get("high_n_obs_threshold", high)),
+        n_obs_boundary=int(m.get("n_obs_boundary", _n_obs_boundary)),
+        is_diff_metric=bool(m.get("is_diff_metric", is_diff_metric)),
+    )
+
 DYNAMIC_THRESHOLDS = {
-    "bond_diff": DynamicThreshold("bond_diff", 8, 0.05, 0.15),
-    "ledger_diff": DynamicThreshold("ledger_diff", 8, 0.05, 0.15),
-    # Calibrated to observed variance scale (v2.3 telemetry): residual/precision are typically 1e-4~1e-2.
-    "somatic_residual_diff": DynamicThreshold("somatic_residual_diff", 8, 0.00005, 0.003),
-    "policy_diff": DynamicThreshold("policy_diff", 8, 0.04, 0.10),
-    "precision_diff": DynamicThreshold("precision_diff", 8, 0.0001, 0.0015),
-    "high_impact_false_positive_rate": DynamicThreshold(
-        "high_impact_false_positive_rate", 8, 0.15, 0.05, is_diff_metric=False
-    ),
+    "bond_diff": _m("bond_diff", 0.05, 0.15),
+    "ledger_diff": _m("ledger_diff", 0.05, 0.15),
+    "somatic_residual_diff": _m("somatic_residual_diff", 0.00005, 0.003),
+    "policy_diff": _m("policy_diff", 0.04, 0.10),
+    "precision_diff": _m("precision_diff", 0.0001, 0.0015),
+    "high_impact_false_positive_rate": _m("high_impact_false_positive_rate", 0.15, 0.05, is_diff_metric=False),
 }
 
 
@@ -846,17 +897,19 @@ class IndividualizationAnalyzer:
 class ScenarioRunner:
     """Runner for individual scenarios"""
     
-    def __init__(self, scenario_path: Path, seed: int = 42):
+    def __init__(self, scenario_path: Path, seed: int = 42, debug_metrics: bool = False):
         self.scenario_path = scenario_path
         self.scenario_data = None
         self.turn_results: List[TurnResult] = []
         self.seed = seed
+        self.debug_metrics = debug_metrics
         self.telemetry_tracker = BodyTelemetryTracker()
         self.consequence_tagger = ConsequenceTagger()
         self.recovery_analyzer = RecoveryAnalyzer()
         self.individualization_analyzer = IndividualizationAnalyzer()
         self.targets_seen_input: set[str] = set()
         self.declared_target_ids: set[str] = set()
+        self.debug_metrics = debug_metrics
 
     def _resolve_target_id(self, event_data: Dict[str, Any]) -> Optional[str]:
         """Resolve target_id via explicit fields only (+ declared-target actor mapping)."""
@@ -1339,11 +1392,16 @@ class ScenarioRunner:
             },
         }
 
-        metrics["individualization_raw_dump"] = {
+        metrics["_internal_individualization_raw_dump"] = {
             "targets": target_ids,
             "per_target": per_target_raw,
         }
-        metrics["individualization_submetric_trace"] = submetric_trace
+        if self.debug_metrics:
+            metrics["individualization_raw_dump"] = {
+                "targets": target_ids,
+                "per_target": per_target_raw,
+            }
+            metrics["individualization_submetric_trace"] = submetric_trace
         
         # Legacy individualization for backwards compatibility
         actor_emotions = {}
@@ -1537,24 +1595,25 @@ class ScenarioRunner:
         
         # Calculate metrics
         metrics, failure_reasons = self.calculate_metrics()
-        metrics["target_isolation_debug"] = {
-            "targets_seen_count": targets_seen_count,
-            "targets_seen": sorted(self.targets_seen_input),
-            "relationship_targets_count": relationship_targets_count,
-            "relationship_targets": relationship_targets,
-            "ledger_targets_count": ledger_targets_count,
-            "ledger_targets": ledger_targets,
-            "expected_target_count": expected_target_count,
-            "passed": (
-                (expected_target_count < 2) or
-                (targets_seen_count >= 2 and relationship_targets_count >= 2 and ledger_targets_count >= 2)
-            ),
-        }
+        if self.debug_metrics:
+            metrics["target_isolation_debug"] = {
+                "targets_seen_count": targets_seen_count,
+                "targets_seen": sorted(self.targets_seen_input),
+                "relationship_targets_count": relationship_targets_count,
+                "relationship_targets": relationship_targets,
+                "ledger_targets_count": ledger_targets_count,
+                "ledger_targets": ledger_targets,
+                "expected_target_count": expected_target_count,
+                "passed": (
+                    (expected_target_count < 2) or
+                    (targets_seen_count >= 2 and relationship_targets_count >= 2 and ledger_targets_count >= 2)
+                ),
+            }
 
         # Blocking sanity gates for smoke scenarios (prevent wasted autotune on dead pipelines)
         scenario_category = (self.scenario_data.get("metadata", {}).get("category", "") if self.scenario_data else "")
         if expected_target_count >= 2 and scenario_category == "smoke":
-            raw = metrics.get("individualization_raw_dump", {}).get("per_target", {})
+            raw = metrics.get("_internal_individualization_raw_dump", {}).get("per_target", {})
             ledger_total = sum((v.get("ledger", {}).get("promise_count", 0) + v.get("ledger", {}).get("violation_count", 0)) for v in raw.values())
             residual_total = 0.0
             precision_var = []
@@ -1642,12 +1701,13 @@ def result_to_dict(obj) -> Dict[str, Any]:
 class EvalSuiteV2_3:
     """Main evaluation suite runner v2.3"""
     
-    def __init__(self, scenarios_dir: Path = None, output_format: str = "json", seed: int = 42):
+    def __init__(self, scenarios_dir: Path = None, output_format: str = "json", seed: int = 42, debug_metrics: bool = False):
         self.base_path = Path(__file__).parent.parent
         self.scenarios_dir = scenarios_dir or self.base_path / "scenarios"
         self.output_format = output_format
         self.results: List[ScenarioResult] = []
         self.seed = seed
+        self.debug_metrics = debug_metrics
         
     def discover_scenarios(self) -> List[Path]:
         """Discover all scenario files"""
@@ -1703,7 +1763,7 @@ class EvalSuiteV2_3:
     
     async def run_scenario(self, scenario_path: Path) -> ScenarioResult:
         """Run a single scenario"""
-        runner = ScenarioRunner(scenario_path, seed=self.seed)
+        runner = ScenarioRunner(scenario_path, seed=self.seed, debug_metrics=self.debug_metrics)
         return await runner.run()
     
     def calculate_aggregate_metrics(self) -> Dict[str, Any]:
@@ -1805,7 +1865,7 @@ class EvalSuiteV2_3:
                 passed_scenarios=0,
                 failed_scenarios=0,
                 scenarios=[],
-                aggregate_metrics={},
+                aggregate_metrics={"threshold_config": {"version": THRESHOLD_CONFIG.get("version", "2.3.0"), "hash": THRESHOLD_CONFIG_HASH}},
                 seed=self.seed
             )
         
@@ -1842,7 +1902,7 @@ class EvalSuiteV2_3:
                 passed_scenarios=passed_count,
                 failed_scenarios=len(self.results) - passed_count,
                 scenarios=self.results,
-                aggregate_metrics=aggregate_metrics,
+                aggregate_metrics={**aggregate_metrics, "threshold_config": {"version": THRESHOLD_CONFIG.get("version", "2.3.0"), "hash": THRESHOLD_CONFIG_HASH}},
                 seed=self.seed
             )
             
@@ -1923,6 +1983,7 @@ async def main():
     parser.add_argument("--output-file", help="Write output to file")
     parser.add_argument("--seed", type=int, default=42,
                        help="Random seed for reproducibility (default: 42)")
+    parser.add_argument("--debug-metrics", action="store_true", help="Include raw_dump/submetric_trace diagnostics")
     args = parser.parse_args()
     
     base_path = Path(__file__).parent.parent
@@ -1934,7 +1995,7 @@ async def main():
     else:
         scenario_files = None
     
-    suite = EvalSuiteV2_3(scenarios_dir=scenarios_dir, output_format=args.output, seed=args.seed)
+    suite = EvalSuiteV2_3(scenarios_dir=scenarios_dir, output_format=args.output, seed=args.seed, debug_metrics=args.debug_metrics)
     result = await suite.run_all(scenario_files)
     
     output = suite.output_results(result)

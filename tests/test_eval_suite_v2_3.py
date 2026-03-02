@@ -105,6 +105,20 @@ class TestDynamicThresholds:
         for metric in required_metrics:
             assert metric in DYNAMIC_THRESHOLDS
             
+
+    def test_n_obs_boundary_safe_int_conversion(self):
+        """n_obs_boundary must be int-coercible and comparison direction must stay correct."""
+        dt = DynamicThreshold("test_metric", 0.1, 0.05, 0.15, n_obs_boundary="10")
+        assert isinstance(dt.n_obs_boundary, int)
+        assert dt.get_threshold(9) == 0.05
+        assert dt.get_threshold(10) == 0.15
+
+    def test_two_fixed_inputs_threshold_direction(self):
+        """Two fixed inputs verify relax(<boundary) and strict(>=boundary) directions."""
+        dt = DynamicThreshold("test_metric", 0.1, 0.01, 0.2, n_obs_boundary=10)
+        low = dt.get_threshold(3)
+        high = dt.get_threshold(20)
+        assert low < high
     def test_threshold_transparency(self):
         """Test that threshold rules are transparent and auditable."""
         for name, dt in DYNAMIC_THRESHOLDS.items():
@@ -353,6 +367,26 @@ class TestIntegration:
         
         # Should have failure reasons
         assert len(subscores.failure_reasons) > 0
+
+    def test_negative_sanity_forced_no_differentiation_fails(self):
+        """If bond/ledger/residual/precision are forced identical, at least one submetric must fail."""
+        analyzer = IndividualizationAnalyzer()
+        for tid in ("target_a", "target_b"):
+            analyzer.target_bonds[tid] = [0.5, 0.5]
+            analyzer.target_ledgers[tid]["promises"] = [{}]
+            analyzer.target_ledgers[tid]["violations"] = []
+            analyzer.target_somatic_residuals[tid]["safety_stress"] = [0.0, 0.0]
+            analyzer.target_somatic_residuals[tid]["social_need"] = [0.0, 0.0]
+            analyzer.target_somatic_residuals[tid]["novelty_need"] = [0.0, 0.0]
+            analyzer.target_precision[tid]["w_action"] = [0.7, 0.7]
+            analyzer.target_precision[tid]["w_memory"] = [0.6, 0.6]
+            analyzer.target_policies[tid] = ["observe", "observe"]
+            analyzer.target_n_obs[tid] = 20
+
+        subscores = analyzer.calculate_subscores()
+        assert not subscores.all_passed()
+        assert len(subscores.failure_reasons) >= 1
+
 
 
 class TestBodyTelemetryTracker:

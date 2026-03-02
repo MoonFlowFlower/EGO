@@ -1,0 +1,31 @@
+{
+  "version": "2.3.0",
+  "n_obs_boundary": 10,
+  "metrics": {
+    "bond_diff": {
+      "low_n_obs_threshold": 0.05,
+      "high_n_obs_threshold": 0.15
+    },
+    "ledger_diff": {
+      "low_n_obs_threshold": 0.05,
+      "high_n_obs_threshold": 0.15
+    },
+    "somatic_residual_diff": {
+      "low_n_obs_threshold": 0.00005,
+      "high_n_obs_threshold": 0.003
+    },
+    "policy_diff": {
+      "low_n_obs_threshold": 0.04,
+      "high_n_obs_threshold": 0.10
+    },
+    "precision_diff": {
+      "low_n_obs_threshold": 0.0001,
+      "high_n_obs_threshold": 0.0015
+    },
+    "high_impact_false_positive_rate": {
+      "low_n_obs_threshold": 0.15,
+      "high_n_obs_threshold": 0.05,
+      "is_diff_metric": false
+    }
+  }
+}

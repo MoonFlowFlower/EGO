@@ -210,6 +210,7 @@ class CandidateResult:
     param_fingerprint: str = ""
     effective_params_snapshot: Dict[str, Any] = field(default_factory=dict)
     telemetry_hash: str = ""
+    threshold_config: Dict[str, Any] = field(default_factory=dict)
     rank: int = 0
     lexicographic_level: Optional[str] = None
     
@@ -222,6 +223,7 @@ class CandidateResult:
             "param_fingerprint": self.param_fingerprint,
             "effective_params_snapshot": self.effective_params_snapshot,
             "telemetry_hash": self.telemetry_hash,
+            "threshold_config": self.threshold_config,
             "rank": self.rank,
             "lexicographic_level": self.lexicographic_level,
         }
@@ -573,6 +575,7 @@ class AutoTuneEngine:
                 param_fingerprint=_param_fingerprint(candidate_params),
                 effective_params_snapshot=get_auto_tune_params_snapshot(),
                 telemetry_hash=_eval_telemetry_hash(candidate_eval_result),
+                threshold_config=(result_to_dict(candidate_eval_result).get("aggregate_metrics", {}).get("threshold_config", {})),
             )
             candidates.append(candidate_result)
         candidates.sort(key=lambda c: c.fitness, reverse=True)
@@ -680,6 +683,9 @@ class AutoTuneEngine:
         lines.append("|------|-----------|--------|---------|-------|----------|------------|-------------|")
         for c in result.candidates[:20]:
             lines.append(f"| {c.rank} | {c.candidate_id} | {c.fitness.passed_scenarios} | {c.fitness.high_impact_false_positive_rate:.4f} | {c.fitness.individualization_score:.4f} | {c.fitness.recovery_score:.4f} | {c.fitness.efficiency:.4f} | {c.fitness.tie_breaker:.6f} |")
+        baseline_threshold = result.baseline_result.get("aggregate_metrics", {}).get("threshold_config", {})
+        if baseline_threshold:
+            lines.append(f"**Threshold Config:** {baseline_threshold.get('version', 'unknown')} ({baseline_threshold.get('hash', '')[:12]})")
         if result.best_candidate:
             best = result.best_candidate
             lines.extend(["", "## Best Candidate Details", ""])
