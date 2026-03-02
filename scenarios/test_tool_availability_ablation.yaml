@@ -2,6 +2,12 @@
 # Purpose: Prove that behavior difference disappears when capability router is disabled
 
 name: test_tool_availability_ablation
+metadata:
+  name: test_tool_availability_ablation
+  version: "1.0"
+  description: >
+    Test that tool availability effect on behavior disappears or significantly
+    reduces when the capability router mechanism is disabled (ablated).
 description: >
   Test that tool availability effect on behavior disappears or significantly
   reduces when the capability router mechanism is disabled (ablated).

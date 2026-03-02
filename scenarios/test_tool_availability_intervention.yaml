@@ -2,6 +2,12 @@
 # Purpose: Demonstrate that tool availability causally affects behavior
 
 name: test_tool_availability_intervention
+metadata:
+  name: test_tool_availability_intervention
+  version: "1.0"
+  description: >
+    Test that same task with different tool availability produces significantly
+    different behavior distributions.
 description: >
   Test that same task with different tool availability produces
   significantly different behavior distributions.
