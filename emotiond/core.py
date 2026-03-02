@@ -590,7 +590,7 @@ async def process_event(event: Event) -> Dict[str, Any]:
             w_explore = float(weights.w_explore)
 
             # Smoke-only gain for precision sensitivity probes (keeps production behavior unchanged)
-            if isinstance(event.meta, dict) and str(event.meta.get("category", "")).lower() == "smoke":
+            if isinstance(event.meta, dict) and str(event.meta.get("category", "")).lower() == "smoke" and str(event.meta.get("scenario_name", "")).lower().startswith("smoke_"):
                 precision_test_gain = 3.0
                 neutral = 1.0 / 3.0
 

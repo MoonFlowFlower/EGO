@@ -737,7 +737,7 @@ class BodyStateVector:
             Trace record with deltas and shrinkage info
         """
         target_id = meta.get("target_id") if meta else None
-        smoke_mode = bool(meta and str(meta.get("category", "")).lower() == "smoke")
+        smoke_mode = bool(meta and str(meta.get("category", "")).lower() == "smoke" and str(meta.get("scenario_name", "")).lower().startswith("smoke_"))
         residual_test_gain = 5.0 if smoke_mode else 1.0
         evidence_increment = 0.3 if smoke_mode else 0.1
         

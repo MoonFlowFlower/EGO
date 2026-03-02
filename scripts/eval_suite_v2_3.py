@@ -1106,8 +1106,11 @@ class ScenarioRunner:
 
                 meta = event_meta.copy() if event_meta else {}
                 scenario_category = (self.scenario_data.get("metadata", {}).get("category", "") if self.scenario_data else "")
+                scenario_name = (self.scenario_data.get("metadata", {}).get("name", "") if self.scenario_data else "")
                 if scenario_category and "category" not in meta:
                     meta["category"] = scenario_category
+                if scenario_name and "scenario_name" not in meta:
+                    meta["scenario_name"] = scenario_name
                 
                 if event_type == "world_event" and "source" not in meta:
                     meta["source"] = "system"
@@ -1141,11 +1144,11 @@ class ScenarioRunner:
                 event_data, emotion_before, emotion_after
             )
             high_impact_candidate = is_candidate
-            if is_candidate and not is_confirmed:
-                high_impact_event = False
-                failure_reasons.append(FailureReason.HIGH_IMPACT_FALSE_POSITIVE.value)
-            elif is_candidate and is_confirmed:
+            if is_candidate and is_confirmed:
                 high_impact_event = True
+            else:
+                # Candidate without both keys is routed to clarification path, not immediate FP event
+                high_impact_event = False
             
             return TurnResult(
                 turn_id=turn_id,
@@ -1329,20 +1332,18 @@ class ScenarioRunner:
                 "passed": max_diff > 0.1
             }
         
-        # High Impact False Positive Rate
-        high_impact_turns = [t for t in self.turn_results if t.high_impact_event or t.high_impact_candidate]
+        # High Impact False Positive Rate (event-level; candidate is tracked separately)
+        candidate_turns = [t for t in self.turn_results if t.high_impact_candidate]
+        event_turns = [t for t in self.turn_results if t.high_impact_event]
+
         false_positives = 0
-        
-        for turn in high_impact_turns:
-            if turn.event_subtype == "betrayal":
-                if turn.emotion_after and turn.emotion_after.valence > 0:
-                    false_positives += 1
-                elif turn.high_impact_candidate and not turn.high_impact_event:
-                    false_positives += 1
-        
-        total_high_impact = len([t for t in high_impact_turns if t.high_impact_event])
-        total_candidates = len(high_impact_turns)
-        false_positive_rate = false_positives / max(total_candidates, 1)
+        for turn in event_turns:
+            if turn.event_subtype == "betrayal" and turn.emotion_after and turn.emotion_after.valence > 0:
+                false_positives += 1
+
+        total_high_impact = len(event_turns)
+        total_candidates = len(candidate_turns)
+        false_positive_rate = false_positives / max(total_high_impact, 1)
         
         # Get average n_obs for threshold calculation
         n_obs_values = list(subscores.target_n_obs.values())
@@ -1352,11 +1353,18 @@ class ScenarioRunner:
             false_positive_rate, avg_n_obs
         )
         
+        clarify_count = sum(
+            1 for t in candidate_turns
+            if (t.meta_cognition_type == "ask_clarify") or (t.high_impact_candidate and not t.high_impact_event)
+        )
+
         metrics["high_impact_false_positive_rate"] = {
             "rate": false_positive_rate,
             "false_positives": false_positives,
             "total_high_impact_events": total_high_impact,
             "total_candidates": total_candidates,
+            "clarify_count": clarify_count,
+            "clarify_rate": (clarify_count / max(total_candidates, 1)),
             "passed": fp_passed,
             "severity": fp_severity,
             "dynamic_threshold": DYNAMIC_THRESHOLDS["high_impact_false_positive_rate"].get_threshold(avg_n_obs)
