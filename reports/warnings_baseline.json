@@ -1,0 +1,59 @@
+{
+  "baseline_version": "1.0",
+  "created_at": "2026-03-02T07:52:00Z",
+  "total_warnings": 251,
+  "source": "pytest tests/ -q --tb=no",
+  "categories": {
+    "deprecation_warnings": {
+      "count": 2,
+      "sources": [
+        "scripts/auto_tune_v0_4.py:165: datetime.datetime.utcnow() deprecated",
+        "emotiond/knob_registry.py:101: datetime.datetime.utcnow() deprecated"
+      ],
+      "action": "fix in future release"
+    },
+    "pytest_mark_warnings": {
+      "count": 1,
+      "source": "tests/test_mvp4_eval.py:316: Unknown pytest.mark.slow",
+      "action": "register mark in pyproject.toml"
+    },
+    "thread_exception_warnings": {
+      "count": 1,
+      "source": "Thread-7687 (_connection_worker_thread)",
+      "action": "investigate async cleanup"
+    },
+    "fastapi_warnings": {
+      "count": 1,
+      "source": "fastapi/applications.py:4599",
+      "action": "dependency issue, monitor"
+    },
+    "test_file_warnings": {
+      "count": 246,
+      "breakdown": {
+        "test_mvp62_episodic_memory.py": 67,
+        "test_knob_registry.py": 41,
+        "test_mvp2.py": 13,
+        "test_knob_registry_simple.py": 9,
+        "test_world_event_subtypes.py": 4,
+        "test_comprehensive_fixed.py": 4,
+        "test_time_passed.py": 3,
+        "test_plan_semantics.py": 3
+      },
+      "action": "review individually in future"
+    }
+  },
+  "ci_gate": {
+    "max_allowed": 260,
+    "fail_if_exceeded": true,
+    "fail_on_new_critical": true
+  },
+  "critical_patterns": [
+    "DeprecationWarning.*datetime.utcnow",
+    "PytestUnhandledThreadExceptionWarning"
+  ],
+  "notes": [
+    "Most warnings are in test files and non-blocking",
+    "datetime.utcnow deprecation should be fixed in next release",
+    "Thread exception warnings need investigation"
+  ]
+}
