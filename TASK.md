@@ -1,40 +1,30 @@
-# Task: MVP-7.0 Sequential Implementation
+# Task: MVP-7.1 Release Anchor + CI Hygiene + Agency Planning
 
-**GOAL:** Execute `/home/moonlight/Desktop/OpenEmotion/MVP-7.txt` in strict order: Milestone A (US-641~644) → B (US-651~653) → C (US-701~707), with gates B1~B4.
+**GOAL:** 固化 MVP-7.0 为可发布锚点，完成 CI 卫生强化，产出 MVP-7.1 Agency+Tooling 可测计划
 
 ## DoD (Definition of Done)
-- [x] Milestone A complete (US-641~US-644)
-- [x] Milestone B complete (US-651~US-653)
-- [x] Milestone C complete (US-701~US-707)
-- [x] Gates B1~B4 pass with reports
+- [ ] Phase 1: MVP-7.0 Release Anchor (docs + tag)
+- [ ] Phase 2: Skipped tests governance (quarantine.yml)
+- [ ] Phase 3: Warnings baseline gate (warnings_baseline.json)
+- [ ] Phase 4: Clean environment reproducibility (ci_fresh_run.sh)
+- [ ] Phase 5: Deterministic OOD (seed + manifest)
+- [ ] Phase 6: MVP-7.1 Agency+Tooling Plan document
 
 ## Status
-- **Phase:** done
-- **Current US:** Gate verification complete
-- **Last Update:** 2026-03-02 07:18 CST
+- **Phase:** implement
+- **Last Update:** 2026-03-02 07:48 CST
 - **Blockers:** None
-
-## Completed
-### Milestone A ✅
-- [x] US-641 KnobRegistry + Hard Freeze (commit: cdc6ffa)
-- [x] US-642 Frozen Holdout + OOD Harness (commit: 6087885)
-- [x] US-643 Provenance + Signature Attribution (commit: e3370b9)
-- [x] US-644 Trace Hash Splitting (commit: d98624c)
-
-### Milestone B ✅
-- [x] US-651 Homeostasis Drive v0 (commit: a083e7b)
-- [x] US-652 Intervention Test (commit: 9f2d633)
-- [x] US-653 Ablation Test (commit: 9f2d633)
-
-### Milestone C ✅
-- [x] US-701 Self-Model v0 (commit: be8d423)
-- [x] US-702 Episodic Memory v0 (commit: 44dd831)
-- [x] US-703~707 Phase 3 modules (commit: d93fc27)
+- **Git Policy:** NO PUSH unless explicitly approved
 
 ## Next Action
-**next_action:** Prepare B1~B4 audit bundle (hash/version/scenario_set/evidence) and publish summary.
+**next_action:** Create docs/MVP-7_RELEASE_ANCHOR.md with commit refs, audit summary path, key report paths
 
 ## Evidence
-- Total commits: 9
-- Total tests: 116+ passed
-- Core modules: provenance, drive_homeostasis, self_model, episodic_memory, offline_rollouts, dmn_tick
+- [ ] docs/MVP-7_RELEASE_ANCHOR.md created
+- [ ] Local tag mvp-7.0.0 created (not pushed)
+- [ ] reports/latest.md updated
+
+## Notes
+- Base commit: d41ae32 (audit summary)
+- Latest commit: 4516fc7 (thresholds update)
+- Tests: 2028 passed, 10 skipped
