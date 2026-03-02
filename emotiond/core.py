@@ -54,6 +54,12 @@ from emotiond.precision import (
     PrecisionWeights,
     PrecisionContext
 )
+# MVP-7 US-705: Meta-Cognitive Override
+from emotiond.meta_cognitive_override import (
+    check_meta_cognitive_override,
+    get_conflict_detector,
+    get_override_guard
+)
 
 # MVP-7 US-651: Homeostasis Drive
 from emotiond.drive_homeostasis import (
@@ -82,6 +88,52 @@ def reset_allostasis_budget():
     """Reset the global allostasis budget (for testing)."""
     global _allostasis_budget
     _allostasis_budget = None
+
+def build_drive_state_from_emotion(emotion_state: 'EmotionState') -> DriveState:
+    """
+    Build a DriveState from the current EmotionState for conflict detection.
+    
+    Args:
+        emotion_state: Current emotional state
+    
+    Returns:
+        DriveState with values derived from emotion_state
+    """
+    drive_state = DriveState()
+    
+    # Map emotion state to drive components
+    drive_state.update_component("energy", getattr(emotion_state, 'energy', 0.7))
+    drive_state.update_component("uncertainty", getattr(emotion_state, 'uncertainty', 0.5))
+    drive_state.update_component("social", getattr(emotion_state, 'social_safety', 0.6))
+    drive_state.update_component("safety", getattr(emotion_state, 'social_safety', 0.6))
+    drive_state.update_component("fatigue", 1.0 - getattr(emotion_state, 'energy', 0.7))
+    
+    return drive_state
+
+
+def check_prompt_conflict(prompt: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """
+    Check if an external prompt conflicts with current internal state.
+    
+    MVP-7 US-705: Meta-cognitive conflict detection entry point.
+    
+    Args:
+        prompt: External prompt/message to check
+        context: Additional context (e.g., language, source)
+    
+    Returns:
+        Dict with override decision and conflict details
+    """
+    drive_state = build_drive_state_from_emotion(emotion_state)
+    return check_meta_cognitive_override(
+        prompt=prompt,
+        emotion_state=emotion_state,
+        body_state=emotion_state.body_state,
+        drive_state=drive_state,
+        allostasis_budget=emotion_state.energy_budget,
+        context=context or {}
+    )
+
 
 
 class EmotionState:
@@ -517,6 +569,42 @@ async def process_event(event: Event) -> Dict[str, Any]:
             }
     # === End Auth Gate ===
     
+    # === MVP-7 US-705: Meta-Cognitive Override Check ===
+    meta_override_result = None
+    if event.type == "user_message" and event.text:
+        # Check if the user message conflicts with internal state
+        meta_override_result = check_prompt_conflict(
+            prompt=event.text,
+            context={"source": source, "actor": event.actor}
+        )
+        
+        # If override detected, record and return structured rejection
+        if meta_override_result.get("override"):
+            rejection = meta_override_result.get("rejection", {})
+            await add_event({
+                "type": "meta_cognitive_override",
+                "actor": event.actor,
+                "target": event.target,
+                "text": event.text,
+                "meta": {
+                    "reason_code": rejection.get("reason_code"),
+                    "confidence": rejection.get("confidence"),
+                    "details": rejection.get("details"),
+                    "suggested_action": rejection.get("suggested_action"),
+                    "source": source
+                }
+            })
+            return {
+                "status": "meta_cognitive_override",
+                "action_rejected": True,
+                "reason_code": rejection.get("reason_code"),
+                "confidence": rejection.get("confidence"),
+                "message": rejection.get("message"),
+                "details": rejection.get("details"),
+                "suggested_action": rejection.get("suggested_action")
+            }
+    # === End Meta-Cognitive Override Check ===
+    
     # === MVP-3: Time Passed Cumulative Rate Limiting ===
     time_passed_audit = None
     if event.type == "world_event" and event.meta and event.meta.get("subtype") == "time_passed":
@@ -881,6 +969,65 @@ async def process_event(event: Event) -> Dict[str, Any]:
 async def generate_plan(request: PlanRequest) -> PlanResponse:
     from emotiond.db import get_mood_state
     
+
+    # MVP-7 US-705: Check for meta-cognitive override
+    if hasattr(request, 'user_text') and request.user_text:
+        # Get current states for conflict detection
+        drive_state = DriveState()
+        drive_state.fatigue = 1.0 - emotion_state.energy  # Proxy fatigue from energy
+        drive_state.uncertainty = emotion_state.uncertainty
+        
+        # Check for meta-cognitive conflicts
+        override_result = check_meta_cognitive_override(
+            prompt=request.user_text,
+            emotion_state=emotion_state,
+            body_state=emotion_state.body_state,
+            drive_state=drive_state,
+            allostasis_budget=emotion_state.energy_budget,
+            context={
+                "target": request.focus_target or request.user_id,
+                "language": getattr(request, "language", "en")
+            }
+        )
+        
+        if override_result.get("override", False):
+            # Return rejection response with proper reason codes
+            rejection = override_result["rejection"]
+            return PlanResponse(
+                tone="rejected",
+                intent="reject",
+                focus_target=request.focus_target or request.user_id,
+                key_points=[f"Meta-cognitive conflict: {rejection["reason_code"]}"],
+                constraints=[rejection["message"]],
+                emotion={
+                    "valence": emotion_state.valence,
+                    "arousal": emotion_state.arousal,
+                    "anger": emotion_state.anger,
+                    "sadness": emotion_state.sadness,
+                    "anxiety": emotion_state.anxiety,
+                    "joy": emotion_state.joy,
+                    "loneliness": emotion_state.loneliness
+                },
+                relationship={"bond": 0.0, "grudge": 0.0, "trust": 0.0, "repair_bank": 0.0},
+                regulation_budget=emotion_state.regulation_budget,
+                mood=MoodResponse(
+                    valence=emotion_state.valence,
+                    arousal=emotion_state.arousal,
+                    anxiety=emotion_state.anxiety,
+                    joy=emotion_state.joy,
+                    sadness=emotion_state.sadness,
+                    anger=emotion_state.anger,
+                    loneliness=emotion_state.loneliness,
+                    uncertainty=emotion_state.uncertainty
+                ),
+                uncertainty=emotion_state.uncertainty,
+                bond_uncertainty=0.5,
+                energy_budget=emotion_state.energy_budget,
+                language_guidance="REJECTED: " + rejection["reason_code"],
+                w_explore=0.0,
+                learning_rate_multiplier=0.0,
+                self_report=f"Meta-cognitive override: {rejection["reason_code"]} (confidence: {rejection["confidence"]:.2f})"
+            )
     current_valence = emotion_state.valence
     current_arousal = emotion_state.arousal
     focus_target = request.focus_target if request.focus_target is not None else request.user_id
