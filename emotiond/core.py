@@ -37,6 +37,7 @@ from emotiond.body_state import BodyStateVector
 from emotiond.persistence import get_persistence_constraint
 from emotiond.other_minds import get_other_minds_model, apply_other_minds_to_intent_scores
 from emotiond.ledger import get_ledger, detect_promise
+from emotiond.self_model import get_self_model, build_self_model_v0, render_self_report
 # MVP-5 D2: Allostasis Budget
 from emotiond.allostasis import (
     AllostasisBudget, get_budget, reset_budget,
@@ -925,6 +926,18 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         key_points, constraints = ["Establish clear expectations", "Communicate needs"], ["Be firm but respectful", "Avoid ambiguity"]
     
     relationship_dict = {"bond": target_relationship["bond"], "grudge": target_relationship["grudge"], "trust": target_relationship.get("trust", 0.0), "repair_bank": target_relationship.get("repair_bank", 0.0)}
+
+    ledger = get_ledger()
+    focus_ledger = ledger.get_summary_for_target(focus_target) if hasattr(ledger, "get_summary_for_target") else {}
+    base_self_model = get_self_model()
+    self_state_v0 = build_self_model_v0(
+        focus_target=focus_target,
+        emotion_state=emotion_state,
+        relationship=target_relationship,
+        ledger_summary=focus_ledger,
+        values=base_self_model.values.model_dump() if hasattr(base_self_model, "values") else None,
+    )
+    self_report = render_self_report(self_state_v0, evidence={"ledger": focus_ledger, "episode_refs": []})
     
     include_all = os.environ.get("EMOTIOND_PLAN_INCLUDE_RELATIONSHIPS", "0") == "1"
     all_relationships = None
@@ -969,7 +982,8 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         energy_budget=emotion_state.energy_budget,
         language_guidance=language_guidance,
         w_explore=w_explore_adjusted,
-        learning_rate_multiplier=learning_rate_multiplier
+        learning_rate_multiplier=learning_rate_multiplier,
+        self_report=self_report
     )
 
 

@@ -807,3 +807,86 @@ def apply_self_model_to_decision(
             decision["boundary_strategy"] = strategy
     
     return decision
+
+# ========================= MVP-7 Self-Model v0 =========================
+class BodilySnapshot(BaseModel):
+    energy: float = Field(default=0.7, ge=0.0, le=1.0)
+    social_safety: float = Field(default=0.6, ge=0.0, le=1.0)
+    focus_fatigue: float = Field(default=0.0, ge=0.0, le=1.0)
+
+
+class RelationalSnapshot(BaseModel):
+    focus_target: str = "user"
+    bond: float = Field(default=0.5, ge=0.0, le=1.0)
+    grudge: float = Field(default=0.0, ge=0.0, le=1.0)
+    trust: float = Field(default=0.5, ge=0.0, le=1.0)
+    repair_bank: float = Field(default=0.0, ge=0.0, le=1.0)
+    ledger_summary: Dict[str, int] = Field(default_factory=dict)
+
+
+class CognitiveSnapshot(BaseModel):
+    confidence: float = Field(default=0.5, ge=0.0, le=1.0)
+    uncertainty: float = Field(default=0.5, ge=0.0, le=1.0)
+    regulation_budget: float = Field(default=1.0, ge=0.0, le=1.0)
+
+
+class IdentitySnapshot(BaseModel):
+    traits: List[str] = Field(default_factory=lambda: ["calm", "direct", "pragmatic"])
+    value_weights: Dict[str, float] = Field(default_factory=dict)
+
+
+class SelfModelV0(BaseModel):
+    bodily: BodilySnapshot = Field(default_factory=BodilySnapshot)
+    relational: RelationalSnapshot = Field(default_factory=RelationalSnapshot)
+    cognitive: CognitiveSnapshot = Field(default_factory=CognitiveSnapshot)
+    identity: IdentitySnapshot = Field(default_factory=IdentitySnapshot)
+    updated_at: float = Field(default_factory=time.time)
+
+
+def build_self_model_v0(*, focus_target: str, emotion_state: Any, relationship: Dict[str, Any], ledger_summary: Optional[Dict[str, int]] = None, values: Optional[Dict[str, float]] = None) -> SelfModelV0:
+    uncertainty = float(getattr(emotion_state, "uncertainty", 0.5))
+    confidence = max(0.0, min(1.0, 1.0 - uncertainty))
+    return SelfModelV0(
+        bodily=BodilySnapshot(
+            energy=float(getattr(emotion_state, "energy", 0.7)),
+            social_safety=float(getattr(emotion_state, "social_safety", 0.6)),
+            focus_fatigue=max(0.0, min(1.0, 1.0 - float(getattr(emotion_state, "energy_budget", 1.0)))),
+        ),
+        relational=RelationalSnapshot(
+            focus_target=focus_target,
+            bond=float(relationship.get("bond", 0.5)),
+            grudge=float(relationship.get("grudge", 0.0)),
+            trust=float(relationship.get("trust", 0.5)),
+            repair_bank=float(relationship.get("repair_bank", 0.0)),
+            ledger_summary=ledger_summary or {},
+        ),
+        cognitive=CognitiveSnapshot(
+            confidence=confidence,
+            uncertainty=uncertainty,
+            regulation_budget=float(getattr(emotion_state, "regulation_budget", 1.0)),
+        ),
+        identity=IdentitySnapshot(value_weights=values or {"connection": 0.7, "honesty": 0.8, "safety": 0.6, "growth": 0.5}),
+    )
+
+
+def render_self_report(self_state: SelfModelV0, *, evidence: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    evidence = evidence or {}
+    return {
+        "summary": {
+            "state": "stable" if self_state.cognitive.uncertainty < 0.5 else "uncertain",
+            "focus_target": self_state.relational.focus_target,
+            "confidence": round(self_state.cognitive.confidence, 3),
+        },
+        "self_model": self_state.model_dump(),
+        "evidence": {
+            "self_model_fields": [
+                "bodily.energy",
+                "bodily.social_safety",
+                "relational.bond",
+                "relational.grudge",
+                "cognitive.uncertainty",
+            ],
+            "ledger": evidence.get("ledger", {}),
+            "episode_refs": evidence.get("episode_refs", []),
+        },
+    }

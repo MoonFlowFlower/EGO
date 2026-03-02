@@ -54,6 +54,7 @@ class PlanResponse(BaseModel):
     language_guidance: Optional[Dict[str, Any]] = None  # Guidance for language generation
     w_explore: Optional[float] = None  # Adjusted exploration weight
     learning_rate_multiplier: Optional[float] = None  # Adjusted learning rate
+    self_report: Optional[Dict[str, Any]] = None  # MVP-7: structured self-report (from self-model only)
 
 
 class AppraisalResult(BaseModel):
