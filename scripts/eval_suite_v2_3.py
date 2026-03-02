@@ -116,13 +116,14 @@ class DynamicThreshold:
 
 # Dynamic thresholds for individualization sub-metrics
 DYNAMIC_THRESHOLDS = {
-    "bond_diff": DynamicThreshold("bond_diff", 0.1, 0.05, 0.15),
-    "ledger_diff": DynamicThreshold("ledger_diff", 0.1, 0.05, 0.15),
-    "somatic_residual_diff": DynamicThreshold("somatic_residual_diff", 0.1, 0.03, 0.12),
-    "policy_diff": DynamicThreshold("policy_diff", 0.08, 0.04, 0.10),
-    "precision_diff": DynamicThreshold("precision_diff", 0.08, 0.04, 0.10),
+    "bond_diff": DynamicThreshold("bond_diff", 8, 0.05, 0.15),
+    "ledger_diff": DynamicThreshold("ledger_diff", 8, 0.05, 0.15),
+    # Calibrated to observed variance scale (v2.3 telemetry): residual/precision are typically 1e-4~1e-2.
+    "somatic_residual_diff": DynamicThreshold("somatic_residual_diff", 8, 0.00005, 0.003),
+    "policy_diff": DynamicThreshold("policy_diff", 8, 0.04, 0.10),
+    "precision_diff": DynamicThreshold("precision_diff", 8, 0.0001, 0.0015),
     "high_impact_false_positive_rate": DynamicThreshold(
-        "high_impact_false_positive_rate", 0.1, 0.15, 0.05, is_diff_metric=False
+        "high_impact_false_positive_rate", 8, 0.15, 0.05, is_diff_metric=False
     ),
 }
 
