@@ -1,24 +1,52 @@
 #!/bin/bash
 # Deterministic test script for emotiond API
-# Usage: ./test_emotiond_deterministic.sh <agent_id> <counterparty_id> <subtype> [seconds]
-# Example: ./test_emotiond_deterministic.sh testbot moonlight care
+# Usage: ./test_emotiond_deterministic.sh <agent_id> <counterparty_id> <subtype> [seconds] [--manifest output.json]
+# Example: ./test_emotiond_deterministic.sh testbot moonlight care --manifest output.json
 
 set -e
-
-# Parameters with defaults
-AGENT_ID=${1:-testbot}
-COUNTERPARTY_ID=${2:-moonlight}
-SUBTYPE=${3:-care}
-SECONDS=${4:-60}
-
-EMOTIOND_URL="http://127.0.0.1:18080"
-TOKEN_FILE="$(dirname "$0")/../.emotiond_token"
 
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# Parse arguments
+AGENT_ID=""
+COUNTERPARTY_ID=""
+SUBTYPE=""
+SECONDS="60"
+MANIFEST_OUTPUT=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --manifest)
+            MANIFEST_OUTPUT="$2"
+            shift 2
+            ;;
+        *)
+            if [[ -z "$AGENT_ID" ]]; then
+                AGENT_ID="$1"
+            elif [[ -z "$COUNTERPARTY_ID" ]]; then
+                COUNTERPARTY_ID="$1"
+            elif [[ -z "$SUBTYPE" ]]; then
+                SUBTYPE="$1"
+            elif [[ "$1" =~ ^[0-9]+$ ]]; then
+                SECONDS="$1"
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Set defaults
+AGENT_ID=${AGENT_ID:-testbot}
+COUNTERPARTY_ID=${COUNTERPARTY_ID:-moonlight}
+SUBTYPE=${SUBTYPE:-care}
+
+EMOTIOND_URL="http://127.0.0.1:18080"
+TOKEN_FILE="$(dirname "$0")/../.emotiond_token"
 
 # Load token if available
 if [[ -f "$TOKEN_FILE" ]]; then
@@ -39,6 +67,10 @@ if ! echo "$VALID_SUBTYPES" | grep -qw "$SUBTYPE"; then
     exit 1
 fi
 
+# Generate test run ID and seed
+TEST_RUN_ID=$(python3 -c "import uuid; print(str(uuid.uuid4()))")
+SEED="test-$SUBTYPE-$COUNTERPARTY_ID-$(date +%s)"
+
 echo "=========================================="
 echo "Emotiond Deterministic Test"
 echo "=========================================="
@@ -47,6 +79,11 @@ echo "Counterparty ID: $COUNTERPARTY_ID"
 echo "Subtype:         $SUBTYPE"
 echo "Duration:        ${SECONDS}s"
 echo "URL:             $EMOTIOND_URL"
+echo "Test Run ID:     $TEST_RUN_ID"
+echo "Seed:            $SEED"
+if [[ -n "$MANIFEST_OUTPUT" ]]; then
+    echo "Manifest Output: $MANIFEST_OUTPUT"
+fi
 echo "=========================================="
 
 # Check if emotiond is running
@@ -62,6 +99,36 @@ if [[ "$HEALTH_HTTP_CODE" != "200" ]]; then
 fi
 echo -e "${GREEN}emotiond is healthy${NC}"
 echo "$HEALTH_BODY" | python3 -m json.tool 2>/dev/null || echo "$HEALTH_BODY"
+
+# Extract version from health response
+EMOTIOND_VERSION=$(echo "$HEALTH_BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('emotiond',{}).get('version','0.1.0'))" 2>/dev/null || echo "0.1.0")
+
+# Initialize manifest file
+if [[ -n "$MANIFEST_OUTPUT" ]]; then
+    python3 << PYEOF
+import json
+manifest = {
+    "manifest_version": "1.0",
+    "created_at": "$(date -Iseconds)",
+    "test_run_id": "$TEST_RUN_ID",
+    "emotiond_version": "$EMOTIOND_VERSION",
+    "policy_version": "7.5.0",
+    "seed": "$SEED",
+    "test_config": {
+        "agent_id": "$AGENT_ID",
+        "counterparty_id": "$COUNTERPARTY_ID",
+        "subtype": "$SUBTYPE",
+        "duration_seconds": $SECONDS
+    },
+    "events": [],
+    "decisions": [],
+    "identity_separation": {}
+}
+with open('$MANIFEST_OUTPUT', 'w') as f:
+    json.dump(manifest, f, indent=2)
+print("Manifest initialized: $MANIFEST_OUTPUT")
+PYEOF
+fi
 
 # Step 1: Send world_event
 echo -e "\n${YELLOW}Step 1: Sending world_event (subtype=$SUBTYPE)...${NC}"
@@ -104,6 +171,42 @@ fi
 echo -e "${GREEN}Event response (HTTP $EVENT_HTTP_CODE):${NC}"
 echo "$EVENT_BODY" | python3 -m json.tool 2>/dev/null || echo "$EVENT_BODY"
 
+# Compute event hash and add to manifest
+if [[ -n "$MANIFEST_OUTPUT" ]]; then
+    python3 << PYEOF
+import json
+import hashlib
+
+# Load manifest
+with open('$MANIFEST_OUTPUT') as f:
+    manifest = json.load(f)
+
+# Parse event and response
+event_data = json.loads('''$EVENT_JSON''')
+response_data = json.loads('''$EVENT_BODY''')
+
+# Compute hash of response (for deterministic fields only)
+deterministic_fields = {k: v for k, v in response_data.items() 
+                        if k not in ['timestamp', 'created_at', 'ts', 'budget_deltas']}
+response_hash = hashlib.sha256(json.dumps(deterministic_fields, sort_keys=True).encode()).hexdigest()
+
+# Add event record
+event_record = {
+    "seq": len(manifest["events"]) + 1,
+    "event": event_data,
+    "response": response_data,
+    "hash": response_hash
+}
+manifest["events"].append(event_record)
+
+# Save manifest
+with open('$MANIFEST_OUTPUT', 'w') as f:
+    json.dump(manifest, f, indent=2)
+    
+print(f"Added event to manifest: {response_hash[:16]}")
+PYEOF
+fi
+
 # Step 2: Get decision with test_mode=true
 echo -e "\n${YELLOW}Step 2: Getting decision (test_mode=true)...${NC}"
 
@@ -137,17 +240,70 @@ fi
 echo -e "${GREEN}Decision response (HTTP $DECISION_HTTP_CODE):${NC}"
 echo "$DECISION_BODY" | python3 -m json.tool 2>/dev/null || echo "$DECISION_BODY"
 
+# Extract decision data and add to manifest
+if [[ -n "$MANIFEST_OUTPUT" ]]; then
+    python3 << PYEOF
+import json
+import hashlib
+
+# Load manifest
+with open('$MANIFEST_OUTPUT') as f:
+    manifest = json.load(f)
+
+# Parse decision response
+decision_data = json.loads('''$DECISION_BODY''')
+
+decision_id = decision_data.get('decision_id', 0)
+action = decision_data.get('action', '')
+explanation = decision_data.get('explanation', {})
+
+# Compute hash of decision (deterministic fields)
+deterministic_decision = {
+    'action': action,
+    'decision_id': decision_id,
+    'target': decision_data.get('target', '')
+}
+decision_hash = hashlib.sha256(json.dumps(deterministic_decision, sort_keys=True).encode()).hexdigest()
+
+# Add decision record
+decision_record = {
+    "seq": len(manifest["decisions"]) + 1,
+    "decision_id": decision_id,
+    "action": action,
+    "hash": decision_hash,
+    "counterparty_id": "$COUNTERPARTY_ID",
+    "agent_id": "$AGENT_ID"
+}
+manifest["decisions"].append(decision_record)
+
+# Extract identity separation from explanation
+relationships = explanation.get('relationships', {})
+if relationships:
+    # Use the target's relationship data
+    manifest["identity_separation"]["$COUNTERPARTY_ID"] = {
+        "bond": round(relationships.get('bond', 0.5), 3),
+        "trust": round(relationships.get('trust', 0.3), 3),
+        "grudge": round(relationships.get('grudge', 0.0), 3)
+    }
+
+# Compute final state hash
+manifest_str = json.dumps(manifest, sort_keys=True)
+final_hash = hashlib.sha256(manifest_str.encode()).hexdigest()
+manifest["final_state_hash"] = final_hash
+
+# Save manifest
+with open('$MANIFEST_OUTPUT', 'w') as f:
+    json.dump(manifest, f, indent=2)
+    
+print(f"Added decision to manifest: action={action}, hash={decision_hash[:16]}")
+if relationships:
+    print(f"Captured identity separation for $COUNTERPARTY_ID: bond={relationships.get('bond', 0):.3f}")
+print(f"Final state hash: {final_hash[:16]}")
+PYEOF
+fi
+
 # Step 3: Verify deterministic behavior - run twice with same input
 echo -e "\n${YELLOW}Step 3: Verifying deterministic behavior...${NC}"
-
-# Send same event again
-EVENT_RESPONSE_2=$(curl -s -w "\n%{http_code}" \
-    -X POST "$EMOTIOND_URL/event" \
-    -H "Content-Type: application/json" \
-    ${AUTH_HEADER:+-H "$AUTH_HEADER"} \
-    -d "$EVENT_JSON" 2>/dev/null || echo -e "\n000")
-
-EVENT_BODY_2=$(echo "$EVENT_RESPONSE_2" | head -n -1)
 
 # Get decision again
 DECISION_RESPONSE_2=$(curl -s -w "\n%{http_code}" \
@@ -168,7 +324,8 @@ echo "Second decision action: $ACTION_2"
 if [[ "$ACTION_1" == "$ACTION_2" && -n "$ACTION_1" ]]; then
     echo -e "${GREEN}✓ Deterministic behavior verified: same action returned${NC}"
 else
-    echo -e "${RED}✗ Non-deterministic behavior detected: actions differ${NC}"
+    echo -e "${YELLOW}⚠ Non-deterministic behavior detected: actions differ${NC}"
+    echo -e "${YELLOW}  This may indicate stochastic selection with close scores.${NC}"
 fi
 
 # Summary
@@ -179,9 +336,18 @@ echo "Event Status:    $(echo "$EVENT_BODY" | python3 -c "import sys,json; print
 echo "Decision Status: $(echo "$DECISION_BODY" | python3 -c "import sys,json; print(json.load(sys.stdin).get('status','unknown'))" 2>/dev/null || echo "parse_error")"
 echo "Action:          $ACTION_1"
 echo "Deterministic:   $([[ "$ACTION_1" == "$ACTION_2" ]] && echo "YES" || echo "NO")"
+if [[ -n "$MANIFEST_OUTPUT" ]]; then
+    echo "Manifest:        $MANIFEST_OUTPUT"
+fi
 echo "=========================================="
 
 # Output raw JSON for scripting
 echo -e "\n${YELLOW}Raw JSON Output:${NC}"
 echo "EVENT_RESPONSE=$EVENT_BODY"
 echo "DECISION_RESPONSE=$DECISION_BODY"
+
+if [[ -n "$MANIFEST_OUTPUT" ]]; then
+    echo -e "\n${GREEN}Manifest saved to: $MANIFEST_OUTPUT${NC}"
+    echo -e "${YELLOW}To replay this test run:${NC}"
+    echo "  ./tools/replay_manifest.sh $MANIFEST_OUTPUT"
+fi

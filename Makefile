@@ -2,7 +2,7 @@ VENV = venv
 PYTHON = $(VENV)/bin/python
 PIP = $(VENV)/bin/pip
 
-.PHONY: venv run test demo clean test-no-venv test-integration2-live
+.PHONY: venv run test demo clean test-no-venv test-ci test-integration2-live
 
 venv:
 	python3 -m venv $(VENV)
@@ -26,6 +26,13 @@ clean:
 	rm -rf */__pycache__
 	rm -rf .pytest_cache
 	rm -rf *.egg-info
+
+# Run CI test suite locally
+test-ci: ## Run CI test suite locally
+	./tools/test_emotiond_deterministic.sh agent test_ci care
+	./tools/test_emotiond_deterministic.sh agent test_ci betrayal
+	./tools/test_identity_separation.sh
+	./tools/test_enforcer_bypass.sh
 
 # Start local emotiond service and run Integration-2 live tests
 test-integration2-live:
