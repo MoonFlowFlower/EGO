@@ -1,0 +1,89 @@
+# Quarantine Registry for Skipped Tests
+# Policy: Total count can only decrease (or new additions require explicit approval)
+# Last Updated: 2026-03-02 07:50 CST
+
+metadata:
+  total_skipped: 10
+  policy: "quarantine count can only decrease"
+  approval_required_for_new: true
+
+skipped_tests:
+  # Integration tests requiring emotiond service (expected to skip in CI without service)
+  - test_id: "test_openclaw_integration2.py::TestUserMessageWorldEvent::test_send_user_message_event"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_openclaw_integration2.py::TestUserMessageWorldEvent::test_user_message_creates_learning_record"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_send_tool_result_event"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_send_env_outcome_event"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_send_interaction_outcome_event"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_tool_result_status_simulation_success"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_tool_result_status_simulation_failure"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_tool_result_status_simulation_timeout"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_payload_size_within_3kb_limit"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+    
+  - test_id: "test_outcome_capture_integration.py::TestOutcomeCapture::test_replayable_trace_pointer"
+    reason: "Requires emotiond service running at EMOTIOND_URL"
+    owner: "integration"
+    target_unblock_version: "mvp-7.2"
+    issue_link: null
+    category: "integration"
+
+# Summary by category
+summary:
+  integration: 10  # All require emotiond service
+  
+# CI Gate: quarantine_total must not increase
+ci_gate:
+  max_allowed: 10
+  fail_if_exceeded: true
