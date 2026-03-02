@@ -58,16 +58,33 @@ class KnobRegistry:
     
     def _build_allowlist_set(self) -> Set[str]:
         """Build set of all allowlisted parameters."""
+        allowlist_cfg = self.config.get("allowlist", {})
+        if isinstance(allowlist_cfg, list):
+            return set(allowlist_cfg)
+
         allowlist = set()
-        for category, config in self.config["allowlist"].items():
-            allowlist.update(config.get("parameters", []))
+        if isinstance(allowlist_cfg, dict):
+            for _category, config in allowlist_cfg.items():
+                if isinstance(config, dict):
+                    allowlist.update(config.get("parameters", []))
         return allowlist
     
     def _build_hard_freeze_set(self) -> Set[str]:
         """Build set of all hard frozen parameters."""
+        hard_cfg = self.config.get("hard_freeze", {})
         hard_freeze = set()
-        for category, config in self.config["hard_freeze"].items():
-            hard_freeze.update(config.get("parameters", []))
+
+        if isinstance(hard_cfg, list):
+            hard_freeze.update(hard_cfg)
+        elif isinstance(hard_cfg, dict):
+            # New schema: {"keys": [...], "prefixes": [...], ...}
+            if isinstance(hard_cfg.get("keys"), list):
+                hard_freeze.update(hard_cfg["keys"])
+            # Legacy schema: category -> {parameters: [...]}
+            for _category, config in hard_cfg.items():
+                if isinstance(config, dict):
+                    hard_freeze.update(config.get("parameters", []))
+
         return hard_freeze
     
     def validate_parameter_change(self, param_name: str, new_value: Any) -> Tuple[bool, Optional[str]]:
@@ -112,20 +129,24 @@ class KnobRegistry:
     
     def _validate_parameter_range(self, param_name: str, value: Any) -> Tuple[bool, Optional[str]]:
         """Validate parameter value against allowed ranges."""
+        allowlist_cfg = self.config.get("allowlist", {})
+        if not isinstance(allowlist_cfg, dict):
+            return True, None  # Flat allowlist schema has no category range rules
+
         # Find which category this parameter belongs to
         category = None
-        for cat_name, cat_config in self.config["allowlist"].items():
-            if param_name in cat_config.get("parameters", []):
+        for cat_name, cat_config in allowlist_cfg.items():
+            if isinstance(cat_config, dict) and param_name in cat_config.get("parameters", []):
                 category = cat_name
                 break
-        
+
         if category is None:
             return True, None  # No range constraints defined
-        
-        range_rules = self.config["validation_rules"]["allowlist_range_checks"]
+
+        range_rules = self.config.get("validation_rules", {}).get("allowlist_range_checks", {})
         if category not in range_rules:
             return True, None  # No range rules for this category
-        
+
         range_config = range_rules[category]
         
         # Check numeric ranges
@@ -182,26 +203,50 @@ class KnobRegistry:
     
     def get_parameter_config(self, param_name: str) -> Optional[Dict[str, Any]]:
         """Get configuration details for a specific parameter."""
-        # Check allowlist
-        for category, config in self.config["allowlist"].items():
-            if param_name in config.get("parameters", []):
-                return {
-                    "status": "ALLOWLIST",
-                    "category": category,
-                    "description": config.get("description"),
-                    "range_rules": self.config["validation_rules"]["allowlist_range_checks"].get(category)
-                }
-        
-        # Check hard freeze
-        for category, config in self.config["hard_freeze"].items():
-            if param_name in config.get("parameters", []):
+        allowlist_cfg = self.config.get("allowlist", {})
+        if isinstance(allowlist_cfg, dict):
+            for category, config in allowlist_cfg.items():
+                if isinstance(config, dict) and param_name in config.get("parameters", []):
+                    return {
+                        "status": "ALLOWLIST",
+                        "category": category,
+                        "description": config.get("description"),
+                        "range_rules": self.config.get("validation_rules", {}).get("allowlist_range_checks", {}).get(category)
+                    }
+        elif isinstance(allowlist_cfg, list) and param_name in allowlist_cfg:
+            return {
+                "status": "ALLOWLIST",
+                "category": "flat",
+                "description": "Flat allowlist entry",
+                "range_rules": None,
+            }
+
+        hard_cfg = self.config.get("hard_freeze", {})
+        if isinstance(hard_cfg, dict):
+            if isinstance(hard_cfg.get("keys"), list) and param_name in hard_cfg["keys"]:
                 return {
                     "status": "HARD_FREEZE",
-                    "category": category,
-                    "description": config.get("description"),
-                    "change_allowed": False
+                    "category": "keys",
+                    "description": "Hard freeze key",
+                    "change_allowed": False,
                 }
-        
+            for category, config in hard_cfg.items():
+                if isinstance(config, dict) and param_name in config.get("parameters", []):
+                    return {
+                        "status": "HARD_FREEZE",
+                        "category": category,
+                        "description": config.get("description"),
+                        "change_allowed": False
+                    }
+
+        if isinstance(hard_cfg, list) and param_name in hard_cfg:
+            return {
+                "status": "HARD_FREEZE",
+                "category": "flat",
+                "description": "Hard freeze entry",
+                "change_allowed": False,
+            }
+
         return None
     
     def get_config_hash(self) -> str:

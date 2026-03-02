@@ -154,7 +154,7 @@ class AutoTuneEngine:
                 
                 # Validate parameter change with KnobRegistry
                 new_val = self._mutate_parameter(current_val, min_val, max_val, mutation_strength)
-                is_allowed, reason = validate_parameter_change(param_name, new_val)
+                is_allowed, reason = self.knob_registry.validate_parameter_change(param_name, new_val)
                 
                 if is_allowed:
                     candidate[param_name] = new_val

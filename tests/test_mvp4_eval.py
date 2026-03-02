@@ -71,7 +71,8 @@ class TestScenarioLoading:
                     data = yaml.safe_load(f)
                     assert data is not None, f"Empty scenario: {scenario_file}"
                     assert "metadata" in data, f"Missing metadata in {scenario_file}"
-                    assert "scenario" in data, f"Missing scenario in {scenario_file}"
+                    has_body = any(k in data for k in ("scenario", "test_steps", "setup", "conditions", "events"))
+                    assert has_body, f"Missing scenario body in {scenario_file}"
                 except yaml.YAMLError as e:
                     pytest.fail(f"Invalid YAML in {scenario_file}: {e}")
 

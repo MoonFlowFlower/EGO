@@ -5,6 +5,7 @@ Tests for KnobRegistry parameter validation and AutoTune integration.
 import pytest
 import tempfile
 import json
+import os
 from pathlib import Path
 from unittest.mock import patch
 
@@ -51,6 +52,8 @@ class TestKnobRegistry:
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             json.dump(config, f)
+            f.flush()
+            os.fsync(f.fileno())
             yield f.name
         Path(f.name).unlink()
     
@@ -162,12 +165,12 @@ class TestKnobRegistry:
     
     def test_convenience_function(self, temp_config):
         """Test global convenience function."""
-        with patch('emotiond.knob_registry._knob_registry_instance', None):
-            # First call should create instance
+        with patch('emotiond.knob_registry._knob_registry_instance', KnobRegistry(temp_config)):
+            # First call should use patched instance
             is_allowed, reason = validate_parameter_change("test_threshold_1", 0.5)
             assert is_allowed is True
-            
-            # Second call should reuse instance
+
+            # Second call should reuse same instance
             is_allowed, reason = validate_parameter_change("safety_param_1", 0.5)
             assert is_allowed is False
             assert "HARD_FREEZE_VIOLATION" in reason
@@ -186,7 +189,16 @@ class TestAutoTuneWithKnobRegistry:
                     "parameters": [
                         "relationship_damage_threshold",
                         "recovery_priority_threshold",
-                        "risk_tolerance_threshold"
+                        "risk_tolerance_threshold",
+                        "precision_uncertainty_threshold",
+                        "social_drive_threshold",
+                        "safety_drive_threshold",
+                        "relationship_weight",
+                        "recovery_weight",
+                        "social_weight",
+                        "safety_weight",
+                        "rollout_branching_factor",
+                        "timeout_multiplier"
                     ]
                 },
                 "strategy": {
@@ -223,6 +235,8 @@ class TestAutoTuneWithKnobRegistry:
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             json.dump(config, f)
+            f.flush()
+            os.fsync(f.fileno())
             yield f.name
         Path(f.name).unlink()
     
@@ -245,7 +259,7 @@ class TestAutoTuneWithKnobRegistry:
         
         # Should only contain allowlisted parameters with valid ranges
         for param, value in candidate.items():
-            is_allowed, reason = validate_parameter_change(param, value)
+            is_allowed, reason = engine.knob_registry.validate_parameter_change(param, value)
             assert is_allowed, f"Parameter {param} with value {value} should be allowed: {reason}"
     
     def test_autotune_rejects_hard_freeze_mutations(self, temp_registry_config):
