@@ -1,17 +1,59 @@
 """
 Pydantic models for request/response
 """
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import List, Dict, Any, Optional
 
 
 class Event(BaseModel):
-    """Event model for POST /event"""
+    """
+    Event model for POST /event
+    
+    Layer semantics (MVP-7.4):
+    - Self: agent's own emotional state (agent_id)
+    - Relation: agent's relationship with counterparty (agent_id -> counterparty_id)
+    - Other: agent's inference about counterparty's state (optional)
+    
+    New fields (recommended):
+    - agent_id: whose emotion/relationship is being updated (default: "agent")
+    - counterparty_id: who the relationship is with (default: derived from actor)
+    
+    Legacy fields (backward compatible):
+    - actor: who initiated the event (for world_event, this is the counterparty)
+    - target: who received the event
+    """
     type: str  # user_message|assistant_reply|world_event
     actor: str
     target: str
     text: Optional[str] = None
     meta: Optional[Dict[str, Any]] = None
+    # MVP-7.4: Explicit layer semantics
+    agent_id: Optional[str] = None  # Whose emotion/relationship is updated
+    counterparty_id: Optional[str] = None  # Who the relationship is with
+    
+    def get_agent_id(self) -> str:
+        """Get agent_id with fallback."""
+        if self.agent_id:
+            return self.agent_id
+        # Default: the entity whose state is being updated
+        # For user_message: agent receives, so target is agent
+        # For world_event: depends on context, default to target
+        if self.type == "user_message":
+            return self.target
+        return self.target
+    
+    def get_counterparty_id(self) -> str:
+        """Get counterparty_id with fallback to legacy logic."""
+        if self.counterparty_id:
+            return self.counterparty_id
+        # Legacy fallback: derive from actor based on event type
+        if self.type == "user_message":
+            return self.actor  # User sent message, they are the counterparty
+        elif self.type == "assistant_reply":
+            return self.target  # Assistant replied to someone
+        elif self.type == "world_event":
+            return self.actor  # Who performed the action
+        return self.actor
 
 
 class PlanRequest(BaseModel):

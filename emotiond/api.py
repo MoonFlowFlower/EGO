@@ -113,7 +113,7 @@ async def event(
         
         # MVP-3 C2: Optionally include explanation in response
         if include_explanation and result.get("status") == "processed":
-            target = event.target if event.target else event.actor
+            target = event.get_counterparty_id()  # MVP-7.4
             last_decision = await get_last_decision()
             if last_decision:
                 result["last_decision"] = last_decision

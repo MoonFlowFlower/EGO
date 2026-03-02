@@ -111,10 +111,12 @@ async function safeFetchDecision(targetId) {
 async function safeSendTimePassed(targetId, seconds, reqId) {
   return new Promise((resolve) => {
     const url = new URL('/event', EMOTIOND_BASE_URL);
+    // MVP-7.4: Use explicit counterparty_id for relationship semantics
     const body = JSON.stringify({
       type: 'world_event',
       actor: 'system',
-      target: 'assistant',
+      target: 'agent',
+      counterparty_id: targetId,  // Who the time_passed affects (relationship target)
       text: null,
       meta: { subtype: 'time_passed', seconds, source: 'openclaw', target_id: targetId, request_id: reqId }
     });
@@ -143,10 +145,12 @@ async function safeSendTimePassed(targetId, seconds, reqId) {
 async function safeSendUserMessageEvent(conversationId, messageLength, fromUser) {
   return new Promise((resolve) => {
     const url = new URL('/event', EMOTIOND_BASE_URL);
+    // MVP-7.4: Use explicit counterparty_id for relationship semantics
     const body = JSON.stringify({
       type: 'world_event',
       actor: fromUser || 'user',
-      target: 'assistant',
+      counterparty_id: conversationId,  // Who the relationship is with
+      target: 'agent',
       text: null,
       meta: {
         subtype: 'user_message',

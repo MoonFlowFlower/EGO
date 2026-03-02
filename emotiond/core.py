@@ -356,15 +356,9 @@ class RelationshipManager:
     def update_from_event(self, event: Event, emotion_state: Optional[EmotionState] = None) -> None:
         if is_core_disabled():
             return
-        if event.type == "user_message":
-            target = event.actor
-        elif event.type == "assistant_reply":
-            target = event.target
-        elif event.type == "world_event":
-            # For world events, store relationship under the actor (who performed the action)
-            target = event.actor
-        else:
-            target = event.actor
+        # MVP-7.4: Use explicit layer semantics
+        # target = who the relationship is with (counterparty)
+        target = event.get_counterparty_id()
         self._ensure_relationship_fields(target)
         memory_impact = memory_system.get_memory_impact_on_relationship(target)
         bond_update_gain = float(get_auto_tune_param("bond_update_gain", 1.0))
@@ -659,7 +653,7 @@ async def process_event(event: Event) -> Dict[str, Any]:
     # MVP-6.2 wiring: update body_state (including target residual) from real event stream
     event_subtype = event.meta.get("subtype") if event.meta else None
     body_meta = dict(event.meta or {})
-    event_target = event.actor if event.type == "user_message" else event.target
+    event_target = event.get_counterparty_id()  # MVP-7.4
     if event_target:
         body_meta.setdefault("target_id", event_target)
     body_trace = emotion_state.body_state.update_from_event(event.type, event_subtype, body_meta)
@@ -810,12 +804,12 @@ async def process_event(event: Event) -> Dict[str, Any]:
     for target, rel_data in relationship_manager.relationships.items():
         await update_relationship(target, rel_data["bond"], rel_data["grudge"], rel_data.get("trust", 0.0), rel_data.get("repair_bank", 0.0))
         # MVP-4 D1: Reduce relationship uncertainty on interaction
-        if target == (event.actor if event.type == "user_message" else event.target):
+        if target == event.get_counterparty_id():  # MVP-7.4
             rel_data["uncertainty"] = max(0.0, rel_data.get("uncertainty", 0.5) - 0.05)
     
     # MVP-4 D2: Appraise the event
     # Build context for appraisal
-    target = event.actor if event.type == "user_message" else event.target
+    target = event.get_counterparty_id()  # MVP-7.4
     bond_state = None
     if target in relationship_manager.relationships:
         rel = relationship_manager.relationships[target]
