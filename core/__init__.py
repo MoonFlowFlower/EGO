@@ -55,3 +55,8 @@ __all__ = [
     "render_self_report",
     "validate_self_report",
 ]
+from .episodic_memory import (
+    Episode,
+    EpisodeStore,
+)
+__all__.extend(["Episode", "EpisodeStore"])
