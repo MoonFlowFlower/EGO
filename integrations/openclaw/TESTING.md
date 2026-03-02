@@ -119,6 +119,139 @@ curl -s -X POST "http://127.0.0.1:18080/decision?test_mode=true" \
 - `repair_success` - Successful relationship repair
 - `time_passed` - Time decay event
 
+---
+
+## Enforcement (v1.4)
+
+### Overview
+The emotiond-enforcer hook intercepts bot responses and ensures they comply with emotiond decisions. It runs as a pre-send middleware.
+
+### Hook Location
+```
+~/.openclaw/hooks/emotiond-enforcer/hook.json
+~/.openclaw/hooks/emotiond-bridge/handler.js  (exports enforceDecision)
+```
+
+### Enforcement Rules
+
+| Action | Enforcement | Template |
+|--------|-------------|----------|
+| `withdraw` | Replace with brief, neutral template | "I understand. Noted." |
+| `boundary` | Check for violations, warn if detected | (no replacement) |
+| `attack` | Sanitize to safe response | "I need to step back." |
+| `approach` | Allow (no enforcement) | - |
+| `repair_offer` | Allow (no enforcement) | - |
+| `observe` | Allow (no enforcement) | - |
+
+### Boundary Violation Patterns
+
+The enforcer checks for these patterns when action is `boundary`:
+- `I (love|adore|worship) you`
+- `you('re| are) (my|the) (everything|world|life)`
+- `I can't live without you`
+- `forever together`
+- `I'll do anything for you`
+
+### Usage
+
+**Programmatic Usage:**
+```javascript
+const { enforceDecision } = require('/home/moonlight/.openclaw/hooks/emotiond-bridge/handler.js');
+
+// Enforce a decision before sending
+const result = await enforceDecision('moonlight', 'I would love to help you!');
+
+if (result.enforced) {
+  console.log('Response was modified:', result.finalResponse);
+  console.log('Reason:', result.reason);
+} else {
+  console.log('Response allowed:', result.finalResponse);
+}
+```
+
+**Result Object:**
+```javascript
+{
+  enforced: boolean,        // true if response was modified
+  action: string,           // emotiond action (withdraw, boundary, etc.)
+  originalResponse: string, // original proposed response (null if not enforced)
+  finalResponse: string,    // the response to use
+  reason: string,           // enforcement reason
+  auditId: string,          // audit record ID
+  decision_id: string       // emotiond decision ID
+}
+```
+
+### Audit Log
+
+All enforcement decisions are logged to:
+```
+~/.openclaw/workspace/emotiond/enforcement_audit.jsonl
+```
+
+**Audit Record Format:**
+```json
+{
+  "audit_id": "audit_1709123456789_abc123",
+  "timestamp": "2026-03-02T22:47:00.000Z",
+  "target_id": "moonlight",
+  "proposed_response_hash": "a1b2c3d4",
+  "decision": {
+    "action": "withdraw",
+    "decision_id": "dec_xyz",
+    "confidence": 0.85
+  },
+  "enforcement": {
+    "action_taken": "replaced",
+    "original_response": "I would love to help you!",
+    "final_response": "I understand. Noted.",
+    "reason": "withdraw_action_enforced"
+  }
+}
+```
+
+### Testing Enforcement
+
+**Test withdraw enforcement:**
+```bash
+# First, trigger a withdraw action
+curl -s -X POST http://127.0.0.1:18080/event \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "world_event",
+    "actor": "moonlight",
+    "target": "agent",
+    "meta": {"subtype": "betrayal"}
+  }'
+
+# Then test enforcement
+node -e "
+const { enforceDecision } = require('/home/moonlight/.openclaw/hooks/emotiond-bridge/handler.js');
+enforceDecision('moonlight', 'I really want to help you with this!').then(console.log);
+"
+```
+
+**Test boundary check:**
+```javascript
+const { checkBoundaryViolations } = require('/home/moonlight/.openclaw/hooks/emotiond-bridge/handler.js');
+
+const result = checkBoundaryViolations("I love you so much!");
+// { hasViolation: true, matchedPatterns: ["I (love|adore|worship) you"] }
+```
+
+### Integration with OpenClaw
+
+To use the enforcer as a pre-send hook, add to your OpenClaw configuration:
+```json
+{
+  "hooks": {
+    "pre-send": ["emotiond-enforcer"]
+  }
+}
+```
+
+---
+
 ## Troubleshooting
 
 ### emotiond not responding
@@ -138,3 +271,12 @@ cat .emotiond_token
 
 ### Non-deterministic Results
 Ensure `test_mode=true` is set in the decision query parameter.
+
+### Enforcement Not Working
+```bash
+# Check enforcement audit log
+tail -f ~/.openclaw/workspace/emotiond/enforcement_audit.jsonl
+
+# Verify hook is loaded
+ls -la ~/.openclaw/hooks/emotiond-enforcer/
+```
