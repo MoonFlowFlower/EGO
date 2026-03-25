@@ -11,20 +11,25 @@
     "N2B",
     "N2C",
     "N2D",
-    "N2E"
+    "N2E",
+    "N3A",
+    "N3B",
+    "N3C",
+    "N3D"
   ],
   "completed_themes": [
-    "N2"
+    "N2",
+    "N3"
   ],
   "failed_tasks": [],
   "failed_subtasks": [],
   "blocked_tasks": [],
   "blocked_subtasks": [],
   "last_verified_task": "N1",
-  "last_verified_subtask": "N2E",
-  "last_verified_theme": "N2",
+  "last_verified_subtask": "N3D",
+  "last_verified_theme": "N3",
   "ready_to_start": [
-    "N3"
+    "N4"
   ],
   "truth_sources_checked": [
     "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
@@ -49,10 +54,18 @@
     "reports/N2B_REPORT.md",
     "reports/N2C_REPORT.md",
     "reports/N2D_REPORT.md",
-    "reports/N2_THEME_REPORT.md"
+    "reports/N2_THEME_REPORT.md",
+    "artifacts/n3_experiments/N3A_SAMPLE_CONTRACT.md",
+    "artifacts/n3_experiments/n3_summary.json",
+    "OpenEmotion/scripts/n3_experiment_harness.py",
+    "reports/N3A_REPORT.md",
+    "reports/N3B_REPORT.md",
+    "reports/N3C_REPORT.md",
+    "reports/N3D_REPORT.md",
+    "reports/N3_THEME_REPORT.md"
   ],
   "handoff_ready": true,
-  "last_report_path": "reports/N2_THEME_REPORT.md",
+  "last_report_path": "reports/N3_THEME_REPORT.md",
   "stop_reason": null,
-  "notes": "N2 THEME VERIFIED. All 5 subtasks completed. 9/9 primary experiments passed. 4/4 ablation experiments show significant effect. Ready for N3 theme."
+  "notes": "N3 THEME VERIFIED. All 4 subtasks completed. Key findings: (1) Replay consistency verified, (2) 4/4 misaggregations detected in should-separate samples, (3) safety_context not included in psi_bucket calculation, (4) keyword priority conflicts cause classification errors. Ready for N4 theme."
 }

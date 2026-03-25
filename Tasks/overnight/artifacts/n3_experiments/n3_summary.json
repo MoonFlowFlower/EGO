@@ -1,0 +1,481 @@
+{
+  "timestamp": "2026-03-25T08:21:34.189083",
+  "merge_tests": {
+    "total": 3,
+    "passed": 2,
+    "failed": 1,
+    "details": [
+      {
+        "group_id": "SM-1",
+        "samples": [
+          {
+            "sample_id": "SM-1a",
+            "sample_group": "SM",
+            "intent": "读取 config.yaml",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "candidate",
+            "hits": 1,
+            "strength": 0.05,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-1b",
+            "sample_group": "SM",
+            "intent": "查看配置文件",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "strengthen",
+            "hits": 2,
+            "strength": 0.15000000000000002,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-1c",
+            "sample_group": "SM",
+            "intent": "read the file",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "strengthen",
+            "hits": 3,
+            "strength": 0.25,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-1d",
+            "sample_group": "SM",
+            "intent": "check file content",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "strengthen",
+            "hits": 4,
+            "strength": 0.35,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          }
+        ],
+        "unique_cycle_ids": 1,
+        "expected_unique_cycle_ids": 1,
+        "passed": true,
+        "reason": "所有 4 个样本正确聚合到 1 个 cycle"
+      },
+      {
+        "group_id": "SM-2",
+        "samples": [
+          {
+            "sample_id": "SM-2a",
+            "sample_group": "SM",
+            "intent": "运行测试",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "5031b09d340c9fb7",
+            "observed_coarse_intent": "status_query",
+            "observed_psi_bucket": "telegram:user_message:status_query",
+            "observed_op": "candidate",
+            "hits": 1,
+            "strength": 0.05,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-2b",
+            "sample_group": "SM",
+            "intent": "验证功能",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "34c1264506f1d7fe",
+            "observed_coarse_intent": "test_verify",
+            "observed_psi_bucket": "telegram:user_message:test_verify",
+            "observed_op": "candidate",
+            "hits": 1,
+            "strength": 0.05,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-2c",
+            "sample_group": "SM",
+            "intent": "run e2e test",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "34c1264506f1d7fe",
+            "observed_coarse_intent": "test_verify",
+            "observed_psi_bucket": "telegram:user_message:test_verify",
+            "observed_op": "strengthen",
+            "hits": 2,
+            "strength": 0.15000000000000002,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-2d",
+            "sample_group": "SM",
+            "intent": "confirm the result",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "34c1264506f1d7fe",
+            "observed_coarse_intent": "test_verify",
+            "observed_psi_bucket": "telegram:user_message:test_verify",
+            "observed_op": "strengthen",
+            "hits": 3,
+            "strength": 0.25,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          }
+        ],
+        "unique_cycle_ids": 2,
+        "expected_unique_cycle_ids": 1,
+        "passed": false,
+        "reason": "预期 1 个 cycle，实际 2 个（聚合失败）"
+      },
+      {
+        "group_id": "SM-3",
+        "samples": [
+          {
+            "sample_id": "SM-3a",
+            "sample_group": "SM",
+            "intent": "查看系统状态",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "candidate",
+            "hits": 1,
+            "strength": 0.05,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-3b",
+            "sample_group": "SM",
+            "intent": "检查日志",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "strengthen",
+            "hits": 2,
+            "strength": 0.15000000000000002,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-3c",
+            "sample_group": "SM",
+            "intent": "check health",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "strengthen",
+            "hits": 3,
+            "strength": 0.25,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          },
+          {
+            "sample_id": "SM-3d",
+            "sample_group": "SM",
+            "intent": "show process list",
+            "expected_behavior": "aggregate",
+            "observed_cycle_id": "30aa24ef0787e022",
+            "observed_coarse_intent": "file_read",
+            "observed_psi_bucket": "telegram:user_message:file_read",
+            "observed_op": "strengthen",
+            "hits": 4,
+            "strength": 0.35,
+            "promoted": false,
+            "safety_context": null,
+            "extra_context": null
+          }
+        ],
+        "unique_cycle_ids": 1,
+        "expected_unique_cycle_ids": 1,
+        "passed": true,
+        "reason": "所有 4 个样本正确聚合到 1 个 cycle"
+      }
+    ]
+  },
+  "separate_tests": {
+    "total": 4,
+    "misaggregations": 4,
+    "correct_separations": 0,
+    "details": [
+      {
+        "group_id": "SS-1",
+        "sample_a": {
+          "sample_id": "SS-1a",
+          "sample_group": "SS",
+          "intent": "删除临时文件",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "98bd0a1ae1b14728",
+          "observed_coarse_intent": "file_risk_op",
+          "observed_psi_bucket": "telegram:user_message:file_risk_op",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": {
+            "risk": "low"
+          },
+          "extra_context": null
+        },
+        "sample_b": {
+          "sample_id": "SS-1b",
+          "sample_group": "SS",
+          "intent": "删除生产数据库",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "98bd0a1ae1b14728",
+          "observed_coarse_intent": "file_risk_op",
+          "observed_psi_bucket": "telegram:user_message:file_risk_op",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": {
+            "risk": "critical"
+          },
+          "extra_context": null
+        },
+        "same_cycle": true,
+        "expected_same_cycle": false,
+        "misaggregation": true,
+        "risk_level": "high",
+        "reason": "⚠️ 误聚合：'删除临时文件' 和 '删除生产数据库' 命中同一 cycle"
+      },
+      {
+        "group_id": "SS-2",
+        "sample_a": {
+          "sample_id": "SS-2a",
+          "sample_group": "SS",
+          "intent": "修改用户配置",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "98bd0a1ae1b14728",
+          "observed_coarse_intent": "file_risk_op",
+          "observed_psi_bucket": "telegram:user_message:file_risk_op",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": null,
+          "extra_context": {
+            "target": "user_config"
+          }
+        },
+        "sample_b": {
+          "sample_id": "SS-2b",
+          "sample_group": "SS",
+          "intent": "修改系统配置",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "98bd0a1ae1b14728",
+          "observed_coarse_intent": "file_risk_op",
+          "observed_psi_bucket": "telegram:user_message:file_risk_op",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": null,
+          "extra_context": {
+            "target": "system_config"
+          }
+        },
+        "same_cycle": true,
+        "expected_same_cycle": false,
+        "misaggregation": true,
+        "risk_level": "medium",
+        "reason": "⚠️ 误聚合：'修改用户配置' 和 '修改系统配置' 命中同一 cycle"
+      },
+      {
+        "group_id": "SS-3",
+        "sample_a": {
+          "sample_id": "SS-3a",
+          "sample_group": "SS",
+          "intent": "测试登录功能",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "34c1264506f1d7fe",
+          "observed_coarse_intent": "test_verify",
+          "observed_psi_bucket": "telegram:user_message:test_verify",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": null,
+          "extra_context": {
+            "environment": "dev"
+          }
+        },
+        "sample_b": {
+          "sample_id": "SS-3b",
+          "sample_group": "SS",
+          "intent": "测试生产环境",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "34c1264506f1d7fe",
+          "observed_coarse_intent": "test_verify",
+          "observed_psi_bucket": "telegram:user_message:test_verify",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": null,
+          "extra_context": {
+            "environment": "production"
+          }
+        },
+        "same_cycle": true,
+        "expected_same_cycle": false,
+        "misaggregation": true,
+        "risk_level": "medium",
+        "reason": "⚠️ 误聚合：'测试登录功能' 和 '测试生产环境' 命中同一 cycle"
+      },
+      {
+        "group_id": "SS-4",
+        "sample_a": {
+          "sample_id": "SS-4a",
+          "sample_group": "SS",
+          "intent": "检查代码",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "30aa24ef0787e022",
+          "observed_coarse_intent": "file_read",
+          "observed_psi_bucket": "telegram:user_message:file_read",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": null,
+          "extra_context": {
+            "meaning": "code_review"
+          }
+        },
+        "sample_b": {
+          "sample_id": "SS-4b",
+          "sample_group": "SS",
+          "intent": "检查健康状态",
+          "expected_behavior": "separate",
+          "observed_cycle_id": "30aa24ef0787e022",
+          "observed_coarse_intent": "file_read",
+          "observed_psi_bucket": "telegram:user_message:file_read",
+          "observed_op": "candidate",
+          "hits": 1,
+          "strength": 0.05,
+          "promoted": false,
+          "safety_context": null,
+          "extra_context": {
+            "meaning": "health_check"
+          }
+        },
+        "same_cycle": true,
+        "expected_same_cycle": false,
+        "misaggregation": true,
+        "risk_level": "low",
+        "reason": "⚠️ 误聚合：'检查代码' 和 '检查健康状态' 命中同一 cycle"
+      }
+    ]
+  },
+  "replay_tests": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "details": [
+      {
+        "test_id": "replay-001",
+        "event_sequence": [
+          {
+            "event_id": "replay-000",
+            "timestamp": "2026-03-25T08:21:34.188914",
+            "actor": "user",
+            "source": "telegram",
+            "event_type": "user_message",
+            "user_intent": "read file"
+          },
+          {
+            "event_id": "replay-001",
+            "timestamp": "2026-03-25T08:21:34.188916",
+            "actor": "user",
+            "source": "telegram",
+            "event_type": "user_message",
+            "user_intent": "read file"
+          },
+          {
+            "event_id": "replay-002",
+            "timestamp": "2026-03-25T08:21:34.188918",
+            "actor": "user",
+            "source": "telegram",
+            "event_type": "user_message",
+            "user_intent": "read file"
+          },
+          {
+            "event_id": "replay-003",
+            "timestamp": "2026-03-25T08:21:34.188919",
+            "actor": "user",
+            "source": "telegram",
+            "event_type": "user_message",
+            "user_intent": "read file"
+          },
+          {
+            "event_id": "replay-004",
+            "timestamp": "2026-03-25T08:21:34.188919",
+            "actor": "user",
+            "source": "telegram",
+            "event_type": "user_message",
+            "user_intent": "read file"
+          }
+        ],
+        "original_cycle_ids": [
+          "30aa24ef0787e022",
+          "30aa24ef0787e022",
+          "30aa24ef0787e022",
+          "30aa24ef0787e022",
+          "30aa24ef0787e022"
+        ],
+        "replay_cycle_ids": [
+          "30aa24ef0787e022",
+          "30aa24ef0787e022",
+          "30aa24ef0787e022",
+          "30aa24ef0787e022",
+          "30aa24ef0787e022"
+        ],
+        "original_strengths": [
+          0.05,
+          0.15000000000000002,
+          0.25,
+          0.35,
+          0.44999999999999996
+        ],
+        "replay_strengths": [
+          0.05,
+          0.15000000000000002,
+          0.25,
+          0.35,
+          0.44999999999999996
+        ],
+        "cycle_id_consistent": true,
+        "strength_consistent": true,
+        "passed": true,
+        "reason": "Replay 一致性验证通过"
+      }
+    ]
+  },
+  "risk_summary": {
+    "high_risk_misaggregations": 1,
+    "medium_risk_misaggregations": 2,
+    "low_risk_misaggregations": 1
+  }
+}
