@@ -1,83 +1,51 @@
 {
-  "batch_id": "proto_self_overnight_batch_v3",
+  "batch_id": "proto_self_steady_state_p0",
   "overall_status": "completed",
   "current_theme": null,
   "current_subtask": null,
   "completed_tasks": [
-    "N1"
+    "N1",
+    "P0"
   ],
   "completed_subtasks": [
-    "N2A",
-    "N2B",
-    "N2C",
-    "N2D",
-    "N2E",
-    "N3A",
-    "N3B",
-    "N3C",
-    "N3D",
-    "N4A",
-    "N4B",
-    "N4C",
-    "N4D"
+    "N2A", "N2B", "N2C", "N2D", "N2E",
+    "N3A", "N3B", "N3C", "N3D",
+    "N4A", "N4B", "N4C", "N4D",
+    "P0-Phase0", "P0-Phase1", "P0-Phase2", "P0-Phase3", "P0-Phase4", "P0-Phase5"
   ],
   "completed_themes": [
-    "N2",
-    "N3",
-    "N4"
+    "N2", "N3", "N4", "P0"
   ],
   "failed_tasks": [],
   "failed_subtasks": [],
   "blocked_tasks": [],
   "blocked_subtasks": [],
-  "last_verified_task": "N1",
-  "last_verified_subtask": "N4D",
-  "last_verified_theme": "N4",
+  "last_verified_task": "P0",
+  "last_verified_subtask": "P0-Phase5",
+  "last_verified_theme": "P0",
   "ready_to_start": [],
   "truth_sources_checked": [
-    "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
-    "OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml",
-    "OpenEmotion/openemotion/proto_self/kernel.py",
-    "OpenEmotion/openemotion/proto_self/state.py",
-    "OpenEmotion/openemotion/proto_self/schemas.py",
     "OpenEmotion/openemotion/proto_self/cycles.py",
-    "OpenEmotion/openemotion/proto_self/reflection.py",
-    "OpenEmotion/openemotion/proto_self/reducers.py",
-    "OpenEmotion/openemotion/proto_self/appraisal.py"
+    "OpenEmotion/openemotion/proto_self/appraisal.py",
+    "OpenEmotion/openemotion/proto_self/kernel.py",
+    "EgoCore/app/openemotion_adapter/proto_self_adapter.py"
   ],
   "artifacts_generated": [
-    "artifacts/n2_experiments/N2A_EXPERIMENT_CONTRACT.md",
-    "artifacts/n2_experiments/n2_overall_summary.json",
-    "artifacts/n2_experiments/n2c_primary_experiments_summary.json",
-    "artifacts/n2_experiments/n2d_ablation_summary.json",
-    "OpenEmotion/scripts/n2_experiment_harness.py",
-    "OpenEmotion/scripts/n2c_primary_experiments.py",
-    "OpenEmotion/scripts/n2d_ablation_experiments.py",
-    "reports/N2A_REPORT.md",
-    "reports/N2B_REPORT.md",
-    "reports/N2C_REPORT.md",
-    "reports/N2D_REPORT.md",
-    "reports/N2_THEME_REPORT.md",
-    "artifacts/n3_experiments/N3A_SAMPLE_CONTRACT.md",
-    "artifacts/n3_experiments/n3_summary.json",
-    "OpenEmotion/scripts/n3_experiment_harness.py",
-    "reports/N3A_REPORT.md",
-    "reports/N3B_REPORT.md",
-    "reports/N3C_REPORT.md",
-    "reports/N3D_REPORT.md",
-    "reports/N3_THEME_REPORT.md",
-    "artifacts/n4_user_test/N4A_USER_TEST_CONTRACT.md",
-    "artifacts/n4_user_test/N4C_SCENARIO_PACK.md",
-    "artifacts/n4_user_test/N4D_OPERATOR_GUIDE.md",
-    "OpenEmotion/scripts/proto_self_diagnostics.py",
-    "reports/N4A_REPORT.md",
-    "reports/N4B_REPORT.md",
-    "reports/N4C_REPORT.md",
-    "reports/N4D_REPORT.md",
-    "reports/N4_THEME_REPORT.md"
+    "Tasks/p0_steady_state/P0_CONTRACT.md",
+    "Tasks/p0_steady_state/artifacts/p0_regression_summary.json",
+    "Tasks/p0_steady_state/reports/P0_PHASE1_REPORT.md",
+    "Tasks/p0_steady_state/reports/P0_PHASE2_REPORT.md",
+    "Tasks/p0_steady_state/reports/P0_PHASE3_REPORT.md",
+    "Tasks/p0_steady_state/reports/P0_PHASE4_REPORT.md",
+    "Tasks/p0_steady_state/reports/FINAL_ACCEPTANCE_REPORT.md",
+    "OpenEmotion/scripts/p0_regression_test.py"
+  ],
+  "files_modified": [
+    "OpenEmotion/openemotion/proto_self/cycles.py",
+    "OpenEmotion/openemotion/proto_self/appraisal.py"
   ],
   "handoff_ready": true,
-  "last_report_path": "reports/N4_THEME_REPORT.md",
+  "last_report_path": "Tasks/p0_steady_state/reports/FINAL_ACCEPTANCE_REPORT.md",
   "stop_reason": null,
-  "notes": "N4 THEME VERIFIED. All 4 subtasks completed. User test contract frozen, read-only diagnostics implemented, scenario pack created, operator guide generated. User can now test Proto-Self Kernel v1 without reading source code. Batch completed."
+  "notes": "P0 TASK VERIFIED. HIGH-risk misaggregation fixed. N2 conditions preserved. 5/5 regression tests passed. Key changes: (1) psi_bucket now includes risk_level for critical/high operations, (2) keyword priority conflicts resolved, (3) safety_context passed through appraisal to perceived. Real Telegram verification pending user action."
 }

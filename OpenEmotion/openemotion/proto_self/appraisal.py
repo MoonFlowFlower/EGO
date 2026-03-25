@@ -18,13 +18,18 @@ from openemotion.proto_self.state import ProtoSelfState
 def perceive_event(event: KernelEvent, state: ProtoSelfState) -> Dict[str, Any]:
     """
     感知：把事件压成最小可更新语义。
-    
+
     不做大而全 NLU，只提取关键维度。
+
+    v1.1 更新：
+    - 传递完整的 safety_context 到 perceived
+    - 用于 cycle 聚合时的风险区分
     """
     return {
         "intent": event.user_intent,
         "event_type": event.event_type,
         "source": event.source,
+        "safety_context": event.safety_context or {},  # 传递完整上下文
         "novelty": _score_novelty(event, state),
         "identity_conflict": _score_identity_conflict(event, state),
         "unfinished_commitment": _score_unfinished_commitment(event, state),

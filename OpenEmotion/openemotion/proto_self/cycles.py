@@ -109,6 +109,11 @@ def _build_psi_bucket(perceived: Dict[str, Any]) -> str:
 
     使用粗粒度 intent 分类，让相似事件聚合到同一 cycle。
     例如：多次文件操作请求会命中同一 cycle，实现 strengthen。
+
+    v1.1 更新：
+    - 追加 safety_context.risk 到 psi_bucket
+    - 高风险操作与低风险操作将被区分到不同 cycle
+    - 向后兼容：缺失 risk 时默认 "normal"
     """
     intent = perceived.get("intent", "unknown") or "unknown"
     event_type = perceived.get("event_type", "unknown") or "unknown"
@@ -117,7 +122,18 @@ def _build_psi_bucket(perceived: Dict[str, Any]) -> str:
     # 粗粒度 intent 分类：将相似输入映射到同一类别
     coarse_intent = _coarse_intent_classify(intent)
 
-    return f"{source}:{event_type}:{coarse_intent}"
+    # 结构化上下文：风险等级
+    # 高风险操作应与低风险操作区分
+    safety_ctx = perceived.get("safety_context", {})
+    risk_level = safety_ctx.get("risk", "normal") if safety_ctx else "normal"
+
+    # 分层聚合策略：
+    # - high/critical 风险：追加 risk 后缀，强制区分
+    # - normal/low 风险：保持聚合，不追加后缀
+    if risk_level in ["critical", "high"]:
+        return f"{source}:{event_type}:{coarse_intent}:risk_{risk_level}"
+    else:
+        return f"{source}:{event_type}:{coarse_intent}"
 
 
 def _build_phi_signature(
@@ -165,49 +181,57 @@ def _coarse_intent_classify(intent: str) -> str:
 
     这样相似事件（如多次文件操作）会命中同一 cycle，实现 strengthen。
 
-    分类规则（按优先级匹配）：
-    1. 高风险文件操作 -> file_risk_op
-    2. 文件读取/查看 -> file_read
-    3. 系统状态查询 -> status_query
-    4. 重启/停止服务 -> service_control
-    5. 测试/验证 -> test_verify
-    6. 其他 -> unknown
+    v1.1 更新：
+    - 修复关键词优先级冲突
+    - 优化中文关键词覆盖
+    - 使用更精确的匹配规则
+
+    分类规则（按优先级匹配，高优先级先匹配）：
+    1. 高风险文件操作 -> file_risk_op（删除、修改、覆盖）
+    2. 服务控制 -> service_control（重启、停止、启动）- 提前避免被"运行"等词误匹配
+    3. 测试/验证 -> test_verify（测试、验证、e2e）
+    4. 系统状态查询 -> status_query（状态、日志、健康）- "检查健康"优先于此
+    5. 文件读取/查看 -> file_read（读取、查看、显示）
+    6. 其他 -> general
     """
     if not intent:
         return "unknown"
 
     intent_lower = intent.lower()
 
-    # 1. 高风险文件操作（删除、修改、覆盖）
-    risk_patterns = ["删除", "删掉", "删除", "delet", "remove", "清空", "truncate",
-                     "修改", "替换", "覆盖", "overwrite", "patch", "fix"]
+    # 1. 高风险文件操作（删除、修改、覆盖）- 最高优先级
+    risk_patterns = ["删除", "删掉", "delet", "remove", "清空", "truncate",
+                     "修改", "替换", "覆盖", "overwrite", "patch"]
     if any(p in intent_lower for p in risk_patterns):
         return "file_risk_op"
 
-    # 2. 文件读取/查看（读取、查看、检查）
-    read_patterns = ["读取", "查看", "检查", "read", "查看", "check", "show",
-                     "显示", "查看", "查看", "cat ", "head ", "tail ", "ls ", "dir "]
-    if any(p in intent_lower for p in read_patterns):
-        return "file_read"
-
-    # 3. 系统状态查询（状态、日志、运行）
-    status_patterns = ["状态", "status", "日志", "log", "运行", "running",
-                       "检查", "check", "健康", "health", "进程", "process"]
-    if any(p in intent_lower for p in status_patterns):
-        return "status_query"
-
-    # 4. 重启/停止服务（重启、停止、启动）
+    # 2. 服务控制（重启、停止、启动）- 提前避免被"运行"等词误匹配
     service_patterns = ["重启", "停止", "启动", "restart", "stop", "start",
-                        "reload", "reload", "重新加载"]
+                        "reload", "重新加载"]
     if any(p in intent_lower for p in service_patterns):
         return "service_control"
 
-    # 5. 测试/验证（测试、验证、确认）
-    test_patterns = ["测试", "验证", "确认", "test", "verify", "check",
-                     "确认", "confirm", "validate", "e2e"]
+    # 3. 测试/验证（测试、验证、e2e）- 提前避免被"运行测试"中的"运行"误匹配
+    test_patterns = ["测试", "验证", "确认", "test", "verify",
+                     "confirm", "validate", "e2e"]
     if any(p in intent_lower for p in test_patterns):
         return "test_verify"
 
-    # 6. 其他：返回原始 intent 的前20字符（截断防止过长）
-    # 但仍然太细粒度，改为返回 "general"
+    # 4. 系统状态查询（状态、日志、健康）
+    # 注意："检查代码"不会被匹配，因为不包含这些关键词
+    status_patterns = ["状态", "status", "日志", "log", "running",
+                       "健康", "health", "进程", "process"]
+    if any(p in intent_lower for p in status_patterns):
+        return "status_query"
+
+    # 5. 文件读取/查看（读取、查看、显示）
+    # 注意：放在 status_query 之后，让"检查健康状态"优先匹配 status_query
+    # "check file/content" 视为文件读取，但单独的 "check" 不算
+    read_patterns = ["读取", "查看", "read", "show", "显示",
+                     "cat ", "head ", "tail ", "ls ", "dir ",
+                     "check file", "check content"]  # check + 文件相关词
+    if any(p in intent_lower for p in read_patterns):
+        return "file_read"
+
+    # 6. 其他
     return "general"

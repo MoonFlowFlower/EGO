@@ -1,0 +1,98 @@
+{
+  "timestamp": "2026-03-25T11:08:31.302388",
+  "total_tests": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": {
+    "high_risk_separation": {
+      "passed": true,
+      "details": {
+        "SS-1a": {
+          "intent": "删除临时文件",
+          "safety_context": {
+            "risk": "low"
+          },
+          "psi_bucket": "telegram:user_message:file_risk_op"
+        },
+        "SS-1b": {
+          "intent": "删除生产数据库",
+          "safety_context": {
+            "risk": "critical"
+          },
+          "psi_bucket": "telegram:user_message:file_risk_op:risk_critical"
+        }
+      }
+    },
+    "should_merge": {
+      "passed": true,
+      "details": {
+        "SM-1": {
+          "unique_cycles": 1,
+          "passed": true
+        }
+      }
+    },
+    "n2_cycle_strengthen": {
+      "passed": true,
+      "details": {
+        "same_cycle": true,
+        "hits": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "strength": [
+          0.05,
+          0.15000000000000002,
+          0.25,
+          0.35,
+          0.44999999999999996
+        ]
+      }
+    },
+    "n2_reflection": {
+      "passed": true,
+      "details": {
+        "initial": 0,
+        "final": 2
+      }
+    },
+    "intent_classification": {
+      "passed": true,
+      "details": {
+        "运行测试": {
+          "expected": "test_verify",
+          "actual": "test_verify",
+          "correct": true
+        },
+        "检查健康状态": {
+          "expected": "status_query",
+          "actual": "status_query",
+          "correct": true
+        },
+        "检查代码": {
+          "expected": "general",
+          "actual": "general",
+          "correct": true
+        },
+        "删除临时文件": {
+          "expected": "file_risk_op",
+          "actual": "file_risk_op",
+          "correct": true
+        },
+        "读取文件": {
+          "expected": "file_read",
+          "actual": "file_read",
+          "correct": true
+        },
+        "重启服务": {
+          "expected": "service_control",
+          "actual": "service_control",
+          "correct": true
+        }
+      }
+    }
+  }
+}
