@@ -1,5 +1,52 @@
 # EgoCore Changelog - Phases
 
+## P0-R2: Risk Signal 接线 (2026-03-25)
+
+### 修复
+- `EgoCore/app/openemotion_adapter/event_builder.py` - 添加 `risk` 字段映射
+- `OpenEmotion/openemotion/proto_self/appraisal.py` - 修复 `_score_identity_conflict` 类型 bug
+- `OpenEmotion/openemotion/proto_self/appraisal.py` - 修复 `_score_risk` 类型 bug
+
+### 核心成果
+- `safety_context.risk` 正确从 EgoCore 传递到 OpenEmotion
+- 高风险操作 psi_bucket 包含 `:risk_high` 后缀
+- 高低风险操作被分配到不同 cycle
+
+### 测试
+- `EgoCore/scripts/p0_r2_risk_test.py` - 单元测试
+- `EgoCore/scripts/p0_r2_e2e_test.py` - 端到端测试
+
+---
+
+## P0-R1: 真实 Telegram 验证 (2026-03-25)
+
+### 验证
+- EgoCore 服务在真实 Telegram 环境正常运行
+- Cycle 聚合机制工作正常（hits 递增, strength 累积）
+- Reflection 机制工作正常（revision_counter 增加）
+- 诊断脚本输出与真实状态一致
+
+### 报告
+- `Tasks/p0_steady_state/reports_r1/` - 5 份 R1 报告
+
+---
+
+## P0: 高风险误聚合修复 (2026-03-25)
+
+### 修复
+- `OpenEmotion/openemotion/proto_self/cycles.py` - psi_bucket 追加 risk_level
+- `OpenEmotion/openemotion/proto_self/appraisal.py` - safety_context 传递
+
+### 核心成果
+- HIGH 风险操作与低风险操作被区分
+- 关键词优先级冲突修复
+- N2 成立条件未被破坏
+
+### 测试
+- `OpenEmotion/scripts/p0_regression_test.py` - 5/5 回归测试通过
+
+---
+
 ## P2-C: Human-in-the-Loop 最小闭环 (2026-03-13)
 
 ### 新增

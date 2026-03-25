@@ -2,6 +2,14 @@
 
 EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmotion（主体内核）。
 
+## 当前状态
+
+**Proto-Self Kernel v1** 已完成稳态收口：
+- ✅ Cycle 聚合机制正常工作
+- ✅ Reflection 机制正常工作
+- ✅ 高风险操作与低风险操作被正确区分
+- ✅ `safety_context.risk` 从 EgoCore 正确传递到 OpenEmotion
+
 ## 仓库结构
 
 ```
@@ -44,6 +52,23 @@ git push origin main
 1. **EgoCore 相关开发** → 在 EgoCore 源仓开发 → subtree pull 到总仓
 2. **OpenEmotion 相关开发** → 在 OpenEmotion 源仓开发 → subtree pull 到总仓
 3. **总仓集成任务** → 直接在 EGO 总仓开发
+
+## 最近更新
+
+### 2026-03-25: P0-R2 Risk Signal 接线
+- 修复 `safety_context.risk` 字段名不匹配问题
+- 高风险操作 psi_bucket 包含 `:risk_high` 后缀
+- 高低风险操作被分配到不同 cycle
+
+### 2026-03-25: P0-R1 真实 Telegram 验证
+- EgoCore 服务在真实 Telegram 环境正常运行
+- Cycle 聚合机制工作正常
+- Reflection 机制工作正常
+
+### 2026-03-25: P0 高风险误聚合修复
+- psi_bucket 追加 risk_level 区分
+- 关键词优先级冲突修复
+- 5/5 回归测试通过
 
 ---
 
