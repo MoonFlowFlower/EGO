@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "description": "双仓闭环测试用例 v2 (EgoCore 真实接入版)",
+  "created_at": "2026-03-16T12:25:00Z",
+  "cases": [
+    {
+      "case_id": "case_1",
+      "description": "首次用户消息",
+      "objective": "证明最基础真实闭环打通",
+      "input": {
+        "user_message": "你好，这是第一条测试消息",
+        "actor_id": "test_user_1"
+      },
+      "expected_path": [
+        "egocore_ingress",
+        "egocore_runtime",
+        "openemotion_adapter",
+        "openemotion_shadow",
+        "egocore_consume",
+        "final_output"
+      ],
+      "required_artifacts": [
+        "egocore_ingress/{event_id}.json",
+        "egocore_runtime/{event_id}.json",
+        "openemotion_adapter/{event_id}.json",
+        "openemotion_shadow/{event_id}.json",
+        "final_outputs/case_1.json"
+      ],
+      "required_fields": {
+        "egocore_ingress": ["event_id", "trace_id", "case_id", "timestamp", "actor"],
+        "openemotion_shadow": ["event_id", "trace_id", "case_id", "openemotion_result"],
+        "final_output": ["case_id", "trace_id", "steps", "final_decision"]
+      },
+      "checks": [
+        "EgoCore 收到事件",
+        "创建任务/路由",
+        "调用 OpenEmotion",
+        "返回结构化输出",
+        "EgoCore 给出回复并落盘"
+      ]
+    },
+    {
+      "case_id": "case_2",
+      "description": "同一用户第二轮消息",
+      "objective": "证明状态续接",
+      "input": [
+        {
+          "user_message": "你好，这是第一条消息",
+          "actor_id": "test_user_1"
+        },
+        {
+          "user_message": "我想继续刚才的话题",
+          "actor_id": "test_user_1"
+        }
+      ],
+      "expected_path": [
+        "egocore_ingress (x2)",
+        "egocore_runtime (x2)",
+        "openemotion_adapter (x2)",
+        "openemotion_shadow (x2)",
+        "egocore_consume (x2)",
+        "final_output"
+      ],
+      "required_artifacts": [
+        "egocore_ingress/{event_id_1}.json",
+        "egocore_ingress/{event_id_2}.json",
+        "openemotion_shadow/{event_id_1}.json",
+        "openemotion_shadow/{event_id_2}.json",
+        "final_outputs/case_2.json"
+      ],
+      "required_fields": {
+        "final_output": ["case_id", "steps_count >= 10"]
+      },
+      "checks": [
+        "不重新初始化为全新身份",
+        "能引用上一轮状态",
+        "EgoCore 与 OpenEmotion 的状态链连续"
+      ]
+    },
+    {
+      "case_id": "case_3",
+      "description": "identity_handle 兼容差异",
+      "objective": "证明 adapter 真处理差异",
+      "input": {
+        "user_message": "测试 identity_handle 差异处理",
+        "actor_id": "special_user_identity_test"
+      },
+      "expected_path": [
+        "egocore_ingress",
+        "egocore_runtime",
+        "openemotion_adapter",
+        "openemotion_shadow",
+        "egocore_consume",
+        "final_output"
+      ],
+      "required_artifacts": [
+        "egocore_ingress/{event_id}.json",
+        "openemotion_adapter/{event_id}.json",
+        "final_outputs/case_3.json"
+      ],
+      "checks": [
+        "兼容字段被吸收",
+        "不报错",
+        "输出结构稳定",
+        "EgoCore 不需要为主体本体差异写补丁逻辑"
+      ]
+    }
+  ],
+  "red_lines": [
+    "不宣称 WS-C/C1 completed",
+    "不进入 WS-C/C2",
+    "不宣称 MVP13-15 completed"
+  ],
+  "pass_criteria": {
+    "all_cases_pass": true,
+    "artifacts_aligned": true,
+    "no_errors": true,
+    "red_lines_intact": true
+  }
+}

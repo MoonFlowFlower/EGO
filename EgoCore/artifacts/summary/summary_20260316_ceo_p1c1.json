@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0.0",
+  "summary_id": "summary_20260316_ceo_p1c1",
+  "identity_handle_ref": "ceo",
+  "summary_created_at": "2026-03-16T04:30:00Z",
+  "summary_period_start": "2026-03-16T00:00:00Z",
+  "summary_period_end": "2026-03-16T04:30:00Z",
+  "identity_summary": {
+    "core_name": "CEO Agent",
+    "core_role": "personal_assistant",
+    "primary_owner": "user_moonlight",
+    "identity_stability_note": "身份稳定，无漂移"
+  },
+  "current_phase_summary": {
+    "phase_name": "P1 MVS 骨架建设",
+    "phase_start": "2026-03-16T00:00:00Z",
+    "primary_focus": "实现主体骨架层 (Identity → Self-Model → Summary)",
+    "key_activities": [
+      "P1-A Identity Invariants v1",
+      "P1-B Self-Model v1",
+      "P1-C1 Long-Term Self Summary v1"
+    ],
+    "progress_indicators": {
+      "p1a": 1.0,
+      "p1b": 1.0,
+      "p1c1": 0.8
+    }
+  },
+  "capability_summary": {
+    "strong_domains": [
+      "file_operations",
+      "reasoning",
+      "analysis"
+    ],
+    "developing_domains": [
+      "web_access",
+      "planning"
+    ],
+    "known_limitations": [
+      "无 GUI 操作能力",
+      "上下文窗口有限",
+      "无原生持久化记忆（P1-C 待实现）"
+    ],
+    "capability_trend": "growing"
+  },
+  "constraint_summary": {
+    "hard_constraints": [
+      "不编造事实，不伪造完成状态",
+      "不绕过安全边界"
+    ],
+    "soft_constraints": [
+      "保持简洁回复"
+    ],
+    "temporary_constraints": [
+      "P1 阶段专注骨架，不扩展远期能力"
+    ]
+  },
+  "active_commitments_summary": {
+    "standing_commitments": [
+      "不编造事实，不伪造完成状态",
+      "不绕过安全边界"
+    ],
+    "recent_new_commitments": [
+      "P1 必须按骨架顺序一层层锁死"
+    ],
+    "commitments_fulfilled": []
+  },
+  "recent_key_events_summary": [
+    {
+      "event_type": "milestone",
+      "summary": "P0 宿主化接线完成",
+      "significance": "high",
+      "timestamp": "2026-03-16T02:00:00Z"
+    },
+    {
+      "event_type": "milestone",
+      "summary": "P0.5 宿主化收口审计完成",
+      "significance": "high",
+      "timestamp": "2026-03-16T02:40:00Z"
+    },
+    {
+      "event_type": "milestone",
+      "summary": "P1-A Identity Invariants v1 完成",
+      "significance": "high",
+      "timestamp": "2026-03-16T03:15:00Z"
+    },
+    {
+      "event_type": "audit",
+      "summary": "P1-A 稳定性审查通过 (GO_P1B)",
+      "significance": "medium",
+      "timestamp": "2026-03-16T03:30:00Z"
+    },
+    {
+      "event_type": "milestone",
+      "summary": "P1-B Self-Model v1 完成",
+      "significance": "high",
+      "timestamp": "2026-03-16T04:25:00Z"
+    }
+  ],
+  "stable_conclusions": [
+    {
+      "conclusion_id": "conc_p1_order",
+      "statement": "P1 必须按 Identity → Self-Model → Summary 顺序执行",
+      "confidence": 0.95,
+      "basis": "架构依赖分析",
+      "formed_at": "2026-03-16T03:00:00Z"
+    },
+    {
+      "conclusion_id": "conc_boundary_clear",
+      "statement": "Identity Invariants 与 Self-Model 职责边界清晰，无重叠",
+      "confidence": 0.9,
+      "basis": "字段审计结果",
+      "formed_at": "2026-03-16T03:30:00Z"
+    },
+    {
+      "conclusion_id": "conc_summary_not_truth",
+      "statement": "Summary 引用 identity 和 self-model，不是第二真相源",
+      "confidence": 1.0,
+      "basis": "架构设计原则",
+      "formed_at": "2026-03-16T04:00:00Z"
+    }
+  ],
+  "open_questions": [
+    {
+      "question_id": "q_restore_timing",
+      "question": "Self Restore 应该在哪个时机实现？",
+      "priority": "medium",
+      "blocking": false
+    },
+    {
+      "question_id": "q_summary_refresh_freq",
+      "question": "Summary 的最佳刷新频率是多少？",
+      "priority": "low",
+      "blocking": false
+    }
+  ],
+  "self_model_version_ref": {
+    "model_handle": "ceo",
+    "snapshot_timestamp": "2026-03-16T04:00:00Z"
+  },
+  "recovery_hints": {
+    "last_active_context": "EgoCore P1-C1 Summary 实现",
+    "suggested_start_actions": [
+      "检查 identity invariants 和 self-model 状态",
+      "验证 summary 与 identity/self-model 对齐",
+      "继续 P1-C1 Summary 开发"
+    ],
+    "pending_tasks": [
+      "完成 P1-C1 Long-Term Self Summary v1",
+      "等待用户确认后决定是否实现 Self Restore"
+    ]
+  },
+  "metadata": {
+    "generation_method": "manual",
+    "verified": true
+  },
+  "last_modified_at": "2026-03-16T04:30:00Z",
+  "modification_audit_trail": [
+    {
+      "timestamp": "2026-03-16T04:30:00Z",
+      "action": "created",
+      "authorized": true,
+      "trigger": "p1c1_implementation",
+      "changes_summary": "初始生成 P1-C1 Summary"
+    }
+  ]
+}

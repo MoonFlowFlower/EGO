@@ -1,0 +1,56 @@
+# Telegram Bot Configuration
+
+telegram:
+  enabled: true
+  
+  # Bot token should be set in .env file
+  # token: ${TELEGRAM_BOT_TOKEN}
+  
+  # Polling configuration
+  polling:
+    enabled: true
+    timeout: 30
+    drop_pending_updates: false
+  
+  # Webhook configuration (alternative to polling)
+  webhook:
+    enabled: false
+    url: ""
+    port: 8443
+  
+  # Security settings
+  security:
+    allowed_chat_ids: []  # Empty = allow all, or specify IDs
+    admin_ids: []  # Admin user IDs for privileged commands
+    rate_limit:
+      enabled: true
+      max_messages_per_minute: 10
+  
+  # Message settings
+  message:
+    max_length: 4096
+    parse_mode: "Markdown"
+    disable_web_page_preview: false
+  
+  # Commands
+  commands:
+    - command: start
+      description: Start the bot
+    - command: new
+      description: Create a new task
+    - command: status
+      description: Check current task status
+    - command: tasks
+      description: List all tasks
+    - command: resume
+      description: Resume a paused task
+    - command: pause
+      description: Pause current task
+    - command: retry
+      description: Retry last failed step
+    - command: abort
+      description: Abort current task
+    - command: report
+      description: Generate task report
+    - command: memory
+      description: View memory summary

@@ -1,0 +1,336 @@
+{
+  "timestamp": "2026-03-19T05:04:34.391814",
+  "test_user_id": 8420019401,
+  "test_chat_id": 8420019401,
+  "summary": {
+    "total": 6,
+    "passed": 4,
+    "failed": 2
+  },
+  "results": [
+    {
+      "test_id": 1,
+      "expected_type": "preference",
+      "input": "我喜欢用 Python 写代码",
+      "check": "event_stored",
+      "pass": true,
+      "analysis": {
+        "pass": true,
+        "memory_event_type": "unknown",
+        "stored_value": "N/A"
+      },
+      "response": "具体指哪部分？",
+      "diagnostic_data": {
+        "envelope_id": "env_195d8b33",
+        "result_id": null,
+        "decision_id": "dec_8a43750e",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "unknown",
+          "turn_count": 1
+        },
+        "memory_update": {
+          "event_stored": true,
+          "narrative_created": false,
+          "policy_candidate": false,
+          "salience_score": 0.25125722818464424
+        },
+        "consumed": {
+          "stable": true,
+          "memory_integrity": true,
+          "policy_consistent": true,
+          "policy_hint": {
+            "hint_type": "prefer",
+            "reason": "关系偏向: seeking",
+            "confidence": 0.6,
+            "expires_at": null
+          },
+          "response_tendency": {
+            "tone": "neutral",
+            "length": "moderate",
+            "urgency": 0.5170382603817232
+          }
+        },
+        "interpretation": {
+          "interaction_interpretation": {},
+          "relationship_implication": {},
+          "appraisal_state_delta": {},
+          "reflection_note": {}
+        }
+      }
+    },
+    {
+      "test_id": 2,
+      "expected_type": "goal",
+      "input": "我想尽快把这个项目做出最小闭环",
+      "check": "event_stored",
+      "pass": true,
+      "analysis": {
+        "pass": true,
+        "memory_event_type": "unknown",
+        "stored_value": "N/A"
+      },
+      "response": "你说的是…？",
+      "diagnostic_data": {
+        "envelope_id": "env_64614dc6",
+        "result_id": null,
+        "decision_id": "dec_d6067b8c",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 2
+        },
+        "memory_update": {
+          "event_stored": true,
+          "narrative_created": false,
+          "policy_candidate": false,
+          "salience_score": 0.2505327056246385
+        },
+        "consumed": {
+          "stable": true,
+          "memory_integrity": true,
+          "policy_consistent": true,
+          "policy_hint": {
+            "hint_type": "prefer",
+            "reason": "关系偏向: seeking",
+            "confidence": 0.6,
+            "expires_at": null
+          },
+          "response_tendency": {
+            "tone": "neutral",
+            "length": "moderate",
+            "urgency": 0.5136306083053785
+          }
+        },
+        "interpretation": {
+          "interaction_interpretation": {},
+          "relationship_implication": {},
+          "appraisal_state_delta": {},
+          "reflection_note": {}
+        }
+      }
+    },
+    {
+      "test_id": 3,
+      "expected_type": "constraint",
+      "input": "我只有晚上有空",
+      "check": "event_stored",
+      "pass": true,
+      "analysis": {
+        "pass": true,
+        "memory_event_type": "unknown",
+        "stored_value": "N/A"
+      },
+      "response": "展开讲讲？",
+      "diagnostic_data": {
+        "envelope_id": "env_e8fed1ea",
+        "result_id": null,
+        "decision_id": "dec_5cbd521e",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 3
+        },
+        "memory_update": {
+          "event_stored": false,
+          "narrative_created": false,
+          "policy_candidate": false,
+          "salience_score": 0.19886454036090215
+        },
+        "consumed": {
+          "stable": true,
+          "memory_integrity": true,
+          "policy_consistent": true,
+          "policy_hint": {
+            "hint_type": "prefer",
+            "reason": "关系偏向: seeking",
+            "confidence": 0.6,
+            "expires_at": null
+          },
+          "response_tendency": {
+            "tone": "neutral",
+            "length": "moderate",
+            "urgency": 0.5109044866443028
+          }
+        },
+        "interpretation": {
+          "interaction_interpretation": {},
+          "relationship_implication": {},
+          "appraisal_state_delta": {},
+          "reflection_note": {}
+        }
+      }
+    },
+    {
+      "test_id": 4,
+      "expected_type": "read_context",
+      "input": "Python 这边下一步我该先做什么？",
+      "check": "old_value_present",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "memory_refs_count": 0,
+        "context_detected": false
+      },
+      "response": "没太跟上，你再说说？",
+      "diagnostic_data": {
+        "envelope_id": "env_a92bf85a",
+        "result_id": null,
+        "decision_id": "dec_93a53ea9",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 4
+        },
+        "memory_update": {
+          "event_stored": true,
+          "narrative_created": false,
+          "policy_candidate": false,
+          "salience_score": 0.24820701690410635
+        },
+        "consumed": {
+          "stable": true,
+          "memory_integrity": true,
+          "policy_consistent": true,
+          "policy_hint": {
+            "hint_type": "prefer",
+            "reason": "关系偏向: seeking",
+            "confidence": 0.6,
+            "expires_at": null
+          },
+          "response_tendency": {
+            "tone": "neutral",
+            "length": "moderate",
+            "urgency": 0.5087235893154423
+          }
+        },
+        "interpretation": {
+          "interaction_interpretation": {},
+          "relationship_implication": {},
+          "appraisal_state_delta": {},
+          "reflection_note": {}
+        }
+      }
+    },
+    {
+      "test_id": 5,
+      "expected_type": "chitchat",
+      "input": "今天天气不错",
+      "check": "no_memory_write",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "primary_mode": "unknown",
+        "memory_written": true
+      },
+      "response": "指的是什么？",
+      "diagnostic_data": {
+        "envelope_id": "env_0ba1ade4",
+        "result_id": null,
+        "decision_id": "dec_d692220e",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 5
+        },
+        "memory_update": {
+          "event_stored": false,
+          "narrative_created": false,
+          "policy_candidate": false,
+          "salience_score": 0.18018099813866967
+        },
+        "consumed": {
+          "stable": true,
+          "memory_integrity": true,
+          "policy_consistent": true,
+          "policy_hint": {
+            "hint_type": "prefer",
+            "reason": "关系偏向: seeking",
+            "confidence": 0.6,
+            "expires_at": null
+          },
+          "response_tendency": {
+            "tone": "neutral",
+            "length": "moderate",
+            "urgency": 0.5159788714523538
+          }
+        },
+        "interpretation": {
+          "interaction_interpretation": {},
+          "relationship_implication": {},
+          "appraisal_state_delta": {},
+          "reflection_note": {}
+        }
+      }
+    },
+    {
+      "test_id": 6,
+      "expected_type": "correction",
+      "input": "不对，我说的是 JavaScript",
+      "check": "override_or_conflict",
+      "pass": true,
+      "analysis": {
+        "pass": true,
+        "override_detected": true,
+        "reflection": "N/A"
+      },
+      "response": "具体指哪部分？",
+      "diagnostic_data": {
+        "envelope_id": "env_266f20bc",
+        "result_id": null,
+        "decision_id": "dec_0fb28653",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 6
+        },
+        "memory_update": {
+          "event_stored": true,
+          "narrative_created": false,
+          "policy_candidate": false,
+          "salience_score": 0.2708601831263203
+        },
+        "consumed": {
+          "stable": true,
+          "memory_integrity": true,
+          "policy_consistent": true,
+          "policy_hint": {
+            "hint_type": "prefer",
+            "reason": "关系偏向: seeking",
+            "confidence": 0.6,
+            "expires_at": null
+          },
+          "response_tendency": {
+            "tone": "neutral",
+            "length": "moderate",
+            "urgency": 0.5127830971618831
+          }
+        },
+        "interpretation": {
+          "interaction_interpretation": {},
+          "relationship_implication": {},
+          "appraisal_state_delta": {},
+          "reflection_note": {}
+        }
+      }
+    }
+  ]
+}

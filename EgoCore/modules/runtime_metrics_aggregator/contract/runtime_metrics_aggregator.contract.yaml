@@ -1,0 +1,199 @@
+metadata:
+  name: "runtime_metrics_aggregator"
+  version: "0.1.0"
+  created_at: "2026-03-14"
+  owner: "moonlight"
+  status: "frozen"
+
+responsibility:
+  description: "聚合运行时指标，提供统一指标收集与查询接口"
+  problem_solved: "各模块指标分散，无法统一观测系统健康状态"
+  why_needed: "提供中心化指标收集，支持监控、告警、趋势分析"
+
+caller:
+  primary: "system_core"
+  secondary:
+    - "session_manager"
+    - "subagent_orchestrator"
+    - "reply_pipeline"
+
+trigger:
+  condition: "系统运行时各模块上报指标事件"
+  frequency: "continuous"
+  priority: "low"
+
+input:
+  schema:
+    type: "object"
+    required: ["metric_name", "metric_type", "value"]
+    properties:
+      metric_name:
+        type: "string"
+        description: "指标名称"
+        minLength: 1
+        maxLength: 128
+      metric_type:
+        type: "string"
+        enum: ["counter", "gauge", "histogram", "timer"]
+        description: "指标类型"
+      value:
+        type: "number"
+        description: "指标值"
+      labels:
+        type: "object"
+        description: "标签键值对"
+        additionalProperties:
+          type: "string"
+      timestamp:
+        type: "integer"
+        description: "Unix 时间戳（毫秒）"
+      module:
+        type: "string"
+        description: "来源模块名"
+  example:
+    metric_name: "session_created_total"
+    metric_type: "counter"
+    value: 1
+    labels:
+      source: "telegram"
+      status: "success"
+    timestamp: 1710420000000
+    module: "session_manager"
+  validation_rules:
+    - "metric_name 只能包含 [a-z0-9_]"
+    - "timestamp 如未提供，使用当前时间"
+    - "labels 键只能包含 [a-z0-9_]"
+
+output:
+  schema:
+    type: "object"
+    required: ["success", "metric_id"]
+    properties:
+      success:
+        type: "boolean"
+        description: "是否成功接收"
+      metric_id:
+        type: "string"
+        description: "指标唯一标识"
+      error:
+        type: "string"
+        description: "错误信息（如有）"
+  example:
+    success: true
+    metric_id: "sess_abc123"
+  empty_behavior: "返回 success=false，error 说明原因"
+
+query_output:
+  schema:
+    type: "object"
+    required: ["metrics"]
+    properties:
+      metrics:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+            value:
+              type: "number"
+            labels:
+              type: "object"
+            timestamp:
+              type: "integer"
+  example:
+    metrics:
+      - name: "session_created_total"
+        value: 42
+        labels:
+          source: "telegram"
+        timestamp: 1710420000000
+
+error:
+  schema:
+    type: "object"
+    required: ["code", "message"]
+    properties:
+      code:
+        type: "string"
+        enum: ["INVALID_METRIC", "STORAGE_ERROR", "RATE_LIMITED", "TIMEOUT", "UNKNOWN"]
+      message:
+        type: "string"
+      details:
+        type: "object"
+  error_codes:
+    - code: "INVALID_METRIC"
+      description: "指标格式无效"
+      severity: "warning"
+      user_visible: false
+    - code: "STORAGE_ERROR"
+      description: "存储后端错误"
+      severity: "error"
+      user_visible: false
+    - code: "RATE_LIMITED"
+      description: "指标上报速率超限"
+      severity: "warning"
+      user_visible: false
+    - code: "TIMEOUT"
+      description: "处理超时"
+      severity: "warning"
+      user_visible: false
+    - code: "UNKNOWN"
+      description: "未知错误"
+      severity: "error"
+      user_visible: false
+
+fallback:
+  enabled: true
+  behavior: "指标丢弃但返回 success=true，记录 warning log，不影响调用方"
+  default_value:
+    success: true
+    metric_id: "dropped"
+  notify_user: false
+  log_level: "warning"
+
+timeout:
+  default_ms: 50
+  max_ms: 200
+  graceful_degradation: true
+
+non_goals:
+  - "不做复杂指标计算（只聚合原始值）"
+  - "不做长期历史存储（只保留近期窗口）"
+  - "不做告警决策（只提供数据）"
+  - "不替代专业监控系统（Prometheus/Grafana）"
+  - "不影响主业务流程性能"
+
+dependencies:
+  required: []
+  optional:
+    - name: "persistent_storage"
+      description: "持久化存储后端"
+      fallback: "内存存储，重启丢失"
+
+integration:
+  point: "system_core.metrics_hook"
+  feature_flag: "runtime_metrics_enabled"
+  rollout_strategy: "gradual"
+  rollback_plan: "关闭 feature flag runtime_metrics_enabled"
+
+observability:
+  metrics:
+    - name: "metrics_received_total"
+      type: "counter"
+      description: "接收指标总数"
+    - name: "metrics_dropped_total"
+      type: "counter"
+      description: "丢弃指标数"
+    - name: "metrics_storage_errors_total"
+      type: "counter"
+      description: "存储错误数"
+    - name: "metrics_query_latency_ms"
+      type: "histogram"
+      description: "查询延迟"
+      buckets: [1, 5, 10, 25, 50, 100]
+  logs:
+    level: "info"
+    sample_rate: 0.1
+  traces:
+    enabled: false

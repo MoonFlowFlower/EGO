@@ -1,0 +1,46 @@
+# EgoCore Metrics Configuration
+# Phase: PRODUCTION_INTEGRATION
+# Feature Flag: runtime_metrics_enabled
+
+runtime_metrics:
+  # 主开关 (默认 OFF)
+  enabled: false
+  
+  # Shadow 模式 (默认 ON)
+  # Shadow 模式下收集指标但不影响主链输出
+  shadow_mode: true
+  
+  # 性能配置
+  buffer_size: 10000        # 环形缓冲区大小
+  timeout_ms: 50           # 超时时间
+  max_timeout_ms: 200      # 最大超时
+  
+  # 日志配置
+  log_sample_rate: 0.1     # 日志采样率
+  log_level: "info"        # 日志级别
+  
+  # 模块级开关
+  # 允许逐个模块启用/禁用
+  modules:
+    telegram_bot: true
+    command_router: true
+    session_manager: false    # 暂未接入
+    subagent_orchestrator: false  # 暂未接入
+  
+  # 保护阈值
+  max_memory_mb: 50                    # 最大内存使用
+  error_threshold_percent: 5.0         # 错误率阈值 (%)
+  timeout_threshold_percent: 1.0       # 超时率阈值 (%)
+  
+  # 自动禁用配置
+  auto_disable:
+    on_error_rate: true
+    on_timeout_rate: true
+    on_memory: true
+  
+  # Circuit Breaker 配置
+  circuit_breaker:
+    failure_threshold: 5      # 失败阈值
+    success_threshold: 3      # 恢复阈值
+    timeout_seconds: 60       # 熔断持续时间
+    half_open_max_calls: 3    # 半开状态最大试探次数

@@ -1,0 +1,80 @@
+# Module Map
+
+## EgoCore
+
+- `.`: 13 files
+  - sample: SHIM_REGISTER.md; test_syntax.py; demo_phase3.py; 任务单.md; hello.html; .env.example; .env; test_phase3.py
+- `POLICIES`: 2 files
+  - sample: POLICIES/双仓统一进度账 v1 设计稿.md; POLICIES/EgoCore_OpenEmotion_Boundary_Constitution_v1.md
+- `app`: 137 files
+  - sample: app/llm_client.py; app/command_router.py; app/__init__.py; app/telegram_agent.py; app/logger.py; app/cli.py; app/config.py; app/main.py
+- `config`: 9 files
+  - sample: config/openemotion.yaml; config/telegram.yaml; config/canonical_repos.yaml; config/app.yaml; config/metrics.yaml; config/llm.yaml; config/prompts.yaml; config/tools.yaml
+- `contracts`: 11 files
+  - sample: contracts/OPENEMOTION_OUTPUT_CONTRACT.md; contracts/registry.json; contracts/restore_audit.schema.json; contracts/openemotion_output.schema.json; contracts/self_model.schema.json; contracts/registry.json.bak; contracts/CONTRACT_VERSIONING_RULES.md; contracts/long_term_self_summary.schema.json
+- `docs`: 70 files
+  - sample: docs/04_CHANGE_ROUTING.md; docs/00_MASTER_INDEX.md; docs/Plan Injection Migration OpenClaw Hook Host → EgoCore Native Integration.txt; docs/01_PROJECT_OVERVIEW.md; docs/cycle_is_all_you_need.pdf; docs/PROGRAM_STATE_UNIFIED.yaml; docs/02_SYSTEM_FLOW.md; docs/05_DEPRECATED_AND_SHIMS.md
+- `egocore`: 20 files
+  - sample: egocore/__init__.py; egocore/adapters/openemotion_adapter.py; egocore/adapters/__init__.py; egocore/adapters/test_openemotion_adapter.py; egocore/adapters/contract_guard.py; egocore/artifacts/__init__.py; egocore/artifacts/openemotion_trace_writer.py; egocore/runtime/self_model_manager.py
+- `examples`: 2 files
+  - sample: examples/openemotion_contracts/result_v1_example.json; examples/openemotion_contracts/event_v1_example.json
+- `modules`: 28 files
+  - sample: modules/emotion_context_formatter/emotion_context_formatter_gate_checklist.md; modules/emotion_context_formatter/emotion_context_formatter_contract.yaml; modules/runtime_metrics_aggregator/runtime_metrics_aggregator_contract.yaml; modules/runtime_metrics_aggregator/DESIGN.md; modules/runtime_metrics_aggregator/runtime_metrics_aggregator_gate_checklist.md; modules/emotion_context_formatter/observability/metrics.py; modules/emotion_context_formatter/core/formatter.py; modules/emotion_context_formatter/adapter/context_adapter.py
+- `prompts`: 3 files
+  - sample: prompts/SOUL.md; prompts/AGENT.md; prompts/TOOLS.md
+- `system_core`: 2 files
+  - sample: system_core/__init__.py; system_core/metrics_hook.py
+- `templates`: 4 files
+  - sample: templates/module_contract_template.yaml; templates/module_design_note_template.md; templates/subagent_callback_task.md; templates/module_gate_checklist.md
+- `tests`: 69 files
+  - sample: tests/test_semantic_router.py; tests/test_telegram_outbound_dedup.py; tests/test_p2c.py; tests/test_runtime_architecture.py; tests/test_runtime_v2_telegram_bridge_actions.py; tests/test_runtime_v2_typed_delivery.py; tests/test_telegram_command_registration_lifecycle.py; tests/test_runtime_v2_contracts_phase1.py
+- `tools`: 27 files
+  - sample: tools/module_preflight_check.py; tools/test_contract_compatibility.py; tools/dual_repo_artifact_comparison.py; tools/dual_repo_closed_loop_e2e_v3.py; tools/replay_regression.py; tools/shadow_metrics_summary.py; tools/test_p1b_e2e.py; tools/verify_contract_schemas.py
+## OpenEmotion
+
+- `.`: 29 files
+  - sample: .gitattributes; verify_prediction_error.py; verify_event_endpoint.py; progress-d6ac2162-33a2-4340-8e8b-e2f3f607fdfc.txt; progress-fd81bb6c-8e97-4c87-a588-6000a2d689f4.txt; TASK_PROTO_SELF_KERNEL_V1.md; test_smoke.py; LICENSE
+- `.github`: 8 files
+  - sample: .github/workflows/emotiond-test.yml; .github/workflows/mvp11-hardening.yml; .github/workflows/mvp11-cycle-gate-nightly.yml; .github/workflows/evaluation.yml; .github/workflows/testbot-highvalue-scenarios.yml; .github/workflows/testbot-e2e.yml; .github/workflows/mvp114-nightly.yml; .github/workflows/mvp9-eval.yml
+- `POLICIES`: 8 files
+  - sample: POLICIES/双仓统一进度账 v1 设计稿.md; POLICIES/MASTER_AUTONOMOUS_MISSION.md; POLICIES/BRANCH_AND_RELEASE_POLICY_v1.md; POLICIES/LAYER_REPORTING_POLICY.md; POLICIES/EgoCore_OpenEmotion_Boundary_Constitution_v1.md; POLICIES/ROADMAP_EXECUTION_POLICY.md; POLICIES/SELF_REPORT_ALIGNMENT.md; POLICIES/RESPONSE_INTENT_ALIGNMENT.md
+- `TaskManage`: 36 files
+  - sample: TaskManage/Version/MVP-6.2.3.txt; TaskManage/Version/MVP-check.txt; TaskManage/Version/MVP-Integration-3.txt; TaskManage/Version/MVP-Bugfix.txt; TaskManage/Version/MVP-TestTool.txt; TaskManage/Version/MVP-6.txt; TaskManage/Version/MVP-10.txt; TaskManage/Version/MVP-8.txt
+- `core`: 8 files
+  - sample: core/__init__.py; core/provenance.py; core/dmn_tick.py; core/self_model.py; core/offline_rollouts.py; core/episodic_memory.py; core/drive_range.py; core/drive_homeostasis.py
+- `deploy`: 5 files
+  - sample: deploy/drift_guard; deploy/daily_check.sh; deploy/send_daily_report.sh; deploy/mvp16-observation-cron.sh; deploy/systemd/user/emotiond.service
+- `docs`: 115 files
+  - sample: docs/04_CHANGE_ROUTING.md; docs/SCENARIOS-self-awareness.md; docs/00_MASTER_INDEX.md; docs/SECURITY.md; docs/01_PROJECT_OVERVIEW.md; docs/mvp76_self_model_factcheck.txt; docs/cycle_is_all_you_need.pdf; docs/PROGRAM_STATE_UNIFIED.yaml
+- `emotiond`: 157 files
+  - sample: emotiond/valence_policy.py; emotiond/state.py; emotiond/self_report_interpreter.py; emotiond/reflection.py; emotiond/models.py; emotiond/tool_registry.py; emotiond/metrics_mvp9.py; emotiond/loop_mvp10.py
+- `eval`: 9 files
+  - sample: eval/scenarios/scenario_008_boredom_novelty_need.yaml; eval/scenarios/scenario_003_apology_repair.json; eval/scenarios/scenario_002_care_approach.json; eval/scenarios/scenario_004_rejection_boundary.json; eval/scenarios/scenario_006_tool_failure_spiral.yaml; eval/scenarios/scenario_001_betrayal_withdraw.json; eval/scenarios/scenario_005_mixed_sequence.json; eval/scenarios/README.md
+- `fixtures`: 7 files
+  - sample: fixtures/manifests/mixed_sequence.json; fixtures/manifests/care_sequence.json; fixtures/manifests/betrayal_sequence.json; fixtures/manifests/scenario_repair_conflict.json; fixtures/manifests/scenario_self_threat.json; fixtures/manifests/README.md; fixtures/manifests/scenario_capability_success.json
+- `legacy`: 21 files
+  - sample: legacy/openclaw/README_LEGACY.md; legacy/openclaw/README.md; legacy/openclaw/TESTING.md; legacy/openclaw/classifiers/__init__.py; legacy/openclaw/classifiers/user_affect.py; legacy/openclaw/classifiers/README.md; legacy/openclaw/docs/TRACE_ROTATION.md; legacy/openclaw/replay/replay_trace.py
+- `memory`: 1 files
+  - sample: memory/2026-03-01.md
+- `openclaw_skill`: 3 files
+  - sample: openclaw_skill/emotion_core/SKILL.md; openclaw_skill/emotion_core/skill.py; openclaw_skill/emotion_core/install.sh
+- `openemotion`: 50 files
+  - sample: openemotion/__init__.py; openemotion/README.md; openemotion/identity/long_term_self_summary.py; openemotion/identity/__init__.py; openemotion/identity/identity_invariants.py; openemotion/cycle_core/state.py; openemotion/cycle_core/readout.py; openemotion/cycle_core/__init__.py
+- `openemotion.egg-info`: 5 files
+  - sample: openemotion.egg-info/SOURCES.txt; openemotion.egg-info/dependency_links.txt; openemotion.egg-info/requires.txt; openemotion.egg-info/top_level.txt; openemotion.egg-info/PKG-INFO
+- `ops`: 2 files
+  - sample: ops/v6k_daily_report.sh; ops/cron/whitelist_governance.cron
+- `roadmap`: 5 files
+  - sample: roadmap/VersionRoadmap.md; roadmap/ROADMAP_STATE.json; roadmap/ROADMAP_INDEX.md; roadmap/SELF_AWARE_AI_ROADMAP.md; roadmap/versions/MVP11_5.spec.yaml
+- `scenarios`: 45 files
+  - sample: scenarios/meta_cognition.yaml; scenarios/cross_target_isolation.yaml; scenarios/test_mirror_identity.yaml; scenarios/tool_failure_spiral.yaml; scenarios/rhythm_stress_recovery.yaml; scenarios/promise_betrayal.yaml; scenarios/smoke_confabulation_trap.yaml; scenarios/smoke_residual_forced.yaml
+- `schemas`: 18 files
+  - sample: schemas/mvp11_event_log.v1.json; schemas/external_event.schema.json; schemas/response_intent_contract.v1.schema.json; schemas/mvp10_plan.v1.json; schemas/self_model.schema.json; schemas/openemotion_result_v1.schema.json; schemas/long_term_self_summary.schema.json; schemas/mvp10_state_snapshot.v1.json
+- `scripts`: 80 files
+  - sample: scripts/eval_suite_v2_1.py; scripts/eval_suite_v2_2.py; scripts/replay_mvp10.py; scripts/generate_whitelist_receipt.py; scripts/build_mvp11_trend_7d.py; scripts/run_limited_rollout_observation.py; scripts/cycle_analyze_mvp11.py; scripts/run_t07_3_mixed_rerun.py
+- `tasks`: 7 files
+  - sample: tasks/MVP11_5/T01_shadow_snapshot.yaml; tasks/MVP11_5/T06_checker_testbot_scenarios.yaml; tasks/MVP11_5/T02_numeric_leak_taxonomy.yaml; tasks/MVP11_5/T04_violation_taxonomy.yaml; tasks/MVP11_5/T07_shadow_rerun_readiness.yaml; tasks/MVP11_5/T03_numeric_leak_source_trace.yaml; tasks/MVP11_5/T05_response_intent_contract.yaml
+- `tests`: 304 files
+  - sample: tests/test_mvp5_self_model.py; tests/test_mvp4_emotion_mapping.py; tests/test_self_report_consistency.py; tests/test_t07_1_layer2_expansion.py; tests/test_comprehensive_suite.py; tests/test_mvp5_allostasis.py; tests/test_mvp5_intrinsic_motivation.py; tests/test_mvp9_eval_smoke.py
+- `tools`: 46 files
+  - sample: tools/dual_repo_closed_loop_e2e.py; tools/mvp13_daily_report.py; tools/main_chain_wiring_check.py; tools/e2e_api_smoke_mvp11.sh; tools/mvp13_7day_summary.py; tools/run_evaluation.py; tools/test_cycle_core_e2e.py; tools/e2e_memory_retrieval_quality_check_v6.py

@@ -1,0 +1,11 @@
+{
+  "task_id": "task_1773716426535",
+  "action": "create_file",
+  "params": {
+    "filename": "test_file.txt",
+    "content": "Hello World"
+  },
+  "status": "success",
+  "output": "\u6587\u4ef6 test_file.txt \u5df2\u521b\u5efa",
+  "duration_ms": 150
+}

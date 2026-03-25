@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "restore_id": "restore_20260316_ceo_p1c2",
+  "timestamp": "2026-03-16T05:20:00Z",
+  "session_id": "session_20260316_ceo",
+  "status": "success",
+  "loaded_layers": ["identity", "self_model", "summary"],
+  "identity_ref": {
+    "identity_handle": "ceo",
+    "loaded_at": "2026-03-16T05:20:00Z"
+  },
+  "self_model_ref": {
+    "model_handle": "ceo",
+    "loaded_at": "2026-03-16T05:20:00Z"
+  },
+  "summary_ref": {
+    "summary_id": "summary_20260316_ceo_p1c1",
+    "loaded_at": "2026-03-16T05:20:00Z"
+  },
+  "conflicts": [],
+  "warnings": [],
+  "errors": [],
+  "injected_context": {
+    "identity_loaded": true,
+    "capabilities_count": 5,
+    "limitations_count": 3,
+    "active_goals_count": 2,
+    "recovery_hints_present": true
+  },
+  "duration_ms": 45.2,
+  "degraded_mode": false
+}

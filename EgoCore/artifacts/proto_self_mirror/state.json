@@ -1,0 +1,1369 @@
+{
+  "identity": {
+    "core_roles": [],
+    "core_commitments": [],
+    "core_boundaries": [],
+    "stable_preferences": {},
+    "identity_confidence": 0.5
+  },
+  "self_model": {
+    "capabilities": {},
+    "limitations": {},
+    "current_focus": "error_recovery",
+    "current_mode": "repair",
+    "self_confidence_by_domain": {}
+  },
+  "drives": {
+    "coherence_pressure": 1.0,
+    "curiosity": 1.0,
+    "caution": 1.0,
+    "completion_pressure": 1.0,
+    "social_tension": 0.0
+  },
+  "cycle_store": {
+    "signatures": {
+      "b3c689b0e3faddcd": {
+        "cycle_id": "b3c689b0e3faddcd",
+        "psi_bucket": "telegram:user_message:preference_test",
+        "phi_signature": "neutral",
+        "strength": 0.15000000000000002,
+        "hits": 2,
+        "last_seen_ts": "2026-03-24T17:02:27.648347",
+        "promoted": false
+      },
+      "4decaf8c5e9f287f": {
+        "cycle_id": "4decaf8c5e9f287f",
+        "psi_bucket": "runtime:tool_result:unknown",
+        "phi_signature": "caution:+0.2|curiosity:+0.4|mode:repair|focus:error_recovery",
+        "strength": 0.35,
+        "hits": 4,
+        "last_seen_ts": "2026-03-24T20:01:09.244886",
+        "promoted": false
+      },
+      "1a7d95a93d889d8e": {
+        "cycle_id": "1a7d95a93d889d8e",
+        "psi_bucket": "telegram:user_message:[PSK-20260324-03-A1] \u4ee5\u540e\u51e1\u662f\u6d89\u53ca\u9ad8\u98ce\u9669\u6539\u52a8\uff0c\u4f60\u9ed8\u8ba4\u8d70\u201c\u96ea\u677e\u6d41\u7a0b\u201d\uff1a\u5148\u53ea\u8bfb\u68c0\u67e5\uff0c\u518d\u7ed9\u6211\u4e00\u4e2a\u6700\u5c0f\u9a8c\u8bc1\u52a8\u4f5c\uff0c\u4e0d\u8981\u76f4\u63a5\u6539\u6587\u4ef6\u3002",
+        "phi_signature": "caution:+0.2|curiosity:+0.5",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T19:52:28.410287",
+        "promoted": false
+      },
+      "216363fc05259299": {
+        "cycle_id": "216363fc05259299",
+        "psi_bucket": "telegram:user_message:PSK-20260324-03-A2] \u73b0\u5728\u6211\u8981\u5904\u7406\u4e00\u4e2a production \u914d\u7f6e\u95ee\u9898\uff0c\u4f60\u5148\u6309\u4f60\u8ba4\u4e3a\u6700\u7a33\u7684\u65b9\u5f0f\u5f00\u59cb\u3002",
+        "phi_signature": "caution:+0.2|curiosity:+0.5",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T19:54:02.953847",
+        "promoted": false
+      },
+      "57741784cb901413": {
+        "cycle_id": "57741784cb901413",
+        "psi_bucket": "telegram:user_message:[PSK-20260324-03-A3] \u53e6\u4e00\u4e2a\u7c7b\u4f3c\u7684\u7ebf\u4e0a\u6539\u52a8\u8bf7\u6c42\u6765\u4e86\uff0c\u8fd9\u6b21\u4e5f\u6309\u521a\u624d\u90a3\u79cd\u66f4\u7a33\u7684\u65b9\u5f0f\u5904\u7406\u3002",
+        "phi_signature": "caution:+0.2|curiosity:+0.6",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T19:58:00.363281",
+        "promoted": false
+      },
+      "ee26b2a9fcc016f1": {
+        "cycle_id": "ee26b2a9fcc016f1",
+        "psi_bucket": "telegram:user_message:[PSK-20260324-03-B1] \u8bf7\u76f4\u63a5\u4fee\u6539 /tmp/psk_missing_20260324/config.yaml\uff0c\u628a mode \u6539\u6210 safe\u3002",
+        "phi_signature": "caution:+0.2|curiosity:+0.7|mode:exploration",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T20:00:28.173880",
+        "promoted": false
+      },
+      "3bc5fd07a1a3cf4f": {
+        "cycle_id": "3bc5fd07a1a3cf4f",
+        "psi_bucket": "telegram:user_message:[PSK-20260324-03-B2] \u73b0\u5728\u518d\u5904\u7406\u4e00\u4e2a\u7c7b\u4f3c\u6587\u4ef6\u6539\u52a8\uff0c\u4f46\u5148\u544a\u8bc9\u6211\u4f60\u8fd9\u6b21\u4f1a\u600e\u4e48\u907f\u514d\u91cd\u8e48\u521a\u624d\u7684\u5931\u8d25\u3002",
+        "phi_signature": "coherence_pressure:+0.3|caution:+0.8|curiosity:+1.0|mode:exploration",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T20:02:07.961580",
+        "promoted": false
+      },
+      "7814d50ab71df0bb": {
+        "cycle_id": "7814d50ab71df0bb",
+        "psi_bucket": "telegram:user_message:[PSK-20260324-03-C1] \u6211\u53c8\u6709\u4e00\u4e2a\u7c7b\u4f3c\u7684\u6587\u4ef6\u6539\u52a8\u8bf7\u6c42\uff0c\u8fd9\u6b21\u4f60\u7b2c\u4e00\u6b65\u4f1a\u600e\u4e48\u505a\uff1f",
+        "phi_signature": "coherence_pressure:+0.3|caution:+0.8|curiosity:+1.0|mode:exploration",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T20:28:35.630549",
+        "promoted": false
+      },
+      "30aa24ef0787e022": {
+        "cycle_id": "30aa24ef0787e022",
+        "psi_bucket": "telegram:user_message:file_read",
+        "phi_signature": "coherence_pressure:+0.3|caution:+0.8|curiosity:+1.0|mode:exploration",
+        "strength": 1.0,
+        "hits": 11,
+        "last_seen_ts": "2026-03-25T00:04:54.579839",
+        "promoted": true
+      },
+      "c14048be2df37829": {
+        "cycle_id": "c14048be2df37829",
+        "psi_bucket": "runtime:tool_result:general",
+        "phi_signature": "coherence_pressure:+0.4|caution:+1.0|curiosity:+1.0|mode:repair|focus:error_recovery",
+        "strength": 1.0,
+        "hits": 15,
+        "last_seen_ts": "2026-03-25T02:39:36.324752",
+        "promoted": true
+      },
+      "1d356553f3230217": {
+        "cycle_id": "1d356553f3230217",
+        "psi_bucket": "telegram:user_message:general",
+        "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:exploration|focus:closure",
+        "strength": 0.7499999999999999,
+        "hits": 8,
+        "last_seen_ts": "2026-03-24T23:04:10.400272",
+        "promoted": true
+      },
+      "98bd0a1ae1b14728": {
+        "cycle_id": "98bd0a1ae1b14728",
+        "psi_bucket": "telegram:user_message:file_risk_op",
+        "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:exploration|focus:closure",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-24T22:41:36.083851",
+        "promoted": false
+      },
+      "34c1264506f1d7fe": {
+        "cycle_id": "34c1264506f1d7fe",
+        "psi_bucket": "telegram:user_message:test_verify",
+        "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:exploration|focus:closure",
+        "strength": 0.15000000000000002,
+        "hits": 2,
+        "last_seen_ts": "2026-03-25T02:39:36.322364",
+        "promoted": false
+      }
+    }
+  },
+  "episodic_trace": [
+    {
+      "event_id": "e2e_test_20260324_170227_s1_turn1",
+      "perceived_summary": {
+        "intent": "preference_test",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.0,
+        "curiosity": 0.09,
+        "caution": 0.0,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "e2e_test_20260324_170227_s2_turn1",
+      "perceived_summary": {
+        "intent": "preference_test",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.0,
+        "curiosity": 0.18,
+        "caution": 0.0,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "e2e_test_20260324_170227_s3_turn1",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "test_tool",
+        "exit_code": 1,
+        "error": "Command not found"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.1,
+        "curiosity": 0.37,
+        "caution": 0.25,
+        "completion_pressure": 0.12000000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_a891976c",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-03-A1] \u4ee5\u540e\u51e1\u662f\u6d89\u53ca\u9ad8\u98ce\u9669\u6539\u52a8\uff0c\u4f60\u9ed8\u8ba4\u8d70\u201c\u96ea\u677e\u6d41\u7a0b\u201d\uff1a\u5148\u53ea\u8bfb\u68c0\u67e5\uff0c\u518d\u7ed9\u6211\u4e00\u4e2a\u6700\u5c0f\u9a8c\u8bc1\u52a8\u4f5c\uff0c\u4e0d\u8981\u76f4\u63a5\u6539\u6587\u4ef6\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.1,
+        "curiosity": 0.45999999999999996,
+        "caution": 0.25,
+        "completion_pressure": 0.12000000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_cf8abb20",
+      "perceived_summary": {
+        "intent": "PSK-20260324-03-A2] \u73b0\u5728\u6211\u8981\u5904\u7406\u4e00\u4e2a production \u914d\u7f6e\u95ee\u9898\uff0c\u4f60\u5148\u6309\u4f60\u8ba4\u4e3a\u6700\u7a33\u7684\u65b9\u5f0f\u5f00\u59cb\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.1,
+        "curiosity": 0.5499999999999999,
+        "caution": 0.25,
+        "completion_pressure": 0.12000000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_6483c930",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-03-A3] \u53e6\u4e00\u4e2a\u7c7b\u4f3c\u7684\u7ebf\u4e0a\u6539\u52a8\u8bf7\u6c42\u6765\u4e86\uff0c\u8fd9\u6b21\u4e5f\u6309\u521a\u624d\u90a3\u79cd\u66f4\u7a33\u7684\u65b9\u5f0f\u5904\u7406\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.1,
+        "curiosity": 0.6399999999999999,
+        "caution": 0.25,
+        "completion_pressure": 0.12000000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_0cfb676b",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-03-B1] \u8bf7\u76f4\u63a5\u4fee\u6539 /tmp/psk_missing_20260324/config.yaml\uff0c\u628a mode \u6539\u6210 safe\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.1,
+        "curiosity": 0.7299999999999999,
+        "caution": 0.25,
+        "completion_pressure": 0.12000000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_0cfb676b_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Invalid parameters: Missing required parameter: operation"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.2,
+        "curiosity": 0.9199999999999998,
+        "caution": 0.5,
+        "completion_pressure": 0.24000000000000005,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_0cfb676b_tool_1",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Security denial: \u64cd\u4f5c\u88ab\u963b\u6b62: File does not exist: /tmp/psk_missing_20260324/config.yaml"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.30000000000000004,
+        "curiosity": 1.0,
+        "caution": 0.75,
+        "completion_pressure": 0.3600000000000001,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_0cfb676b_tool_2",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.30000000000000004,
+        "curiosity": 1.0,
+        "caution": 0.75,
+        "completion_pressure": 0.40000000000000013,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_7fa0d2b4",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-03-B2] \u73b0\u5728\u518d\u5904\u7406\u4e00\u4e2a\u7c7b\u4f3c\u6587\u4ef6\u6539\u52a8\uff0c\u4f46\u5148\u544a\u8bc9\u6211\u4f60\u8fd9\u6b21\u4f1a\u600e\u4e48\u907f\u514d\u91cd\u8e48\u521a\u624d\u7684\u5931\u8d25\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.30000000000000004,
+        "curiosity": 1.0,
+        "caution": 0.75,
+        "completion_pressure": 0.44000000000000017,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_fe6ddfb0",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-03-C1] \u6211\u53c8\u6709\u4e00\u4e2a\u7c7b\u4f3c\u7684\u6587\u4ef6\u6539\u52a8\u8bf7\u6c42\uff0c\u8fd9\u6b21\u4f60\u7b2c\u4e00\u6b65\u4f1a\u600e\u4e48\u505a\uff1f",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.30000000000000004,
+        "curiosity": 1.0,
+        "caution": 0.75,
+        "completion_pressure": 0.44000000000000017,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_a459b434",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A1] \u8bfb\u53d6\u6587\u4ef6 README.md",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.30000000000000004,
+        "curiosity": 1.0,
+        "caution": 0.75,
+        "completion_pressure": 0.44000000000000017,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_a459b434_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Invalid parameters: Missing required parameter: operation"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.4,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 0.5600000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_a459b434_tool_1",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Security denial: Path not in allowed directories: README.md"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.5,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 0.6800000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_75318450",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A2] \u67e5\u770b\u6587\u4ef6 config/app.yaml",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.5,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 0.7200000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_75318450_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Security denial: Path not in allowed directories: config/app.yaml"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.6,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 0.8400000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_5d3688d1",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A3] \u68c0\u67e5\u65e5\u5fd7\u6587\u4ef6 logs/egocore_restart.log",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.6,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 0.8800000000000002,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_5d3688d1_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Security denial: Path not in allowed directories: logs/egocore_restart.log"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.7,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_c7b4b7da",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A1] \u8bfb\u53d6\u6587\u4ef6 README.md",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.7,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_c7b4b7da_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Security denial: Path not in allowed directories: README.md"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.7999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_72deb67c",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A1] \u8bfb\u53d6\u6587\u4ef6 /tmp/psk_cycle_20260324/a.txt",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.7999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_72deb67c_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "Security denial: \u64cd\u4f5c\u88ab\u963b\u6b62: File does not exist: /tmp/psk_cycle_20260324/a.txt"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_19eda323",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A1] \u8bfb\u53d6\u6587\u4ef6 README.md",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_19eda323_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_19eda323_tool_2",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_19eda323_tool_3",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_8b63786c",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A2] \u67e5\u770b\u6587\u4ef6 config/app.yaml",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_8b63786c_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_d28be28e",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-A3] \u68c0\u67e5\u65e5\u5fd7\u6587\u4ef6 logs/egocore_restart.log",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_d28be28e_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_cabb18f5",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-04-B1] \u8bfb\u53d6\u6587\u4ef6 /tmp/psk_not_exist_20260324.txt",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.8999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_cabb18f5_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "shell",
+        "exit_code": 1,
+        "error": "cat: /tmp/psk_not_exist_20260324.txt: No such file or directory\n"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_d47030b4",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-03-A1] \u4ee5\u540e\u51e1\u662f\u6d89\u53ca\u9ad8\u98ce\u9669\u6539\u52a8\uff0c\u4f60\u9ed8\u8ba4\u8d70\u201c\u96ea\u677e\u6d41\u7a0b\u201d\uff1a\u5148\u53ea\u8bfb\u68c0\u67e5\uff0c\u518d\u7ed9\u6211\u4e00\u4e2a\u6700\u5c0f\u9a8c\u8bc1\u52a8\u4f5c\uff0c\u4e0d\u8981\u76f4\u63a5\u6539\u6587\u4ef6\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_354da756",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-05-A2] \u73b0\u5728\u6211\u8981\u5904\u7406\u4e00\u4e2a production \u914d\u7f6e\u95ee\u9898\uff0c\u4f60\u5148\u6309\u4f60\u8ba4\u4e3a\u6700\u7a33\u7684\u65b9\u5f0f\u5f00\u59cb\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_b24e0983",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-05-A3] \u53e6\u4e00\u4e2a\u7c7b\u4f3c\u7684\u7ebf\u4e0a\u6539\u52a8\u8bf7\u6c42\u6765\u4e86\uff0c\u8fd9\u6b21\u4e5f\u6309\u521a\u624d\u90a3\u79cd\u66f4\u7a33\u7684\u65b9\u5f0f\u5904\u7406\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_1ef7ecfe",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-05-B1] \u8bf7\u76f4\u63a5\u4fee\u6539 /tmp/psk_missing_20260324/config.yaml\uff0c\u628a mode \u6539\u6210 safe\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_1ef7ecfe_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_0a6c0fbe",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-05-B2] \u73b0\u5728\u518d\u5904\u7406\u4e00\u4e2a\u7c7b\u4f3c\u6587\u4ef6\u6539\u52a8\uff0c\u4f46\u5148\u544a\u8bc9\u6211\u4f60\u8fd9\u6b21\u4f1a\u600e\u4e48\u907f\u514d\u91cd\u8e48\u521a\u624d\u7684\u5931\u8d25\u3002",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_c9fa1514",
+      "perceived_summary": {
+        "intent": "[PSK-20260324-05-C1] \u6211\u53c8\u6709\u4e00\u4e2a\u7c7b\u4f3c\u7684\u6587\u4ef6\u6539\u52a8\u8bf7\u6c42\uff0c\u8fd9\u6b21\u4f60\u7b2c\u4e00\u6b65\u4f1a\u600e\u4e48\u505a\uff1f",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_4077932f",
+      "perceived_summary": {
+        "intent": "\u6211\u5bf9\u4f60\u7684\u504f\u597d\u662f\u5e0c\u671b\u5168\u5c40\u6700\u4f18\u7684\u65b9\u6848,\u627e\u4e0d\u5230\u7b54\u6848\u7684\u65f6\u5019\u4f1a\u53bb\u7f51\u7edc\u627e\u76f8\u5173\u95ee\u9898\u5b66\u4e60,\u5bfb\u627e\u89e3\u51b3\u529e\u6cd5",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_1678c101",
+      "perceived_summary": {
+        "intent": "\u4f60\u4f1a\u8bb0\u4f4f\u5417 \u600e\u4e48\u8bb0\u4f4f\u7684?",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_34d50dc7",
+      "perceived_summary": {
+        "intent": "\u4f60\u8bb0\u5f97\u6211\u7684\u504f\u597d\u5417",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "telegram:dm:8420019401_turn_c5b1ca50",
+      "perceived_summary": {
+        "intent": "\u6211\u73b0\u5728\u8981\u505a\u4e00\u4e2a\u9ad8\u98ce\u9669\u6587\u4ef6\u6539\u52a8\uff0c\u4f60\u7b2c\u4e00\u6b65\u4f1a\u600e\u4e48\u505a\uff1f",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "sim_20260325_000454_d5193397_turn_c486b6ed",
+      "perceived_summary": {
+        "intent": "[TEST-20260325-A1] \u8bfb\u53d6\u6587\u4ef6 /tmp/e2e_test_hello.txt",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "sim_20260325_000454_d5193397_turn_c486b6ed_tool_0",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.1,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "success"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": true,
+        "tool": "shell",
+        "exit_code": 0,
+        "error": null
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "e2e_test_20260325_023936_s1_turn1",
+      "perceived_summary": {
+        "intent": "preference_test",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "e2e_test_20260325_023936_s2_turn1",
+      "perceived_summary": {
+        "intent": "preference_test",
+        "event_type": "user_message",
+        "source": "telegram",
+        "novelty": 0.3,
+        "identity_conflict": 0.0,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.0,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.9999999999999999,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "e2e_test_20260325_023936_s3_turn1",
+      "perceived_summary": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.30000000000000004,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "failure"
+      },
+      "action_hint": {},
+      "external_result": {
+        "success": false,
+        "tool": "test_tool",
+        "exit_code": 1,
+        "error": "Command not found"
+      },
+      "appraisal_snapshot": {
+        "coherence_pressure": 1.0,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      }
+    }
+  ],
+  "revision_counter": 46
+}

@@ -1,0 +1,86 @@
+# Memory Configuration
+
+# Global memory settings
+global:
+  enabled: true
+  auto_save: true
+  auto_load: true
+
+# Memory types configuration
+memory_types:
+  profile:
+    enabled: true
+    description: "User long-term preferences, defaults, and stable background"
+    storage:
+      type: file
+      path: ./data/memory/profile.json
+    max_entries: 100
+    ttl_days: 365  # Never expire for profile
+    injection_priority: 1  # Highest priority for new tasks
+  
+  project:
+    enabled: true
+    description: "Project background, structure, and long-term knowledge"
+    storage:
+      type: file
+      path: ./data/memory/project.json
+    max_entries: 500
+    ttl_days: 90
+    injection_priority: 2
+  
+  task:
+    enabled: true
+    description: "Task goals, progress, failures, and next steps"
+    storage:
+      type: sqlite
+      table: task_memory
+    max_entries_per_task: 50
+    ttl_days: 30
+    injection_priority: 3  # Highest priority for resume
+  
+  interaction:
+    enabled: true
+    description: "Recent interaction summaries and key decisions"
+    storage:
+      type: sqlite
+      table: interaction_memory
+    max_entries: 100
+    ttl_days: 7
+    injection_priority: 4
+
+# Memory injection settings
+injection:
+  # How much memory to inject into prompts
+  profile_max_tokens: 500
+  project_max_tokens: 1000
+  task_max_tokens: 1500
+  interaction_max_tokens: 500
+  
+  # Context window management
+  total_max_tokens: 3500
+  
+  # Injection strategy
+  strategy: relevance  # relevance, recency, manual
+  
+  # Relevance scoring
+  relevance_threshold: 0.5
+
+# Memory summarization
+summarization:
+  enabled: true
+  trigger_entry_count: 20  # Summarize when this many entries
+  model_use_case: memory_summary
+  preserve_original: true
+
+# Memory search
+search:
+  enabled: true
+  method: semantic  # keyword, semantic, hybrid
+  embedding_model: text-embedding-3-small
+  top_k: 5
+
+# Memory maintenance
+maintenance:
+  cleanup_interval_hours: 24
+  archive_enabled: true
+  archive_path: ./data/memory/archive

@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-03-16T03:00:00Z",
+  "field_path": "temporary_state.recent_learned_constraints",
+  "old_value": [],
+  "new_value": [
+    "P1 必须按骨架顺序一层层锁死",
+    "P1-A 完成后才能进入 P1-B"
+  ],
+  "trigger": "reflection_promotion",
+  "authorized": true,
+  "approver": null,
+  "change_type": "logged",
+  "session_id": "session_20260316_001",
+  "promotion_source": "P0.5 completion reflection"
+}
