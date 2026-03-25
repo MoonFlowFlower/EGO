@@ -1,0 +1,156 @@
+batch_id: proto_self_overnight_batch_v3
+batch_title: Proto-Self Kernel v1 夜间主题批任务包
+batch_goal: >
+  在 N1 已 verified 的基础上，把 Proto-Self Kernel v1 推进到
+  可反驳实验、可识别泛化边界、可由用户直接测试、且可整夜持续推进的状态。
+truth_sources:
+  - OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml
+  - EgoCore/docs/00_MASTER_INDEX.md
+  - EgoCore/scripts/e2e_proto_self_preflight.py
+  - EgoCore/scripts/regression_proto_self_telegram_e2e.py
+  - EgoCore/artifacts/proto_self_v1/
+  - reports/N1_REPORT.md
+  - runtime/RUN_STATE.json
+
+context_policy:
+  source_of_truth:
+    - runtime/RUN_STATE.json
+    - reports/<SUBTASK_ID>_REPORT.md
+    - reports/<THEME_ID>_THEME_REPORT.md
+    - artifacts/
+    - repo truth sources
+  preferred_execution_mode: one_theme_per_new_session
+  fallback_execution_mode: same_theme_single_session_with_forced_handoff_and_compact
+  compact_is_cache_not_truth: true
+
+default_status_policy:
+  allowed:
+    - verified
+    - implemented_but_pending_real_validation
+    - partial
+    - blocked
+  forbid_claims:
+    - full_project_closed_loop
+    - consciousness_proven
+    - production_ready_without_evidence
+
+baseline_completed:
+  verified_tasks:
+    - N1
+  verified_reports:
+    - reports/N1_REPORT.md
+
+themes:
+  - id: N2
+    title: 递归核有效性实验主题
+    file: tasks/N2_THEME_RECURSIVE_KERNEL_EXPERIMENTS.md
+    depends_on: [N1]
+    stop_on_fail: true
+    priority: P0
+    execution_policy:
+      recommended_mode: same_theme_multi_subtask_overnight
+      allow_cross_session_resume: true
+      allow_continue_after_partial_subtask: true
+      deny_cross_theme_jump: true
+    subtasks:
+      - id: N2A
+        title: 实验合同冻结
+        file: tasks/N2_subtasks/N2A_EXPERIMENT_CONTRACT.md
+        depends_on: []
+        stop_on_fail: true
+      - id: N2B
+        title: 实验脚手架与artifact通道
+        file: tasks/N2_subtasks/N2B_EXPERIMENT_HARNESS.md
+        depends_on: [N2A]
+        stop_on_fail: true
+      - id: N2C
+        title: 主实验运行
+        file: tasks/N2_subtasks/N2C_PRIMARY_EXPERIMENTS.md
+        depends_on: [N2B]
+        stop_on_fail: false
+      - id: N2D
+        title: Ablation与对比实验
+        file: tasks/N2_subtasks/N2D_ABLATION_EXPERIMENTS.md
+        depends_on: [N2C]
+        stop_on_fail: false
+      - id: N2E
+        title: 主题汇总与结论报告
+        file: tasks/N2_subtasks/N2E_THEME_SUMMARY.md
+        depends_on: [N2C]
+        stop_on_fail: true
+
+  - id: N3
+    title: 泛化、误聚合与反证主题
+    file: tasks/N3_THEME_GENERALIZATION_AND_FALSIFICATION.md
+    depends_on: [N2]
+    stop_on_fail: true
+    priority: P1
+    execution_policy:
+      recommended_mode: same_theme_multi_subtask_overnight
+      allow_cross_session_resume: true
+      allow_continue_after_partial_subtask: true
+      deny_cross_theme_jump: true
+    subtasks:
+      - id: N3A
+        title: 样本合同与观测指标冻结
+        file: tasks/N3_subtasks/N3A_SAMPLE_CONTRACT.md
+        depends_on: []
+        stop_on_fail: true
+      - id: N3B
+        title: 应聚合样本与命中检查
+        file: tasks/N3_subtasks/N3B_SHOULD_MERGE_SAMPLES.md
+        depends_on: [N3A]
+        stop_on_fail: false
+      - id: N3C
+        title: 应区分样本与误聚合检查
+        file: tasks/N3_subtasks/N3C_SHOULD_SEPARATE_SAMPLES.md
+        depends_on: [N3A]
+        stop_on_fail: false
+      - id: N3D
+        title: Replay一致性与风险清单
+        file: tasks/N3_subtasks/N3D_REPLAY_AND_RISK_SUMMARY.md
+        depends_on: [N3B, N3C]
+        stop_on_fail: true
+
+  - id: N4
+    title: 用户可测入口与诊断主题
+    file: tasks/N4_THEME_USER_TEST_ENTRY.md
+    depends_on: [N2]
+    stop_on_fail: false
+    priority: P1
+    execution_policy:
+      recommended_mode: same_theme_multi_subtask_overnight
+      allow_cross_session_resume: true
+      allow_continue_after_partial_subtask: true
+      deny_cross_theme_jump: true
+    subtasks:
+      - id: N4A
+        title: 用户测试合同冻结
+        file: tasks/N4_subtasks/N4A_USER_TEST_CONTRACT.md
+        depends_on: []
+        stop_on_fail: true
+      - id: N4B
+        title: 只读诊断入口或等价脚本
+        file: tasks/N4_subtasks/N4B_READONLY_DIAGNOSTICS.md
+        depends_on: [N4A]
+        stop_on_fail: false
+      - id: N4C
+        title: 固定测试场景包
+        file: tasks/N4_subtasks/N4C_SCENARIO_PACK.md
+        depends_on: [N4A]
+        stop_on_fail: false
+      - id: N4D
+        title: 操作手册、对照表与主题报告
+        file: tasks/N4_subtasks/N4D_OPERATOR_GUIDE_AND_SUMMARY.md
+        depends_on: [N4B, N4C]
+        stop_on_fail: true
+
+execution_policy:
+  recommended_mode: one_theme_per_night
+  max_themes_per_night: 1
+  allow_multi_subtask_per_theme: true
+  must_update_run_state_after_each_subtask: true
+  must_write_subtask_report_after_each_subtask: true
+  must_write_theme_report_before_marking_theme_verified: true
+  must_write_session_handoff_if_continuing_same_session: true
+  must_stop_if_dependency_not_verified: true

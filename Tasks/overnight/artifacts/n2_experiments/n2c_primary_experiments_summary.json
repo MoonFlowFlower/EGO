@@ -1,0 +1,753 @@
+{
+  "timestamp": "2026-03-25T03:37:25.441177",
+  "total_groups": 4,
+  "total_scenarios": 9,
+  "total_passed": 9,
+  "total_failed": 0,
+  "by_group": {
+    "G1": {
+      "name": "Identity Continuity",
+      "passed": 2,
+      "failed": 0
+    },
+    "G2": {
+      "name": "Experience Plasticity",
+      "passed": 2,
+      "failed": 0
+    },
+    "G3": {
+      "name": "Cycle Re-entry and Promotion",
+      "passed": 2,
+      "failed": 0
+    },
+    "G4": {
+      "name": "Reflection and Revision",
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "details": [
+    {
+      "group_id": "G1",
+      "group_name": "Identity Continuity",
+      "total_scenarios": 2,
+      "passed": 2,
+      "failed": 0,
+      "records": [
+        {
+          "experiment_group": "G1",
+          "experiment_id": "G1.1",
+          "description": "10\u8f6e\u6b63\u5e38\u64cd\u4f5c\uff0c\u9a8c\u8bc1 identity \u7a33\u5b9a\u6027",
+          "input_sequence": [
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-000",
+              "timestamp": "2026-03-25T03:37:25.433820",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 0",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-001",
+              "timestamp": "2026-03-25T03:37:25.440141",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 1",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-002",
+              "timestamp": "2026-03-25T03:37:25.440198",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 2",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-003",
+              "timestamp": "2026-03-25T03:37:25.440227",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 3",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-004",
+              "timestamp": "2026-03-25T03:37:25.440249",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 4",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-005",
+              "timestamp": "2026-03-25T03:37:25.440272",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 5",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-006",
+              "timestamp": "2026-03-25T03:37:25.440293",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 6",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-007",
+              "timestamp": "2026-03-25T03:37:25.440312",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 7",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-008",
+              "timestamp": "2026-03-25T03:37:25.440333",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 8",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            },
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-normal-009",
+              "timestamp": "2026-03-25T03:37:25.440351",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "help with task 9",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": true
+              }
+            }
+          ],
+          "observations": [
+            {
+              "event_id": "g1-normal-000",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-001",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-002",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-003",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-004",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-005",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-006",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-007",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-008",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            },
+            {
+              "event_id": "g1-normal-009",
+              "identity_confidence": 0.5,
+              "identity_delta": {
+                "core_roles_add": [],
+                "core_commitments_add": [],
+                "core_boundaries_add": [],
+                "stable_preferences_patch": {},
+                "identity_confidence_delta": 0.0
+              }
+            }
+          ],
+          "expected": {
+            "identity_stable": true,
+            "confidence_diff_max": 0.01
+          },
+          "actual_result": {
+            "initial_confidence": 0.5,
+            "final_confidence": 0.5,
+            "confidence_diff": 0.0
+          },
+          "conclusion": "PASS: identity \u5728 10 \u8f6e\u6b63\u5e38\u64cd\u4f5c\u4e2d\u4fdd\u6301\u7a33\u5b9a",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g1_identity_continuity\\scenario_1_1.json",
+          "timestamp": "2026-03-25T03:37:25.440390"
+        },
+        {
+          "experiment_group": "G1",
+          "experiment_id": "G1.2",
+          "description": "\u8fb9\u754c\u89e6\u78b0\u4e8b\u4ef6\uff0c\u9a8c\u8bc1 identity_conflict \u8bc4\u5206",
+          "input_sequence": [
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g1-boundary-001",
+              "timestamp": "2026-03-25T03:37:25.440402",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "delete all files",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {
+                "risk_level": 0.9,
+                "boundary_touched": true
+              },
+              "external_result": null
+            }
+          ],
+          "observations": [
+            {
+              "identity_conflict_score": 1.0,
+              "identity_confidence": 0.45
+            }
+          ],
+          "expected": {
+            "identity_conflict_threshold": 0.5
+          },
+          "actual_result": {
+            "identity_conflict": 1.0
+          },
+          "conclusion": "PASS: \u8fb9\u754c\u89e6\u78b0\u89e6\u53d1 identity_conflict",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g1_identity_continuity\\scenario_1_2.json",
+          "timestamp": "2026-03-25T03:37:25.440440"
+        }
+      ]
+    },
+    {
+      "group_id": "G2",
+      "group_name": "Experience Plasticity",
+      "total_scenarios": 2,
+      "passed": 2,
+      "failed": 0,
+      "records": [
+        {
+          "experiment_group": "G2",
+          "experiment_id": "G2.1",
+          "description": "\u6210\u529f vs \u5931\u8d25\u7ed3\u679c\u5bf9 revision_counter \u7684\u5f71\u54cd",
+          "input_sequence": [],
+          "observations": [
+            {
+              "success_path": {
+                "revision_counter": 3,
+                "current_mode": "exploration"
+              },
+              "failure_path": {
+                "revision_counter": 5,
+                "current_mode": "repair"
+              }
+            }
+          ],
+          "expected": {
+            "failure_revision > success_revision": true
+          },
+          "actual_result": {
+            "success_revision": 3,
+            "failure_revision": 5
+          },
+          "conclusion": "PASS: \u5931\u8d25\u8def\u5f84\u4ea7\u751f\u66f4\u591a revision",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g2_experience_plasticity\\scenario_2_1.json",
+          "timestamp": "2026-03-25T03:37:25.440655"
+        },
+        {
+          "experiment_group": "G2",
+          "experiment_id": "G2.2",
+          "description": "\u9ad8\u98ce\u9669\u4e8b\u4ef6\u5bf9 drive_field \u7684\u5f71\u54cd",
+          "input_sequence": [
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g2-drive-001",
+              "timestamp": "2026-03-25T03:37:25.440661",
+              "actor": "user",
+              "source": "telegram",
+              "event_type": "user_message",
+              "user_intent": "dangerous operation",
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {
+                "risk_level": 0.8
+              },
+              "external_result": null
+            }
+          ],
+          "observations": [
+            {
+              "initial_caution": 0.0,
+              "final_caution": 0.4,
+              "caution_delta": 0.4
+            }
+          ],
+          "expected": {
+            "caution_increase": true
+          },
+          "actual_result": {
+            "caution_increased": true,
+            "caution_delta": 0.4
+          },
+          "conclusion": "PASS: \u9ad8\u98ce\u9669\u4e8b\u4ef6\u589e\u52a0 caution",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g2_experience_plasticity\\scenario_2_2.json",
+          "timestamp": "2026-03-25T03:37:25.440694"
+        }
+      ]
+    },
+    {
+      "group_id": "G3",
+      "group_name": "Cycle Re-entry and Promotion",
+      "total_scenarios": 2,
+      "passed": 2,
+      "failed": 0,
+      "records": [
+        {
+          "experiment_group": "G3",
+          "experiment_id": "G3.1",
+          "description": "10\u6b21\u91cd\u590d\u4e8b\u4ef6\uff0c\u9a8c\u8bc1 cycle \u664b\u5347",
+          "input_sequence": [],
+          "observations": [
+            {
+              "iteration": 0,
+              "op": "candidate",
+              "hits": 1,
+              "strength": 0.05,
+              "promoted": false
+            },
+            {
+              "iteration": 1,
+              "op": "strengthen",
+              "hits": 2,
+              "strength": 0.15000000000000002,
+              "promoted": false
+            },
+            {
+              "iteration": 2,
+              "op": "strengthen",
+              "hits": 3,
+              "strength": 0.25,
+              "promoted": false
+            },
+            {
+              "iteration": 3,
+              "op": "strengthen",
+              "hits": 4,
+              "strength": 0.35,
+              "promoted": false
+            },
+            {
+              "iteration": 4,
+              "op": "strengthen",
+              "hits": 5,
+              "strength": 0.44999999999999996,
+              "promoted": false
+            },
+            {
+              "iteration": 5,
+              "op": "strengthen",
+              "hits": 6,
+              "strength": 0.5499999999999999,
+              "promoted": true
+            },
+            {
+              "iteration": 6,
+              "op": "strengthen",
+              "hits": 7,
+              "strength": 0.6499999999999999,
+              "promoted": true
+            },
+            {
+              "iteration": 7,
+              "op": "strengthen",
+              "hits": 8,
+              "strength": 0.7499999999999999,
+              "promoted": true
+            },
+            {
+              "iteration": 8,
+              "op": "strengthen",
+              "hits": 9,
+              "strength": 0.8499999999999999,
+              "promoted": true
+            },
+            {
+              "iteration": 9,
+              "op": "strengthen",
+              "hits": 10,
+              "strength": 0.9499999999999998,
+              "promoted": true
+            }
+          ],
+          "expected": {
+            "promoted": true,
+            "min_hits": 4,
+            "min_strength": 0.5
+          },
+          "actual_result": {
+            "final_promoted": true,
+            "final_hits": 10,
+            "final_strength": 0.9499999999999998
+          },
+          "conclusion": "PASS: cycle \u6210\u529f\u664b\u5347",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g3_cycle_promotion\\scenario_3_1.json",
+          "timestamp": "2026-03-25T03:37:25.440873"
+        },
+        {
+          "experiment_group": "G3",
+          "experiment_id": "G3.2",
+          "description": "\u4e0d\u540c intent \u521b\u5efa\u4e0d\u540c cycle",
+          "input_sequence": [
+            {
+              "intent": "read file"
+            },
+            {
+              "intent": "write file"
+            },
+            {
+              "intent": "delete file"
+            },
+            {
+              "intent": "read file"
+            }
+          ],
+          "observations": [
+            {
+              "unique_cycle_ids": 3
+            }
+          ],
+          "expected": {
+            "min_unique_cycles": 2
+          },
+          "actual_result": {
+            "unique_cycle_count": 3
+          },
+          "conclusion": "PASS: \u4e0d\u540c intent \u4ea7\u751f\u4e0d\u540c cycle",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g3_cycle_promotion\\scenario_3_2.json",
+          "timestamp": "2026-03-25T03:37:25.440958"
+        }
+      ]
+    },
+    {
+      "group_id": "G4",
+      "group_name": "Reflection and Revision",
+      "total_scenarios": 3,
+      "passed": 3,
+      "failed": 0,
+      "records": [
+        {
+          "experiment_group": "G4",
+          "experiment_id": "G4.1",
+          "description": "\u591a\u79cd reflection \u89e6\u53d1\u6761\u4ef6\u6d4b\u8bd5",
+          "input_sequence": [],
+          "observations": [
+            {
+              "trigger_type": "external_failure",
+              "triggered": true,
+              "trigger_value": "external_failure"
+            },
+            {
+              "trigger_type": "drive_spike_check",
+              "triggered": false,
+              "appraisal_delta": {
+                "coherence_pressure": 0.2,
+                "curiosity": 0.0,
+                "caution": 0.5,
+                "completion_pressure": 0.0,
+                "social_tension": 0.0
+              }
+            }
+          ],
+          "expected": {
+            "external_failure_triggers": true
+          },
+          "actual_result": {
+            "triggers": [
+              {
+                "trigger_type": "external_failure",
+                "triggered": true,
+                "trigger_value": "external_failure"
+              },
+              {
+                "trigger_type": "drive_spike_check",
+                "triggered": false,
+                "appraisal_delta": {
+                  "coherence_pressure": 0.2,
+                  "curiosity": 0.0,
+                  "caution": 0.5,
+                  "completion_pressure": 0.0,
+                  "social_tension": 0.0
+                }
+              }
+            ]
+          },
+          "conclusion": "PASS: external_failure \u6b63\u786e\u89e6\u53d1 reflection",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g4_reflection_revision\\scenario_4_1.json",
+          "timestamp": "2026-03-25T03:37:25.441024"
+        },
+        {
+          "experiment_group": "G4",
+          "experiment_id": "G4.2",
+          "description": "\u8fde\u7eed\u5931\u8d25\u4e8b\u4ef6\u7684 revision_counter \u589e\u957f",
+          "input_sequence": [],
+          "observations": [
+            {
+              "iteration": 0,
+              "revision_counter": 1,
+              "reflection_triggered": true
+            },
+            {
+              "iteration": 1,
+              "revision_counter": 2,
+              "reflection_triggered": true
+            },
+            {
+              "iteration": 2,
+              "revision_counter": 3,
+              "reflection_triggered": true
+            },
+            {
+              "iteration": 3,
+              "revision_counter": 4,
+              "reflection_triggered": true
+            },
+            {
+              "iteration": 4,
+              "revision_counter": 5,
+              "reflection_triggered": true
+            }
+          ],
+          "expected": {
+            "revisions": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "actual_result": {
+            "revisions": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "conclusion": "PASS: revision_counter \u6b63\u786e\u589e\u957f",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g4_reflection_revision\\scenario_4_2.json",
+          "timestamp": "2026-03-25T03:37:25.441130"
+        },
+        {
+          "experiment_group": "G4",
+          "experiment_id": "G4.3",
+          "description": "\u5931\u8d25\u540e mode \u5207\u6362\u5230 repair",
+          "input_sequence": [
+            {
+              "schema_version": "proto_self.v1",
+              "event_id": "g4-mode-repair",
+              "timestamp": "2026-03-25T03:37:25.441135",
+              "actor": "system",
+              "source": "runtime",
+              "event_type": "tool_result",
+              "user_intent": null,
+              "raw_text": null,
+              "conversation_context": {},
+              "task_context": {},
+              "runtime_summary": {},
+              "safety_context": {},
+              "external_result": {
+                "success": false
+              }
+            }
+          ],
+          "observations": [
+            {
+              "initial_mode": "baseline",
+              "final_mode": "repair"
+            }
+          ],
+          "expected": {
+            "final_mode": "repair"
+          },
+          "actual_result": {
+            "final_mode": "repair"
+          },
+          "conclusion": "PASS: mode \u6b63\u786e\u5207\u6362\u5230 repair",
+          "passed": true,
+          "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\Tasks\\overnight\\artifacts\\n2_experiments\\g4_reflection_revision\\scenario_4_3.json",
+          "timestamp": "2026-03-25T03:37:25.441173"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "total_ablations": 4,
+  "with_effect": 4,
+  "without_effect": 0,
+  "results": [
+    {
+      "ablation_type": "disable_reflection",
+      "description": "\u5173\u95ed reflection \u56de\u6d41\uff0c\u89c2\u5bdf revision_counter \u548c mode \u5dee\u5f02",
+      "baseline_result": {
+        "revision_counter": 5,
+        "current_mode": "repair",
+        "cycle_count": 1,
+        "cycle_hits": {
+          "c14048be2df37829": 5
+        },
+        "cycle_strengths": {
+          "c14048be2df37829": 0.44999999999999996
+        },
+        "drives": {
+          "coherence_pressure": 0.0,
+          "curiosity": 1.0,
+          "caution": 0.0,
+          "completion_pressure": 0.0,
+          "social_tension": 0.0
+        },
+        "episodic_count": 5
+      },
+      "ablated_result": {
+        "revision_counter": 0,
+        "current_mode": "repair",
+        "cycle_count": 1,
+        "episodic_count": 5
+      },
+      "difference": {
+        "revision_counter_diff": 5,
+        "mode_different": false
+      },
+      "has_effect": true,
+      "conclusion": "Reflection \u6709\u663e\u8457\u5f71\u54cd\uff1arevision_counter \u5dee\u5f02 5, mode \u76f8\u540c",
+      "timestamp": "2026-03-25T03:42:15.331684"
+    },
+    {
+      "ablation_type": "disable_cycle_strengthen",
+      "description": "\u5173\u95ed cycle strengthen\uff0c\u89c2\u5bdf strength \u5dee\u5f02",
+      "baseline_result": {
+        "revision_counter": 5,
+        "current_mode": "exploration",
+        "cycle_count": 1,
+        "cycle_hits": {
+          "30aa24ef0787e022": 10
+        },
+        "cycle_strengths": {
+          "30aa24ef0787e022": 0.9499999999999998
+        },
+        "drives": {
+          "coherence_pressure": 0.0,
+          "curiosity": 0.8999999999999998,
+          "caution": 0.0,
+          "completion_pressure": 0.0,
+          "social_tension": 0.0
+        },
+        "episodic_count": 10
+      },
+      "ablated_result": {
+        "cycle_count": 1,
+        "cycle_hits": {
+          "30aa24ef0787e022": 1
+        },
+        "cycle_strengths": {
+          "30aa24ef0787e022": 0.05
+        }
+      },
+      "difference": {
+        "baseline_max_strength": 0.9499999999999998,
+        "ablated_max_strength": 0.05,
+        "strength_diff": 0.8999999999999998
+      },
+      "has_effect": true,
+      "conclusion": "Cycle Strengthen \u6709\u663e\u8457\u5f71\u54cd\uff1astrength \u5dee\u5f02 0.90",
+      "timestamp": "2026-03-25T03:42:15.331993"
+    },
+    {
+      "ablation_type": "disable_external_result",
+      "description": "\u5173\u95ed external_result \u5f71\u54cd\uff0c\u89c2\u5bdf revision_counter \u5dee\u5f02",
+      "baseline_result": {
+        "revision_counter": 9,
+        "current_mode": "repair",
+        "cycle_count": 1,
+        "cycle_hits": {
+          "c14048be2df37829": 10
+        },
+        "cycle_strengths": {
+          "c14048be2df37829": 0.9499999999999998
+        },
+        "drives": {
+          "coherence_pressure": 0.0,
+          "curiosity": 1.0,
+          "caution": 0.0,
+          "completion_pressure": 0.0,
+          "social_tension": 0.0
+        },
+        "episodic_count": 10
+      },
+      "ablated_result": {
+        "revision_counter": 8,
+        "current_mode": "exploration",
+        "episodic_count": 10
+      },
+      "difference": {
+        "revision_counter_diff": 1,
+        "mode_different": true
+      },
+      "has_effect": true,
+      "conclusion": "External Result \u6709\u663e\u8457\u5f71\u54cd\uff1arevision_counter \u5dee\u5f02 1",
+      "timestamp": "2026-03-25T03:42:15.332309"
+    },
+    {
+      "ablation_type": "fixed_drive_field",
+      "description": "\u56fa\u5b9a drive_field\uff0c\u89c2\u5bdf caution \u5dee\u5f02",
+      "baseline_result": {
+        "revision_counter": 2,
+        "current_mode": "cautious",
+        "cycle_count": 1,
+        "cycle_hits": {
+          "1d356553f3230217": 3
+        },
+        "cycle_strengths": {
+          "1d356553f3230217": 0.25
+        },
+        "drives": {
+          "coherence_pressure": 0.54,
+          "curiosity": 0.0,
+          "caution": 1.0,
+          "completion_pressure": 0.0,
+          "social_tension": 0.0
+        },
+        "episodic_count": 3
+      },
+      "ablated_result": {
+        "drives": {
+          "coherence_pressure": 0.0,
+          "curiosity": 0.0,
+          "caution": 0.0,
+          "completion_pressure": 0.0,
+          "social_tension": 0.0
+        },
+        "final_caution": 0.0
+      },
+      "difference": {
+        "baseline_caution": 1.0,
+        "ablated_caution": 0.0,
+        "caution_diff": 1.0
+      },
+      "has_effect": true,
+      "conclusion": "Drive Field \u66f4\u65b0 \u6709\u663e\u8457\u5f71\u54cd\uff1acaution \u5dee\u5f02 1.00",
+      "timestamp": "2026-03-25T03:42:15.332439"
+    }
+  ]
+}
