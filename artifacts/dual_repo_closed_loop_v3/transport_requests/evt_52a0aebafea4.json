@@ -1,0 +1,21 @@
+{
+  "request_id": "req_53307251",
+  "event_id": "evt_52a0aebafea4",
+  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+  "case_id": "case_2",
+  "timestamp": "2026-03-16T12:48:33.270712+00:00",
+  "endpoint": "/event",
+  "payload": {
+    "type": "user_message",
+    "actor": "test_user_1",
+    "target": "assistant",
+    "text": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f",
+    "meta": {
+      "event_id": "evt_52a0aebafea4",
+      "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+      "case_id": "case_2",
+      "source": "telegram",
+      "timestamp": "2026-03-16T12:48:33.270505+00:00"
+    }
+  }
+}

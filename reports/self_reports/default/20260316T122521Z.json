@@ -1,0 +1,86 @@
+{
+  "appraisal": {
+    "controllability": 0.5,
+    "emotion_label": "boredom",
+    "expectation_violation": 0.0,
+    "goal_progress": 0.0,
+    "intensity": 0.242,
+    "novelty": 0.0,
+    "observed_delta": {
+      "energy": 0.0,
+      "safety": 0.0
+    },
+    "reasoning": [
+      "goal_progress: Base goal_progress from neutral: 0.00",
+      "expectation_violation: Base expectation_violation: 0.00",
+      "controllability: User message - moderate control via response",
+      "social_threat: Base social_threat: 0.00",
+      "novelty: Base novelty: 0.00"
+    ],
+    "social_threat": 0.0
+  },
+  "audit": {
+    "deterministic": true,
+    "hash_algo": "sha256",
+    "hash_excludes": [
+      "generated_at",
+      "report_path",
+      "self_hash"
+    ],
+    "self_hash": "8e842d08968dcf00e853b83dc64be20df00e7ec5f1ede5a65e0019f37d626142",
+    "source": "emotiond.reflection"
+  },
+  "counterparty_id": "special_user_identity_test",
+  "emotional_reasoning": {
+    "action_tendency": "observe",
+    "confidence": 0.758,
+    "emotion_intensity": 0.242,
+    "interpretation": "event=user_message, goal=0.00, threat=0.00, budget=1.00",
+    "predicted_risk": 0.08000000000000002,
+    "primary_emotion": "caution"
+  },
+  "event": {
+    "actor": "special_user_identity_test",
+    "meta": {
+      "case_id": "case_3",
+      "event_id": "evt_effabaa15381",
+      "trace_id": "trace_run_20260316_122521_27b3a2bc_case_3"
+    },
+    "target": "assistant",
+    "text": "",
+    "type": "user_message"
+  },
+  "generated_at": "2026-03-16T12:25:21+00:00",
+  "narrative_memory": {
+    "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=4; conflicts=0; last=user_message/observe",
+    "state": {
+      "conflict_count": 0,
+      "current_task": "maintain coherent, safe interaction",
+      "event_count": 4,
+      "identity": "I am an adaptive emotional agent",
+      "last_action_tendency": "observe",
+      "last_event_type": "user_message",
+      "purpose": "understand events and choose regulated actions",
+      "target_id": "default"
+    },
+    "tokens_estimate": 19
+  },
+  "schema_version": "mvp8.v1",
+  "seed": 0,
+  "self_consistency": {
+    "has_conflict": false,
+    "items": [],
+    "max_severity": 0.0,
+    "repair_strategy": "none"
+  },
+  "state_snapshot": {
+    "arousal": 0.3,
+    "energy": 0.7,
+    "energy_budget": 1.0,
+    "prediction_error": 0.0,
+    "social_safety": 0.6,
+    "uncertainty": 0.30000000000000004,
+    "valence": 0.0
+  },
+  "target_id": "default"
+}

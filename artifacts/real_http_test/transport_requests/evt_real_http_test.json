@@ -1,0 +1,21 @@
+{
+  "request_id": "req_f1c3811f",
+  "event_id": "evt_real_http_test",
+  "trace_id": null,
+  "case_id": null,
+  "timestamp": "2026-03-17T02:57:10.263205+00:00",
+  "endpoint": "/event",
+  "payload": {
+    "type": "user_message",
+    "actor": "test_user",
+    "target": "assistant",
+    "text": "Hello via REAL HTTP from EgoCore",
+    "meta": {
+      "event_id": "evt_real_http_test",
+      "trace_id": null,
+      "case_id": null,
+      "source": "telegram",
+      "timestamp": "2026-03-17T02:57:10.263084+00:00"
+    }
+  }
+}

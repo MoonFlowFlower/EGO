@@ -1,0 +1,39 @@
+{
+  "event_id": "evt_1773716426535_4197",
+  "timestamp": "2026-03-17T03:00:26.535570+00:00",
+  "actor": {
+    "actor_id": "assistant",
+    "actor_type": "human"
+  },
+  "source": {
+    "channel": "telegram",
+    "source_id": "test_chat_e2e"
+  },
+  "event_type": "assistant_reply",
+  "user_intent": {
+    "intent_type": "chat",
+    "confidence": 0.9
+  },
+  "safety_context": {
+    "risk_level": "low",
+    "permissions": [
+      "read",
+      "write"
+    ]
+  },
+  "conversation_context": {
+    "conversation_id": "e2e_conv_result_1773716426514",
+    "turn_number": 2
+  },
+  "metadata": {
+    "user_message": "\u6587\u4ef6 test_file.txt \u5df2\u521b\u5efa"
+  },
+  "trace_id": "trace_result_1773716426514",
+  "case_id": "e2e_scenario",
+  "external_result": {
+    "task_id": "task_1773716426535",
+    "action": "create_file",
+    "status": "success",
+    "output": "\u6587\u4ef6 test_file.txt \u5df2\u521b\u5efa"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "event_id": "evt_defe27ff2fac",
+  "trace_id": "trace_run_20260316_122521_27b3a2bc_case_2",
+  "case_id": "case_2",
+  "timestamp": "2026-03-16T12:25:21.490691+00:00",
+  "adapter_output": {
+    "output_id": "out_mock_fff00376",
+    "timestamp": "2026-03-16T12:25:21.490708Z",
+    "event_id_ref": "evt_defe27ff2fac",
+    "confidence_metadata": {
+      "overall_confidence": 0.9,
+      "identity_confidence": 1.0,
+      "memory_confidence": 0.8
+    },
+    "appraisal_state_delta": {
+      "valence": 0.2,
+      "arousal": 0.3,
+      "dominance": 0.5
+    },
+    "policy_hint": {
+      "preferred_action_type": "respond",
+      "risk_tolerance": "moderate"
+    },
+    "response_tendency": {
+      "tone": "neutral",
+      "verbosity": "moderate",
+      "proactivity": 0.5
+    }
+  },
+  "adapter_stats": {
+    "total_calls": 3,
+    "successful_calls": 3,
+    "failed_calls": 0,
+    "mock_calls": 0
+  }
+}

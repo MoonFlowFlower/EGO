@@ -1,0 +1,321 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "openemotion_output.schema.json",
+  "title": "OpenEmotion Output Contract",
+  "description": "OpenEmotion → EgoCore 标准输出契约。定义 OpenEmotion 返回给 EgoCore 的结构化输出格式。",
+  "schema_version": "1.0.0",
+  "schema_version_policy": {
+    "major": "破坏性变更：必填字段移除/重命名、类型变更",
+    "minor": "向后兼容：新增可选字段、扩展枚举值",
+    "patch": "文档/描述修正"
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "output_id",
+    "timestamp",
+    "event_id_ref",
+    "confidence_metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "契约版本号 (semver)",
+      "default": "1.0.0"
+    },
+    "output_id": {
+      "type": "string",
+      "description": "输出唯一标识符",
+      "pattern": "^out_[a-zA-Z0-9_-]+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "输出时间 (ISO 8601)"
+    },
+    "event_id_ref": {
+      "type": "string",
+      "description": "关联的输入事件 ID"
+    },
+    "identity_state_delta": {
+      "type": "object",
+      "description": "身份状态变化",
+      "properties": {
+        "name_changed": {
+          "type": "boolean",
+          "description": "名称是否变化"
+        },
+        "role_changed": {
+          "type": "boolean",
+          "description": "角色是否变化"
+        },
+        "commitment_added": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "新增承诺"
+        },
+        "commitment_removed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "移除承诺"
+        },
+        "invariant_violation_detected": {
+          "type": "boolean",
+          "description": "是否检测到不变量违反"
+        }
+      }
+    },
+    "self_model_delta": {
+      "type": "object",
+      "description": "自我模型变化",
+      "properties": {
+        "capabilities_updated": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "capability": { "type": "string" },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          },
+          "description": "能力置信度更新"
+        },
+        "goals_added": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "新增目标"
+        },
+        "goals_completed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "完成的目标"
+        },
+        "limitations_recognized": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "认识的局限性"
+        }
+      }
+    },
+    "memory_update": {
+      "type": "object",
+      "description": "记忆更新",
+      "properties": {
+        "event_memory_additions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "event_ref": { "type": "string" },
+              "salience": { "type": "number", "minimum": 0, "maximum": 1 },
+              "tags": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "description": "事件记忆新增"
+        },
+        "narrative_memory_additions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "narrative": { "type": "string" },
+              "source_events": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "description": "叙事记忆新增"
+        },
+        "policy_memory_additions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "policy": { "type": "string" },
+              "reason": { "type": "string" },
+              "confidence": { "type": "number" }
+            }
+          },
+          "description": "策略记忆新增"
+        }
+      }
+    },
+    "relationship_update": {
+      "type": "object",
+      "description": "关系更新",
+      "properties": {
+        "actor_ref": {
+          "type": "string",
+          "description": "关联的 actor ID"
+        },
+        "trust_delta": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1,
+          "description": "信任度变化 (-1 到 1)"
+        },
+        "attachment_delta": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1,
+          "description": "依恋度变化"
+        },
+        "interaction_count": {
+          "type": "integer",
+          "description": "交互次数"
+        },
+        "last_interaction_summary": {
+          "type": "string",
+          "description": "最近交互摘要"
+        }
+      }
+    },
+    "appraisal_state_delta": {
+      "type": "object",
+      "description": "评价状态变化",
+      "properties": {
+        "valence": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1,
+          "description": "效价 (负-中性-正)"
+        },
+        "arousal": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "唤醒度"
+        },
+        "dominance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "支配度"
+        },
+        "dimensions": {
+          "type": "object",
+          "description": "评价维度",
+          "properties": {
+            "goal_support": { "type": "number", "minimum": -1, "maximum": 1 },
+            "source_credibility": { "type": "number", "minimum": 0, "maximum": 1 },
+            "expectation_violation": { "type": "number", "minimum": -1, "maximum": 1 },
+            "fairness": { "type": "number", "minimum": -1, "maximum": 1 },
+            "threat_level": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "reflection_note": {
+      "type": "object",
+      "description": "反思笔记",
+      "properties": {
+        "observation": {
+          "type": "string",
+          "description": "观察"
+        },
+        "diagnosis": {
+          "type": "string",
+          "description": "诊断"
+        },
+        "policy_candidate": {
+          "type": "string",
+          "description": "策略候选"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "置信度"
+        },
+        "promote_to_memory": {
+          "type": "boolean",
+          "description": "是否提升到长期记忆"
+        }
+      }
+    },
+    "policy_hint": {
+      "type": "object",
+      "description": "策略提示",
+      "properties": {
+        "preferred_action_type": {
+          "type": "string",
+          "enum": ["respond", "act", "wait", "ask_clarify", "delegate", "decline"],
+          "description": "偏好的行动类型"
+        },
+        "risk_tolerance": {
+          "type": "string",
+          "enum": ["conservative", "moderate", "aggressive"],
+          "description": "风险容忍度"
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "建议约束"
+        }
+      }
+    },
+    "response_tendency": {
+      "type": "object",
+      "description": "响应倾向",
+      "properties": {
+        "tone": {
+          "type": "string",
+          "enum": ["formal", "casual", "warm", "neutral", "cautious"],
+          "description": "语气倾向"
+        },
+        "verbosity": {
+          "type": "string",
+          "enum": ["concise", "moderate", "detailed"],
+          "description": "详细程度"
+        },
+        "proactivity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "主动程度"
+        },
+        "emotional_expressiveness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "情感表达程度"
+        }
+      }
+    },
+    "confidence_metadata": {
+      "type": "object",
+      "description": "置信度元数据",
+      "required": ["overall_confidence"],
+      "properties": {
+        "overall_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "整体置信度"
+        },
+        "identity_confidence": {
+          "type": "number",
+          "description": "身份变化置信度"
+        },
+        "memory_confidence": {
+          "type": "number",
+          "description": "记忆更新置信度"
+        },
+        "policy_confidence": {
+          "type": "number",
+          "description": "策略提示置信度"
+        },
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "不确定性原因"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "扩展元数据",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

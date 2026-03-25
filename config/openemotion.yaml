@@ -1,0 +1,50 @@
+# OpenEmotion Bridge Configuration
+# Native EgoCore integration - no OpenClaw hooks required
+
+bridge:
+  enabled: true
+  
+  # OpenEmotion service configuration
+  host: "127.0.0.1"
+  port: 18080
+  
+  # Path to OpenEmotion repository (for auto-start)
+  repo_path: "/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion"
+  
+  # Auto-start OpenEmotion when EgoCore starts
+  auto_start: true
+  
+  # Timeouts (in milliseconds)
+  healthcheck_timeout_ms: 1000
+  plan_timeout_ms: 1500
+  event_timeout_ms: 800
+  
+  # Plan Injection Configuration
+  plan_injection:
+    # Master switch for plan injection
+    enabled: true
+    
+    # Only inject for chat paths
+    chat_only: true
+    
+    # Skip plan injection for these paths
+    skip_commands: true
+    skip_task_control: true
+    skip_tool_paths: true
+    
+    # Soft fail: don't block replies on plan failures
+    soft_fail: true
+    
+  # Event Mirror Configuration  
+  event_mirror:
+    enabled: true
+    
+    # Event types to mirror
+    send_world_events: true
+    send_time_passed: true
+    
+    # Minimum time delta for time_passed events (seconds)
+    time_passed_min_delta: 10
+    
+    # Maximum time to report (clamped, seconds)
+    time_passed_max_seconds: 300

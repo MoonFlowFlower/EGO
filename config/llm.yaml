@@ -1,0 +1,97 @@
+# LLM Configuration
+
+# Default settings - using Baidu Qianfan
+default_provider: qianfan
+default_model: glm-5
+
+# Provider configurations
+providers:
+  qianfan:
+    enabled: true
+    base_url: "https://qianfan.baidubce.com/v2/coding"
+    api_key_env: QIANFAN_API_KEY
+    models:
+      - id: glm-5
+        name: Qianfan Code Latest
+        max_tokens: 128000
+        supports_vision: false
+  
+  openai:
+    enabled: true
+    base_url: "https://api.openai.com/v1"
+    api_key_env: OPENAI_API_KEY
+    models:
+      - id: gpt-4o
+        name: GPT-4o
+        max_tokens: 128000
+        supports_vision: true
+      - id: gpt-4o-mini
+        name: GPT-4o Mini
+        max_tokens: 128000
+        supports_vision: true
+  
+  anthropic:
+    enabled: true
+    base_url: "https://api.anthropic.com"
+    api_key_env: ANTHROPIC_API_KEY
+    models:
+      - id: claude-3-5-sonnet-20241022
+        name: Claude 3.5 Sonnet
+        max_tokens: 200000
+        supports_vision: true
+  
+  deepseek:
+    enabled: true
+    base_url: "https://api.deepseek.com/v1"
+    api_key_env: DEEPSEEK_API_KEY
+    models:
+      - id: deepseek-chat
+        name: DeepSeek Chat
+        max_tokens: 64000
+        supports_vision: false
+
+# Model selection by use case
+use_cases:
+  planning:
+    provider: qianfan
+    model: glm-5
+    temperature: 0.7
+    max_tokens: 4000
+  
+  execution:
+    provider: qianfan
+    model: glm-5
+    temperature: 0.3
+    max_tokens: 8000
+  
+  reporting:
+    provider: qianfan
+    model: glm-5
+    temperature: 0.5
+    max_tokens: 4000
+  
+  memory_summary:
+    provider: qianfan
+    model: glm-5
+    temperature: 0.3
+    max_tokens: 2000
+  
+  chat:
+    provider: qianfan
+    model: glm-5
+    temperature: 0.8
+    max_tokens: 2000
+
+# Request settings
+request:
+  timeout: 60  # seconds
+  max_retries: 3
+  retry_delay: 1  # seconds
+  
+# Fallback configuration
+fallback:
+  enabled: true
+  providers:
+    - openai
+    - anthropic
+    - deepseek

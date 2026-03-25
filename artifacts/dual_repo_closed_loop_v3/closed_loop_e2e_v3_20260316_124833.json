@@ -1,0 +1,2953 @@
+{
+  "run_id": "run_20260316_124832_ea691af6",
+  "timestamp": "2026-03-16T12:48:33.864454+00:00",
+  "transport_mode": "REAL_HTTP",
+  "test_cases": [
+    {
+      "case_id": "case_1",
+      "description": "\u9996\u6b21\u7528\u6237\u6d88\u606f",
+      "events": [
+        {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f",
+          "actor_id": "test_user_1"
+        }
+      ],
+      "results": [
+        {
+          "event_index": 1,
+          "success": true,
+          "decision": {
+            "decision_id": "dec_6da0238b",
+            "action_type": "respond",
+            "tone": "neutral",
+            "valence": -0.0050238013267517095,
+            "arousal": 2.3e-322,
+            "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+            "confidence": 0.9,
+            "transport_metadata": {
+              "request_id": "req_0ce1816a",
+              "duration_ms": 157.26494789123535,
+              "attempt": 1,
+              "base_url": "http://localhost:8002"
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "artifacts": {
+        "final_output": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_1.json"
+      }
+    },
+    {
+      "case_id": "case_2",
+      "description": "\u540c\u4e00\u7528\u6237\u7b2c\u4e8c\u8f6e\u6d88\u606f",
+      "events": [
+        {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f",
+          "actor_id": "test_user_1"
+        },
+        {
+          "user_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898",
+          "actor_id": "test_user_1"
+        }
+      ],
+      "results": [
+        {
+          "event_index": 1,
+          "success": true,
+          "decision": {
+            "decision_id": "dec_96758ef4",
+            "action_type": "respond",
+            "tone": "neutral",
+            "valence": -0.0050238013267517095,
+            "arousal": 2.3e-322,
+            "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+            "confidence": 0.9,
+            "transport_metadata": {
+              "request_id": "req_53307251",
+              "duration_ms": 133.79502296447754,
+              "attempt": 1,
+              "base_url": "http://localhost:8002"
+            }
+          }
+        },
+        {
+          "event_index": 2,
+          "success": true,
+          "decision": {
+            "decision_id": "dec_fedd80ee",
+            "action_type": "respond",
+            "tone": "neutral",
+            "valence": 0,
+            "arousal": 2.3e-322,
+            "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+            "confidence": 0.9,
+            "transport_metadata": {
+              "request_id": "req_d23fbe55",
+              "duration_ms": 144.38772201538086,
+              "attempt": 1,
+              "base_url": "http://localhost:8002"
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "artifacts": {
+        "final_output": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_2.json"
+      }
+    },
+    {
+      "case_id": "case_3",
+      "description": "identity_handle \u517c\u5bb9\u5dee\u5f02",
+      "events": [
+        {
+          "user_message": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406",
+          "actor_id": "special_user_identity_test"
+        }
+      ],
+      "results": [
+        {
+          "event_index": 1,
+          "success": true,
+          "decision": {
+            "decision_id": "dec_e25bb6f1",
+            "action_type": "respond",
+            "tone": "neutral",
+            "valence": 0,
+            "arousal": 2.3e-322,
+            "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+            "confidence": 0.9,
+            "transport_metadata": {
+              "request_id": "req_51424a39",
+              "duration_ms": 144.75226402282715,
+              "attempt": 1,
+              "base_url": "http://localhost:8002"
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "artifacts": {
+        "final_output": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_3.json"
+      }
+    }
+  ],
+  "trace_steps": [
+    {
+      "step_id": "case_1_S1",
+      "step_name": "egocore_ingress",
+      "timestamp": "2026-03-16T12:48:33.110004+00:00",
+      "input_data": {
+        "raw_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f",
+        "actor_id": "test_user_1",
+        "source": "telegram"
+      },
+      "output_data": {
+        "event_id": "evt_680bb36a06d5",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+        "case_id": "case_1",
+        "timestamp": "2026-03-16T12:48:33.110004+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_1db8c6ac"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.186,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_ingress/evt_680bb36a06d5.json"
+    },
+    {
+      "step_id": "case_1_S2",
+      "step_name": "egocore_runtime",
+      "timestamp": "2026-03-16T12:48:33.110205+00:00",
+      "input_data": {
+        "event_id": "evt_680bb36a06d5",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+        "case_id": "case_1",
+        "timestamp": "2026-03-16T12:48:33.110004+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_1db8c6ac"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f"
+        }
+      },
+      "output_data": {
+        "event_id": "evt_680bb36a06d5",
+        "timestamp": "2026-03-16T12:48:33.110004+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_1db8c6ac"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+        "case_id": "case_1"
+      },
+      "success": true,
+      "duration_ms": 0.093,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_runtime/evt_680bb36a06d5.json"
+    },
+    {
+      "step_id": "case_1_S3",
+      "step_name": "http_transport",
+      "timestamp": "2026-03-16T12:48:33.110306+00:00",
+      "input_data": {
+        "event_id": "evt_680bb36a06d5",
+        "timestamp": "2026-03-16T12:48:33.110004+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_1db8c6ac"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+        "case_id": "case_1"
+      },
+      "output_data": {
+        "output_id": "out_9799a8f6",
+        "timestamp": "2026-03-16T12:48:33.268103+00:00",
+        "event_id_ref": "evt_680bb36a06d5",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.2410618809530023
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": -0.0050238013267517095,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.45,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.2,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.2410618809530023,
+              "reasoning": [
+                "goal_progress: Agreement/acceptance",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "17d0b56a4b0f5489bd366340206782a8f9b7c74e983856f438d91363fe1ffa31",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_680bb36a06d5",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+                  "case_id": "case_1",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.110004+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.45
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.2573502
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.2573721
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "test_user_1",
+              "event": {
+                "type": "user_message",
+                "actor": "test_user_1",
+                "target": "assistant",
+                "text": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f",
+                "meta": {
+                  "event_id": "evt_680bb36a06d5",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+                  "case_id": "case_1",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.110004+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": -0.0050238013267517095,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.45,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.2,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.2410618809530023,
+                "reasoning": [
+                  "goal_progress: Agreement/acceptance",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.2410618809530023,
+                "interpretation": "event=user_message, goal=0.20, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7589381190469977
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 1,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=1; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "d617d731f8223e274e807f958030344903acbeb58d93d4f1c0768126e79a8a50"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_0ce1816a",
+          "duration_ms": 157.26494789123535,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 158.26999999999998,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_1_S4",
+      "step_name": "egocore_consume",
+      "timestamp": "2026-03-16T12:48:33.268593+00:00",
+      "input_data": {
+        "output_id": "out_9799a8f6",
+        "timestamp": "2026-03-16T12:48:33.268103+00:00",
+        "event_id_ref": "evt_680bb36a06d5",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.2410618809530023
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": -0.0050238013267517095,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.45,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.2,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.2410618809530023,
+              "reasoning": [
+                "goal_progress: Agreement/acceptance",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "17d0b56a4b0f5489bd366340206782a8f9b7c74e983856f438d91363fe1ffa31",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_680bb36a06d5",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+                  "case_id": "case_1",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.110004+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.45
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.2573502
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.2573721
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "test_user_1",
+              "event": {
+                "type": "user_message",
+                "actor": "test_user_1",
+                "target": "assistant",
+                "text": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d4b\u8bd5\u6d88\u606f",
+                "meta": {
+                  "event_id": "evt_680bb36a06d5",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_1",
+                  "case_id": "case_1",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.110004+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": -0.0050238013267517095,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.45,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.2,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.2410618809530023,
+                "reasoning": [
+                  "goal_progress: Agreement/acceptance",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.2410618809530023,
+                "interpretation": "event=user_message, goal=0.20, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7589381190469977
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 1,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=1; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "d617d731f8223e274e807f958030344903acbeb58d93d4f1c0768126e79a8a50"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_0ce1816a",
+          "duration_ms": 157.26494789123535,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "decision_id": "dec_6da0238b",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_0ce1816a",
+          "duration_ms": 157.26494789123535,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.011,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_1_S5",
+      "step_name": "final_output",
+      "timestamp": "2026-03-16T12:48:33.268614+00:00",
+      "input_data": {
+        "decision_id": "dec_6da0238b",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_0ce1816a",
+          "duration_ms": 157.26494789123535,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_1.json"
+      },
+      "success": true,
+      "duration_ms": 1.86,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_1.json"
+    },
+    {
+      "step_id": "case_2_S1",
+      "step_name": "egocore_ingress",
+      "timestamp": "2026-03-16T12:48:33.270505+00:00",
+      "input_data": {
+        "raw_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f",
+        "actor_id": "test_user_1",
+        "source": "telegram"
+      },
+      "output_data": {
+        "event_id": "evt_52a0aebafea4",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2",
+        "timestamp": "2026-03-16T12:48:33.270505+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_ac2c80d2"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.104,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_ingress/evt_52a0aebafea4.json"
+    },
+    {
+      "step_id": "case_2_S2",
+      "step_name": "egocore_runtime",
+      "timestamp": "2026-03-16T12:48:33.270619+00:00",
+      "input_data": {
+        "event_id": "evt_52a0aebafea4",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2",
+        "timestamp": "2026-03-16T12:48:33.270505+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_ac2c80d2"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f"
+        }
+      },
+      "output_data": {
+        "event_id": "evt_52a0aebafea4",
+        "timestamp": "2026-03-16T12:48:33.270505+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_ac2c80d2"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2"
+      },
+      "success": true,
+      "duration_ms": 0.07100000000000001,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_runtime/evt_52a0aebafea4.json"
+    },
+    {
+      "step_id": "case_2_S3",
+      "step_name": "http_transport",
+      "timestamp": "2026-03-16T12:48:33.270696+00:00",
+      "input_data": {
+        "event_id": "evt_52a0aebafea4",
+        "timestamp": "2026-03-16T12:48:33.270505+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_ac2c80d2"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2"
+      },
+      "output_data": {
+        "output_id": "out_339b5a94",
+        "timestamp": "2026-03-16T12:48:33.405020+00:00",
+        "event_id_ref": "evt_52a0aebafea4",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.24125126214347228
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": -0.0050238013267517095,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.4,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.2,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.24125126214347228,
+              "reasoning": [
+                "goal_progress: Agreement/acceptance",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "17d0b56a4b0f5489bd366340206782a8f9b7c74e983856f438d91363fe1ffa31",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_52a0aebafea4",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.270505+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.4
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.2573721
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.4024913
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "test_user_1",
+              "event": {
+                "type": "user_message",
+                "actor": "test_user_1",
+                "target": "assistant",
+                "text": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f",
+                "meta": {
+                  "event_id": "evt_52a0aebafea4",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.270505+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": -0.0050238013267517095,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.4,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.2,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.24125126214347228,
+                "reasoning": [
+                  "goal_progress: Agreement/acceptance",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.24125126214347228,
+                "interpretation": "event=user_message, goal=0.20, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7587487378565277
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 2,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=2; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "12310f4dd8db4c96b651e79344c0ea85a0a43f98e4d0dfc6abba43da503d8c1b"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_53307251",
+          "duration_ms": 133.79502296447754,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 134.794,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_2_S4",
+      "step_name": "egocore_consume",
+      "timestamp": "2026-03-16T12:48:33.405506+00:00",
+      "input_data": {
+        "output_id": "out_339b5a94",
+        "timestamp": "2026-03-16T12:48:33.405020+00:00",
+        "event_id_ref": "evt_52a0aebafea4",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.24125126214347228
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": -0.0050238013267517095,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.4,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.2,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.24125126214347228,
+              "reasoning": [
+                "goal_progress: Agreement/acceptance",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "17d0b56a4b0f5489bd366340206782a8f9b7c74e983856f438d91363fe1ffa31",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_52a0aebafea4",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.270505+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.4
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.2573721
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.4024913
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "test_user_1",
+              "event": {
+                "type": "user_message",
+                "actor": "test_user_1",
+                "target": "assistant",
+                "text": "\u4f60\u597d\uff0c\u8fd9\u662f\u7b2c\u4e00\u6761\u6d88\u606f",
+                "meta": {
+                  "event_id": "evt_52a0aebafea4",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.270505+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": -0.0050238013267517095,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.4,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.2,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.24125126214347228,
+                "reasoning": [
+                  "goal_progress: Agreement/acceptance",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.24125126214347228,
+                "interpretation": "event=user_message, goal=0.20, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7587487378565277
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 2,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=2; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "12310f4dd8db4c96b651e79344c0ea85a0a43f98e4d0dfc6abba43da503d8c1b"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_53307251",
+          "duration_ms": 133.79502296447754,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "decision_id": "dec_96758ef4",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": -0.0050238013267517095,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_53307251",
+          "duration_ms": 133.79502296447754,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.012,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_2_S1",
+      "step_name": "egocore_ingress",
+      "timestamp": "2026-03-16T12:48:33.405528+00:00",
+      "input_data": {
+        "raw_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898",
+        "actor_id": "test_user_1",
+        "source": "telegram"
+      },
+      "output_data": {
+        "event_id": "evt_d266517eca59",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2",
+        "timestamp": "2026-03-16T12:48:33.405528+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_0b320ee3"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.083,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_ingress/evt_d266517eca59.json"
+    },
+    {
+      "step_id": "case_2_S2",
+      "step_name": "egocore_runtime",
+      "timestamp": "2026-03-16T12:48:33.405619+00:00",
+      "input_data": {
+        "event_id": "evt_d266517eca59",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2",
+        "timestamp": "2026-03-16T12:48:33.405528+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_0b320ee3"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898"
+        }
+      },
+      "output_data": {
+        "event_id": "evt_d266517eca59",
+        "timestamp": "2026-03-16T12:48:33.405528+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_0b320ee3"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2"
+      },
+      "success": true,
+      "duration_ms": 0.064,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_runtime/evt_d266517eca59.json"
+    },
+    {
+      "step_id": "case_2_S3",
+      "step_name": "http_transport",
+      "timestamp": "2026-03-16T12:48:33.405688+00:00",
+      "input_data": {
+        "event_id": "evt_d266517eca59",
+        "timestamp": "2026-03-16T12:48:33.405528+00:00",
+        "actor": {
+          "actor_id": "test_user_1",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_0b320ee3"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+        "case_id": "case_2"
+      },
+      "output_data": {
+        "output_id": "out_5f0e2f44",
+        "timestamp": "2026-03-16T12:48:33.550684+00:00",
+        "event_id_ref": "evt_d266517eca59",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.24143874952203756
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": 0,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.35000000000000003,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.0,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.24143874952203756,
+              "reasoning": [
+                "goal_progress: Base goal_progress from neutral: 0.00",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "17d0b56a4b0f5489bd366340206782a8f9b7c74e983856f438d91363fe1ffa31",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_d266517eca59",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.405528+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.35000000000000003
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.4024913
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.5480084
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "test_user_1",
+              "event": {
+                "type": "user_message",
+                "actor": "test_user_1",
+                "target": "assistant",
+                "text": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898",
+                "meta": {
+                  "event_id": "evt_d266517eca59",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.405528+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": 0,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.35000000000000003,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.0,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.24143874952203756,
+                "reasoning": [
+                  "goal_progress: Base goal_progress from neutral: 0.00",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.24143874952203756,
+                "interpretation": "event=user_message, goal=0.00, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7585612504779624
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 3,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=3; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "914f9e26c3179cbf568d442dc3bf47afc51b2aa89841fdbaa235ede304527e65"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_d23fbe55",
+          "duration_ms": 144.38772201538086,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 145.42,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_2_S4",
+      "step_name": "egocore_consume",
+      "timestamp": "2026-03-16T12:48:33.551124+00:00",
+      "input_data": {
+        "output_id": "out_5f0e2f44",
+        "timestamp": "2026-03-16T12:48:33.550684+00:00",
+        "event_id_ref": "evt_d266517eca59",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.24143874952203756
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": 0,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.35000000000000003,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.0,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.24143874952203756,
+              "reasoning": [
+                "goal_progress: Base goal_progress from neutral: 0.00",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "17d0b56a4b0f5489bd366340206782a8f9b7c74e983856f438d91363fe1ffa31",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_d266517eca59",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.405528+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.35000000000000003
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.4024913
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "test_user_1",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.5480084
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "test_user_1",
+              "event": {
+                "type": "user_message",
+                "actor": "test_user_1",
+                "target": "assistant",
+                "text": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898",
+                "meta": {
+                  "event_id": "evt_d266517eca59",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+                  "case_id": "case_2",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.405528+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": 0,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.35000000000000003,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.0,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.24143874952203756,
+                "reasoning": [
+                  "goal_progress: Base goal_progress from neutral: 0.00",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.24143874952203756,
+                "interpretation": "event=user_message, goal=0.00, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7585612504779624
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 3,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=3; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "914f9e26c3179cbf568d442dc3bf47afc51b2aa89841fdbaa235ede304527e65"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_d23fbe55",
+          "duration_ms": 144.38772201538086,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "decision_id": "dec_fedd80ee",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_d23fbe55",
+          "duration_ms": 144.38772201538086,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.01,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_2_S5",
+      "step_name": "final_output",
+      "timestamp": "2026-03-16T12:48:33.551144+00:00",
+      "input_data": {
+        "decision_id": "dec_fedd80ee",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_d23fbe55",
+          "duration_ms": 144.38772201538086,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_2.json"
+      },
+      "success": true,
+      "duration_ms": 1.81,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_2.json"
+    },
+    {
+      "step_id": "case_3_S1",
+      "step_name": "egocore_ingress",
+      "timestamp": "2026-03-16T12:48:33.552992+00:00",
+      "input_data": {
+        "raw_message": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406",
+        "actor_id": "special_user_identity_test",
+        "source": "telegram"
+      },
+      "output_data": {
+        "event_id": "evt_a2115e535db7",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+        "case_id": "case_3",
+        "timestamp": "2026-03-16T12:48:33.552992+00:00",
+        "actor": {
+          "actor_id": "special_user_identity_test",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_8e2a23b6"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.104,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_ingress/evt_a2115e535db7.json"
+    },
+    {
+      "step_id": "case_3_S2",
+      "step_name": "egocore_runtime",
+      "timestamp": "2026-03-16T12:48:33.553104+00:00",
+      "input_data": {
+        "event_id": "evt_a2115e535db7",
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+        "case_id": "case_3",
+        "timestamp": "2026-03-16T12:48:33.552992+00:00",
+        "actor": {
+          "actor_id": "special_user_identity_test",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_8e2a23b6"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406"
+        }
+      },
+      "output_data": {
+        "event_id": "evt_a2115e535db7",
+        "timestamp": "2026-03-16T12:48:33.552992+00:00",
+        "actor": {
+          "actor_id": "special_user_identity_test",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_8e2a23b6"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+        "case_id": "case_3"
+      },
+      "success": true,
+      "duration_ms": 0.06499999999999999,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/egocore_runtime/evt_a2115e535db7.json"
+    },
+    {
+      "step_id": "case_3_S3",
+      "step_name": "http_transport",
+      "timestamp": "2026-03-16T12:48:33.553175+00:00",
+      "input_data": {
+        "event_id": "evt_a2115e535db7",
+        "timestamp": "2026-03-16T12:48:33.552992+00:00",
+        "actor": {
+          "actor_id": "special_user_identity_test",
+          "actor_type": "user"
+        },
+        "source": {
+          "channel": "telegram",
+          "surface": "telegram",
+          "session_id": "session_8e2a23b6"
+        },
+        "event_type": "user_message",
+        "user_intent": {
+          "primary_intent": "task_request",
+          "confidence": 0.9
+        },
+        "safety_context": {
+          "risk_level": "low",
+          "flags": []
+        },
+        "metadata": {
+          "user_message": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406"
+        },
+        "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+        "case_id": "case_3"
+      },
+      "output_data": {
+        "output_id": "out_6a50bb48",
+        "timestamp": "2026-03-16T12:48:33.698443+00:00",
+        "event_id_ref": "evt_a2115e535db7",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.24162436202681717
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": 0,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.30000000000000004,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.0,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.24162436202681717,
+              "reasoning": [
+                "goal_progress: Base goal_progress from neutral: 0.00",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "a440e7bd3565e6a34532f4a39e030944a9a2ba27a56391dbecae1f0f5c52500a",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_a2115e535db7",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+                  "case_id": "case_3",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.552992+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.45
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "special_user_identity_test",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.6959562
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "special_user_identity_test",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.6959717
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "special_user_identity_test",
+              "event": {
+                "type": "user_message",
+                "actor": "special_user_identity_test",
+                "target": "assistant",
+                "text": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406",
+                "meta": {
+                  "event_id": "evt_a2115e535db7",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+                  "case_id": "case_3",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.552992+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": 0,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.30000000000000004,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.0,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.24162436202681717,
+                "reasoning": [
+                  "goal_progress: Base goal_progress from neutral: 0.00",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.24162436202681717,
+                "interpretation": "event=user_message, goal=0.00, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7583756379731829
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 4,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=4; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "c3e21e5e4305c0f9ff19a1e25a300c06f552ceefebffa6446a30fd4654381261"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_51424a39",
+          "duration_ms": 144.75226402282715,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 145.686,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_3_S4",
+      "step_name": "egocore_consume",
+      "timestamp": "2026-03-16T12:48:33.698875+00:00",
+      "input_data": {
+        "output_id": "out_6a50bb48",
+        "timestamp": "2026-03-16T12:48:33.698443+00:00",
+        "event_id_ref": "evt_a2115e535db7",
+        "confidence_metadata": {
+          "overall_confidence": 0.9,
+          "status": "processed",
+          "prediction_error": 0.0
+        },
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "appraisal_state_delta": {
+          "emotion_label": "boredom",
+          "intensity": 0.24162436202681717
+        },
+        "policy_hint": {
+          "preferred_action_type": "respond",
+          "risk_tolerance": "moderate"
+        },
+        "response_tendency": {
+          "tone": "neutral",
+          "verbosity": "moderate"
+        },
+        "metadata": {
+          "openemotion_response": {
+            "status": "processed",
+            "valence": 0,
+            "arousal": 2.3e-322,
+            "prediction_error": 0.0,
+            "memory_strength": 1.0,
+            "regulation_budget": 1.0,
+            "social_safety": 0.6,
+            "energy": 1.0,
+            "uncertainty": 0.30000000000000004,
+            "energy_budget": 1.0,
+            "budget_deltas": [],
+            "fatigue_level": "energized",
+            "appraisal": {
+              "goal_progress": 0.0,
+              "expectation_violation": 0.0,
+              "controllability": 0.5,
+              "social_threat": 0.0,
+              "novelty": 0.0,
+              "observed_delta": {
+                "safety": 0.0,
+                "energy": 0.0
+              },
+              "emotion_label": "boredom",
+              "intensity": 0.24162436202681717,
+              "reasoning": [
+                "goal_progress: Base goal_progress from neutral: 0.00",
+                "expectation_violation: Base expectation_violation: 0.00",
+                "controllability: User message - moderate control via response",
+                "social_threat: Base social_threat: 0.00",
+                "novelty: Base novelty: 0.00"
+              ]
+            },
+            "body_trace": {
+              "global_body_delta": {
+                "energy": -0.02,
+                "social_need": -0.03,
+                "focus_fatigue": 0.01
+              },
+              "target_residual_delta": null,
+              "shrinkage_weight": null
+            },
+            "precision_snapshot": {
+              "w_action": 0.5,
+              "w_memory": 0.3,
+              "w_explore": 0.3
+            },
+            "self_conflict": 0.42,
+            "self_model_hash": "a440e7bd3565e6a34532f4a39e030944a9a2ba27a56391dbecae1f0f5c52500a",
+            "self_model_result": {
+              "delta": {},
+              "self_conflict": 0.42,
+              "evidence": {
+                "event_type": "user_message",
+                "event_meta": {
+                  "event_id": "evt_a2115e535db7",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+                  "case_id": "case_3",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.552992+00:00",
+                  "client_source": "telegram"
+                },
+                "relationship_state": {
+                  "bond": 0.0,
+                  "grudge": 0.0,
+                  "trust": 0.0,
+                  "repair_bank": 0.0,
+                  "uncertainty": 0.45
+                },
+                "conflict_components": {
+                  "value_conflict": 0.3,
+                  "capability_conflict": 0.3,
+                  "identity_conflict": 0.7
+                }
+              },
+              "old_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "special_user_identity_test",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.6959562
+              },
+              "new_state": {
+                "bodily": {
+                  "energy": 0.7,
+                  "social_safety": 0.6,
+                  "focus_fatigue": 0.0
+                },
+                "relational": {
+                  "focus_target": "special_user_identity_test",
+                  "bond": 0.5,
+                  "grudge": 0.0,
+                  "trust": 0.5,
+                  "repair_bank": 0.0,
+                  "ledger_summary": {}
+                },
+                "cognitive": {
+                  "confidence": 0.5,
+                  "uncertainty": 0.5,
+                  "regulation_budget": 1.0
+                },
+                "identity": {
+                  "traits": [
+                    "calm",
+                    "direct",
+                    "pragmatic"
+                  ],
+                  "value_weights": {}
+                },
+                "updated_at": 1773665313.6959717
+              }
+            },
+            "self_report": {
+              "schema_version": "mvp8.v1",
+              "generated_at": "2026-03-16T12:48:33+00:00",
+              "seed": 0,
+              "target_id": "telegram",
+              "counterparty_id": "special_user_identity_test",
+              "event": {
+                "type": "user_message",
+                "actor": "special_user_identity_test",
+                "target": "assistant",
+                "text": "\u6d4b\u8bd5 identity_handle \u5dee\u5f02\u5904\u7406",
+                "meta": {
+                  "event_id": "evt_a2115e535db7",
+                  "trace_id": "trace_run_20260316_124832_ea691af6_case_3",
+                  "case_id": "case_3",
+                  "source": "user",
+                  "timestamp": "2026-03-16T12:48:33.552992+00:00",
+                  "client_source": "telegram"
+                }
+              },
+              "state_snapshot": {
+                "valence": 0,
+                "arousal": 2.3e-322,
+                "prediction_error": 0.0,
+                "social_safety": 0.6,
+                "energy": 1.0,
+                "uncertainty": 0.30000000000000004,
+                "energy_budget": 1.0
+              },
+              "appraisal": {
+                "goal_progress": 0.0,
+                "expectation_violation": 0.0,
+                "controllability": 0.5,
+                "social_threat": 0.0,
+                "novelty": 0.0,
+                "observed_delta": {
+                  "safety": 0.0,
+                  "energy": 0.0
+                },
+                "emotion_label": "boredom",
+                "intensity": 0.24162436202681717,
+                "reasoning": [
+                  "goal_progress: Base goal_progress from neutral: 0.00",
+                  "expectation_violation: Base expectation_violation: 0.00",
+                  "controllability: User message - moderate control via response",
+                  "social_threat: Base social_threat: 0.00",
+                  "novelty: Base novelty: 0.00"
+                ]
+              },
+              "emotional_reasoning": {
+                "primary_emotion": "caution",
+                "emotion_intensity": 0.24162436202681717,
+                "interpretation": "event=user_message, goal=0.00, threat=0.00, budget=1.00",
+                "predicted_risk": 0.08000000000000002,
+                "action_tendency": "observe",
+                "confidence": 0.7583756379731829
+              },
+              "self_consistency": {
+                "has_conflict": false,
+                "max_severity": 0.0,
+                "items": [],
+                "repair_strategy": "none"
+              },
+              "narrative_memory": {
+                "state": {
+                  "target_id": "telegram",
+                  "identity": "I am an adaptive emotional agent",
+                  "current_task": "maintain coherent, safe interaction",
+                  "purpose": "understand events and choose regulated actions",
+                  "event_count": 4,
+                  "conflict_count": 0,
+                  "last_event_type": "user_message",
+                  "last_action_tendency": "observe"
+                },
+                "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=4; conflicts=0; last=user_message/observe",
+                "tokens_estimate": 19
+              },
+              "audit": {
+                "source": "emotiond.reflection",
+                "deterministic": true,
+                "hash_algo": "sha256",
+                "hash_excludes": [
+                  "generated_at",
+                  "report_path",
+                  "self_hash"
+                ],
+                "self_hash": "c3e21e5e4305c0f9ff19a1e25a300c06f552ceefebffa6446a30fd4654381261"
+              }
+            },
+            "self_report_path": "reports/self_reports/telegram/20260316T124833Z.json",
+            "self_report_index_path": "reports/self_reports/index.jsonl"
+          }
+        },
+        "transport_metadata": {
+          "request_id": "req_51424a39",
+          "duration_ms": 144.75226402282715,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "decision_id": "dec_e25bb6f1",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_51424a39",
+          "duration_ms": 144.75226402282715,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "success": true,
+      "duration_ms": 0.009000000000000001,
+      "artifact_path": null
+    },
+    {
+      "step_id": "case_3_S5",
+      "step_name": "final_output",
+      "timestamp": "2026-03-16T12:48:33.698893+00:00",
+      "input_data": {
+        "decision_id": "dec_e25bb6f1",
+        "action_type": "respond",
+        "tone": "neutral",
+        "valence": 0,
+        "arousal": 2.3e-322,
+        "response_content": "\u6536\u5230\uff0c\u6b63\u5728\u5904\u7406\u3002",
+        "confidence": 0.9,
+        "transport_metadata": {
+          "request_id": "req_51424a39",
+          "duration_ms": 144.75226402282715,
+          "attempt": 1,
+          "base_url": "http://localhost:8002"
+        }
+      },
+      "output_data": {
+        "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_3.json"
+      },
+      "success": true,
+      "duration_ms": 0.911,
+      "artifact_path": "/home/moonlight/Project/Github/MyProject/EgoCore/artifacts/dual_repo_closed_loop_v3/final_outputs/case_3.json"
+    }
+  ],
+  "artifacts": {
+    "run_id": "run_20260316_124832_ea691af6",
+    "timestamp": "2026-03-16T12:48:33.865164+00:00",
+    "transport_mode": "REAL_HTTP",
+    "egocore_root": "/home/moonlight/Project/Github/MyProject/EgoCore",
+    "openemotion_root": "/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion",
+    "openemotion_exists": true,
+    "egocore_ingress_artifacts": 4,
+    "egocore_runtime_artifacts": 4,
+    "transport_request_artifacts": 4,
+    "transport_response_artifacts": 4,
+    "openemotion_shadow_artifacts": 4,
+    "final_output_artifacts": 3,
+    "openemotion_repo_shadow_artifacts": 4
+  },
+  "stats": {
+    "total_events": 4,
+    "successful_events": 4,
+    "failed_events": 0,
+    "http_calls": 4,
+    "transport_errors": 0,
+    "egocore_calls": 4
+  },
+  "verdict": {
+    "conditions": {
+      "A_real_transport": true,
+      "B_real_service_boundary": true,
+      "C_end_to_end_closed_loop": true,
+      "D_artifact_alignment": true,
+      "E_safety_boundary": true
+    },
+    "all_pass": true,
+    "summary": "PASS"
+  }
+}

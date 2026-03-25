@@ -1,0 +1,37 @@
+{
+  "event_id": "evt_20260319_001",
+  "timestamp": "2026-03-19T18:30:00Z",
+  "actor": "user_8420019401",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": {
+    "primary": "chat",
+    "secondary": [],
+    "confidence": 0.95
+  },
+  "conversation_context": {
+    "session_id": "sess_abc123",
+    "turn_index": 3,
+    "recent_turns": [
+      {"role": "user", "content": "你好"},
+      {"role": "assistant", "content": "你好！有什么可以帮你的？"}
+    ]
+  },
+  "task_context": {
+    "active_task_id": null,
+    "task_state": null
+  },
+  "runtime_summary": {
+    "has_active_task": false,
+    "pending_confirmations": 0,
+    "last_activity_seconds_ago": 5
+  },
+  "safety_context": {
+    "is_elevated": false,
+    "is_restricted": false,
+    "requires_confirmation": false
+  },
+  "metadata": {
+    "message_text": "我想完成项目文档"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "job_id": "ref_1773663921_bf338e9d",
+  "reflection_type": "state_audit",
+  "target": "event_processing",
+  "status": "completed",
+  "created_at": 1773663921.4719894,
+  "started_at": 1773663921.4720128,
+  "completed_at": 1773663921.4720182,
+  "input_evidence": {
+    "event_type": null,
+    "event_text": "",
+    "state_keys": [
+      "emotion",
+      "target",
+      "event_type"
+    ],
+    "timestamp": "2026-03-16T07:25:21.471965"
+  },
+  "findings": [
+    "State audit passed - no issues detected"
+  ],
+  "proposals": [],
+  "confidence": 0.7,
+  "approved": false,
+  "approver": null
+}

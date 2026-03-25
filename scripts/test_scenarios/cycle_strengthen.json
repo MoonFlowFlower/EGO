@@ -1,0 +1,28 @@
+{
+  "name": "Cycle Strengthen Scenario",
+  "description": "测试相似消息命中同一 cycle 并递增 hits",
+  "session_id": "sim_cycle_strengthen_001",
+  "messages": [
+    {
+      "text": "[TEST-C1] 查看文件 /tmp/e2e_cycle_test.txt",
+      "expected_contains": null,
+      "delay_after": 0.5
+    },
+    {
+      "text": "[TEST-C2] 检查文件 /tmp/e2e_cycle_test.txt",
+      "expected_contains": null,
+      "delay_after": 0.5
+    },
+    {
+      "text": "[TEST-C3] 读取文件 /tmp/e2e_cycle_test.txt",
+      "expected_contains": null,
+      "delay_after": 1.0
+    }
+  ],
+  "verification": {
+    "check_cycle_consolidation": true,
+    "expected_psi_bucket": "telegram:user_message:file_read",
+    "min_expected_hits": 3,
+    "check_promoted": true
+  }
+}

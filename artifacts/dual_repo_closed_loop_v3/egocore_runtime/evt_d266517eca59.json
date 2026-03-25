@@ -1,0 +1,33 @@
+{
+  "event_id": "evt_d266517eca59",
+  "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+  "case_id": "case_2",
+  "timestamp": "2026-03-16T12:48:33.405619+00:00",
+  "event_input": {
+    "event_id": "evt_d266517eca59",
+    "timestamp": "2026-03-16T12:48:33.405528+00:00",
+    "actor": {
+      "actor_id": "test_user_1",
+      "actor_type": "user"
+    },
+    "source": {
+      "channel": "telegram",
+      "surface": "telegram",
+      "session_id": "session_0b320ee3"
+    },
+    "event_type": "user_message",
+    "user_intent": {
+      "primary_intent": "task_request",
+      "confidence": 0.9
+    },
+    "safety_context": {
+      "risk_level": "low",
+      "flags": []
+    },
+    "metadata": {
+      "user_message": "\u6211\u60f3\u7ee7\u7eed\u521a\u624d\u7684\u8bdd\u9898"
+    },
+    "trace_id": "trace_run_20260316_124832_ea691af6_case_2",
+    "case_id": "case_2"
+  }
+}

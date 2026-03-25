@@ -1,0 +1,169 @@
+metadata:
+  name: "emotion_context_formatter"
+  version: "0.1.0"
+  created_at: "2026-03-14"
+  owner: "moonlight"
+  status: "frozen"
+
+responsibility:
+  description: "根据情绪状态格式化回复上下文"
+  problem_solved: "回复缺乏情绪适配，显得机械"
+  why_needed: "提升交互自然度，让回复更符合当前情绪氛围"
+
+caller:
+  primary: "reply_pipeline"
+  secondary: []
+
+trigger:
+  condition: "reply 生成前，当 emotion_state 可用时"
+  frequency: "per_message"
+  priority: "normal"
+
+input:
+  schema:
+    type: "object"
+    required: ["raw_context", "emotion_state"]
+    properties:
+      raw_context:
+        type: "string"
+        description: "原始上下文文本"
+        minLength: 1
+        maxLength: 10000
+      emotion_state:
+        type: "object"
+        required: ["valence", "arousal"]
+        properties:
+          valence:
+            type: "number"
+            description: "情绪效价，-1(负面) 到 1(正面)"
+            minimum: -1
+            maximum: 1
+          arousal:
+            type: "number"
+            description: "唤醒度，0(平静) 到 1(激动)"
+            minimum: 0
+            maximum: 1
+  example:
+    raw_context: "用户询问天气"
+    emotion_state:
+      valence: 0.3
+      arousal: 0.5
+  validation_rules:
+    - "emotion_state.valence 必须在 [-1, 1] 范围内"
+    - "emotion_state.arousal 必须在 [0, 1] 范围内"
+
+output:
+  schema:
+    type: "object"
+    required: ["formatted_context", "emotion_applied"]
+    properties:
+      formatted_context:
+        type: "string"
+        description: "格式化后的上下文"
+      emotion_applied:
+        type: "boolean"
+        description: "是否成功应用情绪格式化"
+      meta:
+        type: "object"
+        properties:
+          emotion_label:
+            type: "string"
+            description: "情绪标签"
+          processing_time_ms:
+            type: "number"
+            description: "处理耗时"
+  example:
+    formatted_context: "[友好] 用户询问天气"
+    emotion_applied: true
+    meta:
+      emotion_label: "friendly"
+      processing_time_ms: 5
+  empty_behavior: "返回原始上下文，emotion_applied=false"
+
+error:
+  schema:
+    type: "object"
+    required: ["code", "message"]
+    properties:
+      code:
+        type: "string"
+        enum: ["INVALID_STATE", "TIMEOUT", "PROCESSING_ERROR", "UNKNOWN"]
+      message:
+        type: "string"
+      details:
+        type: "object"
+  error_codes:
+    - code: "INVALID_STATE"
+      description: "情绪状态格式无效或超出范围"
+      severity: "warning"
+      user_visible: false
+    - code: "TIMEOUT"
+      description: "处理超时"
+      severity: "warning"
+      user_visible: false
+    - code: "PROCESSING_ERROR"
+      description: "处理过程中发生错误"
+      severity: "warning"
+      user_visible: false
+    - code: "UNKNOWN"
+      description: "未知错误"
+      severity: "error"
+      user_visible: false
+
+fallback:
+  enabled: true
+  behavior: "返回原始上下文，不添加情绪标记，emotion_applied=false"
+  default_value:
+    formatted_context: "{raw_context}"
+    emotion_applied: false
+    meta:
+      emotion_label: "none"
+      processing_time_ms: 0
+  notify_user: false
+  log_level: "warning"
+
+timeout:
+  default_ms: 100
+  max_ms: 500
+  graceful_degradation: true
+
+non_goals:
+  - "不修改原始消息内容"
+  - "不做情绪检测（只接收已检测的情绪状态）"
+  - "不存储历史情绪数据"
+  - "不做复杂情绪推理"
+  - "不影响回复生成的核心逻辑"
+
+dependencies:
+  required: []
+  optional:
+    - name: "emotion_detector"
+      description: "如果 emotion_state 未提供，可尝试检测"
+      fallback: "使用中性情绪默认值"
+
+integration:
+  point: "reply_pipeline.pre_process"
+  feature_flag: "emotion_context_enabled"
+  rollout_strategy: "shadow_mode"
+  rollback_plan: "关闭 feature flag emotion_context_enabled"
+
+observability:
+  metrics:
+    - name: "emotion_format_requests_total"
+      type: "counter"
+      description: "格式化请求总次数"
+    - name: "emotion_format_success_total"
+      type: "counter"
+      description: "成功格式化次数"
+    - name: "emotion_format_fallback_total"
+      type: "counter"
+      description: "fallback 触发次数"
+    - name: "emotion_format_latency_ms"
+      type: "histogram"
+      description: "格式化延迟分布"
+      buckets: [1, 5, 10, 25, 50, 100, 250, 500]
+  logs:
+    level: "info"
+    sample_rate: 1.0
+  traces:
+    enabled: false

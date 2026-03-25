@@ -1,0 +1,165 @@
+{
+  "timestamp": "2026-03-19T04:45:54.171743",
+  "test_user_id": 8420019401,
+  "test_chat_id": 8420019401,
+  "summary": {
+    "total": 6,
+    "passed": 1,
+    "failed": 5
+  },
+  "results": [
+    {
+      "test_id": 1,
+      "expected_type": "preference",
+      "input": "我喜欢用 Python 写代码",
+      "check": "event_stored",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "error": "未检测到 memory_update"
+      },
+      "response": "具体指哪部分？",
+      "diagnostic_data": {
+        "envelope_id": "env_e4e76181",
+        "result_id": null,
+        "decision_id": "dec_513fe1d0",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "unknown",
+          "turn_count": 1
+        }
+      }
+    },
+    {
+      "test_id": 2,
+      "expected_type": "goal",
+      "input": "我想尽快把这个项目做出最小闭环",
+      "check": "event_stored",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "error": "未检测到 memory_update"
+      },
+      "response": "指的是什么？",
+      "diagnostic_data": {
+        "envelope_id": "env_054ef29f",
+        "result_id": null,
+        "decision_id": "dec_ed155b24",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 2
+        }
+      }
+    },
+    {
+      "test_id": 3,
+      "expected_type": "constraint",
+      "input": "我只有晚上有空",
+      "check": "event_stored",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "error": "未检测到 memory_update"
+      },
+      "response": "你说的是…？",
+      "diagnostic_data": {
+        "envelope_id": "env_ad2244a0",
+        "result_id": null,
+        "decision_id": "dec_54e6565d",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 3
+        }
+      }
+    },
+    {
+      "test_id": 4,
+      "expected_type": "read_context",
+      "input": "Python 这边下一步我该先做什么？",
+      "check": "old_value_present",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "memory_refs_count": 0,
+        "context_detected": false
+      },
+      "response": "展开讲讲？",
+      "diagnostic_data": {
+        "envelope_id": "env_706c147d",
+        "result_id": null,
+        "decision_id": "dec_1e5a9103",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 4
+        }
+      }
+    },
+    {
+      "test_id": 5,
+      "expected_type": "chitchat",
+      "input": "今天天气不错",
+      "check": "no_memory_write",
+      "pass": true,
+      "analysis": {
+        "pass": true,
+        "primary_mode": "unknown",
+        "memory_written": false
+      },
+      "response": "具体指哪部分？",
+      "diagnostic_data": {
+        "envelope_id": "env_c8abecb6",
+        "result_id": null,
+        "decision_id": "dec_f9064340",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 5
+        }
+      }
+    },
+    {
+      "test_id": 6,
+      "expected_type": "correction",
+      "input": "不对，我说的是 JavaScript",
+      "check": "override_or_conflict",
+      "pass": false,
+      "analysis": {
+        "pass": false,
+        "override_detected": false,
+        "reflection": "N/A"
+      },
+      "response": "你说的是…？",
+      "diagnostic_data": {
+        "envelope_id": "env_26098911",
+        "result_id": null,
+        "decision_id": "dec_d4795989",
+        "primary_mode": "unknown",
+        "runtime_route": "reply",
+        "degraded": false,
+        "relationship": {
+          "temperature": 0.5,
+          "social_arc": "stable",
+          "turn_count": 6
+        }
+      }
+    }
+  ]
+}

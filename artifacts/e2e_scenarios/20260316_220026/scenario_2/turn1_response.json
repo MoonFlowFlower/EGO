@@ -1,0 +1,222 @@
+{
+  "status": "processed",
+  "valence": 0.0,
+  "arousal": 0.28500000000000003,
+  "prediction_error": 0.0,
+  "memory_strength": 1.0855,
+  "regulation_budget": 1.0,
+  "social_safety": 0.6,
+  "energy": 0.7,
+  "uncertainty": 0.45,
+  "energy_budget": 1.0,
+  "budget_deltas": [],
+  "fatigue_level": "energized",
+  "appraisal": {
+    "goal_progress": 0.4,
+    "expectation_violation": 0.0,
+    "controllability": 0.5,
+    "social_threat": 0.0,
+    "novelty": 0.0,
+    "observed_delta": {
+      "safety": 0.0,
+      "energy": 0.0
+    },
+    "emotion_label": "joy",
+    "intensity": 0.5,
+    "reasoning": [
+      "goal_progress: Positive expression",
+      "expectation_violation: Base expectation_violation: 0.00",
+      "controllability: User message - moderate control via response",
+      "social_threat: Base social_threat: 0.00",
+      "novelty: Base novelty: 0.00"
+    ]
+  },
+  "body_trace": {
+    "global_body_delta": {
+      "energy": -0.02,
+      "social_need": -0.03,
+      "focus_fatigue": 0.01
+    },
+    "target_residual_delta": null,
+    "shrinkage_weight": null
+  },
+  "precision_snapshot": {
+    "w_action": 0.5,
+    "w_memory": 0.3,
+    "w_explore": 0.3
+  },
+  "self_conflict": 0.42,
+  "self_model_hash": "ab6d8402f74c175571d0b5f0354d1cf0f306340193370be8a6e75d70d298339d",
+  "self_model_result": {
+    "delta": {},
+    "self_conflict": 0.42,
+    "evidence": {
+      "event_type": "user_message",
+      "event_meta": {
+        "source": "egocore_direct",
+        "trace_id": "trace_memory_1773716426465",
+        "conversation_id": "e2e_conv_memory_1773716426465",
+        "turn": 1
+      },
+      "relationship_state": {
+        "bond": 0.0,
+        "grudge": 0.0,
+        "trust": 0.0,
+        "repair_bank": 0.0,
+        "uncertainty": 0.45
+      },
+      "conflict_components": {
+        "value_conflict": 0.3,
+        "capability_conflict": 0.3,
+        "identity_conflict": 0.7
+      }
+    },
+    "old_state": {
+      "bodily": {
+        "energy": 0.7,
+        "social_safety": 0.6,
+        "focus_fatigue": 0.0
+      },
+      "relational": {
+        "focus_target": "test_user",
+        "bond": 0.5,
+        "grudge": 0.0,
+        "trust": 0.5,
+        "repair_bank": 0.0,
+        "ledger_summary": {}
+      },
+      "cognitive": {
+        "confidence": 0.5,
+        "uncertainty": 0.5,
+        "regulation_budget": 1.0
+      },
+      "identity": {
+        "traits": [
+          "calm",
+          "direct",
+          "pragmatic"
+        ],
+        "value_weights": {}
+      },
+      "updated_at": 1773716426.4613068
+    },
+    "new_state": {
+      "bodily": {
+        "energy": 0.7,
+        "social_safety": 0.6,
+        "focus_fatigue": 0.0
+      },
+      "relational": {
+        "focus_target": "test_user",
+        "bond": 0.5,
+        "grudge": 0.0,
+        "trust": 0.5,
+        "repair_bank": 0.0,
+        "ledger_summary": {}
+      },
+      "cognitive": {
+        "confidence": 0.5,
+        "uncertainty": 0.5,
+        "regulation_budget": 1.0
+      },
+      "identity": {
+        "traits": [
+          "calm",
+          "direct",
+          "pragmatic"
+        ],
+        "value_weights": {}
+      },
+      "updated_at": 1773716426.4912834
+    }
+  },
+  "self_report": {
+    "schema_version": "mvp8.v1",
+    "generated_at": "2026-03-17T03:00:26+00:00",
+    "seed": 0,
+    "target_id": "default",
+    "counterparty_id": "test_user",
+    "event": {
+      "type": "user_message",
+      "actor": "test_user",
+      "target": "assistant",
+      "text": "\u6211\u53eb\u5f20\u4e09\uff0c\u6211\u559c\u6b22\u7f16\u7a0b",
+      "meta": {
+        "source": "egocore_direct",
+        "trace_id": "trace_memory_1773716426465",
+        "conversation_id": "e2e_conv_memory_1773716426465",
+        "turn": 1
+      }
+    },
+    "state_snapshot": {
+      "valence": 0.0,
+      "arousal": 0.28500000000000003,
+      "prediction_error": 0.0,
+      "social_safety": 0.6,
+      "energy": 0.7,
+      "uncertainty": 0.45,
+      "energy_budget": 1.0
+    },
+    "appraisal": {
+      "goal_progress": 0.4,
+      "expectation_violation": 0.0,
+      "controllability": 0.5,
+      "social_threat": 0.0,
+      "novelty": 0.0,
+      "observed_delta": {
+        "safety": 0.0,
+        "energy": 0.0
+      },
+      "emotion_label": "joy",
+      "intensity": 0.5,
+      "reasoning": [
+        "goal_progress: Positive expression",
+        "expectation_violation: Base expectation_violation: 0.00",
+        "controllability: User message - moderate control via response",
+        "social_threat: Base social_threat: 0.00",
+        "novelty: Base novelty: 0.00"
+      ]
+    },
+    "emotional_reasoning": {
+      "primary_emotion": "trust",
+      "emotion_intensity": 0.5,
+      "interpretation": "event=user_message, goal=0.40, threat=0.00, budget=1.00",
+      "predicted_risk": 0.08000000000000002,
+      "action_tendency": "approach",
+      "confidence": 0.5
+    },
+    "self_consistency": {
+      "has_conflict": false,
+      "max_severity": 0.0,
+      "items": [],
+      "repair_strategy": "none"
+    },
+    "narrative_memory": {
+      "state": {
+        "target_id": "default",
+        "identity": "I am an adaptive emotional agent",
+        "current_task": "maintain coherent, safe interaction",
+        "purpose": "understand events and choose regulated actions",
+        "event_count": 2,
+        "conflict_count": 0,
+        "last_event_type": "user_message",
+        "last_action_tendency": "approach"
+      },
+      "compressed": "who=I am an adaptive emotional agent; what=maintain coherent, safe interaction; why=understand events and choose regulated actions; events=2; conflicts=0; last=user_message/approach",
+      "tokens_estimate": 19
+    },
+    "audit": {
+      "source": "emotiond.reflection",
+      "deterministic": true,
+      "hash_algo": "sha256",
+      "hash_excludes": [
+        "generated_at",
+        "report_path",
+        "self_hash"
+      ],
+      "self_hash": "92902c3e9060cd22a65f84ca96ae7794e0855167763419a0431bc3536e0b77cc"
+    }
+  },
+  "self_report_path": "reports/self_reports/default/20260317T030026Z.json",
+  "self_report_index_path": "reports/self_reports/index.jsonl"
+}

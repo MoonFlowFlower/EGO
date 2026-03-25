@@ -1,0 +1,70 @@
+{
+  "contracts": {
+    "event_input": {
+      "current_version": "1.0.0",
+      "file": "contracts/event_input.schema.json",
+      "compatible_versions": [
+        "1.0.0"
+      ],
+      "description": "EgoCore \u2192 OpenEmotion \u4e8b\u4ef6\u8f93\u5165\u5951\u7ea6"
+    },
+    "openemotion_output": {
+      "current_version": "1.0.0",
+      "file": "contracts/openemotion_output.schema.json",
+      "compatible_versions": [
+        "1.0.0"
+      ],
+      "description": "OpenEmotion \u2192 EgoCore \u8f93\u51fa\u5951\u7ea6"
+    },
+    "identity_invariants": {
+      "current_version": "1.0.0",
+      "file": "contracts/identity_invariants.schema.json",
+      "compatible_versions": [
+        "1.0.0"
+      ],
+      "description": "\u7cfb\u7edf\u7ea7\u8eab\u4efd\u4e0d\u53d8\u91cf\u7ea6\u675f"
+    },
+    "self_model": {
+      "current_version": "1.0.0",
+      "file": "contracts/self_model.schema.json",
+      "compatible_versions": [
+        "1.0.0"
+      ],
+      "description": "\u7ed3\u6784\u5316\u81ea\u6211\u6a21\u578b"
+    },
+    "long_term_self_summary": {
+      "current_version": "1.0.0",
+      "file": "contracts/long_term_self_summary.schema.json",
+      "compatible_versions": [
+        "1.0.0"
+      ],
+      "description": "\u957f\u671f\u81ea\u6211\u6458\u8981"
+    },
+    "restore_audit": {
+      "current_version": "1.0.0",
+      "file": "contracts/restore_audit.schema.json",
+      "compatible_versions": [
+        "1.0.0"
+      ],
+      "description": "\u81ea\u6211\u6062\u590d\u5ba1\u8ba1\u8bb0\u5f55"
+    }
+  },
+  "version_policy": {
+    "major": "\u7834\u574f\u6027\u53d8\u66f4\uff1a\u5fc5\u586b\u5b57\u6bb5\u79fb\u9664/\u91cd\u547d\u540d\u3001\u7c7b\u578b\u53d8\u66f4",
+    "minor": "\u5411\u540e\u517c\u5bb9\uff1a\u65b0\u589e\u53ef\u9009\u5b57\u6bb5\u3001\u6269\u5c55\u679a\u4e3e\u503c",
+    "patch": "\u6587\u6863/\u63cf\u8ff0\u4fee\u6b63"
+  },
+  "validation_records": {
+    "b12_identity_verify": {
+      "validated_at": "2026-03-17T00:57:40.085497Z",
+      "task_id": "pilot_b12_identity_verify",
+      "result": "passed",
+      "checks": [
+        "schema_exists",
+        "guard_exists",
+        "import_ok",
+        "guard_functional"
+      ]
+    }
+  }
+}

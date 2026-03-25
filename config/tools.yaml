@@ -1,0 +1,103 @@
+# Tools Configuration
+
+# Global tool settings
+global:
+  enabled: true
+  require_confirmation: false  # Ask user before executing tools
+  log_executions: true
+
+# Individual tool configurations
+tools:
+  file:
+    enabled: true
+    description: "Read, write, and manage files"
+    config:
+      allowed_extensions:
+        - .txt
+        - .md
+        - .json
+        - .yaml
+        - .yml
+        - .py
+        - .js
+        - .html
+        - .css
+        - .ts
+        - .sh
+      max_file_size_mb: 10
+      allowed_paths:
+        - .
+        - ./data
+        - ./workspace
+        - ./config
+        - ./app
+        - /tmp
+        - D:\Project\AIProject\MyProject
+        - D:/Project/AIProject/MyProject
+      denied_paths:
+        - .env
+        - .git
+      read_only_mode: false
+  
+  shell:
+    enabled: true
+    description: "Execute shell commands"
+    config:
+      timeout: 60  # seconds
+      max_output_length: 10000
+      allowed_commands:
+        - ls
+        - cat
+        - grep
+        - find
+        - mkdir
+        - cp
+        - mv
+        - rm
+        - date
+        - pwd
+        - echo
+        - python
+        - python3
+      denied_commands:
+        - rm -rf /
+        - sudo
+        - chmod 777
+      working_directory: .
+      env_passthrough: []
+  
+  python:
+    enabled: true
+    description: "Execute Python code"
+    config:
+      timeout: 120  # seconds
+      max_output_length: 10000
+      allowed_modules:
+        - os
+        - sys
+        - json
+        - re
+        - datetime
+        - math
+        - pathlib
+        - httpx
+      denied_modules:
+        - subprocess
+        - socket
+        - multiprocessing
+      memory_limit_mb: 512
+      working_directory: .
+
+# Tool execution settings
+execution:
+  parallel_enabled: false
+  max_parallel_tools: 1
+  retry_on_failure: true
+  max_retries: 2
+  retry_delay: 1  # seconds
+
+# Security settings
+security:
+  sandbox_enabled: false  # Future: enable containerized execution
+  audit_log: true
+  audit_log_path: ./data/logs/tool_audit.log

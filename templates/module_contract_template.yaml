@@ -1,0 +1,218 @@
+# Module Contract Template
+# 复制此文件，重命名为 {module_name}_contract.yaml，然后逐项填写
+
+metadata:
+  name: ""                    # 模块名称，小写下划线分隔
+  version: "0.1.0"           # 初始版本
+  created_at: ""             # 创建日期 YYYY-MM-DD
+  owner: ""                  # 负责人
+  status: "draft"            # draft | review | frozen | deprecated
+
+responsibility:
+  description: ""            # 一句话描述模块职责
+  problem_solved: ""         # 解决什么真实问题
+  why_needed: ""             # 为什么需要这个模块
+
+caller:
+  primary: ""                # 主调用方
+  secondary: []              # 次要调用方列表
+
+trigger:
+  condition: ""              # 触发条件
+  frequency: ""              # 触发频率: per_message | per_session | per_task | on_demand
+  priority: "normal"         # critical | high | normal | low
+
+input:
+  schema:
+    type: "object"
+    required: []             # 必填字段列表
+    properties: {}           # 字段定义，见示例
+  example: {}                # 有效输入示例
+  validation_rules: []       # 额外验证规则
+
+output:
+  schema:
+    type: "object"
+    required: []             # 必填字段列表
+    properties: {}           # 字段定义
+  example: {}                # 有效输出示例
+  empty_behavior: ""         # 空结果如何处理
+
+error:
+  schema:
+    type: "object"
+    required: ["code", "message"]
+    properties:
+      code:
+        type: "string"
+        enum: []             # 错误码列表
+      message:
+        type: "string"
+      details:
+        type: "object"
+  error_codes:               # 错误码定义
+    - code: ""
+      description: ""
+      severity: "warning"    # warning | error | critical
+      user_visible: false    # 用户是否可见
+
+fallback:
+  enabled: true              # 是否启用 fallback
+  behavior: ""               # fallback 行为描述
+  default_value: null        # fallback 返回值
+  notify_user: false         # 是否通知用户
+  log_level: "warning"       # debug | info | warning | error
+
+timeout:
+  default_ms: 5000           # 默认超时毫秒
+  max_ms: 30000              # 最大超时毫秒
+  graceful_degradation: true # 超时是否优雅降级
+
+non_goals:
+  - ""                       # 明确不做什么
+  - ""
+
+dependencies:
+  required: []               # 必需依赖列表
+  optional: []               # 可选依赖列表
+
+integration:
+  point: ""                  # 接入主链的位置
+  feature_flag: ""           # 功能开关名称
+  rollout_strategy: ""       # 灰度策略
+  rollback_plan: ""          # 回滚方案
+
+observability:
+  metrics:                   # 需要采集的指标
+    - name: ""
+      type: "counter"        # counter | gauge | histogram
+      description: ""
+  logs:
+    level: "info"            # debug | info | warning | error
+    sample_rate: 1.0         # 采样率 0.0-1.0
+  traces:
+    enabled: false           # 是否启用 tracing
+
+---
+# 填写示例 (填写完成后删除此部分)
+
+# metadata:
+#   name: "emotion_context_formatter"
+#   version: "0.1.0"
+#   created_at: "2026-03-14"
+#   owner: "moonlight"
+#   status: "draft"
+#
+# responsibility:
+#   description: "根据情绪状态格式化回复上下文"
+#   problem_solved: "回复缺乏情绪适配，显得机械"
+#   why_needed: "提升交互自然度"
+#
+# caller:
+#   primary: "reply_pipeline"
+#   secondary: []
+#
+# trigger:
+#   condition: "reply 生成前"
+#   frequency: "per_message"
+#   priority: "normal"
+#
+# input:
+#   schema:
+#     type: "object"
+#     required: ["raw_context", "emotion_state"]
+#     properties:
+#       raw_context:
+#         type: "string"
+#       emotion_state:
+#         type: "object"
+#         properties:
+#           valence:
+#             type: "number"
+#             minimum: -1
+#             maximum: 1
+#           arousal:
+#             type: "number"
+#             minimum: 0
+#             maximum: 1
+#   example:
+#     raw_context: "用户询问天气"
+#     emotion_state:
+#       valence: 0.3
+#       arousal: 0.5
+#
+# output:
+#   schema:
+#     type: "object"
+#     required: ["formatted_context"]
+#     properties:
+#       formatted_context:
+#         type: "string"
+#       emotion_applied:
+#         type: "boolean"
+#   example:
+#     formatted_context: "[友好] 用户询问天气"
+#     emotion_applied: true
+#
+# error:
+#   schema:
+#     type: "object"
+#     required: ["code", "message"]
+#     properties:
+#       code:
+#         type: "string"
+#         enum: ["INVALID_STATE", "TIMEOUT", "UNKNOWN"]
+#       message:
+#         type: "string"
+#   error_codes:
+#     - code: "INVALID_STATE"
+#       description: "情绪状态格式无效"
+#       severity: "warning"
+#       user_visible: false
+#     - code: "TIMEOUT"
+#       description: "处理超时"
+#       severity: "warning"
+#       user_visible: false
+#
+# fallback:
+#   enabled: true
+#   behavior: "返回原始上下文，不添加情绪标记"
+#   default_value:
+#     formatted_context: "{raw_context}"
+#     emotion_applied: false
+#   notify_user: false
+#   log_level: "warning"
+#
+# timeout:
+#   default_ms: 100
+#   max_ms: 500
+#   graceful_degradation: true
+#
+# non_goals:
+#   - "不修改原始消息内容"
+#   - "不做情绪检测（只接收已检测的情绪状态）"
+#   - "不存储历史情绪数据"
+#
+# dependencies:
+#   required: []
+#   optional: []
+#
+# integration:
+#   point: "reply_pipeline.pre_process"
+#   feature_flag: "emotion_context_enabled"
+#   rollout_strategy: "shadow_mode"
+#   rollback_plan: "关闭 feature flag"
+#
+# observability:
+#   metrics:
+#     - name: "emotion_format_requests"
+#       type: "counter"
+#       description: "格式化请求次数"
+#     - name: "emotion_format_latency_ms"
+#       type: "histogram"
+#       description: "格式化延迟"
+#   logs:
+#     level: "info"
+#     sample_rate: 1.0
+#   traces:
+#     enabled: false

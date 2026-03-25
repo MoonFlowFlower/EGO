@@ -1,0 +1,66 @@
+# EgoCore Canonical Repo Registry
+# Version: v1.0
+# Purpose: Define canonical repo root for EgoCore
+# Enforcement: MANDATORY - application startup must validate repo root
+
+metadata:
+  version: "1.0"
+  created: "2026-03-16"
+  status: ACTIVE
+  enforcement: MANDATORY
+
+canonical_repos:
+  EgoCore:
+    description: |
+      EgoCore 项目唯一合法仓库根目录
+      EgoCore 是独立的 Telegram Agent Runtime
+      
+    canonical_root: "D:/Project/AIProject/MyProject/Ego/EgoCore"
+    
+    identifiers:
+      git_remote: "https://github.com/pen364692088/EgoCore.git"
+      repo_name: "EgoCore"
+      
+    markers:
+      - "app/main.py"
+      - "config/app.yaml"
+      - "tools/module_preflight_check.py"
+      
+    forbidden_alternatives:
+      - path: "/home/moonlight/.openclaw/workspace"
+        reason: "OpenClaw 默认 workspace，不是 EgoCore 项目仓库"
+      - path: "/home/moonlight/Project/Github/MyProject/Agent-Self-health-Scaffold"
+        reason: "Scaffold 项目仓库，不是 EgoCore"
+      - path: "/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion"
+        reason: "OpenEmotion 项目仓库，不是 EgoCore"
+    
+    enforcement:
+      block_if_wrong_repo: true
+      auto_switch_allowed: false  # 独立应用不允许自动切换，必须手动处理
+      requires_confirmation: false
+
+blocking:
+  when_wrong_repo:
+    message: |
+      🚫 REPO ROOT MISMATCH
+      
+      Expected Canonical Root: {canonical_root}
+      Current Directory: {current_dir}
+      
+      You are NOT in the correct repository for EgoCore.
+      
+      EgoCore must be run from its canonical repository root.
+      
+      Action Required:
+      1. cd {canonical_root}
+      2. python -m app.main --telegram
+      
+      Until resolved:
+      - Application startup BLOCKED
+      
+    blocked_operations:
+      - "application_startup"
+      - "telegram_bot"
+      - "state_update"
+      - "testing"
+      - "git_operations"

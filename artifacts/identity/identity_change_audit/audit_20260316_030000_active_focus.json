@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-03-16T03:00:00Z",
+  "field_path": "temporary_state.active_focus",
+  "old_value": "初始状态",
+  "new_value": "EgoCore P1 开发",
+  "trigger": "owner_directive",
+  "authorized": true,
+  "approver": null,
+  "change_type": "free",
+  "session_id": "session_20260316_001"
+}
