@@ -1,6 +1,6 @@
 {
   "batch_id": "proto_self_overnight_batch_v3",
-  "overall_status": "in_progress",
+  "overall_status": "completed",
   "current_theme": null,
   "current_subtask": null,
   "completed_tasks": [
@@ -15,22 +15,25 @@
     "N3A",
     "N3B",
     "N3C",
-    "N3D"
+    "N3D",
+    "N4A",
+    "N4B",
+    "N4C",
+    "N4D"
   ],
   "completed_themes": [
     "N2",
-    "N3"
+    "N3",
+    "N4"
   ],
   "failed_tasks": [],
   "failed_subtasks": [],
   "blocked_tasks": [],
   "blocked_subtasks": [],
   "last_verified_task": "N1",
-  "last_verified_subtask": "N3D",
-  "last_verified_theme": "N3",
-  "ready_to_start": [
-    "N4"
-  ],
+  "last_verified_subtask": "N4D",
+  "last_verified_theme": "N4",
+  "ready_to_start": [],
   "truth_sources_checked": [
     "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
     "OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml",
@@ -62,10 +65,19 @@
     "reports/N3B_REPORT.md",
     "reports/N3C_REPORT.md",
     "reports/N3D_REPORT.md",
-    "reports/N3_THEME_REPORT.md"
+    "reports/N3_THEME_REPORT.md",
+    "artifacts/n4_user_test/N4A_USER_TEST_CONTRACT.md",
+    "artifacts/n4_user_test/N4C_SCENARIO_PACK.md",
+    "artifacts/n4_user_test/N4D_OPERATOR_GUIDE.md",
+    "OpenEmotion/scripts/proto_self_diagnostics.py",
+    "reports/N4A_REPORT.md",
+    "reports/N4B_REPORT.md",
+    "reports/N4C_REPORT.md",
+    "reports/N4D_REPORT.md",
+    "reports/N4_THEME_REPORT.md"
   ],
   "handoff_ready": true,
-  "last_report_path": "reports/N3_THEME_REPORT.md",
+  "last_report_path": "reports/N4_THEME_REPORT.md",
   "stop_reason": null,
-  "notes": "N3 THEME VERIFIED. All 4 subtasks completed. Key findings: (1) Replay consistency verified, (2) 4/4 misaggregations detected in should-separate samples, (3) safety_context not included in psi_bucket calculation, (4) keyword priority conflicts cause classification errors. Ready for N4 theme."
+  "notes": "N4 THEME VERIFIED. All 4 subtasks completed. User test contract frozen, read-only diagnostics implemented, scenario pack created, operator guide generated. User can now test Proto-Self Kernel v1 without reading source code. Batch completed."
 }
