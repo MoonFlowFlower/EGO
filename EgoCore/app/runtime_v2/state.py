@@ -285,6 +285,7 @@ class RuntimeV2State:
 
     def mark_task_completed(self) -> None:
         self.task_status = "completed_verified"
+        self.waiting_for_user_input = False
         self.last_task_completed_at = time.time()
         self.final_sent = True
         self.active_turn_status = "terminal"
