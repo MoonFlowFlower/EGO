@@ -71,6 +71,44 @@ async def test_primary_turn_falls_back_when_native_loop_fails(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_primary_turn_blocks_instead_of_fallback_for_artifact_execute_when_native_fails(monkeypatch):
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    bot.native_loop = object()
+    state = bot._get_runtime_state("telegram:dm:1")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "resolved_target": {
+            "artifact_id": "artifact://task-sheet",
+            "artifact_ref": "artifact://task-sheet",
+            "filename": "任务单.txt",
+        },
+    }
+    ingress = SimpleNamespace(_runtime_action="execute_task", is_file_only=False)
+
+    async def native(*args, **kwargs):
+        raise RuntimeError("The read operation timed out")
+
+    async def fail_runtime(*args, **kwargs):
+        raise AssertionError("artifact execute should not fall back to runtime_v2")
+
+    monkeypatch.setattr(bot, "_run_native_loop_turn", native)
+    monkeypatch.setattr(bot, "_run_runtime_v2_turn", fail_runtime)
+
+    result = await bot._run_primary_turn(
+        update=None,
+        session_key="telegram:dm:1",
+        text="执行",
+        state=state,
+        ingress=ingress,
+        ack_text=None,
+    )
+
+    assert result.status == "blocked"
+    assert "避免卡在 read_artifact" in result.reply_text
+    assert state.task_status == "blocked"
+
+
+@pytest.mark.asyncio
 async def test_runtime_v2_loop_is_lazy_until_runtime_turn(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
     state = bot._get_runtime_state("telegram:dm:1")

@@ -38,7 +38,7 @@ class DummyUpdate:
 
 
 @pytest.mark.asyncio
-async def test_uploaded_task_file_then_execute_confirmation_stays_on_native_mainline(monkeypatch):
+async def test_uploaded_task_file_executes_immediately_on_native_mainline(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
     bot.native_loop = object()
     events: List[Dict[str, Any]] = []
@@ -70,34 +70,20 @@ async def test_uploaded_task_file_then_execute_confirmation_stays_on_native_main
     state = bot._get_runtime_state(session_key)
     state.add_pending_artifact("artifact://task-sheet", "任务单.txt", "artifact://task-sheet")
 
-    first_update = DummyUpdate("[用户发送了文件: 任务单.txt]", 1886)
+    update = DummyUpdate("[用户发送了文件: 任务单.txt]", 1886)
     await bot._handle_with_runtime_v2(
-        update=first_update,
-        text=first_update.message.text,
+        update=update,
+        text=update.message.text,
         chat_id=DummyChat.id,
         user_id=DummyUser.id,
         username=DummyUser.username,
         trace_id="trace-upload",
     )
 
-    assert first_update.message.sent == ["我看这更像一份任务单「任务单.txt」。我要先按「执行这份任务」走吗？"]
-    assert state.task_status == "waiting_input"
-    assert state.waiting_for_user_input is True
-    assert state.last_inferred_action == "execute"
-
-    second_update = DummyUpdate("执行", 1888)
-    await bot._handle_with_runtime_v2(
-        update=second_update,
-        text=second_update.message.text,
-        chat_id=DummyChat.id,
-        user_id=DummyUser.id,
-        username=DummyUser.username,
-        trace_id="trace-confirm",
-    )
-
-    assert second_update.message.sent == ["页面已创建。"]
+    assert update.message.sent == ["页面已创建。"]
     assert state.task_status == "completed_verified"
     assert state.waiting_for_user_input is False
+    assert state.last_inferred_action == "execute"
     assert any(
         event["kind"] == "primary_path_selected" and event["payload"]["path"] == "native_loop"
         for event in events

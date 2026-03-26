@@ -170,6 +170,15 @@ class TelegramBot:
             "如果你愿意，我可以基于这份任务内容直接继续执行，并在出错时立即汇报。"
         )
 
+    def _is_artifact_execute_turn(self, state: RuntimeV2State, ingress=None) -> bool:
+        ingress_context = state.ingress_context or {}
+        runtime_action = getattr(ingress, "_runtime_action", None) or ingress_context.get("runtime_action")
+        if runtime_action != "execute_task":
+            return False
+        target = ingress_context.get("resolved_target") or {}
+        artifact_id = target.get("artifact_id") or target.get("artifact_ref")
+        return bool(str(artifact_id).startswith("artifact://"))
+
     def _ensure_phase1_bus(self) -> None:
         if self._phase1_bus_ready:
             return
@@ -1035,11 +1044,11 @@ class TelegramBot:
     def _should_use_native_loop(self, ingress, state) -> bool:
         if self._get_native_loop() is None:
             return False
-        if getattr(ingress, "is_file_only", False):
+        runtime_action = getattr(ingress, "_runtime_action", None)
+        if getattr(ingress, "is_file_only", False) and runtime_action != "execute_task":
             return False
         if state.waiting_for_user_input and not getattr(ingress, "is_confirm_execution", False):
             return False
-        runtime_action = getattr(ingress, "_runtime_action", None)
         if runtime_action == "return_runtime_status":
             return False
         return True
@@ -1069,6 +1078,28 @@ class TelegramBot:
                 )
             except Exception as e:
                 logger.exception("native_loop.failed session=%s err=%s; falling back to runtime_v2", session_key, e)
+                if self._is_artifact_execute_turn(state, ingress):
+                    state.task_status = "blocked"
+                    state.waiting_for_user_input = False
+                    state.current_step = None
+                    blocked_result = TelegramTurnResult(
+                        status="blocked",
+                        state=state,
+                        reply=TelegramTurnReply(
+                            reply_text=(
+                                "执行任务单时遇到问题，我已经停止旧 fallback 路径，避免卡在 read_artifact。\n\n"
+                                f"错误：{str(e).strip() or 'unknown error'}"
+                            ),
+                            delivery_kind="final",
+                            status="blocked",
+                        ),
+                    )
+                    await self._publish_phase1_event(
+                        session_key=session_key,
+                        kind="primary_path_blocked",
+                        payload={"path": "native_loop", "error": str(e), "reason": "artifact_execute_no_legacy_fallback"},
+                    )
+                    return blocked_result
                 await self._publish_phase1_event(
                     session_key=session_key,
                     kind="primary_path_fallback",

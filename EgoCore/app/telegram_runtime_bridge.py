@@ -535,13 +535,23 @@ class TelegramRuntimeBridge:
 
         if decision.is_file_only:
             intent = infer_intent(text="", state=state, has_attachment=True)
-            suggestion_text = build_suggestion_response_from_intent(intent, state)
             if intent.inferred_action:
                 state.last_inferred_action = intent.inferred_action
             if intent.primary_target:
                 target_filename = intent.primary_target.get("filename")
                 if target_filename:
                     state.last_inferred_target = target_filename
+            if intent.inferred_action == "execute":
+                decision._runtime_action = "execute_task"
+                if state.ingress_context is not None:
+                    state.ingress_context["runtime_action"] = "execute_task"
+                    state.ingress_context["request_mode"] = "execute"
+                    state.ingress_context["resolved_target"] = state.resolve_target("execute")
+                return TelegramPreRuntimeAction(
+                    should_return_early=False,
+                    ack_text="收到任务单，开始执行。",
+                )
+            suggestion_text = build_suggestion_response_from_intent(intent, state)
             return TelegramPreRuntimeAction(
                 should_return_early=True,
                 force_waiting_input=True,
