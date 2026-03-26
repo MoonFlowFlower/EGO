@@ -19,6 +19,7 @@ from .state import RuntimeV2State
 from .tool_broker import RuntimeV2ToolBroker
 from .transition import RuntimeV2TransitionEngine
 from .verifier import RuntimeV2Verifier
+from .proto_self_runtime import RuntimeV2ProtoSelfRuntime, assess_risk_level
 
 # Proto-Self Kernel Adapter - deferred loading
 try:
@@ -67,36 +68,8 @@ def _check_proto_self_enabled() -> bool:
 MAX_USER_INPUT_IN_STATE = 300  # 字符（更严格）
 
 
-# P0-R3: 风险评估关键词（与 context_assembler.py 保持一致）
-_HIGH_RISK_KEYWORDS = ["删除", "delete", "rm ", "格式化", "format", "drop "]
-_MEDIUM_RISK_KEYWORDS = ["修改", "chmod", "chown", "git push", "deploy"]
-
-
 def _assess_risk_level(user_input: str) -> str:
-    """
-    评估用户输入的风险等级。
-
-    P0-R3: 在 runtime 主链中为 Proto-Self Kernel 提供 risk 信号。
-
-    Args:
-        user_input: 用户输入文本
-
-    Returns:
-        风险等级: "high", "medium", "low"
-    """
-    user_lower = user_input.lower()
-
-    # 检查高风险关键词
-    for keyword in _HIGH_RISK_KEYWORDS:
-        if keyword in user_lower:
-            return "high"
-
-    # 检查中等风险关键词
-    for keyword in _MEDIUM_RISK_KEYWORDS:
-        if keyword in user_lower:
-            return "medium"
-
-    return "low"
+    return assess_risk_level(user_input)
 
 
 def _truncate_user_input(text: str) -> str:
@@ -123,10 +96,16 @@ class RuntimeV2Loop:
         if _PROTO_SELF_IMPORT_OK and proto_self_enabled:
             self.proto_self_adapter = ProtoSelfAdapter()
             self.proto_self_trace_bridge = ProtoSelfTraceBridge()
+            self.proto_self_runtime = RuntimeV2ProtoSelfRuntime(
+                adapter=self.proto_self_adapter,
+                trace_bridge=self.proto_self_trace_bridge,
+                evidence_collector_factory=get_evidence_collector if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+            )
             logger.info(f"[PSK-INIT] ProtoSelfAdapter initialized, mirror_dir={self.proto_self_adapter.mirror_dir}")
         else:
             self.proto_self_adapter = None
             self.proto_self_trace_bridge = None
+            self.proto_self_runtime = None
             logger.warning(f"[PSK-INIT] Proto-Self NOT available (import_ok={_PROTO_SELF_IMPORT_OK}, enabled={proto_self_enabled})")
 
     def get_state(self, session_id: str) -> RuntimeV2State:
@@ -181,71 +160,17 @@ class RuntimeV2Loop:
 
         # Proto-Self Kernel: 在决策前调用，注入主体倾向
         logger.info(f"[PSK-TG-TRACE-03] proto_self_adapter={self.proto_self_adapter is not None}")
-        if self.proto_self_adapter:
+        if self.proto_self_runtime:
             try:
-                logger.info(f"[PSK-TG-TRACE-04] Building proto_self_event for {session_id}_{turn_id}")
-
-                # P0-R3: 评估用户输入的风险等级，不再硬编码空 safety_context
-                risk_level = _assess_risk_level(truncated_input)
-                logger.info(f"[PSK-TG-TRACE-04b] Risk assessment: risk_level={risk_level}")
-
-                proto_self_event = {
-                    "event_id": f"{session_id}_{turn_id}",
-                    "timestamp": datetime.now().isoformat(),
-                    "actor": "user",
-                    "source": source,
-                    "event_type": "user_message",
-                    "user_intent": truncated_input[:100] if truncated_input else None,
-                    "raw_text": truncated_input,
-                    "task_context": {
-                        "pending_tasks": 1 if state.current_goal else 0,
-                        "blocked_tasks": 0,
-                    },
-                    "safety_context": {
-                        "risk": risk_level,  # OpenEmotion 期望的字段名
-                        "risk_level": risk_level,  # 保留原字段名
-                    },
-                    "external_result": None,
-                }
-                logger.info(f"[PSK-TG-TRACE-05] Calling adapter.handle_event...")
-                proto_self_result = self.proto_self_adapter.handle_event(proto_self_event)
-                logger.info(f"[PSK-TG-TRACE-06] adapter.handle_event returned: {proto_self_result is not None}")
-
-                # E4 Evidence: Capture normalized_event and openemotion_result
-                if _EVIDENCE_COLLECTOR_AVAILABLE:
-                    try:
-                        collector = evidence_collector or get_evidence_collector()
-                        collector.capture_normalized_event(proto_self_event)
-                        collector.capture_openemotion_result(proto_self_result)
-                        logger.info(f"[E4-EVIDENCE] Captured normalized_event and openemotion_result")
-                    except Exception as e:
-                        logger.warning(f"[E4-EVIDENCE] Failed to capture: {e}")
-
-                # 注入到 state
-                state.proto_self_context = {
-                    "policy_hint": proto_self_result.get("policy_hint"),
-                    "response_tendency": proto_self_result.get("response_tendency"),
-                    "reflection_note": proto_self_result.get("reflection_note"),
-                }
-
-                # 写入 trace
-                logger.info(f"[PSK-TG-TRACE-07] trace_bridge={self.proto_self_trace_bridge is not None}")
-                if self.proto_self_trace_bridge:
-                    logger.info(f"[PSK-TG-TRACE-08] Writing trace to {self.proto_self_trace_bridge.trace_file}")
-                    self.proto_self_trace_bridge.write({
-                        "event_id": proto_self_event["event_id"],
-                        "session_id": session_id,
-                        "turn_id": turn_id,
-                        "policy_hint": proto_self_result.get("policy_hint"),
-                        "response_tendency": proto_self_result.get("response_tendency"),
-                    })
-                    logger.info(f"[PSK-TG-TRACE-09] Trace written successfully")
-
-                # 记录到 history
-                state.record("proto_self", {
-                    "policy_hint": proto_self_result.get("policy_hint"),
-                    "reflection_trigger": proto_self_result.get("reflection_note", {}).get("trigger") if proto_self_result.get("reflection_note") else None,
-                })
+                logger.info(f"[PSK-TG-TRACE-04] Processing proto-self ingress for {session_id}_{turn_id}")
+                self.proto_self_runtime.process_ingress(
+                    session_id=session_id,
+                    turn_id=turn_id,
+                    source=source,
+                    user_input=truncated_input,
+                    state=state,
+                    evidence_collector=evidence_collector,
+                )
                 logger.info(f"[PSK-TG-TRACE-10] Proto-Self processing completed")
             except Exception as e:
                 # Proto-Self Kernel 失败不影响主流程
@@ -281,53 +206,14 @@ class RuntimeV2Loop:
             transition = await self.transition_engine.apply(state, action)
 
             # Proto-Self Kernel: 工具执行后回流 external_result
-            if self.proto_self_adapter and action.type == "act" and state.last_tool_result:
+            if self.proto_self_runtime and action.type == "act" and state.last_tool_result:
                 try:
-                    tool_result = state.last_tool_result
-                    external_result_event = {
-                        "event_id": f"{session_id}_{turn_id}_tool_{step}",
-                        "timestamp": datetime.now().isoformat(),
-                        "actor": "system",
-                        "source": "runtime",
-                        "event_type": "tool_result",
-                        "user_intent": None,
-                        "raw_text": None,
-                        "task_context": {
-                            "pending_tasks": 1 if state.current_goal else 0,
-                            "blocked_tasks": 1 if not tool_result.get("success") else 0,
-                        },
-                        "safety_context": {
-                            "risk_level": 0.5 if not tool_result.get("success") else 0.0,
-                        },
-                        "external_result": {
-                            "success": tool_result.get("success", False),
-                            "tool": tool_result.get("tool"),
-                            "exit_code": tool_result.get("exit_code"),
-                            "error": tool_result.get("stderr", "")[:200] if not tool_result.get("success") else None,
-                        },
-                    }
-                    external_result = self.proto_self_adapter.handle_event(external_result_event)
-
-                    # 更新 state 中的 proto_self_context
-                    state.proto_self_context["external_result"] = external_result
-
-                    # 如果触发 reflection，记录到 state
-                    if external_result.get("reflection_note"):
-                        state.record("proto_self_reflection", {
-                            "trigger": external_result.get("reflection_note", {}).get("trigger"),
-                            "diagnosis": external_result.get("reflection_note", {}).get("diagnosis"),
-                        })
-
-                    # 写入 trace
-                    if self.proto_self_trace_bridge:
-                        self.proto_self_trace_bridge.write({
-                            "event_id": external_result_event["event_id"],
-                            "session_id": session_id,
-                            "turn_id": turn_id,
-                            "step": step,
-                            "type": "external_result",
-                            "reflection_trigger": external_result.get("reflection_note", {}).get("trigger") if external_result.get("reflection_note") else None,
-                        })
+                    self.proto_self_runtime.process_external_result(
+                        session_id=session_id,
+                        turn_id=turn_id,
+                        step=step,
+                        state=state,
+                    )
                 except Exception as e:
                     # Proto-Self Kernel 失败不影响主流程
                     state.record("proto_self", {"external_result_error": str(e)})
@@ -342,15 +228,12 @@ class RuntimeV2Loop:
                     result.reply.turn_id = turn_id
 
                 # E4 Evidence: Capture response_plan
-                if _EVIDENCE_COLLECTOR_AVAILABLE:
+                if self.proto_self_runtime:
                     try:
-                        collector = evidence_collector or get_evidence_collector()
-                        response_plan = {
-                            "status": result.status,
-                            "delivery_kind": result.delivery_kind if result.reply else None,
-                            "reply_length": len(result.reply_text) if result.reply_text else 0,
-                        }
-                        collector.capture_response_plan(response_plan)
+                        self.proto_self_runtime.capture_response_plan(
+                            result=result,
+                            evidence_collector=evidence_collector,
+                        )
                         logger.info(f"[E4-EVIDENCE] Captured response_plan: status={result.status}")
                     except Exception as e:
                         logger.warning(f"[E4-EVIDENCE] Failed to capture response_plan: {e}")
