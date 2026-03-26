@@ -1,0 +1,107 @@
+{
+  "run_id": "integration_20260325_191140",
+  "timestamp": "2026-03-25T19:11:40.448700",
+  "evidence_level": "E3",
+  "source_type": "integration",
+  "channel": "telegram",
+  "session_id": "integration_default",
+  "total_tests": 2,
+  "passed": 2,
+  "failed": 0,
+  "results": [
+    {
+      "test_id": "E3-UPDATE-001",
+      "test_name": "update_contract",
+      "passed": true,
+      "artifact": {
+        "raw_update": {
+          "update_id": 99999,
+          "message": {
+            "message_id": 1,
+            "from": {
+              "id": 123456,
+              "is_bot": false,
+              "first_name": "Test",
+              "username": "test_user"
+            },
+            "chat": {
+              "id": 123456,
+              "type": "private"
+            },
+            "date": 1774483895,
+            "text": "状态查询"
+          }
+        },
+        "normalized_event": {
+          "event_id": "evt_7b878e35b41e465f",
+          "timestamp": "2026-03-26T00:11:35.098558+00:00",
+          "actor": "123456",
+          "source": "telegram",
+          "event_type": "user_message",
+          "content": "状态查询",
+          "conversation_context": {
+            "session_id": "123456",
+            "chat_id": "123456",
+            "user_id": "123456",
+            "username": "test_user",
+            "message_id": 1,
+            "turn_index": 0,
+            "recent_messages": []
+          },
+          "metadata": {
+            "update_id": 99999,
+            "message_date": 1774483895,
+            "chat_type": "private",
+            "raw_update": {
+              "update_id": 99999,
+              "message": {
+                "message_id": 1,
+                "from": {
+                  "id": 123456,
+                  "is_bot": false,
+                  "first_name": "Test",
+                  "username": "test_user"
+                },
+                "chat": {
+                  "id": 123456,
+                  "type": "private"
+                },
+                "date": 1774483895,
+                "text": "状态查询"
+              }
+            }
+          }
+        }
+      },
+      "what_it_proves": "受控环境中的 Telegram update 契约仍与主链兼容",
+      "what_it_does_not_prove": "真实 Telegram 渠道稳定"
+    },
+    {
+      "run_id": "integration_20260325_191140",
+      "session_id": "integration_1",
+      "evidence_level": "E3",
+      "source_type": "integration",
+      "channel": "telegram",
+      "sample_id": "sample_20260325_191135_c1c322e4",
+      "sample_dir": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\telegram_real_mainline_v1\\integration\\sample_20260325_191135_c1c322e4",
+      "status": "chat",
+      "reply_text": "你好！有什么我可以帮你的吗？",
+      "passed": true,
+      "missing_evidence": [],
+      "timestamp": "2026-03-25T19:11:40.448615",
+      "what_it_proves": "受控环境中通过相同 runtime 主链完成输入到输出的闭环",
+      "what_it_does_not_prove": "真实 Telegram 主链稳定"
+    }
+  ],
+  "allowed_conclusions": [
+    "集成验证通过",
+    "具备真实主链验证条件",
+    "主链候选可用"
+  ],
+  "forbidden_conclusions": [
+    "已接主链",
+    "已启用",
+    "正式生效",
+    "稳定运行"
+  ]
+}

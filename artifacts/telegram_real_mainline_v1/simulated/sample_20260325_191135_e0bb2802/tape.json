@@ -1,0 +1,10 @@
+{
+  "tape_id": "tape_sample_20260325_191135_e0bb2802",
+  "timestamp": "2026-03-25T19:11:35.097458",
+  "evidence_level": "E2",
+  "source_type": "simulated",
+  "channel": "telegram",
+  "update_id": 895097,
+  "trace_id": "sample_20260325_191135_e0bb2802",
+  "normalized_event_id": "simulated_smoke_1_turn_4f53351c"
+}

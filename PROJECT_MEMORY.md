@@ -68,6 +68,7 @@
 | 关键词优先级 | service_control/test_verify 需提前匹配 |
 | 传输层边界 | simulated / integration / real_channel 应复用同一条 runtime 主链，只替换 ingress/egress 证据来源 |
 | E4 最小证据包 | E4 样本除 raw/update/event/result/plan/outbox 外，还需 timeline + tape + replay artifact |
+| 环境执行口径 | 当前工作区内 E2/E3 runner 以 Windows `py -3` 实跑通过；Linux `python3` 仅适合静态检查，依赖不完整 |
 
 ---
 
@@ -93,6 +94,7 @@
 | 2026-03-25 | EGO 总仓 + Subtree 集成链生效 |
 | 2026-03-25 | P0-R3 runtime 主链接线修复完成 |
 | 2026-03-25 | simulated / integration / real_channel runner 对齐为同一 runtime 主链，E4 replay artifact 补齐 |
+| 2026-03-25 | unified runner 跨层一致性实跑通过：E2/E3 共用 `RuntimeV2Loop`，E4 参考样本形成对照证据 |
 
 ---
 

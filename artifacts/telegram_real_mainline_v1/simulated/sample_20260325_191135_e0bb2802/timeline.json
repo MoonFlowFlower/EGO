@@ -1,0 +1,26 @@
+[
+  {
+    "stage": "update_received",
+    "timestamp": "2026-03-25T19:11:35.097489",
+    "update_id": 895097
+  },
+  {
+    "stage": "event_normalized",
+    "timestamp": "2026-03-25T19:11:35.107066",
+    "event_id": "simulated_smoke_1_turn_4f53351c"
+  },
+  {
+    "stage": "openemotion_processed",
+    "timestamp": "2026-03-25T19:11:35.107080"
+  },
+  {
+    "stage": "response_planned",
+    "timestamp": "2026-03-25T19:11:40.560488"
+  },
+  {
+    "stage": "message_sent",
+    "timestamp": "2026-03-25T19:11:40.560508",
+    "chat_id": 67890,
+    "message_id": 895098
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "run_id": "simulated_20260325_191140",
+  "timestamp": "2026-03-25T19:11:40.570752",
+  "evidence_level": "E2",
+  "source_type": "simulated",
+  "channel": "telegram",
+  "total_tests": 1,
+  "passed": 1,
+  "failed": 0,
+  "results": [
+    {
+      "run_id": "simulated_20260325_191140",
+      "session_id": "simulated_smoke_1",
+      "evidence_level": "E2",
+      "source_type": "simulated",
+      "channel": "telegram",
+      "sample_id": "sample_20260325_191135_e0bb2802",
+      "sample_dir": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\telegram_real_mainline_v1\\simulated\\sample_20260325_191135_e0bb2802",
+      "status": "chat",
+      "reply_text": "你好！有什么我可以帮你的吗？",
+      "passed": true,
+      "missing_evidence": [],
+      "timestamp": "2026-03-25T19:11:40.570603"
+    }
+  ],
+  "allowed_conclusions": [
+    "模拟验证通过",
+    "脚本级通过",
+    "具备真实链路回归价值"
+  ],
+  "forbidden_conclusions": [
+    "已接主链",
+    "已启用",
+    "已生效",
+    "verified_mainline_e2e"
+  ]
+}

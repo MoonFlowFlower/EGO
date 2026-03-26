@@ -26,6 +26,7 @@
 | 跨轮状态连续 (old_value != null) | ✅ |
 | 显式偏好/目标写入 (event_stored=true) | ✅ |
 | 窄版路由修复 (CHAT != NEW_TASK) | ✅ |
+| unified runner 跨层一致性 (E2/E3/E4 参考) | ✅ 已验证共用 `RuntimeV2Loop` 主链 |
 
 ---
 
@@ -92,6 +93,12 @@
 - 单 Agent Runtime（不做多 Agent）
 - Telegram 驱动（不做 Dashboard）
 - 最小闭环（不做大型 DSL）
+
+### Unified Runner 验证
+
+- `scripts/run_telegram_simulated_smoke.py`、`scripts/run_telegram_integration_e2e.py` 与 `scripts/run_telegram_real_channel_capture.py` 使用统一 artifact 结构
+- `simulated / integration / real_telegram` 的差异仅保留在 ingress / egress / evidence source
+- 一致性结论见 `artifacts/telegram_real_mainline_v1/reports/UNIFIED_RUNNER_CONSISTENCY_REPORT.md`
 
 ## Quick Start
 

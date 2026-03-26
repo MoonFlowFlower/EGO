@@ -1,0 +1,10 @@
+{
+  "tape_id": "tape_sample_20260325_191135_c1c322e4",
+  "timestamp": "2026-03-25T19:11:35.100323",
+  "evidence_level": "E3",
+  "source_type": "integration",
+  "channel": "telegram",
+  "update_id": 895100,
+  "trace_id": "sample_20260325_191135_c1c322e4",
+  "normalized_event_id": "integration_1_turn_57a5db94"
+}

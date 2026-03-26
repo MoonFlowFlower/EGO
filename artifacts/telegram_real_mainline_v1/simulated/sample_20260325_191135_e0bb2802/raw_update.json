@@ -1,0 +1,19 @@
+{
+  "update_id": 895097,
+  "message": {
+    "message_id": 895097,
+    "date": 1774483895,
+    "chat": {
+      "id": 67890,
+      "type": "private"
+    },
+    "from": {
+      "id": 12345,
+      "is_bot": false,
+      "username": "te*******"
+    },
+    "text": "你好"
+  },
+  "_simulated": true,
+  "_simulated_at": "2026-03-25T19:11:35.097155"
+}

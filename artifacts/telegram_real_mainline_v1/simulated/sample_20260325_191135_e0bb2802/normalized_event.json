@@ -1,0 +1,18 @@
+{
+  "event_id": "simulated_smoke_1_turn_4f53351c",
+  "timestamp": "2026-03-25T19:11:35.097599",
+  "actor": "user",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": "你好",
+  "raw_text": "你好",
+  "task_context": {
+    "pending_tasks": 0,
+    "blocked_tasks": 0
+  },
+  "safety_context": {
+    "risk": "low",
+    "risk_level": "low"
+  },
+  "external_result": null
+}

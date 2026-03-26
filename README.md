@@ -9,6 +9,24 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 - ✅ Reflection 机制正常工作
 - ✅ 高风险操作与低风险操作被正确区分
 - ✅ `safety_context.risk` 从 EgoCore 正确传递到 OpenEmotion
+- ✅ **真实 Telegram 环境验证通过**
+
+## 最近更新
+
+### 2026-03-25: unified runner 跨层一致性验证
+- `simulated / integration / real_telegram` 已被验证为共用同一条 `RuntimeV2Loop` 主链
+- 三层差异被收敛到输入来源、输出 transport、evidence collector
+- E2/E3 已在 Windows Python 环境下实际跑通，形成统一 evidence bundle
+
+### 2026-03-25: P0-R3 runtime 主链接线修复
+- 修复 `runtime_v2/loop.py` 硬编码 `safety_context` 为空的问题
+- 高风险消息 psi_bucket 包含 `:risk_high` 后缀
+- 真实 Telegram 双样本验证通过
+
+### 2026-03-25: P0-R2 Risk Signal 接线
+- 修复 `safety_context.risk` 字段名不匹配问题
+- 高风险操作 psi_bucket 包含 `:risk_high` 后缀
+- 高低风险操作被分配到不同 cycle
 
 ## 仓库结构
 
