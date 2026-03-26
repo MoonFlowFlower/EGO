@@ -103,3 +103,42 @@ def test_native_loop_returns_contract_and_verification(monkeypatch, tmp_path):
     assert result.verification_result is not None
     assert result.verification_result["expected_signal_matched"] is True
     assert "页面已创建" in result.reply_text
+
+
+def test_native_loop_reads_artifact_as_explicit_step(monkeypatch):
+    client = FakeLLMClient()
+    loop = NativeToolCallingLoop(llm_client=client)
+
+    monkeypatch.setattr(
+        loop.contract_runtime,
+        "execute_artifact_read_step",
+        lambda artifact_id: {
+            "success": True,
+            "output": "在D:\\Project\\AIProject\\MyProject\\Test下创建一个介绍EgoCore的html页面",
+            "error": None,
+            "metadata": {"artifact_id": artifact_id, "stage": "artifact_parse_completed"},
+            "execution_time_ms": 1.0,
+        },
+    )
+
+    import asyncio
+
+    result = asyncio.run(
+        loop.run_turn(
+            session_key="telegram:dm:1",
+            user_input="[用户发送了文件: 任务单.txt]",
+            ingress_context={
+                "runtime_action": "execute_task",
+                "resolved_target": {
+                    "artifact_id": "artifact://compacted/demo",
+                    "artifact_ref": "artifact://compacted/demo",
+                    "filename": "任务单.txt",
+                },
+            },
+            proto_self_context=None,
+        )
+    )
+
+    assert result.next_step_decision["action_type"] == "read_artifact"
+    assert result.tool_results[0]["tool_name"] == "read_artifact"
+    assert result.verification_result["need_relock"] is True

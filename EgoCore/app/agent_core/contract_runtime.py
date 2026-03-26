@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path, PureWindowsPath
 from typing import Any, Dict, List, Optional
 
 from app.tools import execute_tool
+from app.compaction import ReadRequest, get_compaction_manager
+from app.ingestion.artifact_store import get_artifact_store
 
 
 WINDOWS_PATH_RE = re.compile(r"[A-Za-z]:[\\/](?:[A-Za-z0-9._() \-]+[\\/])*[A-Za-z0-9._() \-]+")
@@ -201,7 +204,8 @@ class ContractRuntimeEngine:
 
         ask_reason = None
         ask_needed = False
-        if not target_path and ingress_context.get("runtime_action") == "execute_task":
+        has_artifact_envelope = bool(target.get("artifact_id") or target.get("artifact_ref"))
+        if not target_path and ingress_context.get("runtime_action") == "execute_task" and not has_artifact_envelope:
             ask_needed = True
             ask_reason = "缺少明确输出目标路径或任务产物位置。"
         elif output_format == "html" and not target_path:
@@ -236,6 +240,15 @@ class ContractRuntimeEngine:
         ingress_context: Optional[Dict[str, Any]] = None,
     ) -> NextStepDecision:
         ingress_context = ingress_context or {}
+        if contract.source_artifact_id and not ingress_context.get("resolved_artifact_text"):
+            return NextStepDecision(
+                step_id=f"step_{uuid.uuid4().hex[:8]}",
+                action_type="read_artifact",
+                rationale="Only artifact envelope is available; perform explicit artifact read as the single step.",
+                expected_signal="Artifact content becomes available for re-lock.",
+                tool_name="read_artifact",
+                tool_input={"artifact_id": contract.source_artifact_id},
+            )
         if contract.ask_needed:
             return NextStepDecision(
                 step_id=f"step_{uuid.uuid4().hex[:8]}",
@@ -306,6 +319,16 @@ class ContractRuntimeEngine:
                 stop_reason = "verification_failed"
             else:
                 stop_reason = "verified"
+        elif step.action_type == "read_artifact":
+            observed["tool_result"] = tool_result or {}
+            matched = bool(tool_result and tool_result.get("success"))
+            need_relock = matched
+            stop_reason = "artifact_ready" if matched else "artifact_read_failed"
+            if matched:
+                contract_delta["resolved_artifact_text"] = True
+            else:
+                contract_delta["stage_error_code"] = (tool_result or {}).get("metadata", {}).get("stage_error_code")
+                contract_delta["reason"] = (tool_result or {}).get("error")
         else:
             stop_reason = "unsupported_step"
             need_relock = True
@@ -321,6 +344,85 @@ class ContractRuntimeEngine:
 
     def build_ask_reply(self, contract: TaskContract) -> str:
         return contract.ask_reason or "我还缺少一个关键信息，先告诉我缺的那部分。"
+
+    def build_read_artifact_reply(self, contract: TaskContract, verification: VerificationResult) -> str:
+        if verification.expected_signal_matched:
+            return "任务单原文已读取，方向已重新锁定。请继续下一步执行。"
+        stage_code = verification.contract_delta.get("stage_error_code") or "artifact_read_failed"
+        return f"读取任务单原文失败，当前阶段错误码：{stage_code}。"
+
+    def execute_artifact_read_step(self, artifact_id: str) -> Dict[str, Any]:
+        started = time.time()
+        metadata: Dict[str, Any] = {"artifact_id": artifact_id}
+        try:
+            if artifact_id.startswith("artifact://compacted/"):
+                metadata["stage"] = "artifact_parse"
+                result = get_compaction_manager().read(ReadRequest(artifact_id=artifact_id, mode="raw"))
+                if not result.success:
+                    metadata["stage_error_code"] = "artifact_parse_timeout"
+                    return {
+                        "success": False,
+                        "output": "",
+                        "error": result.error or "artifact read failed",
+                        "metadata": metadata,
+                        "execution_time_ms": (time.time() - started) * 1000,
+                    }
+                metadata["stage"] = "artifact_parse_completed"
+                metadata["chars"] = len(result.content or "")
+                return {
+                    "success": True,
+                    "output": (result.content or "")[:12000],
+                    "error": None,
+                    "metadata": metadata,
+                    "execution_time_ms": (time.time() - started) * 1000,
+                }
+            if artifact_id.startswith("artifact://ingested/"):
+                metadata["stage"] = "artifact_download"
+                content = get_artifact_store().read_raw(artifact_id)
+                if content is None:
+                    metadata["stage_error_code"] = "artifact_download_timeout"
+                    return {
+                        "success": False,
+                        "output": "",
+                        "error": "artifact read failed",
+                        "metadata": metadata,
+                        "execution_time_ms": (time.time() - started) * 1000,
+                    }
+                metadata["stage"] = "artifact_download_completed"
+                metadata["chars"] = len(content)
+                return {
+                    "success": True,
+                    "output": content[:12000],
+                    "error": None,
+                    "metadata": metadata,
+                    "execution_time_ms": (time.time() - started) * 1000,
+                }
+            metadata["stage_error_code"] = "artifact_unsupported_scheme"
+            return {
+                "success": False,
+                "output": "",
+                "error": f"Unsupported artifact id: {artifact_id}",
+                "metadata": metadata,
+                "execution_time_ms": (time.time() - started) * 1000,
+            }
+        except TimeoutError as exc:
+            metadata["stage_error_code"] = "native_read_timeout"
+            return {
+                "success": False,
+                "output": "",
+                "error": str(exc),
+                "metadata": metadata,
+                "execution_time_ms": (time.time() - started) * 1000,
+            }
+        except Exception as exc:
+            metadata["stage_error_code"] = "handoff_timeout" if "timeout" in str(exc).lower() else "artifact_read_failed"
+            return {
+                "success": False,
+                "output": "",
+                "error": str(exc),
+                "metadata": metadata,
+                "execution_time_ms": (time.time() - started) * 1000,
+            }
 
     def build_execution_messages(
         self,

@@ -137,7 +137,7 @@ async def test_execute_confirmation_ingress_is_bound_to_pending_task(monkeypatch
 
 
 @pytest.mark.asyncio
-async def test_execute_confirmation_hydrates_artifact_text_into_native_context(monkeypatch):
+async def test_execute_confirmation_hydrates_artifact_envelope_only_into_native_context(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
     session_key = "telegram:dm:8420019401"
     state = bot._get_runtime_state(session_key)
@@ -154,15 +154,7 @@ async def test_execute_confirmation_hydrates_artifact_text_into_native_context(m
         },
     }
 
-    monkeypatch.setattr(
-        "app.telegram_bot.get_compaction_manager",
-        lambda: type(
-            "M",
-            (),
-            {"read": lambda self, request: type("R", (), {"success": True, "content": "在D:\\Project\\AIProject\\MyProject\\Test下创建html页面"})()},
-        )(),
-    )
-
     hydrated = bot._hydrate_artifact_ingress_context(state)
     assert hydrated["resolved_artifact_filename"] == "任务单.txt"
-    assert "创建html页面" in hydrated["resolved_artifact_text"]
+    assert hydrated["resolved_artifact_id"] == "artifact://compacted/task-sheet"
+    assert "resolved_artifact_text" not in hydrated

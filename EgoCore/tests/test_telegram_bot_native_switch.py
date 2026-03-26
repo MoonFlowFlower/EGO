@@ -352,6 +352,55 @@ async def test_native_loop_turn_publishes_contract_runtime_events(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_native_loop_turn_publishes_artifact_stage_events(monkeypatch):
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:1")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "resolved_target": {
+            "artifact_id": "artifact://compacted/demo",
+            "artifact_ref": "artifact://compacted/demo",
+            "filename": "任务单.txt",
+        },
+    }
+    events = []
+
+    class Hook:
+        enabled = False
+
+    class NativeResult:
+        reply_text = "任务单原文已读取，方向已重新锁定。请继续下一步执行。"
+        task_contract = {"task_id": "contract_1", "goal": "x", "success_criteria": [], "hard_constraints": [], "risk_level": "medium", "ask_needed": False}
+        next_step_decision = {"step_id": "step_1", "action_type": "read_artifact", "expected_signal": "Artifact content becomes available for re-lock.", "tool_name": "read_artifact"}
+        verification_result = {"step_id": "step_1", "expected_signal_matched": True, "need_relock": True, "stop_reason": "artifact_ready", "contract_delta": {"resolved_artifact_text": True}}
+        tool_results = [{"tool_name": "read_artifact", "result": {"success": True, "output": "ok", "error": None, "metadata": {"stage_error_code": None}}}]
+
+    async def fake_run_turn(**kwargs):
+        return NativeResult()
+
+    async def fake_publish(**kwargs):
+        events.append(kwargs)
+
+    bot.native_openemotion_hooks = Hook()
+    bot.native_loop = type("Loop", (), {"run_turn": None})()
+    monkeypatch.setattr(bot.native_loop, "run_turn", fake_run_turn)
+    monkeypatch.setattr(bot, "_publish_phase1_event", fake_publish)
+
+    await bot._run_native_loop_turn(
+        update=None,
+        session_key="telegram:dm:1",
+        text="[用户发送了文件: 任务单.txt]",
+        state=state,
+        ack_text=None,
+    )
+
+    kinds = [event["kind"] for event in events]
+    assert "artifact_envelope_ready" in kinds
+    assert "artifact_read_started" in kinds
+    assert "artifact_read_completed" in kinds
+
+
+@pytest.mark.asyncio
 async def test_native_loop_turn_returns_blocked_reply_on_failed_tool_without_final(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
     state = bot._get_runtime_state("telegram:dm:1")

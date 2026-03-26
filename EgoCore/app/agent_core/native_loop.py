@@ -94,6 +94,36 @@ class NativeToolCallingLoop:
                 next_step_decision=next_step.to_dict(),
                 verification_result=verification.to_dict(),
             )
+        if next_step.action_type == "read_artifact":
+            artifact_result = self.contract_runtime.execute_artifact_read_step(contract.source_artifact_id or "")
+            if artifact_result.get("success") and artifact_result.get("output"):
+                contract = self.contract_runtime.lock_contract(
+                    session_key=session_key,
+                    user_input=user_input,
+                    ingress_context={**(ingress_context or {}), "resolved_artifact_text": artifact_result.get("output")},
+                    proto_self_context=proto_self_context,
+                )
+            verification = self.contract_runtime.verify_step(
+                contract=contract,
+                step=next_step,
+                tool_result=artifact_result,
+                reply_text="",
+            )
+            return NativeLoopResult(
+                reply_text=self.contract_runtime.build_read_artifact_reply(contract, verification),
+                tool_results=[
+                    {
+                        "tool_name": "read_artifact",
+                        "arguments": {"artifact_id": contract.source_artifact_id},
+                        "result": artifact_result,
+                    }
+                ],
+                usage=[],
+                finish_reason="artifact_read_step",
+                task_contract=contract.to_dict(),
+                next_step_decision=next_step.to_dict(),
+                verification_result=verification.to_dict(),
+            )
 
         messages = self.context_builder.build_messages(
             session_key=session_key,

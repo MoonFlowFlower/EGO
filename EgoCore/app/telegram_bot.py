@@ -142,19 +142,8 @@ class TelegramBot:
         artifact_id = target.get("artifact_id") or target.get("artifact_ref")
         if not artifact_id or not str(artifact_id).startswith("artifact://"):
             return ingress_context
-
-        artifact_text = None
-        if str(artifact_id).startswith("artifact://compacted/"):
-            manager = get_compaction_manager()
-            result = manager.read(ReadRequest(artifact_id=str(artifact_id), mode="raw"))
-            if result.success:
-                artifact_text = result.content
-        elif str(artifact_id).startswith("artifact://ingested/"):
-            artifact_text = get_artifact_store().read_raw(str(artifact_id))
-
-        if artifact_text:
-            ingress_context["resolved_artifact_text"] = artifact_text[:12000]
-            ingress_context["resolved_artifact_filename"] = target.get("filename")
+        ingress_context["resolved_artifact_id"] = str(artifact_id)
+        ingress_context["resolved_artifact_filename"] = target.get("filename")
         return ingress_context
 
     def _build_native_failure_reply(self, state: RuntimeV2State) -> str:
@@ -188,9 +177,15 @@ class TelegramBot:
         next_step: Optional[dict] = None,
         verification: Optional[dict] = None,
     ) -> dict:
-        contract = contract or state.task_contract or {}
-        next_step = next_step or state.next_step_decision or {}
-        verification = verification or state.last_verification_result or {}
+        contract = contract or {}
+        next_step = next_step or {}
+        verification = verification or {}
+        if not contract and event_kind != "contract_locked":
+            contract = state.task_contract or {}
+        if not next_step and event_kind in {"step_verified", "need_relock"}:
+            next_step = state.next_step_decision or {}
+        if not verification and event_kind in {"step_verified", "need_relock"}:
+            verification = state.last_verification_result or {}
         return {
             "trace_schema": "contract_runtime_v1",
             "event_kind": event_kind,
@@ -1190,9 +1185,28 @@ class TelegramBot:
             ingress_context=self._hydrate_artifact_ingress_context(state),
             proto_self_context=state.proto_self_context,
         )
+        await self._publish_phase1_event(
+            session_key=session_key,
+            kind="contract_runtime_started",
+            payload={
+                "trace_schema": "contract_runtime_v1",
+                "runtime_action": (state.ingress_context or {}).get("runtime_action"),
+                "artifact_id": ((state.ingress_context or {}).get("resolved_target") or {}).get("artifact_id"),
+            },
+        )
         task_contract = getattr(result, "task_contract", None)
         next_step_decision = getattr(result, "next_step_decision", None)
         verification_result = getattr(result, "verification_result", None)
+        if ((state.ingress_context or {}).get("resolved_target") or {}).get("artifact_id"):
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="artifact_envelope_ready",
+                payload={
+                    "trace_schema": "contract_runtime_v1",
+                    "artifact_id": ((state.ingress_context or {}).get("resolved_target") or {}).get("artifact_id"),
+                    "filename": ((state.ingress_context or {}).get("resolved_target") or {}).get("filename"),
+                },
+            )
         if task_contract:
             state.set_task_contract(task_contract)
             await self._publish_phase1_event(
@@ -1219,6 +1233,15 @@ class TelegramBot:
         if result.tool_results:
             for step_index, tool_entry in enumerate(result.tool_results):
                 tool_result = tool_entry.get("result") or {}
+                if tool_entry.get("tool_name") == "read_artifact":
+                    await self._publish_phase1_event(
+                        session_key=session_key,
+                        kind="artifact_read_started",
+                        payload={
+                            "trace_schema": "contract_runtime_v1",
+                            "artifact_id": ((state.ingress_context or {}).get("resolved_target") or {}).get("artifact_id"),
+                        },
+                    )
                 state.last_tool_result = {
                     "success": tool_result.get("success"),
                     "tool": tool_entry.get("tool_name"),
@@ -1250,6 +1273,19 @@ class TelegramBot:
                         "error_preview": str(tool_result.get("error") or "")[:200],
                     },
                 )
+                if tool_entry.get("tool_name") == "read_artifact":
+                    artifact_event_kind = "artifact_read_completed" if tool_result.get("success") else "artifact_read_timeout"
+                    await self._publish_phase1_event(
+                        session_key=session_key,
+                        kind=artifact_event_kind,
+                        payload={
+                            "trace_schema": "contract_runtime_v1",
+                            "artifact_id": ((state.ingress_context or {}).get("resolved_target") or {}).get("artifact_id"),
+                            "stage_error_code": (tool_result.get("metadata") or {}).get("stage_error_code"),
+                            "success": bool(tool_result.get("success")),
+                            "error": tool_result.get("error"),
+                        },
+                    )
         if verification_result:
             state.record_verification(verification_result)
             await self._publish_phase1_event(

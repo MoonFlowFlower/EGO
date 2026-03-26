@@ -46,6 +46,29 @@ def test_decide_next_step_asks_user_when_contract_missing_target():
     assert step.action_type == "ask_user"
 
 
+def test_decide_next_step_reads_artifact_before_deep_reasoning():
+    engine = ContractRuntimeEngine()
+    contract = engine.lock_contract(
+        session_key="telegram:dm:1",
+        user_input="[用户发送了文件: 任务单.txt]",
+        ingress_context={
+            "runtime_action": "execute_task",
+            "resolved_target": {
+                "artifact_id": "artifact://compacted/demo",
+                "artifact_ref": "artifact://compacted/demo",
+                "filename": "任务单.txt",
+            },
+        },
+        proto_self_context=None,
+    )
+
+    step = engine.decide_next_step(contract=contract, ingress_context={"runtime_action": "execute_task"})
+
+    assert contract.ask_needed is False
+    assert step.action_type == "read_artifact"
+    assert step.tool_name == "read_artifact"
+
+
 def test_verify_step_checks_html_file_signal(tmp_path):
     engine = ContractRuntimeEngine()
     target = tmp_path / "egocore_intro.html"
@@ -76,4 +99,3 @@ def test_verify_step_checks_html_file_signal(tmp_path):
     assert verification.expected_signal_matched is True
     assert verification.need_relock is False
     assert verification.observed_result["target_exists"] is True
-
