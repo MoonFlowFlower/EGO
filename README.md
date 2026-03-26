@@ -9,7 +9,7 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 - ✅ Reflection 机制正常工作
 - ✅ 高风险操作与低风险操作被正确区分
 - ✅ `safety_context.risk` 从 EgoCore 正确传递到 OpenEmotion
-- ✅ **真实 Telegram 环境验证通过**
+- ✅ **真实 Telegram 样本级验证通过，待 E5 观察期准入判定**
 
 ## 最近更新
 

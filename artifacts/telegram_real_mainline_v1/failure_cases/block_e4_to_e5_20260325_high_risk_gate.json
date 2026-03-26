@@ -1,0 +1,10 @@
+{
+  "block_id": "block_e4_to_e5_20260325_high_risk_gate",
+  "timestamp": "2026-03-25T19:25:00",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "missing_condition": "missing_verified_high_risk_real_sample",
+  "current_artifact_path": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260325_180013_540e7b4e/sample.json",
+  "risk_if_ignored": "把仅具备高风险文案、但未证明命中高风险路径的样本误当作 E5 准入前提，会把 E4 样本级误报为观察期级。",
+  "next_fix_action": "补 1 个完整 real_telegram 高风险样本，并确认 normalized_event.safety_context.risk 命中高风险路径；随后重新执行 E4→E5 准入判定。"
+}
