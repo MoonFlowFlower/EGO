@@ -124,7 +124,7 @@ class TestRuntimeActionDecision:
         assert action == "return_runtime_status"
 
     def test_status_query_when_idle(self):
-        """P3: 空闲状态查询也应返回状态信息，而非 chat"""
+        """空闲态下不应把状态查询硬判成 runtime status 快路。"""
         from app.runtime_v2.semantic_parser import decide_runtime_action
 
         graph = ParsedIntentGraph(
@@ -138,7 +138,7 @@ class TestRuntimeActionDecision:
                 return False
 
         action = decide_runtime_action(graph, MockState())
-        assert action == "return_runtime_status"
+        assert action == "chat"
 
     def test_correction_priority(self):
         from app.runtime_v2.semantic_parser import decide_runtime_action
@@ -424,10 +424,9 @@ class TestDesignContractSamples:
         assert graph.primary_intent == "chat"
 
     def test_sample_2_status_query(self):
-        """样例2：状态查询"""
+        """样例2：短探针命中 heuristic status_query；是否早返回取决于 runtime context。"""
         graph = heuristic_parse("还在吗")
-        # heuristic 不识别自然语言，默认 chat
-        assert graph.primary_intent == "chat"
+        assert graph.primary_intent == "status_query"
 
     def test_sample_3_task_with_path(self):
         """样例3：路径 + 自然语言 → reference_material（heuristic 只识别显式硬信号，不处理执行动词）"""

@@ -821,8 +821,7 @@ def decide_runtime_action(graph: ParsedIntentGraph, state: Any) -> str:
     if graph.has_status_query:
         if hasattr(state, "is_busy") and state.is_busy():
             return "return_runtime_status"
-        # 空闲状态也返回状态信息（而非普通 chat）
-        return "return_runtime_status"
+        return "chat"
 
     # 纠错/反驳优先
     if graph.has_correction:

@@ -265,6 +265,31 @@ class TelegramDeliveryAction:
 
 
 class RuntimeV2TelegramBridge:
+    AMBIGUOUS_PRESENCE_PROBES = {"在吗", "还在吗", "还在不", "在不在"}
+
+    def _normalize_ambiguous_probe(
+        self,
+        text: str,
+        graph: ParsedIntentGraph,
+        state: RuntimeV2State,
+    ) -> ParsedIntentGraph:
+        normalized = re.sub(r"\s+", "", (text or "").strip().lower()).strip("?!？！。,.，")
+        if normalized not in self.AMBIGUOUS_PRESENCE_PROBES:
+            return graph
+        if hasattr(state, "is_busy") and state.is_busy():
+            return graph
+
+        # 空闲态下，这类短句更接近存在性问候，不应硬判成 status_query。
+        graph.has_status_query = False
+        graph.primary_intent = "chat"
+        graph.secondary_intents = []
+        graph.requires_clarification = False
+        if graph.segments:
+            graph.segments[0].kind = "small_talk"
+            graph.segments[0].request_mode = None
+        graph.parser_source = "heuristic_parser"
+        return graph
+
     def build_ingress_context(
         self,
         decision: TelegramIngressDecision,
@@ -322,7 +347,7 @@ class RuntimeV2TelegramBridge:
         
         # 直接走程序化解析，避免前置 parser LLM 与主决策 LLM 串行。
         # 复杂语义留给主决策 LLM 一次性消费 ingress_context 处理。
-        graph = heuristic_parse(text)
+        graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
         
         # ================================================================
         # 审计日志：打印关键决策信息
@@ -412,7 +437,7 @@ class RuntimeV2TelegramBridge:
         此方法不再使用关键词表作为主判定源。
         当无法使用语义解析器时，会回退到 heuristic parser。
         """
-        graph = heuristic_parse(text)
+        graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
         runtime_action = decide_runtime_action(graph, state)
 
         looks_like_task = (

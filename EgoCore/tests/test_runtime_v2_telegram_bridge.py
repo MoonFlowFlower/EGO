@@ -38,6 +38,15 @@ def test_telegram_bridge_short_probe_is_programmatic_status_query():
     assert decision._parsed_intent_graph.primary_intent == "status_query"
 
 
+def test_telegram_bridge_presence_probe_when_idle_falls_back_to_chat():
+    bridge = RuntimeV2TelegramBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+    decision = bridge.inspect_ingress("在吗", state)
+    assert decision.is_short_probe is False
+    assert decision._runtime_action == "chat"
+    assert decision._parsed_intent_graph.primary_intent == "chat"
+
+
 def test_telegram_bridge_marks_challenge_turn_programmatically():
     """挑战轮次应由程序化入口直接识别，避免前置 parser LLM。"""
     bridge = RuntimeV2TelegramBridge()
