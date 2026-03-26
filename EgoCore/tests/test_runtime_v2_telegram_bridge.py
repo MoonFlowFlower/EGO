@@ -25,35 +25,30 @@ def test_telegram_bridge_path_is_reference_material():
     assert decision._runtime_action == "waiting_input"
 
 
-def test_telegram_bridge_short_probe_requires_async():
-    """
-    短探针识别需要 LLM 语义解析（async 版本）。
-    
-    同步版本（heuristic parser）不处理自然语言语义。
-    这是设计合同的正确行为：heuristic 只处理显式硬信号。
-    """
+def test_telegram_bridge_short_probe_is_programmatic_status_query():
+    """短探针应由程序化入口直接识别，避免前置 parser LLM。"""
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     state.task_status = "running"
     state.current_goal = "修改 hello.html 配色"
-    
-    # 同步版本不识别自然语言
+
     decision = bridge.inspect_ingress("还在吗", state)
-    assert decision.is_short_probe is False  # heuristic 不识别
+    assert decision.is_short_probe is True
+    assert decision._runtime_action == "return_runtime_status"
+    assert decision._parsed_intent_graph.primary_intent == "status_query"
 
 
-def test_telegram_bridge_marks_challenge_turn_requires_async():
-    """
-    挑战轮次识别需要 LLM 语义解析（async 版本）。
-    """
+def test_telegram_bridge_marks_challenge_turn_programmatically():
+    """挑战轮次应由程序化入口直接识别，避免前置 parser LLM。"""
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     state.task_status = "running"
     state.current_goal = "修改 hello.html 配色"
-    
-    # 同步版本不识别自然语言
+
     decision = bridge.inspect_ingress("你没改啊", state)
-    assert decision.is_challenge_turn is False  # heuristic 不识别
+    assert decision.is_challenge_turn is True
+    assert decision._runtime_action == "repair_or_reframe"
+    assert decision._parsed_intent_graph.primary_intent == "correction"
 
 
 def test_telegram_bridge_discussion_not_task():

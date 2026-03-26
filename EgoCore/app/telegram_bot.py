@@ -30,8 +30,6 @@ from app.config import get_config, ConfigError
 from app.command_router import (
     get_router, CommandContext, CommandResult, handle_natural_language
 )
-from app.llm_client import get_llm_client
-
 # v2.0: 新 runtime 入口
 from app.runtime import (
     run_agent,
@@ -767,16 +765,8 @@ class TelegramBot:
         if extra_context:
             text = f"{text}\n\n{extra_context}"
 
-        # Phase 2: 优先使用 async semantic parser
-        # 获取 LLM client（可能为 None，会回退到 heuristic）
-        llm_client = None
-        try:
-            llm_client = get_llm_client()
-        except Exception as e:
-            logger.warning(f"runtime_v2: failed to get LLM client: {e}, using heuristic parser")
-
-        # 调用 async 版本
-        ingress = await self.runtime_v2_bridge.inspect_ingress_semantic(text, state, llm_client)
+        ingress = await self.runtime_v2_bridge.inspect_ingress_semantic(text, state, llm_client=None)
+        state.ingress_context = self.runtime_v2_bridge.build_ingress_context(ingress, state)
         pre_runtime = self.runtime_v2_bridge.plan_pre_runtime(ingress, state)
         logger.info("runtime_v2.turn.start session=%s text=%r ingress=%s parser_source=%s", 
                     session_key, text[:200], ingress, 
@@ -816,6 +806,10 @@ class TelegramBot:
             state.waiting_for_user_input = True
             waiting_text = getattr(pre_runtime, 'waiting_input_text', '收到文件，请告诉我你要做什么。')
             await self._send_reply(update, waiting_text)
+            return True
+
+        if getattr(pre_runtime, "direct_reply_text", None):
+            await self._send_reply(update, pre_runtime.direct_reply_text)
             return True
 
         # 不再发送 generic busy notice

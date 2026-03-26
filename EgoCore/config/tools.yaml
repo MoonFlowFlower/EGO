@@ -34,6 +34,8 @@ tools:
         - /tmp
         - D:\Project\AIProject\MyProject
         - D:/Project/AIProject/MyProject
+        - D:\Project\AIProject\MyProject\Test
+        - D:/Project/AIProject/MyProject/Test
       denied_paths:
         - .env
         - .git

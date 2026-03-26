@@ -12,7 +12,7 @@ from .state import RuntimeV2State
 from .semantic_parser import (
     ParsedIntentGraph,
     SemanticSegment,
-    safe_semantic_parse,
+    heuristic_parse,
     decide_runtime_action,
     build_runtime_status_reply,
     SEGMENT_KINDS,
@@ -255,6 +255,7 @@ class TelegramPreRuntimeAction:
     remember_challenge_turn: bool = False
     force_waiting_input: bool = False  # 强制 waiting_input
     waiting_input_text: Optional[str] = None
+    direct_reply_text: Optional[str] = None
 
 
 @dataclass
@@ -264,6 +265,37 @@ class TelegramDeliveryAction:
 
 
 class RuntimeV2TelegramBridge:
+    def build_ingress_context(
+        self,
+        decision: TelegramIngressDecision,
+        state: RuntimeV2State,
+    ) -> Dict[str, Any]:
+        graph = decision._parsed_intent_graph
+        request_mode = None
+        if graph is not None:
+            for seg in graph.segments:
+                if seg.request_mode:
+                    request_mode = seg.request_mode
+                    break
+        target_action = request_mode or decision.inferred_action
+        resolved_target = state.resolve_target(target_action) if target_action in {"execute", "compare", "analyze"} else None
+        return {
+            "parser_source": graph.parser_source if graph else "chat_default",
+            "primary_intent": graph.primary_intent if graph else "chat",
+            "secondary_intents": graph.secondary_intents if graph else [],
+            "runtime_action": decision._runtime_action,
+            "request_mode": request_mode,
+            "requires_clarification": graph.requires_clarification if graph else False,
+            "has_status_query": graph.has_status_query if graph else False,
+            "has_correction": graph.has_correction if graph else False,
+            "actionable_targets": graph.actionable_targets if graph else [],
+            "constraints": graph.constraints if graph else [],
+            "acceptance_criteria": graph.acceptance_criteria if graph else [],
+            "pending_artifacts_count": len(state.pending_artifacts),
+            "last_uploaded_artifact": state.last_uploaded_artifact,
+            "resolved_target": resolved_target,
+        }
+
     # =========================================================================
     # Phase 0 设计合同：统一语义解析器（新主链）
     # =========================================================================
@@ -288,14 +320,9 @@ class RuntimeV2TelegramBridge:
         import logging
         logger = logging.getLogger(__name__)
         
-        # 调用统一语义解析器
-        recent_turns = state.history[-6:] if hasattr(state, "history") else []
-        graph = await safe_semantic_parse(
-            text=text,
-            recent_turns=recent_turns,
-            state=state,
-            llm_client=llm_client,
-        )
+        # 直接走程序化解析，避免前置 parser LLM 与主决策 LLM 串行。
+        # 复杂语义留给主决策 LLM 一次性消费 ingress_context 处理。
+        graph = heuristic_parse(text)
         
         # ================================================================
         # 审计日志：打印关键决策信息
@@ -385,34 +412,31 @@ class RuntimeV2TelegramBridge:
         此方法不再使用关键词表作为主判定源。
         当无法使用语义解析器时，会回退到 heuristic parser。
         """
-        from .semantic_parser import heuristic_parse, decide_runtime_action
-        
-        # 使用 heuristic parser（不调用 LLM）
         graph = heuristic_parse(text)
         runtime_action = decide_runtime_action(graph, state)
-        
+
         looks_like_task = (
             graph.primary_intent == "task_request" or
             any(seg.kind == "task_request" for seg in graph.segments)
         )
-        
+
         has_attachment = "[用户发送了文件:" in text or "[附件:" in text
         is_file_only = has_attachment and not looks_like_task
         is_status_query = graph.has_status_query
         is_challenge_turn = graph.has_correction
-        
+
         inferred_action = None
         for seg in graph.segments:
             if seg.kind == "task_request" and seg.request_mode:
                 inferred_action = seg.request_mode
                 break
-        
+
         is_confirm_execution = (
             looks_like_task and
             hasattr(state, "pending_artifacts") and
             len(state.pending_artifacts) > 0
         )
-        
+
         return TelegramIngressDecision(
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
@@ -470,6 +494,13 @@ class RuntimeV2TelegramBridge:
                 force_waiting_input=True,
                 waiting_input_text=suggestion_text,
                 ack_text=None,  # 不再单独发 ack
+            )
+
+        if runtime_action == "return_runtime_status":
+            return TelegramPreRuntimeAction(
+                should_return_early=True,
+                direct_reply_text=build_runtime_status_reply(state),
+                remember_challenge_turn=decision.remember_challenge_turn,
             )
         
         return TelegramPreRuntimeAction(

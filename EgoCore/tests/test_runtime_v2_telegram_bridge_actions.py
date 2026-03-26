@@ -3,17 +3,18 @@ from app.runtime_v2.state import RuntimeV2State
 
 
 def test_telegram_bridge_plans_pre_runtime_no_busy_notice():
-    """短探针不再触发 busy notice"""
+    """短探针应直接返回 runtime 状态，不再进 LLM 决策。"""
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     state.task_status = "running"
     state.current_goal = "修改 hello.html 配色"
     decision = bridge.inspect_ingress("还在吗", state)
     action = bridge.plan_pre_runtime(decision, state)
-    # 短探针不再返回 busy notice
     assert decision.absorb_as_busy_notice is False
+    assert action.should_return_early is True
     assert action.busy_notice_text is None
     assert action.ack_text is None
+    assert action.direct_reply_text == "正在处理：修改 hello.html 配色"
 
 
 def test_telegram_bridge_plans_no_ack_for_task():

@@ -87,7 +87,7 @@ async def test_runtime_v2_task_then_challenge_followup_stays_coherent(monkeypatc
 
 @pytest.mark.asyncio
 async def test_runtime_v2_short_probe_no_longer_sends_busy_notice(monkeypatch):
-    """短探针不再发送 generic busy notice"""
+    """短探针直接返回程序化状态，不再静默吸收或走 LLM。"""
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
     bot.app = type("A", (), {"bot": DummyBot()})()
     session_id = "telegram:dm:456"
@@ -115,6 +115,5 @@ async def test_runtime_v2_short_probe_no_longer_sends_busy_notice(monkeypatch):
     update2 = DummyUpdate("还在吗", 202)
     await bot.handle_message(update2, None)
 
-    # 不再发送 generic busy notice
-    assert update1.message.sent == []
-    assert update2.message.sent == []
+    assert update1.message.sent == ["正在处理：修改 hello.html 配色"]
+    assert update2.message.sent == ["正在处理：修改 hello.html 配色"]

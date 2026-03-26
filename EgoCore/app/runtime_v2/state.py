@@ -156,6 +156,7 @@ class RuntimeV2State:
     
     # Proto-Self Kernel Context
     proto_self_context: Optional[Dict[str, Any]] = None  # policy_hint / response_tendency / reflection_note
+    ingress_context: Optional[Dict[str, Any]] = None  # canonical ingress structure for single-pass decision
 
     def to_prompt_context(self) -> Dict[str, Any]:
         """
@@ -207,6 +208,8 @@ class RuntimeV2State:
             "last_delivery_type": self.last_delivery_type,
             # Proto-Self Kernel Context
             "proto_self_context": self.proto_self_context,
+            # Canonical ingress structure
+            "ingress_context": self.ingress_context,
         }
     
     def add_pending_artifact(self, artifact_id: str, filename: Optional[str] = None, 
