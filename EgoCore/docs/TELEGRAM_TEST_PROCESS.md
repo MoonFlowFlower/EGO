@@ -82,15 +82,21 @@ PYTHONPATH=. python3 -m pytest -s \
 EgoCore/tools/run_telegram_mainline_regression.sh
 ```
 
+真实故障 replay 固定入口：
+
+- `tests/test_telegram_failure_case_replay.py`
+
 ## 3. 新增真实故障的处理规则
 
 任何真实 Telegram 故障，修复前后都必须遵守：
 
 1. 先抓真实日志 / session log / trace，不允许靠猜
-2. 先写一个能复现该故障的测试，再修
-3. 测试必须落在最贴近故障层级的位置
-4. 修完后至少再跑一次“Telegram 主链最低回归门”
-5. 如果故障来自真实用户旅程，必须优先补“跨轮状态机回归”，不能只补散点单测
+2. 先用 `tools/capture_telegram_failure_case.py` 从 session log 生成 fixture 草稿
+3. 把 fixture 放进 `tests/fixtures/telegram_failure_cases/`
+4. 先让 `tests/test_telegram_failure_case_replay.py` 复现，再修
+5. 测试必须落在最贴近故障层级的位置
+6. 修完后至少再跑一次“Telegram 主链最低回归门”
+7. 如果故障来自真实用户旅程，必须优先补“跨轮状态机回归”，不能只补散点单测
 
 ## 4. 标准验证顺序
 
@@ -98,9 +104,10 @@ EgoCore/tools/run_telegram_mainline_regression.sh
 
 1. `py_compile`
 2. 对应层级的最小测试集
-3. Telegram 主链最低回归门
-4. 如果是外部行为变更，再做真实 Telegram E2E
-5. 提交前写清：
+3. `tests/test_telegram_failure_case_replay.py`（如果本次来自真实故障）
+4. Telegram 主链最低回归门
+5. 如果是外部行为变更，再做真实 Telegram E2E
+6. 提交前写清：
    - 跑了哪些测试
    - 哪条是真实故障回归
    - 是否做了真实 Telegram 验证
@@ -112,6 +119,7 @@ EgoCore/tools/run_telegram_mainline_regression.sh
 - 本次改动触及哪一层
 - 本次必须跑的测试集
 - 是否新增了真实故障回归
+- fixture 文件名是什么
 - 真实 E2E 是否已做
 - 若未做，缺的是什么
 

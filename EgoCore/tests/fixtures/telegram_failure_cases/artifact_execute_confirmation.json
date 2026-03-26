@@ -1,0 +1,27 @@
+{
+  "case_id": "artifact_execute_confirmation",
+  "description": "文件上传进入 waiting_input 后，用户回复“执行”，必须绑定到挂起任务单并继续走 native 主链。",
+  "initial_state": {
+    "session_key": "telegram:dm:8420019401",
+    "task_status": "waiting_input",
+    "waiting_for_user_input": true,
+    "last_inferred_action": "execute",
+    "pending_artifacts": [
+      {
+        "artifact_id": "artifact://task-sheet",
+        "filename": "任务单.txt",
+        "artifact_ref": "artifact://task-sheet"
+      }
+    ]
+  },
+  "turn": {
+    "message_id": 1888,
+    "text": "执行"
+  },
+  "expected": {
+    "runtime_action": "execute_task",
+    "primary_path": "native_loop",
+    "resolved_target_artifact_id": "artifact://task-sheet",
+    "reply_text": "页面已创建。"
+  }
+}

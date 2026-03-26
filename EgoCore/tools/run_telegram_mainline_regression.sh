@@ -5,6 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 PYTHONPATH=. python3 -m pytest -s \
+  tests/test_telegram_failure_case_replay.py \
   tests/test_telegram_artifact_confirmation_flow.py \
   tests/test_runtime_v2_telegram_bridge.py \
   tests/test_telegram_bot_native_switch.py \
