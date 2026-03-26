@@ -1072,9 +1072,16 @@ class TelegramBot:
         if self._get_native_loop() is None:
             return False
         runtime_action = getattr(ingress, "_runtime_action", None)
+        resolved_target = (state.ingress_context or {}).get("resolved_target") or {}
+        has_artifact_target = bool(
+            str(resolved_target.get("artifact_id") or resolved_target.get("artifact_ref") or "").startswith("artifact://")
+        )
         if getattr(ingress, "is_file_only", False) and runtime_action != "execute_task":
             return False
-        if state.waiting_for_user_input and not getattr(ingress, "is_confirm_execution", False):
+        if state.waiting_for_user_input and not (
+            getattr(ingress, "is_confirm_execution", False)
+            or (runtime_action == "execute_task" and has_artifact_target)
+        ):
             return False
         if runtime_action == "return_runtime_status":
             return False

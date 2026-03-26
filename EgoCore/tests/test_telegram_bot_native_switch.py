@@ -190,6 +190,25 @@ def test_should_use_native_loop_for_execute_confirmation_while_waiting_input():
     assert bot._should_use_native_loop(ingress, state) is True
 
 
+def test_should_use_native_loop_for_task_artifact_upload_even_if_previous_turn_waiting_input():
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    bot.native_loop = object()
+    state = bot._get_runtime_state("telegram:dm:1")
+    state.task_status = "waiting_input"
+    state.waiting_for_user_input = True
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "resolved_target": {
+            "artifact_id": "artifact://compacted/task-sheet",
+            "artifact_ref": "artifact://compacted/task-sheet",
+            "filename": "任务单.txt",
+        },
+    }
+    ingress = SimpleNamespace(_runtime_action="execute_task", is_file_only=True, is_confirm_execution=False)
+
+    assert bot._should_use_native_loop(ingress, state) is True
+
+
 @pytest.mark.asyncio
 async def test_native_loop_turn_calls_openemotion_hooks(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
