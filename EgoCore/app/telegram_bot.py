@@ -53,6 +53,8 @@ from app.runtime_v2 import (
     RuntimeV2TelegramBridge,
     RuntimeV2TurnResult,
 )
+from app.core_bus import BusEvent, get_message_bus, get_session_worker_pool
+from app.session_store import SessionLogManager
 
 # Ingestion Layer
 from app.ingestion import (
@@ -114,8 +116,44 @@ class TelegramBot:
         # Stale reply suppression: remember latest ingress message per session.
         self._latest_message_id_by_session: dict[str, int] = {}
         self._delivery_dedupe_policy = DeliveryDedupePolicy()
+        self._message_bus = get_message_bus()
+        self._session_worker_pool = get_session_worker_pool()
+        self._session_log_manager = SessionLogManager()
+        self._phase1_bus_ready = False
         # Ingestion Manager
         self._ingestion_manager: Optional[IngestionManager] = None
+
+    def _ensure_phase1_bus(self) -> None:
+        if self._phase1_bus_ready:
+            return
+
+        async def append_to_session_log(event: BusEvent) -> None:
+            self._session_log_manager.append(event)
+
+        self._session_worker_pool.register_handler(append_to_session_log)
+        self._session_worker_pool.start()
+        self._phase1_bus_ready = True
+
+    async def _publish_phase1_event(
+        self,
+        *,
+        session_key: str,
+        kind: str,
+        payload: dict,
+        trace_id: Optional[str] = None,
+        message_id: Optional[int] = None,
+    ) -> None:
+        self._ensure_phase1_bus()
+        await self._message_bus.publish(
+            BusEvent(
+                session_key=session_key,
+                kind=kind,
+                payload=payload,
+                channel="telegram",
+                trace_id=trace_id,
+                message_id=message_id,
+            )
+        )
 
     def is_allowed(self, chat_id: int) -> bool:
         """Check if chat ID is allowed to interact with bot."""
@@ -760,6 +798,18 @@ class TelegramBot:
             self._latest_message_id_by_session.get(session_key),
             text[:80].replace("\n", " ") if text else None
         )
+        await self._publish_phase1_event(
+            session_key=session_key,
+            kind="telegram_ingress",
+            trace_id=trace_id,
+            message_id=ingress_message_id,
+            payload={
+                "text_preview": text[:300],
+                "chat_id": chat_id,
+                "user_id": user_id,
+                "username": username,
+            },
+        )
 
         # 如果有额外上下文（如文件内容），合并到用户输入
         if extra_context:
@@ -776,6 +826,18 @@ class TelegramBot:
             state.last_challenge_turn = text
 
         if await self._maybe_handle_runtime_v2_pre_runtime(update, state, pre_runtime):
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="telegram_early_return",
+                trace_id=trace_id,
+                message_id=ingress_message_id,
+                payload={
+                    "task_status": state.task_status,
+                    "waiting_for_user_input": state.waiting_for_user_input,
+                    "direct_reply_text": getattr(pre_runtime, "direct_reply_text", None),
+                    "waiting_input_text": getattr(pre_runtime, "waiting_input_text", None),
+                },
+            )
             logger.info("runtime_v2.turn.early_return session=%s reason=pre_runtime busy_notice=%r", session_key, pre_runtime.busy_notice_text)
             return
 
@@ -787,6 +849,19 @@ class TelegramBot:
             ack_text=pre_runtime.ack_text,
         )
         logger.info("runtime_v2.turn.result session=%s status=%s reply=%r step=%r tool=%r verification=%r", session_key, result.status, result.reply_text[:200], state.current_step, state.last_tool_result, state.last_verification_result)
+        await self._publish_phase1_event(
+            session_key=session_key,
+            kind="runtime_v2_result",
+            trace_id=trace_id,
+            message_id=ingress_message_id,
+            payload={
+                "status": result.status,
+                "reply_text": result.reply_text[:1000] if result.reply_text else "",
+                "current_step": state.current_step,
+                "last_tool_result": state.last_tool_result or {},
+                "last_verification_result": state.last_verification_result or {},
+            },
+        )
         await self._deliver_runtime_v2_result(
             update=update,
             state=state,
@@ -884,6 +959,17 @@ class TelegramBot:
 
         # 直接发送，不再用 should_send_failure_notice 判断普通消息
         if delivery.text:
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="telegram_delivery",
+                trace_id=trace_id,
+                message_id=ingress_message_id,
+                payload={
+                    "text": delivery.text[:1000],
+                    "delivery_kind": getattr(result, "delivery_kind", "final"),
+                    "status": result.status,
+                },
+            )
             await self._send_reply(update, delivery.text)
 
     async def _handle_with_new_runtime(
