@@ -14,6 +14,7 @@ import os
 import socket
 import tempfile
 import argparse
+import sys
 from pathlib import Path
 
 from app.config import load_config, get_config, ConfigError
