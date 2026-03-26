@@ -56,6 +56,7 @@ from app.core_bus import BusEvent, get_message_bus, get_session_worker_pool
 from app.session_store import SessionLogManager
 from app.agent_core import NativeToolCallingLoop
 from app.openemotion_hooks import NativeOpenEmotionHooks
+from app.telegram_runtime_fallback import TelegramRuntimeFallbackRunner
 from app.telegram_runtime_bridge import TelegramRuntimeBridge
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
@@ -113,7 +114,8 @@ class TelegramBot:
         self.use_runtime_v2 = use_runtime_v2
         self._legacy_runtime_notice_logged = False
         self.runtime_v2_loop = None
-        self.runtime_v2_fallback_runner = RuntimeV2FallbackRunner() if use_runtime_v2 else None
+        self.telegram_runtime_fallback_runner = TelegramRuntimeFallbackRunner() if use_runtime_v2 else None
+        self.runtime_v2_fallback_runner = self.telegram_runtime_fallback_runner
         self.telegram_runtime_bridge = TelegramRuntimeBridge() if use_runtime_v2 else None
         self.runtime_v2_bridge = self.telegram_runtime_bridge
         self.native_loop = None
@@ -166,10 +168,11 @@ class TelegramBot:
     def _get_runtime_v2_loop(self):
         if not self.use_runtime_v2:
             return None
-        if self.runtime_v2_fallback_runner is None:
-            self.runtime_v2_fallback_runner = RuntimeV2FallbackRunner()
+        if self.telegram_runtime_fallback_runner is None:
+            self.telegram_runtime_fallback_runner = TelegramRuntimeFallbackRunner()
+            self.runtime_v2_fallback_runner = self.telegram_runtime_fallback_runner
         if self.runtime_v2_loop is None:
-            self.runtime_v2_loop = self.runtime_v2_fallback_runner.get_loop()
+            self.runtime_v2_loop = self.telegram_runtime_fallback_runner.get_loop()
         return self.runtime_v2_loop
 
     def _get_runtime_state(self, session_key: str) -> RuntimeV2State:
@@ -199,9 +202,10 @@ class TelegramBot:
         return state
 
     def _sync_state_into_runtime_v2_loop(self, session_key: str, state: RuntimeV2State):
-        runner = self.runtime_v2_fallback_runner
+        runner = self.telegram_runtime_fallback_runner
         if runner is None:
-            runner = RuntimeV2FallbackRunner()
+            runner = TelegramRuntimeFallbackRunner()
+            self.telegram_runtime_fallback_runner = runner
             self.runtime_v2_fallback_runner = runner
         runtime_loop = runner.attach_state(session_key, state)
         self.runtime_v2_loop = runtime_loop
@@ -979,9 +983,10 @@ class TelegramBot:
                 filename = state.last_uploaded_artifact.get("filename", "未知文件")
                 enhanced_input = f"{text}\n\n[目标文件: {filename}]"
 
-            runner = self.runtime_v2_fallback_runner
+            runner = self.telegram_runtime_fallback_runner
             if runner is None:
-                runner = RuntimeV2FallbackRunner()
+                runner = TelegramRuntimeFallbackRunner()
+                self.telegram_runtime_fallback_runner = runner
                 self.runtime_v2_fallback_runner = runner
             self.runtime_v2_loop = runner.get_loop()
             result = await runner.run_turn(session_key=session_key, user_input=enhanced_input, state=state)
