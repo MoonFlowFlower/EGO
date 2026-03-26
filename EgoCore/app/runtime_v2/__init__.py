@@ -21,6 +21,7 @@ from .telegram_bridge import (
     TelegramIngressDecision,
     TelegramPreRuntimeAction,
 )
+from .fallback_runner import RuntimeV2FallbackRunner
 from .loop import RuntimeV2Loop
 from .cli import run_cli
 
@@ -47,6 +48,7 @@ __all__ = [
     "TelegramDeliveryAction",
     "TelegramIngressDecision",
     "TelegramPreRuntimeAction",
+    "RuntimeV2FallbackRunner",
     "RuntimeV2Loop",
     "run_cli",
 ]

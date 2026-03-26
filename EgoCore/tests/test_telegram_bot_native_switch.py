@@ -76,35 +76,41 @@ async def test_runtime_v2_loop_is_lazy_until_runtime_turn(monkeypatch):
     state = bot._get_runtime_state("telegram:dm:1")
     assert bot.runtime_v2_loop is None
 
-    async def fake_send_reply(*args, **kwargs):
-        return None
+    class FakeLoop:
+        def __init__(self):
+            self._states = {}
 
-    async def fake_run_turn_typed(*args, **kwargs):
-        assert bot.runtime_v2_loop is not None
-        return type(
-            "LegacyResult",
-            (),
-            {
-                "status": "completed_verified",
-                "state": state,
-                "reply": type(
-                    "LegacyReply",
-                    (),
-                    {
-                        "reply_text": "fallback",
-                        "delivery_kind": "final",
-                        "status": "completed_verified",
-                        "suppressible": False,
-                        "request_id": None,
-                        "generation_id": None,
-                        "turn_id": None,
-                    },
-                )(),
-            },
-        )()
+        async def run_turn_typed(self, *args, **kwargs):
+            assert bot.runtime_v2_loop is not None
+            return type(
+                "LegacyResult",
+                (),
+                {
+                    "status": "completed_verified",
+                    "state": state,
+                    "reply": type(
+                        "LegacyReply",
+                        (),
+                        {
+                            "reply_text": "fallback",
+                            "delivery_kind": "final",
+                            "status": "completed_verified",
+                            "suppressible": False,
+                            "request_id": None,
+                            "generation_id": None,
+                            "turn_id": None,
+                        },
+                    )(),
+                },
+            )()
 
-    monkeypatch.setattr(bot, "_send_reply", fake_send_reply)
-    monkeypatch.setattr("app.telegram_bot.RuntimeV2Loop.run_turn_typed", fake_run_turn_typed)
+    fake_loop = FakeLoop()
+
+    def fake_get_loop():
+        bot.runtime_v2_fallback_runner._loop = fake_loop
+        return fake_loop
+
+    monkeypatch.setattr(bot.runtime_v2_fallback_runner, "get_loop", fake_get_loop)
 
     result = await bot._run_runtime_v2_turn(
         update=None,

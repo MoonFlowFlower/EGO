@@ -17,7 +17,7 @@ import logging
 import os
 import socket
 import uuid
-from typing import Any, Optional
+from typing import Optional
 import json
 import time
 from contextlib import asynccontextmanager
@@ -48,7 +48,7 @@ try:
 except ImportError:
     _EVIDENCE_COLLECTOR_AVAILABLE = False
 from app.runtime_v2 import (
-    RuntimeV2Loop,
+    RuntimeV2FallbackRunner,
     RuntimeV2PromptFiles,
     RuntimeV2TelegramBridge,
     RuntimeV2State,
@@ -113,6 +113,7 @@ class TelegramBot:
         self.use_runtime_v2 = use_runtime_v2
         self._legacy_runtime_notice_logged = False
         self.runtime_v2_loop = None
+        self.runtime_v2_fallback_runner = RuntimeV2FallbackRunner() if use_runtime_v2 else None
         self.runtime_v2_bridge = RuntimeV2TelegramBridge() if use_runtime_v2 else None
         self.native_loop = None
         self.native_openemotion_hooks = None
@@ -161,11 +162,13 @@ class TelegramBot:
             )
         )
 
-    def _get_runtime_v2_loop(self) -> Optional[RuntimeV2Loop]:
+    def _get_runtime_v2_loop(self):
         if not self.use_runtime_v2:
             return None
+        if self.runtime_v2_fallback_runner is None:
+            self.runtime_v2_fallback_runner = RuntimeV2FallbackRunner()
         if self.runtime_v2_loop is None:
-            self.runtime_v2_loop = RuntimeV2Loop()
+            self.runtime_v2_loop = self.runtime_v2_fallback_runner.get_loop()
         return self.runtime_v2_loop
 
     def _get_runtime_state(self, session_key: str) -> RuntimeV2State:
@@ -194,9 +197,13 @@ class TelegramBot:
             runtime_loop._states[session_key] = state
         return state
 
-    def _sync_state_into_runtime_v2_loop(self, session_key: str, state: RuntimeV2State) -> RuntimeV2Loop:
-        runtime_loop = self._get_runtime_v2_loop()
-        runtime_loop._states[session_key] = state
+    def _sync_state_into_runtime_v2_loop(self, session_key: str, state: RuntimeV2State):
+        runner = self.runtime_v2_fallback_runner
+        if runner is None:
+            runner = RuntimeV2FallbackRunner()
+            self.runtime_v2_fallback_runner = runner
+        runtime_loop = runner.attach_state(session_key, state)
+        self.runtime_v2_loop = runtime_loop
         return runtime_loop
 
     def _get_native_loop(self) -> Optional[NativeToolCallingLoop]:
@@ -971,9 +978,14 @@ class TelegramBot:
                 filename = state.last_uploaded_artifact.get("filename", "未知文件")
                 enhanced_input = f"{text}\n\n[目标文件: {filename}]"
 
-            runtime_loop = self._sync_state_into_runtime_v2_loop(session_key, state)
-            result = await runtime_loop.run_turn_typed(session_id=session_key, user_input=enhanced_input)
-            return self._adapt_runtime_v2_result(result)
+            runner = self.runtime_v2_fallback_runner
+            if runner is None:
+                runner = RuntimeV2FallbackRunner()
+                self.runtime_v2_fallback_runner = runner
+            self.runtime_v2_loop = runner.get_loop()
+            result = await runner.run_turn(session_key=session_key, user_input=enhanced_input, state=state)
+            self.runtime_v2_loop = runner.loop
+            return result
 
         return await run_once()
 
@@ -1141,25 +1153,6 @@ class TelegramBot:
             except Exception as e:
                 logger.exception("native_openemotion.response_plan.failed session=%s err=%s", session_key, e)
         return turn_result
-
-    def _adapt_runtime_v2_result(self, result: Any) -> TelegramTurnResult:
-        reply = getattr(result, "reply", None)
-        adapted_reply = None
-        if reply is not None:
-            adapted_reply = TelegramTurnReply(
-                reply_text=reply.reply_text,
-                delivery_kind=reply.delivery_kind,
-                status=reply.status,
-                suppressible=getattr(reply, "suppressible", False),
-                request_id=getattr(reply, "request_id", None),
-                generation_id=getattr(reply, "generation_id", None),
-                turn_id=getattr(reply, "turn_id", None),
-            )
-        return TelegramTurnResult(
-            status=result.status,
-            state=result.state,
-            reply=adapted_reply,
-        )
 
     async def _deliver_runtime_v2_result(
         self,
