@@ -2,24 +2,209 @@ from __future__ import annotations
 
 import logging
 import re
+from dataclasses import dataclass
 from pathlib import PurePosixPath, PureWindowsPath
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from app.telegram_runtime_result import TelegramTurnResult
 
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
-from app.runtime_v2.semantic_parser import ParsedIntentGraph, decide_runtime_action, heuristic_parse
+from app.runtime_v2.semantic_parser import ParsedIntentGraph, build_runtime_status_reply, decide_runtime_action, heuristic_parse
 from app.runtime_v2.state import RuntimeV2State
-from app.runtime_v2.telegram_bridge import (
-    TelegramDeliveryAction,
-    TelegramIngressDecision,
-    TelegramPreRuntimeAction,
-    build_runtime_status_reply,
-    build_suggestion_response_from_intent,
-    infer_intent,
-)
 
 logger = logging.getLogger(__name__)
+
+FILE_TYPE_PATTERNS = {
+    "task": ["任务单", "todo", "task", "plan", "fix", "patch", "执行", ".txt"],
+    "spec": ["SOUL", "AGENTS", "TOOLS", "BOOTSTRAP", "README", "POLICY", "规范", ".md"],
+    "log": ["log", "trace", "error", "report", "日志", ".log"],
+}
+
+
+@dataclass
+class IntentInference:
+    inferred_action: Optional[str] = None
+    confidence: str = "low"
+    primary_target: Optional[Dict[str, Any]] = None
+    secondary_option: Optional[str] = None
+    reason: Optional[str] = None
+
+
+def extract_filename_from_text(text: str) -> Optional[str]:
+    patterns = [
+        r"\[附件:\s*([^\]]+)\]",
+        r"\[用户发送了文件:\s*([^\]]+)\]",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if match:
+            return match.group(1).strip()
+    return None
+
+
+def infer_intent_from_filename(filename: str) -> List[str]:
+    if not filename:
+        return []
+    candidates = []
+    filename_lower = filename.lower()
+    for file_type, patterns in FILE_TYPE_PATTERNS.items():
+        if any(p.lower() in filename_lower for p in patterns):
+            candidates.append(file_type)
+    return candidates
+
+
+def infer_intent(
+    text: str,
+    state: RuntimeV2State,
+    has_attachment: bool = False,
+) -> IntentInference:
+    if re.search(r"(执行|运行|开始|做|处理|改|修|fix|run|execute)", text or "", flags=re.IGNORECASE):
+        return IntentInference(
+            inferred_action="execute",
+            confidence="high",
+            primary_target=state.last_uploaded_artifact,
+            secondary_option="analyze",
+            reason="用户明确提到动作",
+        )
+
+    result = IntentInference()
+    if state.last_uploaded_artifact:
+        filename = state.last_uploaded_artifact.get("filename")
+        artifact_type = state._classify_artifact_type(filename)
+        if artifact_type == "task":
+            result.inferred_action = "execute"
+            result.confidence = "medium"
+            result.primary_target = state.last_uploaded_artifact
+            result.secondary_option = "analyze"
+            result.reason = "检测到任务单类文件"
+            return result
+        if artifact_type == "spec":
+            result.inferred_action = "analyze"
+            result.confidence = "medium"
+            result.primary_target = state.last_uploaded_artifact
+            result.secondary_option = "constraint"
+            result.reason = "检测到规范类文件"
+            return result
+
+    if has_attachment:
+        filename = extract_filename_from_text(text)
+        if filename:
+            file_types = infer_intent_from_filename(filename)
+            if file_types:
+                file_type = file_types[0]
+                result.primary_target = {"filename": filename, "source": "attachment"}
+                if file_type == "task":
+                    result.inferred_action = "execute"
+                    result.confidence = "low"
+                    result.secondary_option = "analyze"
+                    result.reason = "文件名暗示任务单"
+                elif file_type == "spec":
+                    result.inferred_action = "analyze"
+                    result.confidence = "low"
+                    result.secondary_option = "constraint"
+                    result.reason = "文件名暗示规范文件"
+                else:
+                    result.inferred_action = "analyze"
+                    result.confidence = "low"
+                    result.reason = "文件类型未知"
+                return result
+
+    result.reason = "无法推断意图"
+    return result
+
+
+def build_suggestion_response_from_intent(intent: IntentInference, state: RuntimeV2State) -> str:
+    action = intent.inferred_action
+    confidence = intent.confidence
+    target = intent.primary_target
+    secondary = intent.secondary_option
+
+    if state.pending_artifacts and len(state.pending_artifacts) >= 2:
+        task_artifacts = state.get_task_artifacts()
+        spec_artifacts = state.get_spec_artifacts()
+        if task_artifacts and spec_artifacts:
+            task_file = task_artifacts[-1].get("filename", "任务单")
+            spec_count = len(spec_artifacts)
+            if confidence == "high":
+                return f"我可以先按「{task_file}」执行，并把 {spec_count} 份规范当作约束。要我这样走吗？"
+            return f"我看有 {spec_count} 份规范和 1 份任务单「{task_file}」。要我按任务单执行，并把规范当约束？还是先对比规范？"
+        if len(spec_artifacts) >= 2:
+            if confidence == "high":
+                return f"现在有 {len(spec_artifacts)} 份规范文件，我可以先做职责边界对比。要我现在开始吗？"
+            return f"我看到 {len(spec_artifacts)} 份规范文件。你要我对比它们的职责边界，还是审查某一份？"
+
+    if target:
+        filename = target.get("filename", "文件")
+        if action == "execute":
+            if confidence == "high":
+                return f"我先按「{filename}」执行。要我开始吗？"
+            if confidence == "medium":
+                return f"我看这更像一份任务单「{filename}」。我要先按「执行这份任务」走吗？"
+            if secondary == "analyze":
+                return f"收到「{filename}」。你要我执行它，还是先审查内容？"
+            return f"收到「{filename}」。你要我做什么？"
+        if action == "analyze":
+            if confidence == "high":
+                return f"我先审查「{filename}」。要我开始吗？"
+            if confidence == "medium":
+                if secondary == "constraint":
+                    return f"这更像规范文件「{filename}」。你是要我审查它，还是把它当作后续执行约束？"
+                return f"我看这是「{filename}」。你要我先审查它吗？"
+            return f"收到「{filename}」。你要我审查它，还是把它当作执行约束？"
+        if action == "compare":
+            if confidence == "high":
+                return "我开始对比。要我现在开始吗？"
+            return "你想要对比哪些文件？"
+
+    return "收到文件。请告诉我你想做什么（执行/审查/对比）？"
+
+
+def build_suggestion_response(filename: str, file_type: str, action: Optional[str] = None) -> str:
+    intent = IntentInference(
+        inferred_action=action,
+        confidence="medium" if file_type != "unknown" else "low",
+        primary_target={"filename": filename},
+        secondary_option="analyze" if file_type == "task" else "constraint",
+    )
+    state = RuntimeV2State(session_id="compat")
+    return build_suggestion_response_from_intent(intent, state)
+
+
+@dataclass
+class TelegramIngressDecision:
+    looks_like_task: bool
+    is_short_probe: bool
+    is_challenge_turn: bool
+    absorb_as_busy_notice: bool
+    remember_challenge_turn: bool
+    has_attachment: bool = False
+    is_file_only: bool = False
+    inferred_action: Optional[str] = None
+    inferred_file_type: Optional[str] = None
+    inferred_filename: Optional[str] = None
+    is_confirm_execution: bool = False
+    ack_text: Optional[str] = None
+    busy_notice_text: Optional[str] = None
+    requested_output: Optional[Dict[str, Any]] = None
+    _parsed_intent_graph: Optional[ParsedIntentGraph] = None
+    _runtime_action: Optional[str] = None
+
+
+@dataclass
+class TelegramPreRuntimeAction:
+    should_return_early: bool = False
+    busy_notice_text: Optional[str] = None
+    ack_text: Optional[str] = None
+    remember_challenge_turn: bool = False
+    force_waiting_input: bool = False
+    waiting_input_text: Optional[str] = None
+    direct_reply_text: Optional[str] = None
+
+
+@dataclass
+class TelegramDeliveryAction:
+    should_send: bool
+    text: str = ""
 
 
 class TelegramRuntimeBridge:
@@ -362,6 +547,13 @@ class TelegramRuntimeBridge:
 
 
 __all__ = [
+    "FILE_TYPE_PATTERNS",
+    "IntentInference",
+    "extract_filename_from_text",
+    "infer_intent_from_filename",
+    "infer_intent",
+    "build_suggestion_response_from_intent",
+    "build_suggestion_response",
     "TelegramRuntimeBridge",
     "TelegramDeliveryAction",
     "TelegramIngressDecision",
