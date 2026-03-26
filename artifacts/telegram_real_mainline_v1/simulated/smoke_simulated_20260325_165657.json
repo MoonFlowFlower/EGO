@@ -1,0 +1,92 @@
+{
+  "run_id": "simulated_20260325_165657",
+  "timestamp": "2026-03-25T16:56:57.843358",
+  "evidence_level": "E2",
+  "source_type": "simulated",
+  "total_tests": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "test_id": "E2-NORM-001",
+      "test_name": "event_normalization",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E2-NORM-001",
+        "evidence_level": "E2",
+        "source_type": "simulated",
+        "artifact_path": "",
+        "what_it_proves": "事件标准化逻辑正确",
+        "what_it_does_not_prove": "真实 Telegram update 可正确处理"
+      },
+      "timestamp": "2026-03-25T16:56:57.837918"
+    },
+    {
+      "test_id": "E2-STRUCT-001",
+      "test_name": "structured_output",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E2-STRUCT-001",
+        "evidence_level": "E2",
+        "source_type": "simulated",
+        "artifact_path": "",
+        "what_it_proves": "OpenEmotion 返回结构化结果",
+        "what_it_does_not_prove": "EgoCore 正确消费结果"
+      },
+      "timestamp": "2026-03-25T16:56:57.843007"
+    },
+    {
+      "test_id": "E2-BOUND-001",
+      "test_name": "boundary_check",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E2-BOUND-001",
+        "evidence_level": "E2",
+        "source_type": "simulated",
+        "artifact_path": "",
+        "what_it_proves": "边界检查逻辑正确",
+        "what_it_does_not_prove": "真实场景无越界"
+      },
+      "timestamp": "2026-03-25T16:56:57.843231"
+    },
+    {
+      "test_id": "E2-RISK-001",
+      "test_name": "risk_differentiation",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E2-RISK-001",
+        "evidence_level": "E2",
+        "source_type": "simulated",
+        "artifact_path": "",
+        "what_it_proves": "风险区分逻辑正确",
+        "what_it_does_not_prove": "真实场景风险正确区分"
+      },
+      "timestamp": "2026-03-25T16:56:57.843299"
+    },
+    {
+      "test_id": "E2-TRACE-001",
+      "test_name": "trace_payload_integrity",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E2-TRACE-001",
+        "evidence_level": "E2",
+        "source_type": "simulated",
+        "artifact_path": "",
+        "what_it_proves": "Trace payload 包含必要字段",
+        "what_it_does_not_prove": "真实场景 trace 完整"
+      },
+      "timestamp": "2026-03-25T16:56:57.843340"
+    }
+  ],
+  "allowed_conclusions": [
+    "模拟验证通过",
+    "脚本级通过",
+    "内部逻辑正确"
+  ],
+  "forbidden_conclusions": [
+    "已接主链",
+    "已启用",
+    "已生效",
+    "verified"
+  ]
+}

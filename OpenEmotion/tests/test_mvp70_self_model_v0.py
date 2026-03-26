@@ -1,6 +1,6 @@
 import pytest
 
-from emotiond.self_model import build_self_model_v0, render_self_report
+from emotiond.self_model.legacy import build_self_model_v0, render_self_report
 
 
 class DummyEmotion:

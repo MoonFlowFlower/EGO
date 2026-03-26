@@ -1,0 +1,70 @@
+{
+  "sample_id": "sample_20260325_173407_9f6575e5",
+  "timestamp": "2026-03-25T17:34:07.854915",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1776,
+      "date": 1774478048,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "我现在要做一个高风险文件改动，你第一步会怎么做？"
+    },
+    "update_id": 476272422
+  },
+  "normalized_event": null,
+  "openemotion_result": null,
+  "response_plan": {
+    "status": "chat",
+    "delivery_kind": "chat",
+    "reply_length": 295
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1777,
+    "date": "2026-03-25T22:34:51+00:00",
+    "text_length": 295,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-25T17:34:07.854934",
+      "update_id": 476272422
+    },
+    {
+      "stage": "response_planned",
+      "timestamp": "2026-03-25T17:34:50.407739"
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-25T17:34:50.743829",
+      "chat_id": 8420019401,
+      "message_id": 1777
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260325_173407_9f6575e5",
+    "timestamp": "2026-03-25T17:34:07.854915",
+    "evidence_level": "E4",
+    "update_id": 476272422,
+    "trace_id": "sample_20260325_173407_9f6575e5"
+  },
+  "replay_hash": "57f5a8ed47dcc343",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": false,
+    "openemotion_result": false,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true
+  }
+}

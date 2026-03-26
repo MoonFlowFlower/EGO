@@ -3,7 +3,7 @@ import pytest
 import pytest_asyncio
 import asyncio
 import time
-from emotiond.memory import MemorySystem, memory_system
+from emotiond.memory_legacy import MemorySystem, memory_system
 from emotiond.db import add_event, init_db, get_recent_events, get_events_by_target
 import os
 from emotiond.models import Event

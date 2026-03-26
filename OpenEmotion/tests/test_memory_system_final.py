@@ -6,7 +6,7 @@ import pytest_asyncio
 import asyncio
 import os
 import tempfile
-from emotiond.memory import MemorySystem
+from emotiond.memory_legacy import MemorySystem
 from emotiond.db import add_event, init_db, get_recent_events, get_events_by_target
 from emotiond.models import Event
 from emotiond.config import DB_PATH

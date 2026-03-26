@@ -13,7 +13,7 @@ from typing import Dict, Any, List
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from emotiond.self_model import get_self_model_v0
+from emotiond.self_model.legacy import get_self_model_v0
 from emotiond.self_model_mirror import SelfModelMirrorAdapter
 
 

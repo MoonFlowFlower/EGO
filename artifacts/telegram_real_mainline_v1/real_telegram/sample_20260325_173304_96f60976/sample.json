@@ -1,0 +1,70 @@
+{
+  "sample_id": "sample_20260325_173304_96f60976",
+  "timestamp": "2026-03-25T17:33:04.474610",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1772,
+      "date": 1774477985,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "我现在要做一个高风险文件改动，你第一步会怎么做？"
+    },
+    "update_id": 476272420
+  },
+  "normalized_event": null,
+  "openemotion_result": null,
+  "response_plan": {
+    "status": "chat",
+    "delivery_kind": "chat",
+    "reply_length": 643
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1774,
+    "date": "2026-03-25T22:33:46+00:00",
+    "text_length": 643,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-25T17:33:04.474629",
+      "update_id": 476272420
+    },
+    {
+      "stage": "response_planned",
+      "timestamp": "2026-03-25T17:33:45.298487"
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-25T17:33:45.634329",
+      "chat_id": 8420019401,
+      "message_id": 1774
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260325_173304_96f60976",
+    "timestamp": "2026-03-25T17:33:04.474610",
+    "evidence_level": "E4",
+    "update_id": 476272420,
+    "trace_id": "sample_20260325_173304_96f60976"
+  },
+  "replay_hash": "fb4592dea1aefa75",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": false,
+    "openemotion_result": false,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true
+  }
+}

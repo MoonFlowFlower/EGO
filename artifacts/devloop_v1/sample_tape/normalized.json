@@ -1,0 +1,15 @@
+{
+  "schema_version": "proto_self.v1",
+  "event_id": "replay_sample_20260325_153239",
+  "timestamp": "2026-03-25T15:32:39.016465",
+  "actor": "user",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": "replay_test",
+  "raw_text": "\u6d4b\u8bd5\u56de\u653e",
+  "conversation_context": {},
+  "task_context": {},
+  "runtime_summary": {},
+  "safety_context": {},
+  "external_result": null
+}

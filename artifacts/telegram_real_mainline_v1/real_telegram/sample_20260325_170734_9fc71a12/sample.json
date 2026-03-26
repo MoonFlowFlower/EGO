@@ -1,0 +1,115 @@
+{
+  "sample_id": "sample_20260325_170734_9fc71a12",
+  "timestamp": "2026-03-25T17:07:34.466875",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "raw_update": {
+    "update_id": 454466,
+    "message": {
+      "message_id": 1,
+      "date": 1774476454,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false
+      },
+      "text": "读取文件 test.txt"
+    },
+    "_source": "state.json_reconstruction"
+  },
+  "normalized_event": {
+    "event_id": "telegram:dm:8420019401_turn_3a4bcb66",
+    "source": "telegram",
+    "event_type": "user_message",
+    "intent": "读取文件 test.txt",
+    "safety_context": {
+      "risk": "low",
+      "risk_level": "low"
+    },
+    "perceived_summary": {
+      "intent": "读取文件 test.txt",
+      "event_type": "user_message",
+      "source": "telegram",
+      "safety_context": {
+        "risk": "low",
+        "risk_level": "low"
+      },
+      "novelty": 0.3,
+      "identity_conflict": 0.05,
+      "unfinished_commitment": 0.1,
+      "risk_signal": 0.1,
+      "relational_mismatch": 0.0,
+      "external_outcome_type": "none"
+    }
+  },
+  "openemotion_result": {
+    "event_id": "telegram:dm:8420019401_turn_3a4bcb66",
+    "perceived_summary": {
+      "intent": "读取文件 test.txt",
+      "event_type": "user_message",
+      "source": "telegram",
+      "safety_context": {
+        "risk": "low",
+        "risk_level": "low"
+      },
+      "novelty": 0.3,
+      "identity_conflict": 0.05,
+      "unfinished_commitment": 0.1,
+      "risk_signal": 0.1,
+      "relational_mismatch": 0.0,
+      "external_outcome_type": "none"
+    },
+    "appraisal_snapshot": {
+      "coherence_pressure": 0.14,
+      "curiosity": 0.35,
+      "caution": 0.35,
+      "completion_pressure": 0.08000000000000002,
+      "social_tension": 0.0
+    },
+    "action_hint": {}
+  },
+  "response_plan": {
+    "source": "state_reconstruction",
+    "drives": {
+      "coherence_pressure": 0.16000000000000003,
+      "curiosity": 0.58,
+      "caution": 0.39999999999999997,
+      "completion_pressure": 0.20000000000000004,
+      "social_tension": 0.0
+    },
+    "current_mode": "repair"
+  },
+  "outbox_record": null,
+  "timeline": [
+    {
+      "stage": "event_captured_from_state",
+      "timestamp": "2026-03-25T17:07:34.466885",
+      "event_id": "telegram:dm:8420019401_turn_3a4bcb66"
+    },
+    {
+      "stage": "reconstruction_complete",
+      "timestamp": "2026-03-25T17:07:34.466887"
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260325_170734_9fc71a12",
+    "timestamp": "2026-03-25T17:07:34.466875",
+    "evidence_level": "E4",
+    "update_id": 454466,
+    "normalized_event_id": "telegram:dm:8420019401_turn_3a4bcb66",
+    "trace_id": "sample_20260325_170734_9fc71a12",
+    "source": "state_reconstruction"
+  },
+  "replay_hash": "e3d448f842f55a65",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": true,
+    "openemotion_result": true,
+    "response_plan": true,
+    "outbox_record": false,
+    "timeline": true
+  }
+}

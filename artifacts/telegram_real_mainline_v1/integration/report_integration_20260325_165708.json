@@ -1,0 +1,184 @@
+{
+  "run_id": "integration_20260325_165708",
+  "timestamp": "2026-03-25T16:57:08.342426",
+  "evidence_level": "E3",
+  "source_type": "integration",
+  "session_id": "integration_20260325_165708",
+  "total_tests": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "test_id": "E3-UPDATE-001",
+      "test_name": "update_normalization",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E3-UPDATE-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "",
+        "what_it_proves": "Telegram update 可正确归一化",
+        "what_it_does_not_prove": "真实 Telegram update 稳定处理"
+      },
+      "tape": {
+        "update_id": 99999,
+        "raw_update": {
+          "update_id": 99999,
+          "message": {
+            "message_id": 1,
+            "from": {
+              "id": 123456,
+              "is_bot": false,
+              "first_name": "Test",
+              "username": "test_user"
+            },
+            "chat": {
+              "id": 123456,
+              "type": "private"
+            },
+            "date": 1774475818,
+            "text": "读取文件 test.txt"
+          }
+        },
+        "normalized_event": {
+          "event_id": "evt_3478b6c093574e1f",
+          "timestamp": "2026-03-25T21:56:58.517663+00:00",
+          "actor": "123456",
+          "source": "telegram",
+          "event_type": "user_message",
+          "content": "读取文件 test.txt",
+          "conversation_context": {
+            "session_id": "123456",
+            "chat_id": "123456",
+            "user_id": "123456",
+            "username": "test_user",
+            "message_id": 1,
+            "turn_index": 0,
+            "recent_messages": []
+          },
+          "metadata": {
+            "update_id": 99999,
+            "message_date": 1774475818,
+            "chat_type": "private",
+            "raw_update": {
+              "update_id": 99999,
+              "message": {
+                "message_id": 1,
+                "from": {
+                  "id": 123456,
+                  "is_bot": false,
+                  "first_name": "Test",
+                  "username": "test_user"
+                },
+                "chat": {
+                  "id": 123456,
+                  "type": "private"
+                },
+                "date": 1774475818,
+                "text": "读取文件 test.txt"
+              }
+            }
+          }
+        }
+      },
+      "timestamp": "2026-03-25T16:56:58.517681"
+    },
+    {
+      "test_id": "E3-SESSION-001",
+      "test_name": "session_lifecycle",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E3-SESSION-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "",
+        "what_it_proves": "Session 可正常创建和管理",
+        "what_it_does_not_prove": "真实多用户场景稳定"
+      },
+      "tape": {
+        "session_id": "int_test_20260325_165658",
+        "created": true
+      },
+      "timestamp": "2026-03-25T16:56:58.531237"
+    },
+    {
+      "test_id": "E3-FLOW-001",
+      "test_name": "message_flow",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E3-FLOW-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "",
+        "what_it_proves": "消息可在 runtime 主链处理",
+        "what_it_does_not_prove": "真实 Telegram 消息稳定"
+      },
+      "tape": {
+        "session_id": "flow_20260325_165658",
+        "input": "状态查询",
+        "status": "chat",
+        "reply_length": 236
+      },
+      "timestamp": "2026-03-25T16:57:08.341436"
+    },
+    {
+      "test_id": "E3-INTERFACE-001",
+      "test_name": "structured_interface",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E3-INTERFACE-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "",
+        "what_it_proves": "EgoCore-OpenEmotion 结构化接口存在",
+        "what_it_does_not_prove": "接口数据流正确"
+      },
+      "tape": {
+        "adapter_exists": true,
+        "mirror_dir": "artifacts\\proto_self_mirror"
+      },
+      "timestamp": "2026-03-25T16:57:08.341659"
+    },
+    {
+      "test_id": "E3-TAPE-001",
+      "test_name": "tape_generation",
+      "passed": true,
+      "evidence": {
+        "evidence_id": "E-E3-TAPE-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\telegram_real_mainline_v1\\integration\\tape_tape_20260325_165708.json",
+        "what_it_proves": "Tape 可正确生成和保存",
+        "what_it_does_not_prove": "真实场景 tape 完整"
+      },
+      "tape": {
+        "tape_id": "tape_20260325_165708",
+        "timestamp": "2026-03-25T16:57:08.341687",
+        "update_id": 12345,
+        "normalized_event": {
+          "event_id": "evt_tape_20260325_165708",
+          "source": "telegram",
+          "event_type": "user_message"
+        },
+        "openemotion_output": {
+          "schema_version": "proto_self.v1"
+        },
+        "response_plan": {
+          "action": "respond"
+        }
+      },
+      "timestamp": "2026-03-25T16:57:08.342396"
+    }
+  ],
+  "allowed_conclusions": [
+    "集成验证通过",
+    "具备真实主链验证条件",
+    "主链候选可用"
+  ],
+  "forbidden_conclusions": [
+    "正式生效",
+    "稳定运行",
+    "已接主链",
+    "已启用"
+  ]
+}

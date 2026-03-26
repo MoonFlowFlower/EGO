@@ -1,0 +1,87 @@
+{
+  "run_id": "smoke_20260325_153151",
+  "timestamp": "2026-03-25T15:31:51.251928",
+  "total_tests": 6,
+  "passed": 6,
+  "failed": 0,
+  "results": [
+    {
+      "test_name": "event_normalization",
+      "passed": true,
+      "message": "\u4e8b\u4ef6\u6807\u51c6\u5316\u6210\u529f",
+      "evidence": {
+        "event_id": "smoke-test-001",
+        "schema_version": "proto_self.v1"
+      },
+      "timestamp": "2026-03-25T15:31:51.238727"
+    },
+    {
+      "test_name": "openemotion_processing",
+      "passed": true,
+      "message": "OpenEmotion \u5904\u7406\u6210\u529f",
+      "evidence": {
+        "schema_version": "proto_self.v1",
+        "has_policy_hint": true,
+        "has_response_tendency": true,
+        "trace_schema": "proto_self.trace.v1"
+      },
+      "timestamp": "2026-03-25T15:31:51.245726"
+    },
+    {
+      "test_name": "boundary_check",
+      "passed": true,
+      "message": "\u8fb9\u754c\u68c0\u67e5\u6b63\u5e38\u5de5\u4f5c",
+      "evidence": {
+        "safe_output_passed": true,
+        "unsafe_output_blocked": true
+      },
+      "timestamp": "2026-03-25T15:31:51.246087"
+    },
+    {
+      "test_name": "risk_differentiation",
+      "passed": true,
+      "message": "\u98ce\u9669\u533a\u5206\u6b63\u5e38\u5de5\u4f5c",
+      "evidence": {
+        "high_risk_bucket": "telegram:user_message:general:risk_high",
+        "low_risk_bucket": "telegram:user_message:test_verify",
+        "differentiated": true
+      },
+      "timestamp": "2026-03-25T15:31:51.246236"
+    },
+    {
+      "test_name": "state_persistence",
+      "passed": true,
+      "message": "\u72b6\u6001\u6301\u4e45\u5316\u6b63\u5e38",
+      "evidence": {
+        "trace_count": 2,
+        "persistence_works": true
+      },
+      "timestamp": "2026-03-25T15:31:51.251804"
+    },
+    {
+      "test_name": "trace_payload_integrity",
+      "passed": true,
+      "message": "Trace payload \u5b8c\u6574",
+      "evidence": {
+        "has_schema_version": true,
+        "has_event_id": true,
+        "trace_keys": [
+          "schema_version",
+          "event_id",
+          "perceived",
+          "appraisal_delta",
+          "self_model_delta",
+          "cycle_delta",
+          "identity_delta",
+          "reflection_trigger",
+          "policy_hint",
+          "timestamp"
+        ]
+      },
+      "timestamp": "2026-03-25T15:31:51.251896"
+    }
+  ],
+  "main_chain_status": "accessible",
+  "enabled_status": true,
+  "trigger_evidence": "smoke_test_passed_6/6"
+}

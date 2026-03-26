@@ -1,0 +1,70 @@
+{
+  "sample_id": "sample_20260325_173917_b1b8bf3f",
+  "timestamp": "2026-03-25T17:39:17.959614",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1785,
+      "date": 1774478358,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "那你现在有持久化记忆吗"
+    },
+    "update_id": 476272427
+  },
+  "normalized_event": null,
+  "openemotion_result": null,
+  "response_plan": {
+    "status": "chat",
+    "delivery_kind": "chat",
+    "reply_length": 365
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1786,
+    "date": "2026-03-25T22:40:02+00:00",
+    "text_length": 365,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-25T17:39:17.959623",
+      "update_id": 476272427
+    },
+    {
+      "stage": "response_planned",
+      "timestamp": "2026-03-25T17:40:01.489832"
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-25T17:40:02.079840",
+      "chat_id": 8420019401,
+      "message_id": 1786
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260325_173917_b1b8bf3f",
+    "timestamp": "2026-03-25T17:39:17.959614",
+    "evidence_level": "E4",
+    "update_id": 476272427,
+    "trace_id": "sample_20260325_173917_b1b8bf3f"
+  },
+  "replay_hash": "37bab586bab26227",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": false,
+    "openemotion_result": false,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true
+  }
+}

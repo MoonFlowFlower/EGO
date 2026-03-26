@@ -111,14 +111,6 @@ class TestDocumentationExamples:
         service_path = Path("deploy/systemd/user/emotiond.service")
         assert service_path.exists(), "emotiond.service does not exist"
 
-    def test_openclaw_skill_exists(self):
-        """Test that OpenClaw skill directory exists."""
-        skill_dir = Path("openclaw_skill/emotion_core")
-        assert skill_dir.exists(), "openclaw_skill/emotion_core directory does not exist"
-        
-        skill_file = skill_dir / "skill.py"
-        assert skill_file.exists(), "skill.py does not exist"
-
     def test_core_package_structure(self):
         """Test that core package structure is correct."""
         required_files = [
@@ -197,7 +189,6 @@ class TestDocumentationCompleteness:
             "type checking",
             "demo usage",
             "evaluation suite",
-            "OpenClaw skill usage",
             "systemd deployment"
         ]
         

@@ -1,0 +1,16 @@
+{
+  "tape_id": "tape_20260325_165708",
+  "timestamp": "2026-03-25T16:57:08.341687",
+  "update_id": 12345,
+  "normalized_event": {
+    "event_id": "evt_tape_20260325_165708",
+    "source": "telegram",
+    "event_type": "user_message"
+  },
+  "openemotion_output": {
+    "schema_version": "proto_self.v1"
+  },
+  "response_plan": {
+    "action": "respond"
+  }
+}

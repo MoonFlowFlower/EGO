@@ -1,0 +1,11 @@
+{
+  "source": "state_reconstruction",
+  "drives": {
+    "coherence_pressure": 0.16000000000000003,
+    "curiosity": 0.58,
+    "caution": 0.39999999999999997,
+    "completion_pressure": 0.20000000000000004,
+    "social_tension": 0.0
+  },
+  "current_mode": "repair"
+}

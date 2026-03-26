@@ -1,0 +1,11 @@
+[
+  {
+    "stage": "event_captured_from_state",
+    "timestamp": "2026-03-25T17:07:34.466885",
+    "event_id": "telegram:dm:8420019401_turn_3a4bcb66"
+  },
+  {
+    "stage": "reconstruction_complete",
+    "timestamp": "2026-03-25T17:07:34.466887"
+  }
+]

@@ -21,8 +21,7 @@ class TestProjectStructure:
             "tests", 
             "scripts",
             "data",
-            "deploy/systemd/user",
-            "openclaw_skill/emotion_core"
+            "deploy/systemd/user"
         ]
         
         for dir_path in required_dirs:
@@ -32,13 +31,9 @@ class TestProjectStructure:
         """Test that README.md exists"""
         assert os.path.exists("README.md")
     
-    def test_skill_files_exist(self):
-        """Test that OpenClaw skill files exist"""
-        skill_files = [
-            "openclaw_skill/emotion_core/SKILL.md",
-            "openclaw_skill/emotion_core/skill.py",
-            "openclaw_skill/emotion_core/install.sh"
-        ]
-        
-        for file_path in skill_files:
-            assert os.path.exists(file_path), f"Skill file {file_path} does not exist"
+    def test_compatibility_assets_optional(self):
+        """Legacy compatibility assets may exist, but are not formal requirements."""
+        compat_skill_dir = "openclaw_skill/emotion_core"
+        if os.path.exists(compat_skill_dir):
+            assert os.path.exists(f"{compat_skill_dir}/SKILL.md")
+            assert os.path.exists(f"{compat_skill_dir}/skill.py")

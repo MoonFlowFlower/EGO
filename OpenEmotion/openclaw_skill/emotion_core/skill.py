@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
-OpenClaw skill for emotiond integration
+Compatibility-only OpenClaw skill shim for emotiond integration.
+
+This file is retained for legacy bridge users and is not part of the
+formal EgoCore + OpenEmotion mainline.
 """
 
 import httpx

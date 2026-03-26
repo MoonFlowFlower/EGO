@@ -290,7 +290,7 @@ def run_e2e_telegram_test(evidence: dict) -> dict:
         "user_intent": None,
         "raw_text": None,
         "task_context": {"pending_tasks": 1, "blocked_tasks": 1},
-        "safety_context": {"risk_level": 0.5},
+        "safety_context": {"risk_level": "high"},
         "external_result": {
             "success": False,
             "tool": "test_tool",

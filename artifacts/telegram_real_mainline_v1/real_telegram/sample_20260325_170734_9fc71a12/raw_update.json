@@ -1,0 +1,17 @@
+{
+  "update_id": 454466,
+  "message": {
+    "message_id": 1,
+    "date": 1774476454,
+    "chat": {
+      "id": 8420019401,
+      "type": "private"
+    },
+    "from": {
+      "id": 8420019401,
+      "is_bot": false
+    },
+    "text": "读取文件 test.txt"
+  },
+  "_source": "state.json_reconstruction"
+}

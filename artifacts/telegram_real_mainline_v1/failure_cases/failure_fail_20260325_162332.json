@@ -1,0 +1,20 @@
+{
+  "failure_id": "fail_20260325_162332",
+  "timestamp": "2026-03-25T16:23:32.841554",
+  "trigger_method": "integration_test",
+  "raw_input": {
+    "test_name": "update_normalization",
+    "expected_function": "build_from_telegram_update"
+  },
+  "expected": "函数存在，可正确归一化 Telegram update",
+  "actual": "ImportError: cannot import name 'build_from_telegram_update' from 'app.openemotion_adapter.event_builder'",
+  "evidence_level": "E3",
+  "source_type": "integration",
+  "initial_cause_type": "contract_error",
+  "cause_detail": "integration adapter API drift - runner 与实际 Telegram/event normalization 之间的接线契约没对齐",
+  "secondary_cause": null,
+  "tape_path": null,
+  "in_regression": true,
+  "retested": true,
+  "fix_applied": "添加 build_from_telegram_update 函数到 EgoCore/app/openemotion_adapter/event_builder.py"
+}

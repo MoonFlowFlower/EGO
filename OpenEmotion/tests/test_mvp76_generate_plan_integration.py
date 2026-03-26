@@ -3,7 +3,7 @@ import pytest
 from unittest.mock import patch, AsyncMock, MagicMock
 
 from emotiond.core import generate_plan, emotion_state, relationship_manager, reset_allostasis_budget
-from emotiond.self_model import get_self_model_v0, reset_self_model_v0
+from emotiond.self_model.legacy import get_self_model_v0, reset_self_model_v0
 from emotiond.models import PlanRequest
 
 

@@ -1,0 +1,140 @@
+{
+  "sample_id": "sample_20260325_175906_9ce22ea4",
+  "timestamp": "2026-03-25T17:59:06.196674",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1789,
+      "date": 1774479546,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "在吗"
+    },
+    "update_id": 476272429
+  },
+  "normalized_event": {
+    "event_id": "telegram:dm:8420019401_turn_c8083199",
+    "timestamp": "2026-03-25T17:59:24.666325",
+    "actor": "user",
+    "source": "telegram",
+    "event_type": "user_message",
+    "user_intent": "在吗",
+    "raw_text": "在吗",
+    "task_context": {
+      "pending_tasks": 0,
+      "blocked_tasks": 0
+    },
+    "safety_context": {
+      "risk": "low",
+      "risk_level": "low"
+    },
+    "external_result": null
+  },
+  "openemotion_result": {
+    "policy_hint": {
+      "risk_bias": "normal",
+      "closure_bias": false,
+      "ask_preferred": false,
+      "should_avoid_commitment_upgrade": true,
+      "exploration_mode": false
+    },
+    "response_tendency": {
+      "preferred_mode": "repair",
+      "preferred_tone": "calm",
+      "certainty_bound": "bounded",
+      "suggested_next_step": "clarify_or_repair",
+      "ask_needed": false
+    },
+    "identity_state_delta": {
+      "core_roles_add": [],
+      "core_commitments_add": [],
+      "core_boundaries_add": [],
+      "stable_preferences_patch": {},
+      "identity_confidence_delta": 0.0
+    },
+    "self_model_delta": {
+      "capabilities": {},
+      "limitations": {},
+      "current_focus": null,
+      "current_mode": null,
+      "self_confidence_by_domain": {}
+    },
+    "appraisal_state_delta": {
+      "coherence_pressure": 0.18000000000000005,
+      "curiosity": 0.6599999999999999,
+      "caution": 0.44999999999999996,
+      "completion_pressure": 0.20000000000000004,
+      "social_tension": 0.0
+    },
+    "reflection_note": {
+      "trigger": "drive_spike",
+      "diagnosis": "significant internal state change detected",
+      "proposed_adjustment": {
+        "review_drive_field": true
+      },
+      "promote_to_memory": false
+    }
+  },
+  "response_plan": {
+    "status": "chat",
+    "delivery_kind": "chat",
+    "reply_length": 12
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1791,
+    "date": "2026-03-25T22:59:32+00:00",
+    "text_length": 12,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-25T17:59:06.196688",
+      "update_id": 476272429
+    },
+    {
+      "stage": "event_normalized",
+      "timestamp": "2026-03-25T17:59:24.669847",
+      "event_id": "telegram:dm:8420019401_turn_c8083199"
+    },
+    {
+      "stage": "openemotion_processed",
+      "timestamp": "2026-03-25T17:59:24.669852"
+    },
+    {
+      "stage": "response_planned",
+      "timestamp": "2026-03-25T17:59:31.219015"
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-25T17:59:31.554342",
+      "chat_id": 8420019401,
+      "message_id": 1791
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260325_175906_9ce22ea4",
+    "timestamp": "2026-03-25T17:59:06.196674",
+    "evidence_level": "E4",
+    "update_id": 476272429,
+    "trace_id": "sample_20260325_175906_9ce22ea4"
+  },
+  "replay_hash": "224b0acd0b9e9c09",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": true,
+    "openemotion_result": true,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true
+  }
+}

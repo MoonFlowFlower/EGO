@@ -1,0 +1,105 @@
+{
+  "schema_version": "proto_self.v1",
+  "event_id": "replay_sample_20260325_153239",
+  "identity_state_delta": {
+    "core_roles_add": [],
+    "core_commitments_add": [],
+    "core_boundaries_add": [],
+    "stable_preferences_patch": {},
+    "identity_confidence_delta": 0.0
+  },
+  "self_model_delta": {
+    "capabilities": {},
+    "limitations": {},
+    "current_focus": null,
+    "current_mode": null,
+    "self_confidence_by_domain": {}
+  },
+  "memory_update": {
+    "append_episode": true,
+    "cycle_promotion_candidate": "34c1264506f1d7fe",
+    "promote_reflection": false
+  },
+  "relationship_update": {},
+  "appraisal_state_delta": {
+    "coherence_pressure": 0.0,
+    "curiosity": 0.09,
+    "caution": 0.0,
+    "completion_pressure": 0.0,
+    "social_tension": 0.0
+  },
+  "reflection_note": null,
+  "policy_hint": {
+    "risk_bias": "normal",
+    "closure_bias": false,
+    "ask_preferred": false,
+    "should_avoid_commitment_upgrade": true,
+    "exploration_mode": false
+  },
+  "response_tendency": {
+    "preferred_mode": "respond",
+    "preferred_tone": "calm",
+    "certainty_bound": "bounded",
+    "suggested_next_step": "continue",
+    "ask_needed": false
+  },
+  "confidence_meta": {
+    "identity_confidence": 0.5,
+    "revision_count": 0,
+    "cycle_count": 1,
+    "episodic_count": 1
+  },
+  "trace_payload": {
+    "schema_version": "proto_self.trace.v1",
+    "event_id": "replay_sample_20260325_153239",
+    "perceived": {
+      "intent": "replay_test",
+      "event_type": "user_message",
+      "source": "telegram",
+      "safety_context": {},
+      "novelty": 0.3,
+      "identity_conflict": 0.0,
+      "unfinished_commitment": 0.0,
+      "risk_signal": 0.0,
+      "relational_mismatch": 0.0,
+      "external_outcome_type": "none"
+    },
+    "appraisal_delta": {
+      "coherence_pressure": 0.0,
+      "curiosity": 0.09,
+      "caution": 0.0,
+      "completion_pressure": 0.0,
+      "social_tension": 0.0
+    },
+    "self_model_delta": {
+      "capabilities": {},
+      "limitations": {},
+      "current_focus": null,
+      "current_mode": null,
+      "self_confidence_by_domain": {}
+    },
+    "cycle_delta": {
+      "cycle_id": "34c1264506f1d7fe",
+      "op": "candidate",
+      "psi_bucket": "telegram:user_message:test_verify",
+      "phi_signature": "neutral",
+      "strength_delta": 0.05
+    },
+    "identity_delta": {
+      "core_roles_add": [],
+      "core_commitments_add": [],
+      "core_boundaries_add": [],
+      "stable_preferences_patch": {},
+      "identity_confidence_delta": 0.0
+    },
+    "reflection_trigger": null,
+    "policy_hint": {
+      "risk_bias": "normal",
+      "closure_bias": false,
+      "ask_preferred": false,
+      "should_avoid_commitment_upgrade": true,
+      "exploration_mode": false
+    },
+    "timestamp": "2026-03-25T15:32:39.016465"
+  }
+}

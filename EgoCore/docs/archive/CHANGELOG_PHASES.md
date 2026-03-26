@@ -1,5 +1,46 @@
 # EgoCore Changelog - Phases
 
+## P0-R3: runtime 主链接线修复 (2026-03-25)
+
+### 修复
+- `EgoCore/app/runtime_v2/loop.py` - 新增 `_assess_risk_level()` 风险评估函数
+- `EgoCore/app/runtime_v2/loop.py` - 修复 `proto_self_event.safety_context` 不再硬编码为空
+- `EgoCore/app/runtime_v2/loop.py` - 添加 `risk` 和 `risk_level` 双字段传递
+
+### 核心成果
+- ✅ `runtime_v2/loop.py` 正确评估风险并传递到 `safety_context`
+- ✅ 高风险操作的 psi_bucket 包含 `:risk_high` 后缀
+- ✅ 高低风险操作被分配到不同 cycle
+- ✅ 真实 Telegram 环境验证通过
+
+### 验证数据
+| 消息 | psi_bucket | cycle_id | risk_signal |
+|------|------------|----------|-------------|
+| 删除临时文件 | `telegram:user_message:file_risk_op:risk_high` | `f7c8318dccc2d7c0` | 0.5 |
+| 读取文件 test.txt | `telegram:user_message:test_verify` | `34c1264506f1d7fe` | 0.1 |
+
+### 测试
+- `EgoCore/scripts/p0_r3_unit_test.py` - 单元测试 (13/13 通过)
+- `EgoCore/scripts/p0_r3_e2e_test.py` - E2E 测试 (全部通过)
+
+### 报告
+- `Tasks/p0_steady_state/reports_r3/P0_R3_REPORT.md`
+
+---
+
+## P0-FINAL: 真实 Telegram 双样本现场核验 (2026-03-25)
+
+### 验证状态
+- ✅ 高风险 bucket 含 `:risk_high`
+- ✅ 低风险 bucket 不含 `:risk_high`
+- ✅ 两者 cycle_id 不同
+- ✅ 真实 Telegram 环境验证通过
+
+### 报告
+- `Tasks/p0_steady_state/reports_final/P0_FINAL_VERIFICATION_REPORT.md`
+
+---
+
 ## P0-R2: Risk Signal 接线 (2026-03-25)
 
 ### 修复
@@ -8,13 +49,9 @@
 - `OpenEmotion/openemotion/proto_self/appraisal.py` - 修复 `_score_risk` 类型 bug
 
 ### 核心成果
-- `safety_context.risk` 正确从 EgoCore 传递到 OpenEmotion
-- 高风险操作 psi_bucket 包含 `:risk_high` 后缀
-- 高低风险操作被分配到不同 cycle
-
-### 测试
-- `EgoCore/scripts/p0_r2_risk_test.py` - 单元测试
-- `EgoCore/scripts/p0_r2_e2e_test.py` - 端到端测试
+- ✅ `safety_context.risk` 正确从 EgoCore 传递到 OpenEmotion
+- ✅ 高风险操作 psi_bucket 包含 `:risk_high` 后缀
+- ✅ 高低风险操作被分配到不同 cycle
 
 ---
 

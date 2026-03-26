@@ -1,0 +1,70 @@
+{
+  "sample_id": "sample_20260325_173811_22674d22",
+  "timestamp": "2026-03-25T17:38:11.063108",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1783,
+      "date": 1774478291,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "你的这个思路是怎么来的?"
+    },
+    "update_id": 476272426
+  },
+  "normalized_event": null,
+  "openemotion_result": null,
+  "response_plan": {
+    "status": "chat",
+    "delivery_kind": "chat",
+    "reply_length": 449
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1784,
+    "date": "2026-03-25T22:38:57+00:00",
+    "text_length": 449,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-25T17:38:11.063121",
+      "update_id": 476272426
+    },
+    {
+      "stage": "response_planned",
+      "timestamp": "2026-03-25T17:38:55.947261"
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-25T17:38:56.284500",
+      "chat_id": 8420019401,
+      "message_id": 1784
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260325_173811_22674d22",
+    "timestamp": "2026-03-25T17:38:11.063108",
+    "evidence_level": "E4",
+    "update_id": 476272426,
+    "trace_id": "sample_20260325_173811_22674d22"
+  },
+  "replay_hash": "680e7c5d7d4179cf",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": false,
+    "openemotion_result": false,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true
+  }
+}

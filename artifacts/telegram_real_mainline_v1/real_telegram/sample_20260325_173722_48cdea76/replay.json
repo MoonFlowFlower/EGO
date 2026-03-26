@@ -1,0 +1,16 @@
+{
+  "replay_id": "replay_sample_20260325_173722_48cdea76",
+  "timestamp": "2026-03-25T18:58:15.285475",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "channel": "telegram",
+  "sample_id": "sample_20260325_173722_48cdea76",
+  "raw_update_ref": "raw_update.json",
+  "normalized_event_ref": null,
+  "openemotion_result_ref": null,
+  "response_plan_ref": "response_plan.json",
+  "outbox_record_ref": "outbox_record.json",
+  "timeline_ref": "timeline.json",
+  "tape_ref": "tape.json",
+  "replay_hash": "2dc5285a65b99ae3"
+}

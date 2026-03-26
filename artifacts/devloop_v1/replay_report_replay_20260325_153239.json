@@ -1,0 +1,53 @@
+{
+  "run_id": "replay_20260325_153239",
+  "timestamp": "2026-03-25T15:32:39.023782",
+  "chains_checked": 1,
+  "chains_passed": 1,
+  "chains_failed": 0,
+  "total_steps": 4,
+  "steps_passed": 4,
+  "steps_failed": 0,
+  "overall_integrity": true,
+  "chains": [
+    {
+      "event_id": "sample_tape",
+      "steps": [
+        {
+          "step_id": "sample_tape_ingress",
+          "step_type": "ingress",
+          "timestamp": "2026-03-25T15:32:39.015776",
+          "data_hash": "b63924f90565",
+          "data_preview": "{'event_id': 'replay_sample_20260325_153239', 'timestamp': '2026-03-25T15:32:39.015776', 'actor': 'u",
+          "integrity": true
+        },
+        {
+          "step_id": "sample_tape_normalized",
+          "step_type": "normalized",
+          "timestamp": "2026-03-25T15:32:39.016465",
+          "data_hash": "55329a5fbf0b",
+          "data_preview": "{'schema_version': 'proto_self.v1', 'event_id': 'replay_sample_20260325_153239', 'timestamp': '2026-",
+          "integrity": true
+        },
+        {
+          "step_id": "sample_tape_processed",
+          "step_type": "processed",
+          "timestamp": "",
+          "data_hash": "93df7ef54cea",
+          "data_preview": "{'schema_version': 'proto_self.v1', 'event_id': 'replay_sample_20260325_153239', 'identity_state_del",
+          "integrity": true
+        },
+        {
+          "step_id": "sample_tape_final",
+          "step_type": "final",
+          "timestamp": "2026-03-25T15:32:39.020833",
+          "data_hash": "fee8f105ad6a",
+          "data_preview": "{'action': 'respond', 'timestamp': '2026-03-25T15:32:39.020833', 'event_id': 'replay_sample_20260325",
+          "integrity": true
+        }
+      ],
+      "chain_integrity": true,
+      "missing_steps": []
+    }
+  ],
+  "errors": []
+}

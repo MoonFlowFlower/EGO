@@ -1,0 +1,156 @@
+{
+  "identity": {
+    "core_roles": [],
+    "core_commitments": [],
+    "core_boundaries": [],
+    "stable_preferences": {},
+    "identity_confidence": 0.5
+  },
+  "self_model": {
+    "capabilities": {},
+    "limitations": {},
+    "current_focus": null,
+    "current_mode": "baseline",
+    "self_confidence_by_domain": {}
+  },
+  "drives": {
+    "coherence_pressure": 0.08000000000000002,
+    "curiosity": 0.31999999999999995,
+    "caution": 0.2,
+    "completion_pressure": 0.0,
+    "social_tension": 0.0
+  },
+  "cycle_store": {
+    "signatures": {
+      "5031b09d340c9fb7": {
+        "cycle_id": "5031b09d340c9fb7",
+        "psi_bucket": "telegram:user_message:status_query",
+        "phi_signature": "neutral",
+        "strength": 0.25,
+        "hits": 3,
+        "last_seen_ts": "2026-03-25T16:56:58.531597",
+        "promoted": false
+      },
+      "1d356553f3230217": {
+        "cycle_id": "1d356553f3230217",
+        "psi_bucket": "telegram:user_message:general",
+        "phi_signature": "caution:+0.2|curiosity:+0.3",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-03-25T19:11:35.100459",
+        "promoted": false
+      }
+    }
+  },
+  "episodic_trace": [
+    {
+      "event_id": "flow_20260325_165209_turn_e13083ae",
+      "perceived_summary": {
+        "intent": "\u72b6\u6001\u67e5\u8be2",
+        "event_type": "user_message",
+        "source": "telegram",
+        "safety_context": {
+          "risk": "low",
+          "risk_level": "low"
+        },
+        "novelty": 0.3,
+        "identity_conflict": 0.05,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.1,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.020000000000000004,
+        "curiosity": 0.07999999999999999,
+        "caution": 0.05,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "flow_20260325_165302_turn_164c9606",
+      "perceived_summary": {
+        "intent": "\u72b6\u6001\u67e5\u8be2",
+        "event_type": "user_message",
+        "source": "telegram",
+        "safety_context": {
+          "risk": "low",
+          "risk_level": "low"
+        },
+        "novelty": 0.3,
+        "identity_conflict": 0.05,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.1,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.04000000000000001,
+        "curiosity": 0.15999999999999998,
+        "caution": 0.1,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "flow_20260325_165658_turn_95fe7089",
+      "perceived_summary": {
+        "intent": "\u72b6\u6001\u67e5\u8be2",
+        "event_type": "user_message",
+        "source": "telegram",
+        "safety_context": {
+          "risk": "low",
+          "risk_level": "low"
+        },
+        "novelty": 0.3,
+        "identity_conflict": 0.05,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.1,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.06000000000000001,
+        "curiosity": 0.23999999999999996,
+        "caution": 0.15000000000000002,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      }
+    },
+    {
+      "event_id": "integration_1_turn_57a5db94",
+      "perceived_summary": {
+        "intent": "\u4f60\u597d",
+        "event_type": "user_message",
+        "source": "telegram",
+        "safety_context": {
+          "risk": "low",
+          "risk_level": "low"
+        },
+        "novelty": 0.3,
+        "identity_conflict": 0.05,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.1,
+        "relational_mismatch": 0.0,
+        "external_outcome_type": "none"
+      },
+      "action_hint": {},
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.08000000000000002,
+        "curiosity": 0.31999999999999995,
+        "caution": 0.2,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      }
+    }
+  ],
+  "revision_counter": 0
+}

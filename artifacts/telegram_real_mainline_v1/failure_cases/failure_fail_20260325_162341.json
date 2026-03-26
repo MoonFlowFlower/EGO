@@ -1,0 +1,20 @@
+{
+  "failure_id": "fail_20260325_162341",
+  "timestamp": "2026-03-25T16:23:41.651551",
+  "trigger_method": "integration_test",
+  "raw_input": {
+    "test_name": "session_lifecycle",
+    "expected_config_dir": "config/"
+  },
+  "expected": "配置目录存在，可正常初始化 RuntimeV2Loop",
+  "actual": "Configuration directory not found: config",
+  "evidence_level": "E3",
+  "source_type": "integration",
+  "initial_cause_type": "runtime_error",
+  "cause_detail": "运行时环境/路径解析失败，非边界语义错误",
+  "secondary_cause": "test_gap",
+  "tape_path": null,
+  "in_regression": true,
+  "retested": true,
+  "fix_applied": "添加 _init_config() 函数到 scripts/run_telegram_integration_e2e.py，使用绝对路径加载配置"
+}

@@ -1,0 +1,26 @@
+{
+  "run_id": "classify_20260325_153308",
+  "timestamp": "2026-03-25T15:33:08.354777",
+  "failures_classified": 1,
+  "failures_by_type": {
+    "boundary_error": 1
+  },
+  "failures_by_severity": {
+    "high": 1
+  },
+  "wording_issues": 0,
+  "closure_issues": 0,
+  "classifications": [
+    {
+      "error_id": "err_782550",
+      "error_type": "boundary_error",
+      "description": "边界归属错误，能力错位写入",
+      "severity": "high",
+      "evidence": "Error: 边界归属错误，OpenEmotion 不应该在 EgoCore 中实现\n",
+      "matched_pattern": "OpenEmotion.*不应该.*EgoCore",
+      "timestamp": "2026-03-25T15:33:08.354736"
+    }
+  ],
+  "wording_results": [],
+  "closure_result": null
+}

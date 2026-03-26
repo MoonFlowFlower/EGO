@@ -1,5 +1,7 @@
 # Emotion Core Skill
 
+> Compatibility-only legacy bridge. Not part of the formal EgoCore + OpenEmotion mainline.
+
 Use the emotiond daemon to maintain emotional state and generate response plans for OpenClaw.
 
 ## Usage

@@ -544,7 +544,6 @@ class TestTestSuiteComprehensive:
         import tests.test_eval_suite
         import tests.test_event_endpoint
         import tests.test_fastapi_service
-        import tests.test_openclaw_skill
         import tests.test_plan_endpoint
         import tests.test_run_daemon
         import tests.test_tick_loop
@@ -561,7 +560,6 @@ class TestTestSuiteComprehensive:
             "test_eval_suite.py",
             "test_event_endpoint.py",
             "test_fastapi_service.py",
-            "test_openclaw_skill.py",
             "test_plan_endpoint.py",
             "test_run_daemon.py",
             "test_tick_loop.py"

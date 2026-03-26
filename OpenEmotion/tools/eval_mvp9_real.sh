@@ -77,7 +77,7 @@ sys.path.insert(0, '${PROJECT_ROOT}')
 from emotiond.eval_mvp9 import load_scenarios, evaluate_all, generate_failures_markdown
 from emotiond.core import process_event, emotion_state
 from emotiond.models import Event
-from emotiond.self_model import reset_self_model_v0
+from emotiond.self_model.legacy import reset_self_model_v0
 from emotiond.db import init_db
 
 # Initialize test database

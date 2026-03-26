@@ -1,0 +1,70 @@
+{
+  "run_id": "replay_all_20260325_165414",
+  "timestamp": "2026-03-25T16:54:14.455953",
+  "total_replayed": 2,
+  "passed": 1,
+  "still_failing": 1,
+  "results": [
+    {
+      "replay_id": "replay_fail_20260325_162332_20260325_165414",
+      "failure_id": "fail_20260325_162332",
+      "timestamp": "2026-03-25T16:54:14.446196",
+      "original_failure": {
+        "failure_id": "fail_20260325_162332",
+        "timestamp": "2026-03-25T16:23:32.841554",
+        "trigger_method": "integration_test",
+        "raw_input": {
+          "test_name": "update_normalization",
+          "expected_function": "build_from_telegram_update"
+        },
+        "expected": "函数存在，可正确归一化 Telegram update",
+        "actual": "ImportError: cannot import name 'build_from_telegram_update' from 'app.openemotion_adapter.event_builder'",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "initial_cause_type": "contract_error",
+        "cause_detail": "integration adapter API drift - runner 与实际 Telegram/event normalization 之间的接线契约没对齐",
+        "secondary_cause": null,
+        "tape_path": null,
+        "in_regression": false,
+        "retested": true
+      },
+      "replay_passed": false,
+      "still_fails": true,
+      "evidence": {
+        "function_exists": false
+      },
+      "notes": "契约检查完成 - 函数仍不存在"
+    },
+    {
+      "replay_id": "replay_fail_20260325_162341_20260325_165414",
+      "failure_id": "fail_20260325_162341",
+      "timestamp": "2026-03-25T16:54:14.451667",
+      "original_failure": {
+        "failure_id": "fail_20260325_162341",
+        "timestamp": "2026-03-25T16:23:41.651551",
+        "trigger_method": "integration_test",
+        "raw_input": {
+          "test_name": "session_lifecycle",
+          "expected_config_dir": "config/"
+        },
+        "expected": "配置目录存在，可正常初始化 RuntimeV2Loop",
+        "actual": "Configuration directory not found: config",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "initial_cause_type": "runtime_error",
+        "cause_detail": "运行时环境/路径解析失败，非边界语义错误",
+        "secondary_cause": "test_gap",
+        "tape_path": null,
+        "in_regression": false,
+        "retested": true
+      },
+      "replay_passed": true,
+      "still_fails": false,
+      "evidence": {
+        "config_dir_exists": true,
+        "config_dir": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoCore\\config"
+      },
+      "notes": "运行时检查完成"
+    }
+  ]
+}

@@ -6,7 +6,6 @@ This test suite provides complete coverage for all major components:
 - State management
 - API endpoints
 - Daemon lifecycle
-- OpenClaw skill integration
 - Evaluation suite
 - Demo scripts
 """

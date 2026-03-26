@@ -1,0 +1,22 @@
+{
+  "failure_id": "fail_20260325_171610",
+  "timestamp": "2026-03-25T17:16:10.954321",
+  "trigger_method": "real_telegram",
+  "raw_input": {
+    "sample_id": "sample_20260325_170734_9fc71a12",
+    "event_id": "telegram:dm:8420019401_turn_3a4bcb66",
+    "user_input": "读取文件 test.txt"
+  },
+  "expected": "outbox_record 记录实际发送的消息内容、chat_id、message_id",
+  "actual": "outbox_record = null，无法证明消息已发送",
+  "evidence_level": "E4",
+  "source_type": "real_telegram",
+  "initial_cause_type": "delivery_error",
+  "cause_detail": "outbox_record 缺失：evidence collector 未在消息发送流程中捕获 outbox_record，导致无法证明真实 Telegram 回复已成功送达",
+  "secondary_cause": "capture_gap",
+  "tape_path": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260325_170734_9fc71a12/tape.json",
+  "in_regression": true,
+  "retested": true,
+  "fix_applied": "在 telegram_bot.py 的 _send_reply 中添加 outbox_record 捕获，在 loop.py 中添加 normalized_event 和 openemotion_result 捕获，修复 loop.py 中 OpenEmotion 路径设置",
+  "retest_evidence": "sample_20260325_175931_c62a411e 完整 6/6 证据包"
+}

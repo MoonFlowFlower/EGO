@@ -17,10 +17,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import modules
-from emotiond.self_model import (
-    get_self_model_v0, reset_self_model_v0,
-    get_self_model_manager, reset_self_model_manager
-)
+from emotiond.self_model import get_self_model_manager, reset_self_model_manager
+from emotiond.self_model.legacy import get_self_model_v0, reset_self_model_v0
 from emotiond.drives import get_drive_manager, reset_drive_manager
 from emotiond.developmental import get_developmental_manager, reset_developmental_manager
 from emotiond.self_model.persistence import get_persistence, reset_persistence

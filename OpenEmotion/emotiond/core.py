@@ -36,13 +36,19 @@ from emotiond.config import (
 )
 from emotiond.state import AffectState, MoodState, BondState, StateHierarchy, apply_time_passed_affect, apply_time_passed_mood, apply_time_passed_bond
 from emotiond.security import validate_time_passed_cumulative
-from emotiond.memory import memory_system, initialize_memory_system
+from emotiond.memory_legacy import memory_system, initialize_memory_system
 from emotiond.episodic_memory import episodic_memory_manager
 from emotiond.body_state import BodyStateVector
 from emotiond.persistence import get_persistence_constraint
 from emotiond.other_minds import get_other_minds_model, apply_other_minds_to_intent_scores
 from emotiond.ledger import get_ledger, detect_promise
-from emotiond.self_model import get_self_model, build_self_model_v0, render_self_report, get_self_model_v0, reset_self_model_v0
+from emotiond.self_model.legacy import (
+    get_self_model,
+    build_self_model_v0,
+    render_self_report,
+    get_self_model_v0,
+    reset_self_model_v0,
+)
 
 # OpenEmotion Self-Model Adapter (P0 main-chain wiring)
 ENABLE_OPENEMOTION_SELF_MODEL = os.environ.get("ENABLE_OPENEMOTION_SELF_MODEL", "true").lower() == "true"

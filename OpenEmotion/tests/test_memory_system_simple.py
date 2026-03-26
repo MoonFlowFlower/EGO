@@ -7,7 +7,7 @@ import os
 import asyncio
 import tempfile
 import shutil
-from emotiond.memory import MemorySystem
+from emotiond.memory_legacy import MemorySystem
 from emotiond.db import add_event, init_db, get_recent_events, get_events_by_target
 from emotiond.models import Event
 from emotiond import config, db, core

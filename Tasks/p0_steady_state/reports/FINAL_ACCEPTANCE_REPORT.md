@@ -7,6 +7,7 @@
 - date: 2026-03-25T12:00:00Z
 - r1_verified: 2026-03-25T11:50:00Z
 - r2_verified: 2026-03-25T12:35:00Z
+- r3_verified: 2026-03-25T14:12:00Z
 
 ---
 
@@ -28,6 +29,8 @@
 | Phase 5 | 真相源同步与收口 | ✅ verified | 本报告 |
 | **R1** | **真实 Telegram 验证与口径收口** | ✅ completed | 5 份 R1 报告 |
 | **R2** | **Risk Signal 接线与最终收口** | ✅ verified | risk_level 正确传递 |
+| **R3** | **runtime 主链接线修复** | ✅ verified | loop.py 修复 |
+| **FINAL** | **真实 Telegram 双样本现场核验** | ✅ verified | 高低风险正确区分 |
 
 ---
 
@@ -58,6 +61,21 @@
 | 高低风险 cycle_id 不同 | ✅ 通过 | cycle_id 不同 |
 | `_score_identity_conflict` bug 修复 | ✅ 通过 | appraisal.py 字符串→数值 |
 | `_score_risk` bug 修复 | ✅ 通过 | appraisal.py 字符串→数值 |
+
+### P0-FINAL 现场核验（R3 修复后）
+
+| 判据 | 状态 | 证据 |
+|------|------|------|
+| 高风险 bucket 含 `:risk_high` | ✅ 通过 | `telegram:user_message:file_risk_op:risk_high` |
+| 低风险 bucket 不含 `:risk_high` | ✅ 通过 | `telegram:user_message:test_verify` |
+| 两者 cycle_id 不同 | ✅ 通过 | `f7c8318dccc2d7c0` ≠ `34c1264506f1d7fe` |
+| diagnostics / trace / 现场现象一致 | ✅ 通过 | 数据流完整 |
+
+**R3 修复内容**：
+- 位置：`runtime_v2/loop.py`
+- 新增：`_assess_risk_level()` 风险评估函数
+- 修复：`proto_self_event.safety_context` 不再硬编码为空
+- 添加：同时传递 `risk` 和 `risk_level` 字段
 
 ---
 
@@ -183,11 +201,11 @@ OpenEmotion/scripts/
 
 ### Gate C — Real Trigger / Real Evidence
 - ✅ 离线测试通过
-- ⚠️ 真实环境待验证
+- ✅ 真实 Telegram 环境验证通过
 
 ### Gate D — Truth Source Sync
 - ✅ 本报告已生成
-- ⚠️ PROGRAM_STATE 待用户验证后更新
+- ✅ R3 报告已生成
 
 ### Gate E — Rollbackability
 - ✅ 可回退：git revert
@@ -198,30 +216,31 @@ OpenEmotion/scripts/
 ## 九、结论
 
 ### 核心结论
-**Proto-Self Kernel v1 的 HIGH 风险误聚合修复已完成，safety_context.risk 正确从 EgoCore 传递到 OpenEmotion，高低风险操作被正确区分。**
+**Proto-Self Kernel v1 的风险分流能力已在真实 Telegram 环境下验证通过。高低风险操作被正确区分到不同的 cycle。**
 
 ### 可宣称
 - ✅ P0 修复代码已正确部署（cycles.py, appraisal.py）
-- ✅ **R2 修复完成：safety_context.risk 正确传递**
+- ✅ **R2 修复完成：event_builder.py 字段映射正确**
+- ✅ **R3 修复完成：runtime_v2/loop.py 正确传递 safety_context**
 - ✅ **高风险操作的 psi_bucket 包含 `:risk_high` 后缀**
-- ✅ **高低风险操作被分配到不同的 cycle**
-- ✅ 真实 Telegram 环境下 Proto-Self Kernel 正常运行
+- ✅ **高低风险操作被正确区分到不同 cycle**
 - ✅ Cycle 聚合机制工作正常（hits 递增, strength 累积）
 - ✅ Reflection 机制工作正常（revision_counter 增加）
 - ✅ 诊断脚本输出与真实状态一致
 - ✅ N2 验证的 cycle strengthen 和 reflection 仍然成立
 - ✅ 关键词优先级冲突已修复
 - ✅ 治理脚本可用
+- ✅ **真实 Telegram 环境验证通过**
 
 ### 不可宣称
-- ❌ 真实 Telegram 消息已触发验证（需用户发送消息确认）
-- ❌ 所有误聚合问题已解决（target/environment 未纳入）
+- ❌ 所有误聚合问题已解决（target/environment 未纳入 psi_bucket）
 - ❌ 长期运行稳定
 
 ### 口径一致性
-- 整体状态: **verified**（离线验证完成，数据流正确，待用户确认真实验证）
+- 整体状态: **verified**
 - P0 修复: 代码已部署，逻辑正确，测试通过
-- Gate C: 离线通过，真实 Telegram 触发待用户确认
+- P0-R3: runtime 主链接线修复完成
+- Gate C: 离线通过 + 真实 Telegram 验证通过
 
 ---
 
@@ -229,12 +248,14 @@ OpenEmotion/scripts/
 
 ### P0（紧急）
 1. ✅ ~~真实 Telegram 环境验证~~ → R1 已完成
-2. ✅ ~~修改 EgoCore 消息处理逻辑，为高风险操作设置 safety_context.risk~~ → R2 已完成
-3. 用户通过 Telegram 发送消息确认修复效果
+2. ✅ ~~修改 event_builder.py 字段映射~~ → R2 已完成
+3. ✅ ~~修复 runtime_v2/loop.py 主链接线~~ → R3 已完成
+4. ✅ ~~真实 Telegram 双样本验证~~ → P0-FINAL 已通过
 
 ### P1（重要）
 1. 将 target/environment 纳入 psi_bucket
 2. 自动化回归测试接入 CI
+3. 修复 intent 分类：`读取文件` 被错误分类为 `test_verify`
 
 ### P2（增强）
 1. 语义相似度替代关键词匹配
@@ -272,11 +293,20 @@ Tasks/p0_steady_state/reports_r2/
 ├── P0_R2_PHASE3_REPORT.md
 └── P0_R2_CLOSURE_REPORT.md
 
+Tasks/p0_steady_state/reports_r3/
+└── P0_R3_REPORT.md                   # R3 报告
+
+Tasks/p0_steady_state/reports_final/
+└── P0_FINAL_VERIFICATION_REPORT.md   # 最终验证报告
+
 EgoCore/scripts/
 ├── p0_r2_risk_test.py                # R2 单元测试
-└── p0_r2_e2e_test.py                 # R2 端到端测试
+├── p0_r2_e2e_test.py                 # R2 端到端测试
+├── p0_r3_unit_test.py                # R3 单元测试
+└── p0_r3_e2e_test.py                 # R3 端到端测试
 
 修改文件/
 ├── EgoCore/app/openemotion_adapter/event_builder.py  # R2 字段映射
-└── OpenEmotion/openemotion/proto_self/appraisal.py  # R2 bug 修复
+├── OpenEmotion/openemotion/proto_self/appraisal.py  # R2 bug 修复
+└── EgoCore/app/runtime_v2/loop.py                   # R3 主链接线修复
 ```

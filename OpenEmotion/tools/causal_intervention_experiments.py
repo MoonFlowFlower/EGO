@@ -14,7 +14,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import modules
-from emotiond.self_model import get_self_model_v0, reset_self_model_v0, get_self_model_manager, reset_self_model_manager
+from emotiond.self_model import get_self_model_manager, reset_self_model_manager
+from emotiond.self_model.legacy import (
+    get_self_model_v0,
+    reset_self_model_v0,
+    apply_self_model_to_decision,
+)
 from emotiond.drives import get_drive_manager, reset_drive_manager
 from emotiond.reflection_engine import get_reflection_engine
 from emotiond.developmental import get_developmental_manager, reset_developmental_manager
@@ -49,7 +54,6 @@ def experiment_self_model_intervention():
     
     # Check if apply_self_model_to_decision exists and works
     try:
-        from emotiond.self_model import apply_self_model_to_decision
         # Create test decision context
         test_decision = {"action": "respond", "scores": {"cooperate": 0.5, "assert": 0.5}}
         

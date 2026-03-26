@@ -36,10 +36,9 @@ from emotiond.memory import (
     EpisodicMemory, EpisodicEvent,
     NarrativeMemory, NarrativeEntry,
     Commitment, CommitmentsLedger,
-    memory_system, initialize_memory_system,
 )
 from emotiond.narrative_memory import narrative_memory, NarrativeState
-from emotiond.memory_legacy import MemorySystem
+from emotiond.memory_legacy import MemorySystem, memory_system, initialize_memory_system
 
 
 @dataclass

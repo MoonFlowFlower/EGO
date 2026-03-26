@@ -1,0 +1,18 @@
+{
+  "event_id": "telegram:dm:8420019401_turn_f9d2d9cf",
+  "timestamp": "2026-03-25T18:00:01.574518",
+  "actor": "user",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": "那你现在有持久化记忆吗",
+  "raw_text": "那你现在有持久化记忆吗",
+  "task_context": {
+    "pending_tasks": 0,
+    "blocked_tasks": 0
+  },
+  "safety_context": {
+    "risk": "low",
+    "risk_level": "low"
+  },
+  "external_result": null
+}

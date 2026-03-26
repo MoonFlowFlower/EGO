@@ -15,7 +15,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock, AsyncMock
 
 # Import the modules we need to test
-from emotiond.self_model import (
+from emotiond.self_model.legacy import (
     SelfModelV0,
     get_self_model_v0,
     reset_self_model_v0,

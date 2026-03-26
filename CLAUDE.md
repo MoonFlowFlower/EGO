@@ -355,7 +355,7 @@ AIProject 是一个 AI Agent 架构项目，采用分层设计实现认知与执
 启动时先读
 "D:\Project\AIProject\MyProject\Ego\EgoCore\docs\00_MASTER_INDEX.md"
 "D:\Project\AIProject\MyProject\Ego\OpenEmotion\docs\00_MASTER_INDEX.md"
-
+"D:\Project\AIProject\MyProject\Ego\docs\EGO 验收证据分级协议 v1.md"
 ---
 
 ## 项目结构
@@ -384,13 +384,17 @@ ls -la Prompt/
 
 # 查看核心组件
 ls -la Ego/
+
+
+
 ```
 
 ---
 
 ## 注意事项
 
-- 状态变化必须先持久化，再做汇报
+- 状态变化必须先持久化，先把对应的文档改好,再做汇报
+- 每次任务都要提交推送到远端.(pen364692088)的仓库都自动推送.
 - 交接时保留：目标、证据、未知、层级、差距、下一步
 - 派发任务时明确：类型、目标、成功判据、当前层级、方案等级
 

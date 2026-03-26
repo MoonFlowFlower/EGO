@@ -1,0 +1,9 @@
+{
+  "event_id": "replay_sample_20260325_153239",
+  "timestamp": "2026-03-25T15:32:39.015776",
+  "actor": "user",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": "replay_test",
+  "raw_text": "\u6d4b\u8bd5\u56de\u653e"
+}

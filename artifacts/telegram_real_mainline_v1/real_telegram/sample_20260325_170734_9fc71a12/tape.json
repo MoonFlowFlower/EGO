@@ -1,0 +1,9 @@
+{
+  "tape_id": "tape_sample_20260325_170734_9fc71a12",
+  "timestamp": "2026-03-25T17:07:34.466875",
+  "evidence_level": "E4",
+  "update_id": 454466,
+  "normalized_event_id": "telegram:dm:8420019401_turn_3a4bcb66",
+  "trace_id": "sample_20260325_170734_9fc71a12",
+  "source": "state_reconstruction"
+}

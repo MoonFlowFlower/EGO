@@ -1,0 +1,60 @@
+{
+  "run_id": "integration_20260325_162231",
+  "timestamp": "2026-03-25T16:22:31.739203",
+  "evidence_level": "E3",
+  "source_type": "integration",
+  "session_id": "integration_20260325_162231",
+  "total_tests": 3,
+  "passed": 0,
+  "failed": 3,
+  "results": [
+    {
+      "test_id": "E3-SESSION-001",
+      "test_name": "session_lifecycle",
+      "passed": false,
+      "evidence": {
+        "evidence_id": "E-E3-SESSION-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "",
+        "what_it_proves": "Session 可正常创建和管理",
+        "what_it_does_not_prove": "真实多用户场景稳定"
+      },
+      "tape": {
+        "error": "Configuration directory not found: config"
+      },
+      "timestamp": "2026-03-25T16:22:31.737065"
+    },
+    {
+      "test_id": "E3-FLOW-001",
+      "test_name": "message_flow",
+      "passed": false,
+      "evidence": {
+        "evidence_id": "E-E3-FLOW-001",
+        "evidence_level": "E3",
+        "source_type": "integration",
+        "artifact_path": "",
+        "what_it_proves": "消息可在 runtime 主链处理",
+        "what_it_does_not_prove": "真实 Telegram 消息稳定"
+      },
+      "tape": {
+        "session_id": "flow_20260325_162231",
+        "input": "状态查询",
+        "status": "waiting_input",
+        "reply_length": 53
+      },
+      "timestamp": "2026-03-25T16:22:31.739168"
+    }
+  ],
+  "allowed_conclusions": [
+    "集成验证通过",
+    "具备真实主链验证条件",
+    "主链候选可用"
+  ],
+  "forbidden_conclusions": [
+    "正式生效",
+    "稳定运行",
+    "已接主链",
+    "已启用"
+  ]
+}

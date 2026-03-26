@@ -1,0 +1,18 @@
+{
+  "event_id": "telegram:dm:8420019401_turn_c8083199",
+  "timestamp": "2026-03-25T17:59:24.666325",
+  "actor": "user",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": "在吗",
+  "raw_text": "在吗",
+  "task_context": {
+    "pending_tasks": 0,
+    "blocked_tasks": 0
+  },
+  "safety_context": {
+    "risk": "low",
+    "risk_level": "low"
+  },
+  "external_result": null
+}

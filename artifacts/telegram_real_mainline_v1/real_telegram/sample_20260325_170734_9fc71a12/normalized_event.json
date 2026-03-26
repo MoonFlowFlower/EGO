@@ -1,0 +1,25 @@
+{
+  "event_id": "telegram:dm:8420019401_turn_3a4bcb66",
+  "source": "telegram",
+  "event_type": "user_message",
+  "intent": "读取文件 test.txt",
+  "safety_context": {
+    "risk": "low",
+    "risk_level": "low"
+  },
+  "perceived_summary": {
+    "intent": "读取文件 test.txt",
+    "event_type": "user_message",
+    "source": "telegram",
+    "safety_context": {
+      "risk": "low",
+      "risk_level": "low"
+    },
+    "novelty": 0.3,
+    "identity_conflict": 0.05,
+    "unfinished_commitment": 0.1,
+    "risk_signal": 0.1,
+    "relational_mismatch": 0.0,
+    "external_outcome_type": "none"
+  }
+}

@@ -1,6 +1,6 @@
 """Tests for MVP-7.6 Phase 1: SelfModel v0 Self-Conflict & Manifest/Replay."""
 import pytest
-from emotiond.self_model import SelfModelV0, build_self_model_v0
+from emotiond.self_model.legacy import SelfModelV0, build_self_model_v0
 
 
 class TestSelfConflict:

@@ -79,7 +79,7 @@ class SelfModelAdapter:
         
         # 加载 legacy SelfModelV0
         try:
-            from emotiond.self_model import SelfModelV0, get_self_model_v0
+            from emotiond.self_model.legacy import get_self_model_v0
             self._legacy_model = get_self_model_v0()
             logger.info("[SelfModelAdapter] Legacy SelfModelV0 loaded")
         except Exception as e:

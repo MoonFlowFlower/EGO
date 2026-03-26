@@ -1,0 +1,32 @@
+[
+  {
+    "failure_id": "fail_20260325_162332",
+    "timestamp": "2026-03-25T16:23:32.841554",
+    "evidence_level": "E3",
+    "source_type": "integration",
+    "initial_cause_type": "contract_error",
+    "cause_summary": "build_from_telegram_update 函数不存在，集成接口契约不一致",
+    "in_regression": true,
+    "retested": true
+  },
+  {
+    "failure_id": "fail_20260325_162341",
+    "timestamp": "2026-03-25T16:23:41.651551",
+    "evidence_level": "E3",
+    "source_type": "integration",
+    "initial_cause_type": "runtime_error",
+    "cause_summary": "配置目录路径解析失败",
+    "in_regression": true,
+    "retested": true
+  },
+  {
+    "failure_id": "fail_20260325_171610",
+    "timestamp": "2026-03-25T17:16:10.954321",
+    "evidence_level": "E4",
+    "source_type": "real_telegram",
+    "initial_cause_type": "delivery_error",
+    "cause_summary": "outbox_record 缺失，无法证明消息已成功发送回复",
+    "in_regression": true,
+    "retested": true
+  }
+]
