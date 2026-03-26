@@ -51,3 +51,10 @@ def test_context_unknown_subcommand_returns_usage():
     result = bot._handle_context_command(DummyUpdate(), "show", 123, 456, "moonlight")
     assert result.success is False
     assert "用法: /context list" in result.message
+
+
+def test_telegram_runtime_bridge_alias_remains_available():
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+
+    assert bot.telegram_runtime_bridge is not None
+    assert bot.runtime_v2_bridge is bot.telegram_runtime_bridge

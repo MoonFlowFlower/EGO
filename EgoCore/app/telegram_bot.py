@@ -50,13 +50,13 @@ except ImportError:
 from app.runtime_v2 import (
     RuntimeV2FallbackRunner,
     RuntimeV2PromptFiles,
-    RuntimeV2TelegramBridge,
     RuntimeV2State,
 )
 from app.core_bus import BusEvent, get_message_bus, get_session_worker_pool
 from app.session_store import SessionLogManager
 from app.agent_core import NativeToolCallingLoop
 from app.openemotion_hooks import NativeOpenEmotionHooks
+from app.telegram_runtime_bridge import TelegramRuntimeBridge
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
 # Ingestion Layer
@@ -114,7 +114,8 @@ class TelegramBot:
         self._legacy_runtime_notice_logged = False
         self.runtime_v2_loop = None
         self.runtime_v2_fallback_runner = RuntimeV2FallbackRunner() if use_runtime_v2 else None
-        self.runtime_v2_bridge = RuntimeV2TelegramBridge() if use_runtime_v2 else None
+        self.telegram_runtime_bridge = TelegramRuntimeBridge() if use_runtime_v2 else None
+        self.runtime_v2_bridge = self.telegram_runtime_bridge
         self.native_loop = None
         self.native_openemotion_hooks = None
         self._setup_complete = False
@@ -879,9 +880,9 @@ class TelegramBot:
         if extra_context:
             text = f"{text}\n\n{extra_context}"
 
-        ingress = await self.runtime_v2_bridge.inspect_ingress_semantic(text, state, llm_client=None)
-        state.ingress_context = self.runtime_v2_bridge.build_ingress_context(ingress, state)
-        pre_runtime = self.runtime_v2_bridge.plan_pre_runtime(ingress, state)
+        ingress = await self.telegram_runtime_bridge.inspect_ingress_semantic(text, state, llm_client=None)
+        state.ingress_context = self.telegram_runtime_bridge.build_ingress_context(ingress, state)
+        pre_runtime = self.telegram_runtime_bridge.plan_pre_runtime(ingress, state)
         logger.info("runtime_v2.turn.start session=%s text=%r ingress=%s parser_source=%s", 
                     session_key, text[:200], ingress, 
                     ingress._parsed_intent_graph.parser_source if ingress._parsed_intent_graph else "none")
@@ -1173,7 +1174,7 @@ class TelegramBot:
             self._is_stale_reply(session_key, ingress_message_id)
         )
 
-        delivery = self.runtime_v2_bridge.plan_delivery(result, state, is_challenge_turn)
+        delivery = self.telegram_runtime_bridge.plan_delivery(result, state, is_challenge_turn)
         if not delivery.should_send:
             logger.info("runtime_v2.turn.delivery session=%s should_send=false", state.session_id)
             return
