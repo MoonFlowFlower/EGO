@@ -4,7 +4,7 @@
 
 | failure_id | type | location | observed_issue | risk_if_ignored | current_disposition |
 |---|---|---|---|---|---|
-| P1-F-001 | regression_gap | `EgoCore/tests/test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete` | Windows `pytest` 下返回 `waiting_input`，未得到预期 `completed_verified` | 如果直接忽略，会把“多数回归通过”误报成“全部主链回归通过” | 已记录；本轮不扩展到 P2/Pverify 范围排查 |
+| P1-F-001 | test_contract_mismatch | `EgoCore/tests/test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete` | Windows `pytest` 下把 `tmp_path` 直接拼进 JSON，导致 `RuntimeV2Action.from_model_output()` 返回 `invalid_json -> ask -> waiting_input` | 如果直接忽略，会把“测试自身跨平台失配”误报成“P1 主链新回归” | 已完成归因，待决定是否修测试 |
 
 ## 历史失败样本（与 P1 直接相关的上下文）
 
@@ -15,5 +15,5 @@
 
 ## 本次结论不能证明什么
 - 不能证明 runtime 全量回归无破坏
-- 不能证明 `test_runtime_v2_minimal` 的失败一定是 P1 引入，也不能证明它与 P1 无关
+- 不能证明 `test_runtime_v2_minimal` 除了当前已识别的 Windows 路径 JSON 失配外，没有第二层隐藏问题
 - 不能证明外部真实链路行为已重新验证

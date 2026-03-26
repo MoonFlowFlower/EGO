@@ -21,7 +21,7 @@ P1：RuntimeV2Loop 主链瘦身手术
 - adapter 仍应保持薄层，宿主 helper 才是本轮承接点
 
 ## 关键未知
-- `test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete` 当前在 Windows pytest 下失败，尚未完成根因归属
+- `test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete` 已归因到测试构造的 Windows JSON 路径转义失配；但修完这条后是否还有第二层 runtime 问题，仍未知
 - loop 之外的 transition / state / decision 是否还存在第二层职责堆积
 - 本轮 helper 形态是否足够支撑 P2，而不再产生新的宿主垃圾桶
 
@@ -54,6 +54,7 @@ P1：RuntimeV2Loop 主链瘦身手术
 - `cmd.exe /c py -3 -m pytest tests\\test_runtime_v2_proto_self_runtime.py tests\\test_runtime_v2_turn_result.py -q`：`7 passed`
 - `cmd.exe /c py -3 -m pytest tests\\test_runtime_v2_proto_self_runtime.py tests\\test_runtime_v2_minimal.py tests\\test_runtime_v2_turn_result.py -q`：`9 passed, 1 failed`
 - 当前唯一失败样本：`tests/test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete`
+- 失败归因见：`artifacts/P1/FAILURE_ATTRIBUTION.md`
 - 结构量化：`loop.py` 从 `376` 行降到 `259` 行；proto-self 相关宿主职责迁移到 `proto_self_runtime.py`
 
 ## 行为保持说明
@@ -74,6 +75,6 @@ P1：RuntimeV2Loop 主链瘦身手术
 - 不能证明 P2 已可无风险展开
 
 ## 离 P2 还差什么
-- 需要先解释或收口 `test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete` 的失败归属
+- 需要决定是否修复 `test_runtime_v2_minimal.py` 的 Windows JSON 路径失配，以恢复 P1 最小回归的可信度
 - 需要确认 `loop.py` 之外的 state / transition / decision 还剩多少跨层状态语义
 - 需要把本轮 helper 的“临时宿主归属”在 P2 前进一步固定，避免再次堆积
