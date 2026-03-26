@@ -1158,6 +1158,23 @@ class TelegramBot:
             ingress_context=self._hydrate_artifact_ingress_context(state),
             proto_self_context=state.proto_self_context,
         )
+        task_contract = getattr(result, "task_contract", None)
+        next_step_decision = getattr(result, "next_step_decision", None)
+        verification_result = getattr(result, "verification_result", None)
+        if task_contract:
+            state.set_task_contract(task_contract)
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="contract_locked",
+                payload=task_contract,
+            )
+        if next_step_decision:
+            state.set_next_step_decision(next_step_decision)
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="next_step_decided",
+                payload=next_step_decision,
+            )
 
         if result.tool_results:
             for step_index, tool_entry in enumerate(result.tool_results):
@@ -1193,16 +1210,32 @@ class TelegramBot:
                         "error_preview": str(tool_result.get("error") or "")[:200],
                     },
                 )
+        if verification_result:
+            state.record_verification(verification_result)
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="step_verified",
+                payload=verification_result,
+            )
 
         if result.reply_text:
-            state.mark_task_completed()
+            verification = verification_result or {}
+            if verification.get("need_relock"):
+                state.task_status = "blocked"
+                state.waiting_for_user_input = True
+                state.contract_phase = "re_lock_needed"
+            elif next_step_decision and next_step_decision.get("action_type") == "ask_user":
+                state.task_status = "waiting_input"
+                state.waiting_for_user_input = True
+            else:
+                state.mark_task_completed()
             turn_result = TelegramTurnResult(
-                status="completed_verified",
+                status="waiting_input" if state.waiting_for_user_input else "completed_verified",
                 state=state,
                 reply=TelegramTurnReply(
                     reply_text=result.reply_text,
                     delivery_kind="final",
-                    status="completed_verified",
+                    status="waiting_input" if state.waiting_for_user_input else "completed_verified",
                 ),
             )
             if native_hooks and native_hooks.enabled:

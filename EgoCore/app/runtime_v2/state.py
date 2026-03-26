@@ -157,6 +157,11 @@ class RuntimeV2State:
     # Proto-Self Kernel Context
     proto_self_context: Optional[Dict[str, Any]] = None  # policy_hint / response_tendency / reflection_note
     ingress_context: Optional[Dict[str, Any]] = None  # canonical ingress structure for single-pass decision
+    task_contract: Optional[Dict[str, Any]] = None
+    next_step_decision: Optional[Dict[str, Any]] = None
+    verification_history: List[Dict[str, Any]] = field(default_factory=list)
+    need_relock: bool = False
+    contract_phase: str = "pending"
 
     def to_prompt_context(self) -> Dict[str, Any]:
         """
@@ -210,6 +215,11 @@ class RuntimeV2State:
             "proto_self_context": self.proto_self_context,
             # Canonical ingress structure
             "ingress_context": self.ingress_context,
+            "task_contract": self.task_contract,
+            "next_step_decision": self.next_step_decision,
+            "verification_history": self.verification_history[-3:],
+            "need_relock": self.need_relock,
+            "contract_phase": self.contract_phase,
         }
     
     def add_pending_artifact(self, artifact_id: str, filename: Optional[str] = None, 
@@ -279,6 +289,7 @@ class RuntimeV2State:
         self.task_status = "running"
         self.waiting_for_user_input = False
         self.last_task_started_at = time.time()
+        self.contract_phase = "executing"
         if goal:
             # 截断 goal，防止大内容进入 state
             self.current_goal = goal[:MAX_GOAL_LENGTH] if len(goal) > MAX_GOAL_LENGTH else goal
@@ -289,6 +300,25 @@ class RuntimeV2State:
         self.last_task_completed_at = time.time()
         self.final_sent = True
         self.active_turn_status = "terminal"
+        self.contract_phase = "completed"
+
+    def set_task_contract(self, contract: Optional[Dict[str, Any]]) -> None:
+        self.task_contract = contract
+        if contract:
+            self.contract_phase = "contract_locked"
+
+    def set_next_step_decision(self, step: Optional[Dict[str, Any]]) -> None:
+        self.next_step_decision = step
+        if step:
+            self.current_step = step.get("action_type")
+            self.contract_phase = "step_selected"
+
+    def record_verification(self, verification: Optional[Dict[str, Any]]) -> None:
+        self.last_verification_result = verification
+        if verification:
+            self.verification_history.append(verification)
+            self.need_relock = bool(verification.get("need_relock"))
+            self.contract_phase = "re_lock_needed" if self.need_relock else "verifying"
 
     # ==================== WS-1: Turn Isolation ====================
     
@@ -307,6 +337,11 @@ class RuntimeV2State:
         self.current_goal = None
         self.current_step = None
         self.waiting_for_user_input = False
+        self.task_contract = None
+        self.next_step_decision = None
+        self.verification_history = []
+        self.need_relock = False
+        self.contract_phase = "pending"
         # 保留 pending_artifacts，因为用户可能在 reset 后继续用同一批文件
         return self.generation_id
     

@@ -12,6 +12,8 @@ SYSTEM_PROMPT = """你是 EgoCore 的原生执行循环。
 3. 信息不足才提问
 4. 不要输出内部协议或多余解释
 5. 对单文件写入/修改任务，保持动作直接、内容简洁、结果可验证
+6. 任务执行遵守 Contract Lock -> Next Step -> Verify -> Re-lock
+7. 每轮只做一个最小动作
 """
 
 
@@ -26,6 +28,9 @@ class NativeContextBuilder:
         user_input: str,
         ingress_context: Optional[Dict[str, Any]] = None,
         proto_self_context: Optional[Dict[str, Any]] = None,
+        task_contract: Optional[Dict[str, Any]] = None,
+        next_step: Optional[Dict[str, Any]] = None,
+        verification_result: Optional[Dict[str, Any]] = None,
         max_events: int = 12,
     ) -> List[Dict[str, Any]]:
         history = self.session_log_manager.get_log(session_key).tail(max_events)
@@ -57,6 +62,27 @@ class NativeContextBuilder:
                 {
                     "role": "system",
                     "content": f"proto_self={proto_self_context}",
+                }
+            )
+        if task_contract:
+            messages.append(
+                {
+                    "role": "system",
+                    "content": f"task_contract={task_contract}",
+                }
+            )
+        if next_step:
+            messages.append(
+                {
+                    "role": "system",
+                    "content": f"next_step={next_step}",
+                }
+            )
+        if verification_result:
+            messages.append(
+                {
+                    "role": "system",
+                    "content": f"verification_result={verification_result}",
                 }
             )
 

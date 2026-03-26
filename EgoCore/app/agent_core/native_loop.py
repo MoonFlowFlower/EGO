@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 import asyncio
-import json
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 from app.config import get_config, load_config
 from app.llm_client import LLMClient, get_llm_client
-from app.tools import execute_tool, get_registry, setup_tools
+from app.tools import get_registry, setup_tools
 
+from .contract_runtime import ContractRuntimeEngine, NextStepDecision, TaskContract, VerificationResult
 from .context_builder import NativeContextBuilder
 
 
@@ -18,6 +18,9 @@ class NativeLoopResult:
     tool_results: List[Dict[str, Any]] = field(default_factory=list)
     usage: List[Dict[str, Any]] = field(default_factory=list)
     finish_reason: Optional[str] = None
+    task_contract: Optional[Dict[str, Any]] = None
+    next_step_decision: Optional[Dict[str, Any]] = None
+    verification_result: Optional[Dict[str, Any]] = None
 
 
 class NativeToolCallingLoop:
@@ -28,6 +31,7 @@ class NativeToolCallingLoop:
     ) -> None:
         self.llm_client = llm_client or get_llm_client(provider="qianfan", model="glm-5")
         self.context_builder = context_builder or NativeContextBuilder()
+        self.contract_runtime = ContractRuntimeEngine()
         self._ensure_tools_ready()
 
     def _ensure_tools_ready(self) -> None:
@@ -66,83 +70,67 @@ class NativeToolCallingLoop:
         proto_self_context: Optional[Dict[str, Any]] = None,
         max_rounds: int = 6,
     ) -> NativeLoopResult:
-        messages = self.context_builder.build_messages(
+        contract = self.contract_runtime.lock_contract(
             session_key=session_key,
             user_input=user_input,
             ingress_context=ingress_context,
             proto_self_context=proto_self_context,
         )
-        tools = self._build_tool_definitions()
-        tool_results: List[Dict[str, Any]] = []
-        usage: List[Dict[str, Any]] = []
-        last_finish_reason: Optional[str] = None
-
-        for _ in range(max_rounds):
-            response = await asyncio.to_thread(
-                self.llm_client.chat_with_tools,
-                messages,
-                tools,
-                temperature=0.1,
-                max_tokens=4000,
-                timeout=45,
+        next_step = self.contract_runtime.decide_next_step(contract=contract, ingress_context=ingress_context)
+        if next_step.action_type == "ask_user":
+            reply_text = self.contract_runtime.build_ask_reply(contract)
+            verification = self.contract_runtime.verify_step(
+                contract=contract,
+                step=next_step,
+                tool_result=None,
+                reply_text=reply_text,
             )
-            last_finish_reason = response.finish_reason
-            usage.append(response.usage or {})
-
-            if response.has_tool_calls:
-                assistant_message: Dict[str, Any] = {
-                    "role": "assistant",
-                    "content": response.content or "",
-                    "tool_calls": [
-                        {
-                            "id": call.get("id"),
-                            "type": call.get("type", "function"),
-                            "function": {
-                                "name": call.get("name"),
-                                "arguments": json.dumps(call.get("arguments") or {}, ensure_ascii=False),
-                            },
-                        }
-                        for call in response.tool_calls
-                    ],
-                }
-                messages.append(assistant_message)
-
-                for call in response.tool_calls:
-                    result = await asyncio.to_thread(
-                        execute_tool,
-                        call.get("name"),
-                        call.get("arguments") or {},
-                        None,
-                        f"native_loop_{session_key}",
-                    )
-                    result_dict = result.to_dict()
-                    tool_results.append(
-                        {
-                            "tool_name": call.get("name"),
-                            "arguments": call.get("arguments") or {},
-                            "result": result_dict,
-                        }
-                    )
-                    messages.append(
-                        {
-                            "role": "tool",
-                            "tool_call_id": call.get("id"),
-                            "name": call.get("name"),
-                            "content": json.dumps(result_dict, ensure_ascii=False),
-                        }
-                    )
-                continue
-
             return NativeLoopResult(
-                reply_text=response.content or "",
-                tool_results=tool_results,
-                usage=usage,
-                finish_reason=last_finish_reason,
+                reply_text=reply_text,
+                tool_results=[],
+                usage=[],
+                finish_reason="ask_user",
+                task_contract=contract.to_dict(),
+                next_step_decision=next_step.to_dict(),
+                verification_result=verification.to_dict(),
             )
 
+        messages = self.context_builder.build_messages(
+            session_key=session_key,
+            user_input=user_input,
+            ingress_context=ingress_context,
+            proto_self_context=proto_self_context,
+            task_contract=contract.to_dict(),
+            next_step=next_step.to_dict(),
+        )
+        tools = self._build_tool_definitions()
+        execution_messages = self.contract_runtime.build_execution_messages(
+            base_messages=messages,
+            contract=contract,
+            step=next_step,
+        )
+        reply_text, tool_results, usage, last_finish_reason = await asyncio.to_thread(
+            self.contract_runtime.execute_single_step_with_model,
+            llm_client=self.llm_client,
+            messages=execution_messages,
+            tools=tools,
+            session_key=session_key,
+        )
+        if asyncio.iscoroutine(reply_text):
+            reply_text, tool_results, usage, last_finish_reason = await reply_text
+        tool_result_payload = tool_results[0]["result"] if tool_results else None
+        verification = self.contract_runtime.verify_step(
+            contract=contract,
+            step=next_step,
+            tool_result=tool_result_payload,
+            reply_text=reply_text,
+        )
         return NativeLoopResult(
-            reply_text="",
+            reply_text=reply_text,
             tool_results=tool_results,
             usage=usage,
-            finish_reason=last_finish_reason or "max_rounds",
+            finish_reason=last_finish_reason,
+            task_contract=contract.to_dict(),
+            next_step_decision=next_step.to_dict(),
+            verification_result=verification.to_dict(),
         )
