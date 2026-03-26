@@ -17,7 +17,7 @@ import logging
 import os
 import socket
 import uuid
-from typing import Optional
+from typing import Any, Optional
 import json
 import time
 from contextlib import asynccontextmanager
@@ -51,14 +51,13 @@ from app.runtime_v2 import (
     RuntimeV2Loop,
     RuntimeV2PromptFiles,
     RuntimeV2TelegramBridge,
-    RuntimeV2Reply,
-    RuntimeV2TurnResult,
     RuntimeV2State,
 )
 from app.core_bus import BusEvent, get_message_bus, get_session_worker_pool
 from app.session_store import SessionLogManager
 from app.agent_core import NativeToolCallingLoop
 from app.openemotion_hooks import NativeOpenEmotionHooks
+from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
 # Ingestion Layer
 from app.ingestion import (
@@ -957,8 +956,8 @@ class TelegramBot:
         text: str,
         state,
         ack_text: Optional[str],
-    ) -> RuntimeV2TurnResult:
-        async def run_once() -> RuntimeV2TurnResult:
+    ) -> TelegramTurnResult:
+        async def run_once() -> TelegramTurnResult:
             if ack_text:
                 state.mark_task_started(goal=text)
                 try:
@@ -973,7 +972,8 @@ class TelegramBot:
                 enhanced_input = f"{text}\n\n[目标文件: {filename}]"
 
             runtime_loop = self._sync_state_into_runtime_v2_loop(session_key, state)
-            return await runtime_loop.run_turn_typed(session_id=session_key, user_input=enhanced_input)
+            result = await runtime_loop.run_turn_typed(session_id=session_key, user_input=enhanced_input)
+            return self._adapt_runtime_v2_result(result)
 
         return await run_once()
 
@@ -997,7 +997,7 @@ class TelegramBot:
         state,
         ingress,
         ack_text: Optional[str],
-    ) -> RuntimeV2TurnResult:
+    ) -> TelegramTurnResult:
         if self._should_use_native_loop(ingress, state):
             try:
                 await self._publish_phase1_event(
@@ -1040,7 +1040,7 @@ class TelegramBot:
         text: str,
         state,
         ack_text: Optional[str],
-    ) -> RuntimeV2TurnResult:
+    ) -> TelegramTurnResult:
         native_loop = self._get_native_loop()
         native_hooks = self._get_native_openemotion_hooks()
         turn_id = state.active_turn_id or state.start_turn()
@@ -1107,10 +1107,10 @@ class TelegramBot:
 
         if result.reply_text:
             state.mark_task_completed()
-            turn_result = RuntimeV2TurnResult(
+            turn_result = TelegramTurnResult(
                 status="completed_verified",
                 state=state,
-                reply=RuntimeV2Reply(
+                reply=TelegramTurnReply(
                     reply_text=result.reply_text,
                     delivery_kind="final",
                     status="completed_verified",
@@ -1125,10 +1125,10 @@ class TelegramBot:
 
         state.task_status = "waiting_input"
         state.waiting_for_user_input = True
-        turn_result = RuntimeV2TurnResult(
+        turn_result = TelegramTurnResult(
             status="waiting_input",
             state=state,
-            reply=RuntimeV2Reply(
+            reply=TelegramTurnReply(
                 reply_text="",
                 delivery_kind="progress",
                 status="waiting_input",
@@ -1142,11 +1142,30 @@ class TelegramBot:
                 logger.exception("native_openemotion.response_plan.failed session=%s err=%s", session_key, e)
         return turn_result
 
+    def _adapt_runtime_v2_result(self, result: Any) -> TelegramTurnResult:
+        reply = getattr(result, "reply", None)
+        adapted_reply = None
+        if reply is not None:
+            adapted_reply = TelegramTurnReply(
+                reply_text=reply.reply_text,
+                delivery_kind=reply.delivery_kind,
+                status=reply.status,
+                suppressible=getattr(reply, "suppressible", False),
+                request_id=getattr(reply, "request_id", None),
+                generation_id=getattr(reply, "generation_id", None),
+                turn_id=getattr(reply, "turn_id", None),
+            )
+        return TelegramTurnResult(
+            status=result.status,
+            state=result.state,
+            reply=adapted_reply,
+        )
+
     async def _deliver_runtime_v2_result(
         self,
         update: Update,
         state,
-        result: RuntimeV2TurnResult,
+        result: TelegramTurnResult,
         is_challenge_turn: bool,
         ingress_message_id: Optional[int] = None,
         trace_id: Optional[str] = None,

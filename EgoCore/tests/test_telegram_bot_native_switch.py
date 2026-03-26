@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import pytest
 
 from app.telegram_bot import TelegramBot
-from app.runtime_v2 import RuntimeV2Reply, RuntimeV2TurnResult
+from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
 
 @pytest.mark.asyncio
@@ -17,10 +17,10 @@ async def test_primary_turn_prefers_native_loop_for_execute_task(monkeypatch):
         raise AssertionError("runtime_v2 fallback should not be used")
 
     async def native(*args, **kwargs):
-        return RuntimeV2TurnResult(
+        return TelegramTurnResult(
             status="completed_verified",
             state=state,
-            reply=RuntimeV2Reply(reply_text="done", delivery_kind="final", status="completed_verified"),
+            reply=TelegramTurnReply(reply_text="done", delivery_kind="final", status="completed_verified"),
         )
 
     monkeypatch.setattr(bot, "_run_runtime_v2_turn", fail_runtime)
@@ -49,10 +49,10 @@ async def test_primary_turn_falls_back_when_native_loop_fails(monkeypatch):
         raise RuntimeError("boom")
 
     async def runtime(*args, **kwargs):
-        return RuntimeV2TurnResult(
+        return TelegramTurnResult(
             status="completed_verified",
             state=state,
-            reply=RuntimeV2Reply(reply_text="fallback", delivery_kind="final", status="completed_verified"),
+            reply=TelegramTurnReply(reply_text="fallback", delivery_kind="final", status="completed_verified"),
         )
 
     monkeypatch.setattr(bot, "_run_native_loop_turn", native)
@@ -81,11 +81,27 @@ async def test_runtime_v2_loop_is_lazy_until_runtime_turn(monkeypatch):
 
     async def fake_run_turn_typed(*args, **kwargs):
         assert bot.runtime_v2_loop is not None
-        return RuntimeV2TurnResult(
-            status="completed_verified",
-            state=state,
-            reply=RuntimeV2Reply(reply_text="fallback", delivery_kind="final", status="completed_verified"),
-        )
+        return type(
+            "LegacyResult",
+            (),
+            {
+                "status": "completed_verified",
+                "state": state,
+                "reply": type(
+                    "LegacyReply",
+                    (),
+                    {
+                        "reply_text": "fallback",
+                        "delivery_kind": "final",
+                        "status": "completed_verified",
+                        "suppressible": False,
+                        "request_id": None,
+                        "generation_id": None,
+                        "turn_id": None,
+                    },
+                )(),
+            },
+        )()
 
     monkeypatch.setattr(bot, "_send_reply", fake_send_reply)
     monkeypatch.setattr("app.telegram_bot.RuntimeV2Loop.run_turn_typed", fake_run_turn_typed)
