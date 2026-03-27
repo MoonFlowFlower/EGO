@@ -30,6 +30,8 @@ def test_repeated_pattern_creates_cycle():
     cycle_delta = output1.trace_payload.get("cycle_delta", {})
     assert cycle_delta.get("op") == "candidate"
     assert cycle_delta.get("cycle_id") is not None
+    assert cycle_delta.get("closure_signature") == cycle_delta.get("cycle_id")
+    assert output1.trace_payload.get("outcome_signature") == "unknown"
 
 
 def test_repeated_pattern_strengthens_same_cycle():
@@ -84,30 +86,38 @@ def test_different_patterns_create_different_cycles():
 
 
 def test_cycle_promotion():
-    """满足条件的 cycle 应该晋升。"""
+    """repair closure 重复出现时应满足晋升条件。"""
     state = ProtoSelfState.empty()
 
-    # 处理多个相似事件以达到晋升门槛（strength > 0.5 且 hits > 3）
-    # 每次增加 0.1 strength，需要 6 次以上
-    for i in range(7):
-        event = KernelEvent(
-            event_id=f"promote-{i:03d}",
+    for i in range(6):
+        failure_event = KernelEvent(
+            event_id=f"promote-failure-{i:03d}",
             timestamp=datetime.now().isoformat(),
-            actor="user",
-            source="telegram",
-            event_type="user_message",
-            user_intent="greeting",
+            actor="system",
+            source="runtime",
+            event_type="tool_result",
+            safety_context={"risk_level": "medium"},
+            external_result={"success": False, "tool": "shell", "exit_code": 1, "error": "boom"},
         )
-        output = process_event(state, event)
+        process_event(state, failure_event)
+        success_event = KernelEvent(
+            event_id=f"promote-success-{i:03d}",
+            timestamp=datetime.now().isoformat(),
+            actor="system",
+            source="runtime",
+            event_type="tool_result",
+            safety_context={"risk_level": "medium"},
+            external_result={"success": True, "tool": "shell", "exit_code": 0},
+        )
+        output = process_event(state, success_event)
 
-    # 检查 cycle 是否晋升
     cycle_delta = output.trace_payload.get("cycle_delta", {})
     cycle_id = cycle_delta.get("cycle_id")
     if cycle_id and cycle_id in state.cycle_store.signatures:
         cycle = state.cycle_store.signatures[cycle_id]
-        # 应该已经晋升（strength > 0.5 且 hits > 3）
         assert cycle.promoted is True
         assert cycle.hits > 3
+        assert cycle.outcome_signature == "success"
 
 
 if __name__ == "__main__":

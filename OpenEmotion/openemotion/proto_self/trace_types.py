@@ -37,6 +37,12 @@ class ProtoSelfTracePayload:
     self_model_delta: Dict[str, Any] = field(default_factory=dict)
     cycle_delta: Dict[str, Any] = field(default_factory=dict)
     identity_delta: Dict[str, Any] = field(default_factory=dict)
+    closure_signature: str = ""
+    closure_family_id: str = ""
+    action_signature: str = ""
+    outcome_signature: str = ""
+    closure_consistency_score: float = 0.0
+    order_invariance_candidate: str = ""
 
     # 反思触发（如有）
     reflection_trigger: Optional[str] = None
@@ -56,6 +62,12 @@ class ProtoSelfTracePayload:
             "self_model_delta": self.self_model_delta,
             "cycle_delta": self.cycle_delta,
             "identity_delta": self.identity_delta,
+            "closure_signature": self.closure_signature,
+            "closure_family_id": self.closure_family_id,
+            "action_signature": self.action_signature,
+            "outcome_signature": self.outcome_signature,
+            "closure_consistency_score": self.closure_consistency_score,
+            "order_invariance_candidate": self.order_invariance_candidate,
             "reflection_trigger": self.reflection_trigger,
             "policy_hint": self.policy_hint,
             "timestamp": self.timestamp,
@@ -71,6 +83,12 @@ class ProtoSelfTracePayload:
             self_model_delta=data.get("self_model_delta", {}),
             cycle_delta=data.get("cycle_delta", {}),
             identity_delta=data.get("identity_delta", {}),
+            closure_signature=data.get("closure_signature", ""),
+            closure_family_id=data.get("closure_family_id", ""),
+            action_signature=data.get("action_signature", ""),
+            outcome_signature=data.get("outcome_signature", ""),
+            closure_consistency_score=data.get("closure_consistency_score", 0.0),
+            order_invariance_candidate=data.get("order_invariance_candidate", ""),
             reflection_trigger=data.get("reflection_trigger"),
             policy_hint=data.get("policy_hint", {}),
             timestamp=data.get("timestamp", ""),
@@ -86,6 +104,12 @@ def build_trace_payload(
     identity_delta: Dict[str, Any],
     reflection_trigger: Optional[str],
     policy_hint: Dict[str, Any],
+    closure_signature: str = "",
+    closure_family_id: str = "",
+    action_signature: str = "",
+    outcome_signature: str = "",
+    closure_consistency_score: float = 0.0,
+    order_invariance_candidate: str = "",
     timestamp: str = "",
 ) -> Dict[str, Any]:
     """
@@ -100,6 +124,12 @@ def build_trace_payload(
         self_model_delta=self_model_delta,
         cycle_delta=cycle_delta,
         identity_delta=identity_delta,
+        closure_signature=closure_signature,
+        closure_family_id=closure_family_id,
+        action_signature=action_signature,
+        outcome_signature=outcome_signature,
+        closure_consistency_score=closure_consistency_score,
+        order_invariance_candidate=order_invariance_candidate,
         reflection_trigger=reflection_trigger,
         policy_hint=policy_hint,
         timestamp=timestamp,

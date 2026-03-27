@@ -1,7 +1,7 @@
 # PROJECT_MEMORY.md
 
 > AIProject 核心记忆 - Claude Code 持续更新
-> 最后更新: 2026-03-25
+> 最后更新: 2026-03-26
 
 ---
 
@@ -70,6 +70,7 @@
 | E4 最小证据包 | E4 样本除 raw/update/event/result/plan/outbox 外，还需 timeline + tape + replay artifact |
 | 环境执行口径 | 当前工作区内 E2/E3 runner 以 Windows `py -3` 实跑通过；Linux `python3` 仅适合静态检查，依赖不完整 |
 | E5 准入门槛 | 进入观察期前，至少要有 1 个完整普通 real 样本 + 1 个完整且命中高风险路径的 real 样本 |
+| Cycle 身份升级 | `cycle_id` 已从纯 `psi_bucket` 聚合升级为 closure-sensitive signature，可区分 success / failure / repair 等 closure；仍未达到 full multi-step closure graph identity |
 
 ---
 
@@ -101,6 +102,7 @@
 | 2026-03-25 | P1 主链瘦身：`RuntimeV2Loop` 将 proto-self ingress / feedback / evidence capture 抽到 `EgoCore/app/runtime_v2/proto_self_runtime.py`，保留 orchestration 主线 |
 | 2026-03-25 | P1 失败归因：`test_runtime_v2_minimal.py::test_runtime_v2_loop_runs_plan_act_complete` 首要归因是 Windows 路径直接拼 JSON 导致 `invalid_json`，属于测试契约失配，不是已证实的 P1 主链新回归 |
 | 2026-03-25 | P1 归因修复：`EgoCore/tests/test_runtime_v2_minimal.py` 改为用 `json.dumps()` 构造 action，Windows 下最小回归恢复通过；本次修的是测试契约，不是 runtime 主链语义 |
+| 2026-03-26 | P2 Closure-Sensitive Cycle Identity 升级完成：Proto-Self `cycle_id` 不再只依赖 `psi_bucket`，trace 补齐 closure-level 字段，`openemotion/proto_self/tests` 在当前 Linux 环境下 `38 passed` |
 
 ---
 
@@ -110,4 +112,4 @@
 
 ---
 
-*此文件由 Claude Code 动态维护，记录项目核心记忆*
+*此文件由Agents动态维护，记录项目核心记忆*

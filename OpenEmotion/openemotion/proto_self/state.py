@@ -141,21 +141,33 @@ class CycleSignature:
     - 只有反复出现、后果一致、与 identity 高相关的结构才能固化
     """
     cycle_id: str
+    closure_signature: str
+    closure_family_id: str
     psi_bucket: str       # 输入模式签名
+    action_signature: str
+    outcome_signature: str
+    mode_signature: str
     phi_signature: str    # 内态变化签名
     strength: float = 0.0
     hits: int = 0
     last_seen_ts: str = ""
+    closure_consistency_score: float = 0.0
     promoted: bool = False  # 是否已晋升为长期 cycle
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "cycle_id": self.cycle_id,
+            "closure_signature": self.closure_signature,
+            "closure_family_id": self.closure_family_id,
             "psi_bucket": self.psi_bucket,
+            "action_signature": self.action_signature,
+            "outcome_signature": self.outcome_signature,
+            "mode_signature": self.mode_signature,
             "phi_signature": self.phi_signature,
             "strength": self.strength,
             "hits": self.hits,
             "last_seen_ts": self.last_seen_ts,
+            "closure_consistency_score": self.closure_consistency_score,
             "promoted": self.promoted,
         }
 
@@ -163,11 +175,17 @@ class CycleSignature:
     def from_dict(cls, data: Dict[str, Any]) -> "CycleSignature":
         return cls(
             cycle_id=data["cycle_id"],
+            closure_signature=data.get("closure_signature", data["cycle_id"]),
+            closure_family_id=data.get("closure_family_id", data.get("cycle_id", "")),
             psi_bucket=data["psi_bucket"],
+            action_signature=data.get("action_signature", "unknown"),
+            outcome_signature=data.get("outcome_signature", "unknown"),
+            mode_signature=data.get("mode_signature", "baseline"),
             phi_signature=data["phi_signature"],
             strength=data.get("strength", 0.0),
             hits=data.get("hits", 0),
             last_seen_ts=data.get("last_seen_ts", ""),
+            closure_consistency_score=data.get("closure_consistency_score", 0.0),
             promoted=data.get("promoted", False),
         )
 

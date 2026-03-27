@@ -45,7 +45,7 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
     self_model_delta = _update_self_model(state, perceived, appraisal_delta)
 
     # 4. Cycle 固化
-    cycle_delta = _consolidate_cycles(state, perceived, appraisal_delta, self_model_delta)
+    cycle_delta = _consolidate_cycles(state, event, perceived, appraisal_delta, self_model_delta)
 
     # 5. 反思（如有必要）
     reflection_note = _maybe_reflect(state, event, perceived, appraisal_delta, self_model_delta)
@@ -85,6 +85,12 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
         identity_delta=identity_delta,
         reflection_trigger=reflection_note.trigger if reflection_note else None,
         policy_hint=policy_hint,
+        closure_signature=cycle_delta.get("closure_signature", cycle_delta.get("cycle_id", "")),
+        closure_family_id=cycle_delta.get("closure_family_id", ""),
+        action_signature=cycle_delta.get("action_signature", "unknown"),
+        outcome_signature=cycle_delta.get("outcome_signature", "unknown"),
+        closure_consistency_score=cycle_delta.get("closure_consistency_score", 0.0),
+        order_invariance_candidate=cycle_delta.get("order_invariance_candidate", ""),
         timestamp=event.timestamp,
     )
 
@@ -140,6 +146,7 @@ def _update_self_model(
 
 def _consolidate_cycles(
     state: ProtoSelfState,
+    event: KernelEvent,
     perceived: Dict[str, Any],
     appraisal_delta: Dict[str, Any],
     self_model_delta: Dict[str, Any],
@@ -148,7 +155,7 @@ def _consolidate_cycles(
     Cycle 固化：从反复出现中提炼可重入不变量。
     """
     from openemotion.proto_self.cycles import consolidate_cycles
-    return consolidate_cycles(state, perceived, appraisal_delta, self_model_delta)
+    return consolidate_cycles(state, event, perceived, appraisal_delta, self_model_delta)
 
 
 def _maybe_reflect(

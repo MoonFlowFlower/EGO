@@ -168,7 +168,10 @@ def apply_updates(
             EpisodicRecord(
                 event_id=event.event_id,
                 perceived_summary=perceived,
-                action_hint={},
+                action_hint={
+                    "current_mode": state.self_model.current_mode,
+                    "event_type": event.event_type,
+                },
                 external_result=event.external_result,
                 appraisal_snapshot=appraisal_delta,
             )

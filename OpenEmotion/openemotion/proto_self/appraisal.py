@@ -30,11 +30,14 @@ def perceive_event(event: KernelEvent, state: ProtoSelfState) -> Dict[str, Any]:
         "event_type": event.event_type,
         "source": event.source,
         "safety_context": event.safety_context or {},  # 传递完整上下文
+        "action_class_seed": _derive_action_class_seed(event),
         "novelty": _score_novelty(event, state),
         "identity_conflict": _score_identity_conflict(event, state),
         "unfinished_commitment": _score_unfinished_commitment(event, state),
         "risk_signal": _score_risk(event.safety_context),
         "relational_mismatch": _score_relation_mismatch(event, state),
+        "outcome_class": _classify_external_result(event.external_result),
+        "boundary_state": _derive_boundary_state(event.safety_context),
         "external_outcome_type": _classify_external_result(event.external_result),
     }
 
@@ -158,10 +161,17 @@ def _classify_external_result(external_result: Dict[str, Any] | None) -> str:
     """
     分类外部结果类型。
     
-    返回：success / failure / neutral / none
+    返回：success / failure / blocked / partial / unknown
     """
     if not external_result:
-        return "none"
+        return "unknown"
+
+    error_text = str(external_result.get("error") or "").lower()
+    if any(marker in error_text for marker in ["security denial", "blocked", "denied", "forbidden", "permission"]):
+        return "blocked"
+
+    if external_result.get("partial") is True or external_result.get("success") == "partial":
+        return "partial"
     
     success = external_result.get("success", None)
     if success is True:
@@ -169,7 +179,52 @@ def _classify_external_result(external_result: Dict[str, Any] | None) -> str:
     elif success is False:
         return "failure"
     
-    return "neutral"
+    return "unknown"
+
+
+def _derive_action_class_seed(event: KernelEvent) -> str:
+    """
+    提供稳定离散化的 action class 种子。
+
+    Proto-Self 不负责 planner，因此这里只编码可从事件安全取得的稳定动作族。
+    """
+    if event.event_type == "tool_result":
+        tool = (event.external_result or {}).get("tool")
+        if not tool:
+            return "tool:unknown"
+        return f"tool:{_normalize_tool_class(str(tool))}"
+
+    if event.event_type == "user_message":
+        return "ingress:user_request"
+
+    if event.event_type == "system_event":
+        return "system:event"
+
+    return f"observe:{event.event_type or 'unknown'}"
+
+
+def _normalize_tool_class(tool_name: str) -> str:
+    lowered = tool_name.strip().lower()
+    if lowered in {"file", "filesystem"}:
+        return "file"
+    if lowered in {"shell", "bash", "terminal"}:
+        return "shell"
+    if lowered in {"python", "py"}:
+        return "python"
+    if lowered in {"api", "http", "request"}:
+        return "api"
+    return lowered or "unknown"
+
+
+def _derive_boundary_state(safety_context: Dict[str, Any]) -> str:
+    if not safety_context:
+        return "clear"
+    if safety_context.get("boundary_touched"):
+        return "boundary_touched"
+    risk_level = safety_context.get("risk_level", "low")
+    if risk_level in {"critical", "high"}:
+        return "elevated_risk"
+    return "clear"
 
 
 def _clamp(value: float, min_val: float = 0.0, max_val: float = 1.0) -> float:

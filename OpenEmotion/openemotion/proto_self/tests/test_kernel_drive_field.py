@@ -26,8 +26,9 @@ def test_high_caution_changes_response_tendency():
     )
     output = process_event(state, event)
 
-    # caution 应该升高（1.0 * 0.5 = 0.5）
-    assert output.appraisal_state_delta.get("caution", 0.0) >= 0.5
+    # numeric risk_level=1.0 会被规范化为 critical，对应 risk_signal=0.8
+    # caution = 0.8 * 0.5 = 0.4
+    assert output.appraisal_state_delta.get("caution", 0.0) >= 0.4
 
     # policy_hint 应该反映高风险（caution >= 0.7 才触发 high risk_bias）
     # 所以这里应该是 normal

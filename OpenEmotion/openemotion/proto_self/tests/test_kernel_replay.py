@@ -36,6 +36,12 @@ def test_trace_payload_is_sufficient_for_replay():
         "cycle_delta",
         "identity_delta",
         "policy_hint",
+        "closure_signature",
+        "closure_family_id",
+        "action_signature",
+        "outcome_signature",
+        "closure_consistency_score",
+        "order_invariance_candidate",
     ]
 
     for key in required_keys:
@@ -84,6 +90,8 @@ def test_trace_payload_preserves_cycle_delta():
     # cycle_delta 应该包含必要信息
     assert "cycle_id" in cycle_delta
     assert "op" in cycle_delta
+    assert "closure_signature" in cycle_delta
+    assert "outcome_signature" in cycle_delta
 
 
 def test_trace_payload_preserves_policy_hint():
@@ -104,6 +112,28 @@ def test_trace_payload_preserves_policy_hint():
     # policy_hint 应该包含决策依据
     assert "risk_bias" in policy_hint
     assert "closure_bias" in policy_hint
+
+
+def test_trace_payload_preserves_closure_level_fields():
+    """closure-level trace 字段应稳定存在。"""
+    state = ProtoSelfState.empty()
+
+    event = KernelEvent(
+        event_id="replay-test-closure-001",
+        timestamp=datetime.now().isoformat(),
+        actor="system",
+        source="runtime",
+        event_type="tool_result",
+        safety_context={"risk_level": "medium"},
+        external_result={"success": False, "tool": "shell", "exit_code": 1, "error": "boom"},
+    )
+    output = process_event(state, event)
+
+    trace = output.trace_payload
+    assert trace["closure_signature"] == trace["cycle_delta"]["closure_signature"]
+    assert trace["closure_family_id"] == trace["cycle_delta"]["closure_family_id"]
+    assert trace["action_signature"] == "tool:shell"
+    assert trace["outcome_signature"] == "failure"
 
 
 def test_trace_serialization():

@@ -13,11 +13,13 @@ Cycle 固化：从事件—动作—后果反复出现中提炼可重入不变�
 import hashlib
 from typing import Any, Dict
 
+from openemotion.proto_self.schemas import KernelEvent
 from openemotion.proto_self.state import ProtoSelfState
 
 
 def consolidate_cycles(
     state: ProtoSelfState,
+    event: KernelEvent,
     perceived: Dict[str, Any],
     appraisal_delta: Dict[str, Any],
     self_model_delta: Dict[str, Any],
@@ -25,36 +27,72 @@ def consolidate_cycles(
     """
     固化 cycle：从反复出现的模式中提炼可重入不变量。
     
-    返回：
-    - cycle_id: cycle 唯一标识（只基于 psi_bucket）
-    - op: strengthen / candidate
-    - psi_bucket: 输入模式签名
-    - phi_signature: 内态变化签名
-    - strength_delta: 强度变化
+    当前升级目标：
+    - cycle_id 不再只看 psi_bucket
+    - closure signature 至少编码 event/action/outcome/mode
+    - phi_signature 必须进入 promotion gating
     """
     psi_bucket = _build_psi_bucket(perceived)
+    action_signature = _build_action_signature(event, perceived)
+    outcome_signature = _build_outcome_signature(perceived)
+    mode_signature = _build_mode_signature(state, self_model_delta)
     phi_signature = _build_phi_signature(appraisal_delta, self_model_delta)
+    closure_family_id = _stable_hash(f"{psi_bucket}|{action_signature}")
+    closure_signature = _stable_hash(
+        f"{psi_bucket}|{action_signature}|{outcome_signature}|{mode_signature}"
+    )
+    closure_consistency_score = _compute_closure_consistency_score(
+        state=state,
+        closure_family_id=closure_family_id,
+        outcome_signature=outcome_signature,
+        phi_signature=phi_signature,
+    )
+    repair_closure = _is_repair_closure(
+        state=state,
+        action_signature=action_signature,
+        outcome_signature=outcome_signature,
+        mode_signature=mode_signature,
+    )
+    order_invariance_candidate = _build_order_invariance_candidate(
+        state=state,
+        psi_bucket=psi_bucket,
+        action_signature=action_signature,
+        outcome_signature=outcome_signature,
+    )
 
-    # cycle_id 只基于 psi_bucket（稳定的输入模式）
-    cycle_id = _stable_hash(psi_bucket)
+    cycle_id = closure_signature
     existing = state.cycle_store.signatures.get(cycle_id)
 
     if existing:
-        # 已存在 → 强化
         return {
             "cycle_id": cycle_id,
+            "closure_signature": closure_signature,
+            "closure_family_id": closure_family_id,
             "op": "strengthen",
             "psi_bucket": psi_bucket,
+            "action_signature": action_signature,
+            "outcome_signature": outcome_signature,
+            "mode_signature": mode_signature,
             "phi_signature": phi_signature,
+            "closure_consistency_score": closure_consistency_score,
+            "repair_closure": repair_closure,
+            "order_invariance_candidate": order_invariance_candidate,
             "strength_delta": 0.1,
         }
 
-    # 新 candidate
     return {
         "cycle_id": cycle_id,
+        "closure_signature": closure_signature,
+        "closure_family_id": closure_family_id,
         "op": "candidate",
         "psi_bucket": psi_bucket,
+        "action_signature": action_signature,
+        "outcome_signature": outcome_signature,
+        "mode_signature": mode_signature,
         "phi_signature": phi_signature,
+        "closure_consistency_score": closure_consistency_score,
+        "repair_closure": repair_closure,
+        "order_invariance_candidate": order_invariance_candidate,
         "strength_delta": 0.05,
     }
 
@@ -75,26 +113,35 @@ def apply_cycle_delta(
     op = cycle_delta["op"]
 
     if op == "strengthen":
-        # 强化现有 cycle
         existing = cycle_store.signatures.get(cycle_id)
         if existing:
             existing.strength = min(1.0, existing.strength + cycle_delta["strength_delta"])
             existing.hits += 1
             existing.last_seen_ts = timestamp
+            existing.phi_signature = cycle_delta.get("phi_signature", existing.phi_signature)
+            existing.mode_signature = cycle_delta.get("mode_signature", existing.mode_signature)
+            existing.closure_consistency_score = cycle_delta.get(
+                "closure_consistency_score",
+                existing.closure_consistency_score,
+            )
 
-            # 晋升门槛：strength > 0.5 且 hits > 3
-            if existing.strength > 0.5 and existing.hits > 3:
+            if _should_promote(existing, cycle_delta):
                 existing.promoted = True
 
     elif op == "candidate":
-        # 创建新 candidate
         cycle_store.signatures[cycle_id] = CycleSignature(
             cycle_id=cycle_id,
+            closure_signature=cycle_delta["closure_signature"],
+            closure_family_id=cycle_delta["closure_family_id"],
             psi_bucket=cycle_delta["psi_bucket"],
+            action_signature=cycle_delta["action_signature"],
+            outcome_signature=cycle_delta["outcome_signature"],
+            mode_signature=cycle_delta["mode_signature"],
             phi_signature=cycle_delta["phi_signature"],
             strength=cycle_delta["strength_delta"],
             hits=1,
             last_seen_ts=timestamp,
+            closure_consistency_score=cycle_delta.get("closure_consistency_score", 0.0),
             promoted=False,
         )
 
@@ -164,6 +211,105 @@ def _build_phi_signature(
         parts.append(f"focus:{focus_change}")
 
     return "|".join(parts) if parts else "neutral"
+
+
+def _build_action_signature(event: KernelEvent, perceived: Dict[str, Any]) -> str:
+    return perceived.get("action_class_seed", "unknown") or "unknown"
+
+
+def _build_outcome_signature(perceived: Dict[str, Any]) -> str:
+    outcome = perceived.get("outcome_class", "unknown") or "unknown"
+    if outcome in {"success", "failure", "blocked", "partial"}:
+        return outcome
+    return "unknown"
+
+
+def _build_mode_signature(state: ProtoSelfState, self_model_delta: Dict[str, Any]) -> str:
+    return self_model_delta.get("current_mode") or state.self_model.current_mode or "baseline"
+
+
+def _compute_closure_consistency_score(
+    *,
+    state: ProtoSelfState,
+    closure_family_id: str,
+    outcome_signature: str,
+    phi_signature: str,
+) -> float:
+    family_members = [
+        signature
+        for signature in state.cycle_store.signatures.values()
+        if signature.closure_family_id == closure_family_id
+    ]
+
+    if outcome_signature == "unknown":
+        return 0.35
+
+    if not family_members:
+        return 0.75
+
+    family_hits = sum(member.hits for member in family_members)
+    same_outcome_hits = sum(
+        member.hits for member in family_members if member.outcome_signature == outcome_signature
+    )
+    same_phi_hits = sum(
+        member.hits for member in family_members if member.phi_signature == phi_signature
+    )
+
+    outcome_ratio = same_outcome_hits / family_hits if family_hits else 0.0
+    phi_ratio = same_phi_hits / family_hits if family_hits else 0.0
+    return round(min(1.0, 0.6 * outcome_ratio + 0.4 * phi_ratio), 3)
+
+
+def _is_repair_closure(
+    *,
+    state: ProtoSelfState,
+    action_signature: str,
+    outcome_signature: str,
+    mode_signature: str,
+) -> bool:
+    if outcome_signature != "success" or mode_signature != "repair":
+        return False
+
+    action_family = action_signature.split(":", 1)[-1]
+    for record in reversed(state.episodic_trace):
+        result = record.external_result or {}
+        if result.get("success") is False:
+            previous_tool = str(result.get("tool") or "unknown").strip().lower()
+            if previous_tool == action_family:
+                return True
+    return False
+
+
+def _build_order_invariance_candidate(
+    *,
+    state: ProtoSelfState,
+    psi_bucket: str,
+    action_signature: str,
+    outcome_signature: str,
+) -> str:
+    precursor_buckets = []
+    for record in reversed(state.episodic_trace):
+        perceived_summary = record.perceived_summary or {}
+        if perceived_summary.get("event_type") == "tool_result":
+            continue
+        precursor_buckets.append(_build_psi_bucket(perceived_summary))
+        if len(precursor_buckets) >= 3:
+            break
+
+    precursor_buckets.sort()
+    payload = "|".join(precursor_buckets + [psi_bucket, action_signature, outcome_signature])
+    return _stable_hash(payload)
+
+
+def _should_promote(signature, cycle_delta: Dict[str, Any]) -> bool:
+    if signature.strength <= 0.5 or signature.hits <= 3:
+        return False
+
+    consistency = cycle_delta.get("closure_consistency_score", signature.closure_consistency_score)
+    repair_closure = bool(cycle_delta.get("repair_closure"))
+    outcome_known = signature.outcome_signature != "unknown"
+
+    return (outcome_known and consistency >= 0.75) or repair_closure
 
 
 def _stable_hash(s: str) -> str:
