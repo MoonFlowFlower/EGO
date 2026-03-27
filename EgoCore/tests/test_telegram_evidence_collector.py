@@ -89,3 +89,48 @@ def test_collector_writes_authoritative_ledger_and_compatibility_mirrors(tmp_pat
 
     assert sample.replay["primary_ledger_ref"] == "ledger.json"
     assert sample.replay["replay_input_source"]["path"] == "openemotion.trace_payload"
+
+
+def test_collector_keeps_parallel_message_samples_isolated(tmp_path):
+    collector = TelegramEvidenceCollector(artifacts_dir=tmp_path)
+
+    update_a = {
+        "update_id": 2001,
+        "message": {
+            "message_id": 301,
+            "date": 1774483895,
+            "chat": {"id": 42, "type": "private"},
+            "from": {"id": 7, "is_bot": False, "username": "tester"},
+            "text": "first",
+        },
+    }
+    update_b = {
+        "update_id": 2002,
+        "message": {
+            "message_id": 302,
+            "date": 1774483896,
+            "chat": {"id": 42, "type": "private"},
+            "from": {"id": 7, "is_bot": False, "username": "tester"},
+            "text": "second",
+        },
+    }
+
+    import contextvars
+
+    ctx_a = contextvars.copy_context()
+    ctx_b = contextvars.copy_context()
+
+    ctx_a.run(collector.start_sample, update_a)
+    ctx_b.run(collector.start_sample, update_b)
+
+    ctx_a.run(collector.capture_normalized_event, {"event_id": "session:test_turn_a", "conversation_context": {"session_id": "a"}})
+    ctx_b.run(collector.capture_normalized_event, {"event_id": "session:test_turn_b", "conversation_context": {"session_id": "b"}})
+
+    sample_a = ctx_a.run(collector.finalize_sample)
+    sample_b = ctx_b.run(collector.finalize_sample)
+
+    assert sample_a is not None
+    assert sample_b is not None
+    assert sample_a.sample_id != sample_b.sample_id
+    assert sample_a.normalized_event["event_id"] == "session:test_turn_a"
+    assert sample_b.normalized_event["event_id"] == "session:test_turn_b"

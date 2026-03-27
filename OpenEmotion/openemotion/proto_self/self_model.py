@@ -32,6 +32,8 @@ def update_self_model(
         "self_confidence_by_domain": {},
     }
 
+    external_outcome_type = perceived.get("external_outcome_type")
+
     # 高风险 → 切换到 cautious 模式
     if perceived.get("risk_signal", 0.0) > 0.7:
         delta["current_mode"] = "cautious"
@@ -44,8 +46,8 @@ def update_self_model(
     if appraisal_delta.get("curiosity", 0.0) > 0.7 and perceived.get("risk_signal", 0.0) < 0.3:
         delta["current_mode"] = "exploration"
 
-    # 外部失败 → 切换到修复模式
-    if perceived.get("external_outcome_type") == "failure":
+    # 外部失败/阻塞 → 切换到修复模式
+    if external_outcome_type in {"failure", "blocked"}:
         delta["current_mode"] = "repair"
         delta["current_focus"] = "error_recovery"
 

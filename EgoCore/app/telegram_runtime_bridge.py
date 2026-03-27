@@ -228,6 +228,22 @@ class TelegramRuntimeBridge:
     WINDOWS_PATH_RE = re.compile(r"[A-Za-z]:[\\/](?:[A-Za-z0-9._() -]+[\\/])*[A-Za-z0-9._() -]+")
     UNIX_PATH_RE = re.compile(r"(?:/mnt|/home|/tmp|/Users)(?:/[A-Za-z0-9._() -]+)+")
 
+    def _looks_like_explicit_path(self, target_ref: Optional[str]) -> bool:
+        if not target_ref:
+            return False
+        return bool(self.WINDOWS_PATH_RE.fullmatch(target_ref) or self.UNIX_PATH_RE.fullmatch(target_ref))
+
+    def _build_explicit_path_target(self, target_ref: str) -> Dict[str, Any]:
+        if re.match(r"^[A-Za-z]:[\\/]", target_ref or ""):
+            filename = PureWindowsPath(target_ref).name
+        else:
+            filename = PurePosixPath(target_ref).name
+        return {
+            "path": target_ref,
+            "filename": filename or target_ref,
+            "source": "explicit_path",
+        }
+
     def _extract_requested_output(self, text: str) -> Optional[Dict[str, Any]]:
         raw_path = self._extract_first_path(text)
         if not raw_path:
@@ -389,15 +405,23 @@ class TelegramRuntimeBridge:
     ) -> Dict[str, Any]:
         graph = decision._parsed_intent_graph
         request_mode = None
+        explicit_target_ref = None
         if graph is not None:
             for seg in graph.segments:
                 if seg.request_mode:
                     request_mode = seg.request_mode
                     break
+            for seg in graph.segments:
+                if self._looks_like_explicit_path(seg.target_ref):
+                    explicit_target_ref = seg.target_ref
+                    break
         if request_mode is None and decision.is_confirm_execution:
             request_mode = "execute"
         target_action = request_mode or decision.inferred_action
-        resolved_target = state.resolve_target(target_action) if target_action in {"execute", "compare", "analyze"} else None
+        if explicit_target_ref and target_action in {"execute", "compare", "analyze", "write"}:
+            resolved_target = self._build_explicit_path_target(explicit_target_ref)
+        else:
+            resolved_target = state.resolve_target(target_action) if target_action in {"execute", "compare", "analyze"} else None
         if resolved_target is None and decision.requested_output:
             resolved_target = {
                 "path": decision.requested_output.get("effective_path"),

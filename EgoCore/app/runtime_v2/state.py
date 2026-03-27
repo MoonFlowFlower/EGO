@@ -302,6 +302,25 @@ class RuntimeV2State:
         self.active_turn_status = "terminal"
         self.contract_phase = "completed"
 
+    def reset_active_task_context(self) -> None:
+        """Drop stale task execution state while preserving uploaded artifacts."""
+        self.task_status = "idle"
+        self.current_goal = None
+        self.current_step = None
+        self.waiting_for_user_input = False
+        self.last_model_action = None
+        self.last_tool_result = None
+        self.last_verification_result = None
+        self.task_contract = None
+        self.next_step_decision = None
+        self.verification_history = []
+        self.need_relock = False
+        self.contract_phase = "pending"
+        self.current_step_number = 0
+        self.total_steps_planned = None
+        self.active_turn_status = "idle"
+        self.final_sent = False
+
     def set_task_contract(self, contract: Optional[Dict[str, Any]]) -> None:
         self.task_contract = contract
         if contract:
@@ -342,6 +361,8 @@ class RuntimeV2State:
         self.verification_history = []
         self.need_relock = False
         self.contract_phase = "pending"
+        self.current_step_number = 0
+        self.total_steps_planned = None
         # 保留 pending_artifacts，因为用户可能在 reset 后继续用同一批文件
         return self.generation_id
     

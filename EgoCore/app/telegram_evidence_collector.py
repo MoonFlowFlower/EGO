@@ -25,6 +25,7 @@ Telegram Evidence Collector - E4 真实证据采集
 
 import json
 import hashlib
+import contextvars
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
@@ -118,36 +119,44 @@ class TelegramEvidenceCollector:
         self.channel = channel
         self.evidence_level = evidence_level
 
-        self._current_sample: Optional[E4EvidenceSample] = None
+        self._samples_by_key: Dict[str, E4EvidenceSample] = {}
+        self._active_sample_key: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar(
+            "telegram_evidence_sample_key",
+            default=None,
+        )
         self._samples: List[E4EvidenceSample] = []
 
     def start_sample(self, update: Dict[str, Any]) -> E4EvidenceSample:
         """开始新样本采集"""
         sample_id = f"sample_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{hashlib.md5(str(update.get('update_id', 0)).encode()).hexdigest()[:8]}"
+        sample_key = self._make_sample_key(update)
 
-        self._current_sample = E4EvidenceSample(
+        sample = E4EvidenceSample(
             sample_id=sample_id,
             timestamp=datetime.now().isoformat(),
             evidence_level=self.evidence_level,
             source_type=self.source_type,
             channel=self.channel,
         )
+        self._samples_by_key[sample_key] = sample
+        self._active_sample_key.set(sample_key)
 
         # 自动捕获 raw_update
         self.capture_update(update)
 
-        return self._current_sample
+        return sample
 
     def capture_update(self, update: Dict[str, Any]) -> None:
         """捕获原始 Telegram update"""
-        if not self._current_sample:
+        sample = self._get_active_sample()
+        if not sample:
             return
 
         # 脱敏：移除敏感信息
         sanitized_update = self._sanitize_update(update)
 
-        self._current_sample.raw_update = sanitized_update
-        self._current_sample.timeline.append({
+        sample.raw_update = sanitized_update
+        sample.timeline.append({
             "stage": "update_received",
             "timestamp": datetime.now().isoformat(),
             "update_id": update.get("update_id"),
@@ -155,11 +164,12 @@ class TelegramEvidenceCollector:
 
     def capture_normalized_event(self, event: Dict[str, Any]) -> None:
         """捕获归一化事件"""
-        if not self._current_sample:
+        sample = self._get_active_sample()
+        if not sample:
             return
 
-        self._current_sample.normalized_event = event
-        self._current_sample.timeline.append({
+        sample.normalized_event = event
+        sample.timeline.append({
             "stage": "event_normalized",
             "timestamp": datetime.now().isoformat(),
             "event_id": event.get("event_id"),
@@ -167,20 +177,21 @@ class TelegramEvidenceCollector:
 
     def capture_openemotion_result(self, result: Dict[str, Any]) -> None:
         """捕获 OpenEmotion 结构化结果"""
-        if not self._current_sample:
+        sample = self._get_active_sample()
+        if not sample:
             return
 
-        self._current_sample.openemotion_result = result
+        sample.openemotion_result = result
         trace_payload = result.get("trace_payload")
         if trace_payload:
-            self._current_sample.openemotion_trace = trace_payload
-        self._current_sample.openemotion_events.append({
+            sample.openemotion_trace = trace_payload
+        sample.openemotion_events.append({
             "stage": "kernel_output",
             "timestamp": datetime.now().isoformat(),
             "event_id": result.get("event_id"),
             "has_trace_payload": bool(trace_payload),
         })
-        self._current_sample.timeline.append({
+        sample.timeline.append({
             "stage": "openemotion_processed",
             "timestamp": datetime.now().isoformat(),
             "event_id": result.get("event_id"),
@@ -193,11 +204,12 @@ class TelegramEvidenceCollector:
         stage: str = "kernel_trace_mirror",
     ) -> None:
         """把 OpenEmotion trace 纳入主账本，而不是另起独立真相源。"""
-        if not self._current_sample or not trace_payload:
+        sample = self._get_active_sample()
+        if not sample or not trace_payload:
             return
 
-        self._current_sample.openemotion_trace = trace_payload
-        self._current_sample.openemotion_events.append({
+        sample.openemotion_trace = trace_payload
+        sample.openemotion_events.append({
             "stage": stage,
             "timestamp": datetime.now().isoformat(),
             "event_id": trace_payload.get("event_id"),
@@ -206,22 +218,24 @@ class TelegramEvidenceCollector:
 
     def capture_response_plan(self, plan: Dict[str, Any]) -> None:
         """捕获 EgoCore 响应计划"""
-        if not self._current_sample:
+        sample = self._get_active_sample()
+        if not sample:
             return
 
-        self._current_sample.response_plan = plan
-        self._current_sample.timeline.append({
+        sample.response_plan = plan
+        sample.timeline.append({
             "stage": "response_planned",
             "timestamp": datetime.now().isoformat(),
         })
 
     def capture_outbox_record(self, record: Dict[str, Any]) -> None:
         """捕获实际发送记录"""
-        if not self._current_sample:
+        sample = self._get_active_sample()
+        if not sample:
             return
 
-        self._current_sample.outbox_record = record
-        self._current_sample.timeline.append({
+        sample.outbox_record = record
+        sample.timeline.append({
             "stage": "message_sent",
             "timestamp": datetime.now().isoformat(),
             "chat_id": record.get("chat_id"),
@@ -230,41 +244,58 @@ class TelegramEvidenceCollector:
 
     def finalize_sample(self) -> Optional[E4EvidenceSample]:
         """完成样本采集并保存"""
-        if not self._current_sample:
+        sample_key = self._active_sample_key.get()
+        sample = self._get_active_sample()
+        if not sample:
             return None
 
         # 生成 replay hash
-        self._current_sample.replay_hash = self._generate_replay_hash()
+        sample.replay_hash = self._generate_replay_hash(sample)
 
         # 生成 tape
-        self._current_sample.tape = {
-            "tape_id": f"tape_{self._current_sample.sample_id}",
-            "timestamp": self._current_sample.timestamp,
-            "evidence_level": self._current_sample.evidence_level,
-            "source_type": self._current_sample.source_type,
-            "channel": self._current_sample.channel,
-            "update_id": self._current_sample.raw_update.get("update_id") if self._current_sample.raw_update else None,
-            "trace_id": self._current_sample.sample_id,
+        sample.tape = {
+            "tape_id": f"tape_{sample.sample_id}",
+            "timestamp": sample.timestamp,
+            "evidence_level": sample.evidence_level,
+            "source_type": sample.source_type,
+            "channel": sample.channel,
+            "update_id": sample.raw_update.get("update_id") if sample.raw_update else None,
+            "trace_id": sample.sample_id,
             "normalized_event_id": (
-                self._current_sample.normalized_event.get("event_id")
-                if self._current_sample.normalized_event else None
+                sample.normalized_event.get("event_id")
+                if sample.normalized_event else None
             ),
             "ledger_ref": "ledger.json",
         }
-        self._current_sample.replay = self._build_replay()
+        sample.replay = self._build_replay(sample)
 
         # 检查完整性
-        self._current_sample.check_completeness()
-        self._current_sample.ledger = self._build_ledger()
+        sample.check_completeness()
+        sample.ledger = self._build_ledger(sample)
 
         # 保存到文件
-        self._save_sample(self._current_sample)
-
-        sample = self._current_sample
+        self._save_sample(sample)
         self._samples.append(sample)
-        self._current_sample = None
+        if sample_key is not None:
+            self._samples_by_key.pop(sample_key, None)
+            self._active_sample_key.set(None)
 
         return sample
+
+    def _make_sample_key(self, update: Dict[str, Any]) -> str:
+        update_id = update.get("update_id")
+        if update_id is not None:
+            return f"update:{update_id}"
+        message_id = (update.get("message") or {}).get("message_id")
+        if message_id is not None:
+            return f"message:{message_id}"
+        return f"ad_hoc:{hashlib.md5(json.dumps(update, sort_keys=True, default=str).encode()).hexdigest()[:12]}"
+
+    def _get_active_sample(self) -> Optional[E4EvidenceSample]:
+        sample_key = self._active_sample_key.get()
+        if not sample_key:
+            return None
+        return self._samples_by_key.get(sample_key)
 
     def _sanitize_update(self, update: Dict[str, Any]) -> Dict[str, Any]:
         """脱敏处理：移除敏感信息"""
@@ -300,24 +331,18 @@ class TelegramEvidenceCollector:
             return "***"
         return username[:2] + "*" * (len(username) - 2)
 
-    def _generate_replay_hash(self) -> str:
+    def _generate_replay_hash(self, sample: E4EvidenceSample) -> str:
         """生成可回放哈希"""
-        if not self._current_sample:
-            return ""
-
         data = {
-            "update_id": self._current_sample.raw_update.get("update_id") if self._current_sample.raw_update else None,
-            "timestamp": self._current_sample.timestamp,
-            "timeline_length": len(self._current_sample.timeline),
+            "update_id": sample.raw_update.get("update_id") if sample.raw_update else None,
+            "timestamp": sample.timestamp,
+            "timeline_length": len(sample.timeline),
         }
 
         return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()[:16]
 
-    def _build_replay(self) -> Dict[str, Any]:
+    def _build_replay(self, sample: E4EvidenceSample) -> Dict[str, Any]:
         """生成可回放索引。"""
-        sample = self._current_sample
-        if sample is None:
-            return {}
         return {
             "replay_id": f"replay_{sample.sample_id}",
             "timestamp": datetime.now().isoformat(),
@@ -342,11 +367,7 @@ class TelegramEvidenceCollector:
             "replay_hash": sample.replay_hash,
         }
 
-    def _build_ledger(self) -> Dict[str, Any]:
-        sample = self._current_sample
-        if sample is None:
-            return {}
-
+    def _build_ledger(self, sample: E4EvidenceSample) -> Dict[str, Any]:
         normalized_event = sample.normalized_event or {}
         conversation_context = normalized_event.get("conversation_context") or {}
         trace_payload = sample.openemotion_trace or {}

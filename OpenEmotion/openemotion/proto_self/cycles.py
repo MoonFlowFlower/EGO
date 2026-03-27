@@ -33,11 +33,12 @@ def consolidate_cycles(
     - phi_signature 必须进入 promotion gating
     """
     psi_bucket = _build_psi_bucket(perceived)
+    family_bucket = _build_family_bucket(perceived)
     action_signature = _build_action_signature(event, perceived)
     outcome_signature = _build_outcome_signature(perceived)
     mode_signature = _build_mode_signature(state, self_model_delta)
     phi_signature = _build_phi_signature(appraisal_delta, self_model_delta)
-    closure_family_id = _stable_hash(f"{psi_bucket}|{action_signature}")
+    closure_family_id = _stable_hash(f"{family_bucket}|{action_signature}")
     closure_signature = _stable_hash(
         f"{psi_bucket}|{action_signature}|{outcome_signature}|{mode_signature}"
     )
@@ -183,6 +184,20 @@ def _build_psi_bucket(perceived: Dict[str, Any]) -> str:
         return f"{source}:{event_type}:{coarse_intent}"
 
 
+def _build_family_bucket(perceived: Dict[str, Any]) -> str:
+    """
+    构建 family bucket：闭环族的粗粒度归一化键。
+
+    family 只表达“这是哪一类 closure”，不能被风险后缀这种 outcome-adjacent
+    信号拆开；细粒度差异继续留给 closure_signature 编码。
+    """
+    intent = perceived.get("intent", "unknown") or "unknown"
+    event_type = perceived.get("event_type", "unknown") or "unknown"
+    source = perceived.get("source", "unknown") or "unknown"
+    coarse_intent = _coarse_intent_classify(intent)
+    return f"{source}:{event_type}:{coarse_intent}"
+
+
 def _build_phi_signature(
     appraisal_delta: Dict[str, Any],
     self_model_delta: Dict[str, Any],
@@ -267,17 +282,59 @@ def _is_repair_closure(
     outcome_signature: str,
     mode_signature: str,
 ) -> bool:
-    if outcome_signature != "success" or mode_signature != "repair":
+    if outcome_signature != "success":
         return False
+    return _has_recent_repair_precursor(state=state, action_signature=action_signature)
 
+
+def _has_recent_repair_precursor(*, state: ProtoSelfState, action_signature: str) -> bool:
     action_family = action_signature.split(":", 1)[-1]
     for record in reversed(state.episodic_trace):
-        result = record.external_result or {}
-        if result.get("success") is False:
-            previous_tool = str(result.get("tool") or "unknown").strip().lower()
-            if previous_tool == action_family:
-                return True
+        perceived_summary = record.perceived_summary or {}
+        if perceived_summary.get("event_type") != "tool_result":
+            continue
+
+        previous_action = _extract_record_action_signature(record)
+        if not previous_action:
+            continue
+
+        previous_family = previous_action.split(":", 1)[-1]
+        if previous_action != action_signature and previous_family != action_family:
+            continue
+
+        previous_outcome = _extract_record_outcome_signature(record)
+        if previous_outcome in {"failure", "blocked"}:
+            return True
+        if previous_outcome == "success":
+            return False
     return False
+
+
+def _extract_record_action_signature(record) -> str:
+    perceived_summary = record.perceived_summary or {}
+    action_signature = perceived_summary.get("action_class_seed")
+    if action_signature:
+        return str(action_signature)
+
+    result = record.external_result or {}
+    tool = str(result.get("tool") or "").strip().lower()
+    if not tool:
+        return ""
+    return f"tool:{tool}"
+
+
+def _extract_record_outcome_signature(record) -> str:
+    perceived_summary = record.perceived_summary or {}
+    outcome = perceived_summary.get("external_outcome_type") or perceived_summary.get("outcome_class")
+    if outcome in {"success", "failure", "blocked", "partial"}:
+        return str(outcome)
+
+    result = record.external_result or {}
+    if result.get("success") is True:
+        return "success"
+    if result.get("success") is False:
+        return "failure"
+    return "unknown"
 
 
 def _build_order_invariance_candidate(

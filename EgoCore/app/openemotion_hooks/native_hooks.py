@@ -4,6 +4,12 @@ import logging
 from typing import Any, Optional
 
 from app.runtime_v2.proto_self_runtime import RuntimeV2ProtoSelfRuntime
+try:
+    from app.telegram_evidence_collector import get_evidence_collector
+    _EVIDENCE_COLLECTOR_AVAILABLE = True
+except Exception:
+    get_evidence_collector = None
+    _EVIDENCE_COLLECTOR_AVAILABLE = False
 
 try:
     from app.openemotion_adapter import ProtoSelfAdapter, ProtoSelfTraceBridge
@@ -34,6 +40,7 @@ class NativeOpenEmotionHooks:
             self.runtime = RuntimeV2ProtoSelfRuntime(
                 adapter=adapter,
                 trace_bridge=adapter.trace_bridge,
+                evidence_collector_factory=get_evidence_collector if _EVIDENCE_COLLECTOR_AVAILABLE else None,
             )
         else:
             self.runtime = None
@@ -50,6 +57,7 @@ class NativeOpenEmotionHooks:
         source: str,
         user_input: str,
         state: Any,
+        evidence_collector: Optional[Any] = None,
     ) -> None:
         if self.runtime is None:
             return
@@ -59,6 +67,7 @@ class NativeOpenEmotionHooks:
             source=source,
             user_input=user_input,
             state=state,
+            evidence_collector=evidence_collector,
         )
 
     def process_external_result(
@@ -68,6 +77,7 @@ class NativeOpenEmotionHooks:
         turn_id: str,
         step: int,
         state: Any,
+        evidence_collector: Optional[Any] = None,
     ) -> None:
         if self.runtime is None:
             return
@@ -76,9 +86,10 @@ class NativeOpenEmotionHooks:
             turn_id=turn_id,
             step=step,
             state=state,
+            evidence_collector=evidence_collector,
         )
 
-    def capture_response_plan(self, *, result: Any) -> None:
+    def capture_response_plan(self, *, result: Any, evidence_collector: Optional[Any] = None) -> None:
         if self.runtime is None:
             return
-        self.runtime.capture_response_plan(result=result)
+        self.runtime.capture_response_plan(result=result, evidence_collector=evidence_collector)

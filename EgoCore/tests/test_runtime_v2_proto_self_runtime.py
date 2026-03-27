@@ -47,6 +47,30 @@ def test_build_external_result_event_preserves_feedback_contract():
     assert event["task_context"]["blocked_tasks"] == 1
 
 
+def test_build_external_result_event_does_not_steal_family_or_repair_semantics():
+    state = RuntimeV2State(session_id="session:test")
+    state.current_goal = "执行任务"
+
+    event = build_external_result_event(
+        session_id="session:test",
+        turn_id="turn_002",
+        step=0,
+        tool_result={"success": False, "tool": "file", "exit_code": 1, "stderr": "blocked: missing file"},
+        state=state,
+    )
+
+    assert "closure_family_id" not in event
+    assert "closure_signature" not in event
+    assert "repair_closure" not in event
+    assert "mode_signature" not in event
+    assert event["external_result"] == {
+        "success": False,
+        "tool": "file",
+        "exit_code": 1,
+        "error": "blocked: missing file",
+    }
+
+
 def test_capture_response_plan_uses_same_payload_shape():
     captured = {}
 

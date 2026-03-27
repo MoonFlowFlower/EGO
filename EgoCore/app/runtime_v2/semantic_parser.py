@@ -52,7 +52,9 @@ UNIX_PATH_RE = re.compile(r"(?:/mnt|/home|/tmp|/Users)(?:/[A-Za-z0-9._() -]+)+")
 
 EXPLICIT_FILE_TASK_PATTERNS = (
     (("创建", "新建", "生成", "做", "制作", "写"), ("页面", "网页", "html", "html网页", "html页面", "page", "webpage", "website")),
+    (("读取", "读", "查看", "打开", "检查", "看"), tuple()),
     (("修改", "改", "更新", "重写", "修复", "优化", "换"), tuple()),
+    (("read", "open", "view", "inspect", "check", "show"), tuple()),
     (("create", "generate", "write", "make", "build"), ("html", "page", "webpage", "website", "file")),
     (("modify", "update", "edit", "fix", "rewrite"), tuple()),
 )
@@ -391,7 +393,7 @@ def _extract_explicit_paths(text: str) -> List[str]:
     paths: List[str] = []
     for pattern in (WINDOWS_PATH_RE, UNIX_PATH_RE):
         for match in pattern.finditer(text or ""):
-            candidate = match.group(0).rstrip(".,!?，。！？")
+            candidate = match.group(0).strip().rstrip(".,!?，。！？")
             if candidate not in paths:
                 paths.append(candidate)
     return paths

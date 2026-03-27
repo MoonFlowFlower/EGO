@@ -168,6 +168,24 @@ class TelegramBot:
         artifact_id = target.get("artifact_id") or target.get("artifact_ref")
         return bool(str(artifact_id).startswith("artifact://"))
 
+    def _has_explicit_path_target(self, state: RuntimeV2State) -> bool:
+        target = (state.ingress_context or {}).get("resolved_target") or {}
+        return bool(target.get("path")) and target.get("source") == "explicit_path"
+
+    def _should_override_stale_task_with_explicit_target(self, state: RuntimeV2State, ingress) -> bool:
+        ingress_context = state.ingress_context or {}
+        runtime_action = getattr(ingress, "_runtime_action", None) or ingress_context.get("runtime_action")
+        if runtime_action != "execute_task" or not self._has_explicit_path_target(state):
+            return False
+        return bool(
+            state.last_uploaded_artifact
+            and (
+                state.task_status in {"running", "waiting_input"}
+                or state.waiting_for_user_input
+                or state.contract_phase in {"step_selected", "planning_stalled", "re_lock_needed", "executing"}
+            )
+        )
+
     def _build_contract_event_payload(
         self,
         *,
@@ -967,6 +985,9 @@ class TelegramBot:
         if pre_runtime.remember_challenge_turn:
             state.last_challenge_turn = text
 
+        if self._should_override_stale_task_with_explicit_target(state, ingress):
+            state.reset_active_task_context()
+
         if await self._maybe_handle_runtime_v2_pre_runtime(update, state, pre_runtime):
             await self._publish_phase1_event(
                 session_key=session_key,
@@ -1046,13 +1067,13 @@ class TelegramBot:
             if ack_text:
                 state.mark_task_started(goal=text)
                 try:
-                    await self._send_reply(update, ack_text)
+                    await self._send_reply(update, ack_text, finalize_evidence=False)
                 except Exception:
                     pass
 
             # 闭环2：把 pending_artifacts 信息注入 user_input，帮 LLM 知道要执行什么
             enhanced_input = text
-            if state.last_uploaded_artifact:
+            if state.last_uploaded_artifact and not self._has_explicit_path_target(state):
                 filename = state.last_uploaded_artifact.get("filename", "未知文件")
                 enhanced_input = f"{text}\n\n[目标文件: {filename}]"
 
@@ -1076,11 +1097,12 @@ class TelegramBot:
         has_artifact_target = bool(
             str(resolved_target.get("artifact_id") or resolved_target.get("artifact_ref") or "").startswith("artifact://")
         )
+        has_explicit_target = bool(resolved_target.get("path")) and resolved_target.get("source") == "explicit_path"
         if getattr(ingress, "is_file_only", False) and runtime_action != "execute_task":
             return False
         if state.waiting_for_user_input and not (
             getattr(ingress, "is_confirm_execution", False)
-            or (runtime_action == "execute_task" and has_artifact_target)
+            or (runtime_action == "execute_task" and (has_artifact_target or has_explicit_target))
         ):
             return False
         if runtime_action == "return_runtime_status":
@@ -1175,6 +1197,7 @@ class TelegramBot:
                     source="telegram",
                     user_input=text,
                     state=state,
+                    evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
                 )
             except Exception as e:
                 logger.exception("native_openemotion.ingress.failed session=%s err=%s", session_key, e)
@@ -1182,7 +1205,7 @@ class TelegramBot:
         if ack_text:
             state.mark_task_started(goal=text)
             try:
-                await self._send_reply(update, ack_text)
+                await self._send_reply(update, ack_text, finalize_evidence=False)
             except Exception:
                 pass
 
@@ -1271,6 +1294,7 @@ class TelegramBot:
                             turn_id=turn_id,
                             step=step_index,
                             state=state,
+                            evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
                         )
                     except Exception as e:
                         logger.exception("native_openemotion.external_result.failed session=%s err=%s", session_key, e)
@@ -1345,7 +1369,10 @@ class TelegramBot:
             )
             if native_hooks and native_hooks.enabled:
                 try:
-                    native_hooks.capture_response_plan(result=turn_result)
+                    native_hooks.capture_response_plan(
+                        result=turn_result,
+                        evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+                    )
                 except Exception as e:
                     logger.exception("native_openemotion.response_plan.failed session=%s err=%s", session_key, e)
             return turn_result
@@ -1365,7 +1392,10 @@ class TelegramBot:
             )
             if native_hooks and native_hooks.enabled:
                 try:
-                    native_hooks.capture_response_plan(result=turn_result)
+                    native_hooks.capture_response_plan(
+                        result=turn_result,
+                        evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+                    )
                 except Exception as e:
                     logger.exception("native_openemotion.response_plan.failed session=%s err=%s", session_key, e)
             return turn_result
@@ -1384,7 +1414,10 @@ class TelegramBot:
         )
         if native_hooks and native_hooks.enabled:
             try:
-                native_hooks.capture_response_plan(result=turn_result)
+                native_hooks.capture_response_plan(
+                    result=turn_result,
+                    evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+                )
             except Exception as e:
                 logger.exception("native_openemotion.response_plan.failed session=%s err=%s", session_key, e)
         return turn_result
@@ -1587,7 +1620,7 @@ class TelegramBot:
             except Exception:
                 pass
 
-    async def _send_reply(self, update: Update, text: str, use_markdown: bool = False) -> None:
+    async def _send_reply(self, update: Update, text: str, use_markdown: bool = False, finalize_evidence: bool = True) -> None:
         """发送回复
 
         Args:
@@ -1632,10 +1665,10 @@ class TelegramBot:
                 collector.capture_outbox_record(outbox_record)
                 logger.info(f"[E4-EVIDENCE] outbox_record captured: chat_id={outbox_record['chat_id']} msg_id={outbox_record['message_id']}")
 
-                # Finalize and save the sample
-                sample = collector.finalize_sample()
-                if sample:
-                    logger.info(f"[E4-EVIDENCE] Sample finalized: {sample.sample_id} complete={sample.is_complete()}")
+                if finalize_evidence:
+                    sample = collector.finalize_sample()
+                    if sample:
+                        logger.info(f"[E4-EVIDENCE] Sample finalized: {sample.sample_id} complete={sample.is_complete()}")
             except Exception as e:
                 logger.warning(f"[E4-EVIDENCE] Failed to capture outbox_record: {e}")
 

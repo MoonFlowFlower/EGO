@@ -209,6 +209,25 @@ def test_should_use_native_loop_for_task_artifact_upload_even_if_previous_turn_w
     assert bot._should_use_native_loop(ingress, state) is True
 
 
+def test_should_use_native_loop_for_explicit_path_execute_while_waiting_input():
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    bot.native_loop = object()
+    state = bot._get_runtime_state("telegram:dm:1")
+    state.task_status = "waiting_input"
+    state.waiting_for_user_input = True
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "resolved_target": {
+            "path": r"D:\Project\AIProject\MyProject\Test\CLAUDE.md",
+            "filename": "CLAUDE.md",
+            "source": "explicit_path",
+        },
+    }
+    ingress = SimpleNamespace(_runtime_action="execute_task", is_file_only=False, is_confirm_execution=False)
+
+    assert bot._should_use_native_loop(ingress, state) is True
+
+
 @pytest.mark.asyncio
 async def test_native_loop_turn_calls_openemotion_hooks(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
@@ -219,13 +238,13 @@ async def test_native_loop_turn_calls_openemotion_hooks(monkeypatch):
         enabled = True
 
         def process_ingress(self, **kwargs):
-            calls.append(("ingress", kwargs["session_id"], kwargs["turn_id"]))
+            calls.append(("ingress", kwargs["session_id"], kwargs["turn_id"], "evidence_collector" in kwargs))
 
         def process_external_result(self, **kwargs):
-            calls.append(("external", kwargs["session_id"], kwargs["step"]))
+            calls.append(("external", kwargs["session_id"], kwargs["step"], "evidence_collector" in kwargs))
 
         def capture_response_plan(self, **kwargs):
-            calls.append(("plan", kwargs["result"].status))
+            calls.append(("plan", kwargs["result"].status, "evidence_collector" in kwargs))
 
     class NativeResult:
         reply_text = "native done"
@@ -257,8 +276,55 @@ async def test_native_loop_turn_calls_openemotion_hooks(monkeypatch):
 
     assert result.reply_text == "native done"
     assert calls[0][0] == "ingress"
-    assert ("external", "telegram:dm:1", 0) in calls
-    assert ("plan", "completed_verified") in calls
+    assert ("external", "telegram:dm:1", 0, True) in calls
+    assert ("plan", "completed_verified", True) in calls
+
+
+@pytest.mark.asyncio
+async def test_runtime_v2_turn_does_not_append_uploaded_artifact_when_explicit_path_present(monkeypatch):
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:1")
+    state.last_uploaded_artifact = {
+        "artifact_id": "artifact://compacted/task-sheet",
+        "artifact_ref": "artifact://compacted/task-sheet",
+        "filename": "P3_closure_real_probe_task.txt",
+    }
+    state.ingress_context = {
+        "resolved_target": {
+            "path": r"D:\Project\AIProject\MyProject\Test\missing_closure_probe.md",
+            "filename": "missing_closure_probe.md",
+            "source": "explicit_path",
+        }
+    }
+
+    captured = {}
+
+    class FakeRunner:
+        loop = object()
+
+        def get_loop(self):
+            return self.loop
+
+        async def run_turn(self, *, session_key, user_input, state):
+            captured["user_input"] = user_input
+            return TelegramTurnResult(
+                status="completed_verified",
+                state=state,
+                reply=TelegramTurnReply(reply_text="ok", delivery_kind="final", status="completed_verified"),
+            )
+
+    bot.telegram_runtime_fallback_runner = FakeRunner()
+
+    result = await bot._run_runtime_v2_turn(
+        update=None,
+        session_key="telegram:dm:1",
+        text=r"读取 D:\Project\AIProject\MyProject\Test\missing_closure_probe.md 前 1 行",
+        state=state,
+        ack_text=None,
+    )
+
+    assert result.reply_text == "ok"
+    assert captured["user_input"] == r"读取 D:\Project\AIProject\MyProject\Test\missing_closure_probe.md 前 1 行"
 
 
 @pytest.mark.asyncio
