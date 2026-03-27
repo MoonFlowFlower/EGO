@@ -155,6 +155,29 @@ class NativeToolCallingLoop:
             task_contract=contract.to_dict(),
             next_step=next_step.to_dict(),
         )
+        if self.contract_runtime.should_fast_path_html_write(contract, ingress_context):
+            tool_entry = self.contract_runtime.execute_fast_html_write_step(
+                contract=contract,
+                ingress_context=ingress_context,
+                session_key=session_key,
+            )
+            tool_results = accumulated_tool_results + [tool_entry]
+            tool_result_payload = tool_entry["result"]
+            verification = self.contract_runtime.verify_step(
+                contract=contract,
+                step=next_step,
+                tool_result=tool_result_payload,
+                reply_text="页面已创建。",
+            )
+            return NativeLoopResult(
+                reply_text="页面已创建。",
+                tool_results=tool_results,
+                usage=[],
+                finish_reason="fast_html_write",
+                task_contract=contract.to_dict(),
+                next_step_decision=next_step.to_dict(),
+                verification_result=verification.to_dict(),
+            )
         tools = self._build_tool_definitions()
         execution_messages = self.contract_runtime.build_execution_messages(
             base_messages=messages,

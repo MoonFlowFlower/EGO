@@ -165,3 +165,74 @@ def test_native_loop_reads_artifact_as_explicit_step(monkeypatch):
     assert result.tool_results[0]["tool_name"] == "read_artifact"
     assert len(result.tool_results) >= 2
     assert "页面已创建" in result.reply_text
+
+
+def test_native_loop_fast_paths_html_write_after_artifact_relock(tmp_path, monkeypatch):
+    client = FakeLLMClient()
+    loop = NativeToolCallingLoop(llm_client=client)
+    target = tmp_path / "task_output.html"
+
+    monkeypatch.setattr(
+        loop.contract_runtime,
+        "execute_artifact_read_step",
+        lambda artifact_id: {
+            "success": True,
+            "output": f"在{target}创建一个参照bilili的html页面,只是看着像,不用做真正的功能.",
+            "error": None,
+            "metadata": {"artifact_id": artifact_id, "stage": "artifact_parse_completed"},
+            "execution_time_ms": 1.0,
+        },
+    )
+
+    def fail_model_call(**kwargs):
+        raise AssertionError("fast-path html write should not call the model")
+
+    monkeypatch.setattr(loop.contract_runtime, "execute_single_step_with_model", fail_model_call)
+
+    def fake_execute_tool(tool_name, arguments, *_args):
+        target.write_text(arguments["content"], encoding="utf-8")
+        return type(
+            "ToolExecution",
+            (),
+            {
+                "to_dict": lambda self: {
+                    "success": True,
+                    "output": "ok",
+                    "error": None,
+                    "status": "success",
+                    "metadata": {"path": arguments["path"]},
+                    "execution_time_ms": 1.0,
+                }
+            },
+        )()
+
+    monkeypatch.setattr("app.agent_core.contract_runtime.execute_tool", fake_execute_tool)
+
+    import asyncio
+
+    result = asyncio.run(
+        loop.run_turn(
+            session_key="telegram:dm:1",
+            user_input="[用户发送了文件: 任务单.txt]",
+            ingress_context={
+                "runtime_action": "execute_task",
+                "requested_output": {
+                    "effective_path": str(target),
+                    "target_path": str(target),
+                    "format": "html",
+                },
+                "resolved_target": {
+                    "artifact_id": "artifact://compacted/demo",
+                    "artifact_ref": "artifact://compacted/demo",
+                    "filename": "任务单.txt",
+                },
+            },
+            proto_self_context=None,
+        )
+    )
+
+    assert result.finish_reason == "fast_html_write"
+    assert result.tool_results[0]["tool_name"] == "read_artifact"
+    assert result.tool_results[1]["tool_name"] == "file"
+    assert target.exists() is True
+    assert "<html" in target.read_text(encoding="utf-8").lower()
