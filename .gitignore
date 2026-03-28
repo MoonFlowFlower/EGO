@@ -47,3 +47,12 @@ ENV/
 
 # Session and memory
 .claude/
+
+# Codex assistant local memory artifacts
+.codex/memory/tasks/active/*.json
+.codex/memory/tasks/archive/*.json
+.codex/memory/sessions/*.json
+!.codex/memory/tasks/README.md
+!.codex/memory/tasks/active/README.md
+!.codex/memory/tasks/archive/README.md
+!.codex/memory/sessions/README.md

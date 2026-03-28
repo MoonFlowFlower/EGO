@@ -49,6 +49,12 @@
 - **pen364692088 仓库**: commit 后自动推送
 - **其他仓库**: 等待用户确认后推送
 
+### Codex Assistant Memory
+- 稳定记忆索引: `CODEX_MEMORY.md`
+- 结构化源文件: `.codex/memory/project_truth.jsonl` + `.codex/memory/user_preferences.jsonl`
+- 本地任务/会话衔接: `.codex/memory/tasks/` + `.codex/memory/sessions/`
+- 规则: 任务边界继续新开会话；同一任务内可依赖 session capsule 减少重开
+
 ### E2E 测试流程
 1. 停止现有 EgoCore 进程
 2. 清理 state mirror/trace (如需隔离)

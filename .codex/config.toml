@@ -1,1 +1,1 @@
-project_doc_fallback_filenames = ["CLAUDE.md","PROJECT_MEMORY.md"]
+project_doc_fallback_filenames = ["CLAUDE.md","PROJECT_MEMORY.md","CODEX_MEMORY.md"]

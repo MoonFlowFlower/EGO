@@ -13,15 +13,16 @@
 ### 第一步：新开会话
 只喂下面 4 类材料：
 
-1. `00_README.md`
-2. `01_MASTER_EXECUTION_ORDER.md`
-3. 当前要做的单个任务文件
-4. 上一个任务的 `artifacts/<prev>/TASK_REPORT.md`（仅上一任务，不要全量历史）
+1. `CODEX_MEMORY.md`
+2. 当前要做的单个任务文件
+3. 上一个任务的 closure / `TASK_REPORT.md`（仅上一任务，不要全量历史）
+4. 若仍是同一任务，再补对应 `session capsule`
 
 这能让 Codex 只保留：
 - 当前全局目标
 - 当前任务约束
 - 上一个任务的必要上下文
+- 已确认的稳定项目真相与用户偏好
 
 而不是把全部历史都塞进去。
 
