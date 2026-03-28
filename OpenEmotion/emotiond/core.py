@@ -84,24 +84,14 @@ from emotiond.meta_cognitive_override import (
     get_override_guard
 )
 
-# MVP-7 US-651: Homeostasis Drive
-from emotiond.drive_homeostasis import (
-    DriveState, drive_error, emotion_from_drive,
-    get_drive_modulation_params, get_state_hash
-)
-
-# MVP14: Dual-run adapter (optional)
-import os
+# MVP14: Drive adapter / bounded migration path
 ENABLE_MVP14_DUAL_RUN = os.environ.get("ENABLE_MVP14_DUAL_RUN", "true").lower() == "true"
-if ENABLE_MVP14_DUAL_RUN:
-    try:
-        from emotiond.drive_adapter import get_drive_adapter
-        _mvp14_adapter = get_drive_adapter()
-    except ImportError:
-        _mvp14_adapter = None
-        ENABLE_MVP14_DUAL_RUN = False
-else:
+try:
+    from emotiond.drive_adapter import get_drive_adapter
+    _mvp14_adapter = get_drive_adapter(enable_dual_run=ENABLE_MVP14_DUAL_RUN)
+except ImportError:
     _mvp14_adapter = None
+    ENABLE_MVP14_DUAL_RUN = False
 
 # MVP15: Shadow reflection mode (optional)
 ENABLE_MVP15_SHADOW = os.environ.get("ENABLE_MVP15_SHADOW", "true").lower() == "true"
@@ -140,7 +130,7 @@ def reset_allostasis_budget():
     global _allostasis_budget
     _allostasis_budget = None
 
-def build_drive_state_from_emotion(emotion_state: 'EmotionState') -> DriveState:
+def build_drive_state_from_emotion(emotion_state: 'EmotionState'):
     """
     Build a DriveState from the current EmotionState for conflict detection.
     
@@ -150,29 +140,30 @@ def build_drive_state_from_emotion(emotion_state: 'EmotionState') -> DriveState:
     Returns:
         DriveState with values derived from emotion_state
     """
-    drive_state = DriveState()
-    
-    # MVP14: Dual-run comparison (read-only, no behavior change)
-    if _mvp14_adapter and ENABLE_MVP14_DUAL_RUN:
-        try:
-            adapter_metrics = _mvp14_adapter.get_adapter_metrics()
-            # Log dual-run status periodically
-            if adapter_metrics["legacy_calls"] % 100 == 0:
-                import logging
-                logging.getLogger("emotiond.core").debug(
-                    f"[MVP14] Dual-run: legacy={adapter_metrics['legacy_calls']}, "
-                    f"new={adapter_metrics['new_calls']}, mismatches={adapter_metrics['mismatches']}"
-                )
-        except Exception:
-            pass
-    
-    # Map emotion state to drive components
-    drive_state.update_component("energy", getattr(emotion_state, 'energy', 0.7))
-    drive_state.update_component("uncertainty", getattr(emotion_state, 'uncertainty', 0.5))
-    drive_state.update_component("social", getattr(emotion_state, 'social_safety', 0.6))
-    drive_state.update_component("safety", getattr(emotion_state, 'social_safety', 0.6))
-    drive_state.update_component("fatigue", 1.0 - getattr(emotion_state, 'energy', 0.7))
-    
+    components = {
+        "energy": getattr(emotion_state, "energy", 0.7),
+        "uncertainty": getattr(emotion_state, "uncertainty", 0.5),
+        "social": getattr(emotion_state, "social_safety", 0.6),
+        "safety": getattr(emotion_state, "social_safety", 0.6),
+        "fatigue": 1.0 - getattr(emotion_state, "energy", 0.7),
+    }
+
+    if not _mvp14_adapter:
+        raise RuntimeError("MVP14 drive adapter unavailable; core mainline cannot build drive snapshot")
+
+    drive_state = _mvp14_adapter.build_legacy_state(
+        components,
+        source="core.build_drive_state_from_emotion",
+        sync_new_manager=True,
+    )
+    if ENABLE_MVP14_DUAL_RUN:
+        adapter_metrics = _mvp14_adapter.get_adapter_metrics()
+        if adapter_metrics["legacy_calls"] % 100 == 0:
+            import logging
+            logging.getLogger("emotiond.core").debug(
+                f"[MVP14] Dual-run: legacy={adapter_metrics['legacy_calls']}, "
+                f"new={adapter_metrics['new_calls']}, mismatches={adapter_metrics['mismatches']}"
+            )
     return drive_state
 
 
@@ -1157,16 +1148,27 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
     # MVP-7 US-705: Check for meta-cognitive override
     if hasattr(request, 'user_text') and request.user_text:
         # Get current states for conflict detection
-        drive_state = DriveState()
-        drive_state.fatigue = 1.0 - emotion_state.energy  # Proxy fatigue from energy
-        drive_state.uncertainty = emotion_state.uncertainty
-        
+        drive_components = {
+            "fatigue": 1.0 - emotion_state.energy,
+            "uncertainty": emotion_state.uncertainty,
+        }
+        if not _mvp14_adapter:
+            raise RuntimeError("MVP14 drive adapter unavailable; generate_plan cannot build drive snapshot")
+        drive_state = _mvp14_adapter.build_legacy_state(
+            drive_components,
+            source="core.generate_plan",
+            sync_new_manager=True,
+        )
+
         # MVP14: Dual-run comparison (read-only)
         if _mvp14_adapter and ENABLE_MVP14_DUAL_RUN:
             try:
-                # Compare legacy params with new manager
-                legacy_params = get_drive_modulation_params(drive_state)
-                new_state = _mvp14_adapter.get_new_state()
+                legacy_params = _mvp14_adapter.get_drive_modulation_params_for_components(
+                    drive_components,
+                    source="core.generate_plan",
+                    sync_new_manager=True,
+                )
+                _mvp14_adapter.get_new_state()
                 # Log for diff analysis (no behavior change)
                 if _mvp14_adapter.metrics.legacy_calls % 50 == 0:
                     import logging
