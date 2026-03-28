@@ -10,9 +10,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 窗口样本总数 | `89` |
-| 完整 evidence bundle | `60` |
-| 缺项 / 不完整 | `29` |
+| 窗口样本总数 | `92` |
+| 完整 evidence bundle | `62` |
+| 缺项 / 不完整 | `30` |
 | 覆盖日期 | `2026-03-26`、`2026-03-27` |
 
 ## 核心代表样本
@@ -148,14 +148,29 @@
   - 结果：post-restart 再次命中同一 `profile_rule_b811ed8829dcdc68`
   - 用途：形成“真实重启日志 + post-restart 命中样本”的跨证据链正证据
 
+### 10. `restore continuity` 直接真实样本链
+
+- `scripts/restore_egocore.sh --telegram`
+  - 时间：`2026-03-27 23:04:31 CST -> 23:04:41 CST`
+  - 结果：真实完成一次显式 restore，单实例 poller 收敛到 `PID 46188`
+- `sample_20260327_230603_c55d9294`
+  - 输入：`/new`
+  - 结果：restore 后先执行 session reset；该命令样本完整，但未消费 `restore_observation`
+- `sample_20260327_230605_5dec2d7a`
+  - 输入：`你还记得你的名字吗`
+  - 结果：首条 post-restore 真实用户消息形成完整 E4 bundle，且样本内直接出现 `restore_id`、`restore_status=success`、`post_restore_first_turn=true`
+- `sample_20260327_230613_829d0fe7`
+  - 输入：`我现在想改"D:\\Project\\AIProject\\MyProject\\Test"下的task_output.html,你怎么看`
+  - 结果：post-restore continuity probe 再次命中 `reply_only_once("什么喵?")`
+  - 用途：形成“显式 restore 入口 + 首条 post-restore 完整 bundle + post-restore continuity 命中”的直接真实正证据链
+
 ## 缺失类别
 
 以下任务单要求的类别，本轮仍未全部补齐：
 
-- `state restore` 的直接触发样本
 - post-restart 命中样本仍不是完整单样本 E4 bundle
 
-当前不能把 O1 升级成“完整通过”；`/new` 后 continuity 已有多条强阳性链，`restart continuity` 也已有跨证据链正证据，但 `restore` 仍是唯一未触达的正式缺口。
+当前不能把 O1 升级成“完整通过”；`/new` 后 continuity 已有多条强阳性链，`restart continuity` 已有跨证据链正证据，`restore continuity` 现也已拿到直接真实正证据，但 post-restart 命中样本仍不完整，且观察窗口仍有显著 evidence gap。
 
 ## 关键观察点
 

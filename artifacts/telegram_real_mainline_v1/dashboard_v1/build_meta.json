@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-03-28T04:18:00.008667+00:00",
+  "source_last_modified": 1774671476.6111007,
+  "total_runs": 206,
+  "complete_runs": 86,
+  "oe_available_runs": 89,
+  "host_only_runs": 84,
+  "failure_cases": 3,
+  "continuity_status": {
+    "new": "direct_real",
+    "restart": "cross_evidence",
+    "restore": "missing"
+  },
+  "gap_type_counts": {
+    "collector_timing_gap": 33,
+    "host_only_pre_runtime": 84,
+    "replay_mismatch": 10,
+    "response_plan_missing": 26,
+    "send_record_missing": 1
+  },
+  "plasticity_chain_count": 1,
+  "reflection_candidate_count": 89
+}

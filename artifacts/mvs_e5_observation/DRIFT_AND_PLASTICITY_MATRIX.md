@@ -85,7 +85,7 @@
 
 | 维度 | 结论 |
 |---|---|
-| O1 vs M1 | `部分通过（显著增强）`，`/new` 直接样本已多次补上，且已有 `/new` 后显式规则 continuity 正证据、`猫娘流程` 在多次 `/new` 后持续命中，以及 `restart continuity` 跨证据链正证据；但 `restore` 仍缺，post-restart 命中样本也仍非完整单样本 E4 bundle |
+| O1 vs M1 | `部分通过（显著增强）`，`/new` 直接样本已多次补上，且已有 `/new` 后显式规则 continuity 正证据、`猫娘流程` 在多次 `/new` 后持续命中、`restart continuity` 跨证据链正证据，以及 `restore continuity` 的直接真实正证据；但 post-restart 命中样本仍非完整单样本 E4 bundle，观察窗口仍有显著 evidence gap |
 | O2 vs M2 | `部分通过`，plasticity 存在但仍弱，且 closure 倾向进一步增强 |
 | O3 vs M2/M3 | `部分通过`，repair 链会影响输出，但 appraisal 仍偏单一化 |
 | O4 vs M3 | `部分通过`，repair 相关结构写回存在，但 reflection_note 仍完全同型，reflection 因果仍不够干净 |

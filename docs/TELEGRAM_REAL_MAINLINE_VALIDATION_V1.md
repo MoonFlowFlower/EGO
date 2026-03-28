@@ -3,7 +3,7 @@
 > 正式验证体系文档
 > 版本：v1.0
 > 证据层级：E2-E4
-> 状态：E4 样本级已验证，E5 观察进行中；`/new continuity` 与 `restart continuity` 已有强真实正证据，`restore` 仍缺
+> 状态：E4 样本级已验证，E5 观察进行中；`/new continuity` 已有直接真实正证据，`restart continuity` 已有跨证据链正证据，`restore continuity` 已有直接真实正证据
 
 ---
 
@@ -226,15 +226,15 @@ artifacts/telegram_real_mainline_v1/
   - `A1/A2/A3 -> /new -> B1` continuity probe
   - `猫娘流程` 在多次 `/new` 后继续命中同一 `profile_rule`
   - `restart continuity` 的跨证据链正证据：真实重启日志 + post-restart 命中样本
+  - `restore continuity` 的直接真实正证据：显式 restore 后，首条真实用户消息已带 `restore_id`、`restore_status`、`post_restore_first_turn=true`，随后 continuity probe 再次命中 `profile_rule_b811ed8829dcdc68`
 - 当前仍不能越级宣称：
   - `E5 稳定成立`
   - `Developmental Self` 准入通过
-  - `restore continuity` 已被证明
 - 当前正式 blocker：
-  - `restore` 仍没有直接真实样本
   - post-restart 命中样本仍不是完整单样本 E4 bundle
   - 观察窗口仍有显著 evidence gap
-- 当前唯一最高优先级动作：补 `restore continuity` 真实样本
+- `restore continuity` 已可从 `missing` 升级为 `direct_real`
+- 当前唯一最高优先级动作：补一次更完整的 post-restart continuity 命中样本，并继续压 evidence gap
 
 当前观察收口的权威入口：
 - `artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`

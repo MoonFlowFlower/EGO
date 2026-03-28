@@ -69,20 +69,29 @@
 
 ### 场景 3: restore
 
+当前状态：
+
+- 已通过 `scripts/restore_egocore.sh --telegram` 于 `2026-03-27 23:04:31 CST -> 23:04:41 CST` 完成显式 restore
+- `sample_20260327_230603_c55d9294` 证明 restore 后的 `/new` 未误消费 `restore_observation`
+- `sample_20260327_230605_5dec2d7a` 已形成首条 post-restore 真实用户消息的完整 E4 bundle，且直接带 `restore_id`、`restore_status=success`、`post_restore_first_turn=true`
+- `sample_20260327_230613_829d0fe7` 再次命中 `reply_only_once("什么喵?")`
+- 因此 `restore continuity` 已可按直接真实正证据入账，不再是 O1 的第一优先级缺口
+
 步骤：
 
-1. 在已有 agent-global 状态下启动新进程
-2. 发送 restore 相关 probing 问题
-3. 观察 restore 后第一条真实消息的 tendency / context
+1. 仅在需要重复性验证时再做一次 restore continuity 复采
+2. 复采时保持“显式 restore -> `/new` 可选 -> 首条 post-restore probe -> continuity probe”四段链
+3. 不再把 restore 当作当前 O1 第一缺口，而是转入重复性 / 稳定性验证
 
 验收：
 
-- restore 后第一条消息形成完整样本
-- 能从真实样本直接比对 restore 前后行为，不只靠 restore audit 文件
+- 显式 restore 后第一条真实用户消息形成完整样本
+- 样本内直接出现 `restore_id`、`restore_status`、`post_restore_first_turn=true`
+- 后续 continuity probe 可再次命中既有默认规则，不只靠 restore audit 文件
 
 当前优先级：
 
-- 这是当前 O1 的第一优先级缺口
+- 该项已完成首次正式补证；当前 O1 优先级已切到 post-restart 样本完整度
 
 ## Plasticity / Reflection 因果链
 
