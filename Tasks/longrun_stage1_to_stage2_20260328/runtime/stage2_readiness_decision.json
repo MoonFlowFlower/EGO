@@ -6,10 +6,13 @@
   "formal_stage_outcome": "stay_stage1",
   "verification_level": "V3",
   "evidence_level": "E3",
+  "decision_scope": "negative_readiness_mapping_from_current_mixed_layer2_baseline",
   "inputs": {
     "rerun_results": "OpenEmotion/artifacts/self_report/t07.3_mixed_layer2_results.json",
     "readiness_criteria": "OpenEmotion/docs/archive/mvp11/MVP11_5_READINESS_CRITERIA.md",
-    "intent_alignment_report": "OpenEmotion/artifacts/testbot/intent_alignment_report.json"
+    "intent_alignment_report": "OpenEmotion/artifacts/testbot/intent_alignment_report.json",
+    "t07_3_protocol": "OpenEmotion/docs/archive/mvp11/T07_3_MIXED_LAYER2_RERUN.md",
+    "t07_3_evidence_pack": "OpenEmotion/artifacts/roadmap/evidence/MVP11_5_T07.3.md"
   },
   "observed_metrics": {
     "sample_size": 100,
@@ -28,6 +31,12 @@
     "layered_reports_available": true,
     "gate_a_b_c_complete": false
   },
+  "limitations": [
+    "T07.3 rebuilds a Layer 2 mixed baseline and observability signal; it is not a standalone promotion-readiness proof.",
+    "Layer 3 natural-runtime evidence remains absent.",
+    "The cumulative readiness sample floor remains below the suggested >= 200 guidance.",
+    "Gate/report closure for promotion readiness is still incomplete."
+  ],
   "blockers": [
     {
       "class": "numeric_leak",
@@ -48,8 +57,30 @@
     {
       "class": "commitment_upgrade",
       "reason": "commitment upgrade violations remain at 47 events and still require Stage 1 closure work."
+    },
+    {
+      "class": "layer3_natural_evidence",
+      "reason": "The current result set is still Layer 2 controlled runtime-path evidence; the T07.3 evidence pack explicitly says this does not justify leaving SHADOW."
+    },
+    {
+      "class": "gate_and_report_closure",
+      "reason": "Readiness criteria still require complete gate/report closure before promotion can be discussed."
     }
   ],
+  "closure_tracks": {
+    "stage1_strengthening_blockers": [
+      "numeric_leak",
+      "certainty_upgrade",
+      "commitment_upgrade",
+      "overall_violation_rate"
+    ],
+    "readiness_evidence_blockers": [
+      "sample_size",
+      "layer3_natural_evidence",
+      "gate_and_report_closure"
+    ]
+  },
   "next_repair_candidate": "numeric_leak",
+  "next_evidence_closure_candidate": "layer3_natural_evidence",
   "repair_loops_used": 0
 }

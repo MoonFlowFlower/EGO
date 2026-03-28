@@ -6,8 +6,9 @@
 - current formal stage: `Stage 1`
 - readiness decision: `not_ready`
 - next repair candidate: `numeric_leak`
+- next evidence-closure candidate: `layer3_natural_evidence`
 
-## Confirmed Blockers
+## Confirmed Stage1 Strengthening Blockers
 
 1. `numeric_leak`
    - readiness requires `numeric_leak = 0`
@@ -15,17 +16,26 @@
 2. `overall_violation_rate`
    - current value `0.71`
    - too high for readiness-grade mixed baseline
-3. `sample_size`
+3. `certainty_upgrade`
+   - still high in mixed runtime-path results
+4. `commitment_upgrade`
+   - still high in mixed runtime-path results
+
+## Confirmed Readiness-Evidence Blockers
+
+1. `sample_size`
    - current mixed rerun produced `100`
    - readiness guidance suggests cumulative `>= 200`
-4. `certainty_upgrade`
-   - still high in mixed runtime-path results
-5. `commitment_upgrade`
-   - still high in mixed runtime-path results
+2. `layer3_natural_evidence`
+   - the current evidence set is still Layer 2 controlled runtime-path only
+   - `MVP11_5_T07.3.md` explicitly says this does not justify leaving `SHADOW`
+3. `gate_and_report_closure`
+   - readiness criteria still require complete gate/report closure before promotion can be discussed
 
 ## Scope Guard
 
 - Do not enter `Stage 3 / MVP12`.
 - Repairs must stay inside `MVP11.5 / Stage 1`.
-- First repair should target the smallest blocker with the clearest authority contract:
+- First repair should target the smallest strengthening blocker with the clearest authority contract:
   - `numeric_leak`
+- Do not let a strengthening repair silently replace missing evidence-closure work.

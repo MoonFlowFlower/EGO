@@ -55,7 +55,7 @@ steps:
     depends_on: [STAGE2-03]
     stop_on_fail: true
   - id: STAGE2-05
-    title: Bounded repair loop
+    title: Readiness-closure split + bounded repair loop
     file: steps/STAGE2_05_bounded_repair_loop.md
     kind: repair_loop
     depends_on: [STAGE2-04]
@@ -77,6 +77,7 @@ steps:
     depends_on: [STAGE2-04]
     enter_if:
       readiness_decision_in: [ready]
+      latest_readiness_source_in: [STAGE2-04, STAGE2-06]
     stop_on_fail: true
   - id: STAGE2-08
     title: Truth-source sync

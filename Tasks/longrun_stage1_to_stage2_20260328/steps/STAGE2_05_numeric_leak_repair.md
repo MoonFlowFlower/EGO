@@ -10,18 +10,20 @@ blocker_class: numeric_leak
 
 ## real_goal
 
-Reduce `numeric_leak` to the point where the mixed Layer 2 rerun can move materially closer to readiness, without crossing beyond `MVP11.5 / Stage 1`.
+Use `numeric_leak` as the first bounded `Stage 1 strengthening` candidate so the mixed Layer 2 rerun can move materially closer to readiness, without claiming that this repair alone can satisfy Stage 2 promotion.
 
 ## success_criteria
 
 - the repair stays inside the response-intent / numeric-leak containment path
 - relevant local tests pass
 - a rerun shows numeric leak materially reduced
+- the repair report explicitly leaves `sample_size / Layer 3 evidence / Gate closure` as independent readiness blockers unless separately closed
 
 ## authority_source
 
 - `runtime/stage2_readiness_decision.json`
 - `OpenEmotion/docs/archive/mvp11/MVP11_5_READINESS_CRITERIA.md`
+- `OpenEmotion/artifacts/roadmap/evidence/MVP11_5_T07.3.md`
 - `OpenEmotion/artifacts/self_report/numeric_leak_patch_notes.md`
 - `OpenEmotion/artifacts/self_report/numeric_leak_source_trace.md`
 - `OpenEmotion/artifacts/self_report/numeric_leak_rootcause_report.json`
@@ -51,4 +53,4 @@ main_chain_status: shadow
 
 ## next_minimal_closure_action
 
-Read the numeric leak root-cause artifacts, choose the smallest in-scope containment fix, then rerun STAGE2-03 and STAGE2-04.
+Read the numeric leak root-cause artifacts, choose the smallest in-scope containment fix, rerun STAGE2-03 and STAGE2-04, and keep the remaining evidence-closure blockers explicit.

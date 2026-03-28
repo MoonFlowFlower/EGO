@@ -12,13 +12,13 @@ Make the formal decision whether the system can enter Stage 2 from Stage 1.
 
 ## success_criteria
 
-- admission review uses only current authority sources and the latest readiness decision
+- admission review uses only current authority sources and the latest readiness decision, whether it came directly from `STAGE2-04` or from the post-repair recompute in `STAGE2-06`
 - result is explicitly `promote` or `stay_stage1`
 - if `promote`, the required evidence level is at least `E4` and verification level at least `V4`
 
 ## authority_source
 
-- `runtime/stage2_readiness_decision.json`
+- `runtime/stage2_readiness_decision.json` (latest output from `STAGE2-04` or `STAGE2-06`)
 - `OpenEmotion/docs/archive/mvp11/MVP11_5_READINESS_CRITERIA.md`
 - batch reports from `reports/`
 

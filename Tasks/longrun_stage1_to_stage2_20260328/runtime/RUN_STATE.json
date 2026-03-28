@@ -4,7 +4,7 @@
   "overall_status": "in_progress",
   "current_theme": "MVP11.5 readiness closure",
   "current_step": "STAGE2-05",
-  "step_status": "pending",
+  "step_status": "in_progress",
   "completed_steps": [
     "STAGE2-00",
     "STAGE2-01",
@@ -22,7 +22,7 @@
   ],
   "evidence_level": "E3",
   "verification_level": "V3",
-  "current_blocker": "numeric_leak_nonzero + high_violation_rate + insufficient_readiness_sample_size",
-  "next_action": "Enter STAGE2-05 with the smallest in-scope repair first: numeric_leak containment in the MVP11.5 response-intent path",
+  "current_blocker": "layer2_baseline_only + stage1_strengthening_blockers + readiness_evidence_blockers",
+  "next_action": "Finish the STAGE2-05 closure split, then execute the first bounded strengthening repair (numeric_leak) without over-claiming away the remaining sample_size / Layer3 / gate blockers",
   "stop_reason": null
 }
