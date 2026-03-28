@@ -63,9 +63,10 @@ status: pending
 
 1. `Spec`
 2. `Author`
-3. `Reviewer`
-4. `Verifier`
-5. `Publisher`
+3. `Self-Reviewer`
+4. `Independent Reviewer`
+5. `Verifier`
+6. `Publisher`
 
 ---
 
@@ -99,7 +100,7 @@ status: spec_ready
 | README.md | 45 | s/拼写错误/正确拼写/ | typo |
 ```
 
-Spec → Author → Reviewer → Verifier → Publisher
+Spec → Author → Self-Reviewer → Independent Reviewer（可选）→ Verifier → Publisher
 
 ---
 
@@ -137,9 +138,10 @@ main_chain_status: planning
 按阶段执行：
 1. **Spec** → 写清 authority source、成功判据、最小验收路径
 2. **Author** → 做最小必要改动
-3. **Reviewer** → findings-first 自 review
-4. **Verifier** → 跑最低门与对应回归
-5. **Publisher** → 只在 `review_passed + verify_passed` 后提交与推送
+3. **Self-Reviewer** → findings-first 自 review
+4. **Independent Reviewer** → 高风险任务启用独立 reviewer subagent
+5. **Verifier** → 跑最低门与对应回归
+6. **Publisher** → 只在 `review_passed + verify_passed` 后提交与推送
 
 ---
 
@@ -204,6 +206,7 @@ archived（移动到 Tasks/archive/）
 4. **Handoff clear**：交接时必须填写 HANDOFF 区
 5. **Grade honestly**：方案等级如实标注（formal/transitional/temporary）
 6. **Findings first**：自 review 和 verify 先写发现项，再给通过结论
+7. **High-risk double review**：Telegram 主链、双仓、状态恢复、evidence 任务默认启用独立 Reviewer subagent
 
 ---
 

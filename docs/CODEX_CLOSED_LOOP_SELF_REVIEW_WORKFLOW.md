@@ -10,7 +10,7 @@
 这套流程建立在“`双速 Spec + Build/Verify/Observe 三泳道`”之上，再加一层默认强制的闭环：
 
 ```text
-Spec -> Author -> Reviewer -> Verifier -> Publisher
+Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher
 ```
 
 核心目标不是减少人工确认，而是让开发助手在提交前先完成第一轮找 bug、补回归、纠正文案口径，不把首轮 QA 压给用户。
@@ -20,8 +20,9 @@ Spec -> Author -> Reviewer -> Verifier -> Publisher
 ## 默认适用规则
 
 - 正式代码、脚本、模板、文档收口改动，默认都进入这套闭环。
-- `L1/L2` 任务默认走 `Spec Lite + Author/Reviewer/Verifier/Publisher`。
-- `L3/高风险/双仓/主链治理` 任务默认走 `Full Spec + Build/Verify/Observe`，并在每个实现阶段内继续套用 `Author/Reviewer/Verifier/Publisher`。
+- `L1` 低风险任务默认走 `Spec Lite + Author + Self-Reviewer + Verifier + Publisher`；独立 Reviewer 为可选。
+- `L2` 任务默认走 `Spec Lite + Author + Self-Reviewer + Independent Reviewer + Verifier + Publisher`；中风险建议双审，高风险强制双审。
+- `L3/高风险/双仓/主链治理` 任务默认走 `Full Spec + Build/Verify/Observe`，并在每个实现阶段内继续套用 `Author + Self-Reviewer + Independent Reviewer + Verifier + Publisher`。
 - 真实主链补证任务单独走 `VERIFY` 任务，不把“补样本”混成“实现任务”。
 
 ---
@@ -74,7 +75,16 @@ handed_off
 
 ### 3. Reviewer
 
-切换到严格 code review 心态，自审刚写的 diff。输出必须 findings-first。
+`Reviewer` 阶段拆成两层：
+
+1. `Self-Reviewer`
+2. `Independent Reviewer`
+
+两者都必须 findings-first。
+
+#### Self-Reviewer
+
+由作者本人切换到严格 code review 心态，自审刚写的 diff。
 
 固定检查项：
 
@@ -87,8 +97,32 @@ handed_off
 
 规则：
 
-- 有阻断发现：先回修，再重新 Review
-- 无阻断发现：明确写“自 review 未发现阻断项”，再进入 Verify
+- 有阻断发现：先回修，再重新 Self-Review
+- 无阻断发现：明确写“自 review 未发现阻断项”，再决定是否进入 `Independent Reviewer`
+
+#### Independent Reviewer
+
+由独立 Reviewer subagent 审核作者视角盲区，不负责改代码，只负责 findings-first 审计。
+
+默认启用档位：
+
+- `L1` 低风险：可选
+- `L2` 中风险：默认建议
+- `L2` 高风险：强制
+- `L3` / 双仓 / schema / adapter / Telegram 主链 / 状态恢复 / evidence：强制
+
+重点检查项：
+
+- 作者是否在错误层级修问题
+- 是否存在“本地测试通过但主链未接入”的伪完成
+- 是否有遗漏的回归门、evidence、回退口径
+- 是否把边界漂移、shim 主化、双重真相源漏过去了
+- 提交范围里是否混入无关噪声
+
+通过条件：
+
+- 强制双审场景下，只有 `Self-Reviewer` 与 `Independent Reviewer` 都无 blocker，才允许进入 `Verifier`
+- 可选双审场景下，若未启用独立 Reviewer，必须在任务单中写明原因
 
 ### 4. Verifier
 
@@ -142,7 +176,7 @@ handed_off
 
 ## 失败策略
 
-- `Reviewer` 发现问题：不报“已完成”，直接回修
+- `Self-Reviewer` 或 `Independent Reviewer` 发现问题：不报“已完成”，直接回修
 - `Verifier` 未过：不推远端，保留为“条件性完成”
 - 真实主链证据缺失：只报实现完成，不报闭环完成
 
@@ -155,6 +189,7 @@ handed_off
 - 用户不再反复指出“漏测 / 漏回归 / 口径过强 / 提交带噪声”
 - Telegram 主链任务默认都有层级门 + 最低回归门
 - 双仓任务默认都有 contract gate
+- 高风险任务默认都有独立 Reviewer subagent
 - 推送前都能清楚说出“已证实什么 / 未证实什么”
 - 自 review 若发现问题，优先在同一轮内自修，不把首轮 QA 压给用户
 

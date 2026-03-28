@@ -20,7 +20,8 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
   - 同任务 `SessionCapsule` 可补充连续性，异任务 capsule 会被明确拒绝
   - 当前仍是手动喂入/脚本辅助启动，不是全自动注入
 - **默认开发流程**：已升级为闭环自审流
-  - 正式改动默认执行 `Spec -> Author -> Reviewer -> Verifier -> Publisher`
+  - 正式改动默认执行 `Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
+  - 高风险任务强制独立 Reviewer subagent；低风险 `L1` 可只做自审
   - 只有 `review_passed + verify_passed` 才允许自动推远端
   - 正式说明文档：`docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
 - **EgoCore Telegram 正式主线** 是：
@@ -38,7 +39,8 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 ## 最近更新
 
 ### 2026-03-28: 闭环自审开发流落地
-- 默认开发流程已从“分层混合 + 高强度自检”进一步收口为正式闭环：`Spec -> Author -> Reviewer -> Verifier -> Publisher`
+- 默认开发流程已从“分层混合 + 高强度自检”进一步收口为正式闭环：`Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
+- 高风险任务默认启用独立 Reviewer subagent，避免“自己写自己审”的视角盲区
 - 任务模板、快速启动模板、收口模板和记忆入口已同步到这套新流程
 - 自动推远端的门槛也已收紧到 `review_passed + verify_passed`
 

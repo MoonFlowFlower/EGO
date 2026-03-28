@@ -2,7 +2,7 @@
 
 > 适用：跨 EgoCore + OpenEmotion 的架构改动、新 Kernel 版本、边界调整
 > 预期耗时：4 小时 - 多天
-> 执行方式：`Full Spec -> (OpenEmotion Author/Reviewer) -> (EgoCore Author/Reviewer) -> Verifier -> Publisher`
+> 执行方式：`Full Spec -> (OpenEmotion Author/Self-Reviewer/Independent Reviewer) -> (EgoCore Author/Self-Reviewer/Independent Reviewer) -> Verifier -> Publisher`
 
 ---
 
@@ -118,11 +118,15 @@ agent:
 - [ ] 接口文档
 - [ ] 自测报告
 
-#### OpenEmotion Reviewer
+#### OpenEmotion Self-Reviewer
 - [ ] authority source 与 schema 未漂移
 - [ ] 未让 OpenEmotion 偷做 EgoCore runtime 治理
 - [ ] contract / schema / docs 已同步
 - [ ] 自 review 未发现阻断项
+
+#### OpenEmotion Independent Reviewer
+- [ ] 已由独立 Reviewer subagent 审核
+- [ ] findings-first 结果已记录
 
 #### 交接
 ```yaml
@@ -150,11 +154,15 @@ agent:
 - [ ] Contract guard 更新
 - [ ] 双仓联动测试
 
-#### EgoCore Reviewer
+#### EgoCore Self-Reviewer
 - [ ] 未在 adapter/prompt 发明 OpenEmotion 语义字段
 - [ ] 未把 shim/fallback 偷升成正式主链
 - [ ] 双仓接口契约仍唯一
 - [ ] 自 review 未发现阻断项
+
+#### EgoCore Independent Reviewer
+- [ ] 已由独立 Reviewer subagent 审核
+- [ ] findings-first 结果已记录
 
 ---
 

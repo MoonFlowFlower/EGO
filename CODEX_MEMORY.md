@@ -34,8 +34,8 @@
 | ID | 标题 | 来源 | 复核规则 |
 |---|---|---|---|
 | pref-auto-push-remote | 默认自动推送远端 | user_confirmation:2026-03-27:auto_push_remote | until_user_overrides |
-| pref-self-review-high | 默认高强度自检 | user_confirmation:2026-03-27:self_review_high;user_confirmation:2026-03-28:closed_loop_self_review | until_user_overrides |
-| pref-workflow-layered | 默认分层混合开发流 | user_confirmation:2026-03-27:layered_mixed_workflow;user_confirmation:2026-03-28:closed_loop_self_review | until_user_overrides |
+| pref-self-review-high | 默认高强度自检 | user_confirmation:2026-03-27:self_review_high;user_confirmation:2026-03-28:closed_loop_self_review;user_confirmation:2026-03-28:independent_reviewer_subagent | until_user_overrides |
+| pref-workflow-layered | 默认分层混合开发流 | user_confirmation:2026-03-27:layered_mixed_workflow;user_confirmation:2026-03-28:closed_loop_self_review;user_confirmation:2026-03-28:independent_reviewer_subagent | until_user_overrides |
 | pref-session-discipline | 保留任务边界新开会话纪律 | user_confirmation:2026-03-27:task_boundary_new_session | until_user_overrides |
 | pref-report-four-blocks | 默认四段交付格式 | user_confirmation:2026-03-28:closed_loop_self_review | until_user_overrides |
 

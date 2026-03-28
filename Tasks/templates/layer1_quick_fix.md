@@ -2,7 +2,7 @@
 
 > 适用：紧急修复、单文件改动、文档更新、typo 修复
 > 预期耗时：5-30 分钟
-> 执行方式：`Spec Lite -> Author -> Reviewer -> Verifier -> Publisher`
+> 执行方式：`Spec Lite -> Author -> Self-Reviewer -> Verifier -> Publisher`（低风险默认不强制独立 Reviewer）
 
 ---
 
@@ -60,7 +60,7 @@ status: pending  # pending/spec_ready/author_done/review_passed/verify_passed/pu
 最小修改：
 ```
 
-## Reviewer（findings-first）
+## Self-Reviewer（findings-first）
 
 ### 阻断发现
 - [ ] 无
@@ -76,6 +76,11 @@ status: pending  # pending/spec_ready/author_done/review_passed/verify_passed/pu
 ```
 自 review 未发现阻断项 / 发现问题并已修复：
 ```
+
+## Independent Reviewer（可选）
+
+- [ ] 当前任务属于低风险 `L1`，可不启用
+- [ ] 若启用，记录 findings-first 结论
 
 ## Verifier
 

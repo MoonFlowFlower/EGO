@@ -2,7 +2,7 @@
 
 > 适用：功能实现、单模块改动、接口调整、测试补充
 > 预期耗时：30 分钟 - 4 小时
-> 执行方式：`Spec Lite -> Author -> Reviewer -> Verifier -> Publisher`
+> 执行方式：`Spec Lite -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
 
 ---
 
@@ -126,7 +126,7 @@ trigger_evidence: none
 
 ---
 
-### Stage 3: Reviewer（必须，findings-first）
+### Stage 3: Self-Reviewer（必须，findings-first）
 
 #### 阻断发现
 - [ ] 无
@@ -151,7 +151,25 @@ trigger_evidence: none
 
 ---
 
-### Stage 4: Verifier（必须）
+### Stage 4: Independent Reviewer（分档启用）
+
+#### 启用档位
+- [ ] `L2` 低风险：可选
+- [ ] `L2` 中风险：默认建议
+- [ ] `L2` 高风险：强制
+
+#### 独立 Reviewer 结论
+| 发现 | 严重度 | 处理状态 | 备注 |
+|------|--------|----------|------|
+| | blocker/warn/info | fixed/open | |
+
+#### 放行条件
+- [ ] 若本任务属于建议/强制档位，已完成独立 Reviewer 审计
+- [ ] 若未启用，已记录原因
+
+---
+
+### Stage 5: Verifier（必须）
 
 #### 验证层级
 - [ ] Gate A: Contract 正确
@@ -181,7 +199,7 @@ trigger_evidence: none
 
 ---
 
-### Stage 5: Publisher
+### Stage 6: Publisher
 
 #### 发布门槛
 - [ ] Spec 已清楚

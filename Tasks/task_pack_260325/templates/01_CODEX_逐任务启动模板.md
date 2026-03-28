@@ -27,7 +27,8 @@
    - 不扩大范围
    - 不顺手做下一个任务
    - 不要把猜测写成事实
-   - 正式改动默认执行 `Spec -> Author -> Reviewer -> Verifier -> Publisher`
+   - 正式改动默认执行 `Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
+   - 高风险任务必须启用独立 Reviewer subagent 做 findings-first 审计
    - `review_passed + verify_passed` 前不得自动推远端
 4. 结束时必须提交以下产物：
    - `artifacts/[任务编号]/TASK_REPORT.md`
