@@ -1,0 +1,60 @@
+{
+  "schema_version": "stage2.batch.execution_contract.v1",
+  "batch_id": "stage1_to_stage2_20260328",
+  "source_task": "OpenEmotion/tasks/MVP11_5/T07_shadow_rerun_readiness.yaml",
+  "deprecated_commands": [
+    "python tools/run-shadow-observation --full",
+    "python tools/generate-shadow-readiness-report"
+  ],
+  "deprecated_reason": "The original T07 commands are stale in the current repo and must not be used for this batch.",
+  "active_execution_chain": [
+    {
+      "id": "checker_baseline",
+      "purpose": "Validate the response intent checker contract before rerun",
+      "command": "./EgoCore/.venv/bin/python -m pytest -s -q OpenEmotion/tests/test_response_intent_checker.py",
+      "artifacts": [
+        "OpenEmotion/artifacts/self_report/intent_checker_report.json"
+      ]
+    },
+    {
+      "id": "mixed_rerun",
+      "purpose": "Run the real mixed Layer 2 rerun harness",
+      "command": "cd OpenEmotion && ../EgoCore/.venv/bin/python tests/test_t07_3_mixed_layer2_rerun.py",
+      "artifacts": [
+        "OpenEmotion/artifacts/self_report/t07.3_mixed_layer2_results.json"
+      ]
+    },
+    {
+      "id": "intent_alignment_e2e",
+      "purpose": "Validate intent-alignment E2E scenarios used by readiness interpretation",
+      "command": "./EgoCore/.venv/bin/python -m pytest -s -q OpenEmotion/tests/testbot/test_intent_alignment_e2e.py",
+      "artifacts": [
+        "OpenEmotion/artifacts/testbot/intent_alignment_report.json"
+      ]
+    }
+  ],
+  "environment_notes": [
+    "Do not use the default WSL pytest command in this batch; use EgoCore/.venv Python.",
+    "Use -s when invoking pytest from this environment to avoid capture-layer FileNotFoundError.",
+    "Run the mixed rerun harness from the OpenEmotion working directory so artifacts land under OpenEmotion/artifacts/."
+  ],
+  "readiness_inputs": {
+    "stage_overview": "OpenEmotion/docs/archive/mvp11/MVP11_5_STAGE_OVERVIEW.md",
+    "readiness_criteria": "OpenEmotion/docs/archive/mvp11/MVP11_5_READINESS_CRITERIA.md",
+    "rerun_results": "OpenEmotion/artifacts/self_report/t07.3_mixed_layer2_results.json",
+    "prior_readiness_report": "OpenEmotion/artifacts/self_report/MVP11_5_shadow_readiness.md",
+    "evidence_report": "OpenEmotion/artifacts/roadmap/evidence/MVP11_5_T07.3.md"
+  },
+  "allowed_repair_blockers": [
+    "numeric_leak",
+    "certainty_upgrade",
+    "commitment_upgrade",
+    "mixed_drift",
+    "report_consistency"
+  ],
+  "hard_boundaries": [
+    "Do not claim Stage 2 unless readiness recompute and admission review both pass.",
+    "Do not cross into Stage 3/MVP12 capability work from this contract.",
+    "Do not use stale T07 commands inside this batch."
+  ]
+}

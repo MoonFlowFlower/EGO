@@ -1,0 +1,55 @@
+{
+  "schema_version": "stage2.readiness.decision.v1",
+  "batch_id": "stage1_to_stage2_20260328",
+  "decision_time": "2026-03-28T07:00:00Z",
+  "decision": "not_ready",
+  "formal_stage_outcome": "stay_stage1",
+  "verification_level": "V3",
+  "evidence_level": "E3",
+  "inputs": {
+    "rerun_results": "OpenEmotion/artifacts/self_report/t07.3_mixed_layer2_results.json",
+    "readiness_criteria": "OpenEmotion/docs/archive/mvp11/MVP11_5_READINESS_CRITERIA.md",
+    "intent_alignment_report": "OpenEmotion/artifacts/testbot/intent_alignment_report.json"
+  },
+  "observed_metrics": {
+    "sample_size": 100,
+    "overall_violation_rate": 0.71,
+    "numeric_leak_events": 38,
+    "certainty_upgrade_events": 45,
+    "commitment_upgrade_events": 47,
+    "safe_control_false_positives": 0,
+    "intent_alignment_e2e_passed": 4,
+    "intent_alignment_e2e_failed": 0
+  },
+  "criteria_evaluation": {
+    "numeric_leak_eq_0": false,
+    "sample_size_gte_200": false,
+    "overall_violation_rate_below_readiness_target": false,
+    "layered_reports_available": true,
+    "gate_a_b_c_complete": false
+  },
+  "blockers": [
+    {
+      "class": "numeric_leak",
+      "reason": "Readiness requires numeric_leak = 0, but the mixed rerun surfaced 38 numeric leak violations."
+    },
+    {
+      "class": "overall_violation_rate",
+      "reason": "overall_violation_rate = 0.71 is far above a readiness-grade mixed baseline."
+    },
+    {
+      "class": "sample_size",
+      "reason": "Readiness guidance suggests >= 200 cumulative samples; the current mixed rerun produced 100."
+    },
+    {
+      "class": "certainty_upgrade",
+      "reason": "certainty upgrade violations remain at 45 events and still require Stage 1 closure work."
+    },
+    {
+      "class": "commitment_upgrade",
+      "reason": "commitment upgrade violations remain at 47 events and still require Stage 1 closure work."
+    }
+  ],
+  "next_repair_candidate": "numeric_leak",
+  "repair_loops_used": 0
+}

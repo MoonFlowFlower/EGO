@@ -1,0 +1,88 @@
+batch_id: stage1_to_stage2_20260328
+batch_title: Stage1 to Stage2 long-run readiness closure
+goal_stage: Stage 2
+goal_statement: >
+  Push MVP11.5 from Stage 1 shadow/not-ready into a formal Stage 2 admission decision,
+  or stop cleanly at Stage 1 with a complete blocker dossier.
+
+truth_sources:
+  - OpenEmotion/roadmap/SELF_AWARE_NORMALIZATION_RULES_20260328.md
+  - OpenEmotion/roadmap/self_aware_normalized_state.json
+  - OpenEmotion/docs/archive/mvp11/MVP11_5_STAGE_OVERVIEW.md
+  - OpenEmotion/docs/archive/mvp11/MVP11_5_READINESS_CRITERIA.md
+  - runtime/RUN_STATE.json
+
+execution_policy:
+  mode: strong_auto
+  must_update_run_state_after_each_step: true
+  must_write_report_after_each_step: true
+  must_write_session_handoff_if_continuing: true
+  checkpoint_commit_after_verified_step: true
+  allow_repair_loops: true
+  max_repair_loops: 2
+  stop_on_stage_promotion: true
+  stop_on_stop_rule: true
+
+steps:
+  - id: STAGE2-00
+    title: Authority Freeze + Batch Bootstrap
+    file: steps/STAGE2_00_authority_freeze.md
+    kind: bootstrap
+    depends_on: []
+    stop_on_fail: true
+  - id: STAGE2-01
+    title: MVP11.5 executable contract refresh
+    file: steps/STAGE2_01_mvp11_5_execution_contract.md
+    kind: contract_refresh
+    depends_on: [STAGE2-00]
+    stop_on_fail: true
+  - id: STAGE2-02
+    title: Baseline preflight
+    file: steps/STAGE2_02_baseline_preflight.md
+    kind: baseline
+    depends_on: [STAGE2-01]
+    stop_on_fail: true
+  - id: STAGE2-03
+    title: T07.3 mixed Layer2 rerun
+    file: steps/STAGE2_03_t07_3_mixed_layer2_rerun.md
+    kind: rerun
+    depends_on: [STAGE2-02]
+    stop_on_fail: true
+  - id: STAGE2-04
+    title: Readiness recompute
+    file: steps/STAGE2_04_readiness_recompute.md
+    kind: readiness
+    depends_on: [STAGE2-03]
+    stop_on_fail: true
+  - id: STAGE2-05
+    title: Bounded repair loop
+    file: steps/STAGE2_05_bounded_repair_loop.md
+    kind: repair_loop
+    depends_on: [STAGE2-04]
+    enter_if:
+      readiness_decision_in: [not_ready]
+    stop_on_fail: false
+  - id: STAGE2-06
+    title: Rerun after repairs
+    file: steps/STAGE2_06_rerun_after_repairs.md
+    kind: rerun_after_repairs
+    depends_on: [STAGE2-05]
+    enter_if:
+      repair_loop_executed: true
+    stop_on_fail: false
+  - id: STAGE2-07
+    title: Stage2 admission review
+    file: steps/STAGE2_07_stage2_admission_review.md
+    kind: admission
+    depends_on: [STAGE2-04]
+    enter_if:
+      readiness_decision_in: [ready]
+    stop_on_fail: true
+  - id: STAGE2-08
+    title: Truth-source sync
+    file: steps/STAGE2_08_truth_source_sync.md
+    kind: sync
+    depends_on: [STAGE2-07]
+    enter_if:
+      admission_decision_in: [promote]
+    stop_on_fail: true
