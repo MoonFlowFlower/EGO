@@ -55,4 +55,3 @@ main_chain_status: 启用
 ## next_minimal_closure_action
 
 完成一版 `MVP16 unblock` 审计报告，并据此决定是否进入 admission review。
-

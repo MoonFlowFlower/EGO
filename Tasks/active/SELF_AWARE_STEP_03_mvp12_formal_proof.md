@@ -24,8 +24,8 @@ status: pending
 ## authority_source
 
 - `OpenEmotion/roadmap/versions/MVP12.spec.yaml`
-- `OpenEmotion/docs/archive/mvp12/*`
-- `OpenEmotion/tests/mvp12/*`
+- `OpenEmotion/docs/archive/mvp12/`
+- `OpenEmotion/tests/mvp12/`
 
 ## current_layer
 
@@ -47,6 +47,16 @@ main_chain_status: 启用
 - `pytest -q tests/mvp12/test_replay.py`
 - `python tools/verify_mvp12_daemon.py`
 
+## workflow_requirements
+
+```yaml
+full_spec_required: true
+self_reviewer_required: true
+independent_reviewer_required: true
+verifier_required: true
+publisher_required: true
+```
+
 ## promotion_blockers
 
 - authority bypass 风险
@@ -56,4 +66,3 @@ main_chain_status: 启用
 ## next_minimal_closure_action
 
 跑最小 formal proof 链并产出一份 `MVP12 formal proof` 汇总报告。
-

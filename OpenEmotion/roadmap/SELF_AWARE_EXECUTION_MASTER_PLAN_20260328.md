@@ -106,13 +106,13 @@
 
 ## 5. 当前默认执行顺序
 
-近期默认只允许：
+当前已完成：
 
 1. `Step 00`
 2. `Step 01`
 3. `Step 02`
 
-只有在这三步收口后，才进入 `Step 03-08` 的正式施工。
+后续正式施工从 `Step 03` 开始。
 
 原因：
 
@@ -126,6 +126,8 @@
 ### 6.1 统一规则
 
 - `OpenEmotion/roadmap/SELF_AWARE_NORMALIZATION_RULES_20260328.md`
+- `OpenEmotion/roadmap/SELF_AWARE_CURRENT_STATE_RECOMPUTE_20260328.md`
+- `OpenEmotion/roadmap/self_aware_normalized_state.json`
 
 ### 6.2 版本 spec
 
@@ -149,7 +151,25 @@
 
 ---
 
-## 7. 当前完成口径
+## 7. 下一轮真实任务试运行约束
+
+从 `Step 02` 开始，默认按高风险双仓任务处理。
+
+必须执行：
+
+```text
+Full Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher
+```
+
+规则：
+
+- `Independent Reviewer` 为强制，不可跳过
+- `Verifier` 为强制，不可只做文档落盘
+- 若未走完双审 + 验证，不得宣称该 step 可交付
+
+---
+
+## 8. 当前完成口径
 
 本主计划只建立路线与判定层，不等于已经推进阶段通过。
 
@@ -164,4 +184,3 @@
 - `MVP12-16` 已 formal pass
 - `Developmental Self` 已准入
 - `Open Developmental Self` 已成立
-

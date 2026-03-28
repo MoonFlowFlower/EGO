@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: spec_ready
+status: published
 ```
 
 ## real_goal
@@ -52,5 +52,4 @@ main_chain_status: 接入
 
 ## next_minimal_closure_action
 
-用统一编译层重算当前阶段与当前 blocker，形成 Step 01。
-
+执行 Step 01，输出当前阶段重算报告与机器可读状态文件。

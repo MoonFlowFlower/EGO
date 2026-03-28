@@ -24,8 +24,8 @@ status: pending
 ## authority_source
 
 - `OpenEmotion/roadmap/versions/MVP14.spec.yaml`
-- `OpenEmotion/docs/mvp14/*`
-- `OpenEmotion/tests/mvp14/*`
+- `OpenEmotion/docs/mvp14/`
+- `OpenEmotion/tests/mvp14/`
 
 ## current_layer
 
@@ -55,4 +55,3 @@ main_chain_status: 启用
 ## next_minimal_closure_action
 
 补一条“drive/homeostasis 受控干预 -> 策略变化”的 formal proof。
-

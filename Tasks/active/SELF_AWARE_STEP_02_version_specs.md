@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: spec_ready
+status: published
 ```
 
 ## real_goal
@@ -23,11 +23,11 @@ status: spec_ready
 ## authority_source
 
 - `OpenEmotion/roadmap/versions/MVP11_5.spec.yaml`
-- `OpenEmotion/docs/archive/mvp12/*`
-- `OpenEmotion/docs/mvp13/*`
-- `OpenEmotion/docs/mvp14/*`
-- `OpenEmotion/docs/mvp15/*`
-- `OpenEmotion/docs/mvp16/*`
+- `OpenEmotion/docs/archive/mvp12/`
+- `OpenEmotion/docs/mvp13/`
+- `OpenEmotion/docs/mvp14/`
+- `OpenEmotion/docs/mvp15/`
+- `OpenEmotion/docs/mvp16/`
 
 ## current_layer
 
@@ -49,11 +49,21 @@ main_chain_status: 构件
 - 校验每版 spec 引用的 docs/tests/artifacts 路径存在或被明确声明为未来 required_artifacts
 - 校验 `ROADMAP_INDEX` 已接入新 spec
 
+## workflow_requirements
+
+```yaml
+full_spec_required: true
+self_reviewer_required: true
+independent_reviewer_required: true
+verifier_required: true
+publisher_required: true
+```
+
 ## promotion_blockers
 
 - 仍未完成阶段 formal proof
+- `MVP16` 仍处于 `blocked`
 
 ## next_minimal_closure_action
 
-从 `MVP12` 开始逐阶段 formal proof，先证明 developmental core 不只是代码存在。
-
+执行 `SELF_AWARE_STEP_03_mvp12_formal_proof.md`，并在下一轮真实任务试运行中强制走 `Independent Reviewer -> Verifier`。

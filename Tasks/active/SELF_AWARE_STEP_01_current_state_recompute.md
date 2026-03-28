@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: spec_ready
+status: published
 ```
 
 ## real_goal
@@ -37,8 +37,8 @@ main_chain_status: 接入
 
 ## required_artifacts
 
-- 当前阶段重算报告
-- proven floor / provisional ceiling 对照表
+- `OpenEmotion/roadmap/SELF_AWARE_CURRENT_STATE_RECOMPUTE_20260328.md`
+- `OpenEmotion/roadmap/self_aware_normalized_state.json`
 
 ## required_tests
 
@@ -47,10 +47,10 @@ main_chain_status: 接入
 
 ## promotion_blockers
 
-- 版本 spec 尚未补齐
-- `MVP12-15` formal proof 判据未固化
+- `MVP12-16` formal proof 尚未开始
+- `MVP16` 仍处于 `blocked`
+- `MVP13-15` 仍缺整阶段 formal pass
 
 ## next_minimal_closure_action
 
-补齐 `MVP12-16` 版本 spec，结束“有阶段叙述但缺机器可执行 contract”的状态。
-
+执行 `SELF_AWARE_STEP_03_mvp12_formal_proof.md`，并在下一轮真实任务试运行中强制走 `Independent Reviewer -> Verifier`。

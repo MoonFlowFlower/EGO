@@ -26,6 +26,8 @@
 
 - 统一规则：`OpenEmotion/roadmap/SELF_AWARE_NORMALIZATION_RULES_20260328.md`
 - 总路线图：`OpenEmotion/roadmap/SELF_AWARE_EXECUTION_MASTER_PLAN_20260328.md`
+- 当前阶段重算：`OpenEmotion/roadmap/SELF_AWARE_CURRENT_STATE_RECOMPUTE_20260328.md`
+- 机器可读状态：`OpenEmotion/roadmap/self_aware_normalized_state.json`
 - 逐步任务：
   - `Tasks/active/SELF_AWARE_STEP_00_normalization_layer.md`
   - `Tasks/active/SELF_AWARE_STEP_01_current_state_recompute.md`

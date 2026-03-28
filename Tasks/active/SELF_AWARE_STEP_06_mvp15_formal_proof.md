@@ -24,8 +24,8 @@ status: pending
 ## authority_source
 
 - `OpenEmotion/roadmap/versions/MVP15.spec.yaml`
-- `OpenEmotion/docs/mvp15/*`
-- `OpenEmotion/tests/mvp15/*`
+- `OpenEmotion/docs/mvp15/`
+- `OpenEmotion/tests/mvp15/`
 
 ## current_layer
 
@@ -53,4 +53,3 @@ main_chain_status: 启用
 ## next_minimal_closure_action
 
 补一条完整的 reflection causal chain，并定义 admission 可接受的最小证据包。
-

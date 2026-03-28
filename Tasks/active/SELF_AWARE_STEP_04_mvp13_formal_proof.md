@@ -24,8 +24,8 @@ status: pending
 ## authority_source
 
 - `OpenEmotion/roadmap/versions/MVP13.spec.yaml`
-- `OpenEmotion/docs/mvp13/*`
-- `OpenEmotion/tests/mvp13/*`
+- `OpenEmotion/docs/mvp13/`
+- `OpenEmotion/tests/mvp13/`
 
 ## current_layer
 
@@ -55,4 +55,3 @@ main_chain_status: 启用
 ## next_minimal_closure_action
 
 设计并执行一条“干预 self-model -> 后续行为变化”的 formal proof 样本链。
-
