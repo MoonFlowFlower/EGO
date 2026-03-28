@@ -59,7 +59,13 @@ status: pending
 
 ### Step 3: 开始执行
 
-根据模板中的阶段推进，每完成一个阶段更新状态。
+根据模板中的闭环推进，每完成一个阶段更新状态：
+
+1. `Spec`
+2. `Author`
+3. `Reviewer`
+4. `Verifier`
+5. `Publisher`
 
 ---
 
@@ -76,7 +82,7 @@ cp Tasks/templates/layer1_quick_fix.md Tasks/active/20260323-L1-fix-typo.md
 ```yaml
 task_id: L1-20260323-001
 owner: "claude"
-status: in_progress
+status: spec_ready
 ```
 
 ```markdown
@@ -93,7 +99,7 @@ status: in_progress
 | README.md | 45 | s/拼写错误/正确拼写/ | typo |
 ```
 
-执行 → 提交 → 标记完成
+Spec → Author → Reviewer → Verifier → Publisher
 
 ---
 
@@ -111,7 +117,7 @@ owner: "claude"
 layer: 2
 type: functional
 target_repo: EgoCore
-status: in_progress
+status: spec_ready
 ```
 
 ```markdown
@@ -129,10 +135,11 @@ main_chain_status: planning
 ```
 
 按阶段执行：
-1. **Stage 1: 规划** → 更新文档
-2. **Stage 2: 实现** → 修改代码，更新文档
-3. **Stage 3: 验收** → 运行测试，更新文档
-4. **完成声明** → 标记完成，归档
+1. **Spec** → 写清 authority source、成功判据、最小验收路径
+2. **Author** → 做最小必要改动
+3. **Reviewer** → findings-first 自 review
+4. **Verifier** → 跑最低门与对应回归
+5. **Publisher** → 只在 `review_passed + verify_passed` 后提交与推送
 
 ---
 
@@ -171,13 +178,18 @@ Agent(
 ```
 pending
   ↓
-in_progress
+spec_ready
+  ↓
+author_done
+  ↓
+review_passed
+  ↓
+verify_passed
+  ↓
+published
   ↓
   ├─ blocked（遇到阻塞）→ 添加 blocked_by → 解决后恢复
-  ↓
-handed_off（如需接力）→ 填写 HANDOFF 区
-  ↓
-completed
+  ├─ handed_off（如需接力）→ 填写 HANDOFF 区
   ↓
 archived（移动到 Tasks/archive/）
 ```
@@ -191,6 +203,7 @@ archived（移动到 Tasks/archive/）
 3. **Update as you go**：边做边更新，不要最后补
 4. **Handoff clear**：交接时必须填写 HANDOFF 区
 5. **Grade honestly**：方案等级如实标注（formal/transitional/temporary）
+6. **Findings first**：自 review 和 verify 先写发现项，再给通过结论
 
 ---
 

@@ -2,7 +2,7 @@
 
 > 适用：跨 EgoCore + OpenEmotion 的架构改动、新 Kernel 版本、边界调整
 > 预期耗时：4 小时 - 多天
-> 执行方式：规划者 → [worktree隔离]执行者 → [worktree]验收者
+> 执行方式：`Full Spec -> (OpenEmotion Author/Reviewer) -> (EgoCore Author/Reviewer) -> Verifier -> Publisher`
 
 ---
 
@@ -15,7 +15,7 @@ owner: "规划者"
 layer: 3
 type: dual_repo  # dual_repo/boundary_fix/architecture
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: pending  # pending/spec_ready/author_done/review_passed/verify_passed/published
 ```
 
 ---
@@ -102,7 +102,7 @@ trigger_evidence: none
 
 ---
 
-### Stage 2: OpenEmotion 实现（执行者 A，worktree）
+### Stage 2: OpenEmotion Author（执行者 A，worktree）
 
 ```yaml
 agent:
@@ -118,6 +118,12 @@ agent:
 - [ ] 接口文档
 - [ ] 自测报告
 
+#### OpenEmotion Reviewer
+- [ ] authority source 与 schema 未漂移
+- [ ] 未让 OpenEmotion 偷做 EgoCore runtime 治理
+- [ ] contract / schema / docs 已同步
+- [ ] 自 review 未发现阻断项
+
 #### 交接
 ```yaml
 HANDOFF:
@@ -129,7 +135,7 @@ HANDOFF:
 
 ---
 
-### Stage 3: EgoCore Adapter（执行者 B，worktree）
+### Stage 3: EgoCore Author（执行者 B，worktree）
 
 ```yaml
 agent:
@@ -144,9 +150,15 @@ agent:
 - [ ] Contract guard 更新
 - [ ] 双仓联动测试
 
+#### EgoCore Reviewer
+- [ ] 未在 adapter/prompt 发明 OpenEmotion 语义字段
+- [ ] 未把 shim/fallback 偷升成正式主链
+- [ ] 双仓接口契约仍唯一
+- [ ] 自 review 未发现阻断项
+
 ---
 
-### Stage 4: E2E 验证（验收者，worktree）
+### Stage 4: Verifier（验收者，worktree）
 
 ```yaml
 agent:
@@ -160,6 +172,18 @@ agent:
 - [ ] Gate B: E2E 主链可触发
 - [ ] Gate C: Preflight / replay 通过
 - [ ] 真实触发证据已收集
+- [ ] contract/schema gate 已通过
+- [ ] cross-repo compatibility gate 已通过
+- [ ] adapter/runtime 回归已通过
+
+---
+
+### Stage 5: Publisher
+
+- [ ] `review_passed`
+- [ ] `verify_passed`
+- [ ] 提交范围干净
+- [ ] 按 `code/mainline -> docs -> evidence` 拆分
 
 ---
 
@@ -172,6 +196,7 @@ stage_status:
   egocore_adapter: pending
   e2e_verify: pending
   handoff_ready: false
+  publish_ready: false
 
 evidence:
   planning_doc: "Tasks/L3-XXX-design.md"
@@ -196,6 +221,7 @@ commit_hash_emotion: ""
 solution_grade: formal
 next_action: observe
 observation_period: 7d
+status: published
 ```
 
 ---

@@ -7,7 +7,7 @@
 1. **选择模板**：根据任务类型选择对应模板
 2. **复制创建**：复制到 `Tasks/active/` 目录，按命名规范重命名
 3. **填充信息**：按模板字段填写
-4. **阶段推进**：每完成一个阶段更新状态
+4. **闭环推进**：默认按 `Spec -> Author -> Reviewer -> Verifier -> Publisher` 推进
 5. **最终归档**：完成后移动到 `Tasks/archive/`
 
 ## 模板清单
@@ -36,10 +36,16 @@ Tasks/active/
 ## 状态流转
 
 ```
-pending → in_progress → [blocked] → completed → archived
-               ↓
-           handed_off → [next_owner]
+pending → spec_ready → author_done → review_passed → verify_passed → published → archived
+                                ↓
+                      blocked / handed_off
 ```
+
+默认规则：
+
+- `review_passed` 前，不报可交付
+- `verify_passed` 前，不自动推远端
+- 真实主链证据缺失时，只能报条件性完成
 
 ## 接力信号
 

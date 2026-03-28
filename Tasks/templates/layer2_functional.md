@@ -2,7 +2,7 @@
 
 > 适用：功能实现、单模块改动、接口调整、测试补充
 > 预期耗时：30 分钟 - 4 小时
-> 执行方式：规划 → 实现 → 验收（文档接力，同一会话或单 subagent）
+> 执行方式：`Spec Lite -> Author -> Reviewer -> Verifier -> Publisher`
 
 ---
 
@@ -15,7 +15,8 @@ owner: "负责人"
 layer: 2
 type: functional  # functional/verify/refactor
 target_repo: EgoCore  # EgoCore/OpenEmotion/Dual
-status: pending
+status: pending  # pending/spec_ready/author_done/review_passed/verify_passed/published
+risk_level: medium  # low/medium/high
 ```
 
 ---
@@ -78,7 +79,7 @@ trigger_evidence: none
 
 ## 阶段规划
 
-### Stage 1: 规划（10分钟）
+### Stage 1: Spec（10分钟）
 
 #### 入口检查
 - [ ] 已读 `00_MASTER_INDEX.md`
@@ -105,7 +106,7 @@ trigger_evidence: none
 
 ---
 
-### Stage 2: 实现（主要耗时）
+### Stage 2: Author（主要耗时）
 
 #### 修改文件清单
 | 文件路径 | 修改类型 | 影响范围 | 风险 |
@@ -125,12 +126,45 @@ trigger_evidence: none
 
 ---
 
-### Stage 3: 验证（必须）
+### Stage 3: Reviewer（必须，findings-first）
+
+#### 阻断发现
+- [ ] 无
+
+#### 固定检查项
+- [ ] authority source 未改错
+- [ ] 未引入双重真相源
+- [ ] 未把 shim/mirror/cache/fallback 偷升成正式主链
+- [ ] 不存在“测试能过但主链未接入”的伪完成
+- [ ] 已补对应测试、文档、evidence 或明确说明为何暂缺
+- [ ] 未把无关日志、state、临时样本、运行噪声带进提交
+
+#### Review 记录
+| 发现 | 严重度 | 处理状态 | 备注 |
+|------|--------|----------|------|
+| | blocker/warn/info | fixed/open | |
+
+#### Review 结论
+```
+自 review 未发现阻断项 / 已修复以下阻断项：
+```
+
+---
+
+### Stage 4: Verifier（必须）
 
 #### 验证层级
 - [ ] Gate A: Contract 正确
 - [ ] Gate B: E2E 主链可触发
 - [ ] Gate C: Preflight / tool / runtime / replay 校验通过
+
+#### 验证门匹配
+- [ ] 最低门：`py_compile` / 导入检查 / 脚本语法
+- [ ] 最低门：改动相关最小测试集
+- [ ] 若为 Telegram 主链：按 `TELEGRAM_TEST_PROCESS.md` 匹配层级测试
+- [ ] 若为 Telegram 主链：`EgoCore/tools/run_telegram_mainline_regression.sh`
+- [ ] 若触及 contract/runtime：补合同步门
+- [ ] 若为真实故障修复：先 replay 复现，再修，再复跑最低回归门
 
 #### 测试覆盖
 | 测试类型 | 测试文件 | 结果 |
@@ -147,6 +181,23 @@ trigger_evidence: none
 
 ---
 
+### Stage 5: Publisher
+
+#### 发布门槛
+- [ ] Spec 已清楚
+- [ ] Reviewer 无阻断发现
+- [ ] Verifier 已通过对应门
+- [ ] 提交范围干净，只包含本轮正式内容
+
+#### 提交拆分计划
+| 提交类型 | 是否需要 | 备注 |
+|----------|----------|------|
+| code/mainline | | |
+| docs/observation/index | | |
+| evidence bundles | | |
+
+---
+
 ## 完成声明
 
 ```yaml
@@ -158,6 +209,7 @@ trigger_evidence: "日志/Telegram E2E"
 commit_hash: ""
 solution_grade: formal  # formal/transitional/temporary/assumption
 next_action: observe  # 观察期
+status: published
 ```
 
 ---

@@ -2,7 +2,7 @@
 
 > 适用：紧急修复、单文件改动、文档更新、typo 修复
 > 预期耗时：5-30 分钟
-> 执行方式：单会话直接完成
+> 执行方式：`Spec Lite -> Author -> Reviewer -> Verifier -> Publisher`
 
 ---
 
@@ -14,7 +14,7 @@ created_at: "2026-03-23T10:00:00Z"
 owner: "负责人"
 layer: 1
 type: quick_fix
-status: pending  # pending/in_progress/completed
+status: pending  # pending/spec_ready/author_done/review_passed/verify_passed/published
 ```
 
 ---
@@ -42,25 +42,56 @@ status: pending  # pending/in_progress/completed
 
 ---
 
-## 执行记录
+## Spec Lite
 
-### 阶段 1: 定位（5分钟）
+| 项目 | 内容 |
+|------|------|
+| authority source | |
+| 当前层级 | |
+| 变更分类 | 根因修复 / 临时缓解 / 观察增强 |
+| 最小验收路径 | |
+| 回退动作 | |
+
+## Author
+
 ```
 发现位置：
 问题原因：
+最小修改：
 ```
 
-### 阶段 2: 修复（10分钟）
+## Reviewer（findings-first）
+
+### 阻断发现
+- [ ] 无
+
+### 固定检查项
+- [ ] authority source 未改错
+- [ ] 未引入双重真相源
+- [ ] 未把 fallback/shim 偷升成正式主链
+- [ ] 未遗漏对应测试/文档/回退口径
+- [ ] 未把无关日志、state、运行噪声带进提交
+
+### Review 结论
 ```
-修改内容：
-验证方式：
+自 review 未发现阻断项 / 发现问题并已修复：
 ```
 
-### 阶段 3: 验证（5分钟）
+## Verifier
+
 ```
-自测结果：
-是否有副作用：
+语法/导入检查：
+最小验证动作：
+结果：
+副作用：
 ```
+
+## Publisher
+
+- [ ] review_passed
+- [ ] verify_passed
+- [ ] 提交范围干净
+- [ ] 可以自动推远端
 
 ---
 
@@ -71,6 +102,7 @@ completed_at: ""
 verified_by: ""  # 自测/他测
 commit_hash: ""
 next_action: none  # 无后续
+status: published
 ```
 
 ---
@@ -80,5 +112,6 @@ next_action: none  # 无后续
 - [ ] 只改了必要的文件
 - [ ] 没有引入新依赖
 - [ ] 没有修改边界文件
+- [ ] 自 review 已完成
 - [ ] 自测通过
 - [ ] 无需文档更新
