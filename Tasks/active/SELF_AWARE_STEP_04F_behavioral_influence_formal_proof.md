@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -34,13 +34,14 @@ status: pending
 
 ```yaml
 current_layer: verification
-main_chain_status: formal owner contract converged; owner-backed decision surface established; behavioral influence proof pending
+main_chain_status: owner-backed behavioral influence established on the emotiond decision mainline; stage pass still not claimed
 ```
 
 ## required_artifacts
 
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_04E_EXECUTION_REPORT_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_04E_REVIEW_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_04F_REVIEW_20260329.md`
 - `OpenEmotion/docs/mvp13/SELF_MODEL_STATE_SCHEMA.md`
 
 ## required_tests
@@ -62,10 +63,9 @@ publisher_required: true
 
 ## promotion_blockers
 
-- E4 behavioral influence 证据尚未建立
-- downstream decision change 还未形成 paired intervention/control 证据链
-- MVP13 stage pass 仍未满足 `behavioral_influence_e4_proven`
+- long-stage / Stage 4 admission 仍未建立
+- MVP15 formal proof 仍未完成，`OE_MVP:16` 继续 blocked
 
 ## next_minimal_closure_action
 
-先定义一条最小 paired harness：固定 base scores、干预 `confidence_by_domain["action:<action>"]`、比较同一 target 上的主链 action selection 变化。
+本步已完成并发布；下一步切到 `SELF_AWARE_STEP_05_mvp14_formal_proof.md`。

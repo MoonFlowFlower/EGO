@@ -30,7 +30,7 @@
 - `execution_target = OE_MVP:16`
 - `execution_phase = Open Developmental Self`
 - `execution_state = blocked`
-- `block_reason = mvp13_behavioral_influence_and_mvp15_formal_proof_not_proven`
+- `block_reason = mvp15_formal_proof_not_proven`
 
 ### 2.3 宿主承载层
 
@@ -59,7 +59,7 @@
 以下能力只能视为当前临时上界，不得当作整阶段通过：
 
 - `OE_MVP:12 = component-level verified but stage unproven`
-- `OE_MVP:13 = component-level verified on shadow/main-chain self-model path; formal owner contract is converged, owner-backed decision surface is established, but behavioral influence and stage pass remain unproven`
+- `OE_MVP:13 = component-level verified on shadow/main-chain self-model path; formal owner contract is converged, owner-backed behavioral influence is now proven on the emotiond decision mainline, but long-stage admission is still not claimed`
 - `OE_MVP:14 = shadow_running`
 - `OE_MVP:15 = shadow_running`
 - `OE_MVP:16 = blocked`
@@ -97,7 +97,7 @@
 
 - 细粒度 `verified_e2e` 只解释为 **component-level / subchain-level verified**
 - 整阶段是否 `passed` 仍以版本 spec 与 blocker 口径裁定
-- 所以 `OE_MVP:13` 当前只能记为“shadow/main-chain wiring、component proof、formal owner contract convergence 与 owner-backed decision surface 已证，但 behavioral proof 仍未完成，未达到整阶段 formal pass”
+- 所以 `OE_MVP:13` 当前可记为“shadow/main-chain wiring、component proof、formal owner contract convergence、owner-backed decision surface 与 behavioral influence proof 已证，但这仍不自动等于长期 Stage 4 passed”
 
 ---
 
@@ -153,6 +153,7 @@
 - 当前执行目标仍是 `OE_MVP:16`
 - 当前执行状态仍是 `blocked`
 - `MVP12-15` 不能因局部验证或 shadow 状态而视为整阶段通过
+- `MVP13 behavioral influence` 已在 emotiond decision mainline 上拿到正式 paired proof
 
 ### 不可宣称
 
@@ -167,4 +168,4 @@
 
 唯一最高优先级动作：
 
-**执行 `SELF_AWARE_STEP_04F_behavioral_influence_formal_proof.md`，并且继续强制走 `Independent Reviewer -> Verifier`；该动作属于 component-proof 序列推进，不等于长期正式阶段已升级。**
+**执行 `SELF_AWARE_STEP_05_mvp14_formal_proof.md`，并继续强制走 `Independent Reviewer -> Verifier`；该动作表示 component-proof 序列进入 `MVP14`，不等于长期正式阶段已升级。**
