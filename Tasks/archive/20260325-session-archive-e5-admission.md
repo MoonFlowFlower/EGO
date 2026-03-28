@@ -32,3 +32,19 @@
 
 ## 备注
 - 本文件是本地会话归档，不替代正式报告与 artifacts
+
+## 后续补充（2026-03-27）
+
+- 这次归档中的“`E5 准入通过，可进入观察期`”仍然成立，但已不代表当前最新观察结论。
+- 后续真实观察已进一步拿到：
+  - `/new continuity` 的完整正样本链：`A1/A2/A3 -> /new -> B1`
+  - `猫娘流程` 在多次 `/new` 后持续命中同一 `profile_rule` 的真实链
+  - `restart continuity` 的跨证据链正证据：真实重启日志 + post-restart 命中样本
+- 当前最新正式口径应以下列观察文档为准，而不是只停在“准入通过”：
+  - `artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`
+  - `artifacts/mvs_e5_observation/OBSERVATION_SAMPLE_INDEX.md`
+  - `artifacts/mvs_e5_observation/DEVELOPMENTAL_ADMISSION_REVIEW.md`
+- 最新 blocker：
+  - `restore` 仍缺
+  - post-restart 命中样本仍不是完整单样本 E4 bundle
+  - 因此不能宣称 `E5 稳定成立` 或 `Developmental Self` 准入通过

@@ -2,6 +2,24 @@
 
 一个轻量级、独立的 Agent Runtime，专注 Telegram 单 Agent 任务执行。
 
+## 当前权威状态（2026-03-27）
+
+- **Telegram 正式主线**：`telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
+- **Proto-Self 当前主线状态**：真实 Telegram 已完成 P4 family/repair 收口
+  - `tool:file` blocked / success 已在真实样本中同 family、不同 identity
+  - 首次 retry-success 已点亮 `repair_closure=true`
+- **MVS E5 观察状态**：`/new continuity` 与 `restart continuity` 已有强真实正证据
+  - 显式默认规则已在真实链路中进入 `profile_memory`，并在多次 `/new` 后继续命中
+  - `restart continuity` 已有真实重启日志 + post-restart 命中样本的跨证据链正证据
+  - 当前仍不能宣称 `E5 稳定成立`；`restore` 仍是最高优先级缺口
+- **权威入口**
+  - `docs/PROGRAM_STATE_UNIFIED.yaml`
+  - `docs/00_MASTER_INDEX.md`
+  - `../artifacts/closure_repair_fix/CLOSURE_REPAIR_FIX_REPORT.md`
+  - `../artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`
+
+> 下方 Phase / P3 / shadow observation 表格保留为历史治理基线，不再单独代表当前最新主链验收前沿。
+
 ## 当前正式主体链
 
 | 组件 | 类型 | 状态 |
@@ -53,9 +71,9 @@
 | P3-C | runtime_metricsAggregator dry-run | ✅ 完成 |
 | P3-D | runtime_metricsAggregator 正式接主链 | ✅ 完成 |
 
-### Runtime Metrics Shadow Observation
+### 历史治理基线：Runtime Metrics Shadow Observation
 
-**状态**: ⏳ 观察中 (Day 1/14, 2026-03-14 → 2026-03-28)
+**状态说明**: 历史 shadow 观测轨道；当前最新主链验收口径以上方“当前权威状态”为准。
 
 **目标**: 收集 shadow 指标，评估 pilot 模式切换条件。
 

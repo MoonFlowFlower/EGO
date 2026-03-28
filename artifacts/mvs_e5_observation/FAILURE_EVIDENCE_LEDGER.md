@@ -11,7 +11,7 @@
 
 | 类别 | 数量 |
 |---|---|
-| evidence 缺项 / 不完整 | `23` |
+| evidence 缺项 / 不完整 | `29` |
 | 真实 blocked 工具样本（完整） | `3` |
 | 观察窗口内已确认 host semantic theft | `0` |
 | 观察窗口内已确认 OpenEmotion 越权输出 | `0` |
@@ -52,6 +52,12 @@
 | `sample_20260326_222703_9e2bb07b` | 已归因 | `normalized_event.json`, `openemotion_result.json` |
 | `sample_20260326_223755_238449d4` | 已归因 | `normalized_event.json`, `openemotion_result.json` |
 | `sample_20260326_223842_b8d9e1f2` | 已归因 | `normalized_event.json`, `openemotion_result.json` |
+| `sample_20260327_192938_6895514d` | 已归因 | `normalized_event.json`, `openemotion_result.json`, `openemotion_trace.jsonl` |
+| `sample_20260327_193003_4f89937d` | 已归因 | `normalized_event.json`, `openemotion_result.json`, `openemotion_trace.jsonl` |
+| `sample_20260327_193014_7167c17b` | 已归因 | `normalized_event.json`, `openemotion_result.json`, `openemotion_trace.jsonl` |
+| `sample_20260327_193039_11781ed8` | 已归因 | `normalized_event.json`, `openemotion_result.json`, `openemotion_trace.jsonl` |
+| `sample_20260327_193918_e117da7e` | 已归因 | `normalized_event.json`, `openemotion_result.json`, `openemotion_trace.jsonl` |
+| `sample_20260327_194005_25c165d3` | 已归因 | `normalized_event.json`, `openemotion_result.json`, `openemotion_trace.jsonl` |
 
 ## B. 真实 blocked / failure 业务样本
 
@@ -68,5 +74,5 @@
 这份账本说明：
 
 - 本轮不是“只有成功样本”的观察
-- 但 `23/58` 的缺项比例仍过高，足以构成正式准入阻塞
+- 2026-03-27 新增了一批 continuity 样本，其中 `/new` 与 `restart continuity` 都有新增正证据；但 `29/89` 的缺项比例仍过高，足以构成正式准入阻塞
 - 在这些 gap 被压低前，不应把结论升级成 `E5 稳定成立`

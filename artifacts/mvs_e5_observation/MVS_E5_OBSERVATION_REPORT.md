@@ -37,11 +37,15 @@
 
 ## 真实触发证据
 
-- 观察窗口真实样本总数：`58`
-- 观察窗口内完整 evidence bundle 样本：`35`
-- 观察窗口内缺项 / 不完整样本：`23`
+- 观察窗口真实样本总数：`89`
+- 观察窗口内完整 evidence bundle 样本：`60`
+- 观察窗口内缺项 / 不完整样本：`29`
 - 覆盖日期：`2026-03-26`、`2026-03-27`
 - 关键样本：
+  - `sample_20260327_172843_9dd30fcf`：真实 `/new` 命令样本，`raw_update=/new`，`event_id=telegram:dm:8420019401_cmd_2012`
+  - `sample_20260327_181726_a0a60957` + `sample_20260327_181836_c62ec4ab` + `sample_20260327_181902_1981805c`：`A1/A2/A3 -> /new -> B1` continuity probe 已形成完整真实样本链，证明 `/new` 后显式“雪松流程”默认策略至少一次被保留并调用
+  - `sample_20260327_192938_6895514d` + `sample_20260327_193003_4f89937d` + `sample_20260327_193011_ba85afe6` + `sample_20260327_193014_7167c17b` + `sample_20260327_193036_85bb0b22` + `sample_20260327_193039_11781ed8`：`猫娘流程` 在多次 `/new` 后持续命中同一条 `profile_rule_b811ed8829dcdc68`
+  - `scripts/restart_egocore.sh --telegram` 输出（`2026-03-27 19:39:39 CST -> 19:39:48 CST`, `PID 2586 -> 2657`）+ `sample_20260327_194005_25c165d3`：`restart continuity` 跨证据链正证据；重启后 `A3` 再次命中 `profile_rule_b811ed8829dcdc68`
   - `sample_20260326_232655_3f3f89cb`：`tool:file blocked`
   - `sample_20260326_232715_271e229b`：首次 retry-success，`repair_closure=true`
   - `sample_20260326_232738_49b65b2e`：重复 success，不重复误点 repair
@@ -51,6 +55,10 @@
 ## 当前确定项
 
 - P4 修复后的 `same-family` 与 `repair_closure` 在真实 Telegram 样本中仍成立。
+- 已拿到 `/new` 的直接真实样本，且 session 宿主审计记录 `last_reset.command="/new"`。
+- 已拿到完整 `A1/A2/A3 -> /new -> B1` 真实样本链，且 `B1` 的 `policy_hint` / `response_tendency` 继续命中高风险“雪松流程”默认策略。
+- 已拿到 `猫娘流程` 的真实 `profile_memory` 命中 metadata：`authority_source=profile_memory`、`matched_rule_ids`、`rule_enforcement` 已进入 host pre-runtime 样本。
+- 已拿到 `restart continuity` 的跨证据链正证据：真实重启日志可证明进程重建，重启后第一组相关 probe 继续命中同一 `profile_rule`。
 - 窗口内至少覆盖了 `chat/reply`、`tool success`、`tool blocked`、`failure -> repair -> success`、`重复相似任务` 五类真实样本。
 - `session.json` 与 `thread.json` 显示 thread continuity 与 reset-preserve-agent-global 仍在。
 - OpenEmotion 边界没有观察到越权证据；宿主侧无新增 family/repair 语义偷渡。
@@ -62,10 +70,10 @@
 
 | 判据 | 结论 | 证据摘要 |
 |---|---|---|
-| O1 身份连续性 | `部分通过` | `session.json`/`thread.json` 证明 thread 与 agent-global continuity；但窗口内没有 `/new` / `restart` / `restore` 的直接真实样本，且 `identity` 本体状态仍接近空壳，不能报完整通过。 |
-| O2 经历可塑性 | `部分通过，偏弱` | `response_tendency` 只有 `explore / prioritize_closure / clarify_or_repair` 三类；blocked 链能把 `self_model.current_mode` 推到 `repair`，但跨更多历史后果的稳定可塑性证据仍弱。 |
-| O3 appraisal 真因果 | `部分通过，未稳` | blocked 样本会切到 `repair/error_recovery`，但完整窗口样本里 `risk_bias` 35/35 都是 `high`，多数 appraisal 值饱和到 `1.0`，仍有“表达单一化”风险。 |
-| O4 reflection 真写回 | `部分通过，证据不足` | 失败链后出现 `repair_closure=true` 与 `current_mode=repair -> exploration` 的结构变化，但 `reflection_note` 在窗口内完全同型，尚不足以证明 reflection 本身稳定写回。 |
+| O1 身份连续性 | `部分通过（显著增强）` | 现已拿到多次 `/new` 的直接真实样本、完整 `A1/A2/A3 -> /new -> B1` continuity probe，以及 `猫娘流程` 在多次 `/new` 后继续命中同一 `profile_rule` 的真实链；再结合 `restart_egocore.sh --telegram` 的真实重启日志与 `sample_20260327_194005_25c165d3`，`restart continuity` 也已有跨证据链正证据。但 post-restart 命中样本仍非完整单样本 E4 bundle，且 `restore` 仍缺，因此不能报完整通过。 |
+| O2 经历可塑性 | `部分通过，偏弱` | `response_tendency` 现为 `prioritize_closure=35`、`explore=13`、`clarify_or_repair=4`；存在可测变化，但高风险默认策略样本进一步把输出推向 closure/cautious，跨更多历史后果的稳定可塑性证据仍弱。 |
+| O3 appraisal 真因果 | `部分通过，未稳` | blocked 样本会切到 `repair/error_recovery`，但完整窗口样本里 `risk_bias` `52/52` 都是 `high`，多数 appraisal 值仍接近饱和，仍有“表达单一化”风险。 |
+| O4 reflection 真写回 | `部分通过，证据不足` | 失败链后出现 `repair_closure=true` 与 `current_mode=repair -> exploration` 的结构变化，但 `reflection_note` 在完整窗口 `52/52` 样本里仍是同型，尚不足以证明 reflection 本身稳定写回。 |
 | O5 cycle 可重入但不污染 | `通过（窗口内）` | `tool:file` blocked / success 同 family、不同 identity；首次 retry-success 点亮 repair，重复 success 不重复误点；一般 ingress family 跨日延续。 |
 | O6 边界无越权 | `通过` | adapter 与 runtime 仍只做 normalize / invoke / audit；边界守卫测试通过，未见 OpenEmotion 直接拿执行权或 EgoCore 偷做主体语义。 |
 
@@ -73,16 +81,16 @@
 
 | 指标 | 结果 |
 |---|---|
-| M1 身份漂移统计 | 窗口内未观察到明确“无因 identity 漂移”实例；但缺少 `/new`/`restart` 样本，当前只能给“未观察到，不足以证明稳定”。 |
-| M2 response_tendency 可塑性 | `prioritize_closure=14`，`explore=13`，`clarify_or_repair=2`；存在变化，但变化幅度仍有限。 |
+| M1 身份漂移统计 | 窗口内未观察到明确“无因 identity 漂移”实例；`/new` 直接样本现已多次出现，且新增 `猫娘流程` 在多次 `/new` 后连续命中的真实链；`restart` 现也已有“真实重启日志 + post-restart A3 命中”的跨证据链正证据。但 `restore` 仍缺，且 post-restart 命中样本仍不完整，因此当前仍只能给“未观察到，仍未充分证明稳定”。 |
+| M2 response_tendency 可塑性 | `prioritize_closure=35`，`explore=13`，`clarify_or_repair=4`；存在变化，但高风险默认策略样本进一步放大了 closure 倾向。 |
 | M3 repair 统计 | 完整 success 样本 `4`，完整 blocked 样本 `3`，`repair_closure=true` 命中 `1` 次；重复 success 未重复误触发 repair。 |
 | M4 cycle 统计 | 完整 `tool:file` 样本形成稳定 family；`ingress:user_request` 一般 family 跨 `2026-03-26` 到 `2026-03-27` 延续；窗口内未见明确 pollution 实例。 |
-| M5 边界 / 审计统计 | 观察窗口样本 `58` 中完整 `35`、缺项 `23`；host semantic theft 观察值 `0`，OpenEmotion 越权输出观察值 `0`，但 replay/audit 缺项仍显著。 |
+| M5 边界 / 审计统计 | 观察窗口样本 `89` 中完整 `60`、缺项 `29`；host semantic theft 观察值 `0`，OpenEmotion 越权输出观察值 `0`，但 host pre-runtime 直回样本仍导致 replay/audit 缺项显著。 |
 
 ## 当前关键未知
 
 - 经过 `3-7` 天窗口后，O1-O4 是否仍能维持当前判断，而不是一次性短窗现象。
-- `/new`、`restart`、`restore` 场景下 identity continuity 是否仍成立。
+- `restart continuity` 现虽已有跨证据链正证据，但 post-restart 命中样本仍不是完整单样本 E4 bundle；`restore` 仍完全缺失。
 - reflection 是否能在更丰富失败链上稳定写回，而不只是 repair 相关链路偶然同现。
 - appraisal / plasticity 是否会继续维持“变化存在但偏弱”的状态。
 
@@ -97,6 +105,6 @@
 
 先补足阻塞项，再重开正式观察窗口：
 
-1. 优先补 `/new` / `restart` / `restore` 真实样本。
-2. 把窗口内剩余 `23` 个 evidence gap 继续补齐，重点修 collector 时序，而不是再靠 session/thread 旁证。
+1. 优先补 `restore` 真实样本；`restart continuity` 已可跨证据链入账，但 `restore` 仍是 O1 唯一未触达的正式缺口。
+2. 把窗口内剩余 `29` 个 evidence gap 继续补齐，重点修 collector 时序，而不是再靠 session/thread 旁证。
 3. 针对 plasticity / reflection 做一轮定向真实样本采集，再复评是否可转入下一阶段。

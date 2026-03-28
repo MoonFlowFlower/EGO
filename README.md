@@ -2,25 +2,43 @@
 
 EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmotion（主体内核）。
 
-## 当前状态
+## 当前权威状态
 
-**Proto-Self Kernel v1** 已完成主链基础接线，并形成当前最高到 E5 准入的证据：
-- ✅ Cycle 聚合机制正常工作
-- ✅ Reflection 机制正常工作
-- ✅ 高风险操作与低风险操作被正确区分
-- ✅ `safety_context.risk` 从 EgoCore 正确传递到 OpenEmotion
-- ✅ **真实 Telegram 已满足 E5 准入门槛，可进入 E5 观察期**
+截至 2026-03-27，当前入口口径统一如下：
 
-**EgoCore Telegram 宿主主链** 当前正式口径：
-- `Telegram Adapter -> Host Bridge -> NativeToolCallingLoop -> OpenEmotion hooks -> Delivery`
-- 旧 `runtime_v2` 保留为 fallback，不再是 Telegram 首选执行协议
-- 2026-03-26 起，native 主链已接入最小 `Contract Lock -> Next Step -> Verify -> Re-lock`
-- 当前代码证据：`EgoCore/app/agent_core/contract_runtime.py`
-- 当前测试门：`EgoCore/tests/test_contract_runtime.py`、`EgoCore/tests/test_native_loop_contract_runtime.py`、`EgoCore/tools/run_telegram_mainline_regression.sh`
-- 当前事件链：`contract_locked`、`next_step_decided`、`step_verified`、`need_relock`
-- 当前证据等级：代码与本地回归已通过；真实 Telegram 样本需继续补齐后，才升口径到“样本级生效”
+- **Proto-Self Kernel v1** 已完成真实 Telegram 主链接入，并完成 P4 真链修复
+  - `tool:file` blocked / success 已在真实样本中同 family、不同 identity
+  - 首次 retry-success 已在真实样本中点亮 `repair_closure=true`
+- **MVS E5 观察状态**：已拿到 `/new continuity` 与 `restart continuity` 的强真实正证据
+  - 显式默认规则现已在真实链路中由 `profile_memory` 持久化并在多次 `/new` 后继续命中
+  - `restart continuity` 已有“真实重启日志 + post-restart 命中样本”的跨证据链正证据
+  - 当前仍不能宣称 `E5 稳定成立` 或 `Developmental Self` 准入通过；`restore` 仍是最高优先级缺口
+- **EgoCore Telegram 正式主线** 是：
+  - `telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
+  - 旧 `runtime_v2` 保留为兼容/桥接层，不再是 Telegram 当前正式执行口径
+- **最新报告**
+  - `artifacts/closure_real_evidence/CLOSURE_REAL_EVIDENCE_REPORT.md`
+  - `artifacts/closure_repair_fix/CLOSURE_REPAIR_FIX_REPORT.md`
+  - `artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`
+  - `artifacts/mvs_e5_observation/OBSERVATION_SAMPLE_INDEX.md`
+  - `artifacts/mvs_e5_observation/TARGETED_CAPTURE_PLAN.md`
+  - `EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml`
+  - `PROJECT_MEMORY.md`
 
 ## 最近更新
+
+### 2026-03-27: MVS E5 观察收口推进
+- `显式默认规则 -> profile_memory` 的真实链路已落地，并在 `猫娘流程` 样本中于多次 `/new` 后持续命中
+- `/new continuity` 已不再只靠 session/thread 旁证，而是有真实命中链与 `matched_rule_ids / authority_source=profile_memory` metadata
+- `restart continuity` 已拿到跨证据链正证据：真实重启日志 + post-restart 命中样本
+- 当前正式 blocker 已切到 `restore`，post-restart 命中样本仍不是完整单样本 E4 bundle
+- 最新观察结论以 `artifacts/mvs_e5_observation/` 下文档为准
+
+### 2026-03-26 / 2026-03-27: P3/P4 真链收口与文档对齐
+- P3 真实证据补采完成，形成 `closure_real_evidence` 报告与样本索引
+- P4 修复 `same-family drift` 与 `repair_closure` 失配
+- 新真实样本 `sample_20260326_232655_3f3f89cb` / `sample_20260326_232715_271e229b` / `sample_20260326_232738_49b65b2e` 已证明主链收口
+- 总仓公开状态已推到 `origin/main@00c7b58`
 
 ### 2026-03-25: 高风险真实样本补齐与 E5 准入复判
 - 新增 `real_telegram` 高风险命中样本 `sample_20260325_200847_4d2b5dae`
@@ -87,7 +105,9 @@ git push origin main
 2. **OpenEmotion 相关开发** → 在 OpenEmotion 源仓开发 → subtree pull 到总仓
 3. **总仓集成任务** → 直接在 EGO 总仓开发
 
-## 最近更新
+## 历史里程碑
+
+以下条目保留为历史基线，不再代表当前最新验收前沿：
 
 ### 2026-03-25: P0-R2 Risk Signal 接线
 - 修复 `safety_context.risk` 字段名不匹配问题

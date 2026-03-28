@@ -1,7 +1,7 @@
 # PROJECT_MEMORY.md
 
 > AIProject 核心记忆 - Claude Code 持续更新
-> 最后更新: 2026-03-26
+> 最后更新: 2026-03-27
 
 ---
 
@@ -72,6 +72,8 @@
 | E5 准入门槛 | 进入观察期前，至少要有 1 个完整普通 real 样本 + 1 个完整且命中高风险路径的 real 样本 |
 | Cycle 身份升级 | `cycle_id` 已从纯 `psi_bucket` 聚合升级为 closure-sensitive signature，可区分 success / failure / repair 等 closure；仍未达到 full multi-step closure graph identity |
 | P4 修复口径 | `closure_family_id` 现由 coarse `family_bucket + action_signature` 决定，不再被 `risk_high` 这类 psi 后缀拆开；真实 `tool:file` blocked -> retry success 已可点亮一次 `repair_closure=true` |
+| 显式默认规则 continuity | 显式默认规则现由 EgoCore `ProfileMemory` 持久化；`/new` 后可继续命中，且 `response_plan` 已记录 `authority_source=profile_memory`、`matched_rule_ids`、`rule_enforcement` |
+| MVS E5 当前口径 | `/new continuity` 与 `restart continuity` 已有强真实正证据，但 post-restart 命中样本仍非完整单样本 E4 bundle，`restore` 仍是最高优先级缺口；因此不能报 `E5 稳定成立` 或 `Developmental Self` 准入通过 |
 
 ---
 
@@ -105,11 +107,16 @@
 | 2026-03-25 | P1 归因修复：`EgoCore/tests/test_runtime_v2_minimal.py` 改为用 `json.dumps()` 构造 action，Windows 下最小回归恢复通过；本次修的是测试契约，不是 runtime 主链语义 |
 | 2026-03-26 | P2 Closure-Sensitive Cycle Identity 升级完成：Proto-Self `cycle_id` 不再只依赖 `psi_bucket`，trace 补齐 closure-level 字段，`openemotion/proto_self/tests` 在当前 Linux 环境下 `38 passed` |
 | 2026-03-26 | P4 真实主链 family/repair 修复完成：真实 Telegram 样本 `sample_20260326_232655_3f3f89cb` / `sample_20260326_232715_271e229b` / `sample_20260326_232738_49b65b2e` 证明 `tool:file` blocked/success 已同 family、不同 identity，且首次 retry-success 点亮 `repair_closure=true` |
+| 2026-03-27 | 总仓最新公开状态已推到 `origin/main@00c7b58`，P3/P4 报告、真实样本与文档入口已经对齐更新 |
+| 2026-03-27 | MVS E5 观察推进：`A1/A2/A3 -> /new -> B1` continuity probe 与 `猫娘流程` 多次 `/new` continuity 链均已成立，显式默认规则在真实链路中由 `profile_memory` 持久化并被再次命中 |
+| 2026-03-27 | `restart continuity` 已拿到跨证据链正证据：`restart_egocore.sh --telegram` 真实重启日志 + post-restart `A3` 命中同一 `profile_rule`；但 `restore` 仍缺，post-restart 命中样本仍非完整单样本 E4 bundle |
 
 ---
 
 ## 待办/待观察
 
+- [ ] 补 `restore continuity` 真实样本
+- [ ] 继续压 `artifacts/mvs_e5_observation` 中剩余 evidence gap
 - [ ] 持续更新此文件
 
 ---

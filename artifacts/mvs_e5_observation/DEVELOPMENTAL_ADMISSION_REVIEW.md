@@ -19,8 +19,9 @@
 ### 2. 为什么也不能报“已达到 E5”
 
 - 观察窗口只有 `2026-03-26` 与 `2026-03-27` 两个日期，仍偏短。
-- `/new` / `restart` / `restore` 类样本缺失，O1 只能部分成立。
-- `23/58` 的窗口样本 evidence 仍不完整，构成正式 `replay / audit insufficiency`。
+- 已拿到 `/new` 的直接真实样本，且新增了两组更强 continuity 证据：`A1/A2/A3 -> /new -> B1` 的完整正样本链，以及 `猫娘流程` 在多次 `/new` 后继续命中同一 `profile_rule` 的真实链。
+- `restart continuity` 现在也已有跨证据链正证据：真实重启 shell 日志 + post-restart 命中样本；但 `restore` 仍缺，且 post-restart 命中样本仍不是完整单样本 E4 bundle，因此 O1 仍只能部分成立。
+- `29/89` 的窗口样本 evidence 仍不完整，构成正式 `replay / audit insufficiency`。
 - plasticity 与 reflection 的证据存在，但仍偏弱，尚未把关键未知降到“只剩更高层扩展问题”。
 
 ## A3 若准入通过，下一阶段优先做什么
@@ -41,7 +42,7 @@
 
 补充说明：
 
-- O1 不是“已证实 identity instability”，而是“identity continuity 证据覆盖不够”
+- O1 不是“已证实 identity instability”，而是“identity continuity 证据覆盖仍不够”；当前剩余核心缺口已切到 `restore`
 - O6 不是 blocker，本轮未见明确边界回退
 
 ## 准入标准对照
@@ -59,4 +60,4 @@
 > 当前能力仍位于 `E4 / E5 边缘`。
 > MVS 主链已成立，也已经进入真实观察，但稳定性与证据覆盖仍有关键缺口。
 > 准入评审结论：`暂不允许进入 Developmental Self`。
-> 下一步唯一最高优先级动作：`修复观察阻塞项后重开观察期`。
+> 下一步唯一最高优先级动作：`将 restart continuity 正式入账，并优先补 restore 后重开观察期`。

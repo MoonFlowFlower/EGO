@@ -6,29 +6,31 @@
 |---|---|
 | 无因 identity 变动次数 | `0` 个已观察到实例 |
 | 有证据 identity 修正次数 | `0` 个明确 identity patch 证据 |
-| reset / preserve 证据 | `session.json` 显示 `reset_count=10`，且 `preserves_agent_global=true`、`preserves_thread_history=true` |
-| 直接 `/new` / `restart` / `restore` 样本 | `0` |
+| reset / preserve 证据 | 已反复观察到 `/new` reset 审计记录保留 `preserves_agent_global=true`、`preserves_thread_history=true`，且 `last_reset.command="/new"` |
+| 直接 `/new` / `restart` / `restore` 样本 | `/new` 直接真实样本已多次出现；`restart` 已有一组跨证据链正证据；`restore=0` |
 
 判断：
 
 - 可以说“未观察到明显 identity 漂移”
+- 可以说“`/new` 后显式规则 continuity 已拿到多条正样本链”
+- 可以说“`restart continuity` 已拿到跨证据链正证据”
 - 不能说“identity continuity 已被充分证明”
 
 ## M2 response_tendency 可塑性统计
 
 | 指标 | 数值 |
 |---|---|
-| 完整窗口样本数 | `35` |
-| `suggested_next_step=prioritize_closure` | `14` |
+| 完整窗口样本数 | `60` |
+| `suggested_next_step=prioritize_closure` | `35` |
 | `suggested_next_step=explore` | `13` |
-| `suggested_next_step=clarify_or_repair` | `2` |
-| `policy_hint.closure_bias=True` | `16` |
+| `suggested_next_step=clarify_or_repair` | `4` |
+| `policy_hint.closure_bias=True` | `39` |
 | `policy_hint.closure_bias=False` | `13` |
 
 解释：
 
 - 存在可测变化，说明不是完全静态输出。
-- 但变化主要集中在短期任务上下文，尚不足以证明“不同历史后果会稳定塑造下一轮倾向”。
+- 但变化仍明显向 `prioritize_closure` 倾斜，尚不足以证明“不同历史后果会稳定塑造下一轮倾向”。
 
 ## M3 repair 相关统计
 
@@ -71,8 +73,8 @@
 |---|---|
 | host semantic theft 观察值 | `0` |
 | OpenEmotion 越权输出观察值 | `0` |
-| replay / audit / trace 缺项样本 | `23` |
-| 完整 evidence bundle 样本 | `35` |
+| replay / audit / trace 缺项样本 | `29` |
+| 完整 evidence bundle 样本 | `60` |
 
 支撑：
 
@@ -83,9 +85,9 @@
 
 | 维度 | 结论 |
 |---|---|
-| O1 vs M1 | `部分通过`，主要缺 `/new` / `restart` / `restore` 直接样本 |
-| O2 vs M2 | `部分通过`，plasticity 存在但仍弱 |
+| O1 vs M1 | `部分通过（显著增强）`，`/new` 直接样本已多次补上，且已有 `/new` 后显式规则 continuity 正证据、`猫娘流程` 在多次 `/new` 后持续命中，以及 `restart continuity` 跨证据链正证据；但 `restore` 仍缺，post-restart 命中样本也仍非完整单样本 E4 bundle |
+| O2 vs M2 | `部分通过`，plasticity 存在但仍弱，且 closure 倾向进一步增强 |
 | O3 vs M2/M3 | `部分通过`，repair 链会影响输出，但 appraisal 仍偏单一化 |
-| O4 vs M3 | `部分通过`，repair 相关结构写回存在，但 reflection 因果仍不够干净 |
+| O4 vs M3 | `部分通过`，repair 相关结构写回存在，但 reflection_note 仍完全同型，reflection 因果仍不够干净 |
 | O5 vs M4 | `通过` |
 | O6 vs M5 | `通过`，但 audit insufficiency 本身阻塞准入 |

@@ -53,3 +53,18 @@
 - 只继续采集 2026-03-26 起的新真实 Telegram 主链样本
 - 成功样本与失败样本继续入 `artifacts/E5/*`
 - 不改架构，不改业务逻辑
+
+## 后续补充（2026-03-27）
+
+- 这份归档中的“E5 仍只是已启动观察期”是当时正确状态，但后续观察已继续推进。
+- 截至 `2026-03-27`，后续真实样本已经新增：
+  - `/new` 直接真实样本与 `/new continuity` 正证据
+  - `猫娘流程` 的 `profile_memory` 持久化 continuity 链
+  - `restart continuity` 的跨证据链正证据
+- 当前最新正式口径：
+  - `restart continuity` 已可正式入账，但仍不是完整单样本 E4 bundle
+  - `restore` 已成为 O1 的最高优先级缺口
+  - 仍不能宣称 `E5 已完成`、`稳定运行` 或 `Developmental Self` 准入通过
+- 最新观察入口：
+  - `artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`
+  - `artifacts/mvs_e5_observation/TARGETED_CAPTURE_PLAN.md`

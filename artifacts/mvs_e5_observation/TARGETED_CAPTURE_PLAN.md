@@ -4,7 +4,7 @@
 
 下一轮真实样本采集只做三件事：
 
-1. 补 O1 关键场景真实样本
+1. 补 O1 剩余关键场景真实样本
 2. 压 remaining evidence gap
 3. 定向补 plasticity / reflection 因果样本
 
@@ -18,31 +18,54 @@
 
 ### 场景 1: `/new`
 
+当前状态：
+
+- 已于 `2026-03-27` 拿到直接真实样本：`sample_20260327_172843_9dd30fcf`
+- 同日又新增 `/new` 样本：`sample_20260327_181702_f2b07aa4`、`sample_20260327_181836_c62ec4ab`、`sample_20260327_192917_0fb99fcd`、`sample_20260327_193011_ba85afe6`、`sample_20260327_193036_85bb0b22`、`sample_20260327_193908_691109dd`、`sample_20260327_193950_5b0f3ace`
+- 已拿到完整 `A1/A2/A3 -> /new -> B1` 正样本链，`sample_20260327_181902_1981805c` 证明 `/new` 后显式“雪松流程”默认策略仍被正确调用
+- 已拿到 `猫娘流程` 的 `profile_memory` continuity 链：`sample_20260327_192938_6895514d -> sample_20260327_193003_4f89937d -> sample_20260327_193011_ba85afe6 -> sample_20260327_193014_7167c17b -> sample_20260327_193036_85bb0b22 -> sample_20260327_193039_11781ed8`
+- 已验证 `raw_update=/new`、`event_id=telegram:dm:8420019401_cmd_2012`
+- 已验证 session reset 审计记录 `last_reset.command="/new"`
+- `/new` 命令本身与其后的一次显式规则 continuity 已有正证据，因此这里不再是最高优先级缺口
+
 步骤：
 
-1. 先在同一 Telegram 会话里发送一个普通问题
-2. 发送 `/new`
-3. 再发送一个需要 continuity 判断的问题
+1. 只有在需要补重复性时，才再做一次 `/new` continuity 复采
+2. 复采时优先复用“显式默认策略 -> `/new` -> continuity probe”的成对链路
+3. 不要再把 `/new` 当成本轮唯一最高优先级
 
 验收：
 
 - `/new` 本身产生直接真实样本
 - reset 审计记录命令名为 `/new`
-- `/new` 前后 continuity 不再只靠 `session.json` / `thread.json` 间接推断
+- `/new` 前后 continuity 已不再只靠 `session.json` / `thread.json` 间接推断
+- 若再次复采，目标是重复性，不是首次证明
 
 ### 场景 2: restart
 
+当前状态：
+
+- 已有真实重启 shell 证据：`restart_egocore.sh --telegram` 于 `2026-03-27 19:39:39 CST -> 19:39:48 CST` 完成 PID `2586 -> 2657`
+- 已有 post-restart 普通真实消息：`sample_20260327_193954_7ab41a5b`
+- 已有 post-restart continuity 命中样本：`sample_20260327_194005_25c165d3`
+- 因此 `restart continuity` 已可按跨证据链正证据入账，不再是“首次证明”缺口
+- 当前剩余问题是：post-restart 命中样本仍不是完整单样本 E4 bundle
+
 步骤：
 
-1. 在 bot 运行中发送一条普通问题
-2. 重启 EgoCore 进程
-3. 再发送 continuity 检查消息
+1. 若继续复采，优先目标不再是“证明 restart 会命中”，而是把 post-restart continuity 命中样本补成完整 bundle
+2. 复采时保留真实重启日志、post-restart 第一条普通消息、post-restart continuity probe 三段证据
+3. 不再把 restart 当作当前 O1 的第一优先级缺口
 
 验收：
 
 - restart 前后两侧都有真实 Telegram 样本
-- restart 后第一条消息形成完整 evidence bundle
-- continuity 结论来自真实消息链，而不是只看 state manifest
+- 真实重启事实可由 shell / process 证据直接确认
+- post-restart continuity 命中样本若能形成完整 bundle，则可把 restart 从“跨证据链正证据”推进到“单样本更完整”
+
+当前优先级：
+
+- 这是当前 O1 的第二优先级工作，不再是第一缺口
 
 ### 场景 3: restore
 
@@ -56,6 +79,10 @@
 
 - restore 后第一条消息形成完整样本
 - 能从真实样本直接比对 restore 前后行为，不只靠 restore audit 文件
+
+当前优先级：
+
+- 这是当前 O1 的第一优先级缺口
 
 ## Plasticity / Reflection 因果链
 

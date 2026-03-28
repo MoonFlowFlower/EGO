@@ -3,7 +3,7 @@
 > 正式验证体系文档
 > 版本：v1.0
 > 证据层级：E2-E4
-> 状态：E4 样本级已验证，E5 准入通过，待执行观察期
+> 状态：E4 样本级已验证，E5 观察进行中；`/new continuity` 与 `restart continuity` 已有强真实正证据，`restore` 仍缺
 
 ---
 
@@ -215,6 +215,31 @@ artifacts/telegram_real_mainline_v1/
 5. 把 OpenEmotion 自然语言解释当作程序消费字段
 6. 没有 E5 证据时写"关键未知为无/已完全收口/稳定运行"
 7. 把问题默认归到 OpenEmotion，不先排查 EgoCore
+
+---
+
+## 九、当前 E5 观察口径（2026-03-27）
+
+- `E4 -> E5` 准入通过这一历史结论仍成立，但当前已经不再停留在“待执行观察期”。
+- 观察期内新增的正式正证据包括：
+  - `/new` 的多次直接真实样本
+  - `A1/A2/A3 -> /new -> B1` continuity probe
+  - `猫娘流程` 在多次 `/new` 后继续命中同一 `profile_rule`
+  - `restart continuity` 的跨证据链正证据：真实重启日志 + post-restart 命中样本
+- 当前仍不能越级宣称：
+  - `E5 稳定成立`
+  - `Developmental Self` 准入通过
+  - `restore continuity` 已被证明
+- 当前正式 blocker：
+  - `restore` 仍没有直接真实样本
+  - post-restart 命中样本仍不是完整单样本 E4 bundle
+  - 观察窗口仍有显著 evidence gap
+- 当前唯一最高优先级动作：补 `restore continuity` 真实样本
+
+当前观察收口的权威入口：
+- `artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`
+- `artifacts/mvs_e5_observation/OBSERVATION_SAMPLE_INDEX.md`
+- `artifacts/mvs_e5_observation/DEVELOPMENTAL_ADMISSION_REVIEW.md`
 
 ---
 

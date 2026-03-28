@@ -1,8 +1,8 @@
 # PROGRAM_STATE_UNIFIED.yaml - EgoCore
 # 双仓共享唯一真相源
 
-ledger_version: 17
-updated_at: "2026-03-26T23:40:00Z"
+ledger_version: 19
+updated_at: "2026-03-27T20:45:00Z"
 updated_by: "Codex"
 owner: "dual-repo-program-state"
 
@@ -92,16 +92,25 @@ axes:
         note: "偏好/目标/约束/纠正写入 + 第二轮读取 + 闲聊不误写 + replay artifact"
       - ref: "PROTO_SELF_KERNEL_V1"
         state: "verified_telegram_e2e"
-        evidence: "EgoCore/artifacts/proto_self_v1/ACCEPTANCE_REPORT_CYCLE_STRENGTHEN_20260324.md"
-        verified_at: "2026-03-24T21:55:00Z"
-        note: "Cycle strengthen + external_failure reflection 已证实，hits 3→9, revision 16→30"
+        evidence: "artifacts/closure_repair_fix/CLOSURE_REPAIR_FIX_REPORT.md"
+        verified_at: "2026-03-27T05:30:00Z"
+        note: "真实 Telegram 主链已完成 P4 收口：tool:file blocked/success 同 family，首次 retry-success 已点亮 repair_closure=true"
+      - ref: "MVS_E5_OBSERVATION"
+        state: "observation_running"
+        evidence: "artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md"
+        verified_at: "2026-03-27T20:45:00Z"
+        note: "E5 观察期内已拿到 `/new continuity` 与 `restart continuity` 的强真实正证据；`restore` 仍缺，post-restart 命中样本仍非完整单样本 E4 bundle"
     substate:
       WS_A: "verified_contract"
       WS_B: "verified_contract"
       WS_C1: "verified_e2e"
       CYCLE_CORE_V1: "verified_e2e"
       PROTO_SELF_KERNEL_V1: "verified_telegram_e2e"
-    blockers: []
+      MVS_E5_OBSERVATION: "observation_running"
+    blockers:
+      - "restore_continuity_missing"
+      - "post_restart_hit_not_full_single_sample_e4_bundle"
+      - "observation_evidence_gap_still_material"
     allowed_next:
       - "C3_observation_period"
       - "monitor_shadow_mode"
@@ -171,16 +180,18 @@ axes:
 decision:
   overall_program_state: "in_progress"
   reason:
-    - "subject_axis in_progress (CYCLE_CORE_V1 verified_e2e, WS_C1 verified_e2e, PROTO_SELF_KERNEL_V1 verified_telegram_e2e)"
+    - "subject_axis in_progress (CYCLE_CORE_V1 verified_e2e, WS_C1 verified_e2e, PROTO_SELF_KERNEL_V1 verified_telegram_e2e, MVS_E5_OBSERVATION observation_running)"
     - "verification_axis shadow_running (SelfModelAdapter E2E verified, Closed Loop E2E v3 PASS)"
-  note: "PROTO_SELF_KERNEL_V1 Telegram E2E 已验证：cycle strengthen + external_failure reflection 均已证实"
+  note: "PROTO_SELF_KERNEL_V1 Telegram real mainline 已验证，且 E5 观察期已拿到 `/new continuity` 与 `restart continuity` 强真实正证据；当前 blocker 已切到 `restore` 与 evidence gap"
   closed_loop_verified: true
   proto_self_kernel_v1: "verified_telegram_e2e"
+  mvs_e5_observation: "running_with_restart_continuity_positive_restore_missing"
   forbidden_next:
     - "SELF_WS:C2"
     - "OE_MVP:17"
     - "new_subject_semantics_in_egocore"
     - "claim_WS_C1_completed_before_observation"
+    - "claim_E5_stably_resolved_before_restore_and_gap_closure"
     - "expand_Phase_C_in_egocore"
     - "expand_Phase_C2_in_egocore"
     - "add_subject_semantics_to_egocore_without_migration"
@@ -191,7 +202,7 @@ decision:
 sync_status:
   OpenEmotion_README: "aligned"
   OpenEmotion_PROGRAM_STATE: "aligned"
-  EgoCore_README: "pending_refresh"
+  EgoCore_README: "aligned"
   EgoCore_PROGRAM_STATE: "aligned"
   DUAL_REPO_STATUS_UNIFIED: "aligned"
 
@@ -214,7 +225,7 @@ host_runtime_contract:
     - "step_verified"
     - "need_relock"
   code_state: "implemented_local_and_regression_verified"
-  evidence_state: "real_telegram_sample_pending"
+  evidence_state: "real_telegram_samples_verified_p4"
   guards:
     - "single_step_only"
     - "openemotion_advisory_only"
@@ -226,6 +237,24 @@ host_runtime_contract:
 
 
 changelog:
+  - version: 18
+    updated_at: "2026-03-27T05:30:00Z"
+    updated_by: "Codex"
+    trigger: "P4 真实主链 family/repair 修复完成，并同步入口文档"
+    changes:
+      - "host_runtime_contract.evidence_state: real_telegram_sample_pending -> real_telegram_samples_verified_p4"
+      - "decision.note 同步到 P4 真链闭环状态"
+      - "sync_status.EgoCore_README: pending_refresh -> aligned"
+      - "新增入口文档刷新，避免旧 P3/P4 口径继续污染现状"
+    evidence:
+      - "artifacts/closure_repair_fix/CLOSURE_REPAIR_FIX_REPORT.md"
+      - "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_232655_3f3f89cb/"
+      - "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_232715_271e229b/"
+      - "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_232738_49b65b2e/"
+    impact:
+      - "当前公开真相源不再把 host_runtime_contract 标成 real sample pending"
+      - "README / MASTER_INDEX / PROGRAM_STATE 的入口口径重新对齐"
+
   - version: 17
     updated_at: "2026-03-26T23:40:00Z"
     updated_by: "Codex"
