@@ -156,7 +156,7 @@
 - 主入口：`OpenEmotion/docs/mvp15/MVP15_STAGE_OVERVIEW.md`
 - 目标：建立受治理的自我反思与反事实自我评估
 - 进入条件：MVP14 completed
-- 注：当前路线里，`MVP15` 已完成基础 infra、shadow artifact 诊断与 bounded mainline consumer convergence；当前剩余唯一主线是 `Step06B` behavioral relevance formal proof
+- 注：当前路线里，`MVP15` 已完成基础 infra、shadow artifact 诊断、bounded mainline consumer convergence，以及 bounded downstream behavioral relevance proof；当前下一步是 `Step07` 的 `MVP16 unblock` 重算
 - 离开条件：reflection proposals、counterfactual evaluation、replayability 达标
 - 建议读取顺序：
   1. `OpenEmotion/docs/mvp15/MVP15_STAGE_OVERVIEW.md`
@@ -169,7 +169,9 @@
   8. `OpenEmotion/roadmap/SELF_AWARE_STEP_06_EXECUTION_REPORT_20260329.md`
   9. `OpenEmotion/roadmap/SELF_AWARE_STEP_06A_EXECUTION_REPORT_20260329.md`
   10. `OpenEmotion/roadmap/SELF_AWARE_STEP_06A_REVIEW_20260329.md`
-  11. `Tasks/active/SELF_AWARE_STEP_06B_reflection_behavioral_relevance_formal_proof.md`
+  11. `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_EXECUTION_REPORT_20260329.md`
+  12. `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_REVIEW_20260329.md`
+  13. `Tasks/active/SELF_AWARE_STEP_07_mvp16_unblock.md`
 
 ### MVP16 — Open Developmental Self
 - 主入口：`OpenEmotion/docs/mvp16/MVP16_STAGE_OVERVIEW.md`

@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -37,7 +37,7 @@ status: pending
 
 ```yaml
 current_layer: verification
-main_chain_status: bounded reflection_guidance surface is present on /plan and /decision explanation, but behavioral relevance remains unproven
+main_chain_status: paired behavioral relevance is now proven on the bounded /plan and /decision explanation surfaces; stage admission remains unproven
 ```
 
 ## required_artifacts
@@ -65,10 +65,10 @@ publisher_required: true
 
 ## promotion_blockers
 
-- reflection_guidance 目前只证明 bounded consumer presence
-- behavioral relevance 还没有 paired proof
-- proposal discipline 不能在 proof harness 中被破坏
+- long-run revision utility / maintenance stability 仍未证明
+- workspace 仍不在当前 bounded convergence 目标内
+- `MVP16` unblock audit / admission separation 仍待执行
 
 ## next_minimal_closure_action
 
-设计一条受治理、可 replay、同入口 paired harness，证明 reflection / counterfactual guidance 会改变 downstream relevance，但不会取得 direct authority。
+进入 `SELF_AWARE_STEP_07_mvp16_unblock.md`，基于 `MVP12-15` 当前 formal proof 线重算 `MVP16` 的真实剩余 blocker。

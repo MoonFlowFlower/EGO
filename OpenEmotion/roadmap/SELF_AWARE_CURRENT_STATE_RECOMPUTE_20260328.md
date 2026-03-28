@@ -30,7 +30,7 @@
 - `execution_target = OE_MVP:16`
 - `execution_phase = Open Developmental Self`
 - `execution_state = blocked`
-- `block_reason = mvp15_behavioral_relevance_not_proven`
+- `block_reason = mvp16_unblock_audit_pending`
 
 ### 2.3 宿主承载层
 
@@ -157,7 +157,7 @@
 - `MVP12-15` 不能因局部验证或 shadow 状态而视为整阶段通过
 - `MVP13 behavioral influence` 已在 emotiond decision mainline 上拿到正式 paired proof
 - `MVP14` 的 owner-backed behavioral influence 已在 boundedly converged 的 emotiond decision mainline 上拿到正式 paired proof；后续剩余主 blocker 已收敛到 `MVP15`
-- `MVP15` 已从 `shadow-only` 结构推进到 bounded mainline consumer present，但 behavioral relevance 仍未拿到正式 paired proof
+- `MVP15` 已在 `/plan` 与 `/decision/target` explanation 上拿到 bounded downstream behavioral relevance paired proof，但仍只可收口为 component-level verified but stage unproven
 
 ### 不可宣称
 
@@ -172,4 +172,4 @@
 
 唯一最高优先级动作：
 
-**执行 `SELF_AWARE_STEP_06B_reflection_behavioral_relevance_formal_proof.md`，并继续强制走 `Independent Reviewer -> Verifier`；该动作表示 `MVP15` 已完成 bounded mainline convergence，后续正式 blocker 已收敛到 behavioral relevance proof。**
+**执行 `SELF_AWARE_STEP_07_mvp16_unblock.md`，重算 `MVP16 blocked` 的当前正式 blocker，并确认 admission review 还缺哪些输入。**

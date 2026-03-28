@@ -36,7 +36,7 @@
 
 - `OE_MVP:16` 是当前执行目标版本
 - `ROADMAP_STATE.json` 仍为 `blocked`
-- blocker 已收敛为 `mvp15 behavioral relevance proof gap`
+- blocker 已收敛为 `mvp16 unblock recompute pending`
 - 仓库已有大量阶段 overview、exit criteria、tests、artifacts，但缺少统一编译层与正式 spec 收口
 
 ---
@@ -179,7 +179,8 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Step 05C` 已完成并发布，正式结论为：`emotiond/drives/*` 的 owner-backed behavioral influence 已在 boundedly converged 的 emotiond decision mainline 上拿到正式 paired proof
 - `Step 06` 已完成并发布为诊断，正式结论为：`MVP15 formal proof initially blocked by shadow-only artifact path and missing mainline writeback consumer`
 - `Step 06A` 已完成并发布，正式结论为：`/plan` 与 `/decision/target` explanation 现在已接入 bounded reflection_guidance consumer surface，但 behavioral relevance 仍未证明`
-- 后续正式施工从 `Step 06B` 开始
+- `Step 06B` 已完成并发布，正式结论为：`reflection/counterfactual guidance now shows bounded downstream behavioral relevance on the current /plan and /decision/target explanation mainline surfaces while preserving proposal_only discipline and behavioral_authority = none`
+- 后续正式施工从 `Step 07` 开始
 `Step 04` 仍必须继续服从 `Step 03A` 与 `Step 03` 已落定的 scope guard。
 
 补充说明：
@@ -227,6 +228,10 @@ Step 03 开始前，先执行一个固定前置守门：
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_05C_REVIEW_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_06_EXECUTION_REPORT_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_06_REVIEW_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_06A_EXECUTION_REPORT_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_06A_REVIEW_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_EXECUTION_REPORT_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_REVIEW_20260329.md`
 
 ### 6.2 版本 spec
 

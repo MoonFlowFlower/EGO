@@ -11,7 +11,7 @@
     "note": "Daily check now correctly returns insufficient_evidence when no real data exists. Persistence-backed verification is working."
   },
   "promotion_blocked": true,
-  "block_reason": "mvp15_behavioral_relevance_not_proven",
+  "block_reason": "mvp16_unblock_audit_pending",
   "next_version": null,
   "allowed_workstreams": [
     "verification_fix",
@@ -26,7 +26,7 @@
     "observation_based_promotion"
   ],
   "active_blockers": [
-    "MVP15 reflection / counterfactual bounded mainline consumer exists, but behavioral relevance remains unproven"
+    "MVP15 bounded downstream behavioral relevance is established at component level, but MVP16 unblock recompute / admission dependency audit is still pending"
   ],
   "resolved_blockers": [
     {
@@ -46,24 +46,30 @@
       "resolved_at": "2026-03-29T22:10:00Z",
       "resolution": "Step05C established paired owner-backed drive behavioral influence on the boundedly converged emotiond /decision/target mainline while keeping emotiond/drives/* as the formal owner.",
       "repair_task": "SELF_AWARE_STEP_05C"
+    },
+    {
+      "blocker": "MVP15 reflection / counterfactual bounded mainline consumer exists, but behavioral relevance remains unproven",
+      "resolved_at": "2026-03-30T01:30:00Z",
+      "resolution": "Step06B established paired downstream behavioral relevance on the bounded /plan and /decision explanation surfaces while preserving proposal_only and no direct behavioral authority.",
+      "repair_task": "SELF_AWARE_STEP_06B"
     }
   ],
   "mvp16_completion": {
     "status": "blocked",
-    "reason": "mvp15_behavioral_relevance_not_proven",
+    "reason": "mvp16_unblock_audit_pending",
     "tests": 30,
     "gates": [
       "A",
       "B",
       "C"
     ],
-    "exit_criteria_met": "blocked_by_mvp15_behavioral_relevance_gap"
+    "exit_criteria_met": "pending_unblock_audit_after_mvp15_bounded_behavioral_relevance"
   },
   "observation_metrics": {
     "status": "valid",
     "note": "Persistence-backed daily check is now working. Returns insufficient_evidence when no real data exists."
   },
-  "last_update": "2026-03-29T23:59:00Z",
+  "last_update": "2026-03-30T01:30:00Z",
   "history": [
     {
       "phase": "MVP11.5",
@@ -83,12 +89,12 @@
     },
     {
       "phase": "MVP15",
-      "audit_status": "Bounded Mainline Consumer Present"
+      "audit_status": "Bounded Behavioral Relevance Established"
     },
     {
       "phase": "MVP16",
       "audit_status": "Blocked",
-      "reason": "mvp15_behavioral_relevance_not_proven"
+      "reason": "mvp16_unblock_audit_pending"
     }
   ],
   "repair_verification": {

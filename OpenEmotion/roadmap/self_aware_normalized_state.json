@@ -1,6 +1,6 @@
 {
   "schema_version": "self_aware.normalized_state.v1",
-  "generated_at": "2026-03-29T23:59:00Z",
+  "generated_at": "2026-03-30T01:30:00Z",
   "owner": "Codex",
   "authority_priority": [
     "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
@@ -21,7 +21,7 @@
       "version": "MVP16",
       "phase": "Open Developmental Self",
       "status": "blocked",
-      "block_reason": "mvp15_behavioral_relevance_not_proven"
+      "block_reason": "mvp16_unblock_audit_pending"
     },
     "host_support": {
       "eg_phase_state": "shadow_running",
@@ -76,12 +76,12 @@
     {
       "ref": "OE_MVP:15",
       "status": "component_level_verified_but_stage_unproven",
-      "note": "Step06A established a bounded reflection_guidance consumer on /plan and /decision explanation; proposal discipline remains proposal_only, but behavioral relevance is not yet proven"
+      "note": "Step06A established a bounded reflection_guidance consumer on /plan and /decision explanation, and Step06B now proves bounded downstream behavioral relevance on those same surfaces while keeping proposal_only and behavioral_authority=none; long-stage admission is still not claimed"
     },
     {
       "ref": "OE_MVP:16",
       "status": "blocked",
-      "note": "MVP14 drive behavioral influence gap is closed at component level; MVP16 now remains blocked by the MVP15 reflection behavioral relevance proof gap"
+      "note": "MVP15 bounded downstream behavioral relevance gap is closed at component level; MVP16 now remains blocked only by pending unblock recompute and admission dependency audit"
     }
   ],
   "allowed_workstreams": [
@@ -102,7 +102,7 @@
       "higher_priority_source": "OpenEmotion/roadmap/ROADMAP_STATE.json",
       "lower_priority_source": "OpenEmotion/artifacts/handoff/LATEST_HANDOFF.md",
       "resolution": "formal_state=blocked",
-      "reason": "handoff cannot override blocked roadmap state, and the remaining formal blocker is now MVP15"
+      "reason": "handoff cannot override blocked roadmap state; MVP15 bounded behavioral relevance is now proven at component level, but the next formal gate is still MVP16 unblock recompute"
     },
     {
       "topic": "mvp14_status",
@@ -148,9 +148,9 @@
     }
   },
   "next_action": {
-      "step": "SELF_AWARE_STEP_06B",
-      "title": "MVP15 Reflection Behavioral Relevance Formal Proof",
-      "next_minimal_closure_action": "prove paired downstream behavioral relevance on the bounded reflection_guidance mainline surface without granting direct authority",
+      "step": "SELF_AWARE_STEP_07",
+      "title": "MVP16 Unblock Recompute",
+      "next_minimal_closure_action": "recompute the formal MVP16 blocker after MVP15 bounded downstream behavioral relevance is established, and decide whether admission review inputs are now complete",
       "workflow_requirements": {
         "full_spec_required": true,
         "independent_reviewer_required": true,
