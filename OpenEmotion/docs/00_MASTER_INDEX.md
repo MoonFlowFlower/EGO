@@ -27,13 +27,23 @@
 ### 新 agent 第一顺序
 1. `docs/01_PROJECT_OVERVIEW.md`
 2. `docs/03_BOUNDARY_AND_OWNERSHIP.md`
-3. `docs/PROTO_SELF_KERNEL_V1_DESIGN.md`
-4. `docs/PROTO_SELF_KERNEL_V1_SPEC.md`
-5. `docs/04_CHANGE_ROUTING.md`
-6. `docs/06_AGENT_ONBOARDING.md`
+3. `docs/PROTO_SELF_KERNEL_V2_SPEC.md`
+4. `docs/PROTO_SELF_KERNEL_V2_MIGRATION_MAP.md`
+5. `docs/PROTO_SELF_KERNEL_V1_DESIGN.md`
+6. `docs/PROTO_SELF_KERNEL_V1_SPEC.md`
+7. `docs/04_CHANGE_ROUTING.md`
+8. `docs/06_AGENT_ONBOARDING.md`
+
+注：
+
+- `PROTO_SELF_KERNEL_V2_SPEC.md` 是下一代 Proto-Self 内核模型定义的 canonical source
+- 当前运行时 / replay / 验证主线仍是 V1 实现线与其配套文档
+- 本轮没有把 V2 规格直接提升成当前 runtime contract
 
 ### 想理解项目
 - `docs/01_PROJECT_OVERVIEW.md`
+- `docs/PROTO_SELF_KERNEL_V2_SPEC.md`
+- `docs/PROTO_SELF_KERNEL_V2_MIGRATION_MAP.md`
 - `docs/PROTO_SELF_KERNEL_V1_DESIGN.md`
 - `docs/MEMORY_MODEL_V1.md`
 
@@ -53,7 +63,7 @@
 
 | 任务类型 | 先看哪里 |
 |---|---|
-| 理解主体内核架构 | `01_PROJECT_OVERVIEW.md` + `PROTO_SELF_KERNEL_V1_DESIGN.md` |
+| 理解主体内核架构 | `01_PROJECT_OVERVIEW.md` + `PROTO_SELF_KERNEL_V2_SPEC.md` + `PROTO_SELF_KERNEL_V1_SPEC.md` |
 | 改 identity / self-model / proto-self | `04_CHANGE_ROUTING.md` §5 |
 | 改 memory / salience / consolidation | `04_CHANGE_ROUTING.md` §6 + `MEMORY_MODEL_V1.md` |
 | 改 appraisal / drive_field | `04_CHANGE_ROUTING.md` §7 |
@@ -73,12 +83,14 @@
 - 运行 `tools/build_doc_inventory.py`
 - 更新说明看 `docs/07_DOC_SYSTEM_MAINTENANCE.md`
 
-## 当前正式主线：Proto-Self Kernel v1
+## 当前运行时主线：Proto-Self Kernel v1
 
 | 文档 | 说明 |
 |------|------|
-| [设计稿](PROTO_SELF_KERNEL_V1_DESIGN.md) | 最小主体内核设计稿（MVS 内核候选） |
-| [接口草案](PROTO_SELF_KERNEL_V1_SPEC.md) | 接口与伪代码 |
+| [设计稿](PROTO_SELF_KERNEL_V1_DESIGN.md) | V1 历史设计入口，不再是 canonical source |
+| [接口草案](PROTO_SELF_KERNEL_V1_SPEC.md) | V1 接口草案 / 历史实现桥接，不是 V2 canonical source |
+| [V2 正式规格](PROTO_SELF_KERNEL_V2_SPEC.md) | 下一代 Proto-Self 内核 canonical source，不是当前 runtime contract |
+| [V2 迁移映射](PROTO_SELF_KERNEL_V2_MIGRATION_MAP.md) | V1 -> V2 命名 / 字段 / replay 映射 |
 | [实现](../openemotion/proto_self/) | 已验证通过 |
 | [基础验收报告](../artifacts/proto_self_v1/ACCEPTANCE_REPORT_CYCLE_STRENGTHEN_20260324.md) | Cycle strengthen / reflection 基础验收通过 |
 | [最新真实主链报告](../../artifacts/closure_repair_fix/CLOSURE_REPAIR_FIX_REPORT.md) | P4 family/repair 真链修复完成 |

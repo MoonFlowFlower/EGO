@@ -1,5 +1,28 @@
 # Proto-Self Kernel v1 设计稿
 
+> 状态：historical design entry
+> 当前 canonical source：`docs/PROTO_SELF_KERNEL_V2_SPEC.md`
+> 当前迁移映射：`docs/PROTO_SELF_KERNEL_V2_MIGRATION_MAP.md`
+
+## 历史说明
+
+这份文档保留为 **Proto-Self Kernel v1 历史设计稿**。
+
+它仍可用于理解：
+
+- V1 为什么采用单一递归内核
+- V1 的最小状态切分
+- V1 与双核边界的原始设计意图
+
+但从现在开始，它 **不再是核心模型的正式 canonical source**。
+
+新的正式核心模型定义、V2 命名、V2 输入输出、V2 replay 规则，以：
+
+- `docs/PROTO_SELF_KERNEL_V2_SPEC.md`
+- `docs/PROTO_SELF_KERNEL_V2_MIGRATION_MAP.md`
+
+为准。
+
 > 项目：EgoCore + OpenEmotion
 > 文档类型：最小主体内核设计稿
 > 目标：在 **不破坏双核边界**、**不绕过治理壳**、**不冒充已完成意识** 的前提下，设计一个可在 **<1000 行核心代码** 内实现的 Proto-Self Kernel。
@@ -189,7 +212,7 @@ EgoCore 只允许承担：
 
 ## 6. 一句话核心模型
 
-Proto-Self Kernel 的唯一主更新法则：
+Proto-Self Kernel v1 的历史主更新法则：
 
 ```
 S_{t+1} = F(S_t, E_t, A_t, O_t)

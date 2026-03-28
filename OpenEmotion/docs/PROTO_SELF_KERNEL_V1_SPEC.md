@@ -1,5 +1,10 @@
 # Proto-Self Kernel v1 接口与伪代码草案
 
+> 状态补充：V1 interface draft / historical implementation bridge
+> 与 V2 关系：它不是 `Proto-Self V2` 的 canonical source
+> V2 正式规格：`docs/PROTO_SELF_KERNEL_V2_SPEC.md`
+> V2 迁移映射：`docs/PROTO_SELF_KERNEL_V2_MIGRATION_MAP.md`
+
 > 项目：EgoCore + OpenEmotion
 > 类型：工程草案 / 接口与伪代码
 > 状态：设计完成，未启用
