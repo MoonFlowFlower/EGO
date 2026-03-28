@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -18,7 +18,8 @@ status: pending
 
 - 明确 `MVP13` 的正式 self-model authority 是哪条实现线
 - 明确另一条线的角色：mirror / legacy / migration aid / to-be-removed
-- 统一 `version spec / stage docs / main-chain wiring task / roadmap state` 的口径
+- 统一 `roadmap state / current-state recompute / main-chain wiring task` 对 formal owner 的口径
+- 明确标注 `version spec / stage docs / proof contract` 仍待进入 `Step04C` 做 contract convergence
 - 给出后续 `behavioral influence proof` 的唯一正式入口
 
 ## authority_source
@@ -34,7 +35,7 @@ status: pending
 
 ```yaml
 current_layer: strategy
-main_chain_status: behavioral proof blocked by authority split
+main_chain_status: self-model authority resolved; contract convergence pending
 ```
 
 ## required_artifacts
@@ -69,4 +70,4 @@ publisher_required: true
 
 ## next_minimal_closure_action
 
-先给出一份 authority-resolution 决议：保留哪条线为正式 owner、另一条线如何降级或迁移；然后再决定 `Step04C` 是否需要最小语义补足或行为影响 harness。
+已完成 authority-resolution 决议；下一步切到 `SELF_AWARE_STEP_04C_mvp13_contract_convergence.md`。
