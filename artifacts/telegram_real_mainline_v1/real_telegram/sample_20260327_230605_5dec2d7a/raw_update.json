@@ -1,0 +1,17 @@
+{
+  "message": {
+    "message_id": 2134,
+    "date": 1774670766,
+    "chat": {
+      "id": 8420019401,
+      "type": "private"
+    },
+    "from": {
+      "id": 8420019401,
+      "is_bot": false,
+      "username": null
+    },
+    "text": "你还记得你的名字吗"
+  },
+  "update_id": 476272603
+}

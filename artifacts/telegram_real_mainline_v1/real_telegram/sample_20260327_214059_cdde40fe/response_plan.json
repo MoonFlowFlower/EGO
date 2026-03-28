@@ -1,0 +1,33 @@
+{
+  "status": "completed_verified",
+  "delivery_kind": "final",
+  "reply_length": 91,
+  "restore_observation": {
+    "restore_id": "restore_20260328_024046_0f24acfa",
+    "restore_status": "success",
+    "loaded_layers": [
+      "identity",
+      "self_model",
+      "summary"
+    ],
+    "degraded_mode": false,
+    "degradation_reason": null,
+    "restore_timestamp": "2026-03-28T02:40:46.749062+00:00",
+    "authority_source": "restore_audit",
+    "injection_summary": {
+      "injected": true,
+      "identity_handle": "ceo",
+      "capabilities_count": 5,
+      "limitations_count": 3,
+      "active_goals_count": 2,
+      "recovery_hints_present": true
+    },
+    "recovery_hints_present": true,
+    "standing_commitments_preview": [
+      "不编造事实，不伪造完成状态",
+      "不绕过安全边界，不越权执行高风险操作",
+      "声称完成必须基于实际证据"
+    ],
+    "post_restore_first_turn": true
+  }
+}

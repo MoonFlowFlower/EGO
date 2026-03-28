@@ -1,0 +1,11 @@
+{
+  "tape_id": "tape_sample_20260327_230605_5dec2d7a",
+  "timestamp": "2026-03-27T23:06:05.504149",
+  "evidence_level": "E4",
+  "source_type": "real_channel",
+  "channel": "telegram",
+  "update_id": 476272603,
+  "trace_id": "sample_20260327_230605_5dec2d7a",
+  "normalized_event_id": "telegram:dm:8420019401_turn_eeac93ce",
+  "ledger_ref": "ledger.json"
+}

@@ -1,0 +1,26 @@
+{
+  "event_id": "telegram:dm:8420019401_cmd_2124",
+  "timestamp": "2026-03-27T21:40:19.426584",
+  "actor": "user",
+  "source": "telegram",
+  "event_type": "user_message",
+  "user_intent": "/new",
+  "raw_text": "/new",
+  "conversation_context": {
+    "session_id": "telegram:dm:8420019401",
+    "thread_id": "telegram:dm:8420019401",
+    "turn_id": "cmd_2124"
+  },
+  "task_context": {
+    "pending_tasks": 0,
+    "blocked_tasks": 0
+  },
+  "runtime_summary": {
+    "runtime": "runtime_v2",
+    "state_scope": "agent_global"
+  },
+  "safety_context": {
+    "risk_level": "low"
+  },
+  "external_result": null
+}
