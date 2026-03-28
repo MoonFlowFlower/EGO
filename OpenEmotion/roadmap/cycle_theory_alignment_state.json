@@ -1,6 +1,6 @@
 {
   "schema_version": "cycle_theory_alignment.v1",
-  "generated_at": "2026-03-30T01:30:00Z",
+  "generated_at": "2026-03-30T04:10:00Z",
   "owner": "Codex",
   "paper_source": {
     "local_pdf": "OpenEmotion/docs/cycle_is_all_you_need.pdf",
@@ -27,8 +27,8 @@
     "route_cycle_theory_formal_proof_into_mvp12_plus"
   ],
   "next_action": {
-    "step": "SELF_AWARE_STEP_07",
-    "title": "MVP16 Unblock Recompute",
-    "next_minimal_closure_action": "continue the theory-aligned line by recomputing the MVP16 blocker after MVP15 bounded downstream behavioral relevance is established"
+    "step": "SELF_AWARE_STEP_08A",
+    "title": "MVP16 Real Developmental Evidence Closure",
+    "next_minimal_closure_action": "continue the theory-aligned line by accumulating real developmental trajectory evidence instead of over-reading component proofs as Stage 7 admission"
   }
 }

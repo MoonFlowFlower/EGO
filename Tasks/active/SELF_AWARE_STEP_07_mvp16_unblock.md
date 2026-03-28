@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -35,7 +35,7 @@ status: pending
 
 ```yaml
 current_layer: strategy
-main_chain_status: MVP15 bounded downstream behavioral relevance is established; MVP16 unblock recompute is pending
+main_chain_status: MVP16 unblock recompute completed; upstream component blockers are no longer primary and the remaining formal gate is admission review
 ```
 
 ## required_artifacts
@@ -51,9 +51,9 @@ main_chain_status: MVP15 bounded downstream behavioral relevance is established;
 
 ## promotion_blockers
 
-- `MVP16` observation 与 version pass 口径仍未分离
-- unblock recompute 还未完成
+- 本 step 无剩余内部 blocker
+- 下游 admission 结果已由 `SELF_AWARE_STEP_08_admission_review.md` 接管
 
 ## next_minimal_closure_action
 
-完成一版 `MVP16 unblock` 审计报告，并据此决定是否进入 admission review。
+`Step08` 已完成并给出 `not_admitted` verdict；当前 live next action 已切到 `SELF_AWARE_STEP_08A_real_developmental_evidence_closure.md`。

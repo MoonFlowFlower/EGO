@@ -1,6 +1,6 @@
 {
   "schema_version": "self_aware.normalized_state.v1",
-  "generated_at": "2026-03-30T01:30:00Z",
+  "generated_at": "2026-03-30T04:10:00Z",
   "owner": "Codex",
   "authority_priority": [
     "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
@@ -21,7 +21,7 @@
       "version": "MVP16",
       "phase": "Open Developmental Self",
       "status": "blocked",
-      "block_reason": "mvp16_unblock_audit_pending"
+      "block_reason": "mvp16_admission_not_granted_insufficient_real_developmental_data"
     },
     "host_support": {
       "eg_phase_state": "shadow_running",
@@ -81,14 +81,15 @@
     {
       "ref": "OE_MVP:16",
       "status": "blocked",
-      "note": "MVP15 bounded downstream behavioral relevance gap is closed at component level; MVP16 now remains blocked only by pending unblock recompute and admission dependency audit"
+      "note": "Step07 completed the unblock audit and Step08 completed the formal admission review; MVP16 is still blocked because no real developmental data currently exists for admission-grade continuity / governed-growth / identity / replay evidence"
     }
   ],
   "allowed_workstreams": [
     "verification_fix",
     "minimal_wiring_fix",
     "documentation_alignment",
-    "bug_fixes"
+    "bug_fixes",
+    "real_developmental_evidence_closure"
   ],
   "forbidden_workstreams": [
     "new_features",
@@ -102,7 +103,7 @@
       "higher_priority_source": "OpenEmotion/roadmap/ROADMAP_STATE.json",
       "lower_priority_source": "OpenEmotion/artifacts/handoff/LATEST_HANDOFF.md",
       "resolution": "formal_state=blocked",
-      "reason": "handoff cannot override blocked roadmap state; MVP15 bounded behavioral relevance is now proven at component level, but the next formal gate is still MVP16 unblock recompute"
+      "reason": "handoff cannot override blocked roadmap state; upstream component blockers are narrowed, but admission was not granted because real developmental evidence is still insufficient"
     },
     {
       "topic": "mvp14_status",
@@ -148,9 +149,9 @@
     }
   },
   "next_action": {
-      "step": "SELF_AWARE_STEP_07",
-      "title": "MVP16 Unblock Recompute",
-      "next_minimal_closure_action": "recompute the formal MVP16 blocker after MVP15 bounded downstream behavioral relevance is established, and decide whether admission review inputs are now complete",
+      "step": "SELF_AWARE_STEP_08A",
+      "title": "MVP16 Real Developmental Evidence Closure",
+      "next_minimal_closure_action": "accumulate real developmental episodes / transitions and generate admission-grade continuity, governed-growth, identity, and replay evidence on a persisted trajectory",
       "workflow_requirements": {
         "full_spec_required": true,
         "independent_reviewer_required": true,

@@ -30,7 +30,7 @@
 - `execution_target = OE_MVP:16`
 - `execution_phase = Open Developmental Self`
 - `execution_state = blocked`
-- `block_reason = mvp16_unblock_audit_pending`
+- `block_reason = mvp16_admission_not_granted_insufficient_real_developmental_data`
 
 ### 2.3 宿主承载层
 
@@ -172,4 +172,4 @@
 
 唯一最高优先级动作：
 
-**执行 `SELF_AWARE_STEP_07_mvp16_unblock.md`，重算 `MVP16 blocked` 的当前正式 blocker，并确认 admission review 还缺哪些输入。**
+`Step07` 已完成 unblock recompute，`Step08` 已完成 admission review；当前下一步改为执行 `SELF_AWARE_STEP_08A_real_developmental_evidence_closure.md`，补齐 real developmental evidence。

@@ -157,11 +157,11 @@ axes:
         state: "retrieval_quality_v6_partial"
         evidence: "OpenEmotion/docs/MEMORY_RETRIEVAL_ENHANCEMENT_V6_REPORT.md"
     blockers:
-      - "mvp16_unblock_audit_pending"
+      - "mvp16_admission_not_granted_insufficient_real_developmental_data"
     allowed_next:
       - "monitor_shadow_mode"
       - "update_handoff_and_readme"
-      - "SELF_AWARE_STEP_07"
+      - "SELF_AWARE_STEP_08A"
 
   boundary_axis:
     namespace: "BOUNDARY"

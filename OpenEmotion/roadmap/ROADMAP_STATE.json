@@ -5,19 +5,20 @@
   "observation_window": {
     "start": "2026-03-12",
     "duration_days": 14,
-    "day": 12,
-    "last_check": "2026-03-23T00:00:42.485232",
+    "day": 17,
+    "last_check": "2026-03-28T14:56:20.745461",
     "overall_status": "blocked",
     "note": "Daily check now correctly returns insufficient_evidence when no real data exists. Persistence-backed verification is working."
   },
   "promotion_blocked": true,
-  "block_reason": "mvp16_unblock_audit_pending",
+  "block_reason": "mvp16_admission_not_granted_insufficient_real_developmental_data",
   "next_version": null,
   "allowed_workstreams": [
     "verification_fix",
     "minimal_wiring_fix",
     "documentation_alignment",
-    "bug_fixes"
+    "bug_fixes",
+    "real_developmental_evidence_closure"
   ],
   "forbidden_workstreams": [
     "new_features",
@@ -26,7 +27,8 @@
     "observation_based_promotion"
   ],
   "active_blockers": [
-    "MVP15 bounded downstream behavioral relevance is established at component level, but MVP16 unblock recompute / admission dependency audit is still pending"
+    "MVP16 admission review completed with no-go: no real developmental data is currently available for continuity / metrics / invariants validation",
+    "long-horizon continuity / governed growth / identity-preserving replay are still not evidenced on a real accumulated developmental trajectory"
   ],
   "resolved_blockers": [
     {
@@ -52,24 +54,30 @@
       "resolved_at": "2026-03-30T01:30:00Z",
       "resolution": "Step06B established paired downstream behavioral relevance on the bounded /plan and /decision explanation surfaces while preserving proposal_only and no direct behavioral authority.",
       "repair_task": "SELF_AWARE_STEP_06B"
+    },
+    {
+      "blocker": "MVP16 unblock recompute pending after MVP15 bounded downstream behavioral relevance",
+      "resolved_at": "2026-03-30T04:10:00Z",
+      "resolution": "Step07 completed the unblock audit and confirmed that the primary remaining gate is admission review rather than upstream MVP12-15 component-proof gaps.",
+      "repair_task": "SELF_AWARE_STEP_07"
     }
   ],
   "mvp16_completion": {
     "status": "blocked",
-    "reason": "mvp16_unblock_audit_pending",
+    "reason": "mvp16_admission_not_granted_insufficient_real_developmental_data",
     "tests": 30,
     "gates": [
       "A",
       "B",
       "C"
     ],
-    "exit_criteria_met": "pending_unblock_audit_after_mvp15_bounded_behavioral_relevance"
+    "exit_criteria_met": "admission_not_granted_real_developmental_evidence_missing"
   },
   "observation_metrics": {
     "status": "valid",
     "note": "Persistence-backed daily check is now working. Returns insufficient_evidence when no real data exists."
   },
-  "last_update": "2026-03-30T01:30:00Z",
+  "last_update": "2026-03-28T14:56:20.745461",
   "history": [
     {
       "phase": "MVP11.5",
@@ -93,8 +101,8 @@
     },
     {
       "phase": "MVP16",
-      "audit_status": "Blocked",
-      "reason": "mvp16_unblock_audit_pending"
+      "audit_status": "Admission Reviewed - Not Admitted",
+      "reason": "mvp16_admission_not_granted_insufficient_real_developmental_data"
     }
   ],
   "repair_verification": {

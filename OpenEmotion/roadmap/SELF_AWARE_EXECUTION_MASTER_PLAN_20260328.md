@@ -36,7 +36,7 @@
 
 - `OE_MVP:16` 是当前执行目标版本
 - `ROADMAP_STATE.json` 仍为 `blocked`
-- blocker 已收敛为 `mvp16 unblock recompute pending`
+- blocker 已收敛为 `mvp16 admission not granted due to insufficient real developmental data`
 - 仓库已有大量阶段 overview、exit criteria、tests、artifacts，但缺少统一编译层与正式 spec 收口
 
 ---
@@ -180,7 +180,9 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Step 06` 已完成并发布为诊断，正式结论为：`MVP15 formal proof initially blocked by shadow-only artifact path and missing mainline writeback consumer`
 - `Step 06A` 已完成并发布，正式结论为：`/plan` 与 `/decision/target` explanation 现在已接入 bounded reflection_guidance consumer surface，但 behavioral relevance 仍未证明`
 - `Step 06B` 已完成并发布，正式结论为：`reflection/counterfactual guidance now shows bounded downstream behavioral relevance on the current /plan and /decision/target explanation mainline surfaces while preserving proposal_only discipline and behavioral_authority = none`
-- 后续正式施工从 `Step 07` 开始
+- `Step 07` 已完成并发布，正式结论为：`MVP16 unblock audit is complete; the remaining formal gate is admission review rather than upstream component-proof gaps`
+- `Step 08` 已完成并发布，正式结论为：`admission review = not admitted because real developmental data and long-horizon evidence are still insufficient`
+- 后续正式施工从 `Step 08A` 开始
 `Step 04` 仍必须继续服从 `Step 03A` 与 `Step 03` 已落定的 scope guard。
 
 补充说明：
@@ -232,6 +234,10 @@ Step 03 开始前，先执行一个固定前置守门：
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_06A_REVIEW_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_EXECUTION_REPORT_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_REVIEW_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_07_EXECUTION_REPORT_20260330.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_07_REVIEW_20260330.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_08_EXECUTION_REPORT_20260330.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_08_REVIEW_20260330.md`
 
 ### 6.2 版本 spec
 
@@ -264,6 +270,7 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Tasks/active/SELF_AWARE_STEP_06B_reflection_behavioral_relevance_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_07_mvp16_unblock.md`
 - `Tasks/active/SELF_AWARE_STEP_08_admission_review.md`
+- `Tasks/active/SELF_AWARE_STEP_08A_real_developmental_evidence_closure.md`
 
 ---
 

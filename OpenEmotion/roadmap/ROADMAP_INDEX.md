@@ -156,7 +156,7 @@
 - 主入口：`OpenEmotion/docs/mvp15/MVP15_STAGE_OVERVIEW.md`
 - 目标：建立受治理的自我反思与反事实自我评估
 - 进入条件：MVP14 completed
-- 注：当前路线里，`MVP15` 已完成基础 infra、shadow artifact 诊断、bounded mainline consumer convergence，以及 bounded downstream behavioral relevance proof；当前下一步是 `Step07` 的 `MVP16 unblock` 重算
+- 注：当前路线里，`MVP15` 已完成基础 infra、shadow artifact 诊断、bounded mainline consumer convergence，以及 bounded downstream behavioral relevance proof；`Step07` 与 `Step08` 已完成，当前下一步是 `Step08A` 的 real developmental evidence closure
 - 离开条件：reflection proposals、counterfactual evaluation、replayability 达标
 - 建议读取顺序：
   1. `OpenEmotion/docs/mvp15/MVP15_STAGE_OVERVIEW.md`
@@ -172,6 +172,12 @@
   11. `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_EXECUTION_REPORT_20260329.md`
   12. `OpenEmotion/roadmap/SELF_AWARE_STEP_06B_REVIEW_20260329.md`
   13. `Tasks/active/SELF_AWARE_STEP_07_mvp16_unblock.md`
+  14. `OpenEmotion/roadmap/SELF_AWARE_STEP_07_EXECUTION_REPORT_20260330.md`
+  15. `OpenEmotion/roadmap/SELF_AWARE_STEP_07_REVIEW_20260330.md`
+  16. `Tasks/active/SELF_AWARE_STEP_08_admission_review.md`
+  17. `OpenEmotion/roadmap/SELF_AWARE_STEP_08_EXECUTION_REPORT_20260330.md`
+  18. `OpenEmotion/roadmap/SELF_AWARE_STEP_08_REVIEW_20260330.md`
+  19. `Tasks/active/SELF_AWARE_STEP_08A_real_developmental_evidence_closure.md`
 
 ### MVP16 — Open Developmental Self
 - 主入口：`OpenEmotion/docs/mvp16/MVP16_STAGE_OVERVIEW.md`

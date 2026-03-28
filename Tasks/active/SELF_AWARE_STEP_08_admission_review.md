@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -32,7 +32,7 @@ status: pending
 
 ```yaml
 current_layer: closure
-main_chain_status: 观察
+main_chain_status: admission review completed; verdict = not_admitted because real developmental evidence is still insufficient
 ```
 
 ## required_artifacts
@@ -48,10 +48,9 @@ main_chain_status: 观察
 
 ## promotion_blockers
 
-- 任何一步 formal proof 未达标
-- 任何 admission 结论无法回指到正式证据包
+- real_developmental_data_missing
+- long_horizon_continuity_governed_growth_identity_replay_not_evidenced_at_admission_strength
 
 ## next_minimal_closure_action
 
-只有在 `Step 03-07` 全部收口后，才生成正式 admission verdict。
-
+admission verdict 已生成；下一步切到 `SELF_AWARE_STEP_08A_real_developmental_evidence_closure.md`。
