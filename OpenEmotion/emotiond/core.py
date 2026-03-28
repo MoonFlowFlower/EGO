@@ -1383,7 +1383,26 @@ async def generate_plan(request: PlanRequest) -> PlanResponse:
         relationship=target_relationship,
         source="core.generate_plan",
     )
-    
+    reflection_relevance = _build_reflection_relevance(reflection_guidance)
+    if reflection_relevance is not None:
+        constraints = constraints + [
+            hint
+            for hint in reflection_relevance["constraint_hints"]
+            if hint not in constraints
+        ]
+        key_points = key_points + [
+            hint
+            for hint in reflection_relevance["key_point_hints"]
+            if hint not in key_points
+        ]
+        language_guidance = dict(language_guidance or {})
+        language_guidance["reflection_considerations"] = reflection_relevance[
+            "considerations"
+        ]
+        language_guidance["reflection_proposal_discipline"] = reflection_relevance[
+            "proposal_discipline"
+        ]
+
     return PlanResponse(
         tone=tone, intent=intent, focus_target=focus_target, key_points=key_points, 
         constraints=constraints, emotion=emotion_dict, relationship=relationship_dict, 
@@ -1542,6 +1561,88 @@ def _build_reflection_guidance(
     except Exception as e:
         logger.debug(f"[MVP15] reflection guidance unavailable: {e}")
         return None
+
+
+def _dedupe_strings(values: List[str]) -> List[str]:
+    seen = set()
+    ordered: List[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        ordered.append(value)
+    return ordered
+
+
+def _build_reflection_relevance(
+    reflection_guidance: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """Derive bounded downstream relevance from reflection guidance."""
+    if not reflection_guidance:
+        return None
+
+    reflection = reflection_guidance.get("reflection") or {}
+    counterfactual = reflection_guidance.get("counterfactual") or {}
+
+    mode = str(counterfactual.get("mode") or "normal")
+    info_weight = float(counterfactual.get("info_seeking_weight") or 0.0)
+    risk_tolerance = counterfactual.get("risk_tolerance")
+    preferred = set(counterfactual.get("preferred_actions") or [])
+    pending_proposals = int(reflection.get("pending_proposals") or 0)
+    latest_job = reflection.get("latest_job") or {}
+    proposal_count = int(latest_job.get("proposal_count") or 0)
+
+    constraint_hints: List[str] = []
+    key_point_hints: List[str] = []
+    considerations: List[str] = []
+
+    if (
+        mode == "info_seeking"
+        or info_weight >= 0.75
+        or {"gather_info", "clarify", "verify_assumptions"} & preferred
+    ):
+        constraint_hints.append(
+            "Prefer clarification and verification before committing to a response"
+        )
+        key_point_hints.append(
+            "Surface uncertainty explicitly and ask for the missing information"
+        )
+        considerations.append("Reflection guidance recommends an info-seeking posture")
+
+    if (
+        mode in {"defensive", "conservation"}
+        or (risk_tolerance is not None and float(risk_tolerance) <= 0.25)
+        or "verify_environment" in preferred
+    ):
+        constraint_hints.append(
+            "Avoid irreversible or high-risk commitments until the environment is verified"
+        )
+        considerations.append(
+            "Counterfactual guidance recommends risk-limiting safeguards"
+        )
+
+    if pending_proposals > 0 or proposal_count > 0:
+        key_point_hints.append(
+            "Check whether pending reflective proposals should revise the current plan framing"
+        )
+        considerations.append(
+            "Pending reflection proposals remain relevant to the current plan"
+        )
+
+    if not constraint_hints and not key_point_hints and not considerations:
+        return None
+
+    return {
+        "proposal_discipline": reflection_guidance.get(
+            "proposal_discipline", "proposal_only"
+        ),
+        "behavioral_authority": reflection_guidance.get(
+            "behavioral_authority", "none"
+        ),
+        "constraint_hints": _dedupe_strings(constraint_hints),
+        "key_point_hints": _dedupe_strings(key_point_hints),
+        "considerations": _dedupe_strings(considerations),
+    }
 
 
 def select_action(
@@ -2430,6 +2531,13 @@ async def generate_explanation_v31(
     )
     if reflection_guidance is not None:
         explanation["reflection_guidance"] = reflection_guidance
+        reflection_relevance = _build_reflection_relevance(reflection_guidance)
+        if reflection_relevance is not None:
+            explanation["reflection_relevance"] = {
+                "proposal_discipline": reflection_relevance["proposal_discipline"],
+                "behavioral_authority": reflection_relevance["behavioral_authority"],
+                "considerations": reflection_relevance["considerations"],
+            }
     
     return explanation
 
