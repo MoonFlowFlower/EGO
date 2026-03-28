@@ -15,6 +15,7 @@
     "higher_order_invariance_emerges_later_than_stage1"
   ],
   "current_direction_assessment": {
+    "guard_status": "published",
     "stage1_mvp11_5_batch": "correct_for_srap_stabilization_only",
     "stage1_batch_as_cycle_theory_proof": "invalid",
     "memory_loop_v1_v3_line": "partial_alignment_infrastructure_only",
@@ -26,8 +27,8 @@
     "route_cycle_theory_formal_proof_into_mvp12_plus"
   ],
   "next_action": {
-    "step": "SELF_AWARE_STEP_03A",
-    "title": "Cycle Theory Alignment Guard",
-    "next_minimal_closure_action": "execute the cycle-theory alignment guard, then enter MVP12 formal proof"
+    "step": "SELF_AWARE_STEP_03",
+    "title": "MVP12 Formal Proof",
+    "next_minimal_closure_action": "execute MVP12 formal proof with independent reviewer and verifier"
   }
 }

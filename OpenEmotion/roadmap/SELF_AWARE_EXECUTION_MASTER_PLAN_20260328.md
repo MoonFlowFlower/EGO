@@ -118,9 +118,11 @@ Step 03 开始前，先执行一个固定前置守门：
 2. `Step 01`
 3. `Step 02`
 
-后续正式施工从 `Step 03` 开始。
+当前状态更新：
 
-其中 `Step 03` 的第一动作是先过 `Step 03A cycle theory alignment guard`。
+- `Step 03A` 已完成并发布
+- 后续正式施工从 `Step 03` 开始
+`Step 03` 的 formal proof 仍必须继续服从 `Step 03A` 已落定的 scope guard。
 
 原因：
 
@@ -138,6 +140,8 @@ Step 03 开始前，先执行一个固定前置守门：
 - `OpenEmotion/roadmap/self_aware_normalized_state.json`
 - `OpenEmotion/roadmap/CYCLE_IS_ALL_YOU_NEED_ALIGNMENT_20260328.md`
 - `OpenEmotion/roadmap/cycle_theory_alignment_state.json`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_03A_EXECUTION_REPORT_20260328.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_03A_REVIEW_20260328.md`
 
 ### 6.2 版本 spec
 

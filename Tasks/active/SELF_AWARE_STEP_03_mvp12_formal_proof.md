@@ -28,15 +28,19 @@ status: pending
 - `OpenEmotion/docs/cycle_is_all_you_need.pdf`
 - `OpenEmotion/roadmap/CYCLE_IS_ALL_YOU_NEED_ALIGNMENT_20260328.md`
 - `OpenEmotion/roadmap/cycle_theory_alignment_state.json`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_03A_EXECUTION_REPORT_20260328.md`
 - `OpenEmotion/roadmap/versions/MVP12.spec.yaml`
 - `OpenEmotion/docs/archive/mvp12/`
 - `OpenEmotion/tests/mvp12/`
+- `OpenEmotion/docs/archive/mvp12/SANDBOX_GOVERNANCE.md`
+- `EgoCore/POLICIES/EgoCore_OpenEmotion_Boundary_Constitution_v1.md`
+- `EgoCore/egocore/contracts/runtime_decision_envelope_v1.py`
 
 ## current_layer
 
 ```yaml
-current_layer: verification
-main_chain_status: 启用
+current_layer: strategy
+main_chain_status: 待执行 formal proof
 ```
 
 ## required_artifacts
@@ -51,6 +55,8 @@ main_chain_status: 启用
 - `pytest -q tests/mvp12/test_developmental_core.py`
 - `pytest -q tests/mvp12/test_replay.py`
 - `python tools/verify_mvp12_daemon.py`
+- `pytest -q tests/mvp11/test_governor_blocks_high_impact.py`
+- `authority boundary review against SANDBOX_GOVERNANCE + EgoCore boundary constitution + runtime decision envelope`
 
 ## workflow_requirements
 

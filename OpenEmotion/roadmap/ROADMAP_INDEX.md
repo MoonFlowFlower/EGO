@@ -30,6 +30,8 @@
 - 机器可读状态：`OpenEmotion/roadmap/self_aware_normalized_state.json`
 - cycle 理论对齐：`OpenEmotion/roadmap/CYCLE_IS_ALL_YOU_NEED_ALIGNMENT_20260328.md`
 - cycle 理论机器状态：`OpenEmotion/roadmap/cycle_theory_alignment_state.json`
+- Step03A 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_03A_EXECUTION_REPORT_20260328.md`
+- Step03A review：`OpenEmotion/roadmap/SELF_AWARE_STEP_03A_REVIEW_20260328.md`
 - 逐步任务：
   - `Tasks/active/SELF_AWARE_STEP_00_normalization_layer.md`
   - `Tasks/active/SELF_AWARE_STEP_01_current_state_recompute.md`
@@ -136,3 +138,4 @@
 - 恢复执行时不得凭“记忆”直接跳任务，必须回到 state + handoff
 - 如果阶段文档缺失，以 `blocked` 处理，不得自行虚构完成状态
 - 当前正式阶段判断若与 handoff/README 冲突，以统一判定层为准
+- 不得把 Stage1/self-report/storage-only 线冒充成 cycle-theory formal proof

@@ -122,6 +122,7 @@
   "theory_alignment": {
     "cycle_is_all_you_need": {
       "status": "directionally_aligned_but_not_formally_proven",
+      "guard_status": "published",
       "primary_proof_line": "OpenEmotion/openemotion/proto_self/* + MVP12_plus_formal_proof",
       "non_primary_lines": [
         "OpenEmotion/tools/e2e_memory_loop_check_v1.py",
@@ -133,9 +134,9 @@
     }
   },
   "next_action": {
-    "step": "SELF_AWARE_STEP_03A",
-    "title": "Cycle Theory Alignment Guard",
-    "next_minimal_closure_action": "execute step 03A to lock the cycle-theory proof line, then enter MVP12 formal proof",
+    "step": "SELF_AWARE_STEP_03",
+    "title": "MVP12 Formal Proof",
+    "next_minimal_closure_action": "execute Step03 MVP12 formal proof with independent reviewer and verifier after the published cycle-theory guard",
     "workflow_requirements": {
       "full_spec_required": true,
       "independent_reviewer_required": true,

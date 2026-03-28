@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -42,11 +42,16 @@ main_chain_status: direction_guard
 
 - `OpenEmotion/roadmap/CYCLE_IS_ALL_YOU_NEED_ALIGNMENT_20260328.md`
 - `OpenEmotion/roadmap/cycle_theory_alignment_state.json`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_03A_EXECUTION_REPORT_20260328.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_03A_REVIEW_20260328.md`
 
 ## required_tests
 
 - `json parse: OpenEmotion/roadmap/cycle_theory_alignment_state.json`
+- `json parse: OpenEmotion/roadmap/self_aware_normalized_state.json`
 - `path existence check for all authority_source refs`
+- `check next_action.step == SELF_AWARE_STEP_03 in both state json files`
+- `check SELF_AWARE_STEP_03_mvp12_formal_proof.md explicitly consumes Step03A conclusion`
 - `git diff --check`
 
 ## workflow_requirements
@@ -67,4 +72,4 @@ publisher_required: true
 
 ## next_minimal_closure_action
 
-完成 theory-alignment guard，然后把结论接入 `SELF_AWARE_STEP_03_mvp12_formal_proof.md`。
+已完成 theory-alignment guard；下一步执行 `SELF_AWARE_STEP_03_mvp12_formal_proof.md`。
