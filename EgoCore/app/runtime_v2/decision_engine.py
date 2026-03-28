@@ -68,6 +68,39 @@ class RuntimeV2DecisionEngine:
         
         return "\n## 主体倾向提示\n" + "\n".join(parts) + "\n"
 
+    def build_profile_rule_context(self, ingress_context: dict) -> str:
+        if not ingress_context:
+            return ""
+
+        matched_rules = ingress_context.get("matched_profile_rules") or []
+        active_rules = ingress_context.get("active_profile_rules") or []
+        rule_enforcement = ingress_context.get("rule_enforcement") or {}
+        lines: List[str] = []
+
+        if matched_rules:
+            lines.append("## 当前命中的用户默认规则")
+            for item in matched_rules[:3]:
+                summary = item.get("summary")
+                if summary:
+                    lines.append(f"- {summary}")
+        elif active_rules:
+            lines.append("## 当前生效的用户默认规则")
+            for item in active_rules[:3]:
+                summary = item.get("summary")
+                if summary:
+                    lines.append(f"- {summary}")
+
+        if rule_enforcement:
+            kind = rule_enforcement.get("kind")
+            if kind == "reply_only_once":
+                lines.append("- 这轮若要执行宿主裁决，固定短句优先，且不继续展开。")
+            elif kind == "read_only_preflight":
+                lines.append("- 这轮受高风险默认规则约束：只读检查优先，不要直接改文件，先给最小验证动作。")
+
+        if not lines:
+            return ""
+        return "\n" + "\n".join(lines) + "\n"
+
     async def decide(self, state: RuntimeV2State) -> RuntimeV2Action:
         system_prompt = self.build_system_prompt()
         
@@ -75,6 +108,10 @@ class RuntimeV2DecisionEngine:
         policy_hint_context = self.build_policy_hint_context(state.proto_self_context or {})
         if policy_hint_context:
             system_prompt = system_prompt + policy_hint_context
+
+        profile_rule_context = self.build_profile_rule_context(state.ingress_context or {})
+        if profile_rule_context:
+            system_prompt = system_prompt + profile_rule_context
         
         messages: List[Dict[str, str]] = [
             {"role": "system", "content": system_prompt},

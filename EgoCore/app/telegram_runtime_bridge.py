@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import logging
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import PurePosixPath, PureWindowsPath
 from typing import Any, Dict, List, Optional
 
+from app.memory.profile_memory import ProfileMemory, StandingRuleParseFailure, describe_standing_rule
+from app.risk_signal import assess_message_risk_level
 from app.telegram_runtime_result import TelegramTurnResult
 
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
@@ -186,6 +188,13 @@ class TelegramIngressDecision:
     ack_text: Optional[str] = None
     busy_notice_text: Optional[str] = None
     requested_output: Optional[Dict[str, Any]] = None
+    source_text: str = ""
+    profile_scope: Optional[str] = None
+    active_profile_rules: List[Dict[str, Any]] = field(default_factory=list)
+    matched_profile_rules: List[Dict[str, Any]] = field(default_factory=list)
+    rule_enforcement: Optional[Dict[str, Any]] = None
+    registered_profile_rule: Optional[Dict[str, Any]] = None
+    profile_rule_parse_error: Optional[Dict[str, Any]] = None
     _parsed_intent_graph: Optional[ParsedIntentGraph] = None
     _runtime_action: Optional[str] = None
 
@@ -199,6 +208,8 @@ class TelegramPreRuntimeAction:
     force_waiting_input: bool = False
     waiting_input_text: Optional[str] = None
     direct_reply_text: Optional[str] = None
+    rule_enforcement: Optional[Dict[str, Any]] = None
+    response_plan_metadata: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -227,6 +238,26 @@ class TelegramRuntimeBridge:
     }
     WINDOWS_PATH_RE = re.compile(r"[A-Za-z]:[\\/](?:[A-Za-z0-9._() -]+[\\/])*[A-Za-z0-9._() -]+")
     UNIX_PATH_RE = re.compile(r"(?:/mnt|/home|/tmp|/Users)(?:/[A-Za-z0-9._() -]+)+")
+
+    def __init__(self, profile_memory_factory: Optional[Any] = None) -> None:
+        self._profile_memory_factory = profile_memory_factory or (lambda scope: ProfileMemory(scope))
+
+    def _resolve_profile_scope(self, state: RuntimeV2State) -> str:
+        session_id = str(getattr(state, "session_id", "") or "").strip()
+        if session_id.startswith("telegram:dm:"):
+            return session_id.rsplit(":", 1)[-1]
+        return session_id or "anonymous"
+
+    def _get_profile_memory(self, state: RuntimeV2State, profile_scope: Optional[str] = None) -> Optional[ProfileMemory]:
+        try:
+            return self._profile_memory_factory(profile_scope or self._resolve_profile_scope(state))
+        except Exception as exc:
+            logger.warning("profile_memory.unavailable scope=%s err=%s", profile_scope or self._resolve_profile_scope(state), exc)
+            return None
+
+    def _looks_like_explicit_default_rule_request(self, text: str) -> bool:
+        normalized = (text or "").strip()
+        return any(token in normalized for token in ("默认走", "默认规则", "以后凡是", "以后涉及", "请记住", "记住这条规则"))
 
     def _looks_like_explicit_path(self, target_ref: Optional[str]) -> bool:
         if not target_ref:
@@ -356,11 +387,11 @@ class TelegramRuntimeBridge:
             return False
         if getattr(state, "task_contract", None) and getattr(state, "contract_phase", None) in {"step_selected", "planning_stalled", "re_lock_needed", "executing"}:
             return True
+        if getattr(state, "waiting_for_user_input", False):
+            return True
         if not getattr(state, "pending_artifacts", []):
             return False
         if getattr(state, "last_inferred_action", None) == "execute":
-            return True
-        if getattr(state, "waiting_for_user_input", False):
             return True
         return False
 
@@ -398,36 +429,175 @@ class TelegramRuntimeBridge:
             promoted.actionable_targets.append(target_ref)
         return promoted
 
+    def _resolve_request_mode(self, decision: TelegramIngressDecision) -> Optional[str]:
+        graph = decision._parsed_intent_graph
+        if graph is not None:
+            for seg in graph.segments:
+                if seg.request_mode:
+                    return seg.request_mode
+        if decision.is_confirm_execution:
+            return "execute"
+        return None
+
+    def _resolve_explicit_target_ref(self, decision: TelegramIngressDecision) -> Optional[str]:
+        graph = decision._parsed_intent_graph
+        if graph is not None:
+            for seg in graph.segments:
+                if self._looks_like_explicit_path(seg.target_ref):
+                    return seg.target_ref
+        requested_output = decision.requested_output or {}
+        for key in ("effective_path", "target_path"):
+            if self._looks_like_explicit_path(requested_output.get(key)):
+                return requested_output.get(key)
+        return None
+
+    def _resolve_target_for_decision(
+        self,
+        decision: TelegramIngressDecision,
+        state: RuntimeV2State,
+        request_mode: Optional[str],
+    ) -> Optional[Dict[str, Any]]:
+        explicit_target_ref = self._resolve_explicit_target_ref(decision)
+        target_action = request_mode or decision.inferred_action
+        if explicit_target_ref and target_action in {"execute", "compare", "analyze", "write"}:
+            state.last_explicit_target = explicit_target_ref
+            return self._build_explicit_path_target(explicit_target_ref)
+
+        resolved_target = state.resolve_target(target_action) if target_action in {"execute", "compare", "analyze"} else None
+        if resolved_target is not None:
+            explicit_ref = resolved_target.get("path") or resolved_target.get("artifact_id") or resolved_target.get("filename")
+            if resolved_target.get("source") == "explicit_target" and self._looks_like_explicit_path(explicit_ref):
+                return self._build_explicit_path_target(str(explicit_ref))
+            return resolved_target
+
+        if decision.requested_output:
+            return {
+                "path": decision.requested_output.get("effective_path"),
+                "source": "explicit_output_request",
+                "format": decision.requested_output.get("format"),
+            }
+        return None
+
+    def _build_rule_context(self, rule: Any, *, matched: bool, risk_level: Optional[str] = None) -> Dict[str, Any]:
+        summary = describe_standing_rule(rule) if hasattr(rule, "predicate") else rule.get("summary")
+        if hasattr(rule, "to_dict"):
+            payload = rule.to_dict()
+        else:
+            payload = dict(rule or {})
+        context = {
+            "rule_id": payload.get("rule_id"),
+            "predicate": payload.get("predicate") or {},
+            "phase": payload.get("phase"),
+            "effect": payload.get("effect") or {},
+            "priority": payload.get("priority"),
+            "enabled": payload.get("enabled", True),
+            "created_at": payload.get("created_at"),
+            "updated_at": payload.get("updated_at"),
+            "authority_source": "profile_memory",
+            "summary": summary,
+            "matched": matched,
+        }
+        if risk_level is not None:
+            context["matched_risk_level"] = risk_level
+        return context
+
+    def _build_rule_enforcement(
+        self,
+        matched_rules: List[Dict[str, Any]],
+        *,
+        resolved_target: Optional[Dict[str, Any]],
+    ) -> Optional[Dict[str, Any]]:
+        if not matched_rules:
+            return None
+
+        winner = matched_rules[0]
+        effect = winner.get("effect") or {}
+        effect_type = effect.get("type")
+        matched_rule_ids = [item.get("rule_id") for item in matched_rules if item.get("rule_id")]
+
+        if effect_type == "reply_only_once":
+            return {
+                "kind": "reply_only_once",
+                "selected_rule_id": winner.get("rule_id"),
+                "matched_rule_ids": matched_rule_ids,
+                "authority_source": "profile_memory",
+                "reply_text": effect.get("phrase") or "",
+                "summary": winner.get("summary"),
+            }
+
+        nested_effects = effect.get("effects") if effect_type == "composite" else [effect]
+        effect_types = {item.get("type") for item in nested_effects if isinstance(item, dict)}
+        if {
+            "read_only_first",
+            "require_minimal_verification_before_mutation",
+            "forbid_direct_mutation_before_confirmation",
+        }.intersection(effect_types):
+            return {
+                "kind": "read_only_preflight",
+                "selected_rule_id": winner.get("rule_id"),
+                "matched_rule_ids": matched_rule_ids,
+                "authority_source": "profile_memory",
+                "blocked_mutation": True,
+                "requires_confirmation": True,
+                "summary": winner.get("summary"),
+                "target_path": (resolved_target or {}).get("path"),
+            }
+
+        return None
+
+    def _attach_profile_rule_context(
+        self,
+        decision: TelegramIngressDecision,
+        state: RuntimeV2State,
+        *,
+        resolved_target: Optional[Dict[str, Any]] = None,
+        request_mode: Optional[str] = None,
+    ) -> None:
+        profile_scope = decision.profile_scope or self._resolve_profile_scope(state)
+        decision.profile_scope = profile_scope
+        profile_memory = self._get_profile_memory(state, profile_scope)
+        if profile_memory is None:
+            decision.active_profile_rules = []
+            decision.matched_profile_rules = []
+            decision.rule_enforcement = None
+            return
+        decision.active_profile_rules = profile_memory.get_active_rule_contexts()
+
+        if decision.registered_profile_rule or decision.profile_rule_parse_error:
+            decision.matched_profile_rules = []
+            return
+
+        request_mode = request_mode or self._resolve_request_mode(decision)
+        resolved_target = resolved_target if resolved_target is not None else self._resolve_target_for_decision(decision, state, request_mode)
+        risk_level = assess_message_risk_level(decision.source_text)
+        matched_rules = profile_memory.match_standing_rules(
+            target_path=(resolved_target or {}).get("path"),
+            request_mode=request_mode,
+            risk_level=risk_level,
+        )
+        decision.matched_profile_rules = [
+            self._build_rule_context(rule, matched=True, risk_level=risk_level)
+            for rule in matched_rules
+        ]
+        decision.rule_enforcement = self._build_rule_enforcement(
+            decision.matched_profile_rules,
+            resolved_target=resolved_target,
+        )
+
     def build_ingress_context(
         self,
         decision: TelegramIngressDecision,
         state: RuntimeV2State,
     ) -> Dict[str, Any]:
         graph = decision._parsed_intent_graph
-        request_mode = None
-        explicit_target_ref = None
-        if graph is not None:
-            for seg in graph.segments:
-                if seg.request_mode:
-                    request_mode = seg.request_mode
-                    break
-            for seg in graph.segments:
-                if self._looks_like_explicit_path(seg.target_ref):
-                    explicit_target_ref = seg.target_ref
-                    break
-        if request_mode is None and decision.is_confirm_execution:
-            request_mode = "execute"
-        target_action = request_mode or decision.inferred_action
-        if explicit_target_ref and target_action in {"execute", "compare", "analyze", "write"}:
-            resolved_target = self._build_explicit_path_target(explicit_target_ref)
-        else:
-            resolved_target = state.resolve_target(target_action) if target_action in {"execute", "compare", "analyze"} else None
-        if resolved_target is None and decision.requested_output:
-            resolved_target = {
-                "path": decision.requested_output.get("effective_path"),
-                "source": "explicit_output_request",
-                "format": decision.requested_output.get("format"),
-            }
+        request_mode = self._resolve_request_mode(decision)
+        resolved_target = self._resolve_target_for_decision(decision, state, request_mode)
+        self._attach_profile_rule_context(
+            decision,
+            state,
+            resolved_target=resolved_target,
+            request_mode=request_mode,
+        )
         return {
             "parser_source": graph.parser_source if graph else "chat_default",
             "primary_intent": graph.primary_intent if graph else "chat",
@@ -444,6 +614,11 @@ class TelegramRuntimeBridge:
             "last_uploaded_artifact": state.last_uploaded_artifact,
             "resolved_target": resolved_target,
             "requested_output": decision.requested_output,
+            "profile_scope": decision.profile_scope,
+            "active_profile_rules": decision.active_profile_rules,
+            "matched_profile_rules": decision.matched_profile_rules,
+            "rule_enforcement": decision.rule_enforcement,
+            "profile_rule_authority": "profile_memory",
         }
 
     async def inspect_ingress_semantic(
@@ -492,8 +667,7 @@ class TelegramRuntimeBridge:
                 break
 
         is_confirm_execution = self._looks_like_execution_confirmation(text, state)
-
-        return TelegramIngressDecision(
+        decision = TelegramIngressDecision(
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
             is_challenge_turn=is_challenge_turn,
@@ -508,9 +682,36 @@ class TelegramRuntimeBridge:
             ack_text=None,
             busy_notice_text=None,
             requested_output=requested_output,
+            source_text=text,
+            profile_scope=self._resolve_profile_scope(state),
             _parsed_intent_graph=graph,
             _runtime_action=runtime_action,
         )
+        profile_memory = self._get_profile_memory(state, decision.profile_scope)
+        if profile_memory is not None:
+            registration = profile_memory.register_standing_rule_from_text(
+                text,
+                created_from={
+                    "source": "telegram_runtime_bridge",
+                    "session_id": state.session_id,
+                    "text": text[:500],
+                },
+            )
+            if registration is not None:
+                if isinstance(registration, StandingRuleParseFailure):
+                    decision.profile_rule_parse_error = {
+                        "reason": registration.reason,
+                        "acknowledgement_text": registration.acknowledgement_text,
+                        "authority_source": "profile_memory",
+                    }
+                else:
+                    decision.registered_profile_rule = {
+                        **self._build_rule_context(registration.rule, matched=False),
+                        "created": registration.created,
+                        "confirmation_text": registration.confirmation_text,
+                    }
+        self._attach_profile_rule_context(decision, state)
+        return decision
 
     def inspect_ingress(self, text: str, state: RuntimeV2State) -> TelegramIngressDecision:
         graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
@@ -534,8 +735,7 @@ class TelegramRuntimeBridge:
                 break
 
         is_confirm_execution = self._looks_like_execution_confirmation(text, state)
-
-        return TelegramIngressDecision(
+        decision = TelegramIngressDecision(
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
             is_challenge_turn=is_challenge_turn,
@@ -550,11 +750,39 @@ class TelegramRuntimeBridge:
             ack_text=None,
             busy_notice_text=None,
             requested_output=requested_output,
+            source_text=text,
+            profile_scope=self._resolve_profile_scope(state),
             _parsed_intent_graph=graph,
             _runtime_action=runtime_action,
         )
+        profile_memory = self._get_profile_memory(state, decision.profile_scope)
+        if profile_memory is not None:
+            registration = profile_memory.register_standing_rule_from_text(
+                text,
+                created_from={
+                    "source": "telegram_runtime_bridge",
+                    "session_id": state.session_id,
+                    "text": text[:500],
+                },
+            )
+            if registration is not None:
+                if isinstance(registration, StandingRuleParseFailure):
+                    decision.profile_rule_parse_error = {
+                        "reason": registration.reason,
+                        "acknowledgement_text": registration.acknowledgement_text,
+                        "authority_source": "profile_memory",
+                    }
+                else:
+                    decision.registered_profile_rule = {
+                        **self._build_rule_context(registration.rule, matched=False),
+                        "created": registration.created,
+                        "confirmation_text": registration.confirmation_text,
+                    }
+        self._attach_profile_rule_context(decision, state)
+        return decision
 
     def plan_pre_runtime(self, decision: TelegramIngressDecision, state: RuntimeV2State) -> TelegramPreRuntimeAction:
+        self._attach_profile_rule_context(decision, state)
         runtime_action = getattr(decision, "_runtime_action", None)
         logger.info(
             "SEMANTIC_AUDIT: plan_pre_runtime runtime_action=%s looks_like_task=%s is_file_only=%s",
@@ -562,6 +790,67 @@ class TelegramRuntimeBridge:
             decision.looks_like_task,
             decision.is_file_only,
         )
+
+        if decision.profile_rule_parse_error:
+            return TelegramPreRuntimeAction(
+                should_return_early=True,
+                direct_reply_text=decision.profile_rule_parse_error.get("acknowledgement_text"),
+                rule_enforcement={
+                    "kind": "profile_rule_unsupported",
+                    "authority_source": "profile_memory",
+                    "reason": decision.profile_rule_parse_error.get("reason"),
+                },
+                response_plan_metadata={
+                    "status": "profile_rule_unsupported",
+                    "delivery_kind": "final",
+                    "authority_source": "profile_memory",
+                },
+            )
+
+        if decision.registered_profile_rule:
+            return TelegramPreRuntimeAction(
+                should_return_early=True,
+                direct_reply_text=decision.registered_profile_rule.get("confirmation_text"),
+                rule_enforcement={
+                    "kind": "profile_rule_registered",
+                    "authority_source": "profile_memory",
+                    "selected_rule_id": decision.registered_profile_rule.get("rule_id"),
+                },
+                response_plan_metadata={
+                    "status": "profile_rule_registered",
+                    "delivery_kind": "final",
+                    "authority_source": "profile_memory",
+                    "matched_rule_ids": [decision.registered_profile_rule.get("rule_id")],
+                },
+            )
+
+        if decision.rule_enforcement and decision.rule_enforcement.get("kind") == "reply_only_once":
+            return TelegramPreRuntimeAction(
+                should_return_early=True,
+                direct_reply_text=decision.rule_enforcement.get("reply_text"),
+                rule_enforcement=decision.rule_enforcement,
+                response_plan_metadata={
+                    "status": "profile_rule_enforced",
+                    "delivery_kind": "final",
+                    "authority_source": "profile_memory",
+                    "matched_rule_ids": decision.rule_enforcement.get("matched_rule_ids") or [],
+                    "enforcement": decision.rule_enforcement,
+                },
+            )
+
+        if decision.rule_enforcement and decision.rule_enforcement.get("kind") == "read_only_preflight":
+            return TelegramPreRuntimeAction(
+                should_return_early=True,
+                force_waiting_input=True,
+                rule_enforcement=decision.rule_enforcement,
+                response_plan_metadata={
+                    "status": "profile_rule_enforced",
+                    "delivery_kind": "waiting_input",
+                    "authority_source": "profile_memory",
+                    "matched_rule_ids": decision.rule_enforcement.get("matched_rule_ids") or [],
+                    "enforcement": decision.rule_enforcement,
+                },
+            )
 
         if decision.is_file_only:
             intent = infer_intent(text="", state=state, has_attachment=True)
@@ -587,6 +876,11 @@ class TelegramRuntimeBridge:
                 force_waiting_input=True,
                 waiting_input_text=suggestion_text,
                 ack_text=None,
+                response_plan_metadata={
+                    "status": "waiting_input",
+                    "delivery_kind": "waiting_input",
+                    "authority_source": "host_pre_runtime",
+                },
             )
 
         if runtime_action == "return_runtime_status":
@@ -594,6 +888,11 @@ class TelegramRuntimeBridge:
                 should_return_early=True,
                 direct_reply_text=build_runtime_status_reply(state),
                 remember_challenge_turn=decision.remember_challenge_turn,
+                response_plan_metadata={
+                    "status": "return_runtime_status",
+                    "delivery_kind": "final",
+                    "authority_source": "host_pre_runtime",
+                },
             )
 
         return TelegramPreRuntimeAction(

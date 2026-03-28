@@ -235,6 +235,7 @@ class TelegramEvidenceCollector:
         delivery_kind: str,
         reply_text: str,
         inferred: bool = False,
+        extra: Optional[Dict[str, Any]] = None,
     ) -> None:
         """为命令/宿主直回路径记录最小 response plan。"""
         plan = {
@@ -244,6 +245,8 @@ class TelegramEvidenceCollector:
         }
         if inferred:
             plan["inferred"] = True
+        if extra:
+            plan.update(extra)
         self.capture_response_plan(plan)
 
     def capture_outbox_record(self, record: Dict[str, Any]) -> None:

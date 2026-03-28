@@ -39,7 +39,9 @@ class MemoryManager:
             db_path: Path to SQLite database
             memory_dir: Directory for memory JSON files
         """
-        config = get_config()
+        config = None
+        if db_path is None or memory_dir is None:
+            config = get_config()
         self.db_path = db_path or config.get_path('data_dir') / 'memory.db'
         self.memory_dir = memory_dir or config.get_path('memory_dir')
         

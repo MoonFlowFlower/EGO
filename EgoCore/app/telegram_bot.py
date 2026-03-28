@@ -60,6 +60,7 @@ from app.openemotion_hooks import NativeOpenEmotionHooks
 from app.telegram_runtime_fallback import TelegramRuntimeFallbackRunner
 from app.telegram_runtime_bridge import TelegramRuntimeBridge
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
+from app.tools import execute_tool
 from app.ingestion.artifact_store import get_artifact_store
 from app.compaction import ReadRequest, get_compaction_manager
 
@@ -184,6 +185,66 @@ class TelegramBot:
                 or state.waiting_for_user_input
                 or state.contract_phase in {"step_selected", "planning_stalled", "re_lock_needed", "executing"}
             )
+        )
+
+    def _capture_pre_runtime_response_plan(self, reply_text: str, pre_runtime) -> None:
+        if not _EVIDENCE_COLLECTOR_AVAILABLE:
+            return
+        metadata = getattr(pre_runtime, "response_plan_metadata", None) or {}
+        try:
+            collector = get_evidence_collector()
+            collector.capture_host_response_plan(
+                status=metadata.get("status", "pre_runtime"),
+                delivery_kind=metadata.get("delivery_kind", "final"),
+                reply_text=reply_text,
+                extra={
+                    "authority_source": metadata.get("authority_source", "host_pre_runtime"),
+                    "matched_rule_ids": metadata.get("matched_rule_ids") or [],
+                    "rule_enforcement": metadata.get("enforcement") or getattr(pre_runtime, "rule_enforcement", None),
+                },
+            )
+        except Exception as e:
+            logger.warning(f"[E4-EVIDENCE] Failed to capture pre-runtime response_plan: {e}")
+
+    async def _build_profile_rule_preflight_reply(self, state: RuntimeV2State, rule_enforcement: dict) -> str:
+        target = (state.ingress_context or {}).get("resolved_target") or {}
+        target_path = target.get("path") or rule_enforcement.get("target_path")
+        summary = rule_enforcement.get("summary") or "这轮受默认高风险流程约束。"
+        intro = "按你设定的默认流程，这次我先不直接改文件。"
+
+        if not target_path:
+            return (
+                f"{intro}\n\n"
+                f"只读检查：{summary}\n"
+                "最小验证动作：先告诉我具体目标路径或要执行的高风险动作，我再继续。"
+            )
+
+        result = await asyncio.to_thread(
+            execute_tool,
+            "file",
+            {"operation": "read", "path": target_path},
+            None,
+            "profile_rule_read_only_preflight",
+        )
+        result_dict = result.to_dict()
+        filename = os.path.basename(target_path.replace("\\", "/")) or target_path
+
+        if result_dict.get("success"):
+            content = result_dict.get("output") or ""
+            lower = content.lower()
+            file_kind = "HTML 文件" if "<html" in lower or "<!doctype html" in lower else "文本文件"
+            char_count = len(content)
+            return (
+                f"{intro}\n\n"
+                f"只读检查：已读取 `{filename}`，当前是 {file_kind}（{char_count} 字符）。\n"
+                "最小验证动作：先明确这次只改哪 1 个点，或直接回复“继续”让我按默认流程进入正式修改。"
+            )
+
+        error = str(result_dict.get("error") or "unknown_error")
+        return (
+            f"{intro}\n\n"
+            f"只读检查：读取 `{filename}` 失败，原因：{error}\n"
+            "最小验证动作：先确认目标路径可访问，或给我正确文件路径后我继续。"
         )
 
     def _build_contract_event_payload(
@@ -1126,15 +1187,25 @@ class TelegramBot:
         if not pre_runtime.should_return_early:
             return False
 
+        if getattr(pre_runtime, "rule_enforcement", None) and pre_runtime.rule_enforcement.get("kind") == "read_only_preflight":
+            state.task_status = "waiting_input"
+            state.waiting_for_user_input = True
+            waiting_text = await self._build_profile_rule_preflight_reply(state, pre_runtime.rule_enforcement)
+            self._capture_pre_runtime_response_plan(waiting_text, pre_runtime)
+            await self._send_reply(update, waiting_text)
+            return True
+
         # 文件-only：强制 waiting_input，不进入 runtime
         if getattr(pre_runtime, 'force_waiting_input', False):
             state.task_status = "waiting_input"
             state.waiting_for_user_input = True
             waiting_text = getattr(pre_runtime, 'waiting_input_text', '收到文件，请告诉我你要做什么。')
+            self._capture_pre_runtime_response_plan(waiting_text, pre_runtime)
             await self._send_reply(update, waiting_text)
             return True
 
         if getattr(pre_runtime, "direct_reply_text", None):
+            self._capture_pre_runtime_response_plan(pre_runtime.direct_reply_text, pre_runtime)
             await self._send_reply(update, pre_runtime.direct_reply_text)
             return True
 

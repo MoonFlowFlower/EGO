@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import PurePosixPath, PureWindowsPath
+import re
 from typing import Any, Dict, List, Optional
 import time
 
@@ -13,6 +15,7 @@ MAX_CONTENT_IN_HISTORY = 2000  # 字符
 MAX_STDOUT_IN_STATE = 2000
 MAX_STDERR_IN_STATE = 500
 MAX_GOAL_LENGTH = 200  # 目标截断
+WINDOWS_PATH_RE = re.compile(r"^[A-Za-z]:[\\/]")
 
 
 def _truncate_tool_result(tool_result: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
@@ -537,7 +540,18 @@ class RuntimeV2State:
         """
         # 1. last_explicit_target 最高优先级（所有动作通用）
         if self.last_explicit_target:
-            # 返回一个伪 artifact 结构
+            if WINDOWS_PATH_RE.match(self.last_explicit_target):
+                return {
+                    "path": self.last_explicit_target,
+                    "filename": PureWindowsPath(self.last_explicit_target).name or self.last_explicit_target,
+                    "source": "explicit_path",
+                }
+            if self.last_explicit_target.startswith(("/", "/mnt/", "/home/", "/tmp/", "/Users/")):
+                return {
+                    "path": self.last_explicit_target,
+                    "filename": PurePosixPath(self.last_explicit_target).name or self.last_explicit_target,
+                    "source": "explicit_path",
+                }
             return {
                 "artifact_id": self.last_explicit_target,
                 "filename": self.last_explicit_target,
