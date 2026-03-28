@@ -36,7 +36,7 @@
 
 - `OE_MVP:16` 是当前执行目标版本
 - `ROADMAP_STATE.json` 仍为 `blocked`
-- blocker 已收敛为 `mvp15 formal proof gap`
+- blocker 已收敛为 `mvp14 drive authority/mainline gap + mvp15 formal proof gap`
 - 仓库已有大量阶段 overview、exit criteria、tests、artifacts，但缺少统一编译层与正式 spec 收口
 
 ---
@@ -132,13 +132,21 @@ Step 03 开始前，先执行一个固定前置守门：
 
 把 endogenous drives / self-maintenance 从“可运行结构”推进到“真实影响候选加权、优先级和维护行为”。
 
+如果 `Step 05` 发现 formal owner 与真实 mainline 仍然分裂，则必须插入固定子步骤：
+
+- `SELF_AWARE_STEP_05A_drive_authority_resolution.md`
+- `SELF_AWARE_STEP_05B_drive_mainline_wiring.md`
+
+目的不是绕路，而是先统一 `MVP14` 的 formal owner 与正式 consumer，
+再恢复 `drive/homeostasis formal proof`。
+
 ### Step 06 — MVP15 Formal Proof
 
 把 reflection / counterfactual self 从“能生成结构化产物”推进到“会回写并改变后续策略”。
 
 ### Step 07 — MVP16 Unblock
 
-消除 `mvp15_formal_proof_not_proven` 类 blocker，使 `MVP16` 从 blocked 升到可观察/可准入状态。
+消除 `mvp14_* / mvp15_*` 类 formal blocker，使 `MVP16` 从 blocked 升到可观察/可准入状态。
 
 ### Step 08 — Admission Review
 
@@ -165,7 +173,9 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Step 04D` 已完成并发布，正式结论为：`behavioral proof currently blocked by missing owner-backed decision surface`
 - `Step 04E` 已完成并发布，正式结论为：`owner-backed decision surface now exists on the real mainline`
 - `Step 04F` 已完成并发布，正式结论为：`owner-backed behavioral influence is proven on the emotiond decision mainline`
-- 后续正式施工从 `Step 05` 开始
+- `Step 05` 已完成并发布，正式结论为：`MVP14 formal proof currently blocked by drive authority/mainline split`
+- `Step 05A` 已完成并发布，正式结论为：`formal drive owner convergence target = emotiond/drives/*; next step is mainline wiring convergence`
+- 后续正式施工从 `Step 05B` 开始
 `Step 04` 仍必须继续服从 `Step 03A` 与 `Step 03` 已落定的 scope guard。
 
 补充说明：
@@ -205,6 +215,8 @@ Step 03 开始前，先执行一个固定前置守门：
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_04E_EXECUTION_REPORT_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_04F_EXECUTION_REPORT_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_04F_REVIEW_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_05_EXECUTION_REPORT_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_05A_EXECUTION_REPORT_20260329.md`
 
 ### 6.2 版本 spec
 
@@ -229,6 +241,8 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Tasks/active/SELF_AWARE_STEP_04E_owner_backed_decision_surface.md`
 - `Tasks/active/SELF_AWARE_STEP_04F_behavioral_influence_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_05_mvp14_formal_proof.md`
+- `Tasks/active/SELF_AWARE_STEP_05A_drive_authority_resolution.md`
+- `Tasks/active/SELF_AWARE_STEP_05B_drive_mainline_wiring.md`
 - `Tasks/active/SELF_AWARE_STEP_06_mvp15_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_07_mvp16_unblock.md`
 - `Tasks/active/SELF_AWARE_STEP_08_admission_review.md`

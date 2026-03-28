@@ -30,7 +30,7 @@
 - `execution_target = OE_MVP:16`
 - `execution_phase = Open Developmental Self`
 - `execution_state = blocked`
-- `block_reason = mvp15_formal_proof_not_proven`
+- `block_reason = mvp14_drive_authority_and_mainline_not_converged_plus_mvp15_formal_proof_not_proven`
 
 ### 2.3 宿主承载层
 
@@ -137,10 +137,12 @@
 1. `Step 03`：MVP12 formal proof
 2. `Step 04E`：MVP13 owner-backed decision surface
 3. `Step 04F`：MVP13 behavioral influence formal proof
-4. `Step 05`：MVP14 formal proof
-5. `Step 06`：MVP15 formal proof
-6. `Step 07`：MVP16 unblock
-7. `Step 08`：admission review
+4. `Step 05`：MVP14 formal proof feasibility check
+5. `Step 05A`：MVP14 drive authority resolution
+6. `Step 05B`：MVP14 drive mainline wiring
+7. `Step 06`：MVP15 formal proof
+8. `Step 07`：MVP16 unblock
+9. `Step 08`：admission review
 
 ---
 
@@ -154,6 +156,7 @@
 - 当前执行状态仍是 `blocked`
 - `MVP12-15` 不能因局部验证或 shadow 状态而视为整阶段通过
 - `MVP13 behavioral influence` 已在 emotiond decision mainline 上拿到正式 paired proof
+- `MVP14` 当前不能直接继续 formal proof；必须先解决 `emotiond/drives/*` 与 legacy drive/homeostasis mainline split
 
 ### 不可宣称
 
@@ -168,4 +171,4 @@
 
 唯一最高优先级动作：
 
-**执行 `SELF_AWARE_STEP_05_mvp14_formal_proof.md`，并继续强制走 `Independent Reviewer -> Verifier`；该动作表示 component-proof 序列进入 `MVP14`，不等于长期正式阶段已升级。**
+**执行 `SELF_AWARE_STEP_05B_drive_mainline_wiring.md`，并继续强制走 `Independent Reviewer -> Verifier`；该动作表示 component-proof 序列进入 `MVP14` 的正式 wiring convergence，不等于长期正式阶段已升级。**

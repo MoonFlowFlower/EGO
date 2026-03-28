@@ -7,19 +7,18 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
 
-把 `MVP14` 从“drive / maintenance 结构存在、shadow 运行”推进到“真实影响优先级、候选加权或维护行为”的 formal proof。
+判断当前仓库是否已经具备直接执行 `MVP14 formal proof` 的前提，并在不满足时把主路线收口到正确的 authority/mainline resolution 步骤。
 
 ## success_criteria
 
-- drives 具备审计轨迹
-- drives 对策略或候选排序有可测影响
-- homeostatic response 可观察
-- governance integrity 完整
+- 明确 `MVP14 formal proof` 当前是否可直接施工
+- 若不可直接施工，必须给出唯一下一步而不是继续硬做 proof harness
+- 路线收口不得把 legacy causal path 冒充成 `emotiond/drives/*` 的正式证明
 
 ## authority_source
 
@@ -31,7 +30,7 @@ status: pending
 
 ```yaml
 current_layer: verification
-main_chain_status: 启用
+main_chain_status: blocked_by_drive_authority_and_mainline_split
 ```
 
 ## required_artifacts
@@ -40,6 +39,7 @@ main_chain_status: 启用
 - `OpenEmotion/artifacts/mvp14/GATE_B_REPORT.md`
 - `OpenEmotion/artifacts/mvp14/GATE_C_REPORT.md`
 - `OpenEmotion/artifacts/mvp14/runtime_diff_stats.json`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_05_EXECUTION_REPORT_20260329.md`
 
 ## required_tests
 
@@ -49,9 +49,10 @@ main_chain_status: 启用
 
 ## promotion_blockers
 
-- 只看到 shadow 差异，还未证明 drives 真正驱动行为
-- 尚未把 homeostatic response 纳入正式通过口径
+- `emotiond/drives/*` 仍未进入正式主链
+- legacy drive/homeostasis path 仍承担实际因果效力
+- formal proof 不能在 authority split 状态下继续推进
 
 ## next_minimal_closure_action
 
-补一条“drive/homeostasis 受控干预 -> 策略变化”的 formal proof。
+执行 `SELF_AWARE_STEP_05A_drive_authority_resolution.md`，先统一 `MVP14` 的 formal owner 与 mainline convergence 路径。

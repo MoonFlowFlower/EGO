@@ -1,6 +1,6 @@
 {
   "schema_version": "cycle_theory_alignment.v1",
-  "generated_at": "2026-03-29T13:10:00Z",
+  "generated_at": "2026-03-29T16:20:00Z",
   "owner": "Codex",
   "paper_source": {
     "local_pdf": "OpenEmotion/docs/cycle_is_all_you_need.pdf",
@@ -27,8 +27,8 @@
     "route_cycle_theory_formal_proof_into_mvp12_plus"
   ],
   "next_action": {
-    "step": "SELF_AWARE_STEP_05",
-    "title": "MVP14 Formal Proof",
-    "next_minimal_closure_action": "continue the theory-aligned line after MVP13 by proving drive/homeostasis influence under governance on the real mainline"
+    "step": "SELF_AWARE_STEP_05B",
+    "title": "MVP14 Drive Mainline Wiring",
+    "next_minimal_closure_action": "continue the theory-aligned line after MVP13 by converging the formal drive owner onto the real mainline before proving governed drive/homeostasis influence"
   }
 }
