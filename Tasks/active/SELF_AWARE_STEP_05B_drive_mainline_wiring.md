@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: pending
+status: published
 ```
 
 ## real_goal
@@ -33,7 +33,7 @@ status: pending
 
 ```yaml
 current_layer: implementation
-main_chain_status: authority_resolved_wiring_pending
+main_chain_status: core_decision_mainline_boundedly_converged_via_adapter_workspace_still_legacy
 ```
 
 ## required_artifacts
@@ -51,8 +51,8 @@ main_chain_status: authority_resolved_wiring_pending
 ## promotion_blockers
 
 - 新 drive path 尚未接入正式 mainline
-- proof harness 仍无法证明 formal owner 的行为影响
+- adapter 仍通过 legacy modulation params 提供 bounded compatibility，formal owner 的行为影响尚未证明
 
 ## next_minimal_closure_action
 
-完成最小 bounded wiring convergence，并在正式 mainline 上补一条 owner-backed drive/homeostasis paired proof。
+本步已完成并发布；下一步切到 `SELF_AWARE_STEP_05C_drive_behavioral_influence_formal_proof.md`。

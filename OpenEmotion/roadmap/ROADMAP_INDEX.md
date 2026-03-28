@@ -39,6 +39,8 @@
 - Step05 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_05_EXECUTION_REPORT_20260329.md`
 - Step05A 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_05A_EXECUTION_REPORT_20260329.md`
 - Step05A review：`OpenEmotion/roadmap/SELF_AWARE_STEP_05A_REVIEW_20260329.md`
+- Step05B 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_05B_EXECUTION_REPORT_20260329.md`
+- Step05B review：`OpenEmotion/roadmap/SELF_AWARE_STEP_05B_REVIEW_20260329.md`
 - Step04A 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_04A_EXECUTION_REPORT_20260328.md`
 - Step04A review：`OpenEmotion/roadmap/SELF_AWARE_STEP_04A_REVIEW_20260328.md`
 - Step04B 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_04B_EXECUTION_REPORT_20260328.md`
@@ -62,6 +64,7 @@
   - `Tasks/active/SELF_AWARE_STEP_05_mvp14_formal_proof.md`
   - `Tasks/active/SELF_AWARE_STEP_05A_drive_authority_resolution.md`
   - `Tasks/active/SELF_AWARE_STEP_05B_drive_mainline_wiring.md`
+  - `Tasks/active/SELF_AWARE_STEP_05C_drive_behavioral_influence_formal_proof.md`
   - `Tasks/active/SELF_AWARE_STEP_06_mvp15_formal_proof.md`
   - `Tasks/active/SELF_AWARE_STEP_07_mvp16_unblock.md`
   - `Tasks/active/SELF_AWARE_STEP_08_admission_review.md`
@@ -121,13 +124,16 @@
   18. `OpenEmotion/roadmap/SELF_AWARE_STEP_05A_EXECUTION_REPORT_20260329.md`
   19. `Tasks/active/SELF_AWARE_STEP_05_mvp14_formal_proof.md`
   20. `Tasks/active/SELF_AWARE_STEP_05A_drive_authority_resolution.md`
-  21. `Tasks/active/SELF_AWARE_STEP_05B_drive_mainline_wiring.md`
+  21. `OpenEmotion/roadmap/SELF_AWARE_STEP_05B_EXECUTION_REPORT_20260329.md`
+  22. `OpenEmotion/roadmap/SELF_AWARE_STEP_05B_REVIEW_20260329.md`
+  23. `Tasks/active/SELF_AWARE_STEP_05B_drive_mainline_wiring.md`
+  24. `Tasks/active/SELF_AWARE_STEP_05C_drive_behavioral_influence_formal_proof.md`
 
 ### MVP14 — Endogenous Drives + Self-Maintenance
 - 主入口：`OpenEmotion/docs/mvp14/MVP14_STAGE_OVERVIEW.md`
 - 目标：让内部状态以结构性压力的方式影响优先级与自我维持
 - 进入条件：MVP13 behavioral influence formal proof completed，且 self-model authority 已统一
-- 注：在当前路线中，`MVP13` 相关 authority 与 behavioral proof 已完成；但 `MVP14` 当前发现新的 drive authority/mainline split，因此下一步不是直接 proof，而是先做 `drive authority resolution -> mainline wiring`
+- 注：在当前路线中，`MVP13` 相关 authority 与 behavioral proof 已完成；`MVP14` 也已完成 `drive authority resolution -> bounded mainline wiring`，因此下一步是 `drive behavioral influence formal proof`，而不是重复做 wiring
 - 离开条件：drive system / maintenance runtime / governance integrity 达标
 - 建议读取顺序：
   1. `OpenEmotion/docs/mvp14/MVP14_STAGE_OVERVIEW.md`

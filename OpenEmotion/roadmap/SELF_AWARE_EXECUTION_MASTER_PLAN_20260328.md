@@ -36,7 +36,7 @@
 
 - `OE_MVP:16` 是当前执行目标版本
 - `ROADMAP_STATE.json` 仍为 `blocked`
-- blocker 已收敛为 `mvp14 drive authority/mainline gap + mvp15 formal proof gap`
+- blocker 已收敛为 `mvp14 formal-owner behavioral influence gap + mvp15 formal proof gap`
 - 仓库已有大量阶段 overview、exit criteria、tests、artifacts，但缺少统一编译层与正式 spec 收口
 
 ---
@@ -175,7 +175,8 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Step 04F` 已完成并发布，正式结论为：`owner-backed behavioral influence is proven on the emotiond decision mainline`
 - `Step 05` 已完成并发布，正式结论为：`MVP14 formal proof currently blocked by drive authority/mainline split`
 - `Step 05A` 已完成并发布，正式结论为：`formal drive owner convergence target = emotiond/drives/*; next step is mainline wiring convergence`
-- 后续正式施工从 `Step 05B` 开始
+- `Step 05B` 已完成并发布，正式结论为：`emotiond/core.py` 的当前 API decision mainline 已 boundedly converge 到 `emotiond/drive_adapter.py`，但 formal-owner behavioral influence 仍未证明
+- 后续正式施工从 `Step 05C` 开始
 `Step 04` 仍必须继续服从 `Step 03A` 与 `Step 03` 已落定的 scope guard。
 
 补充说明：
@@ -217,6 +218,8 @@ Step 03 开始前，先执行一个固定前置守门：
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_04F_REVIEW_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_05_EXECUTION_REPORT_20260329.md`
 - `OpenEmotion/roadmap/SELF_AWARE_STEP_05A_EXECUTION_REPORT_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_05B_EXECUTION_REPORT_20260329.md`
+- `OpenEmotion/roadmap/SELF_AWARE_STEP_05B_REVIEW_20260329.md`
 
 ### 6.2 版本 spec
 
@@ -243,6 +246,7 @@ Step 03 开始前，先执行一个固定前置守门：
 - `Tasks/active/SELF_AWARE_STEP_05_mvp14_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_05A_drive_authority_resolution.md`
 - `Tasks/active/SELF_AWARE_STEP_05B_drive_mainline_wiring.md`
+- `Tasks/active/SELF_AWARE_STEP_05C_drive_behavioral_influence_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_06_mvp15_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_07_mvp16_unblock.md`
 - `Tasks/active/SELF_AWARE_STEP_08_admission_review.md`

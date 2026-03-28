@@ -16,3 +16,7 @@
 - current_blocker: T07.3 now provides honest observability statistics, but its pre-authored adversarial samples are not a valid direct repair-priority source for the next strengthening loop; readiness-evidence blockers still remain open
 - next_entry_action: do not auto-pick another strengthening repair from T07.3 counts; instead open the evidence-closure track and/or find a valid non-adversarial strengthening signal before continuing
 - continue_recommendation: continue
+- exec_session_hygiene:
+  - current_assessment: working assumption is that unified exec over-limit warnings are primarily tool-layer old session counts; repo main-process leakage is not currently confirmed
+  - default_strategy: open fewer new exec sessions, batch related reads/verifications, and avoid killing real long-lived main processes without explicit process-level proof
+  - operator_note: prefer file-driven continuation and verifier scripts over repeated ad hoc shell fan-out while the longrun batch is active

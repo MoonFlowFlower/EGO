@@ -11,7 +11,7 @@
     "note": "Daily check now correctly returns insufficient_evidence when no real data exists. Persistence-backed verification is working."
   },
   "promotion_blocked": true,
-  "block_reason": "mvp13_mvp15_wiring_not_proven",
+  "block_reason": "mvp14_formal_owner_behavioral_influence_not_proven_plus_mvp15_formal_proof_not_proven",
   "next_version": null,
   "allowed_workstreams": [
     "verification_fix",
@@ -26,7 +26,8 @@
     "observation_based_promotion"
   ],
   "active_blockers": [
-    "MVP13-MVP15 new modules are implemented but not proven wired into audited core main chain"
+    "MVP14 formal owner behavioral influence remains unproven after bounded mainline convergence",
+    "MVP15 formal proof remains incomplete"
   ],
   "resolved_blockers": [
     {
@@ -44,7 +45,7 @@
   ],
   "mvp16_completion": {
     "status": "blocked",
-    "reason": "mvp13_mvp15_wiring_not_proven",
+    "reason": "mvp14_formal_owner_behavioral_influence_not_proven_plus_mvp15_formal_proof_not_proven",
     "tests": 30,
     "gates": [
       "A",
@@ -82,7 +83,7 @@
     {
       "phase": "MVP16",
       "audit_status": "Blocked",
-      "reason": "mvp13_mvp15_wiring_not_proven"
+      "reason": "mvp14_formal_owner_behavioral_influence_not_proven_plus_mvp15_formal_proof_not_proven"
     }
   ],
   "repair_verification": {
