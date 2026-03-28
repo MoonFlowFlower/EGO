@@ -29,3 +29,4 @@
 - 还没证明 `numeric_leak` 已经被根因修掉。
 - 还没证明 `certainty_upgrade / commitment_upgrade` 已被压到 readiness 可接受范围。
 - 还没证明 `sample_size / Layer 3 natural evidence / gate-report closure` 已补齐。
+- 还没证明 `T07.3` 的 top class 计数可以直接充当下一轮 strengthening repair 的优先级来源；当前权威解读是否定的。

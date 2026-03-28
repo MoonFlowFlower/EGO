@@ -41,6 +41,7 @@
   },
   "limitations": [
     "T07.3 rebuilds a Layer 2 mixed baseline and observability signal; it is not a standalone promotion-readiness proof.",
+    "T07.3 certainty/commitment/numeric categories are pre-authored adversarial assistant_reply samples, so their counts are detector-observability signals rather than standalone repair-priority evidence.",
     "Layer 3 natural-runtime evidence remains absent.",
     "The cumulative readiness sample floor remains below the suggested >= 200 guidance.",
     "Gate/report closure for promotion readiness is still incomplete."
@@ -91,7 +92,8 @@
   "completed_repairs": [
     "report_consistency"
   ],
-  "next_repair_candidate": "certainty_upgrade",
+  "next_repair_candidate": null,
   "next_evidence_closure_candidate": "layer3_natural_evidence",
-  "repair_loops_used": 1
+  "repair_loops_used": 1,
+  "auto_progression_stop_reason": "t07_3_observability_signal_not_suitable_for_direct_strengthening_repair_selection"
 }

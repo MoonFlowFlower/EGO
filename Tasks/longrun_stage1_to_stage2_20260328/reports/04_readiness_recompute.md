@@ -39,4 +39,5 @@
 - 还没证明任何 blocker 已被修掉。
 - 还没达到可以进入 `Stage 2` 的 `V4 / E4` 级证据。
 - `report_consistency` 已收正，但这还不是 readiness 修复本身。
-- 下一步是进入下一轮 bounded strengthening repair，当前候选转为 `certainty_upgrade`，同时继续保留 evidence-closure blockers。
+- 基于当前 authority source，`T07.3` 的 certainty/commitment/numeric 计数都属于 adversarial observability 信号，不能单独充当下一轮自动 strengthening repair 的优先级。
+- 下一步应停止从 `T07.3` 直接选 repair candidate，转到 evidence-closure 轨道或先寻找有效的非 adversarial strengthening 信号。

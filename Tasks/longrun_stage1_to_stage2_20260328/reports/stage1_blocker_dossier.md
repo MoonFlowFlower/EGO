@@ -6,7 +6,7 @@
 - current formal stage: `Stage 1`
 - readiness decision: `not_ready`
 - completed repair loop #1: `report_consistency`
-- next repair candidate: `certainty_upgrade`
+- direct next repair candidate from `T07.3`: `none`
 - next evidence-closure candidate: `layer3_natural_evidence`
 
 ## Confirmed Stage1 Strengthening Blockers
@@ -19,8 +19,10 @@
    - too high for readiness-grade mixed baseline
 3. `certainty_upgrade`
    - current mixed rerun surfaced `30` certainty-upgrade samples in the corrected summary view
+   - but these come from pre-authored adversarial assistant_reply samples in `T07.3`, so they are not by themselves a valid direct repair-priority signal
 4. `commitment_upgrade`
    - current mixed rerun surfaced `29` commitment-upgrade samples in the corrected summary view
+   - but these also come from the same adversarial observability source
 
 ## Confirmed Readiness-Evidence Blockers
 
@@ -37,6 +39,5 @@
 
 - Do not enter `Stage 3 / MVP12`.
 - Repairs must stay inside `MVP11.5 / Stage 1`.
-- First repair should target the smallest strengthening blocker with the clearest authority contract:
-  - `certainty_upgrade`
+- Do not auto-select the next strengthening repair directly from `T07.3` category counts once it is confirmed those counts come from pre-authored adversarial samples.
 - Do not let a strengthening repair silently replace missing evidence-closure work.

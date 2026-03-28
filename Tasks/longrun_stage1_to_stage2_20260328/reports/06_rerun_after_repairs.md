@@ -28,4 +28,5 @@
 
 - rerun 仍然没有让系统达到 `ready`
 - rerun 只说明 report consistency 已收正，不代表 strengthening blockers 已解决
-- 下一步仍需新的 bounded repair 候选，而不是直接 admission
+- rerun 里的 top class 仍来自 adversarial observability 样本，不能直接当成下一轮 bounded repair 的优先级
+- 下一步应先切到 evidence-closure / valid strengthening-source selection，而不是直接 admission
