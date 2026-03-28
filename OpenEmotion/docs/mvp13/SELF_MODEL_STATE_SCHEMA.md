@@ -68,6 +68,26 @@ Naming rule:
 These are the fields whose controlled intervention may later be used to prove
 that the persistent self-model changes downstream behavior.
 
+### 3.2 Current Minimal Formal Proof Path
+
+As of Step04F, the minimal formal proof path for MVP13 behavioral influence is:
+
+- API entry: `POST /decision/target?test_mode=true`
+- target scope: same `target` + same `target_id`
+- intervention lever:
+  - `confidence_by_domain["action:<action>"]`
+- downstream decision point:
+  - `emotiond.core.generate_explanation_v31()`
+  - `emotiond.core.select_action_with_explanation_v31()`
+  - `emotiond.core.score_action_with_target()`
+
+The proof contract for this path is:
+
+- hold base predictions and relationship state fixed
+- intervene only on the formal owner action-confidence surface
+- show downstream action change on the same decision point
+- exclude legacy-only `emotiond/self_model/*` fields from the causal path
+
 ## 4. Legacy / Migration Candidates
 
 The following structures appear in the older `emotiond/self_model/*` line and
