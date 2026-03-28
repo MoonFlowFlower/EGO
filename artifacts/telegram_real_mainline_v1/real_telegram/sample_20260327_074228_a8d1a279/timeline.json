@@ -1,0 +1,27 @@
+[
+  {
+    "stage": "update_received",
+    "timestamp": "2026-03-27T07:42:28.172262",
+    "update_id": 476272537
+  },
+  {
+    "stage": "event_normalized",
+    "timestamp": "2026-03-27T07:42:28.935045",
+    "event_id": "telegram:dm:8420019401_turn_57fd8e60"
+  },
+  {
+    "stage": "openemotion_processed",
+    "timestamp": "2026-03-27T07:42:28.935055",
+    "event_id": "telegram:dm:8420019401_turn_57fd8e60"
+  },
+  {
+    "stage": "response_planned",
+    "timestamp": "2026-03-27T07:42:42.088742"
+  },
+  {
+    "stage": "message_sent",
+    "timestamp": "2026-03-27T07:42:42.422592",
+    "chat_id": 8420019401,
+    "message_id": 2002
+  }
+]

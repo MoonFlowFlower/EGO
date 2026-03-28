@@ -1,0 +1,226 @@
+{
+  "sample_id": "sample_20260326_143224_1406bcb4",
+  "timestamp": "2026-03-26T14:32:24.797130",
+  "ledger_version": "host.evidence.ledger.v1",
+  "evidence_level": "E4",
+  "source_type": "real_channel",
+  "channel": "telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1868,
+      "date": 1774553544,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "你好"
+    },
+    "update_id": 476272471
+  },
+  "normalized_event": null,
+  "openemotion_result": null,
+  "openemotion_trace": null,
+  "response_plan": {
+    "status": "delivered_without_explicit_plan",
+    "delivery_kind": "final",
+    "reply_length": 15,
+    "inferred": true
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1870,
+    "date": "2026-03-26T19:32:35+00:00",
+    "text_length": 15,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-26T14:32:24.797145",
+      "update_id": 476272471
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-26T14:32:35.995544",
+      "chat_id": 8420019401,
+      "message_id": 1870
+    }
+  ],
+  "openemotion_events": [],
+  "tape": {
+    "tape_id": "tape_sample_20260326_143224_1406bcb4",
+    "timestamp": "2026-03-26T14:32:24.797130",
+    "evidence_level": "E4",
+    "source_type": "real_channel",
+    "channel": "telegram",
+    "update_id": 476272471,
+    "trace_id": "sample_20260326_143224_1406bcb4",
+    "normalized_event_id": null,
+    "ledger_ref": "ledger.json"
+  },
+  "replay": {
+    "replay_id": "replay_sample_20260326_143224_1406bcb4",
+    "timestamp": "2026-03-26T14:32:35.995583",
+    "evidence_level": "E4",
+    "source_type": "real_channel",
+    "channel": "telegram",
+    "sample_id": "sample_20260326_143224_1406bcb4",
+    "primary_ledger_ref": "ledger.json",
+    "replay_input_source": {
+      "type": "ledger",
+      "path": "openemotion.trace_payload",
+      "authority": "OpenEmotion"
+    },
+    "raw_update_ref": "raw_update.json",
+    "normalized_event_ref": null,
+    "openemotion_result_ref": null,
+    "openemotion_trace_ref": null,
+    "response_plan_ref": null,
+    "outbox_record_ref": "outbox_record.json",
+    "timeline_ref": "timeline.json",
+    "tape_ref": "tape.json",
+    "replay_hash": "21b6d729881bcb0a"
+  },
+  "replay_hash": "21b6d729881bcb0a",
+  "ledger": {
+    "ledger_version": "host.evidence.ledger.v1",
+    "sample_id": "sample_20260326_143224_1406bcb4",
+    "timestamp": "2026-03-26T14:32:24.797130",
+    "evidence_level": "E4",
+    "source_type": "real_channel",
+    "channel": "telegram",
+    "ownership": {
+      "primary_ledger_owner": "EgoCore host evidence ledger",
+      "openemotion_trace_owner": "OpenEmotion trace_payload",
+      "compatibility_mirrors_owner": "EgoCore compatibility exports",
+      "bridge_policy": "ProtoSelfTraceBridge is compatibility-only and must not become an independent authority source."
+    },
+    "ids": {
+      "sample_id": "sample_20260326_143224_1406bcb4",
+      "event_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "turn_id": null,
+      "update_id": 476272471,
+      "replay_id": "replay_sample_20260326_143224_1406bcb4",
+      "tape_id": "tape_sample_20260326_143224_1406bcb4"
+    },
+    "inputs": {
+      "raw_update": {
+        "message": {
+          "message_id": 1868,
+          "date": 1774553544,
+          "chat": {
+            "id": 8420019401,
+            "type": "private"
+          },
+          "from": {
+            "id": 8420019401,
+            "is_bot": false,
+            "username": null
+          },
+          "text": "你好"
+        },
+        "update_id": 476272471
+      },
+      "normalized_event": {}
+    },
+    "openemotion": {
+      "result": {},
+      "trace_payload": {},
+      "events": [],
+      "trace_schema_version": null,
+      "result_schema_version": null
+    },
+    "host": {
+      "response_plan": null,
+      "outbox_record": {
+        "chat_id": 8420019401,
+        "message_id": 1870,
+        "date": "2026-03-26T19:32:35+00:00",
+        "text_length": 15,
+        "success": true
+      },
+      "timeline": [
+        {
+          "stage": "update_received",
+          "timestamp": "2026-03-26T14:32:24.797145",
+          "update_id": 476272471
+        },
+        {
+          "stage": "message_sent",
+          "timestamp": "2026-03-26T14:32:35.995544",
+          "chat_id": 8420019401,
+          "message_id": 1870
+        }
+      ]
+    },
+    "replay_input": {
+      "authority": "OpenEmotion trace_payload within ledger.json",
+      "required_sections": [
+        "inputs.normalized_event",
+        "openemotion.trace_payload"
+      ],
+      "optional_sections": [
+        "openemotion.result",
+        "host.response_plan",
+        "host.outbox_record"
+      ],
+      "compatibility_refs": {
+        "replay_json": "replay.json",
+        "openemotion_trace_json": null
+      }
+    },
+    "report_sources": {
+      "sample_summary": "ledger.json",
+      "acceptance_reports": [
+        "ledger.json",
+        "replay.json",
+        "tape.json"
+      ]
+    },
+    "compatibility_mirrors": [
+      "sample.json",
+      "raw_update.json",
+      "normalized_event.json",
+      "openemotion_result.json",
+      null,
+      "response_plan.json",
+      "outbox_record.json",
+      "timeline.json",
+      "tape.json",
+      "replay.json",
+      "summary.md"
+    ],
+    "replay_hash": "21b6d729881bcb0a",
+    "evidence_completeness": {
+      "raw_update": true,
+      "normalized_event": false,
+      "openemotion_result": false,
+      "openemotion_trace": false,
+      "response_plan": false,
+      "outbox_record": true,
+      "timeline": true,
+      "tape": true,
+      "replay": true
+    }
+  },
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": false,
+    "openemotion_result": false,
+    "openemotion_trace": false,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true,
+    "tape": true,
+    "replay": true
+  },
+  "ledger_ref": "ledger.json",
+  "authority": "compatibility_mirror"
+}

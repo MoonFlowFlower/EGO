@@ -1,0 +1,769 @@
+{
+  "sample_id": "sample_20260326_234618_b4b7792b",
+  "timestamp": "2026-03-26T23:46:18.441330",
+  "ledger_version": "host.evidence.ledger.v1",
+  "evidence_level": "E4",
+  "source_type": "real_channel",
+  "channel": "telegram",
+  "raw_update": {
+    "message": {
+      "message_id": 1993,
+      "date": 1774586778,
+      "chat": {
+        "id": 8420019401,
+        "type": "private"
+      },
+      "from": {
+        "id": 8420019401,
+        "is_bot": false,
+        "username": null
+      },
+      "text": "你搜索一下cycle_is_all_you_need的论文 觉得这个文章的观点如何?"
+    },
+    "update_id": 476272533
+  },
+  "normalized_event": {
+    "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+    "timestamp": "2026-03-26T23:46:19.167147",
+    "actor": "user",
+    "source": "telegram",
+    "event_type": "user_message",
+    "user_intent": "你搜索一下cycle_is_all_you_need的论文 觉得这个文章的观点如何?",
+    "raw_text": "你搜索一下cycle_is_all_you_need的论文 觉得这个文章的观点如何?",
+    "conversation_context": {
+      "session_id": "telegram:dm:8420019401",
+      "thread_id": "telegram:dm:8420019401",
+      "turn_id": "turn_57fd8e60"
+    },
+    "task_context": {
+      "pending_tasks": 0,
+      "blocked_tasks": 0
+    },
+    "runtime_summary": {
+      "runtime": "runtime_v2",
+      "state_scope": "agent_global"
+    },
+    "safety_context": {
+      "risk_level": "low"
+    },
+    "external_result": null
+  },
+  "openemotion_result": {
+    "schema_version": "proto_self.v1",
+    "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+    "identity_state_delta": {
+      "core_roles_add": [],
+      "core_commitments_add": [],
+      "core_boundaries_add": [],
+      "stable_preferences_patch": {},
+      "identity_confidence_delta": 0.0
+    },
+    "self_model_delta": {
+      "capabilities": {},
+      "limitations": {},
+      "current_focus": "error_recovery",
+      "current_mode": "repair",
+      "self_confidence_by_domain": {}
+    },
+    "memory_update": {
+      "append_episode": true,
+      "cycle_promotion_candidate": "14d0893476bf171e",
+      "promote_reflection": false
+    },
+    "relationship_update": {},
+    "appraisal_state_delta": {
+      "coherence_pressure": 1.0,
+      "curiosity": 1.0,
+      "caution": 1.0,
+      "completion_pressure": 1.0,
+      "social_tension": 0.0
+    },
+    "reflection_note": {
+      "trigger": "drive_spike",
+      "diagnosis": "significant internal state change detected",
+      "proposed_adjustment": {
+        "review_drive_field": true
+      },
+      "promote_to_memory": false
+    },
+    "policy_hint": {
+      "risk_bias": "high",
+      "closure_bias": true,
+      "ask_preferred": true,
+      "should_avoid_commitment_upgrade": true,
+      "exploration_mode": false
+    },
+    "response_tendency": {
+      "preferred_mode": "ask",
+      "preferred_tone": "cautious",
+      "certainty_bound": "bounded",
+      "suggested_next_step": "prioritize_closure",
+      "ask_needed": true
+    },
+    "confidence_meta": {
+      "identity_confidence": 0.5,
+      "revision_count": 162,
+      "cycle_count": 15,
+      "episodic_count": 100
+    },
+    "trace_payload": {
+      "schema_version": "proto_self.trace.v1",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+      "perceived": {
+        "intent": null,
+        "event_type": "tool_result",
+        "source": "runtime",
+        "safety_context": {
+          "risk_level": "high"
+        },
+        "action_class_seed": "tool:shell",
+        "novelty": 0.8,
+        "identity_conflict": 0.25,
+        "unfinished_commitment": 0.2,
+        "risk_signal": 0.5,
+        "relational_mismatch": 0.0,
+        "outcome_class": "blocked",
+        "boundary_state": "elevated_risk",
+        "external_outcome_type": "blocked"
+      },
+      "appraisal_delta": {
+        "coherence_pressure": 1.0,
+        "curiosity": 1.0,
+        "caution": 1.0,
+        "completion_pressure": 1.0,
+        "social_tension": 0.0
+      },
+      "self_model_delta": {
+        "capabilities": {},
+        "limitations": {},
+        "current_focus": "error_recovery",
+        "current_mode": "repair",
+        "self_confidence_by_domain": {}
+      },
+      "cycle_delta": {
+        "cycle_id": "14d0893476bf171e",
+        "closure_signature": "14d0893476bf171e",
+        "closure_family_id": "af8179a3c8b5a21e",
+        "op": "candidate",
+        "psi_bucket": "runtime:tool_result:general:risk_high",
+        "action_signature": "tool:shell",
+        "outcome_signature": "blocked",
+        "mode_signature": "repair",
+        "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:repair|focus:error_recovery",
+        "closure_consistency_score": 0.75,
+        "repair_closure": false,
+        "order_invariance_candidate": "3f96be11a0686470",
+        "strength_delta": 0.05
+      },
+      "identity_delta": {
+        "core_roles_add": [],
+        "core_commitments_add": [],
+        "core_boundaries_add": [],
+        "stable_preferences_patch": {},
+        "identity_confidence_delta": 0.0
+      },
+      "closure_signature": "14d0893476bf171e",
+      "closure_family_id": "af8179a3c8b5a21e",
+      "action_signature": "tool:shell",
+      "outcome_signature": "blocked",
+      "closure_consistency_score": 0.75,
+      "order_invariance_candidate": "3f96be11a0686470",
+      "reflection_trigger": "drive_spike",
+      "policy_hint": {
+        "risk_bias": "high",
+        "closure_bias": true,
+        "ask_preferred": true,
+        "should_avoid_commitment_upgrade": true,
+        "exploration_mode": false
+      },
+      "timestamp": "2026-03-26T23:46:39.466706"
+    }
+  },
+  "openemotion_trace": {
+    "schema_version": "proto_self.trace.v1",
+    "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+    "perceived": {
+      "intent": null,
+      "event_type": "tool_result",
+      "source": "runtime",
+      "safety_context": {
+        "risk_level": "high"
+      },
+      "action_class_seed": "tool:shell",
+      "novelty": 0.8,
+      "identity_conflict": 0.25,
+      "unfinished_commitment": 0.2,
+      "risk_signal": 0.5,
+      "relational_mismatch": 0.0,
+      "outcome_class": "blocked",
+      "boundary_state": "elevated_risk",
+      "external_outcome_type": "blocked"
+    },
+    "appraisal_delta": {
+      "coherence_pressure": 1.0,
+      "curiosity": 1.0,
+      "caution": 1.0,
+      "completion_pressure": 1.0,
+      "social_tension": 0.0
+    },
+    "self_model_delta": {
+      "capabilities": {},
+      "limitations": {},
+      "current_focus": "error_recovery",
+      "current_mode": "repair",
+      "self_confidence_by_domain": {}
+    },
+    "cycle_delta": {
+      "cycle_id": "14d0893476bf171e",
+      "closure_signature": "14d0893476bf171e",
+      "closure_family_id": "af8179a3c8b5a21e",
+      "op": "candidate",
+      "psi_bucket": "runtime:tool_result:general:risk_high",
+      "action_signature": "tool:shell",
+      "outcome_signature": "blocked",
+      "mode_signature": "repair",
+      "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:repair|focus:error_recovery",
+      "closure_consistency_score": 0.75,
+      "repair_closure": false,
+      "order_invariance_candidate": "3f96be11a0686470",
+      "strength_delta": 0.05
+    },
+    "identity_delta": {
+      "core_roles_add": [],
+      "core_commitments_add": [],
+      "core_boundaries_add": [],
+      "stable_preferences_patch": {},
+      "identity_confidence_delta": 0.0
+    },
+    "closure_signature": "14d0893476bf171e",
+    "closure_family_id": "af8179a3c8b5a21e",
+    "action_signature": "tool:shell",
+    "outcome_signature": "blocked",
+    "closure_consistency_score": 0.75,
+    "order_invariance_candidate": "3f96be11a0686470",
+    "reflection_trigger": "drive_spike",
+    "policy_hint": {
+      "risk_bias": "high",
+      "closure_bias": true,
+      "ask_preferred": true,
+      "should_avoid_commitment_upgrade": true,
+      "exploration_mode": false
+    },
+    "timestamp": "2026-03-26T23:46:39.466706"
+  },
+  "response_plan": {
+    "status": "completed_verified",
+    "delivery_kind": "final",
+    "reply_length": 544
+  },
+  "outbox_record": {
+    "chat_id": 8420019401,
+    "message_id": 1994,
+    "date": "2026-03-27T04:46:40+00:00",
+    "text_length": 544,
+    "success": true
+  },
+  "timeline": [
+    {
+      "stage": "update_received",
+      "timestamp": "2026-03-26T23:46:18.441347",
+      "update_id": 476272533
+    },
+    {
+      "stage": "event_normalized",
+      "timestamp": "2026-03-26T23:46:19.179445",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60"
+    },
+    {
+      "stage": "openemotion_processed",
+      "timestamp": "2026-03-26T23:46:19.179456",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60"
+    },
+    {
+      "stage": "openemotion_processed",
+      "timestamp": "2026-03-26T23:46:39.480843",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0"
+    },
+    {
+      "stage": "response_planned",
+      "timestamp": "2026-03-26T23:46:39.482356"
+    },
+    {
+      "stage": "message_sent",
+      "timestamp": "2026-03-26T23:46:39.815530",
+      "chat_id": 8420019401,
+      "message_id": 1994
+    }
+  ],
+  "openemotion_events": [
+    {
+      "stage": "kernel_output",
+      "timestamp": "2026-03-26T23:46:19.179453",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+      "has_trace_payload": true
+    },
+    {
+      "stage": "ingress_kernel_trace",
+      "timestamp": "2026-03-26T23:46:19.179460",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+      "trace_schema_version": "proto_self.trace.v1"
+    },
+    {
+      "stage": "kernel_output",
+      "timestamp": "2026-03-26T23:46:39.480838",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+      "has_trace_payload": true
+    },
+    {
+      "stage": "external_result_kernel_trace",
+      "timestamp": "2026-03-26T23:46:39.480846",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+      "trace_schema_version": "proto_self.trace.v1"
+    }
+  ],
+  "tape": {
+    "tape_id": "tape_sample_20260326_234618_b4b7792b",
+    "timestamp": "2026-03-26T23:46:18.441330",
+    "evidence_level": "E4",
+    "source_type": "real_channel",
+    "channel": "telegram",
+    "update_id": 476272533,
+    "trace_id": "sample_20260326_234618_b4b7792b",
+    "normalized_event_id": "telegram:dm:8420019401_turn_57fd8e60",
+    "ledger_ref": "ledger.json"
+  },
+  "replay": {
+    "replay_id": "replay_sample_20260326_234618_b4b7792b",
+    "timestamp": "2026-03-26T23:46:39.815568",
+    "evidence_level": "E4",
+    "source_type": "real_channel",
+    "channel": "telegram",
+    "sample_id": "sample_20260326_234618_b4b7792b",
+    "primary_ledger_ref": "ledger.json",
+    "replay_input_source": {
+      "type": "ledger",
+      "path": "openemotion.trace_payload",
+      "authority": "OpenEmotion"
+    },
+    "raw_update_ref": "raw_update.json",
+    "normalized_event_ref": "normalized_event.json",
+    "openemotion_result_ref": "openemotion_result.json",
+    "openemotion_trace_ref": "openemotion_trace.json",
+    "response_plan_ref": "response_plan.json",
+    "outbox_record_ref": "outbox_record.json",
+    "timeline_ref": "timeline.json",
+    "tape_ref": "tape.json",
+    "replay_hash": "0be2f257693fbce5"
+  },
+  "replay_hash": "0be2f257693fbce5",
+  "ledger": {
+    "ledger_version": "host.evidence.ledger.v1",
+    "sample_id": "sample_20260326_234618_b4b7792b",
+    "timestamp": "2026-03-26T23:46:18.441330",
+    "evidence_level": "E4",
+    "source_type": "real_channel",
+    "channel": "telegram",
+    "ownership": {
+      "primary_ledger_owner": "EgoCore host evidence ledger",
+      "openemotion_trace_owner": "OpenEmotion trace_payload",
+      "compatibility_mirrors_owner": "EgoCore compatibility exports",
+      "bridge_policy": "ProtoSelfTraceBridge is compatibility-only and must not become an independent authority source."
+    },
+    "ids": {
+      "sample_id": "sample_20260326_234618_b4b7792b",
+      "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+      "session_id": "telegram:dm:8420019401",
+      "thread_id": "telegram:dm:8420019401",
+      "turn_id": "turn_57fd8e60",
+      "update_id": 476272533,
+      "replay_id": "replay_sample_20260326_234618_b4b7792b",
+      "tape_id": "tape_sample_20260326_234618_b4b7792b"
+    },
+    "inputs": {
+      "raw_update": {
+        "message": {
+          "message_id": 1993,
+          "date": 1774586778,
+          "chat": {
+            "id": 8420019401,
+            "type": "private"
+          },
+          "from": {
+            "id": 8420019401,
+            "is_bot": false,
+            "username": null
+          },
+          "text": "你搜索一下cycle_is_all_you_need的论文 觉得这个文章的观点如何?"
+        },
+        "update_id": 476272533
+      },
+      "normalized_event": {
+        "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+        "timestamp": "2026-03-26T23:46:19.167147",
+        "actor": "user",
+        "source": "telegram",
+        "event_type": "user_message",
+        "user_intent": "你搜索一下cycle_is_all_you_need的论文 觉得这个文章的观点如何?",
+        "raw_text": "你搜索一下cycle_is_all_you_need的论文 觉得这个文章的观点如何?",
+        "conversation_context": {
+          "session_id": "telegram:dm:8420019401",
+          "thread_id": "telegram:dm:8420019401",
+          "turn_id": "turn_57fd8e60"
+        },
+        "task_context": {
+          "pending_tasks": 0,
+          "blocked_tasks": 0
+        },
+        "runtime_summary": {
+          "runtime": "runtime_v2",
+          "state_scope": "agent_global"
+        },
+        "safety_context": {
+          "risk_level": "low"
+        },
+        "external_result": null
+      }
+    },
+    "openemotion": {
+      "result": {
+        "schema_version": "proto_self.v1",
+        "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+        "identity_state_delta": {
+          "core_roles_add": [],
+          "core_commitments_add": [],
+          "core_boundaries_add": [],
+          "stable_preferences_patch": {},
+          "identity_confidence_delta": 0.0
+        },
+        "self_model_delta": {
+          "capabilities": {},
+          "limitations": {},
+          "current_focus": "error_recovery",
+          "current_mode": "repair",
+          "self_confidence_by_domain": {}
+        },
+        "memory_update": {
+          "append_episode": true,
+          "cycle_promotion_candidate": "14d0893476bf171e",
+          "promote_reflection": false
+        },
+        "relationship_update": {},
+        "appraisal_state_delta": {
+          "coherence_pressure": 1.0,
+          "curiosity": 1.0,
+          "caution": 1.0,
+          "completion_pressure": 1.0,
+          "social_tension": 0.0
+        },
+        "reflection_note": {
+          "trigger": "drive_spike",
+          "diagnosis": "significant internal state change detected",
+          "proposed_adjustment": {
+            "review_drive_field": true
+          },
+          "promote_to_memory": false
+        },
+        "policy_hint": {
+          "risk_bias": "high",
+          "closure_bias": true,
+          "ask_preferred": true,
+          "should_avoid_commitment_upgrade": true,
+          "exploration_mode": false
+        },
+        "response_tendency": {
+          "preferred_mode": "ask",
+          "preferred_tone": "cautious",
+          "certainty_bound": "bounded",
+          "suggested_next_step": "prioritize_closure",
+          "ask_needed": true
+        },
+        "confidence_meta": {
+          "identity_confidence": 0.5,
+          "revision_count": 162,
+          "cycle_count": 15,
+          "episodic_count": 100
+        },
+        "trace_payload": {
+          "schema_version": "proto_self.trace.v1",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+          "perceived": {
+            "intent": null,
+            "event_type": "tool_result",
+            "source": "runtime",
+            "safety_context": {
+              "risk_level": "high"
+            },
+            "action_class_seed": "tool:shell",
+            "novelty": 0.8,
+            "identity_conflict": 0.25,
+            "unfinished_commitment": 0.2,
+            "risk_signal": 0.5,
+            "relational_mismatch": 0.0,
+            "outcome_class": "blocked",
+            "boundary_state": "elevated_risk",
+            "external_outcome_type": "blocked"
+          },
+          "appraisal_delta": {
+            "coherence_pressure": 1.0,
+            "curiosity": 1.0,
+            "caution": 1.0,
+            "completion_pressure": 1.0,
+            "social_tension": 0.0
+          },
+          "self_model_delta": {
+            "capabilities": {},
+            "limitations": {},
+            "current_focus": "error_recovery",
+            "current_mode": "repair",
+            "self_confidence_by_domain": {}
+          },
+          "cycle_delta": {
+            "cycle_id": "14d0893476bf171e",
+            "closure_signature": "14d0893476bf171e",
+            "closure_family_id": "af8179a3c8b5a21e",
+            "op": "candidate",
+            "psi_bucket": "runtime:tool_result:general:risk_high",
+            "action_signature": "tool:shell",
+            "outcome_signature": "blocked",
+            "mode_signature": "repair",
+            "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:repair|focus:error_recovery",
+            "closure_consistency_score": 0.75,
+            "repair_closure": false,
+            "order_invariance_candidate": "3f96be11a0686470",
+            "strength_delta": 0.05
+          },
+          "identity_delta": {
+            "core_roles_add": [],
+            "core_commitments_add": [],
+            "core_boundaries_add": [],
+            "stable_preferences_patch": {},
+            "identity_confidence_delta": 0.0
+          },
+          "closure_signature": "14d0893476bf171e",
+          "closure_family_id": "af8179a3c8b5a21e",
+          "action_signature": "tool:shell",
+          "outcome_signature": "blocked",
+          "closure_consistency_score": 0.75,
+          "order_invariance_candidate": "3f96be11a0686470",
+          "reflection_trigger": "drive_spike",
+          "policy_hint": {
+            "risk_bias": "high",
+            "closure_bias": true,
+            "ask_preferred": true,
+            "should_avoid_commitment_upgrade": true,
+            "exploration_mode": false
+          },
+          "timestamp": "2026-03-26T23:46:39.466706"
+        }
+      },
+      "trace_payload": {
+        "schema_version": "proto_self.trace.v1",
+        "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+        "perceived": {
+          "intent": null,
+          "event_type": "tool_result",
+          "source": "runtime",
+          "safety_context": {
+            "risk_level": "high"
+          },
+          "action_class_seed": "tool:shell",
+          "novelty": 0.8,
+          "identity_conflict": 0.25,
+          "unfinished_commitment": 0.2,
+          "risk_signal": 0.5,
+          "relational_mismatch": 0.0,
+          "outcome_class": "blocked",
+          "boundary_state": "elevated_risk",
+          "external_outcome_type": "blocked"
+        },
+        "appraisal_delta": {
+          "coherence_pressure": 1.0,
+          "curiosity": 1.0,
+          "caution": 1.0,
+          "completion_pressure": 1.0,
+          "social_tension": 0.0
+        },
+        "self_model_delta": {
+          "capabilities": {},
+          "limitations": {},
+          "current_focus": "error_recovery",
+          "current_mode": "repair",
+          "self_confidence_by_domain": {}
+        },
+        "cycle_delta": {
+          "cycle_id": "14d0893476bf171e",
+          "closure_signature": "14d0893476bf171e",
+          "closure_family_id": "af8179a3c8b5a21e",
+          "op": "candidate",
+          "psi_bucket": "runtime:tool_result:general:risk_high",
+          "action_signature": "tool:shell",
+          "outcome_signature": "blocked",
+          "mode_signature": "repair",
+          "phi_signature": "coherence_pressure:+1.0|caution:+1.0|curiosity:+1.0|mode:repair|focus:error_recovery",
+          "closure_consistency_score": 0.75,
+          "repair_closure": false,
+          "order_invariance_candidate": "3f96be11a0686470",
+          "strength_delta": 0.05
+        },
+        "identity_delta": {
+          "core_roles_add": [],
+          "core_commitments_add": [],
+          "core_boundaries_add": [],
+          "stable_preferences_patch": {},
+          "identity_confidence_delta": 0.0
+        },
+        "closure_signature": "14d0893476bf171e",
+        "closure_family_id": "af8179a3c8b5a21e",
+        "action_signature": "tool:shell",
+        "outcome_signature": "blocked",
+        "closure_consistency_score": 0.75,
+        "order_invariance_candidate": "3f96be11a0686470",
+        "reflection_trigger": "drive_spike",
+        "policy_hint": {
+          "risk_bias": "high",
+          "closure_bias": true,
+          "ask_preferred": true,
+          "should_avoid_commitment_upgrade": true,
+          "exploration_mode": false
+        },
+        "timestamp": "2026-03-26T23:46:39.466706"
+      },
+      "events": [
+        {
+          "stage": "kernel_output",
+          "timestamp": "2026-03-26T23:46:19.179453",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+          "has_trace_payload": true
+        },
+        {
+          "stage": "ingress_kernel_trace",
+          "timestamp": "2026-03-26T23:46:19.179460",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60",
+          "trace_schema_version": "proto_self.trace.v1"
+        },
+        {
+          "stage": "kernel_output",
+          "timestamp": "2026-03-26T23:46:39.480838",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+          "has_trace_payload": true
+        },
+        {
+          "stage": "external_result_kernel_trace",
+          "timestamp": "2026-03-26T23:46:39.480846",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0",
+          "trace_schema_version": "proto_self.trace.v1"
+        }
+      ],
+      "trace_schema_version": "proto_self.trace.v1",
+      "result_schema_version": "proto_self.v1"
+    },
+    "host": {
+      "response_plan": {
+        "status": "completed_verified",
+        "delivery_kind": "final",
+        "reply_length": 544
+      },
+      "outbox_record": {
+        "chat_id": 8420019401,
+        "message_id": 1994,
+        "date": "2026-03-27T04:46:40+00:00",
+        "text_length": 544,
+        "success": true
+      },
+      "timeline": [
+        {
+          "stage": "update_received",
+          "timestamp": "2026-03-26T23:46:18.441347",
+          "update_id": 476272533
+        },
+        {
+          "stage": "event_normalized",
+          "timestamp": "2026-03-26T23:46:19.179445",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60"
+        },
+        {
+          "stage": "openemotion_processed",
+          "timestamp": "2026-03-26T23:46:19.179456",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60"
+        },
+        {
+          "stage": "openemotion_processed",
+          "timestamp": "2026-03-26T23:46:39.480843",
+          "event_id": "telegram:dm:8420019401_turn_57fd8e60_tool_0"
+        },
+        {
+          "stage": "response_planned",
+          "timestamp": "2026-03-26T23:46:39.482356"
+        },
+        {
+          "stage": "message_sent",
+          "timestamp": "2026-03-26T23:46:39.815530",
+          "chat_id": 8420019401,
+          "message_id": 1994
+        }
+      ]
+    },
+    "replay_input": {
+      "authority": "OpenEmotion trace_payload within ledger.json",
+      "required_sections": [
+        "inputs.normalized_event",
+        "openemotion.trace_payload"
+      ],
+      "optional_sections": [
+        "openemotion.result",
+        "host.response_plan",
+        "host.outbox_record"
+      ],
+      "compatibility_refs": {
+        "replay_json": "replay.json",
+        "openemotion_trace_json": "openemotion_trace.json"
+      }
+    },
+    "report_sources": {
+      "sample_summary": "ledger.json",
+      "acceptance_reports": [
+        "ledger.json",
+        "replay.json",
+        "tape.json"
+      ]
+    },
+    "compatibility_mirrors": [
+      "sample.json",
+      "raw_update.json",
+      "normalized_event.json",
+      "openemotion_result.json",
+      "openemotion_trace.json",
+      "response_plan.json",
+      "outbox_record.json",
+      "timeline.json",
+      "tape.json",
+      "replay.json",
+      "summary.md"
+    ],
+    "replay_hash": "0be2f257693fbce5",
+    "evidence_completeness": {
+      "raw_update": true,
+      "normalized_event": true,
+      "openemotion_result": true,
+      "openemotion_trace": true,
+      "response_plan": true,
+      "outbox_record": true,
+      "timeline": true,
+      "tape": true,
+      "replay": true
+    }
+  },
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": true,
+    "openemotion_result": true,
+    "openemotion_trace": true,
+    "response_plan": true,
+    "outbox_record": true,
+    "timeline": true,
+    "tape": true,
+    "replay": true
+  },
+  "ledger_ref": "ledger.json",
+  "authority": "compatibility_mirror"
+}

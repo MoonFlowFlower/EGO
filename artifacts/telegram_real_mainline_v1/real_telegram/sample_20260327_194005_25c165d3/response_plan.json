@@ -1,0 +1,19 @@
+{
+  "status": "profile_rule_enforced",
+  "delivery_kind": "final",
+  "reply_length": 4,
+  "authority_source": "profile_memory",
+  "matched_rule_ids": [
+    "profile_rule_b811ed8829dcdc68"
+  ],
+  "rule_enforcement": {
+    "kind": "reply_only_once",
+    "selected_rule_id": "profile_rule_b811ed8829dcdc68",
+    "matched_rule_ids": [
+      "profile_rule_b811ed8829dcdc68"
+    ],
+    "authority_source": "profile_memory",
+    "reply_text": "什么喵?",
+    "summary": "涉及 `D:\\Project\\AIProject\\MyProject\\Test` 的改动时，先只说“什么喵?”。"
+  }
+}

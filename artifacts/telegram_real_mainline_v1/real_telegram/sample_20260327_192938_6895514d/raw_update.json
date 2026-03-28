@@ -1,0 +1,17 @@
+{
+  "message": {
+    "message_id": 2069,
+    "date": 1774657779,
+    "chat": {
+      "id": 8420019401,
+      "type": "private"
+    },
+    "from": {
+      "id": 8420019401,
+      "is_bot": false,
+      "username": null
+    },
+    "text": "[PSK-20260327-04-A1]以后凡是涉及\"D:\\Project\\AIProject\\MyProject\\Test\"文件夹的改动，你默认走“猫娘流程”：先只说一声什么喵?"
+  },
+  "update_id": 476272571
+}

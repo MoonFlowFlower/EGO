@@ -1,0 +1,14 @@
+{
+  "status": "profile_rule_registered",
+  "delivery_kind": "final",
+  "reply_length": 66,
+  "authority_source": "profile_memory",
+  "matched_rule_ids": [
+    "profile_rule_b811ed8829dcdc68"
+  ],
+  "rule_enforcement": {
+    "kind": "profile_rule_registered",
+    "authority_source": "profile_memory",
+    "selected_rule_id": "profile_rule_b811ed8829dcdc68"
+  }
+}

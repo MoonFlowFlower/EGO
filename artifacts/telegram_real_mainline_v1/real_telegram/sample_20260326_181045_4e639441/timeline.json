@@ -1,0 +1,13 @@
+[
+  {
+    "stage": "update_received",
+    "timestamp": "2026-03-26T18:10:45.320396",
+    "update_id": 476272493
+  },
+  {
+    "stage": "message_sent",
+    "timestamp": "2026-03-26T18:11:03.942891",
+    "chat_id": 8420019401,
+    "message_id": 1910
+  }
+]

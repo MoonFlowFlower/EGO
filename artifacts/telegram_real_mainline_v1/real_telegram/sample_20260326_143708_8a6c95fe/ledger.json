@@ -1,0 +1,123 @@
+{
+  "ledger_version": "host.evidence.ledger.v1",
+  "sample_id": "sample_20260326_143708_8a6c95fe",
+  "timestamp": "2026-03-26T14:37:08.689141",
+  "evidence_level": "E4",
+  "source_type": "real_channel",
+  "channel": "telegram",
+  "ownership": {
+    "primary_ledger_owner": "EgoCore host evidence ledger",
+    "openemotion_trace_owner": "OpenEmotion trace_payload",
+    "compatibility_mirrors_owner": "EgoCore compatibility exports",
+    "bridge_policy": "ProtoSelfTraceBridge is compatibility-only and must not become an independent authority source."
+  },
+  "ids": {
+    "sample_id": "sample_20260326_143708_8a6c95fe",
+    "event_id": null,
+    "session_id": null,
+    "thread_id": null,
+    "turn_id": null,
+    "update_id": 476272476,
+    "replay_id": "replay_sample_20260326_143708_8a6c95fe",
+    "tape_id": "tape_sample_20260326_143708_8a6c95fe"
+  },
+  "inputs": {
+    "raw_update": {
+      "message": {
+        "message_id": 1878,
+        "date": 1774553828,
+        "chat": {
+          "id": 8420019401,
+          "type": "private"
+        },
+        "from": {
+          "id": 8420019401,
+          "is_bot": false,
+          "username": null
+        },
+        "text": "你能帮我在D:\\Project\\AIProject\\MyProject\\Test里创建一个介绍egocore的页面吗"
+      },
+      "update_id": 476272476
+    },
+    "normalized_event": {}
+  },
+  "openemotion": {
+    "result": {},
+    "trace_payload": {},
+    "events": [],
+    "trace_schema_version": null,
+    "result_schema_version": null
+  },
+  "host": {
+    "response_plan": null,
+    "outbox_record": {
+      "chat_id": 8420019401,
+      "message_id": 1879,
+      "date": "2026-03-26T19:37:53+00:00",
+      "text_length": 312,
+      "success": true
+    },
+    "timeline": [
+      {
+        "stage": "update_received",
+        "timestamp": "2026-03-26T14:37:08.689150",
+        "update_id": 476272476
+      },
+      {
+        "stage": "message_sent",
+        "timestamp": "2026-03-26T14:37:53.102359",
+        "chat_id": 8420019401,
+        "message_id": 1879
+      }
+    ]
+  },
+  "replay_input": {
+    "authority": "OpenEmotion trace_payload within ledger.json",
+    "required_sections": [
+      "inputs.normalized_event",
+      "openemotion.trace_payload"
+    ],
+    "optional_sections": [
+      "openemotion.result",
+      "host.response_plan",
+      "host.outbox_record"
+    ],
+    "compatibility_refs": {
+      "replay_json": "replay.json",
+      "openemotion_trace_json": null
+    }
+  },
+  "report_sources": {
+    "sample_summary": "ledger.json",
+    "acceptance_reports": [
+      "ledger.json",
+      "replay.json",
+      "tape.json"
+    ]
+  },
+  "compatibility_mirrors": [
+    "sample.json",
+    "raw_update.json",
+    "normalized_event.json",
+    "openemotion_result.json",
+    null,
+    "response_plan.json",
+    "outbox_record.json",
+    "timeline.json",
+    "tape.json",
+    "replay.json",
+    "summary.md"
+  ],
+  "replay_hash": "ec0ed4750a92d5ca",
+  "evidence_completeness": {
+    "raw_update": true,
+    "normalized_event": false,
+    "openemotion_result": false,
+    "openemotion_trace": false,
+    "response_plan": false,
+    "outbox_record": true,
+    "timeline": true,
+    "tape": true,
+    "replay": true
+  }
+}
