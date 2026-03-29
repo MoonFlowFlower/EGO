@@ -101,7 +101,7 @@
 - 复杂、模糊、跨模块任务：优先使用 `ego-plan-from-spec`
 - 按 spec / plan / acceptance 实现明确里程碑：优先使用 `ego-implement-milestone`
 - bug / 回归 / 报错 / failing tests / 主链不生效：优先使用 `ego-bugfix-root-cause`
-- 对照验收单做 review 或判断是否可宣称完成：优先使用 `ego-review-against-acceptance`
+- 对照验收单、`type_verify`、release gate、admission review 做 review / verify：优先使用 `ego-review-against-acceptance`
 - 恢复上下文、继续、接着做：优先使用 `ego-resume-context`
 - 交接 / 子代理派发 / brief：显式调用 `ego-handoff-brief`
 - 如果同一请求同时带有 `continue` 和明确的 bug / milestone / review / handoff 目标，优先选择更具体的 task skill；只有“恢复状态”本身是主要工作时才使用 `ego-resume-context`

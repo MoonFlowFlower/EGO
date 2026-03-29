@@ -1,6 +1,6 @@
 ---
 name: "ego-bugfix-root-cause"
-description: "Use when the task is a bug, regression, failing test, runtime error, broken behavior, intermittent fault, or a case where the mainline is not taking effect. Do not use when the task is new feature development, broad refactoring, or pure documentation cleanup. Boundary: this skill is for reproduction, root-cause isolation, minimal patching, and verification; if a resume-style prompt also contains a concrete failure signal, this skill should win over ego-resume-context."
+description: "Use when the task is a bug, regression, failing test, runtime error, broken behavior, intermittent fault, or a case where the mainline is not taking effect, including repo troubleshoot tasks and failure-case replay work. Do not use when the task is new feature development, broad refactoring, or pure documentation cleanup. Boundary: this skill is for reproduction, root-cause isolation, minimal patching, and verification; if a resume-style prompt also contains a concrete failure signal, this skill should win over ego-resume-context."
 ---
 
 # Ego Bugfix Root Cause

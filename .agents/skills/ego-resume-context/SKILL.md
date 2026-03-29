@@ -1,6 +1,6 @@
 ---
 name: "ego-resume-context"
-description: "Use when the user says continue, resume, restore context, pick up where we left off, or asks what state the current task is in, and the main need is state reconstruction. Do not use when starting a brand-new task, doing a focused bugfix from a fresh error report, reviewing against acceptance, or implementing a clearly scoped milestone from scratch. Boundary: this skill reconstructs current state and next action; it does not automatically launch broad implementation unless the user explicitly asks to proceed."
+description: "Use when the user says continue, resume, restore context, pick up where we left off, or asks what state the current task is in, and the main need is state reconstruction from session handoff, archive, or status documents. Do not use when starting a brand-new task, doing a focused bugfix from a fresh error report, reviewing against acceptance, or implementing a clearly scoped milestone from scratch. Boundary: this skill reconstructs current state and next action; it does not automatically launch broad implementation unless the user explicitly asks to proceed."
 ---
 
 # Ego Resume Context

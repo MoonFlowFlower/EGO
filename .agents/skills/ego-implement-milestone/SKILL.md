@@ -1,6 +1,6 @@
 ---
 name: "ego-implement-milestone"
-description: "Use when a milestone is already defined by a spec, plan, acceptance checklist, or task document and the job is to implement that scoped slice now. Do not use when requirements are still ambiguous, planning is still needed, the task is review-only, or the user mainly wants context recovery before deciding whether to code. Boundary: this skill implements the current milestone only and must not expand scope on its own."
+description: "Use when a milestone is already defined by a spec, plan, acceptance checklist, step file, or implementation task document and the job is to implement that scoped slice now, including published or in-progress layer2/layer3 task cards. Do not use when requirements are still ambiguous, planning is still needed, the task is review-only, or the user mainly wants context recovery before deciding whether to code. Boundary: this skill implements the current milestone only and must not expand scope on its own."
 ---
 
 # Ego Implement Milestone
