@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 from app.config import load_config, get_config, ConfigError
+from app.live_process_version import write_live_process_version_report
 from app.logger import init_logging, get_logger
 
 
@@ -319,6 +320,12 @@ def main() -> int:
                     print(f"\n❌ Telegram poller lock already held: {lock_path}")
                     print("   Refusing to start to avoid getUpdates conflict.")
                     return 2
+
+            try:
+                live_report_path = write_live_process_version_report(process_kind="telegram")
+                print(f"  ✓ Live process version report written: {live_report_path}")
+            except Exception as e:
+                print(f"  ⚠ Failed to write live process version report: {e}")
 
             # Initialize tools
             from app.tools import setup_tools
