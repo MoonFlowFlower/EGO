@@ -177,3 +177,39 @@ def test_finalize_infers_minimal_response_plan_from_outbox(tmp_path):
     assert sample.response_plan["status"] == "delivered_without_explicit_plan"
     assert sample.response_plan["reply_length"] == 120
     assert sample.response_plan["inferred"] is True
+
+
+def test_collector_keeps_openemotion_event_payloads_for_later_audit(tmp_path):
+    collector = TelegramEvidenceCollector(artifacts_dir=tmp_path)
+    collector.start_sample(
+        {
+            "update_id": 4001,
+            "message": {
+                "message_id": 501,
+                "date": 1774483898,
+                "chat": {"id": 42, "type": "private"},
+                "from": {"id": 7, "is_bot": False, "username": "tester"},
+                "text": "读取 app.py",
+            },
+        }
+    )
+    collector.capture_openemotion_result(
+        {
+            "schema_version": "proto_self.output.v2",
+            "event_id": "session:test_turn_002",
+            "subject_profile": "seed_v0_2",
+            "candidate_actions": [{"action_type": "inspect_file"}],
+            "trace_payload": {
+                "schema_version": "proto_self.trace.v2",
+                "event_id": "session:test_turn_002",
+                "subject_profile": "seed_v0_2",
+                "candidate_actions": [{"action_type": "inspect_file"}],
+            },
+        }
+    )
+
+    sample = collector.finalize_sample()
+    assert sample is not None
+    assert sample.openemotion_events[0]["payload"]["candidate_actions"][0]["action_type"] == "inspect_file"
+    assert sample.openemotion_events[0]["payload"]["trace_payload"]["schema_version"] == "proto_self.trace.v2"
+    assert sample.ledger["openemotion"]["events"][0]["payload"]["subject_profile"] == "seed_v0_2"

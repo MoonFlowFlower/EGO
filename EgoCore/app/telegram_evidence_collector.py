@@ -187,20 +187,22 @@ class TelegramEvidenceCollector:
         if not sample:
             return
 
-        sample.openemotion_result = result
-        trace_payload = result.get("trace_payload")
+        result_payload = deepcopy(result)
+        sample.openemotion_result = result_payload
+        trace_payload = result_payload.get("trace_payload")
         if trace_payload:
             sample.openemotion_trace = trace_payload
         sample.openemotion_events.append({
             "stage": "kernel_output",
             "timestamp": datetime.now().isoformat(),
-            "event_id": result.get("event_id"),
+            "event_id": result_payload.get("event_id"),
             "has_trace_payload": bool(trace_payload),
+            "payload": result_payload,
         })
         sample.timeline.append({
             "stage": "openemotion_processed",
             "timestamp": datetime.now().isoformat(),
-            "event_id": result.get("event_id"),
+            "event_id": result_payload.get("event_id"),
         })
 
     def capture_openemotion_trace(
@@ -214,12 +216,14 @@ class TelegramEvidenceCollector:
         if not sample or not trace_payload:
             return
 
-        sample.openemotion_trace = trace_payload
+        mirrored_payload = deepcopy(trace_payload)
+        sample.openemotion_trace = mirrored_payload
         sample.openemotion_events.append({
             "stage": stage,
             "timestamp": datetime.now().isoformat(),
-            "event_id": trace_payload.get("event_id"),
-            "trace_schema_version": trace_payload.get("schema_version"),
+            "event_id": mirrored_payload.get("event_id"),
+            "trace_schema_version": mirrored_payload.get("schema_version"),
+            "payload": mirrored_payload,
         })
 
     def capture_response_plan(self, plan: Dict[str, Any]) -> None:

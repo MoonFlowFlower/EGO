@@ -59,6 +59,12 @@ EXPLICIT_FILE_TASK_PATTERNS = (
     (("modify", "update", "edit", "fix", "rewrite"), tuple()),
 )
 
+READ_ONLY_FILE_TASK_MARKERS = (
+    "读取", "读", "查看", "打开", "检查", "看",
+    "read", "open", "view", "inspect", "check", "show",
+    "完整内容", "全部内容", "全文", "不要截断", "别截断", "继续读取", "读完整",
+)
+
 
 # =============================================================================
 # 数据结构（最终版）
@@ -114,7 +120,7 @@ class SemanticSegment:
 class ParsedIntentGraph:
     """
     结构化意图图
-    
+
     唯一语义解析输出对象。
     """
     segments: List[SemanticSegment] = field(default_factory=list)
@@ -209,7 +215,7 @@ def build_parser_context(
 ) -> Dict[str, Any]:
     """
     构建 parser 可用的上下文。
-    
+
     注入内容：
     - 最近 6 轮对话摘要
     - 当前任务状态
@@ -227,7 +233,7 @@ def build_parser_context(
             "role": t.get("role") if isinstance(t, dict) else getattr(t, "role", "user"),
             "text": str(text_val)[:200] if text_val else "",
         })
-    
+
     return {
         "recent_turns_summary": turns_summary,
         "runtime_snapshot": {
@@ -414,6 +420,9 @@ def _extract_explicit_file_task(text: str, paths: List[str]) -> Optional[Dict[st
         request_mode = "write" if any(
             marker in text or marker in lowered
             for marker in ("创建", "新建", "生成", "写", "制作", "html", "页面", "网页", "create", "generate", "write", "build", "page", "website")
+        ) else "analyze" if any(
+            marker in text or marker in lowered
+            for marker in READ_ONLY_FILE_TASK_MARKERS
         ) else "execute"
         break
 
@@ -491,7 +500,7 @@ async def semantic_parse_message(
     - 只输出结构化结果
     - 不决定执行/完成/状态文本
     - 不写 runtime state
-    
+
     性能约束：
     - 超时：8 秒
     - LLM 调用次数：最多 1 次
@@ -514,7 +523,7 @@ async def semantic_parse_message(
     # 构建 prompt
     recent_turns_str = json.dumps(recent_turns[-6:], ensure_ascii=False, indent=2)
     runtime_snapshot_str = json.dumps(runtime_snapshot, ensure_ascii=False, indent=2)
-    
+
     prompt = SEGMENTATION_PROMPT.format(
         text=text,
         recent_turns=recent_turns_str,
@@ -558,11 +567,11 @@ async def semantic_parse_message(
 async def _call_llm(llm_client: Any, prompt: str) -> Dict[str, Any]:
     """
     调用 LLM 并返回 JSON 结果。
-    
+
     这里需要根据实际的 LLM client 适配。
     """
     result_str = None
-    
+
     # 获取 LLM 响应的辅助函数
     def extract_content(response) -> Optional[str]:
         """从 LLM 响应中提取文本内容"""
@@ -578,7 +587,7 @@ async def _call_llm(llm_client: Any, prompt: str) -> Dict[str, Any]:
         if isinstance(response, str):
             return response
         return None
-    
+
     try:
         # 尝试 LLMClient.generate (同步)
         if hasattr(llm_client, "generate"):
@@ -586,13 +595,13 @@ async def _call_llm(llm_client: Any, prompt: str) -> Dict[str, Any]:
             # 在线程池中运行同步方法
             loop = asyncio.get_event_loop()
             response = await loop.run_in_executor(
-                None, 
+                None,
                 lambda: llm_client.generate(prompt)
             )
             result_str = extract_content(response)
     except Exception as e:
         logger.debug(f"_call_llm: generate failed: {e}")
-    
+
     if result_str is None:
         try:
             # 尝试 openai 风格
@@ -605,7 +614,7 @@ async def _call_llm(llm_client: Any, prompt: str) -> Dict[str, Any]:
                 result_str = response.choices[0].message.content
         except Exception as e:
             logger.debug(f"_call_llm: openai style failed: {e}")
-    
+
     if result_str is None:
         try:
             # 尝试自定义 complete 方法
@@ -614,13 +623,13 @@ async def _call_llm(llm_client: Any, prompt: str) -> Dict[str, Any]:
                 result_str = extract_content(result)
         except Exception as e:
             logger.debug(f"_call_llm: complete failed: {e}")
-    
+
     if result_str is None:
         raise SemanticParseError("No valid LLM client interface found")
-    
+
     # 日志：原始 LLM 输出
     logger.info(f"_call_llm: raw output length={len(result_str)}, first 200 chars: {result_str[:200]}")
-    
+
     # 尝试解析 JSON
     try:
         # 清理可能的 markdown 代码块
@@ -727,20 +736,20 @@ def _parse_llm_result(result: Dict[str, Any], original_text: str) -> ParsedInten
     graph = ParsedIntentGraph()
     # 明确清空 parser_source，强制调用方设置正确值
     graph.parser_source = ""
-    
+
     segments_data = result.get("segments", [])
     if not segments_data:
         return graph
-    
+
     for item in segments_data:
         kind = item.get("kind", "small_talk")
         if kind not in SEGMENT_KINDS:
             kind = "small_talk"
-        
+
         request_mode = item.get("request_mode")
         if request_mode and request_mode not in REQUEST_MODES:
             request_mode = "unknown"
-        
+
         seg = SemanticSegment(
             text=item.get("text", original_text),
             kind=kind,
@@ -751,7 +760,7 @@ def _parse_llm_result(result: Dict[str, Any], original_text: str) -> ParsedInten
             priority=int(item.get("priority", 0)),
         )
         graph.segments.append(seg)
-        
+
         # 更新 graph 标志
         if seg.kind == "status_query":
             graph.has_status_query = True
@@ -767,39 +776,39 @@ def _parse_llm_result(result: Dict[str, Any], original_text: str) -> ParsedInten
             graph.acceptance_criteria.append(seg.text)
         elif seg.kind == "task_request":
             graph.actionable_targets.append(seg.text)
-    
+
     # 决定 primary_intent
     graph.primary_intent = _decide_primary_intent(graph)
     graph.secondary_intents = _decide_secondary_intents(graph)
     graph.requires_clarification = _needs_clarification(graph)
-    
+
     return graph
 
 
 def _decide_primary_intent(graph: ParsedIntentGraph) -> str:
     """决定主意图"""
     # 优先级：correction > task_request > status_query > clarification > background > small_talk
-    
+
     if graph.has_correction:
         return "correction"
-    
+
     for seg in graph.segments:
         if seg.kind == "task_request":
             return "task_request"
-    
+
     if graph.has_status_query:
         return "status_query"
-    
+
     if graph.has_clarification:
         return "clarification"
-    
+
     if graph.has_background:
         return "background"
-    
+
     # 默认
     if graph.segments:
         return graph.segments[0].kind
-    
+
     return "chat"
 
 
@@ -807,12 +816,12 @@ def _decide_secondary_intents(graph: ParsedIntentGraph) -> List[str]:
     """决定次要意图"""
     secondary = []
     seen = {graph.primary_intent}
-    
+
     for seg in graph.segments:
         if seg.kind not in seen:
             secondary.append(seg.kind)
             seen.add(seg.kind)
-    
+
     return secondary
 
 
@@ -821,13 +830,13 @@ def _needs_clarification(graph: ParsedIntentGraph) -> bool:
     # 如果有 clarification 块，需要澄清
     if graph.has_clarification:
         return True
-    
+
     # 如果有 reference_material 但没有明确的 task_request，需要澄清
     has_ref = any(seg.kind == "reference_material" for seg in graph.segments)
     has_task = any(seg.kind == "task_request" for seg in graph.segments)
     if has_ref and not has_task:
         return True
-    
+
     return False
 
 
@@ -843,12 +852,12 @@ async def safe_semantic_parse(
 ) -> ParsedIntentGraph:
     """
     安全语义解析入口。
-    
+
     退路顺序：
     1. semantic_parser
     2. heuristic_parser
     3. chat_default
-    
+
     禁止：
     - 回退旧 TASK_KEYWORDS
     - 回退旧 regex 分类器
@@ -856,7 +865,7 @@ async def safe_semantic_parse(
     """
     context = build_parser_context(recent_turns, state)
     runtime_snapshot = context["runtime_snapshot"]
-    
+
     # 日志：输入
     logger.info(f"safe_semantic_parse: input text[:100]={text[:100]}, has_llm={llm_client is not None}")
 
@@ -951,7 +960,7 @@ def decide_runtime_action(graph: ParsedIntentGraph, state: Any) -> str:
 def build_runtime_status_reply(state: Any) -> str:
     """
     构建状态查询回复。
-    
+
     内容必须来自 runtime snapshot，不能由 LLM 自由生成。
     """
     # 没有运行中的任务

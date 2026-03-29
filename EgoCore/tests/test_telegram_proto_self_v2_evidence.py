@@ -175,16 +175,17 @@ async def test_telegram_handle_message_captures_proto_self_v2_trace_in_ledger(mo
     assert sample.normalized_event["subject_profile"] == SEED_SUBJECT_PROFILE
     assert sample.openemotion_result["schema_version"] == "proto_self.output.v2"
     assert sample.openemotion_result["subject_profile"] == SEED_SUBJECT_PROFILE
-    assert sample.openemotion_result["candidate_actions"]
     assert sample.openemotion_trace["schema_version"] == "proto_self.trace.v2"
     assert sample.openemotion_trace["subject_profile"] == SEED_SUBJECT_PROFILE
-    assert sample.openemotion_trace["candidate_actions"]
     assert sample.ledger["openemotion"]["trace_payload"]["schema_version"] == "proto_self.trace.v2"
     assert sample.response_plan["proto_self_subject_profile"] == SEED_SUBJECT_PROFILE
     assert sample.response_plan["candidate_action_types"]
     stages = [item["stage"] for item in sample.openemotion_events]
     assert "finalized_result_kernel_trace" in stages
     assert "idle_check_kernel_trace" in stages
+    ingress_event = next(item for item in sample.openemotion_events if item["stage"] == "kernel_output")
+    assert ingress_event["payload"]["subject_profile"] == SEED_SUBJECT_PROFILE
+    assert ingress_event["payload"]["candidate_actions"]
 
     ledger_paths = list(tmp_path.glob("sample_*/ledger.json"))
     assert len(ledger_paths) == 1
@@ -193,5 +194,9 @@ async def test_telegram_handle_message_captures_proto_self_v2_trace_in_ledger(mo
     assert ledger["source_type"] == "simulated_external_entry"
     assert ledger["openemotion"]["trace_payload"]["schema_version"] == "proto_self.trace.v2"
     assert ledger["openemotion"]["result"]["subject_profile"] == SEED_SUBJECT_PROFILE
+    assert any(
+        item["stage"] == "kernel_output" and item["payload"]["candidate_actions"]
+        for item in ledger["openemotion"]["events"]
+    )
     assert ledger["host"]["response_plan"]["proto_self_subject_profile"] == SEED_SUBJECT_PROFILE
     assert len(update.message.sent) == 1

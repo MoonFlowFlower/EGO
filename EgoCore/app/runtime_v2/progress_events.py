@@ -48,6 +48,9 @@ PROGRESS_TEMPLATES = {
     ProgressEventType.EXECUTING_STEP: {
         "default": "现在开始执行。",
         "step": "开始执行第 {step} 步：{action}。",
+        "file": "我先读取相关文件。",
+        "shell": "我先运行需要的命令。",
+        "python": "我先运行需要的脚本。",
     },
     ProgressEventType.VERIFYING_RESULT: {
         "default": "我先快速验证一下结果。",
@@ -61,6 +64,8 @@ PROGRESS_TEMPLATES = {
         "default": "这一步完成了。",
     },
 }
+
+MECHANICAL_TOOL_ACTIONS = {"file", "shell", "python"}
 
 
 @dataclass
@@ -121,7 +126,9 @@ def build_progress_event(
     templates = PROGRESS_TEMPLATES.get(event_type, {"default": "处理中..."})
     
     # 选择模板
-    if context and context in templates:
+    if event_type == ProgressEventType.EXECUTING_STEP and action in MECHANICAL_TOOL_ACTIONS:
+        template = templates.get(action, templates["default"])
+    elif context and context in templates:
         template = templates[context]
     elif event_type == ProgressEventType.EXECUTING_STEP and step and action:
         template = templates.get("step", templates["default"])

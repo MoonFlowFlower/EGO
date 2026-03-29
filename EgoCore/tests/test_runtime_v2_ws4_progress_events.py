@@ -48,6 +48,18 @@ class TestProgressEvents:
         assert event.event_type == ProgressEventType.EXECUTING_STEP
         assert "第 1 步" in event.message
         assert "创建目标文件" in event.message
+
+    def test_build_executing_step_event_uses_non_mechanical_file_copy(self):
+        event = build_progress_event(
+            ProgressEventType.EXECUTING_STEP,
+            context="step",
+            step=1,
+            action="file",
+        )
+
+        assert event.event_type == ProgressEventType.EXECUTING_STEP
+        assert "第 1 步" not in event.message
+        assert event.message == "我先读取相关文件。"
     
     def test_build_blocked_event(self):
         """构建 blocked 事件"""

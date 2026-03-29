@@ -17,7 +17,7 @@ from app.runtime_v2.semantic_parser import (
 
 class TestSemanticParserDataStructures:
     """测试数据结构"""
-    
+
     def test_semantic_segment_creation(self):
         seg = SemanticSegment(
             text="测试文本",
@@ -29,7 +29,7 @@ class TestSemanticParserDataStructures:
         assert seg.kind == "task_request"
         assert seg.confidence == 0.9
         assert seg.request_mode == "execute"
-    
+
     def test_parsed_intent_graph_creation(self):
         graph = ParsedIntentGraph(
             segments=[
@@ -47,14 +47,14 @@ class TestSemanticParserDataStructures:
 
 class TestHeuristicParser:
     """测试 heuristic parser"""
-    
+
     def test_explicit_command(self):
         graph = heuristic_parse("/status")
         assert graph.primary_intent == "task_request"
         assert graph.segments[0].kind == "task_request"
         assert graph.segments[0].request_mode == "execute"
         assert graph.parser_source == "heuristic_parser"
-    
+
     def test_file_path(self):
         """路径 + 明确修改任务 → task_request。"""
         graph = heuristic_parse("/home/moonlight/test.html 配色改成蓝色")
@@ -76,17 +76,23 @@ class TestHeuristicParser:
         assert graph.segments[0].target_ref == r"D:\Project\AIProject\MyProject\Test"
         assert "format:html" in graph.constraints
         assert "topic:EgoCore" in graph.acceptance_criteria
-    
+
+    def test_explicit_file_read_request_uses_analyze_mode(self):
+        graph = heuristic_parse(r"看看这个文件 D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md")
+        assert graph.primary_intent == "task_request"
+        assert graph.segments[0].request_mode == "analyze"
+        assert graph.segments[0].target_ref == r"D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md"
+
     def test_attachment(self):
         graph = heuristic_parse("[用户发送了文件: test.html]")
         assert graph.primary_intent == "reference_material"
         assert graph.requires_clarification is True
-    
+
     def test_chat_default(self):
         graph = heuristic_parse("你好")
         assert graph.primary_intent == "chat"
         assert graph.parser_source == "chat_default"
-    
+
     def test_normal_chat(self):
         graph = heuristic_parse("你觉得怎么样")
         assert graph.primary_intent == "chat"
@@ -95,7 +101,7 @@ class TestHeuristicParser:
 
 class TestSegmentKinds:
     """测试 segment kinds 枚举"""
-    
+
     def test_all_valid_kinds(self):
         valid_kinds = {
             "task_request", "status_query", "constraint", "background",
@@ -103,7 +109,7 @@ class TestSegmentKinds:
             "reference_material", "small_talk",
         }
         assert SEGMENT_KINDS == valid_kinds
-    
+
     def test_all_valid_request_modes(self):
         valid_modes = {
             "execute", "analyze", "design", "compare",
@@ -114,7 +120,7 @@ class TestSegmentKinds:
 
 class TestRuntimeActionDecision:
     """测试 runtime action 决策"""
-    
+
     def test_status_query_when_busy(self):
         from app.runtime_v2.semantic_parser import decide_runtime_action
 
@@ -150,46 +156,46 @@ class TestRuntimeActionDecision:
 
     def test_correction_priority(self):
         from app.runtime_v2.semantic_parser import decide_runtime_action
-        
+
         graph = ParsedIntentGraph(
             has_correction=True,
             primary_intent="task_request",
         )
-        
+
         class MockState:
             def is_busy(self):
                 return False
-        
+
         action = decide_runtime_action(graph, MockState())
         assert action == "repair_or_reframe"
-    
+
     def test_task_request_execution(self):
         from app.runtime_v2.semantic_parser import decide_runtime_action
-        
+
         graph = ParsedIntentGraph(
             primary_intent="task_request",
             requires_clarification=False,
         )
-        
+
         class MockState:
             def is_busy(self):
                 return False
-        
+
         action = decide_runtime_action(graph, MockState())
         assert action == "execute_task"
-    
+
     def test_reference_material_needs_clarification(self):
         from app.runtime_v2.semantic_parser import decide_runtime_action
-        
+
         graph = ParsedIntentGraph(
             primary_intent="reference_material",
             requires_clarification=True,
         )
-        
+
         class MockState:
             def is_busy(self):
                 return False
-        
+
         action = decide_runtime_action(graph, MockState())
         assert action == "waiting_input"
 

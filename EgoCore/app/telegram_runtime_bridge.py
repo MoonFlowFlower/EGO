@@ -236,6 +236,23 @@ class TelegramRuntimeBridge:
         "按这个走",
         "就按这个走",
     }
+    EXPLICIT_TARGET_ANALYZE_PATTERNS = (
+        "继续读取",
+        "继续读",
+        "读完整",
+        "完整内容",
+        "全部内容",
+        "全文",
+        "不要截断",
+        "别截断",
+        "完整地看",
+        "继续看看",
+        "read the full",
+        "read full",
+        "full content",
+        "don't truncate",
+        "do not truncate",
+    )
     WINDOWS_PATH_RE = re.compile(r"[A-Za-z]:[\\/](?:[A-Za-z0-9._() -]+[\\/])*[A-Za-z0-9._() -]+")
     UNIX_PATH_RE = re.compile(r"(?:/mnt|/home|/tmp|/Users)(?:/[A-Za-z0-9._() -]+)+")
 
@@ -416,6 +433,48 @@ class TelegramRuntimeBridge:
             refers_to_previous=True,
             target_ref=target_ref,
             request_mode="execute",
+            priority=0,
+        )
+        promoted = ParsedIntentGraph(
+            segments=[segment],
+            primary_intent="task_request",
+            secondary_intents=[],
+            parser_source="heuristic_parser",
+            graph_version=graph.graph_version,
+        )
+        if target_ref:
+            promoted.actionable_targets.append(target_ref)
+        return promoted
+
+    def _looks_like_explicit_target_analyze_followup(self, text: str, state: RuntimeV2State) -> bool:
+        if not getattr(state, "last_explicit_target", None):
+            return False
+        normalized = (text or "").strip().lower()
+        if not normalized:
+            return False
+        return any(marker in text or marker in normalized for marker in self.EXPLICIT_TARGET_ANALYZE_PATTERNS)
+
+    def _promote_explicit_target_analyze_followup(
+        self,
+        text: str,
+        graph: ParsedIntentGraph,
+        state: RuntimeV2State,
+    ) -> ParsedIntentGraph:
+        if not self._looks_like_explicit_target_analyze_followup(text, state):
+            return graph
+
+        target = state.resolve_target("analyze")
+        target_ref = None
+        if target:
+            target_ref = target.get("path") or target.get("artifact_id") or target.get("artifact_ref") or target.get("filename")
+
+        segment = SemanticSegment(
+            text=text,
+            kind="task_request",
+            confidence=0.97,
+            refers_to_previous=True,
+            target_ref=target_ref,
+            request_mode="analyze",
             priority=0,
         )
         promoted = ParsedIntentGraph(
@@ -630,6 +689,7 @@ class TelegramRuntimeBridge:
     ) -> TelegramIngressDecision:
         graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
         graph = self._promote_execution_confirmation(text, graph, state)
+        graph = self._promote_explicit_target_analyze_followup(text, graph, state)
 
         logger.info(
             "SEMANTIC_AUDIT: text[:50]=%r parser_source=%s primary_intent=%s requires_clarification=%s has_status_query=%s has_correction=%s segments=%s",
@@ -717,6 +777,7 @@ class TelegramRuntimeBridge:
     def inspect_ingress(self, text: str, state: RuntimeV2State) -> TelegramIngressDecision:
         graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
         graph = self._promote_execution_confirmation(text, graph, state)
+        graph = self._promote_explicit_target_analyze_followup(text, graph, state)
         requested_output = self._extract_requested_output(text)
         runtime_action = decide_runtime_action(graph, state)
 

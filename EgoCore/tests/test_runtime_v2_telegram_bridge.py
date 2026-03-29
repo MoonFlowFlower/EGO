@@ -64,7 +64,7 @@ def test_telegram_bridge_discussion_not_task():
     """heuristic parser 只处理显式硬信号。讨论性句式需要 LLM 识别。"""
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
-    
+
     decision = bridge.inspect_ingress("你觉得要怎么实现比较好？", state)
     assert decision.looks_like_task is False
     assert decision.ack_text is None
@@ -84,7 +84,7 @@ def test_telegram_bridge_attachment_is_reference_material():
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     decision = bridge.inspect_ingress("[用户发送了文件: test.html]", state)
-    
+
     assert decision.looks_like_task is False
     assert decision._parsed_intent_graph.primary_intent == "reference_material"
     assert decision._parsed_intent_graph.requires_clarification is True
@@ -95,7 +95,7 @@ def test_telegram_bridge_chat_default():
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     decision = bridge.inspect_ingress("你好", state)
-    
+
     assert decision.looks_like_task is False
     assert decision._parsed_intent_graph.primary_intent == "chat"
 
@@ -151,3 +151,36 @@ def test_telegram_bridge_promotes_continue_for_planning_stalled_task():
     assert decision._runtime_action == "execute_task"
     assert ingress["request_mode"] == "execute"
     assert ingress["resolved_target"]["artifact_id"] == "artifact://task"
+
+
+def test_telegram_bridge_binds_explicit_path_target_for_read_request():
+    bridge = RuntimeV2TelegramBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+    state.add_pending_artifact(
+        artifact_id="artifact://compacted/task-sheet",
+        filename="P3_closure_real_probe_task.txt",
+        artifact_ref="artifact://compacted/task-sheet",
+    )
+
+    decision = bridge.inspect_ingress(r"读取 D:\Project\AIProject\MyProject\Test\missing_closure_probe.md 前 1 行", state)
+    ingress_context = bridge.build_ingress_context(decision, state)
+
+    assert decision._runtime_action == "execute_task"
+    assert ingress_context["request_mode"] == "analyze"
+    assert ingress_context["resolved_target"]["source"] == "explicit_path"
+    assert ingress_context["resolved_target"]["path"].endswith(r"missing_closure_probe.md")
+
+
+def test_telegram_bridge_promotes_full_read_followup_to_previous_explicit_target():
+    bridge = RuntimeV2TelegramBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+    state.last_explicit_target = r"D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md"
+
+    decision = bridge.inspect_ingress("继续读取完整内容，不要截断", state)
+    ingress = bridge.build_ingress_context(decision, state)
+
+    assert decision._parsed_intent_graph.primary_intent == "task_request"
+    assert decision._runtime_action == "execute_task"
+    assert ingress["request_mode"] == "analyze"
+    assert ingress["resolved_target"]["source"] == "explicit_path"
+    assert ingress["resolved_target"]["path"] == r"D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md"
