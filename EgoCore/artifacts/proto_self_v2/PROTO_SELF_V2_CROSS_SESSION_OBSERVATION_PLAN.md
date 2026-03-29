@@ -133,6 +133,15 @@ Stop and file a blocker report if any of the following occurs:
 4. no real sample is generated after a candidate natural-language turn
 5. the successful session cannot be tied to an explicit `/new` anchor and a later natural-language sample in the same DM session window
 
+## Time Integrity Rule
+
+- manual system clock changes do not count toward `cross-day` evidence
+- a clock-shifted sample may be recorded only as:
+  - `clock-shift / day-rollover compatibility`
+- it must not be counted as:
+  - `real-calendar-day continuity`
+- counted `cross-day` evidence must come from a later real calendar day in the normal running environment
+
 ## Success Rule
 
 Mark `cross-session real-channel continuity + v2 persistence reached` only if:
@@ -152,3 +161,7 @@ Mark `cross-session real-channel continuity + v2 persistence reached` only if:
     - capture one successful session on a later calendar day
   - optional diagnostic step:
     - use `/proto status` or `/proto v2 on` to confirm mainline posture before the next later-day natural-language turn
+  - operator reminder:
+    - on the next real calendar day, remind the operator to run:
+      - `/new`
+      - one natural-language Telegram message

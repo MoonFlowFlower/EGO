@@ -45,3 +45,4 @@
 
 - cross-day real-channel continuity is not yet closed
 - next required proof is one later-day real Telegram DM sample after `/new`
+- manual system clock changes do not count toward this cross-day proof

@@ -60,6 +60,7 @@
 ## Current Blocker
 
 - there is no second counted successful day yet
+- manual system-time adjustment cannot close this blocker because it does not count as real cross-day evidence
 
 ## Fastest Closure Path
 
@@ -70,6 +71,8 @@
 - if that later-day session satisfies the plan acceptance fields, it closes both:
   - `2 / 2` counted successful sessions
   - `2 / 2` counted successful days
+- next reminder:
+  - on the next real calendar day, prompt the operator to run the later-day Telegram sample
 
 ## Evidence Boundary
 
