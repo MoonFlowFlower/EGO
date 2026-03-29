@@ -61,7 +61,7 @@ class LoopMVP10:
         ts = int(time.time())
         return f"mvp11_{ts}_{uuid.uuid4().hex[:8]}"
 
-    def start(self, goals: Optional[List[str]] = None) -> None:
+    def start(self, goals: Optional[List[str]] = None) -> str:
         self.run_id = self._new_run_id()
         self.goals = goals or [f"goal_{i}" for i in range(8)]
         self.ticks_executed = 0
@@ -69,6 +69,7 @@ class LoopMVP10:
 
         log_path = self.artifacts_dir / f"{self.run_id}.jsonl"
         self._log_fp = log_path.open("w", encoding="utf-8")
+        return self.run_id
 
     def _apply_intervention(self, state: Dict[str, float], event: Dict[str, Any]) -> None:
         kind = self.intervention
@@ -195,8 +196,10 @@ class LoopMVP10:
 
     def _select_action(self, plan: Any) -> Dict[str, Any]:
         """Select action from plan for testing."""
+        action_type = self._rng.choice(["observe", "nudge", "repair", "stabilize"])
         return {
-            "type": self._rng.choice(["observe", "nudge", "repair", "stabilize"]),
+            "action": action_type,
+            "type": action_type,
             "plan_id": getattr(plan, "plan_id", "unknown"),
         }
 
@@ -211,7 +214,7 @@ def run_mvp10(
 ) -> Dict[str, Any]:
     """
     Convenience function to run MVP10 loop for a fixed number of ticks.
-    
+
     Args:
         goals: List of goals to pursue
         seed: Random seed for deterministic execution
@@ -219,7 +222,7 @@ def run_mvp10(
         artifacts_dir: Directory for storing artifacts
         use_mock_planner: Whether to use mock planner
         intervention: Optional intervention type to apply
-    
+
     Returns:
         Dict with run_id, total_ticks, and summary
     """
@@ -230,10 +233,10 @@ def run_mvp10(
         intervention=intervention,
     )
     loop.start(goals=goals)
-    
+
     for _ in range(max_ticks):
         loop.tick()
-    
+
     summary = loop.stop()
     return {
         "run_id": summary["run_id"],
@@ -247,10 +250,10 @@ def _run_method(self, max_ticks: int = 10, goals: Optional[List[str]] = None) ->
     """Run the loop for a fixed number of ticks."""
     if not self.run_id:
         self.start(goals=goals)
-    
+
     for _ in range(max_ticks):
         self.tick()
-    
+
     summary = self.stop()
     return {
         "run_id": summary["run_id"],
