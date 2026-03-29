@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ego Handoff Brief"
+  short_description: "Draft explicit handoff briefs for another executor"
+  default_prompt: "Use $ego-handoff-brief to generate a concise execution brief from the current task state."
+
+policy:
+  allow_implicit_invocation: false
