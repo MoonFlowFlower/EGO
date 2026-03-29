@@ -299,3 +299,200 @@ mypy openemotion/
 ## License
 
 MIT
+
+---
+
+## Quick Start
+
+This section is the minimal runbook contract for `emotiond`. OpenEmotion ships the
+subject-side daemon, API, and supporting scripts. The daemon is implemented with
+FastAPI and the repository test workflow uses `pytest`.
+
+### virtual environment setup
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+```
+
+### daemon startup
+
+```bash
+make run
+```
+
+### testing
+
+```bash
+make test
+```
+
+### type checking
+
+```bash
+python3 verify_typecheck_simple.py
+```
+
+### demo usage
+
+```bash
+make demo
+```
+
+### evaluation suite
+
+```bash
+python3 scripts/eval_suite.py
+```
+
+### systemd deployment
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable emotiond.service
+systemctl --user start emotiond.service
+systemctl --user status emotiond.service
+journalctl --user -u emotiond.service -f
+```
+
+## Complete Runbook
+
+The complete runbook for OpenEmotion long-running daemon work is:
+
+1. Set up the virtual environment.
+2. Install the package in editable mode.
+3. Start the daemon locally with `make run` or deploy via systemd.
+4. Verify `GET /health` before sending events.
+5. Run testing, type checking, demo usage, and the evaluation suite before release.
+
+The canonical repo-tracked entry points are:
+
+- `Makefile` for `venv`, `run`, `test`, and `demo`
+- `scripts/demo_cli.py` for local demo usage
+- `scripts/eval_suite.py` for the evaluation suite
+- `deploy/systemd/user/emotiond.service` for systemd deployment
+
+## API Reference
+
+### GET /health
+
+```bash
+curl -s http://127.0.0.1:18080/health
+```
+
+### POST /event
+
+```bash
+curl -s http://127.0.0.1:18080/event \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "type": "user_message",
+    "actor": "user",
+    "target": "assistant",
+    "content": "hello from README"
+  }'
+```
+
+### POST /plan
+
+```bash
+curl -s http://127.0.0.1:18080/plan \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "user_id": "user",
+    "user_text": "write a short reply",
+    "context": {
+      "channel": "cli"
+    }
+  }'
+```
+
+Example response shape:
+
+```json
+{
+  "tone": "friendly",
+  "intent": "engage",
+  "valence": 0.2,
+  "arousal": 0.4
+}
+```
+
+## Configuration
+
+Common daemon environment variables:
+
+| Variable | Purpose |
+|----------|---------|
+| `EMOTIOND_DB_PATH` | Override the sqlite database path |
+| `EMOTIOND_PORT` | Bind port for the local daemon |
+| `EMOTIOND_HOST` | Bind host for the local daemon |
+| `EMOTIOND_K_AROUSAL` | Override arousal weighting in runtime experiments |
+| `EMOTIOND_DISABLE_CORE` | Disable the core loop for troubleshooting |
+
+## Development
+
+### Project Structure
+
+```text
+emotiond/
+  api.py
+  config.py
+  core.py
+  daemon.py
+  db.py
+scripts/
+  demo_cli.py
+  eval_suite.py
+tests/
+deploy/systemd/user/
+```
+
+### Key Components
+
+- `emotiond/api.py`: FastAPI route layer
+- `emotiond/core.py`: core runtime decision and state update logic
+- `emotiond/daemon.py`: daemon lifecycle and service orchestration
+- `emotiond/db.py`: persistence and database integration
+- `emotiond/config.py`: runtime configuration and environment binding
+
+### Testing Strategy
+
+- Use `pytest` for the repository test suite.
+- Run `make test` for the default OpenEmotion suite.
+- Run `python3 verify_typecheck_simple.py` or `python3 verify_typecheck.py` for type checking.
+- Use `python3 test_smoke.py` for smoke coverage and `python3 scripts/eval_suite.py` for broader evaluation coverage.
+
+## Troubleshooting
+
+### Common Issues
+
+#### Database errors
+
+- Check `EMOTIOND_DB_PATH` and ensure the parent directory is writable.
+- Remove stale temporary databases before rerunning isolated tests.
+
+#### Port conflicts
+
+- Confirm that `EMOTIOND_HOST` and `EMOTIOND_PORT` do not overlap with another daemon.
+- Re-run `curl -s http://127.0.0.1:18080/health` only after confirming the expected process owns the port.
+
+#### Virtual environment issues
+
+- Recreate the virtual environment if imports fail or editable install metadata drifts.
+- Ensure the active interpreter matches the repository environment before running tests or type checking.
+
+#### Systemd service failures
+
+- Check `systemctl --user status emotiond.service`.
+- Follow logs with `journalctl --user -u emotiond.service -f`.
+- Re-run `systemctl --user daemon-reload` after changing the service file.
+
+## Contributing
+
+1. Create a feature branch.
+2. Write tests.
+3. Ensure all tests pass.
+4. Run type checking.
+5. Submit a pull request.
