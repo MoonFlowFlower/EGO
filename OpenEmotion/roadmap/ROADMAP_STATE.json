@@ -11,14 +11,14 @@
     "note": "Daily check now correctly returns insufficient_evidence when no real data exists. Persistence-backed verification is working."
   },
   "promotion_blocked": true,
-  "block_reason": "mvp16_admission_retry_independent_review_pending",
+  "block_reason": "mvp16_admission_publication_pending",
   "next_version": null,
   "allowed_workstreams": [
     "verification_fix",
     "minimal_wiring_fix",
     "documentation_alignment",
     "bug_fixes",
-    "admission_retry_review"
+    "publication_state_update"
   ],
   "forbidden_workstreams": [
     "new_features",
@@ -27,7 +27,7 @@
     "observation_based_promotion"
   ],
   "active_blockers": [
-    "Step08B author-side admission retry review recommends admit, but formal publication still requires the mandatory independent reviewer"
+    "Step08B author-side retry review and independent reviewer are complete; formal publication / state update is still pending"
   ],
   "resolved_blockers": [
     {
@@ -71,18 +71,24 @@
       "resolved_at": "2026-03-29T12:33:50.139676",
       "resolution": "day_18.md, real_trajectory_index.json, and real_trajectory_replay_audit.json now jointly provide admission-grade continuity, governance, identity, and replay evidence on a persisted real trajectory.",
       "repair_task": "SELF_AWARE_STEP_08A"
+    },
+    {
+      "blocker": "mvp16_admission_retry_independent_review_pending",
+      "resolved_at": "2026-03-29T12:40:00Z",
+      "resolution": "Step08B independent reviewer returned approve-with-risks and found no blocking findings against the retry package.",
+      "repair_task": "SELF_AWARE_STEP_08B"
     }
   ],
   "mvp16_completion": {
     "status": "blocked",
-    "reason": "mvp16_admission_retry_independent_review_pending",
+    "reason": "mvp16_admission_publication_pending",
     "tests": 30,
     "gates": [
       "A",
       "B",
       "C"
     ],
-    "exit_criteria_met": "author_recommended_admit_independent_review_pending"
+    "exit_criteria_met": "author_and_independent_review_complete_publication_pending"
   },
   "observation_metrics": {
     "status": "valid",
@@ -118,7 +124,12 @@
     {
       "phase": "MVP16",
       "audit_status": "Admission Retry Author Review - Recommends Admit",
-      "reason": "mvp16_admission_retry_independent_review_pending"
+      "reason": "mvp16_admission_publication_pending"
+    },
+    {
+      "phase": "MVP16",
+      "audit_status": "Admission Retry Independent Review - Approve With Risks",
+      "reason": "mvp16_admission_publication_pending"
     }
   ],
   "repair_verification": {

@@ -54,6 +54,7 @@
 - Step04F review：`OpenEmotion/roadmap/SELF_AWARE_STEP_04F_REVIEW_20260329.md`
 - Step08B 执行报告：`OpenEmotion/roadmap/SELF_AWARE_STEP_08B_EXECUTION_REPORT_20260329.md`
 - Step08B review：`OpenEmotion/roadmap/SELF_AWARE_STEP_08B_REVIEW_20260329.md`
+- Step08B independent review：`OpenEmotion/roadmap/SELF_AWARE_STEP_08B_INDEPENDENT_REVIEW_20260329.md`
 - 逐步任务：
   - `Tasks/active/SELF_AWARE_STEP_00_normalization_layer.md`
   - `Tasks/active/SELF_AWARE_STEP_01_current_state_recompute.md`
@@ -160,7 +161,7 @@
 - 主入口：`OpenEmotion/docs/mvp15/MVP15_STAGE_OVERVIEW.md`
 - 目标：建立受治理的自我反思与反事实自我评估
 - 进入条件：MVP14 completed
-- 注：当前路线里，`MVP15` 已完成基础 infra、shadow artifact 诊断、bounded mainline consumer convergence，以及 bounded downstream behavioral relevance proof；`Step07`、`Step08`、`Step08A` 已完成，`Step08B` author-side retry review 已给出 recommends admit，当前唯一剩余门是 independent reviewer
+- 注：当前路线里，`MVP15` 已完成基础 infra、shadow artifact 诊断、bounded mainline consumer convergence，以及 bounded downstream behavioral relevance proof；`Step07`、`Step08`、`Step08A` 已完成，`Step08B` author-side retry review 已给出 recommends admit，独立 reviewer 也已 approve-with-risks；当前唯一剩余门是 formal publication / state update
 - 离开条件：reflection proposals、counterfactual evaluation、replayability 达标
 - 建议读取顺序：
   1. `OpenEmotion/docs/mvp15/MVP15_STAGE_OVERVIEW.md`
@@ -185,6 +186,7 @@
   20. `Tasks/active/SELF_AWARE_STEP_08B_admission_retry_review.md`
   21. `OpenEmotion/roadmap/SELF_AWARE_STEP_08B_EXECUTION_REPORT_20260329.md`
   22. `OpenEmotion/roadmap/SELF_AWARE_STEP_08B_REVIEW_20260329.md`
+  23. `OpenEmotion/roadmap/SELF_AWARE_STEP_08B_INDEPENDENT_REVIEW_20260329.md`
 
 ### MVP16 — Open Developmental Self
 - 主入口：`OpenEmotion/docs/mvp16/MVP16_STAGE_OVERVIEW.md`

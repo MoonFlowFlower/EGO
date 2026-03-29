@@ -3,12 +3,12 @@
 ```yaml
 task_id: SELF_AWARE_STEP_08B
 created_at: "2026-03-29T12:33:50Z"
-updated_at: "2026-03-29T12:33:50Z"
+updated_at: "2026-03-29T12:40:00Z"
 owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: verify_passed
+status: published
 change_classification: closure
 verification_level_target: V4
 evidence_level_target: E4
@@ -50,7 +50,7 @@ evidence_level_target: E4
 
 ```yaml
 current_layer: closure
-main_chain_status: author-side admission retry review completed; recommendation = admit; formal publish pending independent reviewer
+main_chain_status: author-side admission retry review and independent review completed; formal publication not yet executed
 ```
 
 ## required_artifacts
@@ -86,6 +86,5 @@ formal publish 仍需独立 reviewer。
 
 ## next_minimal_closure_action
 
-执行独立 reviewer。
-若 reviewer 同意当前 author-side retry verdict，
-再正式清除 `ROADMAP_STATE` 的 blocked state 并发布 admission result。
+执行 formal publication / state update，
+把 reviewer verdict 与当前 author-side retry package 一起编译进统一真相源。
