@@ -5,17 +5,9 @@ description: "Use when the user says continue, resume, restore context, pick up 
 
 # Ego Resume Context
 
-先读：
+先读：`AGENTS.md`、`PROJECT_MEMORY.md`、当前任务的 spec / plan / acceptance / status / review、以及最近的 evidence report 或 status report。
 
-1. `AGENTS.md`
-2. `PROJECT_MEMORY.md`
-3. 当前任务的 spec / plan / acceptance / status / review
-4. 最近的 evidence report 或 status report
-
-必要时参考：
-
-- `.agents/references/task-state-and-handoff.md`
-- `.agents/references/engineering-evidence-model.md`
+必要时再读根 `AGENTS.md` 引用的 repo reference docs。
 
 ## Workflow
 

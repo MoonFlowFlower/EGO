@@ -5,17 +5,9 @@ description: "Use when a milestone is already defined by a spec, plan, acceptanc
 
 # Ego Implement Milestone
 
-先读：
+先读：`AGENTS.md`、当前 milestone 对应的 spec / plan / acceptance / status、`PROJECT_MEMORY.md`、以及相关目录的 `README.md` / owner 文档。
 
-1. `AGENTS.md`
-2. 当前 milestone 对应的 spec / plan / acceptance / status
-3. `PROJECT_MEMORY.md`
-4. 相关目录的 README / owner 文档
-
-必要时参考：
-
-- `.agents/references/engineering-evidence-model.md`
-- `.agents/references/task-state-and-handoff.md`
+必要时再读根 `AGENTS.md` 引用的 repo reference docs。
 
 ## Workflow
 

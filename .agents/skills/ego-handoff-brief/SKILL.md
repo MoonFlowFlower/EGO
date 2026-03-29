@@ -5,17 +5,9 @@ description: "Use when the user explicitly asks for a handoff, delegation brief,
 
 # Ego Handoff Brief
 
-先读：
+先读：`AGENTS.md`、当前任务的 spec / plan / acceptance / status / review、`PROJECT_MEMORY.md`、以及最新 evidence / blocker / status report。
 
-1. `AGENTS.md`
-2. 当前任务的 spec / plan / acceptance / status / review
-3. `PROJECT_MEMORY.md`
-4. 最新 evidence / blocker / status report
-
-必要时参考：
-
-- `.agents/references/task-state-and-handoff.md`
-- `.agents/references/engineering-evidence-model.md`
+必要时再读根 `AGENTS.md` 引用的 repo reference docs。
 
 ## Workflow
 

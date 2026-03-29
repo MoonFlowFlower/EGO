@@ -111,5 +111,5 @@
 
 ## References
 
-- `.agents/references/engineering-evidence-model.md`
-- `.agents/references/task-state-and-handoff.md`
+- 方法论与完成口径：`.agents/references/engineering-evidence-model.md`
+- 状态字段与 handoff：`.agents/references/task-state-and-handoff.md`

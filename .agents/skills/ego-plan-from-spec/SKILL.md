@@ -5,18 +5,9 @@ description: "Use when a task is complex, cross-module, ambiguous, expected to t
 
 # Ego Plan From Spec
 
-先读：
+先读：`AGENTS.md`、`PROJECT_MEMORY.md`、`docs/AGENT_DEVELOPMENT_PLAYBOOK.md`、当前任务相关的 spec / plan / acceptance / review / status、以及触及目录对应的 `README.md` 或 owner 文档。
 
-1. `AGENTS.md`
-2. `PROJECT_MEMORY.md`
-3. `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
-4. 当前任务相关的 spec / plan / acceptance / review / status
-5. 触及目录对应的 `README.md` 或 owner 文档
-
-必要时参考：
-
-- `.agents/references/engineering-evidence-model.md`
-- `.agents/references/task-state-and-handoff.md`
+必要时再读根 `AGENTS.md` 引用的 repo reference docs。
 
 ## Workflow
 

@@ -5,17 +5,9 @@ description: "Use when reviewing a diff, uncommitted changes, or a completed tas
 
 # Ego Review Against Acceptance
 
-先读：
+先读：`AGENTS.md`、当前 acceptance / task status / review 文档、相关 spec / plan、以及变更 diff 或目标文件。
 
-1. `AGENTS.md`
-2. 当前 acceptance / task status / review 文档
-3. 相关 spec / plan
-4. 变更 diff 或目标文件
-
-必要时参考：
-
-- `.agents/references/engineering-evidence-model.md`
-- `.agents/references/task-state-and-handoff.md`
+必要时再读根 `AGENTS.md` 引用的 repo reference docs。
 
 ## Workflow
 

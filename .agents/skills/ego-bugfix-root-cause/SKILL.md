@@ -5,16 +5,9 @@ description: "Use when the task is a bug, regression, failing test, runtime erro
 
 # Ego Bugfix Root Cause
 
-先读：
+先读：`AGENTS.md`、当前 bug / regression 对应的任务单与 failure case / stack trace / review、`PROJECT_MEMORY.md`、以及相关目录 README / owner 文档。
 
-1. `AGENTS.md`
-2. 当前 bug / regression 对应的任务单、failure case、stack trace、review
-3. `PROJECT_MEMORY.md`
-4. 相关目录 README 与 owner 文档
-
-必要时参考：
-
-- `.agents/references/engineering-evidence-model.md`
+必要时再读根 `AGENTS.md` 引用的 repo reference docs。
 
 ## Workflow
 
