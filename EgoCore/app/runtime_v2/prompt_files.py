@@ -30,16 +30,30 @@ class PromptFilesBundle:
 class RuntimeV2PromptFiles:
     def __init__(self, root: str | Path | None = None) -> None:
         self.root = Path(root or Path(__file__).resolve().parents[2] / "prompts")
+        self.fallback_root = self.root / "tempsaved"
         self._cached_bundle: PromptFilesBundle | None = None
+
+    def _read_prompt_text(self, name: str) -> Optional[str]:
+        primary = self.root / name
+        if primary.exists():
+            content = primary.read_text(encoding="utf-8")
+            if content.strip():
+                return content
+        fallback = self.fallback_root / name
+        if fallback.exists():
+            content = fallback.read_text(encoding="utf-8")
+            if content.strip():
+                return content
+        return None
 
     def load(self, force_reload: bool = False) -> PromptFilesBundle:
         if self._cached_bundle is not None and not force_reload:
             return self._cached_bundle
         loaded: Dict[str, str] = {}
         for name in PROMPT_FILENAMES:
-            path = self.root / name
-            if path.exists():
-                loaded[name] = path.read_text(encoding="utf-8")
+            content = self._read_prompt_text(name)
+            if content is not None:
+                loaded[name] = content
         self._cached_bundle = PromptFilesBundle(root=str(self.root), loaded=loaded)
         return self._cached_bundle
 
@@ -47,10 +61,7 @@ class RuntimeV2PromptFiles:
         normalized = name.strip()
         if normalized not in PROMPT_FILENAMES:
             return None
-        path = self.root / normalized
-        if not path.exists():
-            return None
-        return path.read_text(encoding="utf-8")
+        return self._read_prompt_text(normalized)
 
     def reload(self) -> PromptFilesBundle:
         return self.load(force_reload=True)

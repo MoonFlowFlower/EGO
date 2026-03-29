@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-ROOT = Path('/home/moonlight/Project/Github/MyProject/EgoCore')
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_legacy_agent_runner_marked_compatibility_only():

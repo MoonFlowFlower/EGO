@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from pathlib import Path
 from typing import Any, Dict
 
 from app.config import get_config, load_config
@@ -48,7 +49,7 @@ ARTIFACT_READ_FAIL_FAST = (
 class RuntimeV2ToolBroker:
     """
     Runtime v2 工具代理
-    
+
     支持：
     - shell: 执行 shell 命令（带 artifact:// 禁止规则）
     - file: 文件操作
@@ -56,12 +57,17 @@ class RuntimeV2ToolBroker:
     - read_chunk: 读取 artifact chunk
     - read_lines: 读取 artifact 行区间
     """
-    
+
     def __init__(self) -> None:
+        repo_root = Path(__file__).resolve().parents[2]
         try:
             cfg = get_config()
         except Exception:
-            cfg = load_config(validate=False)
+            cfg = load_config(
+                config_dir=str(repo_root / "config"),
+                env_file=str(repo_root / ".env"),
+                validate=False,
+            )
         setup_tools(cfg.get("tools", {}) if hasattr(cfg, "get") else {})
         # 两个 artifact 系统
         self.artifact_store = get_artifact_store()
@@ -74,7 +80,7 @@ class RuntimeV2ToolBroker:
     async def execute_typed(self, tool: str, tool_input: Dict[str, Any]) -> ToolExecutionResult:
         """
         执行工具调用
-        
+
         Fail-fast 规则：
         - shell 读取 artifact:// → 立即拒绝
         - read_artifact 失败 → 返回短错，不继续尝试
@@ -106,11 +112,11 @@ class RuntimeV2ToolBroker:
     async def _execute_shell(self, tool_input: Dict[str, Any]) -> ToolExecutionResult:
         """
         执行 shell 命令
-        
+
         Fail-fast: 禁止 shell 直接读取 artifact:// URI
         """
         command = tool_input.get("command", "")
-        
+
         # Fail-fast 规则：禁止 shell 读取 artifact://
         if "artifact://" in command:
             logger.warning(f"Shell blocked: attempted to read artifact:// URI")
@@ -126,7 +132,7 @@ class RuntimeV2ToolBroker:
                 metadata={"blocked": True, "reason": "artifact_uri_in_shell"},
                 raw={},
             )
-        
+
         params = {
             "command": command,
             "working_dir": tool_input.get("cwd"),
@@ -169,15 +175,15 @@ class RuntimeV2ToolBroker:
     async def _execute_read_artifact(self, tool_input: Dict[str, Any]) -> ToolExecutionResult:
         """
         读取 artifact 原文
-        
+
         支持：
         - artifact://compacted/... → CompactionManager
         - artifact://ingested/... → ArtifactStore
-        
+
         Fail-fast: 读取失败立即返回短错，不继续尝试
         """
         artifact_id = tool_input.get("artifact_id") or tool_input.get("artifact_ref")
-        
+
         if not artifact_id:
             return ToolExecutionResult(
                 success=False,
@@ -190,7 +196,7 @@ class RuntimeV2ToolBroker:
                 metadata={},
                 raw={},
             )
-        
+
         # 验证 artifact_id 格式
         if not artifact_id.startswith("artifact://"):
             return ToolExecutionResult(
@@ -204,11 +210,11 @@ class RuntimeV2ToolBroker:
                 metadata={},
                 raw={},
             )
-        
+
         # 尝试读取
         try:
             content = None
-            
+
             # 根据 prefix 判断使用哪个系统
             if artifact_id.startswith("artifact://compacted/"):
                 # 使用 CompactionManager
@@ -216,11 +222,11 @@ class RuntimeV2ToolBroker:
                 result = self.compaction_manager.read(request)
                 if result.success:
                     content = result.content
-                    
+
             elif artifact_id.startswith("artifact://ingested/"):
                 # 使用 ArtifactStore
                 content = self.artifact_store.read_raw(artifact_id)
-            
+
             if content is None:
                 # Fail-fast: 读不到就返回短错
                 logger.warning(f"Artifact read failed: {artifact_id}")
@@ -235,14 +241,14 @@ class RuntimeV2ToolBroker:
                     metadata={"artifact_id": artifact_id, "reason": "not_found"},
                     raw={},
                 )
-            
+
             # 成功读取
             # 截断超长内容（保留 50KB）
             max_len = 50 * 1024
             truncated = len(content) > max_len
             if truncated:
                 content = content[:max_len] + "\n... [截断]"
-            
+
             return ToolExecutionResult(
                 success=True,
                 tool="read_artifact",
@@ -254,7 +260,7 @@ class RuntimeV2ToolBroker:
                 metadata={"artifact_id": artifact_id, "chars": len(content)},
                 raw={"artifact_id": artifact_id},
             )
-            
+
         except Exception as e:
             logger.exception(f"Artifact read error: {artifact_id} - {e}")
             return ToolExecutionResult(
@@ -272,16 +278,16 @@ class RuntimeV2ToolBroker:
     async def _execute_read_chunk(self, tool_input: Dict[str, Any]) -> ToolExecutionResult:
         """
         读取 artifact chunk
-        
+
         支持：
         - artifact://compacted/... → CompactionManager
         - artifact://ingested/... → ArtifactStore
-        
+
         Fail-fast: 读取失败立即返回短错
         """
         artifact_id = tool_input.get("artifact_id") or tool_input.get("artifact_ref")
         chunk_id = tool_input.get("chunk_id") or tool_input.get("chunk")
-        
+
         if not artifact_id or not chunk_id:
             return ToolExecutionResult(
                 success=False,
@@ -294,19 +300,19 @@ class RuntimeV2ToolBroker:
                 metadata={},
                 raw={},
             )
-        
+
         try:
             content = None
-            
+
             if artifact_id.startswith("artifact://compacted/"):
                 request = ReadRequest(artifact_id=artifact_id, mode="chunk", chunk_id=chunk_id)
                 result = self.compaction_manager.read(request)
                 if result.success:
                     content = result.content
-                    
+
             elif artifact_id.startswith("artifact://ingested/"):
                 content = self.artifact_store.read_chunk(artifact_id, chunk_id)
-            
+
             if content is None:
                 logger.warning(f"Chunk read failed: {artifact_id}/{chunk_id}")
                 return ToolExecutionResult(
@@ -320,7 +326,7 @@ class RuntimeV2ToolBroker:
                     metadata={"artifact_id": artifact_id, "chunk_id": chunk_id},
                     raw={},
                 )
-            
+
             return ToolExecutionResult(
                 success=True,
                 tool="read_chunk",
@@ -332,7 +338,7 @@ class RuntimeV2ToolBroker:
                 metadata={"artifact_id": artifact_id, "chunk_id": chunk_id, "chars": len(content)},
                 raw={"artifact_id": artifact_id, "chunk_id": chunk_id},
             )
-            
+
         except Exception as e:
             logger.exception(f"Chunk read error: {artifact_id}/{chunk_id} - {e}")
             return ToolExecutionResult(
@@ -350,17 +356,17 @@ class RuntimeV2ToolBroker:
     async def _execute_read_lines(self, tool_input: Dict[str, Any]) -> ToolExecutionResult:
         """
         读取 artifact 行区间
-        
+
         支持：
         - artifact://compacted/... → CompactionManager
         - artifact://ingested/... → ArtifactStore
-        
+
         Fail-fast: 读取失败立即返回短错
         """
         artifact_id = tool_input.get("artifact_id") or tool_input.get("artifact_ref")
         line_start = tool_input.get("line_start") or tool_input.get("start")
         line_end = tool_input.get("line_end") or tool_input.get("end")
-        
+
         if not artifact_id:
             return ToolExecutionResult(
                 success=False,
@@ -373,7 +379,7 @@ class RuntimeV2ToolBroker:
                 metadata={},
                 raw={},
             )
-        
+
         if line_start is None or line_end is None:
             return ToolExecutionResult(
                 success=False,
@@ -386,10 +392,10 @@ class RuntimeV2ToolBroker:
                 metadata={},
                 raw={},
             )
-        
+
         try:
             content = None
-            
+
             if artifact_id.startswith("artifact://compacted/"):
                 request = ReadRequest(
                     artifact_id=artifact_id,
@@ -400,10 +406,10 @@ class RuntimeV2ToolBroker:
                 result = self.compaction_manager.read(request)
                 if result.success:
                     content = result.content
-                    
+
             elif artifact_id.startswith("artifact://ingested/"):
                 content = self.artifact_store.read_lines(artifact_id, int(line_start), int(line_end))
-            
+
             if content is None:
                 logger.warning(f"Lines read failed: {artifact_id}[{line_start}-{line_end}]")
                 return ToolExecutionResult(
@@ -417,7 +423,7 @@ class RuntimeV2ToolBroker:
                     metadata={"artifact_id": artifact_id, "line_start": line_start, "line_end": line_end},
                     raw={},
                 )
-            
+
             return ToolExecutionResult(
                 success=True,
                 tool="read_lines",
@@ -434,7 +440,7 @@ class RuntimeV2ToolBroker:
                 },
                 raw={"artifact_id": artifact_id, "line_start": line_start, "line_end": line_end},
             )
-            
+
         except Exception as e:
             logger.exception(f"Lines read error: {artifact_id}[{line_start}-{line_end}] - {e}")
             return ToolExecutionResult(

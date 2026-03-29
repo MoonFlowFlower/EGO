@@ -133,8 +133,8 @@ class TelegramBot:
         self.use_new_runtime = use_new_runtime
         self.use_runtime_v2 = use_runtime_v2
         self._legacy_runtime_notice_logged = False
-        self.runtime_v2_loop = None
         self.telegram_runtime_fallback_runner = TelegramRuntimeFallbackRunner() if use_runtime_v2 else None
+        self.runtime_v2_loop = None
         self.runtime_v2_fallback_runner = self.telegram_runtime_fallback_runner
         self.telegram_runtime_bridge = TelegramRuntimeBridge() if use_runtime_v2 else None
         self.runtime_v2_bridge = self.telegram_runtime_bridge
@@ -369,9 +369,16 @@ class TelegramBot:
 
     def _get_runtime_state(self, session_key: str) -> RuntimeV2State:
         state = self._runtime_states.get(session_key)
+        runtime_loop = self.runtime_v2_loop
+        if state is None and runtime_loop is not None:
+            state = runtime_loop._states.get(session_key)
         if state is None:
             state = RuntimeV2State(session_id=session_key)
             self._runtime_states[session_key] = state
+        elif session_key not in self._runtime_states:
+            self._runtime_states[session_key] = state
+        if runtime_loop is not None:
+            runtime_loop._states[session_key] = state
         return state
 
     def _reset_runtime_state(self, session_key: str) -> RuntimeV2State:
@@ -1351,7 +1358,7 @@ class TelegramBot:
         return await run_once()
 
     def _should_use_native_loop(self, ingress, state) -> bool:
-        if self._get_native_loop() is None:
+        if not self.use_runtime_v2:
             return False
         runtime_action = getattr(ingress, "_runtime_action", None)
         resolved_target = (state.ingress_context or {}).get("resolved_target") or {}
@@ -1368,7 +1375,17 @@ class TelegramBot:
             return False
         if runtime_action == "return_runtime_status":
             return False
-        return True
+        if self.native_loop is not None:
+            return True
+        if runtime_action != "execute_task":
+            return False
+        if getattr(ingress, "is_confirm_execution", False):
+            return True
+        if has_artifact_target:
+            return True
+        if has_explicit_target and state.waiting_for_user_input:
+            return True
+        return False
 
     async def _run_primary_turn(
         self,
@@ -2025,7 +2042,9 @@ class TelegramBot:
         self.app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_message))
 
         # Handle document attachments
-        self.app.add_handler(MessageHandler(filters.Document.ALL, self.handle_document))
+        document_filter = getattr(getattr(filters, "Document", None), "ALL", None)
+        if document_filter is not None:
+            self.app.add_handler(MessageHandler(document_filter, self.handle_document))
 
         self._setup_complete = True
         logger.info("Telegram bot handlers registered")

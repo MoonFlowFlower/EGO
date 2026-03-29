@@ -2,19 +2,23 @@
 from __future__ import annotations
 
 import csv
+import os
 import re
 import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
 
-EGOCORE = Path('/home/moonlight/Project/Github/MyProject/EgoCore')
-OPENEMOTION = Path('/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion')
+REPO_ROOT = Path(__file__).resolve().parents[2]
+EGOCORE = REPO_ROOT / 'EgoCore'
+OPENEMOTION = REPO_ROOT / 'OpenEmotion'
 OUT = EGOCORE / 'docs' / 'generated'
 OUT.mkdir(parents=True, exist_ok=True)
 
 REPOS = {'EgoCore': EGOCORE, 'OpenEmotion': OPENEMOTION}
 EXCLUDE_PARTS = {'.git', '.pytest_cache', '__pycache__', '.mypy_cache', 'venv', '.venv', 'venv2', 'venv_new', 'build'}
 EXCLUDE_PREFIXES = ('artifacts/', 'logs/', 'data/', 'reports/', 'test_output/', 'tmp/')
+HOTSPOT_TIMEOUT_SECONDS = 3
+HOTSPOT_MAX_COMMITS = 500
 
 
 def keep(rel: Path) -> bool:
@@ -27,11 +31,66 @@ def keep(rel: Path) -> bool:
 
 
 def scan_files(repo: Path):
-    for p in repo.rglob('*'):
-        if p.is_file():
-            rel = p.relative_to(repo)
+    try:
+        cp = subprocess.run(
+            ['git', '-C', str(repo), '-c', 'core.quotepath=false', 'ls-files', '-z'],
+            capture_output=True,
+            timeout=5,
+            check=False,
+        )
+        if cp.returncode == 0:
+            for raw_path in cp.stdout.split(b'\0'):
+                if not raw_path:
+                    continue
+                rel = Path(raw_path.decode('utf-8', errors='surrogateescape'))
+                if keep(rel):
+                    yield rel
+            return
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+
+    for root, dirnames, filenames in os.walk(repo, topdown=True):
+        root_path = Path(root)
+        rel_root = root_path.relative_to(repo)
+        dirnames[:] = [d for d in dirnames if d not in EXCLUDE_PARTS]
+
+        for filename in filenames:
+            rel = (rel_root / filename) if rel_root != Path('.') else Path(filename)
             if keep(rel):
                 yield rel
+
+
+def build_recent_hotspots(repo_name: str, repo: Path) -> list[str]:
+    lines = [f'## {repo_name}']
+    try:
+        cp = subprocess.run(
+            [
+                'git',
+                '-C',
+                str(repo),
+                'log',
+                '--since=30 days ago',
+                f'--max-count={HOTSPOT_MAX_COMMITS}',
+                '--name-only',
+                '--pretty=format:',
+            ],
+            capture_output=True,
+            text=True,
+            timeout=HOTSPOT_TIMEOUT_SECONDS,
+            check=False,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        lines.append(f'- skipped: git hotspot scan unavailable within {HOTSPOT_TIMEOUT_SECONDS}s')
+        lines.append('')
+        return lines
+
+    cnt = Counter([l.strip() for l in cp.stdout.splitlines() if l.strip()])
+    for path, n in cnt.most_common(30):
+        lines.append(f'- `{path}`: {n}')
+    if len(lines) == 1:
+        lines.append('- no recent hotspot data')
+    lines.append('')
+    return lines
 
 
 def build():
@@ -102,12 +161,7 @@ def build():
 
     hot = ['# Recent Hotspots\n']
     for repo_name, repo in REPOS.items():
-        cp = subprocess.run(['git', '-C', str(repo), 'log', '--since=30 days ago', '--name-only', '--pretty=format:'], capture_output=True, text=True)
-        cnt = Counter([l.strip() for l in cp.stdout.splitlines() if l.strip()])
-        hot.append(f'## {repo_name}')
-        for path, n in cnt.most_common(30):
-            hot.append(f'- `{path}`: {n}')
-        hot.append('')
+        hot.extend(build_recent_hotspots(repo_name, repo))
     (OUT / 'recent_hotspots.md').write_text('\n'.join(hot), encoding='utf-8')
 
     print('Generated doc inventory under', OUT)

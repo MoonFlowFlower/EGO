@@ -43,6 +43,19 @@ class MetricsHook:
         self._flags: Optional[FeatureFlagManager] = None
         self._initialized = False
         self._shadow_mode = True  # 默认 shadow 模式
+
+    def _reload_runtime_config(self, max_buffer_size: int) -> None:
+        enabled = os.environ.get(self.FEATURE_FLAG, "false").lower() == "true"
+        shadow = os.environ.get("runtime_metrics_shadow", "true").lower() == "true"
+
+        config = MetricsFeatureConfig(
+            enabled=enabled,
+            buffer_size=max_buffer_size,
+            timeout_ms=self.DEFAULT_TIMEOUT_MS
+        )
+
+        self._flags = FeatureFlagManager(config)
+        self._shadow_mode = shadow
     
     def initialize(self, max_buffer_size: int = 10000) -> None:
         """
@@ -51,22 +64,12 @@ class MetricsHook:
         Args:
             max_buffer_size: 环形缓冲区大小
         """
+        self._reload_runtime_config(max_buffer_size=max_buffer_size)
+
         if self._initialized:
             return
-        
-        # 从环境变量读取配置
-        enabled = os.environ.get(self.FEATURE_FLAG, "false").lower() == "true"
-        shadow = os.environ.get("runtime_metrics_shadow", "true").lower() == "true"
-        
-        config = MetricsFeatureConfig(
-            enabled=enabled,
-            buffer_size=max_buffer_size,
-            timeout_ms=self.DEFAULT_TIMEOUT_MS
-        )
-        
-        self._flags = FeatureFlagManager(config)
+
         self._adapter = create_adapter(max_buffer_size=max_buffer_size)
-        self._shadow_mode = shadow
         self._initialized = True
     
     def is_enabled(self) -> bool:
@@ -154,28 +157,9 @@ class MetricsHook:
                 return {"success": True, "metric_id": "dropped"}
         
         # ========================================
-        # Shadow 模式：enabled=false 且 shadow=true
-        # 旁路记录样本，返回 dropped（不影响主链）
-        # ========================================
-        if self._shadow_mode:
-            try:
-                breaker = get_circuit_breaker()
-                if breaker.can_execute():
-                    self._adapter.record_with_fallback(
-                        metric_name=metric_name,
-                        metric_type=metric_type,
-                        value=value,
-                        labels=labels,
-                        timestamp=timestamp,
-                        module=module
-                    )
-            except Exception:
-                pass  # 异常隔离
-            
-            return {"success": True, "metric_id": "dropped", "shadow": True}
-        
-        # ========================================
-        # 完全禁用：enabled=false 且 shadow=false
+        # enabled=false 时保持零开销 dropped 路径。
+        # shadow_mode 只描述 enabled=true 时的非阻塞观测语义，
+        # 不在 disabled 主链上旁路写样本。
         # ========================================
         return {"success": True, "metric_id": "dropped", "reason": "disabled"}
     
@@ -205,17 +189,8 @@ class MetricsHook:
         if not self._initialized or not self._adapter:
             return {"metrics": [], "total": 0}
         
-        # Shadow 模式：允许查询已收集的样本
-        if self._shadow_mode:
-            return self._adapter.query_metrics(
-                name=name,
-                labels=labels,
-                since_ms=since_ms,
-                module=module
-            )
-        
-        # 正常模式：需要 enabled=true
-        if not self._flags.is_enabled():
+        # 查询只在 enabled=true 时开放。
+        if not self._flags or not self._flags.is_enabled():
             return {"metrics": [], "total": 0}
         
         return self._adapter.query_metrics(

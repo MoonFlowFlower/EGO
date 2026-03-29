@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.config import get_config, load_config
 from app.llm_client import LLMClient, get_llm_client
-from app.tools import get_registry, setup_tools
+from app.tools import execute_tool, get_registry, setup_tools
 
 from .contract_runtime import ContractRuntimeEngine, NextStepDecision, PlanningTimeoutError, TaskContract, VerificationResult
 from .context_builder import NativeContextBuilder
@@ -36,10 +37,15 @@ class NativeToolCallingLoop:
         self._ensure_tools_ready()
 
     def _ensure_tools_ready(self) -> None:
+        repo_root = Path(__file__).resolve().parents[2]
         try:
             cfg = get_config()
         except Exception:
-            cfg = load_config(validate=False)
+            cfg = load_config(
+                config_dir=str(repo_root / "config"),
+                env_file=str(repo_root / ".env"),
+                validate=False,
+            )
         registry = get_registry()
         if not registry.list_tools():
             setup_tools(cfg.get("tools", {}) if hasattr(cfg, "get") else {})
