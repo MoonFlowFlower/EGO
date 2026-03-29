@@ -52,6 +52,8 @@
 
 - first negative real-channel attempt:
   - [PROTO_SELF_V2_REAL_CHANNEL_ATTEMPT_20260328.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_REAL_CHANNEL_ATTEMPT_20260328.md)
+- first positive real-channel capture:
+  - [PROTO_SELF_V2_REAL_CHANNEL_SUCCESS_20260328.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_REAL_CHANNEL_SUCCESS_20260328.md)
 
 ## Contract gate
 
@@ -70,8 +72,9 @@
   - `proto_self.v2` ingress payload is contract-checked before adapter routing
   - the repo-local runtime mainline can emit `proto_self.trace.v2`
   - the repo-local Telegram external entry can persist `proto_self.trace.v2` into `ledger.json`
+  - the real Telegram channel can persist `proto_self.output.v2` and `proto_self.trace.v2` in a natural-language turn after explicit `/proto v2 on`
 - this report does not prove:
-  - real public Telegram channel evidence
   - long-run stability
   - V2 is now the default runtime mainline
   - E5 stability or real-channel admission evidence
+  - normalized-event parity across every evidence path

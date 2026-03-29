@@ -40,7 +40,11 @@
 - evidence level:
   - `E4 negative evidence` for this attempt
 - current best explanation:
-  - the live Telegram process that served this conversation was still running an older code path and had not loaded the newly added `/proto v2 on` override logic
+  - two concurrent Telegram pollers were serving the same DM session:
+    - `python.exe -u -m app.main --restore --telegram`
+    - `python.exe -u -m app.main --telegram`
+  - the duplicate-poller condition is consistent with the duplicated `/new` reply and the mixed real-channel evidence
+  - after killing both pollers and relaunching a single clean `--telegram` process, the next real Telegram natural-language sample switched to `proto_self.trace.v2`
 
 ## Evidence Boundary
 
@@ -49,7 +53,6 @@
   - the resulting real-channel ledgers for this attempt did not switch to `proto_self.trace.v2`
 - this report does not prove:
   - the newly committed `/proto v2 on` code path is wrong
-  - the live Telegram process had definitely restarted onto the latest code at the time of capture
   - `proto_self.v2` cannot be captured on the real Telegram channel after restart
 
 ## Next Minimal Closure Action
@@ -63,3 +66,8 @@
    - `artifacts/telegram_real_mainline_v1/real_telegram/sample_*/ledger.json`
 4. Confirm:
    - `openemotion.trace_payload.schema_version == "proto_self.trace.v2"`
+
+## Follow-up
+
+- superseded by the later positive real-channel capture:
+  - [PROTO_SELF_V2_REAL_CHANNEL_SUCCESS_20260328.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_REAL_CHANNEL_SUCCESS_20260328.md)
