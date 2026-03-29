@@ -40,12 +40,18 @@
 
 ## Real Telegram capture procedure
 
-1. Send `/proto v2 on` in the target Telegram DM session.
-2. Send one natural-language message in the same session.
-3. Check the newest real sample under:
+1. Ensure the live Telegram process has been restarted after the `/proto v2 on` feature landed on `main`.
+2. Send `/proto v2 on` in the target Telegram DM session.
+3. Send one natural-language message in the same session.
+4. Check the newest real sample under:
    - `artifacts/telegram_real_mainline_v1/real_telegram/sample_*/ledger.json`
-4. Confirm:
+5. Confirm:
    - `openemotion.trace_payload.schema_version == "proto_self.trace.v2"`
+
+## Real Telegram attempt tracking
+
+- first negative real-channel attempt:
+  - [PROTO_SELF_V2_REAL_CHANNEL_ATTEMPT_20260328.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_REAL_CHANNEL_ATTEMPT_20260328.md)
 
 ## Contract gate
 
