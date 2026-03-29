@@ -2,7 +2,13 @@ const view = document.body.dataset.view;
 const sampleId = document.body.dataset.sampleId;
 const metaBar = document.getElementById("meta-bar");
 const app = document.getElementById("app");
-const POLL_MS = 8000;
+const POLL_MS = 5000;
+const VIEW_ROUTES = {
+  runs: "/runs",
+  agency: "/agency",
+  growth: "/growth",
+  failures: "/failures",
+};
 
 async function fetchJson(path) {
   const response = await fetch(path);
@@ -19,12 +25,30 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;");
 }
 
+function formatPercent(value) {
+  if (value === null || value === undefined || Number.isNaN(value)) return "n/a";
+  return `${Math.round(Number(value) * 100)}%`;
+}
+
+function formatFloat(value, digits = 2) {
+  if (value === null || value === undefined || Number.isNaN(value)) return "n/a";
+  return Number(value).toFixed(digits);
+}
+
+function formatFreshness(seconds) {
+  if (seconds === null || seconds === undefined || Number.isNaN(seconds)) return "n/a";
+  if (seconds < 60) return `${Math.round(seconds)}s`;
+  if (seconds < 3600) return `${Math.round(seconds / 60)}m`;
+  return `${Math.round(seconds / 3600)}h`;
+}
+
 function renderMeta(buildMeta, gapSummary) {
   const items = [
     ["Total Runs", buildMeta.total_runs],
     ["Complete E4 Bundles", buildMeta.complete_runs],
     ["OE Available", buildMeta.oe_available_runs],
     ["Host-only", buildMeta.host_only_runs],
+    ["Agency Records", buildMeta.agency_records ?? 0],
     ["Failure Cases", buildMeta.failure_cases],
   ];
   metaBar.innerHTML = items
@@ -55,6 +79,11 @@ function gapTag(type) {
   if (type.includes("missing") || type.includes("gap")) return "warning";
   if (type.includes("mismatch")) return "danger";
   return "ok";
+}
+
+function actionList(actions) {
+  if (!actions?.length) return "none";
+  return actions.join(", ");
 }
 
 function renderRuns(records, continuity) {
@@ -118,13 +147,19 @@ function renderGrowth(records, summary) {
             <article>
               <h3>${escapeHtml(record.sample_id)}</h3>
               <p class="muted">${escapeHtml(record.timestamp)}</p>
-              <pre>${escapeHtml(JSON.stringify({
-                memory_update: record.memory_update_summary,
-                appraisal_state_delta: record.appraisal_delta_summary,
-                reflection: record.reflection_summary,
-                response_tendency: record.response_tendency_summary,
-                cycle: record.cycle_summary,
-              }, null, 2))}</pre>
+              <pre>${escapeHtml(
+                JSON.stringify(
+                  {
+                    memory_update: record.memory_update_summary,
+                    appraisal_state_delta: record.appraisal_delta_summary,
+                    reflection: record.reflection_summary,
+                    response_tendency: record.response_tendency_summary,
+                    cycle: record.cycle_summary,
+                  },
+                  null,
+                  2,
+                ),
+              )}</pre>
             </article>
           `,
         )
@@ -153,11 +188,17 @@ function renderFailures(records, gapSummary) {
                     ${record.in_regression ? `<span class="tag ok">in_regression</span>` : `<span class="tag warning">not_in_regression</span>`}
                     ${record.retested_after_fix ? `<span class="tag ok">retested</span>` : ""}
                   </div>
-                  <pre>${escapeHtml(JSON.stringify({
-                    expected: record.expected,
-                    actual: record.actual,
-                    artifact_ref: record.artifact_ref,
-                  }, null, 2))}</pre>
+                  <pre>${escapeHtml(
+                    JSON.stringify(
+                      {
+                        expected: record.expected,
+                        actual: record.actual,
+                        artifact_ref: record.artifact_ref,
+                      },
+                      null,
+                      2,
+                    ),
+                  )}</pre>
                 </article>
               `,
             )
@@ -196,6 +237,244 @@ function renderSample(detail) {
   `;
 }
 
+function metricCards(summary) {
+  const items = [
+    ["Turns", summary.turn_count],
+    ["Candidate Rate", formatPercent(summary.candidate_generated_rate)],
+    ["Writeback Rate", formatPercent(summary.exec_result_writeback_rate)],
+    ["Trace Complete", formatPercent(summary.trace_completeness_rate)],
+    ["Violations", summary.direct_execution_violations],
+    ["Mean Urge", formatFloat(summary.mean_urge, 3)],
+  ];
+  return `
+    <section class="metric-grid">
+      ${items
+        .map(
+          ([label, value]) => `
+            <article class="metric-card">
+              <strong>${escapeHtml(value)}</strong>
+              <span>${escapeHtml(label)}</span>
+            </article>
+          `,
+        )
+        .join("")}
+    </section>
+  `;
+}
+
+function renderFunnel(funnel, totalTurns) {
+  const steps = [
+    ["idle eligible", funnel.idle_eligible_count],
+    ["candidate generated", funnel.candidate_generated_count],
+    ["governor approved", funnel.governor_approved_count],
+    ["host action", funnel.host_action_count],
+    ["writeback", funnel.writeback_count],
+  ];
+  return `
+    <section class="panel">
+      <h2>Agency Funnel</h2>
+      <div class="funnel-grid">
+        ${steps
+          .map(
+            ([label, count]) => `
+              <article class="funnel-step">
+                <div class="funnel-top">
+                  <strong>${escapeHtml(count)}</strong>
+                  <span>${escapeHtml(label)}</span>
+                </div>
+                <div class="mini-bar">
+                  <span style="width:${Math.max(totalTurns ? (Number(count) / totalTurns) * 100 : 0, 4)}%"></span>
+                </div>
+              </article>
+            `,
+          )
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
+function buildTrendSvg(trends) {
+  if (!trends.length) {
+    return `<div class="empty">no trend data</div>`;
+  }
+  const width = 820;
+  const height = 220;
+  const padX = 28;
+  const padY = 18;
+  const scores = trends.map((item) => Number(item.urge_score || 0));
+  const maxScore = Math.max(1, ...scores);
+  const stepX = trends.length === 1 ? 0 : (width - padX * 2) / (trends.length - 1);
+  const points = trends
+    .map((item, index) => {
+      const x = padX + stepX * index;
+      const y = height - padY - ((Number(item.urge_score || 0) / maxScore) * (height - padY * 2));
+      return { x, y, item };
+    });
+  const polyline = points.map((point) => `${point.x},${point.y}`).join(" ");
+  const candidateDots = points
+    .filter((point) => point.item.candidate_generated)
+    .map((point) => `<circle class="marker candidate" cx="${point.x}" cy="${point.y}" r="4"></circle>`)
+    .join("");
+  const writebackDots = points
+    .filter((point) => point.item.writeback_applied)
+    .map((point) => `<rect class="marker writeback" x="${point.x - 4}" y="${point.y - 4}" width="8" height="8" rx="2"></rect>`)
+    .join("");
+
+  return `
+    <svg class="trend-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-label="urge trend">
+      <line class="trend-axis" x1="${padX}" y1="${height - padY}" x2="${width - padX}" y2="${height - padY}"></line>
+      <polyline class="trend-line" points="${polyline}"></polyline>
+      ${candidateDots}
+      ${writebackDots}
+    </svg>
+  `;
+}
+
+function renderDistribution(title, values) {
+  const entries = Object.entries(values || {}).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) {
+    return `
+      <article class="panel">
+        <h3>${escapeHtml(title)}</h3>
+        <div class="empty">no data</div>
+      </article>
+    `;
+  }
+  const maxValue = Math.max(...entries.map(([, value]) => Number(value)));
+  return `
+    <article class="panel">
+      <h3>${escapeHtml(title)}</h3>
+      <div class="distribution-list">
+        ${entries
+          .map(
+            ([label, value]) => `
+              <div class="distribution-row">
+                <span class="distribution-label">${escapeHtml(label)}</span>
+                <div class="distribution-bar">
+                  <span style="width:${(Number(value) / maxValue) * 100}%"></span>
+                </div>
+                <strong>${escapeHtml(value)}</strong>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    </article>
+  `;
+}
+
+function renderAgency(payload) {
+  const summary = payload?.summary || {};
+  const latest = payload?.latest_state;
+  const trends = payload?.trends || [];
+  const recentTurns = payload?.recent_turns || [];
+  const distributions = payload?.distributions || {};
+  const excludedCounts = payload?.excluded_counts || {};
+  const hasData = Boolean(summary.turn_count);
+
+  if (!hasData) {
+    app.innerHTML = `
+      <section class="panel">
+        <h2>Agency</h2>
+        <div class="empty">no seed_v0_2 agency evidence yet</div>
+      </section>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <section class="panel agency-status-panel">
+      <div class="agency-status-header">
+        <div>
+          <h2>Agency</h2>
+          <p>seed_v0_2 causal chain over read-only real artifacts.</p>
+        </div>
+        <div class="pill-row">
+          <span class="pill ok">freshness=${escapeHtml(formatFreshness(payload.freshness_seconds))}</span>
+          <span class="pill ok">profile=${escapeHtml((payload.profile_scope || []).join(", "))}</span>
+          <span class="pill ${latest?.trace_completeness ? "ok" : "warning"}">trace=${escapeHtml(String(Boolean(latest?.trace_completeness)))}</span>
+        </div>
+      </div>
+      <div class="agency-status-grid">
+        <article class="metric-card">
+          <strong>${escapeHtml(latest?.focus_goal || "n/a")}</strong>
+          <span>current focus</span>
+        </article>
+        <article class="metric-card">
+          <strong>${escapeHtml(actionList(latest?.candidate_actions))}</strong>
+          <span>latest candidate</span>
+        </article>
+        <article class="metric-card">
+          <strong>${escapeHtml(latest?.final_host_action || "none")}</strong>
+          <span>latest final action</span>
+        </article>
+        <article class="metric-card">
+          <strong>${escapeHtml(latest?.exec_result_type || "none")}</strong>
+          <span>latest exec result</span>
+        </article>
+      </div>
+    </section>
+
+    ${metricCards(summary)}
+    ${renderFunnel(payload.funnel || {}, summary.turn_count || 0)}
+
+    <section class="panel">
+      <h2>Urge / Candidate / Writeback</h2>
+      <p class="muted">折线是 urge，圆点表示 candidate，方点表示 writeback。</p>
+      ${buildTrendSvg(trends)}
+    </section>
+
+    <section class="distribution-grid">
+      ${renderDistribution("Candidate Actions", distributions.candidate_actions)}
+      ${renderDistribution("Governor Status", distributions.governor_status)}
+      ${renderDistribution("Final Host Action", distributions.final_host_action)}
+      ${renderDistribution("Suppression Reason", distributions.suppression_reason)}
+    </section>
+
+    <section class="panel">
+      <h2>Recent Turns</h2>
+      <div class="table-wrap">
+        <table class="agency-table">
+          <thead>
+            <tr>
+              <th>sample</th>
+              <th>urge</th>
+              <th>candidate</th>
+              <th>governor</th>
+              <th>final</th>
+              <th>result</th>
+              <th>focus</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${recentTurns
+              .map(
+                (item) => `
+                  <tr>
+                    <td><a href="/samples/${encodeURIComponent(item.sample_id)}">${escapeHtml(item.sample_id)}</a></td>
+                    <td>${escapeHtml(formatFloat(item.urge_score, 3))}</td>
+                    <td>${escapeHtml(actionList(item.candidate_actions))}</td>
+                    <td>${escapeHtml(item.governor_status || "unknown")}</td>
+                    <td>${escapeHtml(item.final_host_action || "none")}</td>
+                    <td>${escapeHtml(item.exec_result_type || "none")}</td>
+                    <td>${escapeHtml(item.focus_goal || "n/a")}</td>
+                  </tr>
+                `,
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+      <div class="pill-row top-gap">
+        ${Object.entries(excludedCounts)
+          .map(([label, value]) => `<span class="pill warning">${escapeHtml(`${label}=${value}`)}</span>`)
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
 async function refresh() {
   const health = await fetchJson("/api/dashboard/health");
   renderMeta(health.build_meta || {}, health.gap_summary || {});
@@ -212,6 +491,12 @@ async function refresh() {
     return;
   }
 
+  if (view === "agency") {
+    const agency = await fetchJson("/api/dashboard/agency");
+    renderAgency(agency);
+    return;
+  }
+
   if (view === "sample" && sampleId) {
     const detail = await fetchJson(`/api/dashboard/samples/${encodeURIComponent(sampleId)}`);
     renderSample(detail);
@@ -223,6 +508,16 @@ async function refresh() {
 }
 
 async function start() {
+  if (window.location.pathname === "/") {
+    const preferredView = window.localStorage.getItem("dashboard:lastView");
+    if (preferredView && VIEW_ROUTES[preferredView]) {
+      window.location.replace(VIEW_ROUTES[preferredView]);
+      return;
+    }
+  }
+  if (view !== "sample" && VIEW_ROUTES[view]) {
+    window.localStorage.setItem("dashboard:lastView", view);
+  }
   try {
     await refresh();
     setInterval(refresh, POLL_MS);

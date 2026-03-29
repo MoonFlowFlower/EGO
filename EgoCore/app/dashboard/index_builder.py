@@ -9,6 +9,9 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from app.dashboard.types import (
+    AgencyLatestState,
+    AgencyRollup,
+    AgencyRunRecord,
     ContinuityObservationRecord,
     DashboardBuildSummary,
     FailureIndexRecord,
@@ -27,6 +30,8 @@ RUNS_FILE = "runs.jsonl"
 CONTINUITY_FILE = "continuity_observation.jsonl"
 GROWTH_FILE = "growth_signals.jsonl"
 FAILURES_FILE = "failures.jsonl"
+AGENCY_RUNS_FILE = "agency_runs.jsonl"
+AGENCY_ROLLUP_FILE = "agency_rollup.json"
 GAP_SUMMARY_FILE = "gap_summary.json"
 BUILD_META_FILE = "build_meta.json"
 
@@ -65,6 +70,444 @@ def _write_jsonl(path: Path, rows: Iterable[Dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _parse_timestamp(value: Optional[str]) -> Optional[datetime]:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def _coerce_bool(value: Any) -> Optional[bool]:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        lowered = value.strip().lower()
+        if lowered in {"true", "1", "yes", "y", "on"}:
+            return True
+        if lowered in {"false", "0", "no", "n", "off"}:
+            return False
+    if isinstance(value, (int, float)):
+        return bool(value)
+    return None
+
+
+def _coerce_float(value: Any) -> Optional[float]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    try:
+        return float(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def _first_defined(*values: Any) -> Any:
+    for value in values:
+        if value is not None:
+            return value
+    return None
+
+
+def _deep_get(data: Dict[str, Any], *paths: str) -> Any:
+    for path in paths:
+        current: Any = data
+        found = True
+        for part in path.split("."):
+            if isinstance(current, dict) and part in current:
+                current = current.get(part)
+            else:
+                found = False
+                break
+        if found:
+            return current
+    return None
+
+
+def _normalize_action_name(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        for key in ("action_type", "type", "name"):
+            action_type = value.get(key)
+            if action_type:
+                return str(action_type)
+    return "unknown"
+
+
+def _normalize_action_list(value: Any) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [_normalize_action_name(item) for item in value]
+    return [_normalize_action_name(value)]
+
+
+def _collapse_focus_goal(value: Any) -> Optional[str]:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        current_focus = value.get("current_focus")
+        if current_focus:
+            return str(current_focus)
+        pending_commitment = value.get("pending_commitment")
+        if pending_commitment:
+            return str(pending_commitment)
+    return None
+
+
+def _iter_proto_event_payloads(ledger: Dict[str, Any]) -> List[Dict[str, Any]]:
+    payloads: List[Dict[str, Any]] = []
+    openemotion = ledger.get("openemotion") or {}
+    for item in openemotion.get("events") or []:
+        payload = item.get("payload")
+        if isinstance(payload, dict) and payload.get("subject_profile"):
+            payloads.append(payload)
+    return payloads
+
+
+def _select_primary_agency_payload(payloads: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    for payload in payloads:
+        if payload.get("candidate_actions"):
+            return payload
+    for payload in payloads:
+        if payload.get("subject_profile"):
+            return payload
+    return None
+
+
+def _select_feedback_payload(payloads: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    for payload in reversed(payloads):
+        if payload.get("exec_result") or payload.get("executed_action"):
+            return payload
+    return None
+
+
+def _derive_idle_eligible(payload: Dict[str, Any], urge_score: Optional[float], candidate_actions: List[str]) -> bool:
+    direct = _coerce_bool(payload.get("idle_eligible"))
+    if direct is not None:
+        return direct
+    perceived = payload.get("perceived") or {}
+    event_type = perceived.get("event_type")
+    if event_type == "exec_result":
+        return False
+    if any(
+        [
+            perceived.get("blocked"),
+            perceived.get("active_task"),
+            perceived.get("confirm_pending"),
+        ]
+    ):
+        return False
+    if candidate_actions:
+        return True
+    return bool(urge_score and urge_score > 0.0)
+
+
+def _derive_suppression_reason(
+    payload: Dict[str, Any],
+    *,
+    candidate_generated: bool,
+    urge_score: Optional[float],
+) -> Optional[str]:
+    explicit = payload.get("suppression_reason")
+    if explicit:
+        return str(explicit)
+    if candidate_generated:
+        return None
+    perceived = payload.get("perceived") or {}
+    if perceived.get("event_type") == "exec_result":
+        return "exec_result_pass"
+    if perceived.get("blocked"):
+        return "blocked_by_safety_context"
+    if perceived.get("active_task"):
+        return "active_task"
+    if perceived.get("confirm_pending"):
+        return "confirm_pending"
+    if not perceived.get("resolved_target_path") and not perceived.get("pending_commitment"):
+        return "no_affordance"
+    if urge_score is not None and urge_score <= 0.0:
+        return "urge_below_threshold"
+    return "unknown"
+
+
+def _pick_agency_candidate_payload(sample_dir: Path, ledger: Dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], str]:
+    payloads = _iter_proto_event_payloads(ledger)
+    primary = _select_primary_agency_payload(payloads)
+    if primary is not None:
+        return primary, "ledger_events"
+
+    trace_payload = (ledger.get("openemotion") or {}).get("trace_payload") or {}
+    result_payload = (ledger.get("openemotion") or {}).get("result") or {}
+    if trace_payload.get("subject_profile") == "seed_v0_2" or result_payload.get("subject_profile") == "seed_v0_2":
+        merged = {}
+        merged.update(trace_payload)
+        merged.update(result_payload)
+        return merged, "ledger_trace"
+
+    sample_payload = _load_optional_json(sample_dir / "sample.json") or {}
+    sample_result = sample_payload.get("openemotion_result") or {}
+    sample_trace = sample_result.get("trace_payload") or sample_payload.get("openemotion_trace") or {}
+    if sample_trace.get("subject_profile") == "seed_v0_2" or sample_result.get("subject_profile") == "seed_v0_2":
+        merged = {}
+        merged.update(sample_trace)
+        merged.update(sample_result)
+        return merged, "sample_mirror"
+
+    return None, "missing"
+
+
+def _build_agency_record(
+    sample_dir: Path,
+    run_record: RunIndexRecord,
+) -> Tuple[Optional[AgencyRunRecord], Optional[str]]:
+    if run_record.host_only:
+        return None, "host_only"
+    if not run_record.oe_available:
+        return None, "oe_unavailable"
+
+    ledger = _load_optional_json(sample_dir / "ledger.json") or {}
+    primary_payload, evidence_source = _pick_agency_candidate_payload(sample_dir, ledger)
+    if primary_payload is None:
+        return None, "missing_agency_trace"
+
+    subject_profile = primary_payload.get("subject_profile") or "unknown"
+    if subject_profile != "seed_v0_2":
+        return None, "non_seed_profile"
+
+    feedback_payload = _select_feedback_payload(_iter_proto_event_payloads(ledger)) or primary_payload
+    policy_hint = primary_payload.get("policy_hint") or {}
+    governor_hint = feedback_payload.get("governor_hint") or primary_payload.get("governor_hint") or {}
+    candidate_actions = _normalize_action_list(primary_payload.get("candidate_actions"))
+    top_candidate_urge = None
+    raw_candidates = primary_payload.get("candidate_actions")
+    if isinstance(raw_candidates, list) and raw_candidates:
+        top_candidate_urge = raw_candidates[0].get("urge_score")
+    urge_score = _coerce_float(
+        _first_defined(
+            primary_payload.get("urge_score"),
+            _deep_get(policy_hint, "urge_score"),
+            _deep_get(primary_payload, "top_candidate_action.urge_score"),
+            top_candidate_urge,
+        )
+    )
+    candidate_generated = _coerce_bool(primary_payload.get("candidate_generated"))
+    candidate_generated = bool(candidate_actions) if candidate_generated is None else candidate_generated
+    idle_check = bool(_coerce_bool(primary_payload.get("idle_check")))
+    idle_eligible = _derive_idle_eligible(primary_payload, urge_score, candidate_actions)
+    suppression_reason = _derive_suppression_reason(
+        feedback_payload or primary_payload,
+        candidate_generated=candidate_generated,
+        urge_score=urge_score,
+    )
+    selected_action = governor_hint.get("selected_action") or {}
+    executed_action = feedback_payload.get("executed_action") or {}
+    exec_result = feedback_payload.get("exec_result") or {}
+    seed_state_snapshot = feedback_payload.get("seed_state_snapshot") or primary_payload.get("seed_state_snapshot") or {}
+    focus_goal = _collapse_focus_goal(seed_state_snapshot.get("focus_goal"))
+    identity_light_hash = (
+        primary_payload.get("identity_light_hash")
+        or _deep_get(primary_payload, "seed_state_snapshot.identity_light_hash")
+        or _deep_get(primary_payload, "legacy_trace_payload.identity_light_hash")
+        or "unknown"
+    )
+    final_host_action = _normalize_action_name(executed_action) if executed_action else _normalize_action_name(selected_action) if selected_action else None
+    exec_result_type = (
+        exec_result.get("status")
+        or exec_result.get("result_type")
+        or exec_result.get("outcome_type")
+        or ("none" if not exec_result else "unknown")
+    )
+    direct_execution_violation = bool(_coerce_bool(primary_payload.get("direct_execution_violation")))
+    trace_completeness = bool(
+        _coerce_bool(primary_payload.get("trace_completeness"))
+        if primary_payload.get("trace_completeness") is not None
+        else subject_profile
+        and governor_hint.get("status")
+        and seed_state_snapshot
+    )
+
+    record = AgencyRunRecord(
+        sample_id=run_record.sample_id,
+        timestamp=run_record.timestamp,
+        session_id=run_record.session_id,
+        subject_profile=subject_profile,
+        idle_check=idle_check,
+        idle_eligible=idle_eligible,
+        urge_score=urge_score,
+        candidate_generated=candidate_generated,
+        candidate_actions=candidate_actions,
+        suppression_reason=suppression_reason,
+        governor_status=governor_hint.get("status"),
+        requires_approval=bool(
+            policy_hint.get("requires_approval")
+            or governor_hint.get("requires_approval")
+            or selected_action.get("requires_approval")
+        ),
+        final_host_action=final_host_action,
+        exec_result_type=str(exec_result_type) if exec_result_type is not None else None,
+        writeback_applied=bool(exec_result) and bool(seed_state_snapshot),
+        focus_goal=focus_goal,
+        identity_light_hash=identity_light_hash,
+        revision_counter=int(seed_state_snapshot.get("revision_counter") or 0),
+        trace_completeness=trace_completeness,
+        evidence_source=evidence_source,
+        direct_execution_violation=direct_execution_violation,
+    )
+    return record, None
+
+
+def _build_agency_rollup(
+    records: List[AgencyRunRecord],
+    *,
+    excluded_counts: Dict[str, int],
+) -> AgencyRollup:
+    generated_at = datetime.now(timezone.utc).isoformat()
+    if not records:
+        return AgencyRollup(
+            generated_at=generated_at,
+            last_sample_timestamp=None,
+            freshness_seconds=None,
+            profile_scope=["seed_v0_2"],
+            summary={
+                "turn_count": 0,
+                "idle_check_count": 0,
+                "idle_eligible_rate": 0.0,
+                "candidate_generated_rate": 0.0,
+                "exec_result_writeback_rate": 0.0,
+                "trace_completeness_rate": 0.0,
+                "direct_execution_violations": 0,
+                "mean_urge": None,
+                "identity_switch_count": 0,
+                "focus_change_count": 0,
+            },
+            latest_state=None,
+            funnel={
+                "idle_eligible_count": 0,
+                "candidate_generated_count": 0,
+                "governor_approved_count": 0,
+                "host_action_count": 0,
+                "writeback_count": 0,
+            },
+            trends=[],
+            distributions={
+                "candidate_actions": {},
+                "governor_status": {},
+                "final_host_action": {},
+                "suppression_reason": {},
+            },
+            recent_turns=[],
+            excluded_counts=excluded_counts,
+        )
+
+    ordered = sorted(records, key=lambda item: item.timestamp)
+    latest = ordered[-1]
+    urge_values = [item.urge_score for item in ordered if item.urge_score is not None]
+    identity_switch_count = sum(
+        1
+        for previous, current in zip(ordered, ordered[1:])
+        if previous.identity_light_hash != current.identity_light_hash
+    )
+    focus_change_count = sum(
+        1
+        for previous, current in zip(ordered, ordered[1:])
+        if previous.focus_goal != current.focus_goal
+    )
+    governor_counter: Counter[str] = Counter()
+    final_action_counter: Counter[str] = Counter()
+    suppression_counter: Counter[str] = Counter()
+    candidate_counter: Counter[str] = Counter()
+    for item in ordered:
+        governor_counter.update([item.governor_status or "unknown"])
+        final_action_counter.update([item.final_host_action or "none"])
+        suppression_counter.update([item.suppression_reason or "none"])
+        candidate_counter.update(item.candidate_actions or ["none"])
+
+    last_sample_dt = _parse_timestamp(latest.timestamp)
+    freshness_seconds = None
+    if last_sample_dt is not None:
+        freshness_seconds = max((datetime.now(timezone.utc) - last_sample_dt).total_seconds(), 0.0)
+
+    return AgencyRollup(
+        generated_at=generated_at,
+        last_sample_timestamp=latest.timestamp,
+        freshness_seconds=freshness_seconds,
+        profile_scope=sorted({item.subject_profile for item in ordered}),
+        summary={
+            "turn_count": len(ordered),
+            "idle_check_count": sum(1 for item in ordered if item.idle_check),
+            "idle_eligible_rate": sum(1 for item in ordered if item.idle_eligible) / len(ordered),
+            "candidate_generated_rate": sum(1 for item in ordered if item.candidate_generated) / len(ordered),
+            "exec_result_writeback_rate": sum(1 for item in ordered if item.writeback_applied) / len(ordered),
+            "trace_completeness_rate": sum(1 for item in ordered if item.trace_completeness) / len(ordered),
+            "direct_execution_violations": sum(1 for item in ordered if item.direct_execution_violation),
+            "mean_urge": round(sum(urge_values) / len(urge_values), 4) if urge_values else None,
+            "identity_switch_count": identity_switch_count,
+            "focus_change_count": focus_change_count,
+        },
+        latest_state=AgencyLatestState(
+            sample_id=latest.sample_id,
+            timestamp=latest.timestamp,
+            subject_profile=latest.subject_profile,
+            session_id=latest.session_id,
+            focus_goal=latest.focus_goal,
+            urge_score=latest.urge_score,
+            candidate_actions=latest.candidate_actions,
+            governor_status=latest.governor_status,
+            final_host_action=latest.final_host_action,
+            exec_result_type=latest.exec_result_type,
+            writeback_applied=latest.writeback_applied,
+            revision_counter=latest.revision_counter,
+            trace_completeness=latest.trace_completeness,
+        ),
+        funnel={
+            "idle_eligible_count": sum(1 for item in ordered if item.idle_eligible),
+            "candidate_generated_count": sum(1 for item in ordered if item.candidate_generated),
+            "governor_approved_count": sum(1 for item in ordered if item.governor_status == "approved"),
+            "host_action_count": sum(1 for item in ordered if item.final_host_action and item.final_host_action != "none"),
+            "writeback_count": sum(1 for item in ordered if item.writeback_applied),
+        },
+        trends=[
+            {
+                "sample_id": item.sample_id,
+                "timestamp": item.timestamp,
+                "urge_score": item.urge_score,
+                "idle_eligible": item.idle_eligible,
+                "candidate_generated": item.candidate_generated,
+                "writeback_applied": item.writeback_applied,
+                "revision_counter": item.revision_counter,
+            }
+            for item in ordered[-50:]
+        ],
+        distributions={
+            "candidate_actions": dict(candidate_counter),
+            "governor_status": dict(governor_counter),
+            "final_host_action": dict(final_action_counter),
+            "suppression_reason": dict(suppression_counter),
+        },
+        recent_turns=[
+            {
+                "sample_id": item.sample_id,
+                "timestamp": item.timestamp,
+                "urge_score": item.urge_score,
+                "candidate_actions": item.candidate_actions,
+                "governor_status": item.governor_status,
+                "final_host_action": item.final_host_action,
+                "exec_result_type": item.exec_result_type,
+                "focus_goal": item.focus_goal,
+                "trace_completeness": item.trace_completeness,
+            }
+            for item in reversed(ordered[-12:])
+        ],
+        excluded_counts=excluded_counts,
+    )
 
 
 def _iter_sample_dirs(real_dir: Path) -> List[Path]:
@@ -600,6 +1043,8 @@ def _render_data_schema() -> str:
 - `continuity_observation.jsonl`: `ContinuityObservationRecord`
 - `growth_signals.jsonl`: `GrowthSignalRecord`
 - `failures.jsonl`: `FailureIndexRecord`
+- `agency_runs.jsonl`: `AgencyRunRecord`
+- `agency_rollup.json`: `AgencyRollup`
 - `gap_summary.json`: gap 统计与 blocker 汇总
 - `build_meta.json`: 索引生成元信息
 
@@ -607,6 +1052,7 @@ def _render_data_schema() -> str:
 
 - 主权威输入：`artifacts/telegram_real_mainline_v1/real_telegram/*/ledger.json`
 - 兼容镜像：`sample.json` 只允许用于展示，不允许反向发明 OpenEmotion 语义
+- Agency causal 链：优先读 `ledger.json.openemotion.events[*].payload`，仅在缺字段时回退 `sample.json`
 - continuity 观察口径：`artifacts/mvs_e5_observation/*.md`
 
 ## notes
@@ -638,6 +1084,7 @@ PYTHONPATH=. python3 -m app.main --dashboard --host 127.0.0.1 --port 8787
 - `/runs`
 - `/growth`
 - `/failures`
+- `/agency`
 - `/samples/<sample_id>`
 
 ## 说明
@@ -694,6 +1141,19 @@ def build_dashboard_indexes(
     gap_summary = _build_gap_summary(run_records, failure_records, continuity_records)
     plasticity_chains = _detect_plasticity_chains(growth_records)
     reflection_candidates = _detect_reflection_candidates(growth_records)
+    agency_records: List[AgencyRunRecord] = []
+    excluded_counts: Counter[str] = Counter()
+    for sample_dir, run_record in zip(sample_dirs, run_records):
+        agency_record, exclusion_reason = _build_agency_record(sample_dir, run_record)
+        if agency_record is not None:
+            agency_records.append(agency_record)
+            continue
+        if exclusion_reason:
+            excluded_counts.update([exclusion_reason])
+    agency_rollup = _build_agency_rollup(
+        agency_records,
+        excluded_counts=dict(sorted(excluded_counts.items())),
+    )
     source_last_modified = dashboard_source_last_modified(
         real_dir=real_dir,
         failure_dir=failure_dir,
@@ -713,12 +1173,16 @@ def build_dashboard_indexes(
         gap_type_counts=gap_summary["gap_type_counts"],
         plasticity_chain_count=len(plasticity_chains),
         reflection_candidate_count=len(reflection_candidates),
+        agency_records=len(agency_records),
+        agency_profile_scope=agency_rollup.profile_scope,
     )
 
     _write_jsonl(output_dir / RUNS_FILE, (record.to_dict() for record in run_records))
     _write_jsonl(output_dir / CONTINUITY_FILE, (record.to_dict() for record in continuity_records))
     _write_jsonl(output_dir / GROWTH_FILE, (record.to_dict() for record in growth_records))
     _write_jsonl(output_dir / FAILURES_FILE, (record.to_dict() for record in failure_records))
+    _write_jsonl(output_dir / AGENCY_RUNS_FILE, (record.to_dict() for record in agency_records))
+    _write_json(output_dir / AGENCY_ROLLUP_FILE, agency_rollup.to_dict())
     _write_json(output_dir / GAP_SUMMARY_FILE, gap_summary)
     _write_json(output_dir / BUILD_META_FILE, summary.to_dict())
 

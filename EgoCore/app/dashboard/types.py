@@ -58,6 +58,75 @@ class GrowthSignalRecord:
 
 
 @dataclass
+class AgencyRunRecord:
+    sample_id: str
+    timestamp: str
+    session_id: Optional[str]
+    subject_profile: str
+    idle_check: bool
+    idle_eligible: bool
+    urge_score: Optional[float]
+    candidate_generated: bool
+    candidate_actions: List[str]
+    suppression_reason: Optional[str]
+    governor_status: Optional[str]
+    requires_approval: bool
+    final_host_action: Optional[str]
+    exec_result_type: Optional[str]
+    writeback_applied: bool
+    focus_goal: Optional[str]
+    identity_light_hash: Optional[str]
+    revision_counter: int
+    trace_completeness: bool
+    evidence_source: str
+    direct_execution_violation: bool = False
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class AgencyLatestState:
+    sample_id: str
+    timestamp: str
+    subject_profile: str
+    session_id: Optional[str]
+    focus_goal: Optional[str]
+    urge_score: Optional[float]
+    candidate_actions: List[str]
+    governor_status: Optional[str]
+    final_host_action: Optional[str]
+    exec_result_type: Optional[str]
+    writeback_applied: bool
+    revision_counter: int
+    trace_completeness: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class AgencyRollup:
+    generated_at: str
+    last_sample_timestamp: Optional[str]
+    freshness_seconds: Optional[float]
+    profile_scope: List[str]
+    summary: Dict[str, Any]
+    latest_state: Optional[AgencyLatestState]
+    funnel: Dict[str, int]
+    trends: List[Dict[str, Any]]
+    distributions: Dict[str, Dict[str, int]]
+    recent_turns: List[Dict[str, Any]]
+    excluded_counts: Dict[str, int]
+
+    def to_dict(self) -> Dict[str, Any]:
+        payload = asdict(self)
+        if self.latest_state is not None:
+            payload["latest_state"] = self.latest_state.to_dict()
+        return payload
+
+
+@dataclass
 class FailureIndexRecord:
     failure_id: str
     timestamp: str
@@ -87,6 +156,8 @@ class DashboardBuildSummary:
     gap_type_counts: Dict[str, int] = field(default_factory=dict)
     plasticity_chain_count: int = 0
     reflection_candidate_count: int = 0
+    agency_records: int = 0
+    agency_profile_scope: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

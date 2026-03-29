@@ -16,7 +16,13 @@ def _write_json(path: Path, payload) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def _make_sample(real_dir: Path, sample_id: str, *, oe_available: bool) -> None:
+def _make_sample(
+    real_dir: Path,
+    sample_id: str,
+    *,
+    oe_available: bool,
+    events: list[dict] | None = None,
+) -> None:
     sample_dir = real_dir / sample_id
     sample_dir.mkdir(parents=True, exist_ok=True)
     ledger = {
@@ -49,6 +55,7 @@ def _make_sample(real_dir: Path, sample_id: str, *, oe_available: bool) -> None:
             if oe_available
             else {},
             "trace_payload": {
+                "subject_profile": "seed_v0_2",
                 "reflection_trigger": "drive_spike",
                 "cycle_delta": {
                     "closure_family_id": "family-a",
@@ -58,7 +65,7 @@ def _make_sample(real_dir: Path, sample_id: str, *, oe_available: bool) -> None:
             }
             if oe_available
             else {},
-            "events": [],
+            "events": events or [],
         },
         "host": {
             "response_plan": {"status": "complete", "delivery_kind": "final", "reply_length": 4},
@@ -100,7 +107,34 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
     validation_doc.parent.mkdir(parents=True, exist_ok=True)
     validation_doc.write_text("restore 仍缺\n", encoding="utf-8")
 
-    _make_sample(real_dir, "sample_20260327_100000_aaaaaaaa", oe_available=True)
+    _make_sample(
+        real_dir,
+        "sample_20260327_100000_aaaaaaaa",
+        oe_available=True,
+        events=[
+            {
+                "stage": "ingress_kernel_trace",
+                "payload": {
+                    "subject_profile": "seed_v0_2",
+                    "perceived": {"event_type": "user_event", "blocked": False, "active_task": False, "confirm_pending": False},
+                    "policy_hint": {"urge_score": 0.44, "requires_approval": False},
+                    "candidate_actions": [{"action_type": "inspect_file"}],
+                    "governor_hint": {"status": "approved", "selected_action": {"action_type": "inspect_file"}},
+                    "seed_state_snapshot": {"focus_goal": {"current_focus": "inspect_target"}, "revision_counter": 3},
+                },
+            },
+            {
+                "stage": "external_result_kernel_trace",
+                "payload": {
+                    "subject_profile": "seed_v0_2",
+                    "governor_hint": {"status": "exec_result"},
+                    "executed_action": {"action_type": "file"},
+                    "exec_result": {"status": "success"},
+                    "seed_state_snapshot": {"focus_goal": {"current_focus": "inspect_target"}, "revision_counter": 4},
+                },
+            },
+        ],
+    )
     _make_sample(real_dir, "sample_20260327_100100_bbbbbbbb", oe_available=False)
     observation_dir.mkdir(parents=True, exist_ok=True)
     (observation_dir / "OBSERVATION_SAMPLE_INDEX.md").write_text("### `/new`\n- sample_20260327_100000_aaaaaaaa\n", encoding="utf-8")
@@ -132,10 +166,12 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
         runs = json.loads(urlopen(f"{base}/api/dashboard/runs").read().decode("utf-8"))
         growth = json.loads(urlopen(f"{base}/api/dashboard/growth").read().decode("utf-8"))
         failures = json.loads(urlopen(f"{base}/api/dashboard/failures").read().decode("utf-8"))
+        agency = json.loads(urlopen(f"{base}/api/dashboard/agency").read().decode("utf-8"))
         sample = json.loads(
             urlopen(f"{base}/api/dashboard/samples/sample_20260327_100000_aaaaaaaa").read().decode("utf-8")
         )
         html = urlopen(f"{base}/runs").read().decode("utf-8")
+        agency_html = urlopen(f"{base}/agency").read().decode("utf-8")
     finally:
         server.shutdown()
         thread.join(timeout=2)
@@ -146,6 +182,9 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
     assert growth["records"]
     assert {item["sample_id"] for item in growth["records"]} == {"sample_20260327_100000_aaaaaaaa"}
     assert "gap_summary" in failures
+    assert agency["summary"]["turn_count"] == 1
+    assert agency["latest_state"]["final_host_action"] == "file"
     assert sample["sample_id"] == "sample_20260327_100000_aaaaaaaa"
     assert "ledger.json" in sample["artifacts"]
     assert "OpenEmotion Growth Dashboard v1" in html
+    assert 'data-view="agency"' in agency_html

@@ -21,6 +21,8 @@ def _make_sample(
     completeness: dict[str, bool],
     result_payload: dict | None = None,
     trace_payload: dict | None = None,
+    events: list[dict] | None = None,
+    sample_payload: dict | None = None,
 ) -> None:
     sample_dir = real_dir / sample_id
     sample_dir.mkdir(parents=True, exist_ok=True)
@@ -51,7 +53,7 @@ def _make_sample(
         "openemotion": {
             "result": result_payload or {},
             "trace_payload": trace_payload or {},
-            "events": [],
+            "events": events or [],
         },
         "host": {
             "response_plan": response_plan if completeness.get("response_plan") else None,
@@ -77,6 +79,9 @@ def _make_sample(
         key = filename.replace(".json", "")
         if completeness.get(key):
             _write_json(sample_dir / filename, payload)
+
+    if sample_payload is not None:
+        _write_json(sample_dir / "sample.json", sample_payload)
 
     (sample_dir / "summary.md").write_text(f"# {sample_id}\n", encoding="utf-8")
 
@@ -255,3 +260,137 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
     assert (output_dir / "CONTINUITY_OBSERVATION_LEDGER.md").exists()
     assert (output_dir / "PLASTICITY_REFLECTION_EVIDENCE.md").exists()
     assert (output_dir / "GAP_SUMMARY.md").exists()
+
+
+def test_build_dashboard_indexes_emits_agency_rollup_and_mirror_fallback(tmp_path: Path) -> None:
+    real_dir = tmp_path / "artifacts" / "telegram_real_mainline_v1" / "real_telegram"
+    failure_dir = tmp_path / "artifacts" / "telegram_real_mainline_v1" / "failure_cases"
+    observation_dir = tmp_path / "artifacts" / "mvs_e5_observation"
+    output_dir = tmp_path / "artifacts" / "telegram_real_mainline_v1" / "dashboard_v1"
+    validation_doc = tmp_path / "docs" / "TELEGRAM_REAL_MAINLINE_VALIDATION_V1.md"
+    validation_doc.parent.mkdir(parents=True, exist_ok=True)
+    validation_doc.write_text("restore 仍缺\n", encoding="utf-8")
+
+    seed_events = [
+        {
+            "stage": "ingress_kernel_trace",
+            "payload": {
+                "subject_profile": "seed_v0_2",
+                "perceived": {"event_type": "user_event", "blocked": False, "active_task": False, "confirm_pending": False},
+                "policy_hint": {"urge_score": 0.42, "requires_approval": False},
+                "candidate_actions": [{"action_type": "inspect_file"}],
+                "governor_hint": {"status": "approved", "selected_action": {"action_type": "inspect_file"}},
+                "seed_state_snapshot": {"focus_goal": {"current_focus": "inspect_target"}, "revision_counter": 3},
+            },
+        },
+        {
+            "stage": "external_result_kernel_trace",
+            "payload": {
+                "subject_profile": "seed_v0_2",
+                "governor_hint": {"status": "exec_result"},
+                "executed_action": {"action_type": "file"},
+                "exec_result": {"status": "success"},
+                "seed_state_snapshot": {"focus_goal": {"current_focus": "inspect_target"}, "revision_counter": 4},
+            },
+        },
+    ]
+
+    _make_sample(
+        real_dir,
+        "sample_20260329_175737_7ca3cfb6",
+        timestamp="2026-03-29T17:57:38+00:00",
+        session_id="telegram:dm:8420019401",
+        response_plan_status="complete",
+        completeness={
+            "raw_update": True,
+            "normalized_event": True,
+            "openemotion_result": True,
+            "openemotion_trace": True,
+            "response_plan": True,
+            "outbox_record": True,
+            "timeline": True,
+            "tape": True,
+            "replay": True,
+        },
+        result_payload={"subject_profile": "seed_v0_2"},
+        trace_payload={"subject_profile": "seed_v0_2"},
+        events=seed_events,
+    )
+
+    _make_sample(
+        real_dir,
+        "sample_20260329_180000_abcd1234",
+        timestamp="2026-03-29T18:00:00+00:00",
+        session_id="telegram:dm:8420019401",
+        response_plan_status="complete",
+        completeness={
+            "raw_update": True,
+            "normalized_event": True,
+            "openemotion_result": True,
+            "openemotion_trace": True,
+            "response_plan": True,
+            "outbox_record": True,
+            "timeline": True,
+            "tape": True,
+            "replay": True,
+        },
+        result_payload=None,
+        trace_payload=None,
+        sample_payload={
+            "openemotion_result": {
+                "subject_profile": "seed_v0_2",
+                "policy_hint": {"urge_score": 0.0, "requires_approval": False},
+                "candidate_actions": [],
+                "trace_payload": {
+                    "subject_profile": "seed_v0_2",
+                    "perceived": {"event_type": "user_event", "blocked": False, "active_task": False, "confirm_pending": False},
+                    "suppression_reason": "no_affordance",
+                    "governor_hint": {"status": "none"},
+                    "seed_state_snapshot": {"focus_goal": {"current_focus": "monitor"}, "revision_counter": 8},
+                },
+            }
+        },
+    )
+
+    _make_sample(
+        real_dir,
+        "sample_20260329_180100_deadbeef",
+        timestamp="2026-03-29T18:01:00+00:00",
+        session_id="telegram:dm:8420019401",
+        response_plan_status="profile_rule_enforced",
+        completeness={
+            "raw_update": True,
+            "normalized_event": False,
+            "openemotion_result": False,
+            "openemotion_trace": False,
+            "response_plan": True,
+            "outbox_record": True,
+            "timeline": True,
+            "tape": True,
+            "replay": True,
+        },
+    )
+
+    build_dashboard_indexes(
+        real_dir=real_dir,
+        failure_dir=failure_dir,
+        observation_dir=observation_dir,
+        output_dir=output_dir,
+        validation_doc=validation_doc,
+    )
+
+    agency_runs = load_jsonl(output_dir / "agency_runs.jsonl")
+    agency_rollup = json.loads((output_dir / "agency_rollup.json").read_text(encoding="utf-8"))
+    by_id = {item["sample_id"]: item for item in agency_runs}
+
+    assert by_id["sample_20260329_175737_7ca3cfb6"]["evidence_source"] == "ledger_events"
+    assert by_id["sample_20260329_175737_7ca3cfb6"]["candidate_actions"] == ["inspect_file"]
+    assert by_id["sample_20260329_175737_7ca3cfb6"]["final_host_action"] == "file"
+    assert by_id["sample_20260329_175737_7ca3cfb6"]["exec_result_type"] == "success"
+
+    assert by_id["sample_20260329_180000_abcd1234"]["evidence_source"] == "sample_mirror"
+    assert by_id["sample_20260329_180000_abcd1234"]["suppression_reason"] == "no_affordance"
+
+    assert agency_rollup["summary"]["turn_count"] == 2
+    assert agency_rollup["latest_state"]["sample_id"] == "sample_20260329_180000_abcd1234"
+    assert agency_rollup["excluded_counts"]["host_only"] == 1

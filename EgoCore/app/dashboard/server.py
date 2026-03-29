@@ -9,6 +9,7 @@ from typing import Any, Dict, Optional
 from urllib.parse import parse_qs, urlparse
 
 from app.dashboard.index_builder import (
+    AGENCY_ROLLUP_FILE,
     BUILD_META_FILE,
     CONTINUITY_FILE,
     DASHBOARD_DIR,
@@ -73,6 +74,12 @@ class DashboardDataStore:
             return {}
         return json.loads(path.read_text(encoding="utf-8"))
 
+    def load_agency_rollup(self) -> Dict[str, Any]:
+        path = self.dashboard_dir / AGENCY_ROLLUP_FILE
+        if not path.exists():
+            return {}
+        return json.loads(path.read_text(encoding="utf-8"))
+
     def sample_detail(self, sample_id: str) -> Optional[Dict[str, Any]]:
         sample_dir = self.dashboard_dir.parent / "real_telegram" / sample_id
         if not sample_dir.exists():
@@ -123,7 +130,7 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
             self._serve_static(parsed.path.removeprefix("/static/"))
             return
 
-        if parsed.path in {"/", "/runs", "/growth", "/failures"} or parsed.path.startswith("/samples/"):
+        if parsed.path in {"/", "/runs", "/growth", "/failures", "/agency"} or parsed.path.startswith("/samples/"):
             self._serve_html_shell(parsed.path)
             return
 
@@ -179,6 +186,10 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if parsed.path == "/api/dashboard/agency":
+            self._send_json(self.store.load_agency_rollup())
+            return
+
         if parsed.path.startswith("/api/dashboard/samples/"):
             sample_id = parsed.path.rsplit("/", 1)[-1]
             detail = self.store.sample_detail(sample_id)
@@ -216,7 +227,7 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
         sample_id = ""
         if path == "/":
             view = "runs"
-        elif path in {"/runs", "/growth", "/failures"}:
+        elif path in {"/runs", "/growth", "/failures", "/agency"}:
             view = path.removeprefix("/")
         elif path.startswith("/samples/"):
             view = "sample"
@@ -241,6 +252,7 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
       </div>
       <nav class="nav">
         <a href="/runs">Live Runs</a>
+        <a href="/agency">Agency</a>
         <a href="/growth">Growth Signals</a>
         <a href="/failures">Failures & Replay</a>
       </nav>
