@@ -104,6 +104,7 @@
 - 对照验收单做 review 或判断是否可宣称完成：优先使用 `ego-review-against-acceptance`
 - 恢复上下文、继续、接着做：优先使用 `ego-resume-context`
 - 交接 / 子代理派发 / brief：显式调用 `ego-handoff-brief`
+- 如果同一请求同时带有 `continue` 和明确的 bug / milestone / review / handoff 目标，优先选择更具体的 task skill；只有“恢复状态”本身是主要工作时才使用 `ego-resume-context`
 
 ## References
 
