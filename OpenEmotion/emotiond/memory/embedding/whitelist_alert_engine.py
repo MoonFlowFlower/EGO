@@ -27,6 +27,7 @@ from .whitelist_governance import (
 
 class AlertType(str, Enum):
     """Types of whitelist alerts."""
+    INSUFFICIENT_OBSERVATION_DATA = "insufficient_observation_data"
     FALLBACK_SPIKE = "fallback_spike"
     WRONG_USER_GUARD_TRIGGER = "wrong_user_guard_trigger"
     PROVIDER_HEALTH_DROP = "provider_health_drop"
@@ -72,7 +73,7 @@ class WhitelistAlertV2:
 class WhitelistAlertEngine:
     """
     Generates structured alerts for whitelist governance.
-    
+
     v6k.2 specific:
     - Alert generation with structured schema
     - Governance consumption
@@ -153,12 +154,24 @@ class WhitelistAlertEngine:
         state = self.governance.evaluate_scenario(scenario_name)
         now = datetime.now().isoformat()
 
-        # BOOTSTRAP state: no observation data, skip critical alert generation
-        # This is not a failure, just insufficient evidence
+        # BOOTSTRAP state: no observation data. Keep it non-critical, but emit
+        # a structured warning so governance/reporting can track missing evidence.
         if state.verdict.value == "bootstrap":
-            # Generate a single BOOTSTRAP info-level "alert" for tracking
-            # but don't count it as critical or warning
-            return alerts  # Return empty - bootstrap is expected, not an alert
+            alert = WhitelistAlertV2(
+                alert_id=self._generate_alert_id(AlertType.INSUFFICIENT_OBSERVATION_DATA, scenario_name),
+                alert_type=AlertType.INSUFFICIENT_OBSERVATION_DATA,
+                scenario_name=scenario_name,
+                severity=AlertSeverity.WARNING,
+                triggered_at=now,
+                source_metric="request_count",
+                threshold=1,
+                observed_value=state.request_count,
+                suggested_action="Collect observation data before promoting governance decisions",
+            )
+            alerts.append(alert)
+            self.alerts.extend(alerts)
+            self._save_alerts()
+            return alerts
 
         # Check fallback_spike (critical)
         if state.fallback_rate > self.CRITICAL_FALLBACK_RATE:
