@@ -13,6 +13,7 @@
 5. 如果改 `EgoCore/`，再读 `EgoCore/README.md`
 6. 如果改 `OpenEmotion/`，再读 `OpenEmotion/README.md`
 7. 如果存在当前任务单，优先读 `Tasks/active/` 下的 spec / plan / acceptance / status / review 文档
+8. 如果任务已进入 Codex 长任务闭环，再读 `docs/codex/tasks/<slug>/SPEC.md`、`PLAN.md`、`IMPLEMENT.md`、`STATUS.md`
 
 读取优先级：
 
@@ -28,7 +29,8 @@
 - `EgoCore/`: 宿主、Telegram 入口、runtime、工具执行、安全、delivery、audit
 - `OpenEmotion/`: 主体内核、proto-self、memory、self-model、developmental projection
 - `Tasks/`: 任务单、spec、plan、acceptance、status、handoff；新任务默认使用 `Tasks/templates/`
-- `scripts/`: 跨仓脚本与 capture runner
+- `docs/codex/`: Codex long-run harness 文档、模板、示例、任务目录
+- `scripts/`: 跨仓脚本与 capture runner；`scripts/codex/` 承载 long-run harness 工具
 - `artifacts/`: 证据、观测、样本；除非任务文档明确引用，否则不是默认真相源
 - `docs/`: repo 级治理与开发说明
 
@@ -67,6 +69,8 @@
 
 - `python3 -m py_compile path/to/file.py`
 - `git diff --check`
+- `python3 scripts/codex/verify_repo.py --mode fast`
+- `python3 scripts/codex/verify_repo.py --mode full`
 - OpenEmotion CI 参考：`OpenEmotion/.github/workflows/emotiond-test.yml`
 - Testbot CI 参考：`OpenEmotion/.github/workflows/testbot-e2e.yml`
 
@@ -86,6 +90,19 @@
 - 任务状态、验证等级、handoff 字段使用 `.agents/references/task-state-and-handoff.md`
 - 问题层级、验证/证据口径、completion claim 规则使用 `.agents/references/engineering-evidence-model.md`
 
+## Codex Long-Run Harness
+
+- 长任务正式工作目录固定为 `docs/codex/tasks/<slug>/`
+- 开工前按顺序读取：`SPEC.md -> PLAN.md -> IMPLEMENT.md -> STATUS.md`
+- `STATUS.md` 的 `Current milestone` 是当前执行源；每次只推进一个 milestone
+- milestone 完成后默认运行：`python3 scripts/codex/verify_repo.py --mode fast`
+- milestone 收口、高风险改动、或任务 closeout 前运行：`python3 scripts/codex/verify_repo.py --mode full`
+- 验证失败时，先在当前 milestone 内修复、降级口径、或记录 blocker；不能直接推进下一 milestone
+- 每次收口都要记录：`decisions / risks / next step / rollback notes / commands run / evidence`
+- 保持 diff scoped，不顺手扩 scope；已有 `Tasks/active/*.md` 或 step/task 文档时，只作为 authority refs 引入，不复制为第二真相源
+- 仓库存在 smoke/e2e 能力时，相关长任务必须纳入 smoke/e2e 类验证
+- prompt 含 `LONGRUN` 时，进入持续推进模式：默认不为常规实现细节征求用户；只有命中缺外部凭据/审批、authority source 冲突、或验证证明当前 slice 无法闭环时才停
+
 ## Change constraints / do-not rules
 
 - 保持双核边界：EgoCore 负责宿主与现实裁决；OpenEmotion 负责主体语义与状态
@@ -98,6 +115,7 @@
 
 ## Skill routing
 
+- 多步骤长任务、已有 `docs/codex/tasks/<slug>/`、或 prompt 含 `LONGRUN`：优先使用 `long-run-execution`
 - 复杂、模糊、跨模块任务：优先使用 `ego-plan-from-spec`
 - 按 spec / plan / acceptance 实现明确里程碑：优先使用 `ego-implement-milestone`
 - bug / 回归 / 报错 / failing tests / 主链不生效：优先使用 `ego-bugfix-root-cause`
@@ -108,6 +126,7 @@
 - 如果同一请求同时带有 `plan` 和 `implement`：
   - 目标或 milestone 尚未锁定时，优先使用 `ego-plan-from-spec`
   - 已有明确 step file / implementation task / acceptance slice，且用户明确要求现在动代码时，优先使用 `ego-implement-milestone`
+- 如果同一请求既是长任务持续推进，又带 `continue` / `implement` / `verify`，只要已经存在 `docs/codex/tasks/<slug>/` 或显式出现 `LONGRUN`，优先使用 `long-run-execution`
 
 ## References
 
