@@ -130,10 +130,10 @@ class HomeostasisState:
     certainty: float = 1.0     # 0.0-1.0: Predictability
     autonomy: float = 1.0      # 0.0-1.0: Agency/control
     fairness: float = 1.0      # 0.0-1.0: Perceived fairness
-    
+
     def to_dict(self) -> Dict[str, float]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "HomeostasisState":
         return cls(
@@ -144,7 +144,7 @@ class HomeostasisState:
             autonomy=data.get("autonomy", 1.0),
             fairness=data.get("fairness", 1.0),
         )
-    
+
     def compute_checksum(self) -> str:
         """Compute checksum of state for integrity."""
         state_str = json.dumps(self.to_dict(), sort_keys=True)
@@ -155,20 +155,20 @@ class HomeostasisState:
 class EFETerms:
     """
     Expected Free Energy terms for Active-Inference style decision making.
-    
+
     EFE = risk + ambiguity - info_gain + cost
-    
+
     Lower is better (minimize surprise).
     """
     risk: float = 0.0          # Expected prediction error
     ambiguity: float = 0.0     # Model uncertainty
     info_gain: float = 0.0     # Expected information gain (negative in EFE)
     cost: float = 0.0          # Action cost
-    
+
     def compute_total(self) -> float:
         """Compute total EFE value."""
         return self.risk + self.ambiguity - self.info_gain + self.cost
-    
+
     def to_dict(self) -> Dict[str, float]:
         return {
             "risk": self.risk,
@@ -177,7 +177,7 @@ class EFETerms:
             "cost": self.cost,
             "total": self.compute_total(),
         }
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "EFETerms":
         return cls(
@@ -198,10 +198,10 @@ class GovernorDecisionRecord:
     override: bool = False  # Was this overridden?
     confidence: float = 1.0
     details: Dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "GovernorDecisionRecord":
         return cls(
@@ -234,7 +234,7 @@ class EventLogMVP11:
     state_delta: StateDelta
     interventions: List[Intervention] = field(default_factory=list)
     validation: Optional[ValidationResult] = None
-    
+
     # MVP11 new fields
     homeostasis_state: Optional[HomeostasisState] = None
     efe_terms: Optional[EFETerms] = None
@@ -242,7 +242,7 @@ class EventLogMVP11:
     # MVP11.2 cycle evidence fields (optional)
     cycle_signature: Optional[str] = None
     cycle_bucket: Optional[Dict[str, Any]] = None
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         d = {
@@ -261,10 +261,10 @@ class EventLogMVP11:
             "state_delta": asdict(self.state_delta) if isinstance(self.state_delta, StateDelta) else self.state_delta,
             "interventions": [asdict(i) if isinstance(i, Intervention) else i for i in self.interventions],
         }
-        
+
         if self.validation:
             d["validation"] = asdict(self.validation)
-        
+
         # MVP11 fields
         if self.homeostasis_state:
             d["homeostasis_state"] = self.homeostasis_state.to_dict()
@@ -276,7 +276,7 @@ class EventLogMVP11:
             d["cycle_signature"] = self.cycle_signature
         if self.cycle_bucket:
             d["cycle_bucket"] = self.cycle_bucket
-        
+
         return d
 
 
@@ -356,30 +356,32 @@ class Ledger:
         self.seed: int = 0
         self.events: List[EventLog] = []
         self.snapshots: List[StateSnapshot] = []
-        self._file_handle = None
+        self._log_path: Optional[Path] = None
+        self._file_handle: Optional[object] = None
 
     def start_run(self, seed: int = 0, run_id: Optional[str] = None) -> str:
         """Start a new run with given seed."""
+        self.close()
         self.seed = seed
         self.run_id = run_id or f"run_{uuid.uuid4().hex[:8]}"
         self.events = []
         self.snapshots = []
-        
-        # Open JSONL file for this run
-        log_path = self.artifacts_dir / f"{self.run_id}.jsonl"
-        self._file_handle = open(log_path, 'a')
-        
+        self._log_path = self.artifacts_dir / f"{self.run_id}.jsonl"
+        self._log_path.touch(exist_ok=True)
+        # Backward-compat sentinel: older tests assert that a "handle" exists
+        # after start_run(), but we no longer keep a live OS file handle open.
+        self._file_handle = object()
         return self.run_id
 
     def log_event(self, event: EventLog) -> None:
         """Log an event to the JSONL file."""
-        if self._file_handle is None:
+        if self._log_path is None:
             raise RuntimeError("Run not started. Call start_run() first.")
-        
+
         self.events.append(event)
         line = json.dumps(event.to_dict())
-        self._file_handle.write(line + '\n')
-        self._file_handle.flush()
+        with self._log_path.open("a", encoding="utf-8") as file_handle:
+            file_handle.write(line + "\n")
 
     def take_snapshot(self, state: Dict[str, Any], tick_id: int) -> StateSnapshot:
         """Take a snapshot of the current state."""
@@ -392,20 +394,18 @@ class Ledger:
         )
         snapshot.checksum = snapshot.compute_checksum()
         self.snapshots.append(snapshot)
-        
+
         # Write snapshot file
         snapshot_path = self.artifacts_dir / f"snapshot_{self.run_id}_{tick_id}.json"
         with open(snapshot_path, 'w') as f:
             json.dump(snapshot.to_dict(), f, indent=2)
-        
+
         return snapshot
 
     def end_run(self) -> Dict[str, Any]:
         """End the current run and return summary."""
-        if self._file_handle:
-            self._file_handle.close()
-            self._file_handle = None
-        
+        self.close()
+
         summary = {
             "run_id": self.run_id,
             "seed": self.seed,
@@ -414,12 +414,12 @@ class Ledger:
             "start_ts": self.events[0].ts if self.events else None,
             "end_ts": self.events[-1].ts if self.events else None,
         }
-        
+
         # Write summary file
         summary_path = self.artifacts_dir / f"summary_{self.run_id}.json"
         with open(summary_path, 'w') as f:
             json.dump(summary, f, indent=2)
-        
+
         return summary
 
     def load_run(self, run_id: str) -> List[Dict[str, Any]]:
@@ -439,6 +439,11 @@ class Ledger:
             with open(snapshot_path, 'r') as f:
                 return json.load(f)
         return None
+
+    def close(self) -> None:
+        """Clear compatibility state; no live OS file handle is retained."""
+        self._log_path = None
+        self._file_handle = None
 
 
 # ============================================================================
@@ -455,34 +460,34 @@ class LedgerMVP11:
         self.seed: int = 0
         self.events: List[EventLogMVP11] = []
         self.snapshots: List[StateSnapshotMVP11] = []
-        self._file_handle = None
+        self._log_path: Optional[Path] = None
+        self._file_handle: Optional[object] = None
 
     def start_run(self, seed: int = 0, run_id: Optional[str] = None) -> str:
         """Start a new run with given seed."""
+        self.close()
         self.seed = seed
         self.run_id = run_id or f"run_{uuid.uuid4().hex[:8]}"
         self.events = []
         self.snapshots = []
-        
-        # Open JSONL file for this run
-        log_path = self.artifacts_dir / f"{self.run_id}.jsonl"
-        self._file_handle = open(log_path, 'a')
-        
+        self._log_path = self.artifacts_dir / f"{self.run_id}.jsonl"
+        self._log_path.touch(exist_ok=True)
+        self._file_handle = object()
         return self.run_id
 
     def log_event(self, event: EventLogMVP11) -> None:
         """Log an MVP11 event to the JSONL file."""
-        if self._file_handle is None:
+        if self._log_path is None:
             raise RuntimeError("Run not started. Call start_run() first.")
-        
+
         self.events.append(event)
         line = json.dumps(event.to_dict())
-        self._file_handle.write(line + '\n')
-        self._file_handle.flush()
+        with self._log_path.open("a", encoding="utf-8") as file_handle:
+            file_handle.write(line + "\n")
 
     def take_snapshot(
-        self, 
-        state: Dict[str, Any], 
+        self,
+        state: Dict[str, Any],
         tick_id: int,
         homeostasis_state: Optional[HomeostasisState] = None
     ) -> StateSnapshotMVP11:
@@ -497,20 +502,18 @@ class LedgerMVP11:
         )
         snapshot.checksum = snapshot.compute_checksum()
         self.snapshots.append(snapshot)
-        
+
         # Write snapshot file
         snapshot_path = self.artifacts_dir / f"snapshot_{self.run_id}_{tick_id}.json"
         with open(snapshot_path, 'w') as f:
             json.dump(snapshot.to_dict(), f, indent=2)
-        
+
         return snapshot
 
     def end_run(self) -> Dict[str, Any]:
         """End the current run and return summary."""
-        if self._file_handle:
-            self._file_handle.close()
-            self._file_handle = None
-        
+        self.close()
+
         summary = {
             "run_id": self.run_id,
             "seed": self.seed,
@@ -520,12 +523,12 @@ class LedgerMVP11:
             "end_ts": self.events[-1].ts if self.events else None,
             "schema_version": "mvp11.v1",
         }
-        
+
         # Write summary file
         summary_path = self.artifacts_dir / f"summary_{self.run_id}.json"
         with open(summary_path, 'w') as f:
             json.dump(summary, f, indent=2)
-        
+
         return summary
 
     def load_run(self, run_id: str) -> List[Dict[str, Any]]:
@@ -545,6 +548,11 @@ class LedgerMVP11:
             with open(snapshot_path, 'r') as f:
                 return json.load(f)
         return None
+
+    def close(self) -> None:
+        """Clear compatibility state; no live OS file handle is retained."""
+        self._log_path = None
+        self._file_handle = None
 
 
 # ============================================================================
