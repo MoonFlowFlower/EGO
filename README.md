@@ -15,7 +15,9 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
   - `restart continuity` 已有“真实重启日志 + post-restart 命中样本”的跨证据链正证据，但 post-restart 命中样本仍非完整单样本 E4 bundle
   - 当前仍不能宣称 `E5 稳定成立` 或 `Developmental Self` 准入通过
 - **Codex Assistant Memory**：开发助手侧结构化持久记忆已完成首轮真实新会话验收
-  - `CODEX_MEMORY.md` 可恢复稳定项目真相与长期偏好
+  - `CODEX_MEMORY.md` 是开发助手稳定记忆索引，不是第二份项目总记忆
+  - `PROJECT_MEMORY.md` 仍负责仓库级广义项目背景、边界、关键发现与里程碑
+  - `.codex/memory/*.jsonl` 是结构化源，`CODEX_MEMORY.md` 由其渲染
   - `TaskHandoffRecord` 为当前任务主权威
   - 同任务 `SessionCapsule` 可补充连续性，异任务 capsule 会被明确拒绝
   - 当前仍是手动喂入/脚本辅助启动，不是全自动注入

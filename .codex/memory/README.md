@@ -2,6 +2,24 @@
 
 这套目录只服务 `Codex/Claude Code` 一类开发助手的会话衔接，不接入 `EgoCore/OpenEmotion` runtime。
 
+## 三层边界
+
+- `PROJECT_MEMORY.md`
+  - 仓库级广义项目记忆
+  - 负责项目背景、系统边界、关键发现、里程碑、长期工作流
+- `CODEX_MEMORY.md`
+  - 结构化记忆的渲染索引
+  - 负责给开发助手新会话注入稳定事实和长期偏好
+- `.codex/memory/*.jsonl`
+  - `CODEX_MEMORY.md` 的真正结构化源
+  - 负责持久化稳定项目真相、长期用户偏好、任务 handoff 与 session capsule
+
+结论：
+
+- `CODEX_MEMORY.md` 不是第二份 `PROJECT_MEMORY.md`
+- `PROJECT_MEMORY.md` 也不是 `.codex/memory/*.jsonl` 的镜像源
+- 三者是“广义项目记忆 / 会话索引 / 结构化源”的分层关系
+
 ## 分层
 
 - `project_truth.jsonl`
@@ -60,6 +78,12 @@
 2. `CODEX_MEMORY.md`
 3. 上一任务 closure
 4. 同任务 session capsule
+
+补充读取规则：
+
+- 需要当前任务连续性：优先看 handoff + `CODEX_MEMORY.md`
+- 需要广义项目背景：回读 `PROJECT_MEMORY.md`
+- 需要修正或晋升记忆：直接修改 `.codex/memory/*.jsonl`，再重新渲染 `CODEX_MEMORY.md`
 
 ## 当前验收状态
 

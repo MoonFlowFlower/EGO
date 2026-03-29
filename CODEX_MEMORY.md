@@ -2,12 +2,25 @@
 
 > Codex 开发助手稳定记忆索引
 > Source of truth: `.codex/memory/project_truth.jsonl` + `.codex/memory/user_preferences.jsonl`
+> 这是开发助手记忆索引，不是第二份项目总记忆；广义项目背景仍以 `PROJECT_MEMORY.md` 为主。
+
+## 记忆分层
+
+- `.codex/memory/project_truth.jsonl` + `.codex/memory/user_preferences.jsonl`：Codex 结构化记忆源。
+- `CODEX_MEMORY.md`：结构化记忆的渲染索引，服务新会话注入。
+- `PROJECT_MEMORY.md`：仓库级广义项目记忆，保存边界、流程、关键发现、里程碑与长期背景。
 
 ## 使用边界
 
 - 这套记忆只服务开发助手会话衔接，不接入 EgoCore/OpenEmotion runtime。
 - 只保存结构化事实、长期偏好、任务 handoff/closure、session capsule。
 - 不保存长聊天原文、未验证结论、调试噪声和过期讨论。
+
+## 怎么读
+
+- 新会话恢复当前任务：先读任务 handoff，再读 `CODEX_MEMORY.md`。
+- 需要广义项目背景、系统边界、历史里程碑时：回读 `PROJECT_MEMORY.md`。
+- 需要追结构化源或做记忆维护时：直接看 `.codex/memory/*.jsonl` 与本目录说明。
 
 ## 新会话注入顺序
 

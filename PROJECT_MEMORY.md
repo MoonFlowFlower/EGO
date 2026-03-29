@@ -16,6 +16,39 @@
 
 ---
 
+## 记忆分层与读取顺序
+
+这套项目目前有三层记忆，不是两份同类文件并存：
+
+- `PROJECT_MEMORY.md`
+  - 仓库级广义项目记忆
+  - 保存系统边界、工作流、关键发现、里程碑、长期背景
+- `CODEX_MEMORY.md`
+  - `Codex/Claude Code` 新会话注入用的稳定记忆索引
+  - 只收结构化稳定事实与长期用户偏好
+  - 不是第二份项目总记忆
+- `.codex/memory/*.jsonl`
+  - `CODEX_MEMORY.md` 的结构化源
+  - 其中：
+    - `project_truth.jsonl` 记录稳定项目真相
+    - `user_preferences.jsonl` 记录长期用户偏好
+    - `tasks/` / `sessions/` 记录任务 handoff 与 session capsule
+
+推荐读取顺序：
+
+1. 新 agent / 新人上手仓库：先读 `PROJECT_MEMORY.md`，再读 `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
+2. Codex 新会话恢复当前任务：先读当前任务 handoff，再读 `CODEX_MEMORY.md`
+3. 需要广义背景、边界、历史里程碑时：回读 `PROJECT_MEMORY.md`
+4. 需要核对结构化记忆源、做记忆维护或追溯 source 时：读 `.codex/memory/README.md` 与 `.codex/memory/*.jsonl`
+
+约束：
+
+- 不把 `CODEX_MEMORY.md` 当项目总记忆持续手工扩写
+- 不把长聊天、未验证结论、调试噪声写进 `.codex/memory/*.jsonl`
+- 需要长期复用的开发事实，优先晋升到 `PROJECT_MEMORY.md`；若同时服务开发助手会话衔接，再进入 `.codex/memory/*.jsonl`
+
+---
+
 ## 核心协议
 
 - **元认知内核**: 每轮明确目标→审查模型→定位未知→推进闭环
@@ -62,7 +95,7 @@
 - 稳定记忆索引: `CODEX_MEMORY.md`
 - 结构化源文件: `.codex/memory/project_truth.jsonl` + `.codex/memory/user_preferences.jsonl`
 - 本地任务/会话衔接: `.codex/memory/tasks/` + `.codex/memory/sessions/`
-- 规则: 任务边界继续新开会话；同一任务内可依赖 session capsule 减少重开
+- 规则: 任务边界继续新开会话；同一任务内可依赖 session capsule 减少重开；`CODEX_MEMORY.md` 只做稳定索引，广义项目背景仍以 `PROJECT_MEMORY.md` 为主
 - 当前验收口径: 稳定记忆 + TaskHandoffRecord + 同/异任务 SessionCapsule 已完成首轮真实新会话验收；当前仍是手动喂入/脚本辅助启动，不是全自动注入
 
 ### E2E 测试流程
