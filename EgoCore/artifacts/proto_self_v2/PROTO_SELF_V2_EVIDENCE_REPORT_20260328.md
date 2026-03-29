@@ -58,6 +58,10 @@
   - [PROTO_SELF_V2_E5_OBSERVATION_PLAN.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_E5_OBSERVATION_PLAN.md)
 - E5 observation result:
   - [PROTO_SELF_V2_E5_OBSERVATION_REPORT_20260328.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_E5_OBSERVATION_REPORT_20260328.md)
+- cross-session observation plan:
+  - [PROTO_SELF_V2_CROSS_SESSION_OBSERVATION_PLAN.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_CROSS_SESSION_OBSERVATION_PLAN.md)
+- cross-session observation status:
+  - [PROTO_SELF_V2_CROSS_SESSION_STATUS_20260328.md](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/artifacts/proto_self_v2/PROTO_SELF_V2_CROSS_SESSION_STATUS_20260328.md)
 
 ## Contract gate
 
