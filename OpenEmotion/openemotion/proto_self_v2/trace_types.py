@@ -13,6 +13,10 @@ class ProtoSelfTracePayloadV2:
     kernel_version: str = "proto_self.v2"
     event_id: str = ""
     subject_profile: Optional[str] = None
+    idle_eligible: Optional[bool] = None
+    urge_score: Optional[float] = None
+    candidate_generated: Optional[bool] = None
+    suppression_reason: Optional[str] = None
     update_packet_hash: str = ""
     state_revision_before: int = 0
     state_revision_after: int = 0
@@ -42,6 +46,10 @@ class ProtoSelfTracePayloadV2:
             "kernel_version": self.kernel_version,
             "event_id": self.event_id,
             "subject_profile": self.subject_profile,
+            "idle_eligible": self.idle_eligible,
+            "urge_score": self.urge_score,
+            "candidate_generated": self.candidate_generated,
+            "suppression_reason": self.suppression_reason,
             "update_packet_hash": self.update_packet_hash,
             "state_revision_before": self.state_revision_before,
             "state_revision_after": self.state_revision_after,

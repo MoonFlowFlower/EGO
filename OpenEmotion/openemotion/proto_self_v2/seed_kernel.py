@@ -42,6 +42,50 @@ class ProtoSelfSeedKernel:
             "candidate_count": governor_hint.get("candidate_count", 0),
         }
 
+    def _build_trace_diagnostics(
+        self,
+        *,
+        event: KernelEvent,
+        state: ProtoSelfSeedState,
+        affordances: List[Affordance],
+        urge_score: float,
+        candidate_actions: List[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        runtime = event.runtime_summary or {}
+        safety = event.safety_context or {}
+
+        idle_eligible = (
+            event.event_type != "exec_result"
+            and not bool(runtime.get("active_task", False))
+            and not bool(runtime.get("confirm_pending", False))
+            and not bool(safety.get("blocked", False))
+        )
+        candidate_generated = bool(candidate_actions)
+
+        suppression_reason: Optional[str] = None
+        if not candidate_generated:
+            if event.event_type == "exec_result":
+                suppression_reason = "exec_result_pass"
+            elif runtime.get("active_task", False):
+                suppression_reason = "active_task"
+            elif runtime.get("confirm_pending", False):
+                suppression_reason = "confirm_pending"
+            elif safety.get("blocked", False):
+                suppression_reason = "blocked_by_safety_context"
+            elif not affordances:
+                suppression_reason = "no_affordance"
+            elif state.drives.caution > 0.90:
+                suppression_reason = "caution_gate"
+            else:
+                suppression_reason = "urge_below_threshold"
+
+        return {
+            "idle_eligible": idle_eligible,
+            "urge_score": round(urge_score, 4),
+            "candidate_generated": candidate_generated,
+            "suppression_reason": suppression_reason,
+        }
+
     def process_event(
         self,
         state: ProtoSelfSeedState,
@@ -58,6 +102,13 @@ class ProtoSelfSeedKernel:
             exec_result = self._exec_result_from_event(event)
             reflection_note = self._apply_feedback(state, exec_result)
             self._append_exec_outcome(state, event, reflection_note, exec_result)
+            trace_diagnostics = self._build_trace_diagnostics(
+                event=event,
+                state=state,
+                affordances=[],
+                urge_score=0.0,
+                candidate_actions=[],
+            )
             policy_hint = self._build_policy_hint(
                 state=state,
                 candidate_actions=[],
@@ -84,6 +135,7 @@ class ProtoSelfSeedKernel:
                     candidate_actions=[],
                     governor_hint={"status": "exec_result", "reason": "feedback writeback"},
                     urge_score=0.0,
+                    trace_diagnostics=trace_diagnostics,
                     reflection_note=reflection_note,
                     exec_result=exec_result.to_dict(),
                 ),
@@ -92,6 +144,14 @@ class ProtoSelfSeedKernel:
         affordances = extract_affordances(event, state)
         urge_score = self._compute_urge(state, affordances, event)
         candidate_actions = self._generate_candidate_actions(state, affordances, urge_score)
+        candidate_action_payloads = [item.to_dict() for item in candidate_actions]
+        trace_diagnostics = self._build_trace_diagnostics(
+            event=event,
+            state=state,
+            affordances=affordances,
+            urge_score=urge_score,
+            candidate_actions=candidate_action_payloads,
+        )
         governor_hint = self.governor_lite.classify(candidate_actions, event)
         self._append_non_exec_outcome(state, event, candidate_actions, governor_hint, urge_score)
         policy_hint = self._build_policy_hint(
@@ -109,7 +169,7 @@ class ProtoSelfSeedKernel:
         )
         return SeedKernelResult(
             state_delta=self._diff_state(before, state.to_dict()),
-            candidate_actions=[item.to_dict() for item in candidate_actions],
+            candidate_actions=candidate_action_payloads,
             policy_hint=policy_hint,
             response_tendency=response_tendency,
             reflection_note=None,
@@ -117,9 +177,10 @@ class ProtoSelfSeedKernel:
                 event=event,
                 perceived=perceived,
                 state=state,
-                candidate_actions=[item.to_dict() for item in candidate_actions],
+                candidate_actions=candidate_action_payloads,
                 governor_hint=governor_hint,
                 urge_score=urge_score,
+                trace_diagnostics=trace_diagnostics,
                 reflection_note=None,
                 exec_result=None,
             ),
@@ -462,6 +523,7 @@ class ProtoSelfSeedKernel:
         candidate_actions: List[Dict[str, Any]],
         governor_hint: Dict[str, Any],
         urge_score: float,
+        trace_diagnostics: Dict[str, Any],
         reflection_note: Optional[ReflectionNote],
         exec_result: Optional[Dict[str, Any]],
     ) -> Dict[str, Any]:
@@ -473,6 +535,10 @@ class ProtoSelfSeedKernel:
             }
         return {
             "subject_profile": "seed_v0_2",
+            "idle_eligible": trace_diagnostics["idle_eligible"],
+            "urge_score": trace_diagnostics["urge_score"],
+            "candidate_generated": trace_diagnostics["candidate_generated"],
+            "suppression_reason": trace_diagnostics["suppression_reason"],
             "seed_state_delta": self._diff_state({}, state.to_dict()),
             "seed_state_snapshot": {
                 "focus_goal": state.focus_goal.to_dict(),

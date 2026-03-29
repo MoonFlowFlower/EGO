@@ -70,6 +70,10 @@ def test_seed_idle_check_generates_candidate():
 
     assert output.subject_profile == SEED_SUBJECT_PROFILE
     assert output.candidate_actions
+    assert output.trace_payload["idle_eligible"] is True
+    assert output.trace_payload["candidate_generated"] is True
+    assert output.trace_payload["suppression_reason"] is None
+    assert output.trace_payload["urge_score"] == output.policy_hint["urge_score"]
 
 
 def test_seed_state_dependence_prefers_pending_commitment():
@@ -107,8 +111,71 @@ def test_seed_feedback_writeback_does_not_generate_new_candidate():
     output = process_update_packet(state, packet)
 
     assert output.candidate_actions == []
+    assert output.trace_payload["idle_eligible"] is False
+    assert output.trace_payload["candidate_generated"] is False
+    assert output.trace_payload["suppression_reason"] == "exec_result_pass"
     assert output.trace_payload["exec_result"]["status"] == "success"
     assert len(state.seed_state.recent_outcomes) == 1
+
+
+def test_seed_trace_marks_urge_below_threshold_when_eligible_but_weak():
+    state = _seed_state(curiosity=0.0, completion=0.0, caution=0.0)
+    packet = _seed_packet(
+        event_id="seed_idle_weak_001",
+        event_type="idle_check",
+        payload={"resolved_target_path": "app.py"},
+        runtime_summary={
+            "resolved_target_path": "app.py",
+            "active_task": False,
+        },
+    )
+
+    output = process_update_packet(state, packet)
+
+    assert output.candidate_actions == []
+    assert output.trace_payload["idle_eligible"] is True
+    assert output.trace_payload["candidate_generated"] is False
+    assert output.trace_payload["suppression_reason"] == "urge_below_threshold"
+    assert output.trace_payload["urge_score"] == output.policy_hint["urge_score"]
+
+
+def test_seed_trace_marks_no_affordance_when_nothing_actionable_is_visible():
+    state = _seed_state(curiosity=0.85, completion=0.0, caution=0.0)
+    packet = _seed_packet(
+        event_id="seed_idle_empty_001",
+        event_type="idle_check",
+        payload={},
+        runtime_summary={
+            "active_task": False,
+        },
+    )
+
+    output = process_update_packet(state, packet)
+
+    assert output.candidate_actions == []
+    assert output.trace_payload["idle_eligible"] is True
+    assert output.trace_payload["candidate_generated"] is False
+    assert output.trace_payload["suppression_reason"] == "no_affordance"
+
+
+def test_seed_trace_marks_caution_gate_when_risk_is_too_high():
+    state = _seed_state(curiosity=0.2, completion=0.2, caution=0.95)
+    packet = _seed_packet(
+        event_id="seed_idle_caution_001",
+        event_type="idle_check",
+        payload={"resolved_target_path": "app.py"},
+        runtime_summary={
+            "resolved_target_path": "app.py",
+            "active_task": False,
+        },
+    )
+
+    output = process_update_packet(state, packet)
+
+    assert output.candidate_actions == []
+    assert output.trace_payload["idle_eligible"] is True
+    assert output.trace_payload["candidate_generated"] is False
+    assert output.trace_payload["suppression_reason"] == "caution_gate"
 
 
 def test_seed_trace_keeps_candidate_separate_from_execution():

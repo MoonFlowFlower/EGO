@@ -84,6 +84,10 @@ def _process_seed_profile(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) ->
     trace_payload = build_trace_payload_v2(
         event_id=packet.event_id,
         subject_profile=SEED_SUBJECT_PROFILE,
+        idle_eligible=seed_result.trace_payload.get("idle_eligible"),
+        urge_score=seed_result.trace_payload.get("urge_score"),
+        candidate_generated=seed_result.trace_payload.get("candidate_generated"),
+        suppression_reason=seed_result.trace_payload.get("suppression_reason"),
         update_packet_hash=update_packet_hash,
         state_revision_before=revision_before,
         state_revision_after=revision_after,
