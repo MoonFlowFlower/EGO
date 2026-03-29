@@ -23,10 +23,37 @@ import requests
 from pathlib import Path
 
 
+def _path_exists(path: Path) -> bool:
+    """Windows can raise OSError on broken venv paths; treat that as missing."""
+    try:
+        return path.exists()
+    except OSError:
+        return False
+
+
+def resolve_emotiond_python(project_root: Path) -> str:
+    """Resolve the best available Python for launching the live server."""
+    override = os.environ.get("OPENEMOTION_PYTHON")
+    if override:
+        return override
+
+    candidates = [
+        project_root / ".venv" / "Scripts" / "python.exe",
+        project_root / "venv" / "Scripts" / "python.exe",
+        project_root / ".venv" / "bin" / "python",
+        project_root / "venv" / "bin" / "python",
+    ]
+    for candidate in candidates:
+        if _path_exists(candidate):
+            return str(candidate)
+
+    return sys.executable
+
+
 def get_free_port():
     """Get a random free port from the OS."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(('', 0))
+        s.bind(('127.0.0.1', 0))
         s.listen(1)
         port = s.getsockname()[1]
     return port
@@ -44,8 +71,10 @@ def wait_for_health(url, timeout=30, interval=0.1):
     
     while time.time() - start_time < timeout:
         attempts += 1
+        remaining = timeout - (time.time() - start_time)
+        request_timeout = max(0.05, min(0.1, remaining))
         try:
-            response = requests.get(f"{url}/health", timeout=2)
+            response = requests.get(f"{url}/health", timeout=request_timeout)
             if response.status_code == 200:
                 return True, attempts, ""
         except requests.exceptions.ConnectionError as e:
@@ -76,16 +105,11 @@ class EmotiondProcess:
         env = os.environ.copy()
         env["EMOTIOND_PORT"] = str(self.port)
         
-        # Use the virtual environment's Python
         project_root = Path(__file__).parent.parent
-        venv_python = project_root / ".venv" / "bin" / "python"
-        if not venv_python.exists():
-            venv_python = project_root / "venv" / "bin" / "python"
-        if not venv_python.exists():
-            venv_python = sys.executable
+        venv_python = resolve_emotiond_python(project_root)
         
         cmd = [
-            str(venv_python), "-m", "uvicorn",
+            venv_python, "-m", "uvicorn",
             "emotiond.api:app",
             "--host", "127.0.0.1",
             "--port", str(self.port)
@@ -275,7 +299,7 @@ class TestPortHandling:
         """Test that starting emotiond on an occupied port raises an error."""
         # First, occupy a port
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('', 0))
+            s.bind(('127.0.0.1', 0))
             s.listen(1)
             occupied_port = s.getsockname()[1]
             
@@ -312,7 +336,7 @@ class TestHealthTimeoutMessages:
         """Test that timeout error includes the number of attempts made."""
         # Occupy a port so emotiond can't start
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('', 0))
+            s.bind(('127.0.0.1', 0))
             s.listen(1)
             occupied_port = s.getsockname()[1]
             
@@ -328,7 +352,7 @@ class TestHealthTimeoutMessages:
         """Test that timeout error includes the port number."""
         # Occupy a port so emotiond can't start
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('', 0))
+            s.bind(('127.0.0.1', 0))
             s.listen(1)
             occupied_port = s.getsockname()[1]
             
@@ -344,7 +368,7 @@ class TestHealthTimeoutMessages:
         """Test that timeout error includes the timeout duration."""
         # Occupy a port so emotiond can't start
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('', 0))
+            s.bind(('127.0.0.1', 0))
             s.listen(1)
             occupied_port = s.getsockname()[1]
             
