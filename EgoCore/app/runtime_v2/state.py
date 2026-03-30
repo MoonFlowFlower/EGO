@@ -440,6 +440,7 @@ class RuntimeV2State:
         self.total_steps_planned = None
         self.active_turn_status = "idle"
         self.final_sent = False
+        self.pending_progress_events = []
         self.autonomy_context = None
 
     def set_task_contract(self, contract: Optional[Dict[str, Any]]) -> None:
@@ -488,6 +489,7 @@ class RuntimeV2State:
         self.contract_phase = "pending"
         self.current_step_number = 0
         self.total_steps_planned = None
+        self.pending_progress_events = []
         self.autonomy_context = None
         # 保留 pending_artifacts，因为用户可能在 reset 后继续用同一批文件
         return self.generation_id

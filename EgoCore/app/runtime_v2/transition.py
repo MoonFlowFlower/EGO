@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from pathlib import Path
+import re
+from typing import Any, Dict, List, Optional
 
 from .action_protocol import RuntimeV2Action
 from .progress_events import ProgressEvent, ProgressEventType, build_progress_event
@@ -12,6 +14,8 @@ from .verifier import RuntimeV2Verifier
 # stdout 截断阈值
 MAX_STDOUT_IN_STATE = 2000  # 字符
 MAX_STDERR_IN_STATE = 500
+EXPLICIT_OUTPUT_FILENAME_RE = re.compile(r"(?<![\\/])([A-Za-z0-9][A-Za-z0-9 _.-]{0,120}\.[A-Za-z0-9]{1,8})")
+WINDOWS_TARGET_DIRECTORY_RE = re.compile(r"([A-Za-z]:\\[^\"\n\r]+?)(?=\s*目录下)")
 
 
 def _truncate_tool_result(tool_result: Dict[str, Any]) -> Dict[str, Any]:
@@ -53,6 +57,116 @@ def _truncate_tool_result(tool_result: Dict[str, Any]) -> Dict[str, Any]:
             result["raw"]["output_truncated"] = True
     
     return result
+
+
+def _extract_explicit_output_filenames(text: str) -> List[str]:
+    if not text:
+        return []
+    filenames: List[str] = []
+    for match in EXPLICIT_OUTPUT_FILENAME_RE.findall(text):
+        candidate = match.strip().strip("\"'`")
+        lowered = candidate.lower()
+        if lowered.endswith((".txt", ".py", ".html", ".htm", ".md", ".json", ".js", ".css")):
+            filenames.append(candidate)
+    deduped: List[str] = []
+    seen = set()
+    for filename in filenames:
+        key = filename.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(filename)
+    return deduped
+
+
+def _infer_target_directory(state: RuntimeV2State) -> Optional[Path]:
+    ingress_context = state.ingress_context or {}
+    requested_output = ingress_context.get("requested_output") or {}
+    resolved_target = ingress_context.get("resolved_target") or {}
+
+    for candidate in (
+        requested_output.get("target_directory"),
+        requested_output.get("directory_path"),
+        resolved_target.get("path"),
+        state.last_explicit_target,
+    ):
+        if not isinstance(candidate, str) or not candidate.strip():
+            continue
+        path = Path(candidate.strip())
+        return path if path.suffix == "" else path.parent
+
+    last_user_turn = state.last_user_turn or ""
+    match = WINDOWS_TARGET_DIRECTORY_RE.search(last_user_turn)
+    if match:
+        return Path(match.group(1))
+    return None
+
+
+def _verify_declared_outputs_exist(state: RuntimeV2State) -> Optional[Dict[str, Any]]:
+    if (state.ingress_context or {}).get("runtime_action") != "execute_task":
+        return None
+    if (state.ingress_context or {}).get("request_mode") == "analyze":
+        return None
+
+    filenames = _extract_explicit_output_filenames(state.last_user_turn or "")
+    if not filenames:
+        return None
+
+    base_dir = _infer_target_directory(state)
+    if base_dir is None:
+        return None
+
+    missing: List[str] = []
+    stale: List[str] = []
+    checked_paths: List[str] = []
+    task_started_at = state.last_task_started_at or 0.0
+
+    for filename in filenames:
+        output_path = Path(filename) if Path(filename).is_absolute() else base_dir / filename
+        checked_paths.append(str(output_path))
+        if not output_path.exists():
+            missing.append(filename)
+            continue
+        if task_started_at and output_path.stat().st_mtime + 1.0 < task_started_at:
+            stale.append(filename)
+
+    if missing:
+        return {
+            "passed": False,
+            "reason": "declared_output_missing",
+            "verifier": "declared_outputs",
+            "target": str(base_dir),
+            "evidence": {
+                "base_dir": str(base_dir),
+                "checked_paths": checked_paths,
+                "missing_outputs": missing,
+            },
+            "warnings": [],
+        }
+    if stale:
+        return {
+            "passed": False,
+            "reason": "declared_output_not_updated",
+            "verifier": "declared_outputs",
+            "target": str(base_dir),
+            "evidence": {
+                "base_dir": str(base_dir),
+                "checked_paths": checked_paths,
+                "stale_outputs": stale,
+            },
+            "warnings": [],
+        }
+    return {
+        "passed": True,
+        "reason": "declared_outputs_verified",
+        "verifier": "declared_outputs",
+        "target": str(base_dir),
+        "evidence": {
+            "base_dir": str(base_dir),
+            "checked_paths": checked_paths,
+        },
+        "warnings": [],
+    }
 
 
 class RuntimeV2TransitionEngine:
@@ -130,6 +244,9 @@ class RuntimeV2TransitionEngine:
             state.push_progress_event(verify_event)
             
             verification = self.verifier.verify_complete(action.verification, state.last_tool_result)
+            declared_outputs_verification = _verify_declared_outputs_exist(state)
+            if verification.get("passed") and declared_outputs_verification and not declared_outputs_verification.get("passed"):
+                verification = declared_outputs_verification
             state.last_verification_result = verification
             if verification.get("passed"):
                 state.mark_task_completed()

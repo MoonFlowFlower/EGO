@@ -1695,6 +1695,9 @@ class TelegramBot:
             state=state,
             ingress=ingress,
             ack_text=pre_runtime.ack_text,
+            trace_id=trace_id,
+            ingress_message_id=ingress_message_id,
+            chat_id=chat_id,
         )
         logger.info("runtime_v2.turn.result session=%s status=%s reply=%r step=%r tool=%r verification=%r", session_key, result.status, result.reply_text[:200], state.current_step, state.last_tool_result, state.last_verification_result)
         await self._publish_phase1_event(
@@ -1756,7 +1759,21 @@ class TelegramBot:
         text: str,
         state,
         ack_text: Optional[str],
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+        chat_id: Optional[int] = None,
     ) -> TelegramTurnResult:
+        async def emit_runtime_progress(event: ProgressEvent) -> None:
+            await self._send_autonomy_progress_update(
+                state=state,
+                phase_key=event.event_type.value,
+                text=event.message,
+                update=update,
+                chat_id=chat_id,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            )
+
         async def run_once() -> TelegramTurnResult:
             if ack_text:
                 state.mark_task_started(goal=text)
@@ -1777,7 +1794,12 @@ class TelegramBot:
                 self.telegram_runtime_fallback_runner = runner
                 self.runtime_v2_fallback_runner = runner
             self.runtime_v2_loop = runner.get_loop()
-            result = await runner.run_turn(session_key=session_key, user_input=enhanced_input, state=state)
+            result = await runner.run_turn(
+                session_key=session_key,
+                user_input=enhanced_input,
+                state=state,
+                progress_callback=emit_runtime_progress,
+            )
             self.runtime_v2_loop = runner.loop
             return result
 
@@ -1788,7 +1810,20 @@ class TelegramBot:
         *,
         session_key: str,
         state: RuntimeV2State,
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+        chat_id: Optional[int] = None,
     ) -> TelegramTurnResult:
+        async def emit_runtime_progress(event: ProgressEvent) -> None:
+            await self._send_autonomy_progress_update(
+                state=state,
+                phase_key=event.event_type.value,
+                text=event.message,
+                chat_id=chat_id,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            )
+
         runner = self.telegram_runtime_fallback_runner
         if runner is None:
             runner = TelegramRuntimeFallbackRunner()
@@ -1796,7 +1831,11 @@ class TelegramBot:
             self.runtime_v2_fallback_runner = runner
         loop = runner.attach_state(session_key, state)
         self.runtime_v2_loop = loop
-        result = await loop.continue_turn_typed(session_id=session_key, state=state)
+        result = await loop.continue_turn_typed(
+            session_id=session_key,
+            state=state,
+            progress_callback=emit_runtime_progress,
+        )
         self.runtime_v2_loop = loop
         return runner.adapt_result(result)
 
@@ -1840,6 +1879,9 @@ class TelegramBot:
                     text=text,
                     state=state,
                     ack_text=ack_text,
+                    trace_id=trace_id,
+                    ingress_message_id=ingress_message_id,
+                    chat_id=chat_id,
                 )
             await self._publish_phase1_event(
                 session_key=session_key,
@@ -1990,6 +2032,9 @@ class TelegramBot:
             result = await self._continue_runtime_v2_turn(
                 session_key=run.session_key,
                 state=state,
+                trace_id=run.metadata.get("trace_id"),
+                ingress_message_id=run.metadata.get("ingress_message_id"),
+                chat_id=chat_id if isinstance(chat_id, int) else None,
             )
             sent_progress = await self._deliver_runtime_progress_events(
                 state=state,
@@ -2073,6 +2118,9 @@ class TelegramBot:
         state,
         ingress,
         ack_text: Optional[str],
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+        chat_id: Optional[int] = None,
     ) -> TelegramTurnResult:
         if self._should_use_native_loop(ingress, state):
             try:
@@ -2087,6 +2135,9 @@ class TelegramBot:
                     text=text,
                     state=state,
                     ack_text=ack_text,
+                    chat_id=chat_id,
+                    trace_id=trace_id,
+                    ingress_message_id=ingress_message_id,
                 )
             except Exception as e:
                 logger.exception("native_loop.failed session=%s err=%s; falling back to runtime_v2", session_key, e)
@@ -2129,6 +2180,9 @@ class TelegramBot:
             text=text,
             state=state,
             ack_text=ack_text,
+            trace_id=trace_id,
+            ingress_message_id=ingress_message_id,
+            chat_id=chat_id,
         )
 
     async def _run_native_loop_turn(

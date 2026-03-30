@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import uuid
 from pathlib import PurePosixPath, PureWindowsPath
-from typing import Any, Dict, Optional
+from typing import Any, Awaitable, Callable, Dict, Optional
 from datetime import datetime
 import re
 
@@ -13,6 +13,7 @@ from .state import RuntimeV2State
 from .tool_broker import RuntimeV2ToolBroker
 from .transition import RuntimeV2TransitionEngine
 from .verifier import RuntimeV2Verifier
+from .progress_events import ProgressEvent, is_terminal_event
 from .proto_self_runtime import RuntimeV2ProtoSelfRuntime, assess_risk_level
 
 # Proto-Self Kernel Adapter - deferred loading
@@ -199,7 +200,7 @@ class RuntimeV2Loop:
     def reset_session(self, session_id: str, *, command: str = "reset_session") -> RuntimeV2State:
         """
         重置 session，递增 generation_id 隔离旧消息。
-        
+
         WS-1: 使用 increment_generation() 而不是直接创建新 state
         """
         if session_id in self._states:
@@ -247,6 +248,7 @@ class RuntimeV2Loop:
         *,
         source: str = "telegram",
         evidence_collector: Optional[Any] = None,
+        progress_callback: Optional[Callable[[ProgressEvent], Awaitable[None]]] = None,
     ) -> RuntimeV2TurnResult:
         logger.info(f"[PSK-TG-TRACE-01] run_turn_typed called session_id={session_id}, user_input={user_input[:50]}...")
         state = self.get_state(session_id)
@@ -281,6 +283,7 @@ class RuntimeV2Loop:
                 # Proto-Self Kernel 失败不影响主流程
                 logger.error(f"[PSK-TG-TRACE-ERROR] {e}")
                 state.record("proto_self", {"error": str(e)})
+
         return await self._advance_turn(
             session_id=session_id,
             state=state,
@@ -289,6 +292,7 @@ class RuntimeV2Loop:
             evidence_collector=evidence_collector,
             turn_id=turn_id,
             generation_id=generation_id,
+            progress_callback=progress_callback,
         )
 
     async def continue_turn_typed(
@@ -299,6 +303,7 @@ class RuntimeV2Loop:
         source: str = "autonomy",
         evidence_collector: Optional[Any] = None,
         state: Optional[RuntimeV2State] = None,
+        progress_callback: Optional[Callable[[ProgressEvent], Awaitable[None]]] = None,
     ) -> RuntimeV2TurnResult:
         state = state or self.get_state(session_id)
         if not state.task_id:
@@ -318,6 +323,7 @@ class RuntimeV2Loop:
             evidence_collector=evidence_collector,
             turn_id=turn_id,
             generation_id=generation_id,
+            progress_callback=progress_callback,
         )
 
     async def _advance_turn(
@@ -330,6 +336,7 @@ class RuntimeV2Loop:
         evidence_collector: Optional[Any],
         turn_id: str,
         generation_id: int,
+        progress_callback: Optional[Callable[[ProgressEvent], Awaitable[None]]],
     ) -> RuntimeV2TurnResult:
         invalid_json_retries = 0
         for step in range(max_steps):
@@ -387,6 +394,7 @@ class RuntimeV2Loop:
                 )
 
             transition = await self.transition_engine.apply(state, action)
+            await self._emit_progress_events(state, progress_callback)
 
             if self.proto_self_runtime and action.type == "act" and state.last_tool_result:
                 try:
@@ -438,3 +446,19 @@ class RuntimeV2Loop:
 
     async def _decide(self, state: RuntimeV2State) -> RuntimeV2Action:
         return await self.decision_engine.decide(state)
+
+    async def _emit_progress_events(
+        self,
+        state: RuntimeV2State,
+        progress_callback: Optional[Callable[[ProgressEvent], Awaitable[None]]],
+    ) -> None:
+        if progress_callback is None or not state.has_pending_progress_events():
+            return
+        events = state.pop_progress_events()
+        for event in events:
+            if not isinstance(event, ProgressEvent):
+                continue
+            if is_terminal_event(event.event_type):
+                state.push_progress_event(event)
+                continue
+            await progress_callback(event)

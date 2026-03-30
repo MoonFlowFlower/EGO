@@ -213,7 +213,7 @@ async def test_resume_telegram_autonomy_run_uses_longer_backoff_for_rate_limited
     async def fake_sleep(seconds):
         slept.append(seconds)
 
-    async def fake_continue_runtime_v2_turn(session_key, state):
+    async def fake_continue_runtime_v2_turn(session_key, state, **kwargs):
         return TelegramTurnResult(
             status="resumable_pause",
             state=state,
@@ -270,7 +270,7 @@ async def test_manual_resume_resets_delivery_state_and_re_emits_progress():
     async def fake_send_chat_message(chat_id, text, finalize_evidence=True):
         sent.append((chat_id, text, finalize_evidence))
 
-    async def fake_continue_runtime_v2_turn(session_key, state):
+    async def fake_continue_runtime_v2_turn(session_key, state, **kwargs):
         return TelegramTurnResult(
             status="resumable_pause",
             state=state,

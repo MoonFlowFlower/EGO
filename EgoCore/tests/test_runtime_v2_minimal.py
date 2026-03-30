@@ -66,6 +66,125 @@ async def test_runtime_v2_loop_runs_plan_act_complete(monkeypatch, tmp_path):
     assert result.reply_text == "已完成"
 
 
+@pytest.mark.asyncio
+async def test_runtime_v2_loop_emits_progress_callback_during_turn(monkeypatch, tmp_path):
+    loop = RuntimeV2Loop()
+    target = tmp_path / "hello.html"
+    target.write_text("background: modern", encoding="utf-8")
+
+    actions = iter([
+        RuntimeV2Action.from_model_output(
+            json.dumps({"type": "plan", "goal": "改配色", "steps": ["修改文件", "验证结果"]}, ensure_ascii=False)
+        ),
+        RuntimeV2Action.from_model_output(
+            json.dumps(
+                {
+                    "type": "act",
+                    "tool": "file",
+                    "input": {"operation": "read", "path": str(target)},
+                },
+                ensure_ascii=False,
+            )
+        ),
+        RuntimeV2Action.from_model_output(
+            json.dumps(
+                {
+                    "type": "complete",
+                    "summary": "已完成",
+                    "verification": {"target": str(target), "expected": "modern"},
+                },
+                ensure_ascii=False,
+            )
+        ),
+    ])
+    emitted = []
+
+    async def fake_decide(_state):
+        return next(actions)
+
+    async def fake_execute(_tool, _tool_input):
+        return {"success": True, "tool": "file", "stdout": "background: modern", "stderr": "", "exit_code": 0, "metadata": {}}
+
+    async def progress_callback(event):
+        emitted.append((event.event_type.value, event.message))
+
+    monkeypatch.setattr(loop, "_decide", fake_decide)
+    monkeypatch.setattr(loop.tool_broker, "execute", fake_execute)
+
+    result = await loop.run_turn_typed(
+        "session:test-progress",
+        "请修改 hello.html 配色",
+        progress_callback=progress_callback,
+    )
+
+    assert result.status == "completed_verified"
+    assert emitted == [
+        ("executing_changes", "我先处理需要的文件。"),
+        ("verifying", "我先验证一下结果。"),
+    ]
+
+
+@pytest.mark.asyncio
+async def test_runtime_v2_loop_rejects_complete_when_explicit_output_missing(monkeypatch, tmp_path):
+    loop = RuntimeV2Loop()
+    state = loop.get_state("session:missing-output")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "resolved_target": {"path": str(tmp_path)},
+    }
+
+    actions = iter([
+        RuntimeV2Action.from_model_output(
+            json.dumps(
+                {
+                    "type": "act",
+                    "tool": "file",
+                    "input": {"operation": "write", "path": str(tmp_path / "demo.txt"), "content": "hello"},
+                },
+                ensure_ascii=False,
+            )
+        ),
+        RuntimeV2Action.from_model_output(
+            json.dumps(
+                {
+                    "type": "complete",
+                    "summary": "全部完成",
+                    "verification": {"target": str(tmp_path / "demo.txt"), "expected": "hello"},
+                },
+                ensure_ascii=False,
+            )
+        ),
+    ])
+
+    async def fake_decide(_state):
+        return next(actions)
+
+    async def fake_execute(_tool, tool_input):
+        path = tmp_path / "demo.txt"
+        path.write_text(tool_input["content"], encoding="utf-8")
+        return {
+            "success": True,
+            "tool": "file",
+            "stdout": f"Successfully wrote to {path}",
+            "stderr": "",
+            "exit_code": 0,
+            "metadata": {"path": str(path)},
+        }
+
+    monkeypatch.setattr(loop, "_decide", fake_decide)
+    monkeypatch.setattr(loop.tool_broker, "execute", fake_execute)
+
+    prompt = (
+        f"在 {tmp_path} 目录下创建 demo.txt，写入 hello。"
+        " 最后做一个print hello world.py文件"
+    )
+    result = await loop.run_turn_typed("session:missing-output", prompt, max_steps=2)
+
+    assert result.status == "resumable_pause"
+    assert state.last_verification_result["reason"] == "declared_output_missing"
+    assert "print hello world.py" in state.last_verification_result["evidence"]["missing_outputs"]
+
+
 def test_runtime_v2_loop_promotes_explicit_analyze_shell_read_to_file_read():
     loop = RuntimeV2Loop()
     target = r"D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md"

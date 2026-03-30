@@ -30,9 +30,14 @@ class TelegramRuntimeFallbackRunner:
         session_key: str,
         user_input: str,
         state: RuntimeV2State,
+        progress_callback=None,
     ) -> TelegramTurnResult:
         loop = self.attach_state(session_key, state)
-        result = await loop.run_turn_typed(session_id=session_key, user_input=user_input)
+        result = await loop.run_turn_typed(
+            session_id=session_key,
+            user_input=user_input,
+            progress_callback=progress_callback,
+        )
         return self.adapt_result(result)
 
     def adapt_result(self, result) -> TelegramTurnResult:
@@ -52,6 +57,8 @@ class TelegramRuntimeFallbackRunner:
             status=result.status,
             state=result.state,
             reply=adapted_reply,
+            finish_reason=getattr(result, "finish_reason", None),
+            checkpoint_payload=getattr(result, "checkpoint_payload", None),
         )
 
 
