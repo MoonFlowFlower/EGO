@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Awaitable, Callable, Dict, List, Optional
 
 from app.config import get_config, load_config
 from app.llm_client import LLMClient, get_llm_client
@@ -24,6 +24,9 @@ class NativeLoopResult:
     next_step_decision: Optional[Dict[str, Any]] = None
     verification_result: Optional[Dict[str, Any]] = None
     checkpoint_payload: Optional[Dict[str, Any]] = None
+
+
+ProgressCallback = Callable[[str, Dict[str, Any]], Awaitable[None]]
 
 
 class NativeToolCallingLoop:
@@ -78,7 +81,13 @@ class NativeToolCallingLoop:
         proto_self_context: Optional[Dict[str, Any]] = None,
         max_rounds: int = 6,
         resume_checkpoint: Optional[Dict[str, Any]] = None,
+        progress_callback: Optional[ProgressCallback] = None,
     ) -> NativeLoopResult:
+        async def emit_progress(phase: str, payload: Optional[Dict[str, Any]] = None) -> None:
+            if progress_callback is None:
+                return
+            await progress_callback(phase, payload or {})
+
         resume_checkpoint = dict(resume_checkpoint or {})
         accumulated_tool_results: List[Dict[str, Any]] = list(resume_checkpoint.get("accumulated_tool_results") or [])
         ingress_context = dict(resume_checkpoint.get("ingress_context") or ingress_context or {})
@@ -95,6 +104,24 @@ class NativeToolCallingLoop:
                 proto_self_context=proto_self_context,
             )
             next_step = self.contract_runtime.decide_next_step(contract=contract, ingress_context=ingress_context)
+        await emit_progress(
+            "locking_goal",
+            {
+                "target_path": contract.target_path,
+                "source_artifact_id": contract.source_artifact_id,
+                "action_type": next_step.action_type,
+                "tool_name": next_step.tool_name,
+            },
+        )
+        if contract.target_path or contract.source_artifact_id or (ingress_context or {}).get("resolved_target"):
+            await emit_progress(
+                "reading_context",
+                {
+                    "target_path": contract.target_path,
+                    "source_artifact_id": contract.source_artifact_id,
+                    "resolved_target": (ingress_context or {}).get("resolved_target"),
+                },
+            )
         if next_step.action_type == "ask_user":
             reply_text = self.contract_runtime.build_ask_reply(contract)
             verification = self.contract_runtime.verify_step(
@@ -114,6 +141,14 @@ class NativeToolCallingLoop:
                 verification_result=verification.to_dict(),
             )
         if next_step.action_type == "read_artifact":
+            await emit_progress(
+                "reading_context",
+                {
+                    "source_artifact_id": contract.source_artifact_id,
+                    "action_type": next_step.action_type,
+                    "tool_name": next_step.tool_name,
+                },
+            )
             artifact_result = self.contract_runtime.execute_artifact_read_step(contract.source_artifact_id or "")
             accumulated_tool_results.append(
                 {
@@ -167,6 +202,14 @@ class NativeToolCallingLoop:
                     verification_result=verification.to_dict(),
                 )
 
+        await emit_progress(
+            "executing_changes",
+            {
+                "action_type": next_step.action_type,
+                "tool_name": next_step.tool_name,
+                "target_path": contract.target_path,
+            },
+        )
         messages = self.context_builder.build_messages(
             session_key=session_key,
             user_input=user_input,
@@ -221,6 +264,14 @@ class NativeToolCallingLoop:
             )
         if asyncio.iscoroutine(reply_text):
             reply_text, tool_results, usage, last_finish_reason = await reply_text
+        await emit_progress(
+            "verifying",
+            {
+                "action_type": next_step.action_type,
+                "tool_name": next_step.tool_name,
+                "tool_results_count": len(tool_results),
+            },
+        )
         tool_result_payload = tool_results[0]["result"] if tool_results else None
         verification = self.contract_runtime.verify_step(
             contract=contract,

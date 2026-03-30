@@ -61,6 +61,7 @@ from app.runtime_v2 import (
     RuntimeV2PromptFiles,
     RuntimeV2State,
 )
+from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
 from app.autonomy import (
     AutonomyExecutorKind,
     AutonomyOrchestrator,
@@ -461,6 +462,9 @@ class TelegramBot:
         status: Optional[str] = None,
         finish_reason: Optional[str] = None,
     ) -> None:
+        previous_progress_delivery = None
+        if isinstance(state.autonomy_context, dict):
+            previous_progress_delivery = state.autonomy_context.get("progress_delivery")
         state.autonomy_context = {
             "run_id": run.id,
             "status": status or run.status.value,
@@ -469,8 +473,124 @@ class TelegramBot:
             "resume_count": run.resume_count,
             "hard_blocker_reason": run.hard_blocker_reason,
         }
+        if isinstance(previous_progress_delivery, dict):
+            state.autonomy_context["progress_delivery"] = previous_progress_delivery
         if finish_reason:
             state.autonomy_context["finish_reason"] = finish_reason
+
+    def _get_progress_delivery_state(self, state: RuntimeV2State) -> dict:
+        if not isinstance(state.autonomy_context, dict):
+            state.autonomy_context = {}
+        progress_delivery = state.autonomy_context.get("progress_delivery")
+        if not isinstance(progress_delivery, dict):
+            progress_delivery = {}
+            state.autonomy_context["progress_delivery"] = progress_delivery
+        return progress_delivery
+
+    def _build_autonomy_progress_text(self, phase_key: str, payload: Optional[dict] = None) -> Optional[str]:
+        payload = dict(payload or {})
+        resolved_target = payload.get("resolved_target") or {}
+        target_name = (
+            payload.get("target_name")
+            or resolved_target.get("filename")
+            or payload.get("target_path")
+            or payload.get("source_artifact_id")
+        )
+        tool_name = payload.get("tool_name")
+        if phase_key == "locking_goal":
+            return "我先确认目标和约束。"
+        if phase_key == "reading_context":
+            if target_name:
+                return f"我先检查 {target_name} 和相关上下文。"
+            return "我先检查目标路径和相关上下文。"
+        if phase_key == "planning_current_slice":
+            return "我先规划当前这一段执行。"
+        if phase_key == "executing_changes":
+            if tool_name == "file":
+                return "我开始处理文件和内容。"
+            if tool_name == "shell":
+                return "我开始执行必要的检查。"
+            if tool_name == "python":
+                return "我开始运行需要的脚本。"
+            return "我开始推进当前步骤。"
+        if phase_key == "verifying":
+            return "我先核对结果。"
+        if phase_key == "awaiting_confirmation":
+            return "这一步需要你确认后我再继续。"
+        if phase_key == "blocked":
+            return "这里卡住了，我先停下来整理阻塞点。"
+        return None
+
+    async def _send_autonomy_progress_update(
+        self,
+        *,
+        state: RuntimeV2State,
+        phase_key: str,
+        text: Optional[str],
+        update: Optional[Update] = None,
+        chat_id: Optional[int] = None,
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+    ) -> bool:
+        if not text or state.final_sent:
+            return False
+        progress_delivery = self._get_progress_delivery_state(state)
+        now = time.time()
+        if (
+            progress_delivery.get("last_phase_key") == phase_key
+            and progress_delivery.get("last_text") == text
+            and (now - float(progress_delivery.get("last_sent_at") or 0.0)) < 5.0
+        ):
+            return False
+
+        await self._publish_phase1_event(
+            session_key=state.session_id,
+            kind="telegram_progress_delivery",
+            trace_id=trace_id,
+            message_id=ingress_message_id,
+            payload={"phase_key": phase_key, "text": text[:300]},
+        )
+        if update is not None:
+            await self._send_reply(update, text, finalize_evidence=False)
+        elif isinstance(chat_id, int):
+            await self._send_chat_message(chat_id, text, finalize_evidence=False)
+        else:
+            return False
+
+        progress_delivery["last_phase_key"] = phase_key
+        progress_delivery["last_text"] = text
+        progress_delivery["last_sent_at"] = now
+        return True
+
+    async def _deliver_runtime_progress_events(
+        self,
+        *,
+        state: RuntimeV2State,
+        update: Optional[Update] = None,
+        chat_id: Optional[int] = None,
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+    ) -> int:
+        if not state.has_pending_progress_events():
+            return 0
+        events = state.pop_progress_events()
+        sent = 0
+        for event in events:
+            if not isinstance(event, ProgressEvent):
+                continue
+            if is_terminal_event(event.event_type):
+                continue
+            if await self._send_autonomy_progress_update(
+                state=state,
+                phase_key=event.event_type.value,
+                text=event.message,
+                update=update,
+                chat_id=chat_id,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            ):
+                sent += 1
+        return sent
 
     def _build_autonomy_outcome(
         self,
@@ -1653,6 +1773,9 @@ class TelegramBot:
                     text=text,
                     state=state,
                     ack_text=ack_text,
+                    chat_id=chat_id,
+                    trace_id=trace_id,
+                    ingress_message_id=ingress_message_id,
                 )
             else:
                 result = await self._run_runtime_v2_turn(
@@ -1677,9 +1800,24 @@ class TelegramBot:
                 },
             )
             if result.status == "resumable_pause":
+                sent_progress = 0
+                if executor_kind == AutonomyExecutorKind.GENERIC_RUNTIME:
+                    sent_progress = await self._deliver_runtime_progress_events(
+                        state=state,
+                        update=update,
+                        trace_id=trace_id,
+                        ingress_message_id=ingress_message_id,
+                    )
                 progress_text = "我继续处理这个任务，做完直接给你结果。"
-                if not ack_text:
-                    await self._send_reply(update, progress_text, finalize_evidence=False)
+                if not ack_text and sent_progress == 0:
+                    await self._send_autonomy_progress_update(
+                        state=state,
+                        phase_key="planning_current_slice",
+                        text=progress_text,
+                        update=update,
+                        trace_id=trace_id,
+                        ingress_message_id=ingress_message_id,
+                    )
                 await self._publish_phase1_event(
                     session_key=session_key,
                     kind="autonomy_resumable_pause",
@@ -1733,6 +1871,7 @@ class TelegramBot:
     async def _resume_telegram_autonomy_run(self, run: AutonomyRun, trigger_source: str) -> AutonomySliceOutcome:
         state = self._restore_runtime_state_snapshot(run.session_key, run.runtime_state_snapshot)
         self._sync_autonomy_context(state, run, status=AutonomyRunStatus.RUNNING.value)
+        chat_id = run.metadata.get("chat_id")
         if run.executor_kind == AutonomyExecutorKind.CONTRACT_EXECUTE:
             result = await self._run_native_loop_turn(
                 update=None,
@@ -1741,15 +1880,22 @@ class TelegramBot:
                 state=state,
                 ack_text=None,
                 resume_checkpoint=run.checkpoint_payload,
+                chat_id=chat_id if isinstance(chat_id, int) else None,
             )
+            sent_progress = 0
         else:
             result = await self._continue_runtime_v2_turn(
                 session_key=run.session_key,
                 state=state,
             )
+            sent_progress = await self._deliver_runtime_progress_events(
+                state=state,
+                chat_id=chat_id if isinstance(chat_id, int) else None,
+                trace_id=run.metadata.get("trace_id"),
+                ingress_message_id=run.metadata.get("ingress_message_id"),
+            )
 
         if result.status != "resumable_pause":
-            chat_id = run.metadata.get("chat_id")
             if isinstance(chat_id, int):
                 if run.executor_kind == AutonomyExecutorKind.CONTRACT_EXECUTE:
                     if result.reply_text:
@@ -1761,6 +1907,15 @@ class TelegramBot:
         else:
             state.task_status = "resumable_pause"
             state.waiting_for_user_input = False
+            if isinstance(chat_id, int) and run.executor_kind == AutonomyExecutorKind.GENERIC_RUNTIME and sent_progress == 0:
+                await self._send_autonomy_progress_update(
+                    state=state,
+                    phase_key="planning_current_slice",
+                    text="我继续处理这个任务，做完直接给你结果。",
+                    chat_id=chat_id,
+                    trace_id=run.metadata.get("trace_id"),
+                    ingress_message_id=run.metadata.get("ingress_message_id"),
+                )
 
         return self._build_autonomy_outcome(
             run=run,
@@ -1873,6 +2028,9 @@ class TelegramBot:
         state,
         ack_text: Optional[str],
         resume_checkpoint: Optional[dict] = None,
+        chat_id: Optional[int] = None,
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
     ) -> TelegramTurnResult:
         native_loop = self._get_native_loop()
         native_hooks = self._get_native_openemotion_hooks()
@@ -1900,12 +2058,27 @@ class TelegramBot:
             except Exception:
                 pass
 
+        async def emit_native_progress(phase_key: str, payload: Optional[dict] = None) -> None:
+            if runtime_action != "execute_task":
+                return
+            progress_text = self._build_autonomy_progress_text(phase_key, payload)
+            await self._send_autonomy_progress_update(
+                state=state,
+                phase_key=phase_key,
+                text=progress_text,
+                update=update,
+                chat_id=chat_id,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            )
+
         result = await native_loop.run_turn(
             session_key=session_key,
             user_input=text,
             ingress_context=self._hydrate_artifact_ingress_context(state),
             proto_self_context=state.proto_self_context,
             resume_checkpoint=resume_checkpoint,
+            progress_callback=emit_native_progress,
         )
         await self._publish_phase1_event(
             session_key=session_key,
@@ -2172,6 +2345,15 @@ class TelegramBot:
             trace_id, session_key, ingress_message_id, latest_ingress_id,
             self._is_stale_reply(session_key, ingress_message_id)
         )
+
+        runtime_action = (state.ingress_context or {}).get("runtime_action")
+        if runtime_action == "execute_task" and isinstance(state.autonomy_context, dict):
+            await self._deliver_runtime_progress_events(
+                state=state,
+                update=update,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            )
 
         delivery = self.telegram_runtime_bridge.plan_delivery(result, state, is_challenge_turn)
         if not delivery.should_send:

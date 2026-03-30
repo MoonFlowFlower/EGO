@@ -220,3 +220,69 @@ def test_native_loop_preserves_state_when_planning_times_out_after_artifact_relo
     assert result.verification_result["stop_reason"] == "planning_timeout"
     assert result.reply_text == ""
     assert result.checkpoint_payload["next_step"]["action_type"] == "call_tool"
+
+
+def test_native_loop_emits_progress_phases_for_execute_task(monkeypatch, tmp_path):
+    client = FakeLLMClient()
+    loop = NativeToolCallingLoop(llm_client=client)
+    target = tmp_path / "demo.txt"
+    phases = []
+
+    monkeypatch.setattr(
+        loop.contract_runtime,
+        "execute_single_step_with_model",
+        lambda **kwargs: (
+            "处理完成。",
+            [
+                {
+                    "tool_name": "file",
+                    "arguments": {"operation": "write", "path": str(target)},
+                    "result": {
+                        "success": True,
+                        "output": "ok",
+                        "error": None,
+                        "metadata": {"path": str(target)},
+                        "execution_time_ms": 1.0,
+                    },
+                }
+            ],
+            [],
+            "stop",
+        ),
+    )
+
+    async def capture_progress(phase: str, payload: dict) -> None:
+        phases.append((phase, payload.get("tool_name")))
+
+    import asyncio
+
+    result = asyncio.run(
+        loop.run_turn(
+            session_key="telegram:dm:1",
+            user_input=f"在 {target} 创建 demo.txt",
+            ingress_context={
+                "runtime_action": "execute_task",
+                "requested_output": {
+                    "effective_path": str(target),
+                    "target_path": str(target),
+                    "format": "txt",
+                },
+                "resolved_target": {
+                    "path": str(target),
+                    "filename": "demo.txt",
+                    "source": "explicit_path",
+                },
+            },
+            proto_self_context=None,
+            progress_callback=capture_progress,
+        )
+    )
+
+    assert result.status == "completed_verified"
+    assert [phase for phase, _ in phases] == [
+        "locking_goal",
+        "reading_context",
+        "executing_changes",
+        "verifying",
+    ]
+    assert phases[2][1] == "file"
