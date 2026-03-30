@@ -14,9 +14,12 @@ from app.dashboard.index_builder import (
     CONTINUITY_FILE,
     DASHBOARD_DIR,
     FAILURES_FILE,
+    FAILURES_ROLLUP_FILE,
     GAP_SUMMARY_FILE,
     GROWTH_FILE,
+    GROWTH_ROLLUP_FILE,
     RUNS_FILE,
+    RUNS_ROLLUP_FILE,
     build_dashboard_indexes,
     dashboard_source_last_modified,
     load_jsonl,
@@ -59,11 +62,31 @@ class DashboardDataStore:
     def load_runs(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / RUNS_FILE)
 
+    def load_runs_rollup(self) -> Dict[str, Any]:
+        path = self.dashboard_dir / RUNS_ROLLUP_FILE
+        if not path.exists():
+            return {"records": self.load_runs(), "continuity": self.load_continuity()}
+        return json.loads(path.read_text(encoding="utf-8"))
+
     def load_growth(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / GROWTH_FILE)
 
+    def load_growth_rollup(self) -> Dict[str, Any]:
+        path = self.dashboard_dir / GROWTH_ROLLUP_FILE
+        if not path.exists():
+            records = self.load_growth()
+            return {"records": records, "summary": {"total_records": len(records)}}
+        return json.loads(path.read_text(encoding="utf-8"))
+
     def load_failures(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / FAILURES_FILE)
+
+    def load_failures_rollup(self) -> Dict[str, Any]:
+        path = self.dashboard_dir / FAILURES_ROLLUP_FILE
+        if not path.exists():
+            records = self.load_failures()
+            return {"records": records, "gap_summary": self.load_gap_summary()}
+        return json.loads(path.read_text(encoding="utf-8"))
 
     def load_continuity(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / CONTINUITY_FILE)
@@ -79,6 +102,9 @@ class DashboardDataStore:
         if not path.exists():
             return {}
         return json.loads(path.read_text(encoding="utf-8"))
+
+    def load_agency_records(self) -> list[Dict[str, Any]]:
+        return load_jsonl(self.dashboard_dir / "agency_runs.jsonl")
 
     def sample_detail(self, sample_id: str) -> Optional[Dict[str, Any]]:
         sample_dir = self.dashboard_dir.parent / "real_telegram" / sample_id
@@ -107,8 +133,39 @@ class DashboardDataStore:
                 detail["artifacts"][name] = json.loads(path.read_text(encoding="utf-8"))
             else:
                 detail["artifacts"][name] = path.read_text(encoding="utf-8")
-        run_record = next((item for item in self.load_runs() if item.get("sample_id") == sample_id), None)
+        runs_rollup = self.load_runs_rollup()
+        growth_rollup = self.load_growth_rollup()
+        failures_rollup = self.load_failures_rollup()
+        run_record = next((item for item in runs_rollup.get("records", []) if item.get("sample_id") == sample_id), None)
+        growth_record = next((item for item in growth_rollup.get("records", []) if item.get("sample_id") == sample_id), None)
+        agency_record = next((item for item in self.load_agency_records() if item.get("sample_id") == sample_id), None)
+        failure_record = next((item for item in failures_rollup.get("records", []) if item.get("sample_id") == sample_id), None)
+        chosen_semantic = (
+            (agency_record or {}).get("semantic")
+            or (growth_record or {}).get("semantic")
+            or (run_record or {}).get("semantic")
+            or (failure_record or {}).get("semantic")
+        )
         detail["run_record"] = run_record
+        detail["related_records"] = {
+            "agency": agency_record,
+            "growth": growth_record,
+            "failure": failure_record,
+        }
+        detail["semantic_summary"] = chosen_semantic
+        detail["translated_summary"] = {
+            "headline_code": (chosen_semantic or {}).get("headline_code", "unknown"),
+            "intent_code": (chosen_semantic or {}).get("intent_code", "unknown"),
+            "host_posture_code": (chosen_semantic or {}).get("host_posture_code", "not_applicable"),
+            "result_state_code": (chosen_semantic or {}).get("result_state_code", "not_executed"),
+            "growth_motion_code": (chosen_semantic or {}).get("growth_motion_code", "unknown"),
+            "evidence_state_code": (chosen_semantic or {}).get("evidence_state_code", "partial"),
+            "why_codes": (chosen_semantic or {}).get("why_codes", []),
+            "focus_goal": ((agency_record or {}).get("focus_goal") or (growth_record or {}).get("focus_goal")),
+            "candidate_actions": (agency_record or {}).get("candidate_actions", []),
+            "final_host_action": (agency_record or {}).get("final_host_action"),
+            "exec_result_type": (agency_record or {}).get("exec_result_type"),
+        }
         return detail
 
 
@@ -149,41 +206,23 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
             return
 
         if parsed.path == "/api/dashboard/runs":
+            payload = self.store.load_runs_rollup()
             limit = int((query.get("limit") or ["200"])[0])
-            self._send_json(
-                {
-                    "records": self.store.load_runs()[:limit],
-                    "continuity": self.store.load_continuity(),
-                }
-            )
+            payload["records"] = payload.get("records", [])[:limit]
+            payload["recent_runs"] = payload.get("recent_runs", [])[: min(limit, 50)]
+            self._send_json(payload)
             return
 
         if parsed.path == "/api/dashboard/growth":
+            payload = self.store.load_growth_rollup()
             limit = int((query.get("limit") or ["200"])[0])
-            records = self.store.load_growth()[:limit]
-            self._send_json(
-                {
-                    "records": records,
-                    "summary": {
-                        "total_records": len(records),
-                        "reflection_trigger_count": sum(
-                            1 for item in records if (item.get("reflection_summary") or {}).get("trigger")
-                        ),
-                        "repair_closure_count": sum(
-                            1 for item in records if (item.get("cycle_summary") or {}).get("repair_closure")
-                        ),
-                    },
-                }
-            )
+            payload["records"] = payload.get("records", [])[:limit]
+            payload["recent_growth"] = payload.get("recent_growth", [])[: min(limit, 50)]
+            self._send_json(payload)
             return
 
         if parsed.path == "/api/dashboard/failures":
-            self._send_json(
-                {
-                    "records": self.store.load_failures(),
-                    "gap_summary": self.store.load_gap_summary(),
-                }
-            )
+            self._send_json(self.store.load_failures_rollup())
             return
 
         if parsed.path == "/api/dashboard/agency":
@@ -246,16 +285,22 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
   <main class="shell">
     <header class="hero">
       <div>
-        <p class="eyebrow">Telegram Real Mainline · Read-only</p>
-        <h1>OpenEmotion Growth Dashboard v1</h1>
-        <p class="hero-copy">只读、轻实时、可回放的观测层。所有结论都必须回指 artifacts 与 observation ledger。</p>
+        <p class="eyebrow" id="hero-eyebrow"></p>
+        <h1 id="hero-title"></h1>
+        <p class="hero-copy" id="hero-copy"></p>
       </div>
-      <nav class="nav">
-        <a href="/runs">Live Runs</a>
-        <a href="/agency">Agency</a>
-        <a href="/growth">Growth Signals</a>
-        <a href="/failures">Failures & Replay</a>
-      </nav>
+      <div class="hero-side">
+        <nav class="nav">
+          <a href="/runs" id="nav-runs"></a>
+          <a href="/agency" id="nav-agency"></a>
+          <a href="/growth" id="nav-growth"></a>
+          <a href="/failures" id="nav-failures"></a>
+        </nav>
+        <div class="locale-switch" id="locale-switch">
+          <button type="button" data-locale="zh">中文</button>
+          <button type="button" data-locale="en">EN</button>
+        </div>
+      </div>
     </header>
     <section class="meta-bar" id="meta-bar"></section>
     <section class="content" id="app"></section>

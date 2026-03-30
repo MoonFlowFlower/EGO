@@ -15,8 +15,12 @@ from app.dashboard.types import (
     ContinuityObservationRecord,
     DashboardBuildSummary,
     FailureIndexRecord,
+    FailuresRollup,
     GrowthSignalRecord,
+    GrowthRollup,
     RunIndexRecord,
+    RunsRollup,
+    SemanticSummary,
 )
 
 EGO_ROOT = Path(__file__).resolve().parents[3]
@@ -32,6 +36,9 @@ GROWTH_FILE = "growth_signals.jsonl"
 FAILURES_FILE = "failures.jsonl"
 AGENCY_RUNS_FILE = "agency_runs.jsonl"
 AGENCY_ROLLUP_FILE = "agency_rollup.json"
+RUNS_ROLLUP_FILE = "runs_rollup.json"
+GROWTH_ROLLUP_FILE = "growth_rollup.json"
+FAILURES_ROLLUP_FILE = "failures_rollup.json"
 GAP_SUMMARY_FILE = "gap_summary.json"
 BUILD_META_FILE = "build_meta.json"
 
@@ -161,6 +168,185 @@ def _collapse_focus_goal(value: Any) -> Optional[str]:
         if pending_commitment:
             return str(pending_commitment)
     return None
+
+
+def _normalize_code_list(values: Iterable[Optional[str]]) -> List[str]:
+    deduped: List[str] = []
+    for value in values:
+        if not value:
+            continue
+        text = str(value)
+        if text not in deduped:
+            deduped.append(text)
+    return deduped
+
+
+def _semantic(
+    *,
+    intent_code: str = "unknown",
+    host_posture_code: str = "not_applicable",
+    result_state_code: str = "not_executed",
+    growth_motion_code: str = "unknown",
+    evidence_state_code: str = "partial",
+    why_codes: Optional[Iterable[Optional[str]]] = None,
+    headline_code: str = "unknown",
+) -> SemanticSummary:
+    return SemanticSummary(
+        intent_code=intent_code,
+        host_posture_code=host_posture_code,
+        result_state_code=result_state_code,
+        growth_motion_code=growth_motion_code,
+        evidence_state_code=evidence_state_code,
+        why_codes=_normalize_code_list(why_codes or []),
+        headline_code=headline_code,
+    )
+
+
+def _freshness_seconds(timestamp: Optional[str]) -> Optional[float]:
+    sample_dt = _parse_timestamp(timestamp)
+    if sample_dt is None:
+        return None
+    return max((datetime.now(timezone.utc) - sample_dt).total_seconds(), 0.0)
+
+
+def _counter_to_dict(values: Iterable[Optional[str]], *, default_label: str = "unknown") -> Dict[str, int]:
+    counter: Counter[str] = Counter()
+    for value in values:
+        counter.update([str(value or default_label)])
+    return dict(counter)
+
+
+def _top_items(counter: Counter[str], *, limit: int = 8) -> List[Dict[str, Any]]:
+    return [{"label": label, "count": count} for label, count in counter.most_common(limit)]
+
+
+def _summarize_evidence_state(
+    *,
+    bundle_complete: bool = False,
+    host_only: bool = False,
+    trace_completeness: bool = True,
+    gap_types: Optional[List[str]] = None,
+    evidence_source: Optional[str] = None,
+) -> str:
+    gaps = gap_types or []
+    if host_only:
+        return "host_only"
+    if "replay_mismatch" in gaps:
+        return "replay_gap"
+    if not trace_completeness or "collector_timing_gap" in gaps:
+        return "trace_gap"
+    if bundle_complete and (evidence_source in {None, "ledger_events", "ledger_trace"}):
+        return "complete"
+    return "partial"
+
+
+def _candidate_intent(candidate_actions: List[str], focus_goal: Optional[str], suppression_reason: Optional[str]) -> str:
+    joined = " ".join(candidate_actions).lower()
+    focus = (focus_goal or "").lower()
+    if any(token in joined for token in ("repair", "retry", "fix")) or "repair" in focus:
+        return "repair"
+    if any(token in joined for token in ("continue", "resume", "follow")) or "continue" in focus:
+        return "continue"
+    if any(token in joined for token in ("inspect", "browse", "read", "observe", "file")) or any(
+        token in focus for token in ("inspect", "observe", "browse", "read", "monitor")
+    ):
+        return "observe"
+    if suppression_reason in {"confirm_pending", "active_task"}:
+        return "wait"
+    if suppression_reason == "urge_below_threshold":
+        return "calm"
+    return "unknown"
+
+
+def _host_posture(governor_status: Optional[str], *, requires_approval: bool, final_host_action: Optional[str], why_codes: Iterable[str]) -> str:
+    status = str(governor_status or "").lower()
+    reasons = set(why_codes)
+    if status in {"blocked", "rejected", "denied"} or "safety_block" in reasons:
+        return "blocked"
+    if requires_approval or status in {"approval_required", "approval_needed", "needs_approval"}:
+        return "approval_needed"
+    if final_host_action or status in {"approved", "executed", "exec_result"}:
+        return "allowed"
+    return "not_applicable"
+
+
+def _result_state(final_host_action: Optional[str], exec_result_type: Optional[str], writeback_applied: bool) -> str:
+    status = str(exec_result_type or "").lower()
+    if writeback_applied:
+        return "written_back"
+    if status in {"success", "ok", "completed"}:
+        return "executed_success"
+    if status and status not in {"none", "unknown", "null"}:
+        return "executed_failure"
+    if final_host_action and final_host_action != "none":
+        return "executed_success"
+    return "not_executed"
+
+
+def _agency_headline(
+    *,
+    intent_code: str,
+    host_posture_code: str,
+    result_state_code: str,
+    final_host_action: Optional[str],
+    candidate_actions: List[str],
+) -> str:
+    if result_state_code == "written_back":
+        return "changed_after_result"
+    if result_state_code == "executed_success" or final_host_action:
+        return "action_completed"
+    if host_posture_code == "blocked":
+        return "blocked_by_host"
+    if host_posture_code == "approval_needed":
+        return "waiting_for_host"
+    if intent_code == "observe":
+        return "wants_to_inspect"
+    if intent_code == "continue":
+        return "trying_to_continue"
+    if intent_code == "repair":
+        return "trying_to_repair"
+    if candidate_actions:
+        return "intent_detected"
+    if intent_code == "calm":
+        return "quiet_state"
+    return "waiting_for_signal"
+
+
+def _run_headline(bundle_complete: bool, host_only: bool, gap_types: List[str], oe_available: bool) -> str:
+    if host_only:
+        return "host_only_turn"
+    if "replay_mismatch" in gap_types:
+        return "replay_not_aligned"
+    if "collector_timing_gap" in gap_types or "response_plan_missing" in gap_types or "audit_artifact_missing" in gap_types:
+        return "evidence_missing"
+    if bundle_complete and oe_available:
+        return "mainline_connected"
+    return "partial_evidence"
+
+
+def _growth_headline(growth_motion_code: str, reflection_trigger: Optional[str], focus_goal: Optional[str]) -> str:
+    if growth_motion_code == "repairing":
+        return "repairing_after_failure"
+    if growth_motion_code == "focus_shift":
+        return "shifting_focus"
+    if growth_motion_code == "identity_shift":
+        return "identity_shift_detected"
+    if growth_motion_code == "reflecting" or reflection_trigger:
+        return "reflecting_on_result"
+    if focus_goal:
+        return "holding_current_focus"
+    return "steady_growth"
+
+
+def _failure_headline(cause_type: str, actual: Optional[str], expected: Optional[str]) -> str:
+    haystack = f"{cause_type} {actual or ''} {expected or ''}".lower()
+    if "replay" in haystack:
+        return "replay_not_aligned"
+    if "contract" in haystack or "schema" in haystack:
+        return "contract_chain_broken"
+    if "bundle" in haystack or "missing" in haystack or "gap" in haystack:
+        return "evidence_missing"
+    return "runtime_failure_detected"
 
 
 def _iter_proto_event_payloads(ledger: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -333,6 +519,36 @@ def _build_agency_record(
         and governor_hint.get("status")
         and seed_state_snapshot
     )
+    why_codes = _normalize_code_list(
+        [
+            suppression_reason,
+            "approval_required" if (
+                policy_hint.get("requires_approval")
+                or governor_hint.get("requires_approval")
+                or selected_action.get("requires_approval")
+            ) else None,
+            "safety_block" if suppression_reason == "blocked_by_safety_context" else None,
+        ]
+    )
+    intent_code = _candidate_intent(candidate_actions, focus_goal, suppression_reason)
+    host_posture_code = _host_posture(
+        governor_hint.get("status"),
+        requires_approval=bool(
+            policy_hint.get("requires_approval")
+            or governor_hint.get("requires_approval")
+            or selected_action.get("requires_approval")
+        ),
+        final_host_action=final_host_action,
+        why_codes=why_codes,
+    )
+    result_state_code = _result_state(final_host_action, str(exec_result_type) if exec_result_type is not None else None, bool(exec_result) and bool(seed_state_snapshot))
+    growth_motion_code = "repairing" if any(action.startswith("repair") for action in candidate_actions) else "steady" if bool(seed_state_snapshot) else "unknown"
+    evidence_state_code = _summarize_evidence_state(
+        bundle_complete=run_record.bundle_complete,
+        trace_completeness=trace_completeness,
+        gap_types=run_record.gap_types,
+        evidence_source=evidence_source,
+    )
 
     record = AgencyRunRecord(
         sample_id=run_record.sample_id,
@@ -360,6 +576,21 @@ def _build_agency_record(
         trace_completeness=trace_completeness,
         evidence_source=evidence_source,
         direct_execution_violation=direct_execution_violation,
+        semantic=_semantic(
+            intent_code=intent_code,
+            host_posture_code=host_posture_code,
+            result_state_code=result_state_code,
+            growth_motion_code=growth_motion_code,
+            evidence_state_code=evidence_state_code,
+            why_codes=why_codes,
+            headline_code=_agency_headline(
+                intent_code=intent_code,
+                host_posture_code=host_posture_code,
+                result_state_code=result_state_code,
+                final_host_action=final_host_action,
+                candidate_actions=candidate_actions,
+            ),
+        ),
     )
     return record, None
 
@@ -405,6 +636,16 @@ def _build_agency_rollup(
             },
             recent_turns=[],
             excluded_counts=excluded_counts,
+            semantic_summary={
+                "intent": {},
+                "host_posture": {},
+                "result_state": {},
+                "growth_motion": {},
+                "evidence_state": {},
+                "headline": {},
+            },
+            headline_code="unknown",
+            story_cards=[],
         )
 
     ordered = sorted(records, key=lambda item: item.timestamp)
@@ -434,6 +675,15 @@ def _build_agency_rollup(
     freshness_seconds = None
     if last_sample_dt is not None:
         freshness_seconds = max((datetime.now(timezone.utc) - last_sample_dt).total_seconds(), 0.0)
+
+    semantic_summary = {
+        "intent": _counter_to_dict((item.semantic.intent_code if item.semantic else "unknown" for item in ordered)),
+        "host_posture": _counter_to_dict((item.semantic.host_posture_code if item.semantic else "not_applicable" for item in ordered)),
+        "result_state": _counter_to_dict((item.semantic.result_state_code if item.semantic else "not_executed" for item in ordered)),
+        "growth_motion": _counter_to_dict((item.semantic.growth_motion_code if item.semantic else "unknown" for item in ordered)),
+        "evidence_state": _counter_to_dict((item.semantic.evidence_state_code if item.semantic else "partial" for item in ordered)),
+        "headline": _counter_to_dict((item.semantic.headline_code if item.semantic else "unknown" for item in ordered)),
+    }
 
     return AgencyRollup(
         generated_at=generated_at,
@@ -466,6 +716,7 @@ def _build_agency_rollup(
             writeback_applied=latest.writeback_applied,
             revision_counter=latest.revision_counter,
             trace_completeness=latest.trace_completeness,
+            semantic=latest.semantic,
         ),
         funnel={
             "idle_eligible_count": sum(1 for item in ordered if item.idle_eligible),
@@ -503,10 +754,230 @@ def _build_agency_rollup(
                 "exec_result_type": item.exec_result_type,
                 "focus_goal": item.focus_goal,
                 "trace_completeness": item.trace_completeness,
+                "semantic": item.semantic.to_dict() if item.semantic else None,
             }
             for item in reversed(ordered[-12:])
         ],
         excluded_counts=excluded_counts,
+        semantic_summary=semantic_summary,
+        headline_code=latest.semantic.headline_code if latest.semantic else "unknown",
+        story_cards=[
+            {
+                "slot": "intent",
+                "code": latest.semantic.intent_code if latest.semantic else "unknown",
+                "value": latest.candidate_actions,
+            },
+            {
+                "slot": "host",
+                "code": latest.semantic.host_posture_code if latest.semantic else "not_applicable",
+                "value": latest.governor_status,
+            },
+            {
+                "slot": "result",
+                "code": latest.semantic.result_state_code if latest.semantic else "not_executed",
+                "value": latest.exec_result_type,
+            },
+            {
+                "slot": "growth",
+                "code": latest.semantic.growth_motion_code if latest.semantic else "unknown",
+                "value": latest.revision_counter,
+            },
+        ],
+    )
+
+
+def _build_runs_rollup(
+    run_records: List[RunIndexRecord],
+    continuity_records: List[ContinuityObservationRecord],
+) -> RunsRollup:
+    generated_at = datetime.now(timezone.utc).isoformat()
+    latest = run_records[-1] if run_records else None
+    gap_counter: Counter[str] = Counter()
+    for item in run_records:
+        gap_counter.update(item.gap_types)
+
+    return RunsRollup(
+        generated_at=generated_at,
+        last_sample_timestamp=latest.timestamp if latest else None,
+        freshness_seconds=_freshness_seconds(latest.timestamp if latest else None),
+        headline_code=latest.semantic.headline_code if latest and latest.semantic else "unknown",
+        summary={
+            "turn_count": len(run_records),
+            "complete_bundle_count": sum(1 for item in run_records if item.bundle_complete),
+            "complete_bundle_rate": (sum(1 for item in run_records if item.bundle_complete) / len(run_records)) if run_records else 0.0,
+            "oe_available_rate": (sum(1 for item in run_records if item.oe_available) / len(run_records)) if run_records else 0.0,
+            "host_only_rate": (sum(1 for item in run_records if item.host_only) / len(run_records)) if run_records else 0.0,
+            "latest_bundle_complete": bool(latest.bundle_complete) if latest else False,
+            "latest_oe_available": bool(latest.oe_available) if latest else False,
+        },
+        charts={
+            "bundle_trend": [
+                {
+                    "sample_id": item.sample_id,
+                    "timestamp": item.timestamp,
+                    "bundle_complete": item.bundle_complete,
+                    "oe_available": item.oe_available,
+                    "host_only": item.host_only,
+                    "gap_count": len(item.gap_types),
+                    "semantic": item.semantic.to_dict() if item.semantic else None,
+                }
+                for item in run_records[-50:]
+            ],
+            "oe_state_distribution": {
+                "complete": sum(1 for item in run_records if item.bundle_complete),
+                "partial": sum(1 for item in run_records if not item.bundle_complete and not item.host_only),
+                "host_only": sum(1 for item in run_records if item.host_only),
+            },
+            "gap_type_distribution": dict(gap_counter),
+            "continuity_status": {item.scenario: item.status for item in continuity_records},
+        },
+        continuity=[item.to_dict() for item in continuity_records],
+        recent_runs=[
+            {
+                "sample_id": item.sample_id,
+                "timestamp": item.timestamp,
+                "bundle_complete": item.bundle_complete,
+                "oe_available": item.oe_available,
+                "host_only": item.host_only,
+                "gap_types": item.gap_types,
+                "semantic": item.semantic.to_dict() if item.semantic else None,
+            }
+            for item in reversed(run_records[-12:])
+        ],
+        records=[item.to_dict() for item in run_records],
+        semantic_summary={
+            "headline": _counter_to_dict((item.semantic.headline_code if item.semantic else "unknown" for item in run_records)),
+            "evidence_state": _counter_to_dict((item.semantic.evidence_state_code if item.semantic else "partial" for item in run_records)),
+        },
+    )
+
+
+def _build_growth_rollup(growth_records: List[GrowthSignalRecord]) -> GrowthRollup:
+    generated_at = datetime.now(timezone.utc).isoformat()
+    latest = growth_records[-1] if growth_records else None
+    reflection_counter: Counter[str] = Counter()
+    motion_counter: Counter[str] = Counter()
+    focus_seen = [item.focus_goal for item in growth_records if item.focus_goal]
+    component_totals: Counter[str] = Counter()
+    component_counts: Counter[str] = Counter()
+    for item in growth_records:
+        reflection_counter.update([item.reflection_summary.get("trigger") or "none"])
+        motion_counter.update([item.semantic.growth_motion_code if item.semantic else "unknown"])
+        for key, value in (item.appraisal_delta_summary or {}).items():
+            number = _coerce_float(value)
+            if number is None:
+                continue
+            component_totals.update({key: number})
+            component_counts.update({key: 1})
+
+    appraisal_means = {
+        key: round(component_totals[key] / component_counts[key], 4)
+        for key in component_totals
+        if component_counts[key]
+    }
+
+    return GrowthRollup(
+        generated_at=generated_at,
+        last_sample_timestamp=latest.timestamp if latest else None,
+        freshness_seconds=_freshness_seconds(latest.timestamp if latest else None),
+        headline_code=latest.semantic.headline_code if latest and latest.semantic else "unknown",
+        summary={
+            "total_records": len(growth_records),
+            "reflecting_count": sum(1 for item in growth_records if (item.semantic and item.semantic.growth_motion_code == "reflecting")),
+            "repairing_count": sum(1 for item in growth_records if (item.semantic and item.semantic.growth_motion_code == "repairing")),
+            "focus_shift_count": sum(1 for item in growth_records if (item.semantic and item.semantic.growth_motion_code == "focus_shift")),
+            "identity_shift_count": sum(1 for item in growth_records if (item.semantic and item.semantic.growth_motion_code == "identity_shift")),
+            "latest_revision_counter": latest.revision_counter if latest else 0,
+        },
+        charts={
+            "revision_trend": [
+                {
+                    "sample_id": item.sample_id,
+                    "timestamp": item.timestamp,
+                    "revision_counter": item.revision_counter,
+                    "growth_motion_code": item.semantic.growth_motion_code if item.semantic else "unknown",
+                }
+                for item in growth_records[-50:]
+            ],
+            "appraisal_component_means": appraisal_means,
+            "reflection_trigger_distribution": dict(reflection_counter),
+            "growth_motion_distribution": dict(motion_counter),
+            "focus_timeline": [
+                {
+                    "sample_id": item.sample_id,
+                    "timestamp": item.timestamp,
+                    "focus_goal": item.focus_goal or "none",
+                }
+                for item in growth_records[-50:]
+                if item.focus_goal
+            ],
+        },
+        recent_growth=[
+            {
+                "sample_id": item.sample_id,
+                "timestamp": item.timestamp,
+                "focus_goal": item.focus_goal,
+                "revision_counter": item.revision_counter,
+                "reflection_trigger": item.reflection_summary.get("trigger"),
+                "semantic": item.semantic.to_dict() if item.semantic else None,
+            }
+            for item in reversed(growth_records[-12:])
+        ],
+        records=[item.to_dict() for item in growth_records],
+        semantic_summary={
+            "headline": _counter_to_dict((item.semantic.headline_code if item.semantic else "unknown" for item in growth_records)),
+            "growth_motion": _counter_to_dict((item.semantic.growth_motion_code if item.semantic else "unknown" for item in growth_records)),
+            "focus": _counter_to_dict(focus_seen, default_label="none"),
+        },
+    )
+
+
+def _build_failures_rollup(
+    failure_records: List[FailureIndexRecord],
+    gap_summary: Dict[str, Any],
+) -> FailuresRollup:
+    generated_at = datetime.now(timezone.utc).isoformat()
+    latest = failure_records[-1] if failure_records else None
+    cause_counter = Counter(item.cause_type for item in failure_records)
+    severity_counter = Counter(item.severity for item in failure_records)
+    retested_counter = Counter("retested" if item.retested_after_fix else "open" for item in failure_records)
+
+    return FailuresRollup(
+        generated_at=generated_at,
+        last_sample_timestamp=latest.timestamp if latest else None,
+        freshness_seconds=_freshness_seconds(latest.timestamp if latest else None),
+        headline_code=latest.semantic.headline_code if latest and latest.semantic else "unknown",
+        summary={
+            "total_failures": len(failure_records),
+            "unresolved_count": sum(1 for item in failure_records if not item.retested_after_fix),
+            "retested_rate": (sum(1 for item in failure_records if item.retested_after_fix) / len(failure_records)) if failure_records else 0.0,
+            "top_cause": cause_counter.most_common(1)[0][0] if cause_counter else "none",
+            "replay_mismatch_count": int((gap_summary.get("gap_type_counts") or {}).get("replay_mismatch", 0)),
+        },
+        charts={
+            "cause_distribution": dict(cause_counter),
+            "severity_distribution": dict(severity_counter),
+            "retested_distribution": dict(retested_counter),
+            "top_blockers": _top_items(Counter(gap_summary.get("top_blockers") or []), limit=5),
+        },
+        recent_failures=[
+            {
+                "failure_id": item.failure_id,
+                "timestamp": item.timestamp,
+                "cause_type": item.cause_type,
+                "severity": item.severity,
+                "retested_after_fix": item.retested_after_fix,
+                "semantic": item.semantic.to_dict() if item.semantic else None,
+                "artifact_ref": item.artifact_ref,
+            }
+            for item in reversed(failure_records[-12:])
+        ],
+        records=[item.to_dict() for item in failure_records],
+        semantic_summary={
+            "headline": _counter_to_dict((item.semantic.headline_code if item.semantic else "unknown" for item in failure_records)),
+            "severity": dict(severity_counter),
+        },
+        gap_summary=gap_summary,
     )
 
 
@@ -671,6 +1142,7 @@ def _build_growth_record(sample_dir: Path, run_record: RunIndexRecord) -> Option
 
     cycle_delta = trace_payload.get("cycle_delta") or {}
     reflection_note = result_payload.get("reflection_note") or {}
+    seed_state_snapshot = trace_payload.get("seed_state_snapshot") or {}
     return GrowthSignalRecord(
         sample_id=run_record.sample_id,
         timestamp=run_record.timestamp,
@@ -696,6 +1168,9 @@ def _build_growth_record(sample_dir: Path, run_record: RunIndexRecord) -> Option
         session_id=run_record.session_id,
         thread_id=run_record.thread_id,
         closure_family_id=run_record.closure_family_id,
+        focus_goal=_collapse_focus_goal(seed_state_snapshot.get("focus_goal")),
+        revision_counter=int(seed_state_snapshot.get("revision_counter") or 0),
+        identity_light_hash=trace_payload.get("identity_light_hash") or seed_state_snapshot.get("identity_light_hash"),
     )
 
 
@@ -730,6 +1205,93 @@ def _build_failure_records(failure_dir: Path = FAILURE_CASES_DIR) -> List[Failur
             )
         )
     return records
+
+
+def _attach_run_semantics(run_records: List[RunIndexRecord]) -> None:
+    for record in run_records:
+        why_codes = list(record.gap_types)
+        if record.host_only:
+            why_codes.append("host_only")
+        evidence_state = _summarize_evidence_state(
+            bundle_complete=record.bundle_complete,
+            host_only=record.host_only,
+            gap_types=record.gap_types,
+        )
+        record.semantic = _semantic(
+            intent_code="wait" if record.host_only else "unknown",
+            host_posture_code="not_applicable",
+            result_state_code="executed_success" if record.response_plan_status == "complete" else "not_executed",
+            growth_motion_code="unknown",
+            evidence_state_code=evidence_state,
+            why_codes=why_codes,
+            headline_code=_run_headline(record.bundle_complete, record.host_only, record.gap_types, record.oe_available),
+        )
+
+
+def _attach_growth_semantics(growth_records: List[GrowthSignalRecord]) -> None:
+    ordered = sorted(growth_records, key=lambda item: item.timestamp)
+    previous_focus: Optional[str] = None
+    previous_identity: Optional[str] = None
+    previous_revision: Optional[int] = None
+    for record in ordered:
+        reflection_trigger = record.reflection_summary.get("trigger")
+        repair_closure = bool(record.cycle_summary.get("repair_closure"))
+        focus_shift = bool(previous_focus and record.focus_goal and previous_focus != record.focus_goal)
+        identity_shift = bool(previous_identity and record.identity_light_hash and previous_identity != record.identity_light_hash)
+        revision_delta = max(record.revision_counter - (previous_revision or 0), 0)
+
+        if repair_closure:
+            growth_motion_code = "repairing"
+        elif identity_shift:
+            growth_motion_code = "identity_shift"
+        elif focus_shift:
+            growth_motion_code = "focus_shift"
+        elif reflection_trigger:
+            growth_motion_code = "reflecting"
+        else:
+            growth_motion_code = "steady"
+
+        intent_code = "repair" if repair_closure else "continue" if reflection_trigger else "observe"
+        why_codes = [reflection_trigger]
+        if focus_shift:
+            why_codes.append("focus_change")
+        if identity_shift:
+            why_codes.append("identity_shift")
+        if revision_delta == 0:
+            why_codes.append("no_revision_delta")
+
+        record.semantic = _semantic(
+            intent_code=intent_code,
+            host_posture_code="not_applicable",
+            result_state_code="written_back" if record.revision_counter else "not_executed",
+            growth_motion_code=growth_motion_code,
+            evidence_state_code="complete",
+            why_codes=why_codes,
+            headline_code=_growth_headline(growth_motion_code, reflection_trigger, record.focus_goal),
+        )
+
+        previous_focus = record.focus_goal or previous_focus
+        previous_identity = record.identity_light_hash or previous_identity
+        previous_revision = record.revision_counter
+
+
+def _attach_failure_semantics(failure_records: List[FailureIndexRecord]) -> None:
+    for record in failure_records:
+        evidence_state = "replay_gap" if "replay" in record.cause_type else "partial"
+        why_codes = [record.cause_type]
+        if not record.retested_after_fix:
+            why_codes.append("retest_pending")
+        if record.in_regression:
+            why_codes.append("in_regression")
+        record.semantic = _semantic(
+            intent_code="repair",
+            host_posture_code="blocked",
+            result_state_code="executed_failure",
+            growth_motion_code="unknown",
+            evidence_state_code=evidence_state,
+            why_codes=why_codes,
+            headline_code=_failure_headline(record.cause_type, record.actual, record.expected),
+        )
 
 
 def _read_text(path: Path) -> str:
@@ -1044,6 +1606,9 @@ def _render_data_schema() -> str:
 - `growth_signals.jsonl`: `GrowthSignalRecord`
 - `failures.jsonl`: `FailureIndexRecord`
 - `agency_runs.jsonl`: `AgencyRunRecord`
+- `runs_rollup.json`: `RunsRollup`
+- `growth_rollup.json`: `GrowthRollup`
+- `failures_rollup.json`: `FailuresRollup`
 - `agency_rollup.json`: `AgencyRollup`
 - `gap_summary.json`: gap 统计与 blocker 汇总
 - `build_meta.json`: 索引生成元信息
@@ -1090,6 +1655,7 @@ PYTHONPATH=. python3 -m app.main --dashboard --host 127.0.0.1 --port 8787
 ## 说明
 
 - Dashboard v1 只读，允许轮询刷新，不反写 EgoCore / OpenEmotion 状态
+- 页面层提供共享语义摘要与中英切换，但原始 artifact 仍是唯一权威证据
 - 所有结论强度必须低于或等于当前 artifacts 与 observation 文档的证据强度
 """
 
@@ -1131,13 +1697,16 @@ def build_dashboard_indexes(
     run_records = [_build_run_record(sample_dir) for sample_dir in sample_dirs]
     continuity_records = _build_continuity_records(observation_dir=observation_dir)
     _attach_continuity_tags(run_records, continuity_records)
+    _attach_run_semantics(run_records)
     growth_records = [
         record
         for sample_dir, run_record in zip(sample_dirs, run_records)
         for record in [_build_growth_record(sample_dir, run_record)]
         if record is not None
     ]
+    _attach_growth_semantics(growth_records)
     failure_records = _build_failure_records(failure_dir=failure_dir)
+    _attach_failure_semantics(failure_records)
     gap_summary = _build_gap_summary(run_records, failure_records, continuity_records)
     plasticity_chains = _detect_plasticity_chains(growth_records)
     reflection_candidates = _detect_reflection_candidates(growth_records)
@@ -1154,6 +1723,9 @@ def build_dashboard_indexes(
         agency_records,
         excluded_counts=dict(sorted(excluded_counts.items())),
     )
+    runs_rollup = _build_runs_rollup(run_records, continuity_records)
+    growth_rollup = _build_growth_rollup(growth_records)
+    failures_rollup = _build_failures_rollup(failure_records, gap_summary)
     source_last_modified = dashboard_source_last_modified(
         real_dir=real_dir,
         failure_dir=failure_dir,
@@ -1182,6 +1754,9 @@ def build_dashboard_indexes(
     _write_jsonl(output_dir / GROWTH_FILE, (record.to_dict() for record in growth_records))
     _write_jsonl(output_dir / FAILURES_FILE, (record.to_dict() for record in failure_records))
     _write_jsonl(output_dir / AGENCY_RUNS_FILE, (record.to_dict() for record in agency_records))
+    _write_json(output_dir / RUNS_ROLLUP_FILE, runs_rollup.to_dict())
+    _write_json(output_dir / GROWTH_ROLLUP_FILE, growth_rollup.to_dict())
+    _write_json(output_dir / FAILURES_ROLLUP_FILE, failures_rollup.to_dict())
     _write_json(output_dir / AGENCY_ROLLUP_FILE, agency_rollup.to_dict())
     _write_json(output_dir / GAP_SUMMARY_FILE, gap_summary)
     _write_json(output_dir / BUILD_META_FILE, summary.to_dict())

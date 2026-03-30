@@ -179,12 +179,22 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
 
     assert health["status"] == "ok"
     assert runs["records"]
+    assert runs["summary"]["turn_count"] == 2
+    assert runs["recent_runs"]
+    assert "charts" in runs
     assert growth["records"]
+    assert growth["recent_growth"]
+    assert "charts" in growth
     assert {item["sample_id"] for item in growth["records"]} == {"sample_20260327_100000_aaaaaaaa"}
     assert "gap_summary" in failures
+    assert failures["summary"]["total_failures"] == 0
     assert agency["summary"]["turn_count"] == 1
     assert agency["latest_state"]["final_host_action"] == "file"
+    assert agency["headline_code"] == "changed_after_result"
+    assert agency["story_cards"]
     assert sample["sample_id"] == "sample_20260327_100000_aaaaaaaa"
     assert "ledger.json" in sample["artifacts"]
-    assert "OpenEmotion Growth Dashboard v1" in html
+    assert sample["semantic_summary"]["headline_code"] == "changed_after_result"
+    assert sample["translated_summary"]["focus_goal"] == "inspect_target"
+    assert 'id="locale-switch"' in html
     assert 'data-view="agency"' in agency_html

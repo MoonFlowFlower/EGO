@@ -18,9 +18,11 @@ PYTHONPATH=. python3 -m app.main --dashboard --host 127.0.0.1 --port 8787
 - `/runs`
 - `/growth`
 - `/failures`
+- `/agency`
 - `/samples/<sample_id>`
 
 ## 说明
 
 - Dashboard v1 只读，允许轮询刷新，不反写 EgoCore / OpenEmotion 状态
+- 页面层提供共享语义摘要与中英切换，但原始 artifact 仍是唯一权威证据
 - 所有结论强度必须低于或等于当前 artifacts 与 observation 文档的证据强度

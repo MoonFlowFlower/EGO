@@ -5,6 +5,20 @@ from typing import Any, Dict, List, Optional
 
 
 @dataclass
+class SemanticSummary:
+    intent_code: str
+    host_posture_code: str
+    result_state_code: str
+    growth_motion_code: str
+    evidence_state_code: str
+    why_codes: List[str] = field(default_factory=list)
+    headline_code: str = "unknown"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class RunIndexRecord:
     sample_id: str
     timestamp: str
@@ -21,9 +35,13 @@ class RunIndexRecord:
     thread_id: Optional[str] = None
     outcome_signature: Optional[str] = None
     reflection_trigger: Optional[str] = None
+    semantic: Optional[SemanticSummary] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        if self.semantic is not None:
+            payload["semantic"] = self.semantic.to_dict()
+        return payload
 
 
 @dataclass
@@ -52,9 +70,16 @@ class GrowthSignalRecord:
     session_id: Optional[str] = None
     thread_id: Optional[str] = None
     closure_family_id: Optional[str] = None
+    focus_goal: Optional[str] = None
+    revision_counter: int = 0
+    identity_light_hash: Optional[str] = None
+    semantic: Optional[SemanticSummary] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        if self.semantic is not None:
+            payload["semantic"] = self.semantic.to_dict()
+        return payload
 
 
 @dataclass
@@ -80,9 +105,13 @@ class AgencyRunRecord:
     trace_completeness: bool
     evidence_source: str
     direct_execution_violation: bool = False
+    semantic: Optional[SemanticSummary] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        if self.semantic is not None:
+            payload["semantic"] = self.semantic.to_dict()
+        return payload
 
 
 @dataclass
@@ -100,9 +129,13 @@ class AgencyLatestState:
     writeback_applied: bool
     revision_counter: int
     trace_completeness: bool
+    semantic: Optional[SemanticSummary] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        if self.semantic is not None:
+            payload["semantic"] = self.semantic.to_dict()
+        return payload
 
 
 @dataclass
@@ -118,6 +151,9 @@ class AgencyRollup:
     distributions: Dict[str, Dict[str, int]]
     recent_turns: List[Dict[str, Any]]
     excluded_counts: Dict[str, int]
+    semantic_summary: Dict[str, Dict[str, int]] = field(default_factory=dict)
+    headline_code: str = "unknown"
+    story_cards: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         payload = asdict(self)
@@ -138,6 +174,60 @@ class FailureIndexRecord:
     retested_after_fix: bool
     expected: Optional[str] = None
     actual: Optional[str] = None
+    semantic: Optional[SemanticSummary] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        payload = asdict(self)
+        if self.semantic is not None:
+            payload["semantic"] = self.semantic.to_dict()
+        return payload
+
+
+@dataclass
+class RunsRollup:
+    generated_at: str
+    last_sample_timestamp: Optional[str]
+    freshness_seconds: Optional[float]
+    headline_code: str
+    summary: Dict[str, Any]
+    charts: Dict[str, Any]
+    continuity: List[Dict[str, Any]]
+    recent_runs: List[Dict[str, Any]]
+    records: List[Dict[str, Any]]
+    semantic_summary: Dict[str, Dict[str, int]]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class GrowthRollup:
+    generated_at: str
+    last_sample_timestamp: Optional[str]
+    freshness_seconds: Optional[float]
+    headline_code: str
+    summary: Dict[str, Any]
+    charts: Dict[str, Any]
+    recent_growth: List[Dict[str, Any]]
+    records: List[Dict[str, Any]]
+    semantic_summary: Dict[str, Dict[str, int]]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class FailuresRollup:
+    generated_at: str
+    last_sample_timestamp: Optional[str]
+    freshness_seconds: Optional[float]
+    headline_code: str
+    summary: Dict[str, Any]
+    charts: Dict[str, Any]
+    recent_failures: List[Dict[str, Any]]
+    records: List[Dict[str, Any]]
+    semantic_summary: Dict[str, Dict[str, int]]
+    gap_summary: Dict[str, Any]
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

@@ -235,16 +235,25 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
     growth = load_jsonl(output_dir / "growth_signals.jsonl")
     continuity = load_jsonl(output_dir / "continuity_observation.jsonl")
     failures = load_jsonl(output_dir / "failures.jsonl")
+    runs_rollup = json.loads((output_dir / "runs_rollup.json").read_text(encoding="utf-8"))
+    growth_rollup = json.loads((output_dir / "growth_rollup.json").read_text(encoding="utf-8"))
+    failures_rollup = json.loads((output_dir / "failures_rollup.json").read_text(encoding="utf-8"))
     gap_summary = json.loads((output_dir / "gap_summary.json").read_text(encoding="utf-8"))
 
     host_only = next(item for item in runs if item["sample_id"] == "sample_20260327_100200_cccccccc")
     assert host_only["host_only"] is True
     assert host_only["oe_available"] is False
     assert "host_only_pre_runtime" in host_only["gap_types"]
+    assert host_only["semantic"]["headline_code"] == "host_only_turn"
 
     assert {item["sample_id"] for item in growth} == {
         "sample_20260327_100000_aaaaaaaa",
         "sample_20260327_100100_bbbbbbbb",
+    }
+    assert growth[0]["semantic"]["headline_code"] in {
+        "reflecting_on_result",
+        "steady_growth",
+        "repairing_after_failure",
     }
 
     continuity_map = {item["scenario"]: item for item in continuity}
@@ -254,7 +263,14 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
     assert continuity_map["restore"]["sample_ids"] == []
 
     assert failures[0]["failure_id"] == "fail_001"
+    assert failures[0]["semantic"]["headline_code"] == "evidence_missing"
     assert gap_summary["gap_type_counts"]["host_only_pre_runtime"] >= 1
+    assert runs_rollup["summary"]["turn_count"] == 3
+    assert runs_rollup["recent_runs"][0]["semantic"]["headline_code"] == "host_only_turn"
+    assert growth_rollup["summary"]["total_records"] == 2
+    assert "growth_motion_distribution" in growth_rollup["charts"]
+    assert failures_rollup["summary"]["total_failures"] == 1
+    assert "top_blockers" in failures_rollup["charts"]
 
     assert (output_dir / "REAL_MAINLINE_CAPTURE_STATUS.md").exists()
     assert (output_dir / "CONTINUITY_OBSERVATION_LEDGER.md").exists()
@@ -387,10 +403,14 @@ def test_build_dashboard_indexes_emits_agency_rollup_and_mirror_fallback(tmp_pat
     assert by_id["sample_20260329_175737_7ca3cfb6"]["candidate_actions"] == ["inspect_file"]
     assert by_id["sample_20260329_175737_7ca3cfb6"]["final_host_action"] == "file"
     assert by_id["sample_20260329_175737_7ca3cfb6"]["exec_result_type"] == "success"
+    assert by_id["sample_20260329_175737_7ca3cfb6"]["semantic"]["headline_code"] == "changed_after_result"
 
     assert by_id["sample_20260329_180000_abcd1234"]["evidence_source"] == "sample_mirror"
     assert by_id["sample_20260329_180000_abcd1234"]["suppression_reason"] == "no_affordance"
+    assert by_id["sample_20260329_180000_abcd1234"]["semantic"]["intent_code"] == "observe"
 
     assert agency_rollup["summary"]["turn_count"] == 2
     assert agency_rollup["latest_state"]["sample_id"] == "sample_20260329_180000_abcd1234"
     assert agency_rollup["excluded_counts"]["host_only"] == 1
+    assert agency_rollup["headline_code"] == "wants_to_inspect"
+    assert agency_rollup["story_cards"]
