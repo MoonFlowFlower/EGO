@@ -210,6 +210,15 @@ class RuntimeV2DecisionEngine:
             ),
         )
 
+    def _is_auth_or_config_error(self, error: Exception) -> bool:
+        if isinstance(error, ValueError):
+            return True
+        if isinstance(error, httpx.HTTPStatusError):
+            response = getattr(error, "response", None)
+            status_code = getattr(response, "status_code", None)
+            return status_code in {401, 403}
+        return False
+
     def _resolve_runtime_v2_primary_spec(self) -> Tuple[str, str]:
         config = get_config()
         use_case = config.get_llm_config_for_use_case("execution")
@@ -267,6 +276,7 @@ class RuntimeV2DecisionEngine:
         if not candidates:
             raise RuntimeError("No configured runtime_v2 decision providers are available")
 
+        primary_error: Optional[Exception] = None
         last_error: Optional[Exception] = None
         for index, (provider, model, client) in enumerate(candidates):
             try:
@@ -279,20 +289,52 @@ class RuntimeV2DecisionEngine:
                 )
             except Exception as e:
                 last_error = e
-                if not self._is_transient_decision_error(e):
-                    raise
-                if index + 1 >= len(candidates):
-                    raise
-                next_provider, next_model, _next_client = candidates[index + 1]
+                is_primary = index == 0
+                if is_primary:
+                    primary_error = e
+                    if not self._is_transient_decision_error(e):
+                        raise
+                    if index + 1 >= len(candidates):
+                        raise
+                    next_provider, next_model, _next_client = candidates[index + 1]
+                    logger.warning(
+                        "runtime_v2.decision.transient provider=%s model=%s fallback_provider=%s fallback_model=%s err=%s",
+                        provider,
+                        model,
+                        next_provider,
+                        next_model,
+                        e,
+                    )
+                    continue
+
+                if self._is_auth_or_config_error(e):
+                    logger.warning(
+                        "runtime_v2.decision.fallback_unavailable provider=%s model=%s err=%s",
+                        provider,
+                        model,
+                        e,
+                    )
+                    continue
+
+                if self._is_transient_decision_error(e):
+                    logger.warning(
+                        "runtime_v2.decision.fallback_transient provider=%s model=%s err=%s",
+                        provider,
+                        model,
+                        e,
+                    )
+                    continue
+
                 logger.warning(
-                    "runtime_v2.decision.transient provider=%s model=%s fallback_provider=%s fallback_model=%s err=%s",
+                    "runtime_v2.decision.fallback_nontransient provider=%s model=%s err=%s",
                     provider,
                     model,
-                    next_provider,
-                    next_model,
                     e,
                 )
+                continue
 
+        if primary_error is not None:
+            raise primary_error
         if last_error is not None:
             raise last_error
         raise RuntimeError("Runtime v2 decision fallback exhausted without candidates")

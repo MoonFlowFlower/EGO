@@ -140,3 +140,62 @@ async def test_decision_engine_uses_fallback_provider_after_transient_primary_fa
     assert action.type == "chat"
     assert action.message == "fallback ok"
     assert calls == [("qianfan", "glm-5"), ("openai", "gpt-4o")]
+
+
+@pytest.mark.asyncio
+async def test_decision_engine_does_not_surface_fallback_401_over_primary_transient(monkeypatch):
+    engine = RuntimeV2DecisionEngine()
+    state = RuntimeV2State(session_id="decision:fallback-401")
+    calls = []
+
+    class DummyPrimaryClient:
+        def generate_with_messages(self, *_args, **_kwargs):
+            calls.append(("qianfan", "glm-5"))
+            raise httpx.ReadTimeout("The read operation timed out")
+
+    class DummyOpenAIClient:
+        def generate_with_messages(self, *_args, **_kwargs):
+            calls.append(("openai", "gpt-4o"))
+            request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
+            response = httpx.Response(401, request=request)
+            raise httpx.HTTPStatusError("unauthorized", request=request, response=response)
+
+    class DummyAnthropicClient:
+        def generate_with_messages(self, *_args, **_kwargs):
+            calls.append(("anthropic", "claude-3-5-sonnet-20241022"))
+            return LLMResponse(
+                content='{"type":"chat","message":"anthropic fallback ok"}',
+                model="claude-3-5-sonnet-20241022",
+                provider="anthropic",
+                usage={"input_tokens": 12, "output_tokens": 4},
+            )
+
+    def fake_get_llm_client(provider=None, model=None):
+        if (provider, model) == ("qianfan", "glm-5"):
+            return DummyPrimaryClient()
+        if (provider, model) == ("openai", "gpt-4o"):
+            return DummyOpenAIClient()
+        if (provider, model) == ("anthropic", "claude-3-5-sonnet-20241022"):
+            return DummyAnthropicClient()
+        raise ValueError(f"unexpected provider/model: {(provider, model)}")
+
+    monkeypatch.setattr(
+        engine,
+        "_resolve_runtime_v2_client_specs",
+        lambda: [
+            ("qianfan", "glm-5"),
+            ("openai", "gpt-4o"),
+            ("anthropic", "claude-3-5-sonnet-20241022"),
+        ],
+    )
+    monkeypatch.setattr("app.runtime_v2.decision_engine.get_llm_client", fake_get_llm_client)
+
+    action = await engine.decide(state)
+
+    assert action.type == "chat"
+    assert action.message == "anthropic fallback ok"
+    assert calls == [
+        ("qianfan", "glm-5"),
+        ("openai", "gpt-4o"),
+        ("anthropic", "claude-3-5-sonnet-20241022"),
+    ]

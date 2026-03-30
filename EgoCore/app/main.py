@@ -105,6 +105,9 @@ def show_status(config, logger) -> None:
     telegram_token = config.get_env('TELEGRAM_BOT_TOKEN')
     print(f"  TELEGRAM_BOT_TOKEN: {'✓ Set' if telegram_token else '✗ Not set'}")
 
+    qianfan_key = config.get_env('QIANFAN_API_KEY')
+    print(f"  QIANFAN_API_KEY: {'✓ Set' if qianfan_key else '✗ Not set'}")
+
     openai_key = config.get_env('OPENAI_API_KEY')
     print(f"  OPENAI_API_KEY: {'✓ Set' if openai_key else '✗ Not set'}")
 
