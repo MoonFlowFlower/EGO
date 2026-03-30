@@ -2,15 +2,19 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import Dict, List
+import logging
+from typing import Dict, List, Optional, Tuple
 
 import httpx
 
+from app.config import get_config
 from app.llm_client import get_llm_client
 
 from .action_protocol import RUNTIME_V2_SYSTEM_PROMPT, RuntimeV2Action
 from .prompt_files import RuntimeV2PromptFiles
 from .state import RuntimeV2State
+
+logger = logging.getLogger(__name__)
 
 
 class RuntimeV2DecisionEngine:
@@ -173,16 +177,7 @@ class RuntimeV2DecisionEngine:
         ]
         max_tokens = self._decide_max_tokens(state)
         try:
-            if self.llm_client is None:
-                self.llm_client = get_llm_client(provider="qianfan", model="glm-5")
-            response = await asyncio.to_thread(
-                self.llm_client.generate_with_messages,
-                messages,
-                temperature=0.1,
-                max_tokens=max_tokens,
-                timeout=30,
-            )
-            # Record token usage if available
+            response = await self._generate_with_fallback(messages, max_tokens=max_tokens)
             if response.usage:
                 prompt_tokens = response.usage.get("prompt_tokens", 0) or response.usage.get("input_tokens", 0)
                 completion_tokens = response.usage.get("completion_tokens", 0) or response.usage.get("output_tokens", 0)
@@ -214,6 +209,93 @@ class RuntimeV2DecisionEngine:
                 ConnectionError,
             ),
         )
+
+    def _resolve_runtime_v2_primary_spec(self) -> Tuple[str, str]:
+        config = get_config()
+        use_case = config.get_llm_config_for_use_case("execution")
+        provider = use_case.get("provider") or config.llm.get("default_provider", "qianfan")
+        model = use_case.get("model") or config.llm.get("default_model", "glm-5")
+        return str(provider), str(model)
+
+    def _resolve_provider_default_model(self, provider: str) -> Optional[str]:
+        config = get_config()
+        provider_cfg = (config.llm.get("providers") or {}).get(provider) or {}
+        if provider_cfg.get("enabled") is False:
+            return None
+        for item in provider_cfg.get("models") or []:
+            model_id = item.get("id")
+            if model_id:
+                return str(model_id)
+        return None
+
+    def _resolve_runtime_v2_client_specs(self) -> List[Tuple[str, str]]:
+        primary_provider, primary_model = self._resolve_runtime_v2_primary_spec()
+        specs: List[Tuple[str, str]] = [(primary_provider, primary_model)]
+        config = get_config()
+        fallback_cfg = config.llm.get("fallback") or {}
+        if not fallback_cfg.get("enabled"):
+            return specs
+
+        for provider in fallback_cfg.get("providers") or []:
+            provider_name = str(provider)
+            if provider_name == primary_provider:
+                continue
+            model = self._resolve_provider_default_model(provider_name)
+            if model:
+                specs.append((provider_name, model))
+        return specs
+
+    def _resolve_runtime_v2_clients(self) -> List[Tuple[str, str, object]]:
+        if self.llm_client is not None:
+            return [("injected", "injected", self.llm_client)]
+
+        clients: List[Tuple[str, str, object]] = []
+        for provider, model in self._resolve_runtime_v2_client_specs():
+            try:
+                clients.append((provider, model, get_llm_client(provider=provider, model=model)))
+            except Exception as e:
+                logger.warning(
+                    "runtime_v2.decision.client_unavailable provider=%s model=%s err=%s",
+                    provider,
+                    model,
+                    e,
+                )
+        return clients
+
+    async def _generate_with_fallback(self, messages: List[Dict[str, str]], *, max_tokens: int):
+        candidates = self._resolve_runtime_v2_clients()
+        if not candidates:
+            raise RuntimeError("No configured runtime_v2 decision providers are available")
+
+        last_error: Optional[Exception] = None
+        for index, (provider, model, client) in enumerate(candidates):
+            try:
+                return await asyncio.to_thread(
+                    client.generate_with_messages,
+                    messages,
+                    temperature=0.1,
+                    max_tokens=max_tokens,
+                    timeout=30,
+                )
+            except Exception as e:
+                last_error = e
+                if not self._is_transient_decision_error(e):
+                    raise
+                if index + 1 >= len(candidates):
+                    raise
+                next_provider, next_model, _next_client = candidates[index + 1]
+                logger.warning(
+                    "runtime_v2.decision.transient provider=%s model=%s fallback_provider=%s fallback_model=%s err=%s",
+                    provider,
+                    model,
+                    next_provider,
+                    next_model,
+                    e,
+                )
+
+        if last_error is not None:
+            raise last_error
+        raise RuntimeError("Runtime v2 decision fallback exhausted without candidates")
 
     def _build_error_action(self, error: Exception) -> RuntimeV2Action:
         response = getattr(error, "response", None)

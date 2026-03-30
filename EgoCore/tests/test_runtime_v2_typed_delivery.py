@@ -3,6 +3,7 @@ import pytest
 from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus
 from app.runtime_v2.progress_events import ProgressEvent, ProgressEventType
 from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
+from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 from app.telegram_bot import TelegramBot
 
 
@@ -202,3 +203,58 @@ async def test_resume_telegram_autonomy_run_blocks_after_transient_retry_budget(
     assert len(sent) == 1
     assert sent[0][0] == 8420019401
     assert "连续多次临时失败" in sent[0][1]
+
+
+@pytest.mark.asyncio
+async def test_manual_resume_resets_delivery_state_and_re_emits_progress():
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    sent = []
+
+    async def fake_send_chat_message(chat_id, text, finalize_evidence=True):
+        sent.append((chat_id, text, finalize_evidence))
+
+    async def fake_continue_runtime_v2_turn(session_key, state):
+        return TelegramTurnResult(
+            status="resumable_pause",
+            state=state,
+            reply=TelegramTurnReply(
+                reply_text="",
+                delivery_kind="progress",
+                status="resumable_pause",
+            ),
+            finish_reason="transient_decision_error",
+            checkpoint_payload={"slice": 2},
+        )
+
+    bot._send_chat_message = fake_send_chat_message
+    bot._continue_runtime_v2_turn = fake_continue_runtime_v2_turn
+
+    state = bot._get_runtime_state("telegram:dm:manual-retry")
+    state.final_sent = True
+    state.task_status = "blocked"
+    state.autonomy_context = {
+        "run_id": "autonomy_manual_retry",
+        "status": "blocked",
+        "progress_delivery": {
+            "last_phase_key": "planning_current_slice",
+            "last_text": "我继续处理这个任务，做完直接给你结果。",
+            "last_sent_at": 123.0,
+        },
+    }
+
+    run = AutonomyRun.create(
+        session_key="telegram:dm:manual-retry",
+        surface="telegram",
+        status=AutonomyRunStatus.BLOCKED,
+        executor_kind=AutonomyExecutorKind.GENERIC_RUNTIME,
+        objective="长任务恢复",
+        current_phase="blocked",
+    )
+    run.metadata = {"chat_id": 8420019401}
+    run.runtime_state_snapshot = state.to_snapshot()
+    run.last_result_summary = {"status": "blocked", "finish_reason": "transient_retry_budget_exceeded"}
+
+    outcome = await bot._resume_telegram_autonomy_run(run, trigger_source="manual")
+
+    assert outcome.status == AutonomyRunStatus.RESUMABLE_PAUSE
+    assert sent == [(8420019401, "我继续处理这个任务，做完直接给你结果。", False)]

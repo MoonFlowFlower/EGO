@@ -497,6 +497,11 @@ class TelegramBot:
             state.autonomy_context["progress_delivery"] = progress_delivery
         return progress_delivery
 
+    def _reset_autonomy_delivery_state(self, state: RuntimeV2State) -> None:
+        state.final_sent = False
+        progress_delivery = self._get_progress_delivery_state(state)
+        progress_delivery.clear()
+
     def _build_autonomy_progress_text(self, phase_key: str, payload: Optional[dict] = None) -> Optional[str]:
         payload = dict(payload or {})
         resolved_target = payload.get("resolved_target") or {}
@@ -1561,6 +1566,17 @@ class TelegramBot:
                 latest_run.status == AutonomyRunStatus.RESUMABLE_PAUSE
                 or self._is_manual_resumable_blocked_run(latest_run)
             ):
+                await self._publish_phase1_event(
+                    session_key=session_key,
+                    kind="telegram_manual_resume",
+                    trace_id=trace_id,
+                    message_id=ingress_message_id,
+                    payload={
+                        "run_id": latest_run.id,
+                        "status": latest_run.status.value,
+                        "hard_blocker_reason": latest_run.hard_blocker_reason,
+                    },
+                )
                 await self.autonomy_orchestrator.resume_run(latest_run.id, trigger_source="manual")
                 return
 
@@ -1888,6 +1904,8 @@ class TelegramBot:
     async def _resume_telegram_autonomy_run(self, run: AutonomyRun, trigger_source: str) -> AutonomySliceOutcome:
         state = self._restore_runtime_state_snapshot(run.session_key, run.runtime_state_snapshot)
         self._sync_autonomy_context(state, run, status=AutonomyRunStatus.RUNNING.value)
+        if trigger_source == "manual":
+            self._reset_autonomy_delivery_state(state)
         chat_id = run.metadata.get("chat_id")
         if (
             trigger_source == "driver"
@@ -1899,6 +1917,17 @@ class TelegramBot:
             state.task_status = "blocked"
             state.waiting_for_user_input = False
             if isinstance(chat_id, int):
+                await self._publish_phase1_event(
+                    session_key=run.session_key,
+                    kind="telegram_delivery",
+                    trace_id=run.metadata.get("trace_id"),
+                    message_id=run.metadata.get("ingress_message_id"),
+                    payload={
+                        "text": blocked_text[:1000],
+                        "delivery_kind": "final",
+                        "status": "blocked",
+                    },
+                )
                 await self._send_chat_message(chat_id, blocked_text, finalize_evidence=True)
                 state.final_sent = True
             blocked_result = TelegramTurnResult(

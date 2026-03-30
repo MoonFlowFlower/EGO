@@ -1,6 +1,7 @@
 import httpx
 import pytest
 
+from app.llm_client import LLMResponse
 from app.runtime_v2.decision_engine import RuntimeV2DecisionEngine
 from app.runtime_v2.state import RuntimeV2State
 
@@ -95,3 +96,47 @@ async def test_decision_engine_keeps_http_400_as_non_transient():
     assert action.raw["retryable"] is False
     assert action.raw["status_code"] == 400
     assert "bad request" in (action.question or "")
+
+
+@pytest.mark.asyncio
+async def test_decision_engine_uses_fallback_provider_after_transient_primary_failure(monkeypatch):
+    engine = RuntimeV2DecisionEngine()
+    state = RuntimeV2State(session_id="decision:fallback")
+    calls = []
+
+    class DummyPrimaryClient:
+        def generate_with_messages(self, *_args, **_kwargs):
+            calls.append(("qianfan", "glm-5"))
+            request = httpx.Request("POST", "https://qianfan.baidubce.com/v2/coding/chat/completions")
+            response = httpx.Response(500, request=request)
+            raise httpx.HTTPStatusError("boom", request=request, response=response)
+
+    class DummyFallbackClient:
+        def generate_with_messages(self, *_args, **_kwargs):
+            calls.append(("openai", "gpt-4o"))
+            return LLMResponse(
+                content='{"type":"chat","message":"fallback ok"}',
+                model="gpt-4o",
+                provider="openai",
+                usage={"prompt_tokens": 10, "completion_tokens": 5},
+            )
+
+    def fake_get_llm_client(provider=None, model=None):
+        if (provider, model) == ("qianfan", "glm-5"):
+            return DummyPrimaryClient()
+        if (provider, model) == ("openai", "gpt-4o"):
+            return DummyFallbackClient()
+        raise ValueError(f"unexpected provider/model: {(provider, model)}")
+
+    monkeypatch.setattr(
+        engine,
+        "_resolve_runtime_v2_client_specs",
+        lambda: [("qianfan", "glm-5"), ("openai", "gpt-4o")],
+    )
+    monkeypatch.setattr("app.runtime_v2.decision_engine.get_llm_client", fake_get_llm_client)
+
+    action = await engine.decide(state)
+
+    assert action.type == "chat"
+    assert action.message == "fallback ok"
+    assert calls == [("qianfan", "glm-5"), ("openai", "gpt-4o")]
