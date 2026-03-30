@@ -60,7 +60,7 @@ use_cases:
   
   execution:
     provider: qianfan
-    model: glm-5
+    model: deepseek-v3.2
     temperature: 0.3
     max_tokens: 8000
   
