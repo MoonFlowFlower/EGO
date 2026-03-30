@@ -108,7 +108,10 @@ def _verify_declared_outputs_exist(state: RuntimeV2State) -> Optional[Dict[str, 
     if (state.ingress_context or {}).get("request_mode") == "analyze":
         return None
 
-    filenames = _extract_explicit_output_filenames(state.last_user_turn or "")
+    obligations = list(state.output_obligations or [])
+    filenames = [str(item.get("name") or "") for item in obligations if str(item.get("name") or "").strip()]
+    if not filenames:
+        filenames = _extract_explicit_output_filenames(state.last_user_turn or "")
     if not filenames:
         return None
 
@@ -121,14 +124,27 @@ def _verify_declared_outputs_exist(state: RuntimeV2State) -> Optional[Dict[str, 
     checked_paths: List[str] = []
     task_started_at = state.last_task_started_at or 0.0
 
+    obligation_by_name = {
+        str(item.get("name") or "").lower(): item
+        for item in obligations
+        if str(item.get("name") or "").strip()
+    }
+
     for filename in filenames:
-        output_path = Path(filename) if Path(filename).is_absolute() else base_dir / filename
+        obligation = obligation_by_name.get(filename.lower()) or {}
+        obligation_path_value = obligation.get("path")
+        output_path = Path(obligation_path_value) if isinstance(obligation_path_value, str) and obligation_path_value.strip() else (
+            Path(filename) if Path(filename).is_absolute() else base_dir / filename
+        )
         checked_paths.append(str(output_path))
         if not output_path.exists():
             missing.append(filename)
             continue
         if task_started_at and output_path.stat().st_mtime + 1.0 < task_started_at:
             stale.append(filename)
+            continue
+        if obligation:
+            obligation["status"] = "verified"
 
     if missing:
         return {

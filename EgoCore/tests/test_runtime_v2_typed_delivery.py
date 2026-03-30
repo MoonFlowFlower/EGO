@@ -169,6 +169,72 @@ async def test_telegram_progress_delivery_dedupes_identical_phase_text():
 
 
 @pytest.mark.asyncio
+async def test_telegram_progress_delivery_edits_single_live_message():
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+
+    class DummySentMessage:
+        def __init__(self, chat_id, message_id):
+            self.message_id = message_id
+            self.chat = type("Chat", (), {"id": chat_id})()
+
+    class DummyBot:
+        def __init__(self):
+            self.sent = []
+            self.edits = []
+
+        async def send_message(self, chat_id, text):
+            self.sent.append((chat_id, text))
+            return DummySentMessage(chat_id, 9001)
+
+        async def edit_message_text(self, chat_id, message_id, text):
+            self.edits.append((chat_id, message_id, text))
+
+    bot.app = type("DummyApp", (), {"bot": DummyBot()})()
+
+    state = bot._get_runtime_state("telegram:dm:edit")
+    state.autonomy_context = {"run_id": "autonomy_edit", "status": "running", "progress_delivery": {}}
+
+    first = await bot._send_autonomy_progress_update(
+        state=state,
+        phase_key="executing_changes",
+        text="我先处理需要的文件。",
+        chat_id=8420019401,
+        trace_id="trace_edit",
+        ingress_message_id=10,
+    )
+    second = await bot._send_autonomy_progress_update(
+        state=state,
+        phase_key="verifying",
+        text="我先验证一下结果。",
+        chat_id=8420019401,
+        trace_id="trace_edit",
+        ingress_message_id=10,
+    )
+
+    assert first is True
+    assert second is True
+    assert bot.app.bot.sent == [(8420019401, "我先处理需要的文件。")]
+    assert bot.app.bot.edits == [(8420019401, 9001, "我先验证一下结果。")]
+
+
+def test_extract_output_obligations_preserves_exact_explicit_filenames(tmp_path):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:obligations")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"target_directory": str(tmp_path)},
+    }
+
+    obligations = bot._extract_output_obligations(
+        f"在 {tmp_path} 目录下创建 demo.txt。最后做一个print hello world.py文件",
+        state,
+    )
+
+    assert [item["name"] for item in obligations] == ["demo.txt", "print hello world.py"]
+    assert obligations[1]["path"].endswith("print hello world.py")
+
+
+@pytest.mark.asyncio
 async def test_resume_telegram_autonomy_run_blocks_after_transient_retry_budget():
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
     sent = []
@@ -265,10 +331,6 @@ async def test_resume_telegram_autonomy_run_uses_longer_backoff_for_rate_limited
 @pytest.mark.asyncio
 async def test_manual_resume_resets_delivery_state_and_re_emits_progress():
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
-    sent = []
-
-    async def fake_send_chat_message(chat_id, text, finalize_evidence=True):
-        sent.append((chat_id, text, finalize_evidence))
 
     async def fake_continue_runtime_v2_turn(session_key, state, **kwargs):
         return TelegramTurnResult(
@@ -283,8 +345,22 @@ async def test_manual_resume_resets_delivery_state_and_re_emits_progress():
             checkpoint_payload={"slice": 2},
         )
 
-    bot._send_chat_message = fake_send_chat_message
     bot._continue_runtime_v2_turn = fake_continue_runtime_v2_turn
+
+    class DummySentMessage:
+        def __init__(self, chat_id, message_id):
+            self.message_id = message_id
+            self.chat = type("Chat", (), {"id": chat_id})()
+
+    class DummyBot:
+        def __init__(self):
+            self.sent = []
+
+        async def send_message(self, chat_id, text):
+            self.sent.append((chat_id, text))
+            return DummySentMessage(chat_id, 9101)
+
+    bot.app = type("DummyApp", (), {"bot": DummyBot()})()
 
     state = bot._get_runtime_state("telegram:dm:manual-retry")
     state.final_sent = True
@@ -314,4 +390,77 @@ async def test_manual_resume_resets_delivery_state_and_re_emits_progress():
     outcome = await bot._resume_telegram_autonomy_run(run, trigger_source="manual")
 
     assert outcome.status == AutonomyRunStatus.RESUMABLE_PAUSE
-    assert sent == [(8420019401, "我继续处理这个任务，做完直接给你结果。", False)]
+    assert bot.app.bot.sent == [(8420019401, "我继续处理这个任务，做完直接给你结果。")]
+
+
+@pytest.mark.asyncio
+async def test_resume_telegram_autonomy_run_blocks_after_repeated_no_progress():
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    sent = []
+
+    async def fake_send_chat_message(chat_id, text, finalize_evidence=True):
+        sent.append((chat_id, text, finalize_evidence))
+
+    async def fake_continue_runtime_v2_turn(session_key, state, **kwargs):
+        state.current_step = "tool:file"
+        state.last_tool_result = {
+            "tool": "file",
+            "success": True,
+            "metadata": {"path": r"D:\Project\AIProject\MyProject\Test2\print_hello_world.py"},
+        }
+        state.last_verification_result = {
+            "passed": False,
+            "reason": "missing_target",
+            "verifier": "none",
+            "target": None,
+            "evidence": {},
+            "warnings": [],
+        }
+        return TelegramTurnResult(
+            status="resumable_pause",
+            state=state,
+            reply=TelegramTurnReply(
+                reply_text="",
+                delivery_kind="progress",
+                status="resumable_pause",
+            ),
+            finish_reason="max_steps_exhausted",
+            checkpoint_payload={"slice": 2},
+        )
+
+    bot._send_chat_message = fake_send_chat_message
+    bot._continue_runtime_v2_turn = fake_continue_runtime_v2_turn
+
+    state = bot._get_runtime_state("telegram:dm:no-progress")
+    state.task_status = "resumable_pause"
+    state.output_obligations = [
+        {"name": "demo.txt", "path": r"D:\Project\AIProject\MyProject\Test2\demo.txt", "status": "verified"},
+        {"name": "print hello world.py", "path": r"D:\Project\AIProject\MyProject\Test2\print hello world.py", "status": "pending"},
+    ]
+    state.autonomy_context = {"run_id": "autonomy_no_progress", "status": "resumable_pause", "progress_delivery": {}}
+
+    run = AutonomyRun.create(
+        session_key="telegram:dm:no-progress",
+        surface="telegram",
+        status=AutonomyRunStatus.RESUMABLE_PAUSE,
+        executor_kind=AutonomyExecutorKind.GENERIC_RUNTIME,
+        objective="长任务",
+        current_phase="planning_current_slice",
+    )
+    run.metadata = {"chat_id": 8420019401}
+    run.runtime_state_snapshot = state.to_snapshot()
+    run.last_result_summary = {"status": "resumable_pause", "finish_reason": "max_steps_exhausted"}
+
+    outcome = None
+    for index in range(bot.autonomy_no_progress_retry_limit):
+        outcome = await bot._resume_telegram_autonomy_run(run, trigger_source="driver")
+        run.runtime_state_snapshot = outcome.runtime_state_snapshot
+        run.last_result_summary = outcome.last_result_summary
+        run.hard_blocker_reason = outcome.hard_blocker_reason
+        run.status = outcome.status
+
+    assert outcome is not None
+    assert outcome.status == AutonomyRunStatus.BLOCKED
+    assert outcome.hard_blocker_reason == "no_progress_stall_detected"
+    assert len(sent) == 1
+    assert "连续多次没有新进展" in sent[0][1]

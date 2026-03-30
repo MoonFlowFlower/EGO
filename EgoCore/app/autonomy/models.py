@@ -28,6 +28,7 @@ class AutonomyStopReason(str, Enum):
     CONTEXT_COMPACTION_NEEDED = "context_compaction_needed"
     TRANSIENT_TIMEOUT = "transient_timeout"
     TRANSIENT_RETRY_BUDGET_EXCEEDED = "transient_retry_budget_exceeded"
+    NO_PROGRESS_STALL_DETECTED = "no_progress_stall_detected"
     WAITING_USER_INPUT = "waiting_user_input"
     BLOCKED = "blocked"
     COMPLETED = "completed"

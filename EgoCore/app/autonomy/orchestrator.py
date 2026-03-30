@@ -77,6 +77,7 @@ class AutonomyOrchestrator:
             and run.status == AutonomyRunStatus.BLOCKED
             and run.hard_blocker_reason in {
                 AutonomyStopReason.TRANSIENT_RETRY_BUDGET_EXCEEDED.value,
+                AutonomyStopReason.NO_PROGRESS_STALL_DETECTED.value,
                 AutonomyStopReason.AUTONOMY_SAFETY_CAP_EXCEEDED.value,
             }
         ):

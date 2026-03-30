@@ -15,6 +15,7 @@ import sys
 import asyncio
 import logging
 import os
+import re
 import socket
 import uuid
 from typing import Optional
@@ -22,6 +23,7 @@ import json
 import time
 from contextlib import asynccontextmanager
 from copy import deepcopy
+from pathlib import Path
 
 from telegram import BotCommand, Update
 from telegram.error import Conflict
@@ -100,6 +102,7 @@ except ImportError:
     _METRICS_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
+EXPLICIT_OUTPUT_FILENAME_RE = re.compile(r"(?<![\\/])([A-Za-z0-9][A-Za-z0-9 _.-]{0,120}\.[A-Za-z0-9]{1,8})")
 
 
 class TelegramBot:
@@ -162,6 +165,7 @@ class TelegramBot:
         self.autonomy_orchestrator = AutonomyOrchestrator() if use_runtime_v2 else None
         self.autonomy_transient_retry_limit = 3
         self.autonomy_rate_limited_retry_limit = 5
+        self.autonomy_no_progress_retry_limit = 3
         # Ingestion Manager
         self._ingestion_manager: Optional[IngestionManager] = None
         self._pending_restore_observation = pending_restore_observation
@@ -217,6 +221,54 @@ class TelegramBot:
                 or state.contract_phase in {"step_selected", "planning_stalled", "re_lock_needed", "executing"}
             )
         )
+
+    def _extract_output_obligations(self, text: str, state: RuntimeV2State) -> list[dict]:
+        ingress_context = state.ingress_context or {}
+        if ingress_context.get("runtime_action") != "execute_task":
+            return []
+
+        filenames: list[str] = []
+        for match in EXPLICIT_OUTPUT_FILENAME_RE.findall(text or ""):
+            candidate = match.strip().strip("\"'`")
+            lowered = candidate.lower()
+            if lowered.endswith((".txt", ".py", ".html", ".htm", ".md", ".json", ".js", ".css")):
+                filenames.append(candidate)
+
+        deduped: list[str] = []
+        seen = set()
+        for filename in filenames:
+            key = filename.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(filename)
+
+        if not deduped:
+            return []
+
+        resolved_target = ingress_context.get("resolved_target") or {}
+        requested_output = ingress_context.get("requested_output") or {}
+        base_dir = (
+            requested_output.get("target_directory")
+            or requested_output.get("directory_path")
+            or resolved_target.get("path")
+            or state.last_explicit_target
+        )
+        base_path = Path(base_dir) if isinstance(base_dir, str) and base_dir.strip() else None
+        if base_path is not None and base_path.suffix:
+            base_path = base_path.parent
+
+        obligations: list[dict] = []
+        for filename in deduped:
+            obligation_path = str((base_path / filename) if base_path is not None and not Path(filename).is_absolute() else Path(filename))
+            obligations.append(
+                {
+                    "name": filename,
+                    "path": obligation_path,
+                    "status": "pending",
+                }
+            )
+        return obligations
 
     def _capture_pre_runtime_response_plan(self, reply_text: str, pre_runtime) -> None:
         if not _EVIDENCE_COLLECTOR_AVAILABLE:
@@ -462,6 +514,7 @@ class TelegramBot:
             return False
         return run.hard_blocker_reason in {
             AutonomyStopReason.TRANSIENT_RETRY_BUDGET_EXCEEDED.value,
+            AutonomyStopReason.NO_PROGRESS_STALL_DETECTED.value,
             AutonomyStopReason.AUTONOMY_SAFETY_CAP_EXCEEDED.value,
         }
 
@@ -522,6 +575,132 @@ class TelegramBot:
             return max(suggested_retry_after, min(30 * attempt_index, 180))
         return max(suggested_retry_after, min(15 * attempt_index, 60))
 
+    def _clear_no_progress_tracking(self, run: AutonomyRun) -> None:
+        for key in (
+            "no_progress_signature",
+            "no_progress_count",
+            "no_progress_reason",
+            "no_progress_pending_outputs",
+        ):
+            run.metadata.pop(key, None)
+
+    def _compute_no_progress_signature(self, state: RuntimeV2State, result: TelegramTurnResult) -> Optional[str]:
+        if result.status != "resumable_pause":
+            return None
+        if getattr(result, "finish_reason", None) != AutonomyStopReason.MAX_STEPS_EXHAUSTED.value:
+            return None
+
+        verification = state.last_verification_result or {}
+        evidence = verification.get("evidence") or {}
+        obligations = list(state.output_obligations or [])
+        if obligations:
+            marker = {
+                "finish_reason": getattr(result, "finish_reason", None),
+                "verification_reason": verification.get("reason"),
+                "verified_outputs": sorted(
+                    str(item.get("name") or "")
+                    for item in obligations
+                    if str(item.get("status") or "").lower() == "verified"
+                ),
+                "pending_outputs": sorted(
+                    str(item.get("name") or "")
+                    for item in obligations
+                    if str(item.get("status") or "").lower() != "verified"
+                ),
+            }
+        else:
+            marker = {
+                "finish_reason": getattr(result, "finish_reason", None),
+                "verification_reason": verification.get("reason"),
+                "current_step": state.current_step,
+                "last_tool_path": ((state.last_tool_result or {}).get("metadata") or {}).get("path"),
+                "missing_outputs": evidence.get("missing_outputs") or [],
+                "stale_outputs": evidence.get("stale_outputs") or [],
+            }
+        return json.dumps(marker, ensure_ascii=False, sort_keys=True)
+
+    def _record_no_progress_state(self, run: AutonomyRun, state: RuntimeV2State, result: TelegramTurnResult) -> int:
+        signature = self._compute_no_progress_signature(state, result)
+        if not signature:
+            self._clear_no_progress_tracking(run)
+            return 0
+
+        previous_signature = str(run.metadata.get("no_progress_signature") or "")
+        count = int(run.metadata.get("no_progress_count") or 0)
+        count = (count + 1) if signature == previous_signature else 1
+
+        run.metadata["no_progress_signature"] = signature
+        run.metadata["no_progress_count"] = count
+        run.metadata["no_progress_reason"] = (state.last_verification_result or {}).get("reason")
+        run.metadata["no_progress_pending_outputs"] = [
+            str(item.get("name") or "")
+            for item in (state.output_obligations or [])
+            if str(item.get("status") or "").lower() != "verified"
+        ]
+        return count
+
+    def _build_no_progress_blocked_reply(self, state: RuntimeV2State) -> str:
+        pending_outputs = [
+            str(item.get("name") or "")
+            for item in (state.output_obligations or [])
+            if str(item.get("status") or "").lower() != "verified"
+        ]
+        verification = state.last_verification_result or {}
+        reason = str(verification.get("reason") or "").strip()
+        if pending_outputs:
+            detail = f"还没稳定完成这些显式产物：{', '.join(pending_outputs)}。"
+        elif reason:
+            detail = f"当前卡点：{reason}。"
+        else:
+            detail = "当前步骤连续多次没有产生新的可验证结果。"
+        return (
+            "这个任务在同一阶段连续多次没有新进展，我先停下来，避免继续空转。\n\n"
+            f"{detail}\n\n"
+            "你回复“继续”可以再试一次，或者把任务拆小后再试。"
+        )
+
+    async def _maybe_block_no_progress_run(
+        self,
+        *,
+        run: AutonomyRun,
+        state: RuntimeV2State,
+        result: TelegramTurnResult,
+        chat_id: Optional[int],
+    ) -> Optional[TelegramTurnResult]:
+        repeat_count = self._record_no_progress_state(run, state, result)
+        if repeat_count < self.autonomy_no_progress_retry_limit:
+            return None
+
+        blocked_text = self._build_no_progress_blocked_reply(state)
+        state.task_status = "blocked"
+        state.waiting_for_user_input = False
+        if isinstance(chat_id, int):
+            await self._publish_phase1_event(
+                session_key=run.session_key,
+                kind="telegram_delivery",
+                trace_id=run.metadata.get("trace_id"),
+                message_id=run.metadata.get("ingress_message_id"),
+                payload={
+                    "text": blocked_text[:1000],
+                    "delivery_kind": "final",
+                    "status": "blocked",
+                },
+            )
+            await self._send_chat_message(chat_id, blocked_text, finalize_evidence=True)
+            state.final_sent = True
+
+        return TelegramTurnResult(
+            status="blocked",
+            state=state,
+            reply=TelegramTurnReply(
+                reply_text=blocked_text,
+                delivery_kind="final",
+                status="blocked",
+            ),
+            finish_reason=AutonomyStopReason.NO_PROGRESS_STALL_DETECTED.value,
+            checkpoint_payload=run.checkpoint_payload,
+        )
+
     def _build_autonomy_progress_text(self, phase_key: str, payload: Optional[dict] = None) -> Optional[str]:
         payload = dict(payload or {})
         resolved_target = payload.get("resolved_target") or {}
@@ -576,20 +755,63 @@ class TelegramBot:
         ):
             return False
 
+        progress_chat_id = progress_delivery.get("chat_id")
+        if not isinstance(progress_chat_id, int):
+            if isinstance(chat_id, int):
+                progress_chat_id = chat_id
+            elif update is not None and getattr(update, "effective_chat", None) is not None:
+                progress_chat_id = update.effective_chat.id
+
+        sent_message = None
+        existing_message_id = progress_delivery.get("message_id")
+        delivery_mode = "send"
+        if self.app and getattr(self.app, "bot", None) and isinstance(progress_chat_id, int) and isinstance(existing_message_id, int):
+            try:
+                await self.app.bot.edit_message_text(
+                    chat_id=progress_chat_id,
+                    message_id=existing_message_id,
+                    text=text,
+                )
+                delivery_mode = "edit"
+            except Exception:
+                logger.warning(
+                    "telegram.progress_edit.failed session=%s chat_id=%s message_id=%s phase=%s",
+                    state.session_id,
+                    progress_chat_id,
+                    existing_message_id,
+                    phase_key,
+                    exc_info=True,
+                )
+                existing_message_id = None
+
+        if existing_message_id is None:
+            try:
+                if self.app and getattr(self.app, "bot", None) and isinstance(progress_chat_id, int):
+                    sent_message = await self.app.bot.send_message(chat_id=progress_chat_id, text=text)
+                elif update is not None:
+                    sent_message = await update.message.reply_text(text)
+                else:
+                    return False
+            except Exception as e:
+                logger.warning("telegram.progress_send.failed session=%s err=%s", state.session_id, e)
+                return False
+
+            progress_delivery["message_id"] = sent_message.message_id if sent_message else None
+            progress_delivery["chat_id"] = (
+                sent_message.chat.id if sent_message and sent_message.chat else progress_chat_id
+            )
+
         await self._publish_phase1_event(
             session_key=state.session_id,
             kind="telegram_progress_delivery",
             trace_id=trace_id,
-            message_id=ingress_message_id,
-            payload={"phase_key": phase_key, "text": text[:300]},
+            message_id=progress_delivery.get("message_id") or ingress_message_id,
+            payload={
+                "phase_key": phase_key,
+                "text": text[:300],
+                "delivery_mode": delivery_mode,
+            },
         )
-        if update is not None:
-            await self._send_reply(update, text, finalize_evidence=False)
-        elif isinstance(chat_id, int):
-            await self._send_chat_message(chat_id, text, finalize_evidence=False)
-        else:
-            return False
-
         progress_delivery["last_phase_key"] = phase_key
         progress_delivery["last_text"] = text
         progress_delivery["last_sent_at"] = time.time()
@@ -1643,6 +1865,9 @@ class TelegramBot:
             state.ingress_context["proto_self_subject_profile"] = state.proto_self_subject_profile_override
             state.ingress_context["proto_self_subject_profile_source"] = "telegram_session_override"
         pre_runtime = self.telegram_runtime_bridge.plan_pre_runtime(ingress, state)
+        runtime_action = getattr(ingress, "_runtime_action", None)
+        if runtime_action == "execute_task":
+            state.output_obligations = self._extract_output_obligations(text, state)
         logger.info("runtime_v2.turn.start session=%s text=%r ingress=%s parser_source=%s",
                     session_key, text[:200], ingress,
                     ingress._parsed_intent_graph.parser_source if ingress._parsed_intent_graph else "none")
@@ -1671,7 +1896,6 @@ class TelegramBot:
 
         self._activate_pending_restore_observation(state)
 
-        runtime_action = getattr(ingress, "_runtime_action", None)
         if runtime_action == "execute_task" and self.autonomy_orchestrator is not None:
             await self._run_with_autonomy(
                 update=update,
@@ -1898,6 +2122,19 @@ class TelegramBot:
                 },
             )
             if result.status == "resumable_pause":
+                blocked_result = await self._maybe_block_no_progress_run(
+                    run=run,
+                    state=state,
+                    result=result,
+                    chat_id=chat_id,
+                )
+                if blocked_result is not None:
+                    return self._build_autonomy_outcome(
+                        run=run,
+                        state=state,
+                        result=blocked_result,
+                        default_phase="blocked",
+                    )
                 sent_progress = 0
                 if executor_kind == AutonomyExecutorKind.GENERIC_RUNTIME:
                     sent_progress = await self._deliver_runtime_progress_events(
@@ -1935,6 +2172,7 @@ class TelegramBot:
                     result=result,
                     default_phase="planning_current_slice",
                 )
+            self._clear_no_progress_tracking(run)
             await self._deliver_runtime_v2_result(
                 update=update,
                 state=state,
@@ -1971,6 +2209,7 @@ class TelegramBot:
         self._sync_autonomy_context(state, run, status=AutonomyRunStatus.RUNNING.value)
         if trigger_source == "manual":
             self._reset_autonomy_delivery_state(state)
+            self._clear_no_progress_tracking(run)
         chat_id = run.metadata.get("chat_id")
         if (
             trigger_source == "driver"
@@ -2042,6 +2281,23 @@ class TelegramBot:
                 trace_id=run.metadata.get("trace_id"),
                 ingress_message_id=run.metadata.get("ingress_message_id"),
             )
+
+        if result.status == "resumable_pause":
+            blocked_result = await self._maybe_block_no_progress_run(
+                run=run,
+                state=state,
+                result=result,
+                chat_id=chat_id if isinstance(chat_id, int) else None,
+            )
+            if blocked_result is not None:
+                return self._build_autonomy_outcome(
+                    run=run,
+                    state=state,
+                    result=blocked_result,
+                    default_phase="blocked",
+                )
+        else:
+            self._clear_no_progress_tracking(run)
 
         if result.status != "resumable_pause":
             if isinstance(chat_id, int):

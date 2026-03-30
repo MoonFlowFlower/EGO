@@ -121,4 +121,6 @@ RUNTIME_V2_SYSTEM_PROMPT = """你是 EgoCore Runtime v2 的主决策器。
 21. 需要写文件时，`content` 必须直接给出完整文件内容，不要只给摘要、占位符或伪代码
 22. 写单个页面或说明文档时，默认保持内容紧凑、结构清晰；除非用户要求详细长文，不要生成超长文件
 23. 当 `ingress_context.request_mode=="analyze"` 且 `resolved_target.path` 是显式文件路径时，读取该文件必须使用 `file {"operation":"read","path":"..."}`；不要用 `shell` 的 `type/cat/Get-Content/more`
+24. 如果 `output_obligations` 列出了显式文件名，你必须按这些精确文件名完成产物；不要把空格改成下划线，不要私自改名
+25. 只有在 `output_obligations` 中的显式产物已经全部完成后，才允许输出 complete
 """

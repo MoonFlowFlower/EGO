@@ -235,6 +235,7 @@ class RuntimeV2State:
     need_relock: bool = False
     contract_phase: str = "pending"
     autonomy_context: Optional[Dict[str, Any]] = None
+    output_obligations: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_prompt_context(self) -> Dict[str, Any]:
         """
@@ -296,6 +297,7 @@ class RuntimeV2State:
             "need_relock": self.need_relock,
             "contract_phase": self.contract_phase,
             "autonomy_context": self.autonomy_context,
+            "output_obligations": self.output_obligations,
         }
 
     def to_decision_prompt_context(self) -> Dict[str, Any]:
@@ -341,6 +343,7 @@ class RuntimeV2State:
             "need_relock": self.need_relock,
             "contract_phase": self.contract_phase,
             "autonomy_context": _summarize_autonomy_context(self.autonomy_context),
+            "output_obligations": list(self.output_obligations),
         }
 
     def add_pending_artifact(self, artifact_id: str, filename: Optional[str] = None,
@@ -442,6 +445,7 @@ class RuntimeV2State:
         self.final_sent = False
         self.pending_progress_events = []
         self.autonomy_context = None
+        self.output_obligations = []
 
     def set_task_contract(self, contract: Optional[Dict[str, Any]]) -> None:
         self.task_contract = contract
@@ -491,6 +495,7 @@ class RuntimeV2State:
         self.total_steps_planned = None
         self.pending_progress_events = []
         self.autonomy_context = None
+        self.output_obligations = []
         # 保留 pending_artifacts，因为用户可能在 reset 后继续用同一批文件
         return self.generation_id
 
@@ -634,6 +639,7 @@ class RuntimeV2State:
             "need_relock": self.need_relock,
             "contract_phase": self.contract_phase,
             "autonomy_context": self.autonomy_context,
+            "output_obligations": list(self.output_obligations),
         }
 
     @classmethod
@@ -687,6 +693,7 @@ class RuntimeV2State:
         state.need_relock = bool(snapshot.get("need_relock"))
         state.contract_phase = snapshot.get("contract_phase") or "pending"
         state.autonomy_context = snapshot.get("autonomy_context")
+        state.output_obligations = list(snapshot.get("output_obligations") or [])
         return state
 
     # ==================== WS-2: Target Binding ====================
