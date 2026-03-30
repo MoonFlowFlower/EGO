@@ -40,6 +40,35 @@ def test_decision_engine_uses_small_budget_for_non_write_requests():
     assert engine._decide_max_tokens(state) == 1200
 
 
+def test_decision_engine_uses_configured_request_timeout(monkeypatch):
+    engine = RuntimeV2DecisionEngine()
+    state = RuntimeV2State(session_id="decision:timeout-default")
+    state.ingress_context = {"request_mode": "execute"}
+
+    class DummyConfig:
+        llm = {"request": {"timeout": 60}}
+
+    monkeypatch.setattr("app.runtime_v2.decision_engine.get_config", lambda: DummyConfig())
+
+    assert engine._decide_timeout_seconds(state) == 60
+
+
+def test_decision_engine_boosts_timeout_for_html_writes(monkeypatch):
+    engine = RuntimeV2DecisionEngine()
+    state = RuntimeV2State(session_id="decision:timeout-html")
+    state.ingress_context = {
+        "request_mode": "write",
+        "requested_output": {"format": "html"},
+    }
+
+    class DummyConfig:
+        llm = {"request": {"timeout": 60}}
+
+    monkeypatch.setattr("app.runtime_v2.decision_engine.get_config", lambda: DummyConfig())
+
+    assert engine._decide_timeout_seconds(state) == 90
+
+
 def test_decision_engine_builds_restore_context_from_ingress_observation():
     engine = RuntimeV2DecisionEngine()
     context = engine.build_restore_context(

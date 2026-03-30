@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, Tuple
 
 import httpx
 
-from app.config import get_config
+from app.config import ConfigError, get_config
 from app.llm_client import get_llm_client
 
 from .action_protocol import RUNTIME_V2_SYSTEM_PROMPT, RuntimeV2Action
@@ -176,8 +176,13 @@ class RuntimeV2DecisionEngine:
             },
         ]
         max_tokens = self._decide_max_tokens(state)
+        timeout_seconds = self._decide_timeout_seconds(state)
         try:
-            response = await self._generate_with_fallback(messages, max_tokens=max_tokens)
+            response = await self._generate_with_fallback(
+                messages,
+                max_tokens=max_tokens,
+                timeout_seconds=timeout_seconds,
+            )
             if response.usage:
                 prompt_tokens = response.usage.get("prompt_tokens", 0) or response.usage.get("input_tokens", 0)
                 completion_tokens = response.usage.get("completion_tokens", 0) or response.usage.get("output_tokens", 0)
@@ -194,6 +199,24 @@ class RuntimeV2DecisionEngine:
         if ingress.get("request_mode") == "write":
             return 4000
         return 1200
+
+    def _decide_timeout_seconds(self, state: RuntimeV2State) -> int:
+        timeout_seconds = 60
+        try:
+            config = get_config()
+            request_cfg = config.llm.get("request") or {}
+            timeout_seconds = int(request_cfg.get("timeout") or 60)
+        except (ConfigError, TypeError, ValueError):
+            timeout_seconds = 60
+
+        ingress = state.ingress_context or {}
+        requested_output = ingress.get("requested_output") or {}
+        output_format = requested_output.get("format")
+        if output_format in {"html", "markdown"}:
+            return max(timeout_seconds, 90)
+        if ingress.get("request_mode") == "write":
+            return max(timeout_seconds, 75)
+        return timeout_seconds
 
     def _is_transient_decision_error(self, error: Exception) -> bool:
         if isinstance(error, httpx.HTTPStatusError):
@@ -271,7 +294,13 @@ class RuntimeV2DecisionEngine:
                 )
         return clients
 
-    async def _generate_with_fallback(self, messages: List[Dict[str, str]], *, max_tokens: int):
+    async def _generate_with_fallback(
+        self,
+        messages: List[Dict[str, str]],
+        *,
+        max_tokens: int,
+        timeout_seconds: int,
+    ):
         candidates = self._resolve_runtime_v2_clients()
         if not candidates:
             raise RuntimeError("No configured runtime_v2 decision providers are available")
@@ -285,7 +314,7 @@ class RuntimeV2DecisionEngine:
                     messages,
                     temperature=0.1,
                     max_tokens=max_tokens,
-                    timeout=30,
+                    timeout=timeout_seconds,
                 )
             except Exception as e:
                 last_error = e
