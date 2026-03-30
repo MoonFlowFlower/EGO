@@ -164,3 +164,22 @@ async def test_runtime_v2_loop_executes_explicit_analyze_with_file_tool(monkeypa
 
     assert result.status == "completed_verified"
     assert result.reply_text == "已读取完成"
+
+
+@pytest.mark.asyncio
+async def test_runtime_v2_loop_max_steps_exhausted_returns_resumable_pause(monkeypatch):
+    loop = RuntimeV2Loop()
+    state = loop.get_state("session:max-steps")
+
+    async def fake_decide(_state):
+        return RuntimeV2Action.from_model_output(
+            json.dumps({"type": "plan", "goal": "继续推进", "steps": ["a", "b"]}, ensure_ascii=False)
+        )
+
+    monkeypatch.setattr(loop, "_decide", fake_decide)
+
+    result = await loop.run_turn_typed("session:max-steps", "继续这个执行任务", max_steps=2)
+
+    assert result.status == "resumable_pause"
+    assert result.finish_reason == "max_steps_exhausted"
+    assert result.checkpoint_payload["state_snapshot"]["task_status"] == "resumable_pause"

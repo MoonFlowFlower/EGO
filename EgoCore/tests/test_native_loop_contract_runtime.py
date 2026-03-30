@@ -213,9 +213,10 @@ def test_native_loop_preserves_state_when_planning_times_out_after_artifact_relo
     )
 
     assert result.finish_reason == "planning_timeout"
-    assert result.status == "waiting_input"
+    assert result.status == "resumable_pause"
     assert result.tool_results[0]["tool_name"] == "read_artifact"
     assert result.next_step_decision["action_type"] == "call_tool"
     assert result.task_contract["target_path"] == str(target)
     assert result.verification_result["stop_reason"] == "planning_timeout"
-    assert "回复“继续”可从当前步骤继续" in result.reply_text
+    assert result.reply_text == ""
+    assert result.checkpoint_payload["next_step"]["action_type"] == "call_tool"

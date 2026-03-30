@@ -167,6 +167,7 @@ class RuntimeV2State:
     verification_history: List[Dict[str, Any]] = field(default_factory=list)
     need_relock: bool = False
     contract_phase: str = "pending"
+    autonomy_context: Optional[Dict[str, Any]] = None
 
     def to_prompt_context(self) -> Dict[str, Any]:
         """
@@ -227,6 +228,7 @@ class RuntimeV2State:
             "verification_history": self.verification_history[-3:],
             "need_relock": self.need_relock,
             "contract_phase": self.contract_phase,
+            "autonomy_context": self.autonomy_context,
         }
 
     def add_pending_artifact(self, artifact_id: str, filename: Optional[str] = None,
@@ -290,7 +292,7 @@ class RuntimeV2State:
         return self.total_prompt_tokens + self.total_completion_tokens
 
     def is_busy(self) -> bool:
-        return self.task_status in {"running", "waiting_input"} or bool(self.current_goal)
+        return self.task_status in {"running", "waiting_input", "resumable_pause"} or bool(self.current_goal)
 
     def mark_task_started(self, goal: Optional[str] = None) -> None:
         self.task_status = "running"
@@ -327,6 +329,7 @@ class RuntimeV2State:
         self.total_steps_planned = None
         self.active_turn_status = "idle"
         self.final_sent = False
+        self.autonomy_context = None
 
     def set_task_contract(self, contract: Optional[Dict[str, Any]]) -> None:
         self.task_contract = contract
@@ -374,6 +377,7 @@ class RuntimeV2State:
         self.contract_phase = "pending"
         self.current_step_number = 0
         self.total_steps_planned = None
+        self.autonomy_context = None
         # 保留 pending_artifacts，因为用户可能在 reset 后继续用同一批文件
         return self.generation_id
 
@@ -469,6 +473,108 @@ class RuntimeV2State:
     def has_pending_progress_events(self) -> bool:
         """检查是否有待发送的进度事件"""
         return len(self.pending_progress_events) > 0
+
+    def to_snapshot(self) -> Dict[str, Any]:
+        return {
+            "session_id": self.session_id,
+            "task_id": self.task_id,
+            "task_status": self.task_status,
+            "generation_id": self.generation_id,
+            "active_turn_id": self.active_turn_id,
+            "active_turn_status": self.active_turn_status,
+            "final_sent": self.final_sent,
+            "current_goal": self.current_goal,
+            "current_step": self.current_step,
+            "waiting_for_user_input": self.waiting_for_user_input,
+            "last_user_turn": self.last_user_turn,
+            "last_model_action": self.last_model_action,
+            "last_tool_result": self.last_tool_result,
+            "last_verification_result": self.last_verification_result,
+            "last_task_started_at": self.last_task_started_at,
+            "last_task_completed_at": self.last_task_completed_at,
+            "last_busy_notice_at": self.last_busy_notice_at,
+            "last_failure_notice_at": self.last_failure_notice_at,
+            "last_failure_notice_text": self.last_failure_notice_text,
+            "last_challenge_turn": self.last_challenge_turn,
+            "delivery_ledger": self.delivery_ledger.to_dict(),
+            "history": list(self.history),
+            "total_prompt_tokens": self.total_prompt_tokens,
+            "total_completion_tokens": self.total_completion_tokens,
+            "llm_call_count": self.llm_call_count,
+            "compaction_count": self.compaction_count,
+            "pending_artifacts": list(self.pending_artifacts),
+            "last_uploaded_artifact": self.last_uploaded_artifact,
+            "last_explicit_target": self.last_explicit_target,
+            "last_inferred_action": self.last_inferred_action,
+            "last_inferred_target": self.last_inferred_target,
+            "pending_bundle_summary": self.pending_bundle_summary,
+            "last_delivery_type": self.last_delivery_type,
+            "current_step_number": self.current_step_number,
+            "total_steps_planned": self.total_steps_planned,
+            "proto_self_context": self.proto_self_context,
+            "ingress_context": self.ingress_context,
+            "proto_self_version_override": self.proto_self_version_override,
+            "proto_self_subject_profile_override": self.proto_self_subject_profile_override,
+            "task_contract": self.task_contract,
+            "next_step_decision": self.next_step_decision,
+            "verification_history": list(self.verification_history),
+            "need_relock": self.need_relock,
+            "contract_phase": self.contract_phase,
+            "autonomy_context": self.autonomy_context,
+        }
+
+    @classmethod
+    def from_snapshot(cls, snapshot: Dict[str, Any]) -> "RuntimeV2State":
+        state = cls(session_id=str(snapshot.get("session_id") or "unknown"))
+        state.task_id = snapshot.get("task_id")
+        state.task_status = snapshot.get("task_status") or "idle"
+        state.generation_id = int(snapshot.get("generation_id") or 0)
+        state.active_turn_id = snapshot.get("active_turn_id")
+        state.active_turn_status = snapshot.get("active_turn_status") or "idle"
+        state.final_sent = bool(snapshot.get("final_sent"))
+        state.current_goal = snapshot.get("current_goal")
+        state.current_step = snapshot.get("current_step")
+        state.waiting_for_user_input = bool(snapshot.get("waiting_for_user_input"))
+        state.last_user_turn = snapshot.get("last_user_turn")
+        state.last_model_action = snapshot.get("last_model_action")
+        state.last_tool_result = snapshot.get("last_tool_result")
+        state.last_verification_result = snapshot.get("last_verification_result")
+        state.last_task_started_at = snapshot.get("last_task_started_at")
+        state.last_task_completed_at = snapshot.get("last_task_completed_at")
+        state.last_busy_notice_at = snapshot.get("last_busy_notice_at")
+        state.last_failure_notice_at = snapshot.get("last_failure_notice_at")
+        state.last_failure_notice_text = snapshot.get("last_failure_notice_text")
+        state.last_challenge_turn = snapshot.get("last_challenge_turn")
+        ledger_payload = snapshot.get("delivery_ledger") or {}
+        state.delivery_ledger.last_busy_notice_at = ledger_payload.get("last_busy_notice_at")
+        state.delivery_ledger.last_failure_notice_at = ledger_payload.get("last_failure_notice_at")
+        state.delivery_ledger.last_failure_notice_text = ledger_payload.get("last_failure_notice_text")
+        state.delivery_ledger.sent_keys = dict(ledger_payload.get("sent_keys") or {})
+        state.history = list(snapshot.get("history") or [])
+        state.total_prompt_tokens = int(snapshot.get("total_prompt_tokens") or 0)
+        state.total_completion_tokens = int(snapshot.get("total_completion_tokens") or 0)
+        state.llm_call_count = int(snapshot.get("llm_call_count") or 0)
+        state.compaction_count = int(snapshot.get("compaction_count") or 0)
+        state.pending_artifacts = list(snapshot.get("pending_artifacts") or [])
+        state.last_uploaded_artifact = snapshot.get("last_uploaded_artifact")
+        state.last_explicit_target = snapshot.get("last_explicit_target")
+        state.last_inferred_action = snapshot.get("last_inferred_action")
+        state.last_inferred_target = snapshot.get("last_inferred_target")
+        state.pending_bundle_summary = snapshot.get("pending_bundle_summary")
+        state.last_delivery_type = snapshot.get("last_delivery_type")
+        state.current_step_number = int(snapshot.get("current_step_number") or 0)
+        state.total_steps_planned = snapshot.get("total_steps_planned")
+        state.proto_self_context = snapshot.get("proto_self_context")
+        state.ingress_context = snapshot.get("ingress_context")
+        state.proto_self_version_override = snapshot.get("proto_self_version_override")
+        state.proto_self_subject_profile_override = snapshot.get("proto_self_subject_profile_override")
+        state.task_contract = snapshot.get("task_contract")
+        state.next_step_decision = snapshot.get("next_step_decision")
+        state.verification_history = list(snapshot.get("verification_history") or [])
+        state.need_relock = bool(snapshot.get("need_relock"))
+        state.contract_phase = snapshot.get("contract_phase") or "pending"
+        state.autonomy_context = snapshot.get("autonomy_context")
+        return state
 
     # ==================== WS-2: Target Binding ====================
 

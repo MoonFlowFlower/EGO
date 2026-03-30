@@ -502,13 +502,14 @@ async def test_native_loop_turn_preserves_state_for_planning_timeout(monkeypatch
         enabled = False
 
     class NativeResult:
-        status = "waiting_input"
+        status = "resumable_pause"
         finish_reason = "planning_timeout"
-        reply_text = "下一步规划超时，当前任务状态已保留。回复“继续”可从当前步骤继续。"
+        reply_text = ""
         task_contract = {"task_id": "contract_1", "goal": "x", "success_criteria": [], "hard_constraints": [], "risk_level": "medium", "ask_needed": False}
         next_step_decision = {"step_id": "step_2", "action_type": "call_tool", "expected_signal": "write target file", "tool_name": "file"}
         verification_result = {"step_id": "step_2", "expected_signal_matched": False, "need_relock": False, "stop_reason": "planning_timeout", "contract_delta": {"stage_error_code": "planning_timeout"}}
         tool_results = [{"tool_name": "read_artifact", "result": {"success": True, "output": "在D:\\Project\\AIProject\\MyProject\\Test\\task_output.html创建html页面", "error": None, "metadata": {"stage_error_code": None}}}]
+        checkpoint_payload = {"next_step": {"action_type": "call_tool"}}
 
     async def fake_run_turn(**kwargs):
         return NativeResult()
@@ -525,10 +526,10 @@ async def test_native_loop_turn_preserves_state_for_planning_timeout(monkeypatch
         ack_text=None,
     )
 
-    assert result.status == "waiting_input"
-    assert state.task_status == "waiting_input"
+    assert result.status == "resumable_pause"
+    assert state.task_status == "resumable_pause"
     assert state.contract_phase == "planning_stalled"
-    assert state.waiting_for_user_input is True
+    assert state.waiting_for_user_input is False
     assert state.ingress_context["resolved_artifact_text"].startswith("在D:\\Project")
 
 

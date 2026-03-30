@@ -33,7 +33,7 @@ class TestProgressEvents:
         )
         
         assert event.event_type == ProgressEventType.TARGET_SELECTED
-        assert "任务单" in event.message
+        assert "目标" in event.message
         assert event.target_filename == "测试任务单.txt"
     
     def test_build_executing_step_event(self):
@@ -46,8 +46,7 @@ class TestProgressEvents:
         )
         
         assert event.event_type == ProgressEventType.EXECUTING_STEP
-        assert "第 1 步" in event.message
-        assert "创建目标文件" in event.message
+        assert event.message == "我先推进当前步骤。"
 
     def test_build_executing_step_event_uses_non_mechanical_file_copy(self):
         event = build_progress_event(
@@ -58,8 +57,7 @@ class TestProgressEvents:
         )
 
         assert event.event_type == ProgressEventType.EXECUTING_STEP
-        assert "第 1 步" not in event.message
-        assert event.message == "我先读取相关文件。"
+        assert event.message == "我先处理需要的文件。"
     
     def test_build_blocked_event(self):
         """构建 blocked 事件"""
@@ -207,7 +205,7 @@ class TestGenericBusyReplaced:
         action = bridge.plan_delivery(result, state, is_challenge_turn=False)
         
         assert action.should_send is True
-        assert "修改文件" in action.text
+        assert action.text == "我先推进当前步骤。"
     
     def test_terminal_event_updates_delivery_type(self):
         """terminal 事件更新 last_delivery_type"""

@@ -25,10 +25,10 @@ import time
 
 class ProgressEventType(str, Enum):
     """进度事件类型"""
-    TARGET_SELECTED = "target_selected"
+    TARGET_SELECTED = "locking_goal"
     READING_CONTEXT = "reading_context"
-    EXECUTING_STEP = "executing_step"
-    VERIFYING_RESULT = "verifying_result"
+    EXECUTING_STEP = "executing_changes"
+    VERIFYING_RESULT = "verifying"
     BLOCKED = "blocked"
     COMPLETED = "completed"
 
@@ -36,24 +36,24 @@ class ProgressEventType(str, Enum):
 # 文案模板（尽量短，有信息量）
 PROGRESS_TEMPLATES = {
     ProgressEventType.TARGET_SELECTED: {
-        "task": "我先按刚发的任务单来走。",
-        "spec": "我先把 {filename} 作为约束参考。",
-        "bundle": "我先把 {count} 份规范作为约束，把 {task} 当执行目标。",
-        "default": "我先把目标确定下来。",
+        "task": "我先把目标锁定下来。",
+        "spec": "我先把 {filename} 作为当前约束。",
+        "bundle": "我先锁定任务目标，再把 {count} 份约束一起带上。",
+        "default": "我先锁定目标。",
     },
     ProgressEventType.READING_CONTEXT: {
-        "default": "现在读取任务目标和约束。",
-        "context": "我先看一下相关文件的内容。",
+        "default": "我先读取相关上下文。",
+        "context": "我先把相关文件读全。",
     },
     ProgressEventType.EXECUTING_STEP: {
-        "default": "现在开始执行。",
-        "step": "开始执行第 {step} 步：{action}。",
-        "file": "我先读取相关文件。",
-        "shell": "我先运行需要的命令。",
-        "python": "我先运行需要的脚本。",
+        "default": "我先推进当前这一步。",
+        "step": "我先推进当前步骤。",
+        "file": "我先处理需要的文件。",
+        "shell": "我先跑必要的检查。",
+        "python": "我先执行必要的脚本。",
     },
     ProgressEventType.VERIFYING_RESULT: {
-        "default": "我先快速验证一下结果。",
+        "default": "我先验证一下结果。",
     },
     ProgressEventType.BLOCKED: {
         "default": "这里卡住了：{reason}。",

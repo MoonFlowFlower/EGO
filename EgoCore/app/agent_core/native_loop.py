@@ -23,6 +23,7 @@ class NativeLoopResult:
     task_contract: Optional[Dict[str, Any]] = None
     next_step_decision: Optional[Dict[str, Any]] = None
     verification_result: Optional[Dict[str, Any]] = None
+    checkpoint_payload: Optional[Dict[str, Any]] = None
 
 
 class NativeToolCallingLoop:
@@ -76,15 +77,24 @@ class NativeToolCallingLoop:
         ingress_context: Optional[Dict[str, Any]] = None,
         proto_self_context: Optional[Dict[str, Any]] = None,
         max_rounds: int = 6,
+        resume_checkpoint: Optional[Dict[str, Any]] = None,
     ) -> NativeLoopResult:
-        accumulated_tool_results: List[Dict[str, Any]] = []
-        contract = self.contract_runtime.lock_contract(
-            session_key=session_key,
-            user_input=user_input,
-            ingress_context=ingress_context,
-            proto_self_context=proto_self_context,
-        )
-        next_step = self.contract_runtime.decide_next_step(contract=contract, ingress_context=ingress_context)
+        resume_checkpoint = dict(resume_checkpoint or {})
+        accumulated_tool_results: List[Dict[str, Any]] = list(resume_checkpoint.get("accumulated_tool_results") or [])
+        ingress_context = dict(resume_checkpoint.get("ingress_context") or ingress_context or {})
+        proto_self_context = dict(resume_checkpoint.get("proto_self_context") or proto_self_context or {})
+
+        if resume_checkpoint.get("contract") and resume_checkpoint.get("next_step"):
+            contract = TaskContract.from_dict(resume_checkpoint["contract"])
+            next_step = NextStepDecision.from_dict(resume_checkpoint["next_step"])
+        else:
+            contract = self.contract_runtime.lock_contract(
+                session_key=session_key,
+                user_input=user_input,
+                ingress_context=ingress_context,
+                proto_self_context=proto_self_context,
+            )
+            next_step = self.contract_runtime.decide_next_step(contract=contract, ingress_context=ingress_context)
         if next_step.action_type == "ask_user":
             reply_text = self.contract_runtime.build_ask_reply(contract)
             verification = self.contract_runtime.verify_step(
@@ -184,9 +194,16 @@ class NativeToolCallingLoop:
                 reply_timeout=reply_timeout,
             )
         except (PlanningTimeoutError, TimeoutError) as exc:
+            checkpoint_payload = {
+                "contract": contract.to_dict(),
+                "next_step": next_step.to_dict(),
+                "ingress_context": ingress_context,
+                "proto_self_context": proto_self_context,
+                "accumulated_tool_results": accumulated_tool_results,
+            }
             return NativeLoopResult(
-                status="waiting_input",
-                reply_text="下一步规划超时，当前任务状态已保留。回复“继续”可从当前步骤继续。",
+                status="resumable_pause",
+                reply_text="",
                 tool_results=accumulated_tool_results,
                 usage=[],
                 finish_reason="planning_timeout",
@@ -200,6 +217,7 @@ class NativeToolCallingLoop:
                     "need_relock": False,
                     "stop_reason": "planning_timeout",
                 },
+                checkpoint_payload=checkpoint_payload,
             )
         if asyncio.iscoroutine(reply_text):
             reply_text, tool_results, usage, last_finish_reason = await reply_text

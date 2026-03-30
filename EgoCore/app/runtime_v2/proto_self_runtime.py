@@ -48,7 +48,7 @@ def _seed_runtime_summary(state: RuntimeV2State) -> Dict[str, Any]:
         "state_scope": "agent_global",
         "runtime_action": ingress_context.get("runtime_action"),
         "request_mode": ingress_context.get("request_mode"),
-        "active_task": state.task_status in {"running", "waiting_input"},
+        "active_task": state.task_status in {"running", "waiting_input", "resumable_pause"},
         "confirm_pending": bool(ingress_context.get("confirm_pending")),
         "clarification_needed": bool(ingress_context.get("requires_clarification")),
         "pending_commitment": state.current_goal,
@@ -87,7 +87,7 @@ def _build_seed_status_from_result(*, result: Any, state: RuntimeV2State) -> str
         return "failure"
     if result.status == "blocked":
         return "blocked"
-    if result.status == "waiting_input":
+    if result.status in {"waiting_input", "resumable_pause"}:
         return "no_op"
     return "success"
 

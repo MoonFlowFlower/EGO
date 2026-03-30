@@ -61,6 +61,13 @@ from app.runtime_v2 import (
     RuntimeV2PromptFiles,
     RuntimeV2State,
 )
+from app.autonomy import (
+    AutonomyExecutorKind,
+    AutonomyOrchestrator,
+    AutonomyRun,
+    AutonomyRunStatus,
+    AutonomySliceOutcome,
+)
 from app.core_bus import BusEvent, get_message_bus, get_session_worker_pool
 from app.session_store import SessionLogManager
 from app.agent_core import NativeToolCallingLoop
@@ -150,9 +157,12 @@ class TelegramBot:
         self._session_log_manager = SessionLogManager()
         self._phase1_bus_ready = False
         self._runtime_states: dict[str, RuntimeV2State] = {}
+        self.autonomy_orchestrator = AutonomyOrchestrator() if use_runtime_v2 else None
         # Ingestion Manager
         self._ingestion_manager: Optional[IngestionManager] = None
         self._pending_restore_observation = pending_restore_observation
+        if self.autonomy_orchestrator is not None:
+            self.autonomy_orchestrator.register_surface("telegram", self._resume_telegram_autonomy_run)
 
     def _hydrate_artifact_ingress_context(self, state: RuntimeV2State) -> dict:
         ingress_context = deepcopy(state.ingress_context or {})
@@ -198,7 +208,7 @@ class TelegramBot:
         return bool(
             state.last_uploaded_artifact
             and (
-                state.task_status in {"running", "waiting_input"}
+                state.task_status in {"running", "waiting_input", "resumable_pause"}
                 or state.waiting_for_user_input
                 or state.contract_phase in {"step_selected", "planning_stalled", "re_lock_needed", "executing"}
             )
@@ -380,6 +390,133 @@ class TelegramBot:
         if runtime_loop is not None:
             runtime_loop._states[session_key] = state
         return state
+
+    def _restore_runtime_state_snapshot(self, session_key: str, snapshot: Optional[dict]) -> RuntimeV2State:
+        if snapshot:
+            state = RuntimeV2State.from_snapshot(snapshot)
+        else:
+            state = RuntimeV2State(session_id=session_key)
+        self._runtime_states[session_key] = state
+        runtime_loop = self._get_runtime_v2_loop()
+        if runtime_loop is not None:
+            runtime_loop._states[session_key] = state
+        return state
+
+    async def _send_chat_message(self, chat_id: int, text: str, *, finalize_evidence: bool = True) -> None:
+        if not self.app or not getattr(self.app, "bot", None):
+            return
+
+        sent_message = None
+        try:
+            sent_message = await self.app.bot.send_message(chat_id=chat_id, text=text)
+        except Exception as e:
+            logger.warning("telegram.direct_send.failed chat_id=%s err=%s", chat_id, e)
+            if len(text) > 4000:
+                try:
+                    sent_message = await self.app.bot.send_message(chat_id=chat_id, text=text[:4000] + "\n... (已截断)")
+                except Exception as e2:
+                    logger.error("telegram.direct_send.truncated_failed chat_id=%s err=%s", chat_id, e2)
+
+        if sent_message and _EVIDENCE_COLLECTOR_AVAILABLE:
+            try:
+                collector = get_evidence_collector()
+                collector.capture_outbox_record(
+                    {
+                        "chat_id": sent_message.chat.id if sent_message.chat else None,
+                        "message_id": sent_message.message_id,
+                        "date": sent_message.date.isoformat() if sent_message.date else None,
+                        "text_length": len(text),
+                        "success": True,
+                    }
+                )
+                if finalize_evidence:
+                    sample = collector.finalize_sample()
+                    if sample and _DEVELOPMENTAL_WRITEBACK_AVAILABLE:
+                        try:
+                            record_developmental_projection_from_finalized_sample(
+                                sample=sample,
+                                sample_artifacts_dir=collector.artifacts_dir,
+                            )
+                        except Exception as e:
+                            logger.warning(f"[MVP16-DEVELOPMENTAL] Failed to sync finalized direct sample: {e}")
+            except Exception as e:
+                logger.warning(f"[E4-EVIDENCE] Failed to capture direct outbox_record: {e}")
+
+    def _select_autonomy_executor_kind(self, ingress, state) -> AutonomyExecutorKind:
+        return (
+            AutonomyExecutorKind.CONTRACT_EXECUTE
+            if self._should_use_native_loop(ingress, state)
+            else AutonomyExecutorKind.GENERIC_RUNTIME
+        )
+
+    def _looks_like_manual_continue(self, text: str) -> bool:
+        normalized = (text or "").strip().lower()
+        return normalized in {"继续", "continue", "继续执行", "继续这个任务", "resume"}
+
+    def _sync_autonomy_context(
+        self,
+        state: RuntimeV2State,
+        run: AutonomyRun,
+        *,
+        status: Optional[str] = None,
+        finish_reason: Optional[str] = None,
+    ) -> None:
+        state.autonomy_context = {
+            "run_id": run.id,
+            "status": status or run.status.value,
+            "executor_kind": run.executor_kind.value,
+            "current_phase": run.current_phase,
+            "resume_count": run.resume_count,
+            "hard_blocker_reason": run.hard_blocker_reason,
+        }
+        if finish_reason:
+            state.autonomy_context["finish_reason"] = finish_reason
+
+    def _build_autonomy_outcome(
+        self,
+        *,
+        run: AutonomyRun,
+        state: RuntimeV2State,
+        result: TelegramTurnResult,
+        default_phase: str,
+    ) -> AutonomySliceOutcome:
+        finish_reason = getattr(result, "finish_reason", None)
+        status_map = {
+            "resumable_pause": AutonomyRunStatus.RESUMABLE_PAUSE,
+            "waiting_input": AutonomyRunStatus.WAITING_USER_INPUT,
+            "blocked": AutonomyRunStatus.BLOCKED,
+            "failed": AutonomyRunStatus.FAILED,
+            "completed_verified": AutonomyRunStatus.COMPLETED,
+            "completed": AutonomyRunStatus.COMPLETED,
+            "chat": AutonomyRunStatus.COMPLETED,
+        }
+        run_status = status_map.get(result.status, AutonomyRunStatus.FAILED)
+        if run_status == AutonomyRunStatus.RESUMABLE_PAUSE:
+            current_phase = "planning_current_slice"
+        elif run_status == AutonomyRunStatus.WAITING_USER_INPUT:
+            current_phase = "awaiting_confirmation"
+        elif run_status == AutonomyRunStatus.BLOCKED:
+            current_phase = "blocked"
+        elif run_status == AutonomyRunStatus.COMPLETED:
+            current_phase = "completed"
+        else:
+            current_phase = default_phase
+        self._sync_autonomy_context(state, run, status=run_status.value, finish_reason=finish_reason)
+        return AutonomySliceOutcome(
+            status=run_status,
+            stop_reason=finish_reason,
+            current_phase=current_phase,
+            checkpoint_payload=getattr(result, "checkpoint_payload", None) or {},
+            runtime_state_snapshot=state.to_snapshot(),
+            last_result_summary={
+                "status": result.status,
+                "finish_reason": finish_reason,
+                "reply_text": result.reply_text,
+                "delivery_kind": result.delivery_kind,
+                "current_step": state.current_step,
+            },
+            hard_blocker_reason=finish_reason if run_status == AutonomyRunStatus.BLOCKED else None,
+        )
 
     def _reset_runtime_state(self, session_key: str) -> RuntimeV2State:
         state = self._get_runtime_state(session_key)
@@ -1282,9 +1419,15 @@ class TelegramBot:
     ) -> None:
         session_key = self._resolve_session_key(update, chat_id, user_id)
         state = self._get_runtime_state(session_key)
+        ingress_message_id = update.message.message_id if update.message else None
+
+        if self.autonomy_orchestrator is not None and self._looks_like_manual_continue(text):
+            latest_run = self.autonomy_orchestrator.get_latest_run(session_key)
+            if latest_run is not None and latest_run.status == AutonomyRunStatus.RESUMABLE_PAUSE:
+                await self.autonomy_orchestrator.resume_run(latest_run.id, trigger_source="manual")
+                return
 
         # 记录 ingress 信息
-        ingress_message_id = update.message.message_id if update.message else None
         if ingress_message_id is not None:
             prev = self._latest_message_id_by_session.get(session_key)
             self._latest_message_id_by_session[session_key] = max(int(ingress_message_id), int(prev)) if prev is not None else int(ingress_message_id)
@@ -1351,6 +1494,23 @@ class TelegramBot:
             return
 
         self._activate_pending_restore_observation(state)
+
+        runtime_action = getattr(ingress, "_runtime_action", None)
+        if runtime_action == "execute_task" and self.autonomy_orchestrator is not None:
+            await self._run_with_autonomy(
+                update=update,
+                session_key=session_key,
+                text=text,
+                state=state,
+                ingress=ingress,
+                ack_text=pre_runtime.ack_text,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+                chat_id=chat_id,
+                user_id=user_id,
+                username=username,
+            )
+            return
 
         result = await self._run_primary_turn(
             update=update,
@@ -1446,6 +1606,168 @@ class TelegramBot:
             return result
 
         return await run_once()
+
+    async def _continue_runtime_v2_turn(
+        self,
+        *,
+        session_key: str,
+        state: RuntimeV2State,
+    ) -> TelegramTurnResult:
+        runner = self.telegram_runtime_fallback_runner
+        if runner is None:
+            runner = TelegramRuntimeFallbackRunner()
+            self.telegram_runtime_fallback_runner = runner
+            self.runtime_v2_fallback_runner = runner
+        loop = runner.attach_state(session_key, state)
+        self.runtime_v2_loop = loop
+        result = await loop.continue_turn_typed(session_id=session_key, state=state)
+        self.runtime_v2_loop = loop
+        return runner.adapt_result(result)
+
+    async def _run_with_autonomy(
+        self,
+        *,
+        update: Update,
+        session_key: str,
+        text: str,
+        state: RuntimeV2State,
+        ingress,
+        ack_text: Optional[str],
+        trace_id: Optional[str],
+        ingress_message_id: Optional[int],
+        chat_id: int,
+        user_id: int,
+        username: Optional[str],
+    ) -> None:
+        orchestrator = self.autonomy_orchestrator
+        if orchestrator is None:
+            raise RuntimeError("autonomy orchestrator unavailable")
+        executor_kind = self._select_autonomy_executor_kind(ingress, state)
+
+        async def initial_execute(run: AutonomyRun) -> AutonomySliceOutcome:
+            self._sync_autonomy_context(state, run, status=AutonomyRunStatus.RUNNING.value)
+            if executor_kind == AutonomyExecutorKind.CONTRACT_EXECUTE:
+                result = await self._run_native_loop_turn(
+                    update=update,
+                    session_key=session_key,
+                    text=text,
+                    state=state,
+                    ack_text=ack_text,
+                )
+            else:
+                result = await self._run_runtime_v2_turn(
+                    update=update,
+                    session_key=session_key,
+                    text=text,
+                    state=state,
+                    ack_text=ack_text,
+                )
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="runtime_v2_result",
+                trace_id=trace_id,
+                message_id=ingress_message_id,
+                payload={
+                    "status": result.status,
+                    "reply_text": result.reply_text[:1000] if result.reply_text else "",
+                    "current_step": state.current_step,
+                    "last_tool_result": state.last_tool_result or {},
+                    "last_verification_result": state.last_verification_result or {},
+                    "autonomy_run_id": run.id,
+                },
+            )
+            if result.status == "resumable_pause":
+                progress_text = "我继续处理这个任务，做完直接给你结果。"
+                if not ack_text:
+                    await self._send_reply(update, progress_text, finalize_evidence=False)
+                await self._publish_phase1_event(
+                    session_key=session_key,
+                    kind="autonomy_resumable_pause",
+                    trace_id=trace_id,
+                    message_id=ingress_message_id,
+                    payload={
+                        "run_id": run.id,
+                        "executor_kind": executor_kind.value,
+                        "finish_reason": result.finish_reason,
+                    },
+                )
+                state.task_status = "resumable_pause"
+                state.waiting_for_user_input = False
+                return self._build_autonomy_outcome(
+                    run=run,
+                    state=state,
+                    result=result,
+                    default_phase="planning_current_slice",
+                )
+            await self._deliver_runtime_v2_result(
+                update=update,
+                state=state,
+                result=result,
+                is_challenge_turn=ingress.is_challenge_turn,
+                ingress_message_id=ingress_message_id,
+                trace_id=trace_id,
+            )
+            return self._build_autonomy_outcome(
+                run=run,
+                state=state,
+                result=result,
+                default_phase="completed",
+            )
+
+        run = await orchestrator.submit_ingress(
+            surface="telegram",
+            session_key=session_key,
+            objective=text,
+            executor_kind=executor_kind,
+            metadata={
+                "chat_id": chat_id,
+                "user_id": user_id,
+                "username": username,
+                "trace_id": trace_id,
+                "ingress_message_id": ingress_message_id,
+            },
+            initial_execute=initial_execute,
+        )
+        self._sync_autonomy_context(state, run)
+
+    async def _resume_telegram_autonomy_run(self, run: AutonomyRun, trigger_source: str) -> AutonomySliceOutcome:
+        state = self._restore_runtime_state_snapshot(run.session_key, run.runtime_state_snapshot)
+        self._sync_autonomy_context(state, run, status=AutonomyRunStatus.RUNNING.value)
+        if run.executor_kind == AutonomyExecutorKind.CONTRACT_EXECUTE:
+            result = await self._run_native_loop_turn(
+                update=None,
+                session_key=run.session_key,
+                text=state.last_user_turn or run.objective,
+                state=state,
+                ack_text=None,
+                resume_checkpoint=run.checkpoint_payload,
+            )
+        else:
+            result = await self._continue_runtime_v2_turn(
+                session_key=run.session_key,
+                state=state,
+            )
+
+        if result.status != "resumable_pause":
+            chat_id = run.metadata.get("chat_id")
+            if isinstance(chat_id, int):
+                if run.executor_kind == AutonomyExecutorKind.CONTRACT_EXECUTE:
+                    if result.reply_text:
+                        await self._send_chat_message(chat_id, result.reply_text, finalize_evidence=True)
+                else:
+                    delivery = self.telegram_runtime_bridge.plan_delivery(result, state, False)
+                    if delivery.should_send and delivery.text:
+                        await self._send_chat_message(chat_id, delivery.text, finalize_evidence=True)
+        else:
+            state.task_status = "resumable_pause"
+            state.waiting_for_user_input = False
+
+        return self._build_autonomy_outcome(
+            run=run,
+            state=state,
+            result=result,
+            default_phase="planning_current_slice",
+        )
 
     def _should_use_native_loop(self, ingress, state) -> bool:
         if not self.use_runtime_v2:
@@ -1545,17 +1867,18 @@ class TelegramBot:
 
     async def _run_native_loop_turn(
         self,
-        update: Update,
+        update: Optional[Update],
         session_key: str,
         text: str,
         state,
         ack_text: Optional[str],
+        resume_checkpoint: Optional[dict] = None,
     ) -> TelegramTurnResult:
         native_loop = self._get_native_loop()
         native_hooks = self._get_native_openemotion_hooks()
         turn_id = state.active_turn_id or state.start_turn()
         runtime_action = (state.ingress_context or {}).get("runtime_action")
-        if runtime_action == "execute_task" and state.task_status in {"idle", "waiting_input"}:
+        if runtime_action == "execute_task" and state.task_status in {"idle", "waiting_input", "resumable_pause"}:
             state.mark_task_started(goal=text)
         if native_hooks and native_hooks.enabled:
             try:
@@ -1570,7 +1893,7 @@ class TelegramBot:
             except Exception as e:
                 logger.exception("native_openemotion.ingress.failed session=%s err=%s", session_key, e)
 
-        if ack_text:
+        if ack_text and update is not None:
             state.mark_task_started(goal=text)
             try:
                 await self._send_reply(update, ack_text, finalize_evidence=False)
@@ -1582,6 +1905,7 @@ class TelegramBot:
             user_input=text,
             ingress_context=self._hydrate_artifact_ingress_context(state),
             proto_self_context=state.proto_self_context,
+            resume_checkpoint=resume_checkpoint,
         )
         await self._publish_phase1_event(
             session_key=session_key,
@@ -1713,11 +2037,7 @@ class TelegramBot:
 
         if result.reply_text:
             verification = verification_result or {}
-            if getattr(result, "status", None) == "waiting_input" and getattr(result, "finish_reason", None) == "planning_timeout":
-                state.task_status = "waiting_input"
-                state.waiting_for_user_input = True
-                state.contract_phase = "planning_stalled"
-            elif verification.get("need_relock"):
+            if verification.get("need_relock"):
                 state.task_status = "blocked"
                 state.waiting_for_user_input = True
                 state.contract_phase = "re_lock_needed"
@@ -1734,6 +2054,8 @@ class TelegramBot:
                     delivery_kind="final",
                     status="waiting_input" if state.waiting_for_user_input else "completed_verified",
                 ),
+                finish_reason=getattr(result, "finish_reason", None),
+                checkpoint_payload=getattr(result, "checkpoint_payload", None),
             )
             self._finalize_native_openemotion_turn(
                 session_key=session_key,
@@ -1752,6 +2074,23 @@ class TelegramBot:
                     logger.exception("native_openemotion.response_plan.failed session=%s err=%s", session_key, e)
             return turn_result
 
+        if getattr(result, "status", None) == "resumable_pause":
+            state.task_status = "resumable_pause"
+            state.waiting_for_user_input = False
+            state.contract_phase = "planning_stalled"
+            return TelegramTurnResult(
+                status="resumable_pause",
+                state=state,
+                reply=TelegramTurnReply(
+                    reply_text="",
+                    delivery_kind="progress",
+                    status="resumable_pause",
+                    suppressible=True,
+                ),
+                finish_reason=getattr(result, "finish_reason", None),
+                checkpoint_payload=getattr(result, "checkpoint_payload", None),
+            )
+
         failed_tool = bool(state.last_tool_result) and not bool(state.last_tool_result.get("success"))
         if failed_tool:
             state.task_status = "blocked"
@@ -1764,6 +2103,8 @@ class TelegramBot:
                     delivery_kind="final",
                     status="blocked",
                 ),
+                finish_reason=getattr(result, "finish_reason", None),
+                checkpoint_payload=getattr(result, "checkpoint_payload", None),
             )
             self._finalize_native_openemotion_turn(
                 session_key=session_key,
@@ -1793,6 +2134,8 @@ class TelegramBot:
                 status="waiting_input",
                 suppressible=True,
             ),
+            finish_reason=getattr(result, "finish_reason", None),
+            checkpoint_payload=getattr(result, "checkpoint_payload", None),
         )
         self._finalize_native_openemotion_turn(
             session_key=session_key,
@@ -2202,6 +2545,8 @@ class TelegramBot:
             logger.info("telegram.lifecycle app_start %s", fingerprint)
             await self.app.start()
             logger.info("telegram.lifecycle app_started %s", fingerprint)
+            if self.autonomy_orchestrator is not None:
+                self.autonomy_orchestrator.recover_surface("telegram")
 
             try:
                 command_specs = [
