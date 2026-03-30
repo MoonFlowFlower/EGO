@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-03-30T00:37:43.823805+00:00",
-  "last_sample_timestamp": "2026-03-29T19:34:36.060915",
-  "freshness_seconds": 18187.763698,
+  "generated_at": "2026-03-30T01:34:20.410929+00:00",
+  "last_sample_timestamp": "2026-03-29T19:56:48.624778",
+  "freshness_seconds": 20251.787085,
   "headline_code": "holding_current_focus",
   "summary": {
-    "total_records": 169,
+    "total_records": 180,
     "reflecting_count": 147,
     "repairing_count": 2,
     "focus_shift_count": 6,
@@ -13,72 +13,6 @@
   },
   "charts": {
     "revision_trend": [
-      {
-        "sample_id": "sample_20260329_014126_aa68c75c",
-        "timestamp": "2026-03-29T01:41:26.254212",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_014658_aa68c75c",
-        "timestamp": "2026-03-29T01:46:58.985329",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_015516_aa68c75c",
-        "timestamp": "2026-03-29T01:55:16.910534",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_080053_aa68c75c",
-        "timestamp": "2026-03-29T08:00:53.708931",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_081529_aa68c75c",
-        "timestamp": "2026-03-29T08:15:29.288252",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_083924_aa68c75c",
-        "timestamp": "2026-03-29T08:39:24.725090",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_084823_aa68c75c",
-        "timestamp": "2026-03-29T08:48:23.452392",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_090705_aa68c75c",
-        "timestamp": "2026-03-29T09:07:05.923105",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_093054_aa68c75c",
-        "timestamp": "2026-03-29T09:30:54.119743",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_095241_aa68c75c",
-        "timestamp": "2026-03-29T09:52:41.461840",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
-      {
-        "sample_id": "sample_20260329_101209_aa68c75c",
-        "timestamp": "2026-03-29T10:12:09.233435",
-        "revision_counter": 0,
-        "growth_motion_code": "reflecting"
-      },
       {
         "sample_id": "sample_20260329_102619_aa68c75c",
         "timestamp": "2026-03-29T10:26:19.048800",
@@ -312,6 +246,72 @@
         "timestamp": "2026-03-29T19:34:36.060915",
         "revision_counter": 17,
         "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_193814_76c28070",
+        "timestamp": "2026-03-29T19:38:14.835358",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_193925_01e087c1",
+        "timestamp": "2026-03-29T19:39:25.252774",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_194032_6baf01c1",
+        "timestamp": "2026-03-29T19:40:32.091809",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_194156_69a2cd4c",
+        "timestamp": "2026-03-29T19:41:56.093872",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_194256_acd0b59f",
+        "timestamp": "2026-03-29T19:42:56.414211",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_194329_0d0eb0b0",
+        "timestamp": "2026-03-29T19:43:29.418828",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_194544_410df0a7",
+        "timestamp": "2026-03-29T19:45:44.593318",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_194632_6e913729",
+        "timestamp": "2026-03-29T19:46:32.345713",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_195421_981bf776",
+        "timestamp": "2026-03-29T19:54:21.786774",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_195444_6b573ae6",
+        "timestamp": "2026-03-29T19:54:44.822789",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
+      },
+      {
+        "sample_id": "sample_20260329_195648_f8d80c92",
+        "timestamp": "2026-03-29T19:56:48.624778",
+        "revision_counter": 17,
+        "growth_motion_code": "steady"
       }
     ],
     "appraisal_component_means": {
@@ -323,13 +323,13 @@
     },
     "reflection_trigger_distribution": {
       "drive_spike": 147,
-      "none": 17,
+      "none": 28,
       "exec_failure": 5
     },
     "growth_motion_distribution": {
       "reflecting": 147,
       "repairing": 2,
-      "steady": 14,
+      "steady": 25,
       "focus_shift": 6
     },
     "focus_timeline": [
@@ -442,10 +442,263 @@
         "sample_id": "sample_20260329_193436_a3f258f5",
         "timestamp": "2026-03-29T19:34:36.060915",
         "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_193814_76c28070",
+        "timestamp": "2026-03-29T19:38:14.835358",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_193925_01e087c1",
+        "timestamp": "2026-03-29T19:39:25.252774",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_194032_6baf01c1",
+        "timestamp": "2026-03-29T19:40:32.091809",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_194156_69a2cd4c",
+        "timestamp": "2026-03-29T19:41:56.093872",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_194256_acd0b59f",
+        "timestamp": "2026-03-29T19:42:56.414211",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_194329_0d0eb0b0",
+        "timestamp": "2026-03-29T19:43:29.418828",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_194544_410df0a7",
+        "timestamp": "2026-03-29T19:45:44.593318",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_194632_6e913729",
+        "timestamp": "2026-03-29T19:46:32.345713",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_195421_981bf776",
+        "timestamp": "2026-03-29T19:54:21.786774",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_195444_6b573ae6",
+        "timestamp": "2026-03-29T19:54:44.822789",
+        "focus_goal": "inspect_target"
+      },
+      {
+        "sample_id": "sample_20260329_195648_f8d80c92",
+        "timestamp": "2026-03-29T19:56:48.624778",
+        "focus_goal": "inspect_target"
       }
     ]
   },
   "recent_growth": [
+    {
+      "sample_id": "sample_20260329_195648_f8d80c92",
+      "timestamp": "2026-03-29T19:56:48.624778",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195444_6b573ae6",
+      "timestamp": "2026-03-29T19:54:44.822789",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195421_981bf776",
+      "timestamp": "2026-03-29T19:54:21.786774",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194632_6e913729",
+      "timestamp": "2026-03-29T19:46:32.345713",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194544_410df0a7",
+      "timestamp": "2026-03-29T19:45:44.593318",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194329_0d0eb0b0",
+      "timestamp": "2026-03-29T19:43:29.418828",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194256_acd0b59f",
+      "timestamp": "2026-03-29T19:42:56.414211",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194156_69a2cd4c",
+      "timestamp": "2026-03-29T19:41:56.093872",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194032_6baf01c1",
+      "timestamp": "2026-03-29T19:40:32.091809",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_193925_01e087c1",
+      "timestamp": "2026-03-29T19:39:25.252774",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_193814_76c28070",
+      "timestamp": "2026-03-29T19:38:14.835358",
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
     {
       "sample_id": "sample_20260329_193436_a3f258f5",
       "timestamp": "2026-03-29T19:34:36.060915",
@@ -462,204 +715,6 @@
           "no_revision_delta"
         ],
         "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_193235_e404549d",
-      "timestamp": "2026-03-29T19:32:35.214089",
-      "focus_goal": "inspect_target",
-      "revision_counter": 17,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "steady",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "no_revision_delta"
-        ],
-        "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_193114_906ec7ae",
-      "timestamp": "2026-03-29T19:31:14.024672",
-      "focus_goal": "inspect_target",
-      "revision_counter": 17,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "focus_shift",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "focus_change",
-          "no_revision_delta"
-        ],
-        "headline_code": "shifting_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192715_cc309746",
-      "timestamp": "2026-03-29T19:27:15.985965",
-      "focus_goal": "repair",
-      "revision_counter": 17,
-      "reflection_trigger": "exec_failure",
-      "semantic": {
-        "intent_code": "continue",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "reflecting",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "exec_failure"
-        ],
-        "headline_code": "reflecting_on_result"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192410_1b9c8658",
-      "timestamp": "2026-03-29T19:24:10.032651",
-      "focus_goal": "repair",
-      "revision_counter": 15,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "steady",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192323_d44aef22",
-      "timestamp": "2026-03-29T19:23:23.290438",
-      "focus_goal": "repair",
-      "revision_counter": 12,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "steady",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "no_revision_delta"
-        ],
-        "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192201_70874b45",
-      "timestamp": "2026-03-29T19:22:01.329777",
-      "focus_goal": "repair",
-      "revision_counter": 12,
-      "reflection_trigger": "exec_failure",
-      "semantic": {
-        "intent_code": "continue",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "focus_shift",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "exec_failure",
-          "focus_change"
-        ],
-        "headline_code": "shifting_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192057_8e193aad",
-      "timestamp": "2026-03-29T19:20:57.743885",
-      "focus_goal": "inspect_target",
-      "revision_counter": 11,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "steady",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "no_revision_delta"
-        ],
-        "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192050_b8ea5887",
-      "timestamp": "2026-03-29T19:20:50.041446",
-      "focus_goal": "inspect_target",
-      "revision_counter": 11,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "steady",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "no_revision_delta"
-        ],
-        "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_175737_7ca3cfb6",
-      "timestamp": "2026-03-29T17:57:37.488645",
-      "focus_goal": "inspect_target",
-      "revision_counter": 11,
-      "reflection_trigger": null,
-      "semantic": {
-        "intent_code": "observe",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "written_back",
-        "growth_motion_code": "steady",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "holding_current_focus"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_175730_572acf94",
-      "timestamp": "2026-03-29T17:57:30.909221",
-      "focus_goal": null,
-      "revision_counter": 0,
-      "reflection_trigger": "drive_spike",
-      "semantic": {
-        "intent_code": "continue",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "reflecting",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "drive_spike",
-          "no_revision_delta"
-        ],
-        "headline_code": "reflecting_on_result"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_175723_67a41e91",
-      "timestamp": "2026-03-29T17:57:23.068682",
-      "focus_goal": null,
-      "revision_counter": 0,
-      "reflection_trigger": "drive_spike",
-      "semantic": {
-        "intent_code": "continue",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "reflecting",
-        "evidence_state_code": "complete",
-        "why_codes": [
-          "drive_spike",
-          "no_revision_delta"
-        ],
-        "headline_code": "reflecting_on_result"
       }
     }
   ],
@@ -10153,23 +10208,551 @@
         ],
         "headline_code": "holding_current_focus"
       }
+    },
+    {
+      "sample_id": "sample_20260329_193814_76c28070",
+      "timestamp": "2026-03-29T19:38:14.835358",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "respond",
+        "preferred_tone": "calm",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "stay_idle",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_193925_01e087c1",
+      "timestamp": "2026-03-29T19:39:25.252774",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "respond",
+        "preferred_tone": "calm",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "stay_idle",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194032_6baf01c1",
+      "timestamp": "2026-03-29T19:40:32.091809",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "respond",
+        "preferred_tone": "calm",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "stay_idle",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194156_69a2cd4c",
+      "timestamp": "2026-03-29T19:41:56.093872",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "respond",
+        "preferred_tone": "calm",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "stay_idle",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194256_acd0b59f",
+      "timestamp": "2026-03-29T19:42:56.414211",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194329_0d0eb0b0",
+      "timestamp": "2026-03-29T19:43:29.418828",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194544_410df0a7",
+      "timestamp": "2026-03-29T19:45:44.593318",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194632_6e913729",
+      "timestamp": "2026-03-29T19:46:32.345713",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195421_981bf776",
+      "timestamp": "2026-03-29T19:54:21.786774",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195444_6b573ae6",
+      "timestamp": "2026-03-29T19:54:44.822789",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195648_f8d80c92",
+      "timestamp": "2026-03-29T19:56:48.624778",
+      "memory_update_summary": {
+        "seed_state_updated": true
+      },
+      "appraisal_delta_summary": {},
+      "reflection_summary": {
+        "trigger": null,
+        "promote_to_memory": null,
+        "diagnosis": null,
+        "proposed_adjustment": {}
+      },
+      "response_tendency_summary": {
+        "preferred_mode": "act",
+        "preferred_tone": "direct",
+        "certainty_bound": "bounded",
+        "suggested_next_step": "continue_pending_commitment",
+        "ask_needed": false
+      },
+      "cycle_summary": {
+        "cycle_id": null,
+        "closure_family_id": null,
+        "action_signature": null,
+        "outcome_signature": null,
+        "op": null,
+        "repair_closure": null,
+        "closure_consistency_score": null,
+        "reflection_trigger": null
+      },
+      "session_id": null,
+      "thread_id": null,
+      "closure_family_id": null,
+      "focus_goal": "inspect_target",
+      "revision_counter": 17,
+      "identity_light_hash": null,
+      "semantic": {
+        "intent_code": "observe",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "written_back",
+        "growth_motion_code": "steady",
+        "evidence_state_code": "complete",
+        "why_codes": [
+          "no_revision_delta"
+        ],
+        "headline_code": "holding_current_focus"
+      }
     }
   ],
   "semantic_summary": {
     "headline": {
       "reflecting_on_result": 147,
       "repairing_after_failure": 2,
-      "holding_current_focus": 14,
+      "holding_current_focus": 25,
       "shifting_focus": 6
     },
     "growth_motion": {
       "reflecting": 147,
       "repairing": 2,
-      "steady": 14,
+      "steady": 25,
       "focus_shift": 6
     },
     "focus": {
-      "inspect_target": 15,
+      "inspect_target": 26,
       "repair": 7
     }
   }

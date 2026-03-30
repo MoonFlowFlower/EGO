@@ -1041,25 +1041,27 @@ def _classify_gap_types(
     completeness: Dict[str, bool],
     *,
     host_only: bool,
+    response_plan: Dict[str, Any],
     replay_payload: Dict[str, Any],
     ledger_payload: Dict[str, Any],
 ) -> List[str]:
     gap_types: List[str] = []
+    host_only_gap = _classify_host_only_gap(response_plan) if host_only else None
 
     if host_only:
-        gap_types.append("host_only_pre_runtime")
+        gap_types.append(host_only_gap)
 
     if not completeness.get("raw_update", False):
         gap_types.append("raw_update_missing")
 
     if not completeness.get("normalized_event", False):
-        gap_types.append("collector_timing_gap" if not host_only else "host_only_pre_runtime")
+        gap_types.append("collector_timing_gap" if not host_only else host_only_gap)
 
     if not completeness.get("openemotion_result", False):
-        gap_types.append("collector_timing_gap" if not host_only else "host_only_pre_runtime")
+        gap_types.append("collector_timing_gap" if not host_only else host_only_gap)
 
     if not completeness.get("openemotion_trace", False):
-        gap_types.append("collector_timing_gap" if not host_only else "host_only_pre_runtime")
+        gap_types.append("collector_timing_gap" if not host_only else host_only_gap)
 
     if not completeness.get("response_plan", False):
         gap_types.append("response_plan_missing")
@@ -1092,6 +1094,16 @@ def _classify_gap_types(
     return deduped
 
 
+def _classify_host_only_gap(response_plan: Dict[str, Any]) -> str:
+    status = str((response_plan or {}).get("status") or "").lower()
+    authority_source = str((response_plan or {}).get("authority_source") or "").lower()
+    if authority_source == "profile_memory":
+        return "control_plane_host_only"
+    if status in {"profile_rule_registered", "profile_rule_enforced", "profile_rule_unsupported", "command_result"}:
+        return "control_plane_host_only"
+    return "unexpected_pre_runtime_intercept"
+
+
 def _build_run_record(sample_dir: Path) -> RunIndexRecord:
     ledger = _load_optional_json(sample_dir / "ledger.json") or {}
     ids = ledger.get("ids") or {}
@@ -1108,6 +1120,7 @@ def _build_run_record(sample_dir: Path) -> RunIndexRecord:
     gap_types = _classify_gap_types(
         completeness,
         host_only=host_only,
+        response_plan=response_plan,
         replay_payload=replay_payload,
         ledger_payload=ledger,
     )

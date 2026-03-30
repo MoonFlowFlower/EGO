@@ -189,6 +189,26 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
         result_payload=None,
         trace_payload=None,
     )
+    _make_sample(
+        real_dir,
+        "sample_20260327_100250_dddddddd",
+        timestamp="2026-03-27T10:02:50+00:00",
+        session_id="telegram:dm:1",
+        response_plan_status="complete",
+        completeness={
+            "raw_update": True,
+            "normalized_event": False,
+            "openemotion_result": False,
+            "openemotion_trace": False,
+            "response_plan": True,
+            "outbox_record": True,
+            "timeline": True,
+            "tape": True,
+            "replay": True,
+        },
+        result_payload=None,
+        trace_payload=None,
+    )
 
     failure_dir.mkdir(parents=True, exist_ok=True)
     _write_json(
@@ -230,7 +250,7 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
         validation_doc=validation_doc,
     )
 
-    assert summary.total_runs == 3
+    assert summary.total_runs == 4
     runs = load_jsonl(output_dir / "runs.jsonl")
     growth = load_jsonl(output_dir / "growth_signals.jsonl")
     continuity = load_jsonl(output_dir / "continuity_observation.jsonl")
@@ -243,7 +263,11 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
     host_only = next(item for item in runs if item["sample_id"] == "sample_20260327_100200_cccccccc")
     assert host_only["host_only"] is True
     assert host_only["oe_available"] is False
-    assert "host_only_pre_runtime" in host_only["gap_types"]
+    assert "control_plane_host_only" in host_only["gap_types"]
+    unexpected_host_only = next(item for item in runs if item["sample_id"] == "sample_20260327_100250_dddddddd")
+    assert unexpected_host_only["host_only"] is True
+    assert unexpected_host_only["oe_available"] is False
+    assert "unexpected_pre_runtime_intercept" in unexpected_host_only["gap_types"]
     assert host_only["semantic"]["headline_code"] == "host_only_turn"
 
     assert {item["sample_id"] for item in growth} == {
@@ -264,8 +288,9 @@ def test_build_dashboard_indexes_creates_required_indexes(tmp_path: Path) -> Non
 
     assert failures[0]["failure_id"] == "fail_001"
     assert failures[0]["semantic"]["headline_code"] == "evidence_missing"
-    assert gap_summary["gap_type_counts"]["host_only_pre_runtime"] >= 1
-    assert runs_rollup["summary"]["turn_count"] == 3
+    assert gap_summary["gap_type_counts"]["control_plane_host_only"] >= 1
+    assert gap_summary["gap_type_counts"]["unexpected_pre_runtime_intercept"] >= 1
+    assert runs_rollup["summary"]["turn_count"] == 4
     assert runs_rollup["recent_runs"][0]["semantic"]["headline_code"] == "host_only_turn"
     assert growth_rollup["summary"]["total_records"] == 2
     assert "growth_motion_distribution" in growth_rollup["charts"]

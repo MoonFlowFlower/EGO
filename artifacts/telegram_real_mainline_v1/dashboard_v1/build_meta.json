@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-30T00:38:14.640058+00:00",
-  "source_last_modified": 1774830890.402797,
-  "total_runs": 440,
-  "complete_runs": 166,
-  "oe_available_runs": 169,
+  "generated_at": "2026-03-30T01:34:57.335885+00:00",
+  "source_last_modified": 1774832222.636516,
+  "total_runs": 451,
+  "complete_runs": 177,
+  "oe_available_runs": 180,
   "host_only_runs": 238,
   "failure_cases": 3,
   "continuity_status": {
@@ -13,14 +13,14 @@
   },
   "gap_type_counts": {
     "collector_timing_gap": 33,
-    "host_only_pre_runtime": 238,
+    "control_plane_host_only": 238,
     "replay_mismatch": 10,
     "response_plan_missing": 26,
     "send_record_missing": 1
   },
   "plasticity_chain_count": 1,
   "reflection_candidate_count": 152,
-  "agency_records": 22,
+  "agency_records": 33,
   "agency_profile_scope": [
     "seed_v0_2"
   ]

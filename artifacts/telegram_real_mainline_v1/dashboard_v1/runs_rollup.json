@@ -1,227 +1,19 @@
 {
-  "generated_at": "2026-03-30T00:37:43.815037+00:00",
-  "last_sample_timestamp": "2026-03-29T19:34:36.060915",
-  "freshness_seconds": 18187.754563,
+  "generated_at": "2026-03-30T01:34:20.404000+00:00",
+  "last_sample_timestamp": "2026-03-29T19:56:48.624778",
+  "freshness_seconds": 20251.779418,
   "headline_code": "mainline_connected",
   "summary": {
-    "turn_count": 440,
-    "complete_bundle_count": 166,
-    "complete_bundle_rate": 0.37727272727272726,
-    "oe_available_rate": 0.3840909090909091,
-    "host_only_rate": 0.5409090909090909,
+    "turn_count": 451,
+    "complete_bundle_count": 177,
+    "complete_bundle_rate": 0.3924611973392461,
+    "oe_available_rate": 0.3991130820399113,
+    "host_only_rate": 0.5277161862527716,
     "latest_bundle_complete": true,
     "latest_oe_available": true
   },
   "charts": {
     "bundle_trend": [
-      {
-        "sample_id": "sample_20260329_114153_b8c37e33",
-        "timestamp": "2026-03-29T11:41:53.995271",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114210_fba9d881",
-        "timestamp": "2026-03-29T11:42:10.643813",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114225_aa68c75c",
-        "timestamp": "2026-03-29T11:42:25.954865",
-        "bundle_complete": true,
-        "oe_available": true,
-        "host_only": false,
-        "gap_count": 0,
-        "semantic": {
-          "intent_code": "unknown",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "complete",
-          "why_codes": [],
-          "headline_code": "mainline_connected"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114248_fed33392",
-        "timestamp": "2026-03-29T11:42:48.037056",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114306_1e48c442",
-        "timestamp": "2026-03-29T11:43:06.281534",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114322_7f975a56",
-        "timestamp": "2026-03-29T11:43:22.735120",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114340_65cc2c82",
-        "timestamp": "2026-03-29T11:43:40.291385",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_114356_0768281a",
-        "timestamp": "2026-03-29T11:43:56.159342",
-        "bundle_complete": false,
-        "oe_available": false,
-        "host_only": true,
-        "gap_count": 1,
-        "semantic": {
-          "intent_code": "wait",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "host_only",
-          "why_codes": [
-            "host_only_pre_runtime",
-            "host_only"
-          ],
-          "headline_code": "host_only_turn"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_122242_8f01f48b",
-        "timestamp": "2026-03-29T12:22:42.907916",
-        "bundle_complete": true,
-        "oe_available": true,
-        "host_only": false,
-        "gap_count": 0,
-        "semantic": {
-          "intent_code": "unknown",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "complete",
-          "why_codes": [],
-          "headline_code": "mainline_connected"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_122250_7005b885",
-        "timestamp": "2026-03-29T12:22:50.988738",
-        "bundle_complete": true,
-        "oe_available": true,
-        "host_only": false,
-        "gap_count": 0,
-        "semantic": {
-          "intent_code": "unknown",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "complete",
-          "why_codes": [],
-          "headline_code": "mainline_connected"
-        }
-      },
-      {
-        "sample_id": "sample_20260329_122259_1767e7c5",
-        "timestamp": "2026-03-29T12:22:59.537528",
-        "bundle_complete": true,
-        "oe_available": true,
-        "host_only": false,
-        "gap_count": 0,
-        "semantic": {
-          "intent_code": "unknown",
-          "host_posture_code": "not_applicable",
-          "result_state_code": "not_executed",
-          "growth_motion_code": "unknown",
-          "evidence_state_code": "complete",
-          "why_codes": [],
-          "headline_code": "mainline_connected"
-        }
-      },
       {
         "sample_id": "sample_20260329_122307_9c311412",
         "timestamp": "2026-03-29T12:23:07.488677",
@@ -287,7 +79,7 @@
           "growth_motion_code": "unknown",
           "evidence_state_code": "host_only",
           "why_codes": [
-            "host_only_pre_runtime",
+            "control_plane_host_only",
             "host_only"
           ],
           "headline_code": "host_only_turn"
@@ -341,7 +133,7 @@
           "growth_motion_code": "unknown",
           "evidence_state_code": "host_only",
           "why_codes": [
-            "host_only_pre_runtime",
+            "control_plane_host_only",
             "host_only"
           ],
           "headline_code": "host_only_turn"
@@ -378,7 +170,7 @@
           "growth_motion_code": "unknown",
           "evidence_state_code": "host_only",
           "why_codes": [
-            "host_only_pre_runtime",
+            "control_plane_host_only",
             "host_only"
           ],
           "headline_code": "host_only_turn"
@@ -415,7 +207,7 @@
           "growth_motion_code": "unknown",
           "evidence_state_code": "host_only",
           "why_codes": [
-            "host_only_pre_runtime",
+            "control_plane_host_only",
             "host_only"
           ],
           "headline_code": "host_only_turn"
@@ -435,7 +227,7 @@
           "growth_motion_code": "unknown",
           "evidence_state_code": "host_only",
           "why_codes": [
-            "host_only_pre_runtime",
+            "control_plane_host_only",
             "host_only"
           ],
           "headline_code": "host_only_turn"
@@ -455,7 +247,7 @@
           "growth_motion_code": "unknown",
           "evidence_state_code": "host_only",
           "why_codes": [
-            "host_only_pre_runtime",
+            "control_plane_host_only",
             "host_only"
           ],
           "headline_code": "host_only_turn"
@@ -902,10 +694,197 @@
           "why_codes": [],
           "headline_code": "mainline_connected"
         }
+      },
+      {
+        "sample_id": "sample_20260329_193814_76c28070",
+        "timestamp": "2026-03-29T19:38:14.835358",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_193925_01e087c1",
+        "timestamp": "2026-03-29T19:39:25.252774",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_194032_6baf01c1",
+        "timestamp": "2026-03-29T19:40:32.091809",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_194156_69a2cd4c",
+        "timestamp": "2026-03-29T19:41:56.093872",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_194256_acd0b59f",
+        "timestamp": "2026-03-29T19:42:56.414211",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_194329_0d0eb0b0",
+        "timestamp": "2026-03-29T19:43:29.418828",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_194544_410df0a7",
+        "timestamp": "2026-03-29T19:45:44.593318",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_194632_6e913729",
+        "timestamp": "2026-03-29T19:46:32.345713",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_195421_981bf776",
+        "timestamp": "2026-03-29T19:54:21.786774",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_195444_6b573ae6",
+        "timestamp": "2026-03-29T19:54:44.822789",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_195648_f8d80c92",
+        "timestamp": "2026-03-29T19:56:48.624778",
+        "bundle_complete": true,
+        "oe_available": true,
+        "host_only": false,
+        "gap_count": 0,
+        "semantic": {
+          "intent_code": "unknown",
+          "host_posture_code": "not_applicable",
+          "result_state_code": "not_executed",
+          "growth_motion_code": "unknown",
+          "evidence_state_code": "complete",
+          "why_codes": [],
+          "headline_code": "mainline_connected"
+        }
       }
     ],
     "oe_state_distribution": {
-      "complete": 166,
+      "complete": 177,
       "partial": 36,
       "host_only": 238
     },
@@ -914,7 +893,7 @@
       "send_record_missing": 1,
       "replay_mismatch": 10,
       "response_plan_missing": 26,
-      "host_only_pre_runtime": 238
+      "control_plane_host_only": 238
     },
     "continuity_status": {
       "new": "direct_real",
@@ -979,195 +958,195 @@
   ],
   "recent_runs": [
     {
+      "sample_id": "sample_20260329_195648_f8d80c92",
+      "timestamp": "2026-03-29T19:56:48.624778",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195444_6b573ae6",
+      "timestamp": "2026-03-29T19:54:44.822789",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195421_981bf776",
+      "timestamp": "2026-03-29T19:54:21.786774",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194632_6e913729",
+      "timestamp": "2026-03-29T19:46:32.345713",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194544_410df0a7",
+      "timestamp": "2026-03-29T19:45:44.593318",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194329_0d0eb0b0",
+      "timestamp": "2026-03-29T19:43:29.418828",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194256_acd0b59f",
+      "timestamp": "2026-03-29T19:42:56.414211",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194156_69a2cd4c",
+      "timestamp": "2026-03-29T19:41:56.093872",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194032_6baf01c1",
+      "timestamp": "2026-03-29T19:40:32.091809",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_193925_01e087c1",
+      "timestamp": "2026-03-29T19:39:25.252774",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_193814_76c28070",
+      "timestamp": "2026-03-29T19:38:14.835358",
+      "bundle_complete": true,
+      "oe_available": true,
+      "host_only": false,
+      "gap_types": [],
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
       "sample_id": "sample_20260329_193436_a3f258f5",
       "timestamp": "2026-03-29T19:34:36.060915",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_193235_e404549d",
-      "timestamp": "2026-03-29T19:32:35.214089",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_193114_906ec7ae",
-      "timestamp": "2026-03-29T19:31:14.024672",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192715_cc309746",
-      "timestamp": "2026-03-29T19:27:15.985965",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192410_1b9c8658",
-      "timestamp": "2026-03-29T19:24:10.032651",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192323_d44aef22",
-      "timestamp": "2026-03-29T19:23:23.290438",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192201_70874b45",
-      "timestamp": "2026-03-29T19:22:01.329777",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192057_8e193aad",
-      "timestamp": "2026-03-29T19:20:57.743885",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_192050_b8ea5887",
-      "timestamp": "2026-03-29T19:20:50.041446",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_175737_7ca3cfb6",
-      "timestamp": "2026-03-29T17:57:37.488645",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_175730_572acf94",
-      "timestamp": "2026-03-29T17:57:30.909221",
-      "bundle_complete": true,
-      "oe_available": true,
-      "host_only": false,
-      "gap_types": [],
-      "semantic": {
-        "intent_code": "unknown",
-        "host_posture_code": "not_applicable",
-        "result_state_code": "not_executed",
-        "growth_motion_code": "unknown",
-        "evidence_state_code": "complete",
-        "why_codes": [],
-        "headline_code": "mainline_connected"
-      }
-    },
-    {
-      "sample_id": "sample_20260329_175723_67a41e91",
-      "timestamp": "2026-03-29T17:57:23.068682",
       "bundle_complete": true,
       "oe_available": true,
       "host_only": false,
@@ -5115,7 +5094,7 @@
       "timestamp": "2026-03-27T19:18:32.710262",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5146,7 +5125,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5157,7 +5136,7 @@
       "timestamp": "2026-03-27T19:18:32.873276",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5188,7 +5167,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5199,7 +5178,7 @@
       "timestamp": "2026-03-27T19:18:33.370911",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5230,7 +5209,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5241,7 +5220,7 @@
       "timestamp": "2026-03-27T19:18:33.532978",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5272,7 +5251,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5283,7 +5262,7 @@
       "timestamp": "2026-03-27T19:18:33.011228",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5314,7 +5293,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5325,7 +5304,7 @@
       "timestamp": "2026-03-27T19:18:33.058639",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5356,7 +5335,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5367,7 +5346,7 @@
       "timestamp": "2026-03-27T19:18:34.219800",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5398,7 +5377,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5409,7 +5388,7 @@
       "timestamp": "2026-03-27T19:18:34.029291",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5440,7 +5419,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5451,7 +5430,7 @@
       "timestamp": "2026-03-27T19:19:10.809725",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5482,7 +5461,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5493,7 +5472,7 @@
       "timestamp": "2026-03-27T19:19:11.581636",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5524,7 +5503,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5535,7 +5514,7 @@
       "timestamp": "2026-03-27T19:19:11.821833",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5566,7 +5545,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5577,7 +5556,7 @@
       "timestamp": "2026-03-27T19:19:11.239424",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5608,7 +5587,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5619,7 +5598,7 @@
       "timestamp": "2026-03-27T19:19:11.040510",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5650,7 +5629,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5661,7 +5640,7 @@
       "timestamp": "2026-03-27T19:19:11.301820",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5692,7 +5671,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5703,7 +5682,7 @@
       "timestamp": "2026-03-27T19:19:12.723247",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5734,7 +5713,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5745,7 +5724,7 @@
       "timestamp": "2026-03-27T19:19:12.504444",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5776,7 +5755,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5787,7 +5766,7 @@
       "timestamp": "2026-03-27T19:19:34.851380",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5818,7 +5797,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5829,7 +5808,7 @@
       "timestamp": "2026-03-27T19:19:34.380998",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5860,7 +5839,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5871,7 +5850,7 @@
       "timestamp": "2026-03-27T19:19:34.606813",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5902,7 +5881,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5913,7 +5892,7 @@
       "timestamp": "2026-03-27T19:19:34.923100",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5944,7 +5923,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5955,7 +5934,7 @@
       "timestamp": "2026-03-27T19:19:35.247311",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -5986,7 +5965,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -5997,7 +5976,7 @@
       "timestamp": "2026-03-27T19:19:35.471139",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6028,7 +6007,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6039,7 +6018,7 @@
       "timestamp": "2026-03-27T19:19:36.320639",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6070,7 +6049,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6081,7 +6060,7 @@
       "timestamp": "2026-03-27T19:19:36.101084",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6112,7 +6091,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6123,7 +6102,7 @@
       "timestamp": "2026-03-27T19:20:07.766989",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6154,7 +6133,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6165,7 +6144,7 @@
       "timestamp": "2026-03-27T19:20:07.941145",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6196,7 +6175,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6207,7 +6186,7 @@
       "timestamp": "2026-03-27T19:20:08.475810",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6238,7 +6217,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6249,7 +6228,7 @@
       "timestamp": "2026-03-27T19:20:08.656389",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6280,7 +6259,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6291,7 +6270,7 @@
       "timestamp": "2026-03-27T19:20:08.101170",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6322,7 +6301,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6333,7 +6312,7 @@
       "timestamp": "2026-03-27T19:20:08.153975",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6364,7 +6343,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6375,7 +6354,7 @@
       "timestamp": "2026-03-27T19:20:09.378777",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6406,7 +6385,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6417,7 +6396,7 @@
       "timestamp": "2026-03-27T19:20:09.204532",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6448,7 +6427,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6501,7 +6480,7 @@
       "timestamp": "2026-03-27T19:29:38.372813",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6534,7 +6513,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6545,7 +6524,7 @@
       "timestamp": "2026-03-27T19:30:03.017186",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6578,7 +6557,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6631,7 +6610,7 @@
       "timestamp": "2026-03-27T19:30:14.992067",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6664,7 +6643,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6717,7 +6696,7 @@
       "timestamp": "2026-03-27T19:30:39.535888",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6750,7 +6729,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -6883,7 +6862,7 @@
       "timestamp": "2026-03-27T19:39:18.093572",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -6914,7 +6893,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7009,7 +6988,7 @@
       "timestamp": "2026-03-27T19:40:05.636036",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7042,7 +7021,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7573,7 +7552,7 @@
       "timestamp": "2026-03-27T20:07:35.722991",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7604,7 +7583,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7615,7 +7594,7 @@
       "timestamp": "2026-03-27T20:07:35.887040",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7646,7 +7625,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7657,7 +7636,7 @@
       "timestamp": "2026-03-27T20:07:36.445448",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7688,7 +7667,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7699,7 +7678,7 @@
       "timestamp": "2026-03-27T20:07:36.607049",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7730,7 +7709,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7741,7 +7720,7 @@
       "timestamp": "2026-03-27T20:07:36.034951",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7772,7 +7751,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7783,7 +7762,7 @@
       "timestamp": "2026-03-27T20:07:36.089637",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7814,7 +7793,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7825,7 +7804,7 @@
       "timestamp": "2026-03-27T20:09:08.859879",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7856,7 +7835,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7867,7 +7846,7 @@
       "timestamp": "2026-03-27T20:09:08.519400",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7898,7 +7877,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7909,7 +7888,7 @@
       "timestamp": "2026-03-27T20:09:08.206199",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7940,7 +7919,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7951,7 +7930,7 @@
       "timestamp": "2026-03-27T20:09:08.384456",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -7982,7 +7961,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -7993,7 +7972,7 @@
       "timestamp": "2026-03-27T20:09:08.564494",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8024,7 +8003,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8035,7 +8014,7 @@
       "timestamp": "2026-03-27T20:09:09.765483",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8066,7 +8045,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8077,7 +8056,7 @@
       "timestamp": "2026-03-27T20:09:09.592505",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8108,7 +8087,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8119,7 +8098,7 @@
       "timestamp": "2026-03-27T20:09:09.011313",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8150,7 +8129,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8161,7 +8140,7 @@
       "timestamp": "2026-03-27T20:42:21.942955",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8192,7 +8171,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8203,7 +8182,7 @@
       "timestamp": "2026-03-27T20:42:22.462269",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8234,7 +8213,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8245,7 +8224,7 @@
       "timestamp": "2026-03-27T20:42:22.608140",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8276,7 +8255,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8287,7 +8266,7 @@
       "timestamp": "2026-03-27T20:42:22.202300",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8318,7 +8297,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8329,7 +8308,7 @@
       "timestamp": "2026-03-27T20:42:22.065317",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8360,7 +8339,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8371,7 +8350,7 @@
       "timestamp": "2026-03-27T20:42:22.256814",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8402,7 +8381,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8413,7 +8392,7 @@
       "timestamp": "2026-03-27T20:42:23.179099",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8444,7 +8423,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8455,7 +8434,7 @@
       "timestamp": "2026-03-27T20:42:23.042257",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8486,7 +8465,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8497,7 +8476,7 @@
       "timestamp": "2026-03-27T20:42:51.680763",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8528,7 +8507,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8539,7 +8518,7 @@
       "timestamp": "2026-03-27T20:42:51.835531",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8570,7 +8549,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8581,7 +8560,7 @@
       "timestamp": "2026-03-27T20:42:51.390361",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8612,7 +8591,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8623,7 +8602,7 @@
       "timestamp": "2026-03-27T20:42:51.124915",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8654,7 +8633,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8665,7 +8644,7 @@
       "timestamp": "2026-03-27T20:42:51.258093",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8696,7 +8675,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8707,7 +8686,7 @@
       "timestamp": "2026-03-27T20:42:51.434419",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8738,7 +8717,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8749,7 +8728,7 @@
       "timestamp": "2026-03-27T20:42:52.402324",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8780,7 +8759,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8791,7 +8770,7 @@
       "timestamp": "2026-03-27T20:42:52.275117",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8822,7 +8801,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8873,7 +8852,7 @@
       "timestamp": "2026-03-27T21:26:45.739610",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8904,7 +8883,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8915,7 +8894,7 @@
       "timestamp": "2026-03-27T21:26:45.888830",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8946,7 +8925,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8957,7 +8936,7 @@
       "timestamp": "2026-03-27T21:26:45.328592",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -8988,7 +8967,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -8999,7 +8978,7 @@
       "timestamp": "2026-03-27T21:26:45.012376",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9030,7 +9009,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9041,7 +9020,7 @@
       "timestamp": "2026-03-27T21:26:45.189603",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9072,7 +9051,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9083,7 +9062,7 @@
       "timestamp": "2026-03-27T21:26:45.382745",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9114,7 +9093,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9125,7 +9104,7 @@
       "timestamp": "2026-03-27T21:27:01.750658",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9156,7 +9135,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9167,7 +9146,7 @@
       "timestamp": "2026-03-27T21:27:01.450004",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9198,7 +9177,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9209,7 +9188,7 @@
       "timestamp": "2026-03-27T21:27:01.610274",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9240,7 +9219,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9251,7 +9230,7 @@
       "timestamp": "2026-03-27T21:27:01.798432",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9282,7 +9261,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9293,7 +9272,7 @@
       "timestamp": "2026-03-27T21:27:02.942006",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9324,7 +9303,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9335,7 +9314,7 @@
       "timestamp": "2026-03-27T21:27:02.102894",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9366,7 +9345,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9377,7 +9356,7 @@
       "timestamp": "2026-03-27T21:27:02.762063",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9408,7 +9387,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9419,7 +9398,7 @@
       "timestamp": "2026-03-27T21:27:02.268345",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9450,7 +9429,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9501,7 +9480,7 @@
       "timestamp": "2026-03-27T21:40:32.115614",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9532,7 +9511,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9707,7 +9686,7 @@
       "timestamp": "2026-03-27T23:06:13.610506",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9740,7 +9719,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -9951,7 +9930,7 @@
       "timestamp": "2026-03-28T19:01:30.728277",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -9982,7 +9961,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -10713,7 +10692,7 @@
       "timestamp": "2026-03-29T00:20:02.257022",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -10744,7 +10723,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -10755,7 +10734,7 @@
       "timestamp": "2026-03-29T00:20:12.774850",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -10786,7 +10765,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -10837,7 +10816,7 @@
       "timestamp": "2026-03-29T00:20:34.791799",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -10868,7 +10847,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -10879,7 +10858,7 @@
       "timestamp": "2026-03-29T00:20:45.198204",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -10910,7 +10889,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -10921,7 +10900,7 @@
       "timestamp": "2026-03-29T00:20:56.201748",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -10952,7 +10931,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -10963,7 +10942,7 @@
       "timestamp": "2026-03-29T00:21:07.833355",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -10994,7 +10973,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11005,7 +10984,7 @@
       "timestamp": "2026-03-29T00:21:18.750631",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11036,7 +11015,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11047,7 +11026,7 @@
       "timestamp": "2026-03-29T01:02:01.280967",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11078,7 +11057,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11089,7 +11068,7 @@
       "timestamp": "2026-03-29T01:02:14.197535",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11120,7 +11099,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11171,7 +11150,7 @@
       "timestamp": "2026-03-29T01:02:38.041767",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11202,7 +11181,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11213,7 +11192,7 @@
       "timestamp": "2026-03-29T01:02:44.157079",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11244,7 +11223,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11255,7 +11234,7 @@
       "timestamp": "2026-03-29T01:02:47.296800",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11286,7 +11265,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11297,7 +11276,7 @@
       "timestamp": "2026-03-29T01:02:50.810234",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11328,7 +11307,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11339,7 +11318,7 @@
       "timestamp": "2026-03-29T01:02:54.877150",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11370,7 +11349,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11421,7 +11400,7 @@
       "timestamp": "2026-03-29T01:03:04.793090",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11452,7 +11431,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11463,7 +11442,7 @@
       "timestamp": "2026-03-29T01:03:08.503313",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11494,7 +11473,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11505,7 +11484,7 @@
       "timestamp": "2026-03-29T01:03:12.968891",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11536,7 +11515,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11547,7 +11526,7 @@
       "timestamp": "2026-03-29T01:03:17.165869",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11578,7 +11557,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11589,7 +11568,7 @@
       "timestamp": "2026-03-29T01:03:29.567598",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11620,7 +11599,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11631,7 +11610,7 @@
       "timestamp": "2026-03-29T01:03:42.850271",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11662,7 +11641,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11673,7 +11652,7 @@
       "timestamp": "2026-03-29T01:03:55.871330",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11704,7 +11683,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11715,7 +11694,7 @@
       "timestamp": "2026-03-29T01:04:18.295864",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11746,7 +11725,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11757,7 +11736,7 @@
       "timestamp": "2026-03-29T01:04:30.565270",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11788,7 +11767,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11839,7 +11818,7 @@
       "timestamp": "2026-03-29T01:05:00.382731",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11870,7 +11849,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11881,7 +11860,7 @@
       "timestamp": "2026-03-29T01:05:13.824961",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11912,7 +11891,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11923,7 +11902,7 @@
       "timestamp": "2026-03-29T01:05:28.298714",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11954,7 +11933,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -11965,7 +11944,7 @@
       "timestamp": "2026-03-29T01:05:42.761446",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -11996,7 +11975,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12007,7 +11986,7 @@
       "timestamp": "2026-03-29T01:05:55.603622",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12038,7 +12017,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12049,7 +12028,7 @@
       "timestamp": "2026-03-29T01:07:56.994699",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12080,7 +12059,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12091,7 +12070,7 @@
       "timestamp": "2026-03-29T01:08:08.469919",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12122,7 +12101,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12173,7 +12152,7 @@
       "timestamp": "2026-03-29T01:08:30.962616",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12204,7 +12183,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12215,7 +12194,7 @@
       "timestamp": "2026-03-29T01:08:42.477102",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12246,7 +12225,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12257,7 +12236,7 @@
       "timestamp": "2026-03-29T01:08:53.719351",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12288,7 +12267,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12299,7 +12278,7 @@
       "timestamp": "2026-03-29T01:09:05.480436",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12330,7 +12309,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12341,7 +12320,7 @@
       "timestamp": "2026-03-29T01:09:16.574520",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12372,7 +12351,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12383,7 +12362,7 @@
       "timestamp": "2026-03-29T01:22:25.771398",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12414,7 +12393,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12425,7 +12404,7 @@
       "timestamp": "2026-03-29T01:22:37.048181",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12456,7 +12435,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12507,7 +12486,7 @@
       "timestamp": "2026-03-29T01:23:01.472568",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12538,7 +12517,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12549,7 +12528,7 @@
       "timestamp": "2026-03-29T01:23:14.618036",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12580,7 +12559,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12591,7 +12570,7 @@
       "timestamp": "2026-03-29T01:23:28.367905",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12622,7 +12601,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12633,7 +12612,7 @@
       "timestamp": "2026-03-29T01:23:41.863803",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12664,7 +12643,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12675,7 +12654,7 @@
       "timestamp": "2026-03-29T01:23:55.582158",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12706,7 +12685,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12717,7 +12696,7 @@
       "timestamp": "2026-03-29T01:36:39.602409",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12748,7 +12727,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12759,7 +12738,7 @@
       "timestamp": "2026-03-29T01:36:52.169633",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12790,7 +12769,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12841,7 +12820,7 @@
       "timestamp": "2026-03-29T01:37:16.182131",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12872,7 +12851,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12883,7 +12862,7 @@
       "timestamp": "2026-03-29T01:37:29.024853",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12914,7 +12893,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12925,7 +12904,7 @@
       "timestamp": "2026-03-29T01:37:41.415874",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12956,7 +12935,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -12967,7 +12946,7 @@
       "timestamp": "2026-03-29T01:37:55.106339",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -12998,7 +12977,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13009,7 +12988,7 @@
       "timestamp": "2026-03-29T01:38:07.423056",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13040,7 +13019,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13051,7 +13030,7 @@
       "timestamp": "2026-03-29T01:41:02.991992",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13082,7 +13061,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13093,7 +13072,7 @@
       "timestamp": "2026-03-29T01:41:14.856232",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13124,7 +13103,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13175,7 +13154,7 @@
       "timestamp": "2026-03-29T01:41:37.664356",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13206,7 +13185,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13217,7 +13196,7 @@
       "timestamp": "2026-03-29T01:41:49.656494",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13248,7 +13227,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13259,7 +13238,7 @@
       "timestamp": "2026-03-29T01:42:00.994655",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13290,7 +13269,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13301,7 +13280,7 @@
       "timestamp": "2026-03-29T01:42:13.362153",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13332,7 +13311,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13343,7 +13322,7 @@
       "timestamp": "2026-03-29T01:42:25.075552",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13374,7 +13353,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13385,7 +13364,7 @@
       "timestamp": "2026-03-29T01:46:35.122404",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13416,7 +13395,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13427,7 +13406,7 @@
       "timestamp": "2026-03-29T01:46:47.502603",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13458,7 +13437,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13509,7 +13488,7 @@
       "timestamp": "2026-03-29T01:47:11.364612",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13540,7 +13519,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13551,7 +13530,7 @@
       "timestamp": "2026-03-29T01:47:23.052486",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13582,7 +13561,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13593,7 +13572,7 @@
       "timestamp": "2026-03-29T01:47:34.617094",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13624,7 +13603,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13635,7 +13614,7 @@
       "timestamp": "2026-03-29T01:47:47.644232",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13666,7 +13645,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13677,7 +13656,7 @@
       "timestamp": "2026-03-29T01:47:59.281769",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13708,7 +13687,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13719,7 +13698,7 @@
       "timestamp": "2026-03-29T01:54:44.115826",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13750,7 +13729,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13761,7 +13740,7 @@
       "timestamp": "2026-03-29T01:55:04.217513",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13792,7 +13771,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13843,7 +13822,7 @@
       "timestamp": "2026-03-29T01:55:29.753479",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13874,7 +13853,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13885,7 +13864,7 @@
       "timestamp": "2026-03-29T01:55:41.949881",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13916,7 +13895,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13927,7 +13906,7 @@
       "timestamp": "2026-03-29T01:55:53.978216",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -13958,7 +13937,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -13969,7 +13948,7 @@
       "timestamp": "2026-03-29T01:56:06.472981",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14000,7 +13979,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14011,7 +13990,7 @@
       "timestamp": "2026-03-29T01:56:19.312066",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14042,7 +14021,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14053,7 +14032,7 @@
       "timestamp": "2026-03-29T08:00:23.753710",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14084,7 +14063,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14095,7 +14074,7 @@
       "timestamp": "2026-03-29T08:00:38.024399",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14126,7 +14105,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14177,7 +14156,7 @@
       "timestamp": "2026-03-29T08:01:07.728983",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14208,7 +14187,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14219,7 +14198,7 @@
       "timestamp": "2026-03-29T08:01:19.201447",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14250,7 +14229,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14261,7 +14240,7 @@
       "timestamp": "2026-03-29T08:01:35.556036",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14292,7 +14271,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14303,7 +14282,7 @@
       "timestamp": "2026-03-29T08:01:48.918649",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14334,7 +14313,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14345,7 +14324,7 @@
       "timestamp": "2026-03-29T08:02:03.484234",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14376,7 +14355,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14387,7 +14366,7 @@
       "timestamp": "2026-03-29T08:15:06.358257",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14418,7 +14397,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14429,7 +14408,7 @@
       "timestamp": "2026-03-29T08:15:17.887910",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14460,7 +14439,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14511,7 +14490,7 @@
       "timestamp": "2026-03-29T08:15:41.466020",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14542,7 +14521,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14553,7 +14532,7 @@
       "timestamp": "2026-03-29T08:15:53.442018",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14584,7 +14563,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14595,7 +14574,7 @@
       "timestamp": "2026-03-29T08:16:06.603594",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14626,7 +14605,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14637,7 +14616,7 @@
       "timestamp": "2026-03-29T08:16:21.434937",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14668,7 +14647,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14679,7 +14658,7 @@
       "timestamp": "2026-03-29T08:16:33.580024",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14710,7 +14689,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14721,7 +14700,7 @@
       "timestamp": "2026-03-29T08:38:55.684067",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14752,7 +14731,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14763,7 +14742,7 @@
       "timestamp": "2026-03-29T08:39:10.214369",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14794,7 +14773,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14845,7 +14824,7 @@
       "timestamp": "2026-03-29T08:39:40.359559",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14876,7 +14855,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14887,7 +14866,7 @@
       "timestamp": "2026-03-29T08:39:55.222676",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14918,7 +14897,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14929,7 +14908,7 @@
       "timestamp": "2026-03-29T08:40:10.396431",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -14960,7 +14939,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -14971,7 +14950,7 @@
       "timestamp": "2026-03-29T08:40:25.289495",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15002,7 +14981,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15013,7 +14992,7 @@
       "timestamp": "2026-03-29T08:40:40.954076",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15044,7 +15023,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15055,7 +15034,7 @@
       "timestamp": "2026-03-29T08:47:58.186654",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15086,7 +15065,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15097,7 +15076,7 @@
       "timestamp": "2026-03-29T08:48:10.504352",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15128,7 +15107,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15179,7 +15158,7 @@
       "timestamp": "2026-03-29T08:48:35.682061",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15210,7 +15189,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15221,7 +15200,7 @@
       "timestamp": "2026-03-29T08:48:48.174093",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15252,7 +15231,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15263,7 +15242,7 @@
       "timestamp": "2026-03-29T08:49:01.129697",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15294,7 +15273,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15305,7 +15284,7 @@
       "timestamp": "2026-03-29T08:49:13.937596",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15336,7 +15315,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15347,7 +15326,7 @@
       "timestamp": "2026-03-29T08:49:25.971176",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15378,7 +15357,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15389,7 +15368,7 @@
       "timestamp": "2026-03-29T09:06:32.977848",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15420,7 +15399,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15431,7 +15410,7 @@
       "timestamp": "2026-03-29T09:06:49.154958",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15462,7 +15441,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15513,7 +15492,7 @@
       "timestamp": "2026-03-29T09:07:22.251581",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15544,7 +15523,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15555,7 +15534,7 @@
       "timestamp": "2026-03-29T09:07:37.779758",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15586,7 +15565,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15597,7 +15576,7 @@
       "timestamp": "2026-03-29T09:07:54.629066",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15628,7 +15607,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15639,7 +15618,7 @@
       "timestamp": "2026-03-29T09:08:11.488802",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15670,7 +15649,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15681,7 +15660,7 @@
       "timestamp": "2026-03-29T09:08:28.697223",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15712,7 +15691,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15723,7 +15702,7 @@
       "timestamp": "2026-03-29T09:30:20.952726",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15754,7 +15733,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15765,7 +15744,7 @@
       "timestamp": "2026-03-29T09:30:38.290070",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15796,7 +15775,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15847,7 +15826,7 @@
       "timestamp": "2026-03-29T09:31:10.325911",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15878,7 +15857,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15889,7 +15868,7 @@
       "timestamp": "2026-03-29T09:31:25.123348",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15920,7 +15899,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15931,7 +15910,7 @@
       "timestamp": "2026-03-29T09:31:40.210995",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -15962,7 +15941,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -15973,7 +15952,7 @@
       "timestamp": "2026-03-29T09:31:54.451952",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16004,7 +15983,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16015,7 +15994,7 @@
       "timestamp": "2026-03-29T09:32:09.441213",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16046,7 +16025,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16057,7 +16036,7 @@
       "timestamp": "2026-03-29T09:52:09.809160",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16088,7 +16067,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16099,7 +16078,7 @@
       "timestamp": "2026-03-29T09:52:25.992803",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16130,7 +16109,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16181,7 +16160,7 @@
       "timestamp": "2026-03-29T09:52:58.274061",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16212,7 +16191,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16223,7 +16202,7 @@
       "timestamp": "2026-03-29T09:53:13.792323",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16254,7 +16233,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16265,7 +16244,7 @@
       "timestamp": "2026-03-29T09:53:30.379415",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16296,7 +16275,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16307,7 +16286,7 @@
       "timestamp": "2026-03-29T09:53:46.504764",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16338,7 +16317,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16349,7 +16328,7 @@
       "timestamp": "2026-03-29T09:54:02.791471",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16380,7 +16359,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16391,7 +16370,7 @@
       "timestamp": "2026-03-29T10:11:38.810906",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16422,7 +16401,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16433,7 +16412,7 @@
       "timestamp": "2026-03-29T10:11:53.911529",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16464,7 +16443,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16515,7 +16494,7 @@
       "timestamp": "2026-03-29T10:12:25.984509",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16546,7 +16525,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16557,7 +16536,7 @@
       "timestamp": "2026-03-29T10:12:46.787322",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16588,7 +16567,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16599,7 +16578,7 @@
       "timestamp": "2026-03-29T10:13:02.236989",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16630,7 +16609,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16641,7 +16620,7 @@
       "timestamp": "2026-03-29T10:13:18.334505",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16672,7 +16651,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16683,7 +16662,7 @@
       "timestamp": "2026-03-29T10:13:33.296756",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16714,7 +16693,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16725,7 +16704,7 @@
       "timestamp": "2026-03-29T10:25:53.372614",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16756,7 +16735,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16767,7 +16746,7 @@
       "timestamp": "2026-03-29T10:26:05.890699",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16798,7 +16777,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16849,7 +16828,7 @@
       "timestamp": "2026-03-29T10:26:31.526114",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16880,7 +16859,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16891,7 +16870,7 @@
       "timestamp": "2026-03-29T10:26:45.267493",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16922,7 +16901,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16933,7 +16912,7 @@
       "timestamp": "2026-03-29T10:26:57.382095",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -16964,7 +16943,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -16975,7 +16954,7 @@
       "timestamp": "2026-03-29T10:27:12.220537",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17006,7 +16985,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17017,7 +16996,7 @@
       "timestamp": "2026-03-29T10:27:27.202047",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17048,7 +17027,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17059,7 +17038,7 @@
       "timestamp": "2026-03-29T11:06:25.287150",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17090,7 +17069,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17101,7 +17080,7 @@
       "timestamp": "2026-03-29T11:06:39.684516",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17132,7 +17111,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17183,7 +17162,7 @@
       "timestamp": "2026-03-29T11:07:10.889648",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17214,7 +17193,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17225,7 +17204,7 @@
       "timestamp": "2026-03-29T11:07:27.461467",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17256,7 +17235,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17267,7 +17246,7 @@
       "timestamp": "2026-03-29T11:07:42.619735",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17298,7 +17277,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17309,7 +17288,7 @@
       "timestamp": "2026-03-29T11:07:59.881251",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17340,7 +17319,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17351,7 +17330,7 @@
       "timestamp": "2026-03-29T11:08:15.309111",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17382,7 +17361,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17393,7 +17372,7 @@
       "timestamp": "2026-03-29T11:41:53.995271",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17424,7 +17403,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17435,7 +17414,7 @@
       "timestamp": "2026-03-29T11:42:10.643813",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17466,7 +17445,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17517,7 +17496,7 @@
       "timestamp": "2026-03-29T11:42:48.037056",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17548,7 +17527,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17559,7 +17538,7 @@
       "timestamp": "2026-03-29T11:43:06.281534",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17590,7 +17569,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17601,7 +17580,7 @@
       "timestamp": "2026-03-29T11:43:22.735120",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17632,7 +17611,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17643,7 +17622,7 @@
       "timestamp": "2026-03-29T11:43:40.291385",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17674,7 +17653,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17685,7 +17664,7 @@
       "timestamp": "2026-03-29T11:43:56.159342",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17716,7 +17695,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -17967,7 +17946,7 @@
       "timestamp": "2026-03-29T12:36:25.167206",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -17998,7 +17977,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -18089,7 +18068,7 @@
       "timestamp": "2026-03-29T16:55:03.890513",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -18120,7 +18099,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -18171,7 +18150,7 @@
       "timestamp": "2026-03-29T16:55:47.553069",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -18202,7 +18181,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -18253,7 +18232,7 @@
       "timestamp": "2026-03-29T16:56:39.092025",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -18284,7 +18263,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -18295,7 +18274,7 @@
       "timestamp": "2026-03-29T16:56:43.806215",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -18326,7 +18305,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -18337,7 +18316,7 @@
       "timestamp": "2026-03-29T16:56:46.972558",
       "bundle_complete": false,
       "gap_types": [
-        "host_only_pre_runtime"
+        "control_plane_host_only"
       ],
       "oe_available": false,
       "host_only": true,
@@ -18368,7 +18347,7 @@
         "growth_motion_code": "unknown",
         "evidence_state_code": "host_only",
         "why_codes": [
-          "host_only_pre_runtime",
+          "control_plane_host_only",
           "host_only"
         ],
         "headline_code": "host_only_turn"
@@ -19413,18 +19392,458 @@
         "why_codes": [],
         "headline_code": "mainline_connected"
       }
+    },
+    {
+      "sample_id": "sample_20260329_193814_76c28070",
+      "timestamp": "2026-03-29T19:38:14.835358",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193814_76c28070/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_193925_01e087c1",
+      "timestamp": "2026-03-29T19:39:25.252774",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_193925_01e087c1/sample.json"
+      },
+      "response_plan_status": "waiting_input",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194032_6baf01c1",
+      "timestamp": "2026-03-29T19:40:32.091809",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194032_6baf01c1/sample.json"
+      },
+      "response_plan_status": "waiting_input",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194156_69a2cd4c",
+      "timestamp": "2026-03-29T19:41:56.093872",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194156_69a2cd4c/sample.json"
+      },
+      "response_plan_status": "waiting_input",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194256_acd0b59f",
+      "timestamp": "2026-03-29T19:42:56.414211",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194256_acd0b59f/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194329_0d0eb0b0",
+      "timestamp": "2026-03-29T19:43:29.418828",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194329_0d0eb0b0/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194544_410df0a7",
+      "timestamp": "2026-03-29T19:45:44.593318",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194544_410df0a7/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_194632_6e913729",
+      "timestamp": "2026-03-29T19:46:32.345713",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_194632_6e913729/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195421_981bf776",
+      "timestamp": "2026-03-29T19:54:21.786774",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195421_981bf776/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195444_6b573ae6",
+      "timestamp": "2026-03-29T19:54:44.822789",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195444_6b573ae6/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
+    },
+    {
+      "sample_id": "sample_20260329_195648_f8d80c92",
+      "timestamp": "2026-03-29T19:56:48.624778",
+      "bundle_complete": true,
+      "gap_types": [],
+      "oe_available": true,
+      "host_only": false,
+      "continuity_tags": [],
+      "repair_closure": false,
+      "artifact_refs": {
+        "sample_dir": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92",
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/raw_update.json",
+        "normalized_event": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/normalized_event.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/response_plan.json",
+        "outbox_record": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/outbox_record.json",
+        "timeline": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/timeline.json",
+        "tape": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/tape.json",
+        "replay": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/replay.json",
+        "summary": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/summary.md",
+        "sample": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_195648_f8d80c92/sample.json"
+      },
+      "response_plan_status": "completed_verified",
+      "closure_family_id": null,
+      "session_id": null,
+      "thread_id": null,
+      "outcome_signature": null,
+      "reflection_trigger": null,
+      "semantic": {
+        "intent_code": "unknown",
+        "host_posture_code": "not_applicable",
+        "result_state_code": "not_executed",
+        "growth_motion_code": "unknown",
+        "evidence_state_code": "complete",
+        "why_codes": [],
+        "headline_code": "mainline_connected"
+      }
     }
   ],
   "semantic_summary": {
     "headline": {
       "replay_not_aligned": 10,
-      "mainline_connected": 166,
+      "mainline_connected": 177,
       "evidence_missing": 26,
       "host_only_turn": 238
     },
     "evidence_state": {
       "replay_gap": 10,
-      "complete": 166,
+      "complete": 177,
       "trace_gap": 23,
       "partial": 3,
       "host_only": 238

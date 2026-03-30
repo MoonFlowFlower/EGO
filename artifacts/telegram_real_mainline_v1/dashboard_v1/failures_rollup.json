@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-30T00:37:43.827761+00:00",
+  "generated_at": "2026-03-30T01:34:20.416074+00:00",
   "last_sample_timestamp": "2026-03-25T17:16:10.954321",
-  "freshness_seconds": 372092.873487,
+  "freshness_seconds": 375489.461808,
   "headline_code": "runtime_failure_detected",
   "summary": {
     "total_failures": 3,
@@ -191,15 +191,15 @@
     }
   },
   "gap_summary": {
-    "generated_at": "2026-03-30T00:37:41.374363+00:00",
-    "total_runs": 440,
-    "complete_runs": 166,
+    "generated_at": "2026-03-30T01:34:17.329085+00:00",
+    "total_runs": 451,
+    "complete_runs": 177,
     "host_only_runs": 238,
-    "oe_available_runs": 169,
+    "oe_available_runs": 180,
     "failure_case_count": 3,
     "gap_type_counts": {
       "collector_timing_gap": 33,
-      "host_only_pre_runtime": 238,
+      "control_plane_host_only": 238,
       "replay_mismatch": 10,
       "response_plan_missing": 26,
       "send_record_missing": 1
