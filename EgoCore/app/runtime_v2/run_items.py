@@ -87,9 +87,12 @@ class RunItem:
     description: str
     canonical_path: Optional[str] = None
     status: str = "pending"
+    execution_mode: str = "model_driven"
     baseline_snapshot: Optional[VerificationBaseline] = None
     verification_result: Optional[Dict[str, Any]] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
+    resolved_expected_lines: List[Dict[str, str]] = field(default_factory=list)
+    resolved_values: Dict[str, Any] = field(default_factory=dict)
     attempt_count: int = 0
     last_progress_at: Optional[float] = None
     started_at: Optional[float] = None
@@ -104,9 +107,12 @@ class RunItem:
             "description": self.description,
             "canonical_path": self.canonical_path,
             "status": self.status,
+            "execution_mode": self.execution_mode,
             "baseline_snapshot": self.baseline_snapshot.to_dict() if self.baseline_snapshot else None,
             "verification_result": self.verification_result,
             "metadata": dict(self.metadata),
+            "resolved_expected_lines": [dict(item) for item in self.resolved_expected_lines],
+            "resolved_values": dict(self.resolved_values),
             "attempt_count": self.attempt_count,
             "last_progress_at": self.last_progress_at,
             "started_at": self.started_at,
@@ -125,9 +131,15 @@ class RunItem:
             description=str(data.get("description") or ""),
             canonical_path=data.get("canonical_path"),
             status=str(data.get("status") or "pending"),
+            execution_mode=str(
+                data.get("execution_mode")
+                or _default_execution_mode(str(data.get("kind") or "file_write"), dict(data.get("metadata") or {}))
+            ),
             baseline_snapshot=VerificationBaseline.from_dict(data.get("baseline_snapshot")),
             verification_result=data.get("verification_result"),
             metadata=dict(data.get("metadata") or {}),
+            resolved_expected_lines=[dict(item) for item in list(data.get("resolved_expected_lines") or [])],
+            resolved_values=dict(data.get("resolved_values") or {}),
             attempt_count=int(data.get("attempt_count") or 0),
             last_progress_at=data.get("last_progress_at"),
             started_at=data.get("started_at"),
@@ -271,6 +283,7 @@ def _build_file_item(filename: str, *, base_dir: Optional[Path], text: str, posi
         expected_lines = _parse_expected_lines(text)
         if expected_lines:
             metadata["expected_lines"] = expected_lines
+    execution_mode = _default_execution_mode(kind, metadata)
 
     return {
         "position": position,
@@ -278,6 +291,7 @@ def _build_file_item(filename: str, *, base_dir: Optional[Path], text: str, posi
         "description": f"创建 {filename}",
         "canonical_path": _build_canonical_path(base_dir, filename),
         "metadata": metadata,
+        "execution_mode": execution_mode,
     }
 
 
@@ -290,7 +304,17 @@ def _build_page_item(theme: str, *, base_dir: Optional[Path], position: int) -> 
         "description": f"创建 {filename}",
         "canonical_path": _build_canonical_path(base_dir, filename),
         "metadata": {"theme": theme, "auto_named": True},
+        "execution_mode": "model_driven",
     }
+
+
+def _default_execution_mode(kind: str, metadata: Dict[str, Any]) -> str:
+    expected_lines = list(metadata.get("expected_lines") or [])
+    if kind == "file_write" and expected_lines:
+        return "host_deterministic"
+    if kind == "file_verify" and expected_lines and metadata.get("verify_source_item_id"):
+        return "host_deterministic"
+    return "model_driven"
 
 
 def build_run_items_from_request(text: str, *, ingress_context: Optional[Dict[str, Any]] = None, last_explicit_target: Optional[str] = None) -> List[RunItem]:
@@ -345,6 +369,7 @@ def build_run_items_from_request(text: str, *, ingress_context: Optional[Dict[st
                 kind="file_verify",
                 description=f"验证 {Path(latest_verifiable_item.canonical_path or latest_verifiable_item.description).name}",
                 canonical_path=latest_verifiable_item.canonical_path,
+                execution_mode="host_deterministic" if latest_verifiable_item.execution_mode == "host_deterministic" else "model_driven",
                 metadata=dict(latest_verifiable_item.metadata or {}),
             )
             verify_item.metadata["verify_source_item_id"] = latest_verifiable_item.item_id
@@ -372,6 +397,7 @@ def build_run_items_from_request(text: str, *, ingress_context: Optional[Dict[st
             kind=str(candidate["kind"]),
             description=str(candidate["description"]),
             canonical_path=canonical_path,
+            execution_mode=str(candidate.get("execution_mode") or _default_execution_mode(str(candidate["kind"]), dict(candidate.get("metadata") or {}))),
             metadata=dict(candidate.get("metadata") or {}),
         )
         item.metadata["position"] = event["position"]
@@ -409,6 +435,47 @@ def build_output_obligations(run_items: List[RunItem]) -> List[Dict[str, Any]]:
 
 def current_date_string() -> str:
     return date.today().isoformat()
+
+
+def is_host_deterministic_run_item(item: Optional[RunItem]) -> bool:
+    return item is not None and item.execution_mode == "host_deterministic"
+
+
+def resolve_expected_lines(
+    expected_lines: List[Dict[str, str]],
+    *,
+    resolved_values: Optional[Dict[str, Any]] = None,
+) -> tuple[List[Dict[str, str]], Dict[str, Any]]:
+    frozen_values = dict(resolved_values or {})
+    resolved_lines: List[Dict[str, str]] = []
+    for spec in expected_lines:
+        line_index = str(spec.get("line_index") or "")
+        if spec.get("kind") == "current_date":
+            frozen_values.setdefault("current_date", current_date_string())
+            resolved_lines.append(
+                {
+                    "line_index": line_index,
+                    "kind": "literal",
+                    "value": str(frozen_values["current_date"]),
+                }
+            )
+            continue
+        resolved_lines.append(
+            {
+                "line_index": line_index,
+                "kind": "literal",
+                "value": str(spec.get("value") or "").strip(),
+            }
+        )
+    return resolved_lines, frozen_values
+
+
+def build_deterministic_file_content(resolved_expected_lines: List[Dict[str, str]]) -> str:
+    ordered_lines = sorted(
+        [dict(item) for item in resolved_expected_lines],
+        key=lambda spec: int(spec.get("line_index") or 0),
+    )
+    return "\n".join(str(spec.get("value") or "") for spec in ordered_lines)
 
 
 def _expected_lines_match(path: Path, expected_lines: List[Dict[str, str]]) -> bool:
@@ -449,6 +516,14 @@ def path_changed_from_baseline(path: Path, baseline: Optional[VerificationBaseli
     )
 
 
+def path_matches_canonical(expected_path: Optional[str], actual_path: Optional[str]) -> bool:
+    if not expected_path or not actual_path:
+        return False
+    expected = str(expected_path).replace("/", "\\").lower()
+    actual = str(actual_path).replace("/", "\\").lower()
+    return expected == actual
+
+
 def verify_run_item(item: RunItem) -> Dict[str, Any]:
     path_value = item.canonical_path
     if not path_value:
@@ -473,7 +548,7 @@ def verify_run_item(item: RunItem) -> Dict[str, Any]:
             "evidence": {"path": str(path)},
         }
 
-    expected_lines = list((item.metadata or {}).get("expected_lines") or [])
+    expected_lines = list(item.resolved_expected_lines or (item.metadata or {}).get("expected_lines") or [])
     if expected_lines and not _expected_lines_match(path, expected_lines):
         return {
             "passed": False,
@@ -504,6 +579,14 @@ def verify_run_item(item: RunItem) -> Dict[str, Any]:
                 "evidence": {"path": str(path)},
             }
 
+    if item.kind == "file_verify":
+        verification_result = item.verification_result or {}
+        if verification_result.get("reason") != "verify_read_observed":
+            return {
+                "passed": False,
+                "reason": "run_item_verify_not_observed",
+                "evidence": {"path": str(path)},
+            }
     if item.kind == "file_verify" and expected_lines:
         if not _expected_lines_match(path, expected_lines):
             return {

@@ -5,7 +5,7 @@ import pytest
 
 from app.runtime_v2.action_protocol import RuntimeV2Action
 from app.runtime_v2.loop import RuntimeV2Loop
-from app.runtime_v2.run_items import RunConflictState, build_run_items_from_request
+from app.runtime_v2.run_items import RunConflictState, build_run_items_from_request, current_date_string
 from app.runtime_v2.semantic_parser import build_runtime_status_reply
 from app.runtime_v2.state import RuntimeV2State
 from app.runtime_v2.verifier import RuntimeV2Verifier
@@ -243,6 +243,27 @@ def test_build_run_items_from_request_preserves_user_order_and_verify_target(tmp
     assert items[1].metadata["verify_source_item_id"] == items[0].item_id
 
 
+def test_build_run_items_marks_structured_file_and_verify_as_host_deterministic(tmp_path):
+    prompt = (
+        f"在 {tmp_path} 目录下创建 demo.txt，写入三行内容：第一行是 hello，第二行是当前日期，第三行是 autonomous chain test。"
+        "然后读取这个文件确认内容。然后再创建一个参照youtube的html页面,只是看着像,不用做真正的功能."
+    )
+
+    items = build_run_items_from_request(
+        prompt,
+        ingress_context={
+            "runtime_action": "execute_task",
+            "requested_output": {"target_directory": str(tmp_path)},
+        },
+    )
+
+    assert [item.execution_mode for item in items] == [
+        "host_deterministic",
+        "host_deterministic",
+        "model_driven",
+    ]
+
+
 def test_begin_execute_task_resets_task_scoped_state(tmp_path):
     state = RuntimeV2State(session_id="session:begin-execute")
     state.task_status = "blocked"
@@ -428,7 +449,10 @@ def test_verify_run_item_requires_observed_file_read(tmp_path):
         "requested_output": {"target_directory": str(tmp_path)},
     }
     target = tmp_path / "demo.txt"
-    target.write_text("hello\n2026-03-30\nautonomous chain test", encoding="utf-8")
+    target.write_text(
+        f"hello\n{current_date_string()}\nautonomous chain test",
+        encoding="utf-8",
+    )
 
     state.set_run_items(
         build_run_items_from_request(
@@ -442,6 +466,7 @@ def test_verify_run_item_requires_observed_file_read(tmp_path):
 
     assert verify_item is not None
     assert verify_item.kind == "file_verify"
+    assert verify_item.execution_mode == "host_deterministic"
 
     observation = state.observe_active_run_item_progress()
     assert observation["reason"] == "verify_read_pending"
@@ -549,8 +574,8 @@ async def test_runtime_v2_loop_promotes_frontier_after_write_without_model_compl
                         "tool": "file",
                         "input": {
                             "operation": "write",
-                            "path": str(tmp_path / "demo.txt"),
-                            "content": "hello\n2026-03-30\nautonomous chain test",
+                            "path": str(tmp_path / "youtube_lookalike.html"),
+                            "content": "<!doctype html><html><body>youtube</body></html>",
                         },
                     },
                     ensure_ascii=False,
@@ -561,6 +586,13 @@ async def test_runtime_v2_loop_promotes_frontier_after_write_without_model_compl
     run_events = []
 
     async def fake_decide(_state):
+        active_item = _state.get_active_run_item()
+        assert active_item is not None
+        assert active_item.kind == "page_generate"
+        assert active_item.canonical_path.endswith("youtube_lookalike.html")
+        assert (tmp_path / "demo.txt").read_text(encoding="utf-8") == (
+            f"hello\n{current_date_string()}\nautonomous chain test"
+        )
         return next(actions)
 
     async def fake_execute(_tool, tool_input):
@@ -591,14 +623,45 @@ async def test_runtime_v2_loop_promotes_frontier_after_write_without_model_compl
     assert result.status == "resumable_pause"
     active_item = state.get_active_run_item()
     assert active_item is not None
-    assert active_item.kind == "file_verify"
-    assert active_item.description == "验证 demo.txt"
+    assert active_item.kind == "script_generate"
+    assert active_item.description == "创建 print hello world.py"
     assert state.active_item_id == active_item.item_id
     assert run_events == [
         ("item_started", "开始处理 demo.txt。"),
         ("item_verified", "已验证 demo.txt。"),
         ("item_started", "开始验证 demo.txt。"),
+        ("item_verified", "已验证 demo.txt。"),
+        ("item_started", "开始处理 youtube_lookalike.html。"),
+        ("item_verified", "已验证 youtube_lookalike.html。"),
+        ("item_started", "开始处理 print hello world.py。"),
     ]
+
+
+def test_host_deterministic_verify_reuses_frozen_current_date(monkeypatch, tmp_path):
+    state = RuntimeV2State(session_id="session:frozen-date")
+    prompt = (
+        f"在 {tmp_path} 目录下创建 demo.txt，写入三行内容：第一行是 hello，第二行是当前日期，第三行是 autonomous chain test。"
+        "然后读取这个文件确认内容。"
+    )
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"target_directory": str(tmp_path)},
+    }
+    state.begin_execute_task(prompt, build_run_items_from_request(prompt, ingress_context=state.ingress_context), state.ingress_context)
+
+    write_item = state.ensure_active_run_item_started()
+    assert write_item is not None
+    frozen_date = write_item.resolved_values["current_date"]
+
+    monkeypatch.setattr("app.runtime_v2.run_items.current_date_string", lambda: "2099-01-01")
+
+    first_promotion = state.advance_run_item_frontier()
+    assert first_promotion["blocked"] is False
+    assert state.get_active_run_item() is None
+    verify_item = state.get_run_items()[1]
+    assert verify_item.kind == "file_verify"
+    assert verify_item.resolved_values["current_date"] == frozen_date
+    assert verify_item.status == "verified"
 
 
 @pytest.mark.asyncio

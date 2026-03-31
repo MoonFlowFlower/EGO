@@ -13,11 +13,14 @@ from .run_items import (
     RunEvent,
     RunItem,
     VerificationBaseline,
+    build_deterministic_file_content,
     build_output_obligations,
     build_run_item_started_text,
     build_run_item_verified_text,
+    is_host_deterministic_run_item,
     path_matches_canonical,
     path_changed_from_baseline,
+    resolve_expected_lines,
     verify_run_item,
 )
 
@@ -790,6 +793,7 @@ class RuntimeV2State:
         next_item.last_progress_at = next_item.started_at
         if next_item.canonical_path:
             next_item.baseline_snapshot = VerificationBaseline.capture(next_item.canonical_path)
+        next_item = self._resolve_run_item_for_execution(next_item, items)
         self.active_item_id = next_item.item_id
         self.current_step = next_item.description
         self._write_back_run_items(items)
@@ -802,6 +806,30 @@ class RuntimeV2State:
             )
         )
         return next_item
+
+    def _resolve_run_item_for_execution(self, item: RunItem, items: Optional[List[RunItem]] = None) -> RunItem:
+        if not is_host_deterministic_run_item(item):
+            return item
+
+        siblings = items or self.get_run_items()
+        resolved_values = dict(item.resolved_values or {})
+        if item.kind == "file_verify":
+            source_item_id = (item.metadata or {}).get("verify_source_item_id")
+            if source_item_id:
+                source_item = next((candidate for candidate in siblings if candidate.item_id == source_item_id), None)
+                if source_item is not None:
+                    if source_item.resolved_expected_lines and not item.resolved_expected_lines:
+                        item.resolved_expected_lines = [dict(spec) for spec in source_item.resolved_expected_lines]
+                    if source_item.resolved_values and not resolved_values:
+                        resolved_values = dict(source_item.resolved_values)
+        expected_lines = list((item.metadata or {}).get("expected_lines") or [])
+        if not item.resolved_expected_lines and expected_lines:
+            item.resolved_expected_lines, resolved_values = resolve_expected_lines(
+                expected_lines,
+                resolved_values=resolved_values,
+            )
+        item.resolved_values = resolved_values
+        return item
 
     def resume_active_run_item(self) -> Optional[RunItem]:
         item = self.get_active_run_item()
@@ -825,6 +853,102 @@ class RuntimeV2State:
         self.update_run_item(item)
         self.current_step = item.description
         return item
+
+    def execute_host_deterministic_item(self) -> Dict[str, Any]:
+        item = self.get_active_run_item()
+        if item is None or item.status != "running" or not is_host_deterministic_run_item(item):
+            return {"executed": False, "changed": False, "blocked": False}
+
+        items = self.get_run_items()
+        item = self._resolve_run_item_for_execution(item, items)
+        self.update_run_item(item)
+        path = Path(item.canonical_path or "")
+
+        try:
+            if item.kind == "file_write":
+                path.parent.mkdir(parents=True, exist_ok=True)
+                content = build_deterministic_file_content(item.resolved_expected_lines)
+                path.write_text(content, encoding="utf-8")
+                self.last_tool_result = {
+                    "success": True,
+                    "tool": "file",
+                    "stdout": f"Successfully wrote to {path}",
+                    "stderr": "",
+                    "exit_code": 0,
+                    "metadata": {
+                        "path": str(path),
+                        "operation": "write",
+                        "host_deterministic": True,
+                    },
+                }
+                self.record("tool", self.last_tool_result)
+                observation = {
+                    "progressed": True,
+                    "reason": "host_deterministic_write_executed",
+                    "item_id": item.item_id,
+                    "canonical_path": item.canonical_path,
+                    "actual_path": str(path),
+                }
+                self.mark_active_run_item_completed(observation)
+                return {
+                    "executed": True,
+                    "changed": True,
+                    "blocked": False,
+                    "verification_result": observation,
+                }
+
+            if item.kind == "file_verify":
+                content = path.read_text(encoding="utf-8")
+                self.last_tool_result = {
+                    "success": True,
+                    "tool": "file",
+                    "stdout": content,
+                    "stderr": "",
+                    "exit_code": 0,
+                    "metadata": {
+                        "path": str(path),
+                        "operation": "read",
+                        "host_deterministic": True,
+                    },
+                }
+                self.record("tool", self.last_tool_result)
+                observation = {
+                    "progressed": True,
+                    "reason": "verify_read_observed",
+                    "item_id": item.item_id,
+                    "canonical_path": item.canonical_path,
+                    "actual_path": str(path),
+                }
+                self.mark_active_run_item_completed(observation)
+                return {
+                    "executed": True,
+                    "changed": True,
+                    "blocked": False,
+                    "verification_result": observation,
+                }
+        except FileNotFoundError:
+            verification = {
+                "passed": False,
+                "reason": "run_item_missing",
+                "target": item.canonical_path,
+                "evidence": {"path": str(path)},
+            }
+        except Exception as exc:
+            verification = {
+                "passed": False,
+                "reason": "host_deterministic_item_error",
+                "target": item.canonical_path,
+                "evidence": {"path": str(path), "error": str(exc)},
+            }
+
+        self.last_verification_result = verification
+        self.mark_active_run_item_blocked(verification)
+        return {
+            "executed": True,
+            "changed": True,
+            "blocked": True,
+            "verification_result": verification,
+        }
 
     def update_run_item(self, updated_item: RunItem) -> None:
         items = self.get_run_items()
@@ -1015,6 +1139,14 @@ class RuntimeV2State:
                 break
 
             if active.status == "running":
+                host_execution = self.execute_host_deterministic_item()
+                if host_execution.get("executed"):
+                    changed = changed or bool(host_execution.get("changed"))
+                    verification_result = host_execution.get("verification_result") or verification_result
+                    if host_execution.get("blocked"):
+                        blocked = True
+                        break
+                    continue
                 break
 
             if active.status == "completed":
