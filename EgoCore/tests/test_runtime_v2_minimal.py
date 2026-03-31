@@ -645,6 +645,101 @@ async def test_runtime_v2_loop_promotes_frontier_after_write_without_model_compl
     ]
 
 
+@pytest.mark.asyncio
+async def test_runtime_v2_loop_completes_host_owned_run_items_even_if_model_complete_has_no_target(monkeypatch, tmp_path):
+    loop = RuntimeV2Loop()
+    prompt = (
+        f"在 {tmp_path} 目录下创建 demo.txt，写入三行内容：第一行是 hello，第二行是当前日期，第三行是 autonomous chain test。"
+        "然后读取这个文件确认内容。然后再创建一个参照youtube的html页面,只是看着像,不用做真正的功能."
+        "最后做一个print hello world.py文件"
+    )
+    state = loop.get_state("session:host-owned-complete")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"target_directory": str(tmp_path)},
+    }
+    state.begin_execute_task(prompt, build_run_items_from_request(prompt, ingress_context=state.ingress_context), state.ingress_context)
+
+    actions = iter(
+        [
+            RuntimeV2Action.from_model_output(
+                json.dumps(
+                    {
+                        "type": "act",
+                        "tool": "file",
+                        "input": {
+                            "operation": "write",
+                            "path": str(tmp_path / "youtube_lookalike.html"),
+                            "content": "<!doctype html><html><body>youtube</body></html>",
+                        },
+                    },
+                    ensure_ascii=False,
+                )
+            ),
+            RuntimeV2Action.from_model_output(
+                json.dumps(
+                    {
+                        "type": "act",
+                        "tool": "file",
+                        "input": {
+                            "operation": "write",
+                            "path": str(tmp_path / "print hello world.py"),
+                            "content": 'print("hello world")\n',
+                        },
+                    },
+                    ensure_ascii=False,
+                )
+            ),
+            RuntimeV2Action.from_model_output(
+                json.dumps(
+                    {
+                        "type": "complete",
+                        "summary": "全部完成",
+                        "verification": {},
+                    },
+                    ensure_ascii=False,
+                )
+            ),
+        ]
+    )
+
+    async def fake_decide(_state):
+        return next(actions)
+
+    async def fake_execute(_tool, tool_input):
+        path = Path(tool_input["path"])
+        path.write_text(tool_input["content"], encoding="utf-8")
+        return {
+            "success": True,
+            "tool": "file",
+            "stdout": f"Successfully wrote to {path}",
+            "stderr": "",
+            "exit_code": 0,
+            "metadata": {"path": str(path)},
+        }
+
+    monkeypatch.setattr(loop, "_decide", fake_decide)
+    monkeypatch.setattr(loop.tool_broker, "execute", fake_execute)
+
+    result = await loop.run_turn_typed(
+        "session:host-owned-complete",
+        prompt,
+        max_steps=3,
+    )
+
+    assert result.status == "completed_verified"
+    assert result.reply_text == "\n".join(
+        [
+            "已完成这些任务：",
+            "1. 已写入 demo.txt",
+            "2. 已确认 demo.txt 内容",
+            "3. 已验证 youtube_lookalike.html",
+            "4. 已验证 print hello world.py",
+        ]
+    )
+    assert state.last_verification_result["reason"] == "run_items_verified"
+
+
 def test_run_item_rendering_distinguishes_write_and_verify():
     write_item = RunItem(
         item_id="item_write",

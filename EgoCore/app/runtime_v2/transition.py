@@ -391,10 +391,9 @@ class RuntimeV2TransitionEngine:
             # WS-4: 验证事件
             verify_event = build_progress_event(ProgressEventType.VERIFYING_RESULT)
             state.push_progress_event(verify_event)
-            
-            verification = self.verifier.verify_complete(action.verification, state.last_tool_result)
+
             completion_gate = _evaluate_run_items_completion(state)
-            if verification.get("passed") and completion_gate is not None:
+            if completion_gate is not None:
                 if not completion_gate.passed and completion_gate.reason != "next_item_pending":
                     verification = {
                         "passed": False,
@@ -420,6 +419,9 @@ class RuntimeV2TransitionEngine:
                         "evidence": (completion_gate.verification_result or {}).get("evidence") or {},
                         "warnings": [],
                     }
+            else:
+                verification = self.verifier.verify_complete(action.verification, state.last_tool_result)
+
             declared_outputs_verification = None if state.get_run_items() else _verify_declared_outputs_exist(state)
             if verification.get("passed") and declared_outputs_verification and not declared_outputs_verification.get("passed"):
                 verification = declared_outputs_verification
