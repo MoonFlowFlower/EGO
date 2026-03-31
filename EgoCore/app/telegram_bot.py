@@ -73,7 +73,7 @@ from app.runtime_v2.run_items import (
     build_run_items_from_request,
 )
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
-from app.runtime_v2.semantic_parser import build_runtime_status_reply, parse_session_control_intent
+from app.runtime_v2.semantic_parser import parse_session_control_intent
 from app.autonomy import (
     AutonomyExecutorKind,
     AutonomyOrchestrator,
@@ -92,6 +92,7 @@ from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 from app.tools import execute_tool
 from app.ingestion.artifact_store import get_artifact_store
 from app.compaction import ReadRequest, get_compaction_manager
+from app.response_contract import build_status_response_plan
 from app.restore_runtime import PendingRestoreObservation
 
 # Ingestion Layer
@@ -408,7 +409,22 @@ class TelegramBot:
         snapshot = active_run.runtime_state_snapshot or {}
         if snapshot:
             source_state = RuntimeV2State.from_snapshot(snapshot)
-        return build_runtime_status_reply(source_state, assume_active=True)
+        restore_observation = None
+        ingress_context = source_state.ingress_context or {}
+        restore_payload = ingress_context.get("restore_observation")
+        if isinstance(restore_payload, PendingRestoreObservation):
+            restore_observation = restore_payload
+        elif isinstance(restore_payload, dict) and restore_payload.get("restore_status"):
+            restore_observation = PendingRestoreObservation(**restore_payload)
+        elif self._pending_restore_observation is not None:
+            restore_observation = self._pending_restore_observation
+        plan = build_status_response_plan(
+            "status",
+            source_state,
+            assume_active=True,
+            restore_observation=restore_observation,
+        )
+        return plan.reply_text
 
     def _build_manual_resume_ack_text(self, run: AutonomyRun) -> str:
         snapshot = run.runtime_state_snapshot or {}

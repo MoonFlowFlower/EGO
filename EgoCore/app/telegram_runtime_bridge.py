@@ -6,12 +6,20 @@ from dataclasses import dataclass, field
 from pathlib import PurePosixPath, PureWindowsPath
 from typing import Any, Dict, List, Optional
 
+from app.interaction.classify_interaction import classify_interaction
 from app.memory.profile_memory import ProfileMemory, StandingRuleParseFailure, describe_standing_rule
 from app.risk_signal import assess_message_risk_level
 from app.telegram_runtime_result import TelegramTurnResult
 
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
-from app.runtime_v2.semantic_parser import ParsedIntentGraph, SemanticSegment, build_runtime_status_reply, decide_runtime_action, heuristic_parse
+from app.runtime_v2.semantic_parser import (
+    ParsedIntentGraph,
+    SemanticSegment,
+    build_runtime_status_reply,
+    decide_runtime_action,
+    heuristic_parse,
+    parse_session_control_intent,
+)
 from app.runtime_v2.state import RuntimeV2State
 
 logger = logging.getLogger(__name__)
@@ -174,6 +182,7 @@ def build_suggestion_response(filename: str, file_type: str, action: Optional[st
 
 @dataclass
 class TelegramIngressDecision:
+    interaction_kind: Optional[str]
     looks_like_task: bool
     is_short_probe: bool
     is_challenge_turn: bool
@@ -658,6 +667,7 @@ class TelegramRuntimeBridge:
             request_mode=request_mode,
         )
         return {
+            "interaction_kind": decision.interaction_kind,
             "parser_source": graph.parser_source if graph else "chat_default",
             "primary_intent": graph.primary_intent if graph else "chat",
             "secondary_intents": graph.secondary_intents if graph else [],
@@ -704,6 +714,14 @@ class TelegramRuntimeBridge:
 
         requested_output = self._extract_requested_output(text)
         runtime_action = decide_runtime_action(graph, state)
+        control_intent = parse_session_control_intent(text)
+        interaction = classify_interaction(
+            text,
+            state,
+            graph=graph,
+            control_intent=control_intent,
+            runtime_action=runtime_action,
+        )
         logger.info("SEMANTIC_AUDIT: runtime_action=%s", runtime_action)
 
         looks_like_task = (
@@ -729,6 +747,7 @@ class TelegramRuntimeBridge:
 
         is_confirm_execution = self._looks_like_execution_confirmation(text, state)
         decision = TelegramIngressDecision(
+            interaction_kind=interaction.kind.value,
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
             is_challenge_turn=is_challenge_turn,
@@ -780,6 +799,14 @@ class TelegramRuntimeBridge:
         graph = self._promote_explicit_target_analyze_followup(text, graph, state)
         requested_output = self._extract_requested_output(text)
         runtime_action = decide_runtime_action(graph, state)
+        control_intent = parse_session_control_intent(text)
+        interaction = classify_interaction(
+            text,
+            state,
+            graph=graph,
+            control_intent=control_intent,
+            runtime_action=runtime_action,
+        )
 
         looks_like_task = (
             graph.primary_intent == "task_request" or
@@ -798,6 +825,7 @@ class TelegramRuntimeBridge:
 
         is_confirm_execution = self._looks_like_execution_confirmation(text, state)
         decision = TelegramIngressDecision(
+            interaction_kind=interaction.kind.value,
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
             is_challenge_turn=is_challenge_turn,
