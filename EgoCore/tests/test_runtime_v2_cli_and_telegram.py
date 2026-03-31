@@ -176,6 +176,7 @@ async def test_telegram_bot_runtime_v2_recent_completion_short_probe_enters_runt
 @pytest.mark.asyncio
 async def test_telegram_bot_delivery_applies_output_check_host_completion_fallback(tmp_path):
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    events = []
 
     class DummyMessage:
         last_text = None
@@ -184,6 +185,11 @@ async def test_telegram_bot_delivery_applies_output_check_host_completion_fallba
 
     class DummyUpdate:
         message = DummyMessage()
+
+    async def fake_publish_phase1_event(**kwargs):
+        events.append(kwargs)
+
+    bot._publish_phase1_event = fake_publish_phase1_event
 
     state = bot._get_runtime_state("telegram:dm:456")
     state.ingress_context = {
@@ -197,6 +203,12 @@ async def test_telegram_bot_delivery_applies_output_check_host_completion_fallba
     for item in run_items:
         item.status = "verified"
     state.set_run_items(run_items)
+    state.last_tool_result = {
+        "success": True,
+        "tool": "file",
+        "stdout": "done",
+        "metadata": {"path": str(tmp_path / "demo.txt")},
+    }
 
     result = TelegramTurnResult(
         status="completed_verified",
@@ -218,6 +230,7 @@ async def test_telegram_bot_delivery_applies_output_check_host_completion_fallba
     )
 
     assert "已完成这些任务" in DummyUpdate.message.last_text
+    assert any(event["kind"] == "tool_delivery_bridge" for event in events)
 
 
 @pytest.mark.asyncio

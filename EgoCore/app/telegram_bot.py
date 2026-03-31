@@ -91,6 +91,7 @@ from app.telegram_runtime_fallback import TelegramRuntimeFallbackRunner
 from app.telegram_runtime_bridge import TelegramRuntimeBridge
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 from app.tools import execute_tool
+from app.tools.delivery_bridge import build_tool_delivery_bridge_decision
 from app.ingestion.artifact_store import get_artifact_store
 from app.compaction import ReadRequest, get_compaction_manager
 from app.response_contract import (
@@ -307,6 +308,65 @@ class TelegramBot:
             payload.get("restore_status"),
         )
         return payload
+
+    async def _publish_tool_delivery_bridge_event(
+        self,
+        *,
+        session_key: str,
+        tool_result: Optional[dict],
+        reply_text: str,
+        delivery_kind: Optional[str],
+        source: str,
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+    ) -> None:
+        decision = build_tool_delivery_bridge_decision(
+            tool_result,
+            reply_text=reply_text,
+            delivery_kind=delivery_kind,
+            source=source,
+        )
+        if decision is None:
+            return
+        await self._publish_phase1_event(
+            session_key=session_key,
+            kind="tool_delivery_bridge",
+            trace_id=trace_id,
+            message_id=ingress_message_id,
+            payload=decision.to_dict(),
+        )
+
+    async def _finalize_runtime_delivery_contract(
+        self,
+        *,
+        session_key: str,
+        state: RuntimeV2State,
+        result: TelegramTurnResult,
+        source: str,
+        trace_id: Optional[str] = None,
+        ingress_message_id: Optional[int] = None,
+    ) -> None:
+        response_plan = build_runtime_result_response_plan(result, state)
+        output_verdict = apply_output_check(response_plan, state)
+        if output_verdict.passed:
+            if result.reply is None:
+                result.reply = TelegramTurnReply(
+                    reply_text=output_verdict.reply_text,
+                    delivery_kind=output_verdict.delivery_kind,
+                    status=result.status,
+                )
+            else:
+                result.reply.reply_text = output_verdict.reply_text
+                result.reply.delivery_kind = output_verdict.delivery_kind
+        await self._publish_tool_delivery_bridge_event(
+            session_key=session_key,
+            tool_result=state.last_tool_result,
+            reply_text=result.reply_text,
+            delivery_kind=result.delivery_kind,
+            source=source,
+            trace_id=trace_id,
+            ingress_message_id=ingress_message_id,
+        )
 
     async def _build_profile_rule_preflight_reply(self, state: RuntimeV2State, rule_enforcement: dict) -> str:
         target = (state.ingress_context or {}).get("resolved_target") or {}
@@ -2865,6 +2925,14 @@ class TelegramBot:
                         await self._send_chat_message(chat_id, result.reply_text, finalize_evidence=True)
                         state.final_sent = True
                 else:
+                    await self._finalize_runtime_delivery_contract(
+                        session_key=run.session_key,
+                        state=state,
+                        result=result,
+                        source="runtime_v2_autonomy_resume",
+                        trace_id=run.metadata.get("trace_id"),
+                        ingress_message_id=run.metadata.get("ingress_message_id"),
+                    )
                     delivery = self.telegram_runtime_bridge.plan_delivery(result, state, False)
                     if delivery.should_send and delivery.text:
                         await self._send_chat_message(chat_id, delivery.text, finalize_evidence=True)
@@ -3180,6 +3248,15 @@ class TelegramBot:
                         "error_preview": str(tool_result.get("error") or "")[:200],
                     },
                 )
+                await self._publish_tool_delivery_bridge_event(
+                    session_key=session_key,
+                    tool_result=state.last_tool_result,
+                    reply_text=getattr(result, "reply_text", "") or "",
+                    delivery_kind="final" if getattr(result, "reply_text", "") else None,
+                    source="native_contract_execute",
+                    trace_id=trace_id,
+                    ingress_message_id=ingress_message_id,
+                )
                 if tool_entry.get("tool_name") == "read_artifact":
                     artifact_event_kind = "artifact_read_completed" if tool_result.get("success") else "artifact_read_timeout"
                     await self._publish_phase1_event(
@@ -3362,18 +3439,14 @@ class TelegramBot:
                 ingress_message_id=ingress_message_id,
             )
 
-        response_plan = build_runtime_result_response_plan(result, state)
-        output_verdict = apply_output_check(response_plan, state)
-        if output_verdict.passed:
-            if result.reply is None:
-                result.reply = TelegramTurnReply(
-                    reply_text=output_verdict.reply_text,
-                    delivery_kind=output_verdict.delivery_kind,
-                    status=result.status,
-                )
-            else:
-                result.reply.reply_text = output_verdict.reply_text
-                result.reply.delivery_kind = output_verdict.delivery_kind
+        await self._finalize_runtime_delivery_contract(
+            session_key=session_key,
+            state=state,
+            result=result,
+            source="runtime_v2",
+            trace_id=trace_id,
+            ingress_message_id=ingress_message_id,
+        )
 
         delivery = self.telegram_runtime_bridge.plan_delivery(result, state, is_challenge_turn)
         if not delivery.should_send:

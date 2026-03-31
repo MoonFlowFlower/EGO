@@ -305,7 +305,7 @@ async def test_runtime_v2_turn_does_not_append_uploaded_artifact_when_explicit_p
         def get_loop(self):
             return self.loop
 
-        async def run_turn(self, *, session_key, user_input, state):
+        async def run_turn(self, *, session_key, user_input, state, **kwargs):
             captured["user_input"] = user_input
             return TelegramTurnResult(
                 status="completed_verified",
@@ -370,6 +370,7 @@ async def test_native_loop_turn_publishes_tool_result_event(monkeypatch):
 
     assert result.reply_text == "native done"
     assert any(event["kind"] == "native_tool_result" for event in events)
+    assert any(event["kind"] == "tool_delivery_bridge" for event in events)
 
 
 @pytest.mark.asyncio
