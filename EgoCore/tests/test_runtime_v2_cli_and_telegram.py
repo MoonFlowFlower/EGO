@@ -174,6 +174,53 @@ async def test_telegram_bot_runtime_v2_recent_completion_short_probe_enters_runt
 
 
 @pytest.mark.asyncio
+async def test_telegram_bot_delivery_applies_output_check_host_completion_fallback(tmp_path):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+
+    class DummyMessage:
+        last_text = None
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyUpdate:
+        message = DummyMessage()
+
+    state = bot._get_runtime_state("telegram:dm:456")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"target_directory": str(tmp_path)},
+    }
+    run_items = build_run_items_from_request(
+        f"在 {tmp_path} 目录下创建 demo.txt。最后做一个print hello world.py文件",
+        ingress_context=state.ingress_context,
+    )
+    for item in run_items:
+        item.status = "verified"
+    state.set_run_items(run_items)
+
+    result = TelegramTurnResult(
+        status="completed_verified",
+        state=state,
+        reply=TelegramTurnReply(
+            reply_text="",
+            delivery_kind="final",
+            status="completed_verified",
+        ),
+    )
+
+    await bot._deliver_runtime_v2_result(
+        DummyUpdate(),
+        state,
+        result,
+        is_challenge_turn=False,
+        ingress_message_id=1,
+        trace_id="trace",
+    )
+
+    assert "已完成这些任务" in DummyUpdate.message.last_text
+
+
+@pytest.mark.asyncio
 async def test_telegram_bot_manual_resume_is_control_plane_with_immediate_ack(monkeypatch, tmp_path):
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
 

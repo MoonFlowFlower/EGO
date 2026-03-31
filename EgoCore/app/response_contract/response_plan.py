@@ -19,6 +19,41 @@ class ResponsePlan:
     metadata: Dict[str, Any] = field(default_factory=dict)
 
 
+def build_direct_response_plan(
+    reply_text: str,
+    *,
+    kind: str,
+    delivery_kind: str,
+    authority_source: str,
+    metadata: Optional[Dict[str, Any]] = None,
+    memory_claim_verdict: Optional[MemoryClaimVerdict] = None,
+) -> ResponsePlan:
+    return ResponsePlan(
+        kind=kind,
+        reply_text=reply_text,
+        delivery_kind=delivery_kind,
+        authority_source=authority_source,
+        memory_claim_verdict=memory_claim_verdict,
+        metadata=dict(metadata or {}),
+    )
+
+
+def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
+    delivery_kind = getattr(result, "delivery_kind", None) or (
+        "progress" if getattr(result, "status", None) == "waiting_input" else "chat"
+    )
+    return ResponsePlan(
+        kind=getattr(result, "status", "runtime_result"),
+        reply_text=getattr(result, "reply_text", "") or "",
+        delivery_kind=delivery_kind,
+        authority_source="response_contract.response_plan",
+        metadata={
+            "runtime_status": getattr(result, "status", None),
+            "task_status": getattr(state, "task_status", None),
+        },
+    )
+
+
 def build_status_response_plan(
     text: str,
     state: Any,

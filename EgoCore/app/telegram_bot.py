@@ -92,7 +92,12 @@ from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 from app.tools import execute_tool
 from app.ingestion.artifact_store import get_artifact_store
 from app.compaction import ReadRequest, get_compaction_manager
-from app.response_contract import build_status_response_plan
+from app.response_contract import (
+    apply_output_check,
+    build_direct_response_plan,
+    build_runtime_result_response_plan,
+    build_status_response_plan,
+)
 from app.restore_runtime import PendingRestoreObservation
 
 # Ingestion Layer
@@ -248,24 +253,36 @@ class TelegramBot:
             last_explicit_target=state.last_explicit_target,
         )
 
-    def _capture_pre_runtime_response_plan(self, reply_text: str, pre_runtime) -> None:
+    def _capture_pre_runtime_response_plan(self, plan, verdict) -> None:
         if not _EVIDENCE_COLLECTOR_AVAILABLE:
             return
-        metadata = getattr(pre_runtime, "response_plan_metadata", None) or {}
+        metadata = dict(getattr(plan, "metadata", None) or {})
         try:
             collector = get_evidence_collector()
             collector.capture_host_response_plan(
-                status=metadata.get("status", "pre_runtime"),
-                delivery_kind=metadata.get("delivery_kind", "final"),
-                reply_text=reply_text,
+                status=metadata.get("status", getattr(plan, "kind", "pre_runtime")),
+                delivery_kind=getattr(verdict, "delivery_kind", getattr(plan, "delivery_kind", "final")),
+                reply_text=getattr(verdict, "reply_text", getattr(plan, "reply_text", "")),
                 extra={
-                    "authority_source": metadata.get("authority_source", "host_pre_runtime"),
+                    "authority_source": metadata.get("authority_source", getattr(plan, "authority_source", "host_pre_runtime")),
                     "matched_rule_ids": metadata.get("matched_rule_ids") or [],
-                    "rule_enforcement": metadata.get("enforcement") or getattr(pre_runtime, "rule_enforcement", None),
+                    "rule_enforcement": metadata.get("enforcement"),
+                    "output_check_reason": getattr(verdict, "reason", None),
+                    "used_host_fallback": getattr(verdict, "used_host_fallback", False),
                 },
             )
         except Exception as e:
             logger.warning(f"[E4-EVIDENCE] Failed to capture pre-runtime response_plan: {e}")
+
+    def _build_pre_runtime_response_plan(self, reply_text: str, pre_runtime):
+        metadata = getattr(pre_runtime, "response_plan_metadata", None) or {}
+        return build_direct_response_plan(
+            reply_text,
+            kind=metadata.get("status", "pre_runtime"),
+            delivery_kind=metadata.get("delivery_kind", "final"),
+            authority_source=metadata.get("authority_source", "host_pre_runtime"),
+            metadata=metadata,
+        )
 
     def _activate_pending_restore_observation(self, state: RuntimeV2State) -> Optional[dict]:
         if self._pending_restore_observation is None:
@@ -2373,13 +2390,19 @@ class TelegramBot:
             state.task_status = "waiting_input"
             state.waiting_for_user_input = True
             waiting_text = getattr(pre_runtime, 'waiting_input_text', '收到文件，请告诉我你要做什么。')
-            self._capture_pre_runtime_response_plan(waiting_text, pre_runtime)
-            await self._send_reply(update, waiting_text)
+            plan = self._build_pre_runtime_response_plan(waiting_text, pre_runtime)
+            verdict = apply_output_check(plan, state)
+            if verdict.passed:
+                self._capture_pre_runtime_response_plan(plan, verdict)
+                await self._send_reply(update, verdict.reply_text)
             return True
 
         if getattr(pre_runtime, "direct_reply_text", None):
-            self._capture_pre_runtime_response_plan(pre_runtime.direct_reply_text, pre_runtime)
-            await self._send_reply(update, pre_runtime.direct_reply_text)
+            plan = self._build_pre_runtime_response_plan(pre_runtime.direct_reply_text, pre_runtime)
+            verdict = apply_output_check(plan, state)
+            if verdict.passed:
+                self._capture_pre_runtime_response_plan(plan, verdict)
+                await self._send_reply(update, verdict.reply_text)
             return True
 
         # 不再发送 generic busy notice
@@ -3337,6 +3360,19 @@ class TelegramBot:
                 trace_id=trace_id,
                 ingress_message_id=ingress_message_id,
             )
+
+        response_plan = build_runtime_result_response_plan(result, state)
+        output_verdict = apply_output_check(response_plan, state)
+        if output_verdict.passed:
+            if result.reply is None:
+                result.reply = TelegramTurnReply(
+                    reply_text=output_verdict.reply_text,
+                    delivery_kind=output_verdict.delivery_kind,
+                    status=result.status,
+                )
+            else:
+                result.reply.reply_text = output_verdict.reply_text
+                result.reply.delivery_kind = output_verdict.delivery_kind
 
         delivery = self.telegram_runtime_bridge.plan_delivery(result, state, is_challenge_turn)
         if not delivery.should_send:
