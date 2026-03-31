@@ -42,6 +42,7 @@ from app.runtime import (
     DeliveryIdentity,
     DeliveryDedupePolicy,
 )
+from app.interaction.normalize_user_turn import normalize_user_turn
 from app.interaction.session_context_store import get_session_context_store
 
 # E4 Evidence Collector - for capturing outbox_record
@@ -387,13 +388,13 @@ class TelegramBot:
         }
 
     def _looks_like_replace_task(self, text: str) -> bool:
-        return (text or "").strip().lower() in {"替换", "replace"}
+        return normalize_user_turn(text).control_key in {"替换", "replace"}
 
     def _looks_like_append_task(self, text: str) -> bool:
-        return (text or "").strip().lower() in {"追加", "append"}
+        return normalize_user_turn(text).control_key in {"追加", "append"}
 
     def _looks_like_cancel_task(self, text: str) -> bool:
-        return (text or "").strip().lower() in {"取消", "cancel"}
+        return normalize_user_turn(text).control_key in {"取消", "cancel"}
 
     def _build_task_conflict_reply(self, state: RuntimeV2State) -> str:
         conflict = state.get_pending_task_conflict()
@@ -867,7 +868,7 @@ class TelegramBot:
         )
 
     def _looks_like_manual_continue(self, text: str) -> bool:
-        normalized = (text or "").strip().lower()
+        normalized = normalize_user_turn(text).control_key
         return normalized in {"继续", "continue", "继续执行", "继续这个任务", "resume"}
 
     def _is_manual_resumable_blocked_run(self, run: Optional[AutonomyRun]) -> bool:

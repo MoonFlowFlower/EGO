@@ -7,6 +7,7 @@ from pathlib import PurePosixPath, PureWindowsPath
 from typing import Any, Dict, List, Optional
 
 from app.interaction.classify_interaction import classify_interaction
+from app.interaction.normalize_user_turn import NormalizedUserTurn, normalize_user_turn
 from app.memory.profile_memory import ProfileMemory, StandingRuleParseFailure, describe_standing_rule
 from app.risk_signal import assess_message_risk_level
 from app.telegram_runtime_result import TelegramTurnResult
@@ -206,6 +207,7 @@ class TelegramIngressDecision:
     profile_rule_parse_error: Optional[Dict[str, Any]] = None
     _parsed_intent_graph: Optional[ParsedIntentGraph] = None
     _runtime_action: Optional[str] = None
+    _normalized_turn: Optional[NormalizedUserTurn] = None
 
 
 @dataclass
@@ -391,7 +393,7 @@ class TelegramRuntimeBridge:
         graph: ParsedIntentGraph,
         state: RuntimeV2State,
     ) -> ParsedIntentGraph:
-        normalized = re.sub(r"\s+", "", (text or "").strip().lower()).strip("?!？！。,.，")
+        normalized = normalize_user_turn(text).probe_key
         if normalized not in self.AMBIGUOUS_PRESENCE_PROBES:
             return graph
         if hasattr(state, "is_busy") and state.is_busy():
@@ -408,7 +410,7 @@ class TelegramRuntimeBridge:
         return graph
 
     def _looks_like_execution_confirmation(self, text: str, state: RuntimeV2State) -> bool:
-        normalized = re.sub(r"\s+", "", (text or "").strip().lower()).strip("?!？！。,.，\"'“”‘’")
+        normalized = normalize_user_turn(text).control_key
         if normalized not in self.CONFIRM_EXECUTION_PATTERNS:
             return False
         if getattr(state, "task_contract", None) and getattr(state, "contract_phase", None) in {"step_selected", "planning_stalled", "re_lock_needed", "executing"}:
@@ -458,10 +460,11 @@ class TelegramRuntimeBridge:
     def _looks_like_explicit_target_analyze_followup(self, text: str, state: RuntimeV2State) -> bool:
         if not getattr(state, "last_explicit_target", None):
             return False
-        normalized = (text or "").strip().lower()
+        normalized_turn = normalize_user_turn(text)
+        normalized = normalized_turn.lower_text
         if not normalized:
             return False
-        return any(marker in text or marker in normalized for marker in self.EXPLICIT_TARGET_ANALYZE_PATTERNS)
+        return any(marker in normalized_turn.text or marker in normalized for marker in self.EXPLICIT_TARGET_ANALYZE_PATTERNS)
 
     def _promote_explicit_target_analyze_followup(
         self,
@@ -658,6 +661,7 @@ class TelegramRuntimeBridge:
         state: RuntimeV2State,
     ) -> Dict[str, Any]:
         graph = decision._parsed_intent_graph
+        normalized_turn = decision._normalized_turn
         request_mode = self._resolve_request_mode(decision)
         resolved_target = self._resolve_target_for_decision(decision, state, request_mode)
         self._attach_profile_rule_context(
@@ -667,6 +671,7 @@ class TelegramRuntimeBridge:
             request_mode=request_mode,
         )
         return {
+            "normalized_user_turn": normalized_turn.to_dict() if normalized_turn is not None else None,
             "interaction_kind": decision.interaction_kind,
             "parser_source": graph.parser_source if graph else "chat_default",
             "primary_intent": graph.primary_intent if graph else "chat",
@@ -697,13 +702,14 @@ class TelegramRuntimeBridge:
         state: RuntimeV2State,
         llm_client: Any = None,
     ) -> TelegramIngressDecision:
-        graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
-        graph = self._promote_execution_confirmation(text, graph, state)
-        graph = self._promote_explicit_target_analyze_followup(text, graph, state)
+        normalized_turn = normalize_user_turn(text)
+        graph = self._normalize_ambiguous_probe(normalized_turn.text, heuristic_parse(normalized_turn.text), state)
+        graph = self._promote_execution_confirmation(normalized_turn.text, graph, state)
+        graph = self._promote_explicit_target_analyze_followup(normalized_turn.text, graph, state)
 
         logger.info(
             "SEMANTIC_AUDIT: text[:50]=%r parser_source=%s primary_intent=%s requires_clarification=%s has_status_query=%s has_correction=%s segments=%s",
-            text[:50],
+            normalized_turn.text[:50],
             graph.parser_source,
             graph.primary_intent,
             graph.requires_clarification,
@@ -712,11 +718,11 @@ class TelegramRuntimeBridge:
             len(graph.segments),
         )
 
-        requested_output = self._extract_requested_output(text)
+        requested_output = self._extract_requested_output(normalized_turn.text)
         runtime_action = decide_runtime_action(graph, state)
-        control_intent = parse_session_control_intent(text)
+        control_intent = parse_session_control_intent(normalized_turn.text)
         interaction = classify_interaction(
-            text,
+            normalized_turn.text,
             state,
             graph=graph,
             control_intent=control_intent,
@@ -728,7 +734,7 @@ class TelegramRuntimeBridge:
             graph.primary_intent == "task_request" or
             any(seg.kind == "task_request" for seg in graph.segments)
         )
-        has_attachment = "[用户发送了文件:" in text or "[附件:" in text
+        has_attachment = normalized_turn.has_attachment
         is_file_only = has_attachment and not looks_like_task
         is_status_query = graph.has_status_query
         is_challenge_turn = graph.has_correction
@@ -745,7 +751,7 @@ class TelegramRuntimeBridge:
                 inferred_filename = seg.target_ref
                 break
 
-        is_confirm_execution = self._looks_like_execution_confirmation(text, state)
+        is_confirm_execution = self._looks_like_execution_confirmation(normalized_turn.text, state)
         decision = TelegramIngressDecision(
             interaction_kind=interaction.kind.value,
             looks_like_task=looks_like_task,
@@ -762,19 +768,20 @@ class TelegramRuntimeBridge:
             ack_text=None,
             busy_notice_text=None,
             requested_output=requested_output,
-            source_text=text,
+            source_text=normalized_turn.text,
             profile_scope=self._resolve_profile_scope(state),
             _parsed_intent_graph=graph,
             _runtime_action=runtime_action,
+            _normalized_turn=normalized_turn,
         )
         profile_memory = self._get_profile_memory(state, decision.profile_scope)
         if profile_memory is not None:
             registration = profile_memory.register_standing_rule_from_text(
-                text,
+                normalized_turn.text,
                 created_from={
                     "source": "telegram_runtime_bridge",
                     "session_id": state.session_id,
-                    "text": text[:500],
+                    "text": normalized_turn.text[:500],
                 },
             )
             if registration is not None:
@@ -794,14 +801,15 @@ class TelegramRuntimeBridge:
         return decision
 
     def inspect_ingress(self, text: str, state: RuntimeV2State) -> TelegramIngressDecision:
-        graph = self._normalize_ambiguous_probe(text, heuristic_parse(text), state)
-        graph = self._promote_execution_confirmation(text, graph, state)
-        graph = self._promote_explicit_target_analyze_followup(text, graph, state)
-        requested_output = self._extract_requested_output(text)
+        normalized_turn = normalize_user_turn(text)
+        graph = self._normalize_ambiguous_probe(normalized_turn.text, heuristic_parse(normalized_turn.text), state)
+        graph = self._promote_execution_confirmation(normalized_turn.text, graph, state)
+        graph = self._promote_explicit_target_analyze_followup(normalized_turn.text, graph, state)
+        requested_output = self._extract_requested_output(normalized_turn.text)
         runtime_action = decide_runtime_action(graph, state)
-        control_intent = parse_session_control_intent(text)
+        control_intent = parse_session_control_intent(normalized_turn.text)
         interaction = classify_interaction(
-            text,
+            normalized_turn.text,
             state,
             graph=graph,
             control_intent=control_intent,
@@ -812,7 +820,7 @@ class TelegramRuntimeBridge:
             graph.primary_intent == "task_request" or
             any(seg.kind == "task_request" for seg in graph.segments)
         )
-        has_attachment = "[用户发送了文件:" in text or "[附件:" in text
+        has_attachment = normalized_turn.has_attachment
         is_file_only = has_attachment and not looks_like_task
         is_status_query = graph.has_status_query
         is_challenge_turn = graph.has_correction
@@ -823,7 +831,7 @@ class TelegramRuntimeBridge:
                 inferred_action = seg.request_mode
                 break
 
-        is_confirm_execution = self._looks_like_execution_confirmation(text, state)
+        is_confirm_execution = self._looks_like_execution_confirmation(normalized_turn.text, state)
         decision = TelegramIngressDecision(
             interaction_kind=interaction.kind.value,
             looks_like_task=looks_like_task,
@@ -840,19 +848,20 @@ class TelegramRuntimeBridge:
             ack_text=None,
             busy_notice_text=None,
             requested_output=requested_output,
-            source_text=text,
+            source_text=normalized_turn.text,
             profile_scope=self._resolve_profile_scope(state),
             _parsed_intent_graph=graph,
             _runtime_action=runtime_action,
+            _normalized_turn=normalized_turn,
         )
         profile_memory = self._get_profile_memory(state, decision.profile_scope)
         if profile_memory is not None:
             registration = profile_memory.register_standing_rule_from_text(
-                text,
+                normalized_turn.text,
                 created_from={
                     "source": "telegram_runtime_bridge",
                     "session_id": state.session_id,
-                    "text": text[:500],
+                    "text": normalized_turn.text[:500],
                 },
             )
             if registration is not None:

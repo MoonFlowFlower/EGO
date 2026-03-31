@@ -21,6 +21,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
+from app.interaction.normalize_user_turn import normalize_user_turn
+
 logger = logging.getLogger(__name__)
 
 SHORT_STATUS_PATTERNS = {
@@ -166,16 +168,18 @@ class SessionControlIntent:
 
 
 def parse_session_control_intent(text: str) -> SessionControlIntent:
-    normalized = _normalize_short_probe(text)
-    if normalized in SHORT_STATUS_PATTERNS or normalized in {"status", "进度", "如何了"}:
+    normalized_turn = normalize_user_turn(text)
+    normalized = normalized_turn.probe_key
+    control_key = normalized_turn.control_key
+    if normalized in SHORT_STATUS_PATTERNS or control_key in {"status", "进度", "如何了"}:
         return SessionControlIntent(kind="status_probe")
-    if normalized in {"继续", "continue", "继续执行", "继续这个任务", "resume"}:
+    if control_key in {"继续", "continue", "继续执行", "继续这个任务", "resume"}:
         return SessionControlIntent(kind="manual_resume")
-    if normalized in {"替换", "replace"}:
+    if control_key in {"替换", "replace"}:
         return SessionControlIntent(kind="task_conflict_resolution", resolution="replace")
-    if normalized in {"追加", "append"}:
+    if control_key in {"追加", "append"}:
         return SessionControlIntent(kind="task_conflict_resolution", resolution="append")
-    if normalized in {"取消", "cancel"}:
+    if control_key in {"取消", "cancel"}:
         return SessionControlIntent(kind="task_conflict_resolution", resolution="cancel")
     return SessionControlIntent(kind="execute_task")
 
@@ -412,18 +416,11 @@ def heuristic_parse(text: str) -> ParsedIntentGraph:
 
 
 def _normalize_short_probe(text: str) -> str:
-    normalized = re.sub(r"\s+", "", (text or "").strip().lower())
-    return normalized.strip("?!？！。,.，")
+    return normalize_user_turn(text).probe_key
 
 
 def _extract_explicit_paths(text: str) -> List[str]:
-    paths: List[str] = []
-    for pattern in (WINDOWS_PATH_RE, UNIX_PATH_RE):
-        for match in pattern.finditer(text or ""):
-            candidate = match.group(0).strip().rstrip(".,!?，。！？")
-            if candidate not in paths:
-                paths.append(candidate)
-    return paths
+    return list(normalize_user_turn(text).explicit_paths)
 
 
 def _extract_explicit_file_task(text: str, paths: List[str]) -> Optional[Dict[str, str]]:
