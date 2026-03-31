@@ -66,6 +66,9 @@ class ShellTool(Tool):
         
         # Allowed commands (if set, only these are allowed)
         self.allowed_commands: List[str] = self.config.get('allowed_commands', [])
+        self._allowed_commands_normalized: Set[str] = {
+            str(command).strip().lower() for command in self.allowed_commands if str(command).strip()
+        }
         
         # Denied commands (always blocked)
         self.denied_commands: List[str] = self.config.get('denied_commands', [])
@@ -119,8 +122,8 @@ class ShellTool(Tool):
     def execute(self, params: Dict[str, Any]) -> ToolResult:
         """Execute shell command with preflight check."""
         command = params['command']
-        timeout = params.get('timeout', self.timeout)
-        working_dir = params.get('working_directory', self.working_directory)
+        timeout = params.get('timeout', params.get('timeout_seconds', self.timeout))
+        working_dir = params.get('working_directory', params.get('working_dir', self.working_directory))
         
         # P2-A.1: Preflight check via tool_doctor (统一前置检查)
         from app.runtime.tool_doctor import run_preflight
@@ -196,8 +199,8 @@ class ShellTool(Tool):
                 base_cmd = tokens[0]
                 
                 # Check if in allowed commands (if whitelist is set)
-                if self.allowed_commands:
-                    if base_cmd not in self.allowed_commands:
+                if self._allowed_commands_normalized:
+                    if base_cmd.lower() not in self._allowed_commands_normalized:
                         return f"Command not in allowed list: {base_cmd}"
                 
                 # Extra check for rm command

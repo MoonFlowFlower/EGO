@@ -36,6 +36,8 @@ tools:
         - D:/Project/AIProject/MyProject
         - D:\Project\AIProject\MyProject\Test
         - D:/Project/AIProject/MyProject/Test
+        - D:\Project\AIProject\MyProject\Test2
+        - D:/Project/AIProject/MyProject/Test2
       denied_paths:
         - .env
         - .git
@@ -61,6 +63,20 @@ tools:
         - echo
         - python
         - python3
+        - dir
+        - type
+        - copy
+        - move
+        - del
+        - erase
+        - rmdir
+        - rd
+        - remove-item
+        - get-childitem
+        - get-content
+        - set-content
+        - new-item
+        - test-path
       denied_commands:
         - rm -rf /
         - sudo
