@@ -612,9 +612,10 @@ class TelegramBot:
         chat_id: Optional[int],
         trace_id: Optional[str],
         ingress_message_id: Optional[int],
-    ) -> None:
+    ) -> int:
         if not state.has_pending_run_events():
-            return
+            return 0
+        sent = 0
         for event in state.pop_run_events():
             await self._emit_run_event_message(
                 state=state,
@@ -625,6 +626,8 @@ class TelegramBot:
                 trace_id=trace_id,
                 ingress_message_id=ingress_message_id,
             )
+            sent += 1
+        return sent
 
     async def _ensure_active_run_item_message(
         self,
@@ -690,6 +693,30 @@ class TelegramBot:
             chat_id=chat_id,
             trace_id=trace_id,
             ingress_message_id=ingress_message_id,
+        )
+
+    def _build_manual_resume_stall_reply(self, state: RuntimeV2State) -> str:
+        summary = state.current_frontier_summary() if hasattr(state, "current_frontier_summary") else state.get_run_item_status_summary()
+        completed = list(summary.get("completed") or [])
+        active = summary.get("active")
+        pending = list(summary.get("pending") or [])
+        blocked = list(summary.get("blocked") or [])
+        reason = str((state.last_verification_result or {}).get("reason") or "").strip()
+        details = []
+        if completed:
+            details.append(f"已完成：{', '.join(completed)}。")
+        if blocked:
+            details.append(f"当前卡住：{', '.join(blocked)}。")
+        elif active:
+            details.append(f"当前卡住：{active}。")
+        if pending:
+            details.append(f"还未开始：{', '.join(pending)}。")
+        if reason:
+            details.append(f"失败原因：{reason}。")
+        return (
+            "这次继续后仍没有新的可验证进展，我先停下来，避免继续空转。\n\n"
+            f"{' '.join(details)}\n\n"
+            "你回复“继续”可以再试一次，或者把任务拆小后再试。"
         )
 
     def _ensure_phase1_bus(self) -> None:
@@ -2646,6 +2673,8 @@ class TelegramBot:
         if trigger_source == "manual":
             self._reset_autonomy_delivery_state(state)
             self._clear_no_progress_tracking(run)
+            state.pending_run_events = []
+            state.pending_progress_events = []
             if self._should_use_run_item_timeline(state):
                 state.resume_active_run_item()
         chat_id = run.metadata.get("chat_id")
@@ -2720,8 +2749,9 @@ class TelegramBot:
                 ingress_message_id=run.metadata.get("ingress_message_id"),
             )
 
+        run_events_sent = 0
         if self._should_use_run_item_timeline(state):
-            await self._emit_newly_verified_run_items(
+            run_events_sent = await self._emit_pending_run_events(
                 state=state,
                 session_key=run.session_key,
                 update=None,
@@ -2742,6 +2772,47 @@ class TelegramBot:
                     run=run,
                     state=state,
                     result=blocked_result,
+                    default_phase="blocked",
+                )
+            if (
+                trigger_source == "manual"
+                and self._should_use_run_item_timeline(state)
+                and getattr(result, "finish_reason", None) == AutonomyStopReason.MAX_STEPS_EXHAUSTED.value
+                and sent_progress == 0
+                and run_events_sent == 0
+            ):
+                blocked_text = self._build_manual_resume_stall_reply(state)
+                state.task_status = "blocked"
+                state.waiting_for_user_input = False
+                if isinstance(chat_id, int):
+                    await self._publish_phase1_event(
+                        session_key=run.session_key,
+                        kind="telegram_delivery",
+                        trace_id=run.metadata.get("trace_id"),
+                        message_id=run.metadata.get("ingress_message_id"),
+                        payload={
+                            "text": blocked_text[:1000],
+                            "delivery_kind": "final",
+                            "status": "blocked",
+                        },
+                    )
+                    await self._send_chat_message(chat_id, blocked_text, finalize_evidence=True)
+                    state.final_sent = True
+                manual_blocked = TelegramTurnResult(
+                    status="blocked",
+                    state=state,
+                    reply=TelegramTurnReply(
+                        reply_text=blocked_text,
+                        delivery_kind="final",
+                        status="blocked",
+                    ),
+                    finish_reason=AutonomyStopReason.NO_PROGRESS_STALL_DETECTED.value,
+                    checkpoint_payload=result.checkpoint_payload,
+                )
+                return self._build_autonomy_outcome(
+                    run=run,
+                    state=state,
+                    result=manual_blocked,
                     default_phase="blocked",
                 )
         else:

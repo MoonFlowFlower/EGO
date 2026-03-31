@@ -526,6 +526,82 @@ async def test_runtime_v2_loop_blocks_when_tool_writes_non_frontier_path(monkeyp
 
 
 @pytest.mark.asyncio
+async def test_runtime_v2_loop_promotes_frontier_after_write_without_model_complete(monkeypatch, tmp_path):
+    loop = RuntimeV2Loop()
+    prompt = (
+        f"在 {tmp_path} 目录下创建 demo.txt，写入三行内容：第一行是 hello，第二行是当前日期，第三行是 autonomous chain test。"
+        "然后读取这个文件确认内容。然后再创建一个参照youtube的html页面,只是看着像,不用做真正的功能."
+        "最后做一个print hello world.py文件"
+    )
+    state = loop.get_state("session:frontier-promotion")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"target_directory": str(tmp_path)},
+    }
+    state.begin_execute_task(prompt, build_run_items_from_request(prompt, ingress_context=state.ingress_context), state.ingress_context)
+
+    actions = iter(
+        [
+            RuntimeV2Action.from_model_output(
+                json.dumps(
+                    {
+                        "type": "act",
+                        "tool": "file",
+                        "input": {
+                            "operation": "write",
+                            "path": str(tmp_path / "demo.txt"),
+                            "content": "hello\n2026-03-30\nautonomous chain test",
+                        },
+                    },
+                    ensure_ascii=False,
+                )
+            ),
+        ]
+    )
+    run_events = []
+
+    async def fake_decide(_state):
+        return next(actions)
+
+    async def fake_execute(_tool, tool_input):
+        path = Path(tool_input["path"])
+        path.write_text(tool_input["content"], encoding="utf-8")
+        return {
+            "success": True,
+            "tool": "file",
+            "stdout": f"Successfully wrote to {path}",
+            "stderr": "",
+            "exit_code": 0,
+            "metadata": {"path": str(path)},
+        }
+
+    async def run_event_callback(event):
+        run_events.append((event.event_type, event.text))
+
+    monkeypatch.setattr(loop, "_decide", fake_decide)
+    monkeypatch.setattr(loop.tool_broker, "execute", fake_execute)
+
+    result = await loop.run_turn_typed(
+        "session:frontier-promotion",
+        prompt,
+        max_steps=1,
+        run_event_callback=run_event_callback,
+    )
+
+    assert result.status == "resumable_pause"
+    active_item = state.get_active_run_item()
+    assert active_item is not None
+    assert active_item.kind == "file_verify"
+    assert active_item.description == "验证 demo.txt"
+    assert state.active_item_id == active_item.item_id
+    assert run_events == [
+        ("item_started", "开始处理 demo.txt。"),
+        ("item_verified", "已验证 demo.txt。"),
+        ("item_started", "开始验证 demo.txt。"),
+    ]
+
+
+@pytest.mark.asyncio
 async def test_runtime_v2_loop_executes_explicit_analyze_with_file_tool(monkeypatch):
     loop = RuntimeV2Loop()
     target = r"D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md"

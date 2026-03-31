@@ -12,7 +12,7 @@ from .runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
 from .run_items import RunEvent
 from .state import RuntimeV2State
 from .tool_broker import RuntimeV2ToolBroker
-from .transition import RuntimeV2TransitionEngine
+from .transition import RuntimeV2TransitionEngine, _build_host_blocked_summary
 from .verifier import RuntimeV2Verifier
 from .progress_events import ProgressEvent, is_terminal_event
 from .proto_self_runtime import RuntimeV2ProtoSelfRuntime, assess_risk_level
@@ -344,9 +344,14 @@ class RuntimeV2Loop:
         progress_callback: Optional[Callable[[ProgressEvent], Awaitable[None]]],
         run_event_callback: Optional[Callable[[RunEvent], Awaitable[None]]],
     ) -> RuntimeV2TurnResult:
-        if hasattr(state, "get_run_items") and state.get_run_items() and not state.get_active_run_item():
-            state.ensure_active_run_item_started()
-        await self._emit_run_events(state, run_event_callback)
+        blocked_result = await self._promote_host_owned_frontier(
+            state=state,
+            run_event_callback=run_event_callback,
+            generation_id=generation_id,
+            turn_id=turn_id,
+        )
+        if blocked_result is not None:
+            return blocked_result
         invalid_json_retries = 0
         for step in range(max_steps):
             action = await self._decide(state)
@@ -403,8 +408,15 @@ class RuntimeV2Loop:
                 )
 
             transition = await self.transition_engine.apply(state, action)
+            blocked_result = await self._promote_host_owned_frontier(
+                state=state,
+                run_event_callback=run_event_callback,
+                generation_id=generation_id,
+                turn_id=turn_id,
+            )
+            if blocked_result is not None:
+                return blocked_result
             await self._emit_progress_events(state, progress_callback)
-            await self._emit_run_events(state, run_event_callback)
 
             if self.proto_self_runtime and action.type == "act" and state.last_tool_result:
                 try:
@@ -437,6 +449,15 @@ class RuntimeV2Loop:
                         logger.warning(f"[E4-EVIDENCE] Failed to capture response_plan: {e}")
 
                 return result
+
+        blocked_result = await self._promote_host_owned_frontier(
+            state=state,
+            run_event_callback=run_event_callback,
+            generation_id=generation_id,
+            turn_id=turn_id,
+        )
+        if blocked_result is not None:
+            return blocked_result
 
         state.task_status = "resumable_pause"
         return RuntimeV2TurnResult(
@@ -482,3 +503,39 @@ class RuntimeV2Loop:
             return
         for event in state.pop_run_events():
             await run_event_callback(event)
+
+    async def _promote_host_owned_frontier(
+        self,
+        *,
+        state: RuntimeV2State,
+        run_event_callback: Optional[Callable[[RunEvent], Awaitable[None]]],
+        generation_id: int,
+        turn_id: str,
+    ) -> Optional[RuntimeV2TurnResult]:
+        if not hasattr(state, "get_run_items") or not state.get_run_items():
+            return None
+
+        state.ensure_active_run_item_started()
+        promotion = state.advance_run_item_frontier()
+        await self._emit_run_events(state, run_event_callback)
+
+        if not promotion.get("blocked"):
+            return None
+
+        verification = promotion.get("verification_result") or state.last_verification_result or {}
+        state.task_status = "blocked"
+        state.waiting_for_user_input = False
+        state.last_delivery_type = "blocked"
+        return RuntimeV2TurnResult(
+            status="blocked",
+            state=state,
+            reply=RuntimeV2Reply(
+                reply_text=_build_host_blocked_summary(state, verification),
+                delivery_kind="final",
+                status="blocked",
+                generation_id=generation_id,
+                turn_id=turn_id,
+            ),
+            finish_reason=verification.get("reason") or "blocked_current_item",
+            checkpoint_payload={"state_snapshot": state.to_snapshot()},
+        )

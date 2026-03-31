@@ -18,6 +18,7 @@ from .run_items import (
     build_run_item_verified_text,
     path_matches_canonical,
     path_changed_from_baseline,
+    verify_run_item,
 )
 
 
@@ -751,6 +752,10 @@ class RuntimeV2State:
                 return item
         return None
 
+    def start_next_pending_run_item(self) -> Optional[RunItem]:
+        self.active_item_id = None
+        return self.ensure_active_run_item_started()
+
     def _write_back_run_items(self, items: List[RunItem]) -> None:
         self.run_items = [item.to_dict() for item in items]
         self.output_obligations = build_output_obligations(items)
@@ -849,6 +854,14 @@ class RuntimeV2State:
             )
         )
         return item
+
+    def current_frontier_summary(self) -> Dict[str, Any]:
+        summary = self.get_run_item_status_summary()
+        active_item = self.get_active_run_item()
+        summary["active_item_id"] = active_item.item_id if active_item else None
+        summary["active_item_status"] = active_item.status if active_item else None
+        summary["active_item_path"] = active_item.canonical_path if active_item else None
+        return summary
 
     def mark_active_run_item_blocked(self, verification_result: Optional[Dict[str, Any]] = None) -> Optional[RunItem]:
         item = self.get_active_run_item()
@@ -982,6 +995,65 @@ class RuntimeV2State:
         if changed and item.status == "running":
             self.mark_active_run_item_completed(observation)
         return observation
+
+    def advance_run_item_frontier(self) -> Dict[str, Any]:
+        """
+        Host-owned frontier promotion.
+
+        负责把当前 frontier item 从 running/completed 主动推进到 verified，
+        并在通过后启动下一条 pending item。
+        """
+        changed = False
+        verification_result: Optional[Dict[str, Any]] = None
+        blocked = False
+        started_next = False
+        verified_items: List[str] = []
+
+        while True:
+            active = self.ensure_active_run_item_started()
+            if active is None:
+                break
+
+            if active.status == "running":
+                break
+
+            if active.status == "completed":
+                verification = verify_run_item(active)
+                verification_result = verification
+                self.last_verification_result = verification
+                if verification.get("passed"):
+                    verified_items.append(active.item_id)
+                    self.mark_active_run_item_verified(verification)
+                    changed = True
+                    started_next = True
+                    continue
+                self.mark_active_run_item_blocked(verification)
+                changed = True
+                blocked = True
+                break
+
+            if active.status == "verified":
+                self.active_item_id = None
+                changed = True
+                started_next = True
+                continue
+
+            if active.status == "blocked":
+                verification_result = active.verification_result
+                blocked = True
+                break
+
+            break
+
+        return {
+            "changed": changed,
+            "blocked": blocked,
+            "started_next": started_next,
+            "verified_items": verified_items,
+            "active_item_id": self.active_item_id,
+            "verification_result": verification_result,
+            "frontier_summary": self.current_frontier_summary(),
+        }
 
     def append_run_items(self, items_to_append: List[RunItem]) -> None:
         existing = self.get_run_items()

@@ -1,9 +1,10 @@
 import pytest
 
-from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus
+from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus, AutonomyStopReason
 from app.runtime_v2.run_items import build_run_items_from_request
 from app.runtime_v2.cli import run_cli
 from app.telegram_bot import TelegramBot
+from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
 
 def test_runtime_v2_cli_entry_imports():
@@ -247,6 +248,71 @@ async def test_telegram_bot_manual_resume_is_control_plane_with_immediate_ack(mo
 
     assert DummyUpdate.message.last_text == "继续处理 demo.txt。"
     assert resumed == {"run_id": run.id, "trigger_source": "manual"}
+
+
+@pytest.mark.asyncio
+async def test_telegram_bot_manual_resume_never_stays_silent_when_no_new_milestone(monkeypatch, tmp_path):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+
+    state = bot._get_runtime_state("telegram:dm:456")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"target_directory": str(tmp_path)},
+    }
+    prompt = (
+        f"在 {tmp_path} 目录下创建 demo.txt，写入 hello。"
+        "然后读取这个文件确认内容。最后做一个print hello world.py文件"
+    )
+    state.begin_execute_task(prompt, build_run_items_from_request(prompt, ingress_context=state.ingress_context), state.ingress_context)
+    state.ensure_active_run_item_started()
+    state.mark_active_run_item_blocked({"reason": "no_progress_stall_detected"})
+
+    run = AutonomyRun.create(
+        session_key="telegram:dm:456",
+        surface="telegram",
+        status=AutonomyRunStatus.BLOCKED,
+        executor_kind=AutonomyExecutorKind.GENERIC_RUNTIME,
+        objective=prompt,
+        current_phase="blocked",
+    )
+    run.hard_blocker_reason = AutonomyStopReason.NO_PROGRESS_STALL_DETECTED.value
+    run.runtime_state_snapshot = state.to_snapshot()
+    run.metadata = {"chat_id": 123, "trace_id": "trace-1", "ingress_message_id": 9}
+
+    sent_texts = []
+
+    async def fake_publish_phase1_event(**kwargs):
+        return None
+
+    async def fake_send_chat_message(chat_id, text, finalize_evidence=True):
+        sent_texts.append(text)
+
+    async def fake_continue_runtime_v2_turn(**kwargs):
+        restored_state = kwargs["state"]
+        restored_state.task_status = "resumable_pause"
+        return TelegramTurnResult(
+            status="resumable_pause",
+            state=restored_state,
+            reply=TelegramTurnReply(
+                reply_text="",
+                delivery_kind="progress",
+                status="resumable_pause",
+            ),
+            finish_reason=AutonomyStopReason.MAX_STEPS_EXHAUSTED.value,
+            checkpoint_payload={"state_snapshot": restored_state.to_snapshot()},
+        )
+
+    monkeypatch.setattr(bot, "_publish_phase1_event", fake_publish_phase1_event)
+    monkeypatch.setattr(bot, "_send_chat_message", fake_send_chat_message)
+    monkeypatch.setattr(bot, "_continue_runtime_v2_turn", fake_continue_runtime_v2_turn)
+    monkeypatch.setattr(bot, "_deliver_runtime_progress_events", lambda **kwargs: __import__("asyncio").sleep(0, result=0))
+
+    outcome = await bot._resume_telegram_autonomy_run(run, "manual")
+
+    assert outcome.status == AutonomyRunStatus.BLOCKED
+    assert sent_texts
+    assert "这次继续后仍没有新的可验证进展" in sent_texts[-1]
+    assert "创建 demo.txt" in sent_texts[-1]
 
 
 @pytest.mark.asyncio
