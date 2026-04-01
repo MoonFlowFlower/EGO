@@ -9,6 +9,8 @@ import httpx
 
 from app.config import ConfigError, get_config
 from app.llm_client import get_llm_client
+from app.response_contract.memory_claim_gate import evaluate_memory_claim
+from app.restore_runtime import PendingRestoreObservation
 
 from .chat_state import normalize_chat_reply
 from .runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
@@ -29,6 +31,7 @@ CHAT_MAINLINE_SYSTEM_PROMPT = """你是 EgoCore runtime_v2 的 chat mainline。
 6. 允许简短，但要像人在聊天，不像控制面固定模板。
 7. 当前若存在 active task，它只作为背景信息，不是你必须提起的主题。
 8. 回复 1 到 2 句，默认简洁。
+9. 如果当前没有明确 restore authority，不要声称“已经恢复成功”“还记得用户”“跨对话持续记忆已经就绪”；此时自然回答当下互动即可。
 """
 
 
@@ -39,6 +42,7 @@ class ChatReplyEngine:
     async def reply(self, state: RuntimeV2State) -> RuntimeV2TurnResult:
         ingress = dict(state.ingress_context or {})
         chat_act = str(ingress.get("conversation_act") or "light_chitchat").strip() or "light_chitchat"
+        restore_observation = _resolve_restore_observation(state)
         state.prepare_chat_turn(user_text=state.last_user_turn or "", chat_act=chat_act)
 
         try:
@@ -50,6 +54,11 @@ class ChatReplyEngine:
                         "上一条候选与最近回复完全重复。保持同语义，但换一种自然说法；"
                         "不要拉回任务，不要回放旧证据。"
                     ),
+                )
+            if _should_regenerate_for_memory_claim(candidate, restore_observation):
+                candidate = await self._generate_reply(
+                    state,
+                    extra_system_hint=_build_memory_claim_regeneration_hint(chat_act),
                 )
             reply_text = str(candidate or "").strip()
             if not reply_text:
@@ -150,6 +159,7 @@ class ChatReplyEngine:
                     "risk_bias": policy_hint.get("risk_bias"),
                 },
             },
+            "memory_claim_contract": _build_memory_claim_contract(state),
             "reply_rules": {
                 "do_not_task_bridge_by_default": True,
                 "do_not_replay_evidence": True,
@@ -325,3 +335,50 @@ class ChatReplyEngine:
         if last_error is not None:
             raise last_error
         raise RuntimeError("Runtime v2 chat fallback exhausted without candidates")
+
+
+def _resolve_restore_observation(state: RuntimeV2State) -> Optional[PendingRestoreObservation]:
+    ingress = dict(state.ingress_context or {})
+    payload = ingress.get("restore_observation")
+    if isinstance(payload, PendingRestoreObservation):
+        return payload
+    if isinstance(payload, dict) and payload.get("restore_status"):
+        return PendingRestoreObservation(**payload)
+    return None
+
+
+def _should_regenerate_for_memory_claim(
+    reply_text: str,
+    restore_observation: Optional[PendingRestoreObservation],
+) -> bool:
+    verdict = evaluate_memory_claim(reply_text, restore_observation=restore_observation)
+    return verdict.claim_detected and not verdict.allowed
+
+
+def _build_memory_claim_regeneration_hint(chat_act: str) -> str:
+    if chat_act == "presence_check":
+        return (
+            "上一条候选越界声称了已恢复或记住用户。请直接自然回应你现在在线、在回应对方，"
+            "但不要声称“已恢复成功”“还记得你”“我记得你”。不要解释规则，不要回避。"
+        )
+    return (
+        "上一条候选越界声称了已恢复、记住用户或跨对话持续记忆。请改写为自然聊天，"
+        "只回应当下互动，不要声称“已恢复成功”“还记得你”“我记得你”。"
+        "可以表达你此刻在线、在认真回应、愿意继续聊。"
+    )
+
+
+def _build_memory_claim_contract(state: RuntimeV2State) -> Dict[str, Any]:
+    ingress = dict(state.ingress_context or {})
+    restore_payload = ingress.get("restore_observation")
+    restore_status: Optional[str] = None
+    restore_authority = False
+    if isinstance(restore_payload, dict):
+        restore_status = str(restore_payload.get("restore_status") or "").strip() or None
+        restore_authority = restore_status in {"success", "partial"}
+    return {
+        "restore_authority_available": restore_authority,
+        "restore_status": restore_status,
+        "disallow_claiming_restore_or_cross_session_memory": not restore_authority,
+        "safe_alternative": "自然回应当下互动，表达此刻在线、在认真回应、可以继续聊。",
+    }

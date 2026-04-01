@@ -48,6 +48,32 @@ async def test_chat_reply_engine_regenerates_exact_repeat_for_presence_check():
 
 
 @pytest.mark.asyncio
+async def test_chat_reply_engine_regenerates_disallowed_memory_claim_without_restore_authority():
+    engine = ChatReplyEngine()
+    engine.llm_client = _SequentialClient(
+        [
+            "恢复了，我在。我记得你。",
+            "我在回应你，现在可以继续聊。",
+        ]
+    )
+
+    state = RuntimeV2State(session_id="chat:memory-claim")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    state.last_user_turn = "你现在是不是已经恢复成功了？还记得我吗？"
+
+    result = await engine.reply(state)
+
+    assert result.status == "chat"
+    assert result.reply_text == "我在回应你，现在可以继续聊。"
+    assert result.reply.metadata["reply_origin"] == "chat_mainline"
+    assert result.reply.metadata["reply_authority"] == "model_chat"
+    assert engine.llm_client.calls == 2
+
+
+@pytest.mark.asyncio
 async def test_runtime_v2_loop_routes_chat_to_chat_mainline_without_decision_engine(monkeypatch):
     loop = RuntimeV2Loop()
     state = loop.get_state("chat:loop")
