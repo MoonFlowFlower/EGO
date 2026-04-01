@@ -23,9 +23,17 @@ class OutputCheckVerdict:
     fidelity_mode: str = "summary"
     fidelity_gap: bool = False
     evidence_snapshot: Optional[Dict[str, Any]] = None
+    intent_gate_status: str = "skipped"
+    intent_gate_reason: str = ""
+    intent_gate_would_block: bool = False
+    intent_gate_violation_class: str = "none"
+    intent_gate_violation_types: tuple[str, ...] = ()
+    intent_gate_confidence: Optional[float] = None
 
 
 _TERMINAL_KINDS = {"completed_verified", "completed", "blocked", "failed", "status_probe"}
+_INTENT_GATE_ALLOWED_AUTHORITIES = {"model_chat"}
+_INTENT_GATE_ALLOWED_REPLY_ORIGINS = {"chat_mainline"}
 
 
 def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
@@ -39,6 +47,13 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
     fidelity_mode = "summary"
     fidelity_gap = False
     evidence_snapshot: Optional[Dict[str, Any]] = None
+    intent_gate_status = "skipped"
+    intent_gate_reason = "not_applicable"
+    intent_gate_would_block = False
+    intent_gate_violation_class = "none"
+    intent_gate_violation_types: tuple[str, ...] = ()
+    intent_gate_confidence: Optional[float] = None
+    used_intent_gate_fallback = False
 
     raw_evidence_payload = metadata.get("evidence_payload")
     if isinstance(raw_evidence_payload, dict):
@@ -68,9 +83,32 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
             if not is_evidence_bearing:
                 fidelity_mode = "fallback"
 
+    intent_gate_verdict = _apply_intent_gate(
+        plan,
+        state,
+        reply_text=reply_text,
+        delivery_kind=delivery_kind,
+        applied_authority=applied_authority,
+        reply_origin=reply_origin,
+        is_evidence_bearing=is_evidence_bearing,
+    )
+    intent_gate_status = intent_gate_verdict["status"]
+    intent_gate_reason = intent_gate_verdict["reason"]
+    intent_gate_would_block = intent_gate_verdict["would_block"]
+    intent_gate_violation_class = intent_gate_verdict["violation_class"]
+    intent_gate_violation_types = intent_gate_verdict["violation_types"]
+    intent_gate_confidence = intent_gate_verdict["confidence_score"]
+    if intent_gate_verdict["applied"]:
+        reply_text = intent_gate_verdict["reply_text"]
+        applied_authority = intent_gate_verdict["applied_authority"]
+        used_intent_gate_fallback = bool(intent_gate_verdict["used_fallback"])
+        used_host_fallback = used_host_fallback or used_intent_gate_fallback
+
     passed = bool(reply_text)
     reason = "ok"
-    if used_host_verbatim:
+    if used_intent_gate_fallback:
+        reason = "intent_gate_fallback_applied"
+    elif used_host_verbatim:
         reason = "host_verbatim_applied"
     elif used_host_fallback:
         reason = "host_fallback_applied"
@@ -92,6 +130,12 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
         fidelity_mode=fidelity_mode,
         fidelity_gap=fidelity_gap,
         evidence_snapshot=evidence_snapshot,
+        intent_gate_status=intent_gate_status,
+        intent_gate_reason=intent_gate_reason,
+        intent_gate_would_block=intent_gate_would_block,
+        intent_gate_violation_class=intent_gate_violation_class,
+        intent_gate_violation_types=intent_gate_violation_types,
+        intent_gate_confidence=intent_gate_confidence,
     )
 
 
@@ -159,3 +203,140 @@ def _render_evidence_reply_text(snapshot: Dict[str, Any]) -> str:
     if request_kind == "directory_listing":
         return f"目录内容如下：\n{body}"
     return body
+
+
+def _apply_intent_gate(
+    plan: ResponsePlan,
+    state: Any,
+    *,
+    reply_text: str,
+    delivery_kind: str,
+    applied_authority: str,
+    reply_origin: str,
+    is_evidence_bearing: bool,
+) -> Dict[str, Any]:
+    result: Dict[str, Any] = {
+        "applied": False,
+        "used_fallback": False,
+        "reply_text": reply_text,
+        "applied_authority": applied_authority,
+        "status": "skipped",
+        "reason": "not_applicable",
+        "would_block": False,
+        "violation_class": "none",
+        "violation_types": (),
+        "confidence_score": None,
+    }
+
+    if (
+        not reply_text
+        or is_evidence_bearing
+        or delivery_kind != "chat"
+        or applied_authority not in _INTENT_GATE_ALLOWED_AUTHORITIES
+        or reply_origin not in _INTENT_GATE_ALLOWED_REPLY_ORIGINS
+    ):
+        return result
+
+    checker = _get_intent_checker()
+    if checker is None:
+        result["status"] = "checker_unavailable"
+        result["reason"] = "checker_unavailable"
+        return result
+
+    contract = _build_response_intent_contract(plan, state)
+    try:
+        verdict = checker.check_intent(
+            reply_text,
+            contract,
+            session_id=str(getattr(state, "session_id", "") or ""),
+        )
+    except Exception as exc:
+        result["status"] = "checker_error"
+        result["reason"] = f"checker_error:{type(exc).__name__}"
+        return result
+
+    violation_types = tuple(
+        dict.fromkeys(
+            str(v.get("type") or "").strip()
+            for v in verdict.to_dict().get("violations", [])
+            if str(v.get("type") or "").strip()
+        )
+    )
+    result.update(
+        {
+            "status": verdict.status,
+            "reason": "ok" if verdict.status == "ok" else "violation_detected",
+            "would_block": bool(verdict.would_block),
+            "violation_class": str(verdict.violation_class or "none"),
+            "violation_types": violation_types,
+            "confidence_score": float(verdict.confidence_score),
+        }
+    )
+
+    if verdict.status == "violation" and verdict.would_block:
+        fallback = _build_intent_gate_fallback(plan)
+        result.update(
+            {
+                "applied": True,
+                "used_fallback": True,
+                "reply_text": fallback,
+                "applied_authority": "host_degraded_fallback",
+                "reason": "would_block",
+            }
+        )
+    return result
+
+
+def _build_response_intent_contract(plan: ResponsePlan, state: Any) -> Dict[str, Any]:
+    metadata = dict(getattr(plan, "metadata", None) or {})
+    intent_policy = {
+        "speaker_mode": str(getattr(plan, "speaker_mode", "reflect") or "reflect"),
+        "epistemic_status": str(getattr(plan, "epistemic_status", "uncertain") or "uncertain"),
+        "commitment_level": str(getattr(plan, "commitment_level", "soft") or "soft"),
+        "tone_bounds": dict(getattr(plan, "tone_bounds", {}) or {}),
+        "allowed_claims": list(metadata.get("allowed_claims") or []),
+        "forbidden_claims": list(metadata.get("forbidden_claims") or []),
+        "must_include": list(getattr(plan, "must_include", ()) or ()),
+        "must_not_upgrade": dict(getattr(plan, "must_not_upgrade", {}) or {}),
+    }
+    grounding = dict(metadata.get("grounding") or {})
+    if not grounding:
+        grounding = _build_response_grounding(state)
+    return {
+        "intent_policy": intent_policy,
+        "grounding": grounding,
+    }
+
+
+def _build_response_grounding(state: Any) -> Dict[str, Any]:
+    if state is None:
+        return {}
+    ingress_context = dict(getattr(state, "ingress_context", None) or {})
+    grounding = dict(ingress_context.get("response_grounding") or {})
+    if grounding:
+        return grounding
+    return {}
+
+
+def _build_intent_gate_fallback(plan: ResponsePlan) -> str:
+    metadata = dict(getattr(plan, "metadata", None) or {})
+    conversation_act = str(metadata.get("conversation_act") or metadata.get("chat_act") or "").strip()
+    if conversation_act == "presence_check":
+        return "在，我在。"
+    if conversation_act == "tone_feedback":
+        return "收到，换一种说法。"
+    if conversation_act == "social_keepalive":
+        return "我在听。"
+    if conversation_act == "task_bridge_request":
+        return "可以，你直接说想做什么。"
+    if conversation_act == "light_chitchat":
+        return "我在听。"
+    return "我换个更稳妥的说法。"
+
+
+def _get_intent_checker():
+    try:
+        from emotiond.response_intent_checker import ResponseIntentChecker
+    except Exception:
+        return None
+    return ResponseIntentChecker(enable_shadow_logging=False)

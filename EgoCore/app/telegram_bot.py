@@ -325,6 +325,12 @@ class TelegramBot:
                     "output_check_reason": getattr(verdict, "reason", None),
                     "applied_authority": getattr(verdict, "applied_authority", None),
                     "used_host_fallback": getattr(verdict, "used_host_fallback", False),
+                    "intent_gate_status": getattr(verdict, "intent_gate_status", None),
+                    "intent_gate_reason": getattr(verdict, "intent_gate_reason", None),
+                    "intent_gate_would_block": getattr(verdict, "intent_gate_would_block", None),
+                    "intent_gate_violation_class": getattr(verdict, "intent_gate_violation_class", None),
+                    "intent_gate_violation_types": list(getattr(verdict, "intent_gate_violation_types", ()) or ()),
+                    "intent_gate_confidence": getattr(verdict, "intent_gate_confidence", None),
                 },
             )
         except Exception as e:
@@ -432,6 +438,12 @@ class TelegramBot:
                         "memory_claim_detected": (response_plan.memory_claim_verdict.claim_detected if response_plan.memory_claim_verdict else False),
                         "output_check_reason": output_verdict.reason,
                         "applied_authority": output_verdict.applied_authority,
+                        "intent_gate_status": output_verdict.intent_gate_status,
+                        "intent_gate_reason": output_verdict.intent_gate_reason,
+                        "intent_gate_would_block": output_verdict.intent_gate_would_block,
+                        "intent_gate_violation_class": output_verdict.intent_gate_violation_class,
+                        "intent_gate_violation_types": list(output_verdict.intent_gate_violation_types),
+                        "intent_gate_confidence": output_verdict.intent_gate_confidence,
                     },
                 )
             except Exception as e:

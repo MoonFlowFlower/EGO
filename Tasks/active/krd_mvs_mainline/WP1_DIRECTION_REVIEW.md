@@ -103,7 +103,7 @@
 - 缺口:
   - 还没有 E4 真实样本证明它在 Telegram 主链上拦住了错误 memory claim
 
-### 7. SRAP 核心字段已进入 `ResponsePlan`，但宿主 intent gate 仍未形成
+### 7. SRAP 核心字段已进入 `ResponsePlan`，且宿主最小 intent gate 已形成
 - 证据:
   - [response_plan.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/response_plan.py)
   - [output_check.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/output_check.py)
@@ -112,11 +112,12 @@
   - [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)
 - 当前状态:
   - `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds` 已在宿主合同里
-  - 但 `allowed_claims / forbidden_claims / grounding / violation verdict` 仍未进入 EgoCore host 输出主链
-  - `ResponseIntentChecker` 目前只在 OpenEmotion 侧 shadow/runtime 路径出现
+  - `violation verdict` 已进入 EgoCore host 输出主链
+  - 但 `allowed_claims / forbidden_claims / grounding` 仍未形成正式 source
+  - `ResponseIntentChecker` 现在同时存在于 OpenEmotion shadow/runtime 与 EgoCore host gate 路径
 - 判定:
   - `WP1` 当前不是字段缺失问题
-  - 而是 host-side intent gate 未接问题
+  - 而是 host-side gate 已接、但 contract source 仍未收稳的问题
 
 ## 风险与未证实项
 
@@ -135,9 +136,10 @@
 - 本轮复算结果：
   - `test_response_intent_checker.py -k numeric`：`5 passed`
   - `test_response_intent_checker.py`：`47 passed`
+  - `EgoCore` focused regression：`29 passed, 1 warning`
   - `test_shadow_mode.py`：并入复算后 `4 failed`
 - 额外代码证据：
-  - `EgoCore/app/*` 当前无 `ResponseIntentChecker` 调用
+  - `EgoCore/app/response_contract/output_check.py` 已有 `ResponseIntentChecker` 调用
 - 结论:
   - 不能宣称 `numeric_leak = 0`
   - 也不能宣称 `WP1 ready`
@@ -150,14 +152,16 @@
   - `chat_mainline` 已不再复用 task JSON 决策器
   - `ResponsePlan` 已经成为唯一可继续扩展的宿主表达合同
 - 当前真正缺口:
-  - `self_report_contract / SRAP` 剩余约束尚未形成 host-side gate
+  - `self_report_contract / SRAP` 剩余约束尚未形成正式 source
   - `memory_claim_gate` 尚未拿到 E4 真实样本
+  - `intent_gate` 尚未拿到 E4 真实样本
   - readiness 已复算出负向结论：`numeric_leak = 0` 未满足
 
 ## 唯一最高优先级下一步
 
 在现有主路径上继续，不重写:
 
-1. 在 EgoCore host 输出主链接入最小 `ResponsePlan -> ResponseIntentChecker`
+1. 在现有 host gate 上补 `allowed_claims / forbidden_claims / grounding` 正式 source
 2. 保持 `ResponsePlan` 作为唯一宿主表达合同，不另造第二份 contract
-3. 接线后再重跑 `WP1 readiness` 复算，明确新的 `numeric_leak` 与 SRAP Shadow 结论
+3. 用真实 Telegram 样本验证最小 host-side intent gate
+4. 再重跑 `WP1 readiness` 复算，明确新的 `numeric_leak` 与 SRAP Shadow 结论

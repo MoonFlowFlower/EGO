@@ -127,3 +127,84 @@ def test_output_check_does_not_rewrite_model_chat_from_stale_evidence() -> None:
     assert verdict.applied_authority == "model_chat"
     assert verdict.is_evidence_bearing is False
     assert verdict.reply_text == "在的，请说。"
+
+
+def test_output_check_applies_intent_gate_to_numeric_leak_model_chat() -> None:
+    state = RuntimeV2State(session_id="s")
+    plan = build_direct_response_plan(
+        "我的 joy 是 0.21。",
+        kind="chat",
+        delivery_kind="chat",
+        authority_source="test",
+        reply_authority="model_chat",
+        metadata={
+            "conversation_act": "light_chitchat",
+            "reply_origin": "chat_mainline",
+        },
+        state=state,
+    )
+
+    verdict = apply_output_check(plan, state)
+
+    assert verdict.passed is True
+    assert verdict.reason == "intent_gate_fallback_applied"
+    assert verdict.used_host_fallback is True
+    assert verdict.applied_authority == "host_degraded_fallback"
+    assert verdict.intent_gate_status == "violation"
+    assert verdict.intent_gate_would_block is True
+    assert "numeric_leak" in verdict.intent_gate_violation_types
+    assert verdict.reply_text == "我在听。"
+
+
+def test_output_check_preserves_safe_model_chat_with_intent_gate() -> None:
+    state = RuntimeV2State(session_id="s")
+    plan = build_direct_response_plan(
+        "嗯，我在。",
+        kind="chat",
+        delivery_kind="chat",
+        authority_source="test",
+        reply_authority="model_chat",
+        metadata={
+            "conversation_act": "presence_check",
+            "reply_origin": "chat_mainline",
+        },
+        state=state,
+    )
+
+    verdict = apply_output_check(plan, state)
+
+    assert verdict.passed is True
+    assert verdict.reason == "ok"
+    assert verdict.used_host_fallback is False
+    assert verdict.applied_authority == "model_chat"
+    assert verdict.intent_gate_status == "ok"
+    assert verdict.intent_gate_would_block is False
+
+
+def test_output_check_skips_intent_gate_for_host_evidence_verbatim_numbers() -> None:
+    state = RuntimeV2State(session_id="s")
+    plan = build_direct_response_plan(
+        "已列出目录。",
+        kind="completed_verified",
+        delivery_kind="final",
+        authority_source="test",
+        reply_authority="host_evidence",
+        metadata={
+            "reply_origin": "evidence_mainline",
+            "evidence_payload": {
+                "request_kind": "directory_listing",
+                "body": " Directory of D:\\Project\\AIProject\\MyProject\\Test2\n03/31/2026  04:18 PM               12 demo.txt",
+                "truncated": False,
+                "delivery_was_chunked": False,
+                "source_turn_id": "turn_1234",
+            },
+        },
+        state=state,
+    )
+
+    verdict = apply_output_check(plan, state)
+
+    assert verdict.passed is True
+    assert verdict.applied_authority == "host_evidence"
+    assert verdict.used_host_verbatim is True
+    assert verdict.intent_gate_status == "skipped"

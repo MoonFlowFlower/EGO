@@ -26,39 +26,40 @@
 | `reply_authority / reply_origin` 正式分层 | 已接入且有真实样本 | E4 | Telegram 真实样本已证明 `model_chat` 与 `host_evidence` 可在同一 session 分离 |
 | `chat_mainline` 脱离 execution JSON 主链 | 已接入且有真实样本 | E4 | 普通聊天已由 `llm.use_cases.chat` 驱动 |
 | `tools.delivery_bridge` | 已接入且有真实样本 | E4 | evidence delivery 已可审计 |
-| `ResponsePlan` 为唯一宿主表达主合同 | 已接入 | E3 | 核心字段已并入，但当前仍是 contract carrier，不是已生效的 SRAP gate |
+| `ResponsePlan` 为唯一宿主表达主合同 | 已接入 | E3 | 核心字段已并入，且最小 host-side intent gate 已接入，但还未 ready |
 | `memory_claim_gate` | 已接入 | E3 | 已进入 direct/runtime/status 三条 plan builder，但仍缺 E4 |
-| `self_report_contract / SRAP` 约束并入 `ResponsePlan` | 部分完成 | E3 | 已形成 [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)，明确哪些已映射、哪些仍未接入 |
-| `numeric_leak = 0` | 未满足 | E3 | `ResponseIntentChecker` numeric 子集 `5 passed`、完整 checker `47 passed`，但 shadow 套件 `4 failed`，且 EgoCore host path 还没有正式调用 checker |
+| `self_report_contract / SRAP` 约束并入 `ResponsePlan` | 部分完成 | E3 | 已形成 [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)，且最小 host-side gate 已接入 |
+| `numeric_leak = 0` | 未满足 | E3 | `ResponseIntentChecker` numeric 子集 `5 passed`、完整 checker `47 passed`、EgoCore focused regression `29 passed`，但 shadow 套件 `4 failed`，且缺 E4 |
 
 ## 当前 blocker
 
 ### Blocker 1
-`self_report_contract / SRAP` 虽已部分映射进 `ResponsePlan`，但还没有形成真正的宿主 gate。
+`self_report_contract / SRAP` 虽已部分映射进 `ResponsePlan`，但 `allowed_claims / forbidden_claims / grounding` 还没有形成正式 source。
 
 ### Blocker 2
-`ResponseIntentChecker` 目前没有接到 EgoCore host 输出主链。
-
-### Blocker 3
 `memory_claim_gate` 虽已接入主链，但还没有真实样本级证据。
 
-### Blocker 4
+### Blocker 3
 SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
+
+### Blocker 4
+最小 host-side intent gate 仍缺 Telegram E4 真实样本。
 
 ## 不应误报的事项
 
 - 不能把当前状态报成 `WP1 完成`
 - 不能把 `chat_mainline` 的 E4 样本误报成 `WP1 overall ready`
 - 不能因为 `memory_claim_gate.py` 已存在就报“memory claim gate 已收口”
-- 不能因为 `ResponsePlan` 已有 SRAP 字段就报“numeric_leak = 0”
+- 不能因为 `ResponsePlan` 已接 checker 就报“numeric_leak = 0”
 
 ## 进入下一阶段前需要满足的条件
 
 最小条件:
-1. `ResponsePlan -> ResponseIntentChecker` 宿主接线完成
+1. `allowed_claims / forbidden_claims / grounding` 形成正式 source
 2. `memory_claim_gate` 拿到 E4 真实样本
-3. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
+3. 最小 host-side intent gate 拿到 E4 真实样本
+4. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
 
 ## 下一步唯一最高优先级动作
 
-先实现最小 `ResponsePlan -> ResponseIntentChecker` 宿主接线，再重跑 `WP1 readiness` 复算。当前不应直接推进到 `WP2`。
+先补 `allowed_claims / forbidden_claims / grounding` 的宿主 source，再用真实 Telegram 样本验证最小 host-side intent gate。当前不应直接推进到 `WP2`。

@@ -76,6 +76,6 @@ trigger_evidence:
 
 ## 下一步最小闭环动作
 
-1. 在宿主输出主链接入最小 `ResponsePlan -> ResponseIntentChecker`
-2. 再次复算 `numeric_leak` 与 SRAP Shadow readiness
-3. 依据新的 readiness 结果决定是否可以开始 `WP2` 方向审计
+1. 为最小 host-side intent gate 补 `allowed_claims / forbidden_claims / grounding` 正式 source
+2. 用真实 Telegram 样本验证 intent gate 不误伤普通聊天且能拦住越权表达
+3. 再次复算 `numeric_leak` 与 SRAP Shadow readiness
