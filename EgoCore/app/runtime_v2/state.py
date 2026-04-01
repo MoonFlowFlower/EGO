@@ -58,6 +58,10 @@ def _summarize_ingress_context(ingress_context: Optional[Dict[str, Any]]) -> Opt
     summary: Dict[str, Any] = {
         "runtime_action": ingress_context.get("runtime_action"),
         "request_mode": ingress_context.get("request_mode"),
+        "interaction_kind": ingress_context.get("interaction_kind"),
+        "conversation_act": ingress_context.get("conversation_act"),
+        "parser_source": ingress_context.get("parser_source"),
+        "primary_intent": ingress_context.get("primary_intent"),
     }
     if target:
         summary["resolved_target"] = {

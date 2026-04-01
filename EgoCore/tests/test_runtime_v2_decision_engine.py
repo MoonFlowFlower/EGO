@@ -119,6 +119,19 @@ def test_decision_engine_builds_restore_context_from_ingress_observation():
     assert "protect continuity" in context
 
 
+def test_decision_engine_builds_presence_check_context():
+    engine = RuntimeV2DecisionEngine()
+    context = engine.build_conversation_act_context(
+        {
+            "interaction_kind": "chat",
+            "conversation_act": "presence_check",
+        }
+    )
+    assert "interaction_kind: chat" in context
+    assert "conversation_act: presence_check" in context
+    assert "不是任务状态查询" in context
+
+
 @pytest.mark.asyncio
 async def test_decision_engine_classifies_http_500_as_transient():
     engine = RuntimeV2DecisionEngine()

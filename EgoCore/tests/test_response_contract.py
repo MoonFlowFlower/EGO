@@ -1,5 +1,6 @@
-from app.response_contract import build_status_response_plan, evaluate_memory_claim
+from app.response_contract import build_runtime_result_response_plan, build_status_response_plan, evaluate_memory_claim
 from app.restore_runtime import PendingRestoreObservation
+from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
 from app.runtime_v2.state import RuntimeV2State
 
 
@@ -46,3 +47,28 @@ def test_build_status_response_plan_wraps_runtime_reply_and_verdict() -> None:
     assert "当前步骤" in plan.reply_text
     assert plan.memory_claim_verdict is not None
     assert plan.memory_claim_verdict.allowed is True
+
+
+def test_build_runtime_result_response_plan_preserves_presence_conversation_act() -> None:
+    state = RuntimeV2State(session_id="s")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "presence_check",
+        "parser_source": "chat_default",
+        "primary_intent": "chat",
+    }
+    result = RuntimeV2TurnResult(
+        status="chat",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="在的，请说。",
+            delivery_kind="chat",
+            status="chat",
+        ),
+    )
+
+    plan = build_runtime_result_response_plan(result.reply, state)
+
+    assert plan.reply_authority == "model_chat"
+    assert plan.metadata["conversation_act"] == "presence_check"
+    assert state.to_decision_prompt_context()["ingress_context"]["conversation_act"] == "presence_check"

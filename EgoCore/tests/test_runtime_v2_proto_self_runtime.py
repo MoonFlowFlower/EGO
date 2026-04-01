@@ -89,6 +89,8 @@ def test_build_proto_self_ingress_event_supports_seed_profile_shape():
         "proto_self_subject_profile": SEED_SUBJECT_PROFILE,
         "request_mode": "write",
         "runtime_action": "execute_task",
+        "interaction_kind": "chat",
+        "conversation_act": "presence_check",
         "resolved_target": {"path": "app.py", "filename": "app.py"},
     }
 
@@ -104,6 +106,8 @@ def test_build_proto_self_ingress_event_supports_seed_profile_shape():
     assert event["subject_profile"] == SEED_SUBJECT_PROFILE
     assert event["seed_event"]["event_type"] == "user_event"
     assert event["seed_event"]["runtime_summary"]["request_mode"] == "write"
+    assert event["seed_event"]["runtime_summary"]["conversation_act"] == "presence_check"
+    assert event["seed_event"]["payload"]["conversation_act"] == "presence_check"
     assert event["seed_event"]["payload"]["resolved_target_path"] == "app.py"
 
 

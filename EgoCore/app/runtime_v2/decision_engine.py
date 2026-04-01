@@ -145,6 +145,28 @@ class RuntimeV2DecisionEngine:
                 lines.append(f"- 恢复后的 standing commitment: {item}")
         return "\n" + "\n".join(lines) + "\n"
 
+    def build_conversation_act_context(self, ingress_context: dict) -> str:
+        if not ingress_context:
+            return ""
+
+        conversation_act = str(ingress_context.get("conversation_act") or "").strip()
+        interaction_kind = str(ingress_context.get("interaction_kind") or "").strip()
+        if not conversation_act and not interaction_kind:
+            return ""
+
+        lines: List[str] = ["## 对话行为提示"]
+        if interaction_kind:
+            lines.append(f"- interaction_kind: {interaction_kind}")
+        if conversation_act:
+            lines.append(f"- conversation_act: {conversation_act}")
+
+        if conversation_act == "presence_check":
+            lines.append("- 这是用户在确认你是否在线/在场，属于普通聊天，不是任务状态查询。")
+            lines.append("- 正常自然地回应，可以简短，但不要把它当成固定模板句。")
+            lines.append("- 不要回放旧工具结果、目录正文或任务总结，除非用户明确继续追问。")
+
+        return "\n" + "\n".join(lines) + "\n"
+
     async def decide(self, state: RuntimeV2State) -> RuntimeV2Action:
         system_prompt = self.build_system_prompt()
         
@@ -160,15 +182,28 @@ class RuntimeV2DecisionEngine:
         restore_context = self.build_restore_context(state.ingress_context or {})
         if restore_context:
             system_prompt = system_prompt + restore_context
-        
+
+        conversation_act_context = self.build_conversation_act_context(state.ingress_context or {})
+        if conversation_act_context:
+            system_prompt = system_prompt + conversation_act_context
+
+        decision_state = (
+            state.to_execute_task_prompt_context()
+            if (state.ingress_context or {}).get("runtime_action") == "execute_task" and state.get_run_items()
+            else state.to_decision_prompt_context()
+        )
+        instruction = "根据当前状态输出下一个 JSON action。若需要执行，优先 act；若执行后可验证完成，则 complete；若只是寒暄，chat。"
+        if (state.ingress_context or {}).get("runtime_action") == "execute_task" and state.get_run_items():
+            instruction += " 当前存在 host-owned ordered run_items，你只能推进 active_item，不能跳到后续 item，也不能写入与 active_item.canonical_path 不一致的路径。"
+
         messages: List[Dict[str, str]] = [
             {"role": "system", "content": system_prompt},
             {
                 "role": "user",
                 "content": json.dumps(
                     {
-                        "state": state.to_decision_prompt_context(),
-                        "instruction": "根据当前状态输出下一个 JSON action。若需要执行，优先 act；若执行后可验证完成，则 complete；若只是寒暄，chat。",
+                        "state": decision_state,
+                        "instruction": instruction,
                     },
                     ensure_ascii=False,
                     indent=2,
