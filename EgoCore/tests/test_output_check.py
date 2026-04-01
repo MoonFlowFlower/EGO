@@ -181,6 +181,32 @@ def test_output_check_preserves_safe_model_chat_with_intent_gate() -> None:
     assert verdict.intent_gate_would_block is False
 
 
+def test_output_check_preserves_reflective_interpreted_chat() -> None:
+    state = RuntimeV2State(session_id="s")
+    plan = build_direct_response_plan(
+        "可以想成一条光谱，我们可能都在中间某个位置。",
+        kind="chat",
+        delivery_kind="chat",
+        authority_source="test",
+        reply_authority="model_chat",
+        metadata={
+            "conversation_act": "light_chitchat",
+            "reply_origin": "chat_mainline",
+        },
+        state=state,
+    )
+
+    verdict = apply_output_check(plan, state)
+
+    assert plan.epistemic_status == "interpreted"
+    assert verdict.passed is True
+    assert verdict.reason == "ok"
+    assert verdict.used_host_fallback is False
+    assert verdict.applied_authority == "model_chat"
+    assert verdict.intent_gate_status == "ok"
+    assert verdict.intent_gate_would_block is False
+
+
 def test_output_check_skips_intent_gate_for_host_evidence_verbatim_numbers() -> None:
     state = RuntimeV2State(session_id="s")
     plan = build_direct_response_plan(

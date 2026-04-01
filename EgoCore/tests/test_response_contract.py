@@ -78,7 +78,7 @@ def test_build_runtime_result_response_plan_preserves_presence_conversation_act(
     assert plan.metadata["conversation_act"] == "presence_check"
     assert plan.metadata["reply_origin"] == "chat_mainline"
     assert plan.speaker_mode == "reflect"
-    assert plan.epistemic_status == "uncertain"
+    assert plan.epistemic_status == "interpreted"
     assert plan.commitment_level == "soft"
     assert plan.must_not_upgrade["epistemic_upgrade"] is True
     assert "回应当前在线确认" in plan.must_include

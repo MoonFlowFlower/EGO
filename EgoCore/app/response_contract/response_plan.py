@@ -305,7 +305,7 @@ def _build_expression_contract(
 
     if reply_authority == "model_chat":
         speaker_mode = "reflect"
-        epistemic_status = "uncertain"
+        epistemic_status = _build_chat_epistemic_status(conversation_act)
         commitment_level = "soft"
         must_include = _build_chat_must_include(conversation_act)
         tone_bounds = _build_chat_tone_bounds(state, conversation_act)
@@ -348,6 +348,21 @@ def _build_expression_contract(
         "must_not_upgrade": must_not_upgrade,
         "tone_bounds": tone_bounds,
     }
+
+
+def _build_chat_epistemic_status(conversation_act: str) -> str:
+    # Reflective chat is allowed to use lightweight inference markers such as
+    # "可能/大概/我想", but should still be blocked from definite claims.
+    if conversation_act in {
+        "presence_check",
+        "social_keepalive",
+        "light_chitchat",
+        "tone_feedback",
+        "task_bridge_request",
+        "chat",
+    }:
+        return "interpreted"
+    return "interpreted"
 
 
 def _build_intent_contract_source(
