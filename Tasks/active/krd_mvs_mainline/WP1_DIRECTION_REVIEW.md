@@ -83,7 +83,7 @@
   - `metadata`
 - 当前状态:
   - 上述字段已并入 `ResponsePlan`
-  - 现阶段缺口已从“字段未落地”收敛为“约束是否足以覆盖 SRAP / self_report_contract 目标”
+  - 现阶段缺口已从“字段未落地”收敛为“约束是否足以覆盖 SRAP / self_report_contract 目标，并真正形成 host-side gate”
 - 判定:
   - 方向正确
   - 不需要重写主线
@@ -103,9 +103,24 @@
 - 缺口:
   - 还没有 E4 真实样本证明它在 Telegram 主链上拦住了错误 memory claim
 
+### 7. SRAP 核心字段已进入 `ResponsePlan`，但宿主 intent gate 仍未形成
+- 证据:
+  - [response_plan.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/response_plan.py)
+  - [output_check.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/output_check.py)
+  - [response_intent_checker.py](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/emotiond/response_intent_checker.py)
+  - [core.py](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/emotiond/core.py)
+  - [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)
+- 当前状态:
+  - `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds` 已在宿主合同里
+  - 但 `allowed_claims / forbidden_claims / grounding / violation verdict` 仍未进入 EgoCore host 输出主链
+  - `ResponseIntentChecker` 目前只在 OpenEmotion 侧 shadow/runtime 路径出现
+- 判定:
+  - `WP1` 当前不是字段缺失问题
+  - 而是 host-side intent gate 未接问题
+
 ## 风险与未证实项
 
-### 7. legacy verbalizer / social_chat_handler 仍在仓内
+### 8. legacy verbalizer / social_chat_handler 仍在仓内
 - 证据:
   - [verbalizer.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response/verbalizer.py)
   - [verbalizer_v3.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response/verbalizer_v3.py)
@@ -115,11 +130,17 @@
   - 但仍是回流风险
   - 应继续留在 `WP1` 方向复核范围，不应误报为“已完全剥离”
 
-### 8. `numeric_leak = 0` 还没有当前口径的 readiness 证据
+### 9. `numeric_leak = 0` 当前已有负向 readiness 证据
 - `MVS_task_plan.md` 把它列为 `WP1` 验收条件之一
-- 当前这轮没有看到新的 readiness rerun / readiness report / shadow report 正证据
+- 本轮复算结果：
+  - `test_response_intent_checker.py -k numeric`：`5 passed`
+  - `test_response_intent_checker.py`：`47 passed`
+  - `test_shadow_mode.py`：并入复算后 `4 failed`
+- 额外代码证据：
+  - `EgoCore/app/*` 当前无 `ResponseIntentChecker` 调用
 - 结论:
-  - 不能宣称 `WP1 ready`
+  - 不能宣称 `numeric_leak = 0`
+  - 也不能宣称 `WP1 ready`
 
 ## 总结判定
 
@@ -129,14 +150,14 @@
   - `chat_mainline` 已不再复用 task JSON 决策器
   - `ResponsePlan` 已经成为唯一可继续扩展的宿主表达合同
 - 当前真正缺口:
-  - `self_report_contract / SRAP` 剩余约束尚未完全映射到 `ResponsePlan`
+  - `self_report_contract / SRAP` 剩余约束尚未形成 host-side gate
   - `memory_claim_gate` 尚未拿到 E4 真实样本
-  - readiness 口径尚未复算，`numeric_leak = 0` 未证实
+  - readiness 已复算出负向结论：`numeric_leak = 0` 未满足
 
 ## 唯一最高优先级下一步
 
 在现有主路径上继续，不重写:
 
-1. 把 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds` 并入 `ResponsePlan`
-2. 对 `self_report_contract / SRAP` 剩余约束做映射清单
-3. 跑一轮 `WP1 readiness` 复算，明确 `numeric_leak` 与 SRAP Shadow 当前结论
+1. 在 EgoCore host 输出主链接入最小 `ResponsePlan -> ResponseIntentChecker`
+2. 保持 `ResponsePlan` 作为唯一宿主表达合同，不另造第二份 contract
+3. 接线后再重跑 `WP1 readiness` 复算，明确新的 `numeric_leak` 与 SRAP Shadow 结论

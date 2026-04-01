@@ -38,6 +38,7 @@ scope: "WP0/WP1 execution package"
 - [x] `WP1` 方向复核完成
 - [x] `memory_claim_gate` 已纳入宿主表达主链
 - [x] readiness report 已形成并区分 E4 / E2-E3
+- [x] `WP1` readiness 复算已形成明确负向结论与缺口映射
 
 ## 当前层级与主链状态
 
@@ -75,6 +76,6 @@ trigger_evidence:
 
 ## 下一步最小闭环动作
 
-1. 对 `numeric_leak` 与 SRAP Shadow 跑一轮新的 readiness 复算
-2. 明确 `self_report_contract / SRAP` 当前还有哪些约束未真正落进 `ResponsePlan`
-3. 用新的 readiness 结果决定是否可以开始 `WP2` 方向审计
+1. 在宿主输出主链接入最小 `ResponsePlan -> ResponseIntentChecker`
+2. 再次复算 `numeric_leak` 与 SRAP Shadow readiness
+3. 依据新的 readiness 结果决定是否可以开始 `WP2` 方向审计

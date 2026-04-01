@@ -43,13 +43,14 @@
 - `WP1` 方向复核结论已明确：方向正确，不需要从零重写宿主主链
 - `ResponsePlan` 已吸收 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds`
 - `memory_claim_gate` 已接入 `build_direct_response_plan / build_runtime_result_response_plan / build_status_response_plan`
+- `WP1` readiness 复算已经得到决定性负证据：`ResponsePlan` 当前还是 contract carrier，不是已生效的 SRAP gate
 - session/task runtime 仍有继续拆层空间
 - `memory_claim_gate` 仍未拿到同等级 E4 收口证据
 
 ### 关键未知
 - chat 主链在更长窗口、更多 persona 形态下是否能稳定维持非机械回复而不回退到任务导向
-- 当前口径下 `numeric_leak = 0` 是否成立
-- `self_report_contract / SRAP` 当前还有哪些约束未真正并入 `ResponsePlan`
+- host-side `ResponseIntentChecker` 接线完成后，`numeric_leak = 0` 是否成立
+- `self_report_contract / SRAP` 当前还有哪些约束未真正并入并 enforce 到 `ResponsePlan`
 
 ### 六问门禁
 1. 归属是谁：EgoCore
@@ -68,15 +69,15 @@
 
 ### 本轮最小闭环动作
 - 第一实现轮中，`InteractionKind`、最小 `ResponsePlan`、`output_check`、`chat_mainline` 已落地并拿到 E4
-- 当前不再需要从零重写方向；下一最小闭环动作是跑 `WP1 readiness` 复算：
-  - `numeric_leak`
-  - SRAP Shadow
-  - 剩余 `self_report_contract` 约束映射
+- 当前不再需要从零重写方向；最新 readiness 复算已经说明下一最小闭环动作不是继续写报告，而是接入最小 `ResponsePlan -> ResponseIntentChecker`：
+  - 让宿主输出主链真正拥有 intent gate
+  - 再重跑 `numeric_leak / SRAP Shadow / self_report_contract` readiness
 
 ### 完成定义
 - `chat/task/admin/ask/wait/resume` 有唯一 authority
 - final / ask / blocked / resume 的宿主回复骨架不再由 verbalizer 自由决定
 - “我记得你/已恢复”类声明能被 gate 拦住或放行
+- SRAP intent 约束不只存在于字段层，而是已形成宿主输出 gate
 
 ### 若为迁移件
 - 替代物：
