@@ -13,10 +13,11 @@
   - host-chain 若干关键切片已到 E4
   - `chat_mainline` / `evidence_mainline` / `status_mainline` 已开始分离
   - `ResponsePlan` 已成为正式宿主表达合同骨架
+  - `memory_claim_gate` 已拿到 Telegram 真实样本级证据
 - 还不能确认的:
   - `numeric_leak = 0`
   - `self_report_contract / SRAP` 约束已真正形成宿主 gate
-  - `memory_claim_gate` 已拿到真实样本级证据
+  - 最小 host-side intent gate 已拿到真实样本级证据
 
 ## Readiness 分项
 
@@ -27,19 +28,16 @@
 | `chat_mainline` 脱离 execution JSON 主链 | 已接入且有真实样本 | E4 | 普通聊天已由 `llm.use_cases.chat` 驱动 |
 | `tools.delivery_bridge` | 已接入且有真实样本 | E4 | evidence delivery 已可审计 |
 | `ResponsePlan` 为唯一宿主表达主合同 | 已接入 | E3 | 核心字段已并入，且最小 host-side intent gate 已接入，但还未 ready |
-| `memory_claim_gate` | 已接入 | E3 | 已进入 direct/runtime/status 三条 plan builder，但仍缺 E4 |
+| `memory_claim_gate` | 已接入且有真实样本 | E4 | Telegram 真实样本已证明：无 restore authority 时不会对外声称“已恢复/记得你”，且聊天不再退化成固定 fallback |
 | `self_report_contract / SRAP` 约束并入 `ResponsePlan` | 部分完成 | E3 | 已形成 [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)，最小 host-side gate 与 intent source 都已接入 |
 | `numeric_leak = 0` | 未满足 | E3 | `ResponseIntentChecker` numeric 子集 `5 passed`、完整 checker `47 passed`、EgoCore focused regression `31 passed`，但 shadow 套件 `4 failed`，且缺 E4 |
 
 ## 当前 blocker
 
 ### Blocker 1
-`memory_claim_gate` 虽已接入主链，但还没有真实样本级证据。
-
-### Blocker 2
 SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
 
-### Blocker 3
+### Blocker 2
 最小 host-side intent gate 仍缺 Telegram E4 真实样本。
 
 ## 不应误报的事项
@@ -52,9 +50,8 @@ SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
 ## 进入下一阶段前需要满足的条件
 
 最小条件:
-1. `memory_claim_gate` 拿到 E4 真实样本
-2. 最小 host-side intent gate 拿到 E4 真实样本
-3. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
+1. 最小 host-side intent gate 拿到 E4 真实样本
+2. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
 
 ## 下一步唯一最高优先级动作
 

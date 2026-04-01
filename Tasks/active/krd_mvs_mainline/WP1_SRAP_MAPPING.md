@@ -18,6 +18,7 @@
 1. `ResponsePlan` 已正式带上 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds`
 2. `EgoCore` 当前输出主链已在 `output_check` 中正式调用 `ResponseIntentChecker`
 3. `allowed_claims / forbidden_claims / grounding` 已形成正式 host source，但当前 gate 只覆盖最小 `model_chat + chat_mainline` 路径，且还没有 E4 真实样本
+4. `memory_claim_gate` 已在 Telegram 主链拿到 E4，且当前做法已从固定 fallback 升级为 chat mainline 自然规避
 
 因此，`WP1` 当前不再是“字段未落地 / gate 未接”，而是“最小 gate 与 source 已接，但真实样本/readiness 仍未收稳”。
 
@@ -80,9 +81,23 @@
 - EgoCore host 输出主链现在也已经接上最小 `ResponsePlan -> ResponseIntentChecker`
 - `allowed_claims / forbidden_claims / grounding` 已进入单一 host source builder
 
+### 3. `memory_claim_gate` 已拿到 Telegram E4，且不再只能依赖固定 fallback
+
+证据：
+
+- [memory_claim_gate.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/memory_claim_gate.py)
+- [chat_reply_engine.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/runtime_v2/chat_reply_engine.py)
+- [telegram_dm_8420019401.jsonl](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/data/session_logs/telegram_dm_8420019401.jsonl#L1686)
+
+结论：
+
+- 无 restore authority 时，Telegram 真链路已能禁止“已恢复/记得你”类对外声明
+- 当前对话不会再退化成重复固定 fallback，而是保持 `model_chat + chat_mainline`
+- 这证明 `WP1` 的表达主权收口又前进一步，但还不等于整体 readiness 成立
+
 ## 当前决定性缺口
 
-### 1. host-side gate 与 source 已接，但只覆盖最小 `model_chat` 路径
+### 1. host-side gate 与 source 已接，但 `ResponseIntentChecker` 只覆盖最小 `model_chat` 路径，且仍无 E4
 
 代码证据：
 
@@ -93,10 +108,10 @@
 
 结论：
 
-- 当前最小 SRAP intent gate 已进入 EgoCore 宿主正式输出主链
-- `allowed_claims / forbidden_claims / grounding` 也已形成正式 host source
-- 但它仍只覆盖最小 `model_chat + chat_mainline` 路径，且尚无 E4
-- 因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
+  - 当前最小 SRAP intent gate 已进入 EgoCore 宿主正式输出主链
+  - `allowed_claims / forbidden_claims / grounding` 也已形成正式 host source
+  - 但它仍只覆盖最小 `model_chat + chat_mainline` 路径，且尚无 E4
+  - 因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
 
 ### 2. SRAP shadow 当前也未达到 readiness 稳态
 
@@ -121,7 +136,7 @@
 
 - `WP1` 方向：正确
 - `WP1` 当前 readiness：不成立
-- 根因层级：不是字段缺失，而是 **最小 host gate 只达 E3 + shadow readiness 未稳**
+- 根因层级：不是字段缺失，也不再是 `memory_claim_gate` 无样本，而是 **最小 ResponseIntentChecker host gate 只达 E3 + shadow readiness 未稳**
 
 ## 下一步唯一最高优先级动作
 

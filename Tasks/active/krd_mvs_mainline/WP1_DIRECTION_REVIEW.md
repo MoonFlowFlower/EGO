@@ -89,19 +89,24 @@
   - 不需要重写主线
   - 继续在现有 `ResponsePlan` 上收口，而不是再造 `response_contract_v2`
 
-### 6. `memory_claim_gate` 已进入正式宿主表达主链，但仍缺真实样本级证据
+### 6. `memory_claim_gate` 已进入正式宿主表达主链，并已拿到 E4 真实样本
 - 证据:
   - [memory_claim_gate.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/memory_claim_gate.py)
   - [response_plan.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/response_plan.py)
-  - [telegram_bot.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/telegram_bot.py:563)
+  - [chat_reply_engine.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/runtime_v2/chat_reply_engine.py)
+  - [telegram_dm_8420019401.jsonl](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/data/session_logs/telegram_dm_8420019401.jsonl#L1686)
 - 当前状态:
   - gate 已实现
   - 已接入 `build_direct_response_plan()`
   - 已接入 `build_runtime_result_response_plan()`
   - 已接入 `build_status_response_plan()`
   - focused tests 已覆盖
+  - 2026-03-31 / 2026-04-01 Telegram 真实样本已证明：
+    - 无 restore authority 时，不会对外声称“已恢复成功 / 记得你”
+    - 普通聊天仍保持 `model_chat + chat_mainline`
+    - 不再退化成重复的固定 `host_degraded_fallback`
 - 缺口:
-  - 还没有 E4 真实样本证明它在 Telegram 主链上拦住了错误 memory claim
+  - 仍缺“有 restore authority 时允许正向表述”的 E4 正样本
 
 ### 7. SRAP 核心字段已进入 `ResponsePlan`，且宿主最小 intent gate 已形成
 - 证据:
@@ -152,7 +157,6 @@
   - `chat_mainline` 已不再复用 task JSON 决策器
   - `ResponsePlan` 已经成为唯一可继续扩展的宿主表达合同
 - 当前真正缺口:
-  - `memory_claim_gate` 尚未拿到 E4 真实样本
   - `intent_gate` 尚未拿到 E4 真实样本
   - readiness 已复算出负向结论：`numeric_leak = 0` 未满足
 

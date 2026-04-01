@@ -128,6 +128,7 @@
 | MVS E5 当前口径 | `/new continuity` 与 `restore continuity` 已有 `direct_real` 真实正证据；`restart continuity` 仍主要是 `cross_evidence`。当前仍不能报 `E5 稳定成立` 或 `Developmental Self` 准入通过，最高优先级缺口已转为 post-restart 完整样本与剩余 evidence gap |
 | Codex 记忆层验收 | 开发助手侧结构化记忆已在真实新会话中验证：`CODEX_MEMORY.md` 可恢复稳定真相；`TaskHandoffRecord` 为当前任务主权威；同任务 `SessionCapsule` 可辅助连续性；异任务 capsule 会被拒绝；当前仍是手动喂入/脚本辅助启动 |
 | RuntimeV2 自然聊天主链 | `InteractionKind.CHAT` 已从 execution JSON 主链拆出，进入独立 `chat_mainline`；2026-03-31 真实 Telegram 样本证明 `在吗/语气反馈/轻聊天` 为 `reply_authority=model_chat`、`reply_origin=chat_mainline`，目录查看为 `reply_authority=host_evidence`、`reply_origin=evidence_mainline`，两者已能在同一 session 中分离；当前口径是 E4，不是 E5 稳定解决 |
+| WP1 memory-claim 主链 | 2026-03-31 / 2026-04-01 Telegram 真实样本证明：无 restore authority 时，`memory_claim_gate` 已能阻止“已恢复/记得你”类对外声明；最新接线中，chat mainline 会先自然重生成安全回复，不再退化成重复固定 fallback；当前口径是 E4，不是 E5 稳定解决 |
 
 ---
 
@@ -168,6 +169,7 @@
 | 2026-03-28 | Codex 开发助手结构化记忆层完成首轮真实新会话验收：稳定记忆恢复、TaskHandoff 优先级、同任务 SessionCapsule 正向采用、异任务 capsule 拒绝污染均已验证 |
 | 2026-03-28 | 默认开发流程升级为闭环自审流：在“双速 Spec + Build/Verify/Observe 三泳道”之上，正式改动默认强制 `Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`，并收口到统一模板与说明文档 |
 | 2026-03-31 | `runtime_v2` 自然聊天主链完成第一轮正式接线：`chat_mainline` 使用 `llm.use_cases.chat`，普通聊天不再复用 execution JSON 决策器；真实 Telegram 样本证明 `在吗/能不能不要重复/活法是什么哈哈哈` 走 `model_chat + chat_mainline`，而目录列出继续走 `host_evidence + evidence_mainline`，session log 已记录 `reply_authority / reply_origin` |
+| 2026-03-31 / 2026-04-01 | `WP1` 的 `memory_claim_gate` 已拿到 Telegram E4：早期样本证明无 restore authority 时错误声明会被宿主拦下；后续样本证明 chat mainline 已升级为“先自然重生成安全回复”，不再只能落到固定 `host_degraded_fallback` |
 
 ---
 

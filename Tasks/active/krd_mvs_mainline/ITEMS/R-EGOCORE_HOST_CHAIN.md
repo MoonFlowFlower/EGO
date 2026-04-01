@@ -46,7 +46,7 @@
 - `ResponsePlan -> ResponseIntentChecker` 最小 host-side intent gate 已接到 `output_check`
 - `WP1` readiness 复算已经得到决定性负证据：当前不是“gate 未接”，也不再是“source 未形成”，而是“最小 gate 仅到 E3 + 无 E4”
 - session/task runtime 仍有继续拆层空间
-- `memory_claim_gate` 仍未拿到同等级 E4 收口证据
+- `memory_claim_gate` 已拿到 Telegram E4，且聊天已从固定 fallback 升级为自然规避错误 claim
 
 ### 关键未知
 - chat 主链在更长窗口、更多 persona 形态下是否能稳定维持非机械回复而不回退到任务导向
@@ -71,7 +71,7 @@
 ### 本轮最小闭环动作
 - 第一实现轮中，`InteractionKind`、最小 `ResponsePlan`、`output_check`、`chat_mainline` 已落地并拿到 E4
 - 当前不再需要从零重写方向；最小 `ResponsePlan -> ResponseIntentChecker` 与 intent contract source 都已接入，下一最小闭环动作改为：
-  - 拿真实样本
+  - 拿 `ResponseIntentChecker` 的真实样本
   - 再重跑 `numeric_leak / SRAP Shadow / self_report_contract` readiness
 
 ### 完成定义
