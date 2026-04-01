@@ -116,8 +116,8 @@ async def test_telegram_bot_runtime_v2_busy_short_probe_enters_runtime(monkeypat
 
 
 @pytest.mark.asyncio
-async def test_telegram_bot_runtime_v2_explicit_status_probe_uses_control_plane(monkeypatch):
-    """明确进度词仍走 status control-plane。"""
+async def test_telegram_bot_runtime_v2_natural_language_status_stays_in_chat(monkeypatch):
+    """自然语言进度词退出 control-plane，按聊天主链处理。"""
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
 
     class DummyBot:
@@ -148,30 +148,27 @@ async def test_telegram_bot_runtime_v2_explicit_status_probe_uses_control_plane(
         effective_user = DummyUser()
 
     bot.app = type('A', (), {'bot': DummyBot()})()
-    runtime_loop = bot._get_runtime_v2_loop()
     state = bot._get_runtime_state('telegram:dm:456')
     bot._sync_state_into_runtime_v2_loop('telegram:dm:456', state)
     state.mark_task_completed()
-    monkeypatch.setattr(bot, "_get_active_run", lambda session_key: None)
 
-    async def fake_run_turn_typed(session_id, user_input):
+    async def fake_run_primary_turn(**kwargs):
         from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
         state.start_turn()  # 模拟 run_turn_typed 的行为
         return RuntimeV2TurnResult(
-            status='waiting_input',
+            status='chat',
             state=state,
             reply=RuntimeV2Reply(
-                reply_text='任务已完成，还有什么需要帮忙的吗？',
-                delivery_kind='progress',
-                status='waiting_input',
+                reply_text='刚才那件事已经停下来了；如果你要查状态，用 /status。',
+                delivery_kind='chat',
+                status='chat',
             ),
         )
 
-    monkeypatch.setattr(runtime_loop, 'run_turn_typed', fake_run_turn_typed)
+    monkeypatch.setattr(bot, "_run_primary_turn", fake_run_primary_turn)
     await bot.handle_message(DummyUpdate(), None)
     await bot.handle_message(DummyUpdate(), None)
-    # 明确状态查询由 control-plane 直接响应
-    assert DummyUpdate.message.last_text == '当前没有运行中的任务。'
+    assert DummyUpdate.message.last_text == '刚才那件事已经停下来了；如果你要查状态，用 /status。'
     assert DummyUpdate.message.call_count == 2
 
 
@@ -236,7 +233,7 @@ async def test_telegram_bot_delivery_applies_output_check_host_completion_fallba
 
 
 @pytest.mark.asyncio
-async def test_telegram_bot_manual_resume_is_control_plane_with_immediate_ack(monkeypatch, tmp_path):
+async def test_telegram_bot_bare_continue_no_longer_manual_resumes(monkeypatch, tmp_path):
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
 
     class DummyBot:
@@ -294,22 +291,24 @@ async def test_telegram_bot_manual_resume_is_control_plane_with_immediate_ack(mo
     run.runtime_state_snapshot = state.to_snapshot()
     bot.autonomy_orchestrator.repository.create(run)
 
-    resumed = {}
+    async def fake_run_primary_turn(**kwargs):
+        from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
+        state.start_turn()
+        return RuntimeV2TurnResult(
+            status="chat",
+            state=state,
+            reply=RuntimeV2Reply(
+                reply_text="如果你是说恢复任务，用 /resume。",
+                delivery_kind="chat",
+                status="chat",
+            ),
+        )
 
-    async def fake_publish_phase1_event(**kwargs):
-        return None
-
-    def fake_spawn_manual_resume(run_id):
-        resumed["run_id"] = run_id
-        resumed["trigger_source"] = "manual"
-
-    monkeypatch.setattr(bot, "_publish_phase1_event", fake_publish_phase1_event)
-    monkeypatch.setattr(bot, "_spawn_manual_resume", fake_spawn_manual_resume)
+    monkeypatch.setattr(bot, "_run_primary_turn", fake_run_primary_turn)
 
     await bot.handle_message(DummyUpdate(), None)
 
-    assert DummyUpdate.message.last_text == "继续处理 demo.txt。"
-    assert resumed == {"run_id": run.id, "trigger_source": "manual"}
+    assert DummyUpdate.message.last_text == "如果你是说恢复任务，用 /resume。"
 
 
 @pytest.mark.asyncio
@@ -577,7 +576,7 @@ async def test_telegram_bot_send_reply_chunks_long_output():
 
 
 @pytest.mark.asyncio
-async def test_telegram_bot_conflict_resolution_outside_conflict_returns_invalid_reply():
+async def test_telegram_bot_natural_language_conflict_words_no_longer_resolve_conflict(monkeypatch):
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
 
     class DummyBot:
@@ -607,6 +606,21 @@ async def test_telegram_bot_conflict_resolution_outside_conflict_returns_invalid
         effective_user = DummyUser()
 
     bot.app = type("A", (), {"bot": DummyBot()})()
+    async def fake_run_primary_turn(**kwargs):
+        from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
+        state = bot._get_runtime_state("telegram:dm:456")
+        state.start_turn()
+        return RuntimeV2TurnResult(
+            status="chat",
+            state=state,
+            reply=RuntimeV2Reply(
+                reply_text="你是在聊任务切换规则，还是要我现在处理某件事？",
+                delivery_kind="chat",
+                status="chat",
+            ),
+        )
+
+    monkeypatch.setattr(bot, "_run_primary_turn", fake_run_primary_turn)
     await bot.handle_message(DummyUpdate(), None)
 
-    assert DummyUpdate.message.last_text == "当前没有待确认的新任务。"
+    assert DummyUpdate.message.last_text == "你是在聊任务切换规则，还是要我现在处理某件事？"

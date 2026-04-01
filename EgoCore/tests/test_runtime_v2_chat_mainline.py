@@ -78,7 +78,7 @@ async def test_chat_reply_engine_regenerates_would_blocking_reflective_candidate
     engine = ChatReplyEngine()
     engine.llm_client = _SequentialClient(
         [
-            "这个想法挺有意思的。也许意识并不是某种稀有的“高阶属性”，而是只要信息处理达到一定复杂度和自指能力，就会自然涌现。",
+            "这个想法挺有意思的。也许意识并不是某种稀有的“高阶属性”，而是只要信息处理达到一定复杂度和自指能力，就一定会自然涌现。",
             "我倾向于同意。也许意识更像一条渐变光谱，而不是某个突然跨过去的门槛。",
         ]
     )
@@ -162,7 +162,7 @@ async def test_runtime_v2_loop_routes_chat_to_chat_mainline_without_decision_eng
     assert result.reply.metadata["reply_origin"] == "chat_mainline"
 
 
-def test_telegram_runtime_bridge_marks_presence_and_tone_feedback_as_chat_acts():
+def test_telegram_runtime_bridge_marks_presence_tone_and_thread_continue_as_chat_acts():
     bridge = TelegramRuntimeBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
 
@@ -175,3 +175,22 @@ def test_telegram_runtime_bridge_marks_presence_and_tone_feedback_as_chat_acts()
     tone_context = bridge.build_ingress_context(tone, state)
     assert tone_context["interaction_kind"] == "chat"
     assert tone_context["conversation_act"] == "tone_feedback"
+
+    thread_continue = bridge.inspect_ingress("继续说", state)
+    thread_continue_context = bridge.build_ingress_context(thread_continue, state)
+    assert thread_continue_context["interaction_kind"] == "chat"
+    assert thread_continue_context["conversation_act"] == "thread_continue"
+
+
+def test_telegram_runtime_bridge_marks_bare_continue_without_chat_anchor_as_hint_eligible_chat() -> None:
+    bridge = TelegramRuntimeBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+    state.task_status = "resumable_pause"
+    state.autonomy_context = {"status": "resumable_pause"}
+
+    decision = bridge.inspect_ingress("继续", state)
+    context = bridge.build_ingress_context(decision, state)
+
+    assert context["interaction_kind"] == "chat"
+    assert context["conversation_act"] == "light_chitchat"
+    assert context["resume_hint_eligible"] is True

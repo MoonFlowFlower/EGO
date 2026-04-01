@@ -19,7 +19,7 @@ def _make_manager(tmp_path):
 
 
 def _ensure_tools_ready():
-    cfg = load_config(validate=False)
+    cfg = load_config(config_dir="EgoCore/config", env_file="EgoCore/.env", validate=False)
     registry = get_registry()
     if not registry.list_tools():
         setup_tools(cfg.get("tools", {}) if hasattr(cfg, "get") else {})
@@ -225,7 +225,7 @@ async def test_high_risk_rule_forces_read_only_preflight_and_keeps_target_for_co
     assert "最小验证动作" in reply
 
     state = bot._get_runtime_state("telegram:dm:456")
-    continue_decision = bot.telegram_runtime_bridge.inspect_ingress("继续", state)
+    continue_decision = bot.telegram_runtime_bridge.inspect_ingress("继续读取完整内容，不要截断", state)
     ingress_context = bot.telegram_runtime_bridge.build_ingress_context(continue_decision, state)
     assert ingress_context["resolved_target"]["path"] == str(target_file)
 

@@ -33,6 +33,8 @@ CHAT_MAINLINE_SYSTEM_PROMPT = """你是 EgoCore runtime_v2 的 chat mainline。
 8. 回复 1 到 2 句，默认简洁。
 9. 如果当前没有明确 restore authority，不要声称“已经恢复成功”“跨对话持续记忆已经就绪”。
 10. 如果用户在问当前会话里刚聊过的内容，允许基于这段对话里的明确锚点自然回应，例如“记得，你刚才在聊……”；但不要把这说成跨对话记忆或长期记忆。
+11. 如果当前 turn 是 thread_continue，表示“把刚才的话题继续展开”，默认顺着上一条聊天往下说，不要切回任务、状态或证据回放。
+12. 只有当上下文明确标出 resume_hint_eligible 时，才允许最多一句轻提示“如果你是说恢复任务，用 /resume”；不要把它说成硬拦截。
 """
 
 
@@ -145,6 +147,7 @@ class ChatReplyEngine:
                 "recent_assistant_replies": context.get("recent_assistant_replies") or [],
                 "last_user_tone_feedback": context.get("last_user_tone_feedback"),
                 "active_task_summary": context.get("active_task_summary"),
+                "resume_hint_eligible": bool((context.get("ingress_context") or {}).get("resume_hint_eligible")),
             },
             "relationship_context": {
                 "conversation_temperature": relationship.get("conversation_temperature"),
@@ -171,6 +174,7 @@ class ChatReplyEngine:
             "reply_rules": {
                 "do_not_task_bridge_by_default": True,
                 "do_not_replay_evidence": True,
+                "continue_last_chat_thread": (context.get("conversation_act") == "thread_continue"),
                 "anti_repeat_window": list(state.get_chat_state().recent_assistant_replies[-3:]),
             },
         }

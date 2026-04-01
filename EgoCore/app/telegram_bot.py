@@ -75,7 +75,6 @@ from app.runtime_v2.run_items import (
     build_run_items_from_request,
 )
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
-from app.runtime_v2.semantic_parser import parse_session_control_intent
 from app.autonomy import (
     AutonomyExecutorKind,
     AutonomyOrchestrator,
@@ -560,15 +559,6 @@ class TelegramBot:
             "contract_delta": verification.get("contract_delta") or {},
         }
 
-    def _looks_like_replace_task(self, text: str) -> bool:
-        return normalize_user_turn(text).control_key in {"替换", "replace"}
-
-    def _looks_like_append_task(self, text: str) -> bool:
-        return normalize_user_turn(text).control_key in {"追加", "append"}
-
-    def _looks_like_cancel_task(self, text: str) -> bool:
-        return normalize_user_turn(text).control_key in {"取消", "cancel"}
-
     def _build_task_conflict_reply(self, state: RuntimeV2State) -> str:
         conflict = state.get_pending_task_conflict()
         if conflict is None:
@@ -576,11 +566,69 @@ class TelegramBot:
         return (
             "当前已有一个活跃任务。你刚刚又发了一个新的执行任务。\n\n"
             f"新任务：{conflict.incoming_text[:140]}\n\n"
-            "回复“替换”会结束旧任务并开始新任务；回复“追加”会把它排到当前任务后面；回复“取消”会保持当前任务不变。"
+            "用 `/replace` 会结束旧任务并开始新任务；用 `/append` 会把它排到当前任务后面；用 `/cancel` 会保持当前任务不变。"
         )
 
     def _build_invalid_task_conflict_reply(self) -> str:
         return "当前没有待确认的新任务。"
+
+    async def _apply_pending_task_conflict_resolution(
+        self,
+        *,
+        state: RuntimeV2State,
+        resolution: str,
+        trace_id: Optional[str],
+        ingress_message_id: Optional[int],
+        session_key: str,
+    ) -> Optional[str]:
+        conflict = state.get_pending_task_conflict()
+        if conflict is None:
+            return None
+
+        if resolution == "replace":
+            if self.autonomy_orchestrator is not None and conflict.existing_run_id:
+                existing_run = self.autonomy_orchestrator.repository.get(conflict.existing_run_id)
+                if existing_run is not None:
+                    existing_run.status = AutonomyRunStatus.SUPERSEDED
+                    existing_run.current_phase = "superseded"
+                    self.autonomy_orchestrator.repository.update(existing_run)
+            state.clear_pending_task_conflict()
+            state.reset_active_task_context()
+            return conflict.incoming_text
+
+        if resolution == "append":
+            appended_items = [item for item in (RunItem.from_dict(raw) for raw in conflict.incoming_run_items) if item is not None]
+            state.append_run_items(appended_items)
+            state.clear_pending_task_conflict()
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="telegram_delivery",
+                trace_id=trace_id,
+                message_id=ingress_message_id,
+                payload={
+                    "text": "已把新任务追加到当前任务队列。",
+                    "delivery_kind": "final",
+                    "status": "task_conflict_appended",
+                },
+            )
+            return ""
+
+        if resolution == "cancel":
+            state.clear_pending_task_conflict()
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="telegram_delivery",
+                trace_id=trace_id,
+                message_id=ingress_message_id,
+                payload={
+                    "text": "已取消这次新任务，保持当前任务不变。",
+                    "delivery_kind": "final",
+                    "status": "task_conflict_cancelled",
+                },
+            )
+            return ""
+
+        return None
 
     def _get_active_run(self, session_key: str) -> Optional[AutonomyRun]:
         if self.autonomy_orchestrator is None:
@@ -680,51 +728,6 @@ class TelegramBot:
         conflict = state.get_pending_task_conflict()
         if conflict is None:
             return None
-
-        if self._looks_like_replace_task(text):
-            if self.autonomy_orchestrator is not None and conflict.existing_run_id:
-                existing_run = self.autonomy_orchestrator.repository.get(conflict.existing_run_id)
-                if existing_run is not None:
-                    existing_run.status = AutonomyRunStatus.SUPERSEDED
-                    existing_run.current_phase = "superseded"
-                    self.autonomy_orchestrator.repository.update(existing_run)
-            state.clear_pending_task_conflict()
-            state.reset_active_task_context()
-            return conflict.incoming_text
-
-        if self._looks_like_append_task(text):
-            appended_items = [item for item in (RunItem.from_dict(raw) for raw in conflict.incoming_run_items) if item is not None]
-            state.append_run_items(appended_items)
-            state.clear_pending_task_conflict()
-            await self._publish_phase1_event(
-                session_key=session_key,
-                kind="telegram_delivery",
-                trace_id=trace_id,
-                message_id=ingress_message_id,
-                payload={
-                    "text": "已把新任务追加到当前任务队列。",
-                    "delivery_kind": "final",
-                    "status": "task_conflict_appended",
-                },
-            )
-            await self._send_reply(update, "已把新任务追加到当前任务队列。当前任务恢复后会按顺序继续。")
-            return ""
-
-        if self._looks_like_cancel_task(text):
-            state.clear_pending_task_conflict()
-            await self._publish_phase1_event(
-                session_key=session_key,
-                kind="telegram_delivery",
-                trace_id=trace_id,
-                message_id=ingress_message_id,
-                payload={
-                    "text": "已取消这次新任务，保持当前任务不变。",
-                    "delivery_kind": "final",
-                    "status": "task_conflict_cancelled",
-                },
-            )
-            await self._send_reply(update, "已取消这次新任务，保持当前任务不变。")
-            return ""
 
         await self._send_reply(update, self._build_task_conflict_reply(state))
         return ""
@@ -1103,10 +1106,6 @@ class TelegramBot:
             if self._should_use_native_loop(ingress, state)
             else AutonomyExecutorKind.GENERIC_RUNTIME
         )
-
-    def _looks_like_manual_continue(self, text: str) -> bool:
-        normalized = normalize_user_turn(text).control_key
-        return normalized in {"继续", "continue", "继续执行", "继续这个任务", "resume"}
 
     def _is_manual_resumable_blocked_run(self, run: Optional[AutonomyRun]) -> bool:
         if run is None or run.status != AutonomyRunStatus.BLOCKED:
@@ -1710,6 +1709,9 @@ class TelegramBot:
             result = self._handle_runtime_status_command(update, chat_id, user_id)
             await self._send_result(update, result)
             return
+        if command in {"replace", "append", "cancel"}:
+            await self._handle_task_conflict_command(update, command, chat_id, user_id, username)
+            return
 
         # Metrics: Record message received (Phase: PRODUCTION_INTEGRATION)
         # Feature Flag: runtime_metrics_enabled (default: OFF)
@@ -1813,7 +1815,7 @@ class TelegramBot:
                     f"- subject_profile: `{subject_profile}`\n"
                     "- scope: `session-scoped`\n"
                     "- effect: `future runtime_v2 natural-language turns only`\n"
-                    "- boundary: `proto_self.v2 is the default subject writeback mainline; seed_v0_2 is explicit profile overlay only`"
+                    "- boundary: `proto_self.v2 uses seed_v0_2 as the default subject profile; /proto seed off explicitly falls back to core_v2`"
                 ),
                 data={
                     "session_key": session_key,
@@ -1833,7 +1835,7 @@ class TelegramBot:
                     f"- session: `{session_key}`\n"
                     "- version_override: `default(v2)`\n"
                     "- subject_profile: `default(seed_v0_2)`\n"
-                    "- next_step: `future runtime_v2 natural-language turns stay on the default v2 seed mainline`"
+                    "- next_step: `future runtime_v2 natural-language turns stay on the default seed_v0_2 profile inside proto_self.v2`"
                 ),
                 data={
                     "session_key": session_key,
@@ -1871,7 +1873,7 @@ class TelegramBot:
                     f"- session: `{session_key}`\n"
                     "- version_override: `default(v2)`\n"
                     "- subject_profile: `default(seed_v0_2)`\n"
-                    "- next_step: `future runtime_v2 natural-language turns will route through the Seed profile inside proto_self.v2`"
+                    "- next_step: `future runtime_v2 natural-language turns stay on the default seed_v0_2 profile inside proto_self.v2`"
                 ),
                 data={
                     "session_key": session_key,
@@ -1889,7 +1891,7 @@ class TelegramBot:
                     f"- session: `{session_key}`\n"
                     f"- version_override: `{state.proto_self_version_override or 'default(v2)'}`\n"
                     "- subject_profile: `default(core_v2)`\n"
-                    "- boundary: `Seed profile disabled; base proto_self.v2 path remains active unless version fallback is set`"
+                    "- boundary: `seed_v0_2 disabled; this session now uses core_v2 on the proto_self.v2 mainline unless version fallback is set`"
                 ),
                 data={
                     "session_key": session_key,
@@ -1944,6 +1946,42 @@ class TelegramBot:
             ),
             data={"session_key": session_key, "action": command, "reset": True},
         )
+
+    async def _handle_task_conflict_command(
+        self,
+        update: Update,
+        command: str,
+        chat_id: int,
+        user_id: int,
+        username: Optional[str],
+    ) -> None:
+        session_key = self._resolve_session_key(update, chat_id, user_id)
+        state = self._get_runtime_state(session_key)
+        ingress_message_id = update.message.message_id if update.message else None
+        incoming_text = await self._apply_pending_task_conflict_resolution(
+            state=state,
+            resolution=command,
+            trace_id=None,
+            ingress_message_id=ingress_message_id,
+            session_key=session_key,
+        )
+        if incoming_text is None:
+            await self._send_result(update, CommandResult(success=False, message=self._build_invalid_task_conflict_reply()))
+            return
+        if command == "replace":
+            async with self._typing_indicator(update):
+                await self._handle_with_runtime_v2(
+                    update,
+                    incoming_text,
+                    chat_id,
+                    user_id,
+                    username,
+                )
+            return
+        if command == "append":
+            await self._send_result(update, CommandResult(success=True, message="已把新任务追加到当前任务队列。当前任务恢复后会按顺序继续。"))
+            return
+        await self._send_result(update, CommandResult(success=True, message="已取消这次新任务，保持当前任务不变。"))
 
     def _handle_runtime_status_command(self, update: Update, chat_id: int, user_id: int) -> CommandResult:
         session_key = self._resolve_session_key(update, chat_id, user_id)
@@ -2428,66 +2466,8 @@ class TelegramBot:
         session_key = self._resolve_session_key(update, chat_id, user_id)
         state = self._get_runtime_state(session_key)
         ingress_message_id = update.message.message_id if update.message else None
-        control_intent = parse_session_control_intent(text)
-
-        if control_intent.kind == "task_conflict_resolution":
-            if state.get_pending_task_conflict() is None:
-                await self._send_reply(update, self._build_invalid_task_conflict_reply())
-                return
-            pending_override_text = await self._maybe_handle_pending_task_conflict(
-                update=update,
-                state=state,
-                text=text,
-                trace_id=trace_id,
-                ingress_message_id=ingress_message_id,
-                session_key=session_key,
-            )
-            if pending_override_text == "":
-                return
-            if pending_override_text is not None:
-                text = pending_override_text
-        elif state.get_pending_task_conflict() is not None:
+        if state.get_pending_task_conflict() is not None:
             await self._send_reply(update, self._build_task_conflict_reply(state))
-            return
-
-        if control_intent.kind == "status_probe":
-            reply_text = self._build_runtime_status_control_reply(session_key, state)
-            await self._send_reply(update, reply_text)
-            return
-
-        if control_intent.kind == "manual_resume":
-            active_run = self._get_active_run(session_key)
-            if active_run is None or not (
-                active_run.status == AutonomyRunStatus.RESUMABLE_PAUSE
-                or self._is_manual_resumable_blocked_run(active_run)
-            ):
-                await self._send_reply(update, "当前没有可继续的任务。")
-                return
-            await self._publish_phase1_event(
-                session_key=session_key,
-                kind="telegram_manual_resume",
-                trace_id=trace_id,
-                message_id=ingress_message_id,
-                payload={
-                    "run_id": active_run.id,
-                    "status": active_run.status.value,
-                    "hard_blocker_reason": active_run.hard_blocker_reason,
-                },
-            )
-            resume_snapshot = active_run.runtime_state_snapshot or state.to_snapshot()
-            resume_state = RuntimeV2State.from_snapshot(resume_snapshot)
-            progress_delivery = self._get_progress_delivery_state(resume_state)
-            progress_delivery.pop("last_run_event_signature", None)
-            await self._emit_run_event_message(
-                state=resume_state,
-                session_key=session_key,
-                event=self._build_manual_resume_event(active_run),
-                update=update,
-                chat_id=None,
-                trace_id=trace_id,
-                ingress_message_id=ingress_message_id,
-            )
-            self._spawn_manual_resume(active_run.id)
             return
 
         normalized_turn = normalize_user_turn(text)
@@ -2558,17 +2538,6 @@ class TelegramBot:
             state.ingress_context["proto_self_subject_profile_source"] = "telegram_session_override"
         pre_runtime = self.telegram_runtime_bridge.plan_pre_runtime(ingress, state)
         runtime_action = getattr(ingress, "_runtime_action", None)
-        if runtime_action == "execute_task":
-            if await self._maybe_create_task_conflict(
-                update=update,
-                state=state,
-                session_key=session_key,
-                text=text,
-                trace_id=trace_id,
-                ingress_message_id=ingress_message_id,
-            ):
-                return
-            self._prepare_run_items_for_new_task(text, state)
         logger.info("runtime_v2.turn.start session=%s text=%r ingress=%s parser_source=%s",
                     session_key, text[:200], ingress,
                     ingress._parsed_intent_graph.parser_source if ingress._parsed_intent_graph else "none")
@@ -2596,6 +2565,18 @@ class TelegramBot:
             return
 
         self._activate_pending_restore_observation(state)
+
+        if runtime_action == "execute_task":
+            if await self._maybe_create_task_conflict(
+                update=update,
+                state=state,
+                session_key=session_key,
+                text=text,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            ):
+                return
+            self._prepare_run_items_for_new_task(text, state)
 
         if runtime_action == "execute_task" and self.autonomy_orchestrator is not None:
             await self._run_with_autonomy(
@@ -3996,7 +3977,8 @@ class TelegramBot:
         # Register command handlers
         commands = [
             "start", "help", "new", "reset", "run", "status", "tasks", "resume",
-            "pause", "retry", "abort", "report", "memory", "context", "prompt", "proto"
+            "pause", "retry", "abort", "report", "memory", "context", "prompt", "proto",
+            "replace", "append", "cancel",
         ]
         self._known_commands = set(commands)
 

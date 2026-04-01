@@ -25,17 +25,20 @@ def test_telegram_bridge_path_only_is_reference_material():
     assert decision._runtime_action == "waiting_input"
 
 
-def test_telegram_bridge_short_probe_is_programmatic_status_query():
-    """短探针应由程序化入口直接识别，避免前置 parser LLM。"""
+def test_telegram_bridge_short_probe_now_stays_in_chat_mainline():
+    """自然语言进度词已退出 control-plane，按聊天处理。"""
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     state.task_status = "running"
     state.current_goal = "修改 hello.html 配色"
 
     decision = bridge.inspect_ingress("好了吗", state)
-    assert decision.is_short_probe is True
-    assert decision._runtime_action == "return_runtime_status"
-    assert decision._parsed_intent_graph.primary_intent == "status_query"
+    ingress = bridge.build_ingress_context(decision, state)
+
+    assert decision.interaction_kind == "chat"
+    assert decision._runtime_action == "chat"
+    assert decision._parsed_intent_graph.primary_intent == "chat"
+    assert ingress["conversation_act"] == "social_keepalive"
 
 
 def test_telegram_bridge_presence_probe_when_idle_falls_back_to_chat():
@@ -147,7 +150,7 @@ def test_telegram_bridge_promotes_execute_confirmation_for_pending_task():
     assert ingress["resolved_target"]["artifact_id"] == "artifact://task"
 
 
-def test_telegram_bridge_promotes_continue_for_planning_stalled_task():
+def test_telegram_bridge_bare_continue_on_planning_stalled_task_stays_chat_with_resume_hint():
     bridge = RuntimeV2TelegramBridge()
     state = RuntimeV2State(session_id="telegram:dm:1")
     state.add_pending_artifact("artifact://task", "任务单.txt", "artifact://task")
@@ -160,10 +163,39 @@ def test_telegram_bridge_promotes_continue_for_planning_stalled_task():
     decision = bridge.inspect_ingress("继续", state)
     ingress = bridge.build_ingress_context(decision, state)
 
-    assert decision.is_confirm_execution is True
-    assert decision._runtime_action == "execute_task"
-    assert ingress["request_mode"] == "execute"
-    assert ingress["resolved_target"]["artifact_id"] == "artifact://task"
+    assert decision.is_confirm_execution is False
+    assert decision.interaction_kind == "chat"
+    assert decision._runtime_action == "chat"
+    assert ingress["conversation_act"] == "light_chitchat"
+    assert ingress["resume_hint_eligible"] is True
+
+
+def test_telegram_bridge_marks_continue_say_family_as_thread_continue():
+    bridge = RuntimeV2TelegramBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+
+    decision = bridge.inspect_ingress("继续说 多说点", state)
+    ingress = bridge.build_ingress_context(decision, state)
+
+    assert decision.interaction_kind == "chat"
+    assert decision._runtime_action == "chat"
+    assert ingress["conversation_act"] == "thread_continue"
+
+
+def test_telegram_bridge_bare_continue_after_chat_reply_becomes_thread_continue():
+    bridge = RuntimeV2TelegramBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+    state.last_model_action = {"type": "chat", "message": "上一条回复"}
+    state.last_delivery_type = "chat"
+    state.get_chat_state().recent_assistant_replies = ["上一条回复"]
+
+    decision = bridge.inspect_ingress("继续", state)
+    ingress = bridge.build_ingress_context(decision, state)
+
+    assert decision.interaction_kind == "chat"
+    assert decision._runtime_action == "chat"
+    assert ingress["conversation_act"] == "thread_continue"
+    assert ingress["resume_hint_eligible"] is False
 
 
 def test_telegram_bridge_binds_explicit_path_target_for_read_request():

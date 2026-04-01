@@ -10,6 +10,7 @@ from app.response.style_profile import StyleProfile
 ChatAct = Literal[
     "presence_check",
     "tone_feedback",
+    "thread_continue",
     "light_chitchat",
     "social_keepalive",
     "task_bridge_request",

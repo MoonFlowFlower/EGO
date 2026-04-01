@@ -80,6 +80,8 @@ def _summarize_ingress_context(ingress_context: Optional[Dict[str, Any]]) -> Opt
         summary["risk_level"] = ingress_context.get("risk_level")
     if ingress_context.get("rule_enforcement"):
         summary["rule_enforcement"] = ingress_context.get("rule_enforcement")
+    if ingress_context.get("resume_hint_eligible") is not None:
+        summary["resume_hint_eligible"] = bool(ingress_context.get("resume_hint_eligible"))
     return summary
 
 

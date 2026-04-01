@@ -32,6 +32,28 @@ FILE_TYPE_PATTERNS = {
     "log": ["log", "trace", "error", "report", "日志", ".log"],
 }
 
+THREAD_CONTINUE_MARKERS = (
+    "继续说",
+    "多说点",
+    "展开说",
+    "接着说",
+)
+
+BARE_CONTINUE_KEYS = {
+    "继续",
+    "continue",
+}
+
+NATURAL_STATUS_CHAT_KEYS = {
+    "到哪了",
+    "进度呢",
+    "怎么样了",
+    "好了没",
+    "好了吗",
+    "完成了吗",
+    "处理到哪了",
+}
+
 
 @dataclass
 class IntentInference:
@@ -206,6 +228,7 @@ class TelegramIngressDecision:
     rule_enforcement: Optional[Dict[str, Any]] = None
     registered_profile_rule: Optional[Dict[str, Any]] = None
     profile_rule_parse_error: Optional[Dict[str, Any]] = None
+    resume_hint_eligible: bool = False
     _parsed_intent_graph: Optional[ParsedIntentGraph] = None
     _runtime_action: Optional[str] = None
     _normalized_turn: Optional[NormalizedUserTurn] = None
@@ -234,10 +257,6 @@ class TelegramRuntimeBridge:
     CONFIRM_EXECUTION_PATTERNS = {
         "执行",
         "执行吧",
-        "继续",
-        "继续执行",
-        "接着",
-        "接着做",
         "开始执行",
         "开始",
         "开始吧",
@@ -416,6 +435,64 @@ class TelegramRuntimeBridge:
         )
         return any(marker in normalized.text or marker in lowered for marker in markers)
 
+    def _looks_like_thread_continue_phrase(self, text: str) -> bool:
+        normalized = normalize_user_turn(text)
+        if normalized.control_key in BARE_CONTINUE_KEYS:
+            return False
+        compact = normalized.control_key
+        return any(marker in compact for marker in THREAD_CONTINUE_MARKERS)
+
+    def _looks_like_bare_continue(self, text: str) -> bool:
+        normalized = normalize_user_turn(text)
+        return normalized.control_key in BARE_CONTINUE_KEYS
+
+    def _looks_like_natural_status_phrase(self, text: str) -> bool:
+        normalized = normalize_user_turn(text)
+        return normalized.probe_key in NATURAL_STATUS_CHAT_KEYS
+
+    def _has_recent_chat_reply(self, state: RuntimeV2State) -> bool:
+        chat_state = state.get_chat_state()
+        if not list(chat_state.recent_assistant_replies or []):
+            return False
+        last_action = getattr(state, "last_model_action", None) or {}
+        if last_action.get("type") == "chat":
+            return True
+        return getattr(state, "last_delivery_type", None) == "chat"
+
+    def _resume_hint_eligible(self, text: str, state: RuntimeV2State) -> bool:
+        if not self._looks_like_bare_continue(text):
+            return False
+        if self._has_recent_chat_reply(state):
+            return False
+        autonomy_context = dict(getattr(state, "autonomy_context", None) or {})
+        if autonomy_context.get("status") in {"resumable_pause", "blocked", "running"}:
+            return True
+        return getattr(state, "task_status", None) in {"resumable_pause", "running", "blocked", "waiting_input"}
+
+    def _infer_chat_act(self, text: str, state: RuntimeV2State) -> Optional[str]:
+        if is_presence_probe_text(text):
+            return "presence_check"
+        if self._looks_like_tone_feedback(text):
+            return "tone_feedback"
+        if self._looks_like_thread_continue_phrase(text):
+            return "thread_continue"
+        if self._looks_like_bare_continue(text):
+            if self._has_recent_chat_reply(state):
+                return "thread_continue"
+            return "light_chitchat"
+        if state.is_busy():
+            return "social_keepalive"
+        return "light_chitchat"
+
+    def _should_force_chat_mainline(self, text: str) -> bool:
+        return bool(
+            is_presence_probe_text(text)
+            or self._looks_like_tone_feedback(text)
+            or self._looks_like_thread_continue_phrase(text)
+            or self._looks_like_bare_continue(text)
+            or self._looks_like_natural_status_phrase(text)
+        )
+
     def _resolve_conversation_act(
         self,
         decision: TelegramIngressDecision,
@@ -423,13 +500,7 @@ class TelegramRuntimeBridge:
     ) -> Optional[str]:
         if decision.interaction_kind != "chat":
             return None
-        if is_presence_probe_text(decision.source_text):
-            return "presence_check"
-        if self._looks_like_tone_feedback(decision.source_text):
-            return "tone_feedback"
-        if state.is_busy():
-            return "social_keepalive"
-        return "light_chitchat"
+        return self._infer_chat_act(decision.source_text, state)
 
     def _looks_like_execution_confirmation(self, text: str, state: RuntimeV2State) -> bool:
         normalized = normalize_user_turn(text).control_key
@@ -712,6 +783,7 @@ class TelegramRuntimeBridge:
             "last_uploaded_artifact": state.last_uploaded_artifact,
             "resolved_target": resolved_target,
             "requested_output": decision.requested_output,
+            "resume_hint_eligible": decision.resume_hint_eligible,
             "profile_scope": decision.profile_scope,
             "active_profile_rules": decision.active_profile_rules,
             "matched_profile_rules": decision.matched_profile_rules,
@@ -752,6 +824,8 @@ class TelegramRuntimeBridge:
             control_intent=control_intent,
             runtime_action=runtime_action,
         )
+        forced_chat = self._should_force_chat_mainline(normalized_turn.text)
+        interaction_kind = "chat" if forced_chat else interaction.kind.value
         logger.info("SEMANTIC_AUDIT: runtime_action=%s", runtime_action)
 
         looks_like_task = (
@@ -777,7 +851,7 @@ class TelegramRuntimeBridge:
 
         is_confirm_execution = self._looks_like_execution_confirmation(normalized_turn.text, state)
         decision = TelegramIngressDecision(
-            interaction_kind=interaction.kind.value,
+            interaction_kind=interaction_kind,
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
             is_challenge_turn=is_challenge_turn,
@@ -793,6 +867,7 @@ class TelegramRuntimeBridge:
             busy_notice_text=None,
             requested_output=requested_output,
             source_text=normalized_turn.text,
+            resume_hint_eligible=self._resume_hint_eligible(normalized_turn.text, state),
             profile_scope=self._resolve_profile_scope(state),
             _parsed_intent_graph=graph,
             _runtime_action=runtime_action,
@@ -839,6 +914,8 @@ class TelegramRuntimeBridge:
             control_intent=control_intent,
             runtime_action=runtime_action,
         )
+        forced_chat = self._should_force_chat_mainline(normalized_turn.text)
+        interaction_kind = "chat" if forced_chat else interaction.kind.value
 
         looks_like_task = (
             graph.primary_intent == "task_request" or
@@ -857,7 +934,7 @@ class TelegramRuntimeBridge:
 
         is_confirm_execution = self._looks_like_execution_confirmation(normalized_turn.text, state)
         decision = TelegramIngressDecision(
-            interaction_kind=interaction.kind.value,
+            interaction_kind=interaction_kind,
             looks_like_task=looks_like_task,
             is_short_probe=is_status_query,
             is_challenge_turn=is_challenge_turn,
@@ -873,6 +950,7 @@ class TelegramRuntimeBridge:
             busy_notice_text=None,
             requested_output=requested_output,
             source_text=normalized_turn.text,
+            resume_hint_eligible=self._resume_hint_eligible(normalized_turn.text, state),
             profile_scope=self._resolve_profile_scope(state),
             _parsed_intent_graph=graph,
             _runtime_action=runtime_action,

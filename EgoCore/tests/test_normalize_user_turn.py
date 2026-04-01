@@ -20,11 +20,11 @@ def test_normalize_user_turn_marks_attachment_and_slash_command() -> None:
 
 def test_parse_session_control_intent_uses_normalized_turn() -> None:
     intent = parse_session_control_intent("  继 续 ！？  ")
-    assert intent.kind == "manual_resume"
+    assert intent.kind == "execute_task"
 
     replace_intent = parse_session_control_intent("  替 换 。")
-    assert replace_intent.kind == "task_conflict_resolution"
-    assert replace_intent.resolution == "replace"
+    assert replace_intent.kind == "execute_task"
+    assert replace_intent.resolution is None
 
 
 def test_parse_session_control_intent_presence_probes_do_not_enter_control_plane() -> None:

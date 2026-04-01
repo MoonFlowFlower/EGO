@@ -16,6 +16,7 @@ if "requests" not in sys.modules:
 
 import app.telegram_bot as telegram_bot_module
 from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus
+from app.runtime_v2.run_items import RunConflictState, RunItem
 from app.telegram_bot import TelegramBot
 from app.interaction.session_context_store import get_session_context_store
 
@@ -365,3 +366,132 @@ async def test_proto_command_disables_seed_profile():
 
     assert state.proto_self_subject_profile_override is None
     assert "subject\\_profile: \\`default(core\\_v2)\\`" in DummyUpdate.message.last_text
+
+
+@pytest.mark.asyncio
+async def test_proto_status_uses_default_seed_wording():
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:456")
+    state.proto_self_subject_profile_override = "seed_v0_2"
+
+    class DummyMessage:
+        text = "/proto status"
+        message_id = 27
+        reply_to_message = None
+        date = datetime.now(timezone.utc)
+        last_text = None
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyChat:
+        id = 123
+        type = "private"
+
+    class DummyUser:
+        id = 456
+        username = "moonlight"
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = DummyChat()
+        effective_user = DummyUser()
+
+    await bot.handle_command(DummyUpdate(), None)
+
+    assert "subject\\_profile: \\`default(seed\\_v0\\_2)\\`" in DummyUpdate.message.last_text
+    assert "explicit profile overlay only" not in DummyUpdate.message.last_text
+
+
+@pytest.mark.asyncio
+async def test_append_command_resolves_pending_task_conflict(monkeypatch):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:456")
+    monkeypatch.setattr(bot, "_publish_phase1_event", lambda **kwargs: __import__("asyncio").sleep(0))
+    state.set_pending_task_conflict(
+        RunConflictState(
+            existing_run_id="run_existing",
+            existing_objective="旧任务",
+            incoming_text="新任务",
+            incoming_run_items=[RunItem(item_id="item_1", order_index=1, kind="generic", description="新增任务").to_dict()],
+        )
+    )
+
+    class DummyMessage:
+        text = "/append"
+        message_id = 28
+        reply_to_message = None
+        date = datetime.now(timezone.utc)
+        last_text = None
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyChat:
+        id = 123
+        type = "private"
+
+    class DummyUser:
+        id = 456
+        username = "moonlight"
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = DummyChat()
+        effective_user = DummyUser()
+
+    await bot.handle_command(DummyUpdate(), None)
+
+    assert state.get_pending_task_conflict() is None
+    assert state.run_items
+    assert state.run_items[-1]["description"] == "新增任务"
+    assert "已把新任务追加到当前任务队列" in DummyUpdate.message.last_text
+
+
+@pytest.mark.asyncio
+async def test_replace_command_routes_conflict_text_back_into_runtime(monkeypatch):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:456")
+    state.set_pending_task_conflict(
+        RunConflictState(
+            existing_run_id="run_existing",
+            existing_objective="旧任务",
+            incoming_text="请执行新的任务内容",
+            incoming_run_items=[],
+        )
+    )
+    captured = {}
+
+    async def fake_handle_with_runtime_v2(update, text, chat_id, user_id, username, trace_id=None, extra_context=None):
+        captured["text"] = text
+        update.message.last_text = text
+
+    monkeypatch.setattr(bot, "_handle_with_runtime_v2", fake_handle_with_runtime_v2)
+
+    class DummyMessage:
+        text = "/replace"
+        message_id = 29
+        reply_to_message = None
+        date = datetime.now(timezone.utc)
+        last_text = None
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyChat:
+        id = 123
+        type = "private"
+
+    class DummyUser:
+        id = 456
+        username = "moonlight"
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = DummyChat()
+        effective_user = DummyUser()
+
+    await bot.handle_command(DummyUpdate(), None)
+
+    assert state.get_pending_task_conflict() is None
+    assert captured["text"] == "请执行新的任务内容"

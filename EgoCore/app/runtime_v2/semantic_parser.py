@@ -25,15 +25,8 @@ from app.interaction.normalize_user_turn import normalize_user_turn
 
 logger = logging.getLogger(__name__)
 
-SHORT_STATUS_PATTERNS = {
-    "到哪了",
-    "进度呢",
-    "怎么样了",
-    "好了没",
-    "好了吗",
-    "完成了吗",
-    "处理到哪了",
-}
+# 自然语言控制词已退出 control-plane；进度查询以 slash-only 为准。
+SHORT_STATUS_PATTERNS: set[str] = set()
 
 SHORT_CHAT_PING_PATTERNS = {
     "在吗",
@@ -173,19 +166,6 @@ class SessionControlIntent:
 
 
 def parse_session_control_intent(text: str) -> SessionControlIntent:
-    normalized_turn = normalize_user_turn(text)
-    normalized = normalized_turn.probe_key
-    control_key = normalized_turn.control_key
-    if normalized in SHORT_STATUS_PATTERNS or control_key in {"status", "进度", "如何了"}:
-        return SessionControlIntent(kind="status_probe")
-    if control_key in {"继续", "continue", "继续执行", "继续这个任务", "resume"}:
-        return SessionControlIntent(kind="manual_resume")
-    if control_key in {"替换", "replace"}:
-        return SessionControlIntent(kind="task_conflict_resolution", resolution="replace")
-    if control_key in {"追加", "append"}:
-        return SessionControlIntent(kind="task_conflict_resolution", resolution="append")
-    if control_key in {"取消", "cancel"}:
-        return SessionControlIntent(kind="task_conflict_resolution", resolution="cancel")
     return SessionControlIntent(kind="execute_task")
 
 
@@ -313,20 +293,6 @@ def heuristic_parse(text: str) -> ParsedIntentGraph:
 
     segments = []
     normalized = _normalize_short_probe(text)
-
-    if normalized in SHORT_STATUS_PATTERNS:
-        logger.info("heuristic_parse: detected short status probe, parser_source=heuristic_parser, primary_intent=status_query")
-        segments.append(SemanticSegment(
-            text=text,
-            kind="status_query",
-            confidence=0.95,
-        ))
-        return ParsedIntentGraph(
-            segments=segments,
-            primary_intent="status_query",
-            has_status_query=True,
-            parser_source="heuristic_parser",
-        )
 
     if normalized in SHORT_CORRECTION_PATTERNS:
         logger.info("heuristic_parse: detected short correction, parser_source=heuristic_parser, primary_intent=correction")
@@ -959,8 +925,6 @@ def decide_runtime_action(graph: ParsedIntentGraph, state: Any) -> str:
     """
     # 状态查询优先
     if graph.has_status_query:
-        if hasattr(state, "is_busy") and state.is_busy():
-            return "return_runtime_status"
         return "chat"
 
     # 纠错/反驳优先
