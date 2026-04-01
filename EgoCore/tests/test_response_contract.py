@@ -71,4 +71,5 @@ def test_build_runtime_result_response_plan_preserves_presence_conversation_act(
 
     assert plan.reply_authority == "model_chat"
     assert plan.metadata["conversation_act"] == "presence_check"
+    assert plan.metadata["reply_origin"] == "chat_mainline"
     assert state.to_decision_prompt_context()["ingress_context"]["conversation_act"] == "presence_check"

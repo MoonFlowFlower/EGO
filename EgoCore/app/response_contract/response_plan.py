@@ -43,6 +43,7 @@ def build_direct_response_plan(
 
 
 def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
+    reply_metadata = dict(getattr(getattr(result, "reply", None), "metadata", None) or {})
     delivery_kind = getattr(result, "delivery_kind", None) or (
         "progress" if getattr(result, "status", None) == "waiting_input" else "chat"
     )
@@ -61,10 +62,15 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
     else:
         reply_authority = "model_chat"
 
+    reply_authority = str(reply_metadata.get("reply_authority") or reply_authority)
+    reply_origin = str(reply_metadata.get("reply_origin") or _infer_reply_origin(state, runtime_status, reply_authority)).strip()
+    conversation_act = str(reply_metadata.get("chat_act") or conversation_act).strip() or conversation_act
+
     metadata = {
         "runtime_status": runtime_status,
         "task_status": getattr(state, "task_status", None),
         "conversation_act": conversation_act,
+        "reply_origin": reply_origin,
     }
     if evidence_payload is not None:
         metadata["evidence_payload"] = evidence_payload
@@ -172,6 +178,23 @@ def _build_current_turn_evidence_payload(state: Any) -> Optional[Dict[str, Any]]
         "delivered_at": None,
         "conversation_act": _build_conversation_act(state),
     }
+
+
+def _infer_reply_origin(state: Any, runtime_status: Optional[str], reply_authority: str) -> str:
+    if reply_authority == "model_chat":
+        return "chat_mainline"
+    if reply_authority == "host_evidence":
+        return "evidence_mainline"
+    if reply_authority == "host_status":
+        return "status_mainline"
+    if reply_authority == "host_terminal":
+        return "task_mainline"
+    interaction_kind = str(((getattr(state, "ingress_context", None) or {}).get("interaction_kind") or "")).strip()
+    if interaction_kind == "chat" and runtime_status == "chat":
+        return "chat_mainline"
+    if runtime_status == "status_probe":
+        return "status_mainline"
+    return "task_mainline"
 
 
 def _classify_shell_request_kind(command: str) -> Optional[str]:

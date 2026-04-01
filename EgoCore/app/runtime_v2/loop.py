@@ -7,6 +7,7 @@ from datetime import datetime
 import re
 
 from .action_protocol import RuntimeV2Action
+from .chat_reply_engine import ChatReplyEngine
 from .decision_engine import RuntimeV2DecisionEngine
 from .runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
 from .run_items import RunEvent
@@ -91,6 +92,7 @@ class RuntimeV2Loop:
         self.tool_broker = RuntimeV2ToolBroker()
         self.verifier = RuntimeV2Verifier()
         self.decision_engine = RuntimeV2DecisionEngine()
+        self.chat_reply_engine = ChatReplyEngine()
         self.transition_engine = RuntimeV2TransitionEngine(self.tool_broker, self.verifier)
         self._states: Dict[str, RuntimeV2State] = {}
 
@@ -344,6 +346,14 @@ class RuntimeV2Loop:
         progress_callback: Optional[Callable[[ProgressEvent], Awaitable[None]]],
         run_event_callback: Optional[Callable[[RunEvent], Awaitable[None]]],
     ) -> RuntimeV2TurnResult:
+        if str(((state.ingress_context or {}).get("interaction_kind") or "")).strip() == "chat":
+            result = await self.chat_reply_engine.reply(state)
+            if result.reply:
+                result.reply.generation_id = generation_id
+                result.reply.turn_id = turn_id
+            self._capture_proto_self_response_plan(result=result, evidence_collector=evidence_collector)
+            return result
+
         blocked_result = await self._promote_host_owned_frontier(
             state=state,
             run_event_callback=run_event_callback,
@@ -439,14 +449,7 @@ class RuntimeV2Loop:
                     result.reply.turn_id = turn_id
 
                 if self.proto_self_runtime:
-                    try:
-                        self.proto_self_runtime.capture_response_plan(
-                            result=result,
-                            evidence_collector=evidence_collector,
-                        )
-                        logger.info(f"[E4-EVIDENCE] Captured response_plan: status={result.status}")
-                    except Exception as e:
-                        logger.warning(f"[E4-EVIDENCE] Failed to capture response_plan: {e}")
+                    self._capture_proto_self_response_plan(result=result, evidence_collector=evidence_collector)
 
                 return result
 
@@ -477,6 +480,18 @@ class RuntimeV2Loop:
 
     async def _decide(self, state: RuntimeV2State) -> RuntimeV2Action:
         return await self.decision_engine.decide(state)
+
+    def _capture_proto_self_response_plan(self, *, result: RuntimeV2TurnResult, evidence_collector: Optional[Any]) -> None:
+        if not self.proto_self_runtime:
+            return
+        try:
+            self.proto_self_runtime.capture_response_plan(
+                result=result,
+                evidence_collector=evidence_collector,
+            )
+            logger.info(f"[E4-EVIDENCE] Captured response_plan: status={result.status}")
+        except Exception as e:
+            logger.warning(f"[E4-EVIDENCE] Failed to capture response_plan: {e}")
 
     async def _emit_progress_events(
         self,

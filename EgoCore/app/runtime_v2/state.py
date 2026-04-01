@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 import time
 
 from .contracts import DeliveryLedger
+from .chat_state import ChatState
 from .delivery_policy import RuntimeV2DeliveryPolicy
 from .run_items import (
     RunConflictState,
@@ -278,6 +279,7 @@ class RuntimeV2State:
     pending_run_events: List[Dict[str, Any]] = field(default_factory=list)
     last_delivered_evidence_context: Optional[Dict[str, Any]] = None
     last_evidence_read_result: Optional[Dict[str, Any]] = None
+    chat_state: ChatState = field(default_factory=ChatState)
 
     def to_prompt_context(self) -> Dict[str, Any]:
         """
@@ -344,6 +346,7 @@ class RuntimeV2State:
             "pending_task_conflict": self.pending_task_conflict,
             "active_item_id": self.active_item_id,
             "pending_run_events_count": len(self.pending_run_events),
+            "chat_state": self.get_chat_state().to_dict(),
         }
 
     def to_decision_prompt_context(self) -> Dict[str, Any]:
@@ -394,6 +397,10 @@ class RuntimeV2State:
             "pending_task_conflict": self.pending_task_conflict,
             "active_item_id": self.active_item_id,
             "pending_run_events_count": len(self.pending_run_events),
+            "chat_state": {
+                "last_user_tone_feedback": self.get_chat_state().last_user_tone_feedback,
+                "recent_assistant_replies": list(self.get_chat_state().recent_assistant_replies[-3:]),
+            },
         }
 
     def to_execute_task_prompt_context(self) -> Dict[str, Any]:
@@ -431,6 +438,24 @@ class RuntimeV2State:
                 for item in items
                 if item.status != "verified"
             ],
+        }
+
+    def to_chat_prompt_context(self) -> Dict[str, Any]:
+        chat_state = self.get_chat_state()
+        return {
+            "session_id": self.session_id,
+            "task_id": self.task_id,
+            "interaction_kind": str(((self.ingress_context or {}).get("interaction_kind") or "")).strip(),
+            "conversation_act": str(((self.ingress_context or {}).get("conversation_act") or "")).strip(),
+            "last_user_turn": self.last_user_turn,
+            "recent_user_turns": list(chat_state.recent_user_turns[-4:]),
+            "recent_assistant_replies": list(chat_state.recent_assistant_replies[-4:]),
+            "last_user_tone_feedback": chat_state.last_user_tone_feedback,
+            "relationship_context": dict(chat_state.relationship_context or {}),
+            "style_profile": dict(chat_state.style_profile or {}),
+            "active_task_summary": self.build_active_task_summary(),
+            "proto_self_context": dict(self.proto_self_context or {}),
+            "ingress_context": _summarize_ingress_context(self.ingress_context),
         }
 
     def add_pending_artifact(self, artifact_id: str, filename: Optional[str] = None,
@@ -678,6 +703,7 @@ class RuntimeV2State:
         self.pending_run_events = []
         self.last_delivered_evidence_context = None
         self.last_evidence_read_result = None
+        self.chat_state = ChatState(session_id=self.session_id)
         # 保留 pending_artifacts，因为用户可能在 reset 后继续用同一批文件
         return self.generation_id
 
@@ -1280,6 +1306,36 @@ class RuntimeV2State:
         self.last_tool_result = dict(payload or {}) if payload else None
         self.last_tool_result_turn_id = self.active_turn_id if payload else None
 
+    def get_chat_state(self) -> ChatState:
+        if not isinstance(self.chat_state, ChatState):
+            self.chat_state = ChatState.from_dict(self.chat_state, session_id=self.session_id)
+        self.chat_state.ensure_defaults(self.session_id)
+        return self.chat_state
+
+    def build_active_task_summary(self) -> Optional[Dict[str, Any]]:
+        if self.task_status not in {"running", "waiting_input", "resumable_pause", "blocked"}:
+            return None
+        summary: Dict[str, Any] = {
+            "task_status": self.task_status,
+            "current_goal": self.current_goal,
+            "current_step": self.current_step,
+        }
+        if hasattr(self, "get_run_item_status_summary"):
+            run_summary = self.get_run_item_status_summary()
+            if any(run_summary.get(key) for key in ("completed", "active", "pending", "blocked")):
+                summary["run_item_summary"] = run_summary
+        return summary
+
+    def prepare_chat_turn(self, *, user_text: str, chat_act: str) -> None:
+        self.get_chat_state().prepare_turn(
+            user_text=user_text,
+            chat_act=chat_act,
+            active_task_summary=self.build_active_task_summary(),
+        )
+
+    def finalize_chat_turn(self, *, assistant_reply: str, chat_act: str) -> None:
+        self.get_chat_state().finalize_turn(assistant_reply=assistant_reply, chat_act=chat_act)
+
     def clear_last_delivered_evidence_context(self) -> None:
         self.last_delivered_evidence_context = None
         self.last_evidence_read_result = None
@@ -1364,6 +1420,7 @@ class RuntimeV2State:
             "pending_run_events": list(self.pending_run_events),
             "last_delivered_evidence_context": self.last_delivered_evidence_context,
             "last_evidence_read_result": self.last_evidence_read_result,
+            "chat_state": self.get_chat_state().to_dict(),
         }
 
     @classmethod
@@ -1428,6 +1485,7 @@ class RuntimeV2State:
             or snapshot.get("last_evidence_read_result")
         )
         state.last_evidence_read_result = state.last_delivered_evidence_context
+        state.chat_state = ChatState.from_dict(snapshot.get("chat_state"), session_id=state.session_id)
         return state
 
     # ==================== WS-2: Target Binding ====================

@@ -16,6 +16,7 @@ class OutputCheckVerdict:
     delivery_kind: str
     authority_source: str = "response_contract.output_check"
     applied_authority: str = "model_chat"
+    reply_origin: str = "chat_mainline"
     used_host_fallback: bool = False
     is_evidence_bearing: bool = False
     used_host_verbatim: bool = False
@@ -31,6 +32,7 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
     reply_text = str(plan.reply_text or "").strip()
     delivery_kind = _normalize_delivery_kind(plan)
     applied_authority = str(getattr(plan, "reply_authority", "") or "model_chat")
+    reply_origin = str((metadata := dict(getattr(plan, "metadata", None) or {})).get("reply_origin") or "chat_mainline")
     used_host_fallback = False
     is_evidence_bearing = False
     used_host_verbatim = False
@@ -38,7 +40,6 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
     fidelity_gap = False
     evidence_snapshot: Optional[Dict[str, Any]] = None
 
-    metadata = dict(getattr(plan, "metadata", None) or {})
     raw_evidence_payload = metadata.get("evidence_payload")
     if isinstance(raw_evidence_payload, dict):
         evidence_snapshot = dict(raw_evidence_payload)
@@ -84,6 +85,7 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
         reply_text=reply_text,
         delivery_kind=delivery_kind,
         applied_authority=applied_authority,
+        reply_origin=reply_origin,
         used_host_fallback=used_host_fallback,
         is_evidence_bearing=is_evidence_bearing,
         used_host_verbatim=used_host_verbatim,

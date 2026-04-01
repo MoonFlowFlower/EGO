@@ -161,13 +161,14 @@ async def test_runtime_v2_loop_is_lazy_until_runtime_turn(monkeypatch):
     assert result.reply_text == "fallback"
 
 
-def test_should_use_native_loop_for_chat_like_turns():
+def test_should_not_use_native_loop_for_chat_like_turns():
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
     bot.native_loop = object()
     state = bot._get_runtime_state("telegram:dm:1")
-    ingress = SimpleNamespace(_runtime_action="chat", is_file_only=False)
+    state.ingress_context = {"interaction_kind": "chat"}
+    ingress = SimpleNamespace(_runtime_action="chat", is_file_only=False, interaction_kind="chat")
 
-    assert bot._should_use_native_loop(ingress, state) is True
+    assert bot._should_use_native_loop(ingress, state) is False
 
 
 def test_should_not_use_native_loop_for_status_fast_path():

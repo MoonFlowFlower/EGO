@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, Optional
 
 
@@ -14,6 +14,7 @@ class RuntimeV2Reply:
     # WS-1: Turn Isolation
     generation_id: Optional[int] = None
     turn_id: Optional[str] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -24,6 +25,8 @@ class RuntimeV2TurnResult:
     status: str
     state: Any
     reply: Optional[RuntimeV2Reply] = None
+    finish_reason: Optional[str] = None
+    checkpoint_payload: Optional[Dict[str, Any]] = None
 
     @property
     def reply_text(self) -> str:
@@ -42,4 +45,6 @@ class RuntimeV2TurnResult:
             data.update(self.reply.to_dict())
         else:
             data.update({"reply_text": "", "delivery_kind": None})
+        data["finish_reason"] = self.finish_reason
+        data["checkpoint_payload"] = self.checkpoint_payload
         return data

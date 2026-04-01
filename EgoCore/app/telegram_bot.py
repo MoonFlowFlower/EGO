@@ -3140,6 +3140,9 @@ class TelegramBot:
         if not self.use_runtime_v2:
             return False
         runtime_action = getattr(ingress, "_runtime_action", None)
+        interaction_kind = str(((state.ingress_context or {}).get("interaction_kind") or getattr(ingress, "interaction_kind", None) or "")).strip()
+        if interaction_kind == "chat":
+            return False
         resolved_target = (state.ingress_context or {}).get("resolved_target") or {}
         has_artifact_target = bool(
             str(resolved_target.get("artifact_id") or resolved_target.get("artifact_ref") or "").startswith("artifact://")
@@ -3154,10 +3157,10 @@ class TelegramBot:
             return False
         if runtime_action == "return_runtime_status":
             return False
-        if self.native_loop is not None:
-            return True
         if runtime_action != "execute_task":
             return False
+        if self.native_loop is not None:
+            return True
         if getattr(ingress, "is_confirm_execution", False):
             return True
         if has_artifact_target:
@@ -3639,6 +3642,7 @@ class TelegramBot:
                     "delivery_kind": getattr(result, "delivery_kind", "final"),
                     "status": result.status,
                     "reply_authority": getattr(output_verdict, "applied_authority", None),
+                    "reply_origin": getattr(output_verdict, "reply_origin", None),
                 },
             )
             send_result = await self._send_reply(update, delivery.text)

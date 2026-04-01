@@ -40,6 +40,7 @@ SHORT_CHAT_PING_PATTERNS = {
     "在不在",
     "还在吗",
     "还在不",
+    "真的在吗",
 }
 
 SHORT_CORRECTION_PATTERNS = {

@@ -395,6 +395,42 @@ class TelegramRuntimeBridge:
     ) -> ParsedIntentGraph:
         return graph
 
+    def _looks_like_tone_feedback(self, text: str) -> bool:
+        normalized = normalize_user_turn(text)
+        lowered = normalized.lower_text
+        if not lowered:
+            return False
+        markers = (
+            "换个说辞",
+            "别重复",
+            "不要重复",
+            "不想重复",
+            "别老说",
+            "不要老说",
+            "别总说",
+            "不要总说",
+            "不要机械",
+            "能不能不要重复",
+            "我的意思是不要重复",
+            "我的意思是 不要重复",
+        )
+        return any(marker in normalized.text or marker in lowered for marker in markers)
+
+    def _resolve_conversation_act(
+        self,
+        decision: TelegramIngressDecision,
+        state: RuntimeV2State,
+    ) -> Optional[str]:
+        if decision.interaction_kind != "chat":
+            return None
+        if is_presence_probe_text(decision.source_text):
+            return "presence_check"
+        if self._looks_like_tone_feedback(decision.source_text):
+            return "tone_feedback"
+        if state.is_busy():
+            return "social_keepalive"
+        return "light_chitchat"
+
     def _looks_like_execution_confirmation(self, text: str, state: RuntimeV2State) -> bool:
         normalized = normalize_user_turn(text).control_key
         if normalized not in self.CONFIRM_EXECUTION_PATTERNS:
@@ -656,7 +692,7 @@ class TelegramRuntimeBridge:
             resolved_target=resolved_target,
             request_mode=request_mode,
         )
-        conversation_act = "presence_check" if is_presence_probe_text(decision.source_text) else None
+        conversation_act = self._resolve_conversation_act(decision, state)
         return {
             "normalized_user_turn": normalized_turn.to_dict() if normalized_turn is not None else None,
             "interaction_kind": decision.interaction_kind,
