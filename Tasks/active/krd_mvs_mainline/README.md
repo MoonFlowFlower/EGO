@@ -1,4 +1,4 @@
-# K / R / D + 新主链 MVS 重构任务
+# K / R / D + 新主链 MVS 执行工作包
 
 ```yaml
 task_id: L3-20260331-KRD-MVS
@@ -7,14 +7,26 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: spec_ready
+status: in_progress
+parent_authority: "Tasks/MVS_task_plan.md"
+scope: "WP0/WP1 execution package"
 ```
 
 ---
 
+## 角色定位
+
+本目录不是独立主任务，而是 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的执行层工作包。
+
+- `MVS_task_plan.md`：唯一最终裁决源
+- `krd_mvs_mainline/`：把 `WP0 / WP1` 拆成可执行工作包、状态台账、边界决策和交付物
+
 ## 真实目标
 
-把 `K / R / D 重构清单模板 + 新主链最小目录结构` 收成一套可直接实施的 MVS 主链重构路线，先锁定权威源、迁移矩阵和首批条目详表，不立刻做全量目录搬迁。
+为 MVS 主线先收稳：
+
+1. `WP0`：`proto_self.v2 + seed_v0_2` 的边界、契约、shim、决策日志
+2. `WP1`：宿主壳的状态主权与表达主权收口
 
 ## 成功判据
 
@@ -22,48 +34,45 @@ status: spec_ready
 - [x] 首批迁移矩阵已按当前仓库现状映射到真实承接路径
 - [x] 首批详表已覆盖 K 池、EgoCore R 池、OpenEmotion R 池、D 池
 - [x] 每个条目都写明归属、权威源、主链接入状态、替代物或删除条件
-- [ ] 基于本任务进入第一实现轮
-- [ ] 新主链达到 E3/E4 后再启动删除绞杀
+- [x] `WP0` 的 task-scoped 边界与契约文档已落地
+- [ ] `WP1` 方向复核完成
+- [ ] `memory_claim_gate` 纳入宿主主链
+- [ ] readiness report 形成并区分 E4 / E2-E3
 
 ## 当前层级与主链状态
 
 ```yaml
-current_layer: strategy
-main_chain_status: idea
-enabled_status: false
-trigger_evidence: planning artifacts only
+current_layer: implementation_and_validation
+main_chain_status: partially_enabled
+enabled_status: true
+trigger_evidence:
+  - host-chain slices have direct_real Telegram evidence
+  - WP0 docs are repo-tracked
 ```
 
 ## Authority Source
 
-- `Tasks/K  R  D 重构清单模板 + 新主链最小目录结构.txt`
+- `Tasks/MVS_task_plan.md`
 - `PROJECT_MEMORY.md`
 - `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
 - 当前仓库实际代码布局：
   - `EgoCore/app/interaction`
   - `EgoCore/app/runtime_v2`
   - `EgoCore/app/openemotion_adapter`
-  - `EgoCore/app/response`
+  - `EgoCore/app/response_contract`
   - `OpenEmotion/openemotion/contracts`
-  - `OpenEmotion/openemotion/proto_self`
-  - `OpenEmotion/openemotion/self_model`
-  - `OpenEmotion/openemotion/memory`
+  - `OpenEmotion/openemotion/proto_self_v2`
 
 ## 本轮范围
 
-- 落地 Milestone 1 文档：
-  - `KRD_MASTER.md`
-  - `MIGRATION_MATRIX.md`
-  - `ITEMS/` 首批详表
-- 不做代码重构
-- 不做目录 rename
-- 不删除任何旧路径
+- `WP0` 边界与契约冻结文档
+- `WP1` 基线与缺口台账
+- 不实施 `WP2+`
+- 不删旧路径
+- 不创建平行主线
 
 ## 下一步最小闭环动作
 
-按 `MIGRATION_MATRIX.md` 启动第一实现轮，只做一个最小 EgoCore host-chain skeleton slice：
-
-1. 冻结 `InteractionKind`
-2. 落一个最小 `response_plan` authority
-3. 给 Telegram 主链补最小 route regression
-
+1. 完成 `WP1` 方向复核
+2. 把 `self_report_contract / SRAP` 约束统一并入 `ResponsePlan`
+3. 给 `memory_claim_gate` 补主链接入与验收证据

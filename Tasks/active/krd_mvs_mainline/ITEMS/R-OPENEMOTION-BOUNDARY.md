@@ -4,10 +4,10 @@
 - 策略级 / 实现级
 
 ### 主链接入状态
-- 已接入候选
+- 已接入
 
 ### 启用状态
-- 已启用候选
+- 已启用
 
 ### 真实触发证据
 - evidence_id: proto-self real runtime + adapter traces
@@ -15,7 +15,8 @@
 - artifact_path:
   - `OpenEmotion/openemotion/contracts/event_v1.py`
   - `OpenEmotion/openemotion/contracts/result_v1.py`
-  - `OpenEmotion/openemotion/proto_self/kernel.py`
+  - `OpenEmotion/openemotion/proto_self_v2/kernel.py`
+  - `OpenEmotion/openemotion/proto_self_v2/seed_schemas.py`
   - `EgoCore/app/openemotion_adapter/event_builder.py`
   - `EgoCore/app/openemotion_adapter/result_consumer.py`
   - `EgoCore/app/openemotion_adapter/proto_self_adapter.py`
@@ -24,17 +25,22 @@
 - proves:
   - 双核已经通过结构化 event/result 在主链上通信
   - OE 输出与 EgoCore 消费都已接入
+  - `proto_self_v2 + seed_v0_2` 已是当前现实主线
 - does_not_prove:
   - `event_v1` authority 归属已完全冻结到 EgoCore
+  - 旧 `openemotion/proto_self/` 已完全退出未来功能落点
   - adapter 中不存在主体语义漂移或宿主偷做本体更新
 
 ### 当前确定项
 - `result_v1` 已在 OpenEmotion contracts 下，适合作为继续保留的主体输出 authority
 - `event_v1` 仍需按迁移计划明确为 EgoCore 输入 authority、OE 侧 mirror
+- `proto_self_v2` 必须作为唯一正式主体核路径继续推进
+- 旧 `openemotion/proto_self/` 只能留在 compatibility / deletion inventory
 - `developmental_writeback.py` 这类宿主内主体语义残留必须进入删除池
 
 ### 关键未知
 - `event_v1` authority 的 repo-tracked 文件应落在 EgoCore 哪个稳定路径，才能不新增第三真相源
+- `seed_v0_2` 当前是 subject profile 还是已经承担了最小主体核职责
 
 ### 六问门禁
 1. 归属是谁：event 输入归 EgoCore；result/self-state/主体语义归 OpenEmotion
@@ -55,7 +61,9 @@
 - 冻结 authority 口径：
   - `event_v1` = EgoCore authority, OpenEmotion mirror
   - `result_v1` = OpenEmotion authority, EgoCore consume/mirror
-- 不在本轮直接搬文件，只先把迁移矩阵和删除池写死
+- `proto_self_v2` = 唯一正式主体核路径
+- 旧 `proto_self/` = compatibility / deletion inventory
+- 不在本轮直接搬文件，只先把迁移矩阵、决策日志和删除池写死
 
 ### 完成定义
 - 第一实现轮开始前，不再存在“event/result 谁说了算”的模糊地带
@@ -72,4 +80,3 @@
   - contract test 通过
   - adapter regression 通过
   - 新 event/result authority 拿到 E3/E4
-

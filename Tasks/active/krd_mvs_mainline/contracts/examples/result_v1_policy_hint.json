@@ -1,0 +1,30 @@
+{
+  "event_id": "evt_example_user_001",
+  "result_type": "interpretation",
+  "self_model_delta": null,
+  "memory_update": {
+    "event_stored": true,
+    "narrative_created": false,
+    "policy_candidate": false,
+    "salience_score": 0.21
+  },
+  "policy_hint": {
+    "hint_type": "prefer",
+    "reason": "presence_check should stay in chat_mainline and not escalate to task runtime",
+    "confidence": 0.84,
+    "expires_at": null
+  },
+  "response_tendency": {
+    "tone": "warm",
+    "length": "brief",
+    "urgency": 0.2
+  },
+  "confidence": 0.84,
+  "stability": {
+    "self_model_stable": true,
+    "memory_integrity": true,
+    "policy_consistent": true
+  },
+  "error": null,
+  "processing_time_ms": 18.4
+}

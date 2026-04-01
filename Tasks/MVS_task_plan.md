@@ -1,0 +1,309 @@
+# MVS / Proto-Self 任务安排
+
+> 状态：MVS 主线唯一最终裁决源
+> 执行层工作包：`Tasks/active/krd_mvs_mainline/`
+
+## 一句话主线
+先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
+
+## 裁决关系
+- 本文件负责 `WP0~WP7` 的阶段、依赖、Gate、证据等级和停止条件。
+- `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
+- 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
+
+## 当前真实状态
+- 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
+- 当前阶段目标是 **MVS**，不是开放发展式自我。
+- 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
+- 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
+- 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
+
+## 执行顺序
+1. **WP0 v2 边界与契约冻结**
+2. **WP1 宿主壳收稳（MVP11.5）**
+3. **WP2 Proto-Self Kernel v2 / seed_v0_2 重标定**
+4. **WP3 EgoCore 适配与 trace / replay 接线**
+5. **WP4 升级到 7+2 状态（world / boundary / viability / meta / counterfactual）**
+6. **WP5 反事实反思与因果测试**
+7. **WP6 MVS 主链样本级生效**
+8. **WP7 Developmental Sandbox**
+
+---
+
+## WP0：v2 边界与契约冻结
+**目标**：防止双真相源、接口漂移和 v1/v2 双规划口径。
+
+**归属**：EgoCore + OpenEmotion 联合
+
+**任务**
+- 冻结权威源表：identity / self-model / memory / appraisal / reflection 归 OpenEmotion；运行时 / 工具 / response plan / audit 归 EgoCore。
+- 给新能力补 6 问门禁：归属、权威源、耦合点、双主风险、shim 风险、失败兜底。
+- 正式冻结 contract 族：
+  - `event_v1`
+  - `result_v1`
+  - `proto_self.v2`
+  - `proto_self_seed.v0.2`
+  - `KernelOutput / UpdatePacketV2 / seed_event`
+- 显式回答：
+  - OpenEmotion 哪些字段是本体真相源
+  - EgoCore 哪些字段是宿主真相源
+  - 旧 `proto_self/` 哪些文件仍是 compatibility-only，哪些进入 D 池
+- 在 `WP0` 完成前，禁止继续扩主体语义或新增 adapter 暗协议。
+
+**交付物**
+- `Tasks/active/krd_mvs_mainline/contracts/proto_self.v2.md`
+- `Tasks/active/krd_mvs_mainline/contracts/examples/event_v1_user_message.json`
+- `Tasks/active/krd_mvs_mainline/contracts/examples/result_v1_policy_hint.json`
+- `Tasks/active/krd_mvs_mainline/contracts/examples/update_packet_v2_seed_user_event.json`
+- `Tasks/active/krd_mvs_mainline/contracts/examples/update_packet_v2_exec_result.json`
+- `Tasks/active/krd_mvs_mainline/SHIM_REGISTER.md`
+- `Tasks/active/krd_mvs_mainline/BOUNDARY_DECISION_LOG.md`
+
+**验收**
+- Research Gate：每个核心字段都能回答“谁是权威源”。
+- Engineering Gate：样例 payload 可跑静态校验，且引用到 repo-tracked canonical source。
+- 证据层级目标：E0 -> E1
+
+---
+
+## WP1：宿主壳收稳（MVP11.5）
+**目标**：先把“状态主权 + 表达主权”收稳，不让 LLM 越权说话。
+
+**归属**：EgoCore
+
+**已承认纳入 WP1 基线的主链切片**
+- `InteractionKind`
+- `normalize_user_turn`
+- `ResponsePlan`
+- `output_check`
+- `tools.delivery_bridge`
+- `chat_mainline`
+- `reply_authority / reply_origin`
+- evidence / status / chat 隔离
+
+**任务**
+- 跑满 SRAP Shadow 观察期，但不另造第二套表达 contract。
+- 做一次方向复核，确认已落地主链切片确实服务“状态主权 + 表达主权”，没有把 host shortcut、legacy verbalizer 或 task runtime 偷渡成聊天主链。
+- 将 `self_report_contract / SRAP` 相关约束收敛进现有宿主 contract，不再并行维护 `response_contract_v2`。
+- 把以下表达约束统一收口到 `ResponsePlan`：
+  - `speaker_mode`
+  - `epistemic_status`
+  - `commitment_level`
+  - `must_include`
+  - `must_not_upgrade`
+  - `tone_bounds`
+- 补齐 `memory_claim_gate`，并形成 readiness report。
+
+**交付物**
+- `ResponsePlan` 作为唯一宿主表达合同的设计与落地说明
+- SRAP Shadow 报告
+- testbot 场景与回放结果
+- readiness report
+
+**验收**
+- `numeric_leak = 0`
+- 样本量、误报 / 漏报达到可进入下一步的门槛
+- 能明确说明哪些能力已到 E4，哪些仍停留在 E2/E3
+
+---
+
+## WP2：Proto-Self Kernel v2 / seed_v0_2 重标定
+**目标**：确认当前 `proto_self_v2 + seed_v0_2` 是否已满足 MVS 最小主体核目标，不新开 v3，也不回退到旧 `proto_self/`。
+
+**归属**：OpenEmotion
+
+**任务**
+- 只在 `openemotion/proto_self_v2/` 内继续收口。
+- 做方向审计，必须回答：
+  - 当前 `seed_v0_2` 是否只是 subject profile / 轻语义层，还是已经承担了最小主体核职责
+  - 当前 `state / kernel / schemas / trace_types` 是否足以承担 `WP2` 的正式 MVS kernel
+  - 若不足，缺口在 state shape、kernel loop、output boundary，还是 trace / replay
+- 若需要补齐，继续沿现有 `proto_self_v2` 路径原地替换，不再新增平行路径。
+- 明确禁止：直接工具执行命令、直接 response plan、直接高风险动作裁决。
+
+**交付物**
+- `proto_self_v2` 方向审计
+- v2 gap list
+- kernel / state / contract test matrix
+
+**验收**
+- T1 身份连续性
+- T2 经历可塑性
+- T3 drive / viability 对倾向有因果作用
+- T4 repeated pattern strengthens cycle
+- T5 kernel never returns direct tool execution
+- 证据层级目标：E1 -> E2
+
+---
+
+## WP3：EgoCore 适配与 trace / replay 接线
+**目标**：把 `proto_self_v2` 挂到壳里，但保证 replay / audit / Governor 不被破坏。
+
+**归属**：EgoCore（宿主）+ OpenEmotion（配合）
+
+**任务**
+- 继续使用现有 adapter / trace / replay 路径，不新建并行 adapter。
+- 让 `KernelOutput.trace_payload` 写进主链可审计产物。
+- replay 时优先读 trace，不允许用当前 store 重算旧轮结果。
+- host-side mirror 只缓存，不拥有解释权。
+- 把 `policy_hint / response_tendency` 接入 response plan 前的决策链，但不得绕过 Governor。
+
+**交付物**
+- adapter
+- trace bridge
+- replay regression
+
+**验收**
+- 不破坏 deterministic / replay
+- Proto-Self 输出只能影响排序与倾向，不能绕过 Governor
+- 证据层级目标：E2 -> E3
+
+---
+
+## WP4：升级到 7+2 状态
+**目标**：把 Proto-Self 从“会更新”升级到“有更像主体的承重结构”。
+
+**归属**：OpenEmotion
+
+**新增状态**
+- `world_model`
+- `boundary_model`
+- `viability_appraisal_field`
+- `meta_model`
+- `counterfactual_buffer`
+
+**任务**
+- 补 `self / world / boundary` 三重模型
+- 把 `drive_field` 升级为 viability-driven field
+- 加入 attribution / ownership / controllability 字段
+- 加入 meta 监控：不确定性、模式切换、confidence calibration
+- 保留统一递归更新器，不拆成官僚模块堆
+
+**交付物**
+- state / schema 升级
+- reducer / updater 升级
+- probe tests
+
+**验收**
+- self / world attribution test
+- boundary breach recovery test
+- viability intervention changes policy test
+- appraisal intervention changes policy test
+- 证据层级目标：E2 -> E3
+
+---
+
+## WP5：反事实自我与反思写回
+**目标**：让反思不只是日志，而是真的改变下一轮自己。
+
+**归属**：OpenEmotion
+
+**任务**
+- `maybe_reflect()` 升级为：
+  - self-counterfactual
+  - regret estimate
+  - proposed adjustment with expected viability gain
+- 增加触发条件：
+  - external failure
+  - identity conflict
+  - viability drop
+  - repeated cycle failure
+- 把反思结果写回：
+  - mode
+  - confidence
+  - memory promotion threshold
+  - boundary rigidity
+
+**交付物**
+- counterfactual reflection 模块
+- compare / no-reflection baseline 报告
+
+**验收**
+- 失败后下一轮倾向发生预期变化
+- 反思不是自由文本，而是结构化状态更新候选
+- 证据层级目标：E2 -> E3
+
+---
+
+## WP6：MVS 主链样本级生效
+**目标**：拿到真实主链证据，但不夸大为长期稳定。
+
+**归属**：EgoCore + OpenEmotion
+
+**任务**
+- 先接 testbot / sandbox 近真实链路
+- 再选一个受控真实入口跑样本
+- 保存最小证据包：
+  - 原始入口事件
+  - 标准化 event
+  - KernelOutput
+  - response plan
+  - 实际发送 / 行为记录
+  - timeline / tape / replay artifact
+- 建立失败归因：
+  - `boundary_error`
+  - `authority_source_error`
+  - `contract_error`
+  - `replay_mismatch`
+  - `wording_overclaim`
+
+**交付物**
+- `MVS_E4_REPORT.md`
+- 成功样本 + 失败样本
+- 回归清单
+
+**验收**
+- 只在有真实主链证据时才写“已接主链 / 已启用 / 样本级生效”
+- 没有 E5 不得写“稳定无未知”
+- 证据层级目标：E4
+
+---
+
+## WP7：Developmental Sandbox
+**前提**：只有 WP6 拿到 MVS 样本级生效后才启动。
+
+**归属**：OpenEmotion（主体）+ EgoCore（壳）
+
+**任务**
+- 新增 `developmental_core` / `shadow_self`
+- 只输出：
+  - latent hypotheses
+  - self-model update candidates
+  - cycle candidates
+  - internal tensions
+  - spontaneous rollouts
+- 不拥有最终说话权
+- 不拥有最终执行权
+- 所有内部发育产物都写 trace / replay
+
+**交付物**
+- sandbox runner
+- promote / rollback 机制
+- 观察报告
+
+**验收**
+- 在无外部输入时出现非随机内源活动
+- 不破坏当前主链 determinism / gate / safety
+- 证据层级目标：E3 -> E4（受控样本）
+
+---
+
+## 串行依赖
+- `WP0 -> WP2 -> WP3 -> WP6 -> WP7` 必须串行
+- `WP1` 可与 `WP2 / WP3` 并行，但其表达 contract 不得反向覆盖 Proto-Self 边界定义
+- `WP4 / WP5` 在 `WP2` 基础上推进
+
+## 当前不做
+- 开放发展式自我
+- 强社会自我
+- 具身闭环
+- 无限工具自治
+- 复杂情绪文案层
+- 任何让 OpenEmotion 直接执行现实动作的设计
+
+## 最小里程碑定义
+- **里程碑 A**：`WP0 + WP1`
+- **里程碑 B**：`WP2 + WP3`
+- **里程碑 C**：`WP4 + WP5`
+- **里程碑 D**：`WP6`
+- **里程碑 E**：`WP7`

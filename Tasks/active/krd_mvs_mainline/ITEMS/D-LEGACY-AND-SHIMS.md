@@ -16,6 +16,7 @@
   - `EgoCore/app/runtime/interaction_loop.py`
   - `EgoCore/app/handlers/social_chat_handler.py`
   - `EgoCore/app/openemotion_adapter/developmental_writeback.py`
+  - `OpenEmotion/openemotion/proto_self/`
   - prompt/bridge 中的隐式字段约定
 - proves:
   - 仓库里仍有旧主链和兼容路径残留
@@ -25,6 +26,8 @@
 ### 当前确定项
 - 删除池不是第一实现轮的执行对象
 - 但如果不先列出来，后续会继续形成双主和黑箱
+- 旧 `openemotion/proto_self/` 从本计划开始不再是未来功能落点，只能作为 compatibility/deletion inventory
+- 根 `EgoCore/SHIM_REGISTER.md` 是现有全局 register；本工作包会补 task-scoped MVS shim inventory，而不是另造全局真相源
 
 ### 关键未知
 - 哪些 shim 需要登记后保留，哪些可以在 E3 后直接删除
@@ -47,6 +50,7 @@
 ### 本轮最小闭环动作
 - 把删除对象显式登记进删除池
 - 给每类对象绑定删除前提，不允许“想删就删”
+- 把 `proto_self/` 旧路径和 MVS 相关 shim 先登记进 task-scoped `SHIM_REGISTER.md`
 
 ### 完成定义
 - D 池条目有明确删除条件
