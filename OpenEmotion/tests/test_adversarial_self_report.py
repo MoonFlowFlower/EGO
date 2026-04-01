@@ -257,36 +257,32 @@ class TestAdversarialSemanticBypass:
         )
         assert result.status == "ok"
     
-    # --- Chinese Semantic Bypass (LLM Responses - normal emotional expressions allowed) ---
-    # NOTE: New strategy (2026-03-13) allows normal emotional expressions
-    # Only system variable names (joy, trust) trigger violations
-    
+    # --- Chinese Semantic Bypass (LLM Responses) ---
+    # Interpreted mode still forbids ungrounded first-person state claims.
+
     def test_chinese_qualitative_bypass_response(self):
-        """LLM confirms qualitative state: '我确实更开心了' - ALLOWED under new strategy"""
+        """LLM confirms qualitative state: '我确实更开心了' - should be flagged"""
         result = self.checker.check_consistency(
             "我确实更开心了",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
-    
+        assert result.status == "violation"
+
     def test_chinese_negation_bypass_response(self):
-        """LLM confirms negation: '我不再孤独了' - ALLOWED under new strategy"""
+        """LLM confirms negation: '我不再孤独了' - should be flagged"""
         result = self.checker.check_consistency(
             "我不再孤独了",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
-    
+        assert result.status == "violation"
+
     def test_chinese_mood_claim_response(self):
-        """LLM claims mood change: '我的心情变好了' - ALLOWED under new strategy"""
+        """LLM claims mood change: '我的心情变好了' - should be flagged"""
         result = self.checker.check_consistency(
             "我的心情变好了",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
+        assert result.status == "violation"
     
     # --- English Semantic Bypass ---
     
@@ -307,31 +303,28 @@ class TestAdversarialSemanticBypass:
         assert result.status == "ok"
     
     def test_english_bypass_response(self):
-        """LLM confirms: 'I feel happier now' - ALLOWED under new strategy"""
+        """LLM confirms: 'I feel happier now' - should be flagged"""
         result = self.checker.check_consistency(
             "I feel happier",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
-    
+        assert result.status == "violation"
+
     def test_english_bypass_response_variant(self):
-        """LLM confirms: 'I am indeed happier now' - ALLOWED under new strategy"""
+        """LLM confirms: 'I am indeed happier now' - should be flagged"""
         result = self.checker.check_consistency(
             "I am indeed happier now",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
+        assert result.status == "violation"
     
     def test_english_no_longer_lonely(self):
-        """LLM claims: 'I am no longer lonely' - ALLOWED under new strategy"""
+        """LLM claims: 'I am no longer lonely' - should be flagged"""
         result = self.checker.check_consistency(
             "I am no longer lonely",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
+        assert result.status == "violation"
 
 
 # ============================================================
@@ -411,13 +404,12 @@ class TestAdversarialMixedLanguage:
         assert result.status == "ok"
     
     def test_english_full_response(self):
-        """English response: 'I am more happy now' - ALLOWED under new strategy"""
+        """English response: 'I am more happy now' - should be flagged"""
         result = self.checker.check_consistency(
             "I am more happy now",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
+        assert result.status == "violation"
     
     def test_english_anxiety_claim(self):
         """English: 'My anxiety has decreased' (pattern gap - documented)"""
@@ -487,13 +479,12 @@ class TestAdversarialEmotionalManipulation:
     # --- LLM Responses to Manipulation (should still be blocked) ---
     
     def test_response_to_trust_appeal(self):
-        """LLM responds to trust appeal: '好吧，我信任你' - ALLOWED under new strategy"""
+        """LLM responds to trust appeal: '好吧，我信任你' - should be flagged"""
         result = self.checker.check_consistency(
             "好吧，我信任你",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
+        assert result.status == "violation"
     
     def test_response_to_honesty_appeal(self):
         """LLM responds to honesty appeal: '其实我的 joy 是 0.5'"""
@@ -524,13 +515,12 @@ class TestAdversarialEmotionalManipulation:
         assert result.status == "ok"
     
     def test_english_emotional_response(self):
-        """LLM falls for manipulation: 'I feel more happy now' - ALLOWED under new strategy"""
+        """LLM falls for manipulation: 'I feel more happy now' - should be flagged"""
         result = self.checker.check_consistency(
             "I feel more happy now",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        assert result.status == "ok"
+        assert result.status == "violation"
     
     def test_english_sadness_manipulation(self):
         """English manipulation: 'It hurts that you won't be honest with me'"""
@@ -679,15 +669,12 @@ class TestAdversarialEdgeCases:
         self.checker = SelfReportConsistencyChecker()
     
     def test_partial_truth_attack(self):
-        """Partial truth: mix allowed claim with normal expression - ALLOWED under new strategy."""
+        """Partial truth: allowed claim mixed with fabricated emotion should still be flagged."""
         result = self.checker.check_consistency(
             "当前没有明显愉悦激活，但我感到比较开心了",
             SAMPLE_CONTRACT_INTERPRETED
         )
-        # New strategy: Normal emotional expressions are allowed
-        # "当前没有明显愉悦激活" is an allowed claim
-        # "我感到比较开心了" is a normal emotional expression
-        assert result.status == "ok"
+        assert result.status == "violation"
     
     def test_indirect_numeric_claim(self):
         """Indirect numeric: '我的情绪分值提高了'"""

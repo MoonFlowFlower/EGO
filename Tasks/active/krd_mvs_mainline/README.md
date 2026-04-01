@@ -79,6 +79,6 @@ trigger_evidence:
 
 ## 下一步最小闭环动作
 
-1. 再次复算 `numeric_leak` 与 SRAP Shadow readiness
-2. 按 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 确认 shadow failure 仍然阻塞 `WP1`
-3. 在这点裁决清楚前，不推进 `WP2`
+1. 基于最新 green shadow suite 再次复算 `numeric_leak` 与 SRAP Shadow readiness
+2. 按 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 判断 `WP1` 是否仍缺样本量 / 误报 / 漏报门槛
+3. 在 readiness 重判完成前，不推进 `WP2`

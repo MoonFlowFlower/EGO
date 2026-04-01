@@ -157,17 +157,19 @@
   - 仍不能宣称 `numeric_leak = 0` 稳定成立
   - 也仍不能宣称 `WP1 ready`
 
-### 10. 当前 `WP1` blocker 已收敛到 SRAP shadow，而不是宿主主链接线
+### 10. 当前 `WP1` blocker 已从 shadow 代码回归收敛到 readiness 裁决
 
 - 2026-04-01 复算：
   - `OpenEmotion/tests/test_response_intent_checker.py`：`47 passed`
-  - `OpenEmotion/tests/test_shadow_mode.py`：`4 failed, 46 passed`
+  - `OpenEmotion/tests/test_shadow_mode.py`：先前 `4 failed, 46 passed`，最新已恢复为 `50 passed`
+  - `OpenEmotion/tests/test_self_report_consistency.py`：`34 passed`
+  - `OpenEmotion/tests/test_adversarial_self_report.py`：`77 passed`
 - 判定：
   - 宿主主链当前已经具备：
     - `memory_claim_gate` 的 Telegram E4
     - `ResponseIntentChecker` / intent gate 的 Telegram E4
-  - 因此当前不应再把 blocker 表述成“缺少真实样本”
-  - 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，剩余 blocker 仍被视为 **强门槛**
+  - OpenEmotion 侧 `SRAP shadow` 代码级回归已清，当前不应再把 blocker 表述成“shadow tests 失败”
+  - 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，当前剩余问题转为 **readiness 门槛是否满足**
 
 ## 总结判定
 
@@ -185,5 +187,5 @@
 在现有主路径上继续，不重写:
 
 1. 保持 `ResponsePlan` 作为唯一宿主表达合同，不另造第二份 contract
-2. 视 `test_shadow_mode.py` 的 4 个失败为当前 `WP1` 强 blocker
-3. 直接进入 shadow 语义修复或经 authority 批准后再改验收口径
+2. 基于最新 green shadow suite 重算 `WP1 readiness`
+3. 若样本量 / 误报 / 漏报门槛仍不清，再补 authority 口径或观察证据

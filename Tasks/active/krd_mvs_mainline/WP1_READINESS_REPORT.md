@@ -30,19 +30,22 @@
 | `ResponsePlan` 为唯一宿主表达主合同 | 已接入且有真实样本 | E4 | 核心字段已并入，且最小 host-side intent gate 已在 Telegram 真链路触发 |
 | `memory_claim_gate` | 已接入且有真实样本 | E4 | Telegram 真实样本已证明：无 restore authority 时不会对外声称“已恢复/记得你”，且聊天不再退化成固定 fallback |
 | `self_report_contract / SRAP` 约束并入 `ResponsePlan` | 部分完成 | E4 | 已形成 [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)，且最小 host-side gate 与 intent source 都已拿到 Telegram E4 |
-| `numeric_leak = 0` | 未满足 | E4 | Telegram 真实样本已证明数值泄露会被宿主 gate 改写；`ResponseIntentChecker` 本体 `47 passed`，但 `test_shadow_mode.py` 仍 `4 failed`，不能宣称稳定成立 |
+| `numeric_leak = 0` | 待重判 | E4 | Telegram 真实样本已证明数值泄露会被宿主 gate 改写；当前 `ResponseIntentChecker = 47 passed`、`test_shadow_mode.py = 50 passed`，代码级 blocker 已清，但稳定结论仍需 readiness 复算 |
 
 ## 当前 blocker
 
 ### Blocker 1
-SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
+当前已不再是 shadow 代码回归问题，而是 readiness 门槛尚未重判完成。
 
 - 2026-04-01 复算：
   - `OpenEmotion/tests/test_response_intent_checker.py`：`47 passed`
-  - `OpenEmotion/tests/test_shadow_mode.py`：`4 failed, 46 passed`
-- 失败仍集中在 qualitative error 的 shadow severity / would_block / confidence / full workflow integration
-- 这说明当前 blocker 已不再是“宿主 gate 未接 / 无 E4”，而是 **shadow 语义未收稳**
-- 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，这 4 个失败当前仍应视为 **强 blocker**
+  - `OpenEmotion/tests/test_self_report_consistency.py`：`34 passed`
+  - `OpenEmotion/tests/test_shadow_mode.py`：`50 passed`
+  - `OpenEmotion/tests/test_adversarial_self_report.py`：`77 passed`
+- 这说明当前 blocker 已不再是“宿主 gate 未接 / 无 E4”，也不再是“shadow tests 失败”
+- 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，当前仍需明确：
+  - `numeric_leak = 0` 是否可以从 targeted E4 升级到 readiness 结论
+  - 样本量、误报、漏报是否已达到进入下一步的门槛
 
 ## 不应误报的事项
 
@@ -54,9 +57,9 @@ SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
 ## 进入下一阶段前需要满足的条件
 
 最小条件:
-1. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
-2. 若 shadow 仍失败，明确它与宿主 gate 的最终 owner 关系
+1. 基于最新 shadow suite 结果重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
+2. 明确样本量、误报、漏报门槛是否已满足；若未满足，补观察证据而不是回退代码结论
 
 ## 下一步唯一最高优先级动作
 
-修 `SRAP shadow` 这 4 个失败项，或经 authority 正式改写 `WP1` 验收口径；在此之前，当前仍不应直接推进到 `WP2`。
+基于最新 green shadow suite 重跑 `WP1 readiness`，明确是否还缺样本量 / 误报 / 漏报门槛；在这件事完成前，当前仍不应直接推进到 `WP2`。

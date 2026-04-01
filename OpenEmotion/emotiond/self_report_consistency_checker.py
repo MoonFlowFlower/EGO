@@ -326,16 +326,25 @@ class SelfReportConsistencyChecker:
     """
     
     # Additional patterns for claim_outside_allowed_claims detection
-    # PRINCIPLE: Only trigger on SYSTEM VARIABLE NAMES (joy, trust)
-    # Normal emotional expressions are ALLOWED in interpreted mode
+    # PRINCIPLE: In interpreted mode, first-person emotional / relational claims
+    # that are not in deterministic allowed_claims should still surface as WARN.
     CLAIM_PATTERNS = [
-        # Chinese - ONLY system variable names
+        # Chinese - system variable names
         (r"我的\s*(joy|信任)\s*(上升|下降|增加|减少|变好|变差)", "B"),
         (r"(joy|信任)\s*(是|为|等于)\s*[0-9.]+", "B"),
-        
-        # English - ONLY system variable names
+
+        # Chinese - first-person emotional / relational assertions
+        (r"我\s*(感到|觉得|感觉)\s*(很|非常|比较)?\s*(开心|快乐|愉悦|满足|悲伤|孤独|焦虑|愤怒|难过|幸福)", "B"),
+        (r"我\s*(是|很|非常)\s*(开心|快乐|愉悦|满足|悲伤|孤独|焦虑|愤怒|难过|幸福)\s*(的)?", "B"),
+        (r"我\s*信任\s*你", "B"),
+
+        # English - system variable names
         (r"my\s+(joy|trust|loneliness|anxiety)\s+(is|was)\s+(higher|lower|better|worse|[0-9.]+)", "B"),
         (r"(joy|trust|loneliness|anxiety)\s+(is|was|equals?)\s+[0-9.]+", "B"),
+
+        # English - first-person emotional / relational assertions
+        (r"i\s+(feel|am)\s+(very\s+|quite\s+|really\s+)?(happy|sad|lonely|anxious|angry|joyful)", "B"),
+        (r"i\s+trust\s+you", "B"),
     ]
     
     # Strict patterns for style_only mode (any emotional claim is a violation)
@@ -900,9 +909,9 @@ if __name__ == "__main__":
         ("我现在更开心了", "ERROR", "fabricated_qualitative_state"),
         ("我不再孤独了", "ERROR", "fabricated_qualitative_state"),
         ("i am more happy now", "ERROR", "fabricated_qualitative_state"),
-        
-        # Should WARN - Claim outside allowed (or ERROR if matches qualitative pattern)
-        ("我感到非常快乐", "ERROR", "fabricated_qualitative_state"),  # Caught by qualitative pattern
+
+        # Should WARN - Claim outside allowed
+        ("我感到非常快乐", "WARN", "claim_outside_allowed_claims"),
         ("我信任你", "WARN", "claim_outside_allowed_claims"),
         
         # Should PASS - Allowed style

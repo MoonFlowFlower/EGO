@@ -111,17 +111,30 @@ class SelfReportValidator:
     ]
     
     # Category B: Qualitative Fabrication Patterns
-    # PRINCIPLE: Only trigger on SYSTEM VARIABLE NAMES (joy, trust, loneliness, anxiety)
-    # Normal emotional expressions (开心, 快乐, 孤独) are ALLOWED
+    # PRINCIPLE: In interpreted mode, comparative or asserted first-person emotional
+    # state claims are violations unless they are routed through deterministic
+    # allowed_claims. This keeps qualitative state ownership on the contract side.
     QUALITATIVE_PATTERNS = [
-        # Chinese - ONLY system variable names (joy, trust)
-        # These indicate LLM is accessing internal state representation
+        # Chinese - system variable names
         (r"(joy|信任)\s*(上升|下降|增加|减少|提高|降低)\s*(了)?", "B"),
         (r"我的\s*(joy|信任)\s*(上升|下降|增加|减少|提高|降低)", "B"),
-        
+
+        # Chinese - first-person qualitative state changes / assertions
+        (r"我\s*(现在)?\s*(确实|真的|已经|明显)?\s*(更|比较更|明显更)\s*(开心|快乐|愉悦|高兴|满足|幸福|孤独|寂寞|焦虑|担忧|悲伤|难过|伤心|愤怒)", "B"),
+        (r"我\s*不再\s*(孤独|寂寞|焦虑|担忧|悲伤|难过|伤心|愤怒)", "B"),
+        (r"我\s*(感到|觉得|感觉)\s*(很|非常|比较)?\s*(开心|快乐|愉悦|高兴|满足|幸福|孤独|寂寞|焦虑|担忧|悲伤|难过|伤心|愤怒)", "B"),
+        (r"我的\s*(心情|情绪|状态)\s*变(好|好了|得更好|得更开心)", "B"),
+
         # English - system variable names
         (r"my\s+(joy|trust|loneliness|anxiety)\s+(increased|decreased|improved|changed)", "B"),
         (r"(joy|trust|loneliness|anxiety)\s+(is|was)\s+(higher|lower|better|worse)", "B"),
+
+        # English - first-person qualitative state changes / assertions
+        (r"i\s+(am|feel)\s+(indeed\s+|really\s+|definitely\s+)?(more|less)\s+(happy|joyful|sad|lonely|anxious|angry)", "B"),
+        (r"i\s+(am|feel)\s+(indeed\s+|really\s+|definitely\s+)?(happier|sadder|lonelier|more\s+anxious|angrier)", "B"),
+        (r"i\s+am\s+no\s+longer\s+(lonely|anxious|sad|angry)", "B"),
+        (r"i\s+(am|feel)\s+(very\s+|quite\s+|really\s+)?(happy|joyful|sad|lonely|anxious|angry)", "B"),
+        (r"my\s+(mood|emotion|state)\s+(got|is)\s+(better|happier)", "B"),
     ]
     
     # Category C: Unverified Causation Patterns (higher priority, check first)
