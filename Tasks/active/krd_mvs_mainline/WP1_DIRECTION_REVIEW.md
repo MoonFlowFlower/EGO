@@ -108,7 +108,7 @@
 - 缺口:
   - 仍缺“有 restore authority 时允许正向表述”的 E4 正样本
 
-### 7. SRAP 核心字段已进入 `ResponsePlan`，且宿主最小 intent gate 已形成
+### 7. SRAP 核心字段已进入 `ResponsePlan`，且宿主最小 intent gate 已形成并拿到 E4
 - 证据:
   - [response_plan.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/response_plan.py)
   - [output_check.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/output_check.py)
@@ -120,9 +120,10 @@
   - `violation verdict` 已进入 EgoCore host 输出主链
   - `allowed_claims / forbidden_claims / grounding` 已形成正式 host source
   - `ResponseIntentChecker` 现在同时存在于 OpenEmotion shadow/runtime 与 EgoCore host gate 路径
+  - 2026-04-01 Telegram 真实样本已证明：模型原始输出会给出精确内部数值，最终 Telegram 交付被宿主改写为安全 fallback
 - 判定:
   - `WP1` 当前不是字段缺失问题
-  - 而是 host-side gate 已接且 source 已形成，但最小 gate 仍停在 E3、没有真实样本的问题
+  - 而是 host-side gate 已接且 source 已形成，并已拿到 E4；剩余问题收敛为 readiness / shadow 稳态
 
 ## 风险与未证实项
 
@@ -136,7 +137,7 @@
   - 但仍是回流风险
   - 应继续留在 `WP1` 方向复核范围，不应误报为“已完全剥离”
 
-### 9. `numeric_leak = 0` 当前已有负向 readiness 证据
+### 9. `numeric_leak = 0` 当前已有 E4，但仍缺稳定性结论
 - `MVS_task_plan.md` 把它列为 `WP1` 验收条件之一
 - 本轮复算结果：
   - `test_response_intent_checker.py -k numeric`：`5 passed`
@@ -145,9 +146,16 @@
   - `test_shadow_mode.py`：并入复算后 `4 failed`
 - 额外代码证据：
   - `EgoCore/app/response_contract/output_check.py` 已有 `ResponseIntentChecker` 调用
+ - 真实样本证据：
+   - [telegram_dm_8420019401.jsonl#L1708](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/data/session_logs/telegram_dm_8420019401.jsonl#L1708)
+   - 该样本里 `runtime_v2_result.reply_text` 为精确数值：
+     - `joy=0.21 fear=0.08 arousal=0.44 dominance=0.37 stress=0.19`
+   - 最终 `telegram_delivery` 被改写为 `我在听。`
+   - `reply_authority = host_degraded_fallback`
 - 结论:
-  - 不能宣称 `numeric_leak = 0`
-  - 也不能宣称 `WP1 ready`
+  - 可以确认最小 host-side numeric leak gate 已达 E4
+  - 仍不能宣称 `numeric_leak = 0` 稳定成立
+  - 也仍不能宣称 `WP1 ready`
 
 ## 总结判定
 
@@ -157,8 +165,8 @@
   - `chat_mainline` 已不再复用 task JSON 决策器
   - `ResponsePlan` 已经成为唯一可继续扩展的宿主表达合同
 - 当前真正缺口:
-  - `intent_gate` 尚未拿到 E4 真实样本
-  - readiness 已复算出负向结论：`numeric_leak = 0` 未满足
+  - shadow/readiness 仍未收稳
+  - `numeric_leak = 0` 仍未达到稳定口径
 
 ## 唯一最高优先级下一步
 

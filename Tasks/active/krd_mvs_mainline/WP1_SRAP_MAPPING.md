@@ -17,10 +17,10 @@
 
 1. `ResponsePlan` 已正式带上 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds`
 2. `EgoCore` 当前输出主链已在 `output_check` 中正式调用 `ResponseIntentChecker`
-3. `allowed_claims / forbidden_claims / grounding` 已形成正式 host source，但当前 gate 只覆盖最小 `model_chat + chat_mainline` 路径，且还没有 E4 真实样本
+3. `allowed_claims / forbidden_claims / grounding` 已形成正式 host source，且当前 gate 已在最小 `model_chat + chat_mainline` 路径拿到 E4
 4. `memory_claim_gate` 已在 Telegram 主链拿到 E4，且当前做法已从固定 fallback 升级为 chat mainline 自然规避
 
-因此，`WP1` 当前不再是“字段未落地 / gate 未接”，而是“最小 gate 与 source 已接，但真实样本/readiness 仍未收稳”。
+因此，`WP1` 当前不再是“字段未落地 / gate 未接 / 无真实样本”，而是“最小 gate 与 source 已接且有 E4，但 readiness 仍未收稳”。
 
 ## Authority Source
 
@@ -95,9 +95,24 @@
 - 当前对话不会再退化成重复固定 fallback，而是保持 `model_chat + chat_mainline`
 - 这证明 `WP1` 的表达主权收口又前进一步，但还不等于整体 readiness 成立
 
+### 4. `ResponseIntentChecker` host gate 已拿到 Telegram E4
+
+证据：
+
+- [output_check.py](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/app/response_contract/output_check.py)
+- [telegram_dm_8420019401.jsonl#L1708](/mnt/d/Project/AIProject/MyProject/Ego/EgoCore/data/session_logs/telegram_dm_8420019401.jsonl#L1708)
+
+结论：
+
+- 2026-04-01 真实样本里，模型原始输出给出了精确数值：
+  - `joy=0.21 fear=0.08 arousal=0.44 dominance=0.37 stress=0.19`
+- 最终 Telegram 交付被改写为 `我在听。`
+- 这证明最小 host-side intent gate 已在 Telegram 主链真实触发
+- 但当前仍是 targeted E4，不是稳定 `numeric_leak = 0`
+
 ## 当前决定性缺口
 
-### 1. host-side gate 与 source 已接，但 `ResponseIntentChecker` 只覆盖最小 `model_chat` 路径，且仍无 E4
+### 1. host-side gate 与 source 已接，但 `ResponseIntentChecker` 只覆盖最小 `model_chat` 路径
 
 代码证据：
 
@@ -110,8 +125,8 @@
 
   - 当前最小 SRAP intent gate 已进入 EgoCore 宿主正式输出主链
   - `allowed_claims / forbidden_claims / grounding` 也已形成正式 host source
-  - 但它仍只覆盖最小 `model_chat + chat_mainline` 路径，且尚无 E4
-  - 因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
+  - 它已在最小 `model_chat + chat_mainline` 路径拿到 E4
+  - 但路径覆盖仍窄，且 readiness 仍未完成，因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
 
 ### 2. SRAP shadow 当前也未达到 readiness 稳态
 
@@ -136,7 +151,7 @@
 
 - `WP1` 方向：正确
 - `WP1` 当前 readiness：不成立
-- 根因层级：不是字段缺失，也不再是 `memory_claim_gate` 无样本，而是 **最小 ResponseIntentChecker host gate 只达 E3 + shadow readiness 未稳**
+- 根因层级：不是字段缺失，也不再是“无真实样本”，而是 **host gate 已达 E4，但 shadow / readiness 未稳**
 
 ## 下一步唯一最高优先级动作
 

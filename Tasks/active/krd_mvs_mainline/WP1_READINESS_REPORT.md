@@ -14,10 +14,10 @@
   - `chat_mainline` / `evidence_mainline` / `status_mainline` 已开始分离
   - `ResponsePlan` 已成为正式宿主表达合同骨架
   - `memory_claim_gate` 已拿到 Telegram 真实样本级证据
+  - 最小 host-side intent gate 已拿到 Telegram 真实样本级证据
 - 还不能确认的:
-  - `numeric_leak = 0`
+  - `numeric_leak = 0` 已稳定成立
   - `self_report_contract / SRAP` 约束已真正形成宿主 gate
-  - 最小 host-side intent gate 已拿到真实样本级证据
 
 ## Readiness 分项
 
@@ -27,10 +27,10 @@
 | `reply_authority / reply_origin` 正式分层 | 已接入且有真实样本 | E4 | Telegram 真实样本已证明 `model_chat` 与 `host_evidence` 可在同一 session 分离 |
 | `chat_mainline` 脱离 execution JSON 主链 | 已接入且有真实样本 | E4 | 普通聊天已由 `llm.use_cases.chat` 驱动 |
 | `tools.delivery_bridge` | 已接入且有真实样本 | E4 | evidence delivery 已可审计 |
-| `ResponsePlan` 为唯一宿主表达主合同 | 已接入 | E3 | 核心字段已并入，且最小 host-side intent gate 已接入，但还未 ready |
+| `ResponsePlan` 为唯一宿主表达主合同 | 已接入且有真实样本 | E4 | 核心字段已并入，且最小 host-side intent gate 已在 Telegram 真链路触发 |
 | `memory_claim_gate` | 已接入且有真实样本 | E4 | Telegram 真实样本已证明：无 restore authority 时不会对外声称“已恢复/记得你”，且聊天不再退化成固定 fallback |
-| `self_report_contract / SRAP` 约束并入 `ResponsePlan` | 部分完成 | E3 | 已形成 [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)，最小 host-side gate 与 intent source 都已接入 |
-| `numeric_leak = 0` | 未满足 | E3 | `ResponseIntentChecker` numeric 子集 `5 passed`、完整 checker `47 passed`、EgoCore focused regression `31 passed`，但 shadow 套件 `4 failed`，且缺 E4 |
+| `self_report_contract / SRAP` 约束并入 `ResponsePlan` | 部分完成 | E4 | 已形成 [WP1_SRAP_MAPPING.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/krd_mvs_mainline/WP1_SRAP_MAPPING.md)，且最小 host-side gate 与 intent source 都已拿到 Telegram E4 |
+| `numeric_leak = 0` | 未满足 | E4 | Telegram 真实样本已证明数值泄露会被宿主 gate 改写，但 shadow 套件仍 `4 failed`，不能宣称稳定成立 |
 
 ## 当前 blocker
 
@@ -38,7 +38,7 @@
 SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
 
 ### Blocker 2
-最小 host-side intent gate 仍缺 Telegram E4 真实样本。
+SRAP / numeric leak 当前只有 targeted E4，尚未达到稳定观察。
 
 ## 不应误报的事项
 
@@ -50,9 +50,9 @@ SRAP shadow 当前仍有回归，不能作为 readiness 稳态证据。
 ## 进入下一阶段前需要满足的条件
 
 最小条件:
-1. 最小 host-side intent gate 拿到 E4 真实样本
-2. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
+1. 重跑 readiness 复算，并给出新的 `numeric_leak` 与 SRAP Shadow 结论
+2. 若 shadow 仍失败，明确它与宿主 gate 的最终 owner 关系
 
 ## 下一步唯一最高优先级动作
 
-先用真实 Telegram 样本验证最小 host-side intent gate，再重跑 readiness 复算。当前不应直接推进到 `WP2`。
+重跑 `WP1 readiness` 复算，重点重判 `numeric_leak` 与 SRAP Shadow 的最终阻塞关系。当前仍不应直接推进到 `WP2`。
