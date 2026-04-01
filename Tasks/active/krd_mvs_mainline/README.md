@@ -39,6 +39,7 @@ scope: "WP0/WP1 execution package"
 - [x] `memory_claim_gate` 已纳入宿主表达主链
 - [x] readiness report 已形成并区分 E4 / E2-E3
 - [x] `WP1` readiness 复算已形成明确负向结论与缺口映射
+- [x] 最小 host-side intent gate 的 `allowed_claims / forbidden_claims / grounding` 已形成正式 source
 
 ## 当前层级与主链状态
 
@@ -76,6 +77,5 @@ trigger_evidence:
 
 ## 下一步最小闭环动作
 
-1. 为最小 host-side intent gate 补 `allowed_claims / forbidden_claims / grounding` 正式 source
-2. 用真实 Telegram 样本验证 intent gate 不误伤普通聊天且能拦住越权表达
-3. 再次复算 `numeric_leak` 与 SRAP Shadow readiness
+1. 用真实 Telegram 样本验证 intent gate 不误伤普通聊天且能拦住越权表达
+2. 再次复算 `numeric_leak` 与 SRAP Shadow readiness

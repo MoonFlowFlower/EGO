@@ -44,13 +44,13 @@
 - `ResponsePlan` 已吸收 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds`
 - `memory_claim_gate` 已接入 `build_direct_response_plan / build_runtime_result_response_plan / build_status_response_plan`
 - `ResponsePlan -> ResponseIntentChecker` 最小 host-side intent gate 已接到 `output_check`
-- `WP1` readiness 复算已经得到决定性负证据：当前不是“gate 未接”，而是“source 未收稳 + 无 E4”
+- `WP1` readiness 复算已经得到决定性负证据：当前不是“gate 未接”，也不再是“source 未形成”，而是“最小 gate 仅到 E3 + 无 E4”
 - session/task runtime 仍有继续拆层空间
 - `memory_claim_gate` 仍未拿到同等级 E4 收口证据
 
 ### 关键未知
 - chat 主链在更长窗口、更多 persona 形态下是否能稳定维持非机械回复而不回退到任务导向
-- `allowed_claims / forbidden_claims / grounding` 接稳后，`numeric_leak = 0` 是否成立
+- 最小 host-side intent gate 拿到 E4 后，`numeric_leak = 0` 是否成立
 - `self_report_contract / SRAP` 当前还有哪些约束未真正并入并 enforce 到 `ResponsePlan`
 
 ### 六问门禁
@@ -70,8 +70,7 @@
 
 ### 本轮最小闭环动作
 - 第一实现轮中，`InteractionKind`、最小 `ResponsePlan`、`output_check`、`chat_mainline` 已落地并拿到 E4
-- 当前不再需要从零重写方向；最小 `ResponsePlan -> ResponseIntentChecker` 已接入，下一最小闭环动作改为：
-  - 补 intent contract source
+- 当前不再需要从零重写方向；最小 `ResponsePlan -> ResponseIntentChecker` 与 intent contract source 都已接入，下一最小闭环动作改为：
   - 拿真实样本
   - 再重跑 `numeric_leak / SRAP Shadow / self_report_contract` readiness
 

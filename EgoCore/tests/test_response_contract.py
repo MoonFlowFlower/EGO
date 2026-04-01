@@ -83,6 +83,11 @@ def test_build_runtime_result_response_plan_preserves_presence_conversation_act(
     assert plan.must_not_upgrade["epistemic_upgrade"] is True
     assert "回应当前在线确认" in plan.must_include
     assert "allowed_tones" in plan.tone_bounds
+    intent_contract_source = plan.metadata["intent_contract_source"]
+    assert intent_contract_source["authority_source"] == "response_contract.intent_contract_source"
+    assert intent_contract_source["source_status"] == "default_host_contract"
+    assert intent_contract_source["grounding_source"] == "host_expression_contract"
+    assert intent_contract_source["grounding"]["reply_scope"]["conversation_act"] == "presence_check"
     assert state.to_decision_prompt_context()["ingress_context"]["conversation_act"] == "presence_check"
 
 
@@ -145,3 +150,35 @@ def test_build_direct_response_plan_applies_memory_claim_gate_with_restore_autho
     assert plan.memory_claim_verdict.allowed is True
     assert plan.reply_authority == "model_chat"
     assert plan.reply_text == "我已经恢复成功，还记得你。"
+
+
+def test_build_direct_response_plan_normalizes_intent_contract_source_inputs() -> None:
+    state = RuntimeV2State(session_id="s")
+    plan = build_direct_response_plan(
+        "嗯，我在。",
+        kind="chat",
+        delivery_kind="chat",
+        authority_source="test",
+        reply_authority="model_chat",
+        metadata={
+            "conversation_act": "presence_check",
+            "allowed_claims": ["当前在线"],
+            "forbidden_claims": ["不要声称 joy 上升"],
+            "grounding": {"affect_summary": {"joy": 0.0}},
+        },
+        state=state,
+    )
+
+    source = plan.metadata["intent_contract_source"]
+
+    assert source["source_status"] == "normalized_metadata_inputs"
+    assert source["allowed_claims"] == [{"claim": "当前在线", "source": "response_plan.metadata"}]
+    assert source["forbidden_claims"] == [
+        {
+            "pattern": "不要声称 joy 上升",
+            "reason": "explicit_forbidden_claim",
+            "severity": "ERROR",
+        }
+    ]
+    assert source["grounding"] == {"affect_summary": {"joy": 0.0}}
+    assert source["grounding_source"] == "metadata.grounding"

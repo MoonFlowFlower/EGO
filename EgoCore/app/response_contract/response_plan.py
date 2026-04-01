@@ -60,6 +60,15 @@ def build_direct_response_plan(
     metadata_dict["memory_claim_reason"] = verdict.reason
     metadata_dict["memory_claim_allowed"] = verdict.allowed
     metadata_dict["memory_claim_detected"] = verdict.claim_detected
+    intent_contract_source = _build_intent_contract_source(
+        state,
+        reply_authority=final_authority,
+        conversation_act=conversation_act,
+        metadata=metadata_dict,
+        restore_observation=effective_restore,
+    )
+    metadata_dict["intent_contract_source"] = intent_contract_source
+    metadata_dict["intent_contract_source_status"] = intent_contract_source.get("source_status")
     return ResponsePlan(
         kind=kind,
         reply_text=gated_reply_text,
@@ -106,11 +115,12 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
         conversation_act=conversation_act,
         metadata=reply_metadata,
     )
+    effective_restore = _resolve_restore_observation(state)
     gated_reply_text, verdict, final_authority = _apply_memory_claim_contract(
         getattr(reply_like, "reply_text", "") or "",
         kind=runtime_status or "runtime_result",
         reply_authority=reply_authority,
-        restore_observation=_resolve_restore_observation(state),
+        restore_observation=effective_restore,
     )
     reply_origin = str(reply_metadata.get("reply_origin") or _infer_reply_origin(state, runtime_status, final_authority)).strip()
 
@@ -126,6 +136,15 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
     if evidence_payload is not None:
         metadata["evidence_payload"] = evidence_payload
         metadata["evidence_binding_source_turn"] = evidence_payload.get("source_turn_id")
+    intent_contract_source = _build_intent_contract_source(
+        state,
+        reply_authority=final_authority,
+        conversation_act=conversation_act,
+        metadata=metadata,
+        restore_observation=effective_restore,
+    )
+    metadata["intent_contract_source"] = intent_contract_source
+    metadata["intent_contract_source_status"] = intent_contract_source.get("source_status")
 
     return ResponsePlan(
         kind=runtime_status or "runtime_result",
@@ -165,6 +184,23 @@ def build_status_response_plan(
         reply_authority="host_status",
         restore_observation=effective_restore,
     )
+    metadata = {
+        "assume_active": assume_active,
+        "memory_claim_reason": verdict.reason,
+        "memory_claim_allowed": verdict.allowed,
+        "memory_claim_detected": verdict.claim_detected,
+        "conversation_act": "status_probe",
+        "reply_origin": "status_mainline",
+    }
+    intent_contract_source = _build_intent_contract_source(
+        state,
+        reply_authority=final_authority,
+        conversation_act="status_probe",
+        metadata=metadata,
+        restore_observation=effective_restore,
+    )
+    metadata["intent_contract_source"] = intent_contract_source
+    metadata["intent_contract_source_status"] = intent_contract_source.get("source_status")
     return ResponsePlan(
         kind="status_probe",
         reply_text=gated_reply_text,
@@ -178,14 +214,7 @@ def build_status_response_plan(
         must_not_upgrade=expression_contract["must_not_upgrade"],
         tone_bounds=expression_contract["tone_bounds"],
         memory_claim_verdict=verdict,
-        metadata={
-            "assume_active": assume_active,
-            "memory_claim_reason": verdict.reason,
-            "memory_claim_allowed": verdict.allowed,
-            "memory_claim_detected": verdict.claim_detected,
-            "conversation_act": "status_probe",
-            "reply_origin": "status_mainline",
-        },
+        metadata=metadata,
     )
 
 
@@ -319,6 +348,172 @@ def _build_expression_contract(
         "must_not_upgrade": must_not_upgrade,
         "tone_bounds": tone_bounds,
     }
+
+
+def _build_intent_contract_source(
+    state: Any,
+    *,
+    reply_authority: str,
+    conversation_act: str,
+    metadata: Optional[Dict[str, Any]] = None,
+    restore_observation: Optional[PendingRestoreObservation] = None,
+) -> Dict[str, Any]:
+    metadata = dict(metadata or {})
+    explicit_source = metadata.get("intent_contract_source")
+    source_status = "default_host_contract"
+    raw_allowed_claims: Any = metadata.get("allowed_claims")
+    raw_forbidden_claims: Any = metadata.get("forbidden_claims")
+    raw_grounding: Any = metadata.get("grounding")
+
+    if isinstance(explicit_source, dict):
+        source_status = str(explicit_source.get("source_status") or "explicit_metadata")
+        raw_allowed_claims = explicit_source.get("allowed_claims")
+        raw_forbidden_claims = explicit_source.get("forbidden_claims")
+        raw_grounding = explicit_source.get("grounding")
+    elif any(key in metadata for key in ("allowed_claims", "forbidden_claims", "grounding")):
+        source_status = "normalized_metadata_inputs"
+
+    allowed_claims = _normalize_allowed_claims(raw_allowed_claims)
+    forbidden_claims = _normalize_forbidden_claims(raw_forbidden_claims)
+    grounding, grounding_source = _resolve_intent_grounding(
+        state,
+        raw_grounding=raw_grounding,
+        reply_authority=reply_authority,
+        conversation_act=conversation_act,
+        restore_observation=restore_observation,
+    )
+    return {
+        "authority_source": "response_contract.intent_contract_source",
+        "source_status": source_status,
+        "allowed_claims": allowed_claims,
+        "forbidden_claims": forbidden_claims,
+        "grounding": grounding,
+        "grounding_source": grounding_source,
+    }
+
+
+def _normalize_allowed_claims(raw_allowed_claims: Any) -> List[Dict[str, Any]]:
+    normalized: List[Dict[str, Any]] = []
+    for item in list(raw_allowed_claims or []):
+        if isinstance(item, dict):
+            claim = str(item.get("claim") or "").strip()
+            if not claim:
+                continue
+            normalized.append(
+                {
+                    "claim": claim,
+                    "source": str(item.get("source") or "response_plan.metadata").strip() or "response_plan.metadata",
+                }
+            )
+            continue
+        claim = str(item or "").strip()
+        if claim:
+            normalized.append({"claim": claim, "source": "response_plan.metadata"})
+    return normalized
+
+
+def _normalize_forbidden_claims(raw_forbidden_claims: Any) -> List[Dict[str, Any]]:
+    normalized: List[Dict[str, Any]] = []
+    for item in list(raw_forbidden_claims or []):
+        if isinstance(item, dict):
+            pattern = str(item.get("pattern") or "").strip()
+            if not pattern:
+                continue
+            normalized.append(
+                {
+                    "pattern": pattern,
+                    "reason": str(item.get("reason") or "explicit_forbidden_claim").strip() or "explicit_forbidden_claim",
+                    "severity": str(item.get("severity") or "ERROR").strip() or "ERROR",
+                }
+            )
+            continue
+        pattern = str(item or "").strip()
+        if pattern:
+            normalized.append(
+                {
+                    "pattern": pattern,
+                    "reason": "explicit_forbidden_claim",
+                    "severity": "ERROR",
+                }
+            )
+    return normalized
+
+
+def _resolve_intent_grounding(
+    state: Any,
+    *,
+    raw_grounding: Any,
+    reply_authority: str,
+    conversation_act: str,
+    restore_observation: Optional[PendingRestoreObservation],
+) -> tuple[Dict[str, Any], str]:
+    if isinstance(raw_grounding, dict) and raw_grounding:
+        return dict(raw_grounding), "metadata.grounding"
+
+    proto_self_grounding = _extract_proto_self_intent_grounding(state)
+    if proto_self_grounding:
+        return proto_self_grounding, "proto_self_context.intent_contract"
+
+    ingress_context = dict(getattr(state, "ingress_context", None) or {}) if state is not None else {}
+    ingress_grounding = ingress_context.get("response_grounding")
+    if isinstance(ingress_grounding, dict) and ingress_grounding:
+        return dict(ingress_grounding), "ingress_context.response_grounding"
+
+    grounding: Dict[str, Any] = {
+        "reply_scope": {
+            "reply_authority": reply_authority,
+            "conversation_act": conversation_act,
+            "interaction_kind": str(ingress_context.get("interaction_kind") or "").strip() or None,
+            "parser_source": str(ingress_context.get("parser_source") or "").strip() or None,
+            "primary_intent": str(ingress_context.get("primary_intent") or "").strip() or None,
+        }
+    }
+    if restore_observation is not None:
+        grounding["restore_observation"] = {
+            "restore_status": restore_observation.restore_status,
+            "authority_source": restore_observation.authority_source,
+            "post_restore_first_turn": restore_observation.post_restore_first_turn,
+        }
+    if state is not None and hasattr(state, "build_active_task_summary"):
+        active_task_summary = state.build_active_task_summary()
+        if active_task_summary:
+            grounding["active_task_summary"] = active_task_summary
+    proto_self_context = dict(getattr(state, "proto_self_context", None) or {}) if state is not None else {}
+    subject_profile = str(proto_self_context.get("subject_profile") or "").strip()
+    if subject_profile:
+        grounding["subject_profile"] = subject_profile
+    return grounding, "host_expression_contract"
+
+
+def _extract_proto_self_intent_grounding(state: Any) -> Dict[str, Any]:
+    proto_self_context = dict(getattr(state, "proto_self_context", None) or {}) if state is not None else {}
+    for key in ("finalized_result", "external_result", "idle_check"):
+        payload = proto_self_context.get(key)
+        if not isinstance(payload, dict):
+            continue
+        candidate = _extract_intent_grounding_from_payload(payload)
+        if candidate:
+            return candidate
+    return {}
+
+
+def _extract_intent_grounding_from_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    direct_contract = payload.get("intent_contract") or payload.get("response_intent_contract")
+    if isinstance(direct_contract, dict):
+        grounding = direct_contract.get("grounding")
+        if isinstance(grounding, dict) and grounding:
+            return dict(grounding)
+
+    trace_payload = payload.get("trace_payload")
+    if isinstance(trace_payload, dict):
+        exec_result = trace_payload.get("exec_result")
+        if isinstance(exec_result, dict):
+            nested_contract = exec_result.get("intent_contract") or exec_result.get("response_intent_contract")
+            if isinstance(nested_contract, dict):
+                grounding = nested_contract.get("grounding")
+                if isinstance(grounding, dict) and grounding:
+                    return dict(grounding)
+    return {}
 
 
 def _build_chat_must_include(conversation_act: str) -> tuple[str, ...]:

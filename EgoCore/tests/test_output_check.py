@@ -208,3 +208,39 @@ def test_output_check_skips_intent_gate_for_host_evidence_verbatim_numbers() -> 
     assert verdict.applied_authority == "host_evidence"
     assert verdict.used_host_verbatim is True
     assert verdict.intent_gate_status == "skipped"
+
+
+def test_output_check_uses_intent_contract_source_for_forbidden_patterns() -> None:
+    state = RuntimeV2State(session_id="s")
+    plan = build_direct_response_plan(
+        "这是内部口令。",
+        kind="chat",
+        delivery_kind="chat",
+        authority_source="test",
+        reply_authority="model_chat",
+        metadata={
+            "conversation_act": "light_chitchat",
+            "reply_origin": "chat_mainline",
+            "intent_contract_source": {
+                "allowed_claims": [],
+                "forbidden_claims": [
+                    {
+                        "pattern": "这是内部口令。",
+                        "reason": "test_forbidden_phrase",
+                        "severity": "ERROR",
+                    }
+                ],
+                "grounding": {},
+                "source_status": "explicit_metadata",
+            },
+        },
+        state=state,
+    )
+
+    verdict = apply_output_check(plan, state)
+
+    assert verdict.passed is True
+    assert verdict.reason == "intent_gate_fallback_applied"
+    assert verdict.applied_authority == "host_degraded_fallback"
+    assert verdict.intent_gate_status == "violation"
+    assert "forbidden_internalization" in verdict.intent_gate_violation_types

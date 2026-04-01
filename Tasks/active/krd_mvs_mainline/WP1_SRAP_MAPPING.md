@@ -3,7 +3,7 @@
 > authority: `Tasks/MVS_task_plan.md`
 > scope: `WP1 宿主壳收稳（MVP11.5）`
 > date: 2026-03-31
-> conclusion: `host_gate_connected_but_not_ready`
+> conclusion: `host_gate_and_source_connected_but_not_ready`
 
 ## Summary
 
@@ -17,9 +17,9 @@
 
 1. `ResponsePlan` 已正式带上 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds`
 2. `EgoCore` 当前输出主链已在 `output_check` 中正式调用 `ResponseIntentChecker`
-3. 当前 gate 只覆盖最小 `model_chat + chat_mainline` 路径，且还没有 E4 真实样本
+3. `allowed_claims / forbidden_claims / grounding` 已形成正式 host source，但当前 gate 只覆盖最小 `model_chat + chat_mainline` 路径，且还没有 E4 真实样本
 
-因此，`WP1` 当前不再是“字段未落地 / gate 未接”，而是“最小 gate 已接，但 claim/grounding/readiness 仍未收稳”。
+因此，`WP1` 当前不再是“字段未落地 / gate 未接”，而是“最小 gate 与 source 已接，但真实样本/readiness 仍未收稳”。
 
 ## Authority Source
 
@@ -41,9 +41,9 @@
 | `must_not_upgrade` | `ResponsePlan.must_not_upgrade` | 已映射 | 现有默认值已覆盖 `epistemic/commitment/tone` |
 | `tone_bounds` | `ResponsePlan.tone_bounds` + `output_check` | 已映射 | 已进入最小 host-side checker |
 | `must_include` | `ResponsePlan.must_include` | 部分映射 | 已落成 tuple[str]，但丢失了 `type / position` 这类结构化语义 |
-| `allowed_claims` | `ResponsePlan.metadata` -> `output_check` | 部分映射 | checker 可消费，但主链还没有稳定 source |
-| `forbidden_claims` | `ResponsePlan.metadata` -> `output_check` | 部分映射 | checker 可消费，但主链还没有稳定 source |
-| `grounding / raw_state` | `ResponsePlan.metadata/ingress_context` -> `output_check` | 部分映射 | 通道已留，但当前没有正式 grounding source |
+| `allowed_claims` | `ResponsePlan.metadata.intent_contract_source.allowed_claims` | 已映射 | 已由宿主单一 source builder 正式归一化 |
+| `forbidden_claims` | `ResponsePlan.metadata.intent_contract_source.forbidden_claims` | 已映射 | 已由宿主单一 source builder 正式归一化 |
+| `grounding / raw_state` | `ResponsePlan.metadata.intent_contract_source.grounding` | 部分映射 | grounding source 已形成，但当前仍以 host expression / proto-self mirror 为主，不等于完整 raw_state authority |
 | `violation result` (`status / would_block / confidence / violation_class`) | `OutputCheckVerdict` | 已映射 | 宿主已生成 intent gate verdict 并写入交付证据 |
 | `shadow logging / SRAP report` | OpenEmotion shadow path | 未接宿主主链 | 仍停在 OpenEmotion 侧 shadow 观察，不是 EgoCore host gate |
 
@@ -71,17 +71,18 @@
 - `env PYTHONPATH=OpenEmotion python3 -m pytest -s -q --noconftest OpenEmotion/tests/test_response_intent_checker.py`
   - `47 passed`
 - `env PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -s -q EgoCore/tests/test_output_check.py EgoCore/tests/test_response_contract.py EgoCore/tests/test_runtime_v2_chat_mainline.py EgoCore/tests/test_runtime_v2_cli_and_telegram.py`
-  - `29 passed, 1 warning`
+  - `31 passed, 1 warning`
 
 结论：
 
 - OpenEmotion 侧 `ResponseIntentChecker` 本体不是坏的
 - `numeric_leak` 规则族在局部验证层面是成立的
 - EgoCore host 输出主链现在也已经接上最小 `ResponsePlan -> ResponseIntentChecker`
+- `allowed_claims / forbidden_claims / grounding` 已进入单一 host source builder
 
 ## 当前决定性缺口
 
-### 1. host-side gate 已接，但只覆盖最小 `model_chat` 路径
+### 1. host-side gate 与 source 已接，但只覆盖最小 `model_chat` 路径
 
 代码证据：
 
@@ -93,7 +94,8 @@
 结论：
 
 - 当前最小 SRAP intent gate 已进入 EgoCore 宿主正式输出主链
-- 但它还没有覆盖 `allowed_claims / forbidden_claims / grounding` 的正式 source
+- `allowed_claims / forbidden_claims / grounding` 也已形成正式 host source
+- 但它仍只覆盖最小 `model_chat + chat_mainline` 路径，且尚无 E4
 - 因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
 
 ### 2. SRAP shadow 当前也未达到 readiness 稳态
@@ -119,8 +121,8 @@
 
 - `WP1` 方向：正确
 - `WP1` 当前 readiness：不成立
-- 根因层级：不是字段缺失，而是 **claim/grounding 未接稳 + shadow readiness 未稳**
+- 根因层级：不是字段缺失，而是 **最小 host gate 只达 E3 + shadow readiness 未稳**
 
 ## 下一步唯一最高优先级动作
 
-在现有主路径上继续，把 `allowed_claims / forbidden_claims / grounding` 接成正式 source，然后重跑 `WP1 readiness` 复算。
+在现有主路径上继续，不再扩 contract 范围；下一步改为拿 Telegram E4 样本验证 host-side intent gate，然后重跑 `WP1 readiness` 复算。

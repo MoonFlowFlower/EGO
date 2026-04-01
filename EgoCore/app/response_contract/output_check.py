@@ -289,22 +289,46 @@ def _apply_intent_gate(
 
 def _build_response_intent_contract(plan: ResponsePlan, state: Any) -> Dict[str, Any]:
     metadata = dict(getattr(plan, "metadata", None) or {})
+    source = _resolve_intent_contract_source(plan, state)
     intent_policy = {
         "speaker_mode": str(getattr(plan, "speaker_mode", "reflect") or "reflect"),
         "epistemic_status": str(getattr(plan, "epistemic_status", "uncertain") or "uncertain"),
         "commitment_level": str(getattr(plan, "commitment_level", "soft") or "soft"),
         "tone_bounds": dict(getattr(plan, "tone_bounds", {}) or {}),
-        "allowed_claims": list(metadata.get("allowed_claims") or []),
-        "forbidden_claims": list(metadata.get("forbidden_claims") or []),
+        "allowed_claims": list(source.get("allowed_claims") or []),
+        "forbidden_claims": list(source.get("forbidden_claims") or []),
         "must_include": list(getattr(plan, "must_include", ()) or ()),
         "must_not_upgrade": dict(getattr(plan, "must_not_upgrade", {}) or {}),
     }
-    grounding = dict(metadata.get("grounding") or {})
+    grounding = dict(source.get("grounding") or {})
     if not grounding:
         grounding = _build_response_grounding(state)
     return {
         "intent_policy": intent_policy,
         "grounding": grounding,
+    }
+
+
+def _resolve_intent_contract_source(plan: ResponsePlan, state: Any) -> Dict[str, Any]:
+    metadata = dict(getattr(plan, "metadata", None) or {})
+    source = metadata.get("intent_contract_source")
+    if isinstance(source, dict):
+        return {
+            "authority_source": str(source.get("authority_source") or "response_contract.intent_contract_source"),
+            "source_status": str(source.get("source_status") or "explicit_metadata"),
+            "allowed_claims": list(source.get("allowed_claims") or []),
+            "forbidden_claims": list(source.get("forbidden_claims") or []),
+            "grounding": dict(source.get("grounding") or {}),
+            "grounding_source": str(source.get("grounding_source") or ""),
+        }
+
+    return {
+        "authority_source": "response_contract.output_check.legacy_metadata_fallback",
+        "source_status": "legacy_metadata_fallback",
+        "allowed_claims": list(metadata.get("allowed_claims") or []),
+        "forbidden_claims": list(metadata.get("forbidden_claims") or []),
+        "grounding": dict(metadata.get("grounding") or _build_response_grounding(state)),
+        "grounding_source": "legacy_metadata",
     }
 
 
