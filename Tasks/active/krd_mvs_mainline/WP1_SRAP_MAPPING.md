@@ -126,7 +126,7 @@
   - 当前最小 SRAP intent gate 已进入 EgoCore 宿主正式输出主链
   - `allowed_claims / forbidden_claims / grounding` 也已形成正式 host source
   - 它已在最小 `model_chat + chat_mainline` 路径拿到 E4
-  - 但路径覆盖仍窄，且 readiness 仍未完成，因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
+- 但路径覆盖仍窄，且 readiness 仍未完成，因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
 
 ### 2. SRAP shadow 当前也未达到 readiness 稳态
 
@@ -146,6 +146,8 @@
 
 - 当前不能把 shadow report 当成 readiness 完成证据
 - `numeric_leak = 0` 也不能借由 shadow 稳态直接宣称成立
+- 当前 blocker 已收敛到 shadow 语义与 workflow 定义，而不是宿主 gate 缺失
+- 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，这 4 个 shadow 失败当前仍属于 readiness 强 blocker
 
 ## Readiness 裁决
 
@@ -155,4 +157,4 @@
 
 ## 下一步唯一最高优先级动作
 
-在现有主路径上继续，不再扩 contract 范围；下一步改为拿 Telegram E4 样本验证 host-side intent gate，然后重跑 `WP1 readiness` 复算。
+在现有主路径上继续，不再扩 contract 范围；下一步直接处理 shadow 的 4 个失败，或经 authority 正式改写 readiness 口径。

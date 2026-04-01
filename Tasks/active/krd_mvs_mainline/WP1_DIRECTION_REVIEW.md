@@ -157,6 +157,18 @@
   - 仍不能宣称 `numeric_leak = 0` 稳定成立
   - 也仍不能宣称 `WP1 ready`
 
+### 10. 当前 `WP1` blocker 已收敛到 SRAP shadow，而不是宿主主链接线
+
+- 2026-04-01 复算：
+  - `OpenEmotion/tests/test_response_intent_checker.py`：`47 passed`
+  - `OpenEmotion/tests/test_shadow_mode.py`：`4 failed, 46 passed`
+- 判定：
+  - 宿主主链当前已经具备：
+    - `memory_claim_gate` 的 Telegram E4
+    - `ResponseIntentChecker` / intent gate 的 Telegram E4
+  - 因此当前不应再把 blocker 表述成“缺少真实样本”
+  - 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，剩余 blocker 仍被视为 **强门槛**
+
 ## 总结判定
 
 - 结论: **方向正确，不需要从零重写宿主主链**
@@ -173,5 +185,5 @@
 在现有主路径上继续，不重写:
 
 1. 保持 `ResponsePlan` 作为唯一宿主表达合同，不另造第二份 contract
-2. 用真实 Telegram 样本验证最小 host-side intent gate
-3. 再重跑 `WP1 readiness` 复算，明确新的 `numeric_leak` 与 SRAP Shadow 结论
+2. 视 `test_shadow_mode.py` 的 4 个失败为当前 `WP1` 强 blocker
+3. 直接进入 shadow 语义修复或经 authority 批准后再改验收口径
