@@ -35,14 +35,14 @@ scope: "WP0/WP1 execution package"
 - [x] 首批详表已覆盖 K 池、EgoCore R 池、OpenEmotion R 池、D 池
 - [x] 每个条目都写明归属、权威源、主链接入状态、替代物或删除条件
 - [x] `WP0` 的 task-scoped 边界与契约文档已落地
-- [ ] `WP1` 方向复核完成
+- [x] `WP1` 方向复核完成
 - [ ] `memory_claim_gate` 纳入宿主主链
-- [ ] readiness report 形成并区分 E4 / E2-E3
+- [x] readiness report 已形成并区分 E4 / E2-E3
 
 ## 当前层级与主链状态
 
 ```yaml
-current_layer: implementation_and_validation
+current_layer: validation_and_closure_split
 main_chain_status: partially_enabled
 enabled_status: true
 trigger_evidence:
@@ -67,12 +67,14 @@ trigger_evidence:
 
 - `WP0` 边界与契约冻结文档
 - `WP1` 基线与缺口台账
+- `WP1` 方向复核
+- `WP1` readiness report
 - 不实施 `WP2+`
 - 不删旧路径
 - 不创建平行主线
 
 ## 下一步最小闭环动作
 
-1. 完成 `WP1` 方向复核
-2. 把 `self_report_contract / SRAP` 约束统一并入 `ResponsePlan`
-3. 给 `memory_claim_gate` 补主链接入与验收证据
+1. 把 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds` 并入 `ResponsePlan`
+2. 把 `memory_claim_gate` 从 status path 扩到正式宿主表达主链
+3. 对 `numeric_leak` 与 SRAP Shadow 跑一轮新的 readiness 复算

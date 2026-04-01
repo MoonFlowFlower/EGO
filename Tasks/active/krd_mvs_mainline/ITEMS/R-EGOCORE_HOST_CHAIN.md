@@ -40,12 +40,15 @@
 - `InteractionKind`、`normalize_user_turn`、`ResponsePlan`、`output_check`、`tools.delivery_bridge` 已完成第一轮宿主 authority 收口
 - `InteractionKind.CHAT` 已不再复用 task execution decision contract
 - `telegram_bot._should_use_native_loop()` 的旧接线 bug 已修正，普通 chat 不再被 native loop 抢回旧路径
+- `WP1` 方向复核结论已明确：方向正确，不需要从零重写宿主主链
 - session/task runtime 仍有继续拆层空间
 - `memory_claim_gate` 仍未拿到同等级 E4 收口证据
 
 ### 关键未知
 - chat 主链在更长窗口、更多 persona 形态下是否能稳定维持非机械回复而不回退到任务导向
+- `ResponsePlan` 何时吸收 `speaker_mode / epistemic_status / commitment_level / must_include / must_not_upgrade / tone_bounds`
 - `memory_claim_gate` 与更窄的 status plane 何时接入下一轮最小闭环
+- 当前口径下 `numeric_leak = 0` 是否成立
 
 ### 六问门禁
 1. 归属是谁：EgoCore
@@ -64,10 +67,10 @@
 
 ### 本轮最小闭环动作
 - 第一实现轮中，`InteractionKind`、最小 `ResponsePlan`、`output_check`、`chat_mainline` 已落地并拿到 E4
-- 下一最小闭环动作是观察期样本，不是继续扩大重构面：
-  - repeated presence
-  - tone feedback
-  - read/list + explain + 再回普通 chat
+- 当前不再需要从零重写方向；下一最小闭环动作是补 `WP1` 缺口：
+  - `ResponsePlan` 字段收口
+  - `memory_claim_gate` 主链接线
+  - readiness 复算
 
 ### 完成定义
 - `chat/task/admin/ask/wait/resume` 有唯一 authority
