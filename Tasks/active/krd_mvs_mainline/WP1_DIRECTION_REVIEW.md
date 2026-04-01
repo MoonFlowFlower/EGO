@@ -2,7 +2,7 @@
 
 > authority: `Tasks/MVS_task_plan.md`
 > scope: `WP1 宿主壳收稳（MVP11.5）`
-> date: 2026-03-31
+> date: 2026-04-01
 > conclusion: `direction_correct_with_gaps`
 
 ## 复核问题
@@ -157,19 +157,26 @@
   - 仍不能宣称 `numeric_leak = 0` 稳定成立
   - 也仍不能宣称 `WP1 ready`
 
-### 10. 当前 `WP1` blocker 已从 shadow 代码回归收敛到 readiness 裁决
+### 10. 当前 `WP1` blocker 已从 shadow 代码回归收敛到 readiness 观测源失真
 
 - 2026-04-01 复算：
   - `OpenEmotion/tests/test_response_intent_checker.py`：`47 passed`
   - `OpenEmotion/tests/test_shadow_mode.py`：先前 `4 failed, 46 passed`，最新已恢复为 `50 passed`
   - `OpenEmotion/tests/test_self_report_consistency.py`：`34 passed`
   - `OpenEmotion/tests/test_adversarial_self_report.py`：`77 passed`
+- 2026-04-01 fresh shadow 报告：
+  - 7d：`4484 checks / 979 violations / 720 numeric leaks`
+  - 1d：`558 checks / 231 violations / 137 numeric leaks`
+- 同步分布检查：
+  - 7d 窗口 `4127/4484` 条记录 `session_id=''`
+  - 其余高频条目以 `test_* / parallel_*` 为主
+  - 时间分布主要集中在 `2026-03-29` 和 `2026-04-01` 的测试突发窗口
 - 判定：
   - 宿主主链当前已经具备：
     - `memory_claim_gate` 的 Telegram E4
     - `ResponseIntentChecker` / intent gate 的 Telegram E4
   - OpenEmotion 侧 `SRAP shadow` 代码级回归已清，当前不应再把 blocker 表述成“shadow tests 失败”
-  - 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，当前剩余问题转为 **readiness 门槛是否满足**
+  - 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，当前剩余问题转为 **readiness 观测源是否足够干净，能支持门槛裁决**
 
 ## 总结判定
 
@@ -179,13 +186,13 @@
   - `chat_mainline` 已不再复用 task JSON 决策器
   - `ResponsePlan` 已经成为唯一可继续扩展的宿主表达合同
 - 当前真正缺口:
-  - shadow/readiness 仍未收稳
-  - `numeric_leak = 0` 仍未达到稳定口径
+  - shadow/readiness 观测源尚未分离
+  - `numeric_leak = 0` 仍未达到可用于 readiness 裁决的干净观测口径
 
 ## 唯一最高优先级下一步
 
 在现有主路径上继续，不重写:
 
 1. 保持 `ResponsePlan` 作为唯一宿主表达合同，不另造第二份 contract
-2. 基于最新 green shadow suite 重算 `WP1 readiness`
+2. 给 shadow 观察链补正式 source 分离，再基于干净窗口重算 `WP1 readiness`
 3. 若样本量 / 误报 / 漏报门槛仍不清，再补 authority 口径或观察证据

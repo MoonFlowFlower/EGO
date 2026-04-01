@@ -2,8 +2,8 @@
 
 > authority: `Tasks/MVS_task_plan.md`
 > scope: `WP1 宿主壳收稳（MVP11.5）`
-> date: 2026-03-31
-> conclusion: `host_gate_and_source_connected_but_not_ready`
+> date: 2026-04-01
+> conclusion: `host_gate_connected_but_shadow_observation_contaminated`
 
 ## Summary
 
@@ -12,6 +12,7 @@
 - **contract carrier 已成型**
 - **最小 host-side SRAP gate 已接入**
 - **尚未达到 readiness**
+- **当前 shadow observation source 仍被 synthetic/test traffic 污染**
 
 决定性证据有三条：
 
@@ -128,7 +129,7 @@
   - 它已在最小 `model_chat + chat_mainline` 路径拿到 E4
 - 但路径覆盖仍窄，且 readiness 仍未完成，因此 `WP1` 仍不能宣称“表达主权已 fully enforced”
 
-### 2. SRAP shadow 代码级 blocker 已清，但 readiness 仍待重判
+### 2. SRAP shadow 代码级 blocker 已清，但 readiness 观测源仍待分离
 
 复算证据：
 
@@ -140,20 +141,27 @@
   - 结果：`50 passed`
 - `env PYTHONPATH=OpenEmotion python3 -m pytest -s -q --noconftest OpenEmotion/tests/test_adversarial_self_report.py`
   - 结果：`77 passed`
+- `python3 OpenEmotion/emotiond/shadow_analyzer.py --days 7 --output OpenEmotion/artifacts/self_report/MVP11_5_shadow_readiness_current_7d.md`
+  - 结果：`4484 checks / 979 violations / 720 numeric leaks`
+- `python3 OpenEmotion/emotiond/shadow_analyzer.py --days 1 --output OpenEmotion/artifacts/self_report/MVP11_5_shadow_readiness_current_1d.md`
+  - 结果：`558 checks / 231 violations / 137 numeric leaks`
+- 分布检查：
+  - 7d 窗口 `4127/4484` 条记录 `session_id=''`
+  - 其余高频以 `test_* / parallel_*` 为主
 
 结论：
 
 - 当前不能把上述绿色测试直接等同于 readiness 完成证据
 - `numeric_leak = 0` 也不能仅凭定向 suite 通过就直接宣称稳定成立
-- 当前 blocker 已从 shadow 语义失败转为 readiness 门槛是否满足
+- 当前 blocker 已从 shadow 语义失败转为 **shadow 观察源未分离，导致 readiness 门槛无法有效重判**
 - 结合 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 的 `WP1` 交付物与验收要求，仍需对样本量、误报、漏报做明确裁决
 
 ## Readiness 裁决
 
 - `WP1` 方向：正确
 - `WP1` 当前 readiness：待重判
-- 根因层级：不是字段缺失，也不再是“无真实样本”或“shadow tests 失败”，而是 **host gate 已达 E4，代码级 shadow suite 已绿，但 readiness 结论尚未重算**
+- 根因层级：不是字段缺失，也不再是“无真实样本”或“shadow tests 失败”，而是 **host gate 已达 E4、代码级 shadow suite 已绿，但 readiness 观察窗被 test/synthetic traffic 污染**
 
 ## 下一步唯一最高优先级动作
 
-在现有主路径上继续，不再扩 contract 范围；下一步直接重跑 `WP1 readiness` 复算，明确 readiness 门槛是否已经满足。
+在现有主路径上继续，不再扩 contract 范围；下一步先补 shadow `traffic_source / observation_source` 分离，再基于干净窗口重跑 `WP1 readiness` 复算。

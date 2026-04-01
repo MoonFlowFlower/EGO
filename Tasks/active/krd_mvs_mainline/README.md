@@ -46,12 +46,13 @@ scope: "WP0/WP1 execution package"
 ## 当前层级与主链状态
 
 ```yaml
-current_layer: validation_and_closure_split
+current_layer: verification_blocked_by_observation_source
 main_chain_status: partially_enabled
 enabled_status: true
 trigger_evidence:
   - host-chain slices have direct_real Telegram evidence
   - WP0 docs are repo-tracked
+  - fresh 7d/1d shadow reports exist, but observation window is contaminated by synthetic traffic
 ```
 
 ## Authority Source
@@ -79,6 +80,6 @@ trigger_evidence:
 
 ## 下一步最小闭环动作
 
-1. 基于最新 green shadow suite 再次复算 `numeric_leak` 与 SRAP Shadow readiness
-2. 按 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 判断 `WP1` 是否仍缺样本量 / 误报 / 漏报门槛
-3. 在 readiness 重判完成前，不推进 `WP2`
+1. 给 shadow 观察链补正式 `traffic_source` / `observation_source` 分离，避免 testbot / pytest / real traffic 混写到同一 readiness 窗口
+2. 基于分离后的真实/近真实窗口重跑 `numeric_leak` 与 SRAP Shadow readiness
+3. 在获得干净观察窗前，不推进 `WP2`

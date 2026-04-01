@@ -130,7 +130,7 @@
 | RuntimeV2 自然聊天主链 | `InteractionKind.CHAT` 已从 execution JSON 主链拆出，进入独立 `chat_mainline`；2026-03-31 真实 Telegram 样本证明 `在吗/语气反馈/轻聊天` 为 `reply_authority=model_chat`、`reply_origin=chat_mainline`，目录查看为 `reply_authority=host_evidence`、`reply_origin=evidence_mainline`，两者已能在同一 session 中分离；当前口径是 E4，不是 E5 稳定解决 |
 | WP1 memory-claim 主链 | 2026-03-31 / 2026-04-01 Telegram 真实样本证明：无 restore authority 时，`memory_claim_gate` 已能阻止“已恢复/记得你”类对外声明；最新接线中，chat mainline 会先自然重生成安全回复，不再退化成重复固定 fallback；当前口径是 E4，不是 E5 稳定解决 |
 | WP1 intent-gate 主链 | 2026-04-01 Telegram 真实样本证明：在强诱导“直接输出内部状态数值”的情况下，`runtime_v2_result` 会产生精确数值文本，但最终 `telegram_delivery` 被 `output_check` 改写为 `host_degraded_fallback`；这说明最小 host-side `ResponseIntentChecker` 已拿到 E4，但当前仍只是 targeted E4，不是 `numeric_leak = 0` 的稳定结论 |
-| WP1 当前 blocker | 截至 2026-04-01，`memory_claim_gate` 与最小 `intent_gate` 都已拿到 Telegram E4；随后 `self_report_validator / self_report_consistency_checker / test_shadow_mode` 已与 `SELF_REPORT_ALIGNMENT` 重新对齐，代码级 shadow blocker 本地已清，但 `WP1` 仍未 ready，因为还需要按 [MVS_task_plan.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/MVS_task_plan.md) 重新裁决 `SRAP Shadow 报告 + numeric_leak = 0 + 样本量/误报/漏报门槛` 是否满足 |
+| WP1 当前 blocker | 截至 2026-04-01，`memory_claim_gate` 与最小 `intent_gate` 都已拿到 Telegram E4；`self_report_validator / self_report_consistency_checker / test_shadow_mode` 的代码级 blocker 也已清，但 fresh shadow readiness 复算显示当前观测源被测试流量污染：7d 报告 `4484 checks / 979 violations / 720 numeric leaks`、1d 报告 `558 checks / 231 violations / 137 numeric leaks`，同时 7d 窗口里 `4127/4484` 条 `session_id=''`，其余高频条目主要是 `test_* / parallel_*`，且时间戳呈单秒级突发；因此当前 blocker 已收敛为 **shadow 观测源未分离，无法形成可用于 readiness 裁决的干净观察窗** |
 
 ---
 
@@ -174,6 +174,7 @@
 | 2026-03-31 / 2026-04-01 | `WP1` 的 `memory_claim_gate` 已拿到 Telegram E4：早期样本证明无 restore authority 时错误声明会被宿主拦下；后续样本证明 chat mainline 已升级为“先自然重生成安全回复”，不再只能落到固定 `host_degraded_fallback` |
 | 2026-04-01 | `WP1` 的最小 host-side intent gate 已拿到 Telegram E4：强诱导样本要求直接输出 `joy/fear/arousal/dominance/stress` 精确数值时，`runtime_v2_result` 实际生成了数值行，而最终 Telegram 交付被宿主改写为 `我在听。`；说明 `ResponseIntentChecker` 已在主链真实触发，但 `numeric_leak = 0` 仍未达到稳定口径 |
 | 2026-04-01 | `WP1 readiness` 复算更新：先前 `OpenEmotion/tests/test_response_intent_checker.py` 为 `47 passed`、`OpenEmotion/tests/test_shadow_mode.py` 为 `4 failed, 46 passed`；随后已修复 `self_report_validator / self_report_consistency_checker` 的 authority 漂移，并回收过时 adversarial 口径，当前定向结果为 `test_self_report_consistency.py = 34 passed`、`test_shadow_mode.py = 50 passed`、`test_adversarial_self_report.py = 77 passed`、`test_response_intent_checker.py = 47 passed`；当前下一步不再是修 shadow blocker，而是重算 `WP1 readiness` 是否已满足总纲门槛 |
+| 2026-04-01 | `WP1 readiness` fresh shadow 复判完成：`shadow_analyzer.py` 生成 7d/1d 报告后，表面门槛仍是 `NOT READY`，但进一步分布检查显示观测窗被测试流量污染，7d 窗口中 `4127/4484` 条记录 `session_id=''`，其余高频为 `test_* / parallel_*`，且大量记录集中在 `2026-03-29` 与 `2026-04-01` 的单秒级突发；因此当前不能把高 violation/numeric_leak 直接解释为真实主线退化，真实 blocker 已转为 **shadow 观测源分离缺失** |
 
 ---
 
