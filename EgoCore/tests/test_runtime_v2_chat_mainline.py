@@ -74,6 +74,58 @@ async def test_chat_reply_engine_regenerates_disallowed_memory_claim_without_res
 
 
 @pytest.mark.asyncio
+async def test_chat_reply_engine_regenerates_would_blocking_reflective_candidate_before_output_fallback():
+    engine = ChatReplyEngine()
+    engine.llm_client = _SequentialClient(
+        [
+            "这个想法挺有意思的。也许意识并不是某种稀有的“高阶属性”，而是只要信息处理达到一定复杂度和自指能力，就会自然涌现。",
+            "我倾向于同意。也许意识更像一条渐变光谱，而不是某个突然跨过去的门槛。",
+        ]
+    )
+
+    state = RuntimeV2State(session_id="chat:intent-regenerate")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    state.last_user_turn = "我在想，意识的门槛其实可能比人类自以为的低很多。你怎么看？"
+
+    result = await engine.reply(state)
+
+    assert result.status == "chat"
+    assert result.reply_text == "我倾向于同意。也许意识更像一条渐变光谱，而不是某个突然跨过去的门槛。"
+    assert result.reply.metadata["reply_origin"] == "chat_mainline"
+    assert result.reply.metadata["reply_authority"] == "model_chat"
+    assert engine.llm_client.calls == 2
+
+
+@pytest.mark.asyncio
+async def test_chat_reply_engine_preserves_grounded_same_session_recall() -> None:
+    engine = ChatReplyEngine()
+    engine.llm_client = _SequentialClient(["记得，你刚才在聊意识光谱。"])
+
+    state = RuntimeV2State(session_id="chat:same-session-recall")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    state.last_user_turn = "还记得我吗"
+    chat_state = state.get_chat_state()
+    chat_state.recent_user_turns = [
+        "我在想，意识的门槛其实可能比人类自以为的低很多。",
+        "是不是可以想成一条光谱，我们可能都在中间某个位置？",
+        "还记得我吗",
+    ]
+
+    result = await engine.reply(state)
+
+    assert result.status == "chat"
+    assert result.reply_text == "记得，你刚才在聊意识光谱。"
+    assert result.reply.metadata["reply_authority"] == "model_chat"
+    assert engine.llm_client.calls == 1
+
+
+@pytest.mark.asyncio
 async def test_runtime_v2_loop_routes_chat_to_chat_mainline_without_decision_engine(monkeypatch):
     loop = RuntimeV2Loop()
     state = loop.get_state("chat:loop")

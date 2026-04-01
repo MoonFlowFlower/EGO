@@ -7,7 +7,12 @@ from typing import Any, Dict, Optional, Sequence
 from app.restore_runtime import PendingRestoreObservation
 from app.runtime_v2.semantic_parser import build_runtime_status_reply
 
-from .memory_claim_gate import MemoryClaimVerdict, evaluate_memory_claim
+from .memory_claim_gate import (
+    CurrentSessionRecallGrounding,
+    MemoryClaimVerdict,
+    build_current_session_recall_grounding,
+    evaluate_memory_claim,
+)
 
 
 @dataclass(frozen=True)
@@ -42,6 +47,7 @@ def build_direct_response_plan(
     metadata_dict = dict(metadata or {})
     conversation_act = str(metadata_dict.get("conversation_act") or _build_conversation_act(state)).strip() or "runtime_result"
     effective_restore = _resolve_restore_observation(state, restore_observation=restore_observation)
+    current_session_grounding = _build_current_session_recall_grounding(state)
     expression_contract = _build_expression_contract(
         state,
         reply_authority=reply_authority,
@@ -53,6 +59,7 @@ def build_direct_response_plan(
         kind=kind,
         reply_authority=reply_authority,
         restore_observation=effective_restore,
+        current_session_grounding=current_session_grounding,
         explicit_verdict=memory_claim_verdict,
     )
     metadata_dict.setdefault("conversation_act", conversation_act)
@@ -60,6 +67,9 @@ def build_direct_response_plan(
     metadata_dict["memory_claim_reason"] = verdict.reason
     metadata_dict["memory_claim_allowed"] = verdict.allowed
     metadata_dict["memory_claim_detected"] = verdict.claim_detected
+    metadata_dict["memory_claim_grounding_source"] = (
+        current_session_grounding.authority_source if current_session_grounding is not None else None
+    )
     intent_contract_source = _build_intent_contract_source(
         state,
         reply_authority=final_authority,
@@ -116,11 +126,13 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
         metadata=reply_metadata,
     )
     effective_restore = _resolve_restore_observation(state)
+    current_session_grounding = _build_current_session_recall_grounding(state)
     gated_reply_text, verdict, final_authority = _apply_memory_claim_contract(
         getattr(reply_like, "reply_text", "") or "",
         kind=runtime_status or "runtime_result",
         reply_authority=reply_authority,
         restore_observation=effective_restore,
+        current_session_grounding=current_session_grounding,
     )
     reply_origin = str(reply_metadata.get("reply_origin") or _infer_reply_origin(state, runtime_status, final_authority)).strip()
 
@@ -132,6 +144,9 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
         "memory_claim_reason": verdict.reason,
         "memory_claim_allowed": verdict.allowed,
         "memory_claim_detected": verdict.claim_detected,
+        "memory_claim_grounding_source": (
+            current_session_grounding.authority_source if current_session_grounding is not None else None
+        ),
     }
     if evidence_payload is not None:
         metadata["evidence_payload"] = evidence_payload
@@ -183,6 +198,7 @@ def build_status_response_plan(
         kind="status_probe",
         reply_authority="host_status",
         restore_observation=effective_restore,
+        current_session_grounding=_build_current_session_recall_grounding(state),
     )
     metadata = {
         "assume_active": assume_active,
@@ -625,15 +641,30 @@ def _resolve_restore_observation(
     return None
 
 
+def _build_current_session_recall_grounding(state: Any) -> Optional[CurrentSessionRecallGrounding]:
+    if state is None or not hasattr(state, "get_chat_state"):
+        return None
+    chat_state = state.get_chat_state()
+    return build_current_session_recall_grounding(
+        recent_user_turns=list(getattr(chat_state, "recent_user_turns", None) or []),
+        current_user_turn=str(getattr(state, "last_user_turn", "") or ""),
+    )
+
+
 def _apply_memory_claim_contract(
     reply_text: str,
     *,
     kind: str,
     reply_authority: str,
     restore_observation: Optional[PendingRestoreObservation],
+    current_session_grounding: Optional[CurrentSessionRecallGrounding],
     explicit_verdict: Optional[MemoryClaimVerdict] = None,
 ) -> tuple[str, MemoryClaimVerdict, str]:
-    verdict = explicit_verdict or evaluate_memory_claim(reply_text, restore_observation=restore_observation)
+    verdict = explicit_verdict or evaluate_memory_claim(
+        reply_text,
+        restore_observation=restore_observation,
+        current_session_grounding=current_session_grounding,
+    )
     if verdict.allowed or not verdict.claim_detected:
         return str(reply_text or ""), verdict, reply_authority
 

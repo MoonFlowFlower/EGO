@@ -25,6 +25,7 @@ from contextlib import asynccontextmanager
 from copy import deepcopy
 from pathlib import Path
 
+from openemotion.proto_self_v2.seed_schemas import SEED_SUBJECT_PROFILE
 from telegram import BotCommand, Update
 from telegram.error import Conflict
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
@@ -974,6 +975,7 @@ class TelegramBot:
             state = runtime_loop._states.get(session_key)
         if state is None:
             state = RuntimeV2State(session_id=session_key)
+            state.proto_self_subject_profile_override = SEED_SUBJECT_PROFILE
             self._runtime_states[session_key] = state
         elif session_key not in self._runtime_states:
             self._runtime_states[session_key] = state
@@ -986,6 +988,7 @@ class TelegramBot:
             state = RuntimeV2State.from_snapshot(snapshot)
         else:
             state = RuntimeV2State(session_id=session_key)
+            state.proto_self_subject_profile_override = SEED_SUBJECT_PROFILE
         self._runtime_states[session_key] = state
         runtime_loop = self._get_runtime_v2_loop()
         if runtime_loop is not None:
@@ -1528,7 +1531,7 @@ class TelegramBot:
         state.ingress_context = None
         state.clear_last_delivered_evidence_context()
         state.proto_self_version_override = None
-        state.proto_self_subject_profile_override = None
+        state.proto_self_subject_profile_override = SEED_SUBJECT_PROFILE
         state.proto_self_context = None
         runtime_loop = self.runtime_v2_loop
         if runtime_loop is not None:
@@ -1796,7 +1799,11 @@ class TelegramBot:
 
         if not tokens or tokens[0] == "status":
             override = state.proto_self_version_override or "default(v2)"
-            subject_profile = state.proto_self_subject_profile_override or "default(core_v2)"
+            subject_profile = (
+                "default(seed_v0_2)"
+                if state.proto_self_subject_profile_override == SEED_SUBJECT_PROFILE and state.proto_self_version_override is None
+                else state.proto_self_subject_profile_override or "default(core_v2)"
+            )
             return CommandResult(
                 success=True,
                 message=(
@@ -1817,13 +1824,16 @@ class TelegramBot:
 
         if tokens[:2] == ["v2", "on"]:
             state.proto_self_version_override = None
+            if not state.proto_self_subject_profile_override:
+                state.proto_self_subject_profile_override = SEED_SUBJECT_PROFILE
             return CommandResult(
                 success=True,
                 message=(
                     "*Proto-Self Ingress Mode Updated*\n\n"
                     f"- session: `{session_key}`\n"
                     "- version_override: `default(v2)`\n"
-                    "- next_step: `future runtime_v2 natural-language turns stay on the default v2 mainline`"
+                    "- subject_profile: `default(seed_v0_2)`\n"
+                    "- next_step: `future runtime_v2 natural-language turns stay on the default v2 seed mainline`"
                 ),
                 data={
                     "session_key": session_key,
@@ -1853,20 +1863,20 @@ class TelegramBot:
 
         if tokens[:2] == ["seed", "on"]:
             state.proto_self_version_override = None
-            state.proto_self_subject_profile_override = "seed_v0_2"
+            state.proto_self_subject_profile_override = SEED_SUBJECT_PROFILE
             return CommandResult(
                 success=True,
                 message=(
                     "*Proto-Self Ingress Mode Updated*\n\n"
                     f"- session: `{session_key}`\n"
                     "- version_override: `default(v2)`\n"
-                    "- subject_profile: `seed_v0_2`\n"
+                    "- subject_profile: `default(seed_v0_2)`\n"
                     "- next_step: `future runtime_v2 natural-language turns will route through the Seed profile inside proto_self.v2`"
                 ),
                 data={
                     "session_key": session_key,
                     "proto_self_version_override": None,
-                    "proto_self_subject_profile_override": "seed_v0_2",
+                    "proto_self_subject_profile_override": SEED_SUBJECT_PROFILE,
                 },
             )
 

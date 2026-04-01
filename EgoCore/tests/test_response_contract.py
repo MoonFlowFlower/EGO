@@ -4,6 +4,7 @@ from app.response_contract import (
     build_status_response_plan,
     evaluate_memory_claim,
 )
+from app.response_contract.memory_claim_gate import build_current_session_recall_grounding
 from app.restore_runtime import PendingRestoreObservation
 from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
 from app.runtime_v2.state import RuntimeV2State
@@ -29,6 +30,26 @@ def test_memory_claim_gate_allows_with_restore_authority() -> None:
     assert verdict.claim_detected is True
     assert verdict.allowed is True
     assert verdict.authority_source == "restore_audit"
+
+
+def test_memory_claim_gate_allows_grounded_current_session_recall() -> None:
+    grounding = build_current_session_recall_grounding(
+        recent_user_turns=[
+            "我在想，意识的门槛其实可能比人类自以为的低很多。",
+            "是不是可以想成一条光谱，我们可能都在中间某个位置？",
+            "还记得我吗",
+        ],
+        current_user_turn="还记得我吗",
+    )
+
+    verdict = evaluate_memory_claim(
+        "还记得，你刚才在聊意识光谱。",
+        current_session_grounding=grounding,
+    )
+
+    assert verdict.claim_detected is True
+    assert verdict.allowed is True
+    assert verdict.reason == "grounded_current_session_recall"
 
 
 def test_build_status_response_plan_wraps_runtime_reply_and_verdict() -> None:
@@ -115,6 +136,38 @@ def test_build_runtime_result_response_plan_blocks_memory_claim_without_restore_
     assert plan.reply_authority == "host_degraded_fallback"
     assert "记得你" not in plan.reply_text
     assert plan.metadata["memory_claim_reason"] == "missing_restore_authority"
+
+
+def test_build_runtime_result_response_plan_allows_grounded_same_session_recall() -> None:
+    state = RuntimeV2State(session_id="s")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    state.last_user_turn = "还记得我吗"
+    chat_state = state.get_chat_state()
+    chat_state.recent_user_turns = [
+        "我在想，意识的门槛其实可能比人类自以为的低很多。",
+        "是不是可以想成一条光谱，我们可能都在中间某个位置？",
+        "还记得我吗",
+    ]
+    result = RuntimeV2TurnResult(
+        status="chat",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="还记得，你刚才在聊意识光谱。",
+            delivery_kind="chat",
+            status="chat",
+        ),
+    )
+
+    plan = build_runtime_result_response_plan(result.reply, state)
+
+    assert plan.memory_claim_verdict is not None
+    assert plan.memory_claim_verdict.allowed is True
+    assert plan.memory_claim_verdict.reason == "grounded_current_session_recall"
+    assert plan.reply_authority == "model_chat"
+    assert plan.reply_text == "还记得，你刚才在聊意识光谱。"
 
 
 def test_build_direct_response_plan_applies_memory_claim_gate_with_restore_authority() -> None:

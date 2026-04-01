@@ -84,7 +84,7 @@ def apply_output_check(plan: ResponsePlan, state: Any) -> OutputCheckVerdict:
             if not is_evidence_bearing:
                 fidelity_mode = "fallback"
 
-    intent_gate_verdict = _apply_intent_gate(
+    intent_gate_verdict = evaluate_response_intent_gate(
         plan,
         state,
         reply_text=reply_text,
@@ -206,7 +206,7 @@ def _render_evidence_reply_text(snapshot: Dict[str, Any]) -> str:
     return body
 
 
-def _apply_intent_gate(
+def evaluate_response_intent_gate(
     plan: ResponsePlan,
     state: Any,
     *,
@@ -215,6 +215,8 @@ def _apply_intent_gate(
     applied_authority: str,
     reply_origin: str,
     is_evidence_bearing: bool,
+    enable_shadow_logging: Optional[bool] = None,
+    apply_fallback: bool = True,
 ) -> Dict[str, Any]:
     result: Dict[str, Any] = {
         "applied": False,
@@ -239,9 +241,9 @@ def _apply_intent_gate(
         return result
 
     traffic_source, observation_source = _resolve_intent_shadow_sources(state)
-    checker = _get_intent_checker(
-        enable_shadow_logging=observation_source in {"direct_real", "testbot", "replay"}
-    )
+    if enable_shadow_logging is None:
+        enable_shadow_logging = observation_source in {"direct_real", "testbot", "replay"}
+    checker = _get_intent_checker(enable_shadow_logging=enable_shadow_logging)
     if checker is None:
         result["status"] = "checker_unavailable"
         result["reason"] = "checker_unavailable"
@@ -279,7 +281,7 @@ def _apply_intent_gate(
         }
     )
 
-    if verdict.status == "violation" and verdict.would_block:
+    if verdict.status == "violation" and verdict.would_block and apply_fallback:
         fallback = _build_intent_gate_fallback(plan)
         result.update(
             {

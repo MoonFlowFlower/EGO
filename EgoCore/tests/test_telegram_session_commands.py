@@ -56,6 +56,7 @@ async def test_new_command_resets_runtime_v2_session():
     assert "Session Reset" in DummyUpdate.message.last_text
     assert new_state.task_status == "idle"
     assert new_state.current_goal is None
+    assert new_state.proto_self_subject_profile_override == "seed_v0_2"
     assert get_session_context_store().get_recent_turns(session_key) == []
 
 
@@ -257,7 +258,9 @@ async def test_proto_command_enables_v2_override():
     await bot.handle_command(DummyUpdate(), None)
 
     assert state.proto_self_version_override is None
+    assert state.proto_self_subject_profile_override == "seed_v0_2"
     assert "version\\_override: \\`default(v2)\\`" in DummyUpdate.message.last_text
+    assert "subject\\_profile: \\`default(seed\\_v0\\_2)\\`" in DummyUpdate.message.last_text
 
 
 @pytest.mark.asyncio
@@ -326,7 +329,7 @@ async def test_proto_command_enables_seed_profile():
 
     assert state.proto_self_version_override is None
     assert state.proto_self_subject_profile_override == "seed_v0_2"
-    assert "subject\\_profile: \\`seed\\_v0\\_2\\`" in DummyUpdate.message.last_text
+    assert "subject\\_profile: \\`default(seed\\_v0\\_2)\\`" in DummyUpdate.message.last_text
 
 
 @pytest.mark.asyncio

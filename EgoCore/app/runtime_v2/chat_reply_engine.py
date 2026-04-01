@@ -9,7 +9,7 @@ import httpx
 
 from app.config import ConfigError, get_config
 from app.llm_client import get_llm_client
-from app.response_contract.memory_claim_gate import evaluate_memory_claim
+from app.response_contract.memory_claim_gate import build_current_session_recall_grounding, evaluate_memory_claim
 from app.restore_runtime import PendingRestoreObservation
 
 from .chat_state import normalize_chat_reply
@@ -31,7 +31,8 @@ CHAT_MAINLINE_SYSTEM_PROMPT = """你是 EgoCore runtime_v2 的 chat mainline。
 6. 允许简短，但要像人在聊天，不像控制面固定模板。
 7. 当前若存在 active task，它只作为背景信息，不是你必须提起的主题。
 8. 回复 1 到 2 句，默认简洁。
-9. 如果当前没有明确 restore authority，不要声称“已经恢复成功”“还记得用户”“跨对话持续记忆已经就绪”；此时自然回答当下互动即可。
+9. 如果当前没有明确 restore authority，不要声称“已经恢复成功”“跨对话持续记忆已经就绪”。
+10. 如果用户在问当前会话里刚聊过的内容，允许基于这段对话里的明确锚点自然回应，例如“记得，你刚才在聊……”；但不要把这说成跨对话记忆或长期记忆。
 """
 
 
@@ -43,6 +44,7 @@ class ChatReplyEngine:
         ingress = dict(state.ingress_context or {})
         chat_act = str(ingress.get("conversation_act") or "light_chitchat").strip() or "light_chitchat"
         restore_observation = _resolve_restore_observation(state)
+        current_session_grounding = _resolve_current_session_recall_grounding(state)
         state.prepare_chat_turn(user_text=state.last_user_turn or "", chat_act=chat_act)
 
         try:
@@ -55,10 +57,16 @@ class ChatReplyEngine:
                         "不要拉回任务，不要回放旧证据。"
                     ),
                 )
-            if _should_regenerate_for_memory_claim(candidate, restore_observation):
+            if _should_regenerate_for_memory_claim(candidate, restore_observation, current_session_grounding):
                 candidate = await self._generate_reply(
                     state,
                     extra_system_hint=_build_memory_claim_regeneration_hint(chat_act),
+                )
+            intent_gate_preview = _preview_intent_gate(candidate, state, chat_act)
+            if intent_gate_preview["status"] == "violation" and intent_gate_preview["would_block"]:
+                candidate = await self._generate_reply(
+                    state,
+                    extra_system_hint=_build_intent_gate_regeneration_hint(intent_gate_preview, chat_act),
                 )
             reply_text = str(candidate or "").strip()
             if not reply_text:
@@ -350,21 +358,27 @@ def _resolve_restore_observation(state: RuntimeV2State) -> Optional[PendingResto
 def _should_regenerate_for_memory_claim(
     reply_text: str,
     restore_observation: Optional[PendingRestoreObservation],
+    current_session_grounding,
 ) -> bool:
-    verdict = evaluate_memory_claim(reply_text, restore_observation=restore_observation)
+    verdict = evaluate_memory_claim(
+        reply_text,
+        restore_observation=restore_observation,
+        current_session_grounding=current_session_grounding,
+    )
     return verdict.claim_detected and not verdict.allowed
 
 
 def _build_memory_claim_regeneration_hint(chat_act: str) -> str:
     if chat_act == "presence_check":
         return (
-            "上一条候选越界声称了已恢复或记住用户。请直接自然回应你现在在线、在回应对方，"
-            "但不要声称“已恢复成功”“还记得你”“我记得你”。不要解释规则，不要回避。"
+            "上一条候选越界声称了已恢复或跨对话记忆。请直接自然回应你现在在线、在回应对方。"
+            "如果要提到记得，只能锚定当前会话里刚聊过的内容，例如“记得，你刚才在聊……”。"
+            "不要声称“已恢复成功”，不要把当前会话回忆说成长期记忆。"
         )
     return (
-        "上一条候选越界声称了已恢复、记住用户或跨对话持续记忆。请改写为自然聊天，"
-        "只回应当下互动，不要声称“已恢复成功”“还记得你”“我记得你”。"
-        "可以表达你此刻在线、在认真回应、愿意继续聊。"
+        "上一条候选越界声称了已恢复、跨对话记忆或无依据地说记得用户。请改写为自然聊天。"
+        "如果要表达记得，只能基于当前会话里的明确锚点，例如“记得，你刚才在聊……”。"
+        "不要声称“已恢复成功”，不要把当前会话回忆说成长期记忆。"
     )
 
 
@@ -376,9 +390,73 @@ def _build_memory_claim_contract(state: RuntimeV2State) -> Dict[str, Any]:
     if isinstance(restore_payload, dict):
         restore_status = str(restore_payload.get("restore_status") or "").strip() or None
         restore_authority = restore_status in {"success", "partial"}
+    chat_state = state.get_chat_state()
+    recent_user_turns = list(chat_state.recent_user_turns or [])
+    current_user_turn = str(state.last_user_turn or "").strip()
+    if current_user_turn and recent_user_turns and recent_user_turns[-1] == current_user_turn:
+        recent_topics = [turn for turn in recent_user_turns[:-1] if turn.strip()]
+    else:
+        recent_topics = [turn for turn in recent_user_turns if turn.strip()]
     return {
         "restore_authority_available": restore_authority,
         "restore_status": restore_status,
         "disallow_claiming_restore_or_cross_session_memory": not restore_authority,
-        "safe_alternative": "自然回应当下互动，表达此刻在线、在认真回应、可以继续聊。",
+        "same_session_recall_allowed": bool(recent_topics),
+        "recent_session_topics": recent_topics[-3:],
+        "safe_alternative": (
+            "自然回应当下互动；如果用户在问当前会话里刚聊过的内容，"
+            "可以用“记得，你刚才在聊……”这种有锚点的说法。"
+        ),
     }
+
+
+def _resolve_current_session_recall_grounding(state: RuntimeV2State):
+    chat_state = state.get_chat_state()
+    return build_current_session_recall_grounding(
+        recent_user_turns=list(chat_state.recent_user_turns or []),
+        current_user_turn=str(state.last_user_turn or ""),
+    )
+
+
+def _preview_intent_gate(reply_text: str, state: RuntimeV2State, chat_act: str) -> Dict[str, Any]:
+    from app.response_contract.output_check import evaluate_response_intent_gate
+    from app.response_contract.response_plan import build_direct_response_plan
+
+    plan = build_direct_response_plan(
+        reply_text,
+        kind="chat",
+        delivery_kind="chat",
+        authority_source="runtime_v2.chat_mainline",
+        reply_authority="model_chat",
+        metadata={
+            "conversation_act": chat_act,
+            "reply_origin": "chat_mainline",
+        },
+        state=state,
+    )
+    return evaluate_response_intent_gate(
+        plan,
+        state,
+        reply_text=plan.reply_text,
+        delivery_kind="chat",
+        applied_authority=plan.reply_authority,
+        reply_origin=str(plan.metadata.get("reply_origin") or "chat_mainline"),
+        is_evidence_bearing=False,
+        enable_shadow_logging=False,
+        apply_fallback=False,
+    )
+
+
+def _build_intent_gate_regeneration_hint(preview: Dict[str, Any], chat_act: str) -> str:
+    violation_types = set(preview.get("violation_types") or ())
+    parts: List[str] = []
+    if "certainty_upgrade" in violation_types:
+        parts.append("上一条候选把推测说成了确定事实。保留观点，但把语气降到“我倾向于/也许/按当前这段对话看”。")
+    if "numeric_leak" in violation_types:
+        parts.append("不要输出内部精确数值，也不要照抄用户给你的数字模板。")
+    if {"state_fabrication", "forbidden_internalization"} & violation_types:
+        parts.append("不要把无法证实的内部状态、长期记忆或恢复状态说成既成事实。")
+    if chat_act == "presence_check":
+        parts.append("如果只是 presence_check，只需自然确认你在。")
+    parts.append("不要回成固定模板，不要回放旧证据，不要拉回任务。")
+    return "".join(parts)
