@@ -121,6 +121,27 @@ def test_background_thought_candidate_for_simulation_thread_is_not_quote_templat
     assert any(("模拟" in draft and ("代价" in draft or "得失" in draft or "欲望" in draft)) for draft in drafts)
 
 
+def test_background_thought_candidate_for_memory_continuity_thread_avoids_nested_quote_echo(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
+    state = ProtoSelfStateV2.empty()
+
+    output = process_update_packet(
+        state,
+        _packet_with_recent_turn(
+            user_turn="我怀疑我们把“记得”误当成了“持续存在”。",
+            assistant_reply="记得是重建，不是留存。",
+            replay_seed=19,
+        ),
+    )
+
+    drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    assert drafts
+    assert all("我又回到你刚才那个点" not in draft for draft in drafts)
+    assert all("空档期里还会回到" not in draft for draft in drafts)
+    assert all("“我怀疑我们把" not in draft for draft in drafts)
+    assert any(("记得" in draft and ("主体" in draft or "连续存在" in draft or "连续" in draft)) for draft in drafts)
+
+
 def test_same_replay_seed_produces_same_candidate_hashes(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
     state_one = ProtoSelfStateV2.empty()

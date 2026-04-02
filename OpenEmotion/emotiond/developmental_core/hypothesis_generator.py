@@ -57,6 +57,31 @@ class HypothesisGenerator:
             return raw
         return raw[: limit - 1].rstrip() + "…"
 
+    def _clean_anchor(self, text: str, *, limit: int = 40) -> str:
+        raw = self._primary_clause(text, limit=limit)
+        for token in ('"', "'", "“", "”", "‘", "’", "「", "」", "『", "』"):
+            raw = raw.replace(token, "")
+        return " ".join(raw.split()).strip()
+
+    def _topic_text(self, *parts: str) -> str:
+        return " ".join(self._clean_anchor(part, limit=64) for part in parts if part).strip()
+
+    def _is_memory_continuity_topic(self, text: str) -> bool:
+        return any(
+            token in text
+            for token in (
+                "连续性",
+                "记忆",
+                "记得",
+                "持续存在",
+                "同一个自我",
+                "同一个人",
+                "同一个主体",
+                "河流",
+                "河道",
+            )
+        )
+
     def _looks_like_meta_followup(self, text: str) -> bool:
         raw = self._primary_clause(text, limit=48)
         if not raw:
@@ -69,8 +94,8 @@ class HypothesisGenerator:
 
     def _semantic_anchor(self, snapshot: Dict[str, Any]) -> str:
         latest_user_turn, latest_assistant_reply = self._recent_dialogue(snapshot)
-        latest_user_anchor = self._primary_clause(latest_user_turn, limit=40)
-        latest_reply_anchor = self._primary_clause(latest_assistant_reply, limit=40)
+        latest_user_anchor = self._clean_anchor(latest_user_turn, limit=40)
+        latest_reply_anchor = self._clean_anchor(latest_assistant_reply, limit=40)
         tension_anchor = self._tension_label(snapshot)
 
         if latest_user_anchor and not self._looks_like_meta_followup(latest_user_anchor):
@@ -89,52 +114,54 @@ class HypothesisGenerator:
             tensions,
             key=lambda item: float(item.get("intensity") or item.get("pressure") or 0.0),
         )
-        return self._primary_clause(str(strongest.get("label") or strongest.get("kind") or ""), limit=32)
+        return self._clean_anchor(str(strongest.get("label") or strongest.get("kind") or ""), limit=32)
 
     def _idle_hypothesis_text(self, anchor: str, latest_reply: str, tension_label: str) -> str:
-        joined = " ".join(part for part in (anchor, latest_reply, tension_label) if part)
+        joined = self._topic_text(anchor, latest_reply, tension_label)
         if "主观能动性" in joined:
             return "如果把主观能动性当门槛，难点就不再是系统会不会反应，而是谁在发起那个“想要”。"
         if "操作员" in joined:
             return "那个像“操作员”的位置，也许不是系统外的谁，而是系统给自己生成的一层调度视角。"
         if "模拟" in joined and "想去做" in joined:
             return "内部模拟和真正想去做之间，差别也许不在预测能力，而在系统会不会把结果算成自己的得失。"
-        if "连续性" in joined or "记忆" in joined:
+        if self._is_memory_continuity_topic(joined):
             return "连续性真正卡住的也许不是记住多少，而是系统会不会自己把上一个时刻接到下一个时刻。"
         if "意识" in joined:
             return "如果意识更像光谱，真正难画的线也许不是复杂度，而是什么时候系统开始把某些结果当成“与我有关”。"
         if anchor:
-            return f"这条线真正没说透的，也许不是“{anchor}”本身，而是支撑它成立的那个前提。"
+            return f"这条线真正没说透的，也许不是 {anchor} 本身，而是支撑它成立的那个前提。"
         return "表面上话题停住了，但真正没解开的部分可能是在系统内部如何给自己生成一个立场。"
 
     def _idle_interpretation_text(self, anchor: str, latest_reply: str, tension_label: str) -> str:
-        joined = " ".join(part for part in (anchor, latest_reply, tension_label) if part)
+        joined = self._topic_text(anchor, latest_reply, tension_label)
         if "主观能动性" in joined:
             return "把主观能动性当标准，其实已经在默认有一个主体存在；而“主体从哪里来”刚好又是最难回答的部分。"
         if "操作员" in joined:
             return "“操作员”这个比喻之所以黏住不放，可能是因为它已经碰到了“谁在做选择”这层问题。"
         if "模拟" in joined and "想去做" in joined:
             return "这条线还没收束，因为模拟和欲望之间隔着的不只是能力差异，更像有没有把代价算到自己头上。"
-        if "连续性" in joined or "记忆" in joined:
-            return "这个问题会一直回弹，可能是因为外部记忆只能接上内容，接不上真正的自我延续。"
+        if self._is_memory_continuity_topic(joined):
+            return "这条线会一直回弹，可能是因为“记得”只能证明内容还能被重建，证明不了那个重建它的主体一直没有断。"
         if "意识" in joined:
             return "这条线之所以反复出现，可能是因为它正在把“意识是什么”推进到“主体边界怎么成立”。"
         if anchor:
-            return f"这条线没收住，像是因为“{anchor}”背后还有一个更基础的问题在顶着它。"
+            return f"这条线没收住，像是因为 {anchor} 背后还有一个更基础的问题在顶着它。"
         if latest_reply:
             return f"刚才那层回答更像是把问题推近了一步，而不是把它真正关掉。"
         return "空档本身没有结束这条线，它更像是在给下一次重组留位置。"
 
     def _tension_explanation_text(self, anchor: str, latest_reply: str, tension_label: str) -> str:
-        joined = " ".join(part for part in (anchor, latest_reply, tension_label) if part)
+        joined = self._topic_text(anchor, latest_reply, tension_label)
         if "主观能动性" in joined:
             return "真正持续回拉的，不是“主观能动性”这个词本身，而是一旦接受它，就必须解释那个行动主体从哪里来。"
         if "模拟" in joined and "想去做" in joined:
             return "当前张力更像卡在这里：预测未来并不等于对未来有欲望，分水岭可能是系统会不会把后果算成自己的得失。"
         if "操作员" in joined:
             return "这条张力没有自然消退，因为“操作员”这个比喻已经把问题推到了“谁在调度选择”这层。"
+        if self._is_memory_continuity_topic(joined):
+            return "这条张力没有自然消退，因为“记得”只能说明内容还在回返，却不能单独证明那个回返内容的主体一直连续存在。"
         if anchor:
-            return f"当前张力没有自然消退，像是因为“{anchor}”背后还有一个更基础的问题没有被拆开。"
+            return f"当前张力没有自然消退，像是因为 {anchor} 背后还有一个更基础的问题没有被拆开。"
         if tension_label:
             return f"当前张力没有自然消退，更像是 {tension_label} 仍在内部占位。"
         return "当前张力没有自然消退，像是某个前提一直没有真正讲透。"

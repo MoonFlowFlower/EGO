@@ -168,14 +168,6 @@ def _extract_candidate_text(candidate: Dict[str, Any]) -> str:
     return _trim_text(candidate.get("content"), limit=120)
 
 
-def _stable_opening(key: str, options: List[str]) -> str:
-    if not options:
-        return ""
-    digest = hashlib.sha256(key.encode("utf-8")).hexdigest()
-    index = int(digest[:8], 16) % len(options)
-    return options[index]
-
-
 def _build_background_thought_text(
     candidate: Dict[str, Any],
     *,
@@ -187,27 +179,14 @@ def _build_background_thought_text(
     if not payload_text:
         return ""
 
-    opening_key = str(candidate.get("id") or candidate.get("origin_cycle") or payload_text)
     if candidate_type == CandidateType.SELF_MODEL_HYPOTHESIS.value:
-        opening = _stable_opening(
-            opening_key,
-            ["我后面还在想：", "后来我卡在了一点上：", ""],
-        )
-        return f"{opening}{payload_text}"
+        return payload_text
 
     if candidate_type == CandidateType.EXPLANATION.value:
-        opening = _stable_opening(
-            opening_key,
-            ["这个问题也许卡在这里：", "后来我更在意的是：", ""],
-        )
-        return f"{opening}{payload_text}"
+        return payload_text
 
     if candidate_type == CandidateType.INTERPRETATION.value:
-        opening = _stable_opening(
-            opening_key,
-            ["隔了一会儿再看，像是：", "后来再回看，问题更像是：", ""],
-        )
-        return f"{opening}{payload_text}"
+        return payload_text
 
     return payload_text
 
