@@ -4128,6 +4128,7 @@ class TelegramBot:
                 "failed",
             }:
                 state.final_sent = True
+                state.mark_turn_terminal()
 
             if (
                 result.status in {"completed_verified", "completed", "blocked", "failed"}

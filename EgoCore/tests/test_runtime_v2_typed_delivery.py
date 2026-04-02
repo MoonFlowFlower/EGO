@@ -131,6 +131,44 @@ async def test_telegram_runtime_v2_delivery_keeps_progress_visible_after_interna
 
 
 @pytest.mark.asyncio
+async def test_telegram_runtime_v2_chat_delivery_settles_turn_to_terminal():
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    bot._get_runtime_v2_loop()
+
+    class DummyMessage:
+        last_text = None
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyUpdate:
+        message = DummyMessage()
+
+    state = bot._get_runtime_state("telegram:dm:chat_terminal")
+    bot._sync_state_into_runtime_v2_loop("telegram:dm:chat_terminal", state)
+    state.ingress_context = {"interaction_kind": "chat"}
+    turn_id = state.start_turn()
+    assert turn_id
+    assert state.active_turn_status == "running"
+
+    result = RuntimeV2TurnResult(
+        status="chat_replied",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="我继续想了想，那个比喻还没说完。",
+            delivery_kind="final",
+            status="chat_replied",
+        ),
+    )
+
+    await bot._deliver_runtime_v2_result(DummyUpdate(), state, result, is_challenge_turn=False)
+
+    assert DummyUpdate.message.last_text == "我继续想了想，那个比喻还没说完。"
+    assert state.final_sent is True
+    assert state.active_turn_status == "terminal"
+
+
+@pytest.mark.asyncio
 async def test_telegram_progress_delivery_dedupes_identical_phase_text():
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
 
