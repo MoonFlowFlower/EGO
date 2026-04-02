@@ -1,0 +1,312 @@
+{
+  "dev-bd0bf3907a4ee2cf": {
+    "cycle_id": "dev-bd0bf3907a4ee2cf",
+    "seed": 4239854600,
+    "trigger": "idle",
+    "trace_hash": "bd0bf3907a4ee2cf",
+    "candidates": [
+      {
+        "id": "64e976ed-8a53-4f01-a8d2-8db3d20ac15a",
+        "candidate_type": "interpretation",
+        "timestamp": "2026-04-02T04:58:27.950635",
+        "origin_cycle": "dev-bd0bf3907a4ee2cf",
+        "confidence": 0.40728759502383993,
+        "trace_reference": "bd0bf3907a4ee2cf",
+        "content": {},
+        "metadata": {},
+        "interpretation": "Idle period may indicate opportunity for reflection",
+        "evidence_refs": [],
+        "alternatives": [
+          "System is waiting for input",
+          "Energy conservation mode"
+        ]
+      },
+      {
+        "id": "3f55a9ea-41be-4e18-977e-0d1e333298d3",
+        "candidate_type": "self_model_hypothesis",
+        "timestamp": "2026-04-02T04:58:27.950619",
+        "origin_cycle": "dev-bd0bf3907a4ee2cf",
+        "confidence": 0.3228650117244958,
+        "trace_reference": "bd0bf3907a4ee2cf",
+        "content": {},
+        "metadata": {},
+        "hypothesis": "Current state is stable, no immediate action required",
+        "test_predictions": [
+          "State remains stable for next cycle"
+        ],
+        "disconfirmation_criteria": [
+          "Significant state change detected"
+        ]
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:27.975718",
+    "success": true,
+    "error": null
+  },
+  "dev-cc72258bd4bfa8d9": {
+    "cycle_id": "dev-cc72258bd4bfa8d9",
+    "seed": 1999533579,
+    "trigger": "idle",
+    "trace_hash": "cc72258bd4bfa8d9",
+    "candidates": [
+      {
+        "id": "93e6cdcb-62c8-40dd-9456-e32664e0df06",
+        "candidate_type": "interpretation",
+        "timestamp": "2026-04-02T04:58:28.227117",
+        "origin_cycle": "dev-cc72258bd4bfa8d9",
+        "confidence": 0.554641586763314,
+        "trace_reference": "cc72258bd4bfa8d9",
+        "content": {},
+        "metadata": {},
+        "interpretation": "Idle period may indicate opportunity for reflection",
+        "evidence_refs": [],
+        "alternatives": [
+          "System is waiting for input",
+          "Energy conservation mode"
+        ]
+      },
+      {
+        "id": "475f46be-61b8-414a-8d83-58125d98e080",
+        "candidate_type": "self_model_hypothesis",
+        "timestamp": "2026-04-02T04:58:28.227105",
+        "origin_cycle": "dev-cc72258bd4bfa8d9",
+        "confidence": 0.39014686081755623,
+        "trace_reference": "cc72258bd4bfa8d9",
+        "content": {},
+        "metadata": {},
+        "hypothesis": "Current state is stable, no immediate action required",
+        "test_predictions": [
+          "State remains stable for next cycle"
+        ],
+        "disconfirmation_criteria": [
+          "Significant state change detected"
+        ]
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:28.285577",
+    "success": true,
+    "error": null
+  },
+  "dev-cb1d062d86cb5ef0": {
+    "cycle_id": "dev-cb1d062d86cb5ef0",
+    "seed": 455302741,
+    "trigger": "idle",
+    "trace_hash": "cb1d062d86cb5ef0",
+    "candidates": [
+      {
+        "id": "258fd58c-b88b-49a0-9fce-c53bad005fa7",
+        "candidate_type": "interpretation",
+        "timestamp": "2026-04-02T04:58:28.554539",
+        "origin_cycle": "dev-cb1d062d86cb5ef0",
+        "confidence": 0.5417238298674049,
+        "trace_reference": "cb1d062d86cb5ef0",
+        "content": {},
+        "metadata": {},
+        "interpretation": "Idle period may indicate opportunity for reflection",
+        "evidence_refs": [],
+        "alternatives": [
+          "System is waiting for input",
+          "Energy conservation mode"
+        ]
+      },
+      {
+        "id": "7f96a52d-4c62-40c5-9bc5-2cbb39cc8850",
+        "candidate_type": "self_model_hypothesis",
+        "timestamp": "2026-04-02T04:58:28.554528",
+        "origin_cycle": "dev-cb1d062d86cb5ef0",
+        "confidence": 0.4877543823240679,
+        "trace_reference": "cb1d062d86cb5ef0",
+        "content": {},
+        "metadata": {},
+        "hypothesis": "Current state is stable, no immediate action required",
+        "test_predictions": [
+          "State remains stable for next cycle"
+        ],
+        "disconfirmation_criteria": [
+          "Significant state change detected"
+        ]
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:28.606718",
+    "success": true,
+    "error": null
+  },
+  "dev-d0c71bf764b7b28e": {
+    "cycle_id": "dev-d0c71bf764b7b28e",
+    "seed": 1348118296,
+    "trigger": "unresolved_tension",
+    "trace_hash": "d0c71bf764b7b28e",
+    "candidates": [
+      {
+        "id": "7445bfe9-b80b-4fd0-9a2c-77765cdd8a55",
+        "candidate_type": "explanation",
+        "timestamp": "2026-04-02T04:58:28.883776",
+        "origin_cycle": "dev-d0c71bf764b7b28e",
+        "confidence": 0.7479494184817987,
+        "trace_reference": "d0c71bf764b7b28e",
+        "content": {},
+        "metadata": {},
+        "explanation": "Unresolved tension detected in system state",
+        "supporting_facts": [
+          "Tension exceeds threshold"
+        ],
+        "counter_evidence": []
+      },
+      {
+        "id": "3b355be1-3700-48d0-9687-f75f665a37b5",
+        "candidate_type": "action",
+        "timestamp": "2026-04-02T04:58:28.883790",
+        "origin_cycle": "dev-d0c71bf764b7b28e",
+        "confidence": 0.4841021290054115,
+        "trace_reference": "d0c71bf764b7b28e",
+        "content": {},
+        "metadata": {},
+        "action_type": "observe",
+        "target": "internal_state",
+        "expected_outcome": "Gather more information about tension source",
+        "risk_assessment": {
+          "disruption": 0.1
+        }
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:28.931875",
+    "success": true,
+    "error": null
+  },
+  "dev-6e18e4a999c9726a": {
+    "cycle_id": "dev-6e18e4a999c9726a",
+    "seed": 3761730430,
+    "trigger": "replay_event",
+    "trace_hash": "6e18e4a999c9726a",
+    "candidates": [
+      {
+        "id": "fc7df80e-9a02-4cfa-8cb6-8e07dd4af5f1",
+        "candidate_type": "interpretation",
+        "timestamp": "2026-04-02T04:58:29.510511",
+        "origin_cycle": "dev-6e18e4a999c9726a",
+        "confidence": 0.5,
+        "trace_reference": "6e18e4a999c9726a",
+        "content": {},
+        "metadata": {},
+        "interpretation": "Replaying past cycle for verification",
+        "evidence_refs": [],
+        "alternatives": []
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:29.561288",
+    "success": true,
+    "error": null
+  },
+  "dev-7e28a79027b9abd8": {
+    "cycle_id": "dev-7e28a79027b9abd8",
+    "seed": 2090348869,
+    "trigger": "long_term_goal",
+    "trace_hash": "7e28a79027b9abd8",
+    "candidates": [
+      {
+        "id": "88b492d9-e859-423c-8f6e-4e7953d6ba0d",
+        "candidate_type": "action",
+        "timestamp": "2026-04-02T04:58:29.994428",
+        "origin_cycle": "dev-7e28a79027b9abd8",
+        "confidence": 0.7583227098898078,
+        "trace_reference": "7e28a79027b9abd8",
+        "content": {},
+        "metadata": {},
+        "action_type": "approach",
+        "target": "long_term_goal",
+        "expected_outcome": "Progress toward goal",
+        "risk_assessment": {
+          "resource_cost": 0.2,
+          "disruption": 0.1
+        }
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:30.038229",
+    "success": true,
+    "error": null
+  },
+  "dev-9845f98364ce25bd": {
+    "cycle_id": "dev-9845f98364ce25bd",
+    "seed": 448242521,
+    "trigger": "long_term_goal",
+    "trace_hash": "9845f98364ce25bd",
+    "candidates": [
+      {
+        "id": "6e555598-fdb1-4c84-bd32-64f29a511314",
+        "candidate_type": "action",
+        "timestamp": "2026-04-02T04:58:30.273406",
+        "origin_cycle": "dev-9845f98364ce25bd",
+        "confidence": 0.6772540190939523,
+        "trace_reference": "9845f98364ce25bd",
+        "content": {},
+        "metadata": {},
+        "action_type": "approach",
+        "target": "long_term_goal",
+        "expected_outcome": "Progress toward goal",
+        "risk_assessment": {
+          "resource_cost": 0.2,
+          "disruption": 0.1
+        }
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:30.316287",
+    "success": true,
+    "error": null
+  },
+  "dev-c9fc0b5249d43140": {
+    "cycle_id": "dev-c9fc0b5249d43140",
+    "seed": 491999842,
+    "trigger": "long_term_goal",
+    "trace_hash": "c9fc0b5249d43140",
+    "candidates": [
+      {
+        "id": "5bc8c611-3c03-4ad9-8a92-040740ff64b0",
+        "candidate_type": "action",
+        "timestamp": "2026-04-02T04:58:30.541475",
+        "origin_cycle": "dev-c9fc0b5249d43140",
+        "confidence": 0.6069165343112308,
+        "trace_reference": "c9fc0b5249d43140",
+        "content": {},
+        "metadata": {},
+        "action_type": "approach",
+        "target": "long_term_goal",
+        "expected_outcome": "Progress toward goal",
+        "risk_assessment": {
+          "resource_cost": 0.2,
+          "disruption": 0.1
+        }
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:30.589713",
+    "success": true,
+    "error": null
+  },
+  "dev-9d0e37027ffd0de2": {
+    "cycle_id": "dev-9d0e37027ffd0de2",
+    "seed": 1028871911,
+    "trigger": "long_term_goal",
+    "trace_hash": "9d0e37027ffd0de2",
+    "candidates": [
+      {
+        "id": "e5561fe6-4e93-437e-af59-ae92abed6346",
+        "candidate_type": "action",
+        "timestamp": "2026-04-02T04:58:30.804685",
+        "origin_cycle": "dev-9d0e37027ffd0de2",
+        "confidence": 0.7503385878839338,
+        "trace_reference": "9d0e37027ffd0de2",
+        "content": {},
+        "metadata": {},
+        "action_type": "approach",
+        "target": "long_term_goal",
+        "expected_outcome": "Progress toward goal",
+        "risk_assessment": {
+          "resource_cost": 0.2,
+          "disruption": 0.1
+        }
+      }
+    ],
+    "completed_at": "2026-04-02T04:58:30.850010",
+    "success": true,
+    "error": null
+  }
+}

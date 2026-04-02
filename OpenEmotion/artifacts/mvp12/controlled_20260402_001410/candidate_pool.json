@@ -1,0 +1,296 @@
+[
+  {
+    "candidate": {
+      "id": "4532f5e7-51e6-43f3-80ff-421ebeada2dd",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T05:14:10.397632",
+      "origin_cycle": "dev-5d913b162ab82f37",
+      "confidence": 0.485014884826384,
+      "trace_reference": "5d913b162ab82f37",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Idle period may indicate opportunity for reflection",
+      "evidence_refs": [],
+      "alternatives": [
+        "System is waiting for input",
+        "Energy conservation mode"
+      ]
+    },
+    "score": 0.3740059539305536,
+    "added_at": "2026-04-02T05:14:10.477174",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "4140f1cf-3b48-4665-a065-6fe509075800",
+      "candidate_type": "self_model_hypothesis",
+      "timestamp": "2026-04-02T05:14:10.397596",
+      "origin_cycle": "dev-5d913b162ab82f37",
+      "confidence": 0.30428281211328284,
+      "trace_reference": "5d913b162ab82f37",
+      "content": {},
+      "metadata": {},
+      "hypothesis": "Current state is stable, no immediate action required",
+      "test_predictions": [
+        "State remains stable for next cycle"
+      ],
+      "disconfirmation_criteria": [
+        "Significant state change detected"
+      ]
+    },
+    "score": 0.3917131248453131,
+    "added_at": "2026-04-02T05:14:10.496978",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "1ae8eecd-8f74-4b34-8d54-be8c796cb852",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T05:14:10.845995",
+      "origin_cycle": "dev-418a2f6d88990930",
+      "confidence": 0.5278084999724675,
+      "trace_reference": "418a2f6d88990930",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Idle period may indicate opportunity for reflection",
+      "evidence_refs": [],
+      "alternatives": [
+        "System is waiting for input",
+        "Energy conservation mode"
+      ]
+    },
+    "score": 0.391123399988987,
+    "added_at": "2026-04-02T05:14:10.961733",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "7643c82d-13ef-44c1-b037-09a0148677a1",
+      "candidate_type": "self_model_hypothesis",
+      "timestamp": "2026-04-02T05:14:10.845967",
+      "origin_cycle": "dev-418a2f6d88990930",
+      "confidence": 0.472831698275916,
+      "trace_reference": "418a2f6d88990930",
+      "content": {},
+      "metadata": {},
+      "hypothesis": "Current state is stable, no immediate action required",
+      "test_predictions": [
+        "State remains stable for next cycle"
+      ],
+      "disconfirmation_criteria": [
+        "Significant state change detected"
+      ]
+    },
+    "score": 0.4591326793103664,
+    "added_at": "2026-04-02T05:14:10.980309",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "7db1a175-5727-44b1-b53b-0d4e71d6fded",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T05:14:11.308314",
+      "origin_cycle": "dev-5921ff1518ab6fc6",
+      "confidence": 0.5563011464277491,
+      "trace_reference": "5921ff1518ab6fc6",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Idle period may indicate opportunity for reflection",
+      "evidence_refs": [],
+      "alternatives": [
+        "System is waiting for input",
+        "Energy conservation mode"
+      ]
+    },
+    "score": 0.40252045857109964,
+    "added_at": "2026-04-02T05:14:11.419841",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "69606379-1326-4ff3-b4dc-f8c9c01c00da",
+      "candidate_type": "self_model_hypothesis",
+      "timestamp": "2026-04-02T05:14:11.308288",
+      "origin_cycle": "dev-5921ff1518ab6fc6",
+      "confidence": 0.33904979059402646,
+      "trace_reference": "5921ff1518ab6fc6",
+      "content": {},
+      "metadata": {},
+      "hypothesis": "Current state is stable, no immediate action required",
+      "test_predictions": [
+        "State remains stable for next cycle"
+      ],
+      "disconfirmation_criteria": [
+        "Significant state change detected"
+      ]
+    },
+    "score": 0.4056199162376105,
+    "added_at": "2026-04-02T05:14:11.437969",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "f854357c-e25c-45ab-a70d-a09fe14e7bde",
+      "candidate_type": "explanation",
+      "timestamp": "2026-04-02T05:14:11.805831",
+      "origin_cycle": "dev-2da989342da9c32a",
+      "confidence": 0.765413423257757,
+      "trace_reference": "2da989342da9c32a",
+      "content": {},
+      "metadata": {},
+      "explanation": "Unresolved tension detected in system state",
+      "supporting_facts": [
+        "Tension exceeds threshold"
+      ],
+      "counter_evidence": []
+    },
+    "score": 0.5161653693031028,
+    "added_at": "2026-04-02T05:14:11.921130",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "2d7109f4-68a7-4751-ab18-5956f5fcaf26",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T05:14:11.805860",
+      "origin_cycle": "dev-2da989342da9c32a",
+      "confidence": 0.4502535414270669,
+      "trace_reference": "2da989342da9c32a",
+      "content": {},
+      "metadata": {},
+      "action_type": "observe",
+      "target": "internal_state",
+      "expected_outcome": "Gather more information about tension source",
+      "risk_assessment": {
+        "disruption": 0.1
+      }
+    },
+    "score": 0.39010141657082675,
+    "added_at": "2026-04-02T05:14:11.940910",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "972a4c56-ca1f-434c-b512-7a67592e09d6",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T05:14:12.289209",
+      "origin_cycle": "dev-6e18e4a999c9726a",
+      "confidence": 0.5,
+      "trace_reference": "6e18e4a999c9726a",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Replaying past cycle for verification",
+      "evidence_refs": [],
+      "alternatives": []
+    },
+    "score": 0.35,
+    "added_at": "2026-04-02T05:14:12.397646",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "919d3808-479c-4be0-9394-434e2f996d15",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T05:14:12.735636",
+      "origin_cycle": "dev-6e18e4a999c9726a",
+      "confidence": 0.5,
+      "trace_reference": "6e18e4a999c9726a",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Replaying past cycle for verification",
+      "evidence_refs": [],
+      "alternatives": []
+    },
+    "score": 0.35,
+    "added_at": "2026-04-02T05:14:12.849035",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "39c7c51f-4776-4c8e-9570-397b477f9bcd",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T05:14:13.220927",
+      "origin_cycle": "dev-345844a5206c548a",
+      "confidence": 0.7539528199645789,
+      "trace_reference": "345844a5206c548a",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.5115811279858316,
+    "added_at": "2026-04-02T05:14:13.330082",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "4ca14e5b-98f0-4aff-8486-d9b35c6bf3b5",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T05:14:13.674316",
+      "origin_cycle": "dev-9da3c43609d84531",
+      "confidence": 0.6734251620343553,
+      "trace_reference": "9da3c43609d84531",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.4793700648137421,
+    "added_at": "2026-04-02T05:14:13.781825",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "72d8dc28-eb60-4504-a636-a222f137784a",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T05:14:14.146668",
+      "origin_cycle": "dev-a6f2110432ffdf64",
+      "confidence": 0.7121597338591852,
+      "trace_reference": "a6f2110432ffdf64",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.4948638935436741,
+    "added_at": "2026-04-02T05:14:14.251590",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "4155cb67-9388-4f2a-8ea7-8b461b863a98",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T05:14:14.597022",
+      "origin_cycle": "dev-0866a6038b4cd50e",
+      "confidence": 0.7341305032384532,
+      "trace_reference": "0866a6038b4cd50e",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.5036522012953812,
+    "added_at": "2026-04-02T05:14:14.710902",
+    "status": "pending"
+  }
+]

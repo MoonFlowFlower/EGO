@@ -1,0 +1,10 @@
+{"cycle_id": "dev-5d913b162ab82f37", "success": true, "trigger": "idle", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "5d913b162ab82f37", "timestamp": "2026-04-02T05:14:10.514265"}
+{"cycle_id": "dev-418a2f6d88990930", "success": true, "trigger": "idle", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "418a2f6d88990930", "timestamp": "2026-04-02T05:14:10.997961"}
+{"cycle_id": "dev-5921ff1518ab6fc6", "success": true, "trigger": "idle", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "5921ff1518ab6fc6", "timestamp": "2026-04-02T05:14:11.455525"}
+{"cycle_id": "dev-2da989342da9c32a", "success": true, "trigger": "unresolved_tension", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "2da989342da9c32a", "timestamp": "2026-04-02T05:14:11.958961"}
+{"cycle_id": "dev-6e18e4a999c9726a", "success": true, "trigger": "replay_event", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "6e18e4a999c9726a", "timestamp": "2026-04-02T05:14:12.414732"}
+{"cycle_id": "dev-6e18e4a999c9726a", "success": true, "trigger": "replay_event", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "6e18e4a999c9726a", "timestamp": "2026-04-02T05:14:12.867235"}
+{"cycle_id": "dev-345844a5206c548a", "success": true, "trigger": "long_term_goal", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "345844a5206c548a", "timestamp": "2026-04-02T05:14:13.349037"}
+{"cycle_id": "dev-9da3c43609d84531", "success": true, "trigger": "long_term_goal", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "9da3c43609d84531", "timestamp": "2026-04-02T05:14:13.802924"}
+{"cycle_id": "dev-a6f2110432ffdf64", "success": true, "trigger": "long_term_goal", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "a6f2110432ffdf64", "timestamp": "2026-04-02T05:14:14.271069"}
+{"cycle_id": "dev-0866a6038b4cd50e", "success": true, "trigger": "long_term_goal", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "0866a6038b4cd50e", "timestamp": "2026-04-02T05:14:14.729359"}

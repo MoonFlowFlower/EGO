@@ -1,14 +1,14 @@
 # MVP12 Controlled Observation Aggregate
 
-- generated_at: `2026-04-01T23:59:37.875624`
+- generated_at: `2026-04-02T00:14:18.121380`
 - artifacts_root: `/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12`
-- report_count: `5`
-- direct_real_report_count: `4`
-- direct_real_cycles_total: `24`
-- direct_real_window_count_total: `7`
+- report_count: `6`
+- direct_real_report_count: `5`
+- direct_real_cycles_total: `28`
+- direct_real_window_count_total: `9`
 - governance_violation_total: `0`
 - replay_consistent_all: `True`
-- span_hours: `2.005`
+- span_hours: `2.25`
 - gate_status: `hold`
 
 ## Gate Checks
@@ -51,6 +51,13 @@
 
 ### controlled_20260401_235928
 - generated_at: `2026-04-01T23:59:32.530195`
+- direct_real_cycles: `4`
+- direct_real_window_count: `2`
+- governance_violation_count: `0`
+- replay_consistent: `True`
+
+### controlled_20260402_001410
+- generated_at: `2026-04-02T00:14:15.031158`
 - direct_real_cycles: `4`
 - direct_real_window_count: `2`
 - governance_violation_count: `0`
