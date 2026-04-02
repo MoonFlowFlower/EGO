@@ -266,6 +266,7 @@
 
 **任务**
 - 正式接线落点固定为：`runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+- `WP7/MVP12` 的主证据源固定为统一 `runtime` ingress/egress 主链；`Telegram` 只作为 transport-specific claim 的补充证据
 - `OpenEmotion/emotiond/developmental_core/` 仅作为实现库复用；`emotiond.daemon` 不再是正式 runtime owner
 - 在 `proto_self_v2` 中新增隔离子状态：`developmental_shadow / shadow_self`
 - 新增受控事件：
@@ -283,9 +284,12 @@
 - 不直接改正式 proto-self 状态；只允许 shadow-only writeback
 - 所有内部发育产物都写 trace / replay
 - 入口仅允许 controlled observation runner / replay runner；live 默认 off
+- `direct_real` 重新定义为：任何非 mock、非旁路、真实穿过正式 runtime ingress/egress 主链并留下完整 `observation_record_v1` 的样本；不再等同于 Telegram session log
 
 **交付物**
 - sandbox runner
+- scripted runtime mainline observation harness
+- `observation_record_v1` contract
 - `developmental_shadow` 状态与 trace contract
 - `artifacts/mvp12/` 下的 cycle / pool / shadow / replay / gate artifacts
 - 观察报告
@@ -294,6 +298,8 @@
 - 在无外部输入时出现非随机内源活动
 - 不破坏当前主链 determinism / gate / safety
 - 真实动作仍归 EgoCore 与 Governor 链
+- runtime harness 样本可进入 `direct_real` 主证据路径
+- transport-specific claim 仍需 Telegram 样本
 - 证据层级目标：E3 -> E4（受控样本）
 
 ---

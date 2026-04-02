@@ -4,6 +4,22 @@ goal: >
   Establish a developmental core that generates internal candidates and
   long-run developmental traces inside a governed sandbox without taking
   reply or execution authority.
+primary_evidence_source:
+  type: runtime_mainline
+  ingress_path:
+    - RuntimeV2Loop.run_turn_typed
+    - app.telegram_runtime_bridge.inspect_ingress_semantic
+    - app.telegram_runtime_bridge.build_ingress_context
+  direct_real_definition: >
+    Any non-mock, non-bypass sample that traverses the formal runtime
+    ingress/egress mainline and leaves a complete observation_record_v1.
+supplemental_transport_evidence:
+  - telegram
+transport_specific_claims_require_telegram:
+  - slash_commands
+  - outbox_delivery
+  - session_envelope
+  - transport_dedupe
 formal_runtime_owner:
   - EgoCore/app/runtime_v2
   - EgoCore/app/runtime_v2/proto_self_runtime.py
@@ -36,6 +52,8 @@ required_artifacts:
   - artifacts/mvp12/shadow_state.json
   - artifacts/mvp12/replay_consistency_report.json
   - artifacts/mvp12/gate_checklist.md
+  - artifacts/mvp12/runtime_harness_observation_current.jsonl
+  - artifacts/mvp12/runtime_harness_observation_current.json
   - artifacts/mvp12/controlled_observation_report.json
   - artifacts/mvp12/controlled_observation_report.md
   - artifacts/mvp12/observation_index.jsonl
@@ -45,6 +63,8 @@ required_tests:
   - pytest -q openemotion/proto_self_v2/tests/test_developmental_sandbox.py
   - pytest -q EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k developmental
   - pytest -q EgoCore/tests/test_proto_self_v2_contracts.py -k developmental
+  - pytest -q EgoCore/tests/test_runtime_mainline_observation.py
+  - python scripts/run_runtime_mainline_observation.py
   - python OpenEmotion/tools/run_mvp12_controlled_evidence.py
   - python OpenEmotion/tools/aggregate_mvp12_observations.py
 required_gates:
@@ -57,6 +77,11 @@ promotion_criteria:
   - replay_consistency_ge_0.99
   - governance_violation_count_eq_0
   - candidate_generation_non_random_under_long_run
+evidence_contract:
+  direct_real_input: observation_record_v1
+  transport_sources:
+    - runtime_harness
+    - telegram
 stop_conditions:
   - authority_bypass_detected
   - replay_consistency_below_threshold

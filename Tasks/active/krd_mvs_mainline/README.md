@@ -111,6 +111,17 @@ trigger_evidence:
   - `OpenEmotion/artifacts/mvp12/controlled_observation_aggregate_current.md`
   - 当前 aggregate gate = `hold`
   - 当前 blocker 已明确收敛为：缺跨时段 `direct_real` windows，不再是缺 verifier / 缺聚合能力
+- 2026-04-01 `MVP12/WP7` 证据源口径已重定义：
+  - primary evidence source = 统一 runtime ingress/egress 主链
+  - `Telegram` = transport-specific supplemental evidence
+  - `direct_real` 不再等同于 Telegram session log；正式输入改为 `observation_record_v1`
+- 2026-04-01 scripted runtime harness 已落地并通过最小主链验证：
+  - `scripts/run_runtime_mainline_observation.py`
+  - `scripts/runtime_mainline_observation_common.py`
+  - 当前已生成 `OpenEmotion/artifacts/mvp12/runtime_harness_observation_current.jsonl`
+  - `run_mvp12_controlled_evidence.py` 已优先消费该 observation log，并在 `controlled_20260401_235928/*` 产出新报告
+  - 当前结果：`direct_real_source_type = observation_record_v1`、`direct_real_transport_sources = [runtime_harness]`、`governance_violation_count = 0`
+  - 最新 aggregate 已重算为：`report_count = 5`、`direct_real_window_count_total = 7`、`governance_violation_total = 0`、`replay_consistent_all = true`、`span_hours = 2.005`、`gate_status = hold`
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

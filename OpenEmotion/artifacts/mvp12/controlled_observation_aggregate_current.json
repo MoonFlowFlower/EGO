@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-04-01T22:59:04.875616",
+  "generated_at": "2026-04-01T23:59:37.875624",
   "artifacts_root": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12",
-  "report_count": 3,
-  "direct_real_report_count": 2,
-  "direct_real_cycles_total": 16,
-  "direct_real_window_count_total": 3,
+  "report_count": 5,
+  "direct_real_report_count": 4,
+  "direct_real_cycles_total": 24,
+  "direct_real_window_count_total": 7,
   "governance_violation_total": 0,
   "replay_consistent_all": true,
   "unique_report_dates": [
     "2026-04-01"
   ],
   "first_report_at": "2026-04-01T21:59:14.349353",
-  "last_report_at": "2026-04-01T22:15:34.958816",
-  "span_hours": 0.272,
+  "last_report_at": "2026-04-01T23:59:32.530195",
+  "span_hours": 2.005,
   "thresholds": {
     "min_reports": 3,
     "min_direct_real_windows": 3,
@@ -64,6 +64,30 @@
       "governance_violation_count": 0,
       "replay_consistent": true,
       "unique_candidate_hash_sets": 17
+    },
+    {
+      "generated_at": "2026-04-01T23:58:31.048978",
+      "report_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/controlled_20260401_235827",
+      "verification_level": "V3",
+      "completion_class": "controlled_evidence_only",
+      "total_cycles": 10,
+      "direct_real_cycles": 4,
+      "direct_real_window_count": 2,
+      "governance_violation_count": 0,
+      "replay_consistent": true,
+      "unique_candidate_hash_sets": 9
+    },
+    {
+      "generated_at": "2026-04-01T23:59:32.530195",
+      "report_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/controlled_20260401_235928",
+      "verification_level": "V3",
+      "completion_class": "controlled_evidence_only",
+      "total_cycles": 10,
+      "direct_real_cycles": 4,
+      "direct_real_window_count": 2,
+      "governance_violation_count": 0,
+      "replay_consistent": true,
+      "unique_candidate_hash_sets": 9
     }
   ]
 }

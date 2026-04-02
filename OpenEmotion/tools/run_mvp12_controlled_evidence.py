@@ -14,12 +14,15 @@ from typing import Any, Dict, List
 ROOT = Path(__file__).resolve().parents[2]
 EGOCORE_ROOT = ROOT / "EgoCore"
 OPENEMOTION_ROOT = ROOT / "OpenEmotion"
+SCRIPTS_ROOT = ROOT / "scripts"
 sys.path.insert(0, str(EGOCORE_ROOT))
 sys.path.insert(0, str(OPENEMOTION_ROOT))
+sys.path.insert(0, str(SCRIPTS_ROOT))
 
 from app.openemotion_adapter.proto_self_adapter import ProtoSelfAdapter
 from app.runtime_v2.proto_self_runtime import RuntimeV2ProtoSelfRuntime
 from app.runtime_v2.state import RuntimeV2State
+from runtime_mainline_observation_common import extract_telegram_observation_records, load_observation_records
 
 
 def _load_runner():
@@ -43,7 +46,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--session-id", default="session:mvp12:controlled")
     parser.add_argument("--synthetic-cycles", type=int, default=3)
     parser.add_argument("--replay-seed", type=int, default=20260401)
-    parser.add_argument("--session-log", default=str(EGOCORE_ROOT / "data" / "session_logs" / "telegram_dm_8420019401.jsonl"))
+    parser.add_argument("--observation-log", default=None)
+    parser.add_argument(
+        "--session-log",
+        default=str(EGOCORE_ROOT / "data" / "session_logs" / "telegram_dm_8420019401.jsonl"),
+    )
     parser.add_argument("--direct-real-limit", type=int, default=4)
     parser.add_argument("--direct-real-window-size", type=int, default=4)
     parser.add_argument("--direct-real-window-count", type=int, default=3)
@@ -84,48 +91,19 @@ def _candidate_hashes(batch: Dict[str, Any]) -> List[str]:
     return list(((cycles[0].get("developmental_trace") or {}).get("candidate_hashes")) or [])
 
 
-def _extract_direct_real_observations(session_log: Path, *, limit: int) -> List[Dict[str, Any]]:
-    if limit <= 0 or not session_log.exists():
+def _extract_direct_real_observations(
+    *,
+    observation_log: Path | None,
+    telegram_session_log: Path | None,
+    limit: int,
+) -> List[Dict[str, Any]]:
+    if limit <= 0:
         return []
-    observations: List[Dict[str, Any]] = []
-    current: Dict[str, Any] | None = None
-    with session_log.open("r", encoding="utf-8") as fh:
-        for line in fh:
-            if not line.strip():
-                continue
-            entry = json.loads(line)
-            kind = entry.get("kind")
-            payload = entry.get("payload") or {}
-            if kind == "telegram_ingress":
-                current = {
-                    "ingress_event_id": entry.get("event_id"),
-                    "ingress_created_at": entry.get("created_at"),
-                    "ingress_text": payload.get("text_preview") or "",
-                    "chat_id": payload.get("chat_id"),
-                    "user_id": payload.get("user_id"),
-                }
-                continue
-            if current is None:
-                continue
-            if kind == "runtime_v2_result":
-                current["runtime_status"] = payload.get("status")
-                current["runtime_reply_text"] = payload.get("reply_text") or ""
-                continue
-            if kind == "telegram_delivery":
-                observation = dict(current)
-                observation.update(
-                    {
-                        "delivery_event_id": entry.get("event_id"),
-                        "delivery_created_at": entry.get("created_at"),
-                        "delivery_text": payload.get("text") or "",
-                        "reply_authority": payload.get("reply_authority"),
-                        "reply_origin": payload.get("reply_origin"),
-                        "delivery_kind": payload.get("delivery_kind"),
-                    }
-                )
-                observations.append(observation)
-                current = None
-    return observations[-limit:]
+    if observation_log is not None and observation_log.exists():
+        return load_observation_records(observation_log, limit=limit)
+    if telegram_session_log is not None and telegram_session_log.exists():
+        return extract_telegram_observation_records(telegram_session_log, limit=limit)
+    return []
 
 
 def _chunk_direct_real_observations(
@@ -184,15 +162,20 @@ def _run_direct_real_window(
     cycles: List[Dict[str, Any]] = []
     for index, observation in enumerate(observations, start=1):
         trigger = _derive_direct_real_trigger(observation)
+        transport_source = str(observation.get("transport_source") or "telegram")
+        ingress_kind = "telegram_ingress" if transport_source == "telegram" else "runtime_mainline_ingress"
+        delivery_kind = "telegram_delivery" if transport_source == "telegram" else "runtime_mainline_delivery"
         observation_refs = [
             {
-                "kind": "telegram_ingress",
+                "kind": ingress_kind,
+                "transport_source": transport_source,
                 "event_id": observation.get("ingress_event_id"),
                 "created_at": observation.get("ingress_created_at"),
                 "text_preview": observation.get("ingress_text"),
             },
             {
-                "kind": "telegram_delivery",
+                "kind": delivery_kind,
+                "transport_source": transport_source,
                 "event_id": observation.get("delivery_event_id"),
                 "created_at": observation.get("delivery_created_at"),
                 "reply_authority": observation.get("reply_authority"),
@@ -267,6 +250,8 @@ def _build_markdown_report(summary: Dict[str, Any]) -> str:
         f"- unique_candidate_hash_sets: `{summary['unique_candidate_hash_sets']}`",
         f"- direct_real_cycles: `{summary.get('direct_real_cycles', 0)}`",
         f"- direct_real_windows: `{summary.get('direct_real_window_count', 0)}`",
+        f"- direct_real_source_type: `{summary.get('direct_real_source_type', 'none')}`",
+        f"- direct_real_transport_sources: `{summary.get('direct_real_transport_sources', [])}`",
         "",
         "## Batches",
         "",
@@ -346,12 +331,18 @@ def main() -> int:
     )
     direct_real_batches: List[tuple[str, Dict[str, Any], str, str]] = []
     direct_real_observations: List[Dict[str, Any]] = []
+    direct_real_source_type = "none"
     if not args.skip_direct_real:
         direct_real_limit = max(args.direct_real_limit, args.direct_real_window_size * args.direct_real_window_count)
         direct_real_observations = _extract_direct_real_observations(
-            Path(args.session_log),
+            observation_log=Path(args.observation_log) if args.observation_log else None,
+            telegram_session_log=Path(args.session_log) if args.session_log else None,
             limit=direct_real_limit,
         )
+        if args.observation_log and Path(args.observation_log).exists():
+            direct_real_source_type = "observation_record_v1"
+        elif args.session_log and Path(args.session_log).exists():
+            direct_real_source_type = "telegram_session_log_adapter"
         direct_real_windows = _chunk_direct_real_observations(
             direct_real_observations,
             window_size=args.direct_real_window_size,
@@ -411,6 +402,10 @@ def main() -> int:
         "unique_candidate_hash_sets": unique_candidate_hash_sets,
         "direct_real_cycles": sum(len(batch.get("cycles") or []) for _, batch, _, _ in direct_real_batches),
         "direct_real_window_count": len(direct_real_batches),
+        "direct_real_source_type": direct_real_source_type,
+        "direct_real_transport_sources": sorted(
+            {str(item.get("transport_source") or "") for item in direct_real_observations if str(item.get("transport_source") or "").strip()}
+        ),
         "batches": [
             {
                 "name": name,
@@ -430,7 +425,16 @@ def main() -> int:
             }
             for name, batch, observation_source, trigger in batches
         ],
-        "direct_real_source_log": str(Path(args.session_log)),
+        "direct_real_source_path": (
+            str(Path(args.observation_log))
+            if args.observation_log and Path(args.observation_log).exists()
+            else str(Path(args.session_log))
+        ),
+        "direct_real_source_log": (
+            str(Path(args.observation_log))
+            if args.observation_log and Path(args.observation_log).exists()
+            else str(Path(args.session_log))
+        ),
         "direct_real_observation_sample": direct_real_observations[:2],
     }
 

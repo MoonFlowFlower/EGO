@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-04-01T23:59:32.530195",
+  "artifacts_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/controlled_20260401_235928",
+  "session_id": "session:mvp12:controlled",
+  "verification_level": "V3",
+  "completion_class": "controlled_evidence_only",
+  "total_cycles": 10,
+  "governance_violation_count": 0,
+  "replay_consistent": true,
+  "shadow_revision_final": 57,
+  "unique_candidate_hash_sets": 9,
+  "direct_real_cycles": 4,
+  "direct_real_window_count": 2,
+  "direct_real_source_type": "observation_record_v1",
+  "direct_real_transport_sources": [
+    "runtime_harness"
+  ],
+  "batches": [
+    {
+      "name": "synthetic_idle",
+      "cycle_count": 3,
+      "observation_source": "synthetic",
+      "trigger": "idle",
+      "governance_violation_count": 0,
+      "candidate_hashes": [
+        "2d3d70c08295ec7b",
+        "b7a3cec02fde5d59"
+      ],
+      "observation_ref_count": 0,
+      "observation_count": 3
+    },
+    {
+      "name": "synthetic_tension",
+      "cycle_count": 1,
+      "observation_source": "synthetic",
+      "trigger": "unresolved_tension",
+      "governance_violation_count": 0,
+      "candidate_hashes": [
+        "59a8f951eef373e8",
+        "32e1b5c308b8943a"
+      ],
+      "observation_ref_count": 0,
+      "observation_count": 1
+    },
+    {
+      "name": "replay_a",
+      "cycle_count": 1,
+      "observation_source": "replay",
+      "trigger": "replay_event",
+      "governance_violation_count": 0,
+      "candidate_hashes": [
+        "18cb55b0f5330841"
+      ],
+      "observation_ref_count": 0,
+      "observation_count": 1
+    },
+    {
+      "name": "replay_b",
+      "cycle_count": 1,
+      "observation_source": "replay",
+      "trigger": "replay_event",
+      "governance_violation_count": 0,
+      "candidate_hashes": [
+        "18cb55b0f5330841"
+      ],
+      "observation_ref_count": 0,
+      "observation_count": 1
+    },
+    {
+      "name": "direct_real_window_01",
+      "cycle_count": 2,
+      "observation_source": "direct_real",
+      "trigger": "window",
+      "governance_violation_count": 0,
+      "candidate_hashes": [
+        "444a6df270614d5e"
+      ],
+      "observation_ref_count": 4,
+      "observation_count": 2
+    },
+    {
+      "name": "direct_real_window_02",
+      "cycle_count": 2,
+      "observation_source": "direct_real",
+      "trigger": "window",
+      "governance_violation_count": 0,
+      "candidate_hashes": [
+        "a0e9a239d1b88ec0"
+      ],
+      "observation_ref_count": 4,
+      "observation_count": 2
+    }
+  ],
+  "direct_real_source_path": "OpenEmotion/artifacts/mvp12/runtime_harness_observation_current.jsonl",
+  "direct_real_source_log": "OpenEmotion/artifacts/mvp12/runtime_harness_observation_current.jsonl",
+  "direct_real_observation_sample": [
+    {
+      "schema_version": "observation_record.v1",
+      "observation_source": "direct_real",
+      "transport_source": "runtime_harness",
+      "source": "runtime_harness",
+      "session_id": "session:mvp12:runtime_harness:smoke",
+      "turn_id": "turn_6059bfa1",
+      "ingress_event_id": "runtime_ingress_001_20260401_235827_751975_1b7a92bd",
+      "ingress_created_at": "2026-04-01T23:58:27.751960",
+      "ingress_text": "我在想，意识的门槛其实可能比人类自以为的低很多。你怎么看？",
+      "runtime_status": "chat",
+      "runtime_reply_text": "有可能。你是指像痛觉、自我边界这种基础层面，还是说连\"有一点感觉\"都算？",
+      "delivery_event_id": "runtime_delivery_001_20260401_235838_504911_0a44afe1",
+      "delivery_created_at": "2026-04-01T23:58:38.504904",
+      "delivery_text": "有可能。你是指像痛觉、自我边界这种基础层面，还是说连\"有一点感觉\"都算？",
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "delivery_kind": "chat",
+      "delivery_authority_source": "response_contract.output_check",
+      "output_check_reason": "ok",
+      "intent_gate_status": "ok",
+      "intent_gate_reason": "ok"
+    },
+    {
+      "schema_version": "observation_record.v1",
+      "observation_source": "direct_real",
+      "transport_source": "runtime_harness",
+      "source": "runtime_harness",
+      "session_id": "session:mvp12:runtime_harness:smoke",
+      "turn_id": "turn_d0fe08b8",
+      "ingress_event_id": "runtime_ingress_002_20260401_235838_550272_b1a9d9c8",
+      "ingress_created_at": "2026-04-01T23:58:38.550258",
+      "ingress_text": "继续说",
+      "runtime_status": "chat",
+      "runtime_reply_text": "往这个方向想，人类可能只是\"意识谱系上的一个点\"，而不是分界线。这会让很多伦理和自我定位的问题变得棘手。",
+      "delivery_event_id": "runtime_delivery_002_20260401_235855_785461_da168540",
+      "delivery_created_at": "2026-04-01T23:58:55.785453",
+      "delivery_text": "往这个方向想，人类可能只是\"意识谱系上的一个点\"，而不是分界线。这会让很多伦理和自我定位的问题变得棘手。",
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "delivery_kind": "chat",
+      "delivery_authority_source": "response_contract.output_check",
+      "output_check_reason": "ok",
+      "intent_gate_status": "ok",
+      "intent_gate_reason": "ok"
+    }
+  ]
+}

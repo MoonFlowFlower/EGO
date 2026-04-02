@@ -1,0 +1,24 @@
+{
+  "cycle_id": "dev-6e18e4a999c9726a",
+  "seed": 3761730430,
+  "trigger": "replay_event",
+  "trace_hash": "6e18e4a999c9726a",
+  "candidates": [
+    {
+      "id": "b1c0a500-71ba-4b6d-8224-d52984dc4406",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T04:59:30.861486",
+      "origin_cycle": "dev-6e18e4a999c9726a",
+      "confidence": 0.5,
+      "trace_reference": "6e18e4a999c9726a",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Replaying past cycle for verification",
+      "evidence_refs": [],
+      "alternatives": []
+    }
+  ],
+  "completed_at": "2026-04-02T04:59:30.911106",
+  "success": true,
+  "error": null
+}
