@@ -40,6 +40,21 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 
 ## 最近更新
 
+### 2026-04-02: MVP12-A controlled idle scheduler 已接到 pending draft state
+- `MVP12-A` 现在不止能生成 proactive draft，还能在受控 idle 窗口里把 draft 挂成 `pending_proactive_followup`
+- 运行时新增：
+  - `ChatState.last_user_turn_at / last_assistant_reply_at / last_activity_at`
+  - `RuntimeV2State.pending_proactive_followup`
+  - `EgoCore/app/runtime_v2/initiative_scheduler.py`
+- 当前受控 runner 与 artifact：
+  - `EgoCore/tools/run_mvp12_idle_scheduler.py`
+  - `OpenEmotion/artifacts/mvp12/idle_scheduler_current.json`
+  - `OpenEmotion/artifacts/mvp12/idle_scheduler_current.md`
+- 当前验证口径：
+  - 定向测试 `30 passed`
+  - controlled smoke 已产出 `status = pending_created`、`delivery_status = pending`
+  - 仍未启用 live idle scheduler，也未允许 Telegram unsolicited delivery
+
 ### 2026-04-02: MVP12-A controlled proactive followup draft 链落地
 - `MVP12` 已新增第一条“会自己冒一句”的正式受控脚手架，但当前仍是 **draft only**
 - OpenEmotion 会在 `developmental_tick` 中输出 `background_thought_candidates`

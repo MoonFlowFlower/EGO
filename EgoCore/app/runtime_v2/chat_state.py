@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import time
 from typing import Any, Dict, List, Literal, Optional
 
 from app.response.relationship_context import RelationshipContext, RelationshipEvent
@@ -41,6 +42,9 @@ class ChatState:
     session_id: str = ""
     recent_user_turns: List[str] = field(default_factory=list)
     recent_assistant_replies: List[str] = field(default_factory=list)
+    last_user_turn_at: Optional[float] = None
+    last_assistant_reply_at: Optional[float] = None
+    last_activity_at: Optional[float] = None
     last_user_tone_feedback: Optional[str] = None
     relationship_context: Dict[str, Any] = field(default_factory=dict)
     style_profile: Dict[str, Any] = field(default_factory=dict)
@@ -60,6 +64,9 @@ class ChatState:
             "session_id": self.session_id,
             "recent_user_turns": list(self.recent_user_turns),
             "recent_assistant_replies": list(self.recent_assistant_replies),
+            "last_user_turn_at": self.last_user_turn_at,
+            "last_assistant_reply_at": self.last_assistant_reply_at,
+            "last_activity_at": self.last_activity_at,
             "last_user_tone_feedback": self.last_user_tone_feedback,
             "relationship_context": dict(self.relationship_context or {}),
             "style_profile": dict(self.style_profile or {}),
@@ -73,6 +80,9 @@ class ChatState:
             session_id=session_id,
             recent_user_turns=list((payload or {}).get("recent_user_turns") or []),
             recent_assistant_replies=list((payload or {}).get("recent_assistant_replies") or []),
+            last_user_turn_at=(payload or {}).get("last_user_turn_at"),
+            last_assistant_reply_at=(payload or {}).get("last_assistant_reply_at"),
+            last_activity_at=(payload or {}).get("last_activity_at"),
             last_user_tone_feedback=(payload or {}).get("last_user_tone_feedback"),
             relationship_context=dict((payload or {}).get("relationship_context") or {}),
             style_profile=dict((payload or {}).get("style_profile") or {}),
@@ -93,8 +103,11 @@ class ChatState:
     ) -> None:
         self.ensure_defaults(self.session_id)
         text = str(user_text or "").strip()
+        now_ts = time.time()
         if text:
             self.recent_user_turns = _trim_recent(self.recent_user_turns + [text])
+            self.last_user_turn_at = now_ts
+            self.last_activity_at = now_ts
         self.last_chat_act = chat_act or self.last_chat_act
         self.active_task_summary = dict(active_task_summary or {}) if active_task_summary else None
 
@@ -133,8 +146,11 @@ class ChatState:
     def finalize_turn(self, *, assistant_reply: str, chat_act: str) -> None:
         self.ensure_defaults(self.session_id)
         reply = str(assistant_reply or "").strip()
+        now_ts = time.time()
         if reply:
             self.recent_assistant_replies = _trim_recent(self.recent_assistant_replies + [reply])
+            self.last_assistant_reply_at = now_ts
+            self.last_activity_at = now_ts
 
         relationship = RelationshipContext.from_dict(self.relationship_context)
         style = StyleProfile.from_dict(self.style_profile)
@@ -153,3 +169,10 @@ class ChatState:
             for text in self.recent_assistant_replies[-limit:]
             if normalize_chat_reply(text)
         ]
+
+    def idle_seconds(self, *, now_ts: Optional[float] = None) -> float:
+        anchor = self.last_activity_at or self.last_assistant_reply_at or self.last_user_turn_at
+        if anchor is None:
+            return 0.0
+        current = time.time() if now_ts is None else float(now_ts)
+        return max(0.0, current - float(anchor))

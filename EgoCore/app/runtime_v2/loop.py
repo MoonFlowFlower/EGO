@@ -266,6 +266,7 @@ class RuntimeV2Loop:
 
         # 截断后再存储，防止文件内容进入 state
         truncated_input = _truncate_user_input(user_input)
+        state.clear_pending_proactive_followup()
         state.last_user_turn = truncated_input
         state.record("user", {"text": truncated_input})
 

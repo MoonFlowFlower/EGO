@@ -277,6 +277,7 @@ class RuntimeV2State:
     output_obligations: List[Dict[str, Any]] = field(default_factory=list)
     run_items: List[Dict[str, Any]] = field(default_factory=list)
     pending_task_conflict: Optional[Dict[str, Any]] = None
+    pending_proactive_followup: Optional[Dict[str, Any]] = None
     active_item_id: Optional[str] = None
     pending_run_events: List[Dict[str, Any]] = field(default_factory=list)
     last_delivered_evidence_context: Optional[Dict[str, Any]] = None
@@ -346,6 +347,7 @@ class RuntimeV2State:
             "output_obligations": self.output_obligations,
             "run_items": _summarize_run_items(self.run_items),
             "pending_task_conflict": self.pending_task_conflict,
+            "pending_proactive_followup": self.pending_proactive_followup,
             "active_item_id": self.active_item_id,
             "pending_run_events_count": len(self.pending_run_events),
             "chat_state": self.get_chat_state().to_dict(),
@@ -397,6 +399,7 @@ class RuntimeV2State:
             "output_obligations": list(self.output_obligations),
             "run_items": _summarize_run_items(self.run_items),
             "pending_task_conflict": self.pending_task_conflict,
+            "pending_proactive_followup": self.pending_proactive_followup,
             "active_item_id": self.active_item_id,
             "pending_run_events_count": len(self.pending_run_events),
             "chat_state": {
@@ -567,6 +570,7 @@ class RuntimeV2State:
         self.output_obligations = []
         self.run_items = []
         self.pending_task_conflict = None
+        self.pending_proactive_followup = None
         self.active_item_id = None
         self.pending_run_events = []
         self.last_delivered_evidence_context = None
@@ -603,6 +607,7 @@ class RuntimeV2State:
         self.final_sent = False
         self.pending_progress_events = []
         self.autonomy_context = None
+        self.pending_proactive_followup = None
 
         self.last_delivered_evidence_context = evidence_context
         self.last_evidence_read_result = evidence_compat
@@ -636,6 +641,7 @@ class RuntimeV2State:
         self.pending_progress_events = []
         self.pending_run_events = []
         self.pending_task_conflict = None
+        self.pending_proactive_followup = None
         self.active_item_id = None
         self.active_turn_id = None
         self.active_turn_status = "idle"
@@ -701,6 +707,7 @@ class RuntimeV2State:
         self.output_obligations = []
         self.run_items = []
         self.pending_task_conflict = None
+        self.pending_proactive_followup = None
         self.active_item_id = None
         self.pending_run_events = []
         self.last_delivered_evidence_context = None
@@ -852,6 +859,15 @@ class RuntimeV2State:
 
     def clear_pending_task_conflict(self) -> None:
         self.pending_task_conflict = None
+
+    def set_pending_proactive_followup(self, payload: Optional[Dict[str, Any]]) -> None:
+        self.pending_proactive_followup = dict(payload or {}) if payload else None
+
+    def get_pending_proactive_followup(self) -> Optional[Dict[str, Any]]:
+        return dict(self.pending_proactive_followup or {}) if self.pending_proactive_followup else None
+
+    def clear_pending_proactive_followup(self) -> None:
+        self.pending_proactive_followup = None
 
     def ensure_active_run_item_started(self) -> Optional[RunItem]:
         items = self.get_run_items()
@@ -1328,6 +1344,9 @@ class RuntimeV2State:
                 summary["run_item_summary"] = run_summary
         return summary
 
+    def idle_seconds_since_chat_activity(self, *, now_ts: Optional[float] = None) -> float:
+        return self.get_chat_state().idle_seconds(now_ts=now_ts)
+
     def prepare_chat_turn(self, *, user_text: str, chat_act: str) -> None:
         self.get_chat_state().prepare_turn(
             user_text=user_text,
@@ -1418,6 +1437,7 @@ class RuntimeV2State:
             "output_obligations": list(self.output_obligations),
             "run_items": list(self.run_items),
             "pending_task_conflict": self.pending_task_conflict,
+            "pending_proactive_followup": self.pending_proactive_followup,
             "active_item_id": self.active_item_id,
             "pending_run_events": list(self.pending_run_events),
             "last_delivered_evidence_context": self.last_delivered_evidence_context,
@@ -1480,6 +1500,7 @@ class RuntimeV2State:
         state.output_obligations = list(snapshot.get("output_obligations") or [])
         state.run_items = list(snapshot.get("run_items") or [])
         state.pending_task_conflict = snapshot.get("pending_task_conflict")
+        state.pending_proactive_followup = snapshot.get("pending_proactive_followup")
         state.active_item_id = snapshot.get("active_item_id")
         state.pending_run_events = list(snapshot.get("pending_run_events") or [])
         state.last_delivered_evidence_context = (
