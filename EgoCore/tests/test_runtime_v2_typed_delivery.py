@@ -152,12 +152,12 @@ async def test_telegram_runtime_v2_chat_delivery_settles_turn_to_terminal():
     assert state.active_turn_status == "running"
 
     result = RuntimeV2TurnResult(
-        status="chat_replied",
+        status="chat",
         state=state,
         reply=RuntimeV2Reply(
             reply_text="我继续想了想，那个比喻还没说完。",
-            delivery_kind="final",
-            status="chat_replied",
+            delivery_kind="chat",
+            status="chat",
         ),
     )
 

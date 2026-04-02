@@ -4121,7 +4121,8 @@ class TelegramBot:
                     delivery_was_chunked=bool((send_result or {}).get("was_chunked")),
                     source_assistant_message_id=(send_result or {}).get("last_message_id"),
                 )
-            if getattr(result, "delivery_kind", "final") == "final" or result.status in {
+            if getattr(result, "delivery_kind", "final") in {"final", "chat"} or result.status in {
+                "chat",
                 "completed_verified",
                 "completed",
                 "blocked",
