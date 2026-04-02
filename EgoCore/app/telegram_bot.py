@@ -217,6 +217,7 @@ class TelegramBot:
         self._run_started = False
         # Stale reply suppression: remember latest ingress message per session.
         self._latest_message_id_by_session: dict[str, int] = {}
+        self._chat_id_by_session: dict[str, int] = {}
         self._delivery_dedupe_policy = DeliveryDedupePolicy()
         self._message_bus = get_message_bus()
         self._session_worker_pool = get_session_worker_pool()
@@ -1047,6 +1048,24 @@ class TelegramBot:
         except Exception as e:
             logger.warning(f"[E4-EVIDENCE] Failed to capture direct outbox_record: {e}")
 
+    def _remember_session_transport_binding(self, session_key: str, chat_id: Optional[int]) -> None:
+        if isinstance(chat_id, int):
+            self._chat_id_by_session[session_key] = int(chat_id)
+
+    def _resolve_proactive_chat_id(self, session_key: str, explicit_chat_id: Optional[int] = None) -> Optional[int]:
+        if isinstance(explicit_chat_id, int):
+            return int(explicit_chat_id)
+        mapped = self._chat_id_by_session.get(session_key)
+        if isinstance(mapped, int):
+            return int(mapped)
+        parts = str(session_key or "").split(":")
+        if len(parts) == 3 and parts[0] == "telegram" and parts[1] in {"dm", "group"}:
+            try:
+                return int(parts[2])
+            except (TypeError, ValueError):
+                return None
+        return None
+
     def _build_recent_read_followup_reply(self, state: RuntimeV2State, text: str) -> Optional[str]:
         snapshot = getattr(state, "last_delivered_evidence_context", None) or getattr(state, "last_evidence_read_result", None)
         if not isinstance(snapshot, dict):
@@ -1079,10 +1098,12 @@ class TelegramBot:
 
     async def _send_chat_message(self, chat_id: int, text: str, *, finalize_evidence: bool = True):
         if not self.app or not getattr(self.app, "bot", None):
-            return {"sent_count": 0, "was_chunked": False}
+            return {"sent_count": 0, "was_chunked": False, "last_message_id": None, "message_records": []}
 
         chunks = self._chunk_telegram_text(text)
         sent_count = 0
+        last_message_id = None
+        message_records: list[dict[str, Any]] = []
         for index, chunk in enumerate(chunks):
             sent_message = None
             try:
@@ -1092,13 +1113,200 @@ class TelegramBot:
                 continue
 
             sent_count += 1
+            last_message_id = getattr(sent_message, "message_id", None)
+            message_records.append(
+                {
+                    "chat_id": sent_message.chat.id if getattr(sent_message, "chat", None) else chat_id,
+                    "message_id": getattr(sent_message, "message_id", None),
+                    "date": sent_message.date.isoformat() if getattr(sent_message, "date", None) else None,
+                    "text_length": len(chunk),
+                    "success": True,
+                }
+            )
             self._capture_telegram_outbox_record(
                 sent_message,
                 text_length=len(chunk),
                 finalize_evidence=finalize_evidence and index == len(chunks) - 1,
             )
 
-        return {"sent_count": sent_count, "was_chunked": len(chunks) > 1}
+        return {
+            "sent_count": sent_count,
+            "was_chunked": len(chunks) > 1,
+            "last_message_id": last_message_id,
+            "message_records": message_records,
+        }
+
+    async def drain_pending_proactive_outbox_to_telegram(
+        self,
+        session_key: str,
+        *,
+        chat_id: Optional[int] = None,
+        max_events: Optional[int] = None,
+        finalize_evidence: bool = False,
+    ) -> dict[str, Any]:
+        state = self._get_runtime_state(session_key)
+        if not state.has_pending_proactive_outbox_events():
+            return {
+                "status": "held",
+                "reason": "no_pending_outbox_events",
+                "sent_records": [],
+                "remaining_events": [],
+            }
+        if not self.app or not getattr(self.app, "bot", None):
+            return {
+                "status": "held",
+                "reason": "telegram_transport_unavailable",
+                "sent_records": [],
+                "remaining_events": state.peek_proactive_outbox_events(),
+            }
+
+        resolved_chat_id = self._resolve_proactive_chat_id(session_key, explicit_chat_id=chat_id)
+        if not isinstance(resolved_chat_id, int):
+            return {
+                "status": "held",
+                "reason": "missing_telegram_chat_id",
+                "sent_records": [],
+                "remaining_events": state.peek_proactive_outbox_events(),
+            }
+        if not self.is_allowed(resolved_chat_id):
+            return {
+                "status": "held",
+                "reason": "chat_not_allowed",
+                "sent_records": [],
+                "remaining_events": state.peek_proactive_outbox_events(),
+            }
+
+        queued_events = state.pop_proactive_outbox_events()
+        if isinstance(max_events, int) and max_events > 0 and len(queued_events) > max_events:
+            active_events = queued_events[:max_events]
+            deferred_events = queued_events[max_events:]
+        else:
+            active_events = queued_events
+            deferred_events = []
+
+        sent_records: list[dict[str, Any]] = []
+        remaining_events: list[dict[str, Any]] = list(deferred_events)
+        context_store = get_session_context_store()
+        chat_state = state.get_chat_state()
+
+        for index, event in enumerate(active_events):
+            reply_text = str(event.get("reply_text") or "").strip()
+            if not reply_text:
+                state.record(
+                    "proactive_followup_transport",
+                    {
+                        "status": "dropped_empty",
+                        "initiative_candidate_id": event.get("initiative_candidate_id"),
+                    },
+                )
+                continue
+
+            request_id = str(event.get("initiative_candidate_id") or "").strip() or None
+            delivery_identity = self._build_delivery_identity(
+                session_key=session_key,
+                ingress_message_id=None,
+                reply_text=reply_text,
+                request_id=request_id,
+                delivery_kind="proactive",
+            )
+            if self._delivery_dedupe_policy.should_suppress(delivery_identity):
+                state.record(
+                    "proactive_followup_transport",
+                    {
+                        "status": "duplicate_suppressed",
+                        "initiative_candidate_id": event.get("initiative_candidate_id"),
+                        "reply_origin": event.get("reply_origin"),
+                        "reply_authority": event.get("reply_authority"),
+                    },
+                )
+                continue
+
+            send_result = await self._send_chat_message(
+                resolved_chat_id,
+                reply_text,
+                finalize_evidence=finalize_evidence,
+            )
+            if int(send_result.get("sent_count") or 0) <= 0:
+                remaining_events.append(dict(event))
+                remaining_events.extend(dict(item) for item in active_events[index + 1 :])
+                break
+
+            self._delivery_dedupe_policy.mark_sent(delivery_identity)
+            context_store.add_turn(session_key, "assistant", reply_text)
+            chat_state.finalize_turn(assistant_reply=reply_text, chat_act="thread_continue")
+            sent_record = {
+                "schema_version": "mvp12.telegram_outbox_record.v1",
+                "session_id": session_key,
+                "chat_id": resolved_chat_id,
+                "transport_source": "telegram",
+                "delivery_status": "sent",
+                "outbox_status": "sent",
+                "reply_text": reply_text,
+                "text_length": event.get("text_length") or len(reply_text),
+                "reply_authority": event.get("reply_authority"),
+                "reply_origin": event.get("reply_origin"),
+                "authority_source": event.get("authority_source"),
+                "initiative_mode": event.get("initiative_mode"),
+                "initiative_candidate_id": event.get("initiative_candidate_id"),
+                "initiative_source_cycle": event.get("initiative_source_cycle"),
+                "initiative_source_hash": event.get("initiative_source_hash"),
+                "initiative_score": event.get("initiative_score"),
+                "outbox_lane": event.get("outbox_lane"),
+                "last_message_id": send_result.get("last_message_id"),
+                "was_chunked": bool(send_result.get("was_chunked")),
+                "message_records": list(send_result.get("message_records") or []),
+                "queued_event": dict(event),
+            }
+            sent_records.append(sent_record)
+            state.record(
+                "proactive_followup_transport",
+                {
+                    "status": "sent",
+                    "initiative_candidate_id": sent_record.get("initiative_candidate_id"),
+                    "reply_origin": sent_record.get("reply_origin"),
+                    "reply_authority": sent_record.get("reply_authority"),
+                    "message_id": sent_record.get("last_message_id"),
+                    "text_preview": reply_text[:120],
+                },
+            )
+            await self._publish_phase1_event(
+                session_key=session_key,
+                kind="telegram_proactive_delivery",
+                trace_id=request_id,
+                message_id=sent_record.get("last_message_id"),
+                payload={
+                    "chat_id": resolved_chat_id,
+                    "reply_text": reply_text[:1000],
+                    "reply_authority": sent_record.get("reply_authority"),
+                    "reply_origin": sent_record.get("reply_origin"),
+                    "initiative_candidate_id": sent_record.get("initiative_candidate_id"),
+                    "outbox_lane": sent_record.get("outbox_lane"),
+                    "transport_source": "telegram",
+                },
+            )
+
+        if hasattr(state, "set_proactive_outbox_events"):
+            state.set_proactive_outbox_events(remaining_events)
+        else:
+            for event in remaining_events:
+                state.push_proactive_outbox_event(event)
+
+        if sent_records and not remaining_events:
+            status = "sent"
+            reason = "ok"
+        elif sent_records:
+            status = "partial"
+            reason = "send_failed_midway"
+        else:
+            status = "held"
+            reason = "send_failed"
+        return {
+            "status": status,
+            "reason": reason,
+            "chat_id": resolved_chat_id,
+            "sent_records": sent_records,
+            "remaining_events": state.peek_proactive_outbox_events(),
+        }
 
     def _select_autonomy_executor_kind(self, ingress, state) -> AutonomyExecutorKind:
         return (
@@ -1673,6 +1881,7 @@ class TelegramBot:
         text = update.message.text
         command, args = self.router.parse_command(text)
         session_key = self._resolve_session_key(update, chat_id, user_id)
+        self._remember_session_transport_binding(session_key, chat_id)
 
         self._start_evidence_capture_for_update(
             update,
@@ -2151,6 +2360,7 @@ class TelegramBot:
         trace_id = uuid.uuid4().hex[:10]
         msg_id = update.message.message_id if update.message else None
         session_key = self._resolve_session_key(update, chat_id, user_id)
+        self._remember_session_transport_binding(session_key, chat_id)
         if msg_id is not None:
             prev = self._latest_message_id_by_session.get(session_key)
             self._latest_message_id_by_session[session_key] = max(int(msg_id), int(prev)) if prev is not None else int(msg_id)
@@ -2201,6 +2411,7 @@ class TelegramBot:
 
         document = update.message.document
         session_key = self._resolve_session_key(update, chat_id, user_id)
+        self._remember_session_transport_binding(session_key, chat_id)
         trace_id = uuid.uuid4().hex[:10]
         msg_id = update.message.message_id
 

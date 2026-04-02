@@ -43,13 +43,14 @@ in_scope:
   - controlled_proactive_delivery_lane
   - host_proactive_outbox_lane
   - controlled_outbox_drain
+  - controlled_telegram_transport_bridge
   - developmental_trace_capture
   - replay_consistency
   - sandbox_governance
 out_of_scope:
   - direct_reply_authority
   - live_idle_scheduler
-  - unsolicited_transport_delivery
+  - autonomous_unsolicited_transport_delivery
   - response_plan_injection
   - persistent_self_model
   - endogenous_drives
@@ -79,6 +80,8 @@ required_artifacts:
   - artifacts/mvp12/proactive_outbox_current.md
   - artifacts/mvp12/proactive_outbox_drain_current.json
   - artifacts/mvp12/proactive_outbox_drain_current.md
+  - artifacts/mvp12/telegram_proactive_transport_current.json
+  - artifacts/mvp12/telegram_proactive_transport_current.md
 required_tests:
   - pytest -q openemotion/proto_self_v2/tests/test_developmental_sandbox.py
   - pytest -q EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k developmental
@@ -94,6 +97,8 @@ required_tests:
   - pytest -q EgoCore/tests/test_run_mvp12_proactive_outbox.py
   - pytest -q EgoCore/tests/test_proactive_outbox_drain.py
   - pytest -q EgoCore/tests/test_run_mvp12_proactive_outbox_drain.py
+  - pytest -q EgoCore/tests/test_telegram_proactive_transport.py
+  - pytest -q EgoCore/tests/test_run_mvp12_telegram_proactive_transport.py
   - python scripts/run_runtime_mainline_observation.py
   - python OpenEmotion/tools/run_mvp12_controlled_evidence.py
   - python OpenEmotion/tools/aggregate_mvp12_observations.py
@@ -102,6 +107,7 @@ required_tests:
   - python EgoCore/tools/run_mvp12_controlled_delivery.py
   - python EgoCore/tools/run_mvp12_proactive_outbox.py
   - python EgoCore/tools/run_mvp12_proactive_outbox_drain.py
+  - python EgoCore/tools/run_mvp12_telegram_proactive_transport.py --chat-id <telegram_chat_id>
 required_gates:
   - sandbox_no_authority_bypass
   - shadow_only_writeback
@@ -109,8 +115,10 @@ required_gates:
   - proactive_followup_draft_host_governed
   - pending_proactive_followup_not_sent_directly
   - controlled_delivery_artifact_host_governed
-  - proactive_outbox_queued_without_transport_send
+  - proactive_outbox_queued_before_transport_send
   - simulated_outbox_record_not_claimed_as_real_send
+  - telegram_transport_send_host_governed
+  - telegram_transport_send_not_claimed_as_live_autonomy
   - replay_consistency_ge_threshold
 promotion_criteria:
   - developmental_trace_present

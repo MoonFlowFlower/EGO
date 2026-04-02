@@ -159,6 +159,13 @@ trigger_evidence:
   - 当前 smoke 结果：`drain_result.status = drained`、`transport_source = simulated_outbox_drain`、`pending_proactive_outbox_events = []`
   - 当前验证结果：`10 passed`
   - 当前口径必须保持：**simulated send only**，不是 Telegram 真发送，不是 live unsolicited delivery
+- 2026-04-02 `MVP12-A` 已再补宿主侧 `controlled Telegram transport bridge`：
+  - `EgoCore/app/telegram_bot.py` 现可把 `host_proactive_outbox` queue 消费成真实 Telegram `send_message`
+  - 新 runner：`EgoCore/tools/run_mvp12_telegram_proactive_transport.py`
+  - 新 artifact：`OpenEmotion/artifacts/mvp12/telegram_proactive_transport_current.json` / `.md`
+  - 当前 smoke 结果：`telegram_transport_result.status = sent`、`transport_source = telegram`、`last_message_id = 3030`
+  - 当前验证结果：`8 passed`
+  - 当前口径必须保持：**host-governed Telegram transport connected**，不是 live idle scheduler，不是 autonomous unsolicited delivery
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

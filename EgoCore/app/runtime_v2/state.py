@@ -876,6 +876,9 @@ class RuntimeV2State:
     def push_proactive_outbox_event(self, payload: Dict[str, Any]) -> None:
         self.pending_proactive_outbox_events.append(dict(payload or {}))
 
+    def set_proactive_outbox_events(self, payloads: List[Dict[str, Any]]) -> None:
+        self.pending_proactive_outbox_events = [dict(payload or {}) for payload in payloads]
+
     def pop_proactive_outbox_events(self) -> List[Dict[str, Any]]:
         events = [dict(event) for event in self.pending_proactive_outbox_events]
         self.pending_proactive_outbox_events = []
