@@ -33,7 +33,12 @@ def _developmental_packet(*, event_type: str = "developmental_tick", replay_seed
         safety_context={"risk_level": "low"},
         intervention_context={
             "developmental_input": {
-                "state_snapshot": {"identity_confidence": 0.5, "current_mode": "chat"},
+                "state_snapshot": {
+                    "identity_confidence": 0.5,
+                    "current_mode": "chat",
+                    "recent_user_turns": ["我觉得是有了OS的操作员的感觉。"],
+                    "recent_assistant_replies": ["这个自觉挺关键的——它把会反应和知道自己在反应分开了一条线。"],
+                },
                 "unresolved_tensions": [{"kind": "identity", "intensity": 0.8}],
                 "long_term_goals": [{"name": "cohere", "pressure": 0.4}],
             }
@@ -54,6 +59,8 @@ def test_developmental_tick_writes_shadow_and_trace(monkeypatch, tmp_path):
     assert output.developmental_shadow_delta["shadow_revision_after"] == 1
     assert output.trace_payload["developmental"]["cycle_id"] == output.developmental_summary["cycle_id"]
     assert state.developmental_shadow.shadow_revision == 1
+    assert output.developmental_summary["background_thought_candidate_count"] >= 1
+    assert output.developmental_summary["background_thought_candidates"][0]["draft_text"]
     assert (tmp_path / "developmental_cycles.json").exists()
     assert (tmp_path / "developmental_cycles.jsonl").exists()
     assert (tmp_path / "candidate_pool.json").exists()
@@ -71,6 +78,10 @@ def test_same_replay_seed_produces_same_candidate_hashes(monkeypatch, tmp_path):
     output_two = process_update_packet(state_two, _developmental_packet(replay_seed=123456))
 
     assert output_one.trace_payload["developmental"]["candidate_hashes"] == output_two.trace_payload["developmental"]["candidate_hashes"]
+    assert (
+        output_one.trace_payload["developmental"]["background_thought_candidates"][0]["source_candidate_hash"]
+        == output_two.trace_payload["developmental"]["background_thought_candidates"][0]["source_candidate_hash"]
+    )
 
 
 def test_developmental_replay_does_not_mutate_formal_proto_state(monkeypatch, tmp_path):

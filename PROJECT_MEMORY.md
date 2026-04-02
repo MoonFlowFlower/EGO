@@ -1,7 +1,7 @@
 # PROJECT_MEMORY.md
 
 > AIProject 核心记忆 - Claude Code 持续更新
-> 最后更新: 2026-04-01
+> 最后更新: 2026-04-02
 
 ---
 
@@ -190,6 +190,7 @@
 | 2026-04-01 | MVP12 scripted runtime harness 已拿到第一份主链样本：`scripts/run_runtime_mainline_observation.py` 在 `session:mvp12:runtime_harness:smoke` 下生成了 [runtime_harness_observation_current.jsonl](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/runtime_harness_observation_current.jsonl) 与配套 `.json` 摘要；4 条记录都包含 `runtime_status / runtime_reply_text / delivery_text / reply_authority / reply_origin / delivery_authority_source=response_contract.output_check`，说明 observation producer 已经过正式 runtime ingress + output_check/delivery shaping，而不是直接调 kernel |
 | 2026-04-01 | MVP12 verifier 已拿到第一份 `runtime_harness` direct_real 报告：最新 [controlled_20260401_235928](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/controlled_20260401_235928/controlled_observation_report.md) 结果为 `direct_real_source_type = observation_record_v1`、`direct_real_transport_sources = [runtime_harness]`、`direct_real_cycles = 4`、`direct_real_window_count = 2`、`governance_violation_count = 0`、`replay_consistent = true`。这证明 `MVP12/WP7` 的主证据源已从 Telegram-specific adapter 扩展到统一 runtime 主链；但 aggregate 仍为 `hold`，因为 `span_hours = 2.005 < 12.0` |
 | 2026-04-01 | MVP12 aggregate 已按新主证据源重算：当前 [controlled_observation_aggregate_current.md](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/controlled_observation_aggregate_current.md) 为 `report_count = 5`、`direct_real_report_count = 4`、`direct_real_window_count_total = 7`、`governance_violation_total = 0`、`replay_consistent_all = true`、`span_hours = 2.005`，裁决仍是 `hold`。当前唯一 blocker 继续固定为：**缺跨时段 direct_real windows**，不是 Telegram 入口问题，也不是 verifier/aggregate 能力问题 |
+| 2026-04-02 | MVP12-A controlled proactive followup 已形成第一条正式主链脚手架：OpenEmotion `developmental_tick` 现会根据最近对话、未闭合 tension、long-term goal 生成 `background_thought_candidates`；EgoCore 新增 `initiative_arbiter`，只在 `gate allow + idle window 足够 + 无 active task + 候选不重复最近回复` 时，才经 `ResponsePlan + output_check` 生成 `controlled_shadow_delivery_draft`。当前验证为 `26 passed` 的定向测试，加上 [proactive_followup_current.json](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/proactive_followup_current.json) / [proactive_followup_current.md](/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12/proactive_followup_current.md) 这组 controlled artifact；口径仍是 **draft only**，不包含 live idle scheduler、主动 Telegram 投递、或 OpenEmotion 直接说话权 |
 
 ---
 

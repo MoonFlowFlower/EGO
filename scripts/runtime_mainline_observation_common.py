@@ -6,7 +6,7 @@ import sys
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 SCRIPT_DIR = Path(__file__).parent
 EGO_ROOT = SCRIPT_DIR.parent
@@ -206,14 +206,13 @@ def extract_telegram_observation_records(session_log: Path, *, limit: int) -> Li
     return observations[-limit:]
 
 
-async def run_runtime_observation_session(
+async def run_runtime_mainline_session(
     *,
     messages: List[str],
     session_id: str,
-    observation_log: Path,
     transport_source: str = "runtime_harness",
     source: str = "runtime_harness",
-) -> Dict[str, Any]:
+) -> Tuple[Any, Any, List[Dict[str, Any]]]:
     runtime = init_runtime()
     ingress_bridge = TelegramRuntimeBridge()
     records: List[Dict[str, Any]] = []
@@ -254,6 +253,23 @@ async def run_runtime_observation_session(
             )
         )
 
+    return runtime, runtime.get_state(session_id), records
+
+
+async def run_runtime_observation_session(
+    *,
+    messages: List[str],
+    session_id: str,
+    observation_log: Path,
+    transport_source: str = "runtime_harness",
+    source: str = "runtime_harness",
+) -> Dict[str, Any]:
+    _, _, records = await run_runtime_mainline_session(
+        messages=messages,
+        session_id=session_id,
+        transport_source=transport_source,
+        source=source,
+    )
     append_observation_records(observation_log, records)
     return {
         "schema_version": "runtime_mainline_observation.run.v1",

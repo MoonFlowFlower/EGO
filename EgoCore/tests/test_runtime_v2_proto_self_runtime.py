@@ -532,6 +532,15 @@ def test_process_developmental_tick_updates_shadow_summary_and_trace():
                     "gate_status": "allow",
                     "observation_source": event["runtime_summary"]["observation_source"],
                     "shadow_revision": 2,
+                    "background_thought_candidates": [
+                        {
+                            "candidate_id": "cand_001",
+                            "draft_text": "我后来又想到一个问题。",
+                            "initiative_score": 0.74,
+                            "delivery_ready": True,
+                        }
+                    ],
+                    "background_thought_candidate_count": 1,
                 },
                 "developmental_gate": {"status": "allow"},
                 "trace_payload": {
@@ -568,6 +577,7 @@ def test_process_developmental_tick_updates_shadow_summary_and_trace():
     assert captured["event_id"] == "session:test_turn_dev_developmental"
     assert "developmental_tick_kernel_trace" in captured["stages"]
     assert state.proto_self_context["developmental_summary"]["cycle_id"] == "cycle_001"
+    assert state.proto_self_context["background_thought_candidates"][0]["candidate_id"] == "cand_001"
     assert state.proto_self_context["shadow_revision"] == 2
     assert state.proto_self_context["last_developmental_cycle"] == "cycle_001"
 
@@ -588,6 +598,8 @@ def test_process_developmental_tick_preserves_observation_refs():
                     "gate_status": "allow",
                     "observation_source": event["runtime_summary"]["observation_source"],
                     "shadow_revision": 1,
+                    "background_thought_candidates": [],
+                    "background_thought_candidate_count": 0,
                 },
                 "developmental_gate": {"status": "allow"},
                 "trace_payload": {

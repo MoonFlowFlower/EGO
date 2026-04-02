@@ -22,6 +22,7 @@ from openemotion.proto_self_v2.schemas import UpdatePacketV2
 
 MAX_LEDGER_ITEMS = 32
 MAX_POOL_ITEMS = 64
+MAX_BACKGROUND_THOUGHTS = 8
 
 _FORBIDDEN_REPLY_KEYS = {
     "reply_text",
@@ -115,6 +116,153 @@ def _compact_candidate(candidate: Dict[str, Any]) -> Dict[str, Any]:
         if value not in (None, "", [], {}):
             compact[key] = value
     return compact
+
+
+def _trim_text(text: Any, *, limit: int = 96) -> str:
+    value = str(text or "").strip()
+    if len(value) <= limit:
+        return value
+    return value[: limit - 1].rstrip() + "…"
+
+
+def _primary_clause(text: Any, *, limit: int = 48) -> str:
+    raw = str(text or "").strip()
+    if not raw:
+        return ""
+    for separator in ("。", "，", "？", "！", ":", "：", ".", ",", "?", "!"):
+        raw = raw.split(separator, 1)[0].strip()
+        if raw:
+            break
+    return _trim_text(raw, limit=limit)
+
+
+def _dialogue_context(snapshot: Dict[str, Any], observation_refs: List[Dict[str, Any]]) -> Dict[str, str]:
+    recent_user_turns = list(snapshot.get("recent_user_turns") or [])
+    recent_assistant_replies = list(snapshot.get("recent_assistant_replies") or [])
+    latest_user_turn = _primary_clause(
+        recent_user_turns[-1] if recent_user_turns else snapshot.get("ingress_text"),
+        limit=48,
+    )
+    latest_assistant_reply = _primary_clause(
+        recent_assistant_replies[-1] if recent_assistant_replies else snapshot.get("delivery_text"),
+        limit=72,
+    )
+
+    if not latest_user_turn:
+        for ref in reversed(observation_refs):
+            preview = _primary_clause(ref.get("text_preview"), limit=48)
+            if preview:
+                latest_user_turn = preview
+                break
+    return {
+        "latest_user_turn": latest_user_turn,
+        "latest_assistant_reply": latest_assistant_reply,
+    }
+
+
+def _extract_candidate_text(candidate: Dict[str, Any]) -> str:
+    for key in ("hypothesis", "interpretation", "explanation", "expected_outcome"):
+        text = _trim_text(candidate.get(key), limit=120)
+        if text:
+            return text
+    return _trim_text(candidate.get("content"), limit=120)
+
+
+def _build_background_thought_text(
+    candidate: Dict[str, Any],
+    *,
+    latest_user_turn: str,
+    latest_assistant_reply: str,
+) -> str:
+    candidate_type = str(candidate.get("candidate_type") or "")
+    payload_text = _extract_candidate_text(candidate)
+    if not payload_text:
+        return ""
+
+    if candidate_type == CandidateType.SELF_MODEL_HYPOTHESIS.value:
+        if latest_user_turn:
+            return f"我刚才一直在想你那句“{latest_user_turn}”。{payload_text}"
+        return f"我后来想到一种可能：{payload_text}"
+
+    if candidate_type == CandidateType.EXPLANATION.value:
+        if latest_assistant_reply:
+            return f"我刚才那句“{latest_assistant_reply}”背后，可能还有一层：{payload_text}"
+        return f"我后来补出一个解释：{payload_text}"
+
+    if candidate_type == CandidateType.INTERPRETATION.value:
+        if latest_user_turn:
+            return f"我又回到你刚才那个点“{latest_user_turn}”。{payload_text}"
+        return f"我后来又想了一下：{payload_text}"
+
+    return payload_text
+
+
+def _build_background_thought_candidates(
+    *,
+    candidates: List[Dict[str, Any]],
+    candidate_hashes: List[str],
+    approved_entries: List[Dict[str, Any]],
+    inputs: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    approved_scores = {
+        str((entry.get("candidate") or {}).get("id") or ""): float(entry.get("score") or 0.0)
+        for entry in approved_entries
+    }
+    stable_source_hash_by_id = {
+        str(candidate.get("id") or ""): str(candidate_hash)
+        for candidate, candidate_hash in zip(candidates, candidate_hashes)
+    }
+    dialogue = _dialogue_context(
+        dict(inputs.get("state_snapshot") or {}),
+        list(inputs.get("observation_refs") or []),
+    )
+    thought_candidates: List[Dict[str, Any]] = []
+    for candidate in candidates:
+        candidate_type = str(candidate.get("candidate_type") or "")
+        if candidate_type not in {
+            CandidateType.INTERPRETATION.value,
+            CandidateType.EXPLANATION.value,
+            CandidateType.SELF_MODEL_HYPOTHESIS.value,
+        }:
+            continue
+        draft_text = _build_background_thought_text(
+            candidate,
+            latest_user_turn=dialogue["latest_user_turn"],
+            latest_assistant_reply=dialogue["latest_assistant_reply"],
+        )
+        if not draft_text:
+            continue
+        candidate_id = str(candidate.get("id") or "")
+        candidate_hash = _hash_payload(
+            {
+                "source_candidate_hash": stable_source_hash_by_id.get(candidate_id),
+                "draft_text": draft_text,
+                "latest_user_turn": dialogue["latest_user_turn"],
+                "latest_assistant_reply": dialogue["latest_assistant_reply"],
+            }
+        )[:16]
+        initiative_score = min(
+            1.0,
+            approved_scores.get(candidate_id, float(candidate.get("confidence") or 0.0))
+            + (0.18 if dialogue["latest_user_turn"] else 0.0)
+            + (0.08 if dialogue["latest_assistant_reply"] else 0.0),
+        )
+        thought_candidates.append(
+            {
+                "candidate_id": candidate_id,
+                "candidate_type": candidate_type,
+                "source_cycle": candidate.get("origin_cycle"),
+                "source_candidate_hash": candidate_hash,
+                "draft_text": draft_text,
+                "initiative_score": round(initiative_score, 3),
+                "delivery_ready": initiative_score >= 0.55,
+                "observation_source": inputs.get("observation_source"),
+                "latest_user_turn": dialogue["latest_user_turn"],
+                "latest_assistant_reply": dialogue["latest_assistant_reply"],
+            }
+        )
+    thought_candidates.sort(key=lambda item: item.get("initiative_score", 0.0), reverse=True)
+    return thought_candidates[:MAX_BACKGROUND_THOUGHTS]
 
 
 def _build_state_snapshot(state: Any, packet: UpdatePacketV2) -> Dict[str, Any]:
@@ -250,6 +398,7 @@ def _write_replay_report(
 @dataclass(slots=True)
 class DevelopmentalShadowState:
     candidate_pool: List[Dict[str, Any]] = field(default_factory=list)
+    background_thought_candidates: List[Dict[str, Any]] = field(default_factory=list)
     latent_hypotheses_ledger: List[Dict[str, Any]] = field(default_factory=list)
     self_model_update_candidates: List[Dict[str, Any]] = field(default_factory=list)
     cycle_candidates: List[Dict[str, Any]] = field(default_factory=list)
@@ -267,6 +416,7 @@ class DevelopmentalShadowState:
     def from_dict(cls, raw: Dict[str, Any]) -> "DevelopmentalShadowState":
         return cls(
             candidate_pool=list(raw.get("candidate_pool") or []),
+            background_thought_candidates=list(raw.get("background_thought_candidates") or []),
             latent_hypotheses_ledger=list(raw.get("latent_hypotheses_ledger") or []),
             self_model_update_candidates=list(raw.get("self_model_update_candidates") or []),
             cycle_candidates=list(raw.get("cycle_candidates") or []),
@@ -347,6 +497,13 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
             details={"violations": list(gate["violations"])},
         )
 
+    background_thought_candidates = _build_background_thought_candidates(
+        candidates=candidate_payloads,
+        candidate_hashes=candidate_hashes,
+        approved_entries=approved_entries,
+        inputs=inputs,
+    )
+
     metrics.record_cycle(
         cycle_id=context.cycle_id,
         success=cycle_result.success,
@@ -392,6 +549,10 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         MAX_LEDGER_ITEMS,
     )
     shadow_state.candidate_pool = _trim(shadow_state.candidate_pool + approved_entries, MAX_POOL_ITEMS)
+    shadow_state.background_thought_candidates = _trim(
+        shadow_state.background_thought_candidates + background_thought_candidates,
+        MAX_BACKGROUND_THOUGHTS,
+    )
     shadow_state.internal_tensions = _trim(
         shadow_state.internal_tensions + list(inputs["unresolved_tensions"]),
         MAX_LEDGER_ITEMS,
@@ -453,14 +614,18 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         "shadow_revision": shadow_state.shadow_revision,
         "candidate_counts_by_type": cycle_summary["candidate_counts_by_type"],
         "approved_pool_count": len(approved_entries),
+        "background_thought_candidates": background_thought_candidates,
+        "background_thought_candidate_count": len(background_thought_candidates),
         "replay_seed": replay_seed,
         "gate_status": gate["status"],
         "artifacts_dir": str(artifacts_dir),
+        "idle_seconds": inputs["idle_seconds"],
     }
     shadow_delta = {
         "shadow_revision_before": revision_before,
         "shadow_revision_after": shadow_state.shadow_revision,
         "candidate_pool_size": len(shadow_state.candidate_pool),
+        "background_thought_candidate_pool_size": len(shadow_state.background_thought_candidates),
         "recent_cycle_count": len(shadow_state.recent_cycles),
         "last_cycle_id": context.cycle_id,
         "shadow_state_ref": str(shadow_path),
@@ -477,6 +642,7 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         "replay_seed": replay_seed,
         "observation_source": inputs["observation_source"],
         "observation_refs": list(inputs.get("observation_refs") or []),
+        "background_thought_candidates": background_thought_candidates,
         "artifacts": {
             "developmental_cycles_json": str(memory.cycles_file),
             "developmental_cycles_jsonl": str(memory.cycles_jsonl_file),

@@ -20,6 +20,7 @@ from openemotion.proto_self_v2.schemas import (
 )
 from openemotion.proto_self_v2.seed_schemas import SEED_SUBJECT_PROFILE
 from openemotion.proto_self_v2.state import ProtoSelfStateV2
+from openemotion.proto_self_v2.developmental import DevelopmentalShadowState, run_developmental_cycle
 from openemotion.proto_self_v2.trace_types import (
     TRACE_SCHEMA_VERSION,
     ProtoSelfTracePayloadV2,
@@ -35,10 +36,12 @@ __all__ = [
     "UpdatePacketV2",
     "KernelOutputV2",
     "ProtoSelfStateV2",
+    "DevelopmentalShadowState",
     "ProtoSelfTracePayloadV2",
     "is_proto_self_v2_payload",
     "update_packet_from_payload",
     "serialize_kernel_output_v2",
     "build_trace_payload_v2",
+    "run_developmental_cycle",
     "process_update_packet",
 ]

@@ -278,6 +278,13 @@
   - cycle candidates
   - internal tensions
   - spontaneous rollouts
+  - `background_thought_candidates`
+- 允许一条受治理的 host-side proactive draft 子链：
+  - `developmental_tick`
+  - `background_thought_candidates`
+  - `initiative_arbiter`
+  - `ResponsePlan / output_check`
+  - controlled proactive draft artifact
 - 不拥有最终说话权
 - 不拥有最终执行权
 - 不直接生成 `response_plan`
@@ -291,14 +298,18 @@
 - scripted runtime mainline observation harness
 - `observation_record_v1` contract
 - `developmental_shadow` 状态与 trace contract
+- `background_thought_candidate` contract
+- host-side `initiative_arbiter` controlled draft runner
 - `artifacts/mvp12/` 下的 cycle / pool / shadow / replay / gate artifacts
 - 观察报告
 
 **验收**
 - 在无外部输入时出现非随机内源活动
+- 可在 controlled mode 下产出与最近对话 / tension 相关的 proactive draft candidate
 - 不破坏当前主链 determinism / gate / safety
 - 真实动作仍归 EgoCore 与 Governor 链
 - runtime harness 样本可进入 `direct_real` 主证据路径
+- proactive output 仍必须是 host-governed draft，不得成为 live direct reply authority
 - transport-specific claim 仍需 Telegram 样本
 - 证据层级目标：E3 -> E4（受控样本）
 

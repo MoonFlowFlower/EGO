@@ -40,6 +40,20 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 
 ## 最近更新
 
+### 2026-04-02: MVP12-A controlled proactive followup draft 链落地
+- `MVP12` 已新增第一条“会自己冒一句”的正式受控脚手架，但当前仍是 **draft only**
+- OpenEmotion 会在 `developmental_tick` 中输出 `background_thought_candidates`
+- EgoCore 新增 `initiative_arbiter`，只在 gate allow、无 active task、idle 窗口满足、且候选不重复最近回复时，才生成受治理的 proactive draft
+- 主链边界保持不变：OpenEmotion 不直接说话、不直接执行、不直接注入 `response_plan`
+- 当前受控 runner 与 artifact：
+  - `EgoCore/tools/run_mvp12_proactive_followup.py`
+  - `OpenEmotion/artifacts/mvp12/proactive_followup_current.json`
+  - `OpenEmotion/artifacts/mvp12/proactive_followup_current.md`
+- 当前验证口径：
+  - 定向测试 `26 passed`
+  - controlled smoke 已能生成 context-tied proactive draft
+  - 尚未启用 live idle scheduler，也未允许 Telegram unsolicited delivery
+
 ### 2026-03-28: 闭环自审开发流落地
 - 默认开发流程已从“分层混合 + 高强度自检”进一步收口为正式闭环：`Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
 - 高风险任务默认启用独立 Reviewer subagent，避免“自己写自己审”的视角盲区
@@ -50,6 +64,11 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 - 开发助手侧结构化记忆已在真实新会话中验证：稳定记忆恢复、TaskHandoff 优先级、同任务 SessionCapsule 采用、异任务 capsule 拒绝污染均已成立
 - 当前形态仍是“结构化记忆 + 手动喂入/脚本辅助启动”，不是全自动注入
 - 相关入口文档：`CODEX_MEMORY.md`、`.codex/memory/README.md`、`PROJECT_MEMORY.md`
+
+### 2026-03-30: Codex Memory Brain 项目级接入闭环
+- `memory_brain` 当前已验证可通过项目级 `.codex/config.toml` 生效，不再只依赖用户级 fallback
+- 当前仓库已补 `trusted project` 配置；项目级 `.codex/config.toml` 会被真实 Codex 采纳
+- 新项目首次接入 SOP 见 [NEW_PROJECT_SOP.md](.codex-memory/NEW_PROJECT_SOP.md)
 
 ### 2026-03-27 / 2026-03-28: restore continuity 正式入账
 - `restore continuity` 已升级为 `direct_real`：显式 `--restore --telegram` 主链、首条 post-restore 完整 E4 样本、post-restore continuity probe 均已形成正式 evidence

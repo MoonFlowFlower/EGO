@@ -122,6 +122,13 @@ trigger_evidence:
   - `run_mvp12_controlled_evidence.py` 已优先消费该 observation log，并在 `controlled_20260401_235928/*` 产出新报告
   - 当前结果：`direct_real_source_type = observation_record_v1`、`direct_real_transport_sources = [runtime_harness]`、`governance_violation_count = 0`
   - 最新 aggregate 已重算为：`report_count = 5`、`direct_real_window_count_total = 7`、`governance_violation_total = 0`、`replay_consistent_all = true`、`span_hours = 2.005`、`gate_status = hold`
+- 2026-04-02 `MVP12-A` 已补第一条 controlled proactive followup draft 链：
+  - OpenEmotion `developmental_tick` 现会输出 `background_thought_candidates`
+  - EgoCore `initiative_arbiter` 只在 `gate allow + idle window 足够 + 无 active task + 不重复最近回复` 时，才经 `ResponsePlan / output_check` 生成 `controlled_shadow_delivery_draft`
+  - 新 runner：`EgoCore/tools/run_mvp12_proactive_followup.py`
+  - 新 artifact：`OpenEmotion/artifacts/mvp12/proactive_followup_current.json` / `.md`
+  - 当前验证结果：`26 passed`
+  - 当前口径必须保持：**draft only**，不是 live proactive speaking，不是 Telegram unsolicited delivery
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

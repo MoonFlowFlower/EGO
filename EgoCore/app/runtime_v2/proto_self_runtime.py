@@ -791,6 +791,9 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["developmental_summary"] = developmental_summary
         state.proto_self_context["shadow_revision"] = developmental_summary.get("shadow_revision")
         state.proto_self_context["last_developmental_cycle"] = developmental_summary.get("cycle_id")
+        state.proto_self_context["background_thought_candidates"] = list(
+            developmental_summary.get("background_thought_candidates") or []
+        )
         state.record(
             "proto_self_developmental",
             {
@@ -798,6 +801,7 @@ class RuntimeV2ProtoSelfRuntime:
                 "trigger": developmental_summary.get("trigger"),
                 "gate_status": developmental_summary.get("gate_status"),
                 "observation_source": developmental_summary.get("observation_source"),
+                "background_thought_candidate_count": developmental_summary.get("background_thought_candidate_count", 0),
             },
         )
         return developmental_result
