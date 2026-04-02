@@ -144,6 +144,14 @@ trigger_evidence:
   - 当前 smoke 结果：`delivery_result.status = artifact_emitted`、`transport_source = controlled_runner`、`pending_proactive_followup = null`
   - 当前验证结果：`11 passed`
   - 当前口径必须保持：**artifact only**，不是 live transport delivery，不是 Telegram unsolicited delivery
+- 2026-04-02 `MVP12-A` 已再补宿主侧 `proactive outbox lane`：
+  - `RuntimeV2State` 新增 `pending_proactive_outbox_events`
+  - `EgoCore/app/runtime_v2/proactive_outbox.py` 会把 `artifact_emitted` 的 delivery record 挂进 `host_proactive_outbox` queue
+  - 新 runner：`EgoCore/tools/run_mvp12_proactive_outbox.py`
+  - 新 artifact：`OpenEmotion/artifacts/mvp12/proactive_outbox_current.json` / `.md`
+  - 当前 smoke 结果：`outbox_result.status = queued`、`outbox_lane = host_proactive_outbox`、`pending_proactive_followup = null`
+  - 当前验证结果：`15 passed`
+  - 当前口径必须保持：**queued only**，不是 Telegram 自动发送，不是 live proactive speaking
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

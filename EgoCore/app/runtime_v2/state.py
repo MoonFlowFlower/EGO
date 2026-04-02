@@ -278,6 +278,7 @@ class RuntimeV2State:
     run_items: List[Dict[str, Any]] = field(default_factory=list)
     pending_task_conflict: Optional[Dict[str, Any]] = None
     pending_proactive_followup: Optional[Dict[str, Any]] = None
+    pending_proactive_outbox_events: List[Dict[str, Any]] = field(default_factory=list)
     active_item_id: Optional[str] = None
     pending_run_events: List[Dict[str, Any]] = field(default_factory=list)
     last_delivered_evidence_context: Optional[Dict[str, Any]] = None
@@ -348,6 +349,7 @@ class RuntimeV2State:
             "run_items": _summarize_run_items(self.run_items),
             "pending_task_conflict": self.pending_task_conflict,
             "pending_proactive_followup": self.pending_proactive_followup,
+            "pending_proactive_outbox_events_count": len(self.pending_proactive_outbox_events),
             "active_item_id": self.active_item_id,
             "pending_run_events_count": len(self.pending_run_events),
             "chat_state": self.get_chat_state().to_dict(),
@@ -400,6 +402,7 @@ class RuntimeV2State:
             "run_items": _summarize_run_items(self.run_items),
             "pending_task_conflict": self.pending_task_conflict,
             "pending_proactive_followup": self.pending_proactive_followup,
+            "pending_proactive_outbox_events_count": len(self.pending_proactive_outbox_events),
             "active_item_id": self.active_item_id,
             "pending_run_events_count": len(self.pending_run_events),
             "chat_state": {
@@ -571,6 +574,7 @@ class RuntimeV2State:
         self.run_items = []
         self.pending_task_conflict = None
         self.pending_proactive_followup = None
+        self.pending_proactive_outbox_events = []
         self.active_item_id = None
         self.pending_run_events = []
         self.last_delivered_evidence_context = None
@@ -868,6 +872,20 @@ class RuntimeV2State:
 
     def clear_pending_proactive_followup(self) -> None:
         self.pending_proactive_followup = None
+
+    def push_proactive_outbox_event(self, payload: Dict[str, Any]) -> None:
+        self.pending_proactive_outbox_events.append(dict(payload or {}))
+
+    def pop_proactive_outbox_events(self) -> List[Dict[str, Any]]:
+        events = [dict(event) for event in self.pending_proactive_outbox_events]
+        self.pending_proactive_outbox_events = []
+        return events
+
+    def peek_proactive_outbox_events(self) -> List[Dict[str, Any]]:
+        return [dict(event) for event in self.pending_proactive_outbox_events]
+
+    def has_pending_proactive_outbox_events(self) -> bool:
+        return len(self.pending_proactive_outbox_events) > 0
 
     def ensure_active_run_item_started(self) -> Optional[RunItem]:
         items = self.get_run_items()
@@ -1438,6 +1456,7 @@ class RuntimeV2State:
             "run_items": list(self.run_items),
             "pending_task_conflict": self.pending_task_conflict,
             "pending_proactive_followup": self.pending_proactive_followup,
+            "pending_proactive_outbox_events": list(self.pending_proactive_outbox_events),
             "active_item_id": self.active_item_id,
             "pending_run_events": list(self.pending_run_events),
             "last_delivered_evidence_context": self.last_delivered_evidence_context,
@@ -1501,6 +1520,7 @@ class RuntimeV2State:
         state.run_items = list(snapshot.get("run_items") or [])
         state.pending_task_conflict = snapshot.get("pending_task_conflict")
         state.pending_proactive_followup = snapshot.get("pending_proactive_followup")
+        state.pending_proactive_outbox_events = list(snapshot.get("pending_proactive_outbox_events") or [])
         state.active_item_id = snapshot.get("active_item_id")
         state.pending_run_events = list(snapshot.get("pending_run_events") or [])
         state.last_delivered_evidence_context = (
