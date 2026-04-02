@@ -50,6 +50,15 @@ async def test_new_command_resets_runtime_v2_session():
     state = bot._get_runtime_state(session_key)
     state.task_status = "running"
     state.current_goal = "修改 hello.html"
+    state.push_proactive_outbox_event(
+        {
+            "schema_version": "mvp12.proactive_outbox_event.v1",
+            "session_id": session_key,
+            "initiative_candidate_id": "candidate-old-thread",
+            "reply_text": "旧线程 proactive",
+            "outbox_status": "queued",
+        }
+    )
     get_session_context_store().add_turn(session_key, "user", "hello")
 
     await bot.handle_command(DummyUpdate(), None)
@@ -57,6 +66,7 @@ async def test_new_command_resets_runtime_v2_session():
     assert "Session Reset" in DummyUpdate.message.last_text
     assert new_state.task_status == "idle"
     assert new_state.current_goal is None
+    assert new_state.peek_proactive_outbox_events() == []
     assert new_state.proto_self_subject_profile_override == "seed_v0_2"
     assert get_session_context_store().get_recent_turns(session_key) == []
 

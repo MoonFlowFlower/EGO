@@ -712,6 +712,7 @@ class RuntimeV2State:
         self.run_items = []
         self.pending_task_conflict = None
         self.pending_proactive_followup = None
+        self.pending_proactive_outbox_events = []
         self.active_item_id = None
         self.pending_run_events = []
         self.last_delivered_evidence_context = None
