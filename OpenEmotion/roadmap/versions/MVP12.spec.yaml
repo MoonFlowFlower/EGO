@@ -38,11 +38,15 @@ required_artifacts:
   - artifacts/mvp12/gate_checklist.md
   - artifacts/mvp12/controlled_observation_report.json
   - artifacts/mvp12/controlled_observation_report.md
+  - artifacts/mvp12/observation_index.jsonl
+  - artifacts/mvp12/controlled_observation_aggregate_current.json
+  - artifacts/mvp12/controlled_observation_aggregate_current.md
 required_tests:
   - pytest -q openemotion/proto_self_v2/tests/test_developmental_sandbox.py
   - pytest -q EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k developmental
   - pytest -q EgoCore/tests/test_proto_self_v2_contracts.py -k developmental
   - python OpenEmotion/tools/run_mvp12_controlled_evidence.py
+  - python OpenEmotion/tools/aggregate_mvp12_observations.py
 required_gates:
   - sandbox_no_authority_bypass
   - shadow_only_writeback

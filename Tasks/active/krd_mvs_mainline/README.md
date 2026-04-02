@@ -105,6 +105,12 @@ trigger_evidence:
   - `OpenEmotion/artifacts/mvp12/controlled_20260401_221524/*`
   - 当前结果：`direct_real_window_count = 3`、`direct_real_cycles = 12`、`governance_violation_count = 0`
   - 口径仍然是 controlled direct_real，不可冒充 `WP7 E4`
+- 2026-04-01 observation aggregator 已落地：
+  - `OpenEmotion/tools/aggregate_mvp12_observations.py`
+  - `OpenEmotion/artifacts/mvp12/observation_index.jsonl`
+  - `OpenEmotion/artifacts/mvp12/controlled_observation_aggregate_current.md`
+  - 当前 aggregate gate = `hold`
+  - 当前 blocker 已明确收敛为：缺跨时段 `direct_real` windows，不再是缺 verifier / 缺聚合能力
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动
