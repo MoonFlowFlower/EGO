@@ -289,8 +289,9 @@
   - `host_proactive_outbox_lane`
   - `controlled_outbox_drain`
   - `controlled_telegram_transport_bridge`
+  - `feature_flagged_host_governed_proactive_telegram_auto_cycle`
   - `ResponsePlan / output_check`
-  - controlled proactive draft / delivery / outbox / simulated-send artifact / host-governed Telegram send record
+  - controlled proactive draft / delivery / outbox / simulated-send artifact / host-governed Telegram send record / host-governed auto-cycle send record
 - 不拥有最终说话权
 - 不拥有最终执行权
 - 不直接生成 `response_plan`
@@ -313,6 +314,7 @@
 - `pending_proactive_outbox_events` state contract
 - controlled outbox drain runner
 - controlled Telegram proactive transport runner
+- host-governed proactive Telegram auto-cycle runner
 - `artifacts/mvp12/` 下的 cycle / pool / shadow / replay / gate artifacts
 - 观察报告
 
@@ -324,6 +326,7 @@
 - 可由宿主侧 outbox lane 将 `artifact_emitted` 的 delivery record 挂入 `host_proactive_outbox` queue
 - 可由 controlled drain 将 `host_proactive_outbox` queue 消费成 `simulated_outbox_record`，但不得冒充真实 outbox_record
 - 可由宿主侧 controlled Telegram transport bridge 将 `host_proactive_outbox` queue 消费成真实 `send_message/outbox_record`，但不得冒充 live autonomous send
+- 可由 feature-flagged host-governed proactive Telegram auto cycle 在宿主 idle/busy gate 通过时自动串起 scheduler -> delivery -> outbox -> Telegram drain，但默认必须 `off`，且不得冒充默认 live autonomy
 - 不破坏当前主链 determinism / gate / safety
 - 真实动作仍归 EgoCore 与 Governor 链
 - runtime harness 样本可进入 `direct_real` 主证据路径

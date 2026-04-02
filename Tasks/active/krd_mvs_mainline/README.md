@@ -166,8 +166,16 @@ trigger_evidence:
   - 当前 smoke 结果：`telegram_transport_result.status = sent`、`transport_source = telegram`、`last_message_id = 3030`
   - 当前验证结果：`8 passed`
   - 当前口径必须保持：**host-governed Telegram transport connected**，不是 live idle scheduler，不是 autonomous unsolicited delivery
+- 2026-04-02 `MVP12-A` 已再补 `feature-flagged host-governed proactive Telegram auto cycle`：
+  - `EgoCore/app/runtime_v2/proactive_telegram_cycle.py` 现在会在宿主 idle/busy gate 通过时串起 `scheduler -> delivery -> outbox -> Telegram drain`
+  - `EgoCore/app/telegram_bot.py` 新增默认 `off` 的 `_mvp12_proactive_telegram_autodrain_enabled` 背景循环
+  - 新 runner：`EgoCore/tools/run_mvp12_host_governed_proactive_telegram_cycle.py`
+  - 新 artifact：`OpenEmotion/artifacts/mvp12/host_governed_proactive_telegram_cycle_current.json` / `.md`
+  - 当前 smoke 结果：`cycle_result.status = sent`、`transport_gate.status = allow`、`transport_result.status = sent`、`last_message_id = 3031`
+  - 当前验证结果：`6 passed`
+  - 当前口径必须保持：**feature-flagged host-governed auto cycle only**，默认 `off`，不是默认 live idle scheduler，不是 autonomous unsolicited delivery
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动
   - live 默认 `off`
-  - 现有证据仅到受控 V2/V3，不得冒充 `WP7 E4`
+  - 现有证据最高到受控主链 real-send E4，不得冒充默认开启的 `WP7` live autonomy

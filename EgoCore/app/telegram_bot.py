@@ -21,7 +21,7 @@ import uuid
 from typing import Any, Optional
 import json
 import time
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 from copy import deepcopy
 from pathlib import Path
 
@@ -75,6 +75,7 @@ from app.runtime_v2.run_items import (
     build_run_items_from_request,
 )
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
+from app.runtime_v2.proactive_telegram_cycle import run_host_governed_proactive_cycle
 from app.autonomy import (
     AutonomyExecutorKind,
     AutonomyOrchestrator,
@@ -130,6 +131,33 @@ READ_LIST_FOLLOWUP_PROBE_KEYS = {
     "没看到",
     "你没列出来",
 }
+
+
+def _env_flag(name: str, default: bool = False) -> bool:
+    value = str(os.environ.get(name, "")).strip().lower()
+    if not value:
+        return bool(default)
+    return value in {"1", "true", "yes", "on"}
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = str(os.environ.get(name, "")).strip()
+    if not raw:
+        return float(default)
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _env_int(name: str, default: int) -> int:
+    raw = str(os.environ.get(name, "")).strip()
+    if not raw:
+        return int(default)
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return int(default)
 
 
 def _extract_directory_listing_entries(body: str) -> list[str]:
@@ -218,6 +246,31 @@ class TelegramBot:
         # Stale reply suppression: remember latest ingress message per session.
         self._latest_message_id_by_session: dict[str, int] = {}
         self._chat_id_by_session: dict[str, int] = {}
+        self._mvp12_proactive_telegram_autodrain_enabled = _env_flag(
+            "EGO_ENABLE_MVP12_PROACTIVE_TELEGRAM_AUTODRAIN",
+            False,
+        )
+        self._mvp12_proactive_telegram_tick_seconds = _env_float(
+            "EGO_MVP12_PROACTIVE_TELEGRAM_TICK_SECONDS",
+            30.0,
+        )
+        self._mvp12_proactive_scheduler_idle_seconds = _env_float(
+            "EGO_MVP12_PROACTIVE_SCHEDULER_IDLE_SECONDS",
+            600.0,
+        )
+        self._mvp12_proactive_transport_idle_seconds = _env_float(
+            "EGO_MVP12_PROACTIVE_TRANSPORT_IDLE_SECONDS",
+            900.0,
+        )
+        self._mvp12_proactive_reply_cooldown_seconds = _env_float(
+            "EGO_MVP12_PROACTIVE_REPLY_COOLDOWN_SECONDS",
+            900.0,
+        )
+        self._mvp12_proactive_max_events_per_tick = max(
+            1,
+            _env_int("EGO_MVP12_PROACTIVE_MAX_EVENTS_PER_TICK", 1),
+        )
+        self._proactive_telegram_autodrain_task: Optional[asyncio.Task] = None
         self._delivery_dedupe_policy = DeliveryDedupePolicy()
         self._message_bus = get_message_bus()
         self._session_worker_pool = get_session_worker_pool()
@@ -1065,6 +1118,89 @@ class TelegramBot:
             except (TypeError, ValueError):
                 return None
         return None
+
+    def _iter_proactive_telegram_sessions(self) -> list[str]:
+        session_keys = set(self._runtime_states.keys()) | set(self._chat_id_by_session.keys())
+        return sorted(
+            session_key
+            for session_key in session_keys
+            if self._resolve_proactive_chat_id(session_key) is not None
+        )
+
+    async def run_host_governed_proactive_telegram_cycle(
+        self,
+        session_key: str,
+        *,
+        now_ts: Optional[float] = None,
+        observation_source: str = "direct_real",
+        live_mode: bool = False,
+        max_events: Optional[int] = None,
+    ) -> dict[str, Any]:
+        runtime_loop = self._get_runtime_v2_loop()
+        state = self._get_runtime_state(session_key)
+        cycle_result = await run_host_governed_proactive_cycle(
+            session_id=session_key,
+            state=state,
+            proto_self_runtime=getattr(runtime_loop, "proto_self_runtime", None),
+            transport_drain=lambda sid, limit: self.drain_pending_proactive_outbox_to_telegram(
+                sid,
+                max_events=(max_events if isinstance(max_events, int) and max_events > 0 else limit),
+                finalize_evidence=False,
+            ),
+            now_ts=now_ts,
+            scheduler_min_idle_seconds=self._mvp12_proactive_scheduler_idle_seconds,
+            transport_min_idle_seconds=self._mvp12_proactive_transport_idle_seconds,
+            assistant_reply_cooldown_seconds=self._mvp12_proactive_reply_cooldown_seconds,
+            max_transport_events=(
+                max_events if isinstance(max_events, int) and max_events > 0 else self._mvp12_proactive_max_events_per_tick
+            ),
+            observation_source=observation_source,
+            controlled_mode=not live_mode,
+        )
+        payload = cycle_result.to_dict()
+        if hasattr(state, "record"):
+            state.record(
+                "proactive_followup_host_cycle",
+                {
+                    "status": payload.get("status"),
+                    "reason": payload.get("reason"),
+                    "transport_status": (payload.get("transport_result") or {}).get("status"),
+                    "transport_reason": (payload.get("transport_result") or {}).get("reason"),
+                },
+            )
+        return payload
+
+    async def _run_proactive_telegram_autodrain_loop(self) -> None:
+        logger.info(
+            "telegram.proactive_autodrain.loop.start tick_seconds=%.1f scheduler_idle=%.1f transport_idle=%.1f cooldown=%.1f",
+            self._mvp12_proactive_telegram_tick_seconds,
+            self._mvp12_proactive_scheduler_idle_seconds,
+            self._mvp12_proactive_transport_idle_seconds,
+            self._mvp12_proactive_reply_cooldown_seconds,
+        )
+        try:
+            while True:
+                await asyncio.sleep(max(1.0, float(self._mvp12_proactive_telegram_tick_seconds)))
+                for session_key in self._iter_proactive_telegram_sessions():
+                    try:
+                        result = await self.run_host_governed_proactive_telegram_cycle(
+                            session_key,
+                            live_mode=True,
+                            observation_source="direct_real",
+                        )
+                    except Exception as e:
+                        logger.exception("telegram.proactive_autodrain.failed session=%s err=%s", session_key, e)
+                        continue
+                    if result.get("status") in {"sent", "partial"}:
+                        logger.info(
+                            "telegram.proactive_autodrain.sent session=%s status=%s reason=%s",
+                            session_key,
+                            result.get("status"),
+                            result.get("reason"),
+                        )
+        except asyncio.CancelledError:
+            logger.info("telegram.proactive_autodrain.loop.stop")
+            raise
 
     def _build_recent_read_followup_reply(self, state: RuntimeV2State, text: str) -> Optional[str]:
         snapshot = getattr(state, "last_delivered_evidence_context", None) or getattr(state, "last_evidence_read_result", None)
@@ -4251,6 +4387,11 @@ class TelegramBot:
             logger.info("telegram.lifecycle app_started %s", fingerprint)
             if self.autonomy_orchestrator is not None:
                 self.autonomy_orchestrator.recover_surface("telegram")
+            if self._mvp12_proactive_telegram_autodrain_enabled and self.use_runtime_v2:
+                self._proactive_telegram_autodrain_task = asyncio.create_task(
+                    self._run_proactive_telegram_autodrain_loop()
+                )
+                logger.info("telegram.lifecycle proactive_autodrain_started %s", fingerprint)
 
             try:
                 command_specs = [
@@ -4290,6 +4431,11 @@ class TelegramBot:
             raise
         finally:
             logger.info("telegram.lifecycle shutdown_start %s", fingerprint)
+            if self._proactive_telegram_autodrain_task is not None:
+                self._proactive_telegram_autodrain_task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await self._proactive_telegram_autodrain_task
+                self._proactive_telegram_autodrain_task = None
             try:
                 if self.app.updater and self.app.updater.running:
                     await self.app.updater.stop()

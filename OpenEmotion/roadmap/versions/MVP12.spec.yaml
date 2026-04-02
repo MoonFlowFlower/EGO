@@ -44,6 +44,7 @@ in_scope:
   - host_proactive_outbox_lane
   - controlled_outbox_drain
   - controlled_telegram_transport_bridge
+  - feature_flagged_host_governed_proactive_telegram_auto_cycle
   - developmental_trace_capture
   - replay_consistency
   - sandbox_governance
@@ -82,6 +83,8 @@ required_artifacts:
   - artifacts/mvp12/proactive_outbox_drain_current.md
   - artifacts/mvp12/telegram_proactive_transport_current.json
   - artifacts/mvp12/telegram_proactive_transport_current.md
+  - artifacts/mvp12/host_governed_proactive_telegram_cycle_current.json
+  - artifacts/mvp12/host_governed_proactive_telegram_cycle_current.md
 required_tests:
   - pytest -q openemotion/proto_self_v2/tests/test_developmental_sandbox.py
   - pytest -q EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k developmental
@@ -99,6 +102,8 @@ required_tests:
   - pytest -q EgoCore/tests/test_run_mvp12_proactive_outbox_drain.py
   - pytest -q EgoCore/tests/test_telegram_proactive_transport.py
   - pytest -q EgoCore/tests/test_run_mvp12_telegram_proactive_transport.py
+  - pytest -q EgoCore/tests/test_host_governed_proactive_telegram_cycle.py
+  - pytest -q EgoCore/tests/test_run_mvp12_host_governed_proactive_telegram_cycle.py
   - python scripts/run_runtime_mainline_observation.py
   - python OpenEmotion/tools/run_mvp12_controlled_evidence.py
   - python OpenEmotion/tools/aggregate_mvp12_observations.py
@@ -108,6 +113,7 @@ required_tests:
   - python EgoCore/tools/run_mvp12_proactive_outbox.py
   - python EgoCore/tools/run_mvp12_proactive_outbox_drain.py
   - python EgoCore/tools/run_mvp12_telegram_proactive_transport.py --chat-id <telegram_chat_id>
+  - python EgoCore/tools/run_mvp12_host_governed_proactive_telegram_cycle.py --chat-id <telegram_chat_id>
 required_gates:
   - sandbox_no_authority_bypass
   - shadow_only_writeback
@@ -119,6 +125,8 @@ required_gates:
   - simulated_outbox_record_not_claimed_as_real_send
   - telegram_transport_send_host_governed
   - telegram_transport_send_not_claimed_as_live_autonomy
+  - feature_flagged_proactive_telegram_auto_cycle_default_off
+  - host_governed_proactive_telegram_cycle_respects_idle_and_busy_gates
   - replay_consistency_ge_threshold
 promotion_criteria:
   - developmental_trace_present

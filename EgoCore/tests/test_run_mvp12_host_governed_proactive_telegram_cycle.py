@@ -23,9 +23,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.telegram_bot import TelegramBot
-from EgoCore.tools import run_mvp12_telegram_proactive_transport as runner_module
-from EgoCore.tools.run_mvp12_telegram_proactive_transport import (
-    run_proactive_telegram_transport_session,
+from EgoCore.tools import run_mvp12_host_governed_proactive_telegram_cycle as runner_module
+from EgoCore.tools.run_mvp12_host_governed_proactive_telegram_cycle import (
+    run_host_governed_proactive_telegram_cycle_session,
 )
 
 
@@ -37,7 +37,7 @@ class DummyBotApi:
         self.sent.append({"chat_id": chat_id, "text": text})
         return SimpleNamespace(
             chat=SimpleNamespace(id=chat_id),
-            message_id=500 + len(self.sent),
+            message_id=3000 + len(self.sent),
             date=datetime.now(timezone.utc),
         )
 
@@ -62,10 +62,10 @@ class DummyProtoRuntime:
 
 
 @pytest.mark.asyncio
-async def test_run_mvp12_telegram_proactive_transport_session_writes_artifact(tmp_path: Path) -> None:
+async def test_run_mvp12_host_governed_proactive_telegram_cycle_session_writes_artifact(tmp_path: Path) -> None:
     telegram_bot = TelegramBot(token="dummy", use_runtime_v2=True)
     telegram_bot.app = SimpleNamespace(bot=DummyBotApi())
-    output_json = tmp_path / "telegram_proactive_transport.json"
+    output_json = tmp_path / "host_governed_proactive_cycle.json"
 
     async def fake_runtime_session(**kwargs):
         state = telegram_bot._get_runtime_state("telegram:dm:8420019401")
@@ -90,7 +90,7 @@ async def test_run_mvp12_telegram_proactive_transport_session_writes_artifact(tm
     monkeypatch.setattr(runner_module, "run_runtime_mainline_session", fake_runtime_session)
 
     try:
-        payload = await run_proactive_telegram_transport_session(
+        payload = await run_host_governed_proactive_telegram_cycle_session(
             messages=[
                 "我在想，意识的门槛其实可能比人类自以为的低很多。你怎么看？",
                 "有主观能动性。",
@@ -105,9 +105,9 @@ async def test_run_mvp12_telegram_proactive_transport_session_writes_artifact(tm
     finally:
         monkeypatch.undo()
 
-    assert payload["telegram_transport_result"]["status"] == "sent"
-    assert payload["telegram_transport_result"]["sent_records"][0]["transport_source"] == "telegram"
+    assert payload["cycle_result"]["status"] == "sent"
+    assert payload["cycle_result"]["transport_result"]["status"] == "sent"
     assert output_json.exists()
     written = json.loads(output_json.read_text(encoding="utf-8"))
-    assert written["telegram_transport_result"]["status"] == "sent"
+    assert written["cycle_result"]["transport_result"]["status"] == "sent"
     assert written["pending_proactive_outbox_events"] == []

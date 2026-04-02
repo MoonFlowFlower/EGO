@@ -40,6 +40,23 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 
 ## 最近更新
 
+### 2026-04-02: MVP12-A feature-flagged host-governed proactive Telegram auto cycle 已接到真实 send path
+- `MVP12-A` 现在不止能由宿主侧 bridge 消费 `host_proactive_outbox`，还可以在 feature flag 打开时，由宿主自动串起 `scheduler -> delivery -> outbox -> Telegram drain`
+- 新增：
+  - `EgoCore/app/runtime_v2/proactive_telegram_cycle.py`
+  - `EgoCore/tools/run_mvp12_host_governed_proactive_telegram_cycle.py`
+  - `EgoCore/tests/test_host_governed_proactive_telegram_cycle.py`
+  - `EgoCore/tests/test_run_mvp12_host_governed_proactive_telegram_cycle.py`
+- 当前受控 artifact：
+  - `OpenEmotion/artifacts/mvp12/host_governed_proactive_telegram_cycle_current.json`
+  - `OpenEmotion/artifacts/mvp12/host_governed_proactive_telegram_cycle_current.md`
+- 当前验证口径：
+  - 定向测试 `6 passed`
+  - controlled real Telegram send 已产出 `cycle_result.status = sent`
+  - `transport_gate.status = allow`
+  - `transport_result.status = sent`
+  - 默认仍 `off`，不等于默认 live idle scheduler，不等于 autonomous unsolicited delivery
+
 ### 2026-04-02: MVP12-A controlled Telegram transport bridge 已接入真实 send_message
 - `MVP12-A` 现在不止能生成 queue 和 simulated send record，还能由宿主侧 bridge 把 `host_proactive_outbox` 消费成真实 Telegram `send_message`
 - 新增：
