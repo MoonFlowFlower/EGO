@@ -92,6 +92,11 @@ trigger_evidence:
   - `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
   - `developmental_tick / developmental_replay`
   - `developmental_shadow` shadow-only writeback
+- 2026-04-01 已补第一份 controlled evidence runner：
+  - `OpenEmotion/tools/run_mvp12_controlled_evidence.py`
+  - 当前已生成一份受控 E3 证据包：
+    - `OpenEmotion/artifacts/mvp12/controlled_20260401_215912/*`
+  - 结论：`governance_violation_count = 0`、`replay_consistent = true`
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动
