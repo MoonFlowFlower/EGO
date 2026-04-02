@@ -97,6 +97,10 @@ trigger_evidence:
   - 当前已生成一份受控 E3 证据包：
     - `OpenEmotion/artifacts/mvp12/controlled_20260401_215912/*`
   - 结论：`governance_violation_count = 0`、`replay_consistent = true`
+- 2026-04-01 同一 verifier 已补第一段 controlled `direct_real` 观察窗：
+  - `OpenEmotion/artifacts/mvp12/controlled_20260401_220610/*`
+  - 当前结果：`direct_real_cycles = 4`、`governance_violation_count = 0`、`observation_ref_count = 8`
+  - 口径仍是 controlled observation，不等于 live 行为放权
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

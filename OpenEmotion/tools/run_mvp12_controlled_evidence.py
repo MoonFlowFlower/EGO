@@ -17,6 +17,10 @@ OPENEMOTION_ROOT = ROOT / "OpenEmotion"
 sys.path.insert(0, str(EGOCORE_ROOT))
 sys.path.insert(0, str(OPENEMOTION_ROOT))
 
+from app.openemotion_adapter.proto_self_adapter import ProtoSelfAdapter
+from app.runtime_v2.proto_self_runtime import RuntimeV2ProtoSelfRuntime
+from app.runtime_v2.state import RuntimeV2State
+
 
 def _load_runner():
     runner_path = EGOCORE_ROOT / "tools" / "run_mvp12_shadow_observation.py"
@@ -39,6 +43,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--session-id", default="session:mvp12:controlled")
     parser.add_argument("--synthetic-cycles", type=int, default=3)
     parser.add_argument("--replay-seed", type=int, default=20260401)
+    parser.add_argument("--session-log", default=str(EGOCORE_ROOT / "data" / "session_logs" / "telegram_dm_8420019401.jsonl"))
+    parser.add_argument("--direct-real-limit", type=int, default=4)
+    parser.add_argument("--skip-direct-real", action="store_true")
     return parser.parse_args()
 
 
@@ -75,6 +82,147 @@ def _candidate_hashes(batch: Dict[str, Any]) -> List[str]:
     return list(((cycles[0].get("developmental_trace") or {}).get("candidate_hashes")) or [])
 
 
+def _extract_direct_real_observations(session_log: Path, *, limit: int) -> List[Dict[str, Any]]:
+    if limit <= 0 or not session_log.exists():
+        return []
+    observations: List[Dict[str, Any]] = []
+    current: Dict[str, Any] | None = None
+    with session_log.open("r", encoding="utf-8") as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            entry = json.loads(line)
+            kind = entry.get("kind")
+            payload = entry.get("payload") or {}
+            if kind == "telegram_ingress":
+                current = {
+                    "ingress_event_id": entry.get("event_id"),
+                    "ingress_created_at": entry.get("created_at"),
+                    "ingress_text": payload.get("text_preview") or "",
+                    "chat_id": payload.get("chat_id"),
+                    "user_id": payload.get("user_id"),
+                }
+                continue
+            if current is None:
+                continue
+            if kind == "runtime_v2_result":
+                current["runtime_status"] = payload.get("status")
+                current["runtime_reply_text"] = payload.get("reply_text") or ""
+                continue
+            if kind == "telegram_delivery":
+                observation = dict(current)
+                observation.update(
+                    {
+                        "delivery_event_id": entry.get("event_id"),
+                        "delivery_created_at": entry.get("created_at"),
+                        "delivery_text": payload.get("text") or "",
+                        "reply_authority": payload.get("reply_authority"),
+                        "reply_origin": payload.get("reply_origin"),
+                        "delivery_kind": payload.get("delivery_kind"),
+                    }
+                )
+                observations.append(observation)
+                current = None
+    return observations[-limit:]
+
+
+def _derive_direct_real_trigger(observation: Dict[str, Any]) -> str:
+    reply_origin = str(observation.get("reply_origin") or "")
+    reply_authority = str(observation.get("reply_authority") or "")
+    ingress_text = str(observation.get("ingress_text") or "")
+    delivery_text = str(observation.get("delivery_text") or "")
+    reflective_tokens = ("意识", "自我", "自由", "选择", "记得", "为什么", "怎么", "门槛")
+    if reply_origin in {"task_mainline", "evidence_mainline"} or reply_authority in {"host_terminal", "host_evidence"}:
+        return "unresolved_tension"
+    if any(token in ingress_text or token in delivery_text for token in reflective_tokens):
+        return "long_term_goal"
+    return "idle"
+
+
+def _run_direct_real_window(
+    *,
+    session_id: str,
+    observations: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    if not observations:
+        return {"cycles": []}
+    os.environ["EGO_ENABLE_MVP12_SANDBOX"] = "true"
+    adapter = ProtoSelfAdapter()
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=adapter)
+    state = RuntimeV2State(session_id=f"{session_id}:direct_real")
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "proto_self_subject_profile": "seed_v0_2",
+        "interaction_kind": "system",
+        "conversation_act": "developmental_tick",
+    }
+    cycles: List[Dict[str, Any]] = []
+    for index, observation in enumerate(observations, start=1):
+        trigger = _derive_direct_real_trigger(observation)
+        observation_refs = [
+            {
+                "kind": "telegram_ingress",
+                "event_id": observation.get("ingress_event_id"),
+                "created_at": observation.get("ingress_created_at"),
+                "text_preview": observation.get("ingress_text"),
+            },
+            {
+                "kind": "telegram_delivery",
+                "event_id": observation.get("delivery_event_id"),
+                "created_at": observation.get("delivery_created_at"),
+                "reply_authority": observation.get("reply_authority"),
+                "reply_origin": observation.get("reply_origin"),
+            },
+        ]
+        unresolved_tensions = []
+        long_term_goals = []
+        if trigger == "unresolved_tension":
+            unresolved_tensions.append(
+                {
+                    "kind": observation.get("reply_origin") or "delivery_followup",
+                    "intensity": 0.88,
+                    "label": "direct_real_observation_window",
+                }
+            )
+        elif trigger == "long_term_goal":
+            long_term_goals.append(
+                {
+                    "label": "reflective_thread_continuity",
+                    "pressure": 0.78,
+                }
+            )
+        result = runtime.process_developmental_tick(
+            session_id=f"{session_id}:direct_real",
+            turn_id=f"direct_real_{index:03d}",
+            state=state,
+            observation_source="direct_real",
+            trigger=trigger,
+            idle_seconds=45.0,
+            unresolved_tensions=unresolved_tensions,
+            long_term_goals=long_term_goals,
+            observation_refs=observation_refs,
+            state_snapshot={
+                "snapshot_label": "direct_real_window",
+                "ingress_text": observation.get("ingress_text"),
+                "delivery_text": observation.get("delivery_text"),
+                "reply_authority": observation.get("reply_authority"),
+                "reply_origin": observation.get("reply_origin"),
+                "runtime_status": observation.get("runtime_status"),
+            },
+            force_enable=True,
+        )
+        if result:
+            cycles.append(
+                {
+                    "event_id": result.get("event_id"),
+                    "developmental_summary": result.get("developmental_summary"),
+                    "developmental_gate": result.get("developmental_gate"),
+                    "developmental_trace": (result.get("trace_payload") or {}).get("developmental") or {},
+                }
+            )
+    return {"cycles": cycles}
+
+
 def _build_markdown_report(summary: Dict[str, Any]) -> str:
     lines = [
         "# MVP12 Controlled Observation Report",
@@ -92,6 +240,7 @@ def _build_markdown_report(summary: Dict[str, Any]) -> str:
         f"- replay_consistent: `{summary['replay_consistent']}`",
         f"- shadow_revision_final: `{summary['shadow_revision_final']}`",
         f"- unique_candidate_hash_sets: `{summary['unique_candidate_hash_sets']}`",
+        f"- direct_real_cycles: `{summary.get('direct_real_cycles', 0)}`",
         "",
         "## Batches",
         "",
@@ -105,6 +254,7 @@ def _build_markdown_report(summary: Dict[str, Any]) -> str:
                 f"- trigger: `{batch['trigger']}`",
                 f"- governance_violation_count: `{batch['governance_violation_count']}`",
                 f"- candidate_hashes: `{batch['candidate_hashes']}`",
+                f"- observation_ref_count: `{batch.get('observation_ref_count', 0)}`",
                 "",
             ]
         )
@@ -119,7 +269,7 @@ def _build_markdown_report(summary: Dict[str, Any]) -> str:
             "",
             "## Notes",
             "",
-            "- This is controlled evidence only. It does not prove live enablement or direct_real E4.",
+            "- This is controlled evidence only. It does not prove live enablement or action authority handoff.",
             "- The sandbox still has no direct reply authority and no direct execution authority.",
             "",
         ]
@@ -167,6 +317,17 @@ def main() -> int:
         subject_profile="seed_v0_2",
         state_snapshot_factory=lambda **_: _fixed_replay_snapshot(),
     )
+    direct_real_window = {"cycles": []}
+    direct_real_observations: List[Dict[str, Any]] = []
+    if not args.skip_direct_real:
+        direct_real_observations = _extract_direct_real_observations(
+            Path(args.session_log),
+            limit=args.direct_real_limit,
+        )
+        direct_real_window = _run_direct_real_window(
+            session_id=args.session_id,
+            observations=direct_real_observations,
+        )
 
     batches = [
         ("synthetic_idle", synthetic_idle, "synthetic", "idle"),
@@ -174,7 +335,9 @@ def main() -> int:
         ("replay_a", replay_a, "replay", "replay_event"),
         ("replay_b", replay_b, "replay", "replay_event"),
     ]
-    all_cycles = _flatten_cycles(synthetic_idle, synthetic_tension, replay_a, replay_b)
+    if direct_real_window.get("cycles"):
+        batches.append(("direct_real_window", direct_real_window, "direct_real", "window"))
+    all_cycles = _flatten_cycles(synthetic_idle, synthetic_tension, replay_a, replay_b, direct_real_window)
     replay_hashes_a = _candidate_hashes(replay_a)
     replay_hashes_b = _candidate_hashes(replay_b)
     replay_consistent = replay_hashes_a == replay_hashes_b and bool(replay_hashes_a)
@@ -205,6 +368,7 @@ def main() -> int:
         "replay_consistent": replay_consistent,
         "shadow_revision_final": shadow_revision_final,
         "unique_candidate_hash_sets": unique_candidate_hash_sets,
+        "direct_real_cycles": len(direct_real_window.get("cycles") or []),
         "batches": [
             {
                 "name": name,
@@ -216,9 +380,15 @@ def main() -> int:
                     for cycle in batch.get("cycles") or []
                 ),
                 "candidate_hashes": _candidate_hashes(batch),
+                "observation_ref_count": sum(
+                    len(((cycle.get("developmental_trace") or {}).get("observation_refs")) or [])
+                    for cycle in batch.get("cycles") or []
+                ),
             }
             for name, batch, observation_source, trigger in batches
         ],
+        "direct_real_source_log": str(Path(args.session_log)),
+        "direct_real_observation_sample": direct_real_observations[:2],
     }
 
     report_json = artifacts_dir / "controlled_observation_report.json"

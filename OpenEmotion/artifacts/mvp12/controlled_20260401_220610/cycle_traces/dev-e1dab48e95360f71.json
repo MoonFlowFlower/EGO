@@ -1,0 +1,42 @@
+{
+  "cycle_id": "dev-e1dab48e95360f71",
+  "seed": 2477276691,
+  "trigger": "unresolved_tension",
+  "trace_hash": "e1dab48e95360f71",
+  "candidates": [
+    {
+      "id": "44befb0a-29f8-4105-840e-47698553643e",
+      "candidate_type": "explanation",
+      "timestamp": "2026-04-02T03:06:11.811844",
+      "origin_cycle": "dev-e1dab48e95360f71",
+      "confidence": 0.6754537479990217,
+      "trace_reference": "e1dab48e95360f71",
+      "content": {},
+      "metadata": {},
+      "explanation": "Unresolved tension detected in system state",
+      "supporting_facts": [
+        "Tension exceeds threshold"
+      ],
+      "counter_evidence": []
+    },
+    {
+      "id": "854dff14-da76-4504-9f2c-bc3bb1d46caf",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:11.811862",
+      "origin_cycle": "dev-e1dab48e95360f71",
+      "confidence": 0.5917447396852298,
+      "trace_reference": "e1dab48e95360f71",
+      "content": {},
+      "metadata": {},
+      "action_type": "observe",
+      "target": "internal_state",
+      "expected_outcome": "Gather more information about tension source",
+      "risk_assessment": {
+        "disruption": 0.1
+      }
+    }
+  ],
+  "completed_at": "2026-04-02T03:06:11.872529",
+  "success": true,
+  "error": null
+}

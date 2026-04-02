@@ -147,6 +147,7 @@ def _extract_developmental_inputs(packet: UpdatePacketV2, state: Any) -> Dict[st
         "state_snapshot": state_snapshot,
         "unresolved_tensions": list(dev_input.get("unresolved_tensions") or []),
         "long_term_goals": list(dev_input.get("long_term_goals") or []),
+        "observation_refs": list(dev_input.get("observation_refs") or []),
         "max_candidates": int(runtime_summary.get("max_candidates") or 5),
     }
 
@@ -375,6 +376,7 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         "trigger": trigger.value,
         "trace_hash": context.trace_hash,
         "observation_source": inputs["observation_source"],
+        "observation_refs": list(inputs.get("observation_refs") or []),
         "developmental_mode": inputs["developmental_mode"],
         "replay_seed": replay_seed,
         "candidate_hashes": candidate_hashes,
@@ -474,6 +476,7 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         "governance_violation_count": gate["governance_violation_count"],
         "replay_seed": replay_seed,
         "observation_source": inputs["observation_source"],
+        "observation_refs": list(inputs.get("observation_refs") or []),
         "artifacts": {
             "developmental_cycles_json": str(memory.cycles_file),
             "developmental_cycles_jsonl": str(memory.cycles_jsonl_file),

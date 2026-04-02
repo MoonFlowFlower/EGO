@@ -570,3 +570,54 @@ def test_process_developmental_tick_updates_shadow_summary_and_trace():
     assert state.proto_self_context["developmental_summary"]["cycle_id"] == "cycle_001"
     assert state.proto_self_context["shadow_revision"] == 2
     assert state.proto_self_context["last_developmental_cycle"] == "cycle_001"
+
+
+def test_process_developmental_tick_preserves_observation_refs():
+    class Adapter:
+        def handle_event(self, event):
+            refs = (
+                (((event.get("intervention_context") or {}).get("developmental_input") or {}).get("observation_refs"))
+                or []
+            )
+            return {
+                "schema_version": "proto_self.output.v2",
+                "event_id": event["event_id"],
+                "developmental_summary": {
+                    "cycle_id": "cycle_refs",
+                    "trigger": "idle",
+                    "gate_status": "allow",
+                    "observation_source": event["runtime_summary"]["observation_source"],
+                    "shadow_revision": 1,
+                },
+                "developmental_gate": {"status": "allow"},
+                "trace_payload": {
+                    "schema_version": "proto_self.trace.v2",
+                    "event_id": event["event_id"],
+                    "developmental": {
+                        "cycle_id": "cycle_refs",
+                        "observation_refs": refs,
+                    },
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter())
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    result = runtime.process_developmental_tick(
+        session_id="session:test",
+        turn_id="turn_dev_refs",
+        state=state,
+        observation_source="direct_real",
+        observation_refs=[
+            {"kind": "telegram_ingress", "event_id": "ingress_1"},
+            {"kind": "telegram_delivery", "event_id": "delivery_1"},
+        ],
+        force_enable=True,
+    )
+
+    assert result is not None
+    assert result["trace_payload"]["developmental"]["observation_refs"] == [
+        {"kind": "telegram_ingress", "event_id": "ingress_1"},
+        {"kind": "telegram_delivery", "event_id": "delivery_1"},
+    ]

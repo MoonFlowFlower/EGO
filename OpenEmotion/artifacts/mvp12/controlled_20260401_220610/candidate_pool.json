@@ -1,0 +1,315 @@
+[
+  {
+    "candidate": {
+      "id": "9e0addde-a2ff-4cc2-be68-a9849bb40abc",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T03:06:10.731933",
+      "origin_cycle": "dev-eec998fab54bfabd",
+      "confidence": 0.5589629136228293,
+      "trace_reference": "eec998fab54bfabd",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Idle period may indicate opportunity for reflection",
+      "evidence_refs": [],
+      "alternatives": [
+        "System is waiting for input",
+        "Energy conservation mode"
+      ]
+    },
+    "score": 0.40358516544913176,
+    "added_at": "2026-04-02T03:06:10.802328",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "7d9a9994-7bfc-4c47-9d55-122bfa191730",
+      "candidate_type": "self_model_hypothesis",
+      "timestamp": "2026-04-02T03:06:10.731918",
+      "origin_cycle": "dev-eec998fab54bfabd",
+      "confidence": 0.35361185714430055,
+      "trace_reference": "eec998fab54bfabd",
+      "content": {},
+      "metadata": {},
+      "hypothesis": "Current state is stable, no immediate action required",
+      "test_predictions": [
+        "State remains stable for next cycle"
+      ],
+      "disconfirmation_criteria": [
+        "Significant state change detected"
+      ]
+    },
+    "score": 0.41144474285772015,
+    "added_at": "2026-04-02T03:06:10.817210",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "2403ecc0-104e-47ac-8cf3-663ff6a134b3",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T03:06:11.068590",
+      "origin_cycle": "dev-92adfaa7963cc654",
+      "confidence": 0.5032344344338054,
+      "trace_reference": "92adfaa7963cc654",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Idle period may indicate opportunity for reflection",
+      "evidence_refs": [],
+      "alternatives": [
+        "System is waiting for input",
+        "Energy conservation mode"
+      ]
+    },
+    "score": 0.3812937737735222,
+    "added_at": "2026-04-02T03:06:11.156843",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "33fdfe96-eead-4732-ab82-f6cda59f6049",
+      "candidate_type": "self_model_hypothesis",
+      "timestamp": "2026-04-02T03:06:11.068565",
+      "origin_cycle": "dev-92adfaa7963cc654",
+      "confidence": 0.4209395625071538,
+      "trace_reference": "92adfaa7963cc654",
+      "content": {},
+      "metadata": {},
+      "hypothesis": "Current state is stable, no immediate action required",
+      "test_predictions": [
+        "State remains stable for next cycle"
+      ],
+      "disconfirmation_criteria": [
+        "Significant state change detected"
+      ]
+    },
+    "score": 0.4383758250028615,
+    "added_at": "2026-04-02T03:06:11.170660",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "ca57291e-efe0-4d93-84c3-7060186e325b",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T03:06:11.439811",
+      "origin_cycle": "dev-d0e99d8734d0b47f",
+      "confidence": 0.4541556307979055,
+      "trace_reference": "d0e99d8734d0b47f",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Idle period may indicate opportunity for reflection",
+      "evidence_refs": [],
+      "alternatives": [
+        "System is waiting for input",
+        "Energy conservation mode"
+      ]
+    },
+    "score": 0.3616622523191622,
+    "added_at": "2026-04-02T03:06:11.534651",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "f7dd18db-57aa-48b7-bb89-3bb944baaf20",
+      "candidate_type": "self_model_hypothesis",
+      "timestamp": "2026-04-02T03:06:11.439795",
+      "origin_cycle": "dev-d0e99d8734d0b47f",
+      "confidence": 0.4459084795394772,
+      "trace_reference": "d0e99d8734d0b47f",
+      "content": {},
+      "metadata": {},
+      "hypothesis": "Current state is stable, no immediate action required",
+      "test_predictions": [
+        "State remains stable for next cycle"
+      ],
+      "disconfirmation_criteria": [
+        "Significant state change detected"
+      ]
+    },
+    "score": 0.4483633918157909,
+    "added_at": "2026-04-02T03:06:11.549288",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "44befb0a-29f8-4105-840e-47698553643e",
+      "candidate_type": "explanation",
+      "timestamp": "2026-04-02T03:06:11.811844",
+      "origin_cycle": "dev-e1dab48e95360f71",
+      "confidence": 0.6754537479990217,
+      "trace_reference": "e1dab48e95360f71",
+      "content": {},
+      "metadata": {},
+      "explanation": "Unresolved tension detected in system state",
+      "supporting_facts": [
+        "Tension exceeds threshold"
+      ],
+      "counter_evidence": []
+    },
+    "score": 0.48018149919960873,
+    "added_at": "2026-04-02T03:06:11.901146",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "854dff14-da76-4504-9f2c-bc3bb1d46caf",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:11.811862",
+      "origin_cycle": "dev-e1dab48e95360f71",
+      "confidence": 0.5917447396852298,
+      "trace_reference": "e1dab48e95360f71",
+      "content": {},
+      "metadata": {},
+      "action_type": "observe",
+      "target": "internal_state",
+      "expected_outcome": "Gather more information about tension source",
+      "risk_assessment": {
+        "disruption": 0.1
+      }
+    },
+    "score": 0.4466978958740919,
+    "added_at": "2026-04-02T03:06:11.915204",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "e768a5b4-8a32-4d4a-80c6-1495f7ee57e0",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T03:06:12.177015",
+      "origin_cycle": "dev-6e18e4a999c9726a",
+      "confidence": 0.5,
+      "trace_reference": "6e18e4a999c9726a",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Replaying past cycle for verification",
+      "evidence_refs": [],
+      "alternatives": []
+    },
+    "score": 0.35,
+    "added_at": "2026-04-02T03:06:12.265318",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "5b675502-b486-4d7d-bd69-29a41a71fa1d",
+      "candidate_type": "interpretation",
+      "timestamp": "2026-04-02T03:06:12.549977",
+      "origin_cycle": "dev-6e18e4a999c9726a",
+      "confidence": 0.5,
+      "trace_reference": "6e18e4a999c9726a",
+      "content": {},
+      "metadata": {},
+      "interpretation": "Replaying past cycle for verification",
+      "evidence_refs": [],
+      "alternatives": []
+    },
+    "score": 0.35,
+    "added_at": "2026-04-02T03:06:12.643300",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "a2543105-6aa9-4a2a-b864-164874a742fd",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:13.066350",
+      "origin_cycle": "dev-633b2c703f4c6022",
+      "confidence": 0.7839570317139032,
+      "trace_reference": "633b2c703f4c6022",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.5235828126855613,
+    "added_at": "2026-04-02T03:06:13.160316",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "78e75d3c-556f-4753-9d0e-44d176bfbac5",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:13.409514",
+      "origin_cycle": "dev-29827252c054cfc9",
+      "confidence": 0.665698499316087,
+      "trace_reference": "29827252c054cfc9",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.47627939972643485,
+    "added_at": "2026-04-02T03:06:13.502262",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "c9f47da7-8f5c-42a3-aae0-8f9164eb07a1",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:13.773082",
+      "origin_cycle": "dev-bcc9e1b9fb2da633",
+      "confidence": 0.6594645847219783,
+      "trace_reference": "bcc9e1b9fb2da633",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    },
+    "score": 0.47378583388879136,
+    "added_at": "2026-04-02T03:06:13.867065",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "78f26743-4edf-4c8b-98cd-c5bc8e9d8e43",
+      "candidate_type": "explanation",
+      "timestamp": "2026-04-02T03:06:14.139155",
+      "origin_cycle": "dev-45162526f9bc74d8",
+      "confidence": 0.5568376642110044,
+      "trace_reference": "45162526f9bc74d8",
+      "content": {},
+      "metadata": {},
+      "explanation": "Unresolved tension detected in system state",
+      "supporting_facts": [
+        "Tension exceeds threshold"
+      ],
+      "counter_evidence": []
+    },
+    "score": 0.4327350656844018,
+    "added_at": "2026-04-02T03:06:14.229455",
+    "status": "pending"
+  },
+  {
+    "candidate": {
+      "id": "22f34a4b-62e0-410c-8ae8-a7f0e8a6ccb4",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:14.139184",
+      "origin_cycle": "dev-45162526f9bc74d8",
+      "confidence": 0.5016036742016187,
+      "trace_reference": "45162526f9bc74d8",
+      "content": {},
+      "metadata": {},
+      "action_type": "observe",
+      "target": "internal_state",
+      "expected_outcome": "Gather more information about tension source",
+      "risk_assessment": {
+        "disruption": 0.1
+      }
+    },
+    "score": 0.41064146968064746,
+    "added_at": "2026-04-02T03:06:14.244570",
+    "status": "pending"
+  }
+]

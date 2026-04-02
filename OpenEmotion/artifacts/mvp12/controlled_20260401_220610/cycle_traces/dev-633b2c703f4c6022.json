@@ -1,0 +1,28 @@
+{
+  "cycle_id": "dev-633b2c703f4c6022",
+  "seed": 422703886,
+  "trigger": "long_term_goal",
+  "trace_hash": "633b2c703f4c6022",
+  "candidates": [
+    {
+      "id": "a2543105-6aa9-4a2a-b864-164874a742fd",
+      "candidate_type": "action",
+      "timestamp": "2026-04-02T03:06:13.066350",
+      "origin_cycle": "dev-633b2c703f4c6022",
+      "confidence": 0.7839570317139032,
+      "trace_reference": "633b2c703f4c6022",
+      "content": {},
+      "metadata": {},
+      "action_type": "approach",
+      "target": "long_term_goal",
+      "expected_outcome": "Progress toward goal",
+      "risk_assessment": {
+        "resource_cost": 0.2,
+        "disruption": 0.1
+      }
+    }
+  ],
+  "completed_at": "2026-04-02T03:06:13.131090",
+  "success": true,
+  "error": null
+}
