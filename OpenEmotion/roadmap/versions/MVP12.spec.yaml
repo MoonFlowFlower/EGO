@@ -45,6 +45,7 @@ in_scope:
   - controlled_outbox_drain
   - controlled_telegram_transport_bridge
   - feature_flagged_host_governed_proactive_telegram_auto_cycle
+  - host_governed_proactive_telegram_enable_policy
   - developmental_trace_capture
   - replay_consistency
   - sandbox_governance
@@ -126,6 +127,7 @@ required_gates:
   - telegram_transport_send_host_governed
   - telegram_transport_send_not_claimed_as_live_autonomy
   - feature_flagged_proactive_telegram_auto_cycle_default_off
+  - proactive_telegram_enable_policy_scoped_by_allowlist_and_recent_history
   - host_governed_proactive_telegram_cycle_respects_idle_and_busy_gates
   - replay_consistency_ge_threshold
 promotion_criteria:

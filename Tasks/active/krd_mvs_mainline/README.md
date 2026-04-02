@@ -174,6 +174,16 @@ trigger_evidence:
   - 当前 smoke 结果：`cycle_result.status = sent`、`transport_gate.status = allow`、`transport_result.status = sent`、`last_message_id = 3031`
   - 当前验证结果：`6 passed`
   - 当前口径必须保持：**feature-flagged host-governed auto cycle only**，默认 `off`，不是默认 live idle scheduler，不是 autonomous unsolicited delivery
+- 2026-04-02 `MVP12-A` 已再补 `host-governed proactive Telegram enable policy`：
+  - 新增 `EgoCore/app/runtime_v2/proactive_telegram_policy.py`
+  - `TelegramBot` 现在在 live autodrain 前先过 `enable_policy`
+  - 当前 policy 最少覆盖：
+    - global feature flag
+    - chat allowlist：`EGO_MVP12_PROACTIVE_ALLOWED_CHAT_IDS`
+    - session scope：`EGO_MVP12_PROACTIVE_ALLOWED_SESSION_PREFIXES`
+    - recent history threshold：默认 `min_recent_user_turns=2`、`min_recent_assistant_replies=1`
+  - 当前验证结果：`4 passed`
+  - 当前口径必须保持：**enable policy only**，仍然默认 `off`，不等于默认 live autonomy
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

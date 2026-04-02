@@ -42,6 +42,7 @@ class ProactiveTransportGateVerdict:
 class HostGovernedProactiveCycleResult:
     status: str
     reason: str
+    enable_policy: Optional[Dict[str, Any]]
     scheduler_result: Optional[Dict[str, Any]]
     delivery_result: Optional[Dict[str, Any]]
     outbox_result: Optional[Dict[str, Any]]
@@ -52,6 +53,7 @@ class HostGovernedProactiveCycleResult:
         return {
             "status": self.status,
             "reason": self.reason,
+            "enable_policy": dict(self.enable_policy or {}) if self.enable_policy else None,
             "scheduler_result": dict(self.scheduler_result or {}) if self.scheduler_result else None,
             "delivery_result": dict(self.delivery_result or {}) if self.delivery_result else None,
             "outbox_result": dict(self.outbox_result or {}) if self.outbox_result else None,
@@ -118,6 +120,7 @@ async def run_host_governed_proactive_cycle(
         return HostGovernedProactiveCycleResult(
             status="held",
             reason="proto_self_runtime_unavailable",
+            enable_policy=None,
             scheduler_result=None,
             delivery_result=None,
             outbox_result=None,
@@ -157,6 +160,7 @@ async def run_host_governed_proactive_cycle(
                 return HostGovernedProactiveCycleResult(
                     status="held",
                     reason=f"scheduler:{scheduler_result.reason}",
+                    enable_policy=None,
                     scheduler_result=scheduler_payload,
                     delivery_result=None,
                     outbox_result=None,
@@ -183,6 +187,7 @@ async def run_host_governed_proactive_cycle(
             return HostGovernedProactiveCycleResult(
                 status="held",
                 reason=f"delivery:{(delivery_payload or {}).get('reason') or 'unavailable'}",
+                enable_policy=None,
                 scheduler_result=scheduler_payload,
                 delivery_result=delivery_payload,
                 outbox_result=None,
@@ -209,6 +214,7 @@ async def run_host_governed_proactive_cycle(
             return HostGovernedProactiveCycleResult(
                 status="held",
                 reason=f"outbox:{outbox_result.reason}",
+                enable_policy=None,
                 scheduler_result=scheduler_payload,
                 delivery_result=delivery_payload,
                 outbox_result=outbox_payload,
@@ -237,6 +243,7 @@ async def run_host_governed_proactive_cycle(
         return HostGovernedProactiveCycleResult(
             status="held",
             reason=f"transport_gate:{gate.reason}",
+            enable_policy=None,
             scheduler_result=scheduler_payload,
             delivery_result=delivery_payload,
             outbox_result=outbox_payload,
@@ -250,6 +257,7 @@ async def run_host_governed_proactive_cycle(
     return HostGovernedProactiveCycleResult(
         status=status,
         reason=reason,
+        enable_policy=None,
         scheduler_result=scheduler_payload,
         delivery_result=delivery_payload,
         outbox_result=outbox_payload,

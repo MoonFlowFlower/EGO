@@ -78,6 +78,8 @@ async def _build_host_governed_fixture(session_id: str):
 async def test_run_host_governed_proactive_telegram_cycle_sends_after_idle() -> None:
     session_id = "telegram:dm:8420019401"
     bot, state = await _build_host_governed_fixture(session_id)
+    bot._mvp12_proactive_telegram_autodrain_enabled = True
+    bot._mvp12_proactive_allowed_chat_ids = {8420019401}
     last_activity_at = state.get_chat_state().last_activity_at
     assert last_activity_at == 100.0
 
@@ -86,9 +88,11 @@ async def test_run_host_governed_proactive_telegram_cycle_sends_after_idle() -> 
         now_ts=last_activity_at + 900.0,
         live_mode=True,
         max_events=1,
+        enforce_enable_policy=True,
     )
 
     assert result["status"] == "sent"
+    assert result["enable_policy"]["status"] == "allow"
     assert result["transport_gate"]["status"] == "allow"
     assert result["transport_result"]["status"] == "sent"
     assert result["transport_result"]["sent_records"][0]["transport_source"] == "telegram"
@@ -99,6 +103,8 @@ async def test_run_host_governed_proactive_telegram_cycle_sends_after_idle() -> 
 async def test_run_host_governed_proactive_telegram_cycle_holds_when_transport_gate_blocks() -> None:
     session_id = "telegram:dm:8420019401"
     bot, state = await _build_host_governed_fixture(session_id)
+    bot._mvp12_proactive_telegram_autodrain_enabled = True
+    bot._mvp12_proactive_allowed_chat_ids = {8420019401}
     last_activity_at = state.get_chat_state().last_activity_at
     assert last_activity_at == 100.0
 
@@ -107,10 +113,36 @@ async def test_run_host_governed_proactive_telegram_cycle_holds_when_transport_g
         now_ts=last_activity_at + 700.0,
         live_mode=True,
         max_events=1,
+        enforce_enable_policy=True,
     )
 
     assert result["status"] == "held"
     assert result["reason"] == "transport_gate:idle_window_too_short"
+    assert result["enable_policy"]["status"] == "allow"
     assert result["transport_gate"]["reason"] == "idle_window_too_short"
     assert result["transport_result"] is None
     assert state.has_pending_proactive_outbox_events()
+
+
+@pytest.mark.asyncio
+async def test_run_host_governed_proactive_telegram_cycle_holds_when_enable_policy_blocks() -> None:
+    session_id = "telegram:dm:8420019401"
+    bot, state = await _build_host_governed_fixture(session_id)
+    bot._mvp12_proactive_telegram_autodrain_enabled = True
+    bot._mvp12_proactive_allowed_chat_ids = {999}
+    last_activity_at = state.get_chat_state().last_activity_at
+    assert last_activity_at == 100.0
+
+    result = await bot.run_host_governed_proactive_telegram_cycle(
+        session_id,
+        now_ts=last_activity_at + 900.0,
+        live_mode=True,
+        max_events=1,
+        enforce_enable_policy=True,
+    )
+
+    assert result["status"] == "held"
+    assert result["reason"] == "enable_policy:chat_not_allowlisted"
+    assert result["enable_policy"]["reason"] == "chat_not_allowlisted"
+    assert result["transport_result"] is None
+    assert not state.has_pending_proactive_outbox_events()

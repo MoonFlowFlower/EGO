@@ -76,6 +76,10 @@ from app.runtime_v2.run_items import (
 )
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
 from app.runtime_v2.proactive_telegram_cycle import run_host_governed_proactive_cycle
+from app.runtime_v2.proactive_telegram_policy import (
+    ProactiveTelegramEnablePolicy,
+    evaluate_proactive_telegram_enable_policy,
+)
 from app.autonomy import (
     AutonomyExecutorKind,
     AutonomyOrchestrator,
@@ -138,6 +142,26 @@ def _env_flag(name: str, default: bool = False) -> bool:
     if not value:
         return bool(default)
     return value in {"1", "true", "yes", "on"}
+
+
+def _env_csv(name: str, default: tuple[str, ...] = ()) -> tuple[str, ...]:
+    value = str(os.environ.get(name, "")).strip()
+    if not value:
+        return tuple(item for item in default if str(item).strip())
+    return tuple(part.strip() for part in value.split(",") if part.strip())
+
+
+def _env_int_set(name: str) -> Optional[set[int]]:
+    values = _env_csv(name, ())
+    if not values:
+        return None
+    parsed: set[int] = set()
+    for value in values:
+        try:
+            parsed.add(int(value))
+        except (TypeError, ValueError):
+            continue
+    return parsed or None
 
 
 def _env_float(name: str, default: float) -> float:
@@ -265,6 +289,21 @@ class TelegramBot:
         self._mvp12_proactive_reply_cooldown_seconds = _env_float(
             "EGO_MVP12_PROACTIVE_REPLY_COOLDOWN_SECONDS",
             900.0,
+        )
+        self._mvp12_proactive_allowed_chat_ids = _env_int_set("EGO_MVP12_PROACTIVE_ALLOWED_CHAT_IDS")
+        if self._mvp12_proactive_allowed_chat_ids is None and self.allowed_chat_ids is not None:
+            self._mvp12_proactive_allowed_chat_ids = set(self.allowed_chat_ids)
+        self._mvp12_proactive_allowed_session_prefixes = _env_csv(
+            "EGO_MVP12_PROACTIVE_ALLOWED_SESSION_PREFIXES",
+            ("telegram:dm:",),
+        )
+        self._mvp12_proactive_min_recent_user_turns = max(
+            1,
+            _env_int("EGO_MVP12_PROACTIVE_MIN_RECENT_USER_TURNS", 2),
+        )
+        self._mvp12_proactive_min_recent_assistant_replies = max(
+            1,
+            _env_int("EGO_MVP12_PROACTIVE_MIN_RECENT_ASSISTANT_REPLIES", 1),
         )
         self._mvp12_proactive_max_events_per_tick = max(
             1,
@@ -1127,6 +1166,20 @@ class TelegramBot:
             if self._resolve_proactive_chat_id(session_key) is not None
         )
 
+    def _build_proactive_telegram_enable_policy(self) -> ProactiveTelegramEnablePolicy:
+        allowed_chat_ids = (
+            frozenset(self._mvp12_proactive_allowed_chat_ids)
+            if self._mvp12_proactive_allowed_chat_ids is not None
+            else None
+        )
+        return ProactiveTelegramEnablePolicy(
+            enabled=self._mvp12_proactive_telegram_autodrain_enabled,
+            allowed_chat_ids=allowed_chat_ids,
+            allowed_session_prefixes=tuple(self._mvp12_proactive_allowed_session_prefixes or ("telegram:dm:",)),
+            min_recent_user_turns=self._mvp12_proactive_min_recent_user_turns,
+            min_recent_assistant_replies=self._mvp12_proactive_min_recent_assistant_replies,
+        )
+
     async def run_host_governed_proactive_telegram_cycle(
         self,
         session_key: str,
@@ -1135,9 +1188,32 @@ class TelegramBot:
         observation_source: str = "direct_real",
         live_mode: bool = False,
         max_events: Optional[int] = None,
+        enforce_enable_policy: bool = False,
     ) -> dict[str, Any]:
         runtime_loop = self._get_runtime_v2_loop()
         state = self._get_runtime_state(session_key)
+        resolved_chat_id = self._resolve_proactive_chat_id(session_key)
+        enable_policy_verdict = None
+        if live_mode and enforce_enable_policy:
+            enable_policy_verdict = evaluate_proactive_telegram_enable_policy(
+                session_id=session_key,
+                state=state,
+                chat_id=resolved_chat_id,
+                policy=self._build_proactive_telegram_enable_policy(),
+            )
+            if hasattr(state, "record"):
+                state.record("proactive_followup_enable_policy", enable_policy_verdict.to_dict())
+            if not enable_policy_verdict.allowed:
+                return {
+                    "status": "held",
+                    "reason": f"enable_policy:{enable_policy_verdict.reason}",
+                    "enable_policy": enable_policy_verdict.to_dict(),
+                    "scheduler_result": None,
+                    "delivery_result": None,
+                    "outbox_result": None,
+                    "transport_gate": {},
+                    "transport_result": None,
+                }
         cycle_result = await run_host_governed_proactive_cycle(
             session_id=session_key,
             state=state,
@@ -1158,6 +1234,8 @@ class TelegramBot:
             controlled_mode=not live_mode,
         )
         payload = cycle_result.to_dict()
+        if enable_policy_verdict is not None:
+            payload["enable_policy"] = enable_policy_verdict.to_dict()
         if hasattr(state, "record"):
             state.record(
                 "proactive_followup_host_cycle",
@@ -1187,6 +1265,7 @@ class TelegramBot:
                             session_key,
                             live_mode=True,
                             observation_source="direct_real",
+                            enforce_enable_policy=True,
                         )
                     except Exception as e:
                         logger.exception("telegram.proactive_autodrain.failed session=%s err=%s", session_key, e)

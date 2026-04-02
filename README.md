@@ -40,6 +40,20 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 
 ## 最近更新
 
+### 2026-04-02: MVP12-A proactive Telegram auto cycle 已加宿主 enable policy
+- `MVP12-A` 的 auto cycle 不再只靠 idle/busy/transport gate，live autodrain 前现在还要先过宿主 enable policy
+- 新增：
+  - `EgoCore/app/runtime_v2/proactive_telegram_policy.py`
+- 当前 policy 覆盖：
+  - global feature flag
+  - `EGO_MVP12_PROACTIVE_ALLOWED_CHAT_IDS`
+  - `EGO_MVP12_PROACTIVE_ALLOWED_SESSION_PREFIXES`
+  - recent history threshold（默认 `2` 条 user turns、`1` 条 assistant replies）
+- 当前验证口径：
+  - 定向测试 `4 passed`
+  - 默认仍 `off`
+  - 这不是默认 live autonomy，只是把 live enable 条件正式收成宿主 gate
+
 ### 2026-04-02: MVP12-A feature-flagged host-governed proactive Telegram auto cycle 已接到真实 send path
 - `MVP12-A` 现在不止能由宿主侧 bridge 消费 `host_proactive_outbox`，还可以在 feature flag 打开时，由宿主自动串起 `scheduler -> delivery -> outbox -> Telegram drain`
 - 新增：
