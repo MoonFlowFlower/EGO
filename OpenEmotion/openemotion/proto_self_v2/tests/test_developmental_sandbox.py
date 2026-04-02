@@ -46,6 +46,18 @@ def _developmental_packet(*, event_type: str = "developmental_tick", replay_seed
     )
 
 
+def _packet_with_recent_turn(
+    *,
+    user_turn: str,
+    assistant_reply: str,
+    replay_seed: int | None = None,
+) -> UpdatePacketV2:
+    packet = _developmental_packet(replay_seed=replay_seed)
+    packet.intervention_context["developmental_input"]["state_snapshot"]["recent_user_turns"] = [user_turn]
+    packet.intervention_context["developmental_input"]["state_snapshot"]["recent_assistant_replies"] = [assistant_reply]
+    return packet
+
+
 def test_developmental_tick_writes_shadow_and_trace(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
     state = ProtoSelfStateV2.empty()
@@ -67,6 +79,46 @@ def test_developmental_tick_writes_shadow_and_trace(monkeypatch, tmp_path):
     assert (tmp_path / "shadow_state.json").exists()
     assert (tmp_path / "replay_consistency_report.json").exists()
     assert (tmp_path / "gate_checklist.md").exists()
+
+
+def test_background_thought_candidate_is_topic_grounded_not_fixed_template(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
+    state = ProtoSelfStateV2.empty()
+
+    output = process_update_packet(
+        state,
+        _packet_with_recent_turn(
+            user_turn="我觉得是有主观能动性。",
+            assistant_reply="主观能动性比镜子测试更根本。",
+            replay_seed=7,
+        ),
+    )
+
+    drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    assert drafts
+    assert all("我又回到你刚才那个点" not in draft for draft in drafts)
+    assert all("空档期里还会回到" not in draft for draft in drafts)
+    assert any(("主体" in draft or "想要" in draft) for draft in drafts)
+
+
+def test_background_thought_candidate_for_simulation_thread_is_not_quote_template(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
+    state = ProtoSelfStateV2.empty()
+
+    output = process_update_packet(
+        state,
+        _packet_with_recent_turn(
+            user_turn="但模拟和真正想去做，还是不一样。",
+            assistant_reply="那个押注感也许才是关键。",
+            replay_seed=11,
+        ),
+    )
+
+    drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    assert drafts
+    assert all("我又回到你刚才那个点" not in draft for draft in drafts)
+    assert all("空档期里还会回到" not in draft for draft in drafts)
+    assert any(("模拟" in draft and ("代价" in draft or "得失" in draft or "欲望" in draft)) for draft in drafts)
 
 
 def test_same_replay_seed_produces_same_candidate_hashes(monkeypatch, tmp_path):
