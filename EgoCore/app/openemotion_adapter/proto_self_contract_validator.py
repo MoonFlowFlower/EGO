@@ -54,11 +54,16 @@ def _fallback_validate(value: Any, schema: Dict[str, Any], path: str) -> None:
 
 def validate_proto_self_v2_payload(payload: Dict[str, Any]) -> None:
     schema = load_proto_self_v2_schema()
+    event_type = ((payload.get("event") or {}).get("event_type") or payload.get("event_type") or "").strip()
+    seed_event_required = payload.get("subject_profile") == SEED_SUBJECT_PROFILE and event_type not in {
+        "developmental_tick",
+        "developmental_replay",
+    }
     try:
         import jsonschema  # type: ignore
     except Exception:
         _fallback_validate(payload, schema, "payload")
-        if payload.get("subject_profile") == SEED_SUBJECT_PROFILE and not isinstance(payload.get("seed_event"), dict):
+        if seed_event_required and not isinstance(payload.get("seed_event"), dict):
             raise ValueError("payload.seed_event: required when subject_profile=seed_v0_2")
         return
 
@@ -69,5 +74,5 @@ def validate_proto_self_v2_payload(payload: Dict[str, Any]) -> None:
         where = f"payload.{path}" if path else "payload"
         raise ValueError(f"{where}: {exc.message}") from exc
 
-    if payload.get("subject_profile") == SEED_SUBJECT_PROFILE and not isinstance(payload.get("seed_event"), dict):
+    if seed_event_required and not isinstance(payload.get("seed_event"), dict):
         raise ValueError("payload.seed_event: required when subject_profile=seed_v0_2")

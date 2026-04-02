@@ -144,3 +144,28 @@ def test_validate_proto_self_v2_payload_rejects_seed_profile_without_seed_event(
         assert "seed_event" in str(exc)
     else:
         raise AssertionError("expected ValueError for missing seed_event")
+
+
+def test_validate_proto_self_v2_payload_allows_developmental_seed_without_seed_event():
+    payload = {
+        "schema_version": "proto_self.v2",
+        "event_id": "evt_v2_dev_seed",
+        "timestamp": datetime.now().isoformat(),
+        "event": {
+            "actor": "system",
+            "source": "runtime",
+            "event_type": "developmental_tick",
+        },
+        "subject_profile": SEED_SUBJECT_PROFILE,
+        "runtime_summary": {
+            "runtime": "runtime_v2",
+            "developmental_mode": "shadow_observe",
+            "observation_source": "synthetic",
+        },
+        "task_summary": {},
+        "conversation_summary": {},
+        "safety_context": {"risk_level": "low"},
+        "intervention_context": {"developmental_input": {}},
+    }
+
+    validate_proto_self_v2_payload(payload)

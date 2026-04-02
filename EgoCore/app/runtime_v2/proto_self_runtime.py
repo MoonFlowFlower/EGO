@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 import logging
+import os
 
 from openemotion.proto_self_v2.seed_schemas import SEED_SCHEMA_VERSION, SEED_SUBJECT_PROFILE
 
@@ -15,6 +16,7 @@ from app.risk_signal import (
 from .state import RuntimeV2State
 
 logger = logging.getLogger(__name__)
+ENABLE_MVP12_SANDBOX = os.environ.get("EGO_ENABLE_MVP12_SANDBOX", "false").lower() == "true"
 
 
 def assess_risk_level(user_input: str) -> str:
@@ -449,6 +451,76 @@ def build_idle_check_event(
     }
 
 
+def build_developmental_tick_event(
+    *,
+    session_id: str,
+    turn_id: str,
+    state: RuntimeV2State,
+    observation_source: str = "synthetic",
+    trigger: str = "idle",
+    idle_seconds: float = 0.0,
+    unresolved_tensions: Optional[list] = None,
+    long_term_goals: Optional[list] = None,
+    state_snapshot: Optional[Dict[str, Any]] = None,
+    replay_seed: Optional[int] = None,
+    force_enable: bool = False,
+) -> Optional[Dict[str, Any]]:
+    if resolve_proto_self_schema_version(state) != "proto_self.v2":
+        return None
+    if not force_enable and not ENABLE_MVP12_SANDBOX:
+        return None
+    subject_profile = resolve_proto_self_subject_profile(state)
+    event_type = "developmental_replay" if observation_source == "replay" else "developmental_tick"
+    runtime_summary = {
+        "runtime": "runtime_v2",
+        "state_scope": "agent_global",
+        **_seed_runtime_summary(state),
+        "developmental_mode": "shadow_observe",
+        "observation_source": observation_source,
+        "developmental_trigger": trigger,
+        "idle_seconds": idle_seconds,
+        "max_candidates": 5,
+    }
+    if replay_seed is not None:
+        runtime_summary["replay_seed"] = replay_seed
+    return {
+        "schema_version": "proto_self.v2",
+        "event_id": f"{session_id}_{turn_id}_developmental",
+        "timestamp": datetime.now().isoformat(),
+        "event": {
+            "actor": "system",
+            "source": "runtime",
+            "event_type": event_type,
+            "user_intent": None,
+            "raw_text": None,
+        },
+        "subject_profile": subject_profile,
+        "conversation_summary": {
+            "session_id": session_id,
+            "thread_id": session_id,
+            "turn_id": turn_id,
+        },
+        "task_summary": {
+            "pending_tasks": 1 if state.current_goal else 0,
+            "blocked_tasks": 0,
+        },
+        "runtime_summary": runtime_summary,
+        "safety_context": {
+            "risk_level": "low",
+        },
+        "executed_action_prev": None,
+        "external_outcome": None,
+        "intervention_context": {
+            "developmental_input": {
+                "state_snapshot": dict(state_snapshot or {}),
+                "unresolved_tensions": list(unresolved_tensions or []),
+                "long_term_goals": list(long_term_goals or []),
+            }
+        },
+        "prediction_snapshot_prev": {},
+    }
+
+
 def build_response_plan_payload(*, result: Any) -> Dict[str, Any]:
     payload = {
         "status": result.status,
@@ -667,6 +739,64 @@ class RuntimeV2ProtoSelfRuntime:
         if idle_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = idle_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = idle_result.get("policy_hint", {}).get("governor_hint")
+
+    def process_developmental_tick(
+        self,
+        *,
+        session_id: str,
+        turn_id: str,
+        state: RuntimeV2State,
+        observation_source: str = "synthetic",
+        trigger: str = "idle",
+        idle_seconds: float = 0.0,
+        unresolved_tensions: Optional[list] = None,
+        long_term_goals: Optional[list] = None,
+        state_snapshot: Optional[Dict[str, Any]] = None,
+        replay_seed: Optional[int] = None,
+        evidence_collector: Optional[Any] = None,
+        force_enable: bool = False,
+    ) -> Optional[Dict[str, Any]]:
+        developmental_event = build_developmental_tick_event(
+            session_id=session_id,
+            turn_id=turn_id,
+            state=state,
+            observation_source=observation_source,
+            trigger=trigger,
+            idle_seconds=idle_seconds,
+            unresolved_tensions=unresolved_tensions,
+            long_term_goals=long_term_goals,
+            state_snapshot=state_snapshot,
+            replay_seed=replay_seed,
+            force_enable=force_enable,
+        )
+        if not developmental_event:
+            return None
+        developmental_result = self.adapter.handle_event(developmental_event)
+        collector = self._resolve_collector(evidence_collector)
+        if collector is not None:
+            collector.capture_normalized_event(developmental_event)
+            collector.capture_openemotion_result(developmental_result)
+        self._capture_trace_in_ledger_or_bridge(
+            proto_self_result=developmental_result,
+            collector=collector,
+            bridge_stage="developmental_tick_kernel_trace",
+        )
+        if state.proto_self_context is None:
+            state.proto_self_context = {}
+        developmental_summary = dict(developmental_result.get("developmental_summary") or {})
+        state.proto_self_context["developmental_summary"] = developmental_summary
+        state.proto_self_context["shadow_revision"] = developmental_summary.get("shadow_revision")
+        state.proto_self_context["last_developmental_cycle"] = developmental_summary.get("cycle_id")
+        state.record(
+            "proto_self_developmental",
+            {
+                "cycle_id": developmental_summary.get("cycle_id"),
+                "trigger": developmental_summary.get("trigger"),
+                "gate_status": developmental_summary.get("gate_status"),
+                "observation_source": developmental_summary.get("observation_source"),
+            },
+        )
+        return developmental_result
 
     def capture_response_plan(self, *, result: Any, evidence_collector: Optional[Any] = None) -> None:
         collector = self._resolve_collector(evidence_collector)

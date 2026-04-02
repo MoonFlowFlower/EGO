@@ -265,7 +265,12 @@
 **归属**：OpenEmotion（主体）+ EgoCore（壳）
 
 **任务**
-- 新增 `developmental_core` / `shadow_self`
+- 正式接线落点固定为：`runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+- `OpenEmotion/emotiond/developmental_core/` 仅作为实现库复用；`emotiond.daemon` 不再是正式 runtime owner
+- 在 `proto_self_v2` 中新增隔离子状态：`developmental_shadow / shadow_self`
+- 新增受控事件：
+  - `developmental_tick`
+  - `developmental_replay`
 - 只输出：
   - latent hypotheses
   - self-model update candidates
@@ -274,16 +279,21 @@
   - spontaneous rollouts
 - 不拥有最终说话权
 - 不拥有最终执行权
+- 不直接生成 `response_plan`
+- 不直接改正式 proto-self 状态；只允许 shadow-only writeback
 - 所有内部发育产物都写 trace / replay
+- 入口仅允许 controlled observation runner / replay runner；live 默认 off
 
 **交付物**
 - sandbox runner
-- promote / rollback 机制
+- `developmental_shadow` 状态与 trace contract
+- `artifacts/mvp12/` 下的 cycle / pool / shadow / replay / gate artifacts
 - 观察报告
 
 **验收**
 - 在无外部输入时出现非随机内源活动
 - 不破坏当前主链 determinism / gate / safety
+- 真实动作仍归 EgoCore 与 Governor 链
 - 证据层级目标：E3 -> E4（受控样本）
 
 ---

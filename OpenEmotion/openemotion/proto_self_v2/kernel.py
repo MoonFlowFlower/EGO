@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 from openemotion.proto_self.kernel import process_event as process_event_v1
 from openemotion.proto_self.state import ProtoSelfState
+from openemotion.proto_self_v2.developmental import run_developmental_cycle
 from openemotion.proto_self_v2.schemas import (
     KernelOutputV2,
     UpdatePacketV2,
@@ -185,8 +186,83 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
     )
 
 
+def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> KernelOutputV2:
+    revision_before = state_v2.revision_counter
+    execution = run_developmental_cycle(state_v2, packet)
+    trace_payload = build_trace_payload_v2(
+        event_id=packet.event_id,
+        subject_profile=packet.subject_profile,
+        update_packet_hash=_stable_hash(packet.to_dict()),
+        state_revision_before=revision_before,
+        state_revision_after=state_v2.revision_counter,
+        retrieval_summary=_build_retrieval_summary(state_v2, packet),
+        constraint_summary=_build_constraint_summary(state_v2, subject_profile=packet.subject_profile),
+        perceived={},
+        identity_delta={},
+        self_model_delta={},
+        drives_delta={},
+        cycles_delta={},
+        predictive_reflective_delta={},
+        policy_hint={
+            "preferred_action_type": "wait",
+            "risk_tolerance": "conservative",
+            "constraints": [
+                "developmental_shadow_only",
+                "no_direct_reply_authority",
+                "no_direct_execution_authority",
+            ],
+            "governor_hint": {
+                "status": execution.gate.get("status"),
+                "mode": "developmental_shadow_only",
+            },
+        },
+        response_tendency=None,
+        candidate_actions=[],
+        governor_hint={
+            "status": execution.gate.get("status"),
+            "mode": "developmental_shadow_only",
+        },
+        executed_action=None,
+        exec_result=None,
+        seed_state_delta={},
+        seed_state_snapshot={},
+        developmental=execution.trace_block,
+        timestamp=packet.timestamp,
+        legacy_trace_payload={},
+    )
+    return KernelOutputV2(
+        event_id=packet.event_id,
+        subject_profile=packet.subject_profile,
+        memory_update={"developmental_shadow_updated": True},
+        candidate_actions=[],
+        policy_hint={
+            "preferred_action_type": "wait",
+            "risk_tolerance": "conservative",
+            "constraints": [
+                "developmental_shadow_only",
+                "no_direct_reply_authority",
+                "no_direct_execution_authority",
+            ],
+            "governor_hint": {
+                "status": execution.gate.get("status"),
+                "mode": "developmental_shadow_only",
+            },
+        },
+        confidence_meta={
+            "developmental_cycle_id": execution.summary.get("cycle_id"),
+            "shadow_revision": execution.summary.get("shadow_revision"),
+        },
+        developmental_summary=execution.summary,
+        developmental_shadow_delta=execution.shadow_delta,
+        developmental_gate=execution.gate,
+        trace_payload=trace_payload,
+    )
+
+
 def process_update_packet(state: ProtoSelfState | ProtoSelfStateV2, packet: UpdatePacketV2) -> KernelOutputV2:
     state_v2 = _coerce_state_v2(state, packet)
+    if packet.event.event_type in {"developmental_tick", "developmental_replay"}:
+        return _process_developmental_v2(state_v2, packet)
     if packet.subject_profile == SEED_SUBJECT_PROFILE:
         return _process_seed_profile(state_v2, packet)
     return _process_default_v2(state_v2, packet)

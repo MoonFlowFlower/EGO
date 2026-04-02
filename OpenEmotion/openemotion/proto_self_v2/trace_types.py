@@ -37,6 +37,7 @@ class ProtoSelfTracePayloadV2:
     exec_result: Optional[Dict[str, Any]] = None
     seed_state_delta: Dict[str, Any] = field(default_factory=dict)
     seed_state_snapshot: Dict[str, Any] = field(default_factory=dict)
+    developmental: Dict[str, Any] = field(default_factory=dict)
     timestamp: str = ""
     legacy_trace_payload: Dict[str, Any] = field(default_factory=dict)
 
@@ -70,6 +71,7 @@ class ProtoSelfTracePayloadV2:
             "exec_result": self.exec_result,
             "seed_state_delta": self.seed_state_delta,
             "seed_state_snapshot": self.seed_state_snapshot,
+            "developmental": self.developmental,
             "timestamp": self.timestamp,
             "legacy_trace_payload": self.legacy_trace_payload,
         }

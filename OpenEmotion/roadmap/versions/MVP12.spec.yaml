@@ -4,29 +4,46 @@ goal: >
   Establish a developmental core that generates internal candidates and
   long-run developmental traces inside a governed sandbox without taking
   reply or execution authority.
+formal_runtime_owner:
+  - EgoCore/app/runtime_v2
+  - EgoCore/app/runtime_v2/proto_self_runtime.py
+  - EgoCore/app/openemotion_adapter/proto_self_adapter.py
+  - OpenEmotion/openemotion/proto_self_v2
+implementation_library:
+  - OpenEmotion/emotiond/developmental_core
+compat_reference_only:
+  - OpenEmotion/emotiond/daemon.py
+  - OpenEmotion/emotiond/developmental
+  - EgoCore/app/openemotion_adapter/developmental_writeback.py
 in_scope:
-  - developmental_core_runtime
+  - controlled_developmental_tick_runtime
+  - developmental_shadow_writeback
   - candidate_pool_generation
   - developmental_trace_capture
   - replay_consistency
   - sandbox_governance
 out_of_scope:
   - direct_reply_authority
+  - response_plan_injection
   - persistent_self_model
   - endogenous_drives
   - reflective_counterfactual_self
+  - promotion_to_formal_proto_self
 required_artifacts:
   - artifacts/mvp12/developmental_cycles.json
+  - artifacts/mvp12/developmental_cycles.jsonl
   - artifacts/mvp12/candidate_pool.json
-  - artifacts/mvp12/sandbox_metrics.json
+  - artifacts/mvp12/shadow_state.json
   - artifacts/mvp12/replay_consistency_report.json
   - artifacts/mvp12/gate_checklist.md
 required_tests:
-  - pytest -q tests/mvp12/test_developmental_core.py
-  - pytest -q tests/mvp12/test_replay.py
-  - python tools/verify_mvp12_daemon.py
+  - pytest -q openemotion/proto_self_v2/tests/test_developmental_sandbox.py
+  - pytest -q EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k developmental
+  - pytest -q EgoCore/tests/test_proto_self_v2_contracts.py -k developmental
+  - python EgoCore/tools/run_mvp12_shadow_observation.py --cycles 1 --observation-source synthetic --trigger idle
 required_gates:
   - sandbox_no_authority_bypass
+  - shadow_only_writeback
   - developmental_trace_present
   - replay_consistency_ge_threshold
 promotion_criteria:
@@ -42,4 +59,3 @@ human_escalation:
   - change_governor_authority
   - allow_direct_behavior_control
   - promote_to_mvp13
-

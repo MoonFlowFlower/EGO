@@ -162,6 +162,9 @@ class KernelOutputV2:
     policy_hint: Dict[str, Any] = field(default_factory=dict)
     response_tendency: Optional[ResponseTendency] = None
     confidence_meta: Dict[str, Any] = field(default_factory=dict)
+    developmental_summary: Dict[str, Any] = field(default_factory=dict)
+    developmental_shadow_delta: Dict[str, Any] = field(default_factory=dict)
+    developmental_gate: Dict[str, Any] = field(default_factory=dict)
     trace_payload: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -181,6 +184,9 @@ class KernelOutputV2:
             "policy_hint": self.policy_hint,
             "response_tendency": self.response_tendency.to_dict() if self.response_tendency else None,
             "confidence_meta": self.confidence_meta,
+            "developmental_summary": self.developmental_summary,
+            "developmental_shadow_delta": self.developmental_shadow_delta,
+            "developmental_gate": self.developmental_gate,
             "trace_payload": self.trace_payload,
         }
 

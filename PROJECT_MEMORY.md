@@ -181,6 +181,7 @@
 | 2026-04-01 | `WP1` shadow 观察源分离已实现：`self_report_consistency_checker.py` / `shadow_analyzer.py` 已支持显式 `traffic_source / observation_source`，`replay_validator.py` 已显式写入 `replay` 来源，`shadow_analyzer.py` 也已支持按 source 过滤生成报告；当前 readiness 仍未重判成功，因为历史污染日志不会自动带上新字段，后续必须基于 post-separation 新观察窗复算 |
 | 2026-04-01 | `WP1` 的 `response_intent` 观察 producer 已补齐：`ResponseIntentChecker` 现在会把 `checker_family=response_intent` 追加到共享 `shadow_log.jsonl`；`testbot` 场景会显式标成 `testbot/synthetic`，`output_check` 的 Telegram-like subchain probe 也已验证会写入 `direct_real/real`。当前仍不能把这一步报成 readiness 完成，因为已有的 `testbot` 窗口是 adversarial corpus，只能证明 producer 与过滤链生效，不能直接外推真实主线 readiness |
 | 2026-04-01 | Telegram natural-language control-plane 已完成一轮真实收口：`a4a0278` 把自然语言 `继续/继续说/多说点/好了吗/完成了吗/替换/追加/取消` 退出 control-plane，控制动作统一到 slash-only；同日真实 Telegram 样本证明 `/proto` 默认 `seed_v0_2` 口径、裸 `继续` 与 `继续说` 继续走 `chat_mainline`、`还记得我吗` 维持当前会话锚定，`/resume` 与 `/replace /append /cancel` 的无冲突路径已符合预期。`pending_task_conflict` 成功裁决路径尚未做 E4，当前已暂缓 |
+| 2026-04-01 | MVP12 已落下第一批正式主链接线脚手架，但仍未达到 WP7 启动口径：`developmental_tick / developmental_replay` 已接入 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`，`proto_self_v2` 新增 `developmental_shadow`、`developmental_summary / developmental_shadow_delta / developmental_gate` 与 `developmental` trace block，并提供 `EgoCore/tools/run_mvp12_shadow_observation.py` 作为受控 observation runner。当前验证强度为 V2/V3：`27 passed` 的定向单测/桥接测试 + 1 次 synthetic controlled tick 产生 `artifacts/mvp12/*`；live 默认仍关闭，不可宣称 WP7 已启用或拿到 E4 |
 
 ---
 

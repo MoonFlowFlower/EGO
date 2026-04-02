@@ -4,6 +4,7 @@ from app.config import load_config
 from app.runtime_v2.proto_self_runtime import (
     RuntimeV2ProtoSelfRuntime,
     assess_risk_level,
+    build_developmental_tick_event,
     build_external_result_event,
     build_finalized_result_event,
     build_idle_check_event,
@@ -192,6 +193,28 @@ def test_build_idle_check_event_requires_seed_profile():
     assert idle_event is not None
     assert idle_event["subject_profile"] == SEED_SUBJECT_PROFILE
     assert idle_event["seed_event"]["event_type"] == "idle_check"
+
+
+def test_build_developmental_tick_event_requires_explicit_enable(monkeypatch):
+    monkeypatch.delenv("EGO_ENABLE_MVP12_SANDBOX", raising=False)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    assert build_developmental_tick_event(
+        session_id="session:test",
+        turn_id="turn_dev",
+        state=state,
+    ) is None
+
+    event = build_developmental_tick_event(
+        session_id="session:test",
+        turn_id="turn_dev",
+        state=state,
+        force_enable=True,
+    )
+    assert event is not None
+    assert event["event"]["event_type"] == "developmental_tick"
+    assert event["runtime_summary"]["developmental_mode"] == "shadow_observe"
 
 
 def test_build_external_result_event_v1_fallback_does_not_steal_family_or_repair_semantics():
@@ -493,3 +516,57 @@ def test_process_finalized_result_and_idle_check_capture_seed_trace():
     assert "finalized_result_kernel_trace" in captured["stages"]
     assert "idle_check_kernel_trace" in captured["stages"]
     assert state.proto_self_context["last_exec_result"]["status"] == "success"
+
+
+def test_process_developmental_tick_updates_shadow_summary_and_trace():
+    captured = {"stages": []}
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "schema_version": "proto_self.output.v2",
+                "event_id": event["event_id"],
+                "developmental_summary": {
+                    "cycle_id": "cycle_001",
+                    "trigger": "idle",
+                    "gate_status": "allow",
+                    "observation_source": event["runtime_summary"]["observation_source"],
+                    "shadow_revision": 2,
+                },
+                "developmental_gate": {"status": "allow"},
+                "trace_payload": {
+                    "schema_version": "proto_self.trace.v2",
+                    "event_id": event["event_id"],
+                    "developmental": {"cycle_id": "cycle_001"},
+                },
+            }
+
+    class Collector:
+        def capture_normalized_event(self, event):
+            captured["event_id"] = event["event_id"]
+
+        def capture_openemotion_result(self, result):
+            captured["result_id"] = result["event_id"]
+
+        def capture_openemotion_trace(self, trace_payload, *, stage):
+            captured["stages"].append(stage)
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter())
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    result = runtime.process_developmental_tick(
+        session_id="session:test",
+        turn_id="turn_dev",
+        state=state,
+        observation_source="synthetic",
+        force_enable=True,
+        evidence_collector=Collector(),
+    )
+
+    assert result is not None
+    assert captured["event_id"] == "session:test_turn_dev_developmental"
+    assert "developmental_tick_kernel_trace" in captured["stages"]
+    assert state.proto_self_context["developmental_summary"]["cycle_id"] == "cycle_001"
+    assert state.proto_self_context["shadow_revision"] == 2
+    assert state.proto_self_context["last_developmental_cycle"] == "cycle_001"

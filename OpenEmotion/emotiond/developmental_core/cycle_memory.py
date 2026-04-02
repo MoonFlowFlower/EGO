@@ -26,6 +26,7 @@ class CycleMemory:
     def __init__(self, storage_path: Optional[str] = None):
         self.storage_path = Path(storage_path or "artifacts/mvp12")
         self.cycles_file = self.storage_path / "developmental_cycles.json"
+        self.cycles_jsonl_file = self.storage_path / "developmental_cycles.jsonl"
         self.pool_file = self.storage_path / "candidate_pool.json"
         self.traces_dir = self.storage_path / "cycle_traces"
 
@@ -72,6 +73,9 @@ class CycleMemory:
         trace_file = self.traces_dir / f"{result.context.cycle_id}.json"
         with open(trace_file, "w") as f:
             json.dump(cycle_data, f, indent=2, default=str)
+
+        with open(self.cycles_jsonl_file, "a") as f:
+            f.write(json.dumps(cycle_data, default=str) + "\n")
 
         self._save()
 

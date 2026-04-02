@@ -12,6 +12,7 @@ from openemotion.proto_self.state import (
     ProtoSelfState,
     SelfModel,
 )
+from openemotion.proto_self_v2.developmental import DevelopmentalShadowState
 from openemotion.proto_self_v2.seed_state import ProtoSelfSeedState
 
 
@@ -40,6 +41,7 @@ class ProtoSelfStateV2:
     predictive_reflective: PredictiveReflectiveState = field(default_factory=PredictiveReflectiveState)
     trace_buffer: Deque[Dict[str, Any]] = field(default_factory=lambda: deque(maxlen=100))
     seed_state: Optional[ProtoSelfSeedState] = None
+    developmental_shadow: DevelopmentalShadowState = field(default_factory=DevelopmentalShadowState)
     revision_counter: int = 0
 
     @classmethod
@@ -85,6 +87,7 @@ class ProtoSelfStateV2:
             ),
             trace_buffer=trace_buffer,
             seed_state=ProtoSelfSeedState.from_dict(dict(seed_state_raw or {})) if seed_state_raw else None,
+            developmental_shadow=DevelopmentalShadowState.from_dict(dict(raw.get("developmental_shadow") or {})),
             revision_counter=int(raw.get("revision_counter", 0)),
         )
 
@@ -101,6 +104,7 @@ class ProtoSelfStateV2:
             "predictive_reflective": self.predictive_reflective.to_dict(),
             "trace_buffer": list(self.trace_buffer),
             "seed_state": self.seed_state.to_dict() if self.seed_state else None,
+            "developmental_shadow": self.developmental_shadow.to_dict(),
             "revision_counter": self.revision_counter,
         }
 

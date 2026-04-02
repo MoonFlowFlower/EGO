@@ -85,3 +85,15 @@ trigger_evidence:
 1. 收集带新 `traffic_source / observation_source / checker_family` 字段的 post-separation 非对抗观察窗
 2. 基于该干净窗口重跑 `numeric_leak` 与 SRAP Shadow readiness
 3. `pending_task_conflict` 下 `/replace /append /cancel` 的成功路径当前已暂缓，不作为本轮 blocker；在获得干净观察窗前，不推进 `WP2`
+
+## 对齐说明
+
+- `WP7 / MVP12` 的第一批代码脚手架已经落在正式主链后面：
+  - `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+  - `developmental_tick / developmental_replay`
+  - `developmental_shadow` shadow-only writeback
+- 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
+- 当前口径必须保持：
+  - `WP7` 还未正式启动
+  - live 默认 `off`
+  - 现有证据仅到受控 V2/V3，不得冒充 `WP7 E4`
