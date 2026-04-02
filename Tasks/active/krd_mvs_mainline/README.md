@@ -137,6 +137,13 @@ trigger_evidence:
   - 新 artifact：`OpenEmotion/artifacts/mvp12/idle_scheduler_current.json` / `.md`
   - 当前验证结果：`30 passed`
   - 当前口径必须保持：**pending only**，不是 live idle scheduler，不是 Telegram unsolicited delivery
+- 2026-04-02 `MVP12-A` 已再补宿主侧 `controlled proactive delivery lane`：
+  - `EgoCore/app/runtime_v2/proactive_delivery.py` 会消费 `pending_proactive_followup`
+  - 新 runner：`EgoCore/tools/run_mvp12_controlled_delivery.py`
+  - 新 artifact：`OpenEmotion/artifacts/mvp12/controlled_proactive_delivery_current.json` / `.md`
+  - 当前 smoke 结果：`delivery_result.status = artifact_emitted`、`transport_source = controlled_runner`、`pending_proactive_followup = null`
+  - 当前验证结果：`11 passed`
+  - 当前口径必须保持：**artifact only**，不是 live transport delivery，不是 Telegram unsolicited delivery
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
   - `WP7` 还未正式启动

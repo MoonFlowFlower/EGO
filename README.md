@@ -40,6 +40,20 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 
 ## 最近更新
 
+### 2026-04-02: MVP12-A controlled proactive delivery lane 已消费 pending state
+- `MVP12-A` 现在不止能生成 proactive draft 和 pending state，还能由宿主侧受控 lane 消费 `pending_proactive_followup`，产出 `artifact_emitted` delivery record
+- 新增：
+  - `EgoCore/app/runtime_v2/proactive_delivery.py`
+  - `EgoCore/tools/run_mvp12_controlled_delivery.py`
+- 当前受控 artifact：
+  - `OpenEmotion/artifacts/mvp12/controlled_proactive_delivery_current.json`
+  - `OpenEmotion/artifacts/mvp12/controlled_proactive_delivery_current.md`
+- 当前验证口径：
+  - 定向测试 `11 passed`
+  - controlled smoke 已产出 `delivery_result.status = artifact_emitted`
+  - `pending_proactive_followup` 在消费后为 `null`
+  - 仍未启用 live idle scheduler，也未允许 Telegram unsolicited delivery
+
 ### 2026-04-02: MVP12-A controlled idle scheduler 已接到 pending draft state
 - `MVP12-A` 现在不止能生成 proactive draft，还能在受控 idle 窗口里把 draft 挂成 `pending_proactive_followup`
 - 运行时新增：

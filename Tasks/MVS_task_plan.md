@@ -285,8 +285,9 @@
   - `initiative_arbiter`
   - `controlled_idle_scheduler`
   - `pending_proactive_followup`
+  - `controlled_proactive_delivery_lane`
   - `ResponsePlan / output_check`
-  - controlled proactive draft artifact
+  - controlled proactive draft / delivery artifact
 - 不拥有最终说话权
 - 不拥有最终执行权
 - 不直接生成 `response_plan`
@@ -304,6 +305,7 @@
 - host-side `initiative_arbiter` controlled draft runner
 - controlled idle scheduler runner
 - `pending_proactive_followup` state contract
+- controlled proactive delivery runner
 - `artifacts/mvp12/` 下的 cycle / pool / shadow / replay / gate artifacts
 - 观察报告
 
@@ -311,6 +313,7 @@
 - 在无外部输入时出现非随机内源活动
 - 可在 controlled mode 下产出与最近对话 / tension 相关的 proactive draft candidate
 - 可在 controlled idle 窗口里生成 `pending_proactive_followup`，但不得直接发送
+- 可由宿主侧 controlled lane 将 `pending_proactive_followup` 消费成 `artifact_emitted` 的 delivery record，但不得直接走 transport
 - 不破坏当前主链 determinism / gate / safety
 - 真实动作仍归 EgoCore 与 Governor 链
 - runtime harness 样本可进入 `direct_real` 主证据路径
