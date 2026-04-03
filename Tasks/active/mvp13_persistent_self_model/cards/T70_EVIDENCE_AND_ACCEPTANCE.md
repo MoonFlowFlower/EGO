@@ -27,6 +27,7 @@ success_criteria:
   - E5 stability gate is defined but not overclaimed
 verification_commands:
   - python OpenEmotion/tools/<mvp13_evidence_runner>.py
+  - python OpenEmotion/tools/run_mvp13_controlled_observation_batch.py
   - pytest -q OpenEmotion/tests/mvp13
 proof_required:
   - repo-tracked report and raw artifacts

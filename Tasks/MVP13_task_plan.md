@@ -78,10 +78,10 @@
 9. `T80` Subagent Assignment
 
 ## Current Phase Status
-- `T00/T10/T20/T30/T40/T50/T60/T70/T80` 已完成，且已拿到第一条 controlled `E4` mainline-trigger formal owner writeback 样本
-- 当前层级：`controlled_observation`
-- 当前 blocker：缺多样本 `E5` 稳定观察
-- 当前最小闭环动作：在不同 dialogue frame 下继续收集 controlled mainline writeback 样本，并验证零 hard invariant violation / replay-consistent revisions
+- `T00/T10/T20/T30/T40/T50/T60/T70/T80` 已完成，且已通过 `scenario bank + batch controlled observation runner` 拿到 controlled `E5` formal owner writeback 稳定样本集
+- 当前层级：`closure`
+- 当前 blocker：`controlled observation` 范围内无主 blocker；live autonomy / transport evidence 仍不在 `WP8` scope
+- 当前最小闭环动作：按 `controlled E5` 口径收口 `WP8`，后续只保留回归维护与补充样本
 
 ## Success Criteria
 - 文档层：
@@ -97,4 +97,4 @@
 ## Completion Rules
 - 本文件完成不等于 `MVP13` 完成
 - 只有实现、验证、E4 样本到位后，才可宣称 `WP8` 生效
-- 未达 `E5` 不得称为“稳定完成”
+- 达到 `E5` 后，仍不得把 controlled observation 等同于 live autonomous authority

@@ -1,0 +1,14 @@
+{
+  "schema_version": "mvp13.observation_scenario.v1",
+  "scenario_id": "open_license_oasst1_monopsony",
+  "source_class": "open_license",
+  "source_ref": "https://huggingface.co/datasets/OpenAssistant/oasst1#message_id=6ab24d72-0181-4594-a9cd-deaf170242fb",
+  "license_note": "Apache-2.0; normalized from OpenAssistant/oasst1 prompt chain rooted at the referenced message_id.",
+  "dialogue_frame_target": "definition_gap",
+  "messages": [
+    "Can you write a short introduction about the relevance of the term monopsony in economics?",
+    "How can one fight back when a monopsony has been created?",
+    "What can be done at a regulatory level to ensure that the power over employees is not abused?"
+  ],
+  "idle_seconds": 900.0
+}

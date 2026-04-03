@@ -2,19 +2,20 @@
 
 ```yaml
 phase: WP8
-status: observation_started
-current_layer: controlled_observation
-main_chain_status: formal_owner_writeback_observed
+status: observation_passed
+current_layer: closure
+main_chain_status: formal_owner_writeback_stable
 enabled_status: controlled_mainline_observation
 trigger_evidence:
   - WP7/MVP12 controlled observation pass
   - MVP12 supplemental Telegram proactive E4 sample
   - MVP13 local evidence pack pass
   - MVP13 controlled mainline writeback sample pass
-verification_level: V4
-evidence_level: E4
-current_blocker: "missing repeated writeback samples for E5 stability"
-next_minimal_closure_action: "collect repeated controlled mainline writeback samples across distinct dialogue frames and verify zero invariant violations"
+  - MVP13 scenario-bank controlled batch pass
+verification_level: V5
+evidence_level: E5
+current_blocker: "none within controlled observation scope"
+next_minimal_closure_action: "close WP8 on the controlled observation axis and keep only regression maintenance"
 ```
 
 ## Milestones
@@ -31,5 +32,17 @@ next_minimal_closure_action: "collect repeated controlled mainline writeback sam
 
 ## 当前口径
 
-- 可宣称完成：`WP8/MVP13` 已拿到第一条 controlled mainline-trigger formal owner writeback `E4` 样本，并正式进入观察期
-- 不可宣称完成：`MVP13` 已达到 `E5` 稳定口径，或默认 live autonomy 已开放
+- 可宣称完成：`WP8/MVP13` 已通过 `repo_authored + open_license` scenario bank 的 controlled batch observation 拿到 formal owner writeback `V5/E5`
+- 不可宣称完成：默认 live autonomy 已开放，或已经获得 transport/live evidence
+
+## 当前观察证据
+
+- 单样本 current report：
+  - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_current.md`
+- batch current report：
+  - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_batch_current.md`
+- 当前 batch 结果：
+  - `report_count = 3`
+  - `accepted_count = 3`
+  - `replay_consistent_count = 3`
+  - `invariant_violation_count = 0`

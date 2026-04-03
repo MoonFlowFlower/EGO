@@ -8,7 +8,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -139,6 +139,7 @@ def _render_markdown(payload: Dict[str, Any]) -> str:
     writeback = dict(payload.get("self_model_writeback") or {})
     decision = dict(writeback.get("decision") or {})
     latest_revision = dict(payload.get("latest_revision") or {})
+    scenario = dict(payload.get("scenario_manifest") or {})
     lines = [
         "# MVP13 Controlled Observation Report",
         "",
@@ -150,30 +151,46 @@ def _render_markdown(payload: Dict[str, Any]) -> str:
         f"- evidence_level: `{payload.get('evidence_level')}`",
         f"- status: `{payload.get('status')}`",
         "",
-        "## Developmental",
-        "",
-        f"- cycle_id: `{(payload.get('developmental_summary') or {}).get('cycle_id')}`",
-        f"- gate_status: `{(payload.get('developmental_gate') or {}).get('status')}`",
-        f"- self_model_delta_fields: `{payload.get('self_model_delta_fields')}`",
-        "",
-        "## Writeback",
-        "",
-        f"- gate_verdict: `{decision.get('gate_verdict')}`",
-        f"- accepted: `{decision.get('accepted')}`",
-        f"- changed_fields: `{decision.get('changed_fields')}`",
-        f"- revision_id: `{latest_revision.get('revision_id')}`",
-        f"- trace_reference: `{latest_revision.get('trace_reference')}`",
-        "",
-        "## Replay",
-        "",
-        f"- replay_valid: `{payload.get('replay_valid')}`",
-        f"- revision_count: `{payload.get('revision_count')}`",
-        "",
-        "## Boundary",
-        "",
-        payload.get("boundary", ""),
-        "",
     ]
+    if scenario:
+        lines.extend(
+            [
+                "## Scenario",
+                "",
+                f"- scenario_id: `{scenario.get('scenario_id')}`",
+                f"- source_class: `{scenario.get('source_class')}`",
+                f"- source_ref: `{scenario.get('source_ref')}`",
+                f"- dialogue_frame_target: `{scenario.get('dialogue_frame_target')}`",
+                "",
+            ]
+        )
+    lines.extend(
+        [
+            "## Developmental",
+            "",
+            f"- cycle_id: `{(payload.get('developmental_summary') or {}).get('cycle_id')}`",
+            f"- gate_status: `{(payload.get('developmental_gate') or {}).get('status')}`",
+            f"- self_model_delta_fields: `{payload.get('self_model_delta_fields')}`",
+            "",
+            "## Writeback",
+            "",
+            f"- gate_verdict: `{decision.get('gate_verdict')}`",
+            f"- accepted: `{decision.get('accepted')}`",
+            f"- changed_fields: `{decision.get('changed_fields')}`",
+            f"- revision_id: `{latest_revision.get('revision_id')}`",
+            f"- trace_reference: `{latest_revision.get('trace_reference')}`",
+            "",
+            "## Replay",
+            "",
+            f"- replay_valid: `{payload.get('replay_valid')}`",
+            f"- revision_count: `{payload.get('revision_count')}`",
+            "",
+            "## Boundary",
+            "",
+            payload.get("boundary", ""),
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 
@@ -182,10 +199,12 @@ async def run_controlled_observation(
     messages: List[str],
     session_id: str,
     idle_seconds: float,
-    output_json: Path,
+    output_json: Optional[Path],
+    artifacts_dir: Optional[Path] = None,
+    scenario_manifest: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    artifacts_dir = ARTIFACTS_ROOT / f"controlled_mainline_{stamp}"
+    artifacts_dir = artifacts_dir or (ARTIFACTS_ROOT / f"controlled_mainline_{stamp}")
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
     runtime = init_runtime()
@@ -251,6 +270,7 @@ async def run_controlled_observation(
         "revision_count": len(revision_log),
         "replay_valid": bool(getattr(replay, "valid_chain", False)),
         "owner_snapshot": store.load_snapshot(DEFAULT_IDENTITY_HANDLE) or {},
+        "scenario_manifest": dict(scenario_manifest or {}) or None,
         "status": "pass" if accepted else "hold",
         "verification_level": "V4" if accepted else "V3",
         "evidence_level": "E4" if accepted else "E3",
@@ -265,10 +285,11 @@ async def run_controlled_observation(
     report_json.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     report_md.write_text(_render_markdown(payload), encoding="utf-8")
 
-    output_json.parent.mkdir(parents=True, exist_ok=True)
-    output_json.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    output_md = output_json.with_suffix(".md")
-    output_md.write_text(_render_markdown(payload), encoding="utf-8")
+    if output_json is not None:
+        output_json.parent.mkdir(parents=True, exist_ok=True)
+        output_json.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        output_md = output_json.with_suffix(".md")
+        output_md.write_text(_render_markdown(payload), encoding="utf-8")
     return payload
 
 

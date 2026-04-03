@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_started
+status: observation_passed
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP13_task_plan.md"
 predecessor: "WP7/MVP12"
@@ -67,11 +67,15 @@ scope: "WP8 / MVP13 Persistent Self-Model"
   - `OpenEmotion/artifacts/mvp13/mvp13_local_evidence_current.md`
 - 第一条 controlled mainline writeback 观察样本已生成：
   - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_current.md`
+- scenario bank controlled batch report 已生成：
+  - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_batch_current.md`
 
 ## 当前 blocker
 
-- 已拿到第一条 `E4` controlled mainline-trigger self-model writeback 样本
-- 当前 blocker 已转为：还没有 `E5` 稳定观察样本集
+- `controlled observation` 范围内已无主 blocker
+- 残余风险：
+  - chat provider 在 batch 运行时可能出现 transient `429/401`
+  - 这不影响当前 formal owner writeback `E5` 口径，但会影响后续重复运行的稳定性预算
 
 ## 本轮不做
 
@@ -88,3 +92,5 @@ scope: "WP8 / MVP13 Persistent Self-Model"
 - contracts：`contracts/`
 - subagent 说明：`SUBAGENT_ASSIGNMENT.md`
 - task cards：`cards/`
+- scenario bank：`OpenEmotion/scenarios/mvp13_observation_bank/`
+- batch runner：`OpenEmotion/tools/run_mvp13_controlled_observation_batch.py`
