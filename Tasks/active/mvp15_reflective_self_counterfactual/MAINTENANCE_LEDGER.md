@@ -42,3 +42,35 @@
 - maintenance 回归判断统一对照 `WP10_QA_BASELINE.md`
 - 这些样本不会自动改变 `WP10 maintenance_mode`
 - 若样本触发 reopen policy，再单独开裁决，不直接在后续阶段文档里偷改
+
+## Entries
+
+### 2026-04-03 — First baseline-driven maintenance verification
+
+- report:
+  - `Tasks/active/mvp15_reflective_self_counterfactual/MAINTENANCE_VERIFICATION_CURRENT.md`
+- baseline used:
+  - `Tasks/active/mvp15_reflective_self_counterfactual/WP10_QA_BASELINE.md`
+- layers exercised:
+  - `Unit / Contract`
+  - `Causal`
+  - `Boundary / No-Bypass`
+  - `Replay / Wiring`
+  - `Controlled Observation`
+- refreshed evidence:
+  - `OpenEmotion/artifacts/mvp15/mvp15_causal_validation_current.md`
+  - `OpenEmotion/artifacts/mvp15/mvp15_controlled_observation_current.md`
+  - `OpenEmotion/artifacts/mvp15/mvp15_controlled_observation_batch_current.md`
+- outcome:
+  - `10/10 checklist passed`
+  - `single observation = pass (V4/E4)`
+  - `batch observation = pass (V5/E5)`
+  - `proposal_discipline_consistent = true`
+  - `behavioral_authority_none = true`
+  - `replay_valid = true`
+  - `invariant_violation_count = 0`
+- reopen decision:
+  - `no`
+- notes:
+  - `DeprecationWarning` present in some tests, not a current blocker
+  - `[PSK-ADAPTER-09] No trace_bridge available!` observed as runner noise, with no verified effect on controlled-axis pass criteria
