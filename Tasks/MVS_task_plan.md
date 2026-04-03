@@ -7,7 +7,7 @@
 先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
 
 ## 裁决关系
-- 本文件负责 `WP0~WP9` 的阶段、依赖、Gate、证据等级和停止条件。
+- 本文件负责 `WP0~WP10` 的阶段、依赖、Gate、证据等级和停止条件。
 - `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
 - 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
 
@@ -29,6 +29,7 @@
 8. **WP7 Developmental Sandbox**
 9. **WP8 Persistent Self-Model**
 10. **WP9 Endogenous Drives + Self-Maintenance**
+11. **WP10 Reflective Self / Counterfactual Self**
 
 ---
 
@@ -524,9 +525,89 @@
 
 ---
 
+## WP10：Reflective Self / Counterfactual Self
+**前提**：只有 `WP9/MVP14` 进入 `maintenance_mode` 后才启动。
+
+**归属**：OpenEmotion（reflective self / counterfactual owner target）+ EgoCore（runtime / Governor / delivery）
+
+**child authority**
+- `Tasks/MVP15_task_plan.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/`
+
+**本阶段当前范围**
+- authority / contract / boundary freeze
+- formal owner target freeze
+- legacy reflection / counterfactual surfaces demotion plan
+- subagent-ready task decomposition
+- 不直接开 `WP10` 代码
+- 不把新能力塞回 `WP9`
+
+**任务**
+- capability ownership 固定为：
+  - reflection queue / diagnosis records / counterfactual records / revision proposal candidates / reflection history / replay-linked audit 归 `OpenEmotion/openemotion/reflective_self/*`
+  - runtime scheduling / Governor / final reply / tool execution / transport 仍归 `EgoCore`
+- authority source 固定为：
+  - 顶层裁决：`Tasks/MVS_task_plan.md`
+  - `WP10` phase-detail authority：`Tasks/MVP15_task_plan.md`
+  - version spec：`OpenEmotion/roadmap/versions/MVP15.spec.yaml`
+  - technical reference：`OpenEmotion/docs/mvp15/*`
+- migration/reference surfaces 固定为：
+  - `OpenEmotion/emotiond/reflection_engine/*`
+  - `OpenEmotion/emotiond/reflection_adapter.py`
+  - `OpenEmotion/emotiond/reflection_shadow.py`
+  - `OpenEmotion/emotiond/self_counterfactual.py`
+  - `OpenEmotion/emotiond/core.py`
+  - `OpenEmotion/emotiond/api.py`
+  - `OpenEmotion/emotiond/workspace.py`
+- input / output contract 先冻结，再开实现：
+  - 输入只允许结构化自我状态、drive projection、developmental / replay / maintenance / decision evidence
+  - 输出只允许 governed reflection deltas、diagnosis / counterfactual / revision proposals、confidence / maintenance priority hints 与 trace artifacts
+  - 不允许输出 final reply / tool command / transport directive / direct policy rewrite
+- `WP9` 边界冻结：
+  - `WP9` 继续是 `maintenance_mode`
+  - 新样本只进 maintenance ledger
+  - 不因 `WP10` 启动而改写 `WP9` formal owner、formal read/write path、或 evidence claim
+- 显式锁定当前仍不放开的能力：
+  - live autonomy
+  - OpenEmotion direct reply authority
+  - broader transport claims
+  - reflection bypass of Governor
+  - counterfactual-authored action selection
+  - unconstrained self-rewrite
+
+**交付物**
+- `Tasks/MVP15_task_plan.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/README.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/STATUS.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/LEGACY_REFERENCE_REGISTER.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/SUBAGENT_ASSIGNMENT.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/contracts/REFLECTION_CAPABILITY_OWNERSHIP.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/contracts/REFLECTION_AUTHORITY_SOURCE.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/contracts/REFLECTION_IO_CONTRACT.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/contracts/WP9_BOUNDARY_FREEZE.md`
+- `Tasks/active/mvp15_reflective_self_counterfactual/contracts/LOCKED_NON_RELEASES.md`
+
+**验收**
+- `STATUS / README / task plan` 三方口径一致，不把旧 `MVP15` bounded / shadow 线误写成当前 formal owner maturity
+- `WP9` 新增样本只进入 maintenance ledger，不自动触发 `WP9` scope reopen
+- provider `429/401` 被持续标注为外部预算层风险，不回灌为 `WP9` blocker
+- `WP10` 从 authority / contract 开始，而不是直接把新能力塞进 `WP9`
+- 文档中没有出现“因为 `WP9` pass，所以 OpenEmotion 可以直接反思发言 / 直接拿 transport claim”这类边界回退
+- 证据层级目标：E0 -> E1（authority / contract freeze）
+
+**当前状态（2026-04-03）**
+- `WP10/MVP15` 当前层级是 `strategy`
+- 当前状态是 `authority_frozen`
+- 旧 `MVP15` reflection / counterfactual infra、shadow artifact、bounded `/plan` / `/decision/target` consumer 与 paired relevance proof 都存在，但全部属于 legacy/reference input，不自动构成当前 formal owner / current-runtime mainline 证据
+- 当前 formal owner target 固定为 `OpenEmotion/openemotion/reflective_self/*`
+- 当前 blocker 是：formal owner 仍未迁到 `openemotion/`，当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 也还没有 `WP10` 的正式 consumer / writeback 线
+- 当前最小闭环动作是：从 `T10_FORMAL_OWNER_PACKAGE` 开始，先建立 `OpenEmotion/openemotion/reflective_self/*`
+
+---
+
 ## 串行依赖
 - `WP0 -> WP2 -> WP3 -> WP6 -> WP7 -> WP8` 必须串行
-- `WP8 -> WP9` 必须串行
+- `WP8 -> WP9 -> WP10` 必须串行
 - `WP1` 可与 `WP2 / WP3` 并行，但其表达 contract 不得反向覆盖 Proto-Self 边界定义
 - `WP4 / WP5` 在 `WP2` 基础上推进
 
