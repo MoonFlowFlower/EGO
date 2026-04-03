@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: authority_frozen
+status: observation_started
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP15_task_plan.md"
 predecessor: "WP9/MVP14"
@@ -20,7 +20,7 @@ scope: "WP10 / MVP15 Reflective Self / Counterfactual Self"
 
 ## 真实目标
 
-在不放开 authority 边界的前提下，把 `WP10/MVP15` 的 formal owner 冻结到 `OpenEmotion/openemotion/reflective_self/*`，并把 reflection / counterfactual capability 规划到当前正式 runtime 主线，而不是延续旧 `emotiond/*` bounded / shadow 线作为正式 owner。
+在不放开 authority 边界的前提下，把 `WP10/MVP15` 的 formal owner 落到 `OpenEmotion/openemotion/reflective_self/*`，并通过当前正式 runtime 主线拿到 proposal-only reflective writeback 的首个 controlled observation 样本。
 
 ## 当前正式 owner target
 
@@ -41,23 +41,24 @@ scope: "WP10 / MVP15 Reflective Self / Counterfactual Self"
 
 ## 当前范围
 
-- authority / contract freeze
-- formal owner target freeze
-- legacy reflection / counterfactual surfaces demotion plan
-- current runtime mainline target freeze
-- subagent-ready task decomposition
+- formal owner package
+- replay / audit / proposal state
+- bounded proto-self reflective contract
+- EgoCore runtime reflective bridge
+- legacy reflection / counterfactual surfaces demotion
+- paired causal validation
+- controlled observation
 
 ## 当前状态
 
-- formal owner：`target frozen, not implemented`
-- 主链接线：`not_started_on_current_runtime_mainline`
-- 启用状态：`disabled`
-- 已证实：legacy `MVP15` infra / tests / bounded consumer / paired relevance proof 存在
-- 当前 blocker：`当前 formal owner 仍在 legacy emotiond surfaces；openemotion reflective owner package 尚不存在`
+- formal owner：`implemented`
+- 主链接线：`formal_owner_writeback_observed`
+- 启用状态：`controlled_mainline_observation`
+- 已证实：formal owner、bounded consumer、governed reflective writeback、paired causal proof、首个 controlled observation 已成立
+- 当前 blocker：`缺重复 controlled observation 样本；当前仅到 V4/E4，不是 E5`
 
 ## 当前不做
 
-- 直接开 `MVP15` 代码
 - 放开 live autonomy
 - 放开 OpenEmotion direct reply authority
 - 放开 broader transport claims

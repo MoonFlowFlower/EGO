@@ -535,11 +535,13 @@
 - `Tasks/active/mvp15_reflective_self_counterfactual/`
 
 **本阶段当前范围**
-- authority / contract / boundary freeze
-- formal owner target freeze
-- legacy reflection / counterfactual surfaces demotion plan
-- subagent-ready task decomposition
-- 不直接开 `WP10` 代码
+- formal owner package
+- replay / audit / proposal state
+- bounded proto-self reflective contract
+- EgoCore runtime reflective bridge
+- legacy reflection / counterfactual surfaces demotion
+- paired causal validation
+- controlled observation
 - 不把新能力塞回 `WP9`
 
 **任务**
@@ -591,17 +593,20 @@
 - `STATUS / README / task plan` 三方口径一致，不把旧 `MVP15` bounded / shadow 线误写成当前 formal owner maturity
 - `WP9` 新增样本只进入 maintenance ledger，不自动触发 `WP9` scope reopen
 - provider `429/401` 被持续标注为外部预算层风险，不回灌为 `WP9` blocker
-- `WP10` 从 authority / contract 开始，而不是直接把新能力塞进 `WP9`
-- 文档中没有出现“因为 `WP9` pass，所以 OpenEmotion 可以直接反思发言 / 直接拿 transport claim”这类边界回退
-- 证据层级目标：E0 -> E1（authority / contract freeze）
+- `WP10` 保持 proposal-only reflective path，不放开 live autonomy / direct reply / broader transport claims
+- 文档中没有出现“因为 `WP10` 观察到 reflective writeback，所以 OpenEmotion 可以直接反思发言 / 直接拿 transport claim”这类边界回退
+- 证据层级目标：E1 -> E4（current mainline observation started）
 
 **当前状态（2026-04-03）**
-- `WP10/MVP15` 当前层级是 `strategy`
-- 当前状态是 `authority_frozen`
+- `WP10/MVP15` 当前层级是 `runtime_mainline_observation`
+- 当前状态是 `observation_started`
 - 旧 `MVP15` reflection / counterfactual infra、shadow artifact、bounded `/plan` / `/decision/target` consumer 与 paired relevance proof 都存在，但全部属于 legacy/reference input，不自动构成当前 formal owner / current-runtime mainline 证据
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/reflective_self/*`
-- 当前 blocker 是：formal owner 仍未迁到 `openemotion/`，当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 也还没有 `WP10` 的正式 consumer / writeback 线
-- 当前最小闭环动作是：从 `T10_FORMAL_OWNER_PACKAGE` 开始，先建立 `OpenEmotion/openemotion/reflective_self/*`
+- 当前 formal owner package、bounded reflective consumer、runtime bridge 与 governed reflective writeback 已落地
+- 当前 causal proof 报告为 `OpenEmotion/artifacts/mvp15/mvp15_causal_validation_current.md`，结果 `status = pass`、`verification_level = V3`、`evidence_level = E3`
+- 当前 controlled observation 报告为 `OpenEmotion/artifacts/mvp15/mvp15_controlled_observation_current.md`，结果 `status = pass`、`verification_level = V4`、`evidence_level = E4`、`gate_verdict = allow_writeback`、`replay_valid = true`
+- 当前 blocker 是：仍缺重复 controlled observation 样本，尚未达到 `E5`
+- 当前最小闭环动作是：继续收集 `WP10` controlled observation 样本，不扩 authority 边界
 
 ---
 

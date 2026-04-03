@@ -1,6 +1,6 @@
 # MVP15 / WP10 Reflective Self / Counterfactual Self
 
-> 状态：WP10 authority_frozen
+> 状态：WP10 observation_started
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP10`
 > predecessor: `WP9/MVP14`
@@ -19,7 +19,6 @@
 - 明确当前仍然不放开的能力，防止“`WP9 pass` => reflection authority 扩张”的错误升级
 
 ## Non-Goals
-- 不直接实现 `MVP15` 代码
 - 不把新能力塞回 `WP9`
 - 不把旧 `emotiond/reflection_engine / reflection_adapter / reflection_shadow / self_counterfactual` 直接升格为 formal owner
 - 不放开 live autonomy
@@ -115,16 +114,19 @@
 - `WP10` may not reinterpret `WP9 controlled E5` as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`strategy`
-- 当前状态：`authority_frozen`
-- 当前 blocker：formal owner 仍在 legacy `emotiond/*` surfaces；current runtime mainline 下尚无 `WP10` 正式 owner / consumer / writeback 路径
-- 当前最小闭环动作：从 `T10_FORMAL_OWNER_PACKAGE` 开始，建立 `OpenEmotion/openemotion/reflective_self/*`，再把旧 `emotiond` reflection/counterfactual 线降级为 compatibility/reference
+- 当前层级：`runtime_mainline_observation`
+- 当前状态：`observation_started`
+- 当前 blocker：重复 controlled observation 样本尚未补齐；当前只到 `V4/E4`，不能报 `E5` 或 closeout
+- 当前最小闭环动作：继续收集 `WP10` controlled observation 样本，验证 replay / governance / proposal discipline 的重复稳定性
 
 ## Current Proven State
 - `MVP15` spec / docs / tests / legacy implementation 已存在
 - legacy bounded consumer 已在旧 `emotiond` `/plan` 与 `/decision/target` surface 上出现过 `reflection_guidance`
 - legacy paired behavioral relevance proof 已存在，但只属于 reference-only 旧线，不自动构成当前 `runtime_v2` 主链 formal proof
-- 当前 `openemotion/` 下尚无 `WP10` formal owner package
+- 当前 `openemotion/reflective_self/*` formal owner package 已落地
+- 当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 已消费 bounded reflective context 并记录 governed reflective writeback
+- 当前 `OpenEmotion/artifacts/mvp15/mvp15_causal_validation_current.md` 为 `pass`，`pair_count = 3`、`passed_count = 3`
+- 当前 `OpenEmotion/artifacts/mvp15/mvp15_controlled_observation_current.md` 为 `pass`，`verification_level = V4`、`evidence_level = E4`、`gate_verdict = allow_writeback`、`replay_valid = true`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP10: Reflective Self / Counterfactual Self`
