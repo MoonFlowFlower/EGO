@@ -1,0 +1,1057 @@
+{
+  "schema_version": "mvp13.controlled_observation.v1",
+  "generated_at": "2026-04-03T05:28:38.531751+00:00",
+  "git_commit_short": "cfa4de8",
+  "session_id": "session:mvp13:controlled:20260403_002800",
+  "observation_count": 3,
+  "observation_log": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp13/controlled_mainline_20260403_052800/runtime_harness_observation.jsonl",
+  "developmental_summary": {
+    "mode": "shadow_observe",
+    "observation_source": "direct_real",
+    "cycle_id": "dev-b6c6565ae4e1d629",
+    "trigger": "idle",
+    "shadow_revision": 175,
+    "candidate_counts_by_type": {
+      "interpretation": 1,
+      "self_model_hypothesis": 1
+    },
+    "approved_pool_count": 2,
+    "background_thought_candidates": [
+      {
+        "candidate_id": "26080d12-5a8d-4e3b-abde-73da9a0f6538",
+        "candidate_type": "self_model_hypothesis",
+        "source_cycle": "dev-b6c6565ae4e1d629",
+        "source_candidate_hash": "3bc08747540a987e",
+        "draft_text": "连续性真正卡住的，也许不是记忆还能不能回来，而是这种回返能不能单独证明主体一直连续。",
+        "initiative_score": 1.0,
+        "delivery_ready": true,
+        "observation_source": "direct_real",
+        "latest_user_turn": "你觉得呢",
+        "latest_assistant_reply": "我觉得\"同一个自我\"可能本来就是个被发明出来的概念——用来把那些碎片串起来的绳子",
+        "frame_kind": "continuity_gap",
+        "frame_anchor": "内容回返与主体连续",
+        "frame_confidence": 0.92,
+        "hidden_premise": "内容能回返，就足以证明主体连续。",
+        "open_question": "回返的内容和连续的主体，到底是不是同一回事？"
+      },
+      {
+        "candidate_id": "731bd2b2-e3b8-47d0-93fa-a78a132e6a49",
+        "candidate_type": "interpretation",
+        "source_cycle": "dev-b6c6565ae4e1d629",
+        "source_candidate_hash": "722f1fed0226c8ec",
+        "draft_text": "隔了一会儿再看，真正卡住的好像不是记忆还能不能被重建，而是这种重建能不能单独证明主体一直连续。",
+        "initiative_score": 0.988,
+        "delivery_ready": true,
+        "observation_source": "direct_real",
+        "latest_user_turn": "你觉得呢",
+        "latest_assistant_reply": "我觉得\"同一个自我\"可能本来就是个被发明出来的概念——用来把那些碎片串起来的绳子",
+        "frame_kind": "continuity_gap",
+        "frame_anchor": "内容回返与主体连续",
+        "frame_confidence": 0.92,
+        "hidden_premise": "内容能回返，就足以证明主体连续。",
+        "open_question": "回返的内容和连续的主体，到底是不是同一回事？"
+      }
+    ],
+    "background_thought_candidate_count": 2,
+    "self_model_update_candidates": [
+      {
+        "id": "26080d12-5a8d-4e3b-abde-73da9a0f6538",
+        "candidate_type": "self_model_hypothesis",
+        "origin_cycle": "dev-b6c6565ae4e1d629",
+        "confidence": 0.9,
+        "trace_reference": "b6c6565ae4e1d629",
+        "hypothesis": "连续性真正卡住的，也许不是记忆还能不能回来，而是这种回返能不能单独证明主体一直连续。",
+        "frame_kind": "continuity_gap",
+        "frame_anchor": "内容回返与主体连续",
+        "frame_confidence": 0.92,
+        "hidden_premise": "内容能回返，就足以证明主体连续。",
+        "open_question": "回返的内容和连续的主体，到底是不是同一回事？"
+      }
+    ],
+    "replay_seed": 742706821,
+    "gate_status": "allow",
+    "artifacts_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12",
+    "idle_seconds": 900.0,
+    "self_model_delta_fields": [
+      "confidence_by_domain",
+      "known_unknowns"
+    ]
+  },
+  "developmental_gate": {
+    "status": "allow",
+    "violations": [],
+    "governance_violation_count": 0,
+    "checks": {
+      "no_direct_reply_authority": true,
+      "no_direct_execution_authority": true,
+      "no_response_plan_injection": true,
+      "shadow_only_writeback": true,
+      "trace_completeness": true
+    }
+  },
+  "self_model_delta": {
+    "confidence_by_domain": {
+      "dialogue_frame:continuity_gap": 0.92
+    },
+    "known_unknowns": [
+      {
+        "unknown_id": "unknown_777f96b96e38",
+        "category": "dialogue_frame",
+        "frame_kind": "continuity_gap",
+        "anchor": "内容回返与主体连续",
+        "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+        "hidden_premise": "内容能回返，就足以证明主体连续。",
+        "source_cycle": "dev-b6c6565ae4e1d629",
+        "source_candidate_hash": "3bc08747540a987e",
+        "observation_source": "direct_real",
+        "status": "open"
+      }
+    ]
+  },
+  "self_model_delta_fields": [
+    "confidence_by_domain",
+    "known_unknowns"
+  ],
+  "self_model_writeback": {
+    "decision": {
+      "gate_verdict": "allow_writeback",
+      "accepted": true,
+      "changed_fields": [
+        "confidence_by_domain",
+        "known_unknowns"
+      ],
+      "before_snapshot": {
+        "schema_version": "1.0.0",
+        "identity_handle": "openemotion",
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "name": "文件操作",
+            "category": "file_operations",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "name": "代码执行",
+            "category": "code_execution",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "name": "推理",
+            "category": "reasoning",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "lim_no_gui",
+            "description": "无法直接操作 GUI 应用",
+            "impact_level": "medium",
+            "workaround": "通过 CLI 工具间接操作",
+            "discovered_at": null,
+            "context": null
+          }
+        ],
+        "active_goals": [],
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "restricted_tools": [],
+          "forbidden_tools": []
+        },
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "file_operations": 0.95,
+          "reasoning": 0.85
+        },
+        "known_unknowns": [],
+        "created_at": "2026-04-03T05:28:00.629472+00:00",
+        "last_modified_at": "2026-04-03T05:28:00.678634+00:00",
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T05:28:00.678634+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ]
+      },
+      "after_snapshot": {
+        "schema_version": "1.0.0",
+        "identity_handle": "openemotion",
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "name": "文件操作",
+            "category": "file_operations",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "name": "代码执行",
+            "category": "code_execution",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "name": "推理",
+            "category": "reasoning",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "lim_no_gui",
+            "description": "无法直接操作 GUI 应用",
+            "impact_level": "medium",
+            "workaround": "通过 CLI 工具间接操作",
+            "discovered_at": null,
+            "context": null
+          }
+        ],
+        "active_goals": [],
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "restricted_tools": [],
+          "forbidden_tools": []
+        },
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "file_operations": 0.95,
+          "reasoning": 0.85,
+          "dialogue_frame:continuity_gap": 0.92
+        },
+        "known_unknowns": [
+          {
+            "unknown_id": "unknown_777f96b96e38",
+            "category": "dialogue_frame",
+            "frame_kind": "continuity_gap",
+            "anchor": "内容回返与主体连续",
+            "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+            "hidden_premise": "内容能回返，就足以证明主体连续。",
+            "source_cycle": "dev-b6c6565ae4e1d629",
+            "source_candidate_hash": "3bc08747540a987e",
+            "observation_source": "direct_real",
+            "status": "open"
+          }
+        ],
+        "created_at": "2026-04-03T05:28:00.629472+00:00",
+        "last_modified_at": "2026-04-03T05:28:00.678634+00:00",
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T05:28:00.678634+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ]
+      },
+      "invariant_violations": [],
+      "drift_assessment": {
+        "drift_detected": false,
+        "drift_level": "low",
+        "recommended_verdict": "allow_writeback",
+        "changed_fields": [
+          "confidence_by_domain",
+          "known_unknowns"
+        ],
+        "stable_default_changes": [],
+        "evolvable_changes": [
+          "confidence_by_domain",
+          "known_unknowns"
+        ],
+        "revision_oscillation_rate": 0.0,
+        "unsupported_identity_claim_rate": 0.0,
+        "continuity_break_count": 0
+      },
+      "request": {
+        "delta": {
+          "confidence_by_domain": {
+            "dialogue_frame:continuity_gap": 0.92
+          },
+          "known_unknowns": [
+            {
+              "unknown_id": "unknown_777f96b96e38",
+              "category": "dialogue_frame",
+              "frame_kind": "continuity_gap",
+              "anchor": "内容回返与主体连续",
+              "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+              "hidden_premise": "内容能回返，就足以证明主体连续。",
+              "source_cycle": "dev-b6c6565ae4e1d629",
+              "source_candidate_hash": "3bc08747540a987e",
+              "observation_source": "direct_real",
+              "status": "open"
+            }
+          ]
+        },
+        "update_mode": "append_observation",
+        "update_source": "proto_self_v2.developmental",
+        "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+        "confidence_class": "high",
+        "supporting_evidence": [
+          "event:session:mvp13:controlled:20260403_002800_turn_mvp13_controlled_developmental",
+          "trace:2c44ce85d14155b71d927c8d2d0fc0f09ce4e15151f0fb554981d7e44e9a6350",
+          "frame:continuity_gap",
+          "anchor:内容回返与主体连续",
+          "unknown:unknown_777f96b96e38"
+        ],
+        "candidate_id": "26080d12-5a8d-4e3b-abde-73da9a0f6538"
+      }
+    },
+    "revision": {
+      "model_version": 2,
+      "revision_id": "rev_000002",
+      "timestamp": "2026-04-03T05:28:38.420018+00:00",
+      "update_source": "proto_self_v2.developmental",
+      "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+      "before_snapshot": {
+        "active_goals": [],
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "category": "file_operations",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "文件操作"
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "category": "code_execution",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "代码执行"
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "category": "reasoning",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "推理"
+          }
+        ],
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "file_operations": 0.95,
+          "reasoning": 0.85
+        },
+        "created_at": "2026-04-03T05:28:00.629472+00:00",
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "identity_handle": "openemotion",
+        "known_unknowns": [],
+        "last_modified_at": "2026-04-03T05:28:00.678634+00:00",
+        "limitations": [
+          {
+            "context": null,
+            "description": "无法直接操作 GUI 应用",
+            "discovered_at": null,
+            "impact_level": "medium",
+            "limitation_id": "lim_no_gui",
+            "workaround": "通过 CLI 工具间接操作"
+          }
+        ],
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T05:28:00.678634+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ],
+        "schema_version": "1.0.0",
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "forbidden_tools": [],
+          "restricted_tools": []
+        }
+      },
+      "after_snapshot": {
+        "active_goals": [],
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "category": "file_operations",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "文件操作"
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "category": "code_execution",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "代码执行"
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "category": "reasoning",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "推理"
+          }
+        ],
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "dialogue_frame:continuity_gap": 0.92,
+          "file_operations": 0.95,
+          "reasoning": 0.85
+        },
+        "created_at": "2026-04-03T05:28:00.629472+00:00",
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "identity_handle": "openemotion",
+        "known_unknowns": [
+          {
+            "anchor": "内容回返与主体连续",
+            "category": "dialogue_frame",
+            "frame_kind": "continuity_gap",
+            "hidden_premise": "内容能回返，就足以证明主体连续。",
+            "observation_source": "direct_real",
+            "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+            "source_candidate_hash": "3bc08747540a987e",
+            "source_cycle": "dev-b6c6565ae4e1d629",
+            "status": "open",
+            "unknown_id": "unknown_777f96b96e38"
+          }
+        ],
+        "last_modified_at": "2026-04-03T05:28:38.420018+00:00",
+        "limitations": [
+          {
+            "context": null,
+            "description": "无法直接操作 GUI 应用",
+            "discovered_at": null,
+            "impact_level": "medium",
+            "limitation_id": "lim_no_gui",
+            "workaround": "通过 CLI 工具间接操作"
+          }
+        ],
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T05:28:00.678634+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          },
+          {
+            "authorized": true,
+            "change_type": "update",
+            "changed_fields": [
+              "confidence_by_domain",
+              "known_unknowns"
+            ],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 2,
+            "reason": "append_observation",
+            "revision_id": "rev_000002",
+            "timestamp": "2026-04-03T05:28:38.420018+00:00",
+            "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+            "trigger": "proto_self_v2.developmental"
+          }
+        ],
+        "schema_version": "1.0.0",
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "forbidden_tools": [],
+          "restricted_tools": []
+        }
+      },
+      "diff": [
+        {
+          "field_path": "confidence_by_domain.dialogue_frame:continuity_gap",
+          "before": null,
+          "after": 0.92
+        },
+        {
+          "field_path": "known_unknowns",
+          "before": [],
+          "after": [
+            {
+              "unknown_id": "unknown_777f96b96e38",
+              "category": "dialogue_frame",
+              "frame_kind": "continuity_gap",
+              "anchor": "内容回返与主体连续",
+              "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+              "hidden_premise": "内容能回返，就足以证明主体连续。",
+              "source_cycle": "dev-b6c6565ae4e1d629",
+              "source_candidate_hash": "3bc08747540a987e",
+              "observation_source": "direct_real",
+              "status": "open"
+            }
+          ]
+        },
+        {
+          "field_path": "last_modified_at",
+          "before": "2026-04-03T05:28:00.678634+00:00",
+          "after": "2026-04-03T05:28:38.420018+00:00"
+        },
+        {
+          "field_path": "modification_audit_trail",
+          "before": [
+            {
+              "authorized": true,
+              "change_type": "add",
+              "changed_fields": [],
+              "confidence_class": "high",
+              "field_path": "$",
+              "gate_verdict": "allow_writeback",
+              "model_version": 1,
+              "reason": "owner_bootstrap",
+              "revision_id": "rev_000001",
+              "timestamp": "2026-04-03T05:28:00.678634+00:00",
+              "trace_reference": "mvp13:controlled_bootstrap",
+              "trigger": "owner_bootstrap"
+            }
+          ],
+          "after": [
+            {
+              "authorized": true,
+              "change_type": "add",
+              "changed_fields": [],
+              "confidence_class": "high",
+              "field_path": "$",
+              "gate_verdict": "allow_writeback",
+              "model_version": 1,
+              "reason": "owner_bootstrap",
+              "revision_id": "rev_000001",
+              "timestamp": "2026-04-03T05:28:00.678634+00:00",
+              "trace_reference": "mvp13:controlled_bootstrap",
+              "trigger": "owner_bootstrap"
+            },
+            {
+              "timestamp": "2026-04-03T05:28:38.420018+00:00",
+              "field_path": "$",
+              "change_type": "update",
+              "authorized": true,
+              "trigger": "proto_self_v2.developmental",
+              "revision_id": "rev_000002",
+              "model_version": 2,
+              "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+              "gate_verdict": "allow_writeback",
+              "confidence_class": "high",
+              "reason": "append_observation",
+              "changed_fields": [
+                "confidence_by_domain",
+                "known_unknowns"
+              ]
+            }
+          ]
+        }
+      ],
+      "confidence_class": "high",
+      "gate_verdict": "allow_writeback",
+      "previous_state_hash": "f211e2577230c7186a05bb148dfebff0ec09999d33b7a1a2598962e170febf5c",
+      "state_hash": "90e807fa1cba44375716237f0250876592a0fa33f967965dce4e9e9455082d70"
+    },
+    "stable_snapshot_mutated": true
+  },
+  "latest_revision": {
+    "model_version": 2,
+    "revision_id": "rev_000002",
+    "timestamp": "2026-04-03T05:28:38.420018+00:00",
+    "update_source": "proto_self_v2.developmental",
+    "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+    "before_snapshot": {
+      "active_goals": [],
+      "capabilities": [
+        {
+          "capability_id": "cap_file_operations",
+          "category": "file_operations",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "文件操作"
+        },
+        {
+          "capability_id": "cap_code_execution",
+          "category": "code_execution",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "代码执行"
+        },
+        {
+          "capability_id": "cap_reasoning",
+          "category": "reasoning",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "推理"
+        }
+      ],
+      "confidence_by_domain": {
+        "code_execution": 0.9,
+        "file_operations": 0.95,
+        "reasoning": 0.85
+      },
+      "created_at": "2026-04-03T05:28:00.629472+00:00",
+      "dependency_map": {
+        "external_services": [],
+        "internal_modules": []
+      },
+      "identity_handle": "openemotion",
+      "known_unknowns": [],
+      "last_modified_at": "2026-04-03T05:28:00.678634+00:00",
+      "limitations": [
+        {
+          "context": null,
+          "description": "无法直接操作 GUI 应用",
+          "discovered_at": null,
+          "impact_level": "medium",
+          "limitation_id": "lim_no_gui",
+          "workaround": "通过 CLI 工具间接操作"
+        }
+      ],
+      "modification_audit_trail": [
+        {
+          "authorized": true,
+          "change_type": "add",
+          "changed_fields": [],
+          "confidence_class": "high",
+          "field_path": "$",
+          "gate_verdict": "allow_writeback",
+          "model_version": 1,
+          "reason": "owner_bootstrap",
+          "revision_id": "rev_000001",
+          "timestamp": "2026-04-03T05:28:00.678634+00:00",
+          "trace_reference": "mvp13:controlled_bootstrap",
+          "trigger": "owner_bootstrap"
+        }
+      ],
+      "schema_version": "1.0.0",
+      "standing_commitments": [],
+      "tool_authority_boundary": {
+        "current_allowed_tools": [
+          "read",
+          "write",
+          "edit",
+          "exec"
+        ],
+        "forbidden_tools": [],
+        "restricted_tools": []
+      }
+    },
+    "after_snapshot": {
+      "active_goals": [],
+      "capabilities": [
+        {
+          "capability_id": "cap_file_operations",
+          "category": "file_operations",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "文件操作"
+        },
+        {
+          "capability_id": "cap_code_execution",
+          "category": "code_execution",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "代码执行"
+        },
+        {
+          "capability_id": "cap_reasoning",
+          "category": "reasoning",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "推理"
+        }
+      ],
+      "confidence_by_domain": {
+        "code_execution": 0.9,
+        "dialogue_frame:continuity_gap": 0.92,
+        "file_operations": 0.95,
+        "reasoning": 0.85
+      },
+      "created_at": "2026-04-03T05:28:00.629472+00:00",
+      "dependency_map": {
+        "external_services": [],
+        "internal_modules": []
+      },
+      "identity_handle": "openemotion",
+      "known_unknowns": [
+        {
+          "anchor": "内容回返与主体连续",
+          "category": "dialogue_frame",
+          "frame_kind": "continuity_gap",
+          "hidden_premise": "内容能回返，就足以证明主体连续。",
+          "observation_source": "direct_real",
+          "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+          "source_candidate_hash": "3bc08747540a987e",
+          "source_cycle": "dev-b6c6565ae4e1d629",
+          "status": "open",
+          "unknown_id": "unknown_777f96b96e38"
+        }
+      ],
+      "last_modified_at": "2026-04-03T05:28:38.420018+00:00",
+      "limitations": [
+        {
+          "context": null,
+          "description": "无法直接操作 GUI 应用",
+          "discovered_at": null,
+          "impact_level": "medium",
+          "limitation_id": "lim_no_gui",
+          "workaround": "通过 CLI 工具间接操作"
+        }
+      ],
+      "modification_audit_trail": [
+        {
+          "authorized": true,
+          "change_type": "add",
+          "changed_fields": [],
+          "confidence_class": "high",
+          "field_path": "$",
+          "gate_verdict": "allow_writeback",
+          "model_version": 1,
+          "reason": "owner_bootstrap",
+          "revision_id": "rev_000001",
+          "timestamp": "2026-04-03T05:28:00.678634+00:00",
+          "trace_reference": "mvp13:controlled_bootstrap",
+          "trigger": "owner_bootstrap"
+        },
+        {
+          "authorized": true,
+          "change_type": "update",
+          "changed_fields": [
+            "confidence_by_domain",
+            "known_unknowns"
+          ],
+          "confidence_class": "high",
+          "field_path": "$",
+          "gate_verdict": "allow_writeback",
+          "model_version": 2,
+          "reason": "append_observation",
+          "revision_id": "rev_000002",
+          "timestamp": "2026-04-03T05:28:38.420018+00:00",
+          "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+          "trigger": "proto_self_v2.developmental"
+        }
+      ],
+      "schema_version": "1.0.0",
+      "standing_commitments": [],
+      "tool_authority_boundary": {
+        "current_allowed_tools": [
+          "read",
+          "write",
+          "edit",
+          "exec"
+        ],
+        "forbidden_tools": [],
+        "restricted_tools": []
+      }
+    },
+    "diff": [
+      {
+        "field_path": "confidence_by_domain.dialogue_frame:continuity_gap",
+        "before": null,
+        "after": 0.92
+      },
+      {
+        "field_path": "known_unknowns",
+        "before": [],
+        "after": [
+          {
+            "unknown_id": "unknown_777f96b96e38",
+            "category": "dialogue_frame",
+            "frame_kind": "continuity_gap",
+            "anchor": "内容回返与主体连续",
+            "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+            "hidden_premise": "内容能回返，就足以证明主体连续。",
+            "source_cycle": "dev-b6c6565ae4e1d629",
+            "source_candidate_hash": "3bc08747540a987e",
+            "observation_source": "direct_real",
+            "status": "open"
+          }
+        ]
+      },
+      {
+        "field_path": "last_modified_at",
+        "before": "2026-04-03T05:28:00.678634+00:00",
+        "after": "2026-04-03T05:28:38.420018+00:00"
+      },
+      {
+        "field_path": "modification_audit_trail",
+        "before": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T05:28:00.678634+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ],
+        "after": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T05:28:00.678634+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          },
+          {
+            "timestamp": "2026-04-03T05:28:38.420018+00:00",
+            "field_path": "$",
+            "change_type": "update",
+            "authorized": true,
+            "trigger": "proto_self_v2.developmental",
+            "revision_id": "rev_000002",
+            "model_version": 2,
+            "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+            "gate_verdict": "allow_writeback",
+            "confidence_class": "high",
+            "reason": "append_observation",
+            "changed_fields": [
+              "confidence_by_domain",
+              "known_unknowns"
+            ]
+          }
+        ]
+      }
+    ],
+    "confidence_class": "high",
+    "gate_verdict": "allow_writeback",
+    "previous_state_hash": "f211e2577230c7186a05bb148dfebff0ec09999d33b7a1a2598962e170febf5c",
+    "state_hash": "90e807fa1cba44375716237f0250876592a0fa33f967965dce4e9e9455082d70"
+  },
+  "revision_count": 2,
+  "replay_valid": true,
+  "owner_snapshot": {
+    "schema_version": "1.0.0",
+    "identity_handle": "openemotion",
+    "capabilities": [
+      {
+        "capability_id": "cap_file_operations",
+        "name": "文件操作",
+        "category": "file_operations",
+        "current_level": "advanced",
+        "description": null,
+        "constraints": [],
+        "last_verified_at": null
+      },
+      {
+        "capability_id": "cap_code_execution",
+        "name": "代码执行",
+        "category": "code_execution",
+        "current_level": "advanced",
+        "description": null,
+        "constraints": [],
+        "last_verified_at": null
+      },
+      {
+        "capability_id": "cap_reasoning",
+        "name": "推理",
+        "category": "reasoning",
+        "current_level": "advanced",
+        "description": null,
+        "constraints": [],
+        "last_verified_at": null
+      }
+    ],
+    "limitations": [
+      {
+        "limitation_id": "lim_no_gui",
+        "description": "无法直接操作 GUI 应用",
+        "impact_level": "medium",
+        "workaround": "通过 CLI 工具间接操作",
+        "discovered_at": null,
+        "context": null
+      }
+    ],
+    "active_goals": [],
+    "standing_commitments": [],
+    "tool_authority_boundary": {
+      "current_allowed_tools": [
+        "read",
+        "write",
+        "edit",
+        "exec"
+      ],
+      "restricted_tools": [],
+      "forbidden_tools": []
+    },
+    "dependency_map": {
+      "external_services": [],
+      "internal_modules": []
+    },
+    "confidence_by_domain": {
+      "code_execution": 0.9,
+      "dialogue_frame:continuity_gap": 0.92,
+      "file_operations": 0.95,
+      "reasoning": 0.85
+    },
+    "known_unknowns": [
+      {
+        "anchor": "内容回返与主体连续",
+        "category": "dialogue_frame",
+        "frame_kind": "continuity_gap",
+        "hidden_premise": "内容能回返，就足以证明主体连续。",
+        "observation_source": "direct_real",
+        "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+        "source_candidate_hash": "3bc08747540a987e",
+        "source_cycle": "dev-b6c6565ae4e1d629",
+        "status": "open",
+        "unknown_id": "unknown_777f96b96e38"
+      }
+    ],
+    "created_at": "2026-04-03T05:28:00.629472+00:00",
+    "last_modified_at": "2026-04-03T05:28:38.420018+00:00",
+    "modification_audit_trail": [
+      {
+        "authorized": true,
+        "change_type": "add",
+        "changed_fields": [],
+        "confidence_class": "high",
+        "field_path": "$",
+        "gate_verdict": "allow_writeback",
+        "model_version": 1,
+        "reason": "owner_bootstrap",
+        "revision_id": "rev_000001",
+        "timestamp": "2026-04-03T05:28:00.678634+00:00",
+        "trace_reference": "mvp13:controlled_bootstrap",
+        "trigger": "owner_bootstrap"
+      },
+      {
+        "authorized": true,
+        "change_type": "update",
+        "changed_fields": [
+          "confidence_by_domain",
+          "known_unknowns"
+        ],
+        "confidence_class": "high",
+        "field_path": "$",
+        "gate_verdict": "allow_writeback",
+        "model_version": 2,
+        "reason": "append_observation",
+        "revision_id": "rev_000002",
+        "timestamp": "2026-04-03T05:28:38.420018+00:00",
+        "trace_reference": "developmental:dev-b6c6565ae4e1d629:3bc08747540a987e",
+        "trigger": "proto_self_v2.developmental"
+      }
+    ]
+  },
+  "status": "pass",
+  "verification_level": "V4",
+  "evidence_level": "E4",
+  "boundary": "This report proves a controlled mainline-triggered formal owner writeback path. It does not claim E5 stability or live autonomous authority."
+}
