@@ -211,6 +211,31 @@ def test_background_thought_candidate_keeps_operator_system_topic_through_meta_f
     assert any(("系统" in draft or "调试" in draft or "脚本" in draft or "参数" in draft) for draft in drafts)
 
 
+def test_background_thought_candidate_keeps_programmed_agency_topic_without_generic_scaffold(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
+    state = ProtoSelfStateV2.empty()
+
+    output = process_update_packet(
+        state,
+        _packet_with_recent_dialogue(
+            user_turns=[
+                "如果AI要实现这种功能,你觉得如何实现?",
+                "对 如何程序化是关键",
+            ],
+            assistant_replies=[
+                "核心可能是两条：给它真正的目标自主权，以及在约束中留出选择空间。",
+                "是啊，想要本身要是也被程序写死，那就又回到被动执行了。",
+            ],
+            replay_seed=31,
+        ),
+    )
+
+    drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    assert drafts
+    assert all("这条线没收住" not in draft for draft in drafts)
+    assert any(("程序化" in draft or "想要" in draft or "偏好" in draft or "规则" in draft) for draft in drafts)
+
+
 def test_same_replay_seed_produces_same_candidate_hashes(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
     state_one = ProtoSelfStateV2.empty()

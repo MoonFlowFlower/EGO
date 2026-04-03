@@ -68,6 +68,10 @@ class HypothesisGenerator:
 
     def _clean_anchor(self, text: str, *, limit: int = 40) -> str:
         raw = self._primary_clause(text, limit=limit)
+        for prefix in ("对 ", "嗯 ", "是啊 ", "是的 ", "就是 ", "其实 ", "所以 "):
+            if raw.startswith(prefix):
+                raw = raw[len(prefix):].strip()
+                break
         for token in ('"', "'", "“", "”", "‘", "’", "「", "」", "『", "』"):
             raw = raw.replace(token, "")
         return " ".join(raw.split()).strip()
@@ -109,6 +113,22 @@ class HypothesisGenerator:
             )
         )
 
+    def _is_programmed_agency_topic(self, text: str) -> bool:
+        return any(
+            token in text
+            for token in (
+                "程序化",
+                "如何实现",
+                "AI要实现",
+                "AI",
+                "想要",
+                "自主权",
+                "选择空间",
+                "目标自主",
+                "被程序写死",
+            )
+        )
+
     def _looks_like_meta_followup(self, text: str) -> bool:
         raw = self._primary_clause(text, limit=48)
         if not raw:
@@ -145,6 +165,8 @@ class HypothesisGenerator:
 
     def _idle_hypothesis_text(self, anchor: str, latest_reply: str, tension_label: str) -> str:
         joined = self._topic_text(anchor, latest_reply, tension_label)
+        if self._is_programmed_agency_topic(joined):
+            return "如果真要把“想要”程序化，难点可能不是多塞几个目标，而是系统能不能自己形成偏好，而不是只在执行预写好的奖励。"
         if "主观能动性" in joined:
             return "如果把主观能动性当门槛，难点就不再是系统会不会反应，而是谁在发起那个“想要”。"
         if self._is_operator_system_topic(joined):
@@ -161,6 +183,8 @@ class HypothesisGenerator:
 
     def _idle_interpretation_text(self, anchor: str, latest_reply: str, tension_label: str) -> str:
         joined = self._topic_text(anchor, latest_reply, tension_label)
+        if self._is_programmed_agency_topic(joined):
+            return "隔了一会儿再看，真正卡住的好像不是功能怎么堆出来，而是：一个系统什么时候才算真的在“想要”，而不只是按规则输出想要的样子。"
         if "主观能动性" in joined:
             return "把主观能动性当标准，其实已经在默认有一个主体存在；而“主体从哪里来”刚好又是最难回答的部分。"
         if self._is_operator_system_topic(joined):
@@ -172,13 +196,15 @@ class HypothesisGenerator:
         if "意识" in joined:
             return "这条线之所以反复出现，可能是因为它正在把“意识是什么”推进到“主体边界怎么成立”。"
         if anchor:
-            return f"这条线没收住，像是因为 {anchor} 背后还有一个更基础的问题在顶着它。"
+            return f"隔了一会儿再看，真正卡住的也许不是“{anchor}”本身，而是它默认了一个更底层的前提。"
         if latest_reply:
             return f"刚才那层回答更像是把问题推近了一步，而不是把它真正关掉。"
         return "空档本身没有结束这条线，它更像是在给下一次重组留位置。"
 
     def _tension_explanation_text(self, anchor: str, latest_reply: str, tension_label: str) -> str:
         joined = self._topic_text(anchor, latest_reply, tension_label)
+        if self._is_programmed_agency_topic(joined):
+            return "这条张力没有自然消退，因为一旦问“想要能不能被程序化”，就会碰到更底层的问题：偏好究竟是被写进去的，还是系统自己长出来的。"
         if "主观能动性" in joined:
             return "真正持续回拉的，不是“主观能动性”这个词本身，而是一旦接受它，就必须解释那个行动主体从哪里来。"
         if "模拟" in joined and "想去做" in joined:
@@ -188,7 +214,7 @@ class HypothesisGenerator:
         if self._is_memory_continuity_topic(joined):
             return "这条张力没有自然消退，因为“记得”只能说明内容还在回返，却不能单独证明那个回返内容的主体一直连续存在。"
         if anchor:
-            return f"当前张力没有自然消退，像是因为 {anchor} 背后还有一个更基础的问题没有被拆开。"
+            return f"当前张力没有自然消退，更像是“{anchor}”背后还有一个前提没有被真正拆开。"
         if tension_label:
             return f"当前张力没有自然消退，更像是 {tension_label} 仍在内部占位。"
         return "当前张力没有自然消退，像是某个前提一直没有真正讲透。"
