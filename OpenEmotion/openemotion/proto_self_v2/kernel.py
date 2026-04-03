@@ -13,6 +13,11 @@ from openemotion.proto_self_v2.endogenous_drive_context import (
     extract_runtime_endogenous_drive_context,
     summarize_runtime_endogenous_drive_context,
 )
+from openemotion.proto_self_v2.reflective_self_context import (
+    derive_reflective_self_outputs,
+    extract_runtime_reflective_self_context,
+    summarize_runtime_reflective_self_context,
+)
 from openemotion.proto_self_v2.schemas import (
     KernelOutputV2,
     UpdatePacketV2,
@@ -47,6 +52,7 @@ def _build_constraint_summary(
         "subject_profile": subject_profile,
         "self_model_context": summarize_runtime_self_model_context(runtime_summary),
         "endogenous_drive_context": summarize_runtime_endogenous_drive_context(runtime_summary),
+        "reflective_self_context": summarize_runtime_reflective_self_context(runtime_summary),
     }
 
 
@@ -64,6 +70,7 @@ def _build_retrieval_summary(state: ProtoSelfStateV2, packet: UpdatePacketV2) ->
         "seed_recent_outcomes_count": len(state.seed_state.recent_outcomes) if state.seed_state else 0,
         "self_model_context_present": bool(extract_runtime_self_model_context(packet.runtime_summary)),
         "endogenous_drive_context_present": bool(extract_runtime_endogenous_drive_context(packet.runtime_summary)),
+        "reflective_self_context_present": bool(extract_runtime_reflective_self_context(packet.runtime_summary)),
     }
 
 
@@ -172,6 +179,7 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
     reflection_dict = v1_output.reflection_note.to_dict() if v1_output.reflection_note else None
     predictive_reflective_delta = _build_predictive_reflective_delta(packet, reflection_dict)
     endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
+    reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
     state_v2.apply_v1_state(
         v1_state,
         prediction_snapshot_prev=packet.prediction_snapshot_prev,
@@ -197,20 +205,42 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         self_maintenance_candidate=endogenous_drive_outputs["self_maintenance_candidate"],
         drive_audit_entries=endogenous_drive_outputs["drive_audit_entries"],
         drive_context=endogenous_drive_outputs["drive_context"],
+        reflective_self_delta=reflective_outputs["reflective_self_delta"],
+        revision_proposal_candidates=reflective_outputs["revision_proposal_candidates"],
+        confidence_adjustment_hints=reflective_outputs["confidence_adjustment_hints"],
+        maintenance_priority_hints=reflective_outputs["maintenance_priority_hints"],
+        reflection_writeback_candidate=reflective_outputs["reflection_writeback_candidate"],
+        reflection_context=reflective_outputs["reflection_context"],
         cycles_delta=v1_output.trace_payload.get("cycle_delta", {}),
         predictive_reflective_delta=predictive_reflective_delta,
         reflection_note=reflection_dict,
-        policy_hint={**v1_output.policy_hint, **endogenous_drive_outputs["policy_hint_patch"]},
+        policy_hint={
+            **v1_output.policy_hint,
+            **endogenous_drive_outputs["policy_hint_patch"],
+            **reflective_outputs["policy_hint_patch"],
+        },
         response_tendency=(
-            endogenous_drive_outputs["response_tendency"].to_dict()
-            if endogenous_drive_outputs["response_tendency"]
-            else (v1_output.response_tendency.to_dict() if v1_output.response_tendency else None)
+            reflective_outputs["response_tendency"].to_dict()
+            if reflective_outputs["response_tendency"]
+            else (
+                endogenous_drive_outputs["response_tendency"].to_dict()
+                if endogenous_drive_outputs["response_tendency"]
+                else (v1_output.response_tendency.to_dict() if v1_output.response_tendency else None)
+            )
         ),
         timestamp=packet.timestamp,
         legacy_trace_payload=v1_output.trace_payload,
     )
-    merged_policy_hint = {**v1_output.policy_hint, **endogenous_drive_outputs["policy_hint_patch"]}
-    merged_response_tendency = endogenous_drive_outputs["response_tendency"] or v1_output.response_tendency
+    merged_policy_hint = {
+        **v1_output.policy_hint,
+        **endogenous_drive_outputs["policy_hint_patch"],
+        **reflective_outputs["policy_hint_patch"],
+    }
+    merged_response_tendency = (
+        reflective_outputs["response_tendency"]
+        or endogenous_drive_outputs["response_tendency"]
+        or v1_output.response_tendency
+    )
     output = KernelOutputV2(
         event_id=packet.event_id,
         subject_profile=packet.subject_profile,
@@ -230,6 +260,11 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         candidate_bias_terms=endogenous_drive_outputs["candidate_bias_terms"],
         self_maintenance_candidate=endogenous_drive_outputs["self_maintenance_candidate"],
         drive_audit_entries=endogenous_drive_outputs["drive_audit_entries"],
+        reflective_self_delta=reflective_outputs["reflective_self_delta"],
+        revision_proposal_candidates=reflective_outputs["revision_proposal_candidates"],
+        confidence_adjustment_hints=reflective_outputs["confidence_adjustment_hints"],
+        maintenance_priority_hints=reflective_outputs["maintenance_priority_hints"],
+        reflection_writeback_candidate=reflective_outputs["reflection_writeback_candidate"],
         trace_payload=trace_payload,
     )
 
@@ -245,6 +280,12 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         output.confidence_meta["endogenous_drive_owner_revision"] = constraint_summary["endogenous_drive_context"].get(
             "owner_revision"
         )
+    if constraint_summary["reflective_self_context"]["present"]:
+        output.confidence_meta = dict(output.confidence_meta)
+        output.confidence_meta["reflective_self_context_present"] = True
+        output.confidence_meta["reflective_self_owner_revision"] = constraint_summary["reflective_self_context"].get(
+            "owner_revision"
+        )
     return output
 
 
@@ -252,6 +293,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
     revision_before = state_v2.revision_counter
     execution = run_developmental_cycle(state_v2, packet)
     endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
+    reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
     trace_payload = build_trace_payload_v2(
         event_id=packet.event_id,
         subject_profile=packet.subject_profile,
@@ -275,6 +317,12 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         self_maintenance_candidate=endogenous_drive_outputs["self_maintenance_candidate"],
         drive_audit_entries=endogenous_drive_outputs["drive_audit_entries"],
         drive_context=endogenous_drive_outputs["drive_context"],
+        reflective_self_delta=reflective_outputs["reflective_self_delta"],
+        revision_proposal_candidates=reflective_outputs["revision_proposal_candidates"],
+        confidence_adjustment_hints=reflective_outputs["confidence_adjustment_hints"],
+        maintenance_priority_hints=reflective_outputs["maintenance_priority_hints"],
+        reflection_writeback_candidate=reflective_outputs["reflection_writeback_candidate"],
+        reflection_context=reflective_outputs["reflection_context"],
         cycles_delta={},
         predictive_reflective_delta={},
         policy_hint={
@@ -290,11 +338,16 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
                 "mode": "developmental_shadow_only",
             },
             **endogenous_drive_outputs["policy_hint_patch"],
+            **reflective_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            endogenous_drive_outputs["response_tendency"].to_dict()
-            if endogenous_drive_outputs["response_tendency"]
-            else None
+            reflective_outputs["response_tendency"].to_dict()
+            if reflective_outputs["response_tendency"]
+            else (
+                endogenous_drive_outputs["response_tendency"].to_dict()
+                if endogenous_drive_outputs["response_tendency"]
+                else None
+            )
         ),
         candidate_actions=[],
         governor_hint={
@@ -318,6 +371,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             "developmental_cycle_id": execution.summary.get("cycle_id"),
             "shadow_revision": execution.summary.get("shadow_revision"),
             "self_model_context_present": bool(extract_runtime_self_model_context(packet.runtime_summary)),
+            "reflective_self_context_present": bool(extract_runtime_reflective_self_context(packet.runtime_summary)),
             **execution.self_model_confidence_meta,
         },
         self_model_delta=execution.self_model_delta,
@@ -337,14 +391,20 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
                 "mode": "developmental_shadow_only",
             },
             **endogenous_drive_outputs["policy_hint_patch"],
+            **reflective_outputs["policy_hint_patch"],
         },
-        response_tendency=endogenous_drive_outputs["response_tendency"],
+        response_tendency=reflective_outputs["response_tendency"] or endogenous_drive_outputs["response_tendency"],
         endogenous_drive_delta=endogenous_drive_outputs["endogenous_drive_delta"],
         drive_state_snapshot=endogenous_drive_outputs["drive_state_snapshot"],
         priority_snapshot=endogenous_drive_outputs["priority_snapshot"],
         candidate_bias_terms=endogenous_drive_outputs["candidate_bias_terms"],
         self_maintenance_candidate=endogenous_drive_outputs["self_maintenance_candidate"],
         drive_audit_entries=endogenous_drive_outputs["drive_audit_entries"],
+        reflective_self_delta=reflective_outputs["reflective_self_delta"],
+        revision_proposal_candidates=reflective_outputs["revision_proposal_candidates"],
+        confidence_adjustment_hints=reflective_outputs["confidence_adjustment_hints"],
+        maintenance_priority_hints=reflective_outputs["maintenance_priority_hints"],
+        reflection_writeback_candidate=reflective_outputs["reflection_writeback_candidate"],
         trace_payload=trace_payload,
     )
 

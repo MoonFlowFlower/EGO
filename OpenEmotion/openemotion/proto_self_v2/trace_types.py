@@ -33,6 +33,12 @@ class ProtoSelfTracePayloadV2:
     self_maintenance_candidate: Optional[Dict[str, Any]] = None
     drive_audit_entries: list = field(default_factory=list)
     drive_context: Dict[str, Any] = field(default_factory=dict)
+    reflective_self_delta: Dict[str, Any] = field(default_factory=dict)
+    revision_proposal_candidates: list = field(default_factory=list)
+    confidence_adjustment_hints: Dict[str, Any] = field(default_factory=dict)
+    maintenance_priority_hints: Dict[str, Any] = field(default_factory=dict)
+    reflection_writeback_candidate: Optional[Dict[str, Any]] = None
+    reflection_context: Dict[str, Any] = field(default_factory=dict)
     cycles_delta: Dict[str, Any] = field(default_factory=dict)
     predictive_reflective_delta: Dict[str, Any] = field(default_factory=dict)
     reflection_note: Optional[Dict[str, Any]] = None
@@ -74,6 +80,12 @@ class ProtoSelfTracePayloadV2:
             "self_maintenance_candidate": self.self_maintenance_candidate,
             "drive_audit_entries": self.drive_audit_entries,
             "drive_context": self.drive_context,
+            "reflective_self_delta": self.reflective_self_delta,
+            "revision_proposal_candidates": self.revision_proposal_candidates,
+            "confidence_adjustment_hints": self.confidence_adjustment_hints,
+            "maintenance_priority_hints": self.maintenance_priority_hints,
+            "reflection_writeback_candidate": self.reflection_writeback_candidate,
+            "reflection_context": self.reflection_context,
             "cycles_delta": self.cycles_delta,
             "predictive_reflective_delta": self.predictive_reflective_delta,
             "reflection_note": self.reflection_note,

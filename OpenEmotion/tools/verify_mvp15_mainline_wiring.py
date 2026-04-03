@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Static verifier for MVP15 reflection/counterfactual mainline wiring.
+Static verifier for MVP15 current-runtime reflective wiring.
 
 Purpose:
-- avoid manual grep when checking whether MVP15 is still shadow-only
-- distinguish artifact generation from real mainline writeback / consumer paths
+- verify the current authority source has moved to openemotion/reflective_self
+- verify the current runtime mainline reads bounded reflective context
+- verify legacy emotiond reflection surfaces remain reference-only
 """
 
 from __future__ import annotations
@@ -21,133 +22,107 @@ def _read(rel_path: str) -> str:
     return (ROOT / rel_path).read_text(encoding="utf-8")
 
 
+def _exists(rel_path: str) -> bool:
+    return (ROOT / rel_path).exists()
+
+
 def _has_any(text: str, needles: list[str]) -> bool:
     return any(needle in text for needle in needles)
 
 
 def inspect_wiring() -> dict:
-    core_text = _read("OpenEmotion/emotiond/core.py")
-    api_text = _read("OpenEmotion/emotiond/api.py")
-    workspace_text = _read("OpenEmotion/emotiond/workspace.py")
+    kernel_text = _read("OpenEmotion/openemotion/proto_self_v2/kernel.py")
+    runtime_text = _read("EgoCore/app/runtime_v2/proto_self_runtime.py")
+    register_text = _read("Tasks/active/mvp15_reflective_self_counterfactual/LEGACY_REFERENCE_REGISTER.md")
 
-    reflection_engine_present = (ROOT / "OpenEmotion/emotiond/reflection_engine/engine.py").exists()
-    counterfactual_module_present = (ROOT / "OpenEmotion/emotiond/self_counterfactual.py").exists()
+    reflective_modules = [
+        "OpenEmotion/openemotion/reflective_self/__init__.py",
+        "OpenEmotion/openemotion/reflective_self/schemas.py",
+        "OpenEmotion/openemotion/reflective_self/state.py",
+        "OpenEmotion/openemotion/reflective_self/store.py",
+        "OpenEmotion/openemotion/reflective_self/updater.py",
+    ]
+    legacy_modules = [
+        "OpenEmotion/emotiond/reflection_engine/engine.py",
+        "OpenEmotion/emotiond/reflection_adapter.py",
+        "OpenEmotion/emotiond/reflection_shadow.py",
+        "OpenEmotion/emotiond/self_counterfactual.py",
+    ]
 
-    core_uses_reflection_shadow = "from emotiond.reflection_shadow import get_reflection_shadow" in core_text
-    core_uses_reflection_adapter = _has_any(
-        core_text,
-        [
-            "from emotiond.reflection_adapter import get_reflection_adapter",
-            "_mvp15_reflection_adapter = get_reflection_adapter(",
-            "_build_reflection_guidance(",
-            "\"reflection_guidance\"",
-        ],
-    )
-    core_uses_reflection_engine_directly = _has_any(
-        core_text,
-        [
-            "from emotiond.reflection_engine import",
-            "get_reflection_engine(",
-            "create_reflection_job(",
-            "execute_reflection(",
-            "approve_proposal(",
-        ],
-    )
-    core_uses_counterfactual_consumer = _has_any(
-        core_text,
-        [
-            "from emotiond.self_counterfactual import",
-            "get_counterfactual_model(",
-            "apply_counterfactual_to_candidates(",
-            "match_and_apply_counterfactual(",
-        ],
-    )
+    reflective_self_package_present = all(_exists(path) for path in reflective_modules)
+    legacy_surfaces_present = {path: _exists(path) for path in legacy_modules}
 
-    api_uses_reflection_engine_directly = _has_any(
-        api_text,
+    proto_self_kernel_reads_reflective_context = _has_any(
+        kernel_text,
         [
-            "from emotiond.reflection_engine import",
-            "get_reflection_engine(",
-            "approve_proposal(",
+            "from openemotion.proto_self_v2.reflective_self_context import",
+            "derive_reflective_self_outputs(",
+            "summarize_runtime_reflective_self_context(",
+            "extract_runtime_reflective_self_context(",
         ],
     )
-    api_uses_counterfactual_consumer = _has_any(
-        api_text,
+    runtime_v2_injects_reflective_context = _has_any(
+        runtime_text,
         [
-            "from emotiond.self_counterfactual import",
-            "get_counterfactual_model(",
-            "apply_counterfactual_to_candidates(",
-            "match_and_apply_counterfactual(",
+            "def _inject_reflective_self_context(",
+            "\"reflective_self_context\"",
+            "reflective_self_store=",
         ],
     )
-    api_uses_reflection_guidance_surface = "\"reflection_guidance\"" in api_text or "'reflection_guidance'" in api_text
-
-    workspace_uses_reflection_engine_directly = _has_any(
-        workspace_text,
+    runtime_v2_records_reflection_hooks = _has_any(
+        runtime_text,
         [
-            "from emotiond.reflection_engine import",
-            "get_reflection_engine(",
-            "approve_proposal(",
-        ],
-    )
-    workspace_uses_counterfactual_consumer = _has_any(
-        workspace_text,
-        [
-            "from emotiond.self_counterfactual import",
-            "get_counterfactual_model(",
-            "apply_counterfactual_to_candidates(",
-            "match_and_apply_counterfactual(",
+            "\"reflective_self_delta\"",
+            "\"revision_proposal_candidates\"",
+            "\"reflection_writeback_candidate\"",
         ],
     )
 
-    bounded_mainline_consumer_present = any(
-        [
-            core_uses_reflection_adapter,
-            core_uses_reflection_engine_directly,
-            core_uses_counterfactual_consumer,
-            api_uses_reflection_guidance_surface,
-            api_uses_reflection_engine_directly,
-            api_uses_counterfactual_consumer,
-            workspace_uses_reflection_engine_directly,
-            workspace_uses_counterfactual_consumer,
+    register_mentions_reference_only = all(
+        needle in register_text
+        for needle in [
+            "OpenEmotion/emotiond/reflection_engine/*",
+            "OpenEmotion/emotiond/reflection_adapter.py",
+            "OpenEmotion/emotiond/reflection_shadow.py",
+            "OpenEmotion/emotiond/self_counterfactual.py",
+            "reference-only",
         ]
     )
 
-    if core_uses_reflection_shadow and core_uses_reflection_adapter and not (
-        workspace_uses_reflection_engine_directly or workspace_uses_counterfactual_consumer
-    ):
-        status = "bounded_mainline_consumer_present_workspace_still_legacy"
-    elif core_uses_reflection_shadow and not bounded_mainline_consumer_present:
-        status = "shadow_only_mainline_writeback_missing"
-    elif bounded_mainline_consumer_present:
-        status = "bounded_mainline_consumer_present"
+    bounded_consumer_present = all(
+        [
+            reflective_self_package_present,
+            proto_self_kernel_reads_reflective_context,
+            runtime_v2_injects_reflective_context,
+            runtime_v2_records_reflection_hooks,
+        ]
+    )
+
+    if bounded_consumer_present and register_mentions_reference_only:
+        status = "current_runtime_reflective_consumer_present_legacy_reference_only"
+    elif bounded_consumer_present:
+        status = "current_runtime_reflective_consumer_present_register_incomplete"
+    elif reflective_self_package_present:
+        status = "formal_owner_present_runtime_consumer_missing"
     else:
-        status = "reflection_mainline_not_detected"
+        status = "reflective_owner_not_detected"
 
     return {
-        "schema_version": "mvp15.mainline_wiring_check.v2",
+        "schema_version": "mvp15.mainline_wiring_check.v3",
         "root": str(ROOT),
         "formal_owner": {
-            "reflection_engine_present": reflection_engine_present,
-            "counterfactual_module_present": counterfactual_module_present,
+            "reflective_self_package_present": reflective_self_package_present,
+            "required_modules": reflective_modules,
         },
-        "core": {
-            "uses_reflection_shadow": core_uses_reflection_shadow,
-            "uses_reflection_adapter": core_uses_reflection_adapter,
-            "uses_reflection_engine_directly": core_uses_reflection_engine_directly,
-            "uses_counterfactual_consumer": core_uses_counterfactual_consumer,
+        "current_runtime_mainline": {
+            "proto_self_kernel_reads_reflective_context": proto_self_kernel_reads_reflective_context,
+            "runtime_v2_injects_reflective_context": runtime_v2_injects_reflective_context,
+            "runtime_v2_records_reflection_hooks": runtime_v2_records_reflection_hooks,
+            "bounded_consumer_present": bounded_consumer_present,
         },
-        "api": {
-            "uses_reflection_guidance_surface": api_uses_reflection_guidance_surface,
-            "uses_reflection_engine_directly": api_uses_reflection_engine_directly,
-            "uses_counterfactual_consumer": api_uses_counterfactual_consumer,
-        },
-        "workspace": {
-            "uses_reflection_engine_directly": workspace_uses_reflection_engine_directly,
-            "uses_counterfactual_consumer": workspace_uses_counterfactual_consumer,
-        },
-        "mainline": {
-            "bounded_consumer_present": bounded_mainline_consumer_present,
+        "legacy_reference": {
+            "registered_reference_only": register_mentions_reference_only,
+            "surfaces_present": legacy_surfaces_present,
         },
         "status": status,
     }
@@ -157,9 +132,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", action="store_true", help="Print JSON only.")
     parser.add_argument(
-        "--require-writeback-consumer",
+        "--require-current-runtime-consumer",
         action="store_true",
-        help="Exit non-zero unless a reflection/counterfactual writeback consumer is detected on the current mainline.",
+        help="Exit non-zero unless the current runtime reflective consumer is detected.",
     )
     args = parser.parse_args()
 
@@ -169,10 +144,16 @@ def main() -> int:
         print(json.dumps(report, ensure_ascii=True, indent=2))
     else:
         print(f"status: {report['status']}")
-        print(f"core.uses_reflection_shadow: {report['core']['uses_reflection_shadow']}")
-        print(f"mainline.bounded_consumer_present: {report['mainline']['bounded_consumer_present']}")
+        print(
+            "current_runtime_mainline.bounded_consumer_present: "
+            f"{report['current_runtime_mainline']['bounded_consumer_present']}"
+        )
+        print(
+            "legacy_reference.registered_reference_only: "
+            f"{report['legacy_reference']['registered_reference_only']}"
+        )
 
-    if args.require_writeback_consumer and not report["mainline"]["bounded_consumer_present"]:
+    if args.require_current_runtime_consumer and not report["current_runtime_mainline"]["bounded_consumer_present"]:
         return 1
     return 0
 

@@ -19,6 +19,7 @@ from app.runtime_v2.state import RuntimeV2State
 from app.telegram_evidence_collector import TelegramEvidenceCollector
 from openemotion.endogenous_drives import EndogenousDriveStore
 from openemotion.endogenous_drives.reducers import seed_default_state
+from openemotion.reflective_self import ReflectiveSelfOwner, ReflectiveSelfStore, ReflectionTargetType
 from openemotion.proto_self_v2.seed_schemas import SEED_SUBJECT_PROFILE
 from openemotion.self_model import Goal, GoalStatus, Priority, SelfModelStore, create_default_self_model
 from openemotion.self_model import SelfModelStore, create_default_self_model
@@ -178,6 +179,56 @@ def test_v2_events_inject_formal_endogenous_drive_context(tmp_path):
     assert ingress_event["runtime_summary"]["endogenous_drive_context"]["owner_revision"] == 1
     assert finalized_event is not None
     assert finalized_event["runtime_summary"]["endogenous_drive_context"]["owner_revision"] == 1
+
+
+def test_v2_events_inject_formal_reflective_self_context(tmp_path):
+    store = ReflectiveSelfStore(base_dir=tmp_path)
+    owner = ReflectiveSelfOwner(store=store)
+    owner.upsert_target(
+        target_id="decision:target",
+        target_type=ReflectionTargetType.DECISION,
+        reference="decision:target",
+        reason="review needed",
+        salience=0.8,
+    )
+    owner.enqueue_reflection(
+        target_type=ReflectionTargetType.DECISION,
+        target_reference="decision:target",
+        trigger_source="owner_bootstrap",
+        priority=0.7,
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:reflective_context")
+
+    state = RuntimeV2State(session_id="session:test")
+    state.current_goal = "verify_reflective_bridge"
+    state.ingress_context = {"proto_self_version": "v2"}
+    result = RuntimeV2TurnResult(
+        status="completed_verified",
+        state=state,
+        reply=RuntimeV2Reply(reply_text="已完成", delivery_kind="final", status="completed_verified"),
+    )
+
+    ingress_event = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_reflect_ctx_ingress",
+        source="telegram",
+        user_input="帮我整理 reflection read 链",
+        state=state,
+        reflective_self_store=store,
+    )
+    finalized_event = build_finalized_result_event(
+        session_id="session:test",
+        turn_id="turn_reflect_ctx_finalized",
+        result=result,
+        state=state,
+        reflective_self_store=store,
+    )
+
+    assert ingress_event["runtime_summary"]["reflective_self_context"]["schema_version"] == "mvp15-owner-v1"
+    assert ingress_event["runtime_summary"]["reflective_self_context"]["owner_revision"] == 1
+    assert ingress_event["runtime_summary"]["reflective_self_context"]["top_target_ids"] == ["decision:target"]
+    assert finalized_event is not None
+    assert finalized_event["runtime_summary"]["reflective_self_context"]["owner_revision"] == 1
 
 
 def test_process_ingress_applies_governed_self_model_writeback(tmp_path):
@@ -361,6 +412,77 @@ def test_process_ingress_applies_governed_endogenous_drive_writeback(tmp_path):
     assert state.proto_self_context["endogenous_drive_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
     assert saved is not None
     assert saved.get_total_maintenance_debt() >= 0.25
+    assert len(store.load_revision_log("openemotion")) == 2
+
+
+def test_process_ingress_records_governed_reflection_writeback_without_authority_promotion(tmp_path):
+    store = ReflectiveSelfStore(base_dir=tmp_path)
+    owner = ReflectiveSelfOwner(store=store)
+    owner.upsert_target(
+        target_id="decision:target",
+        target_type=ReflectionTargetType.DECISION,
+        reference="decision:target",
+        reason="review needed",
+        salience=0.9,
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:reflective_init")
+
+    class Adapter:
+        def __init__(self):
+            self.last_event = None
+
+        def handle_event(self, event):
+            self.last_event = event
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {"reflection_bias": "elevated"},
+                "response_tendency": {"preferred_mode": "respond", "certainty_bound": "bounded"},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "self_model_delta": {},
+                "endogenous_drive_delta": {},
+                "reflective_self_delta": {"target_ids": ["decision:target"]},
+                "revision_proposal_candidates": [
+                    {
+                        "candidate_id": "reflection_candidate:decision:target",
+                        "target_id": "decision:target",
+                        "required_gate": "reflection_writeback_gate",
+                        "proposal_discipline": "proposal_only",
+                    }
+                ],
+                "confidence_adjustment_hints": {"certainty_bound": "bounded"},
+                "maintenance_priority_hints": {"reflection_followup_priority": "elevated"},
+                "reflection_writeback_candidate": {
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "none",
+                    "required_gate": "reflection_writeback_gate",
+                },
+                "trace_payload": {"update_packet_hash": "hash_reflective_bridge"},
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), reflective_self_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_reflective_bridge",
+        source="telegram",
+        user_input="把 reflection bridge 接到正式主链",
+        state=state,
+    )
+
+    assert runtime.adapter.last_event["runtime_summary"]["reflective_self_context"]["owner_revision"] == 1
+    assert state.proto_self_context["reflective_self_delta"]["target_ids"] == ["decision:target"]
+    assert state.proto_self_context["revision_proposal_candidates"][0]["proposal_discipline"] == "proposal_only"
+    assert state.proto_self_context["reflection_writeback_candidate"]["behavioral_authority"] == "none"
+    assert state.proto_self_context["reflective_self_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+    saved = store.load("openemotion")
+    assert saved is not None
+    assert len(saved.revision_proposals) == 1
+    proposal = next(iter(saved.revision_proposals.values()))
+    assert proposal.status == "held"
     assert len(store.load_revision_log("openemotion")) == 2
 
 

@@ -171,6 +171,11 @@ class KernelOutputV2:
     candidate_bias_terms: Dict[str, float] = field(default_factory=dict)
     self_maintenance_candidate: Optional[Dict[str, Any]] = None
     drive_audit_entries: List[Dict[str, Any]] = field(default_factory=list)
+    reflective_self_delta: Dict[str, Any] = field(default_factory=dict)
+    revision_proposal_candidates: List[Dict[str, Any]] = field(default_factory=list)
+    confidence_adjustment_hints: Dict[str, Any] = field(default_factory=dict)
+    maintenance_priority_hints: Dict[str, Any] = field(default_factory=dict)
+    reflection_writeback_candidate: Optional[Dict[str, Any]] = None
     trace_payload: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -199,6 +204,11 @@ class KernelOutputV2:
             "candidate_bias_terms": self.candidate_bias_terms,
             "self_maintenance_candidate": self.self_maintenance_candidate,
             "drive_audit_entries": self.drive_audit_entries,
+            "reflective_self_delta": self.reflective_self_delta,
+            "revision_proposal_candidates": self.revision_proposal_candidates,
+            "confidence_adjustment_hints": self.confidence_adjustment_hints,
+            "maintenance_priority_hints": self.maintenance_priority_hints,
+            "reflection_writeback_candidate": self.reflection_writeback_candidate,
             "trace_payload": self.trace_payload,
         }
 

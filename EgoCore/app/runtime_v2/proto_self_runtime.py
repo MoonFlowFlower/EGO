@@ -10,6 +10,12 @@ import os
 from openemotion.proto_self_v2.seed_schemas import SEED_SCHEMA_VERSION, SEED_SUBJECT_PROFILE
 from openemotion.endogenous_drives import EndogenousDriveStore, EndogenousDriveOwner, compact_endogenous_drive_context
 from openemotion.endogenous_drives.reducers import seed_default_state
+from openemotion.reflective_self import (
+    ReflectiveSelfOwner,
+    ReflectiveSelfState,
+    ReflectiveSelfStore,
+    ReflectionTargetType,
+)
 from openemotion.self_model import (
     PHASE1_AUTHORITATIVE_FIELDS,
     SelfModelStore,
@@ -28,6 +34,7 @@ logger = logging.getLogger(__name__)
 ENABLE_MVP12_SANDBOX = os.environ.get("EGO_ENABLE_MVP12_SANDBOX", "false").lower() == "true"
 DEFAULT_SELF_MODEL_IDENTITY_HANDLE = "openemotion"
 DEFAULT_ENDOGENOUS_DRIVE_IDENTITY_HANDLE = "openemotion"
+DEFAULT_REFLECTIVE_SELF_IDENTITY_HANDLE = "openemotion"
 
 
 def assess_risk_level(user_input: str) -> str:
@@ -99,6 +106,15 @@ def _resolve_endogenous_drive_identity_handle(state: RuntimeV2State) -> str:
         ingress_context.get("endogenous_drive_identity_handle")
         or ingress_context.get("identity_handle")
         or DEFAULT_ENDOGENOUS_DRIVE_IDENTITY_HANDLE
+    )
+
+
+def _resolve_reflective_self_identity_handle(state: RuntimeV2State) -> str:
+    ingress_context = state.ingress_context or {}
+    return str(
+        ingress_context.get("reflective_self_identity_handle")
+        or ingress_context.get("identity_handle")
+        or DEFAULT_REFLECTIVE_SELF_IDENTITY_HANDLE
     )
 
 
@@ -198,6 +214,43 @@ def _inject_endogenous_drive_context(
     return runtime_summary
 
 
+def _compact_reflective_self_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    state = ReflectiveSelfState.model_validate(snapshot)
+    return {
+        "schema_version": state.schema_version,
+        "owner_revision": state.owner_revision,
+        "last_revision_id": state.last_revision_id,
+        **state.to_runtime_projection(),
+    }
+
+
+def _inject_reflective_self_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+    reflective_self_store: Optional[ReflectiveSelfStore] = None,
+) -> Dict[str, Any]:
+    store = reflective_self_store or ReflectiveSelfStore()
+    snapshot = store.load_snapshot(_resolve_reflective_self_identity_handle(state))
+    if snapshot:
+        runtime_summary["reflective_self_context"] = _compact_reflective_self_context(snapshot)
+    return runtime_summary
+
+
+def _resolve_reflection_target_type(target_id: str) -> ReflectionTargetType:
+    prefix = str(target_id or "").split(":", 1)[0].strip().lower()
+    mapping = {
+        "decision": ReflectionTargetType.DECISION,
+        "trajectory": ReflectionTargetType.TRAJECTORY,
+        "maintenance": ReflectionTargetType.MAINTENANCE,
+        "self_model": ReflectionTargetType.SELF_MODEL,
+        "drive_state": ReflectionTargetType.DRIVE_STATE,
+        "behavior": ReflectionTargetType.BEHAVIOR,
+        "state": ReflectionTargetType.STATE,
+    }
+    return mapping.get(prefix, ReflectionTargetType.STATE)
+
+
 def _build_seed_event(
     *,
     event_type: str,
@@ -261,6 +314,7 @@ def build_proto_self_ingress_event(
     state: RuntimeV2State,
     self_model_store: Optional[SelfModelStore] = None,
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
+    reflective_self_store: Optional[ReflectiveSelfStore] = None,
 ) -> Dict[str, Any]:
     risk_level = assess_risk_level(user_input)
     restore_observation = (state.ingress_context or {}).get("restore_observation")
@@ -281,6 +335,11 @@ def build_proto_self_ingress_event(
             runtime_summary,
             state=state,
             endogenous_drive_store=endogenous_drive_store,
+        )
+        runtime_summary = _inject_reflective_self_context(
+            runtime_summary,
+            state=state,
+            reflective_self_store=reflective_self_store,
         )
         runtime_summary.update(
             {
@@ -373,6 +432,7 @@ def build_external_result_event(
     state: RuntimeV2State,
     self_model_store: Optional[SelfModelStore] = None,
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
+    reflective_self_store: Optional[ReflectiveSelfStore] = None,
 ) -> Dict[str, Any]:
     failed = not tool_result.get("success")
     schema_version = resolve_proto_self_schema_version(state)
@@ -424,6 +484,11 @@ def build_external_result_event(
             payload["runtime_summary"],
             state=state,
             endogenous_drive_store=endogenous_drive_store,
+        )
+        payload["runtime_summary"] = _inject_reflective_self_context(
+            payload["runtime_summary"],
+            state=state,
+            reflective_self_store=reflective_self_store,
         )
         payload["subject_profile"] = subject_profile
         if subject_profile == SEED_SUBJECT_PROFILE:
@@ -489,6 +554,7 @@ def build_finalized_result_event(
     state: RuntimeV2State,
     self_model_store: Optional[SelfModelStore] = None,
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
+    reflective_self_store: Optional[ReflectiveSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -541,6 +607,11 @@ def build_finalized_result_event(
         state=state,
         endogenous_drive_store=endogenous_drive_store,
     )
+    payload["runtime_summary"] = _inject_reflective_self_context(
+        payload["runtime_summary"],
+        state=state,
+        reflective_self_store=reflective_self_store,
+    )
     if subject_profile == SEED_SUBJECT_PROFILE:
         payload["seed_event"] = _build_seed_event(
             event_type="exec_result",
@@ -562,6 +633,7 @@ def build_idle_check_event(
     state: RuntimeV2State,
     self_model_store: Optional[SelfModelStore] = None,
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
+    reflective_self_store: Optional[ReflectiveSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -622,6 +694,11 @@ def build_idle_check_event(
         state=state,
         endogenous_drive_store=endogenous_drive_store,
     )
+    event["runtime_summary"] = _inject_reflective_self_context(
+        event["runtime_summary"],
+        state=state,
+        reflective_self_store=reflective_self_store,
+    )
     return event
 
 
@@ -641,6 +718,7 @@ def build_developmental_tick_event(
     force_enable: bool = False,
     self_model_store: Optional[SelfModelStore] = None,
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
+    reflective_self_store: Optional[ReflectiveSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -666,6 +744,11 @@ def build_developmental_tick_event(
         runtime_summary,
         state=state,
         endogenous_drive_store=endogenous_drive_store,
+    )
+    runtime_summary = _inject_reflective_self_context(
+        runtime_summary,
+        state=state,
+        reflective_self_store=reflective_self_store,
     )
     if replay_seed is not None:
         runtime_summary["replay_seed"] = replay_seed
@@ -739,6 +822,7 @@ class RuntimeV2ProtoSelfRuntime:
     evidence_collector_factory: Optional[Any] = None
     self_model_store: Optional[SelfModelStore] = None
     endogenous_drive_store: Optional[EndogenousDriveStore] = None
+    reflective_self_store: Optional[ReflectiveSelfStore] = None
 
     def _resolve_collector(self, evidence_collector: Optional[Any]) -> Optional[Any]:
         if evidence_collector is not None:
@@ -860,6 +944,137 @@ class RuntimeV2ProtoSelfRuntime:
         proto_self_result["endogenous_drive_writeback"] = writeback
         return writeback
 
+    def _apply_reflective_self_writeback(
+        self,
+        *,
+        proto_self_result: Dict[str, Any],
+        state: RuntimeV2State,
+    ) -> Optional[Dict[str, Any]]:
+        delta = dict(proto_self_result.get("reflective_self_delta") or {})
+        candidates = list(proto_self_result.get("revision_proposal_candidates") or [])
+        writeback_candidate = dict(proto_self_result.get("reflection_writeback_candidate") or {})
+        if not delta and not candidates and not writeback_candidate:
+            return None
+
+        trace_payload = dict(proto_self_result.get("trace_payload") or {})
+        trace_reference = trace_payload.get("update_packet_hash")
+        if writeback_candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "reflection_writeback_requires_proposal_only",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["reflective_self_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("behavioral_authority") not in {None, "none"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "reflection_writeback_behavioral_authority_must_remain_none",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["reflective_self_writeback"] = writeback
+            return writeback
+
+        identity_handle = _resolve_reflective_self_identity_handle(state)
+        store = self.reflective_self_store or ReflectiveSelfStore(default_identity=identity_handle)
+        current_state = store.load(identity_handle) or ReflectiveSelfState()
+        owner = ReflectiveSelfOwner(initial_state=current_state, store=store)
+        confidence_meta = dict(proto_self_result.get("confidence_meta") or {})
+        resolved_trace_reference = str(
+            confidence_meta.get("reflective_self_trace_reference")
+            or trace_reference
+            or f"proto_self:{proto_self_result.get('event_id', 'unknown')}"
+        )
+
+        target_ids = list(writeback_candidate.get("target_ids") or delta.get("target_ids") or [])
+        if not target_ids:
+            target_ids = [
+                str(item.get("target_id") or "").strip()
+                for item in candidates
+                if str(item.get("target_id") or "").strip()
+            ]
+        target_ids = [target_id for target_id in target_ids if target_id]
+
+        changed_fields: list[str] = []
+        for target_id in target_ids[:3]:
+            owner.upsert_target(
+                target_id=target_id,
+                target_type=_resolve_reflection_target_type(target_id),
+                reference=target_id,
+                reason="proto_self_reflection_candidate",
+                salience=0.7,
+                evidence_refs=[resolved_trace_reference],
+            )
+        if target_ids:
+            changed_fields.append("reflection_targets")
+
+        proposal_count = 0
+        for candidate in candidates:
+            target_id = str(candidate.get("target_id") or "reflective_self").strip()
+            proposal = owner.propose_revision(
+                target_layer=target_id,
+                proposed_change={
+                    "candidate_id": candidate.get("candidate_id"),
+                    "reason": candidate.get("reason"),
+                    "source": "proto_self_v2",
+                    "target_ids": target_ids[:3],
+                },
+                justification=str(candidate.get("reason") or "proto_self reflective proposal"),
+                required_gate=str(candidate.get("required_gate") or "reflection_writeback_gate"),
+                requested_effects=list(candidate.get("requested_effects") or []),
+            )
+            owner.set_proposal_gate_status(
+                proposal.proposal_id,
+                status="held",
+                gate_verdict="allow_writeback",
+                gate_reference=resolved_trace_reference,
+                reason="proposal_only_candidate_recorded",
+            )
+            proposal_count += 1
+        if proposal_count:
+            changed_fields.append("revision_proposals")
+        elif target_ids:
+            owner.add_unresolved_item(
+                summary=f"reflective follow-up pending for {target_ids[0]}",
+                linked_record_id=None,
+                severity=0.55,
+            )
+            changed_fields.append("unresolved_reflection_items")
+
+        try:
+            record = owner.persist(
+                update_source=str(confidence_meta.get("reflective_self_update_source") or "proto_self_v2"),
+                trace_reference=resolved_trace_reference,
+            )
+            writeback = {
+                "decision": {
+                    "gate_verdict": "allow_writeback",
+                    "changed_fields": sorted(set(changed_fields)),
+                    "proposal_count": proposal_count,
+                },
+                "record": {
+                    "revision_id": record.revision_id,
+                    "model_version": record.model_version,
+                    "trace_reference": record.trace_reference,
+                    "state_hash": record.state_hash,
+                },
+                "trace_reference": trace_reference or resolved_trace_reference,
+            }
+        except Exception as exc:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": str(exc)},
+                "record": None,
+                "trace_reference": trace_reference or resolved_trace_reference,
+            }
+        proto_self_result["reflective_self_writeback"] = writeback
+        return writeback
+
     def process_ingress(
         self,
         *,
@@ -878,10 +1093,15 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
             self_model_store=self.self_model_store,
             endogenous_drive_store=self.endogenous_drive_store,
+            reflective_self_store=self.reflective_self_store,
         )
         proto_self_result = self.adapter.handle_event(proto_self_event)
         writeback = self._apply_self_model_writeback(proto_self_result=proto_self_result, state=state)
         endogenous_drive_writeback = self._apply_endogenous_drive_writeback(
+            proto_self_result=proto_self_result,
+            state=state,
+        )
+        reflective_self_writeback = self._apply_reflective_self_writeback(
             proto_self_result=proto_self_result,
             state=state,
         )
@@ -909,6 +1129,12 @@ class RuntimeV2ProtoSelfRuntime:
             "priority_snapshot": proto_self_result.get("priority_snapshot") or {},
             "candidate_bias_terms": proto_self_result.get("candidate_bias_terms") or {},
             "self_maintenance_candidate": proto_self_result.get("self_maintenance_candidate"),
+            "reflective_self_delta": proto_self_result.get("reflective_self_delta") or {},
+            "revision_proposal_candidates": proto_self_result.get("revision_proposal_candidates") or [],
+            "confidence_adjustment_hints": proto_self_result.get("confidence_adjustment_hints") or {},
+            "maintenance_priority_hints": proto_self_result.get("maintenance_priority_hints") or {},
+            "reflection_writeback_candidate": proto_self_result.get("reflection_writeback_candidate"),
+            "reflective_self_writeback": reflective_self_writeback,
         }
         state.record(
             "proto_self",
@@ -918,6 +1144,8 @@ class RuntimeV2ProtoSelfRuntime:
                 "candidate_actions": proto_self_result.get("candidate_actions") or [],
                 "self_model_writeback": writeback,
                 "endogenous_drive_writeback": endogenous_drive_writeback,
+                "reflective_self_writeback": reflective_self_writeback,
+                "reflection_writeback_candidate_present": bool(proto_self_result.get("reflection_writeback_candidate")),
                 "reflection_trigger": (
                     proto_self_result.get("reflection_note", {}).get("trigger")
                     if proto_self_result.get("reflection_note")
@@ -945,10 +1173,15 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
             self_model_store=self.self_model_store,
             endogenous_drive_store=self.endogenous_drive_store,
+            reflective_self_store=self.reflective_self_store,
         )
         external_result = self.adapter.handle_event(external_result_event)
         writeback = self._apply_self_model_writeback(proto_self_result=external_result, state=state)
         endogenous_drive_writeback = self._apply_endogenous_drive_writeback(
+            proto_self_result=external_result,
+            state=state,
+        )
+        reflective_self_writeback = self._apply_reflective_self_writeback(
             proto_self_result=external_result,
             state=state,
         )
@@ -971,6 +1204,12 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["priority_snapshot"] = external_result.get("priority_snapshot") or {}
         state.proto_self_context["candidate_bias_terms"] = external_result.get("candidate_bias_terms") or {}
         state.proto_self_context["self_maintenance_candidate"] = external_result.get("self_maintenance_candidate")
+        state.proto_self_context["reflective_self_delta"] = external_result.get("reflective_self_delta") or {}
+        state.proto_self_context["revision_proposal_candidates"] = external_result.get("revision_proposal_candidates") or []
+        state.proto_self_context["confidence_adjustment_hints"] = external_result.get("confidence_adjustment_hints") or {}
+        state.proto_self_context["maintenance_priority_hints"] = external_result.get("maintenance_priority_hints") or {}
+        state.proto_self_context["reflection_writeback_candidate"] = external_result.get("reflection_writeback_candidate")
+        state.proto_self_context["reflective_self_writeback"] = reflective_self_writeback
         if external_result.get("candidate_actions") is not None:
             state.proto_self_context["candidate_actions"] = external_result.get("candidate_actions") or []
         if external_result.get("policy_hint"):
@@ -1001,12 +1240,17 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
             self_model_store=self.self_model_store,
             endogenous_drive_store=self.endogenous_drive_store,
+            reflective_self_store=self.reflective_self_store,
         )
         if not finalized_event:
             return
         finalized_result = self.adapter.handle_event(finalized_event)
         writeback = self._apply_self_model_writeback(proto_self_result=finalized_result, state=state)
         endogenous_drive_writeback = self._apply_endogenous_drive_writeback(
+            proto_self_result=finalized_result,
+            state=state,
+        )
+        reflective_self_writeback = self._apply_reflective_self_writeback(
             proto_self_result=finalized_result,
             state=state,
         )
@@ -1030,6 +1274,12 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["priority_snapshot"] = finalized_result.get("priority_snapshot") or {}
         state.proto_self_context["candidate_bias_terms"] = finalized_result.get("candidate_bias_terms") or {}
         state.proto_self_context["self_maintenance_candidate"] = finalized_result.get("self_maintenance_candidate")
+        state.proto_self_context["reflective_self_delta"] = finalized_result.get("reflective_self_delta") or {}
+        state.proto_self_context["revision_proposal_candidates"] = finalized_result.get("revision_proposal_candidates") or []
+        state.proto_self_context["confidence_adjustment_hints"] = finalized_result.get("confidence_adjustment_hints") or {}
+        state.proto_self_context["maintenance_priority_hints"] = finalized_result.get("maintenance_priority_hints") or {}
+        state.proto_self_context["reflection_writeback_candidate"] = finalized_result.get("reflection_writeback_candidate")
+        state.proto_self_context["reflective_self_writeback"] = reflective_self_writeback
         if finalized_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = finalized_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = finalized_result.get("policy_hint", {}).get("governor_hint")
@@ -1048,12 +1298,17 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
             self_model_store=self.self_model_store,
             endogenous_drive_store=self.endogenous_drive_store,
+            reflective_self_store=self.reflective_self_store,
         )
         if not idle_event:
             return
         idle_result = self.adapter.handle_event(idle_event)
         writeback = self._apply_self_model_writeback(proto_self_result=idle_result, state=state)
         endogenous_drive_writeback = self._apply_endogenous_drive_writeback(
+            proto_self_result=idle_result,
+            state=state,
+        )
+        reflective_self_writeback = self._apply_reflective_self_writeback(
             proto_self_result=idle_result,
             state=state,
         )
@@ -1078,6 +1333,12 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["priority_snapshot"] = idle_result.get("priority_snapshot") or {}
         state.proto_self_context["candidate_bias_terms"] = idle_result.get("candidate_bias_terms") or {}
         state.proto_self_context["self_maintenance_candidate"] = idle_result.get("self_maintenance_candidate")
+        state.proto_self_context["reflective_self_delta"] = idle_result.get("reflective_self_delta") or {}
+        state.proto_self_context["revision_proposal_candidates"] = idle_result.get("revision_proposal_candidates") or []
+        state.proto_self_context["confidence_adjustment_hints"] = idle_result.get("confidence_adjustment_hints") or {}
+        state.proto_self_context["maintenance_priority_hints"] = idle_result.get("maintenance_priority_hints") or {}
+        state.proto_self_context["reflection_writeback_candidate"] = idle_result.get("reflection_writeback_candidate")
+        state.proto_self_context["reflective_self_writeback"] = reflective_self_writeback
         if idle_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = idle_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = idle_result.get("policy_hint", {}).get("governor_hint")
@@ -1114,12 +1375,17 @@ class RuntimeV2ProtoSelfRuntime:
             force_enable=force_enable,
             self_model_store=self.self_model_store,
             endogenous_drive_store=self.endogenous_drive_store,
+            reflective_self_store=self.reflective_self_store,
         )
         if not developmental_event:
             return None
         developmental_result = self.adapter.handle_event(developmental_event)
         writeback = self._apply_self_model_writeback(proto_self_result=developmental_result, state=state)
         endogenous_drive_writeback = self._apply_endogenous_drive_writeback(
+            proto_self_result=developmental_result,
+            state=state,
+        )
+        reflective_self_writeback = self._apply_reflective_self_writeback(
             proto_self_result=developmental_result,
             state=state,
         )
@@ -1146,6 +1412,12 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["priority_snapshot"] = developmental_result.get("priority_snapshot") or {}
         state.proto_self_context["candidate_bias_terms"] = developmental_result.get("candidate_bias_terms") or {}
         state.proto_self_context["self_maintenance_candidate"] = developmental_result.get("self_maintenance_candidate")
+        state.proto_self_context["reflective_self_delta"] = developmental_result.get("reflective_self_delta") or {}
+        state.proto_self_context["revision_proposal_candidates"] = developmental_result.get("revision_proposal_candidates") or []
+        state.proto_self_context["confidence_adjustment_hints"] = developmental_result.get("confidence_adjustment_hints") or {}
+        state.proto_self_context["maintenance_priority_hints"] = developmental_result.get("maintenance_priority_hints") or {}
+        state.proto_self_context["reflection_writeback_candidate"] = developmental_result.get("reflection_writeback_candidate")
+        state.proto_self_context["reflective_self_writeback"] = reflective_self_writeback
         state.proto_self_context["background_thought_candidates"] = list(
             developmental_summary.get("background_thought_candidates") or []
         )
