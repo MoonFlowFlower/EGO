@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_passed
+status: maintenance_mode
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP13_task_plan.md"
 predecessor: "WP7/MVP12"
@@ -69,6 +69,8 @@ scope: "WP8 / MVP13 Persistent Self-Model"
   - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_current.md`
 - scenario bank controlled batch report 已生成：
   - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_batch_current.md`
+- formal closure report 已生成：
+  - `OpenEmotion/artifacts/mvp13/MVP13_COMPLETION_CURRENT.md`
 
 ## 当前 blocker
 
@@ -76,6 +78,9 @@ scope: "WP8 / MVP13 Persistent Self-Model"
 - 残余风险：
   - chat provider 在 batch 运行时可能出现 transient `429/401`
   - 这不影响当前 formal owner writeback `E5` 口径，但会影响后续重复运行的稳定性预算
+- 当前状态：
+  - `WP8` 已可收口进入维护态
+  - 若继续推进主线，应先定义 `WP9/MVP14` authority
 
 ## 本轮不做
 

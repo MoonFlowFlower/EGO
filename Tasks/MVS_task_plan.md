@@ -429,7 +429,8 @@
 **当前状态（2026-04-03）**
 - `WP7/MVP12` 当前已达到 controlled observation `pass`
 - `WP8/MVP13` 当前已完成 `T00/T10/T20/T30/T40/T50/T60/T70/T80`，并已通过 `repo_authored + open_license` scenario bank 的 controlled batch observation 拿到 `V5/E5` formal owner writeback 稳定样本集
-- 当前 `WP8` 口径是：controlled observation `pass`；这不等于 live autonomy，也不等于 transport evidence
+- 当前 `WP8` 口径是：controlled observation `pass` 且可收口进入维护态；这不等于 live autonomy，也不等于 transport evidence
+- 若继续推进主线，下一步不再是扩 `WP8`，而是先定义 `WP9/MVP14` authority
 
 ---
 

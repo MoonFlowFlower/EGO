@@ -2,7 +2,7 @@
 
 ```yaml
 phase: WP8
-status: observation_passed
+status: maintenance_mode
 current_layer: closure
 main_chain_status: formal_owner_writeback_stable
 enabled_status: controlled_mainline_observation
@@ -15,7 +15,7 @@ trigger_evidence:
 verification_level: V5
 evidence_level: E5
 current_blocker: "none within controlled observation scope"
-next_minimal_closure_action: "close WP8 on the controlled observation axis and keep only regression maintenance"
+next_minimal_closure_action: "hold WP8 in maintenance mode; define WP9/MVP14 authority before new scope"
 ```
 
 ## Milestones
@@ -32,7 +32,7 @@ next_minimal_closure_action: "close WP8 on the controlled observation axis and k
 
 ## 当前口径
 
-- 可宣称完成：`WP8/MVP13` 已通过 `repo_authored + open_license` scenario bank 的 controlled batch observation 拿到 formal owner writeback `V5/E5`
+- 可宣称完成：`WP8/MVP13` 已通过 `repo_authored + open_license` scenario bank 的 controlled batch observation 拿到 formal owner writeback `V5/E5`，并在 controlled observation 轴上收口进入维护态
 - 不可宣称完成：默认 live autonomy 已开放，或已经获得 transport/live evidence
 
 ## 当前观察证据
