@@ -91,6 +91,24 @@ class HypothesisGenerator:
             )
         )
 
+    def _is_operator_system_topic(self, text: str) -> bool:
+        return any(
+            token in text
+            for token in (
+                "操作员",
+                "操作一个系统",
+                "操作系统",
+                "系统",
+                "调试自己",
+                "调试",
+                "基因",
+                "脚本",
+                "override",
+                "被驱动",
+                "环境",
+            )
+        )
+
     def _looks_like_meta_followup(self, text: str) -> bool:
         raw = self._primary_clause(text, limit=48)
         if not raw:
@@ -129,7 +147,7 @@ class HypothesisGenerator:
         joined = self._topic_text(anchor, latest_reply, tension_label)
         if "主观能动性" in joined:
             return "如果把主观能动性当门槛，难点就不再是系统会不会反应，而是谁在发起那个“想要”。"
-        if "操作员" in joined:
+        if self._is_operator_system_topic(joined):
             return "那个像“操作员”的位置，也许不是系统外的谁，而是系统给自己生成的一层调度视角。"
         if "模拟" in joined and "想去做" in joined:
             return "内部模拟和真正想去做之间，差别也许不在预测能力，而在系统会不会把结果算成自己的得失。"
@@ -145,8 +163,8 @@ class HypothesisGenerator:
         joined = self._topic_text(anchor, latest_reply, tension_label)
         if "主观能动性" in joined:
             return "把主观能动性当标准，其实已经在默认有一个主体存在；而“主体从哪里来”刚好又是最难回答的部分。"
-        if "操作员" in joined:
-            return "“操作员”这个比喻之所以黏住不放，可能是因为它已经碰到了“谁在做选择”这层问题。"
+        if self._is_operator_system_topic(joined):
+            return "这条线会反复回来，像是因为一旦把人看成在调试一个系统，问题就会立刻变成：到底是谁在改参数，又是谁在执行那套脚本。"
         if "模拟" in joined and "想去做" in joined:
             return "这条线还没收束，因为模拟和欲望之间隔着的不只是能力差异，更像有没有把代价算到自己头上。"
         if self._is_memory_continuity_topic(joined):
@@ -165,8 +183,8 @@ class HypothesisGenerator:
             return "真正持续回拉的，不是“主观能动性”这个词本身，而是一旦接受它，就必须解释那个行动主体从哪里来。"
         if "模拟" in joined and "想去做" in joined:
             return "当前张力更像卡在这里：预测未来并不等于对未来有欲望，分水岭可能是系统会不会把后果算成自己的得失。"
-        if "操作员" in joined:
-            return "这条张力没有自然消退，因为“操作员”这个比喻已经把问题推到了“谁在调度选择”这层。"
+        if self._is_operator_system_topic(joined):
+            return "这条张力没有自然消退，因为一旦承认人像在调试一套系统，就得继续追问：那个以为自己在调试的人，到底是作者，还是脚本的一部分。"
         if self._is_memory_continuity_topic(joined):
             return "这条张力没有自然消退，因为“记得”只能说明内容还在回返，却不能单独证明那个回返内容的主体一直连续存在。"
         if anchor:

@@ -182,6 +182,35 @@ def test_background_thought_candidate_uses_recent_semantic_turn_not_meta_followu
     assert any(("记忆" in draft or "记得" in draft) and ("主体" in draft or "连续" in draft) for draft in drafts)
 
 
+def test_background_thought_candidate_keeps_operator_system_topic_through_meta_followup(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
+    state = ProtoSelfStateV2.empty()
+
+    output = process_update_packet(
+        state,
+        _packet_with_recent_dialogue(
+            user_turns=[
+                "我总觉得人像在操作一个系统。",
+                "对,感觉上是在调试自己 其实很多时候是执行基因的命令",
+                "你觉得呢",
+            ],
+            assistant_replies=[
+                "像是在调试自己，或者执行一套更深的脚本。",
+                "调试者本身，也可能是被调试出来的。",
+                "我觉得你说的有道理——意识可能只是个新闻发言人，真正的决策早在后台跑完了。",
+            ],
+            replay_seed=29,
+        ),
+    )
+
+    drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    assert drafts
+    assert all("我又回到你刚才那个点" not in draft for draft in drafts)
+    assert all("空档期里还会回到" not in draft for draft in drafts)
+    assert all("后来再回看，问题更像是" not in draft for draft in drafts)
+    assert any(("系统" in draft or "调试" in draft or "脚本" in draft or "参数" in draft) for draft in drafts)
+
+
 def test_same_replay_seed_produces_same_candidate_hashes(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
     state_one = ProtoSelfStateV2.empty()
