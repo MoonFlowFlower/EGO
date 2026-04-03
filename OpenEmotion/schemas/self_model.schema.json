@@ -4,6 +4,37 @@
   "title": "Self-Model Contract",
   "description": "结构化自我模型。定义系统能力、限制、目标、承诺和置信度。",
   "schema_version": "1.0.0",
+  "x_phase1_authoritative_fields": [
+    "schema_version",
+    "identity_handle",
+    "capabilities",
+    "limitations",
+    "active_goals",
+    "standing_commitments",
+    "tool_authority_boundary",
+    "dependency_map",
+    "confidence_by_domain",
+    "known_unknowns",
+    "created_at",
+    "last_modified_at",
+    "modification_audit_trail"
+  ],
+  "x_phase1_allowed_proof_levers": [
+    "active_goals",
+    "standing_commitments",
+    "confidence_by_domain",
+    "capabilities",
+    "limitations"
+  ],
+  "x_phase1_legacy_reference_only_fields": [
+    "behavioral_tendencies",
+    "active_tensions",
+    "continuity_trace",
+    "revision_history",
+    "SelfModelManager"
+  ],
+  "x_runtime_local_projection_field": "proto_self_v2.state.self_model",
+  "x_runtime_local_projection_semantics": "runtime-local projection of formal owner state",
   "type": "object",
   "required": [
     "schema_version",
@@ -174,7 +205,7 @@
       "description": "持续有效的承诺（来自 identity invariants 的引用和运行时承诺）",
       "items": {
         "type": "object",
-        "required": ["commitment_id", "source", "description"],
+        "required": ["commitment_id", "source", "description", "binding_level"],
         "properties": {
           "commitment_id": {
             "type": "string",

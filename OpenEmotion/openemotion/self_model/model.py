@@ -7,12 +7,47 @@ OpenEmotion Self-Model Module
 此模块是 self-model 的唯一权威源。
 """
 
-import json
-from dataclasses import dataclass, asdict, field
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+FORMAL_OWNER_SCHEMA_VERSION = "1.0.0"
+
+PHASE1_AUTHORITATIVE_FIELDS = (
+    "schema_version",
+    "identity_handle",
+    "capabilities",
+    "limitations",
+    "active_goals",
+    "standing_commitments",
+    "tool_authority_boundary",
+    "dependency_map",
+    "confidence_by_domain",
+    "known_unknowns",
+    "created_at",
+    "last_modified_at",
+    "modification_audit_trail",
+)
+
+PHASE1_ALLOWED_PROOF_LEVERS = (
+    "active_goals",
+    "standing_commitments",
+    "confidence_by_domain",
+    "capabilities",
+    "limitations",
+)
+
+PHASE1_LEGACY_REFERENCE_ONLY_FIELDS = (
+    "behavioral_tendencies",
+    "active_tensions",
+    "continuity_trace",
+    "revision_history",
+    "SelfModelManager",
+)
+
+RUNTIME_LOCAL_PROJECTION_FIELD = "proto_self_v2.state.self_model"
+RUNTIME_LOCAL_PROJECTION_SEMANTICS = "runtime-local projection of formal owner state"
 
 
 class CapabilityLevel(Enum):
@@ -113,7 +148,7 @@ class SelfModel:
     identity_handle: str
 
     # Schema 元数据
-    schema_version: str = "1.0.0"
+    schema_version: str = FORMAL_OWNER_SCHEMA_VERSION
 
     # 能力列表
     capabilities: List[Capability] = field(default_factory=list)
@@ -148,7 +183,7 @@ class SelfModel:
     modification_audit_trail: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "identity_handle": self.identity_handle,
             "capabilities": [c.to_dict() for c in self.capabilities],
@@ -170,6 +205,7 @@ class SelfModel:
             "last_modified_at": self.last_modified_at,
             "modification_audit_trail": self.modification_audit_trail,
         }
+        return payload
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "SelfModel":
@@ -178,7 +214,7 @@ class SelfModel:
         dep_map = data.get("dependency_map", {})
 
         return cls(
-            schema_version=data.get("schema_version", "1.0.0"),
+            schema_version=data.get("schema_version", FORMAL_OWNER_SCHEMA_VERSION),
             identity_handle=data.get("identity_handle") or data["model_handle"],
             capabilities=[Capability(**c) if isinstance(c, dict) else c for c in data.get("capabilities", [])],
             limitations=[Limitation(**l) if isinstance(l, dict) else l for l in data.get("limitations", [])],

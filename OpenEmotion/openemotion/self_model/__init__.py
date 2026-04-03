@@ -5,14 +5,20 @@ OpenEmotion Self-Model Module
 """
 
 from .model import (
-    SelfModel,
     Capability,
-    Limitation,
-    Goal,
-    StandingCommitment,
     CapabilityLevel,
+    FORMAL_OWNER_SCHEMA_VERSION,
+    Goal,
     GoalStatus,
+    Limitation,
+    PHASE1_ALLOWED_PROOF_LEVERS,
+    PHASE1_AUTHORITATIVE_FIELDS,
+    PHASE1_LEGACY_REFERENCE_ONLY_FIELDS,
     Priority,
+    RUNTIME_LOCAL_PROJECTION_FIELD,
+    RUNTIME_LOCAL_PROJECTION_SEMANTICS,
+    SelfModel,
+    StandingCommitment,
     create_default_self_model,
 )
 
@@ -25,5 +31,11 @@ __all__ = [
     "CapabilityLevel",
     "GoalStatus",
     "Priority",
+    "FORMAL_OWNER_SCHEMA_VERSION",
+    "PHASE1_AUTHORITATIVE_FIELDS",
+    "PHASE1_ALLOWED_PROOF_LEVERS",
+    "PHASE1_LEGACY_REFERENCE_ONLY_FIELDS",
+    "RUNTIME_LOCAL_PROJECTION_FIELD",
+    "RUNTIME_LOCAL_PROJECTION_SEMANTICS",
     "create_default_self_model",
 ]
