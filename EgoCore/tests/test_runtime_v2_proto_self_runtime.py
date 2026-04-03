@@ -914,3 +914,89 @@ def test_process_developmental_tick_preserves_observation_refs():
         {"kind": "telegram_ingress", "event_id": "ingress_1"},
         {"kind": "telegram_delivery", "event_id": "delivery_1"},
     ]
+
+
+def test_process_developmental_tick_writes_formal_owner_revision(tmp_path):
+    store = SelfModelStore(base_dir=tmp_path)
+    store.save(
+        create_default_self_model("openemotion"),
+        update_source="owner_bootstrap",
+        trace_reference="trace:init",
+        confidence_class="high",
+    )
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "schema_version": "proto_self.output.v2",
+                "event_id": event["event_id"],
+                "self_model_delta": {
+                    "known_unknowns": [
+                        {
+                            "unknown_id": "unknown_dev_001",
+                            "category": "dialogue_frame",
+                            "frame_kind": "continuity_gap",
+                            "anchor": "内容回返与主体连续",
+                            "open_question": "回返的内容和连续的主体，到底是不是同一回事？",
+                            "hidden_premise": "内容能回返，就足以证明主体连续。",
+                            "source_cycle": "dev-trace",
+                            "source_candidate_hash": "hash_dev_001",
+                            "observation_source": "direct_real",
+                            "status": "open",
+                        }
+                    ],
+                    "confidence_by_domain": {
+                        "dialogue_frame:continuity_gap": 0.81,
+                    },
+                },
+                "confidence_meta": {
+                    "self_model_update_mode": "append_observation",
+                    "self_model_update_source": "proto_self_v2.developmental",
+                    "self_model_trace_reference": "developmental:dev-trace:hash_dev_001",
+                    "self_model_confidence_class": "high",
+                    "self_model_candidate_id": "cand_dev_001",
+                    "self_model_supporting_evidence": [
+                        "frame:continuity_gap",
+                        "unknown:unknown_dev_001",
+                    ],
+                },
+                "developmental_summary": {
+                    "cycle_id": "dev-trace",
+                    "trigger": "idle",
+                    "gate_status": "allow",
+                    "observation_source": event["runtime_summary"]["observation_source"],
+                    "shadow_revision": 3,
+                    "background_thought_candidates": [],
+                    "background_thought_candidate_count": 0,
+                    "self_model_delta_fields": ["confidence_by_domain", "known_unknowns"],
+                },
+                "developmental_gate": {"status": "allow"},
+                "trace_payload": {
+                    "schema_version": "proto_self.trace.v2",
+                    "event_id": event["event_id"],
+                    "update_packet_hash": "tracehash_dev_001",
+                    "developmental": {"cycle_id": "dev-trace"},
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), self_model_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    result = runtime.process_developmental_tick(
+        session_id="session:test",
+        turn_id="turn_dev_writeback",
+        state=state,
+        observation_source="direct_real",
+        force_enable=True,
+    )
+
+    saved = store.load("openemotion")
+    revisions = store.load_revision_log("openemotion")
+
+    assert result is not None
+    assert saved is not None
+    assert saved.known_unknowns[-1]["unknown_id"] == "unknown_dev_001"
+    assert saved.confidence_by_domain["dialogue_frame:continuity_gap"] == 0.81
+    assert state.proto_self_context["self_model_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+    assert revisions[-1].trace_reference == "developmental:dev-trace:hash_dev_001"

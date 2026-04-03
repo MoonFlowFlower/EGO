@@ -670,6 +670,10 @@ class RuntimeV2ProtoSelfRuntime:
         supporting_evidence = [f"event:{proto_self_result.get('event_id', 'unknown')}"]
         if update_packet_hash:
             supporting_evidence.append(f"trace:{update_packet_hash}")
+        for item in list(confidence_meta.get("self_model_supporting_evidence") or []):
+            value = str(item or "").strip()
+            if value and value not in supporting_evidence:
+                supporting_evidence.append(value)
         request = SelfModelUpdateRequest(
             delta=delta,
             update_mode=str(confidence_meta.get("self_model_update_mode") or "append_observation"),

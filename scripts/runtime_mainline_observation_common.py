@@ -212,8 +212,9 @@ async def run_runtime_mainline_session(
     session_id: str,
     transport_source: str = "runtime_harness",
     source: str = "runtime_harness",
+    runtime: Any | None = None,
 ) -> Tuple[Any, Any, List[Dict[str, Any]]]:
-    runtime = init_runtime()
+    runtime = runtime or init_runtime()
     ingress_bridge = TelegramRuntimeBridge()
     records: List[Dict[str, Any]] = []
 

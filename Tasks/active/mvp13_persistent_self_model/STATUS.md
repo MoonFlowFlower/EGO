@@ -2,18 +2,19 @@
 
 ```yaml
 phase: WP8
-status: observation_ready
-current_layer: evidence_ready_pre_observation
-main_chain_status: formal_owner_read_write_bridge_ready
-enabled_status: controlled_local_only
+status: observation_started
+current_layer: controlled_observation
+main_chain_status: formal_owner_writeback_observed
+enabled_status: controlled_mainline_observation
 trigger_evidence:
   - WP7/MVP12 controlled observation pass
   - MVP12 supplemental Telegram proactive E4 sample
   - MVP13 local evidence pack pass
-verification_level: V3
-evidence_level: E3
-current_blocker: "missing E4 mainline-trigger self-model writeback evidence"
-next_minimal_closure_action: "run first real controlled MVP13 sample and verify owner revision/writeback on the mainline"
+  - MVP13 controlled mainline writeback sample pass
+verification_level: V4
+evidence_level: E4
+current_blocker: "missing repeated writeback samples for E5 stability"
+next_minimal_closure_action: "collect repeated controlled mainline writeback samples across distinct dialogue frames and verify zero invariant violations"
 ```
 
 ## Milestones
@@ -30,5 +31,5 @@ next_minimal_closure_action: "run first real controlled MVP13 sample and verify 
 
 ## 当前口径
 
-- 可宣称完成：`T20/T30/T40/T50/T60/T70` 已完成本地实现与 `E3` 证据包，`WP8/MVP13` 已进入观察前收口状态
-- 不可宣称完成：`MVP13` 已拿到真实 `E4` mainline-trigger writeback evidence，或已达到 `E5` 稳定口径
+- 可宣称完成：`WP8/MVP13` 已拿到第一条 controlled mainline-trigger formal owner writeback `E4` 样本，并正式进入观察期
+- 不可宣称完成：`MVP13` 已达到 `E5` 稳定口径，或默认 live autonomy 已开放

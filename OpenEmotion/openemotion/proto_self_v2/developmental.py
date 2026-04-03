@@ -17,6 +17,7 @@ from emotiond.developmental_core import (
     HypothesisGenerator,
     create_metrics_collector,
 )
+from openemotion.proto_self_v2.self_model_context import extract_runtime_self_model_context
 from openemotion.proto_self_v2.schemas import UpdatePacketV2
 
 
@@ -280,6 +281,95 @@ def _build_background_thought_candidates(
     return thought_candidates[:MAX_BACKGROUND_THOUGHTS]
 
 
+def _build_formal_self_model_delta(
+    *,
+    packet: UpdatePacketV2,
+    cycle_id: str,
+    background_thought_candidates: List[Dict[str, Any]],
+) -> tuple[Dict[str, Any], Dict[str, Any]]:
+    runtime_summary = dict(packet.runtime_summary or {})
+    if str(runtime_summary.get("observation_source") or "") != "direct_real":
+        return {}, {}
+
+    owner_context = extract_runtime_self_model_context(runtime_summary)
+    if not owner_context:
+        return {}, {}
+
+    candidates = [
+        item
+        for item in background_thought_candidates
+        if str(item.get("frame_kind") or "").strip()
+        and _coerce_float(item.get("frame_confidence"), 0.0) >= 0.58
+    ]
+    if not candidates:
+        return {}, {}
+
+    candidates.sort(
+        key=lambda item: (
+            0 if str(item.get("candidate_type") or "") == CandidateType.SELF_MODEL_HYPOTHESIS.value else 1,
+            -_coerce_float(item.get("initiative_score"), 0.0),
+            -_coerce_float(item.get("frame_confidence"), 0.0),
+        )
+    )
+    selected = dict(candidates[0])
+    frame_kind = str(selected.get("frame_kind") or "").strip()
+    frame_anchor = str(selected.get("frame_anchor") or "").strip()
+    open_question = str(selected.get("open_question") or "").strip()
+    hidden_premise = str(selected.get("hidden_premise") or "").strip()
+    candidate_hash = str(selected.get("source_candidate_hash") or selected.get("candidate_id") or "").strip()
+    if not frame_kind or not open_question or not candidate_hash:
+        return {}, {}
+
+    delta: Dict[str, Any] = {}
+    frame_confidence = round(_coerce_float(selected.get("frame_confidence"), 0.0), 3)
+
+    confidence_key = f"dialogue_frame:{frame_kind}"
+    current_confidence_by_domain = dict(owner_context.get("confidence_by_domain") or {})
+    current_confidence = _coerce_float(current_confidence_by_domain.get(confidence_key), 0.0)
+    proposed_confidence = max(current_confidence, frame_confidence)
+    if proposed_confidence > current_confidence:
+        delta["confidence_by_domain"] = {
+            confidence_key: proposed_confidence,
+        }
+
+    known_unknowns = list(owner_context.get("known_unknowns") or [])
+    unknown_id = f"unknown_{_hash_payload({'cycle_id': cycle_id, 'candidate_hash': candidate_hash, 'frame_kind': frame_kind})[:12]}"
+    if not any(str(item.get("unknown_id") or "") == unknown_id for item in known_unknowns):
+        next_known_unknowns = list(known_unknowns)
+        next_known_unknowns.append(
+            {
+                "unknown_id": unknown_id,
+                "category": "dialogue_frame",
+                "frame_kind": frame_kind,
+                "anchor": frame_anchor,
+                "open_question": open_question,
+                "hidden_premise": hidden_premise,
+                "source_cycle": cycle_id,
+                "source_candidate_hash": candidate_hash,
+                "observation_source": "direct_real",
+                "status": "open",
+            }
+        )
+        delta["known_unknowns"] = next_known_unknowns
+
+    if not delta:
+        return {}, {}
+
+    confidence_meta = {
+        "self_model_update_mode": "append_observation",
+        "self_model_update_source": "proto_self_v2.developmental",
+        "self_model_trace_reference": f"developmental:{cycle_id}:{candidate_hash}",
+        "self_model_confidence_class": "high" if frame_confidence >= 0.78 else "medium",
+        "self_model_candidate_id": selected.get("candidate_id"),
+        "self_model_supporting_evidence": [
+            f"frame:{frame_kind}",
+            f"anchor:{frame_anchor}" if frame_anchor else f"cycle:{cycle_id}",
+            f"unknown:{unknown_id}",
+        ],
+    }
+    return delta, confidence_meta
+
+
 def _build_state_snapshot(state: Any, packet: UpdatePacketV2) -> Dict[str, Any]:
     seed_state = getattr(state, "seed_state", None)
     return {
@@ -450,6 +540,8 @@ class DevelopmentalExecution:
     shadow_delta: Dict[str, Any]
     gate: Dict[str, Any]
     trace_block: Dict[str, Any]
+    self_model_delta: Dict[str, Any] = field(default_factory=dict)
+    self_model_confidence_meta: Dict[str, Any] = field(default_factory=dict)
 
 
 def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> DevelopmentalExecution:
@@ -631,11 +723,25 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         "approved_pool_count": len(approved_entries),
         "background_thought_candidates": background_thought_candidates,
         "background_thought_candidate_count": len(background_thought_candidates),
+        "self_model_update_candidates": [
+            _compact_candidate(candidate)
+            for candidate in candidate_payloads
+            if candidate.get("candidate_type") == CandidateType.SELF_MODEL_HYPOTHESIS.value
+        ],
         "replay_seed": replay_seed,
         "gate_status": gate["status"],
         "artifacts_dir": str(artifacts_dir),
         "idle_seconds": inputs["idle_seconds"],
     }
+    if gate["status"] == "allow":
+        self_model_delta, self_model_confidence_meta = _build_formal_self_model_delta(
+            packet=packet,
+            cycle_id=context.cycle_id,
+            background_thought_candidates=background_thought_candidates,
+        )
+    else:
+        self_model_delta, self_model_confidence_meta = {}, {}
+    summary["self_model_delta_fields"] = sorted(self_model_delta.keys())
     shadow_delta = {
         "shadow_revision_before": revision_before,
         "shadow_revision_after": shadow_state.shadow_revision,
@@ -658,6 +764,7 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         "observation_source": inputs["observation_source"],
         "observation_refs": list(inputs.get("observation_refs") or []),
         "background_thought_candidates": background_thought_candidates,
+        "self_model_delta_fields": sorted(self_model_delta.keys()),
         "artifacts": {
             "developmental_cycles_json": str(memory.cycles_file),
             "developmental_cycles_jsonl": str(memory.cycles_jsonl_file),
@@ -672,4 +779,6 @@ def run_developmental_cycle(state: Any, packet: UpdatePacketV2) -> Developmental
         shadow_delta=shadow_delta,
         gate=gate,
         trace_block=trace_block,
+        self_model_delta=self_model_delta,
+        self_model_confidence_meta=self_model_confidence_meta,
     )

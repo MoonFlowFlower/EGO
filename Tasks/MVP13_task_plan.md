@@ -78,10 +78,10 @@
 9. `T80` Subagent Assignment
 
 ## Current Phase Status
-- `T00/T10/T20/T30/T40/T50/T60/T70/T80` 当前已完成到本地 `E3` 证据
-- 当前层级：`evidence_ready_pre_observation`
-- 当前 blocker：缺真实 `E4` mainline-trigger self-model writeback 样本
-- 当前最小闭环动作：在真实主链上触发一次受治理 writeback，并验证 formal owner revision / audit / replay 对齐
+- `T00/T10/T20/T30/T40/T50/T60/T70/T80` 已完成，且已拿到第一条 controlled `E4` mainline-trigger formal owner writeback 样本
+- 当前层级：`controlled_observation`
+- 当前 blocker：缺多样本 `E5` 稳定观察
+- 当前最小闭环动作：在不同 dialogue frame 下继续收集 controlled mainline writeback 样本，并验证零 hard invariant violation / replay-consistent revisions
 
 ## Success Criteria
 - 文档层：

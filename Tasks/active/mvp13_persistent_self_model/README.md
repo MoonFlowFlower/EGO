@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_ready
+status: observation_started
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP13_task_plan.md"
 predecessor: "WP7/MVP12"
@@ -65,11 +65,13 @@ scope: "WP8 / MVP13 Persistent Self-Model"
 - `T60` EgoCore bridge 已把 formal owner context / writeback result 接回 runtime 主链
 - `T70` 本地证据包已生成：
   - `OpenEmotion/artifacts/mvp13/mvp13_local_evidence_current.md`
+- 第一条 controlled mainline writeback 观察样本已生成：
+  - `OpenEmotion/artifacts/mvp13/mvp13_controlled_observation_current.md`
 
 ## 当前 blocker
 
-- 还没有真实 `E4` mainline-trigger self-model writeback 样本
-- 当前只能报 `E3 local proof`, 不能报 `E4` 或 `E5`
+- 已拿到第一条 `E4` controlled mainline-trigger self-model writeback 样本
+- 当前 blocker 已转为：还没有 `E5` 稳定观察样本集
 
 ## 本轮不做
 

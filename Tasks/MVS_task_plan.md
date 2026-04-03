@@ -426,10 +426,10 @@
 - subtask cards 达到 subagent-ready，不留实现级空白决策
 - 证据层级目标：E0 -> E1（文档冻结） -> E2（实现启动） -> E3（本地 formal-owner 证据包） -> E4（真实主链触发） -> E5（稳定观察）
 
-**当前状态（2026-04-02）**
+**当前状态（2026-04-03）**
 - `WP7/MVP12` 当前已达到 controlled observation `pass`
-- `WP8/MVP13` 当前已完成 `T00/T10/T20/T30/T40/T50/T60/T70`，已具备本地 `E3` 证据包
-- 当前最高优先级已转为：拿到真实 `E4` mainline-trigger self-model writeback 样本，进入观察期
+- `WP8/MVP13` 当前已完成 `T00/T10/T20/T30/T40/T50/T60/T70/T80`，并已拿到第一条 controlled `E4` mainline-trigger formal owner writeback 样本
+- 当前最高优先级已转为：扩成多样本观察窗，推进到 `E5` 稳定口径
 
 ---
 
