@@ -7,7 +7,7 @@
 先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
 
 ## 裁决关系
-- 本文件负责 `WP0~WP7` 的阶段、依赖、Gate、证据等级和停止条件。
+- 本文件负责 `WP0~WP8` 的阶段、依赖、Gate、证据等级和停止条件。
 - `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
 - 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
 
@@ -27,6 +27,7 @@
 6. **WP5 反事实反思与因果测试**
 7. **WP6 MVS 主链样本级生效**
 8. **WP7 Developmental Sandbox**
+9. **WP8 Persistent Self-Model**
 
 ---
 
@@ -345,8 +346,95 @@
 
 ---
 
+## WP8：Persistent Self-Model
+**前提**：只有 `WP7/MVP12` 达到 controlled observation `pass` 后才启动。
+
+**归属**：OpenEmotion（主体 owner）+ EgoCore（runtime / adapter 桥接）
+
+**child authority**
+- `Tasks/MVP13_task_plan.md`
+- `Tasks/active/mvp13_persistent_self_model/`
+
+**任务**
+- `MVP13` 仍属于同一条 MVS 主线，不得另起平行主体或平行 authority 主线。
+- 正式 owner 固定为：
+  - `OpenEmotion/openemotion/self_model/*`
+  - `OpenEmotion/schemas/self_model.schema.json`
+- formal read path 固定为：
+  - owner self-model store
+  - `runtime_v2 -> proto_self_runtime`
+  - `UpdatePacketV2.runtime_summary.self_model_context`
+  - `proto_self_v2` read-only consumption
+- formal write path 固定为：
+  - `proto_self_v2` 只产出 `self_model_delta` / `self_model_update_candidates`
+  - 经 `self_model_update_gate`
+  - gate 通过后才写回 formal owner store
+- `proto_self_v2.state.self_model` 不升格为第二真相源；`WP8 Phase 1` 中仅将其解释为 formal owner state 的 runtime-local projection。
+- `WP8 Phase 1` 只使用当前 formal owner schema 已有字段：
+  - `schema_version`
+  - `identity_handle`
+  - `capabilities`
+  - `limitations`
+  - `active_goals`
+  - `standing_commitments`
+  - `tool_authority_boundary`
+  - `dependency_map`
+  - `confidence_by_domain`
+  - `known_unknowns`
+  - `created_at`
+  - `last_modified_at`
+  - `modification_audit_trail`
+- 旧 `MVP13 mirror / dual-write` 线全部降级为 reference-only：
+  - `OpenEmotion/artifacts/mvp13/TASK.md`
+  - `OpenEmotion/tools/mvp13_*`
+  - `OpenEmotion/emotiond/self_model/*`
+  - `OpenEmotion/emotiond/self_model_mirror.py`
+  - `EgoCore/egocore/runtime/self_model_manager.py`
+- `WP8 Phase 1` 不把 legacy 字段集升格为正式 contract：
+  - `behavioral_tendencies`
+  - `active_tensions`
+  - `continuity_trace`
+  - `revision_history`
+  - `SelfModelManager`
+- `MVP13` 仍不得：
+  - 直接控制 final reply
+  - 直接控制 tool execution
+  - 绕过 Governor
+  - 重新启用旧 `mirror / dual-write` 作为正式 owner path
+
+**交付物**
+- `Tasks/MVP13_task_plan.md`
+- `Tasks/active/mvp13_persistent_self_model/README.md`
+- `Tasks/active/mvp13_persistent_self_model/STATUS.md`
+- `Tasks/active/mvp13_persistent_self_model/LEGACY_REFERENCE_REGISTER.md`
+- `Tasks/active/mvp13_persistent_self_model/SUBAGENT_ASSIGNMENT.md`
+- `Tasks/active/mvp13_persistent_self_model/contracts/SELF_MODEL_OWNER_CONTRACT.md`
+- `Tasks/active/mvp13_persistent_self_model/contracts/SELF_MODEL_UPDATE_GATE.md`
+- `Tasks/active/mvp13_persistent_self_model/contracts/SELF_MODEL_REPLAY_CONTRACT.md`
+- `Tasks/active/mvp13_persistent_self_model/cards/*.md`
+
+**验收**
+- `MVS_task_plan.md` 中已正式出现 `WP8: Persistent Self-Model`
+- `Tasks/MVP13_task_plan.md` 已声明 parent-child 裁决关系
+- `Tasks/active/mvp13_persistent_self_model/` 已声明：
+  - `parent_authority = Tasks/MVS_task_plan.md`
+  - `predecessor = WP7/MVP12`
+  - `same_subject_line = true`
+  - `not_parallel_track = true`
+- 旧 `MVP13` mirror / dual-write 线被显式标记为 reference-only
+- formal owner / read path / write path / compatibility semantics / no-bypass rules 全部在文档中锁死
+- subtask cards 达到 subagent-ready，不留实现级空白决策
+- 证据层级目标：E0 -> E1（文档冻结） -> E2（实现启动）
+
+**当前状态（2026-04-02）**
+- `WP7/MVP12` 当前已达到 controlled observation `pass`
+- `WP8/MVP13` 尚未启动实现，当前只进入文档冻结与任务拆解阶段
+- 当前最高优先级不是迁 legacy 代码，而是先锁 formal owner / contract / read-write gate / execution pack
+
+---
+
 ## 串行依赖
-- `WP0 -> WP2 -> WP3 -> WP6 -> WP7` 必须串行
+- `WP0 -> WP2 -> WP3 -> WP6 -> WP7 -> WP8` 必须串行
 - `WP1` 可与 `WP2 / WP3` 并行，但其表达 contract 不得反向覆盖 Proto-Self 边界定义
 - `WP4 / WP5` 在 `WP2` 基础上推进
 
@@ -357,6 +445,7 @@
 - 无限工具自治
 - 复杂情绪文案层
 - 任何让 OpenEmotion 直接执行现实动作的设计
+- 在 `WP8` 中复活旧 `MVP13 mirror / dual-write` 作为正式 owner path
 
 ## 最小里程碑定义
 - **里程碑 A**：`WP0 + WP1`
@@ -364,3 +453,4 @@
 - **里程碑 C**：`WP4 + WP5`
 - **里程碑 D**：`WP6`
 - **里程碑 E**：`WP7`
+- **里程碑 F**：`WP8`
