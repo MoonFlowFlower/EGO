@@ -107,9 +107,12 @@ def test_background_thought_candidate_is_topic_grounded_not_fixed_template(monke
     )
 
     drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    frames = output.developmental_summary["background_thought_candidates"]
     assert drafts
     assert all("我又回到你刚才那个点" not in draft for draft in drafts)
     assert all("空档期里还会回到" not in draft for draft in drafts)
+    assert all(item["frame_kind"] == "definition_gap" for item in frames)
+    assert all(item["frame_anchor"] for item in frames)
     assert any(("主体" in draft or "想要" in draft) for draft in drafts)
 
 
@@ -127,9 +130,11 @@ def test_background_thought_candidate_for_simulation_thread_is_not_quote_templat
     )
 
     drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    frames = output.developmental_summary["background_thought_candidates"]
     assert drafts
     assert all("我又回到你刚才那个点" not in draft for draft in drafts)
     assert all("空档期里还会回到" not in draft for draft in drafts)
+    assert all(item["frame_kind"] == "contrast_gap" for item in frames)
     assert any(("模拟" in draft and ("代价" in draft or "得失" in draft or "欲望" in draft)) for draft in drafts)
 
 
@@ -147,10 +152,12 @@ def test_background_thought_candidate_for_memory_continuity_thread_avoids_nested
     )
 
     drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    frames = output.developmental_summary["background_thought_candidates"]
     assert drafts
     assert all("我又回到你刚才那个点" not in draft for draft in drafts)
     assert all("空档期里还会回到" not in draft for draft in drafts)
     assert all("“我怀疑我们把" not in draft for draft in drafts)
+    assert all(item["frame_kind"] == "continuity_gap" for item in frames)
     assert any(("记得" in draft and ("主体" in draft or "连续存在" in draft or "连续" in draft)) for draft in drafts)
 
 
@@ -176,9 +183,11 @@ def test_background_thought_candidate_uses_recent_semantic_turn_not_meta_followu
     )
 
     drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    frames = output.developmental_summary["background_thought_candidates"]
     assert drafts
-    assert all("这条线没收住，像是因为" not in draft for draft in drafts)
+    assert all("这条线没收住" not in draft for draft in drafts)
     assert all("我觉得你的怀疑站得住脚" not in draft for draft in drafts)
+    assert all(item["frame_kind"] == "continuity_gap" for item in frames)
     assert any(("记忆" in draft or "记得" in draft) and ("主体" in draft or "连续" in draft) for draft in drafts)
 
 
@@ -204,10 +213,12 @@ def test_background_thought_candidate_keeps_operator_system_topic_through_meta_f
     )
 
     drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    frames = output.developmental_summary["background_thought_candidates"]
     assert drafts
     assert all("我又回到你刚才那个点" not in draft for draft in drafts)
     assert all("空档期里还会回到" not in draft for draft in drafts)
     assert all("后来再回看，问题更像是" not in draft for draft in drafts)
+    assert all(item["frame_kind"] == "agency_split" for item in frames)
     assert any(("系统" in draft or "调试" in draft or "脚本" in draft or "参数" in draft) for draft in drafts)
 
 
@@ -231,9 +242,34 @@ def test_background_thought_candidate_keeps_programmed_agency_topic_without_gene
     )
 
     drafts = [item["draft_text"] for item in output.developmental_summary["background_thought_candidates"]]
+    frames = output.developmental_summary["background_thought_candidates"]
     assert drafts
     assert all("这条线没收住" not in draft for draft in drafts)
+    assert all(item["frame_kind"] == "mechanism_gap" for item in frames)
     assert any(("程序化" in draft or "想要" in draft or "偏好" in draft or "规则" in draft) for draft in drafts)
+
+
+def test_low_confidence_idle_frame_emits_no_background_thought_candidates(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENEMOTION_MVP12_ARTIFACTS_DIR", str(tmp_path))
+    state = ProtoSelfStateV2.empty()
+
+    output = process_update_packet(
+        state,
+        _packet_with_recent_dialogue(
+            user_turns=[
+                "继续",
+                "你觉得呢",
+            ],
+            assistant_replies=[
+                "我在。",
+                "你想继续哪个方向？",
+            ],
+            replay_seed=37,
+        ),
+    )
+
+    assert output.developmental_summary["background_thought_candidate_count"] == 0
+    assert output.developmental_summary["background_thought_candidates"] == []
 
 
 def test_same_replay_seed_produces_same_candidate_hashes(monkeypatch, tmp_path):

@@ -23,6 +23,13 @@ from openemotion.proto_self_v2.schemas import UpdatePacketV2
 MAX_LEDGER_ITEMS = 32
 MAX_POOL_ITEMS = 64
 MAX_BACKGROUND_THOUGHTS = 8
+_FRAME_SUMMARY_KEYS = (
+    "frame_kind",
+    "frame_anchor",
+    "frame_confidence",
+    "hidden_premise",
+    "open_question",
+)
 
 _FORBIDDEN_REPLY_KEYS = {
     "reply_text",
@@ -113,6 +120,11 @@ def _compact_candidate(candidate: Dict[str, Any]) -> Dict[str, Any]:
         "expected_outcome",
     ):
         value = candidate.get(key)
+        if value not in (None, "", [], {}):
+            compact[key] = value
+    metadata = dict(candidate.get("metadata") or {})
+    for key in _FRAME_SUMMARY_KEYS:
+        value = metadata.get(key)
         if value not in (None, "", [], {}):
             compact[key] = value
     return compact
@@ -226,6 +238,7 @@ def _build_background_thought_candidates(
         )
         if not draft_text:
             continue
+        metadata = dict(candidate.get("metadata") or {})
         candidate_id = str(candidate.get("id") or "")
         candidate_hash = _hash_payload(
             {
@@ -233,13 +246,16 @@ def _build_background_thought_candidates(
                 "draft_text": draft_text,
                 "latest_user_turn": dialogue["latest_user_turn"],
                 "latest_assistant_reply": dialogue["latest_assistant_reply"],
+                "frame": {key: metadata.get(key) for key in _FRAME_SUMMARY_KEYS},
             }
         )[:16]
+        frame_confidence = _coerce_float(metadata.get("frame_confidence"), 0.0)
         initiative_score = min(
             1.0,
             approved_scores.get(candidate_id, float(candidate.get("confidence") or 0.0))
             + (0.18 if dialogue["latest_user_turn"] else 0.0)
-            + (0.08 if dialogue["latest_assistant_reply"] else 0.0),
+            + (0.08 if dialogue["latest_assistant_reply"] else 0.0)
+            + min(frame_confidence, 0.12),
         )
         thought_candidates.append(
             {
@@ -253,6 +269,11 @@ def _build_background_thought_candidates(
                 "observation_source": inputs.get("observation_source"),
                 "latest_user_turn": dialogue["latest_user_turn"],
                 "latest_assistant_reply": dialogue["latest_assistant_reply"],
+                "frame_kind": metadata.get("frame_kind"),
+                "frame_anchor": metadata.get("frame_anchor"),
+                "frame_confidence": metadata.get("frame_confidence"),
+                "hidden_premise": metadata.get("hidden_premise"),
+                "open_question": metadata.get("open_question"),
             }
         )
     thought_candidates.sort(key=lambda item: item.get("initiative_score", 0.0), reverse=True)
