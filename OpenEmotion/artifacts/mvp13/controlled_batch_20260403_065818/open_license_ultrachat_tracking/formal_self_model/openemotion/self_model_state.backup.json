@@ -1,0 +1,83 @@
+{
+  "active_goals": [],
+  "capabilities": [
+    {
+      "capability_id": "cap_file_operations",
+      "category": "file_operations",
+      "constraints": [],
+      "current_level": "advanced",
+      "description": null,
+      "last_verified_at": null,
+      "name": "文件操作"
+    },
+    {
+      "capability_id": "cap_code_execution",
+      "category": "code_execution",
+      "constraints": [],
+      "current_level": "advanced",
+      "description": null,
+      "last_verified_at": null,
+      "name": "代码执行"
+    },
+    {
+      "capability_id": "cap_reasoning",
+      "category": "reasoning",
+      "constraints": [],
+      "current_level": "advanced",
+      "description": null,
+      "last_verified_at": null,
+      "name": "推理"
+    }
+  ],
+  "confidence_by_domain": {
+    "code_execution": 0.9,
+    "file_operations": 0.95,
+    "reasoning": 0.85
+  },
+  "created_at": "2026-04-03T06:58:30.090862+00:00",
+  "dependency_map": {
+    "external_services": [],
+    "internal_modules": []
+  },
+  "identity_handle": "openemotion",
+  "known_unknowns": [],
+  "last_modified_at": "2026-04-03T06:58:30.148977+00:00",
+  "limitations": [
+    {
+      "context": null,
+      "description": "无法直接操作 GUI 应用",
+      "discovered_at": null,
+      "impact_level": "medium",
+      "limitation_id": "lim_no_gui",
+      "workaround": "通过 CLI 工具间接操作"
+    }
+  ],
+  "modification_audit_trail": [
+    {
+      "authorized": true,
+      "change_type": "add",
+      "changed_fields": [],
+      "confidence_class": "high",
+      "field_path": "$",
+      "gate_verdict": "allow_writeback",
+      "model_version": 1,
+      "reason": "owner_bootstrap",
+      "revision_id": "rev_000001",
+      "timestamp": "2026-04-03T06:58:30.148977+00:00",
+      "trace_reference": "mvp13:controlled_bootstrap",
+      "trigger": "owner_bootstrap"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "standing_commitments": [],
+  "tool_authority_boundary": {
+    "current_allowed_tools": [
+      "read",
+      "write",
+      "edit",
+      "exec"
+    ],
+    "forbidden_tools": [],
+    "restricted_tools": []
+  }
+}

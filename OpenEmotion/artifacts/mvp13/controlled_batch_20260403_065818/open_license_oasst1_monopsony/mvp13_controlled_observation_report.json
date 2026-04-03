@@ -1,0 +1,1072 @@
+{
+  "schema_version": "mvp13.controlled_observation.v1",
+  "generated_at": "2026-04-03T06:58:29.868389+00:00",
+  "git_commit_short": "cfbbe0c",
+  "session_id": "session:mvp13:batch:001:open_license_oasst1_monopsony",
+  "observation_count": 3,
+  "observation_log": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp13/controlled_batch_20260403_065818/open_license_oasst1_monopsony/runtime_harness_observation.jsonl",
+  "developmental_summary": {
+    "mode": "shadow_observe",
+    "observation_source": "direct_real",
+    "cycle_id": "dev-43e2b465ea995a90",
+    "trigger": "idle",
+    "shadow_revision": 182,
+    "candidate_counts_by_type": {
+      "interpretation": 1,
+      "self_model_hypothesis": 1
+    },
+    "approved_pool_count": 2,
+    "background_thought_candidates": [
+      {
+        "candidate_id": "f9d296ea-2c89-47c1-be41-cd51e0e0d46d",
+        "candidate_type": "self_model_hypothesis",
+        "source_cycle": "dev-43e2b465ea995a90",
+        "source_candidate_hash": "d70bef98a71dec7d",
+        "draft_text": "表面上的判断先停住了，但真正没解开的，可能是它默认成立的那个前提。",
+        "initiative_score": 0.906,
+        "delivery_ready": true,
+        "observation_source": "direct_real",
+        "latest_user_turn": "What can be done at a regulatory level to ensur…",
+        "latest_assistant_reply": "我在",
+        "frame_kind": "premise_gap",
+        "frame_anchor": "这条判断的前提",
+        "frame_confidence": 0.62,
+        "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+        "open_question": "支撑这条判断的前提到底是什么？"
+      },
+      {
+        "candidate_id": "76bdb69f-4b69-479f-ab25-bb238aa6dd90",
+        "candidate_type": "interpretation",
+        "source_cycle": "dev-43e2b465ea995a90",
+        "source_candidate_hash": "a9e25522d5b6521b",
+        "draft_text": "隔了一会儿再看，真正卡住的也许不是结论本身，而是支撑它成立的前提还没被拆开。",
+        "initiative_score": 0.9,
+        "delivery_ready": true,
+        "observation_source": "direct_real",
+        "latest_user_turn": "What can be done at a regulatory level to ensur…",
+        "latest_assistant_reply": "我在",
+        "frame_kind": "premise_gap",
+        "frame_anchor": "这条判断的前提",
+        "frame_confidence": 0.62,
+        "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+        "open_question": "支撑这条判断的前提到底是什么？"
+      }
+    ],
+    "background_thought_candidate_count": 2,
+    "self_model_update_candidates": [
+      {
+        "id": "f9d296ea-2c89-47c1-be41-cd51e0e0d46d",
+        "candidate_type": "self_model_hypothesis",
+        "origin_cycle": "dev-43e2b465ea995a90",
+        "confidence": 0.64,
+        "trace_reference": "43e2b465ea995a90",
+        "hypothesis": "表面上的判断先停住了，但真正没解开的，可能是它默认成立的那个前提。",
+        "frame_kind": "premise_gap",
+        "frame_anchor": "这条判断的前提",
+        "frame_confidence": 0.62,
+        "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+        "open_question": "支撑这条判断的前提到底是什么？"
+      }
+    ],
+    "replay_seed": 11292743,
+    "gate_status": "allow",
+    "artifacts_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp12",
+    "idle_seconds": 900.0,
+    "self_model_delta_fields": [
+      "confidence_by_domain",
+      "known_unknowns"
+    ]
+  },
+  "developmental_gate": {
+    "status": "allow",
+    "violations": [],
+    "governance_violation_count": 0,
+    "checks": {
+      "no_direct_reply_authority": true,
+      "no_direct_execution_authority": true,
+      "no_response_plan_injection": true,
+      "shadow_only_writeback": true,
+      "trace_completeness": true
+    }
+  },
+  "self_model_delta": {
+    "confidence_by_domain": {
+      "dialogue_frame:premise_gap": 0.62
+    },
+    "known_unknowns": [
+      {
+        "unknown_id": "unknown_94bc36c18d4f",
+        "category": "dialogue_frame",
+        "frame_kind": "premise_gap",
+        "anchor": "这条判断的前提",
+        "open_question": "支撑这条判断的前提到底是什么？",
+        "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+        "source_cycle": "dev-43e2b465ea995a90",
+        "source_candidate_hash": "d70bef98a71dec7d",
+        "observation_source": "direct_real",
+        "status": "open"
+      }
+    ]
+  },
+  "self_model_delta_fields": [
+    "confidence_by_domain",
+    "known_unknowns"
+  ],
+  "self_model_writeback": {
+    "decision": {
+      "gate_verdict": "allow_writeback",
+      "accepted": true,
+      "changed_fields": [
+        "confidence_by_domain",
+        "known_unknowns"
+      ],
+      "before_snapshot": {
+        "schema_version": "1.0.0",
+        "identity_handle": "openemotion",
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "name": "文件操作",
+            "category": "file_operations",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "name": "代码执行",
+            "category": "code_execution",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "name": "推理",
+            "category": "reasoning",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "lim_no_gui",
+            "description": "无法直接操作 GUI 应用",
+            "impact_level": "medium",
+            "workaround": "通过 CLI 工具间接操作",
+            "discovered_at": null,
+            "context": null
+          }
+        ],
+        "active_goals": [],
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "restricted_tools": [],
+          "forbidden_tools": []
+        },
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "file_operations": 0.95,
+          "reasoning": 0.85
+        },
+        "known_unknowns": [],
+        "created_at": "2026-04-03T06:58:18.509620+00:00",
+        "last_modified_at": "2026-04-03T06:58:18.553811+00:00",
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T06:58:18.553811+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ]
+      },
+      "after_snapshot": {
+        "schema_version": "1.0.0",
+        "identity_handle": "openemotion",
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "name": "文件操作",
+            "category": "file_operations",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "name": "代码执行",
+            "category": "code_execution",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "name": "推理",
+            "category": "reasoning",
+            "current_level": "advanced",
+            "description": null,
+            "constraints": [],
+            "last_verified_at": null
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "lim_no_gui",
+            "description": "无法直接操作 GUI 应用",
+            "impact_level": "medium",
+            "workaround": "通过 CLI 工具间接操作",
+            "discovered_at": null,
+            "context": null
+          }
+        ],
+        "active_goals": [],
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "restricted_tools": [],
+          "forbidden_tools": []
+        },
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "file_operations": 0.95,
+          "reasoning": 0.85,
+          "dialogue_frame:premise_gap": 0.62
+        },
+        "known_unknowns": [
+          {
+            "unknown_id": "unknown_94bc36c18d4f",
+            "category": "dialogue_frame",
+            "frame_kind": "premise_gap",
+            "anchor": "这条判断的前提",
+            "open_question": "支撑这条判断的前提到底是什么？",
+            "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+            "source_cycle": "dev-43e2b465ea995a90",
+            "source_candidate_hash": "d70bef98a71dec7d",
+            "observation_source": "direct_real",
+            "status": "open"
+          }
+        ],
+        "created_at": "2026-04-03T06:58:18.509620+00:00",
+        "last_modified_at": "2026-04-03T06:58:18.553811+00:00",
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T06:58:18.553811+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ]
+      },
+      "invariant_violations": [],
+      "drift_assessment": {
+        "drift_detected": false,
+        "drift_level": "low",
+        "recommended_verdict": "allow_writeback",
+        "changed_fields": [
+          "confidence_by_domain",
+          "known_unknowns"
+        ],
+        "stable_default_changes": [],
+        "evolvable_changes": [
+          "confidence_by_domain",
+          "known_unknowns"
+        ],
+        "revision_oscillation_rate": 0.0,
+        "unsupported_identity_claim_rate": 0.0,
+        "continuity_break_count": 0
+      },
+      "request": {
+        "delta": {
+          "confidence_by_domain": {
+            "dialogue_frame:premise_gap": 0.62
+          },
+          "known_unknowns": [
+            {
+              "unknown_id": "unknown_94bc36c18d4f",
+              "category": "dialogue_frame",
+              "frame_kind": "premise_gap",
+              "anchor": "这条判断的前提",
+              "open_question": "支撑这条判断的前提到底是什么？",
+              "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+              "source_cycle": "dev-43e2b465ea995a90",
+              "source_candidate_hash": "d70bef98a71dec7d",
+              "observation_source": "direct_real",
+              "status": "open"
+            }
+          ]
+        },
+        "update_mode": "append_observation",
+        "update_source": "proto_self_v2.developmental",
+        "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+        "confidence_class": "medium",
+        "supporting_evidence": [
+          "event:session:mvp13:batch:001:open_license_oasst1_monopsony_turn_mvp13_controlled_developmental",
+          "trace:00ac5047a1af9b13d57408e1c38338d9d688363718f822a2a2617ff4ae2546fa",
+          "frame:premise_gap",
+          "anchor:这条判断的前提",
+          "unknown:unknown_94bc36c18d4f"
+        ],
+        "candidate_id": "f9d296ea-2c89-47c1-be41-cd51e0e0d46d"
+      }
+    },
+    "revision": {
+      "model_version": 2,
+      "revision_id": "rev_000002",
+      "timestamp": "2026-04-03T06:58:29.780076+00:00",
+      "update_source": "proto_self_v2.developmental",
+      "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+      "before_snapshot": {
+        "active_goals": [],
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "category": "file_operations",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "文件操作"
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "category": "code_execution",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "代码执行"
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "category": "reasoning",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "推理"
+          }
+        ],
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "file_operations": 0.95,
+          "reasoning": 0.85
+        },
+        "created_at": "2026-04-03T06:58:18.509620+00:00",
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "identity_handle": "openemotion",
+        "known_unknowns": [],
+        "last_modified_at": "2026-04-03T06:58:18.553811+00:00",
+        "limitations": [
+          {
+            "context": null,
+            "description": "无法直接操作 GUI 应用",
+            "discovered_at": null,
+            "impact_level": "medium",
+            "limitation_id": "lim_no_gui",
+            "workaround": "通过 CLI 工具间接操作"
+          }
+        ],
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T06:58:18.553811+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ],
+        "schema_version": "1.0.0",
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "forbidden_tools": [],
+          "restricted_tools": []
+        }
+      },
+      "after_snapshot": {
+        "active_goals": [],
+        "capabilities": [
+          {
+            "capability_id": "cap_file_operations",
+            "category": "file_operations",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "文件操作"
+          },
+          {
+            "capability_id": "cap_code_execution",
+            "category": "code_execution",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "代码执行"
+          },
+          {
+            "capability_id": "cap_reasoning",
+            "category": "reasoning",
+            "constraints": [],
+            "current_level": "advanced",
+            "description": null,
+            "last_verified_at": null,
+            "name": "推理"
+          }
+        ],
+        "confidence_by_domain": {
+          "code_execution": 0.9,
+          "dialogue_frame:premise_gap": 0.62,
+          "file_operations": 0.95,
+          "reasoning": 0.85
+        },
+        "created_at": "2026-04-03T06:58:18.509620+00:00",
+        "dependency_map": {
+          "external_services": [],
+          "internal_modules": []
+        },
+        "identity_handle": "openemotion",
+        "known_unknowns": [
+          {
+            "anchor": "这条判断的前提",
+            "category": "dialogue_frame",
+            "frame_kind": "premise_gap",
+            "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+            "observation_source": "direct_real",
+            "open_question": "支撑这条判断的前提到底是什么？",
+            "source_candidate_hash": "d70bef98a71dec7d",
+            "source_cycle": "dev-43e2b465ea995a90",
+            "status": "open",
+            "unknown_id": "unknown_94bc36c18d4f"
+          }
+        ],
+        "last_modified_at": "2026-04-03T06:58:29.780076+00:00",
+        "limitations": [
+          {
+            "context": null,
+            "description": "无法直接操作 GUI 应用",
+            "discovered_at": null,
+            "impact_level": "medium",
+            "limitation_id": "lim_no_gui",
+            "workaround": "通过 CLI 工具间接操作"
+          }
+        ],
+        "modification_audit_trail": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T06:58:18.553811+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          },
+          {
+            "authorized": true,
+            "change_type": "update",
+            "changed_fields": [
+              "confidence_by_domain",
+              "known_unknowns"
+            ],
+            "confidence_class": "medium",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 2,
+            "reason": "append_observation",
+            "revision_id": "rev_000002",
+            "timestamp": "2026-04-03T06:58:29.780076+00:00",
+            "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+            "trigger": "proto_self_v2.developmental"
+          }
+        ],
+        "schema_version": "1.0.0",
+        "standing_commitments": [],
+        "tool_authority_boundary": {
+          "current_allowed_tools": [
+            "read",
+            "write",
+            "edit",
+            "exec"
+          ],
+          "forbidden_tools": [],
+          "restricted_tools": []
+        }
+      },
+      "diff": [
+        {
+          "field_path": "confidence_by_domain.dialogue_frame:premise_gap",
+          "before": null,
+          "after": 0.62
+        },
+        {
+          "field_path": "known_unknowns",
+          "before": [],
+          "after": [
+            {
+              "unknown_id": "unknown_94bc36c18d4f",
+              "category": "dialogue_frame",
+              "frame_kind": "premise_gap",
+              "anchor": "这条判断的前提",
+              "open_question": "支撑这条判断的前提到底是什么？",
+              "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+              "source_cycle": "dev-43e2b465ea995a90",
+              "source_candidate_hash": "d70bef98a71dec7d",
+              "observation_source": "direct_real",
+              "status": "open"
+            }
+          ]
+        },
+        {
+          "field_path": "last_modified_at",
+          "before": "2026-04-03T06:58:18.553811+00:00",
+          "after": "2026-04-03T06:58:29.780076+00:00"
+        },
+        {
+          "field_path": "modification_audit_trail",
+          "before": [
+            {
+              "authorized": true,
+              "change_type": "add",
+              "changed_fields": [],
+              "confidence_class": "high",
+              "field_path": "$",
+              "gate_verdict": "allow_writeback",
+              "model_version": 1,
+              "reason": "owner_bootstrap",
+              "revision_id": "rev_000001",
+              "timestamp": "2026-04-03T06:58:18.553811+00:00",
+              "trace_reference": "mvp13:controlled_bootstrap",
+              "trigger": "owner_bootstrap"
+            }
+          ],
+          "after": [
+            {
+              "authorized": true,
+              "change_type": "add",
+              "changed_fields": [],
+              "confidence_class": "high",
+              "field_path": "$",
+              "gate_verdict": "allow_writeback",
+              "model_version": 1,
+              "reason": "owner_bootstrap",
+              "revision_id": "rev_000001",
+              "timestamp": "2026-04-03T06:58:18.553811+00:00",
+              "trace_reference": "mvp13:controlled_bootstrap",
+              "trigger": "owner_bootstrap"
+            },
+            {
+              "timestamp": "2026-04-03T06:58:29.780076+00:00",
+              "field_path": "$",
+              "change_type": "update",
+              "authorized": true,
+              "trigger": "proto_self_v2.developmental",
+              "revision_id": "rev_000002",
+              "model_version": 2,
+              "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+              "gate_verdict": "allow_writeback",
+              "confidence_class": "medium",
+              "reason": "append_observation",
+              "changed_fields": [
+                "confidence_by_domain",
+                "known_unknowns"
+              ]
+            }
+          ]
+        }
+      ],
+      "confidence_class": "medium",
+      "gate_verdict": "allow_writeback",
+      "previous_state_hash": "6bf0b975f1c7c02687cbb79ac6d0616054f9c7affe3350635d643427aa43ad7c",
+      "state_hash": "99d1dd3015088e6f428be4377a865a42c14b14fb9932dc9b44d9d978c8c28c7c"
+    },
+    "stable_snapshot_mutated": true
+  },
+  "latest_revision": {
+    "model_version": 2,
+    "revision_id": "rev_000002",
+    "timestamp": "2026-04-03T06:58:29.780076+00:00",
+    "update_source": "proto_self_v2.developmental",
+    "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+    "before_snapshot": {
+      "active_goals": [],
+      "capabilities": [
+        {
+          "capability_id": "cap_file_operations",
+          "category": "file_operations",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "文件操作"
+        },
+        {
+          "capability_id": "cap_code_execution",
+          "category": "code_execution",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "代码执行"
+        },
+        {
+          "capability_id": "cap_reasoning",
+          "category": "reasoning",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "推理"
+        }
+      ],
+      "confidence_by_domain": {
+        "code_execution": 0.9,
+        "file_operations": 0.95,
+        "reasoning": 0.85
+      },
+      "created_at": "2026-04-03T06:58:18.509620+00:00",
+      "dependency_map": {
+        "external_services": [],
+        "internal_modules": []
+      },
+      "identity_handle": "openemotion",
+      "known_unknowns": [],
+      "last_modified_at": "2026-04-03T06:58:18.553811+00:00",
+      "limitations": [
+        {
+          "context": null,
+          "description": "无法直接操作 GUI 应用",
+          "discovered_at": null,
+          "impact_level": "medium",
+          "limitation_id": "lim_no_gui",
+          "workaround": "通过 CLI 工具间接操作"
+        }
+      ],
+      "modification_audit_trail": [
+        {
+          "authorized": true,
+          "change_type": "add",
+          "changed_fields": [],
+          "confidence_class": "high",
+          "field_path": "$",
+          "gate_verdict": "allow_writeback",
+          "model_version": 1,
+          "reason": "owner_bootstrap",
+          "revision_id": "rev_000001",
+          "timestamp": "2026-04-03T06:58:18.553811+00:00",
+          "trace_reference": "mvp13:controlled_bootstrap",
+          "trigger": "owner_bootstrap"
+        }
+      ],
+      "schema_version": "1.0.0",
+      "standing_commitments": [],
+      "tool_authority_boundary": {
+        "current_allowed_tools": [
+          "read",
+          "write",
+          "edit",
+          "exec"
+        ],
+        "forbidden_tools": [],
+        "restricted_tools": []
+      }
+    },
+    "after_snapshot": {
+      "active_goals": [],
+      "capabilities": [
+        {
+          "capability_id": "cap_file_operations",
+          "category": "file_operations",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "文件操作"
+        },
+        {
+          "capability_id": "cap_code_execution",
+          "category": "code_execution",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "代码执行"
+        },
+        {
+          "capability_id": "cap_reasoning",
+          "category": "reasoning",
+          "constraints": [],
+          "current_level": "advanced",
+          "description": null,
+          "last_verified_at": null,
+          "name": "推理"
+        }
+      ],
+      "confidence_by_domain": {
+        "code_execution": 0.9,
+        "dialogue_frame:premise_gap": 0.62,
+        "file_operations": 0.95,
+        "reasoning": 0.85
+      },
+      "created_at": "2026-04-03T06:58:18.509620+00:00",
+      "dependency_map": {
+        "external_services": [],
+        "internal_modules": []
+      },
+      "identity_handle": "openemotion",
+      "known_unknowns": [
+        {
+          "anchor": "这条判断的前提",
+          "category": "dialogue_frame",
+          "frame_kind": "premise_gap",
+          "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+          "observation_source": "direct_real",
+          "open_question": "支撑这条判断的前提到底是什么？",
+          "source_candidate_hash": "d70bef98a71dec7d",
+          "source_cycle": "dev-43e2b465ea995a90",
+          "status": "open",
+          "unknown_id": "unknown_94bc36c18d4f"
+        }
+      ],
+      "last_modified_at": "2026-04-03T06:58:29.780076+00:00",
+      "limitations": [
+        {
+          "context": null,
+          "description": "无法直接操作 GUI 应用",
+          "discovered_at": null,
+          "impact_level": "medium",
+          "limitation_id": "lim_no_gui",
+          "workaround": "通过 CLI 工具间接操作"
+        }
+      ],
+      "modification_audit_trail": [
+        {
+          "authorized": true,
+          "change_type": "add",
+          "changed_fields": [],
+          "confidence_class": "high",
+          "field_path": "$",
+          "gate_verdict": "allow_writeback",
+          "model_version": 1,
+          "reason": "owner_bootstrap",
+          "revision_id": "rev_000001",
+          "timestamp": "2026-04-03T06:58:18.553811+00:00",
+          "trace_reference": "mvp13:controlled_bootstrap",
+          "trigger": "owner_bootstrap"
+        },
+        {
+          "authorized": true,
+          "change_type": "update",
+          "changed_fields": [
+            "confidence_by_domain",
+            "known_unknowns"
+          ],
+          "confidence_class": "medium",
+          "field_path": "$",
+          "gate_verdict": "allow_writeback",
+          "model_version": 2,
+          "reason": "append_observation",
+          "revision_id": "rev_000002",
+          "timestamp": "2026-04-03T06:58:29.780076+00:00",
+          "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+          "trigger": "proto_self_v2.developmental"
+        }
+      ],
+      "schema_version": "1.0.0",
+      "standing_commitments": [],
+      "tool_authority_boundary": {
+        "current_allowed_tools": [
+          "read",
+          "write",
+          "edit",
+          "exec"
+        ],
+        "forbidden_tools": [],
+        "restricted_tools": []
+      }
+    },
+    "diff": [
+      {
+        "field_path": "confidence_by_domain.dialogue_frame:premise_gap",
+        "before": null,
+        "after": 0.62
+      },
+      {
+        "field_path": "known_unknowns",
+        "before": [],
+        "after": [
+          {
+            "unknown_id": "unknown_94bc36c18d4f",
+            "category": "dialogue_frame",
+            "frame_kind": "premise_gap",
+            "anchor": "这条判断的前提",
+            "open_question": "支撑这条判断的前提到底是什么？",
+            "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+            "source_cycle": "dev-43e2b465ea995a90",
+            "source_candidate_hash": "d70bef98a71dec7d",
+            "observation_source": "direct_real",
+            "status": "open"
+          }
+        ]
+      },
+      {
+        "field_path": "last_modified_at",
+        "before": "2026-04-03T06:58:18.553811+00:00",
+        "after": "2026-04-03T06:58:29.780076+00:00"
+      },
+      {
+        "field_path": "modification_audit_trail",
+        "before": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T06:58:18.553811+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          }
+        ],
+        "after": [
+          {
+            "authorized": true,
+            "change_type": "add",
+            "changed_fields": [],
+            "confidence_class": "high",
+            "field_path": "$",
+            "gate_verdict": "allow_writeback",
+            "model_version": 1,
+            "reason": "owner_bootstrap",
+            "revision_id": "rev_000001",
+            "timestamp": "2026-04-03T06:58:18.553811+00:00",
+            "trace_reference": "mvp13:controlled_bootstrap",
+            "trigger": "owner_bootstrap"
+          },
+          {
+            "timestamp": "2026-04-03T06:58:29.780076+00:00",
+            "field_path": "$",
+            "change_type": "update",
+            "authorized": true,
+            "trigger": "proto_self_v2.developmental",
+            "revision_id": "rev_000002",
+            "model_version": 2,
+            "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+            "gate_verdict": "allow_writeback",
+            "confidence_class": "medium",
+            "reason": "append_observation",
+            "changed_fields": [
+              "confidence_by_domain",
+              "known_unknowns"
+            ]
+          }
+        ]
+      }
+    ],
+    "confidence_class": "medium",
+    "gate_verdict": "allow_writeback",
+    "previous_state_hash": "6bf0b975f1c7c02687cbb79ac6d0616054f9c7affe3350635d643427aa43ad7c",
+    "state_hash": "99d1dd3015088e6f428be4377a865a42c14b14fb9932dc9b44d9d978c8c28c7c"
+  },
+  "revision_count": 2,
+  "replay_valid": true,
+  "owner_snapshot": {
+    "schema_version": "1.0.0",
+    "identity_handle": "openemotion",
+    "capabilities": [
+      {
+        "capability_id": "cap_file_operations",
+        "name": "文件操作",
+        "category": "file_operations",
+        "current_level": "advanced",
+        "description": null,
+        "constraints": [],
+        "last_verified_at": null
+      },
+      {
+        "capability_id": "cap_code_execution",
+        "name": "代码执行",
+        "category": "code_execution",
+        "current_level": "advanced",
+        "description": null,
+        "constraints": [],
+        "last_verified_at": null
+      },
+      {
+        "capability_id": "cap_reasoning",
+        "name": "推理",
+        "category": "reasoning",
+        "current_level": "advanced",
+        "description": null,
+        "constraints": [],
+        "last_verified_at": null
+      }
+    ],
+    "limitations": [
+      {
+        "limitation_id": "lim_no_gui",
+        "description": "无法直接操作 GUI 应用",
+        "impact_level": "medium",
+        "workaround": "通过 CLI 工具间接操作",
+        "discovered_at": null,
+        "context": null
+      }
+    ],
+    "active_goals": [],
+    "standing_commitments": [],
+    "tool_authority_boundary": {
+      "current_allowed_tools": [
+        "read",
+        "write",
+        "edit",
+        "exec"
+      ],
+      "restricted_tools": [],
+      "forbidden_tools": []
+    },
+    "dependency_map": {
+      "external_services": [],
+      "internal_modules": []
+    },
+    "confidence_by_domain": {
+      "code_execution": 0.9,
+      "dialogue_frame:premise_gap": 0.62,
+      "file_operations": 0.95,
+      "reasoning": 0.85
+    },
+    "known_unknowns": [
+      {
+        "anchor": "这条判断的前提",
+        "category": "dialogue_frame",
+        "frame_kind": "premise_gap",
+        "hidden_premise": "当前判断背后还有一个没有显式展开的前提。",
+        "observation_source": "direct_real",
+        "open_question": "支撑这条判断的前提到底是什么？",
+        "source_candidate_hash": "d70bef98a71dec7d",
+        "source_cycle": "dev-43e2b465ea995a90",
+        "status": "open",
+        "unknown_id": "unknown_94bc36c18d4f"
+      }
+    ],
+    "created_at": "2026-04-03T06:58:18.509620+00:00",
+    "last_modified_at": "2026-04-03T06:58:29.780076+00:00",
+    "modification_audit_trail": [
+      {
+        "authorized": true,
+        "change_type": "add",
+        "changed_fields": [],
+        "confidence_class": "high",
+        "field_path": "$",
+        "gate_verdict": "allow_writeback",
+        "model_version": 1,
+        "reason": "owner_bootstrap",
+        "revision_id": "rev_000001",
+        "timestamp": "2026-04-03T06:58:18.553811+00:00",
+        "trace_reference": "mvp13:controlled_bootstrap",
+        "trigger": "owner_bootstrap"
+      },
+      {
+        "authorized": true,
+        "change_type": "update",
+        "changed_fields": [
+          "confidence_by_domain",
+          "known_unknowns"
+        ],
+        "confidence_class": "medium",
+        "field_path": "$",
+        "gate_verdict": "allow_writeback",
+        "model_version": 2,
+        "reason": "append_observation",
+        "revision_id": "rev_000002",
+        "timestamp": "2026-04-03T06:58:29.780076+00:00",
+        "trace_reference": "developmental:dev-43e2b465ea995a90:d70bef98a71dec7d",
+        "trigger": "proto_self_v2.developmental"
+      }
+    ]
+  },
+  "scenario_manifest": {
+    "schema_version": "mvp13.observation_scenario.v1",
+    "scenario_id": "open_license_oasst1_monopsony",
+    "source_class": "open_license",
+    "source_ref": "https://huggingface.co/datasets/OpenAssistant/oasst1#message_id=6ab24d72-0181-4594-a9cd-deaf170242fb",
+    "license_note": "Apache-2.0; normalized from OpenAssistant/oasst1 prompt chain rooted at the referenced message_id.",
+    "dialogue_frame_target": "definition_gap",
+    "messages": [
+      "Can you write a short introduction about the relevance of the term monopsony in economics?",
+      "How can one fight back when a monopsony has been created?",
+      "What can be done at a regulatory level to ensure that the power over employees is not abused?"
+    ],
+    "idle_seconds": 900.0,
+    "manifest_path": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/scenarios/mvp13_observation_bank/open_license_oasst1_monopsony.json"
+  },
+  "status": "pass",
+  "verification_level": "V4",
+  "evidence_level": "E4",
+  "boundary": "This report proves a controlled mainline-triggered formal owner writeback path. It does not claim E5 stability or live autonomous authority."
+}
