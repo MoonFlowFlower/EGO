@@ -1,0 +1,373 @@
+{
+  "active_drives": {
+    "coherence": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "coherence",
+      "drive_type": "coherence",
+      "intensity": 0.25,
+      "last_updated": 1775233391.8731217,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "Internal consistency maintenance"
+    },
+    "completion": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "completion",
+      "drive_type": "completion",
+      "intensity": 0.5,
+      "last_updated": 1775233391.873124,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "Goal completion pressure"
+    },
+    "conservation": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "conservation",
+      "drive_type": "conservation",
+      "intensity": 0.3,
+      "last_updated": 1775233391.8731327,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "Resource conservation drive"
+    },
+    "exploration": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "exploration",
+      "drive_type": "exploration",
+      "intensity": 0.4,
+      "last_updated": 1775233391.8731306,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "Capability exploration drive"
+    },
+    "repair": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "repair",
+      "drive_type": "repair",
+      "intensity": 0.925,
+      "last_updated": 1775233412.860385,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "Self-repair drive"
+    },
+    "stability": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "stability",
+      "drive_type": "stability",
+      "intensity": 1.0,
+      "last_updated": 1775233412.8597882,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "System stability maintenance"
+    },
+    "verification": {
+      "candidate_bias": 0.0,
+      "candidate_effects": {},
+      "drive_id": "verification",
+      "drive_type": "verification",
+      "intensity": 0.78,
+      "last_updated": 1775233391.8736117,
+      "linked_tensions": [],
+      "persistence": 0.5,
+      "source": "State verification drive"
+    }
+  },
+  "created_at": 1775233391.8731008,
+  "drive_history": {
+    "entries": [
+      {
+        "cause": "scenario_bootstrap",
+        "change_type": "intensity_update",
+        "drive_id": "repair",
+        "evidence": {},
+        "new_value": 0.82,
+        "old_value": 0.15,
+        "timestamp": 1775233391.8734813
+      },
+      {
+        "cause": "scenario_bootstrap",
+        "change_type": "intensity_update",
+        "drive_id": "verification",
+        "evidence": {},
+        "new_value": 0.78,
+        "old_value": 0.75,
+        "timestamp": 1775233391.8736136
+      },
+      {
+        "cause": "scenario_bootstrap",
+        "change_type": "intensity_update",
+        "drive_id": "stability",
+        "evidence": {},
+        "new_value": 0.88,
+        "old_value": 0.75,
+        "timestamp": 1775233391.8737419
+      },
+      {
+        "cause": "scenario_bootstrap",
+        "change_type": "maintenance_debt_add",
+        "drive_id": "repair_queue_001",
+        "evidence": {},
+        "new_value": 0.45,
+        "old_value": null,
+        "timestamp": 1775233391.8739018
+      },
+      {
+        "cause": "maintenance_debt:repair_queue",
+        "change_type": "intensity_update",
+        "drive_id": "repair",
+        "evidence": {},
+        "new_value": 0.865,
+        "old_value": 0.82,
+        "timestamp": 1775233391.8740466
+      },
+      {
+        "cause": "homeostatic_deviation:continuity_quality",
+        "change_type": "intensity_update",
+        "drive_id": "stability",
+        "evidence": {},
+        "new_value": 0.98,
+        "old_value": 0.88,
+        "timestamp": 1775233391.8743374
+      },
+      {
+        "cause": "homeostatic_deviation:continuity_quality",
+        "change_type": "intensity_update",
+        "drive_id": "stability",
+        "evidence": {},
+        "new_value": 1.0,
+        "old_value": 0.98,
+        "timestamp": 1775233392.3006563
+      },
+      {
+        "cause": "maintenance_context",
+        "change_type": "maintenance_debt_add",
+        "drive_id": "repair_queue_002",
+        "evidence": {},
+        "new_value": 0.2,
+        "old_value": null,
+        "timestamp": 1775233392.3009682
+      },
+      {
+        "cause": "maintenance_debt:repair_queue",
+        "change_type": "intensity_update",
+        "drive_id": "repair",
+        "evidence": {},
+        "new_value": 0.885,
+        "old_value": 0.865,
+        "timestamp": 1775233392.3013177
+      },
+      {
+        "cause": "homeostatic_deviation:continuity_quality",
+        "change_type": "intensity_update",
+        "drive_id": "stability",
+        "evidence": {},
+        "new_value": 1.0,
+        "old_value": 1.0,
+        "timestamp": 1775233400.113967
+      },
+      {
+        "cause": "maintenance_context",
+        "change_type": "maintenance_debt_add",
+        "drive_id": "repair_queue_003",
+        "evidence": {},
+        "new_value": 0.2,
+        "old_value": null,
+        "timestamp": 1775233400.1142054
+      },
+      {
+        "cause": "maintenance_debt:repair_queue",
+        "change_type": "intensity_update",
+        "drive_id": "repair",
+        "evidence": {},
+        "new_value": 0.905,
+        "old_value": 0.885,
+        "timestamp": 1775233400.114405
+      },
+      {
+        "cause": "homeostatic_deviation:continuity_quality",
+        "change_type": "intensity_update",
+        "drive_id": "stability",
+        "evidence": {},
+        "new_value": 1.0,
+        "old_value": 1.0,
+        "timestamp": 1775233412.8597949
+      },
+      {
+        "cause": "maintenance_context",
+        "change_type": "maintenance_debt_add",
+        "drive_id": "repair_queue_004",
+        "evidence": {},
+        "new_value": 0.2,
+        "old_value": null,
+        "timestamp": 1775233412.8601236
+      },
+      {
+        "cause": "maintenance_debt:repair_queue",
+        "change_type": "intensity_update",
+        "drive_id": "repair",
+        "evidence": {},
+        "new_value": 0.925,
+        "old_value": 0.905,
+        "timestamp": 1775233412.8603876
+      }
+    ],
+    "max_entries": 500,
+    "max_revision_markers": 200,
+    "revision_markers": [
+      {
+        "gate_verdict": "allow_writeback",
+        "revision_id": "drive_rev_000001",
+        "timestamp": "2026-04-03T16:23:11.909241+00:00",
+        "trace_reference": "mvp14:controlled_bootstrap",
+        "update_source": "owner_bootstrap"
+      },
+      {
+        "gate_verdict": "allow_writeback",
+        "revision_id": "drive_rev_000002",
+        "timestamp": "2026-04-03T16:23:12.345570+00:00",
+        "trace_reference": "proto_self:session:mvp14:batch:003:repo_authored_repair_pressure_guarded_turn_cec13eaf",
+        "update_source": "proto_self_v2"
+      },
+      {
+        "gate_verdict": "allow_writeback",
+        "revision_id": "drive_rev_000003",
+        "timestamp": "2026-04-03T16:23:20.172506+00:00",
+        "trace_reference": "proto_self:session:mvp14:batch:003:repo_authored_repair_pressure_guarded_turn_206086d0",
+        "update_source": "proto_self_v2"
+      },
+      {
+        "gate_verdict": "allow_writeback",
+        "revision_id": "drive_rev_000004",
+        "timestamp": "2026-04-03T16:23:32.924850+00:00",
+        "trace_reference": "proto_self:session:mvp14:batch:003:repo_authored_repair_pressure_guarded_turn_afdbfaed",
+        "update_source": "proto_self_v2"
+      }
+    ]
+  },
+  "homeostatic_signals": {
+    "continuity_quality": {
+      "category": "system_health",
+      "desired_range_max": 1.0,
+      "desired_range_min": 0.5,
+      "deviation_level": 0.2,
+      "last_checked": 1775233412.8595371,
+      "observed_value": 0.3,
+      "signal_id": "continuity_quality"
+    },
+    "identity_stability": {
+      "category": "system_health",
+      "desired_range_max": 1.0,
+      "desired_range_min": 0.6,
+      "deviation_level": 0.0,
+      "last_checked": 1775233391.8731382,
+      "observed_value": 0.8,
+      "signal_id": "identity_stability"
+    },
+    "maintenance_balance": {
+      "category": "system_health",
+      "desired_range_max": 0.7,
+      "desired_range_min": 0.3,
+      "deviation_level": 0.0,
+      "last_checked": 1775233391.8731503,
+      "observed_value": 0.5,
+      "signal_id": "maintenance_balance"
+    },
+    "tension_resolution": {
+      "category": "system_health",
+      "desired_range_max": 0.6,
+      "desired_range_min": 0.2,
+      "deviation_level": 0.0,
+      "last_checked": 1775233391.873153,
+      "observed_value": 0.4,
+      "signal_id": "tension_resolution"
+    }
+  },
+  "last_revision_id": "drive_rev_000004",
+  "latent_drives": {},
+  "maintenance_debt": {
+    "repair_queue_001": {
+      "amount": 0.45,
+      "category": "repair_queue",
+      "created_at": 1775233391.873898,
+      "debt_id": "repair_queue_001",
+      "last_updated": 1775233391.8738983,
+      "priority": 0.95,
+      "source": "scenario_bootstrap"
+    },
+    "repair_queue_002": {
+      "amount": 0.2,
+      "category": "repair_queue",
+      "created_at": 1775233392.3009613,
+      "debt_id": "repair_queue_002",
+      "last_updated": 1775233392.3009617,
+      "priority": 0.95,
+      "source": "maintenance_context"
+    },
+    "repair_queue_003": {
+      "amount": 0.2,
+      "category": "repair_queue",
+      "created_at": 1775233400.1142015,
+      "debt_id": "repair_queue_003",
+      "last_updated": 1775233400.1142018,
+      "priority": 0.95,
+      "source": "maintenance_context"
+    },
+    "repair_queue_004": {
+      "amount": 0.2,
+      "category": "repair_queue",
+      "created_at": 1775233412.8601186,
+      "debt_id": "repair_queue_004",
+      "last_updated": 1775233412.8601189,
+      "priority": 0.95,
+      "source": "maintenance_context"
+    }
+  },
+  "owner_revision": 4,
+  "priority_snapshot": {
+    "bias_terms": {
+      "coherence": 0.125,
+      "completion": 0.25,
+      "conservation": 0.15,
+      "exploration": 0.2,
+      "repair": 0.4625,
+      "stability": 0.5,
+      "verification": 0.39
+    },
+    "dominant_drive": "stability",
+    "homeostatic_deviation": 0.2,
+    "maintenance_pressure": 1.05,
+    "total_drive_pressure": 2.0775
+  },
+  "regulation_targets": {
+    "drive_pressure": {
+      "desired_range_max": 0.8,
+      "desired_range_min": 0.2,
+      "deviation_level": 0.0,
+      "observed_value": 0.5,
+      "target_name": "drive_pressure"
+    },
+    "homeostatic_deviation": {
+      "desired_range_max": 0.3,
+      "desired_range_min": 0.0,
+      "deviation_level": 0.0,
+      "observed_value": 0.5,
+      "target_name": "homeostatic_deviation"
+    },
+    "maintenance_debt": {
+      "desired_range_max": 0.5,
+      "desired_range_min": 0.0,
+      "deviation_level": 0.0,
+      "observed_value": 0.5,
+      "target_name": "maintenance_debt"
+    }
+  },
+  "schema_version": "mvp14-owner-v1",
+  "updated_at": 1775233412.925023,
+  "version": "1.0.0"
+}

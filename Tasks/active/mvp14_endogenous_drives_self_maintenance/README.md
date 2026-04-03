@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_started
+status: maintenance_mode
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP14_task_plan.md"
 predecessor: "WP8/MVP13"
@@ -51,11 +51,12 @@ scope: "WP9 / MVP14 Endogenous Drives + Self-Maintenance"
 ## 当前状态
 
 - formal owner：`implemented`
-- 主链接线：`formal_owner_writeback_observed`
+- 主链接线：`formal_owner_writeback_stable`
 - 启用状态：`controlled_mainline_observation`
 - 因果验证：`OpenEmotion/tests/mvp14/test_drive_behavioral_influence_formal_proof.py = 4 passed`
 - 观察证据：`OpenEmotion/artifacts/mvp14/mvp14_controlled_observation_current.md = pass (V4/E4)`
-- 当前 blocker：`缺重复样本，尚未达到 E5/closeout`
+- 稳定样本证据：`OpenEmotion/artifacts/mvp14/mvp14_controlled_observation_batch_current.md = pass (V5/E5)`
+- 当前 blocker：`controlled observation` 范围内无主 blocker；provider `429/401` 仅记为外部预算层风险
 
 ## 当前不做
 
@@ -63,6 +64,12 @@ scope: "WP9 / MVP14 Endogenous Drives + Self-Maintenance"
 - 放开 OpenEmotion direct reply authority
 - 放开 broader transport claims
 - 把 `WP8` maintenance ledger 重新解释成 `WP9` readiness
+
+## 维护态规则
+
+- `WP9` 当前已在 controlled observation 轴上收口进入 `maintenance_mode`
+- 新增样本只进入 [MAINTENANCE_LEDGER.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/mvp14_endogenous_drives_self_maintenance/MAINTENANCE_LEDGER.md)
+- maintenance 样本不会自动 reopen `WP9`
 
 ## 执行入口
 

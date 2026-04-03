@@ -1,6 +1,6 @@
 # MVP14 / WP9 Endogenous Drives + Self-Maintenance
 
-> 状态：WP9 controlled observation started
+> 状态：WP9 maintenance_mode
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP9`
 > predecessor: `WP8/MVP13`
@@ -19,7 +19,6 @@
 - 明确当前仍然不放开的能力，防止“`WP8 pass` => authority 扩张”的错误升级
 
 ## Non-Goals
-- 不直接实现 `MVP14` 代码
 - 不把新能力塞回 `WP8`
 - 不把旧 `emotiond/drives / drive_adapter / drive_homeostasis / homeostasis` 直接升格为 formal owner
 - 不放开 live autonomy
@@ -107,10 +106,10 @@
 - `WP9` may not reinterpret `WP8 controlled E5` as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`verification`
-- 当前状态：`formal owner mainline wired; first controlled observation pass`
-- 当前 blocker：`缺重复 controlled observation 样本，尚未达到 E5 / closeout`
-- 当前最小闭环动作：继续收集 `WP9` formal owner writeback + governed maintenance candidate 的受控样本
+- 当前层级：`closure`
+- 当前状态：`repo_authored scenario-bank controlled batch pass; maintenance_mode`
+- 当前 blocker：`controlled observation` 范围内无主 blocker；provider `429/401` 仅记为外部预算层风险
+- 当前最小闭环动作：保持 `WP9` 维护态，新样本只追加到 `Tasks/active/mvp14_endogenous_drives_self_maintenance/MAINTENANCE_LEDGER.md`；若主线继续推进，先定义下一阶段 authority，而不是继续扩 `WP9`
 
 ## Current Proven State
 - `OpenEmotion/openemotion/endogenous_drives/*` 已成为 `WP9` formal owner package
@@ -121,6 +120,9 @@
 - 首个 controlled observation 已通过：
   - `OpenEmotion/artifacts/mvp14/mvp14_controlled_observation_current.md`
   - 结果：`status = pass`、`verification_level = V4`、`evidence_level = E4`、`gate_verdict = allow_writeback`、`maintenance_candidate_present = true`、`replay_valid = true`
+- controlled batch stability sample 已通过：
+  - `OpenEmotion/artifacts/mvp14/mvp14_controlled_observation_batch_current.md`
+  - 结果：`report_count = 3`、`accepted_count = 3`、`replay_consistent_count = 3`、`maintenance_candidate_present_count = 3`、`invariant_violation_count = 0`、`verification_level = V5`、`evidence_level = E5`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP9: Endogenous Drives + Self-Maintenance`
@@ -137,3 +139,5 @@
 - 首个 controlled observation `V4/E4` 不等于 `WP9` 已稳定通过
 - 未达到重复样本 `E5` 前，不得宣称 `WP9` 稳定解决或可收口
 - `WP9` 的 `V4/E4` 不得被解释为 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity
+- 达到 controlled `V5/E5` 后，可宣称 `WP9` 在 formal owner + governed maintenance + controlled observation 轴上收口，并进入维护态
+- 进入维护态后，新增样本只进入 `Tasks/active/mvp14_endogenous_drives_self_maintenance/MAINTENANCE_LEDGER.md`，除非触发明确 reopen 条件

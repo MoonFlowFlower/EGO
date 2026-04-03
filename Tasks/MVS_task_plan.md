@@ -449,7 +449,7 @@
 **本阶段当前范围**
 - authority / contract / boundary freeze 已完成
 - formal owner package / proto-self contract / runtime bridge / legacy demotion / causal proof 已完成
-- 当前进入 controlled observation；live 默认 off
+- controlled observation batch 已通过，当前进入 `maintenance_mode`；live 默认 off
 - 不把新能力塞回 `WP8`
 
 **任务**
@@ -501,8 +501,8 @@
 - 证据层级目标：E0 -> E1（authority / contract freeze）
 
 **当前状态（2026-04-03）**
-- `WP9/MVP14` 当前层级是 `verification`
-- 当前状态是 `controlled observation started`
+- `WP9/MVP14` 当前层级是 `closure`
+- 当前状态是 `maintenance_mode`
 - formal owner 已迁到 `OpenEmotion/openemotion/endogenous_drives/*`
 - `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 已观测到 `endogenous_drive_writeback`
 - 首个 controlled observation 结果见 `OpenEmotion/artifacts/mvp14/mvp14_controlled_observation_current.md`
@@ -512,7 +512,15 @@
   - `gate_verdict = allow_writeback`
   - `maintenance_candidate_present = true`
   - `replay_valid = true`
-- 当前 blocker 是：缺重复 controlled observation 样本，尚未达到 `E5`
+- controlled batch 结果见 `OpenEmotion/artifacts/mvp14/mvp14_controlled_observation_batch_current.md`
+  - `report_count = 3`
+  - `accepted_count = 3`
+  - `replay_consistent_count = 3`
+  - `maintenance_candidate_present_count = 3`
+  - `invariant_violation_count = 0`
+  - `verification_level = V5`
+  - `evidence_level = E5`
+- 当前 blocker：controlled observation 范围内无主 blocker；provider `429/401` 继续记为外部预算层风险，不回灌为 `WP9` 主链 blocker
 
 ---
 
