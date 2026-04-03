@@ -118,6 +118,7 @@
 - 当前状态：`maintenance_mode`
 - 当前 blocker：controlled observation 范围内无主 blocker；provider `429/401` 仍仅记为外部预算层风险
 - 当前最小闭环动作：维持 `WP10` maintenance ledger intake，不扩 authority 边界，并在进入下一阶段前先定义新的 authority package
+- maintenance QA baseline：`Tasks/active/mvp15_reflective_self_counterfactual/WP10_QA_BASELINE.md`
 
 ## Current Proven State
 - `MVP15` spec / docs / tests / legacy implementation 已存在

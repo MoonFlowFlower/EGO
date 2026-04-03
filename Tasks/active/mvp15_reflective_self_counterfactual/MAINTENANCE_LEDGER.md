@@ -12,6 +12,8 @@
   - `OpenEmotion/artifacts/mvp15/mvp15_controlled_observation_batch_current.md`
 - current status:
   - `Tasks/active/mvp15_reflective_self_counterfactual/STATUS.md`
+- QA baseline:
+  - `Tasks/active/mvp15_reflective_self_counterfactual/WP10_QA_BASELINE.md`
 
 ## Reopen Policy
 
@@ -37,5 +39,6 @@
 ## Sample Intake Rule
 
 - `WP10` 新增 controlled observation 样本只在本 ledger 追加记录
+- maintenance 回归判断统一对照 `WP10_QA_BASELINE.md`
 - 这些样本不会自动改变 `WP10 maintenance_mode`
 - 若样本触发 reopen policy，再单独开裁决，不直接在后续阶段文档里偷改

@@ -23,6 +23,7 @@ next_minimal_closure_action: "hold WP10 in maintenance mode, append new samples 
 - 可宣称完成：`WP10/MVP15` 已通过 repo-authored scenario bank 的 controlled batch observation 拿到 reflective writeback + proposal-only discipline preserved 的 `V5/E5`，并在 controlled observation 轴上收口进入维护态
 - 不可宣称完成：live autonomy、OpenEmotion direct reply authority、broader transport claims
 - 后续样本处理：只进入 [MAINTENANCE_LEDGER.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/mvp15_reflective_self_counterfactual/MAINTENANCE_LEDGER.md)，不自动 reopen `WP10`
+- 维护态 QA 基线：见 [WP10_QA_BASELINE.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/mvp15_reflective_self_counterfactual/WP10_QA_BASELINE.md)
 
 ## 边界提醒
 

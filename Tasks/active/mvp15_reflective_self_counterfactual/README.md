@@ -74,11 +74,13 @@ scope: "WP10 / MVP15 Reflective Self / Counterfactual Self"
 - `WP10` 当前已在 controlled observation 轴上收口进入 `maintenance_mode`
 - 新增样本只进入 [MAINTENANCE_LEDGER.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/mvp15_reflective_self_counterfactual/MAINTENANCE_LEDGER.md)
 - maintenance 样本不会自动 reopen `WP10`
+- 维护态回归基线固定为 [WP10_QA_BASELINE.md](/mnt/d/Project/AIProject/MyProject/Ego/Tasks/active/mvp15_reflective_self_counterfactual/WP10_QA_BASELINE.md)
 
 ## 执行入口
 
 - authority：`Tasks/MVP15_task_plan.md`
 - status：`STATUS.md`
+- qa baseline：`WP10_QA_BASELINE.md`
 - legacy register：`LEGACY_REFERENCE_REGISTER.md`
 - contracts：`contracts/`
 - task cards：`cards/`
