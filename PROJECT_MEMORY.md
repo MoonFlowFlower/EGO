@@ -1,7 +1,7 @@
 # PROJECT_MEMORY.md
 
 > AIProject 核心记忆 - Claude Code 持续更新
-> 最后更新: 2026-04-02
+> 最后更新: 2026-04-03
 
 ---
 
@@ -122,6 +122,7 @@
 | Git index.lock 陷阱 | 若提交时报 `.git/index.lock`，先确认没有活跃 git 进程；残留锁常来自挂住的 git 查询或异常中断。清理旧锁后再继续提交，不要在锁存在时反复重试 |
 | 默认开发闭环 | 正式改动默认走 `Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`；高风险任务强制独立 Reviewer subagent，自审或独立审未过前不得自动推远端 |
 | E5 准入门槛 | 进入观察期前，至少要有 1 个完整普通 real 样本 + 1 个完整且命中高风险路径的 real 样本 |
+| WP11/MVP16 authority 口径 | `WP11/MVP16` 当前只冻结为 `Host-governed Developmental Continuity` 的 authority/task package；formal owner 目标是 `OpenEmotion/openemotion/developmental_self/*`，旧 `emotiond/developmental*` 与旧 `MVP16` tools/docs 只作 technical reference 或 reference-only，不自动构成当前 formal owner / current-runtime proof |
 | Cycle 身份升级 | `cycle_id` 已从纯 `psi_bucket` 聚合升级为 closure-sensitive signature，可区分 success / failure / repair 等 closure；仍未达到 full multi-step closure graph identity |
 | P4 修复口径 | `closure_family_id` 现由 coarse `family_bucket + action_signature` 决定，不再被 `risk_high` 这类 psi 后缀拆开；真实 `tool:file` blocked -> retry success 已可点亮一次 `repair_closure=true` |
 | 显式默认规则 continuity | 显式默认规则现由 EgoCore `ProfileMemory` 持久化；`/new` 后可继续命中，且 `response_plan` 已记录 `authority_source=profile_memory`、`matched_rule_ids`、`rule_enforcement` |
@@ -215,6 +216,7 @@
 | 2026-04-03 | `WP10/MVP15` 已建立 authority/package：formal owner target 冻结为 `OpenEmotion/openemotion/reflective_self/*`，当前主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`。旧 `emotiond/reflection_engine/*`、`reflection_adapter.py`、`reflection_shadow.py`、`self_counterfactual.py` 与旧 `/plan` / `/decision/target` bounded consumer 线全部降为 reference-only input，不再自动构成新的 formal owner / current-runtime proof。当前 `WP10` 只达到 `authority_frozen (V1/E1)`；下一步是 `T10_FORMAL_OWNER_PACKAGE`，不是直接开 live authority 或把旧 self-aware claim 升格为当前结论 |
 | 2026-04-03 | `WP10/MVP15` 已从 authority freeze 推进到 `observation_started`：formal owner package `OpenEmotion/openemotion/reflective_self/*`、bounded proto-self reflective contract、EgoCore runtime bridge、legacy demotion、paired causal validation 与 governed reflective writeback 已落地。当前定向验证：`OpenEmotion/tests/mvp15/test_reflective_owner_infra.py + test_reflective_replay_and_governance.py + test_reflection_proto_self_integration.py + test_reflective_causal_formal_proof.py + test_mainline_reference_demotion.py + test_controlled_observation.py = 19 passed`，`EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k 'reflective or reflection' = 2 passed`。当前 causal report 见 `OpenEmotion/artifacts/mvp15/mvp15_causal_validation_current.md`，结果 `status = pass / V3 / E3`；首个 controlled observation 报告见 `OpenEmotion/artifacts/mvp15/mvp15_controlled_observation_current.md`，结果 `status = pass`、`verification_level = V4`、`evidence_level = E4`、`gate_verdict = allow_writeback`、`reflection_candidate_present = true`、`replay_valid = true`。当前 blocker 已转为 **缺重复 controlled observation 样本；provider 429/401 仍仅记为外部预算层风险** |
 | 2026-04-03 | `WP10/MVP15` 已通过 repo-authored scenario bank 的 controlled batch observation 收口进入维护态：新增 `OpenEmotion/scenarios/mvp15_observation_bank/`、`OpenEmotion/tools/mvp15_scenario_bank.py` 与 `OpenEmotion/tools/run_mvp15_controlled_observation_batch.py`，在 formal runtime mainline 下复用 current controlled observation 路径，得到 `report_count = 3`、`accepted_count = 3`、`replay_consistent_count = 3`、`reflection_candidate_present_count = 3`、`proposal_discipline_consistent_count = 3`、`behavioral_authority_none_count = 3`、`invariant_violation_count = 0`、`verification_level = V5`、`evidence_level = E5`。当前 `WP10` 已在 formal owner + proposal-only reflective writeback + controlled observation 轴上收口进入维护态；这仍不等于 live autonomy、OpenEmotion direct reply authority 或 broader transport claims |
+| 2026-04-03 | `WP11/MVP16` 的 authority/task package 已冻结：顶层 `Tasks/MVS_task_plan.md` 已扩到 `WP11`，新增 `Tasks/MVP16_task_plan.md` 与 `Tasks/active/mvp16_host_governed_developmental_continuity/` 执行包。当前正式口径收窄为 `Host-governed Developmental Continuity`，不是“完整开放发展式自我”；formal owner 目标固定为 `OpenEmotion/openemotion/developmental_self/*`，正式主线仍是 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`，而旧 `emotiond/developmental*`、`mvp16_*` tools 与旧 admission 资料都只作 technical reference / reference-only |
 
 ---
 

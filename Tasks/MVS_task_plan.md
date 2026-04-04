@@ -7,13 +7,13 @@
 先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
 
 ## 裁决关系
-- 本文件负责 `WP0~WP10` 的阶段、依赖、Gate、证据等级和停止条件。
+- 本文件负责 `WP0~WP11` 的阶段、依赖、Gate、证据等级和停止条件。
 - `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
 - 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
 
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
-- 当前阶段目标是 **MVS**，不是开放发展式自我。
+- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；下一阶段是 `WP11/MVP16` 的 bounded developmental continuity，不是完整开放发展式自我。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -30,6 +30,7 @@
 9. **WP8 Persistent Self-Model**
 10. **WP9 Endogenous Drives + Self-Maintenance**
 11. **WP10 Reflective Self / Counterfactual Self**
+12. **WP11 Host-governed Developmental Continuity（MVP16 第一正式切片）**
 
 ---
 
@@ -616,9 +617,105 @@
 
 ---
 
+## WP11：Host-governed Developmental Continuity
+**前提**：只有 `WP10/MVP15` 进入 `maintenance_mode` 后才启动。
+
+**归属**：OpenEmotion（developmental self / continuity owner target）+ EgoCore（runtime / Governor / delivery / observation）
+
+**child authority**
+- `Tasks/MVP16_task_plan.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/`
+
+**本阶段当前范围**
+- formal developmental owner package
+- bounded developmental continuity / intake / promotion semantics
+- bounded proto-self developmental contract
+- EgoCore runtime developmental bridge
+- legacy developmental surfaces demotion
+- causal validation
+- controlled observation
+- scenario-bank batch observation
+- maintenance closeout baseline
+- 不把新能力塞回 `WP7~WP10`
+
+**任务**
+- capability ownership 固定为：
+  - developmental self state / continuity state / identity-preserving adaptation proposals / trajectory summary / promotion semantics / developmental governance ledger 归 `OpenEmotion/openemotion/developmental_self/*`
+  - runtime scheduling / proposal intake / Governor / final reply / tool execution / delivery / observation aggregate 仍归 `EgoCore`
+- authority source 固定为：
+  - 顶层裁决：`Tasks/MVS_task_plan.md`
+  - `WP11` phase-detail authority：`Tasks/MVP16_task_plan.md`
+  - version spec：`OpenEmotion/roadmap/versions/MVP16.spec.yaml`
+  - technical reference：`OpenEmotion/docs/mvp16/*`
+- migration/reference surfaces 固定为：
+  - `OpenEmotion/emotiond/developmental/*`
+  - `OpenEmotion/emotiond/developmental_core/*`
+  - `OpenEmotion/tools/mvp16_daily_check.py`
+  - `OpenEmotion/tools/mvp16_real_trajectory_sync.py`
+  - `OpenEmotion/tools/mvp16_anomaly_handler.py`
+  - `OpenEmotion/tools/persistence_restart_experiments.py`
+  - `OpenEmotion/tools/causal_intervention_experiments.py`
+  - `Tasks/active/SELF_AWARE_STEP_07*`
+  - `Tasks/active/SELF_AWARE_STEP_08*`
+- input / output contract 先冻结，再开实现：
+  - 输入只允许结构化 `developmental_context`、`developmental_self_context`、`self_model_context`、`endogenous_drive_context`、`reflective_self_context` 与 runtime evidence
+  - 输出只允许 governed developmental deltas / proposal candidates / continuity snapshot / priority hints / audit entries / writeback candidate / trace artifacts
+  - 不允许输出 final reply / tool command / transport directive / authority escalation
+- `WP10` 边界冻结：
+  - `WP7~WP10` 继续是 `maintenance_mode`
+  - 新样本只进各自 maintenance ledger
+  - 不因 `WP11` 启动而改写 `WP7~WP10` formal owner、formal read/write path、或 evidence claim
+- 显式锁定当前仍不放开的能力：
+  - live autonomy
+  - OpenEmotion direct reply authority
+  - broader transport claims
+  - developmental bypass of Governor
+  - developmental-authored action selection
+  - unconstrained self-rewrite
+
+**交付物**
+- `Tasks/MVP16_task_plan.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/README.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/STATUS.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/LEGACY_REFERENCE_REGISTER.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/SUBAGENT_ASSIGNMENT.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/contracts/DEVELOPMENTAL_CAPABILITY_OWNERSHIP.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/contracts/DEVELOPMENTAL_AUTHORITY_SOURCE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/contracts/DEVELOPMENTAL_IO_CONTRACT.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/contracts/WP10_BOUNDARY_FREEZE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/contracts/LOCKED_NON_RELEASES.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T00_AUTHORITY_FREEZE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T10_FORMAL_OWNER_PACKAGE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T20_PROTO_SELF_CONTRACT_INTEGRATION.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T30_EGOCORE_RUNTIME_BRIDGE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T40_LEGACY_DEMOTION_AND_COMPAT_MAP.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T50_CAUSAL_VALIDATION.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T60_CONTROLLED_OBSERVATION_SINGLE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T70_BATCH_OBSERVATION_AND_AGGREGATE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T80_CLOSEOUT_AND_QA_BASELINE.md`
+- `Tasks/active/mvp16_host_governed_developmental_continuity/cards/T90_SUBAGENT_ASSIGNMENT.md`
+
+**验收**
+- `Tasks/MVS_task_plan.md` 中已正式出现 `WP11`
+- `Tasks/MVP16_task_plan.md`、执行包 `README / STATUS / contracts / cards` 口径一致
+- `WP7~WP10` 继续处于 `maintenance_mode`，没有被 `WP11` reopen
+- 旧 `emotiond/developmental/*`、`developmental_core/*`、`mvp16_*` 工具与旧 admission docs 被显式标成 reference-only 或 input-only
+- `WP11` 文档没有把 `bounded developmental continuity` 漂成“完整开放发展式自我”
+- 证据层级目标：E1 -> E5（controlled axis only）
+
+**当前状态（2026-04-03）**
+- `WP11/MVP16` 当前层级是 `definition`
+- 当前状态是 `authority_frozen`
+- 当前 formal owner target 固定为 `OpenEmotion/openemotion/developmental_self/*`
+- 当前 formal runtime read surface 固定为 `runtime_summary.developmental_self_context`
+- 当前 legacy `MVP16` specs / docs / tools / admission materials 已存在，但全部属于 technical reference 或 reference-only input，不自动构成当前 formal owner / current-runtime mainline 证据
+- 当前 blocker：无 authority/package blocker；实现尚未启动是当前阶段预期，不是阻塞
+
+---
+
 ## 串行依赖
 - `WP0 -> WP2 -> WP3 -> WP6 -> WP7 -> WP8` 必须串行
-- `WP8 -> WP9 -> WP10` 必须串行
+- `WP8 -> WP9 -> WP10 -> WP11` 必须串行
 - `WP1` 可与 `WP2 / WP3` 并行，但其表达 contract 不得反向覆盖 Proto-Self 边界定义
 - `WP4 / WP5` 在 `WP2` 基础上推进
 
@@ -628,6 +725,7 @@
 - 具身闭环
 - 无限工具自治
 - 复杂情绪文案层
+- 完整开放发展式自我
 - 任何让 OpenEmotion 直接执行现实动作的设计
 - 在 `WP8` 中复活旧 `MVP13 mirror / dual-write` 作为正式 owner path
 - 因 `WP8` 收口就放开 `WP9` 的 direct reply / broader transport authority
