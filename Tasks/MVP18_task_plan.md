@@ -1,6 +1,6 @@
 # MVP18 / WP13 Embodied Loop / Environment Coupling
 
-> 状态：WP13 authority_frozen + task_package_ready
+> 状态：WP13 owner-layer complete + T10 completed + T20 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP13`
 > predecessor: `WP12/MVP17`
@@ -133,10 +133,10 @@
 - `WP13` may not reinterpret `WP12` controlled `E5` or institutionalized maintenance as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`strategy`
-- 当前状态：`authority_frozen`
-- 当前 blocker：`T10 formal owner package not started`
-- 当前最小闭环动作：只开 `T10_FORMAL_OWNER_PACKAGE`，不提前进入 runtime / observation
+- 当前层级：`implementation`
+- 当前状态：`owner_layer_complete`
+- 当前 blocker：`T20 proto-self contract integration not started`
+- 当前最小闭环动作：只开 `T20_PROTO_SELF_CONTRACT_INTEGRATION`，不提前进入 runtime bridge / observation
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP13: Embodied Loop / Environment Coupling`
@@ -152,7 +152,7 @@
 ## Completion Rules
 - 本文件完成不等于 `MVP18` 已实现
 - 本文件完成不等于 `MVP18` 已接当前 runtime 主链
-- `T10` 完成只证明 formal owner package 在 OpenEmotion owner 层落地，不证明 embodied behavior 已生效
+- `T10` 完成只证明 formal owner package 在 OpenEmotion owner 层落地，且 owner-level store / governance / replay / bounded projection 已通过；不证明 embodied behavior 已生效
 - `T20` 完成只证明 `embodied_self` 已接入 `proto_self_v2` bounded contract，不证明 EgoCore runtime mainline 已消费
 - `T30` 完成只证明当前 EgoCore runtime thin bridge 已接入正式主链，不证明 `E4/E5` controlled observation
 - `T40` 完成只证明 historical consequence / intervention surfaces 已 reference-only / input-only 化，并通过 no-second-truth verifier；不证明 causal influence 或 controlled observation

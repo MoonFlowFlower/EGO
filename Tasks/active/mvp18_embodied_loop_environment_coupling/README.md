@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: authority_frozen
+status: owner_layer_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP18_task_plan.md"
 predecessor: "WP12/MVP17"
@@ -20,7 +20,7 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 
 ## 真实目标
 
-在不放开 authority 边界的前提下，把 `WP13/MVP18` 的 formal owner target 冻结到 `OpenEmotion/openemotion/embodied_self/*`，并把 `resource/slack pressure`、`action -> consequence` bounded writeback、`self/world boundary pressure` 的 proposal-only contract 正式接到当前主链规划里。
+在不放开 authority 边界的前提下，把 `WP13/MVP18` 的 formal owner 已落到 `OpenEmotion/openemotion/embodied_self/*`，并继续把 `resource/slack pressure`、`action -> consequence` bounded writeback、`self/world boundary pressure` 的 proposal-only contract 正式接到当前主链规划里。
 
 ## 当前正式 owner target
 
@@ -51,19 +51,27 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 
 ## 当前状态
 
-- 执行包状态：`authority_frozen / task_package_ready`
+- 执行包状态：`owner_layer_complete`
 - authority freeze：`completed`
-- formal owner：`T10 pending`
+- formal owner：`T10 completed`
 - proto_self_v2 contract：`T20 pending`
 - EgoCore runtime bridge：`T30 pending`
 - legacy demotion / compat map：`T40 pending`
 - causal validation：`T50 pending`
 - single controlled observation：`T60 pending`
 - batch controlled observation / aggregate：`T70 pending`
-- 主链接线：`not_started`
+- 主链接线：`formal owner package present`
 - 启用状态：`not_started`
-- 当前 blocker：`T10 formal owner package not started`
-- 当前最小动作：`start T10_FORMAL_OWNER_PACKAGE; do not implement runtime code before T10`
+- 当前 blocker：`T20 proto-self contract integration not started`
+- 当前最小动作：`start T20_PROTO_SELF_CONTRACT_INTEGRATION; do not implement runtime or observation before T20`
+
+## T10 已证实内容
+
+- `OpenEmotion/openemotion/embodied_self/*` 已成为 phase 1 的唯一 formal owner 落点
+- owner state 已覆盖 `embodied_state / environment_coupling_state / resource_pressure_state / boundary_pressure_state / action_consequence_memory / self_world_boundary_semantics / proposal_history / governance_ledger`
+- owner store、revision log、replay 与 proposal-only governance 已有最小测试通过
+- bounded runtime projection 已形成，但不泄漏 owner 全量状态
+- 旧 consequence / intervention surfaces 仍只作为 reference-only / input-only，不构成 current formal owner
 
 ## 当前不做
 
