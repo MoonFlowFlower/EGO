@@ -1,6 +1,6 @@
 # MVP19 / WP14 Cross-Axis Self-Integration / Self-Maintenance Arbitration
 
-> 状态：observation_passed
+> 状态：maintenance_mode
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP14`
 > predecessor: `WP13/MVP18`
@@ -23,7 +23,6 @@
 - 不宣称已接当前 runtime 主链
 - 不宣称 `E4/E5`
 - 不宣称 observation started
-- 不宣称 maintenance mode
 - 不 reopen `WP8~WP13`
 - 不放开 live autonomy
 - 不放开 OpenEmotion direct reply authority
@@ -178,11 +177,11 @@
 - `WP14` may not reinterpret `WP8~WP13` maintenance or controlled evidence as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`controlled_observation_batch`
-- 当前状态：`observation_passed`
-- 当前 blocker：`none on the T70 controlled batch axis`
-- 当前最小闭环动作：`T80_CLOSEOUT_AND_QA_BASELINE`
-- 当前 claim ceiling：`T70 only / controlled-axis V5-E5 observation_passed`
+- 当前层级：`maintenance`
+- 当前状态：`maintenance_mode`
+- 当前 blocker：`none on the WP14 controlled axis`
+- 当前最小闭环动作：`maintenance intake only; define the next authority package before any new scope`
+- 当前 claim ceiling：`T80 only / maintenance_mode on the WP14 controlled axis`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP14: Cross-Axis Self-Integration / Self-Maintenance Arbitration`
@@ -211,7 +210,7 @@
 - `T50` 完成只证明 stability-first cross-axis arbitration 会改变 bounded downstream weighting，并留下 `V3/E3` causal proof；不证明 controlled observation
 - `T60` 完成只证明当前 formal owner + current runtime mainline 已拿到首个 controlled `V4/E4` single observation；不证明 repeated stability、`E5`、或 maintenance mode
 - `T70` 完成只证明当前 formal owner + current runtime mainline 已通过 repeated controlled observation aggregate 拿到 `V5/E5`；不证明 closeout、maintenance mode、或 authority 放开
-- `T80` 完成才证明当前 `WP14` closeout docs、completion artifact 与 QA baseline 已冻结，可以按 maintenance 口径维护；仍不证明 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity
+- `T80` 已完成并证明当前 `WP14` closeout docs、completion artifact 与 QA baseline 已冻结，可以按 maintenance 口径维护；仍不证明 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity
 - 未拿到当前 formal owner + current mainline `E4` 之前，不得宣称 `WP14` 生效
 - 未拿到重复样本 `E5` 之前，不得宣称 `WP14` 稳定解决或可收口
 - 即使未来达到 controlled `E5`，也不得把 `WP14` 解释为 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity

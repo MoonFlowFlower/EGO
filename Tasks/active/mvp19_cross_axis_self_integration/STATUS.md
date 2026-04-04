@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP14
-status: observation_passed
-current_layer: controlled_observation_batch
+status: maintenance_mode
+current_layer: maintenance
 main_chain_status: current_runtime_selfhood_consumer_present_legacy_reference_only
-enabled_status: owner_infra_plus_proto_self_contract_plus_runtime_bridge
+enabled_status: controlled_mainline_maintenance
 trigger_evidence:
   - WP13/MVP18 is the predecessor and remains the last completed maintenance upstream
   - WP14 authority package now exists under Tasks/*
@@ -44,23 +44,26 @@ trigger_evidence:
   - OpenEmotion/tests/mvp19/test_controlled_observation_batch.py now proves batch aggregation and E5 claim ceiling under three accepted reports
   - OpenEmotion/tools/run_mvp19_controlled_observation_batch.py now emits the current V5/E5 batch artifact under OpenEmotion/artifacts/mvp19/mvp19_controlled_observation_batch_current.*
   - current controlled batch observation reached report_count 3, accepted_count 3, replay_consistent_count 3, proposal_only_discipline_count 3, behavioral_authority_none_count 3, and bounded_influence_present_count 3
+  - WP14_QA_BASELINE.md now freezes the only allowed maintenance claim, five-layer regression matrix, ten-point checklist, and reopen policy
+  - MAINTENANCE_LEDGER.md now freezes sample intake, reopen rules, and the controlled closeout baseline entry
+  - MVP19 completion artifacts now close WP14 on the formal owner + proposal-only selfhood integration writeback + controlled observation axis only
 verification_level: V5
 evidence_level: E5
-current_blocker: "none on the T70 controlled batch axis"
-next_minimal_closure_action: "start T80_CLOSEOUT_AND_QA_BASELINE without upgrading beyond controlled-axis V5/E5"
+current_blocker: "none on the WP14 controlled axis"
+next_minimal_closure_action: "maintenance intake only; do not reopen WP14 or start WP15 without a new authority package"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP14/MVP19` 的 authority 仍保持冻结，且 `T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION`、`T30_EGOCORE_RUNTIME_BRIDGE`、`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`、`T50_CAUSAL_VALIDATION`、`T60_CONTROLLED_OBSERVATION_SINGLE` 与 `T70_BATCH_OBSERVATION_AND_AGGREGATE` 已完成
-- 条件性完成：当前已覆盖 authority + owner infra + `proto_self_v2` bounded contract + EgoCore runtime thin bridge + no-second-truth legacy demotion + `V3/E3` causal proof + single `V4/E4` controlled observation + repeated `V5/E5` controlled batch observation，不覆盖 closeout、QA baseline、或 maintenance mode
-- 不可宣称完成：`MVP19` 已进入 maintenance mode、或已放开任何 authority 边界
-- 后续处理：下一步只允许推进 `T80_CLOSEOUT_AND_QA_BASELINE`；在此之前不得把 claim ceiling 抬高到 maintenance mode
+- 可宣称完成：`WP14/MVP19` 已在 formal owner path、current runtime selfhood consumer、legacy no-second-truth demotion、bounded cross-axis causal proof、single controlled `V4/E4` 样本与 repeated controlled `V5/E5` aggregate 全部成立后，正式收口进入 `maintenance_mode`
+- 条件性完成：当前维护态只覆盖 formal owner + proposal-only selfhood integration writeback + controlled observation 这一条轴，不覆盖 authority 放开
+- 不可宣称完成：`MVP19` 已证明 live autonomy、direct reply authority、broader transport claims，或可绕过 host governance
+- 后续处理：`WP14` 后续样本只进入 maintenance ledger；如果主线继续，应先冻结下一阶段 authority package
 
 ## 边界提醒
 
-- `WP8~WP13` 的 maintenance / frozen upstream 状态不是 `WP14` 的实现证据
+- `WP8~WP13` 的 maintenance / frozen upstream 状态不是 `WP14` 的额外能力证据
 - `WP14` 只能读取冻结 surfaces，不能直接回写 `self_model/*`、`endogenous_drives/*`、`reflective_self/*`、`developmental_self/*`、`social_self/*`、`embodied_self/*`
-- `OpenEmotion/openemotion/selfhood_integration/*` 当前已证明 owner-level primitives、current runtime bounded consumption、causal weighting shifts、首个 controlled observation 单样本与 repeated controlled batch `E5` 成立，但仍不证明 closeout、maintenance mode、或 authority 放开
+- `OpenEmotion/openemotion/selfhood_integration/*` 当前已证明 owner 层、current runtime bounded consumer、legacy demotion、causal shifts、single controlled observation、batch controlled observation、closeout / QA baseline 均已冻结；当前维护态仅覆盖 formal owner + proposal-only selfhood integration writeback + controlled observation 轴
 - `axis_arbitration_hints` 当前只允许 advisory use，不允许冒充行为裁决
-- 不得出现“因为已有多轴 proposal，所以 OpenEmotion 可以直接说话 / 直接发工具 / 直接拿 transport claim”这类边界回退
+- 不得出现“因为已有跨轴 integration，所以 OpenEmotion 可以直接说话 / 直接发工具 / 直接拿 transport claim”这类边界回退

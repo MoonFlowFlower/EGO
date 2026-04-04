@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_passed
+status: maintenance_mode
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP19_task_plan.md"
 predecessor: "WP13/MVP18"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP14 / MVP19 Cross-Axis Self-Integration / Self-Maintenance Arbitration"
-claim_ceiling: "T70 only / controlled-axis V5-E5 observation_passed"
+claim_ceiling: "T80 only / maintenance_mode on the WP14 controlled axis (V5/E5 evidence ceiling)"
 ```
 
 ---
@@ -47,11 +47,11 @@ claim_ceiling: "T70 only / controlled-axis V5-E5 observation_passed"
 - EgoCore runtime selfhood integration bridge target
 - `WP8~WP13` upstream boundary freeze
 - legacy / compat / upstream read-only register
-- subagent-ready task decomposition
+- closeout / QA baseline / maintenance ledger
 
 ## 当前状态
 
-- 执行包状态：`observation_passed`
+- 执行包状态：`maintenance_mode`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
@@ -61,12 +61,12 @@ claim_ceiling: "T70 only / controlled-axis V5-E5 observation_passed"
 - `T50` causal validation：`completed`
 - `T60` single controlled observation：`completed`
 - `T70` batch controlled observation / aggregate：`completed`
-- `T80` closeout / QA baseline：`pending`
+- `T80` closeout / QA baseline：`completed`
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`current_runtime_selfhood_consumer_present_legacy_reference_only`
 - 启用状态：`owner_infra_plus_proto_self_contract_plus_runtime_bridge`
-- 当前 blocker：`none on the T70 controlled batch axis`
-- 当前最小动作：`T80_CLOSEOUT_AND_QA_BASELINE`
+- 当前 blocker：`none on the WP14 controlled axis`
+- 当前最小动作：`maintenance intake only`
 
 ## 当前已证实内容
 
@@ -182,11 +182,17 @@ claim_ceiling: "T70 only / controlled-axis V5-E5 observation_passed"
   - `evidence_level = E5`
 - 本层只证明 `WP14` 已在 controlled axis 上拿到 repeated batch `V5/E5`；不证明 closeout、maintenance mode、live autonomy、OpenEmotion direct reply authority、或 broader transport claims
 
+## T80 已证实内容
+
+- `Tasks/active/mvp19_cross_axis_self_integration/WP14_QA_BASELINE.md` 已冻结唯一允许的 maintenance claim、五层测试矩阵、十项 checklist、失败分级与 reopen 规则
+- `Tasks/active/mvp19_cross_axis_self_integration/MAINTENANCE_LEDGER.md` 已冻结 closeout baseline、sample intake rule、reopen policy 与外部预算层风险登记
+- `OpenEmotion/artifacts/mvp19/MVP19_COMPLETION_CURRENT.md` 与 `.json` 已把 `WP14` 收口在 formal owner + proposal-only selfhood integration writeback + controlled observation 这一条轴
+- 当前 `WP14` 已正式进入 `maintenance_mode`
+- 本层仍不证明 live autonomy、OpenEmotion direct reply authority、或 broader transport claims
+
 ## 当前不做
 
-- 不宣称 owner/runtime 已实现
-- 不宣称 maintenance mode
-- 不宣称 maintenance mode
+- 不宣称超出当前 controlled axis 的全局整合成熟
 - 不 reopen `WP8~WP13`
 - 不放开 live autonomy
 - 不放开 OpenEmotion direct reply authority
@@ -200,3 +206,5 @@ claim_ceiling: "T70 only / controlled-axis V5-E5 observation_passed"
 - contracts：`contracts/`
 - task cards：`cards/`
 - subagent assignment：`SUBAGENT_ASSIGNMENT.md`
+- QA baseline：`WP14_QA_BASELINE.md`
+- maintenance ledger：`MAINTENANCE_LEDGER.md`
