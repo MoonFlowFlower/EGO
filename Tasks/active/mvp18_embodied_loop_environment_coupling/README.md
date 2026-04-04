@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: causal_proof_complete
+status: observation_started
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP18_task_plan.md"
 predecessor: "WP12/MVP17"
@@ -51,19 +51,19 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 
 ## 当前状态
 
-- 执行包状态：`causal_proof_complete`
+- 执行包状态：`observation_started`
 - authority freeze：`completed`
 - formal owner：`T10 completed`
 - proto_self_v2 contract：`T20 completed`
 - EgoCore runtime bridge：`T30 completed`
 - legacy demotion / compat map：`T40 completed`
 - causal validation：`T50 completed`
-- single controlled observation：`T60 pending`
+- single controlled observation：`T60 completed`
 - batch controlled observation / aggregate：`T70 pending`
 - 主链接线：`current runtime embodied bridge present`
-- 启用状态：`not_started`
-- 当前 blocker：`T60 single controlled observation pending`
-- 当前最小动作：`start T60_CONTROLLED_OBSERVATION_SINGLE; do not implement batch observation before T60`
+- 启用状态：`controlled_mainline_observation`
+- 当前 blocker：`T70 batch controlled observation / aggregate pending`
+- 当前最小动作：`start T70_BATCH_OBSERVATION_AND_AGGREGATE; do not implement closeout before T70`
 
 ## T10 已证实内容
 
@@ -111,6 +111,24 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
   - `OpenEmotion/artifacts/mvp18/mvp18_causal_validation_current.json`
   - `OpenEmotion/artifacts/mvp18/mvp18_causal_validation_current.md`
 - 当前 causal report 为 `status = pass`、`verification_level = V3`、`evidence_level = E3`、`pair_count = 4`、`passed_count = 4`
+
+## T60 已证实内容
+
+- `OpenEmotion/tools/run_mvp18_controlled_observation.py` 已生成首个 controlled runtime-mainline embodied observation artifacts：
+  - `OpenEmotion/artifacts/mvp18/mvp18_controlled_observation_current.json`
+  - `OpenEmotion/artifacts/mvp18/mvp18_controlled_observation_current.md`
+- `OpenEmotion/tests/mvp18/test_controlled_observation.py` 已把 single controlled observation 的最小 contract 固定成回归测试
+- 当前 single controlled observation 结果为：
+  - `status = pass`
+  - `verification_level = V4`
+  - `evidence_level = E4`
+  - `embodied_writeback_gate = allow_writeback`
+  - `embodied_proposal_present = true`
+  - `proposal_only_discipline_consistent = true`
+  - `behavioral_authority_none = true`
+  - `bounded_influence_present = true`
+  - `replay_valid = true`
+- 这只证明当前 formal owner + current runtime mainline 已拿到首个 embodied proposal-only writeback 样本，不证明 repeated stability、`E5`、closeout、或 maintenance mode
 
 ## 当前不做
 

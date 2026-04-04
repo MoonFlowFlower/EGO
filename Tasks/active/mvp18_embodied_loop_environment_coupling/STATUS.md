@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP13
-status: causal_proof_complete
+status: observation_started
 current_layer: implementation
 main_chain_status: current_runtime_embodied_consumer_present_legacy_reference_only
-enabled_status: not_started
+enabled_status: controlled_mainline_observation
 trigger_evidence:
   - WP12/MVP17 maintenance institutionalization complete
   - WP12 remains maintenance_mode
@@ -26,23 +26,28 @@ trigger_evidence:
   - `OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py` now proves legacy consequence / intervention surfaces remain demoted
   - paired causal validation now proves resource/slack pressure, consequence memory, and self/world boundary pressure alter bounded downstream embodied weighting
   - text-only outcome wording changes without metric shift do not create false downstream embodied behavioral proof
-verification_level: V3
-evidence_level: E3
-current_blocker: "T60 single controlled observation pending"
-next_minimal_closure_action: "start T60_CONTROLLED_OBSERVATION_SINGLE; do not implement batch observation before T60"
+  - `OpenEmotion/tools/run_mvp18_controlled_observation.py` now produces the first controlled runtime-mainline embodied proposal-only writeback artifact
+  - `OpenEmotion/tests/mvp18/test_controlled_observation.py` now locks the single-sample controlled observation contract
+  - current controlled observation artifact reports `status = pass`, `verification_level = V4`, `evidence_level = E4`
+  - current controlled observation artifact reports `embodied_writeback_gate = allow_writeback`
+  - current controlled observation artifact reports `behavioral_authority_none = true`
+verification_level: V4
+evidence_level: E4
+current_blocker: "T70 batch controlled observation / aggregate pending"
+next_minimal_closure_action: "start T70_BATCH_OBSERVATION_AND_AGGREGATE; do not enter closeout before T70"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP13/MVP18` 已完成 `T50_CAUSAL_VALIDATION`，当前 formal owner path、current runtime embodied consumer、legacy no-second-truth demotion 与 bounded embodied causal proof 已同时成立
-- 条件性完成：当前只证明 owner 层、`proto_self_v2` bounded contract、EgoCore runtime thin bridge、legacy demotion 与 `V3/E3` causal proof 已成立，不覆盖 controlled observation、或 `E4/E5`
-- 不可宣称完成：`MVP18` 已进入 observation、已启用、或已有 `E4/E5`
-- 后续处理：只能按 `T60 -> T70 -> T80` 串行推进；不得回头扩写 `WP12`
+- 可宣称完成：`WP13/MVP18` 已完成 `T60_CONTROLLED_OBSERVATION_SINGLE`，当前 formal owner path、current runtime embodied consumer、legacy no-second-truth demotion、bounded embodied causal proof 与首个 controlled `V4/E4` embodied proposal-only writeback 样本已同时成立
+- 条件性完成：当前只证明首个 controlled mainline embodied writeback 样本已成立，不覆盖 repeated controlled stability、`E5`、或维护态
+- 不可宣称完成：`MVP18` 已达到 `E5`、已收口、已进入 `maintenance_mode`，或已放开 live autonomy / direct reply authority / broader transport claims
+- 后续处理：只能按 `T70 -> T80` 串行推进；不得回头扩写 `WP12`
 
 ## 边界提醒
 
 - `WP12` 的 institutionalized maintenance 不是 `WP13` 的实现证据
 - `WP12` 新样本只写入其 maintenance ledger
 - provider `429/401` 仍按外部预算层风险记录
-- `embodied_self/*` 当前已是 formal owner 落点，且 current runtime thin bridge + `T40` legacy demotion + `T50` causal proof 已接入；但还没有 single controlled observation、或 batch aggregate evidence
+- `embodied_self/*` 当前已是 formal owner 落点，且 current runtime thin bridge + `T40` legacy demotion + `T50` causal proof + `T60` single controlled observation 已接入；但还没有 batch aggregate evidence
 - 不得出现“因为 `WP12` 已 institutionalized，所以 embodied loop 可以直接外发 / 直接拿 transport claim”这类边界回退
