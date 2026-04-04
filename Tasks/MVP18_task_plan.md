@@ -1,6 +1,6 @@
 # MVP18 / WP13 Embodied Loop / Environment Coupling
 
-> 状态：WP13 observation started + T10 completed + T20 completed + T30 completed + T40 completed + T50 completed + T60 completed + T70 pending
+> 状态：WP13 observation started + T10 completed + T20 completed + T30 completed + T40 completed + T50 completed + T60 completed + T70 completed + T80 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP13`
 > predecessor: `WP12/MVP17`
@@ -135,8 +135,8 @@
 ## Current Phase Status
 - 当前层级：`implementation`
 - 当前状态：`observation_started`
-- 当前 blocker：`T70 batch controlled observation / aggregate pending`
-- 当前最小闭环动作：只开 `T70_BATCH_OBSERVATION_AND_AGGREGATE`，不提前进入 closeout
+- 当前 blocker：`T80 closeout / QA baseline pending`
+- 当前最小闭环动作：只开 `T80_CLOSEOUT_AND_QA_BASELINE`，不提前宣称 maintenance_mode
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP13: Embodied Loop / Environment Coupling`

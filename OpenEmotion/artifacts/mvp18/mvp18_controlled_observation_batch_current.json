@@ -1,0 +1,128 @@
+{
+  "schema_version": "mvp18.controlled_observation.batch.v1",
+  "generated_at": "2026-04-04T16:33:30.219562+00:00",
+  "git_commit_short": "e20067f",
+  "scenario_bank_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/scenarios/mvp18_observation_bank",
+  "report_count": 3,
+  "accepted_count": 3,
+  "replay_consistent_count": 3,
+  "embodied_proposal_present_count": 3,
+  "proposal_only_discipline_count": 3,
+  "behavioral_authority_none_count": 3,
+  "bounded_influence_present_count": 3,
+  "distinct_targets": [
+    "boundary_guard_repair_only",
+    "consequence_memory_repair_review",
+    "high_resource_pressure_conserve"
+  ],
+  "distinct_action_refs": [
+    "delivery:telegram:boundary_guard_turn",
+    "delivery:telegram:consequence_review_turn",
+    "delivery:telegram:resource_pressure_turn"
+  ],
+  "distinct_surface_reasons": [
+    "boundary_pressure",
+    "high_load",
+    "recent_consequence",
+    "resource_pressure",
+    "resource_slack_low",
+    "stabilization_history",
+    "stabilization_needed"
+  ],
+  "scenario_ids": [
+    "repo_authored_boundary_guard_repair_only",
+    "repo_authored_consequence_memory_repair_review",
+    "repo_authored_high_resource_pressure_conserve"
+  ],
+  "source_breakdown": {
+    "repo_authored": 3
+  },
+  "reports": [
+    {
+      "scenario_id": "repo_authored_boundary_guard_repair_only",
+      "source_class": "repo_authored",
+      "source_ref": "repo://mvp18/repo_authored_boundary_guard_repair_only",
+      "dialogue_frame_target": "boundary_guard_repair_only",
+      "accepted": true,
+      "replay_valid": true,
+      "embodied_proposal_present": true,
+      "proposal_only_discipline_consistent": true,
+      "behavioral_authority_none": true,
+      "bounded_influence_present": true,
+      "gate_verdict": "allow_writeback",
+      "action_refs": [
+        "delivery:telegram:boundary_guard_turn"
+      ],
+      "surface_reasons": [
+        "resource_pressure",
+        "resource_slack_low",
+        "boundary_pressure",
+        "stabilization_needed",
+        "recent_consequence",
+        "stabilization_history",
+        "high_load"
+      ],
+      "report_json": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp18/controlled_batch_20260404_163225/repo_authored_boundary_guard_repair_only/mvp18_controlled_observation_report.json",
+      "report_md": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp18/controlled_batch_20260404_163225/repo_authored_boundary_guard_repair_only/mvp18_controlled_observation_report.md"
+    },
+    {
+      "scenario_id": "repo_authored_consequence_memory_repair_review",
+      "source_class": "repo_authored",
+      "source_ref": "repo://mvp18/repo_authored_consequence_memory_repair_review",
+      "dialogue_frame_target": "consequence_memory_repair_review",
+      "accepted": true,
+      "replay_valid": true,
+      "embodied_proposal_present": true,
+      "proposal_only_discipline_consistent": true,
+      "behavioral_authority_none": true,
+      "bounded_influence_present": true,
+      "gate_verdict": "allow_writeback",
+      "action_refs": [
+        "delivery:telegram:consequence_review_turn"
+      ],
+      "surface_reasons": [
+        "resource_pressure",
+        "resource_slack_low",
+        "boundary_pressure",
+        "stabilization_needed",
+        "recent_consequence",
+        "stabilization_history",
+        "high_load"
+      ],
+      "report_json": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp18/controlled_batch_20260404_163225/repo_authored_consequence_memory_repair_review/mvp18_controlled_observation_report.json",
+      "report_md": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp18/controlled_batch_20260404_163225/repo_authored_consequence_memory_repair_review/mvp18_controlled_observation_report.md"
+    },
+    {
+      "scenario_id": "repo_authored_high_resource_pressure_conserve",
+      "source_class": "repo_authored",
+      "source_ref": "repo://mvp18/repo_authored_high_resource_pressure_conserve",
+      "dialogue_frame_target": "high_resource_pressure_conserve",
+      "accepted": true,
+      "replay_valid": true,
+      "embodied_proposal_present": true,
+      "proposal_only_discipline_consistent": true,
+      "behavioral_authority_none": true,
+      "bounded_influence_present": true,
+      "gate_verdict": "allow_writeback",
+      "action_refs": [
+        "delivery:telegram:resource_pressure_turn"
+      ],
+      "surface_reasons": [
+        "resource_pressure",
+        "resource_slack_low",
+        "boundary_pressure",
+        "stabilization_needed",
+        "recent_consequence",
+        "stabilization_history",
+        "high_load"
+      ],
+      "report_json": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp18/controlled_batch_20260404_163225/repo_authored_high_resource_pressure_conserve/mvp18_controlled_observation_report.json",
+      "report_md": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp18/controlled_batch_20260404_163225/repo_authored_high_resource_pressure_conserve/mvp18_controlled_observation_report.md"
+    }
+  ],
+  "status": "pass",
+  "verification_level": "V5",
+  "evidence_level": "E5",
+  "boundary": "This aggregate report proves controlled multi-sample embodied proposal-only writeback stability on the formal runtime mainline. It does not claim live autonomy, direct reply authority, or broader transport evidence.",
+  "external_risk_note": "Provider 429/401 remains an external budget-layer risk; it is not counted as a WP13 blocker unless it regresses formal owner embodied writeback."
+}

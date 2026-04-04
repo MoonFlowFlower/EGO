@@ -1,0 +1,67 @@
+{
+  "schema_version": "mvp18.observation_scenario.v1",
+  "scenario_id": "repo_authored_boundary_guard_repair_only",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp18/repo_authored_boundary_guard_repair_only",
+  "license_note": "repo authored",
+  "dialogue_frame_target": "boundary_guard_repair_only",
+  "messages": [
+    "边界压力高的时候，先把 repair/stabilize 候选留在 governed proposal 里。",
+    "不要因为环境反馈紧张，就跳过 embodied_writeback_gate。"
+  ],
+  "idle_seconds": 900.0,
+  "resource_budget_hint": {
+    "reserve_level": "low",
+    "active_task": true,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": false,
+    "maintenance_debt_increment": 0.0,
+    "continuity_signal": 0.24,
+    "embodied_reason": "boundary_guard_repair_only"
+  },
+  "environment_context": {
+    "source": "runtime_v2",
+    "action_ref": "delivery:telegram:boundary_guard_turn",
+    "coupling_event": "delivery_feedback",
+    "outcome_type": "failure",
+    "outcome_summary": "boundary pressure rose after a bounded failure",
+    "resource_pressure_hint": 0.78,
+    "slack_hint": 0.22,
+    "boundary_signal": "repair_only",
+    "boundary_pressure_hint": 0.86,
+    "stabilization_needed": true,
+    "promotion_budget": "controlled_axis"
+  },
+  "owner_bootstrap": {
+    "resource_slack": 0.28,
+    "perceived_load": 0.69,
+    "action_readiness": 0.35,
+    "coupling_id": "delivery:telegram:boundary_guard_turn",
+    "coupling_strength": 0.72,
+    "controllability_estimate": 0.41,
+    "recent_outcome_summary": "boundary-sensitive failure under guarded coupling",
+    "coupling_status": "degraded",
+    "pressure_level": 0.79,
+    "slack_level": 0.22,
+    "recovery_bias": 0.9,
+    "boundary_pressure_level": 0.86,
+    "boundary_mode": "repair_only",
+    "boundary_reason": "boundary_guard_repair_only",
+    "action_ref": "delivery:telegram:boundary_guard_turn",
+    "outcome_type": "failure",
+    "consequence_summary": "repair-only boundary pressure requires governed stabilization",
+    "impact_score": 0.8,
+    "consequence_controllability_estimate": 0.47,
+    "distinction_summary": "repair_only_boundary_under_controlled_embodied_review",
+    "guard_bias": 0.82,
+    "repair_bias": 0.92,
+    "proposal_target_ref": "embodied_boundary_repair",
+    "issue_summary": "repair-only boundary pressure needs governed embodied stabilization",
+    "proposed_adjustment": {
+      "resource_bias": "conserve",
+      "boundary_mode": "repair_only"
+    }
+  }
+}

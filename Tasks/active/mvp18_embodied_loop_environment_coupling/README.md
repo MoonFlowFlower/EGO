@@ -59,11 +59,11 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 - legacy demotion / compat map：`T40 completed`
 - causal validation：`T50 completed`
 - single controlled observation：`T60 completed`
-- batch controlled observation / aggregate：`T70 pending`
+- batch controlled observation / aggregate：`T70 completed`
 - 主链接线：`current runtime embodied bridge present`
 - 启用状态：`controlled_mainline_observation`
-- 当前 blocker：`T70 batch controlled observation / aggregate pending`
-- 当前最小动作：`start T70_BATCH_OBSERVATION_AND_AGGREGATE; do not implement closeout before T70`
+- 当前 blocker：`T80 closeout / QA baseline pending`
+- 当前最小动作：`start T80_CLOSEOUT_AND_QA_BASELINE; do not claim maintenance_mode before T80`
 
 ## T10 已证实内容
 
@@ -129,6 +129,27 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
   - `bounded_influence_present = true`
   - `replay_valid = true`
 - 这只证明当前 formal owner + current runtime mainline 已拿到首个 embodied proposal-only writeback 样本，不证明 repeated stability、`E5`、closeout、或 maintenance mode
+
+## T70 已证实内容
+
+- `OpenEmotion/scenarios/mvp18_observation_bank/*` 已提供 3 组 `repo_authored` batch scenarios，分别覆盖：
+  - `high_resource_pressure_conserve`
+  - `consequence_memory_repair_review`
+  - `boundary_guard_repair_only`
+- `OpenEmotion/tools/run_mvp18_controlled_observation_batch.py` 已生成 repeated controlled runtime-mainline embodied aggregate artifacts：
+  - `OpenEmotion/artifacts/mvp18/mvp18_controlled_observation_batch_current.json`
+  - `OpenEmotion/artifacts/mvp18/mvp18_controlled_observation_batch_current.md`
+- `OpenEmotion/tests/mvp18/test_controlled_observation_batch.py` 已把 batch controlled observation 的最小 contract 固定成回归测试
+- 当前 batch controlled observation 结果为：
+  - `status = pass`
+  - `verification_level = V5`
+  - `evidence_level = E5`
+  - `report_count = 3`
+  - `accepted_count = 3`
+  - `proposal_only_discipline_count = 3`
+  - `behavioral_authority_none_count = 3`
+  - `bounded_influence_present_count = 3`
+- 这证明当前 formal owner + current runtime mainline 已在 repeated controlled observation 轴上拿到 embodied proposal-only writeback 的 `V5/E5` aggregate；这仍不证明 closeout、`maintenance_mode`、或 authority 放开
 
 ## 当前不做
 

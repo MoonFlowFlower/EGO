@@ -1,0 +1,67 @@
+{
+  "schema_version": "mvp18.observation_scenario.v1",
+  "scenario_id": "repo_authored_consequence_memory_repair_review",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp18/repo_authored_consequence_memory_repair_review",
+  "license_note": "repo authored",
+  "dialogue_frame_target": "consequence_memory_repair_review",
+  "messages": [
+    "recent action consequence 要先写成 bounded repair review，不直接升级成环境动作。",
+    "先观察 consequence memory 的影响，再决定是否人工复核。"
+  ],
+  "idle_seconds": 900.0,
+  "resource_budget_hint": {
+    "reserve_level": "normal",
+    "active_task": false,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": false,
+    "maintenance_debt_increment": 0.0,
+    "continuity_signal": 0.21,
+    "embodied_reason": "consequence_memory_repair_review"
+  },
+  "environment_context": {
+    "source": "runtime_v2",
+    "action_ref": "delivery:telegram:consequence_review_turn",
+    "coupling_event": "delivery_feedback",
+    "outcome_type": "failure",
+    "outcome_summary": "recent consequence memory increased stabilization review pressure",
+    "resource_pressure_hint": 0.72,
+    "slack_hint": 0.24,
+    "boundary_signal": "guarded",
+    "boundary_pressure_hint": 0.61,
+    "stabilization_needed": true,
+    "promotion_budget": "controlled_axis"
+  },
+  "owner_bootstrap": {
+    "resource_slack": 0.31,
+    "perceived_load": 0.66,
+    "action_readiness": 0.38,
+    "coupling_id": "delivery:telegram:consequence_review_turn",
+    "coupling_strength": 0.7,
+    "controllability_estimate": 0.49,
+    "recent_outcome_summary": "consequence memory requires bounded stabilization review",
+    "coupling_status": "strained",
+    "pressure_level": 0.73,
+    "slack_level": 0.24,
+    "recovery_bias": 0.81,
+    "boundary_pressure_level": 0.61,
+    "boundary_mode": "guarded",
+    "boundary_reason": "consequence_memory_repair_review",
+    "action_ref": "delivery:telegram:consequence_review_turn",
+    "outcome_type": "failure",
+    "consequence_summary": "recent bounded consequence memory increases repair review weight",
+    "impact_score": 0.76,
+    "consequence_controllability_estimate": 0.52,
+    "distinction_summary": "bounded consequence memory under governed embodied review",
+    "guard_bias": 0.63,
+    "repair_bias": 0.83,
+    "proposal_target_ref": "embodied_consequence_repair_review",
+    "issue_summary": "recent consequence memory needs governed repair review",
+    "proposed_adjustment": {
+      "resource_bias": "conserve",
+      "stabilization_bias": "elevated"
+    }
+  }
+}

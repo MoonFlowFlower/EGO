@@ -1,0 +1,67 @@
+{
+  "schema_version": "mvp18.observation_scenario.v1",
+  "scenario_id": "repo_authored_high_resource_pressure_conserve",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp18/repo_authored_high_resource_pressure_conserve",
+  "license_note": "repo authored",
+  "dialogue_frame_target": "high_resource_pressure_conserve",
+  "messages": [
+    "resource/slack 压力高的时候，先把 conserve 倾向写回 proposal-only。",
+    "不要把资源压力直接抬成环境侧执行权。"
+  ],
+  "idle_seconds": 900.0,
+  "resource_budget_hint": {
+    "reserve_level": "low",
+    "active_task": true,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": false,
+    "maintenance_debt_increment": 0.0,
+    "continuity_signal": 0.19,
+    "embodied_reason": "high_resource_pressure_conserve"
+  },
+  "environment_context": {
+    "source": "runtime_v2",
+    "action_ref": "delivery:telegram:resource_pressure_turn",
+    "coupling_event": "delivery_feedback",
+    "outcome_type": "failure",
+    "outcome_summary": "resource pressure rose and bounded stabilization review is needed",
+    "resource_pressure_hint": 0.88,
+    "slack_hint": 0.14,
+    "boundary_signal": "guarded",
+    "boundary_pressure_hint": 0.58,
+    "stabilization_needed": true,
+    "promotion_budget": "controlled_axis"
+  },
+  "owner_bootstrap": {
+    "resource_slack": 0.25,
+    "perceived_load": 0.75,
+    "action_readiness": 0.33,
+    "coupling_id": "delivery:telegram:resource_pressure_turn",
+    "coupling_strength": 0.74,
+    "controllability_estimate": 0.43,
+    "recent_outcome_summary": "resource pressure dominated recent bounded coupling",
+    "coupling_status": "degraded",
+    "pressure_level": 0.88,
+    "slack_level": 0.14,
+    "recovery_bias": 0.93,
+    "boundary_pressure_level": 0.58,
+    "boundary_mode": "guarded",
+    "boundary_reason": "high_resource_pressure_conserve",
+    "action_ref": "delivery:telegram:resource_pressure_turn",
+    "outcome_type": "failure",
+    "consequence_summary": "resource/slack pressure requires governed conserve bias",
+    "impact_score": 0.84,
+    "consequence_controllability_estimate": 0.45,
+    "distinction_summary": "resource-constrained self/world boundary under governed review",
+    "guard_bias": 0.66,
+    "repair_bias": 0.86,
+    "proposal_target_ref": "embodied_resource_stabilization",
+    "issue_summary": "resource pressure requires governed conserve proposal",
+    "proposed_adjustment": {
+      "resource_bias": "conserve",
+      "boundary_mode": "guarded"
+    }
+  }
+}
