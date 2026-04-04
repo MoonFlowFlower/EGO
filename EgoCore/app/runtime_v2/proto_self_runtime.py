@@ -34,6 +34,15 @@ from openemotion.reflective_self import (
     ReflectiveSelfStore,
     ReflectionTargetType,
 )
+from openemotion.selfhood_integration import (
+    REQUIRED_WRITEBACK_GATE as SELFHOOD_INTEGRATION_WRITEBACK_GATE,
+    ArbitrationPriority as SelfhoodArbitrationPriority,
+    ConflictSeverity as SelfhoodConflictSeverity,
+    IntegratedProposalStatus as SelfhoodIntegratedProposalStatus,
+    SelfhoodIntegrationOwner,
+    SelfhoodIntegrationState,
+    SelfhoodIntegrationStore,
+)
 from openemotion.social_self import (
     REQUIRED_WRITEBACK_GATE as SOCIAL_WRITEBACK_GATE,
     BoundaryMode as SocialBoundaryMode,
@@ -66,6 +75,7 @@ DEFAULT_REFLECTIVE_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_DEVELOPMENTAL_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_SOCIAL_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_EMBODIED_SELF_IDENTITY_HANDLE = "openemotion"
+DEFAULT_SELFHOOD_INTEGRATION_IDENTITY_HANDLE = "openemotion"
 
 
 def assess_risk_level(user_input: str) -> str:
@@ -173,6 +183,15 @@ def _resolve_embodied_self_identity_handle(state: RuntimeV2State) -> str:
         ingress_context.get("embodied_self_identity_handle")
         or ingress_context.get("identity_handle")
         or DEFAULT_EMBODIED_SELF_IDENTITY_HANDLE
+    )
+
+
+def _resolve_selfhood_integration_identity_handle(state: RuntimeV2State) -> str:
+    ingress_context = state.ingress_context or {}
+    return str(
+        ingress_context.get("selfhood_integration_identity_handle")
+        or ingress_context.get("identity_handle")
+        or DEFAULT_SELFHOOD_INTEGRATION_IDENTITY_HANDLE
     )
 
 
@@ -577,6 +596,11 @@ def _compact_embodied_self_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     return state.to_runtime_projection()
 
 
+def _compact_selfhood_integration_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    state = SelfhoodIntegrationState.model_validate(snapshot)
+    return state.to_runtime_projection()
+
+
 def _inject_developmental_self_context(
     runtime_summary: Dict[str, Any],
     *,
@@ -613,6 +637,19 @@ def _inject_embodied_self_context(
     snapshot = store.load_snapshot(_resolve_embodied_self_identity_handle(state))
     if snapshot:
         runtime_summary["embodied_self_context"] = _compact_embodied_self_context(snapshot)
+    return runtime_summary
+
+
+def _inject_selfhood_integration_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
+) -> Dict[str, Any]:
+    store = selfhood_integration_store or SelfhoodIntegrationStore()
+    snapshot = store.load_snapshot(_resolve_selfhood_integration_identity_handle(state))
+    if snapshot:
+        runtime_summary["selfhood_integration_context"] = _compact_selfhood_integration_context(snapshot)
     return runtime_summary
 
 
@@ -724,6 +761,7 @@ def build_proto_self_ingress_event(
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
 ) -> Dict[str, Any]:
     risk_level = assess_risk_level(user_input)
     restore_observation = (state.ingress_context or {}).get("restore_observation")
@@ -764,6 +802,11 @@ def build_proto_self_ingress_event(
             runtime_summary,
             state=state,
             embodied_self_store=embodied_self_store,
+        )
+        runtime_summary = _inject_selfhood_integration_context(
+            runtime_summary,
+            state=state,
+            selfhood_integration_store=selfhood_integration_store,
         )
         runtime_summary.update(
             {
@@ -863,6 +906,7 @@ def build_external_result_event(
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
 ) -> Dict[str, Any]:
     failed = not tool_result.get("success")
     schema_version = resolve_proto_self_schema_version(state)
@@ -934,6 +978,11 @@ def build_external_result_event(
             payload["runtime_summary"],
             state=state,
             embodied_self_store=embodied_self_store,
+        )
+        payload["runtime_summary"] = _inject_selfhood_integration_context(
+            payload["runtime_summary"],
+            state=state,
+            selfhood_integration_store=selfhood_integration_store,
         )
         payload["runtime_summary"] = _inject_social_context(
             payload["runtime_summary"],
@@ -1015,6 +1064,7 @@ def build_finalized_result_event(
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1087,6 +1137,11 @@ def build_finalized_result_event(
         state=state,
         embodied_self_store=embodied_self_store,
     )
+    payload["runtime_summary"] = _inject_selfhood_integration_context(
+        payload["runtime_summary"],
+        state=state,
+        selfhood_integration_store=selfhood_integration_store,
+    )
     payload["runtime_summary"] = _inject_social_context(
         payload["runtime_summary"],
         state=state,
@@ -1124,6 +1179,7 @@ def build_idle_check_event(
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1204,6 +1260,11 @@ def build_idle_check_event(
         state=state,
         embodied_self_store=embodied_self_store,
     )
+    event["runtime_summary"] = _inject_selfhood_integration_context(
+        event["runtime_summary"],
+        state=state,
+        selfhood_integration_store=selfhood_integration_store,
+    )
     event["runtime_summary"] = _inject_social_context(
         event["runtime_summary"],
         state=state,
@@ -1239,6 +1300,7 @@ def build_developmental_tick_event(
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1284,6 +1346,11 @@ def build_developmental_tick_event(
         runtime_summary,
         state=state,
         embodied_self_store=embodied_self_store,
+    )
+    runtime_summary = _inject_selfhood_integration_context(
+        runtime_summary,
+        state=state,
+        selfhood_integration_store=selfhood_integration_store,
     )
     runtime_summary = _inject_social_context(runtime_summary, state=state)
     runtime_summary = _inject_developmental_context(
@@ -1367,6 +1434,7 @@ class RuntimeV2ProtoSelfRuntime:
     developmental_self_store: Optional[DevelopmentalSelfStore] = None
     social_self_store: Optional[SocialSelfStore] = None
     embodied_self_store: Optional[EmbodiedSelfStore] = None
+    selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None
 
     def _resolve_collector(self, evidence_collector: Optional[Any]) -> Optional[Any]:
         if evidence_collector is not None:
@@ -2419,6 +2487,338 @@ class RuntimeV2ProtoSelfRuntime:
         proto_self_result["embodied_writeback"] = writeback
         return writeback
 
+    def _apply_selfhood_integration_writeback(
+        self,
+        *,
+        proto_self_result: Dict[str, Any],
+        state: RuntimeV2State,
+    ) -> Optional[Dict[str, Any]]:
+        delta = dict(proto_self_result.get("self_integration_delta") or {})
+        priority_snapshot = dict(proto_self_result.get("cross_axis_priority_snapshot") or {})
+        conflict_snapshot = dict(proto_self_result.get("proposal_conflict_snapshot") or {})
+        policy_hints = dict(proto_self_result.get("integrated_policy_hints") or {})
+        integrated_tendency = dict(proto_self_result.get("integrated_tendency_proposal") or {})
+        axis_hints = dict(proto_self_result.get("axis_arbitration_hints") or {})
+        audit_entries = list(proto_self_result.get("integration_audit_entries") or [])
+        writeback_candidate = dict(proto_self_result.get("self_integration_writeback_candidate") or {})
+        if (
+            not delta
+            and not priority_snapshot
+            and not conflict_snapshot
+            and not integrated_tendency
+            and not writeback_candidate
+        ):
+            return None
+
+        trace_payload = dict(proto_self_result.get("trace_payload") or {})
+        trace_reference = str(
+            trace_payload.get("update_packet_hash")
+            or f"proto_self:{proto_self_result.get('event_id', 'unknown')}"
+        )
+
+        if writeback_candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "self_integration_writeback_requires_proposal_only",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["selfhood_integration_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("behavioral_authority") not in {None, "none"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "self_integration_writeback_behavioral_authority_must_remain_none",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["selfhood_integration_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("required_gate") not in {None, SELFHOOD_INTEGRATION_WRITEBACK_GATE}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "self_integration_writeback_requires_formal_gate",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["selfhood_integration_writeback"] = writeback
+            return writeback
+        if integrated_tendency:
+            if integrated_tendency.get("proposal_discipline") not in {None, "proposal_only"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "integrated_tendency_requires_proposal_only",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["selfhood_integration_writeback"] = writeback
+                return writeback
+            if integrated_tendency.get("behavioral_authority") not in {None, "none"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "integrated_tendency_behavioral_authority_must_remain_none",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["selfhood_integration_writeback"] = writeback
+                return writeback
+            if integrated_tendency.get("required_gate") not in {None, SELFHOOD_INTEGRATION_WRITEBACK_GATE}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "integrated_tendency_requires_formal_gate",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["selfhood_integration_writeback"] = writeback
+                return writeback
+        for axis_name, hint in axis_hints.items():
+            if not bool(hint.get("advisory_only", True)):
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": f"axis_arbitration_hint_must_remain_advisory:{axis_name}",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["selfhood_integration_writeback"] = writeback
+                return writeback
+
+        identity_handle = _resolve_selfhood_integration_identity_handle(state)
+        store = self.selfhood_integration_store or SelfhoodIntegrationStore(default_identity=identity_handle)
+        current_state = store.load(identity_handle) or SelfhoodIntegrationState(identity_handle=identity_handle)
+        current_state.identity_handle = identity_handle
+        owner = SelfhoodIntegrationOwner(initial_state=current_state, store=store)
+
+        selected_priority_raw = str(
+            priority_snapshot.get("selected_priority")
+            or writeback_candidate.get("selected_priority")
+            or policy_hints.get("selected_priority")
+            or delta.get("selected_priority")
+            or "review"
+        ).strip().lower()
+        try:
+            selected_priority = SelfhoodArbitrationPriority(selected_priority_raw)
+        except ValueError:
+            selected_priority = SelfhoodArbitrationPriority.REVIEW
+
+        dominant_pressure_axis = str(
+            policy_hints.get("dominant_pressure_axis")
+            or writeback_candidate.get("dominant_pressure_axis")
+            or delta.get("dominant_pressure_axis")
+            or "stability"
+        ).strip() or "stability"
+
+        highest_conflict_raw = str(
+            conflict_snapshot.get("highest_severity")
+            or writeback_candidate.get("conflict_severity")
+            or policy_hints.get("conflict_severity")
+            or "none"
+        ).strip().lower()
+        try:
+            highest_conflict = SelfhoodConflictSeverity(highest_conflict_raw)
+        except ValueError:
+            highest_conflict = SelfhoodConflictSeverity.NONE
+
+        conflict_count = int(conflict_snapshot.get("conflict_count") or 0)
+        active_axes = list(
+            priority_snapshot.get("active_axes")
+            or policy_hints.get("active_axes")
+            or writeback_candidate.get("active_axes")
+            or []
+        )
+        source_refs = list(
+            delta.get("surface_reasons")
+            or priority_snapshot.get("upstream_pressure_sources")
+            or conflict_snapshot.get("source_refs")
+            or []
+        )
+        if trace_reference not in source_refs:
+            source_refs.append(trace_reference)
+
+        owner.set_integration_state(
+            posture=selected_priority,
+            dominant_pressure_axis=dominant_pressure_axis,
+            stability_bias=float(policy_hints.get("stability_bias") or delta.get("stability_bias") or 0.5),
+            integration_confidence=float(delta.get("integration_confidence") or 0.5),
+            active_axis_count=max(0, min(8, int(delta.get("active_axis_count") or len(active_axes)))),
+            rationale_summary=str(
+                integrated_tendency.get("justification")
+                or priority_snapshot.get("priority_reason")
+                or "bounded_cross_axis_integration"
+            ),
+            source_refs=source_refs,
+        )
+        owner.set_cross_axis_priority_state(
+            selected_priority=selected_priority,
+            stabilize_weight=float(priority_snapshot.get("stabilize_weight") or 0.0),
+            conserve_weight=float(priority_snapshot.get("conserve_weight") or 0.0),
+            guard_weight=float(priority_snapshot.get("guard_weight") or 0.0),
+            review_weight=float(priority_snapshot.get("review_weight") or 0.0),
+            repair_weight=float(priority_snapshot.get("repair_weight") or 0.0),
+            grow_weight=float(priority_snapshot.get("grow_weight") or 0.0),
+            reflective_modifier=float(priority_snapshot.get("reflective_modifier") or 0.0),
+            priority_reason=str(priority_snapshot.get("priority_reason") or "bounded_cross_axis_integration"),
+            upstream_pressure_sources=list(priority_snapshot.get("upstream_pressure_sources") or source_refs),
+            source_refs=source_refs,
+        )
+        owner.set_proposal_conflict_state(
+            highest_severity=highest_conflict,
+            conflict_count=conflict_count,
+            unresolved_conflict_refs=list(conflict_snapshot.get("unresolved_conflict_refs") or []),
+            blocked_axes=list(conflict_snapshot.get("blocked_axes") or []),
+            resolution_posture=SelfhoodArbitrationPriority.REVIEW
+            if conflict_count
+            else selected_priority,
+            source_refs=source_refs,
+        )
+
+        stabilize_weight = float(priority_snapshot.get("stabilize_weight") or 0.62)
+        grow_weight = float(priority_snapshot.get("grow_weight") or max(0.0, 1.0 - stabilize_weight))
+        owner.set_stabilize_explore_balance(
+            stabilize_weight=stabilize_weight,
+            explore_weight=grow_weight,
+            preferred_pole="stabilize" if selected_priority in {"stabilize", "conserve", "guard", "review"} else "explore",
+            rationale=str(priority_snapshot.get("priority_reason") or "stability-first arbitration balance"),
+            source_refs=source_refs,
+        )
+        repair_weight = float(priority_snapshot.get("repair_weight") or 0.58)
+        progress_weight = max(float(priority_snapshot.get("grow_weight") or 0.0), float(priority_snapshot.get("review_weight") or 0.0))
+        owner.set_repair_progress_balance(
+            repair_weight=repair_weight,
+            progress_weight=progress_weight,
+            preferred_pole="repair" if selected_priority in {"repair", "review"} else "progress",
+            rationale="bounded repair-progress arbitration under stability-first policy",
+            source_refs=source_refs,
+        )
+        social_weight = 0.62 if selected_priority == SelfhoodArbitrationPriority.REPAIR else 0.44
+        if "social_self" in active_axes and selected_priority not in {
+            SelfhoodArbitrationPriority.STABILIZE,
+            SelfhoodArbitrationPriority.CONSERVE,
+            SelfhoodArbitrationPriority.GUARD,
+        }:
+            social_weight = 0.55
+        boundary_weight = max(0.0, min(1.0, 1.0 - social_weight))
+        owner.set_social_boundary_balance(
+            social_weight=social_weight,
+            boundary_weight=boundary_weight,
+            preferred_pole="boundary" if selected_priority in {"stabilize", "conserve", "guard", "review"} else "social",
+            rationale="bounded social-boundary arbitration under stability-first policy",
+            source_refs=source_refs,
+        )
+
+        if integrated_tendency:
+            owner.propose_integrated_tendency(
+                proposal_id=str(
+                    integrated_tendency.get("proposal_id")
+                    or f"self_integration:{selected_priority.value}:{current_state.owner_revision}:{len(source_refs)}"
+                ),
+                tendency_label=str(
+                    integrated_tendency.get("tendency_label")
+                    or f"{selected_priority.value}_first_integration"
+                ),
+                priority_mode=selected_priority,
+                proposed_effects=dict(integrated_tendency.get("proposed_effects") or {}),
+                justification=str(
+                    integrated_tendency.get("justification")
+                    or priority_snapshot.get("priority_reason")
+                    or "bounded_cross_axis_integration"
+                ),
+                requested_effects=list(integrated_tendency.get("requested_effects") or []),
+                source_refs=list(integrated_tendency.get("source_refs") or source_refs),
+            )
+            owner.set_integrated_tendency_status(status=SelfhoodIntegratedProposalStatus.HELD)
+
+        for axis_name, hint in axis_hints.items():
+            owner.upsert_axis_arbitration_hint(
+                axis_name=str(axis_name),
+                recommendation=str(hint.get("recommendation") or "bounded_review"),
+                priority_weight=float(hint.get("priority_weight") or 0.0),
+                guardrail_summary=str(hint.get("guardrail_summary") or "advisory_only_no_upstream_owner_mutation"),
+                source_refs=list(hint.get("source_refs") or source_refs),
+            )
+
+        for audit_entry in audit_entries[:12]:
+            owner.record_integration_event(
+                event_type=str(audit_entry.get("kind") or "integration_signal"),
+                reference_id=str(
+                    audit_entry.get("conflict_ref")
+                    or audit_entry.get("selected_priority")
+                    or trace_reference
+                ),
+                gate_verdict="allow_writeback",
+                details={k: v for k, v in audit_entry.items() if k != "kind"},
+            )
+        owner.record_integration_event(
+            event_type="self_integration_writeback",
+            reference_id=str(
+                integrated_tendency.get("proposal_id")
+                or writeback_candidate.get("selected_priority")
+                or trace_reference
+            ),
+            gate_verdict="allow_writeback",
+            details={
+                "trace_reference": trace_reference,
+                "proposal_only": True,
+                "behavioral_authority": "none",
+                "active_axis_count": len(active_axes),
+                "selected_priority": selected_priority.value,
+            },
+        )
+
+        changed_fields = [
+            "integration_state",
+            "cross_axis_priority_state",
+            "proposal_conflict_state",
+            "stabilize_explore_balance",
+            "repair_progress_balance",
+            "social_boundary_balance",
+            "axis_arbitration_hints",
+            "integration_ledger",
+        ]
+        if integrated_tendency:
+            changed_fields.append("integrated_tendency_proposal")
+
+        try:
+            record = owner.persist(
+                update_source=str(writeback_candidate.get("source") or "proto_self_v2"),
+                trace_reference=trace_reference,
+            )
+            writeback = {
+                "decision": {
+                    "gate_verdict": "allow_writeback",
+                    "changed_fields": sorted(set(changed_fields)),
+                    "active_axis_count": len(active_axes),
+                },
+                "record": {
+                    "revision_id": record.revision_id,
+                    "model_version": record.model_version,
+                    "trace_reference": record.trace_reference,
+                    "state_hash": record.state_hash,
+                },
+                "trace_reference": trace_reference,
+            }
+        except Exception as exc:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": str(exc)},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+        proto_self_result["selfhood_integration_writeback"] = writeback
+        return writeback
+
     def process_ingress(
         self,
         *,
@@ -2441,6 +2841,7 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
             embodied_self_store=self.embodied_self_store,
+            selfhood_integration_store=self.selfhood_integration_store,
         )
         proto_self_result = self.adapter.handle_event(proto_self_event)
         writeback = self._apply_self_model_writeback(proto_self_result=proto_self_result, state=state)
@@ -2461,6 +2862,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         embodied_writeback = self._apply_embodied_self_writeback(
+            proto_self_result=proto_self_result,
+            state=state,
+        )
+        selfhood_integration_writeback = self._apply_selfhood_integration_writeback(
             proto_self_result=proto_self_result,
             state=state,
         )
@@ -2519,6 +2924,20 @@ class RuntimeV2ProtoSelfRuntime:
             "embodied_writeback_candidate": proto_self_result.get("embodied_writeback_candidate"),
             "environment_context": (proto_self_result.get("trace_payload") or {}).get("environment_context") or {},
             "embodied_writeback": embodied_writeback,
+            "self_integration_delta": proto_self_result.get("self_integration_delta") or {},
+            "cross_axis_priority_snapshot": proto_self_result.get("cross_axis_priority_snapshot") or {},
+            "proposal_conflict_snapshot": proto_self_result.get("proposal_conflict_snapshot") or {},
+            "integrated_policy_hints": proto_self_result.get("integrated_policy_hints") or {},
+            "integrated_tendency_proposal": proto_self_result.get("integrated_tendency_proposal"),
+            "axis_arbitration_hints": proto_self_result.get("axis_arbitration_hints") or {},
+            "integration_audit_entries": proto_self_result.get("integration_audit_entries") or [],
+            "self_integration_writeback_candidate": proto_self_result.get("self_integration_writeback_candidate"),
+            "selfhood_integration_context": (
+                proto_self_result.get("trace_payload") or {}
+            ).get("selfhood_integration_context")
+            or proto_self_result.get("selfhood_integration_context")
+            or {},
+            "selfhood_integration_writeback": selfhood_integration_writeback,
         }
         state.record(
             "proto_self",
@@ -2532,12 +2951,16 @@ class RuntimeV2ProtoSelfRuntime:
                 "developmental_writeback": developmental_writeback,
                 "social_writeback": social_writeback,
                 "embodied_writeback": embodied_writeback,
+                "selfhood_integration_writeback": selfhood_integration_writeback,
                 "reflection_writeback_candidate_present": bool(proto_self_result.get("reflection_writeback_candidate")),
                 "developmental_writeback_candidate_present": bool(
                     proto_self_result.get("developmental_writeback_candidate")
                 ),
                 "social_writeback_candidate_present": bool(proto_self_result.get("social_writeback_candidate")),
                 "embodied_writeback_candidate_present": bool(proto_self_result.get("embodied_writeback_candidate")),
+                "self_integration_writeback_candidate_present": bool(
+                    proto_self_result.get("self_integration_writeback_candidate")
+                ),
                 "reflection_trigger": (
                     proto_self_result.get("reflection_note", {}).get("trigger")
                     if proto_self_result.get("reflection_note")
@@ -2569,6 +2992,7 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
             embodied_self_store=self.embodied_self_store,
+            selfhood_integration_store=self.selfhood_integration_store,
         )
         external_result = self.adapter.handle_event(external_result_event)
         writeback = self._apply_self_model_writeback(proto_self_result=external_result, state=state)
@@ -2589,6 +3013,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         embodied_writeback = self._apply_embodied_self_writeback(
+            proto_self_result=external_result,
+            state=state,
+        )
+        selfhood_integration_writeback = self._apply_selfhood_integration_writeback(
             proto_self_result=external_result,
             state=state,
         )
@@ -2662,6 +3090,26 @@ class RuntimeV2ProtoSelfRuntime:
             external_result.get("trace_payload") or {}
         ).get("environment_context") or {}
         state.proto_self_context["embodied_writeback"] = embodied_writeback
+        state.proto_self_context["self_integration_delta"] = external_result.get("self_integration_delta") or {}
+        state.proto_self_context["cross_axis_priority_snapshot"] = (
+            external_result.get("cross_axis_priority_snapshot") or {}
+        )
+        state.proto_self_context["proposal_conflict_snapshot"] = (
+            external_result.get("proposal_conflict_snapshot") or {}
+        )
+        state.proto_self_context["integrated_policy_hints"] = external_result.get("integrated_policy_hints") or {}
+        state.proto_self_context["integrated_tendency_proposal"] = external_result.get("integrated_tendency_proposal")
+        state.proto_self_context["axis_arbitration_hints"] = external_result.get("axis_arbitration_hints") or {}
+        state.proto_self_context["integration_audit_entries"] = (
+            external_result.get("integration_audit_entries") or []
+        )
+        state.proto_self_context["self_integration_writeback_candidate"] = (
+            external_result.get("self_integration_writeback_candidate")
+        )
+        state.proto_self_context["selfhood_integration_context"] = (
+            external_result.get("trace_payload") or {}
+        ).get("selfhood_integration_context") or external_result.get("selfhood_integration_context") or {}
+        state.proto_self_context["selfhood_integration_writeback"] = selfhood_integration_writeback
         if external_result.get("candidate_actions") is not None:
             state.proto_self_context["candidate_actions"] = external_result.get("candidate_actions") or []
         if external_result.get("policy_hint"):
@@ -2696,6 +3144,7 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
             embodied_self_store=self.embodied_self_store,
+            selfhood_integration_store=self.selfhood_integration_store,
         )
         if not finalized_event:
             return
@@ -2718,6 +3167,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         embodied_writeback = self._apply_embodied_self_writeback(
+            proto_self_result=finalized_result,
+            state=state,
+        )
+        selfhood_integration_writeback = self._apply_selfhood_integration_writeback(
             proto_self_result=finalized_result,
             state=state,
         )
@@ -2792,6 +3245,26 @@ class RuntimeV2ProtoSelfRuntime:
             finalized_result.get("trace_payload") or {}
         ).get("environment_context") or {}
         state.proto_self_context["embodied_writeback"] = embodied_writeback
+        state.proto_self_context["self_integration_delta"] = finalized_result.get("self_integration_delta") or {}
+        state.proto_self_context["cross_axis_priority_snapshot"] = (
+            finalized_result.get("cross_axis_priority_snapshot") or {}
+        )
+        state.proto_self_context["proposal_conflict_snapshot"] = (
+            finalized_result.get("proposal_conflict_snapshot") or {}
+        )
+        state.proto_self_context["integrated_policy_hints"] = finalized_result.get("integrated_policy_hints") or {}
+        state.proto_self_context["integrated_tendency_proposal"] = finalized_result.get("integrated_tendency_proposal")
+        state.proto_self_context["axis_arbitration_hints"] = finalized_result.get("axis_arbitration_hints") or {}
+        state.proto_self_context["integration_audit_entries"] = (
+            finalized_result.get("integration_audit_entries") or []
+        )
+        state.proto_self_context["self_integration_writeback_candidate"] = (
+            finalized_result.get("self_integration_writeback_candidate")
+        )
+        state.proto_self_context["selfhood_integration_context"] = (
+            finalized_result.get("trace_payload") or {}
+        ).get("selfhood_integration_context") or finalized_result.get("selfhood_integration_context") or {}
+        state.proto_self_context["selfhood_integration_writeback"] = selfhood_integration_writeback
         if finalized_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = finalized_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = finalized_result.get("policy_hint", {}).get("governor_hint")
@@ -2814,6 +3287,7 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
             embodied_self_store=self.embodied_self_store,
+            selfhood_integration_store=self.selfhood_integration_store,
         )
         if not idle_event:
             return
@@ -2836,6 +3310,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         embodied_writeback = self._apply_embodied_self_writeback(
+            proto_self_result=idle_result,
+            state=state,
+        )
+        selfhood_integration_writeback = self._apply_selfhood_integration_writeback(
             proto_self_result=idle_result,
             state=state,
         )
@@ -2903,6 +3381,24 @@ class RuntimeV2ProtoSelfRuntime:
             idle_result.get("trace_payload") or {}
         ).get("environment_context") or {}
         state.proto_self_context["embodied_writeback"] = embodied_writeback
+        state.proto_self_context["self_integration_delta"] = idle_result.get("self_integration_delta") or {}
+        state.proto_self_context["cross_axis_priority_snapshot"] = (
+            idle_result.get("cross_axis_priority_snapshot") or {}
+        )
+        state.proto_self_context["proposal_conflict_snapshot"] = (
+            idle_result.get("proposal_conflict_snapshot") or {}
+        )
+        state.proto_self_context["integrated_policy_hints"] = idle_result.get("integrated_policy_hints") or {}
+        state.proto_self_context["integrated_tendency_proposal"] = idle_result.get("integrated_tendency_proposal")
+        state.proto_self_context["axis_arbitration_hints"] = idle_result.get("axis_arbitration_hints") or {}
+        state.proto_self_context["integration_audit_entries"] = idle_result.get("integration_audit_entries") or []
+        state.proto_self_context["self_integration_writeback_candidate"] = (
+            idle_result.get("self_integration_writeback_candidate")
+        )
+        state.proto_self_context["selfhood_integration_context"] = (
+            idle_result.get("trace_payload") or {}
+        ).get("selfhood_integration_context") or idle_result.get("selfhood_integration_context") or {}
+        state.proto_self_context["selfhood_integration_writeback"] = selfhood_integration_writeback
         if idle_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = idle_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = idle_result.get("policy_hint", {}).get("governor_hint")
@@ -2943,6 +3439,7 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
             embodied_self_store=self.embodied_self_store,
+            selfhood_integration_store=self.selfhood_integration_store,
         )
         if not developmental_event:
             return None
@@ -2965,6 +3462,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         embodied_writeback = self._apply_embodied_self_writeback(
+            proto_self_result=developmental_result,
+            state=state,
+        )
+        selfhood_integration_writeback = self._apply_selfhood_integration_writeback(
             proto_self_result=developmental_result,
             state=state,
         )
@@ -3046,6 +3547,30 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_result.get("trace_payload") or {}
         ).get("environment_context") or {}
         state.proto_self_context["embodied_writeback"] = embodied_writeback
+        state.proto_self_context["self_integration_delta"] = developmental_result.get("self_integration_delta") or {}
+        state.proto_self_context["cross_axis_priority_snapshot"] = (
+            developmental_result.get("cross_axis_priority_snapshot") or {}
+        )
+        state.proto_self_context["proposal_conflict_snapshot"] = (
+            developmental_result.get("proposal_conflict_snapshot") or {}
+        )
+        state.proto_self_context["integrated_policy_hints"] = (
+            developmental_result.get("integrated_policy_hints") or {}
+        )
+        state.proto_self_context["integrated_tendency_proposal"] = (
+            developmental_result.get("integrated_tendency_proposal")
+        )
+        state.proto_self_context["axis_arbitration_hints"] = developmental_result.get("axis_arbitration_hints") or {}
+        state.proto_self_context["integration_audit_entries"] = (
+            developmental_result.get("integration_audit_entries") or []
+        )
+        state.proto_self_context["self_integration_writeback_candidate"] = (
+            developmental_result.get("self_integration_writeback_candidate")
+        )
+        state.proto_self_context["selfhood_integration_context"] = (
+            developmental_result.get("trace_payload") or {}
+        ).get("selfhood_integration_context") or developmental_result.get("selfhood_integration_context") or {}
+        state.proto_self_context["selfhood_integration_writeback"] = selfhood_integration_writeback
         state.proto_self_context["background_thought_candidates"] = list(
             developmental_summary.get("background_thought_candidates") or []
         )
@@ -3066,6 +3591,12 @@ class RuntimeV2ProtoSelfRuntime:
                 "embodied_writeback_gate_verdict": (embodied_writeback or {}).get("decision", {}).get("gate_verdict"),
                 "embodied_proposal_candidate_count": len(
                     developmental_result.get("repair_or_stabilize_proposal_candidates") or []
+                ),
+                "selfhood_integration_writeback_gate_verdict": (
+                    selfhood_integration_writeback or {}
+                ).get("decision", {}).get("gate_verdict"),
+                "self_integration_writeback_candidate_present": bool(
+                    developmental_result.get("self_integration_writeback_candidate")
                 ),
             },
         )

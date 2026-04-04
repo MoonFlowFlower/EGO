@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP14
-status: proto_self_contract_completed
-current_layer: proto_self_contract
-main_chain_status: formal_owner_only_not_runtime_wired
-enabled_status: owner_infra_plus_proto_self_contract_only
+status: runtime_bridge_completed
+current_layer: runtime_bridge
+main_chain_status: egocore_runtime_bridge_connected
+enabled_status: owner_infra_plus_proto_self_contract_plus_runtime_bridge
 trigger_evidence:
   - WP13/MVP18 is the predecessor and remains the last completed maintenance upstream
   - WP14 authority package now exists under Tasks/*
@@ -25,18 +25,22 @@ trigger_evidence:
   - KernelOutputV2 and trace payload now expose self_integration_delta, cross_axis_priority_snapshot, proposal_conflict_snapshot, integrated_policy_hints, integrated_tendency_proposal, axis_arbitration_hints, integration_audit_entries, self_integration_writeback_candidate, and trace_payload.selfhood_integration_context
   - proposal discipline remains proposal_only true, behavioral_authority none, required_gate self_integration_writeback_gate, and no upstream owner mutation path
   - scoped contract tests passed in OpenEmotion/tests/mvp19/test_selfhood_integration_proto_self_integration.py
+  - EgoCore runtime_v2 now injects runtime_summary.selfhood_integration_context from the formal owner projection into the current mainline
+  - current runtime mainline now records self_integration_delta, cross_axis_priority_snapshot, proposal_conflict_snapshot, integrated_policy_hints, integrated_tendency_proposal, axis_arbitration_hints, integration_audit_entries, self_integration_writeback_candidate, selfhood_integration_context, and selfhood_integration_writeback in state.proto_self_context
+  - selfhood integration writeback remains gated to self_integration_writeback_gate with proposal_only discipline and behavioral_authority none
+  - scoped EgoCore runtime bridge tests passed in EgoCore/tests/test_runtime_v2_proto_self_runtime.py
 verification_level: V3
 evidence_level: E3
-current_blocker: "none on the T20 proto-self contract axis"
-next_minimal_closure_action: "start T30_EGOCORE_RUNTIME_BRIDGE without upgrading the claim ceiling beyond T20"
+current_blocker: "none on the T30 runtime bridge axis"
+next_minimal_closure_action: "start T40_LEGACY_DEMOTION_AND_COMPAT_MAP without upgrading the claim ceiling beyond T30"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP14/MVP19` 的 authority 仍保持冻结，且 `T10_FORMAL_OWNER_PACKAGE` 与 `T20_PROTO_SELF_CONTRACT_INTEGRATION` 已完成
-- 条件性完成：当前只覆盖 authority + owner infra + `proto_self_v2` bounded contract 这一条轴，不覆盖 EgoCore runtime bridge、causal proof、controlled observation、或 closeout
-- 不可宣称完成：`MVP19` 已实现、已接当前 runtime 主链、已拿到 `E4/E5`、已开始 observation、或已进入 maintenance mode
-- 后续处理：下一步只允许推进 `T30_EGOCORE_RUNTIME_BRIDGE`；在此之前不得抬高 claim ceiling 超过 `T20`
+- 可宣称完成：`WP14/MVP19` 的 authority 仍保持冻结，且 `T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION` 与 `T30_EGOCORE_RUNTIME_BRIDGE` 已完成
+- 条件性完成：当前只覆盖 authority + owner infra + `proto_self_v2` bounded contract + EgoCore runtime thin bridge 这一条轴，不覆盖 legacy demotion、causal proof、controlled observation、或 closeout
+- 不可宣称完成：`MVP19` 已拿到 `E4/E5`、已开始 observation、或已进入 maintenance mode
+- 后续处理：下一步只允许推进 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`；在此之前不得抬高 claim ceiling 超过 `T30`
 
 ## 边界提醒
 

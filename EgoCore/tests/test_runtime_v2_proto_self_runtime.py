@@ -30,6 +30,10 @@ from openemotion.endogenous_drives import EndogenousDriveStore
 from openemotion.endogenous_drives.reducers import seed_default_state
 from openemotion.reflective_self import ReflectiveSelfOwner, ReflectiveSelfStore, ReflectionTargetType
 from openemotion.proto_self_v2.seed_schemas import SEED_SUBJECT_PROFILE
+from openemotion.selfhood_integration import (
+    SelfhoodIntegrationOwner,
+    SelfhoodIntegrationStore,
+)
 from openemotion.social_self import (
     BoundaryMode as SocialBoundaryMode,
     CommitmentStatus as SocialCommitmentStatus,
@@ -486,6 +490,71 @@ def test_v2_events_inject_formal_embodied_self_context_and_environment_context(t
     assert ingress_event["runtime_summary"]["environment_context"]["promotion_budget"] == "controlled_axis"
     assert finalized_event is not None
     assert finalized_event["runtime_summary"]["embodied_self_context"]["owner_revision"] == 1
+
+
+def test_v2_events_inject_formal_selfhood_integration_context(tmp_path):
+    store = SelfhoodIntegrationStore(base_dir=tmp_path)
+    owner = SelfhoodIntegrationOwner(store=store)
+    owner.set_integration_state(
+        posture="review",
+        dominant_pressure_axis="embodied_self",
+        stability_bias=0.72,
+        integration_confidence=0.63,
+        active_axis_count=4,
+        rationale_summary="bounded integration",
+        source_refs=["trace:selfhood_seed"],
+    )
+    owner.set_cross_axis_priority_state(
+        selected_priority="review",
+        stabilize_weight=0.62,
+        conserve_weight=0.67,
+        guard_weight=0.59,
+        review_weight=0.71,
+        repair_weight=0.38,
+        grow_weight=0.21,
+        reflective_modifier=0.12,
+        priority_reason="hold under review",
+        upstream_pressure_sources=["self_model", "embodied_self"],
+        source_refs=["trace:selfhood_seed"],
+    )
+    owner.propose_integrated_tendency(
+        tendency_label="review_first_integration",
+        priority_mode="review",
+        proposed_effects={"policy_hint": {"self_integration_priority": "review"}},
+        justification="bounded integration review",
+        source_refs=["trace:selfhood_seed"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:selfhood_seed")
+
+    state = RuntimeV2State(session_id="session:test")
+    state.current_goal = "verify_selfhood_bridge"
+    state.ingress_context = {"proto_self_version": "v2"}
+    result = RuntimeV2TurnResult(
+        status="completed_verified",
+        state=state,
+        reply=RuntimeV2Reply(reply_text="已完成", delivery_kind="final", status="completed_verified"),
+    )
+
+    ingress_event = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_selfhood_ctx_ingress",
+        source="telegram",
+        user_input="帮我整理 selfhood integration bridge",
+        state=state,
+        selfhood_integration_store=store,
+    )
+    finalized_event = build_finalized_result_event(
+        session_id="session:test",
+        turn_id="turn_selfhood_ctx_finalized",
+        result=result,
+        state=state,
+        selfhood_integration_store=store,
+    )
+
+    assert ingress_event["runtime_summary"]["selfhood_integration_context"]["schema_version"] == "mvp19-owner-v1"
+    assert ingress_event["runtime_summary"]["selfhood_integration_context"]["owner_revision"] == 1
+    assert finalized_event is not None
+    assert finalized_event["runtime_summary"]["selfhood_integration_context"]["owner_revision"] == 1
 
 
 def test_process_ingress_applies_governed_self_model_writeback(tmp_path):
@@ -1214,6 +1283,271 @@ def test_process_ingress_rejects_embodied_writeback_behavioral_authority_escalat
     assert saved is not None
     assert saved.owner_revision == 1
     assert len(saved.proposal_history) == 0
+
+
+def test_process_ingress_applies_governed_selfhood_integration_writeback_without_authority_promotion(tmp_path):
+    store = SelfhoodIntegrationStore(base_dir=tmp_path)
+    owner = SelfhoodIntegrationOwner(store=store)
+    owner.set_integration_state(
+        posture="review",
+        dominant_pressure_axis="maintenance",
+        stability_bias=0.68,
+        integration_confidence=0.57,
+        active_axis_count=4,
+        rationale_summary="baseline cross-axis review",
+        source_refs=["trace:selfhood_init"],
+    )
+    owner.set_cross_axis_priority_state(
+        selected_priority="review",
+        stabilize_weight=0.58,
+        conserve_weight=0.61,
+        guard_weight=0.56,
+        review_weight=0.69,
+        repair_weight=0.36,
+        grow_weight=0.22,
+        reflective_modifier=0.11,
+        priority_reason="baseline review priority",
+        upstream_pressure_sources=["self_model", "endogenous_drives"],
+        source_refs=["trace:selfhood_init"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:selfhood_init")
+
+    class Adapter:
+        def __init__(self):
+            self.last_event = None
+
+        def handle_event(self, event):
+            self.last_event = event
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {"self_integration_priority": "review"},
+                "response_tendency": {"preferred_mode": "defer", "certainty_bound": "bounded"},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "self_integration_delta": {
+                    "active_axis_count": 5,
+                    "selected_priority": "review",
+                    "dominant_pressure_axis": "embodied_self",
+                    "integration_confidence": 0.64,
+                    "stability_bias": 0.73,
+                    "surface_reasons": ["self_model_low_confidence", "embodied_pressure_high"],
+                },
+                "cross_axis_priority_snapshot": {
+                    "selected_priority": "review",
+                    "stabilize_weight": 0.77,
+                    "conserve_weight": 0.74,
+                    "guard_weight": 0.72,
+                    "review_weight": 0.8,
+                    "repair_weight": 0.46,
+                    "grow_weight": 0.19,
+                    "reflective_modifier": 0.16,
+                    "priority_reason": "hold cross-axis proposals under bounded review",
+                    "upstream_pressure_sources": ["self_model", "embodied_self", "social_self"],
+                    "active_axes": ["self_model", "embodied_self", "social_self"],
+                },
+                "proposal_conflict_snapshot": {
+                    "highest_severity": "medium",
+                    "conflict_count": 2,
+                    "unresolved_conflict_refs": ["conflict:self_model_vs_growth", "conflict:boundary_vs_repair"],
+                    "blocked_axes": ["developmental_self"],
+                    "resolution_posture": "review",
+                    "source_refs": ["self_model_low_confidence", "embodied_pressure_high"],
+                },
+                "integrated_policy_hints": {
+                    "selected_priority": "review",
+                    "dominant_pressure_axis": "embodied_self",
+                    "stability_bias": 0.73,
+                    "conflict_severity": "medium",
+                    "active_axes": ["self_model", "embodied_self", "social_self"],
+                    "required_gate": "self_integration_writeback_gate",
+                    "behavioral_authority": "none",
+                    "proposal_only": True,
+                },
+                "integrated_tendency_proposal": {
+                    "proposal_id": "self_integration:review:1:3",
+                    "tendency_label": "review_first_integration",
+                    "priority_mode": "review",
+                    "policy_mode": "stability_first",
+                    "proposed_effects": {"integrated_policy_hints": {"selected_priority": "review"}},
+                    "justification": "bounded selfhood integration under review",
+                    "required_gate": "self_integration_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "none",
+                    "requested_effects": [],
+                    "source_refs": ["self_model_low_confidence", "embodied_pressure_high"],
+                    "status": "proposed",
+                },
+                "axis_arbitration_hints": {
+                    "self_model": {
+                        "hint_id": "axis_hint:self_model:review",
+                        "axis_name": "self_model",
+                        "recommendation": "hold broad growth until confidence recovers",
+                        "priority_weight": 0.83,
+                        "guardrail_summary": "advisory_only_no_upstream_owner_mutation",
+                        "advisory_only": True,
+                        "source_refs": ["self_model_low_confidence"],
+                    },
+                    "embodied_self": {
+                        "hint_id": "axis_hint:embodied_self:review",
+                        "axis_name": "embodied_self",
+                        "recommendation": "guard boundary before broader coupling",
+                        "priority_weight": 0.79,
+                        "guardrail_summary": "advisory_only_no_upstream_owner_mutation",
+                        "advisory_only": True,
+                        "source_refs": ["embodied_pressure_high"],
+                    },
+                },
+                "integration_audit_entries": [
+                    {
+                        "kind": "integration_priority_selected",
+                        "selected_priority": "review",
+                        "dominant_pressure_axis": "embodied_self",
+                        "source_refs": ["self_model_low_confidence", "embodied_pressure_high"],
+                    }
+                ],
+                "self_integration_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "required_gate": "self_integration_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "none",
+                    "selected_priority": "review",
+                    "dominant_pressure_axis": "embodied_self",
+                    "conflict_severity": "medium",
+                    "active_axes": ["self_model", "embodied_self", "social_self"],
+                    "owner_revision": 1,
+                },
+                "trace_payload": {
+                    "update_packet_hash": "hash_selfhood_bridge",
+                    "selfhood_integration_context": {
+                        "contract_version": "mvp19.selfhood_integration_contract.v1",
+                        "selected_priority": "review",
+                    },
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), selfhood_integration_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_selfhood_bridge",
+        source="telegram",
+        user_input="把 selfhood integration bridge 接到正式主链",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert runtime.adapter.last_event["runtime_summary"]["selfhood_integration_context"]["owner_revision"] == 1
+    assert state.proto_self_context["self_integration_delta"]["selected_priority"] == "review"
+    assert state.proto_self_context["self_integration_writeback_candidate"]["behavioral_authority"] == "none"
+    assert state.proto_self_context["selfhood_integration_context"]["selected_priority"] == "review"
+    assert state.proto_self_context["selfhood_integration_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+    assert saved is not None
+    assert saved.owner_revision == 2
+    assert saved.integrated_tendency_proposal is not None
+    assert saved.integrated_tendency_proposal.behavioral_authority == "none"
+    assert saved.integrated_tendency_proposal.status == "held"
+    assert "self_model" in saved.axis_arbitration_hints
+    assert len(store.load_revision_log("openemotion")) == 2
+
+
+def test_process_ingress_rejects_selfhood_integration_behavioral_authority_escalation(tmp_path):
+    store = SelfhoodIntegrationStore(base_dir=tmp_path)
+    owner = SelfhoodIntegrationOwner(store=store)
+    owner.set_integration_state(
+        posture="review",
+        dominant_pressure_axis="stability",
+        stability_bias=0.61,
+        integration_confidence=0.58,
+        active_axis_count=3,
+        rationale_summary="baseline selfhood integration",
+        source_refs=["trace:selfhood_reject_init"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:selfhood_reject_init")
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {},
+                "response_tendency": {},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "self_integration_delta": {
+                    "active_axis_count": 3,
+                    "selected_priority": "guard",
+                    "dominant_pressure_axis": "embodied_self",
+                    "integration_confidence": 0.63,
+                    "stability_bias": 0.77,
+                    "surface_reasons": ["boundary_pressure"],
+                },
+                "cross_axis_priority_snapshot": {
+                    "selected_priority": "guard",
+                    "stabilize_weight": 0.71,
+                    "conserve_weight": 0.69,
+                    "guard_weight": 0.82,
+                    "review_weight": 0.66,
+                    "repair_weight": 0.28,
+                    "grow_weight": 0.11,
+                    "reflective_modifier": 0.08,
+                    "priority_reason": "guard boundary first",
+                    "upstream_pressure_sources": ["embodied_self"],
+                    "active_axes": ["embodied_self"],
+                },
+                "proposal_conflict_snapshot": {
+                    "highest_severity": "low",
+                    "conflict_count": 1,
+                    "unresolved_conflict_refs": ["conflict:boundary"],
+                    "blocked_axes": [],
+                    "resolution_posture": "review",
+                    "source_refs": ["boundary_pressure"],
+                },
+                "integrated_policy_hints": {
+                    "selected_priority": "guard",
+                    "dominant_pressure_axis": "embodied_self",
+                    "stability_bias": 0.77,
+                    "conflict_severity": "low",
+                    "active_axes": ["embodied_self"],
+                    "required_gate": "self_integration_writeback_gate",
+                    "behavioral_authority": "none",
+                    "proposal_only": True,
+                },
+                "self_integration_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "required_gate": "self_integration_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "reply",
+                    "selected_priority": "guard",
+                    "dominant_pressure_axis": "embodied_self",
+                    "conflict_severity": "low",
+                    "active_axes": ["embodied_self"],
+                    "owner_revision": 1,
+                },
+                "trace_payload": {"update_packet_hash": "hash_selfhood_reject"},
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), selfhood_integration_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_selfhood_reject",
+        source="telegram",
+        user_input="不要让 selfhood integration 越权",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert state.proto_self_context["selfhood_integration_writeback"]["decision"]["gate_verdict"] == "reject"
+    assert saved is not None
+    assert saved.owner_revision == 1
+    assert saved.integrated_tendency_proposal is None
 
 
 def test_process_ingress_rejects_social_writeback_behavioral_authority_escalation(tmp_path):

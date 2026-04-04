@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: proto_self_contract_completed
+status: runtime_bridge_completed
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP19_task_plan.md"
 predecessor: "WP13/MVP18"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP14 / MVP19 Cross-Axis Self-Integration / Self-Maintenance Arbitration"
-claim_ceiling: "T20 only / proto_self_contract_completed"
+claim_ceiling: "T30 only / runtime_bridge_completed"
 ```
 
 ---
@@ -51,22 +51,22 @@ claim_ceiling: "T20 only / proto_self_contract_completed"
 
 ## 当前状态
 
-- 执行包状态：`proto_self_contract_completed`
+- 执行包状态：`runtime_bridge_completed`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
 - `T20` proto_self_v2 contract：`completed`
-- `T30` EgoCore runtime bridge：`pending`
+- `T30` EgoCore runtime bridge：`completed`
 - `T40` legacy demotion / compat map：`pending`
 - `T50` causal validation：`pending`
 - `T60` single controlled observation：`pending`
 - `T70` batch controlled observation / aggregate：`pending`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
-- 主链接线：`formal_owner_only_not_runtime_wired`
-- 启用状态：`owner_infra_plus_proto_self_contract_only`
-- 当前 blocker：`none on the T20 proto-self contract axis`
-- 当前最小动作：`T30_EGOCORE_RUNTIME_BRIDGE`
+- 主链接线：`egocore_runtime_bridge_connected`
+- 启用状态：`owner_infra_plus_proto_self_contract_plus_runtime_bridge`
+- 当前 blocker：`none on the T30 runtime bridge axis`
+- 当前最小动作：`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`
 
 ## 当前已证实内容
 
@@ -102,10 +102,16 @@ claim_ceiling: "T20 only / proto_self_contract_completed"
 - 所有 `WP14` outputs 仍保持 `proposal_only + behavioral_authority = none + required_gate = self_integration_writeback_gate`
 - `OpenEmotion/tests/mvp19/test_selfhood_integration_proto_self_integration.py` 已定向证明 stability-first bounded arbitration、repair/growth priority selection、proposal-only discipline、legacy-not-promoted 与 developmental tick 下的相邻 contract safety
 
+## T30 已证实内容
+
+- `EgoCore/app/runtime_v2/proto_self_runtime.py` 现在会把 `runtime_summary.selfhood_integration_context` 注入当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 正式主链
+- 当前 runtime thin bridge 会把 `self_integration_delta / cross_axis_priority_snapshot / proposal_conflict_snapshot / integrated_policy_hints / integrated_tendency_proposal / axis_arbitration_hints / integration_audit_entries / self_integration_writeback_candidate / selfhood_integration_context` 记录进 `state.proto_self_context`
+- `selfhood_integration_writeback` 当前已通过宿主侧 gate 接回 `OpenEmotion/openemotion/selfhood_integration/*` formal owner，且仍保持 `proposal_only + behavioral_authority = none + required_gate = self_integration_writeback_gate`
+- `EgoCore/tests/test_runtime_v2_proto_self_runtime.py` 已定向证明 current runtime bridge 成立，且不会把 `WP14` proposal-only 输出抬高成 direct reply / tool / transport authority
+
 ## 当前不做
 
 - 不宣称 owner/runtime 已实现
-- 不宣称当前 runtime mainline 已消费 `WP14`
 - 不宣称 `E4/E5`
 - 不宣称 observation started
 - 不宣称 maintenance mode
