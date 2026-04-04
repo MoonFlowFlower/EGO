@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: legacy_demotion_complete
+status: causal_proof_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP17_task_plan.md"
 predecessor: "WP11/MVP16"
@@ -55,10 +55,11 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - proto_self_v2 contract：`T20 completed`
 - EgoCore runtime bridge：`T30 completed`
 - legacy demotion / compat map：`T40 completed`
+- causal validation：`T50 completed`
 - 主链接线：`current_runtime_mainline_connected`
 - 启用状态：`bounded_runtime_bridge_connected`
-- 当前 blocker：`causal proof / controlled observation not started`
-- 当前最小动作：`T50_CAUSAL_VALIDATION`
+- 当前 blocker：`controlled observation not started`
+- 当前最小动作：`T60_CONTROLLED_OBSERVATION_SINGLE`
 
 ## T10 已证实内容
 
@@ -89,6 +90,19 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - 旧 `relationship_context / social_chat_handler / repair_context_manager / openemotion_bridge / emotiond.{api,db,state,models,other_minds,persistence,offline_rollouts,memory_legacy}` 现仅以 `LEGACY_REFERENCE_REGISTER.md` 中登记的 `reference-only / input-only` 身份存在，不再构成当前 `WP12` formal owner 或 current-runtime proof
 - `OpenEmotion/tools/verify_mvp17_mainline_wiring.py` 已验证：formal owner 路径存在、当前 runtime 主链仍读取 `social_self` bounded contract、legacy register 完整且所列 historical surfaces 仍存在
 - `OpenEmotion/tests/mvp17/test_mainline_reference_demotion.py` 已验证 no-second-truth 约束与 current-runtime social consumer 的唯一性
+
+## T50 已证实内容
+
+- `OpenEmotion/tests/mvp17/test_social_causal_formal_proof.py` 已通过 4 组 paired intervention/control proof
+- 当前已证明：
+  - negative trust drift 会抬高 guarded social weighting
+  - commitment breach 会抬高 commitment / repair guard
+  - boundary caution 会改变 bounded boundary weighting
+  - 仅 social event wording 改写而无结构化指标变化时，不会制造假的 downstream behavioral proof
+- `OpenEmotion/tools/run_mvp17_causal_validation.py` 已生成当前 causal proof artifacts：
+  - `OpenEmotion/artifacts/mvp17/mvp17_causal_validation_current.json`
+  - `OpenEmotion/artifacts/mvp17/mvp17_causal_validation_current.md`
+- 当前 causal report 为 `status = pass`、`verification_level = V3`、`evidence_level = E3`、`pair_count = 4`、`passed_count = 4`
 
 ## 当前不做
 

@@ -13,7 +13,7 @@
 
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
-- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP11/MVP16`，`WP12/MVP17` 已完成 authority freeze、`T10` formal owner package、`T20` proto-self social contract integration、`T30` EgoCore runtime bridge 与 `T40` legacy demotion / compat map，当前下一步是 `T50` causal proof，不是 live social autonomy。
+- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP11/MVP16`，`WP12/MVP17` 已完成 authority freeze、`T10` formal owner package、`T20` proto-self social contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map 与 `T50` causal proof，当前下一步是 `T60` single controlled observation，不是 live social autonomy。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -809,14 +809,14 @@
 - `WP12` 文档没有把 bounded social self 漂成 live social autonomy、direct reply authority 或 broader transport maturity
 - 证据层级目标：E0 -> E1（authority / contract freeze）
 
-**当前状态（2026-04-03）**
+**当前状态（2026-04-04）**
 - `WP12/MVP17` 当前层级是 `implementation`
-- 当前状态是 `authority_frozen + runtime_bridge_connected + legacy_demotion_complete`
+- 当前状态是 `authority_frozen + runtime_bridge_connected + legacy_demotion_complete + causal_proof_complete`
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/social_self/*`
 - 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
 - 当前 phase 1 只冻结 `trust / commitment / repair`，不实现更宽的 social self
-- 当前已证实：`OpenEmotion/openemotion/social_self/*` 的 owner / store / governance / replay 基础、`proto_self_v2` bounded social contract、EgoCore runtime thin bridge，以及 legacy social / relation surfaces 的 reference-only / input-only demotion 已落地
-- 当前 blocker：causal proof / controlled observation 尚未完成；下一步是 `T50_CAUSAL_VALIDATION`
+- 当前已证实：`OpenEmotion/openemotion/social_self/*` 的 owner / store / governance / replay 基础、`proto_self_v2` bounded social contract、EgoCore runtime thin bridge、legacy social / relation surfaces 的 reference-only / input-only demotion，以及 trust / commitment / boundary shifts 对 bounded downstream weighting 的 causal proof 已落地
+- 当前 blocker：controlled observation 尚未完成；下一步是 `T60_CONTROLLED_OBSERVATION_SINGLE`
 
 ---
 
