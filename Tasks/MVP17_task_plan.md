@@ -1,6 +1,6 @@
 # MVP17 / WP12 Social Self / Other-Modeling
 
-> 状态：WP12 authority_frozen + T10/T20/T30 completed
+> 状态：WP12 observation_started + T10/T20/T30/T40/T50/T60 completed
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP12`
 > predecessor: `WP11/MVP16`
@@ -141,10 +141,10 @@
 - `WP12` may not reinterpret `WP11 controlled E5` as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`implementation`
-- 当前状态：`authority_frozen + runtime_bridge_connected + legacy_demotion_complete + causal_proof_complete`
-- 当前 blocker：`controlled observation is not completed yet`
-- 当前最小闭环动作：只做 `T60_CONTROLLED_OBSERVATION_SINGLE`，不 reopen `WP11`
+- 当前层级：`observation`
+- 当前状态：`observation_started`
+- 当前 blocker：`batch controlled observation and aggregate are not completed yet`
+- 当前最小闭环动作：只做 `T70_BATCH_OBSERVATION_AND_AGGREGATE`，不 reopen `WP11`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP12: Social Self / Other-Modeling`
@@ -165,6 +165,7 @@
 - `T30` 完成只证明当前 EgoCore runtime thin bridge 已接入正式主链，不证明 `E4/E5` controlled observation
 - `T40` 完成只证明 historical social / relation surfaces 已 reference-only / input-only 化，并通过 no-second-truth verifier；不证明 causal influence 或 controlled observation
 - `T50` 完成只证明 social proposals 会改变 bounded downstream weighting，并留下 `V3/E3` causal proof；不证明 controlled observation
+- `T60` 完成只证明当前 formal owner + current runtime mainline 已拿到首个 controlled `V4/E4` single observation；不证明重复样本稳定性、`E5`、或维护态
 - 未拿到当前 formal owner + current mainline `E4` 之前，不得宣称 `WP12` 生效
 - 未拿到重复样本 `E5` 之前，不得宣称 `WP12` 稳定解决或可收口
 - 即使未来达到 controlled `E5`，也不得把 `WP12` 解释为 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity

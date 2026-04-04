@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP12
-status: causal_proof_complete
-current_layer: implementation
-main_chain_status: current_runtime_mainline_connected
-enabled_status: bounded_runtime_bridge_connected
+status: observation_started
+current_layer: observation
+main_chain_status: formal_owner_writeback_observed
+enabled_status: controlled_mainline_observation
 trigger_evidence:
   - WP11/MVP16 controlled observation V5/E5 pass
   - WP11 remains maintenance_mode
@@ -19,17 +19,18 @@ trigger_evidence:
   - current mainline wiring verifier confirms the formal owner path is active while legacy surfaces stay demoted
   - paired causal validation proves trust / commitment / boundary shifts alter bounded downstream social weighting
   - text-only social event wording changes do not create false downstream behavioral proof
-verification_level: V3
-evidence_level: E3
-current_blocker: "Controlled observation is still pending; no E4/E5 social mainline evidence yet"
-next_minimal_closure_action: "implement T60_CONTROLLED_OBSERVATION_SINGLE before batch observation work"
+  - single controlled observation report passes with social_writeback_gate allow_writeback and behavioral_authority none
+verification_level: V4
+evidence_level: E4
+current_blocker: "Batch controlled observation and aggregate are still pending; no E5 stability claim yet"
+next_minimal_closure_action: "implement T70_BATCH_OBSERVATION_AND_AGGREGATE before closeout work"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP12/MVP17` 的 authority / contract / boundary freeze 已完成，且 `T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION`、`T30_EGOCORE_RUNTIME_BRIDGE`、`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`、`T50_CAUSAL_VALIDATION` 已完成
-- 条件性完成：`MVP17` 已接入当前 EgoCore runtime 主链的 bounded social bridge，legacy social / relation surfaces 已完成 demotion，且 social proposals 已被证明会改变 bounded downstream weighting；但尚未经过 controlled observation
-- 不可宣称完成：`MVP17` 已有 `E4/E5` 行为证据、已进入观察期、或已收口
+- 可宣称完成：`WP12/MVP17` 已完成 `T10/T20/T30/T40/T50/T60`，并已拿到首个 controlled mainline `V4/E4` social proposal-only writeback 样本
+- 条件性完成：`MVP17` 已进入 `observation_started`，formal owner + current runtime mainline 的 bounded social bridge 已被单样本 controlled observation 证实；但重复样本和 aggregate 还没完成
+- 不可宣称完成：`MVP17` 已达 `E5`、已收口、已进入 `maintenance_mode`、或已具备 live social autonomy / direct reply authority / broader transport claims
 - 后续处理：只能按 `cards/` 串行执行，不得回头扩写 `WP12` authority 包
 
 ## 边界提醒
@@ -37,5 +38,5 @@ next_minimal_closure_action: "implement T60_CONTROLLED_OBSERVATION_SINGLE before
 - `WP11` 的轴内 `E5` 不是 `WP12` 的实现证据
 - `WP11` 新样本只写入其 maintenance ledger
 - provider `429/401` 仍按外部预算层风险记录
-- `social_self/*` 当前已证明 owner 层、`proto_self_v2` bounded consumer、EgoCore runtime thin bridge、旧 social / relation surfaces 的 reference-only / input-only demotion，以及 trust / commitment / boundary 变化会改变 bounded downstream weighting；仍不证明社会行为生效或观察期成立
+- `social_self/*` 当前已证明 owner 层、`proto_self_v2` bounded consumer、EgoCore runtime thin bridge、旧 social / relation surfaces 的 reference-only / input-only demotion、trust / commitment / boundary 变化对 bounded downstream weighting 的 causal 影响，以及单样本 controlled mainline social writeback；仍不证明 `E5` 稳定性或维护态成立
 - 不得出现“因为 `WP11` 已 pass，所以 social self 可以直接外发 / 直接拿 transport claim”这类边界回退

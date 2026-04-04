@@ -1,0 +1,308 @@
+{
+  "commitment_state": {
+    "commitment_1775285277_2fa6be69": {
+      "commitment_id": "commitment_1775285277_2fa6be69",
+      "counterpart_id": "telegram:8420019401",
+      "due_hint": null,
+      "last_updated": 1775285277.5895166,
+      "source_refs": [
+        "mvp17:controlled_bootstrap"
+      ],
+      "status": "held",
+      "summary": "follow through on repair review without expanding authority"
+    },
+    "social_commitment:session:mvp17:controlled:20260404_014757_turn_a5e2a196": {
+      "commitment_id": "social_commitment:session:mvp17:controlled:20260404_014757_turn_a5e2a196",
+      "counterpart_id": "telegram:8420019401",
+      "due_hint": null,
+      "last_updated": 1775285278.4049096,
+      "source_refs": [
+        "258037920985436ae8b680a2ccab202127600e1e5092078d086d669ecc8441d6"
+      ],
+      "status": "breached",
+      "summary": "proto_self social commitment review"
+    },
+    "social_commitment:session:mvp17:controlled:20260404_014757_turn_e7856869": {
+      "commitment_id": "social_commitment:session:mvp17:controlled:20260404_014757_turn_e7856869",
+      "counterpart_id": "telegram:8420019401",
+      "due_hint": null,
+      "last_updated": 1775285292.259395,
+      "source_refs": [
+        "fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d"
+      ],
+      "status": "breached",
+      "summary": "proto_self social commitment review"
+    }
+  },
+  "governance_ledger": {
+    "governance_1775285278_03bfde3b": {
+      "created_at": 1775285278.4049897,
+      "details": {
+        "behavioral_authority": "none",
+        "proposal_candidate_count": 1,
+        "proposal_only": true,
+        "relation_candidate_count": 1,
+        "surface_reasons": [
+          "trust_drift",
+          "commitment_breach",
+          "unresolved_repair",
+          "boundary_caution",
+          "repair_outcome",
+          "relationship_strain"
+        ],
+        "trace_reference": "258037920985436ae8b680a2ccab202127600e1e5092078d086d669ecc8441d6"
+      },
+      "event_type": "social_writeback",
+      "gate_name": "social_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "governance_1775285278_03bfde3b",
+      "reference_id": "telegram:8420019401"
+    },
+    "governance_1775285292_2be2f184": {
+      "created_at": 1775285292.2594538,
+      "details": {
+        "behavioral_authority": "none",
+        "proposal_candidate_count": 1,
+        "proposal_only": true,
+        "relation_candidate_count": 1,
+        "surface_reasons": [
+          "trust_drift",
+          "commitment_breach",
+          "unresolved_repair",
+          "boundary_caution",
+          "repair_outcome",
+          "relationship_strain"
+        ],
+        "trace_reference": "fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d"
+      },
+      "event_type": "social_writeback",
+      "gate_name": "social_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "governance_1775285292_2be2f184",
+      "reference_id": "telegram:8420019401"
+    },
+    "persist_social_rev_000001": {
+      "created_at": 1775285277.620019,
+      "details": {
+        "persisted_at": 1775285277.6200101,
+        "trace_reference": "mvp17:controlled_bootstrap",
+        "update_source": "owner_bootstrap"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "social_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_social_rev_000001",
+      "reference_id": "social_rev_000001"
+    },
+    "persist_social_rev_000002": {
+      "created_at": 1775285278.448675,
+      "details": {
+        "persisted_at": 1775285278.4486687,
+        "trace_reference": "258037920985436ae8b680a2ccab202127600e1e5092078d086d669ecc8441d6",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "social_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_social_rev_000002",
+      "reference_id": "social_rev_000002"
+    },
+    "persist_social_rev_000003": {
+      "created_at": 1775285292.3106847,
+      "details": {
+        "persisted_at": 1775285292.3106785,
+        "trace_reference": "fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "social_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_social_rev_000003",
+      "reference_id": "social_rev_000003"
+    }
+  },
+  "identity_handle": "openemotion",
+  "last_revision_id": "social_rev_000003",
+  "other_model_state": {
+    "telegram:8420019401": {
+      "confidence": 0.68,
+      "counterpart_id": "telegram:8420019401",
+      "inferred_constraints": [
+        "bounded_authority_only"
+      ],
+      "inferred_preferences": {
+        "prefers_clarity": true
+      },
+      "last_updated": 1775285277.5894663,
+      "source_refs": [
+        "mvp17:controlled_bootstrap"
+      ]
+    }
+  },
+  "owner_revision": 3,
+  "relation_memory": {
+    "telegram:8420019401": {
+      "continuity_status": "strained",
+      "counterpart_id": "telegram:8420019401",
+      "interaction_role": "user",
+      "last_updated": 1775285292.2593656,
+      "relationship_summary": "proto_self social continuity review: commitment_breach",
+      "source_refs": [
+        "fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d"
+      ]
+    }
+  },
+  "repair_state": {
+    "repair_1775285278_854e1f65": {
+      "behavioral_authority": "none",
+      "counterpart_id": "telegram:8420019401",
+      "created_at": 1775285278.4049478,
+      "effect_scope": "proposal_only",
+      "issue_summary": "social_repair",
+      "justification": "proto_self social proposal from 258037920985436ae8b680a2ccab202127600e1e5092078d086d669ecc8441d6",
+      "proposal_id": "repair_1775285278_854e1f65",
+      "proposed_adjustment": {
+        "social_policy_hints": {
+          "boundary_mode": "cautious",
+          "commitment_guard": "strict",
+          "counterpart_id": "telegram:8420019401",
+          "relationship_continuity": "strained",
+          "repair_bias": "elevated",
+          "trust_bias": "guarded"
+        },
+        "social_self_delta": {
+          "counterpart_id": "telegram:8420019401",
+          "proposal_candidate_count": 1,
+          "relationship_continuity": "strained",
+          "surface_reasons": [
+            "trust_drift",
+            "commitment_breach",
+            "unresolved_repair",
+            "boundary_caution",
+            "repair_outcome",
+            "relationship_strain"
+          ]
+        },
+        "surface_reasons": [
+          "trust_drift",
+          "commitment_breach",
+          "unresolved_repair",
+          "boundary_caution",
+          "repair_outcome",
+          "relationship_strain"
+        ],
+        "trust_commitment_snapshot": {
+          "active_relations_count": 1,
+          "boundary_caution_max": 0.56,
+          "breached_commitment_count": 0,
+          "contract_version": "mvp17.social_contract.v1",
+          "counterpart_id": "telegram:8420019401",
+          "last_revision_id": "social_rev_000001",
+          "open_commitment_count": 1,
+          "owner_revision": 1,
+          "pending_repair_count": 0,
+          "relationship_continuity": "strained",
+          "trust_drift": -0.24,
+          "trust_signal_max": 0.72
+        }
+      },
+      "requested_effects": [],
+      "required_gate": "social_writeback_gate",
+      "source_refs": [
+        "258037920985436ae8b680a2ccab202127600e1e5092078d086d669ecc8441d6"
+      ],
+      "status": "held",
+      "updated_at": 1775285278.4049644
+    },
+    "repair_1775285292_e46ad46b": {
+      "behavioral_authority": "none",
+      "counterpart_id": "telegram:8420019401",
+      "created_at": 1775285292.2594278,
+      "effect_scope": "proposal_only",
+      "issue_summary": "social_repair",
+      "justification": "proto_self social proposal from fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d",
+      "proposal_id": "repair_1775285292_e46ad46b",
+      "proposed_adjustment": {
+        "social_policy_hints": {
+          "boundary_mode": "cautious",
+          "commitment_guard": "strict",
+          "counterpart_id": "telegram:8420019401",
+          "relationship_continuity": "strained",
+          "repair_bias": "elevated",
+          "trust_bias": "guarded"
+        },
+        "social_self_delta": {
+          "counterpart_id": "telegram:8420019401",
+          "proposal_candidate_count": 1,
+          "relationship_continuity": "strained",
+          "surface_reasons": [
+            "trust_drift",
+            "commitment_breach",
+            "unresolved_repair",
+            "boundary_caution",
+            "repair_outcome",
+            "relationship_strain"
+          ]
+        },
+        "surface_reasons": [
+          "trust_drift",
+          "commitment_breach",
+          "unresolved_repair",
+          "boundary_caution",
+          "repair_outcome",
+          "relationship_strain"
+        ],
+        "trust_commitment_snapshot": {
+          "active_relations_count": 1,
+          "boundary_caution_max": 0.56,
+          "breached_commitment_count": 1,
+          "contract_version": "mvp17.social_contract.v1",
+          "counterpart_id": "telegram:8420019401",
+          "last_revision_id": "social_rev_000002",
+          "open_commitment_count": 1,
+          "owner_revision": 2,
+          "pending_repair_count": 1,
+          "relationship_continuity": "strained",
+          "trust_drift": -0.24,
+          "trust_signal_max": 0.72
+        }
+      },
+      "requested_effects": [],
+      "required_gate": "social_writeback_gate",
+      "source_refs": [
+        "fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d"
+      ],
+      "status": "held",
+      "updated_at": 1775285292.2594342
+    }
+  },
+  "schema_version": "mvp17-owner-v1",
+  "social_boundary_state": {
+    "telegram:8420019401": {
+      "boundary_mode": "cautious",
+      "caution_level": 0.56,
+      "counterpart_id": "telegram:8420019401",
+      "last_updated": 1775285292.259386,
+      "reason": "proto_self_social_boundary:cautious",
+      "source_refs": [
+        "fdceb9dc1dc9979e487f2a7981b2da674cb0a46b54d1470144db27cbe3b5957d"
+      ]
+    }
+  },
+  "trust_state": {
+    "telegram:8420019401": {
+      "counterpart_id": "telegram:8420019401",
+      "last_updated": 1775285292.2593763,
+      "trust_basis": [
+        "trust_drift",
+        "commitment_breach",
+        "unresolved_repair",
+        "boundary_caution",
+        "repair_outcome",
+        "relationship_strain"
+      ],
+      "trust_delta": -0.24,
+      "trust_level": 0.72
+    }
+  }
+}

@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: causal_proof_complete
+status: observation_started
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP17_task_plan.md"
 predecessor: "WP11/MVP16"
@@ -56,10 +56,11 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - EgoCore runtime bridge：`T30 completed`
 - legacy demotion / compat map：`T40 completed`
 - causal validation：`T50 completed`
-- 主链接线：`current_runtime_mainline_connected`
-- 启用状态：`bounded_runtime_bridge_connected`
-- 当前 blocker：`controlled observation not started`
-- 当前最小动作：`T60_CONTROLLED_OBSERVATION_SINGLE`
+- single controlled observation：`T60 completed`
+- 主链接线：`formal_owner_writeback_observed`
+- 启用状态：`controlled_mainline_observation`
+- 当前 blocker：`batch controlled observation / aggregate pending`
+- 当前最小动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
 
 ## T10 已证实内容
 
@@ -103,6 +104,16 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
   - `OpenEmotion/artifacts/mvp17/mvp17_causal_validation_current.json`
   - `OpenEmotion/artifacts/mvp17/mvp17_causal_validation_current.md`
 - 当前 causal report 为 `status = pass`、`verification_level = V3`、`evidence_level = E3`、`pair_count = 4`、`passed_count = 4`
+
+## T60 已证实内容
+
+- `OpenEmotion/tests/mvp17/test_controlled_observation.py` 已通过，证明当前 controlled observation runner 会保留 `social_writeback_gate = allow_writeback`、`proposal_only_discipline_consistent = true`、`behavioral_authority_none = true` 与 `replay_valid = true`
+- `OpenEmotion/tools/run_mvp17_controlled_observation.py` 已生成当前 single-sample controlled mainline artifact：
+  - `OpenEmotion/artifacts/mvp17/mvp17_controlled_observation_current.json`
+  - `OpenEmotion/artifacts/mvp17/mvp17_controlled_observation_current.md`
+- 当前 single controlled observation report 为 `status = pass`、`verification_level = V4`、`evidence_level = E4`
+- 当前已证明：formal social owner writeback 已被真实 current runtime mainline 单样本观测到，且 writeback 仍保持 `proposal_only + behavioral_authority = none`
+- 当前仍未证明：重复样本稳定性、batch aggregate `E5`、maintenance mode、live autonomy、OpenEmotion direct reply authority、broader transport claims
 
 ## 当前不做
 

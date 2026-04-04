@@ -1,7 +1,7 @@
 # PROJECT_MEMORY.md
 
 > AIProject 核心记忆 - Claude Code 持续更新
-> 最后更新: 2026-04-03
+> 最后更新: 2026-04-04
 
 ---
 
@@ -224,6 +224,7 @@
 | 2026-04-03 | `WP12/MVP17` 已完成 `T30_EGOCORE_RUNTIME_BRIDGE`：`EgoCore/app/runtime_v2/proto_self_runtime.py` 现在会把 `runtime_summary.social_self_context` 与 `runtime_summary.social_context` 注入当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 主链，并把 `social_self_delta / relation_update_candidates / trust_commitment_snapshot / social_policy_hints / repair_proposal_candidates / social_writeback_candidate` 的 proposal-only 结果以 `behavioral_authority = none` 写回 `OpenEmotion/openemotion/social_self/*` formal owner。`EgoCore/tests/test_runtime_v2_proto_self_runtime.py` 的 social 定向用例与整文件 bridge 回归已通过；当前证据层级维持在 `V3/E3`，因为还没有 `T40/T50/T60` 的 demotion、causal proof 或 controlled observation，不能宣称 `E4/E5` 行为证据 |
 | 2026-04-04 | `WP12/MVP17` 已完成 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`：`Tasks/active/mvp17_social_self_other_modeling/LEGACY_REFERENCE_REGISTER.md` 现已逐项登记当前 social / relation 历史 surfaces 的 `reference-only / input-only` 分类，并新增 `OpenEmotion/tools/verify_mvp17_mainline_wiring.py` 与 `OpenEmotion/tests/mvp17/test_mainline_reference_demotion.py`，证明当前 formal owner path 仍是 `OpenEmotion/openemotion/social_self/*`、current runtime social consumer 仍是正式主链、legacy surfaces 没有重新进入 second truth。当前证据层级仍为 `V3/E3`；这只证明 demotion/no-second-truth 约束成立，不证明 causal influence 或 `E4/E5` observation |
 | 2026-04-04 | `WP12/MVP17` 已完成 `T50_CAUSAL_VALIDATION`：新增 `OpenEmotion/tests/mvp17/test_social_causal_formal_proof.py` 与 `OpenEmotion/tools/run_mvp17_causal_validation.py`，当前已通过 4 组 paired intervention/control proof，证明 negative trust drift、commitment breach、boundary caution 会改变 bounded downstream social weighting，而纯 social event wording 改写不会制造假的 behavioral effect。当前 causal artifact 见 `OpenEmotion/artifacts/mvp17/mvp17_causal_validation_current.md` / `.json`，结果为 `status = pass`、`verification_level = V3`、`evidence_level = E3`、`pair_count = 4`、`passed_count = 4`。这只证明 causal influence on bounded social weighting，不证明 `E4/E5` controlled observation |
+| 2026-04-04 | `WP12/MVP17` 已完成 `T60_CONTROLLED_OBSERVATION_SINGLE`：新增 `OpenEmotion/tools/run_mvp17_controlled_observation.py` 与 `OpenEmotion/tests/mvp17/test_controlled_observation.py`，并生成 `OpenEmotion/artifacts/mvp17/mvp17_controlled_observation_current.md` / `.json`。当前 single controlled observation 结果为 `status = pass`、`verification_level = V4`、`evidence_level = E4`、`social_writeback_gate = allow_writeback`、`social_proposal_present = true`、`proposal_only_discipline_consistent = true`、`behavioral_authority_none = true`、`bounded_influence_present = true`、`replay_valid = true`。这证明当前 formal owner + current runtime mainline 已拿到首个 social proposal-only writeback 主链样本；当前 blocker 已转为 **缺 batch observation / aggregate 的 `E5` 稳定性** |
 
 ---
 
