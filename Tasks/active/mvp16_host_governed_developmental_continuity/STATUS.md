@@ -2,26 +2,27 @@
 
 ```yaml
 phase: WP11
-status: authority_frozen
-current_layer: definition
-main_chain_status: not_started
-enabled_status: task_package_ready
+status: maintenance_mode
+current_layer: maintenance
+main_chain_status: formal_owner_writeback_observed
+enabled_status: controlled_mainline_maintenance
 trigger_evidence:
-  - WP10/MVP15 controlled observation V5/E5 pass
-  - WP11 phase-detail authority exists
-  - WP11 execution pack exists
-  - legacy MVP16 materials are classified as technical-reference or reference-only
-verification_level: V1
-evidence_level: E1
-current_blocker: "none within authority freeze scope"
-next_minimal_closure_action: "start T10_FORMAL_OWNER_PACKAGE without changing the WP11 authority package"
+  - WP11 formal owner package present
+  - WP11 proto-self bounded contract integrated
+  - WP11 runtime bridge observed on formal mainline
+  - WP11 single controlled observation V4/E4 pass
+  - WP11 batch controlled observation V5/E5 pass
+verification_level: V5
+evidence_level: E5
+current_blocker: "none on the controlled axis"
+next_minimal_closure_action: "hold WP11 in maintenance mode and use WP11_QA_BASELINE.md for future regression intake"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP11/MVP16` 的 authority package、boundary freeze 与 subagent-ready task decomposition 已完成
-- 不可宣称完成：`MVP16` 已实现、已接当前 runtime 主链、已拿到 current-mainline `E4/E5`
-- 后续实现处理：按 `cards/` 串行推进，不自动 reopen `WP7~WP10`
+- 可宣称完成：`WP11/MVP16` 已在 formal owner + governed developmental writeback + controlled observation 轴上收口到 `V5/E5`
+- 不可宣称完成：`live autonomy`、`OpenEmotion direct reply authority`、`broader transport claims`
+- 后续处理：进入 maintenance mode；新增样本和回归统一走 `MAINTENANCE_LEDGER.md` 与 `WP11_QA_BASELINE.md`
 
 ## 边界提醒
 

@@ -704,12 +704,17 @@
 - 证据层级目标：E1 -> E5（controlled axis only）
 
 **当前状态（2026-04-03）**
-- `WP11/MVP16` 当前层级是 `definition`
-- 当前状态是 `authority_frozen`
-- 当前 formal owner target 固定为 `OpenEmotion/openemotion/developmental_self/*`
+- `WP11/MVP16` 当前层级是 `maintenance`
+- 当前状态是 `maintenance_mode`
+- 当前 formal owner 已固定并落地于 `OpenEmotion/openemotion/developmental_self/*`
 - 当前 formal runtime read surface 固定为 `runtime_summary.developmental_self_context`
-- 当前 legacy `MVP16` specs / docs / tools / admission materials 已存在，但全部属于 technical reference 或 reference-only input，不自动构成当前 formal owner / current-runtime mainline 证据
-- 当前 blocker：无 authority/package blocker；实现尚未启动是当前阶段预期，不是阻塞
+- 当前正式主链已形成 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+- 当前证据栈：
+  - causal proof `V3/E3`
+  - single controlled observation `V4/E4`
+  - batch controlled observation `V5/E5`
+- 当前 legacy `MVP16` specs / docs / tools / admission materials 仍全部属于 technical reference 或 reference-only input，不自动构成 formal owner / current-runtime mainline 证据
+- 当前 blocker：受控轴内无主 blocker；仅保留 maintenance verification / bugfix / evidence refresh
 
 ---
 

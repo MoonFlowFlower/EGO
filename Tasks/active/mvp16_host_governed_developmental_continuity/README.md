@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: authority_frozen
+status: maintenance_mode
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP16_task_plan.md"
 predecessor: "WP10/MVP15"
@@ -52,11 +52,11 @@ scope: "WP11 / MVP16 Host-governed Developmental Continuity"
 
 ## 当前状态
 
-- formal owner：`not_started`
-- 主链接线：`not_started`
-- 启用状态：`task_package_ready`
-- 当前 blocker：`none within authority freeze scope`
-- 当前阶段结论：`authority_frozen / task_package_ready`
+- formal owner：`completed`
+- 主链接线：`formal_owner_writeback_observed`
+- 启用状态：`controlled_mainline_maintenance`
+- 当前 blocker：`none on the controlled axis`
+- 当前阶段结论：`controlled axis V5/E5 / maintenance_mode`
 
 ## 当前不做
 
@@ -71,6 +71,8 @@ scope: "WP11 / MVP16 Host-governed Developmental Continuity"
 
 - authority：`Tasks/MVP16_task_plan.md`
 - status：`STATUS.md`
+- maintenance ledger：`MAINTENANCE_LEDGER.md`
+- QA baseline：`WP11_QA_BASELINE.md`
 - legacy register：`LEGACY_REFERENCE_REGISTER.md`
 - contracts：`contracts/`
 - task cards：`cards/`

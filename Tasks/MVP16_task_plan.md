@@ -1,6 +1,6 @@
 # MVP16 / WP11 Host-governed Developmental Continuity
 
-> 状态：WP11 authority_frozen
+> 状态：WP11 maintenance_mode
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP11`
 > predecessor: `WP10/MVP15`
@@ -113,15 +113,20 @@
 - `WP11` may not reinterpret `WP7~WP10 controlled E5` as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`definition`
-- 当前状态：`authority_frozen`
-- 当前 blocker：无 authority/package blocker；实现未启动是当前阶段预期
-- 当前最小闭环动作：开始 `T10_FORMAL_OWNER_PACKAGE`，不扩 authority 边界
+- 当前层级：`maintenance`
+- 当前状态：`maintenance_mode`
+- 当前 blocker：`none on the controlled axis`
+- 当前最小闭环动作：只做 maintenance verification / bugfix / evidence refresh，不扩 `WP11` 边界
 
 ## Current Proven State
-- `MVP16` spec / docs / historical tests / tools / admission materials 已存在
-- 历史 `MVP16` 工具线与 `emotiond/developmental` 线已存在，但只属于 reference-only / input-only 旧线，不自动构成当前 `runtime_v2` 主链 formal proof
-- 当前 `WP11` authority package 已定义 complete owner target、IO contract、subagent decomposition 与 boundary freeze
+- formal owner 已落到 `OpenEmotion/openemotion/developmental_self/*`
+- 当前正式主链接线已成立：
+  - `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+- 当前证据栈已成立：
+  - causal proof `V3/E3`
+  - single controlled observation `V4/E4`
+  - batch controlled observation `V5/E5`
+- 历史 `MVP16` 工具线与 `emotiond/developmental` 线仍只属于 reference-only / input-only 旧线，不构成当前 formal owner / current-runtime proof
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP11: Host-governed Developmental Continuity`
@@ -135,8 +140,11 @@
 - 文档没有把旧 `MVP16` lines 误写成当前 `WP11` readiness 或全局成熟
 
 ## Completion Rules
-- 本文件完成不等于 `MVP16` 已实现
-- 本文件完成不等于 `MVP16` 已接当前 runtime 主链
-- 未拿到当前 formal owner + current mainline `E4` 之前，不得宣称 `WP11` 生效
-- 未拿到重复样本 `E5` 之前，不得宣称 `WP11` 稳定解决或可收口
+- `WP11/MVP16` 当前可宣称：
+  - formal owner + governed developmental writeback + controlled observation 轴内收口成立
+  - 状态为 `maintenance_mode`
+- `WP11/MVP16` 当前不可宣称：
+  - live autonomy
+  - OpenEmotion direct reply authority
+  - broader transport maturity
 - 即使未来达到 controlled `E5`，也不得把 `WP11` 解释为 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity
