@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: causal_proof_complete
+status: observation_started
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP19_task_plan.md"
 predecessor: "WP13/MVP18"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP14 / MVP19 Cross-Axis Self-Integration / Self-Maintenance Arbitration"
-claim_ceiling: "T50 only / V3-E3 causal_proof_complete"
+claim_ceiling: "T60 only / single-sample V4-E4 observation_started"
 ```
 
 ---
@@ -51,7 +51,7 @@ claim_ceiling: "T50 only / V3-E3 causal_proof_complete"
 
 ## 当前状态
 
-- 执行包状态：`causal_proof_complete`
+- 执行包状态：`observation_started`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
@@ -59,14 +59,14 @@ claim_ceiling: "T50 only / V3-E3 causal_proof_complete"
 - `T30` EgoCore runtime bridge：`completed`
 - `T40` legacy demotion / compat map：`completed`
 - `T50` causal validation：`completed`
-- `T60` single controlled observation：`pending`
+- `T60` single controlled observation：`completed`
 - `T70` batch controlled observation / aggregate：`pending`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`current_runtime_selfhood_consumer_present_legacy_reference_only`
 - 启用状态：`owner_infra_plus_proto_self_contract_plus_runtime_bridge`
-- 当前 blocker：`none on the T50 causal proof axis`
-- 当前最小动作：`T60_CONTROLLED_OBSERVATION_SINGLE`
+- 当前 blocker：`none on the T60 single-observation axis`
+- 当前最小动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
 
 ## 当前已证实内容
 
@@ -138,11 +138,31 @@ claim_ceiling: "T50 only / V3-E3 causal_proof_complete"
   - `passed_count = 5`
 - 本层仍只证明 stability-first cross-axis arbitration 会改变 bounded downstream weighting；不证明 controlled observation、`E4/E5`、observation started、或 maintenance mode
 
+## T60 已证实内容
+
+- `OpenEmotion/tools/run_mvp19_controlled_observation.py` 已通过当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 正式主链跑出首个 controlled runtime-mainline 单样本
+- `OpenEmotion/tests/mvp19/test_controlled_observation.py` 已定向锁定：
+  - `self_integration_writeback_gate = allow_writeback`
+  - `proposal_only_discipline_consistent = true`
+  - `behavioral_authority_none = true`
+  - `bounded_influence_present = true`
+  - current report 保持 `V4/E4` claim ceiling
+- 当前单样本 artifact 见：
+  - `OpenEmotion/artifacts/mvp19/mvp19_controlled_observation_current.md`
+  - `OpenEmotion/artifacts/mvp19/mvp19_controlled_observation_current.json`
+- 当前 single-observation 结果为：
+  - `status = pass`
+  - `verification_level = V4`
+  - `evidence_level = E4`
+  - `self_integration_writeback_gate = allow_writeback`
+  - `behavioral_authority_none = true`
+  - `replay_valid = true`
+- 本层只证明 current formal owner + current runtime mainline 已拿到首个 controlled `V4/E4` single observation；不证明 repeated stability、batch `E5`、maintenance mode、或任何 authority 放开
+
 ## 当前不做
 
 - 不宣称 owner/runtime 已实现
-- 不宣称 `E4/E5`
-- 不宣称 observation started
+- 不宣称 `E5`
 - 不宣称 maintenance mode
 - 不 reopen `WP8~WP13`
 - 不放开 live autonomy
