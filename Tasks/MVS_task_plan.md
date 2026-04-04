@@ -7,13 +7,14 @@
 先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
 
 ## 裁决关系
-- 本文件负责 `WP0~WP12` 的阶段、依赖、Gate、证据等级和停止条件。
+- 本文件负责 `WP0~WP13` 的阶段、依赖、Gate、证据等级和停止条件。
 - `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
 - 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
 
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
 - 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP12/MVP17`，其 authority freeze、`T10` formal owner package、`T20` proto-self social contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map、`T50` causal proof、`T60` single controlled observation、`T70` batch observation / aggregate 与 `T80` closeout / QA baseline 均已完成，当前已进入 `maintenance_mode`，不是 live social autonomy。
+- 当前下一阶段已冻结为 `WP13/MVP18` 的 authority/task package，范围收窄为 `Embodied Loop / Environment Coupling (host-governed, proposal-only)`；当前只到 `authority_frozen / task_package_ready`，还未进入 owner/runtime 实现。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -32,6 +33,7 @@
 11. **WP10 Reflective Self / Counterfactual Self**
 12. **WP11 Host-governed Developmental Continuity（MVP16 第一正式切片）**
 13. **WP12 Social Self / Other-Modeling（MVP17 第一正式切片）**
+14. **WP13 Embodied Loop / Environment Coupling（MVP18 第一正式切片）**
 
 ---
 
@@ -851,3 +853,97 @@
 - **里程碑 H**：`WP10`
 - **里程碑 I**：`WP11`
 - **里程碑 J**：`WP12`
+- **里程碑 K**：`WP13`
+
+---
+
+## WP13：Embodied Loop / Environment Coupling
+**前提**：只有 `WP12/MVP17` 完成 maintenance institutionalization 后才启动。
+
+**归属**：OpenEmotion（embodied owner / consequence semantics / boundary pressure owner target）+ EgoCore（runtime / Governor / delivery / transport / environment adjudication）
+
+**child authority**
+- `Tasks/MVP18_task_plan.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/`
+
+**本阶段当前范围**
+- authority / contract / boundary freeze
+- formal embodied owner package target 定义
+- bounded action-consequence / resource-boundary proto-self contract target 定义
+- EgoCore runtime embodied bridge target 定义
+- historical consequence / intervention materials demotion
+- subagent-ready task decomposition
+- 不把新能力塞回 `WP12`
+
+**任务**
+- capability ownership 固定为：
+  - embodied state / environment coupling state / resource pressure state / boundary pressure state / action consequence memory / self-world boundary semantics 归 `OpenEmotion/openemotion/embodied_self/*`
+  - runtime scheduling / outward response / tool execution / transport / Governor / observation aggregate 仍归 `EgoCore`
+- authority source 固定为：
+  - 顶层裁决：`Tasks/MVS_task_plan.md`
+  - `WP13` phase-detail authority：`Tasks/MVP18_task_plan.md`
+  - technical reference：`OpenEmotion/roadmap/VersionRoadmap.md`
+  - 当前没有 repo-tracked `MVP18` version spec；若后续补写，也不得自动覆盖 `Tasks/*` authority
+- phase 1 scope 固定为：
+  - `resource / slack pressure`
+  - `action -> consequence` bounded writeback
+  - `self / world boundary pressure` 的结构化 proposal
+- migration/reference surfaces 固定为：
+  - `OpenEmotion/emotiond/consequence.py`
+  - `OpenEmotion/emotiond/science/interventions.py`
+  - `OpenEmotion/roadmap/VersionRoadmap.md`
+- input / output contract 先冻结，再开实现：
+  - 输入只允许结构化 `embodied_self_context`、`environment_context`、`self_model_context`、`endogenous_drive_context`、`reflective_self_context`、`developmental_self_context`、`social_self_context` 与 runtime evidence
+  - 输出只允许 governed embodied deltas / consequence update candidates / resource-boundary snapshot / embodied policy hints / repair-or-stabilize proposal candidates / writeback candidate / trace artifacts
+  - 不允许输出 final reply / tool command / transport directive / authority escalation / embodied takeover
+- `WP12` 边界冻结：
+  - `WP7~WP12` 继续是 `maintenance_mode`
+  - 新样本只进各自 maintenance ledger
+  - 不因 `WP13` 启动而改写 `WP7~WP12` formal owner、formal read/write path、或 evidence claim
+- 显式锁定当前仍不放开的能力：
+  - live autonomy
+  - OpenEmotion direct reply authority
+  - broader transport claims
+  - embodied takeover
+  - sustained proactive outreach
+  - autonomous tool expansion
+  - ungoverned environment action authority
+
+**交付物**
+- `Tasks/MVP18_task_plan.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/README.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/STATUS.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/LEGACY_REFERENCE_REGISTER.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/SUBAGENT_ASSIGNMENT.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/contracts/EMBODIED_CAPABILITY_OWNERSHIP.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/contracts/EMBODIED_AUTHORITY_SOURCE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/contracts/EMBODIED_IO_CONTRACT.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/contracts/WP12_BOUNDARY_FREEZE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/contracts/LOCKED_NON_RELEASES.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T00_AUTHORITY_FREEZE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T10_FORMAL_OWNER_PACKAGE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T20_PROTO_SELF_CONTRACT_INTEGRATION.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T30_EGOCORE_RUNTIME_BRIDGE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T40_LEGACY_DEMOTION_AND_COMPAT_MAP.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T50_CAUSAL_VALIDATION.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T60_CONTROLLED_OBSERVATION_SINGLE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T70_BATCH_OBSERVATION_AND_AGGREGATE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T80_CLOSEOUT_AND_QA_BASELINE.md`
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/cards/T90_SUBAGENT_ASSIGNMENT.md`
+
+**验收**
+- `Tasks/MVS_task_plan.md` 中已正式出现 `WP13`
+- `Tasks/MVP18_task_plan.md`、执行包 `README / STATUS / contracts / cards` 口径一致
+- `WP7~WP12` 继续处于 `maintenance_mode`，没有被 `WP13` reopen
+- historical consequence / intervention materials 被显式标成 technical reference、reference-only 或 input-only
+- `WP13` 文档没有把 host-governed embodied loop 漂成 live autonomy、direct reply authority 或 broader transport maturity
+- 证据层级目标：E0 -> E1（authority / contract freeze）
+
+**当前状态（2026-04-04）**
+- `WP13/MVP18` 当前层级是 `strategy`
+- 当前状态是 `authority_frozen`
+- 当前 formal owner target 固定为 `OpenEmotion/openemotion/embodied_self/*`
+- 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+- 当前 phase 1 只冻结 `resource/slack pressure`、`action -> consequence` bounded writeback、`self/world boundary pressure` proposal；不实现更宽的 embodied loop
+- 当前已证实：`WP12` 已完成 maintenance institutionalization；当前 `WP13` 只完成 authority / contract / boundary freeze，不含 owner/runtime/observation 代码证据
+- 当前 blocker：`WP13` 仍未开始 `T10` formal owner package；当前不能宣称已实现、已接主链、已启用或有 `E4/E5`
