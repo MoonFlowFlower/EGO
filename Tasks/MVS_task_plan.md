@@ -267,6 +267,10 @@
 
 **归属**：OpenEmotion（主体）+ EgoCore（壳）
 
+**child authority**
+- `Tasks/MVP12_task_plan.md`
+- `Tasks/active/mvp12_developmental_sandbox/`
+
 **任务**
 - 正式接线落点固定为：`runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
 - `WP7/MVP12` 的主证据源固定为统一 `runtime` ingress/egress 主链；`Telegram` 只作为 transport-specific claim 的补充证据
@@ -339,10 +343,12 @@
 - transport-specific claim 仍需 Telegram 样本
 - 证据层级目标：E3 -> E4（受控样本）
 
-**当前状态（2026-04-02）**
+**当前状态（2026-04-03）**
 - `scripts/run_runtime_mainline_observation.py`、`OpenEmotion/tools/run_mvp12_controlled_evidence.py`、`OpenEmotion/tools/aggregate_mvp12_observations.py` 已按原路径重跑
 - 最新 aggregate 为：`report_count = 7`、`direct_real_report_count = 6`、`direct_real_window_count_total = 12`、`governance_violation_total = 0`、`replay_consistent_all = true`、`span_hours = 14.098`
 - `stability_gate.status = pass`；这意味着 `WP7/MVP12` 的 controlled observation thresholds 当前已达标
+- `WP7/MVP12` 当前可在 formal runtime sandbox + controlled observation 轴上收口进入 `maintenance_mode`
+- 后续新增样本只进入 `Tasks/active/mvp12_developmental_sandbox/MAINTENANCE_LEDGER.md`，不自动触发 scope reopen
 - 这不等于 live authority handoff，也不等于默认 live autonomy
 - Telegram 侧另有 1 条 allowlisted host-governed proactive follow-up 真实 E4 样本；该样本只作为 transport/proactive path 的补充证据，不改变 controlled observation 的主证据定义
 

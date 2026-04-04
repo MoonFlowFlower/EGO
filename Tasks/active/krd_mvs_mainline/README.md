@@ -20,6 +20,10 @@ scope: "WP0/WP1 execution package"
 
 - `MVS_task_plan.md`：唯一最终裁决源
 - `krd_mvs_mainline/`：把 `WP0 / WP1` 拆成可执行工作包、状态台账、边界决策和交付物
+- `WP7/MVP12` 的当前 authority / closeout / maintenance 口径已经迁到：
+  - `Tasks/MVP12_task_plan.md`
+  - `Tasks/active/mvp12_developmental_sandbox/`
+  - 本目录里保留的 `WP7` 段落只作为历史实施记录
 
 ## 真实目标
 
@@ -195,6 +199,6 @@ trigger_evidence:
   - 当前口径必须保持：**single E4 sample only**，不是 V5/E5 稳定结论，不等于默认 live autonomy
 - 这不改变本执行包当前 scope 仍以 `WP0 / WP1` 为主。
 - 当前口径必须保持：
-  - `WP7` 还未正式启动
+  - `WP7` 的当前 authority 不在本目录，而在 `Tasks/MVP12_task_plan.md` 与 `Tasks/active/mvp12_developmental_sandbox/`
   - live 默认 `off`
-  - 现有证据最高到受控主链 real-send E4，不得冒充默认开启的 `WP7` live autonomy
+  - `WP7` 的 controlled observation 已 `pass`，但不得冒充默认开启的 `WP7` live autonomy
