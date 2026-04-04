@@ -144,6 +144,7 @@ def derive_developmental_outputs(runtime_summary: Dict[str, Any] | None) -> Dict
     should_surface = (
         recent_proposal_count > 0
         or promotion_queue_size > 0
+        or growth_pressure >= 0.7
         or continuity_gap >= 0.2
         or stagnation_signal >= 0.35
         or replay_debt > 0.0
@@ -151,6 +152,7 @@ def derive_developmental_outputs(runtime_summary: Dict[str, Any] | None) -> Dict
     )
 
     developmental_priority_hints = {
+        "growth_priority": "elevated" if growth_pressure >= 0.7 else "normal",
         "continuity_priority": (
             "elevated" if continuity_gap >= 0.25 or replay_debt > 0.0 else "normal"
         ),
@@ -166,6 +168,7 @@ def derive_developmental_outputs(runtime_summary: Dict[str, Any] | None) -> Dict
     for reason, enabled in (
         ("proposal_history_present", recent_proposal_count > 0),
         ("promotion_queue_present", promotion_queue_size > 0),
+        ("growth_pressure", growth_pressure >= 0.7),
         ("continuity_gap", continuity_gap >= 0.2),
         ("stagnation_signal", stagnation_signal >= 0.35),
         ("replay_debt", replay_debt > 0.0),
@@ -223,6 +226,7 @@ def derive_developmental_outputs(runtime_summary: Dict[str, Any] | None) -> Dict
             },
         }
         policy_hint_patch = {
+            "developmental_growth_bias": developmental_priority_hints["growth_priority"],
             "developmental_continuity_bias": developmental_priority_hints["continuity_priority"],
             "identity_preservation_guard": developmental_priority_hints["identity_preservation_guard"],
         }
