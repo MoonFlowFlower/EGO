@@ -142,9 +142,9 @@
 
 ## Current Phase Status
 - 当前层级：`implementation`
-- 当前状态：`authority_frozen + runtime_bridge_connected`
-- 当前 blocker：`legacy demotion / causal proof / controlled observation are not completed yet`
-- 当前最小闭环动作：只做 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`，不 reopen `WP11`
+- 当前状态：`authority_frozen + runtime_bridge_connected + legacy_demotion_complete`
+- 当前 blocker：`causal proof / controlled observation are not completed yet`
+- 当前最小闭环动作：只做 `T50_CAUSAL_VALIDATION`，不 reopen `WP11`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP12: Social Self / Other-Modeling`
@@ -163,6 +163,7 @@
 - `T10` 完成只证明 formal owner package 在 OpenEmotion owner 层落地，不证明 social behavior 已生效
 - `T20` 完成只证明 `social_self` 已接入 `proto_self_v2` bounded contract，不证明 EgoCore runtime mainline 已消费
 - `T30` 完成只证明当前 EgoCore runtime thin bridge 已接入正式主链，不证明 `E4/E5` controlled observation
+- `T40` 完成只证明 historical social / relation surfaces 已 reference-only / input-only 化，并通过 no-second-truth verifier；不证明 causal influence 或 controlled observation
 - 未拿到当前 formal owner + current mainline `E4` 之前，不得宣称 `WP12` 生效
 - 未拿到重复样本 `E5` 之前，不得宣称 `WP12` 稳定解决或可收口
 - 即使未来达到 controlled `E5`，也不得把 `WP12` 解释为 live autonomy、OpenEmotion direct reply authority、或 broader transport maturity
