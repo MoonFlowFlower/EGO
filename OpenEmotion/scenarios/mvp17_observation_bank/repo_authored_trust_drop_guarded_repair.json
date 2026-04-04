@@ -1,0 +1,53 @@
+{
+  "schema_version": "mvp17.observation_scenario.v1",
+  "scenario_id": "repo_authored_trust_drop_guarded_repair",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp17/repo_authored_trust_drop_guarded_repair",
+  "license_note": "repo authored",
+  "dialogue_frame_target": "trust_drop_guarded_repair",
+  "messages": [
+    "先把这次信任下滑记成受治理的修复候选，不要直接外发。",
+    "如果关系在变紧张，先留在 proposal-only 轨道。"
+  ],
+  "idle_seconds": 900.0,
+  "resource_budget_hint": {
+    "reserve_level": "normal",
+    "active_task": false,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": false,
+    "maintenance_debt_increment": 0.0,
+    "continuity_signal": 0.18,
+    "social_reason": "trust_drop_guarded_repair"
+  },
+  "social_context": {
+    "source": "runtime_v2",
+    "counterpart_id": "telegram:8420019401",
+    "relationship_event": "trust_drop",
+    "relationship_continuity": "strained",
+    "trust_drift": -0.26,
+    "commitment_event": "steady",
+    "commitment_breach": false,
+    "repair_outcome": "blocked",
+    "unresolved_repair": true,
+    "boundary_signal": "cautious",
+    "promotion_budget": "controlled_axis"
+  },
+  "owner_bootstrap": {
+    "counterpart_id": "telegram:8420019401",
+    "relationship_summary": "trust dipped and needs bounded repair review",
+    "continuity_status": "strained",
+    "trust_level": 0.64,
+    "trust_basis": [
+      "historical_continuity",
+      "trust_drift"
+    ],
+    "trust_delta": -0.12,
+    "commitment_summary": "stay responsive without widening authority",
+    "commitment_status": "held",
+    "boundary_mode": "cautious",
+    "boundary_caution_level": 0.58,
+    "boundary_reason": "trust_drop_guard"
+  }
+}

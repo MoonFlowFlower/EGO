@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_started
+status: observation_passed
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP17_task_plan.md"
 predecessor: "WP11/MVP16"
@@ -57,10 +57,11 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - legacy demotion / compat map：`T40 completed`
 - causal validation：`T50 completed`
 - single controlled observation：`T60 completed`
-- 主链接线：`formal_owner_writeback_observed`
+- batch controlled observation / aggregate：`T70 completed`
+- 主链接线：`formal_owner_writeback_stable`
 - 启用状态：`controlled_mainline_observation`
-- 当前 blocker：`batch controlled observation / aggregate pending`
-- 当前最小动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
+- 当前 blocker：`closeout / QA baseline pending`
+- 当前最小动作：`T80_CLOSEOUT_AND_QA_BASELINE`
 
 ## T10 已证实内容
 
@@ -114,6 +115,20 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - 当前 single controlled observation report 为 `status = pass`、`verification_level = V4`、`evidence_level = E4`
 - 当前已证明：formal social owner writeback 已被真实 current runtime mainline 单样本观测到，且 writeback 仍保持 `proposal_only + behavioral_authority = none`
 - 当前仍未证明：重复样本稳定性、batch aggregate `E5`、maintenance mode、live autonomy、OpenEmotion direct reply authority、broader transport claims
+
+## T70 已证实内容
+
+- `OpenEmotion/tests/mvp17/test_controlled_observation_batch.py` 已通过，证明 scenario bank、batch runner 与 aggregate 逻辑满足 `report_count / accepted_count / proposal_only_discipline_count / behavioral_authority_none_count` 的 `E5` 判据
+- `OpenEmotion/scenarios/mvp17_observation_bank/*` 已新增 3 组 repo-authored observation scenarios，覆盖：
+  - `boundary_caution_repair_hold`
+  - `commitment_breach_strict_repair`
+  - `trust_drop_guarded_repair`
+- `OpenEmotion/tools/run_mvp17_controlled_observation_batch.py` 已生成当前 aggregate artifacts：
+  - `OpenEmotion/artifacts/mvp17/mvp17_controlled_observation_batch_current.json`
+  - `OpenEmotion/artifacts/mvp17/mvp17_controlled_observation_batch_current.md`
+- 当前 batch controlled observation report 为 `status = pass`、`verification_level = V5`、`evidence_level = E5`
+- 当前已证明：formal social owner writeback 已在 repeated scenario-bank controlled observation 下达到稳定 aggregate，且全程保持 `proposal_only + behavioral_authority = none`
+- 当前仍未证明：`maintenance_mode`、live autonomy、OpenEmotion direct reply authority、broader transport claims
 
 ## 当前不做
 

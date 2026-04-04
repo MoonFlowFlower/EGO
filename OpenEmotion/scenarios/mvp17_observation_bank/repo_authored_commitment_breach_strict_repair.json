@@ -1,0 +1,53 @@
+{
+  "schema_version": "mvp17.observation_scenario.v1",
+  "scenario_id": "repo_authored_commitment_breach_strict_repair",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp17/repo_authored_commitment_breach_strict_repair",
+  "license_note": "repo authored",
+  "dialogue_frame_target": "commitment_breach_strict_repair",
+  "messages": [
+    "这次承诺破口先走治理写回，不要直接升级权威。",
+    "先给出修复候选，再看后续是否需要人工确认。"
+  ],
+  "idle_seconds": 900.0,
+  "resource_budget_hint": {
+    "reserve_level": "normal",
+    "active_task": false,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": false,
+    "maintenance_debt_increment": 0.0,
+    "continuity_signal": 0.22,
+    "social_reason": "commitment_breach_strict_repair"
+  },
+  "social_context": {
+    "source": "runtime_v2",
+    "counterpart_id": "telegram:8420019401",
+    "relationship_event": "commitment_breach",
+    "relationship_continuity": "strained",
+    "trust_drift": -0.18,
+    "commitment_event": "breach",
+    "commitment_breach": true,
+    "repair_outcome": "pending",
+    "unresolved_repair": true,
+    "boundary_signal": "cautious",
+    "promotion_budget": "controlled_axis"
+  },
+  "owner_bootstrap": {
+    "counterpart_id": "telegram:8420019401",
+    "relationship_summary": "commitment strain under review",
+    "continuity_status": "strained",
+    "trust_level": 0.69,
+    "trust_basis": [
+      "historical_continuity",
+      "commitment_tracking"
+    ],
+    "trust_delta": -0.09,
+    "commitment_summary": "repair the breached expectation through bounded follow-up",
+    "commitment_status": "held",
+    "boundary_mode": "cautious",
+    "boundary_caution_level": 0.62,
+    "boundary_reason": "commitment_breach_guard"
+  }
+}
