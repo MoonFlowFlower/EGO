@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: legacy_demotion_complete
+status: causal_proof_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP18_task_plan.md"
 predecessor: "WP12/MVP17"
@@ -51,19 +51,19 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 
 ## 当前状态
 
-- 执行包状态：`runtime_bridge_complete`
+- 执行包状态：`causal_proof_complete`
 - authority freeze：`completed`
 - formal owner：`T10 completed`
 - proto_self_v2 contract：`T20 completed`
 - EgoCore runtime bridge：`T30 completed`
 - legacy demotion / compat map：`T40 completed`
-- causal validation：`T50 pending`
+- causal validation：`T50 completed`
 - single controlled observation：`T60 pending`
 - batch controlled observation / aggregate：`T70 pending`
 - 主链接线：`current runtime embodied bridge present`
 - 启用状态：`not_started`
-- 当前 blocker：`T50 causal validation pending`
-- 当前最小动作：`start T50_CAUSAL_VALIDATION; do not implement observation before T50`
+- 当前 blocker：`T60 single controlled observation pending`
+- 当前最小动作：`start T60_CONTROLLED_OBSERVATION_SINGLE; do not implement batch observation before T60`
 
 ## T10 已证实内容
 
@@ -98,6 +98,19 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
   - `EgoCore` current runtime embodied consumer 仍是唯一 formal path
   - 旧 `consequence / interventions / science_mode` surfaces 没有被重新抬成 second truth
 - `OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py` 已把 no-second-truth / demotion 断言固定成定向回归测试
+
+## T50 已证实内容
+
+- `OpenEmotion/tests/mvp18/test_embodied_causal_formal_proof.py` 已通过 4 组 paired intervention/control proof
+- 当前已证明：
+  - high resource/slack pressure 会改变 conservative embodied weighting
+  - consequence memory present 会改变 bounded consequence weighting
+  - self/world boundary pressure guarded 会改变 bounded boundary weighting
+  - 仅 outcome wording 改写而无结构化指标变化时，不会制造假的 downstream behavioral proof
+- `OpenEmotion/tools/run_mvp18_causal_validation.py` 已生成当前 causal proof artifacts：
+  - `OpenEmotion/artifacts/mvp18/mvp18_causal_validation_current.json`
+  - `OpenEmotion/artifacts/mvp18/mvp18_causal_validation_current.md`
+- 当前 causal report 为 `status = pass`、`verification_level = V3`、`evidence_level = E3`、`pair_count = 4`、`passed_count = 4`
 
 ## 当前不做
 
