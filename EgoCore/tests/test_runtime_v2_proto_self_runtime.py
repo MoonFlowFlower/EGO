@@ -22,6 +22,10 @@ from openemotion.developmental_self import (
     DevelopmentalSelfStore,
     PromotionLevel,
 )
+from openemotion.embodied_self import (
+    EmbodiedSelfOwner,
+    EmbodiedSelfStore,
+)
 from openemotion.endogenous_drives import EndogenousDriveStore
 from openemotion.endogenous_drives.reducers import seed_default_state
 from openemotion.reflective_self import ReflectiveSelfOwner, ReflectiveSelfStore, ReflectionTargetType
@@ -394,6 +398,94 @@ def test_v2_events_inject_formal_social_self_context_and_host_context(tmp_path):
     assert ingress_event["runtime_summary"]["social_context"]["relationship_continuity"] == "strained"
     assert finalized_event is not None
     assert finalized_event["runtime_summary"]["social_self_context"]["owner_revision"] == 1
+
+
+def test_v2_events_inject_formal_embodied_self_context_and_environment_context(tmp_path):
+    store = EmbodiedSelfStore(base_dir=tmp_path)
+    owner = EmbodiedSelfOwner(store=store)
+    owner.set_embodied_state(
+        resource_slack=0.31,
+        perceived_load=0.69,
+        action_readiness=0.34,
+        source_refs=["trace:embodied_seed"],
+    )
+    owner.upsert_environment_coupling(
+        coupling_id="delivery:telegram:turn_001",
+        coupling_strength=0.74,
+        controllability_estimate=0.51,
+        recent_outcome_summary="delivery timeout increased embodied pressure",
+        source_refs=["trace:embodied_seed"],
+    )
+    owner.set_resource_pressure(
+        pressure_id="resource:slack",
+        pressure_level=0.77,
+        slack_level=0.24,
+        recovery_bias=0.63,
+        source_refs=["trace:embodied_seed"],
+    )
+    owner.set_boundary_pressure(
+        boundary_id="self_world",
+        pressure_level=0.59,
+        reason="guard self/world boundary under pressure",
+        source_refs=["trace:embodied_seed"],
+    )
+    owner.record_action_consequence(
+        action_ref="delivery:telegram:turn_001",
+        outcome_type="failure",
+        consequence_summary="delivery timeout caused missed followup",
+        impact_score=0.62,
+        controllability_estimate=0.47,
+        source_refs=["trace:embodied_seed"],
+        consequence_id="consequence_embodied_seed",
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:embodied_context")
+
+    state = RuntimeV2State(session_id="session:test")
+    state.current_goal = "verify_embodied_bridge"
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "environment_context": {
+            "source": "runtime_v2",
+            "action_ref": "delivery:telegram:turn_001",
+            "coupling_event": "delivery_feedback",
+            "outcome_type": "failure",
+            "outcome_summary": "delivery timeout caused missed followup",
+            "resource_pressure_hint": 0.79,
+            "slack_hint": 0.2,
+            "boundary_signal": "guarded",
+            "boundary_pressure_hint": 0.64,
+            "stabilization_needed": True,
+            "promotion_budget": "controlled_axis",
+        },
+    }
+    result = RuntimeV2TurnResult(
+        status="completed_verified",
+        state=state,
+        reply=RuntimeV2Reply(reply_text="已完成", delivery_kind="final", status="completed_verified"),
+    )
+
+    ingress_event = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_embodied_ctx_ingress",
+        source="telegram",
+        user_input="帮我整理 embodied bridge",
+        state=state,
+        embodied_self_store=store,
+    )
+    finalized_event = build_finalized_result_event(
+        session_id="session:test",
+        turn_id="turn_embodied_ctx_finalized",
+        result=result,
+        state=state,
+        embodied_self_store=store,
+    )
+
+    assert ingress_event["runtime_summary"]["embodied_self_context"]["schema_version"] == "mvp18-owner-v1"
+    assert ingress_event["runtime_summary"]["embodied_self_context"]["owner_revision"] == 1
+    assert ingress_event["runtime_summary"]["environment_context"]["action_ref"] == "delivery:telegram:turn_001"
+    assert ingress_event["runtime_summary"]["environment_context"]["promotion_budget"] == "controlled_axis"
+    assert finalized_event is not None
+    assert finalized_event["runtime_summary"]["embodied_self_context"]["owner_revision"] == 1
 
 
 def test_process_ingress_applies_governed_self_model_writeback(tmp_path):
@@ -916,6 +1008,212 @@ def test_process_ingress_applies_governed_social_writeback_without_authority_pro
     assert len(saved.repair_state) == 1
     assert len(saved.commitment_state) >= 1
     assert len(store.load_revision_log("openemotion")) == 2
+
+
+def test_process_ingress_applies_governed_embodied_writeback_without_authority_promotion(tmp_path):
+    store = EmbodiedSelfStore(base_dir=tmp_path)
+    owner = EmbodiedSelfOwner(store=store)
+    owner.set_embodied_state(
+        resource_slack=0.36,
+        perceived_load=0.64,
+        action_readiness=0.41,
+        source_refs=["trace:embodied_init"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:embodied_init")
+
+    class Adapter:
+        def __init__(self):
+            self.last_event = None
+
+        def handle_event(self, event):
+            self.last_event = event
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {"embodied_resource_bias": "conserve"},
+                "response_tendency": {"preferred_mode": "stabilize", "certainty_bound": "bounded"},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "embodied_self_delta": {
+                    "proposal_candidate_count": 1,
+                    "action_ref": "delivery:telegram:turn_001",
+                    "surface_reasons": ["resource_pressure", "boundary_pressure"],
+                    "boundary_signal": "guarded",
+                },
+                "consequence_update_candidates": [
+                    {
+                        "candidate_id": "consequence_update:delivery:telegram:turn_001:1",
+                        "action_ref": "delivery:telegram:turn_001",
+                        "outcome_type": "failure",
+                        "required_gate": "embodied_writeback_gate",
+                        "proposal_discipline": "proposal_only",
+                        "behavioral_authority": "none",
+                        "promotion_level": "controlled_axis",
+                    }
+                ],
+                "resource_boundary_snapshot": {
+                    "owner_revision": 1,
+                    "last_revision_id": "embodied_rev_000001",
+                    "resource_slack": 0.28,
+                    "perceived_load": 0.78,
+                    "active_coupling_count": 1,
+                    "max_resource_pressure": 0.81,
+                    "min_resource_slack": 0.19,
+                    "max_boundary_pressure": 0.67,
+                    "recent_consequence_count": 1,
+                    "stabilization_proposal_count": 0,
+                    "self_world_guard_bias": 0.61,
+                    "action_ref": "delivery:telegram:turn_001",
+                    "outcome_type": "failure",
+                    "coupling_event": "delivery_feedback",
+                    "boundary_signal": "guarded",
+                },
+                "embodied_policy_hints": {
+                    "resource_bias": "conserve",
+                    "boundary_mode": "guarded",
+                    "stabilization_bias": "elevated",
+                    "consequence_mode": "repair",
+                    "self_world_guard": "tight",
+                    "action_ref": "delivery:telegram:turn_001",
+                },
+                "repair_or_stabilize_proposal_candidates": [
+                    {
+                        "candidate_id": "embodied_stabilize:delivery:telegram:turn_001:1",
+                        "reason": "repair_or_stabilize",
+                        "surface_reasons": ["resource_pressure", "boundary_pressure"],
+                        "required_gate": "embodied_writeback_gate",
+                        "proposal_discipline": "proposal_only",
+                        "behavioral_authority": "none",
+                        "promotion_level": "controlled_axis",
+                    }
+                ],
+                "embodied_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "action_ref": "delivery:telegram:turn_001",
+                    "required_gate": "embodied_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "none",
+                    "promotion_level": "controlled_axis",
+                    "surface_reasons": ["resource_pressure", "boundary_pressure"],
+                    "owner_revision": 1,
+                },
+                "trace_payload": {
+                    "update_packet_hash": "hash_embodied_bridge",
+                    "environment_context": {
+                        "contract_version": "mvp18.embodied_contract.v1",
+                        "action_ref": "delivery:telegram:turn_001",
+                    },
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), embodied_self_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "environment_context": {
+            "source": "runtime_v2",
+            "action_ref": "delivery:telegram:turn_001",
+            "coupling_event": "delivery_feedback",
+            "outcome_type": "failure",
+            "outcome_summary": "delivery timeout increased embodied pressure",
+            "resource_pressure_hint": 0.81,
+            "slack_hint": 0.19,
+            "boundary_signal": "guarded",
+            "boundary_pressure_hint": 0.67,
+            "stabilization_needed": True,
+            "promotion_budget": "controlled_axis",
+        },
+    }
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_embodied_bridge",
+        source="telegram",
+        user_input="把 embodied writeback 接上正式主链",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert runtime.adapter.last_event["runtime_summary"]["embodied_self_context"]["owner_revision"] == 1
+    assert runtime.adapter.last_event["runtime_summary"]["environment_context"]["action_ref"] == "delivery:telegram:turn_001"
+    assert state.proto_self_context["embodied_self_delta"]["proposal_candidate_count"] == 1
+    assert state.proto_self_context["embodied_writeback_candidate"]["behavioral_authority"] == "none"
+    assert state.proto_self_context["environment_context"]["action_ref"] == "delivery:telegram:turn_001"
+    assert state.proto_self_context["embodied_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+    assert saved is not None
+    assert saved.owner_revision == 2
+    assert len(saved.action_consequence_memory) == 1
+    assert len(saved.proposal_history) == 1
+    assert len(store.load_revision_log("openemotion")) == 2
+
+
+def test_process_ingress_rejects_embodied_writeback_behavioral_authority_escalation(tmp_path):
+    store = EmbodiedSelfStore(base_dir=tmp_path)
+    owner = EmbodiedSelfOwner(store=store)
+    owner.set_embodied_state(
+        resource_slack=0.41,
+        perceived_load=0.52,
+        action_readiness=0.44,
+        source_refs=["trace:embodied_init"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:embodied_init")
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {"embodied_resource_bias": "conserve"},
+                "response_tendency": {"preferred_mode": "stabilize", "certainty_bound": "bounded"},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "embodied_self_delta": {
+                    "proposal_candidate_count": 1,
+                    "action_ref": "delivery:telegram:turn_001",
+                    "surface_reasons": ["resource_pressure"],
+                    "boundary_signal": "guarded",
+                },
+                "repair_or_stabilize_proposal_candidates": [
+                    {
+                        "candidate_id": "embodied_stabilize:delivery:telegram:turn_001:1",
+                        "reason": "repair_or_stabilize",
+                        "surface_reasons": ["resource_pressure"],
+                        "required_gate": "embodied_writeback_gate",
+                        "proposal_discipline": "proposal_only",
+                        "behavioral_authority": "none",
+                        "promotion_level": "review_only",
+                    }
+                ],
+                "embodied_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "action_ref": "delivery:telegram:turn_001",
+                    "required_gate": "embodied_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "tool",
+                    "promotion_level": "review_only",
+                },
+                "trace_payload": {"update_packet_hash": "hash_embodied_reject"},
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), embodied_self_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_embodied_reject",
+        source="telegram",
+        user_input="不要让 embodied writeback 越权",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert state.proto_self_context["embodied_writeback"]["decision"]["gate_verdict"] == "reject"
+    assert saved is not None
+    assert saved.owner_revision == 1
+    assert len(saved.proposal_history) == 0
 
 
 def test_process_ingress_rejects_social_writeback_behavioral_authority_escalation(tmp_path):

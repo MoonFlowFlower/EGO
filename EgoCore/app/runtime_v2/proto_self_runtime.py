@@ -8,6 +8,15 @@ import logging
 import os
 
 from openemotion.proto_self_v2.seed_schemas import SEED_SCHEMA_VERSION, SEED_SUBJECT_PROFILE
+from openemotion.embodied_self import (
+    REQUIRED_WRITEBACK_GATE as EMBODIED_WRITEBACK_GATE,
+    BoundaryPressureMode as EmbodiedBoundaryPressureMode,
+    EmbodiedProposalStatus,
+    EmbodiedSelfOwner,
+    EmbodiedSelfState,
+    EmbodiedSelfStore,
+    EnvironmentCouplingStatus,
+)
 from openemotion.developmental_self import (
     REQUIRED_WRITEBACK_GATE as DEVELOPMENTAL_WRITEBACK_GATE,
     ContinuityMarkerType,
@@ -56,6 +65,7 @@ DEFAULT_ENDOGENOUS_DRIVE_IDENTITY_HANDLE = "openemotion"
 DEFAULT_REFLECTIVE_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_DEVELOPMENTAL_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_SOCIAL_SELF_IDENTITY_HANDLE = "openemotion"
+DEFAULT_EMBODIED_SELF_IDENTITY_HANDLE = "openemotion"
 
 
 def assess_risk_level(user_input: str) -> str:
@@ -154,6 +164,15 @@ def _resolve_social_self_identity_handle(state: RuntimeV2State) -> str:
         ingress_context.get("social_self_identity_handle")
         or ingress_context.get("identity_handle")
         or DEFAULT_SOCIAL_SELF_IDENTITY_HANDLE
+    )
+
+
+def _resolve_embodied_self_identity_handle(state: RuntimeV2State) -> str:
+    ingress_context = state.ingress_context or {}
+    return str(
+        ingress_context.get("embodied_self_identity_handle")
+        or ingress_context.get("identity_handle")
+        or DEFAULT_EMBODIED_SELF_IDENTITY_HANDLE
     )
 
 
@@ -363,6 +382,124 @@ def _build_social_context(state: RuntimeV2State) -> Dict[str, Any]:
     }
 
 
+def _build_environment_context(state: RuntimeV2State) -> Dict[str, Any]:
+    ingress_context = state.ingress_context or {}
+    provided = dict(ingress_context.get("environment_context") or {})
+    resource_budget_hint = _build_resource_budget_hint(state)
+    delivery_outcome = _build_recent_delivery_outcome(state)
+
+    reserve_level = str(resource_budget_hint.get("reserve_level") or "normal").strip().lower()
+    delivery_status = str(delivery_outcome.get("status") or "").strip().lower()
+    risk_level = str(
+        ingress_context.get("risk_level")
+        or delivery_outcome.get("risk_level")
+        or "low"
+    ).strip().lower()
+
+    if "resource_pressure_hint" in provided:
+        resource_pressure_hint = float(provided.get("resource_pressure_hint") or 0.0)
+    else:
+        resource_pressure_hint = {
+            "low": 0.78,
+            "normal": 0.45,
+        }.get(reserve_level, 0.45)
+        if delivery_status in {"failed", "blocked"}:
+            resource_pressure_hint = max(resource_pressure_hint, 0.72)
+
+    if "slack_hint" in provided:
+        slack_hint = float(provided.get("slack_hint") or 0.0)
+    else:
+        slack_hint = {
+            "low": 0.22,
+            "normal": 0.52,
+        }.get(reserve_level, 0.52)
+        if delivery_status in {"failed", "blocked"}:
+            slack_hint = min(slack_hint, 0.3)
+
+    if "boundary_pressure_hint" in provided:
+        boundary_pressure_hint = float(provided.get("boundary_pressure_hint") or 0.0)
+    else:
+        boundary_pressure_hint = 0.22
+        if state.last_tool_result and not state.last_tool_result.get("success"):
+            boundary_pressure_hint = max(boundary_pressure_hint, 0.58)
+        if risk_level in {"critical", "high"}:
+            boundary_pressure_hint = max(boundary_pressure_hint, 0.66)
+
+    if "boundary_signal" in provided:
+        boundary_signal = str(provided.get("boundary_signal") or "")
+    else:
+        if risk_level == "critical":
+            boundary_signal = "repair_only"
+        elif boundary_pressure_hint >= 0.55 or delivery_status in {"failed", "blocked"}:
+            boundary_signal = "guarded"
+        else:
+            boundary_signal = "open"
+
+    if "stabilization_needed" in provided:
+        stabilization_needed = bool(provided.get("stabilization_needed"))
+    else:
+        stabilization_needed = bool(
+            (state.last_tool_result and not state.last_tool_result.get("success"))
+            or delivery_status in {"failed", "blocked"}
+            or boundary_pressure_hint >= 0.55
+            or resource_pressure_hint >= 0.7
+        )
+
+    action_ref = str(provided.get("action_ref") or "").strip()
+    if not action_ref and state.last_tool_result:
+        tool_name = str(state.last_tool_result.get("tool") or "tool")
+        turn_id = state.last_tool_result_turn_id or state.active_turn_id or "unknown"
+        action_ref = f"{tool_name}:{turn_id}"
+    elif not action_ref and state.current_goal:
+        action_ref = f"goal:{state.current_goal}"
+
+    coupling_event = str(provided.get("coupling_event") or "").strip()
+    if not coupling_event:
+        if state.last_tool_result:
+            coupling_event = "tool_result"
+        elif state.final_sent:
+            coupling_event = "delivery_result"
+        else:
+            coupling_event = "runtime_observe"
+
+    outcome_type = str(provided.get("outcome_type") or "").strip()
+    if not outcome_type:
+        if state.last_tool_result:
+            outcome_type = "failure" if not state.last_tool_result.get("success") else "success"
+        else:
+            outcome_type = delivery_status or "observed"
+
+    outcome_summary = str(provided.get("outcome_summary") or "").strip()
+    if not outcome_summary:
+        if state.last_tool_result:
+            tool_name = str(state.last_tool_result.get("tool") or "tool")
+            if state.last_tool_result.get("success"):
+                outcome_summary = f"{tool_name} completed under runtime_v2"
+            else:
+                outcome_summary = f"{tool_name} failure increased embodied pressure"
+        else:
+            outcome_summary = f"runtime delivery status: {delivery_status or 'observed'}"
+
+    promotion_budget = str(
+        provided.get("promotion_budget")
+        or ("review_only" if stabilization_needed or state.current_goal else "shadow_only")
+    )
+
+    return {
+        "source": str(provided.get("source") or "runtime_v2"),
+        "action_ref": action_ref,
+        "coupling_event": coupling_event,
+        "outcome_type": outcome_type,
+        "outcome_summary": outcome_summary,
+        "resource_pressure_hint": resource_pressure_hint,
+        "slack_hint": slack_hint,
+        "boundary_signal": boundary_signal,
+        "boundary_pressure_hint": boundary_pressure_hint,
+        "stabilization_needed": stabilization_needed,
+        "promotion_budget": promotion_budget,
+    }
+
+
 def _compact_self_model_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     context: Dict[str, Any] = {}
     for field_name in PHASE1_AUTHORITATIVE_FIELDS:
@@ -435,6 +572,11 @@ def _compact_social_self_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     return state.to_runtime_projection()
 
 
+def _compact_embodied_self_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    state = EmbodiedSelfState.model_validate(snapshot)
+    return state.to_runtime_projection()
+
+
 def _inject_developmental_self_context(
     runtime_summary: Dict[str, Any],
     *,
@@ -461,6 +603,19 @@ def _inject_social_self_context(
     return runtime_summary
 
 
+def _inject_embodied_self_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+    embodied_self_store: Optional[EmbodiedSelfStore] = None,
+) -> Dict[str, Any]:
+    store = embodied_self_store or EmbodiedSelfStore()
+    snapshot = store.load_snapshot(_resolve_embodied_self_identity_handle(state))
+    if snapshot:
+        runtime_summary["embodied_self_context"] = _compact_embodied_self_context(snapshot)
+    return runtime_summary
+
+
 def _inject_developmental_context(
     runtime_summary: Dict[str, Any],
     *,
@@ -476,6 +631,15 @@ def _inject_social_context(
     state: RuntimeV2State,
 ) -> Dict[str, Any]:
     runtime_summary["social_context"] = _build_social_context(state)
+    return runtime_summary
+
+
+def _inject_environment_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+) -> Dict[str, Any]:
+    runtime_summary["environment_context"] = _build_environment_context(state)
     return runtime_summary
 
 
@@ -559,6 +723,7 @@ def build_proto_self_ingress_event(
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
+    embodied_self_store: Optional[EmbodiedSelfStore] = None,
 ) -> Dict[str, Any]:
     risk_level = assess_risk_level(user_input)
     restore_observation = (state.ingress_context or {}).get("restore_observation")
@@ -595,6 +760,11 @@ def build_proto_self_ingress_event(
             state=state,
             social_self_store=social_self_store,
         )
+        runtime_summary = _inject_embodied_self_context(
+            runtime_summary,
+            state=state,
+            embodied_self_store=embodied_self_store,
+        )
         runtime_summary.update(
             {
                 k: v
@@ -604,6 +774,7 @@ def build_proto_self_ingress_event(
         )
         runtime_summary = _inject_social_context(runtime_summary, state=state)
         runtime_summary = _inject_developmental_context(runtime_summary, state=state)
+        runtime_summary = _inject_environment_context(runtime_summary, state=state)
         payload = {
             "schema_version": schema_version,
             "event_id": f"{session_id}_{turn_id}",
@@ -691,6 +862,7 @@ def build_external_result_event(
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
+    embodied_self_store: Optional[EmbodiedSelfStore] = None,
 ) -> Dict[str, Any]:
     failed = not tool_result.get("success")
     schema_version = resolve_proto_self_schema_version(state)
@@ -758,11 +930,20 @@ def build_external_result_event(
             state=state,
             social_self_store=social_self_store,
         )
+        payload["runtime_summary"] = _inject_embodied_self_context(
+            payload["runtime_summary"],
+            state=state,
+            embodied_self_store=embodied_self_store,
+        )
         payload["runtime_summary"] = _inject_social_context(
             payload["runtime_summary"],
             state=state,
         )
         payload["runtime_summary"] = _inject_developmental_context(
+            payload["runtime_summary"],
+            state=state,
+        )
+        payload["runtime_summary"] = _inject_environment_context(
             payload["runtime_summary"],
             state=state,
         )
@@ -833,6 +1014,7 @@ def build_finalized_result_event(
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
+    embodied_self_store: Optional[EmbodiedSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -900,11 +1082,20 @@ def build_finalized_result_event(
         state=state,
         social_self_store=social_self_store,
     )
+    payload["runtime_summary"] = _inject_embodied_self_context(
+        payload["runtime_summary"],
+        state=state,
+        embodied_self_store=embodied_self_store,
+    )
     payload["runtime_summary"] = _inject_social_context(
         payload["runtime_summary"],
         state=state,
     )
     payload["runtime_summary"] = _inject_developmental_context(
+        payload["runtime_summary"],
+        state=state,
+    )
+    payload["runtime_summary"] = _inject_environment_context(
         payload["runtime_summary"],
         state=state,
     )
@@ -932,6 +1123,7 @@ def build_idle_check_event(
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
+    embodied_self_store: Optional[EmbodiedSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1007,11 +1199,20 @@ def build_idle_check_event(
         state=state,
         social_self_store=social_self_store,
     )
+    event["runtime_summary"] = _inject_embodied_self_context(
+        event["runtime_summary"],
+        state=state,
+        embodied_self_store=embodied_self_store,
+    )
     event["runtime_summary"] = _inject_social_context(
         event["runtime_summary"],
         state=state,
     )
     event["runtime_summary"] = _inject_developmental_context(
+        event["runtime_summary"],
+        state=state,
+    )
+    event["runtime_summary"] = _inject_environment_context(
         event["runtime_summary"],
         state=state,
     )
@@ -1037,6 +1238,7 @@ def build_developmental_tick_event(
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
     social_self_store: Optional[SocialSelfStore] = None,
+    embodied_self_store: Optional[EmbodiedSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1078,11 +1280,17 @@ def build_developmental_tick_event(
         state=state,
         social_self_store=social_self_store,
     )
+    runtime_summary = _inject_embodied_self_context(
+        runtime_summary,
+        state=state,
+        embodied_self_store=embodied_self_store,
+    )
     runtime_summary = _inject_social_context(runtime_summary, state=state)
     runtime_summary = _inject_developmental_context(
         runtime_summary,
         state=state,
     )
+    runtime_summary = _inject_environment_context(runtime_summary, state=state)
     if replay_seed is not None:
         runtime_summary["replay_seed"] = replay_seed
     return {
@@ -1158,6 +1366,7 @@ class RuntimeV2ProtoSelfRuntime:
     reflective_self_store: Optional[ReflectiveSelfStore] = None
     developmental_self_store: Optional[DevelopmentalSelfStore] = None
     social_self_store: Optional[SocialSelfStore] = None
+    embodied_self_store: Optional[EmbodiedSelfStore] = None
 
     def _resolve_collector(self, evidence_collector: Optional[Any]) -> Optional[Any]:
         if evidence_collector is not None:
@@ -1913,6 +2122,303 @@ class RuntimeV2ProtoSelfRuntime:
         proto_self_result["social_writeback"] = writeback
         return writeback
 
+    def _apply_embodied_self_writeback(
+        self,
+        *,
+        proto_self_result: Dict[str, Any],
+        state: RuntimeV2State,
+    ) -> Optional[Dict[str, Any]]:
+        delta = dict(proto_self_result.get("embodied_self_delta") or {})
+        consequence_candidates = list(proto_self_result.get("consequence_update_candidates") or [])
+        resource_boundary_snapshot = dict(proto_self_result.get("resource_boundary_snapshot") or {})
+        embodied_policy_hints = dict(proto_self_result.get("embodied_policy_hints") or {})
+        repair_candidates = list(proto_self_result.get("repair_or_stabilize_proposal_candidates") or [])
+        writeback_candidate = dict(proto_self_result.get("embodied_writeback_candidate") or {})
+        if (
+            not delta
+            and not consequence_candidates
+            and not resource_boundary_snapshot
+            and not writeback_candidate
+        ):
+            return None
+
+        trace_payload = dict(proto_self_result.get("trace_payload") or {})
+        trace_reference = str(
+            trace_payload.get("update_packet_hash")
+            or f"proto_self:{proto_self_result.get('event_id', 'unknown')}"
+        )
+
+        if writeback_candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": "embodied_writeback_requires_proposal_only"},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["embodied_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("behavioral_authority") not in {None, "none"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "embodied_writeback_behavioral_authority_must_remain_none",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["embodied_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("required_gate") not in {None, EMBODIED_WRITEBACK_GATE}:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": "embodied_writeback_requires_formal_gate"},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["embodied_writeback"] = writeback
+            return writeback
+
+        for candidate in [*consequence_candidates[:3], *repair_candidates[:3]]:
+            if candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+                writeback = {
+                    "decision": {"gate_verdict": "reject", "reason": "embodied_candidate_requires_proposal_only"},
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["embodied_writeback"] = writeback
+                return writeback
+            if candidate.get("behavioral_authority") not in {None, "none"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "embodied_candidate_behavioral_authority_must_remain_none",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["embodied_writeback"] = writeback
+                return writeback
+            if candidate.get("required_gate") not in {None, EMBODIED_WRITEBACK_GATE}:
+                writeback = {
+                    "decision": {"gate_verdict": "reject", "reason": "embodied_candidate_requires_formal_gate"},
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["embodied_writeback"] = writeback
+                return writeback
+
+        identity_handle = _resolve_embodied_self_identity_handle(state)
+        store = self.embodied_self_store or EmbodiedSelfStore(default_identity=identity_handle)
+        current_state = store.load(identity_handle) or EmbodiedSelfState(identity_handle=identity_handle)
+        current_state.identity_handle = identity_handle
+        owner = EmbodiedSelfOwner(initial_state=current_state, store=store)
+
+        action_ref = str(
+            writeback_candidate.get("action_ref")
+            or resource_boundary_snapshot.get("action_ref")
+            or next(
+                (
+                    item.get("action_ref")
+                    for item in consequence_candidates
+                    if str(item.get("action_ref") or "").strip()
+                ),
+                "",
+            )
+            or "runtime:observe"
+        ).strip()
+        outcome_type = str(
+            resource_boundary_snapshot.get("outcome_type")
+            or next(
+                (
+                    item.get("outcome_type")
+                    for item in consequence_candidates
+                    if str(item.get("outcome_type") or "").strip()
+                ),
+                "",
+            )
+            or "observed"
+        ).strip()
+        boundary_signal = str(
+            resource_boundary_snapshot.get("boundary_signal")
+            or embodied_policy_hints.get("boundary_mode")
+            or delta.get("boundary_signal")
+            or "open"
+        ).strip().lower()
+
+        coupling_status_map = {
+            "success": EnvironmentCouplingStatus.STABLE,
+            "observed": EnvironmentCouplingStatus.STABLE,
+            "failure": EnvironmentCouplingStatus.STRAINED,
+            "blocked": EnvironmentCouplingStatus.DEGRADED,
+            "timeout": EnvironmentCouplingStatus.DEGRADED,
+            "error": EnvironmentCouplingStatus.DEGRADED,
+        }
+        boundary_mode_map = {
+            "open": EmbodiedBoundaryPressureMode.STABLE,
+            "stable": EmbodiedBoundaryPressureMode.STABLE,
+            "guarded": EmbodiedBoundaryPressureMode.GUARDED,
+            "pressured": EmbodiedBoundaryPressureMode.PRESSURED,
+            "repair_only": EmbodiedBoundaryPressureMode.REPAIR_ONLY,
+            "cautious": EmbodiedBoundaryPressureMode.GUARDED,
+        }
+
+        changed_fields: list[str] = []
+        owner.set_embodied_state(
+            resource_slack=float(resource_boundary_snapshot.get("min_resource_slack") or 0.0),
+            perceived_load=float(resource_boundary_snapshot.get("perceived_load") or 0.0),
+            action_readiness=max(
+                0.0,
+                min(
+                    1.0,
+                    float(resource_boundary_snapshot.get("min_resource_slack") or 0.0)
+                    + (1.0 - float(resource_boundary_snapshot.get("max_resource_pressure") or 0.0)) * 0.5,
+                ),
+            ),
+            last_action_source="proto_self_v2",
+            source_refs=[trace_reference],
+        )
+        changed_fields.append("embodied_state")
+
+        owner.upsert_environment_coupling(
+            coupling_id=action_ref or "runtime:observe",
+            coupling_strength=max(
+                0.0,
+                min(
+                    1.0,
+                    float(resource_boundary_snapshot.get("max_resource_pressure") or 0.0)
+                    + 0.1 * float(resource_boundary_snapshot.get("recent_consequence_count") or 0),
+                ),
+            ),
+            controllability_estimate=max(
+                0.0,
+                min(
+                    1.0,
+                    1.0 - float(resource_boundary_snapshot.get("self_world_guard_bias") or 0.0) * 0.5,
+                ),
+            ),
+            recent_outcome_summary=str(
+                resource_boundary_snapshot.get("outcome_type")
+                or embodied_policy_hints.get("consequence_mode")
+                or outcome_type
+            ),
+            status=coupling_status_map.get(outcome_type.lower(), EnvironmentCouplingStatus.STABLE),
+            source_refs=[trace_reference],
+        )
+        changed_fields.append("environment_coupling_state")
+
+        owner.set_resource_pressure(
+            pressure_id="resource:runtime",
+            pressure_level=float(resource_boundary_snapshot.get("max_resource_pressure") or 0.0),
+            slack_level=float(resource_boundary_snapshot.get("min_resource_slack") or 0.0),
+            recovery_bias=1.0 if embodied_policy_hints.get("stabilization_bias") == "elevated" else 0.5,
+            source_refs=[trace_reference],
+        )
+        changed_fields.append("resource_pressure_state")
+
+        owner.set_boundary_pressure(
+            boundary_id="self_world",
+            pressure_level=float(resource_boundary_snapshot.get("max_boundary_pressure") or 0.0),
+            mode=boundary_mode_map.get(boundary_signal, EmbodiedBoundaryPressureMode.STABLE),
+            reason=f"proto_self_embodied_boundary:{boundary_signal}",
+            source_refs=[trace_reference],
+        )
+        changed_fields.append("boundary_pressure_state")
+
+        owner.record_action_consequence(
+            consequence_id=f"embodied_consequence:{proto_self_result.get('event_id', 'unknown')}",
+            action_ref=action_ref or "runtime:observe",
+            outcome_type=outcome_type or "observed",
+            consequence_summary=str(
+                embodied_policy_hints.get("consequence_mode")
+                or resource_boundary_snapshot.get("outcome_type")
+                or "embodied consequence observed"
+            ),
+            impact_score=max(
+                float(resource_boundary_snapshot.get("max_resource_pressure") or 0.0),
+                float(resource_boundary_snapshot.get("max_boundary_pressure") or 0.0),
+            ),
+            controllability_estimate=max(
+                0.0,
+                min(
+                    1.0,
+                    1.0 - float(resource_boundary_snapshot.get("self_world_guard_bias") or 0.0) * 0.4,
+                ),
+            ),
+            source_refs=[trace_reference],
+        )
+        changed_fields.append("action_consequence_memory")
+
+        owner.set_self_world_boundary_semantics(
+            distinction_summary=f"bounded_embodied_boundary:{boundary_signal}",
+            guard_bias=float(resource_boundary_snapshot.get("self_world_guard_bias") or 0.0),
+            repair_bias=1.0 if embodied_policy_hints.get("stabilization_bias") == "elevated" else 0.5,
+            source_refs=[trace_reference],
+        )
+        changed_fields.append("self_world_boundary_semantics")
+
+        proposal_count = 0
+        for idx, candidate in enumerate(repair_candidates[:3], start=1):
+            proposal = owner.propose_stabilization(
+                proposal_id=f"embodied_proposal:{proto_self_result.get('event_id', 'unknown')}:{idx}",
+                target_ref=str(candidate.get("reason") or action_ref or "self_world"),
+                issue_summary=str(candidate.get("reason") or "repair_or_stabilize"),
+                proposed_adjustment={
+                    "embodied_self_delta": delta,
+                    "resource_boundary_snapshot": resource_boundary_snapshot,
+                    "embodied_policy_hints": embodied_policy_hints,
+                    "surface_reasons": list(candidate.get("surface_reasons") or writeback_candidate.get("surface_reasons") or []),
+                },
+                justification=f"proto_self embodied proposal from {trace_reference}",
+                source_refs=[trace_reference],
+                requested_effects=list(candidate.get("requested_effects") or []),
+            )
+            owner.set_proposal_status(proposal.proposal_id, status=EmbodiedProposalStatus.HELD)
+            proposal_count += 1
+        if proposal_count:
+            changed_fields.append("proposal_history")
+
+        owner.record_governance_event(
+            event_type="embodied_writeback",
+            reference_id=action_ref or trace_reference,
+            gate_verdict="allow_writeback",
+            details={
+                "trace_reference": trace_reference,
+                "proposal_candidate_count": proposal_count,
+                "consequence_candidate_count": len(consequence_candidates),
+                "proposal_only": True,
+                "behavioral_authority": "none",
+                "surface_reasons": list(writeback_candidate.get("surface_reasons") or delta.get("surface_reasons") or []),
+            },
+        )
+        changed_fields.append("governance_ledger")
+
+        try:
+            record = owner.persist(
+                update_source=str(writeback_candidate.get("source") or "proto_self_v2"),
+                trace_reference=trace_reference,
+            )
+            writeback = {
+                "decision": {
+                    "gate_verdict": "allow_writeback",
+                    "changed_fields": sorted(set(changed_fields)),
+                    "proposal_count": proposal_count,
+                    "consequence_candidate_count": len(consequence_candidates),
+                },
+                "record": {
+                    "revision_id": record.revision_id,
+                    "model_version": record.model_version,
+                    "trace_reference": record.trace_reference,
+                    "state_hash": record.state_hash,
+                },
+                "trace_reference": trace_reference,
+            }
+        except Exception as exc:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": str(exc)},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+        proto_self_result["embodied_writeback"] = writeback
+        return writeback
+
     def process_ingress(
         self,
         *,
@@ -1934,6 +2440,7 @@ class RuntimeV2ProtoSelfRuntime:
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
+            embodied_self_store=self.embodied_self_store,
         )
         proto_self_result = self.adapter.handle_event(proto_self_event)
         writeback = self._apply_self_model_writeback(proto_self_result=proto_self_result, state=state)
@@ -1950,6 +2457,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
+            proto_self_result=proto_self_result,
+            state=state,
+        )
+        embodied_writeback = self._apply_embodied_self_writeback(
             proto_self_result=proto_self_result,
             state=state,
         )
@@ -1998,6 +2509,16 @@ class RuntimeV2ProtoSelfRuntime:
             "social_writeback_candidate": proto_self_result.get("social_writeback_candidate"),
             "social_context": (proto_self_result.get("trace_payload") or {}).get("social_context") or {},
             "social_writeback": social_writeback,
+            "embodied_self_delta": proto_self_result.get("embodied_self_delta") or {},
+            "consequence_update_candidates": proto_self_result.get("consequence_update_candidates") or [],
+            "resource_boundary_snapshot": proto_self_result.get("resource_boundary_snapshot") or {},
+            "embodied_policy_hints": proto_self_result.get("embodied_policy_hints") or {},
+            "repair_or_stabilize_proposal_candidates": (
+                proto_self_result.get("repair_or_stabilize_proposal_candidates") or []
+            ),
+            "embodied_writeback_candidate": proto_self_result.get("embodied_writeback_candidate"),
+            "environment_context": (proto_self_result.get("trace_payload") or {}).get("environment_context") or {},
+            "embodied_writeback": embodied_writeback,
         }
         state.record(
             "proto_self",
@@ -2010,11 +2531,13 @@ class RuntimeV2ProtoSelfRuntime:
                 "reflective_self_writeback": reflective_self_writeback,
                 "developmental_writeback": developmental_writeback,
                 "social_writeback": social_writeback,
+                "embodied_writeback": embodied_writeback,
                 "reflection_writeback_candidate_present": bool(proto_self_result.get("reflection_writeback_candidate")),
                 "developmental_writeback_candidate_present": bool(
                     proto_self_result.get("developmental_writeback_candidate")
                 ),
                 "social_writeback_candidate_present": bool(proto_self_result.get("social_writeback_candidate")),
+                "embodied_writeback_candidate_present": bool(proto_self_result.get("embodied_writeback_candidate")),
                 "reflection_trigger": (
                     proto_self_result.get("reflection_note", {}).get("trigger")
                     if proto_self_result.get("reflection_note")
@@ -2045,6 +2568,7 @@ class RuntimeV2ProtoSelfRuntime:
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
+            embodied_self_store=self.embodied_self_store,
         )
         external_result = self.adapter.handle_event(external_result_event)
         writeback = self._apply_self_model_writeback(proto_self_result=external_result, state=state)
@@ -2061,6 +2585,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
+            proto_self_result=external_result,
+            state=state,
+        )
+        embodied_writeback = self._apply_embodied_self_writeback(
             proto_self_result=external_result,
             state=state,
         )
@@ -2118,6 +2646,22 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["social_writeback_candidate"] = external_result.get("social_writeback_candidate")
         state.proto_self_context["social_context"] = (external_result.get("trace_payload") or {}).get("social_context") or {}
         state.proto_self_context["social_writeback"] = social_writeback
+        state.proto_self_context["embodied_self_delta"] = external_result.get("embodied_self_delta") or {}
+        state.proto_self_context["consequence_update_candidates"] = (
+            external_result.get("consequence_update_candidates") or []
+        )
+        state.proto_self_context["resource_boundary_snapshot"] = (
+            external_result.get("resource_boundary_snapshot") or {}
+        )
+        state.proto_self_context["embodied_policy_hints"] = external_result.get("embodied_policy_hints") or {}
+        state.proto_self_context["repair_or_stabilize_proposal_candidates"] = (
+            external_result.get("repair_or_stabilize_proposal_candidates") or []
+        )
+        state.proto_self_context["embodied_writeback_candidate"] = external_result.get("embodied_writeback_candidate")
+        state.proto_self_context["environment_context"] = (
+            external_result.get("trace_payload") or {}
+        ).get("environment_context") or {}
+        state.proto_self_context["embodied_writeback"] = embodied_writeback
         if external_result.get("candidate_actions") is not None:
             state.proto_self_context["candidate_actions"] = external_result.get("candidate_actions") or []
         if external_result.get("policy_hint"):
@@ -2151,6 +2695,7 @@ class RuntimeV2ProtoSelfRuntime:
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
+            embodied_self_store=self.embodied_self_store,
         )
         if not finalized_event:
             return
@@ -2169,6 +2714,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
+            proto_self_result=finalized_result,
+            state=state,
+        )
+        embodied_writeback = self._apply_embodied_self_writeback(
             proto_self_result=finalized_result,
             state=state,
         )
@@ -2227,6 +2776,22 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["social_writeback_candidate"] = finalized_result.get("social_writeback_candidate")
         state.proto_self_context["social_context"] = (finalized_result.get("trace_payload") or {}).get("social_context") or {}
         state.proto_self_context["social_writeback"] = social_writeback
+        state.proto_self_context["embodied_self_delta"] = finalized_result.get("embodied_self_delta") or {}
+        state.proto_self_context["consequence_update_candidates"] = (
+            finalized_result.get("consequence_update_candidates") or []
+        )
+        state.proto_self_context["resource_boundary_snapshot"] = (
+            finalized_result.get("resource_boundary_snapshot") or {}
+        )
+        state.proto_self_context["embodied_policy_hints"] = finalized_result.get("embodied_policy_hints") or {}
+        state.proto_self_context["repair_or_stabilize_proposal_candidates"] = (
+            finalized_result.get("repair_or_stabilize_proposal_candidates") or []
+        )
+        state.proto_self_context["embodied_writeback_candidate"] = finalized_result.get("embodied_writeback_candidate")
+        state.proto_self_context["environment_context"] = (
+            finalized_result.get("trace_payload") or {}
+        ).get("environment_context") or {}
+        state.proto_self_context["embodied_writeback"] = embodied_writeback
         if finalized_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = finalized_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = finalized_result.get("policy_hint", {}).get("governor_hint")
@@ -2248,6 +2813,7 @@ class RuntimeV2ProtoSelfRuntime:
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
+            embodied_self_store=self.embodied_self_store,
         )
         if not idle_event:
             return
@@ -2266,6 +2832,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
+            proto_self_result=idle_result,
+            state=state,
+        )
+        embodied_writeback = self._apply_embodied_self_writeback(
             proto_self_result=idle_result,
             state=state,
         )
@@ -2321,6 +2891,18 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["social_writeback_candidate"] = idle_result.get("social_writeback_candidate")
         state.proto_self_context["social_context"] = (idle_result.get("trace_payload") or {}).get("social_context") or {}
         state.proto_self_context["social_writeback"] = social_writeback
+        state.proto_self_context["embodied_self_delta"] = idle_result.get("embodied_self_delta") or {}
+        state.proto_self_context["consequence_update_candidates"] = idle_result.get("consequence_update_candidates") or []
+        state.proto_self_context["resource_boundary_snapshot"] = idle_result.get("resource_boundary_snapshot") or {}
+        state.proto_self_context["embodied_policy_hints"] = idle_result.get("embodied_policy_hints") or {}
+        state.proto_self_context["repair_or_stabilize_proposal_candidates"] = (
+            idle_result.get("repair_or_stabilize_proposal_candidates") or []
+        )
+        state.proto_self_context["embodied_writeback_candidate"] = idle_result.get("embodied_writeback_candidate")
+        state.proto_self_context["environment_context"] = (
+            idle_result.get("trace_payload") or {}
+        ).get("environment_context") or {}
+        state.proto_self_context["embodied_writeback"] = embodied_writeback
         if idle_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = idle_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = idle_result.get("policy_hint", {}).get("governor_hint")
@@ -2360,6 +2942,7 @@ class RuntimeV2ProtoSelfRuntime:
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
             social_self_store=self.social_self_store,
+            embodied_self_store=self.embodied_self_store,
         )
         if not developmental_event:
             return None
@@ -2378,6 +2961,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
+            proto_self_result=developmental_result,
+            state=state,
+        )
+        embodied_writeback = self._apply_embodied_self_writeback(
             proto_self_result=developmental_result,
             state=state,
         )
@@ -2443,6 +3030,22 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_result.get("trace_payload") or {}
         ).get("social_context") or {}
         state.proto_self_context["social_writeback"] = social_writeback
+        state.proto_self_context["embodied_self_delta"] = developmental_result.get("embodied_self_delta") or {}
+        state.proto_self_context["consequence_update_candidates"] = (
+            developmental_result.get("consequence_update_candidates") or []
+        )
+        state.proto_self_context["resource_boundary_snapshot"] = (
+            developmental_result.get("resource_boundary_snapshot") or {}
+        )
+        state.proto_self_context["embodied_policy_hints"] = developmental_result.get("embodied_policy_hints") or {}
+        state.proto_self_context["repair_or_stabilize_proposal_candidates"] = (
+            developmental_result.get("repair_or_stabilize_proposal_candidates") or []
+        )
+        state.proto_self_context["embodied_writeback_candidate"] = developmental_result.get("embodied_writeback_candidate")
+        state.proto_self_context["environment_context"] = (
+            developmental_result.get("trace_payload") or {}
+        ).get("environment_context") or {}
+        state.proto_self_context["embodied_writeback"] = embodied_writeback
         state.proto_self_context["background_thought_candidates"] = list(
             developmental_summary.get("background_thought_candidates") or []
         )
@@ -2459,6 +3062,10 @@ class RuntimeV2ProtoSelfRuntime:
                 ).get("decision", {}).get("gate_verdict"),
                 "developmental_proposal_candidate_count": len(
                     developmental_result.get("developmental_proposal_candidates") or []
+                ),
+                "embodied_writeback_gate_verdict": (embodied_writeback or {}).get("decision", {}).get("gate_verdict"),
+                "embodied_proposal_candidate_count": len(
+                    developmental_result.get("repair_or_stabilize_proposal_candidates") or []
                 ),
             },
         )
