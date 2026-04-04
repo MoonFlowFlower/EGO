@@ -171,6 +171,12 @@ class KernelOutputV2:
     developmental_priority_hints: Dict[str, Any] = field(default_factory=dict)
     developmental_audit_entries: List[Dict[str, Any]] = field(default_factory=list)
     developmental_writeback_candidate: Optional[Dict[str, Any]] = None
+    social_self_delta: Dict[str, Any] = field(default_factory=dict)
+    relation_update_candidates: List[Dict[str, Any]] = field(default_factory=list)
+    trust_commitment_snapshot: Dict[str, Any] = field(default_factory=dict)
+    social_policy_hints: Dict[str, Any] = field(default_factory=dict)
+    repair_proposal_candidates: List[Dict[str, Any]] = field(default_factory=list)
+    social_writeback_candidate: Optional[Dict[str, Any]] = None
     endogenous_drive_delta: Dict[str, Any] = field(default_factory=dict)
     drive_state_snapshot: Dict[str, Any] = field(default_factory=dict)
     priority_snapshot: Dict[str, Any] = field(default_factory=dict)
@@ -210,6 +216,12 @@ class KernelOutputV2:
             "developmental_priority_hints": self.developmental_priority_hints,
             "developmental_audit_entries": self.developmental_audit_entries,
             "developmental_writeback_candidate": self.developmental_writeback_candidate,
+            "social_self_delta": self.social_self_delta,
+            "relation_update_candidates": self.relation_update_candidates,
+            "trust_commitment_snapshot": self.trust_commitment_snapshot,
+            "social_policy_hints": self.social_policy_hints,
+            "repair_proposal_candidates": self.repair_proposal_candidates,
+            "social_writeback_candidate": self.social_writeback_candidate,
             "endogenous_drive_delta": self.endogenous_drive_delta,
             "drive_state_snapshot": self.drive_state_snapshot,
             "priority_snapshot": self.priority_snapshot,

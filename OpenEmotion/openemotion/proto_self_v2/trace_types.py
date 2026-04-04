@@ -58,6 +58,13 @@ class ProtoSelfTracePayloadV2:
     developmental_audit_entries: list = field(default_factory=list)
     developmental_writeback_candidate: Optional[Dict[str, Any]] = None
     developmental_context: Dict[str, Any] = field(default_factory=dict)
+    social_self_delta: Dict[str, Any] = field(default_factory=dict)
+    relation_update_candidates: list = field(default_factory=list)
+    trust_commitment_snapshot: Dict[str, Any] = field(default_factory=dict)
+    social_policy_hints: Dict[str, Any] = field(default_factory=dict)
+    repair_proposal_candidates: list = field(default_factory=list)
+    social_writeback_candidate: Optional[Dict[str, Any]] = None
+    social_context: Dict[str, Any] = field(default_factory=dict)
     timestamp: str = ""
     legacy_trace_payload: Dict[str, Any] = field(default_factory=dict)
 
@@ -112,6 +119,13 @@ class ProtoSelfTracePayloadV2:
             "developmental_audit_entries": self.developmental_audit_entries,
             "developmental_writeback_candidate": self.developmental_writeback_candidate,
             "developmental_context": self.developmental_context,
+            "social_self_delta": self.social_self_delta,
+            "relation_update_candidates": self.relation_update_candidates,
+            "trust_commitment_snapshot": self.trust_commitment_snapshot,
+            "social_policy_hints": self.social_policy_hints,
+            "repair_proposal_candidates": self.repair_proposal_candidates,
+            "social_writeback_candidate": self.social_writeback_candidate,
+            "social_context": self.social_context,
             "timestamp": self.timestamp,
             "legacy_trace_payload": self.legacy_trace_payload,
         }

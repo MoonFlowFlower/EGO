@@ -23,6 +23,12 @@ from openemotion.proto_self_v2.reflective_self_context import (
     extract_runtime_reflective_self_context,
     summarize_runtime_reflective_self_context,
 )
+from openemotion.proto_self_v2.social_self_context import (
+    derive_social_outputs,
+    extract_runtime_social_context,
+    extract_runtime_social_self_context,
+    summarize_runtime_social_self_context,
+)
 from openemotion.proto_self_v2.schemas import (
     KernelOutputV2,
     UpdatePacketV2,
@@ -59,6 +65,7 @@ def _build_constraint_summary(
         "developmental_self_context": summarize_runtime_developmental_self_context(runtime_summary),
         "endogenous_drive_context": summarize_runtime_endogenous_drive_context(runtime_summary),
         "reflective_self_context": summarize_runtime_reflective_self_context(runtime_summary),
+        "social_self_context": summarize_runtime_social_self_context(runtime_summary),
     }
 
 
@@ -80,6 +87,8 @@ def _build_retrieval_summary(state: ProtoSelfStateV2, packet: UpdatePacketV2) ->
         ),
         "endogenous_drive_context_present": bool(extract_runtime_endogenous_drive_context(packet.runtime_summary)),
         "reflective_self_context_present": bool(extract_runtime_reflective_self_context(packet.runtime_summary)),
+        "social_self_context_present": bool(extract_runtime_social_self_context(packet.runtime_summary)),
+        "social_context_present": bool(extract_runtime_social_context(packet.runtime_summary)),
     }
 
 
@@ -165,6 +174,7 @@ def _process_seed_profile(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) ->
             "seed_revision_counter": state_v2.seed_state.revision_counter,
             "seed_recent_outcomes_count": len(state_v2.seed_state.recent_outcomes),
             "self_model_context_present": constraint_summary["self_model_context"]["present"],
+            "social_self_context_present": constraint_summary["social_self_context"]["present"],
         },
         trace_payload=trace_payload,
     )
@@ -190,6 +200,7 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
     developmental_outputs = derive_developmental_outputs(packet.runtime_summary)
     endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
     reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
+    social_outputs = derive_social_outputs(packet.runtime_summary)
     state_v2.apply_v1_state(
         v1_state,
         prediction_snapshot_prev=packet.prediction_snapshot_prev,
@@ -230,12 +241,20 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         developmental_audit_entries=developmental_outputs["developmental_audit_entries"],
         developmental_writeback_candidate=developmental_outputs["developmental_writeback_candidate"],
         developmental_context=developmental_outputs["developmental_context"],
+        social_self_delta=social_outputs["social_self_delta"],
+        relation_update_candidates=social_outputs["relation_update_candidates"],
+        trust_commitment_snapshot=social_outputs["trust_commitment_snapshot"],
+        social_policy_hints=social_outputs["social_policy_hints"],
+        repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
+        social_writeback_candidate=social_outputs["social_writeback_candidate"],
+        social_context=social_outputs["social_context"],
         reflection_note=reflection_dict,
         policy_hint={
             **v1_output.policy_hint,
             **developmental_outputs["policy_hint_patch"],
             **endogenous_drive_outputs["policy_hint_patch"],
             **reflective_outputs["policy_hint_patch"],
+            **social_outputs["policy_hint_patch"],
         },
         response_tendency=(
             reflective_outputs["response_tendency"].to_dict()
@@ -244,9 +263,13 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
                 endogenous_drive_outputs["response_tendency"].to_dict()
                 if endogenous_drive_outputs["response_tendency"]
                 else (
-                    developmental_outputs["response_tendency"].to_dict()
-                    if developmental_outputs["response_tendency"]
-                    else (v1_output.response_tendency.to_dict() if v1_output.response_tendency else None)
+                    social_outputs["response_tendency"].to_dict()
+                    if social_outputs["response_tendency"]
+                    else (
+                        developmental_outputs["response_tendency"].to_dict()
+                        if developmental_outputs["response_tendency"]
+                        else (v1_output.response_tendency.to_dict() if v1_output.response_tendency else None)
+                    )
                 )
             )
         ),
@@ -258,10 +281,12 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         **developmental_outputs["policy_hint_patch"],
         **endogenous_drive_outputs["policy_hint_patch"],
         **reflective_outputs["policy_hint_patch"],
+        **social_outputs["policy_hint_patch"],
     }
     merged_response_tendency = (
         reflective_outputs["response_tendency"]
         or endogenous_drive_outputs["response_tendency"]
+        or social_outputs["response_tendency"]
         or developmental_outputs["response_tendency"]
         or v1_output.response_tendency
     )
@@ -284,6 +309,12 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         developmental_priority_hints=developmental_outputs["developmental_priority_hints"],
         developmental_audit_entries=developmental_outputs["developmental_audit_entries"],
         developmental_writeback_candidate=developmental_outputs["developmental_writeback_candidate"],
+        social_self_delta=social_outputs["social_self_delta"],
+        relation_update_candidates=social_outputs["relation_update_candidates"],
+        trust_commitment_snapshot=social_outputs["trust_commitment_snapshot"],
+        social_policy_hints=social_outputs["social_policy_hints"],
+        repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
+        social_writeback_candidate=social_outputs["social_writeback_candidate"],
         endogenous_drive_delta=endogenous_drive_outputs["endogenous_drive_delta"],
         drive_state_snapshot=endogenous_drive_outputs["drive_state_snapshot"],
         priority_snapshot=endogenous_drive_outputs["priority_snapshot"],
@@ -322,6 +353,12 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         output.confidence_meta["reflective_self_owner_revision"] = constraint_summary["reflective_self_context"].get(
             "owner_revision"
         )
+    if constraint_summary["social_self_context"]["present"]:
+        output.confidence_meta = dict(output.confidence_meta)
+        output.confidence_meta["social_self_context_present"] = True
+        output.confidence_meta["social_self_owner_revision"] = constraint_summary["social_self_context"].get(
+            "owner_revision"
+        )
     return output
 
 
@@ -331,6 +368,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
     developmental_outputs = derive_developmental_outputs(packet.runtime_summary)
     endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
     reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
+    social_outputs = derive_social_outputs(packet.runtime_summary)
     trace_payload = build_trace_payload_v2(
         event_id=packet.event_id,
         subject_profile=packet.subject_profile,
@@ -369,6 +407,13 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         developmental_audit_entries=developmental_outputs["developmental_audit_entries"],
         developmental_writeback_candidate=developmental_outputs["developmental_writeback_candidate"],
         developmental_context=developmental_outputs["developmental_context"],
+        social_self_delta=social_outputs["social_self_delta"],
+        relation_update_candidates=social_outputs["relation_update_candidates"],
+        trust_commitment_snapshot=social_outputs["trust_commitment_snapshot"],
+        social_policy_hints=social_outputs["social_policy_hints"],
+        repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
+        social_writeback_candidate=social_outputs["social_writeback_candidate"],
+        social_context=social_outputs["social_context"],
         policy_hint={
             "preferred_action_type": "wait",
             "risk_tolerance": "conservative",
@@ -384,6 +429,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             **developmental_outputs["policy_hint_patch"],
             **endogenous_drive_outputs["policy_hint_patch"],
             **reflective_outputs["policy_hint_patch"],
+            **social_outputs["policy_hint_patch"],
         },
         response_tendency=(
             reflective_outputs["response_tendency"].to_dict()
@@ -392,9 +438,13 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
                 endogenous_drive_outputs["response_tendency"].to_dict()
                 if endogenous_drive_outputs["response_tendency"]
                 else (
-                    developmental_outputs["response_tendency"].to_dict()
-                    if developmental_outputs["response_tendency"]
-                    else None
+                    social_outputs["response_tendency"].to_dict()
+                    if social_outputs["response_tendency"]
+                    else (
+                        developmental_outputs["response_tendency"].to_dict()
+                        if developmental_outputs["response_tendency"]
+                        else None
+                    )
                 )
             )
         ),
@@ -421,6 +471,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             "shadow_revision": execution.summary.get("shadow_revision"),
             "self_model_context_present": bool(extract_runtime_self_model_context(packet.runtime_summary)),
             "reflective_self_context_present": bool(extract_runtime_reflective_self_context(packet.runtime_summary)),
+            "social_self_context_present": bool(extract_runtime_social_self_context(packet.runtime_summary)),
             **execution.self_model_confidence_meta,
         },
         self_model_delta=execution.self_model_delta,
@@ -433,6 +484,12 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         developmental_priority_hints=developmental_outputs["developmental_priority_hints"],
         developmental_audit_entries=developmental_outputs["developmental_audit_entries"],
         developmental_writeback_candidate=developmental_outputs["developmental_writeback_candidate"],
+        social_self_delta=social_outputs["social_self_delta"],
+        relation_update_candidates=social_outputs["relation_update_candidates"],
+        trust_commitment_snapshot=social_outputs["trust_commitment_snapshot"],
+        social_policy_hints=social_outputs["social_policy_hints"],
+        repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
+        social_writeback_candidate=social_outputs["social_writeback_candidate"],
         policy_hint={
             "preferred_action_type": "wait",
             "risk_tolerance": "conservative",
@@ -448,10 +505,12 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             **developmental_outputs["policy_hint_patch"],
             **endogenous_drive_outputs["policy_hint_patch"],
             **reflective_outputs["policy_hint_patch"],
+            **social_outputs["policy_hint_patch"],
         },
         response_tendency=(
             reflective_outputs["response_tendency"]
             or endogenous_drive_outputs["response_tendency"]
+            or social_outputs["response_tendency"]
             or developmental_outputs["response_tendency"]
         ),
         endogenous_drive_delta=endogenous_drive_outputs["endogenous_drive_delta"],

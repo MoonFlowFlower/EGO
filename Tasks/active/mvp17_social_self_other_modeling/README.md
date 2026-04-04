@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: owner_package_in_place
+status: proto_self_contract_connected
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP17_task_plan.md"
 predecessor: "WP11/MVP16"
@@ -20,7 +20,7 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 
 ## 真实目标
 
-在不放开 authority 边界的前提下，把 `WP12/MVP17` 的 formal owner 落到 `OpenEmotion/openemotion/social_self/*`，并在不接主链的前提下先完成 `trust / commitment / repair` proposal-only owner 基础设施。
+在不放开 authority 边界的前提下，把 `WP12/MVP17` 的 formal owner 落到 `OpenEmotion/openemotion/social_self/*`，并把 `trust / commitment / repair` 的 proposal-only contract 正式接到 `proto_self_v2`。
 
 ## 当前正式 owner target
 
@@ -44,7 +44,7 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 
 - authority / contract freeze
 - formal owner package target
-- bounded proto-self social contract target
+- bounded proto-self social contract
 - EgoCore runtime social bridge target
 - historical social / relation materials demotion
 - subagent-ready task decomposition
@@ -52,10 +52,11 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 ## 当前状态
 
 - formal owner：`T10 completed`
+- proto_self_v2 contract：`T20 completed`
 - 主链接线：`not_started`
-- 启用状态：`formal_owner_only`
-- 当前 blocker：`runtime intake and proto_self contract are not connected yet`
-- 当前最小动作：`T20_PROTO_SELF_CONTRACT_INTEGRATION`
+- 启用状态：`proto_self_contract_only`
+- 当前 blocker：`EgoCore runtime bridge and formal mainline entry are not connected yet`
+- 当前最小动作：`T30_EGOCORE_RUNTIME_BRIDGE`
 
 ## T10 已证实内容
 
@@ -63,6 +64,14 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - owner state 已覆盖 `relation_memory / other_model_state / trust_state / commitment_state / repair_state / social_boundary_state / governance_ledger`
 - owner store、revision log、replay 与 proposal-only governance 已有最小测试通过
 - 旧 social surfaces 仍只作为 reference-only / input-only，不构成 current formal owner
+
+## T20 已证实内容
+
+- `proto_self_v2` 已能消费 `runtime_summary.social_self_context` 与 `runtime_summary.social_context`
+- `KernelOutputV2` 已发出锁定的 `social_self_delta / relation_update_candidates / trust_commitment_snapshot / social_policy_hints / repair_proposal_candidates / social_writeback_candidate`
+- trace payload 已镜像 `social_context`
+- social outputs 仍保持 `proposal_only + behavioral_authority = none`
+- legacy `relationship_context` / `emotiond.state.bond_trust` 不会被误当成正式 social contract 输入
 
 ## 当前不做
 

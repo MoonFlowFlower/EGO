@@ -13,7 +13,7 @@
 
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
-- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP11/MVP16`，`WP12/MVP17` 已完成 authority freeze 与 `T10` formal owner package，当前下一步是 `T20` 的 proto-self social contract integration，不是 live social autonomy。
+- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP11/MVP16`，`WP12/MVP17` 已完成 authority freeze、`T10` formal owner package 与 `T20` proto-self social contract integration，当前下一步是 `T30` 的 EgoCore runtime bridge，不是 live social autonomy。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -811,12 +811,12 @@
 
 **当前状态（2026-04-03）**
 - `WP12/MVP17` 当前层级是 `implementation`
-- 当前状态是 `authority_frozen + owner_package_in_place`
+- 当前状态是 `authority_frozen + proto_self_contract_connected`
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/social_self/*`
 - 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
 - 当前 phase 1 只冻结 `trust / commitment / repair`，不实现更宽的 social self
-- 当前已证实：`OpenEmotion/openemotion/social_self/*` 的 owner / store / governance / replay 基础与定向测试已落地
-- 当前 blocker：runtime intake 和 proto-self social contract 尚未接线；下一步是 `T20_PROTO_SELF_CONTRACT_INTEGRATION`
+- 当前已证实：`OpenEmotion/openemotion/social_self/*` 的 owner / store / governance / replay 基础与 `proto_self_v2` bounded social contract 已落地
+- 当前 blocker：EgoCore runtime bridge 尚未接线；下一步是 `T30_EGOCORE_RUNTIME_BRIDGE`
 
 ---
 
