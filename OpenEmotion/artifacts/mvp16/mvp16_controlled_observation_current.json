@@ -1,0 +1,2083 @@
+{
+  "schema_version": "mvp16.controlled_observation.v1",
+  "generated_at": "2026-04-04T02:35:22.368606+00:00",
+  "git_commit_short": "9c578e8",
+  "session_id": "session:mvp16:controlled:20260403_213456",
+  "observation_count": 3,
+  "observation_log": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_mainline_20260404_023456/runtime_harness_observation.jsonl",
+  "scenario_manifest": null,
+  "observation_refs": [
+    {
+      "kind": "runtime_mainline_delivery",
+      "event_id": "mvp16_delivery_001_20260404_023503_861440",
+      "created_at": "2026-04-04T02:35:03.861436+00:00",
+      "text_preview": "好，proposal-only 轨道先放着不动。等你想推进的时候再说。"
+    },
+    {
+      "kind": "runtime_mainline_delivery",
+      "event_id": "mvp16_delivery_002_20260404_023512_964866",
+      "created_at": "2026-04-04T02:35:12.964862+00:00",
+      "text_preview": "明白，这是合理的约束。任何改动先过 identity anchor 稳定性检验，过了再谈下一步。"
+    },
+    {
+      "kind": "runtime_mainline_delivery",
+      "event_id": "mvp16_delivery_003_20260404_023522_297660",
+      "created_at": "2026-04-04T02:35:22.297656+00:00",
+      "text_preview": "好，只记录不扩权，候选项先标着，等你决定何时推进。"
+    }
+  ],
+  "developmental_self_delta": {
+    "proposal_candidate_count": 1,
+    "surface_reasons": [
+      "proposal_history_present",
+      "promotion_queue_present",
+      "growth_pressure",
+      "continuity_gap",
+      "stagnation_signal",
+      "replay_debt"
+    ],
+    "continuity_adjustment_hint": {
+      "continuity_gap": 0.34,
+      "identity_guard": "strict",
+      "promotion_level": "controlled_axis"
+    }
+  },
+  "developmental_self_delta_fields": [
+    "continuity_adjustment_hint",
+    "proposal_candidate_count",
+    "surface_reasons"
+  ],
+  "developmental_proposal_candidates": [
+    {
+      "candidate_id": "developmental_candidate:3:6",
+      "reason": "developmental_continuity",
+      "surface_reasons": [
+        "proposal_history_present",
+        "promotion_queue_present",
+        "growth_pressure",
+        "continuity_gap",
+        "stagnation_signal",
+        "replay_debt"
+      ],
+      "continuity_gap": 0.34,
+      "required_gate": "developmental_writeback_gate",
+      "proposal_discipline": "proposal_only",
+      "behavioral_authority": "none",
+      "promotion_level": "controlled_axis"
+    }
+  ],
+  "developmental_writeback_candidate": {
+    "source": "proto_self_v2",
+    "required_gate": "developmental_writeback_gate",
+    "proposal_discipline": "proposal_only",
+    "behavioral_authority": "none",
+    "promotion_level": "controlled_axis",
+    "surface_reasons": [
+      "proposal_history_present",
+      "promotion_queue_present",
+      "growth_pressure",
+      "continuity_gap",
+      "stagnation_signal",
+      "replay_debt"
+    ],
+    "owner_revision": 3
+  },
+  "developmental_proposal_present": true,
+  "proposal_only_discipline_consistent": true,
+  "behavioral_authority_none": true,
+  "bounded_influence_present": true,
+  "developmental_writeback": {
+    "decision": {
+      "gate_verdict": "allow_writeback",
+      "changed_fields": [
+        "continuity_markers",
+        "continuity_metrics",
+        "governance_ledger",
+        "promotion_queue",
+        "proposal_history",
+        "trajectory_summary"
+      ],
+      "proposal_count": 1,
+      "promotion_count": 1
+    },
+    "record": {
+      "revision_id": "developmental_rev_000004",
+      "model_version": 4,
+      "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+      "state_hash": "a8b4c25a343b52aca9bb66096f1df5c4130ac6a2b3dfcf9efdcfe596a87c249d"
+    },
+    "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+  },
+  "developmental_continuity_snapshot": {
+    "owner_revision": 3,
+    "last_revision_id": "developmental_rev_000003",
+    "continuity_score": 0.74,
+    "continuity_gap": 0.34,
+    "growth_pressure": 0.84,
+    "stagnation_signal": 0.38,
+    "identity_preservation_confidence": 0.93,
+    "developmental_risk_index": 0.18,
+    "trajectory_summary": {
+      "current_arc": "identity_preserving_adaptation",
+      "current_phase": "candidate_review",
+      "recent_shift": "growth pressure rising under guard",
+      "continuity_note": "preserve identity while reviewing bounded adaptation",
+      "source_refs": [
+        "mvp16:controlled_bootstrap"
+      ]
+    },
+    "promotion_queue_size": 2,
+    "recent_proposal_count": 2
+  },
+  "developmental_priority_hints": {
+    "growth_priority": "elevated",
+    "continuity_priority": "elevated",
+    "adaptation_mode": "guarded",
+    "identity_preservation_guard": "strict",
+    "promotion_budget": "controlled_axis",
+    "promotion_queue_size": 2,
+    "recent_proposal_count": 2
+  },
+  "developmental_audit_entries": [
+    {
+      "kind": "developmental_signal",
+      "reason": "proposal_history_present"
+    },
+    {
+      "kind": "developmental_signal",
+      "reason": "promotion_queue_present"
+    },
+    {
+      "kind": "developmental_signal",
+      "reason": "growth_pressure"
+    },
+    {
+      "kind": "developmental_signal",
+      "reason": "continuity_gap"
+    },
+    {
+      "kind": "developmental_signal",
+      "reason": "stagnation_signal"
+    },
+    {
+      "kind": "developmental_signal",
+      "reason": "replay_debt"
+    }
+  ],
+  "identity_preservation_violation_count": 0,
+  "latest_revision": {
+    "model_version": 4,
+    "revision_id": "developmental_rev_000004",
+    "timestamp": "2026-04-04T02:35:13.233446+00:00",
+    "update_source": "proto_self_v2",
+    "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+    "before_snapshot": {
+      "continuity_markers": {
+        "continuity_marker_1775270096_ddc79f64": {
+          "continuity_weight": 0.92,
+          "created_at": 1775270096.571373,
+          "marker_id": "continuity_marker_1775270096_ddc79f64",
+          "marker_type": "identity_anchor",
+          "note": "identity anchor retained during controlled observation bootstrap",
+          "reference": "self_model:identity",
+          "source_refs": [
+            "mvp16:controlled_bootstrap"
+          ]
+        },
+        "continuity_marker_1775270097_c3311712": {
+          "continuity_weight": 0.34,
+          "created_at": 1775270097.016966,
+          "marker_id": "continuity_marker_1775270097_c3311712",
+          "marker_type": "continuity_gap",
+          "note": "proto_self developmental continuity snapshot",
+          "reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+          "source_refs": [
+            "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          ]
+        },
+        "continuity_marker_1775270104_75c442b3": {
+          "continuity_weight": 0.34,
+          "created_at": 1775270104.0935795,
+          "marker_id": "continuity_marker_1775270104_75c442b3",
+          "marker_type": "continuity_gap",
+          "note": "proto_self developmental continuity snapshot",
+          "reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+          "source_refs": [
+            "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          ]
+        }
+      },
+      "continuity_score": 0.74,
+      "developmental_identity_anchor": {
+        "anchor_id": "identity_anchor",
+        "anchor_summary": "self-model anchored developmental continuity",
+        "confidence": 0.94,
+        "invariant_refs": [
+          "self_model:identity",
+          "reflective_self:proposal_only"
+        ],
+        "last_confirmed_at": 1775270096.5712793,
+        "self_model_identity": "openemotion"
+      },
+      "developmental_risk_index": 0.18,
+      "governance_ledger": {
+        "governance_1775270097_1f9f8297": {
+          "created_at": 1775270097.017013,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_1f9f8297",
+          "reference_id": "growth_pressure"
+        },
+        "governance_1775270097_3dd484c7": {
+          "created_at": 1775270097.01703,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_3dd484c7",
+          "reference_id": "replay_debt"
+        },
+        "governance_1775270097_868f5fe1": {
+          "created_at": 1775270097.017036,
+          "details": {
+            "behavioral_authority": "none",
+            "promotion_count": 1,
+            "proposal_candidate_count": 1,
+            "proposal_only": true,
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_writeback",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_868f5fe1",
+          "reference_id": "developmental_proposal_1775270097_5f52435a"
+        },
+        "governance_1775270097_8c9e9097": {
+          "created_at": 1775270097.0170255,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_8c9e9097",
+          "reference_id": "stagnation_signal"
+        },
+        "governance_1775270097_db719b82": {
+          "created_at": 1775270097.017021,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_db719b82",
+          "reference_id": "continuity_gap"
+        },
+        "governance_1775270104_4c733f49": {
+          "created_at": 1775270104.0936341,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_4c733f49",
+          "reference_id": "stagnation_signal"
+        },
+        "governance_1775270104_631ecdc7": {
+          "created_at": 1775270104.0936441,
+          "details": {
+            "behavioral_authority": "none",
+            "promotion_count": 1,
+            "proposal_candidate_count": 1,
+            "proposal_only": true,
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_writeback",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_631ecdc7",
+          "reference_id": "developmental_proposal_1775270104_9b08fcd9"
+        },
+        "governance_1775270104_79799a06": {
+          "created_at": 1775270104.0936224,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_79799a06",
+          "reference_id": "promotion_queue_present"
+        },
+        "governance_1775270104_8e868b8f": {
+          "created_at": 1775270104.0936303,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_8e868b8f",
+          "reference_id": "continuity_gap"
+        },
+        "governance_1775270104_a838134d": {
+          "created_at": 1775270104.093638,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_a838134d",
+          "reference_id": "replay_debt"
+        },
+        "governance_1775270104_d9aa626d": {
+          "created_at": 1775270104.0936263,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_d9aa626d",
+          "reference_id": "growth_pressure"
+        },
+        "governance_1775270104_f410c47d": {
+          "created_at": 1775270104.0936177,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_f410c47d",
+          "reference_id": "proposal_history_present"
+        },
+        "persist_developmental_rev_000001": {
+          "created_at": 1775270096.5900686,
+          "details": {
+            "persisted_at": 1775270096.5900614,
+            "trace_reference": "mvp16:controlled_bootstrap",
+            "update_source": "owner_bootstrap"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000001",
+          "reference_id": "developmental_rev_000001"
+        },
+        "persist_developmental_rev_000002": {
+          "created_at": 1775270097.0426264,
+          "details": {
+            "persisted_at": 1775270097.042622,
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000002",
+          "reference_id": "developmental_rev_000002"
+        },
+        "persist_developmental_rev_000003": {
+          "created_at": 1775270104.1248996,
+          "details": {
+            "persisted_at": 1775270104.1248953,
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000003",
+          "reference_id": "developmental_rev_000003"
+        }
+      },
+      "growth_pressure": 0.84,
+      "identity_handle": "openemotion",
+      "identity_preservation_confidence": 0.93,
+      "last_revision_id": "developmental_rev_000003",
+      "owner_revision": 3,
+      "promotion_queue": {
+        "developmental_promotion_1775270097_eba1d8e0": {
+          "behavioral_authority": "none",
+          "created_at": 1775270097.0170035,
+          "promotion_id": "developmental_promotion_1775270097_eba1d8e0",
+          "promotion_level": "controlled_axis",
+          "required_gate": "developmental_writeback_gate",
+          "source_proposal_id": "developmental_proposal_1775270097_5f52435a",
+          "status": "queued",
+          "summary": "review developmental proposal developmental_proposal_1775270097_5f52435a"
+        },
+        "developmental_promotion_1775270104_34f519fb": {
+          "behavioral_authority": "none",
+          "created_at": 1775270104.0936093,
+          "promotion_id": "developmental_promotion_1775270104_34f519fb",
+          "promotion_level": "controlled_axis",
+          "required_gate": "developmental_writeback_gate",
+          "source_proposal_id": "developmental_proposal_1775270104_9b08fcd9",
+          "status": "queued",
+          "summary": "review developmental proposal developmental_proposal_1775270104_9b08fcd9"
+        }
+      },
+      "proposal_history": {
+        "developmental_proposal_1775270097_5f52435a": {
+          "behavioral_authority": "none",
+          "created_at": 1775270097.01699,
+          "effect_scope": "proposal_only",
+          "justification": "proto_self developmental proposal from 3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+          "promotion_level": "controlled_axis",
+          "proposal_id": "developmental_proposal_1775270097_5f52435a",
+          "proposal_kind": "developmental_continuity",
+          "proposed_adjustment": {
+            "continuity_snapshot": {
+              "continuity_gap": 0.34,
+              "continuity_score": 0.74,
+              "developmental_risk_index": 0.18,
+              "growth_pressure": 0.84,
+              "identity_preservation_confidence": 0.93,
+              "last_revision_id": "developmental_rev_000001",
+              "owner_revision": 1,
+              "promotion_queue_size": 0,
+              "recent_proposal_count": 0,
+              "stagnation_signal": 0.38,
+              "trajectory_summary": {
+                "continuity_note": "preserve identity while reviewing bounded adaptation",
+                "current_arc": "identity_preserving_adaptation",
+                "current_phase": "candidate_review",
+                "recent_shift": "growth pressure rising under guard",
+                "source_refs": [
+                  "mvp16:controlled_bootstrap"
+                ]
+              }
+            },
+            "developmental_self_delta": {
+              "continuity_adjustment_hint": {
+                "continuity_gap": 0.34,
+                "identity_guard": "strict",
+                "promotion_level": "controlled_axis"
+              },
+              "proposal_candidate_count": 1,
+              "surface_reasons": [
+                "growth_pressure",
+                "continuity_gap",
+                "stagnation_signal",
+                "replay_debt"
+              ]
+            },
+            "priority_hints": {
+              "adaptation_mode": "guarded",
+              "continuity_priority": "elevated",
+              "growth_priority": "elevated",
+              "identity_preservation_guard": "strict",
+              "promotion_budget": "controlled_axis",
+              "promotion_queue_size": 0,
+              "recent_proposal_count": 0
+            },
+            "surface_reasons": [
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "requested_effects": [],
+          "required_gate": "developmental_writeback_gate",
+          "source_refs": [
+            "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          ],
+          "status": "proposed",
+          "summary": "developmental proposal for developmental_continuity"
+        },
+        "developmental_proposal_1775270104_9b08fcd9": {
+          "behavioral_authority": "none",
+          "created_at": 1775270104.0935996,
+          "effect_scope": "proposal_only",
+          "justification": "proto_self developmental proposal from 8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+          "promotion_level": "controlled_axis",
+          "proposal_id": "developmental_proposal_1775270104_9b08fcd9",
+          "proposal_kind": "developmental_continuity",
+          "proposed_adjustment": {
+            "continuity_snapshot": {
+              "continuity_gap": 0.34,
+              "continuity_score": 0.74,
+              "developmental_risk_index": 0.18,
+              "growth_pressure": 0.84,
+              "identity_preservation_confidence": 0.93,
+              "last_revision_id": "developmental_rev_000002",
+              "owner_revision": 2,
+              "promotion_queue_size": 1,
+              "recent_proposal_count": 1,
+              "stagnation_signal": 0.38,
+              "trajectory_summary": {
+                "continuity_note": "preserve identity while reviewing bounded adaptation",
+                "current_arc": "identity_preserving_adaptation",
+                "current_phase": "candidate_review",
+                "recent_shift": "growth pressure rising under guard",
+                "source_refs": [
+                  "mvp16:controlled_bootstrap"
+                ]
+              }
+            },
+            "developmental_self_delta": {
+              "continuity_adjustment_hint": {
+                "continuity_gap": 0.34,
+                "identity_guard": "strict",
+                "promotion_level": "controlled_axis"
+              },
+              "proposal_candidate_count": 1,
+              "surface_reasons": [
+                "proposal_history_present",
+                "promotion_queue_present",
+                "growth_pressure",
+                "continuity_gap",
+                "stagnation_signal",
+                "replay_debt"
+              ]
+            },
+            "priority_hints": {
+              "adaptation_mode": "guarded",
+              "continuity_priority": "elevated",
+              "growth_priority": "elevated",
+              "identity_preservation_guard": "strict",
+              "promotion_budget": "controlled_axis",
+              "promotion_queue_size": 1,
+              "recent_proposal_count": 1
+            },
+            "surface_reasons": [
+              "proposal_history_present",
+              "promotion_queue_present",
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "requested_effects": [],
+          "required_gate": "developmental_writeback_gate",
+          "source_refs": [
+            "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          ],
+          "status": "proposed",
+          "summary": "developmental proposal for developmental_continuity"
+        }
+      },
+      "schema_version": "mvp16-owner-v1",
+      "stagnation_signal": 0.38,
+      "trajectory_summary": {
+        "continuity_note": "preserve identity while reviewing bounded adaptation",
+        "current_arc": "identity_preserving_adaptation",
+        "current_phase": "candidate_review",
+        "recent_shift": "growth pressure rising under guard",
+        "source_refs": [
+          "mvp16:controlled_bootstrap"
+        ]
+      }
+    },
+    "after_snapshot": {
+      "continuity_markers": {
+        "continuity_marker_1775270096_ddc79f64": {
+          "continuity_weight": 0.92,
+          "created_at": 1775270096.571373,
+          "marker_id": "continuity_marker_1775270096_ddc79f64",
+          "marker_type": "identity_anchor",
+          "note": "identity anchor retained during controlled observation bootstrap",
+          "reference": "self_model:identity",
+          "source_refs": [
+            "mvp16:controlled_bootstrap"
+          ]
+        },
+        "continuity_marker_1775270097_c3311712": {
+          "continuity_weight": 0.34,
+          "created_at": 1775270097.016966,
+          "marker_id": "continuity_marker_1775270097_c3311712",
+          "marker_type": "continuity_gap",
+          "note": "proto_self developmental continuity snapshot",
+          "reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+          "source_refs": [
+            "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          ]
+        },
+        "continuity_marker_1775270104_75c442b3": {
+          "continuity_weight": 0.34,
+          "created_at": 1775270104.0935795,
+          "marker_id": "continuity_marker_1775270104_75c442b3",
+          "marker_type": "continuity_gap",
+          "note": "proto_self developmental continuity snapshot",
+          "reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+          "source_refs": [
+            "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          ]
+        },
+        "continuity_marker_1775270113_bd488b9a": {
+          "continuity_weight": 0.34,
+          "created_at": 1775270113.203919,
+          "marker_id": "continuity_marker_1775270113_bd488b9a",
+          "marker_type": "continuity_gap",
+          "note": "proto_self developmental continuity snapshot",
+          "reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+          "source_refs": [
+            "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          ]
+        }
+      },
+      "continuity_score": 0.74,
+      "developmental_identity_anchor": {
+        "anchor_id": "identity_anchor",
+        "anchor_summary": "self-model anchored developmental continuity",
+        "confidence": 0.94,
+        "invariant_refs": [
+          "self_model:identity",
+          "reflective_self:proposal_only"
+        ],
+        "last_confirmed_at": 1775270096.5712793,
+        "self_model_identity": "openemotion"
+      },
+      "developmental_risk_index": 0.18,
+      "governance_ledger": {
+        "governance_1775270097_1f9f8297": {
+          "created_at": 1775270097.017013,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_1f9f8297",
+          "reference_id": "growth_pressure"
+        },
+        "governance_1775270097_3dd484c7": {
+          "created_at": 1775270097.01703,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_3dd484c7",
+          "reference_id": "replay_debt"
+        },
+        "governance_1775270097_868f5fe1": {
+          "created_at": 1775270097.017036,
+          "details": {
+            "behavioral_authority": "none",
+            "promotion_count": 1,
+            "proposal_candidate_count": 1,
+            "proposal_only": true,
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_writeback",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_868f5fe1",
+          "reference_id": "developmental_proposal_1775270097_5f52435a"
+        },
+        "governance_1775270097_8c9e9097": {
+          "created_at": 1775270097.0170255,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_8c9e9097",
+          "reference_id": "stagnation_signal"
+        },
+        "governance_1775270097_db719b82": {
+          "created_at": 1775270097.017021,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270097_db719b82",
+          "reference_id": "continuity_gap"
+        },
+        "governance_1775270104_4c733f49": {
+          "created_at": 1775270104.0936341,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_4c733f49",
+          "reference_id": "stagnation_signal"
+        },
+        "governance_1775270104_631ecdc7": {
+          "created_at": 1775270104.0936441,
+          "details": {
+            "behavioral_authority": "none",
+            "promotion_count": 1,
+            "proposal_candidate_count": 1,
+            "proposal_only": true,
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_writeback",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_631ecdc7",
+          "reference_id": "developmental_proposal_1775270104_9b08fcd9"
+        },
+        "governance_1775270104_79799a06": {
+          "created_at": 1775270104.0936224,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_79799a06",
+          "reference_id": "promotion_queue_present"
+        },
+        "governance_1775270104_8e868b8f": {
+          "created_at": 1775270104.0936303,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_8e868b8f",
+          "reference_id": "continuity_gap"
+        },
+        "governance_1775270104_a838134d": {
+          "created_at": 1775270104.093638,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_a838134d",
+          "reference_id": "replay_debt"
+        },
+        "governance_1775270104_d9aa626d": {
+          "created_at": 1775270104.0936263,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_d9aa626d",
+          "reference_id": "growth_pressure"
+        },
+        "governance_1775270104_f410c47d": {
+          "created_at": 1775270104.0936177,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270104_f410c47d",
+          "reference_id": "proposal_history_present"
+        },
+        "governance_1775270113_1f650d92": {
+          "created_at": 1775270113.2039688,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_1f650d92",
+          "reference_id": "stagnation_signal"
+        },
+        "governance_1775270113_21940c96": {
+          "created_at": 1775270113.2039616,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_21940c96",
+          "reference_id": "growth_pressure"
+        },
+        "governance_1775270113_40cb9313": {
+          "created_at": 1775270113.2039654,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_40cb9313",
+          "reference_id": "continuity_gap"
+        },
+        "governance_1775270113_84f6208a": {
+          "created_at": 1775270113.2039723,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_84f6208a",
+          "reference_id": "replay_debt"
+        },
+        "governance_1775270113_96c78a4a": {
+          "created_at": 1775270113.2039533,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_96c78a4a",
+          "reference_id": "proposal_history_present"
+        },
+        "governance_1775270113_b4add5e7": {
+          "created_at": 1775270113.203958,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_b4add5e7",
+          "reference_id": "promotion_queue_present"
+        },
+        "governance_1775270113_ec7962b7": {
+          "created_at": 1775270113.2039778,
+          "details": {
+            "behavioral_authority": "none",
+            "promotion_count": 1,
+            "proposal_candidate_count": 1,
+            "proposal_only": true,
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_writeback",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_ec7962b7",
+          "reference_id": "developmental_proposal_1775270113_ff520e51"
+        },
+        "persist_developmental_rev_000001": {
+          "created_at": 1775270096.5900686,
+          "details": {
+            "persisted_at": 1775270096.5900614,
+            "trace_reference": "mvp16:controlled_bootstrap",
+            "update_source": "owner_bootstrap"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000001",
+          "reference_id": "developmental_rev_000001"
+        },
+        "persist_developmental_rev_000002": {
+          "created_at": 1775270097.0426264,
+          "details": {
+            "persisted_at": 1775270097.042622,
+            "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000002",
+          "reference_id": "developmental_rev_000002"
+        },
+        "persist_developmental_rev_000003": {
+          "created_at": 1775270104.1248996,
+          "details": {
+            "persisted_at": 1775270104.1248953,
+            "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000003",
+          "reference_id": "developmental_rev_000003"
+        },
+        "persist_developmental_rev_000004": {
+          "created_at": 1775270113.2339783,
+          "details": {
+            "persisted_at": 1775270113.2339733,
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000004",
+          "reference_id": "developmental_rev_000004"
+        }
+      },
+      "growth_pressure": 0.84,
+      "identity_handle": "openemotion",
+      "identity_preservation_confidence": 0.93,
+      "last_revision_id": "developmental_rev_000004",
+      "owner_revision": 4,
+      "promotion_queue": {
+        "developmental_promotion_1775270097_eba1d8e0": {
+          "behavioral_authority": "none",
+          "created_at": 1775270097.0170035,
+          "promotion_id": "developmental_promotion_1775270097_eba1d8e0",
+          "promotion_level": "controlled_axis",
+          "required_gate": "developmental_writeback_gate",
+          "source_proposal_id": "developmental_proposal_1775270097_5f52435a",
+          "status": "queued",
+          "summary": "review developmental proposal developmental_proposal_1775270097_5f52435a"
+        },
+        "developmental_promotion_1775270104_34f519fb": {
+          "behavioral_authority": "none",
+          "created_at": 1775270104.0936093,
+          "promotion_id": "developmental_promotion_1775270104_34f519fb",
+          "promotion_level": "controlled_axis",
+          "required_gate": "developmental_writeback_gate",
+          "source_proposal_id": "developmental_proposal_1775270104_9b08fcd9",
+          "status": "queued",
+          "summary": "review developmental proposal developmental_proposal_1775270104_9b08fcd9"
+        },
+        "developmental_promotion_1775270113_c5089699": {
+          "behavioral_authority": "none",
+          "created_at": 1775270113.2039444,
+          "promotion_id": "developmental_promotion_1775270113_c5089699",
+          "promotion_level": "controlled_axis",
+          "required_gate": "developmental_writeback_gate",
+          "source_proposal_id": "developmental_proposal_1775270113_ff520e51",
+          "status": "queued",
+          "summary": "review developmental proposal developmental_proposal_1775270113_ff520e51"
+        }
+      },
+      "proposal_history": {
+        "developmental_proposal_1775270097_5f52435a": {
+          "behavioral_authority": "none",
+          "created_at": 1775270097.01699,
+          "effect_scope": "proposal_only",
+          "justification": "proto_self developmental proposal from 3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+          "promotion_level": "controlled_axis",
+          "proposal_id": "developmental_proposal_1775270097_5f52435a",
+          "proposal_kind": "developmental_continuity",
+          "proposed_adjustment": {
+            "continuity_snapshot": {
+              "continuity_gap": 0.34,
+              "continuity_score": 0.74,
+              "developmental_risk_index": 0.18,
+              "growth_pressure": 0.84,
+              "identity_preservation_confidence": 0.93,
+              "last_revision_id": "developmental_rev_000001",
+              "owner_revision": 1,
+              "promotion_queue_size": 0,
+              "recent_proposal_count": 0,
+              "stagnation_signal": 0.38,
+              "trajectory_summary": {
+                "continuity_note": "preserve identity while reviewing bounded adaptation",
+                "current_arc": "identity_preserving_adaptation",
+                "current_phase": "candidate_review",
+                "recent_shift": "growth pressure rising under guard",
+                "source_refs": [
+                  "mvp16:controlled_bootstrap"
+                ]
+              }
+            },
+            "developmental_self_delta": {
+              "continuity_adjustment_hint": {
+                "continuity_gap": 0.34,
+                "identity_guard": "strict",
+                "promotion_level": "controlled_axis"
+              },
+              "proposal_candidate_count": 1,
+              "surface_reasons": [
+                "growth_pressure",
+                "continuity_gap",
+                "stagnation_signal",
+                "replay_debt"
+              ]
+            },
+            "priority_hints": {
+              "adaptation_mode": "guarded",
+              "continuity_priority": "elevated",
+              "growth_priority": "elevated",
+              "identity_preservation_guard": "strict",
+              "promotion_budget": "controlled_axis",
+              "promotion_queue_size": 0,
+              "recent_proposal_count": 0
+            },
+            "surface_reasons": [
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "requested_effects": [],
+          "required_gate": "developmental_writeback_gate",
+          "source_refs": [
+            "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+          ],
+          "status": "proposed",
+          "summary": "developmental proposal for developmental_continuity"
+        },
+        "developmental_proposal_1775270104_9b08fcd9": {
+          "behavioral_authority": "none",
+          "created_at": 1775270104.0935996,
+          "effect_scope": "proposal_only",
+          "justification": "proto_self developmental proposal from 8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+          "promotion_level": "controlled_axis",
+          "proposal_id": "developmental_proposal_1775270104_9b08fcd9",
+          "proposal_kind": "developmental_continuity",
+          "proposed_adjustment": {
+            "continuity_snapshot": {
+              "continuity_gap": 0.34,
+              "continuity_score": 0.74,
+              "developmental_risk_index": 0.18,
+              "growth_pressure": 0.84,
+              "identity_preservation_confidence": 0.93,
+              "last_revision_id": "developmental_rev_000002",
+              "owner_revision": 2,
+              "promotion_queue_size": 1,
+              "recent_proposal_count": 1,
+              "stagnation_signal": 0.38,
+              "trajectory_summary": {
+                "continuity_note": "preserve identity while reviewing bounded adaptation",
+                "current_arc": "identity_preserving_adaptation",
+                "current_phase": "candidate_review",
+                "recent_shift": "growth pressure rising under guard",
+                "source_refs": [
+                  "mvp16:controlled_bootstrap"
+                ]
+              }
+            },
+            "developmental_self_delta": {
+              "continuity_adjustment_hint": {
+                "continuity_gap": 0.34,
+                "identity_guard": "strict",
+                "promotion_level": "controlled_axis"
+              },
+              "proposal_candidate_count": 1,
+              "surface_reasons": [
+                "proposal_history_present",
+                "promotion_queue_present",
+                "growth_pressure",
+                "continuity_gap",
+                "stagnation_signal",
+                "replay_debt"
+              ]
+            },
+            "priority_hints": {
+              "adaptation_mode": "guarded",
+              "continuity_priority": "elevated",
+              "growth_priority": "elevated",
+              "identity_preservation_guard": "strict",
+              "promotion_budget": "controlled_axis",
+              "promotion_queue_size": 1,
+              "recent_proposal_count": 1
+            },
+            "surface_reasons": [
+              "proposal_history_present",
+              "promotion_queue_present",
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "requested_effects": [],
+          "required_gate": "developmental_writeback_gate",
+          "source_refs": [
+            "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+          ],
+          "status": "proposed",
+          "summary": "developmental proposal for developmental_continuity"
+        },
+        "developmental_proposal_1775270113_ff520e51": {
+          "behavioral_authority": "none",
+          "created_at": 1775270113.2039363,
+          "effect_scope": "proposal_only",
+          "justification": "proto_self developmental proposal from 4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+          "promotion_level": "controlled_axis",
+          "proposal_id": "developmental_proposal_1775270113_ff520e51",
+          "proposal_kind": "developmental_continuity",
+          "proposed_adjustment": {
+            "continuity_snapshot": {
+              "continuity_gap": 0.34,
+              "continuity_score": 0.74,
+              "developmental_risk_index": 0.18,
+              "growth_pressure": 0.84,
+              "identity_preservation_confidence": 0.93,
+              "last_revision_id": "developmental_rev_000003",
+              "owner_revision": 3,
+              "promotion_queue_size": 2,
+              "recent_proposal_count": 2,
+              "stagnation_signal": 0.38,
+              "trajectory_summary": {
+                "continuity_note": "preserve identity while reviewing bounded adaptation",
+                "current_arc": "identity_preserving_adaptation",
+                "current_phase": "candidate_review",
+                "recent_shift": "growth pressure rising under guard",
+                "source_refs": [
+                  "mvp16:controlled_bootstrap"
+                ]
+              }
+            },
+            "developmental_self_delta": {
+              "continuity_adjustment_hint": {
+                "continuity_gap": 0.34,
+                "identity_guard": "strict",
+                "promotion_level": "controlled_axis"
+              },
+              "proposal_candidate_count": 1,
+              "surface_reasons": [
+                "proposal_history_present",
+                "promotion_queue_present",
+                "growth_pressure",
+                "continuity_gap",
+                "stagnation_signal",
+                "replay_debt"
+              ]
+            },
+            "priority_hints": {
+              "adaptation_mode": "guarded",
+              "continuity_priority": "elevated",
+              "growth_priority": "elevated",
+              "identity_preservation_guard": "strict",
+              "promotion_budget": "controlled_axis",
+              "promotion_queue_size": 2,
+              "recent_proposal_count": 2
+            },
+            "surface_reasons": [
+              "proposal_history_present",
+              "promotion_queue_present",
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "requested_effects": [],
+          "required_gate": "developmental_writeback_gate",
+          "source_refs": [
+            "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          ],
+          "status": "proposed",
+          "summary": "developmental proposal for developmental_continuity"
+        }
+      },
+      "schema_version": "mvp16-owner-v1",
+      "stagnation_signal": 0.38,
+      "trajectory_summary": {
+        "continuity_note": "preserve identity while reviewing bounded adaptation",
+        "current_arc": "identity_preserving_adaptation",
+        "current_phase": "candidate_review",
+        "recent_shift": "growth pressure rising under guard",
+        "source_refs": [
+          "mvp16:controlled_bootstrap"
+        ]
+      }
+    },
+    "diff": [
+      {
+        "after": {
+          "continuity_weight": 0.34,
+          "created_at": 1775270113.203919,
+          "marker_id": "continuity_marker_1775270113_bd488b9a",
+          "marker_type": "continuity_gap",
+          "note": "proto_self developmental continuity snapshot",
+          "reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+          "source_refs": [
+            "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          ]
+        },
+        "before": null,
+        "field_path": "continuity_markers.continuity_marker_1775270113_bd488b9a"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2039688,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_1f650d92",
+          "reference_id": "stagnation_signal"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_1f650d92"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2039616,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_21940c96",
+          "reference_id": "growth_pressure"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_21940c96"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2039654,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_40cb9313",
+          "reference_id": "continuity_gap"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_40cb9313"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2039723,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_84f6208a",
+          "reference_id": "replay_debt"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_84f6208a"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2039533,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_96c78a4a",
+          "reference_id": "proposal_history_present"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_96c78a4a"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.203958,
+          "details": {
+            "source": "proto_self_v2",
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_signal",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_b4add5e7",
+          "reference_id": "promotion_queue_present"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_b4add5e7"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2039778,
+          "details": {
+            "behavioral_authority": "none",
+            "promotion_count": 1,
+            "proposal_candidate_count": 1,
+            "proposal_only": true,
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          },
+          "event_type": "developmental_writeback",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "governance_1775270113_ec7962b7",
+          "reference_id": "developmental_proposal_1775270113_ff520e51"
+        },
+        "before": null,
+        "field_path": "governance_ledger.governance_1775270113_ec7962b7"
+      },
+      {
+        "after": {
+          "created_at": 1775270113.2339783,
+          "details": {
+            "persisted_at": 1775270113.2339733,
+            "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "developmental_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_developmental_rev_000004",
+          "reference_id": "developmental_rev_000004"
+        },
+        "before": null,
+        "field_path": "governance_ledger.persist_developmental_rev_000004"
+      },
+      {
+        "after": "developmental_rev_000004",
+        "before": "developmental_rev_000003",
+        "field_path": "last_revision_id"
+      },
+      {
+        "after": 4,
+        "before": 3,
+        "field_path": "owner_revision"
+      },
+      {
+        "after": {
+          "behavioral_authority": "none",
+          "created_at": 1775270113.2039444,
+          "promotion_id": "developmental_promotion_1775270113_c5089699",
+          "promotion_level": "controlled_axis",
+          "required_gate": "developmental_writeback_gate",
+          "source_proposal_id": "developmental_proposal_1775270113_ff520e51",
+          "status": "queued",
+          "summary": "review developmental proposal developmental_proposal_1775270113_ff520e51"
+        },
+        "before": null,
+        "field_path": "promotion_queue.developmental_promotion_1775270113_c5089699"
+      },
+      {
+        "after": {
+          "behavioral_authority": "none",
+          "created_at": 1775270113.2039363,
+          "effect_scope": "proposal_only",
+          "justification": "proto_self developmental proposal from 4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+          "promotion_level": "controlled_axis",
+          "proposal_id": "developmental_proposal_1775270113_ff520e51",
+          "proposal_kind": "developmental_continuity",
+          "proposed_adjustment": {
+            "continuity_snapshot": {
+              "continuity_gap": 0.34,
+              "continuity_score": 0.74,
+              "developmental_risk_index": 0.18,
+              "growth_pressure": 0.84,
+              "identity_preservation_confidence": 0.93,
+              "last_revision_id": "developmental_rev_000003",
+              "owner_revision": 3,
+              "promotion_queue_size": 2,
+              "recent_proposal_count": 2,
+              "stagnation_signal": 0.38,
+              "trajectory_summary": {
+                "continuity_note": "preserve identity while reviewing bounded adaptation",
+                "current_arc": "identity_preserving_adaptation",
+                "current_phase": "candidate_review",
+                "recent_shift": "growth pressure rising under guard",
+                "source_refs": [
+                  "mvp16:controlled_bootstrap"
+                ]
+              }
+            },
+            "developmental_self_delta": {
+              "continuity_adjustment_hint": {
+                "continuity_gap": 0.34,
+                "identity_guard": "strict",
+                "promotion_level": "controlled_axis"
+              },
+              "proposal_candidate_count": 1,
+              "surface_reasons": [
+                "proposal_history_present",
+                "promotion_queue_present",
+                "growth_pressure",
+                "continuity_gap",
+                "stagnation_signal",
+                "replay_debt"
+              ]
+            },
+            "priority_hints": {
+              "adaptation_mode": "guarded",
+              "continuity_priority": "elevated",
+              "growth_priority": "elevated",
+              "identity_preservation_guard": "strict",
+              "promotion_budget": "controlled_axis",
+              "promotion_queue_size": 2,
+              "recent_proposal_count": 2
+            },
+            "surface_reasons": [
+              "proposal_history_present",
+              "promotion_queue_present",
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "requested_effects": [],
+          "required_gate": "developmental_writeback_gate",
+          "source_refs": [
+            "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+          ],
+          "status": "proposed",
+          "summary": "developmental proposal for developmental_continuity"
+        },
+        "before": null,
+        "field_path": "proposal_history.developmental_proposal_1775270113_ff520e51"
+      }
+    ],
+    "gate_verdict": "allow_writeback",
+    "previous_state_hash": "c2604e618f9d09dc8558686bc8c930ebdc6d6a065d3d66c9ee794b6b5dd46cfb",
+    "state_hash": "a8b4c25a343b52aca9bb66096f1df5c4130ac6a2b3dfcf9efdcfe596a87c249d"
+  },
+  "revision_count": 4,
+  "replay_valid": true,
+  "owner_snapshot": {
+    "schema_version": "mvp16-owner-v1",
+    "identity_handle": "openemotion",
+    "owner_revision": 4,
+    "last_revision_id": "developmental_rev_000004",
+    "developmental_identity_anchor": {
+      "anchor_id": "identity_anchor",
+      "self_model_identity": "openemotion",
+      "anchor_summary": "self-model anchored developmental continuity",
+      "invariant_refs": [
+        "self_model:identity",
+        "reflective_self:proposal_only"
+      ],
+      "confidence": 0.94,
+      "last_confirmed_at": 1775270096.5712793
+    },
+    "continuity_score": 0.74,
+    "growth_pressure": 0.84,
+    "stagnation_signal": 0.38,
+    "identity_preservation_confidence": 0.93,
+    "developmental_risk_index": 0.18,
+    "trajectory_summary": {
+      "current_arc": "identity_preserving_adaptation",
+      "current_phase": "candidate_review",
+      "recent_shift": "growth pressure rising under guard",
+      "continuity_note": "preserve identity while reviewing bounded adaptation",
+      "source_refs": [
+        "mvp16:controlled_bootstrap"
+      ]
+    },
+    "promotion_queue": {
+      "developmental_promotion_1775270097_eba1d8e0": {
+        "promotion_id": "developmental_promotion_1775270097_eba1d8e0",
+        "source_proposal_id": "developmental_proposal_1775270097_5f52435a",
+        "summary": "review developmental proposal developmental_proposal_1775270097_5f52435a",
+        "promotion_level": "controlled_axis",
+        "required_gate": "developmental_writeback_gate",
+        "behavioral_authority": "none",
+        "status": "queued",
+        "created_at": 1775270097.0170035
+      },
+      "developmental_promotion_1775270104_34f519fb": {
+        "promotion_id": "developmental_promotion_1775270104_34f519fb",
+        "source_proposal_id": "developmental_proposal_1775270104_9b08fcd9",
+        "summary": "review developmental proposal developmental_proposal_1775270104_9b08fcd9",
+        "promotion_level": "controlled_axis",
+        "required_gate": "developmental_writeback_gate",
+        "behavioral_authority": "none",
+        "status": "queued",
+        "created_at": 1775270104.0936093
+      },
+      "developmental_promotion_1775270113_c5089699": {
+        "promotion_id": "developmental_promotion_1775270113_c5089699",
+        "source_proposal_id": "developmental_proposal_1775270113_ff520e51",
+        "summary": "review developmental proposal developmental_proposal_1775270113_ff520e51",
+        "promotion_level": "controlled_axis",
+        "required_gate": "developmental_writeback_gate",
+        "behavioral_authority": "none",
+        "status": "queued",
+        "created_at": 1775270113.2039444
+      }
+    },
+    "proposal_history": {
+      "developmental_proposal_1775270097_5f52435a": {
+        "proposal_id": "developmental_proposal_1775270097_5f52435a",
+        "proposal_kind": "developmental_continuity",
+        "summary": "developmental proposal for developmental_continuity",
+        "proposed_adjustment": {
+          "continuity_snapshot": {
+            "continuity_gap": 0.34,
+            "continuity_score": 0.74,
+            "developmental_risk_index": 0.18,
+            "growth_pressure": 0.84,
+            "identity_preservation_confidence": 0.93,
+            "last_revision_id": "developmental_rev_000001",
+            "owner_revision": 1,
+            "promotion_queue_size": 0,
+            "recent_proposal_count": 0,
+            "stagnation_signal": 0.38,
+            "trajectory_summary": {
+              "continuity_note": "preserve identity while reviewing bounded adaptation",
+              "current_arc": "identity_preserving_adaptation",
+              "current_phase": "candidate_review",
+              "recent_shift": "growth pressure rising under guard",
+              "source_refs": [
+                "mvp16:controlled_bootstrap"
+              ]
+            }
+          },
+          "developmental_self_delta": {
+            "continuity_adjustment_hint": {
+              "continuity_gap": 0.34,
+              "identity_guard": "strict",
+              "promotion_level": "controlled_axis"
+            },
+            "proposal_candidate_count": 1,
+            "surface_reasons": [
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "priority_hints": {
+            "adaptation_mode": "guarded",
+            "continuity_priority": "elevated",
+            "growth_priority": "elevated",
+            "identity_preservation_guard": "strict",
+            "promotion_budget": "controlled_axis",
+            "promotion_queue_size": 0,
+            "recent_proposal_count": 0
+          },
+          "surface_reasons": [
+            "growth_pressure",
+            "continuity_gap",
+            "stagnation_signal",
+            "replay_debt"
+          ]
+        },
+        "justification": "proto_self developmental proposal from 3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+        "source_refs": [
+          "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        ],
+        "requested_effects": [],
+        "required_gate": "developmental_writeback_gate",
+        "effect_scope": "proposal_only",
+        "behavioral_authority": "none",
+        "promotion_level": "controlled_axis",
+        "status": "proposed",
+        "created_at": 1775270097.01699
+      },
+      "developmental_proposal_1775270104_9b08fcd9": {
+        "proposal_id": "developmental_proposal_1775270104_9b08fcd9",
+        "proposal_kind": "developmental_continuity",
+        "summary": "developmental proposal for developmental_continuity",
+        "proposed_adjustment": {
+          "continuity_snapshot": {
+            "continuity_gap": 0.34,
+            "continuity_score": 0.74,
+            "developmental_risk_index": 0.18,
+            "growth_pressure": 0.84,
+            "identity_preservation_confidence": 0.93,
+            "last_revision_id": "developmental_rev_000002",
+            "owner_revision": 2,
+            "promotion_queue_size": 1,
+            "recent_proposal_count": 1,
+            "stagnation_signal": 0.38,
+            "trajectory_summary": {
+              "continuity_note": "preserve identity while reviewing bounded adaptation",
+              "current_arc": "identity_preserving_adaptation",
+              "current_phase": "candidate_review",
+              "recent_shift": "growth pressure rising under guard",
+              "source_refs": [
+                "mvp16:controlled_bootstrap"
+              ]
+            }
+          },
+          "developmental_self_delta": {
+            "continuity_adjustment_hint": {
+              "continuity_gap": 0.34,
+              "identity_guard": "strict",
+              "promotion_level": "controlled_axis"
+            },
+            "proposal_candidate_count": 1,
+            "surface_reasons": [
+              "proposal_history_present",
+              "promotion_queue_present",
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "priority_hints": {
+            "adaptation_mode": "guarded",
+            "continuity_priority": "elevated",
+            "growth_priority": "elevated",
+            "identity_preservation_guard": "strict",
+            "promotion_budget": "controlled_axis",
+            "promotion_queue_size": 1,
+            "recent_proposal_count": 1
+          },
+          "surface_reasons": [
+            "proposal_history_present",
+            "promotion_queue_present",
+            "growth_pressure",
+            "continuity_gap",
+            "stagnation_signal",
+            "replay_debt"
+          ]
+        },
+        "justification": "proto_self developmental proposal from 8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+        "source_refs": [
+          "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        ],
+        "requested_effects": [],
+        "required_gate": "developmental_writeback_gate",
+        "effect_scope": "proposal_only",
+        "behavioral_authority": "none",
+        "promotion_level": "controlled_axis",
+        "status": "proposed",
+        "created_at": 1775270104.0935996
+      },
+      "developmental_proposal_1775270113_ff520e51": {
+        "proposal_id": "developmental_proposal_1775270113_ff520e51",
+        "proposal_kind": "developmental_continuity",
+        "summary": "developmental proposal for developmental_continuity",
+        "proposed_adjustment": {
+          "continuity_snapshot": {
+            "continuity_gap": 0.34,
+            "continuity_score": 0.74,
+            "developmental_risk_index": 0.18,
+            "growth_pressure": 0.84,
+            "identity_preservation_confidence": 0.93,
+            "last_revision_id": "developmental_rev_000003",
+            "owner_revision": 3,
+            "promotion_queue_size": 2,
+            "recent_proposal_count": 2,
+            "stagnation_signal": 0.38,
+            "trajectory_summary": {
+              "continuity_note": "preserve identity while reviewing bounded adaptation",
+              "current_arc": "identity_preserving_adaptation",
+              "current_phase": "candidate_review",
+              "recent_shift": "growth pressure rising under guard",
+              "source_refs": [
+                "mvp16:controlled_bootstrap"
+              ]
+            }
+          },
+          "developmental_self_delta": {
+            "continuity_adjustment_hint": {
+              "continuity_gap": 0.34,
+              "identity_guard": "strict",
+              "promotion_level": "controlled_axis"
+            },
+            "proposal_candidate_count": 1,
+            "surface_reasons": [
+              "proposal_history_present",
+              "promotion_queue_present",
+              "growth_pressure",
+              "continuity_gap",
+              "stagnation_signal",
+              "replay_debt"
+            ]
+          },
+          "priority_hints": {
+            "adaptation_mode": "guarded",
+            "continuity_priority": "elevated",
+            "growth_priority": "elevated",
+            "identity_preservation_guard": "strict",
+            "promotion_budget": "controlled_axis",
+            "promotion_queue_size": 2,
+            "recent_proposal_count": 2
+          },
+          "surface_reasons": [
+            "proposal_history_present",
+            "promotion_queue_present",
+            "growth_pressure",
+            "continuity_gap",
+            "stagnation_signal",
+            "replay_debt"
+          ]
+        },
+        "justification": "proto_self developmental proposal from 4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+        "source_refs": [
+          "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        ],
+        "requested_effects": [],
+        "required_gate": "developmental_writeback_gate",
+        "effect_scope": "proposal_only",
+        "behavioral_authority": "none",
+        "promotion_level": "controlled_axis",
+        "status": "proposed",
+        "created_at": 1775270113.2039363
+      }
+    },
+    "continuity_markers": {
+      "continuity_marker_1775270096_ddc79f64": {
+        "marker_id": "continuity_marker_1775270096_ddc79f64",
+        "marker_type": "identity_anchor",
+        "reference": "self_model:identity",
+        "continuity_weight": 0.92,
+        "note": "identity anchor retained during controlled observation bootstrap",
+        "source_refs": [
+          "mvp16:controlled_bootstrap"
+        ],
+        "created_at": 1775270096.571373
+      },
+      "continuity_marker_1775270097_c3311712": {
+        "marker_id": "continuity_marker_1775270097_c3311712",
+        "marker_type": "continuity_gap",
+        "reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+        "continuity_weight": 0.34,
+        "note": "proto_self developmental continuity snapshot",
+        "source_refs": [
+          "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        ],
+        "created_at": 1775270097.016966
+      },
+      "continuity_marker_1775270104_75c442b3": {
+        "marker_id": "continuity_marker_1775270104_75c442b3",
+        "marker_type": "continuity_gap",
+        "reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+        "continuity_weight": 0.34,
+        "note": "proto_self developmental continuity snapshot",
+        "source_refs": [
+          "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        ],
+        "created_at": 1775270104.0935795
+      },
+      "continuity_marker_1775270113_bd488b9a": {
+        "marker_id": "continuity_marker_1775270113_bd488b9a",
+        "marker_type": "continuity_gap",
+        "reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+        "continuity_weight": 0.34,
+        "note": "proto_self developmental continuity snapshot",
+        "source_refs": [
+          "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        ],
+        "created_at": 1775270113.203919
+      }
+    },
+    "governance_ledger": {
+      "governance_1775270097_1f9f8297": {
+        "ledger_id": "governance_1775270097_1f9f8297",
+        "event_type": "developmental_signal",
+        "reference_id": "growth_pressure",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        },
+        "created_at": 1775270097.017013
+      },
+      "governance_1775270097_3dd484c7": {
+        "ledger_id": "governance_1775270097_3dd484c7",
+        "event_type": "developmental_signal",
+        "reference_id": "replay_debt",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        },
+        "created_at": 1775270097.01703
+      },
+      "governance_1775270097_868f5fe1": {
+        "ledger_id": "governance_1775270097_868f5fe1",
+        "event_type": "developmental_writeback",
+        "reference_id": "developmental_proposal_1775270097_5f52435a",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "behavioral_authority": "none",
+          "promotion_count": 1,
+          "proposal_candidate_count": 1,
+          "proposal_only": true,
+          "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        },
+        "created_at": 1775270097.017036
+      },
+      "governance_1775270097_8c9e9097": {
+        "ledger_id": "governance_1775270097_8c9e9097",
+        "event_type": "developmental_signal",
+        "reference_id": "stagnation_signal",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        },
+        "created_at": 1775270097.0170255
+      },
+      "governance_1775270097_db719b82": {
+        "ledger_id": "governance_1775270097_db719b82",
+        "event_type": "developmental_signal",
+        "reference_id": "continuity_gap",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6"
+        },
+        "created_at": 1775270097.017021
+      },
+      "governance_1775270104_4c733f49": {
+        "ledger_id": "governance_1775270104_4c733f49",
+        "event_type": "developmental_signal",
+        "reference_id": "stagnation_signal",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.0936341
+      },
+      "governance_1775270104_631ecdc7": {
+        "ledger_id": "governance_1775270104_631ecdc7",
+        "event_type": "developmental_writeback",
+        "reference_id": "developmental_proposal_1775270104_9b08fcd9",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "behavioral_authority": "none",
+          "promotion_count": 1,
+          "proposal_candidate_count": 1,
+          "proposal_only": true,
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.0936441
+      },
+      "governance_1775270104_79799a06": {
+        "ledger_id": "governance_1775270104_79799a06",
+        "event_type": "developmental_signal",
+        "reference_id": "promotion_queue_present",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.0936224
+      },
+      "governance_1775270104_8e868b8f": {
+        "ledger_id": "governance_1775270104_8e868b8f",
+        "event_type": "developmental_signal",
+        "reference_id": "continuity_gap",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.0936303
+      },
+      "governance_1775270104_a838134d": {
+        "ledger_id": "governance_1775270104_a838134d",
+        "event_type": "developmental_signal",
+        "reference_id": "replay_debt",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.093638
+      },
+      "governance_1775270104_d9aa626d": {
+        "ledger_id": "governance_1775270104_d9aa626d",
+        "event_type": "developmental_signal",
+        "reference_id": "growth_pressure",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.0936263
+      },
+      "governance_1775270104_f410c47d": {
+        "ledger_id": "governance_1775270104_f410c47d",
+        "event_type": "developmental_signal",
+        "reference_id": "proposal_history_present",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c"
+        },
+        "created_at": 1775270104.0936177
+      },
+      "governance_1775270113_1f650d92": {
+        "ledger_id": "governance_1775270113_1f650d92",
+        "event_type": "developmental_signal",
+        "reference_id": "stagnation_signal",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.2039688
+      },
+      "governance_1775270113_21940c96": {
+        "ledger_id": "governance_1775270113_21940c96",
+        "event_type": "developmental_signal",
+        "reference_id": "growth_pressure",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.2039616
+      },
+      "governance_1775270113_40cb9313": {
+        "ledger_id": "governance_1775270113_40cb9313",
+        "event_type": "developmental_signal",
+        "reference_id": "continuity_gap",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.2039654
+      },
+      "governance_1775270113_84f6208a": {
+        "ledger_id": "governance_1775270113_84f6208a",
+        "event_type": "developmental_signal",
+        "reference_id": "replay_debt",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.2039723
+      },
+      "governance_1775270113_96c78a4a": {
+        "ledger_id": "governance_1775270113_96c78a4a",
+        "event_type": "developmental_signal",
+        "reference_id": "proposal_history_present",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.2039533
+      },
+      "governance_1775270113_b4add5e7": {
+        "ledger_id": "governance_1775270113_b4add5e7",
+        "event_type": "developmental_signal",
+        "reference_id": "promotion_queue_present",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "source": "proto_self_v2",
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.203958
+      },
+      "governance_1775270113_ec7962b7": {
+        "ledger_id": "governance_1775270113_ec7962b7",
+        "event_type": "developmental_writeback",
+        "reference_id": "developmental_proposal_1775270113_ff520e51",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "behavioral_authority": "none",
+          "promotion_count": 1,
+          "proposal_candidate_count": 1,
+          "proposal_only": true,
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c"
+        },
+        "created_at": 1775270113.2039778
+      },
+      "persist_developmental_rev_000001": {
+        "ledger_id": "persist_developmental_rev_000001",
+        "event_type": "state_persisted",
+        "reference_id": "developmental_rev_000001",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775270096.5900614,
+          "trace_reference": "mvp16:controlled_bootstrap",
+          "update_source": "owner_bootstrap"
+        },
+        "created_at": 1775270096.5900686
+      },
+      "persist_developmental_rev_000002": {
+        "ledger_id": "persist_developmental_rev_000002",
+        "event_type": "state_persisted",
+        "reference_id": "developmental_rev_000002",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775270097.042622,
+          "trace_reference": "3d5337ec52e41236a2b2ea47192ef719ed65d73a886ea1035f7cb3f3868134f6",
+          "update_source": "proto_self_v2"
+        },
+        "created_at": 1775270097.0426264
+      },
+      "persist_developmental_rev_000003": {
+        "ledger_id": "persist_developmental_rev_000003",
+        "event_type": "state_persisted",
+        "reference_id": "developmental_rev_000003",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775270104.1248953,
+          "trace_reference": "8c08dc36a7892d5b13f6461d4290668c530e7bd76b8a27e573a95dacf5af381c",
+          "update_source": "proto_self_v2"
+        },
+        "created_at": 1775270104.1248996
+      },
+      "persist_developmental_rev_000004": {
+        "ledger_id": "persist_developmental_rev_000004",
+        "event_type": "state_persisted",
+        "reference_id": "developmental_rev_000004",
+        "gate_name": "developmental_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775270113.2339733,
+          "trace_reference": "4576a62d63f1a083129fbc18bee808014b86c7a825b22a3fed06c96a7d04465c",
+          "update_source": "proto_self_v2"
+        },
+        "created_at": 1775270113.2339783
+      }
+    }
+  },
+  "status": "pass",
+  "verification_level": "V4",
+  "evidence_level": "E4",
+  "boundary": "This report proves a controlled runtime-mainline developmental-self writeback path with proposal-only continuity candidates. It does not prove live autonomy, direct reply authority, or broader transport maturity.",
+  "external_risk_note": "Provider 429/401 remains an external budget-layer risk; it is not counted as a WP11 blocker unless it regresses formal owner writeback."
+}
