@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: owner_package_completed
+status: proto_self_contract_completed
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP19_task_plan.md"
 predecessor: "WP13/MVP18"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP14 / MVP19 Cross-Axis Self-Integration / Self-Maintenance Arbitration"
-claim_ceiling: "T10 only / formal_owner_package_completed"
+claim_ceiling: "T20 only / proto_self_contract_completed"
 ```
 
 ---
@@ -51,11 +51,11 @@ claim_ceiling: "T10 only / formal_owner_package_completed"
 
 ## 当前状态
 
-- 执行包状态：`owner_package_completed`
+- 执行包状态：`proto_self_contract_completed`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
-- `T20` proto_self_v2 contract：`pending`
+- `T20` proto_self_v2 contract：`completed`
 - `T30` EgoCore runtime bridge：`pending`
 - `T40` legacy demotion / compat map：`pending`
 - `T50` causal validation：`pending`
@@ -64,9 +64,9 @@ claim_ceiling: "T10 only / formal_owner_package_completed"
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`formal_owner_only_not_runtime_wired`
-- 启用状态：`owner_infra_only`
-- 当前 blocker：`none on the T10 owner-only axis`
-- 当前最小动作：`T20_PROTO_SELF_CONTRACT_INTEGRATION`
+- 启用状态：`owner_infra_plus_proto_self_contract_only`
+- 当前 blocker：`none on the T20 proto-self contract axis`
+- 当前最小动作：`T30_EGOCORE_RUNTIME_BRIDGE`
 
 ## 当前已证实内容
 
@@ -85,6 +85,22 @@ claim_ceiling: "T10 only / formal_owner_package_completed"
 - owner store、revision log、replay、proposal-only governance 与 bounded runtime projection 已由 `OpenEmotion/tests/mvp19/test_selfhood_integration_owner_infra.py` 定向证明
 - `axis_arbitration_hints` 当前仍保持 advisory-only，`integrated_tendency_proposal` 仍保持 `proposal_only + behavioral_authority = none + required_gate = self_integration_writeback_gate`
 - `WP8~WP13` upstream owner surfaces 仍只作为 frozen read surfaces / read-only authority，不构成 `WP14` fallback owner 或 direct mutation authority
+
+## T20 已证实内容
+
+- `OpenEmotion/openemotion/proto_self_v2/selfhood_integration_context.py` 已作为 bounded reader/deriver 接入 `proto_self_v2`
+- `proto_self_v2` 当前可基于 `WP8~WP13` frozen surfaces 与 bounded `selfhood_integration_context` projection 生成：
+  - `self_integration_delta`
+  - `cross_axis_priority_snapshot`
+  - `proposal_conflict_snapshot`
+  - `integrated_policy_hints`
+  - `integrated_tendency_proposal`
+  - `axis_arbitration_hints`
+  - `integration_audit_entries`
+  - `self_integration_writeback_candidate`
+  - `trace_payload.selfhood_integration_context`
+- 所有 `WP14` outputs 仍保持 `proposal_only + behavioral_authority = none + required_gate = self_integration_writeback_gate`
+- `OpenEmotion/tests/mvp19/test_selfhood_integration_proto_self_integration.py` 已定向证明 stability-first bounded arbitration、repair/growth priority selection、proposal-only discipline、legacy-not-promoted 与 developmental tick 下的相邻 contract safety
 
 ## 当前不做
 

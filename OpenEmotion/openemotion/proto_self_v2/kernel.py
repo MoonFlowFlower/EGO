@@ -39,6 +39,10 @@ from openemotion.proto_self_v2.schemas import (
     KernelOutputV2,
     UpdatePacketV2,
 )
+from openemotion.proto_self_v2.selfhood_integration_context import (
+    derive_selfhood_integration_outputs,
+    summarize_runtime_selfhood_integration_context,
+)
 from openemotion.proto_self_v2.self_model_context import (
     extract_runtime_self_model_context,
     summarize_runtime_self_model_context,
@@ -60,6 +64,7 @@ def _build_constraint_summary(
     *,
     subject_profile: str | None,
     runtime_summary: Dict[str, Any] | None = None,
+    selfhood_integration_summary: Dict[str, Any] | None = None,
 ) -> Dict[str, Any]:
     return {
         "identity_confidence": state.identity.identity_confidence,
@@ -73,6 +78,8 @@ def _build_constraint_summary(
         "endogenous_drive_context": summarize_runtime_endogenous_drive_context(runtime_summary),
         "reflective_self_context": summarize_runtime_reflective_self_context(runtime_summary),
         "social_self_context": summarize_runtime_social_self_context(runtime_summary),
+        "selfhood_integration_context": selfhood_integration_summary
+        or summarize_runtime_selfhood_integration_context(runtime_summary),
     }
 
 
@@ -83,6 +90,9 @@ def _build_retrieval_summary(state: ProtoSelfStateV2, packet: UpdatePacketV2) ->
     for cycle_id, signature in state.cycles.signatures.items():
         if signature.psi_bucket.startswith(f"{source}:{event_type}:"):
             matched_cycle_ids.append(cycle_id)
+    selfhood_integration_summary = summarize_runtime_selfhood_integration_context(
+        packet.runtime_summary
+    )
     return {
         "cycle_count": len(state.cycles.signatures),
         "recent_episode_count": len(state.trace_buffer),
@@ -98,6 +108,7 @@ def _build_retrieval_summary(state: ProtoSelfStateV2, packet: UpdatePacketV2) ->
         "reflective_self_context_present": bool(extract_runtime_reflective_self_context(packet.runtime_summary)),
         "social_self_context_present": bool(extract_runtime_social_self_context(packet.runtime_summary)),
         "social_context_present": bool(extract_runtime_social_context(packet.runtime_summary)),
+        "selfhood_integration_context_present": bool(selfhood_integration_summary.get("present")),
     }
 
 
@@ -193,10 +204,24 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
     revision_before = state_v2.revision_counter
     packet_dict = packet.to_dict()
     retrieval_summary = _build_retrieval_summary(state_v2, packet)
+    developmental_outputs = derive_developmental_outputs(packet.runtime_summary)
+    embodied_outputs = derive_embodied_outputs(packet.runtime_summary)
+    endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
+    reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
+    social_outputs = derive_social_outputs(packet.runtime_summary)
+    selfhood_outputs = derive_selfhood_integration_outputs(
+        packet.runtime_summary,
+        endogenous_drive_outputs=endogenous_drive_outputs,
+        reflective_outputs=reflective_outputs,
+        developmental_outputs=developmental_outputs,
+        social_outputs=social_outputs,
+        embodied_outputs=embodied_outputs,
+    )
     constraint_summary = _build_constraint_summary(
         state_v2,
         subject_profile=packet.subject_profile,
         runtime_summary=packet.runtime_summary,
+        selfhood_integration_summary=selfhood_outputs["selfhood_integration_context"],
     )
 
     v1_state = state_v2.to_v1()
@@ -206,11 +231,6 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
 
     reflection_dict = v1_output.reflection_note.to_dict() if v1_output.reflection_note else None
     predictive_reflective_delta = _build_predictive_reflective_delta(packet, reflection_dict)
-    developmental_outputs = derive_developmental_outputs(packet.runtime_summary)
-    embodied_outputs = derive_embodied_outputs(packet.runtime_summary)
-    endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
-    reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
-    social_outputs = derive_social_outputs(packet.runtime_summary)
     state_v2.apply_v1_state(
         v1_state,
         prediction_snapshot_prev=packet.prediction_snapshot_prev,
@@ -267,6 +287,15 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
         social_writeback_candidate=social_outputs["social_writeback_candidate"],
         social_context=social_outputs["social_context"],
+        selfhood_integration_context=selfhood_outputs["selfhood_integration_context"],
+        self_integration_delta=selfhood_outputs["self_integration_delta"],
+        cross_axis_priority_snapshot=selfhood_outputs["cross_axis_priority_snapshot"],
+        proposal_conflict_snapshot=selfhood_outputs["proposal_conflict_snapshot"],
+        integrated_policy_hints=selfhood_outputs["integrated_policy_hints"],
+        integrated_tendency_proposal=selfhood_outputs["integrated_tendency_proposal"],
+        axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
+        integration_audit_entries=selfhood_outputs["integration_audit_entries"],
+        self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
         reflection_note=reflection_dict,
         policy_hint={
             **v1_output.policy_hint,
@@ -275,26 +304,31 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
             **endogenous_drive_outputs["policy_hint_patch"],
             **reflective_outputs["policy_hint_patch"],
             **social_outputs["policy_hint_patch"],
+            **selfhood_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            reflective_outputs["response_tendency"].to_dict()
-            if reflective_outputs["response_tendency"]
+            selfhood_outputs["response_tendency"].to_dict()
+            if selfhood_outputs["response_tendency"]
             else (
-                endogenous_drive_outputs["response_tendency"].to_dict()
-                if endogenous_drive_outputs["response_tendency"]
+                reflective_outputs["response_tendency"].to_dict()
+                if reflective_outputs["response_tendency"]
                 else (
-                    social_outputs["response_tendency"].to_dict()
-                    if social_outputs["response_tendency"]
+                    endogenous_drive_outputs["response_tendency"].to_dict()
+                    if endogenous_drive_outputs["response_tendency"]
                     else (
-                        embodied_outputs["response_tendency"].to_dict()
-                        if embodied_outputs["response_tendency"]
+                        social_outputs["response_tendency"].to_dict()
+                        if social_outputs["response_tendency"]
                         else (
-                            developmental_outputs["response_tendency"].to_dict()
-                            if developmental_outputs["response_tendency"]
+                            embodied_outputs["response_tendency"].to_dict()
+                            if embodied_outputs["response_tendency"]
                             else (
-                                v1_output.response_tendency.to_dict()
-                                if v1_output.response_tendency
-                                else None
+                                developmental_outputs["response_tendency"].to_dict()
+                                if developmental_outputs["response_tendency"]
+                                else (
+                                    v1_output.response_tendency.to_dict()
+                                    if v1_output.response_tendency
+                                    else None
+                                )
                             )
                         )
                     )
@@ -311,9 +345,11 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         **endogenous_drive_outputs["policy_hint_patch"],
         **reflective_outputs["policy_hint_patch"],
         **social_outputs["policy_hint_patch"],
+        **selfhood_outputs["policy_hint_patch"],
     }
     merged_response_tendency = (
-        reflective_outputs["response_tendency"]
+        selfhood_outputs["response_tendency"]
+        or reflective_outputs["response_tendency"]
         or endogenous_drive_outputs["response_tendency"]
         or social_outputs["response_tendency"]
         or embodied_outputs["response_tendency"]
@@ -353,6 +389,14 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         social_policy_hints=social_outputs["social_policy_hints"],
         repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
         social_writeback_candidate=social_outputs["social_writeback_candidate"],
+        self_integration_delta=selfhood_outputs["self_integration_delta"],
+        cross_axis_priority_snapshot=selfhood_outputs["cross_axis_priority_snapshot"],
+        proposal_conflict_snapshot=selfhood_outputs["proposal_conflict_snapshot"],
+        integrated_policy_hints=selfhood_outputs["integrated_policy_hints"],
+        integrated_tendency_proposal=selfhood_outputs["integrated_tendency_proposal"],
+        axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
+        integration_audit_entries=selfhood_outputs["integration_audit_entries"],
+        self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
         endogenous_drive_delta=endogenous_drive_outputs["endogenous_drive_delta"],
         drive_state_snapshot=endogenous_drive_outputs["drive_state_snapshot"],
         priority_snapshot=endogenous_drive_outputs["priority_snapshot"],
@@ -403,6 +447,12 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         output.confidence_meta["social_self_owner_revision"] = constraint_summary["social_self_context"].get(
             "owner_revision"
         )
+    if constraint_summary["selfhood_integration_context"]["present"]:
+        output.confidence_meta = dict(output.confidence_meta)
+        output.confidence_meta["selfhood_integration_context_present"] = True
+        output.confidence_meta["selfhood_integration_owner_revision"] = constraint_summary[
+            "selfhood_integration_context"
+        ].get("projection_owner_revision")
     return output
 
 
@@ -414,6 +464,20 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
     endogenous_drive_outputs = derive_endogenous_drive_outputs(packet.runtime_summary)
     reflective_outputs = derive_reflective_self_outputs(packet.runtime_summary)
     social_outputs = derive_social_outputs(packet.runtime_summary)
+    selfhood_outputs = derive_selfhood_integration_outputs(
+        packet.runtime_summary,
+        endogenous_drive_outputs=endogenous_drive_outputs,
+        reflective_outputs=reflective_outputs,
+        developmental_outputs=developmental_outputs,
+        social_outputs=social_outputs,
+        embodied_outputs=embodied_outputs,
+    )
+    constraint_summary = _build_constraint_summary(
+        state_v2,
+        subject_profile=packet.subject_profile,
+        runtime_summary=packet.runtime_summary,
+        selfhood_integration_summary=selfhood_outputs["selfhood_integration_context"],
+    )
     trace_payload = build_trace_payload_v2(
         event_id=packet.event_id,
         subject_profile=packet.subject_profile,
@@ -421,11 +485,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         state_revision_before=revision_before,
         state_revision_after=state_v2.revision_counter,
         retrieval_summary=_build_retrieval_summary(state_v2, packet),
-        constraint_summary=_build_constraint_summary(
-            state_v2,
-            subject_profile=packet.subject_profile,
-            runtime_summary=packet.runtime_summary,
-        ),
+        constraint_summary=constraint_summary,
         perceived={},
         identity_delta={},
         self_model_delta=execution.self_model_delta,
@@ -468,6 +528,15 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         repair_proposal_candidates=social_outputs["repair_proposal_candidates"],
         social_writeback_candidate=social_outputs["social_writeback_candidate"],
         social_context=social_outputs["social_context"],
+        selfhood_integration_context=selfhood_outputs["selfhood_integration_context"],
+        self_integration_delta=selfhood_outputs["self_integration_delta"],
+        cross_axis_priority_snapshot=selfhood_outputs["cross_axis_priority_snapshot"],
+        proposal_conflict_snapshot=selfhood_outputs["proposal_conflict_snapshot"],
+        integrated_policy_hints=selfhood_outputs["integrated_policy_hints"],
+        integrated_tendency_proposal=selfhood_outputs["integrated_tendency_proposal"],
+        axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
+        integration_audit_entries=selfhood_outputs["integration_audit_entries"],
+        self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
         policy_hint={
             "preferred_action_type": "wait",
             "risk_tolerance": "conservative",
@@ -485,23 +554,28 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             **endogenous_drive_outputs["policy_hint_patch"],
             **reflective_outputs["policy_hint_patch"],
             **social_outputs["policy_hint_patch"],
+            **selfhood_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            reflective_outputs["response_tendency"].to_dict()
-            if reflective_outputs["response_tendency"]
+            selfhood_outputs["response_tendency"].to_dict()
+            if selfhood_outputs["response_tendency"]
             else (
-                endogenous_drive_outputs["response_tendency"].to_dict()
-                if endogenous_drive_outputs["response_tendency"]
+                reflective_outputs["response_tendency"].to_dict()
+                if reflective_outputs["response_tendency"]
                 else (
-                    social_outputs["response_tendency"].to_dict()
-                    if social_outputs["response_tendency"]
+                    endogenous_drive_outputs["response_tendency"].to_dict()
+                    if endogenous_drive_outputs["response_tendency"]
                     else (
-                        embodied_outputs["response_tendency"].to_dict()
-                        if embodied_outputs["response_tendency"]
+                        social_outputs["response_tendency"].to_dict()
+                        if social_outputs["response_tendency"]
                         else (
-                            developmental_outputs["response_tendency"].to_dict()
-                            if developmental_outputs["response_tendency"]
-                            else None
+                            embodied_outputs["response_tendency"].to_dict()
+                            if embodied_outputs["response_tendency"]
+                            else (
+                                developmental_outputs["response_tendency"].to_dict()
+                                if developmental_outputs["response_tendency"]
+                                else None
+                            )
                         )
                     )
                 )
@@ -520,7 +594,7 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         timestamp=packet.timestamp,
         legacy_trace_payload={},
     )
-    return KernelOutputV2(
+    output = KernelOutputV2(
         event_id=packet.event_id,
         subject_profile=packet.subject_profile,
         memory_update={"developmental_shadow_updated": True},
@@ -577,9 +651,11 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             **endogenous_drive_outputs["policy_hint_patch"],
             **reflective_outputs["policy_hint_patch"],
             **social_outputs["policy_hint_patch"],
+            **selfhood_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            reflective_outputs["response_tendency"]
+            selfhood_outputs["response_tendency"]
+            or reflective_outputs["response_tendency"]
             or endogenous_drive_outputs["response_tendency"]
             or social_outputs["response_tendency"]
             or embodied_outputs["response_tendency"]
@@ -591,6 +667,14 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         candidate_bias_terms=endogenous_drive_outputs["candidate_bias_terms"],
         self_maintenance_candidate=endogenous_drive_outputs["self_maintenance_candidate"],
         drive_audit_entries=endogenous_drive_outputs["drive_audit_entries"],
+        self_integration_delta=selfhood_outputs["self_integration_delta"],
+        cross_axis_priority_snapshot=selfhood_outputs["cross_axis_priority_snapshot"],
+        proposal_conflict_snapshot=selfhood_outputs["proposal_conflict_snapshot"],
+        integrated_policy_hints=selfhood_outputs["integrated_policy_hints"],
+        integrated_tendency_proposal=selfhood_outputs["integrated_tendency_proposal"],
+        axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
+        integration_audit_entries=selfhood_outputs["integration_audit_entries"],
+        self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
         reflective_self_delta=reflective_outputs["reflective_self_delta"],
         revision_proposal_candidates=reflective_outputs["revision_proposal_candidates"],
         confidence_adjustment_hints=reflective_outputs["confidence_adjustment_hints"],
@@ -598,6 +682,13 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         reflection_writeback_candidate=reflective_outputs["reflection_writeback_candidate"],
         trace_payload=trace_payload,
     )
+    if constraint_summary["selfhood_integration_context"]["present"]:
+        output.confidence_meta = dict(output.confidence_meta)
+        output.confidence_meta["selfhood_integration_context_present"] = True
+        output.confidence_meta["selfhood_integration_owner_revision"] = constraint_summary[
+            "selfhood_integration_context"
+        ].get("projection_owner_revision")
+    return output
 
 
 def process_update_packet(state: ProtoSelfState | ProtoSelfStateV2, packet: UpdatePacketV2) -> KernelOutputV2:

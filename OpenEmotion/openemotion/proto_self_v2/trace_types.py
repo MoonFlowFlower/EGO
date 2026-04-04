@@ -72,6 +72,15 @@ class ProtoSelfTracePayloadV2:
     repair_proposal_candidates: list = field(default_factory=list)
     social_writeback_candidate: Optional[Dict[str, Any]] = None
     social_context: Dict[str, Any] = field(default_factory=dict)
+    selfhood_integration_context: Dict[str, Any] = field(default_factory=dict)
+    self_integration_delta: Dict[str, Any] = field(default_factory=dict)
+    cross_axis_priority_snapshot: Dict[str, Any] = field(default_factory=dict)
+    proposal_conflict_snapshot: Dict[str, Any] = field(default_factory=dict)
+    integrated_policy_hints: Dict[str, Any] = field(default_factory=dict)
+    integrated_tendency_proposal: Optional[Dict[str, Any]] = None
+    axis_arbitration_hints: Dict[str, Any] = field(default_factory=dict)
+    integration_audit_entries: list = field(default_factory=list)
+    self_integration_writeback_candidate: Optional[Dict[str, Any]] = None
     timestamp: str = ""
     legacy_trace_payload: Dict[str, Any] = field(default_factory=dict)
 
@@ -140,6 +149,15 @@ class ProtoSelfTracePayloadV2:
             "repair_proposal_candidates": self.repair_proposal_candidates,
             "social_writeback_candidate": self.social_writeback_candidate,
             "social_context": self.social_context,
+            "selfhood_integration_context": self.selfhood_integration_context,
+            "self_integration_delta": self.self_integration_delta,
+            "cross_axis_priority_snapshot": self.cross_axis_priority_snapshot,
+            "proposal_conflict_snapshot": self.proposal_conflict_snapshot,
+            "integrated_policy_hints": self.integrated_policy_hints,
+            "integrated_tendency_proposal": self.integrated_tendency_proposal,
+            "axis_arbitration_hints": self.axis_arbitration_hints,
+            "integration_audit_entries": self.integration_audit_entries,
+            "self_integration_writeback_candidate": self.self_integration_writeback_candidate,
             "timestamp": self.timestamp,
             "legacy_trace_payload": self.legacy_trace_payload,
         }

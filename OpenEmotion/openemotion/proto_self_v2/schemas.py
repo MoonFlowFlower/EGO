@@ -183,6 +183,14 @@ class KernelOutputV2:
     social_policy_hints: Dict[str, Any] = field(default_factory=dict)
     repair_proposal_candidates: List[Dict[str, Any]] = field(default_factory=list)
     social_writeback_candidate: Optional[Dict[str, Any]] = None
+    self_integration_delta: Dict[str, Any] = field(default_factory=dict)
+    cross_axis_priority_snapshot: Dict[str, Any] = field(default_factory=dict)
+    proposal_conflict_snapshot: Dict[str, Any] = field(default_factory=dict)
+    integrated_policy_hints: Dict[str, Any] = field(default_factory=dict)
+    integrated_tendency_proposal: Optional[Dict[str, Any]] = None
+    axis_arbitration_hints: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+    integration_audit_entries: List[Dict[str, Any]] = field(default_factory=list)
+    self_integration_writeback_candidate: Optional[Dict[str, Any]] = None
     endogenous_drive_delta: Dict[str, Any] = field(default_factory=dict)
     drive_state_snapshot: Dict[str, Any] = field(default_factory=dict)
     priority_snapshot: Dict[str, Any] = field(default_factory=dict)
@@ -234,6 +242,14 @@ class KernelOutputV2:
             "social_policy_hints": self.social_policy_hints,
             "repair_proposal_candidates": self.repair_proposal_candidates,
             "social_writeback_candidate": self.social_writeback_candidate,
+            "self_integration_delta": self.self_integration_delta,
+            "cross_axis_priority_snapshot": self.cross_axis_priority_snapshot,
+            "proposal_conflict_snapshot": self.proposal_conflict_snapshot,
+            "integrated_policy_hints": self.integrated_policy_hints,
+            "integrated_tendency_proposal": self.integrated_tendency_proposal,
+            "axis_arbitration_hints": self.axis_arbitration_hints,
+            "integration_audit_entries": self.integration_audit_entries,
+            "self_integration_writeback_candidate": self.self_integration_writeback_candidate,
             "endogenous_drive_delta": self.endogenous_drive_delta,
             "drive_state_snapshot": self.drive_state_snapshot,
             "priority_snapshot": self.priority_snapshot,

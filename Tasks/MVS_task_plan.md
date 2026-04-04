@@ -14,7 +14,7 @@
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
 - 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP13/MVP18`，其 authority freeze、`T10` formal owner package、`T20` proto-self embodied contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map、`T50` causal proof、`T60` single controlled observation、`T70` batch observation / aggregate 与 `T80` closeout / QA baseline 均已完成，当前已进入 `maintenance_mode`，不是 live embodied autonomy。
-- 当前下一阶段已冻结为 `WP14/MVP19` 的 authority/task package，范围收窄为 `Cross-Axis Self-Integration / Self-Maintenance Arbitration`；当前只完成 authority freeze、phase-detail task plan 与执行包建档，claim ceiling 固定为 `authority_frozen / task_package_ready`，不代表 owner/runtime 实现、主链接线、`E4/E5`、observation、或 maintenance mode。
+- 当前下一阶段为 `WP14/MVP19` 的 `Cross-Axis Self-Integration / Self-Maintenance Arbitration`；authority freeze、phase-detail task plan、执行包、`T10` formal owner package 与 `T20` proto_self_v2 bounded contract integration 已完成，当前 claim ceiling 固定为 `T20 only / proto_self_contract_completed`，不代表 EgoCore runtime bridge、`E4/E5`、observation、或 maintenance mode。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
