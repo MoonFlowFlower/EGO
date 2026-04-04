@@ -6,6 +6,7 @@
 - 所有 subagent 任务都以 `Tasks/MVP17_task_plan.md` 为 phase-detail authority
 - 不允许 subagent 自行扩 scope 到 `WP13+`
 - 不允许 subagent 把 historical social / relation materials 升格为 formal owner path
+- `WP12` 当前已收口为 `maintenance_mode`；本文件只同步任务分派与 write scope，不 reopen `WP12`
 
 ## 推荐分派
 
@@ -19,14 +20,14 @@
 | `T50_CAUSAL_VALIDATION` | Dual-repo | 否 | `OpenEmotion/tests/mvp17/*`, proof tools/artifacts |
 | `T60_CONTROLLED_OBSERVATION_SINGLE` | Dual-repo | 否 | `OpenEmotion/tools/*`, `OpenEmotion/artifacts/mvp17/*`, observation tests |
 | `T70_BATCH_OBSERVATION_AND_AGGREGATE` | Dual-repo | 否 | `OpenEmotion/scenarios/mvp17_observation_bank/*`, batch tools, aggregate artifacts/tests |
-| `T80_CLOSEOUT_AND_QA_BASELINE` | Tasks/docs | 否 | `STATUS.md`, `README.md`, `PROJECT_MEMORY.md`, `OpenEmotion/artifacts/mvp17/MVP17_COMPLETION_CURRENT.*`, `WP12_QA_BASELINE.md` |
+| `T80_CLOSEOUT_AND_QA_BASELINE` | Tasks/docs | 否 | `Tasks/active/mvp17_social_self_other_modeling/*`, `Tasks/MVP17_task_plan.md`, `PROJECT_MEMORY.md`, `OpenEmotion/artifacts/mvp17/MVP17_COMPLETION_CURRENT.*` |
 | `T90_SUBAGENT_ASSIGNMENT` | Tasks/docs | 否 | `SUBAGENT_ASSIGNMENT.md` |
 
 ## 固定依赖
 
 - `T00 -> T10 -> T20 -> T30 -> T50 -> T60 -> T70 -> T80`
 - `T40` 依赖 `T10`，可与 `T20/T30` 并行
-- `T90` 在文档阶段一次性完成
+- `T90` 依赖 `T00`，用于同步当前 authority package 的分派表；在 package 已收口时允许 no-op 验收
 
 ## 交付要求
 
