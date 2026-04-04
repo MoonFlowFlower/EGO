@@ -26,6 +26,13 @@ from openemotion.endogenous_drives import EndogenousDriveStore
 from openemotion.endogenous_drives.reducers import seed_default_state
 from openemotion.reflective_self import ReflectiveSelfOwner, ReflectiveSelfStore, ReflectionTargetType
 from openemotion.proto_self_v2.seed_schemas import SEED_SUBJECT_PROFILE
+from openemotion.social_self import (
+    BoundaryMode as SocialBoundaryMode,
+    CommitmentStatus as SocialCommitmentStatus,
+    RelationshipContinuityStatus,
+    SocialSelfOwner,
+    SocialSelfStore,
+)
 from openemotion.self_model import Goal, GoalStatus, Priority, SelfModelStore, create_default_self_model
 from openemotion.self_model import SelfModelStore, create_default_self_model
 
@@ -309,6 +316,84 @@ def test_v2_events_inject_formal_developmental_self_context_and_host_context(tmp
     assert ingress_event["runtime_summary"]["developmental_context"]["promotion_budget"] == "controlled_axis"
     assert finalized_event is not None
     assert finalized_event["runtime_summary"]["developmental_self_context"]["owner_revision"] == 1
+
+
+def test_v2_events_inject_formal_social_self_context_and_host_context(tmp_path):
+    store = SocialSelfStore(base_dir=tmp_path)
+    owner = SocialSelfOwner(store=store)
+    owner.upsert_relation_memory(
+        counterpart_id="telegram:8420019401",
+        relationship_summary="ongoing trusted interaction",
+        continuity_status=RelationshipContinuityStatus.ACTIVE,
+        source_refs=["trace:social_seed"],
+    )
+    owner.set_trust_state(
+        counterpart_id="telegram:8420019401",
+        trust_level=0.72,
+        trust_delta=-0.08,
+        trust_basis=["recent strain"],
+    )
+    owner.record_commitment(
+        counterpart_id="telegram:8420019401",
+        summary="follow through on repair",
+        status=SocialCommitmentStatus.HELD,
+        source_refs=["trace:social_seed"],
+        commitment_id="commitment_social_seed",
+    )
+    owner.set_social_boundary(
+        counterpart_id="telegram:8420019401",
+        caution_level=0.58,
+        boundary_mode=SocialBoundaryMode.CAUTIOUS,
+        reason="keep social adjustments bounded",
+        source_refs=["trace:social_seed"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:social_context")
+
+    state = RuntimeV2State(session_id="session:test")
+    state.current_goal = "verify_social_bridge"
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "social_context": {
+            "source": "runtime_v2",
+            "counterpart_id": "telegram:8420019401",
+            "relationship_event": "tone_feedback",
+            "relationship_continuity": "strained",
+            "trust_drift": -0.2,
+            "commitment_event": "held",
+            "repair_outcome": "blocked",
+            "unresolved_repair": True,
+            "boundary_signal": "cautious",
+            "promotion_budget": "review_only",
+        },
+    }
+    result = RuntimeV2TurnResult(
+        status="completed_verified",
+        state=state,
+        reply=RuntimeV2Reply(reply_text="已完成", delivery_kind="final", status="completed_verified"),
+    )
+
+    ingress_event = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_social_ctx_ingress",
+        source="telegram",
+        user_input="帮我整理 social bridge",
+        state=state,
+        social_self_store=store,
+    )
+    finalized_event = build_finalized_result_event(
+        session_id="session:test",
+        turn_id="turn_social_ctx_finalized",
+        result=result,
+        state=state,
+        social_self_store=store,
+    )
+
+    assert ingress_event["runtime_summary"]["social_self_context"]["schema_version"] == "mvp17-owner-v1"
+    assert ingress_event["runtime_summary"]["social_self_context"]["owner_revision"] == 1
+    assert ingress_event["runtime_summary"]["social_context"]["counterpart_id"] == "telegram:8420019401"
+    assert ingress_event["runtime_summary"]["social_context"]["relationship_continuity"] == "strained"
+    assert finalized_event is not None
+    assert finalized_event["runtime_summary"]["social_self_context"]["owner_revision"] == 1
 
 
 def test_process_ingress_applies_governed_self_model_writeback(tmp_path):
@@ -691,7 +776,213 @@ def test_process_ingress_applies_governed_developmental_writeback_without_author
     assert saved.owner_revision == 2
     assert len(saved.proposal_history) == 1
     assert len(saved.promotion_queue) == 1
+
+
+def test_process_ingress_applies_governed_social_writeback_without_authority_promotion(tmp_path):
+    store = SocialSelfStore(base_dir=tmp_path)
+    owner = SocialSelfOwner(store=store)
+    owner.upsert_relation_memory(
+        counterpart_id="telegram:8420019401",
+        relationship_summary="long-running collaboration",
+        continuity_status=RelationshipContinuityStatus.ACTIVE,
+        source_refs=["trace:social_init"],
+    )
+    owner.set_trust_state(
+        counterpart_id="telegram:8420019401",
+        trust_level=0.61,
+        trust_delta=-0.05,
+        trust_basis=["baseline trust"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:social_init")
+
+    class Adapter:
+        def __init__(self):
+            self.last_event = None
+
+        def handle_event(self, event):
+            self.last_event = event
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {"social_repair_bias": "elevated"},
+                "response_tendency": {"preferred_mode": "repair", "certainty_bound": "bounded"},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "social_self_delta": {
+                    "proposal_candidate_count": 1,
+                    "counterpart_id": "telegram:8420019401",
+                    "relationship_continuity": "strained",
+                    "surface_reasons": ["commitment_breach", "unresolved_repair"],
+                },
+                "relation_update_candidates": [
+                    {
+                        "candidate_id": "relation_update:telegram:8420019401:1",
+                        "counterpart_id": "telegram:8420019401",
+                        "relationship_event": "repair_followup",
+                        "relationship_continuity": "strained",
+                        "required_gate": "social_writeback_gate",
+                        "proposal_discipline": "proposal_only",
+                        "behavioral_authority": "none",
+                        "promotion_level": "review_only",
+                    }
+                ],
+                "trust_commitment_snapshot": {
+                    "counterpart_id": "telegram:8420019401",
+                    "owner_revision": 1,
+                    "last_revision_id": "social_rev_000001",
+                    "trust_signal_max": 0.58,
+                    "open_commitment_count": 1,
+                    "breached_commitment_count": 1,
+                    "pending_repair_count": 1,
+                    "boundary_caution_max": 0.67,
+                    "relationship_continuity": "strained",
+                    "trust_drift": -0.2,
+                },
+                "social_policy_hints": {
+                    "relationship_continuity": "strained",
+                    "trust_bias": "guarded",
+                    "commitment_guard": "strict",
+                    "repair_bias": "elevated",
+                    "boundary_mode": "cautious",
+                    "counterpart_id": "telegram:8420019401",
+                },
+                "repair_proposal_candidates": [
+                    {
+                        "candidate_id": "repair_candidate:telegram:8420019401:2",
+                        "counterpart_id": "telegram:8420019401",
+                        "reason": "social_repair",
+                        "surface_reasons": ["commitment_breach", "unresolved_repair"],
+                        "required_gate": "social_writeback_gate",
+                        "proposal_discipline": "proposal_only",
+                        "behavioral_authority": "none",
+                        "promotion_level": "review_only",
+                    }
+                ],
+                "social_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "counterpart_id": "telegram:8420019401",
+                    "required_gate": "social_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "none",
+                    "promotion_level": "review_only",
+                    "surface_reasons": ["commitment_breach", "unresolved_repair"],
+                    "owner_revision": 1,
+                },
+                "trace_payload": {
+                    "update_packet_hash": "hash_social_bridge",
+                    "social_context": {
+                        "contract_version": "mvp17.social_contract.v1",
+                        "counterpart_id": "telegram:8420019401",
+                    },
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), social_self_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "social_context": {
+            "source": "runtime_v2",
+            "counterpart_id": "telegram:8420019401",
+            "relationship_event": "tone_feedback",
+            "relationship_continuity": "strained",
+            "trust_drift": -0.2,
+            "commitment_breach": True,
+            "repair_outcome": "blocked",
+            "unresolved_repair": True,
+            "boundary_signal": "cautious",
+            "promotion_budget": "review_only",
+        },
+    }
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_social_bridge",
+        source="telegram",
+        user_input="把 social writeback 接上正式主链",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert runtime.adapter.last_event["runtime_summary"]["social_self_context"]["owner_revision"] == 1
+    assert runtime.adapter.last_event["runtime_summary"]["social_context"]["counterpart_id"] == "telegram:8420019401"
+    assert state.proto_self_context["social_self_delta"]["proposal_candidate_count"] == 1
+    assert state.proto_self_context["social_writeback_candidate"]["behavioral_authority"] == "none"
+    assert state.proto_self_context["social_context"]["counterpart_id"] == "telegram:8420019401"
+    assert state.proto_self_context["social_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+    assert saved is not None
+    assert saved.owner_revision == 2
+    assert len(saved.repair_state) == 1
+    assert len(saved.commitment_state) >= 1
     assert len(store.load_revision_log("openemotion")) == 2
+
+
+def test_process_ingress_rejects_social_writeback_behavioral_authority_escalation(tmp_path):
+    store = SocialSelfStore(base_dir=tmp_path)
+    owner = SocialSelfOwner(store=store)
+    owner.upsert_relation_memory(
+        counterpart_id="telegram:8420019401",
+        relationship_summary="baseline social state",
+        continuity_status=RelationshipContinuityStatus.ACTIVE,
+        source_refs=["trace:social_reject_init"],
+    )
+    owner.persist(update_source="owner_bootstrap", trace_reference="trace:social_reject_init")
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "policy_hint": {},
+                "response_tendency": {},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "social_self_delta": {
+                    "proposal_candidate_count": 1,
+                    "counterpart_id": "telegram:8420019401",
+                    "surface_reasons": ["commitment_breach"],
+                },
+                "relation_update_candidates": [],
+                "trust_commitment_snapshot": {
+                    "counterpart_id": "telegram:8420019401",
+                    "owner_revision": 1,
+                    "trust_signal_max": 0.4,
+                    "breached_commitment_count": 1,
+                },
+                "social_policy_hints": {
+                    "commitment_guard": "strict",
+                    "boundary_mode": "cautious",
+                },
+                "repair_proposal_candidates": [],
+                "social_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "counterpart_id": "telegram:8420019401",
+                    "required_gate": "social_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "reply",
+                },
+                "trace_payload": {"update_packet_hash": "hash_social_reject"},
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), social_self_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_social_reject",
+        source="telegram",
+        user_input="不要让 social writeback 越权",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert state.proto_self_context["social_writeback"]["decision"]["gate_verdict"] == "reject"
+    assert saved is not None
+    assert saved.owner_revision == 1
+    assert len(store.load_revision_log("openemotion")) == 1
 
 
 def test_build_proto_self_ingress_event_supports_seed_profile_shape():

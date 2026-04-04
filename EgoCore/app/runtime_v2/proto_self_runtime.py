@@ -25,6 +25,16 @@ from openemotion.reflective_self import (
     ReflectiveSelfStore,
     ReflectionTargetType,
 )
+from openemotion.social_self import (
+    REQUIRED_WRITEBACK_GATE as SOCIAL_WRITEBACK_GATE,
+    BoundaryMode as SocialBoundaryMode,
+    CommitmentStatus as SocialCommitmentStatus,
+    RelationshipContinuityStatus,
+    RepairProposalStatus as SocialRepairProposalStatus,
+    SocialSelfOwner,
+    SocialSelfState,
+    SocialSelfStore,
+)
 from openemotion.self_model import (
     PHASE1_AUTHORITATIVE_FIELDS,
     SelfModelStore,
@@ -45,6 +55,7 @@ DEFAULT_SELF_MODEL_IDENTITY_HANDLE = "openemotion"
 DEFAULT_ENDOGENOUS_DRIVE_IDENTITY_HANDLE = "openemotion"
 DEFAULT_REFLECTIVE_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_DEVELOPMENTAL_SELF_IDENTITY_HANDLE = "openemotion"
+DEFAULT_SOCIAL_SELF_IDENTITY_HANDLE = "openemotion"
 
 
 def assess_risk_level(user_input: str) -> str:
@@ -134,6 +145,15 @@ def _resolve_developmental_self_identity_handle(state: RuntimeV2State) -> str:
         ingress_context.get("developmental_self_identity_handle")
         or ingress_context.get("identity_handle")
         or DEFAULT_DEVELOPMENTAL_SELF_IDENTITY_HANDLE
+    )
+
+
+def _resolve_social_self_identity_handle(state: RuntimeV2State) -> str:
+    ingress_context = state.ingress_context or {}
+    return str(
+        ingress_context.get("social_self_identity_handle")
+        or ingress_context.get("identity_handle")
+        or DEFAULT_SOCIAL_SELF_IDENTITY_HANDLE
     )
 
 
@@ -266,6 +286,83 @@ def _build_developmental_context(state: RuntimeV2State) -> Dict[str, Any]:
     return context
 
 
+def _build_social_context(state: RuntimeV2State) -> Dict[str, Any]:
+    ingress_context = state.ingress_context or {}
+    provided = dict(ingress_context.get("social_context") or {})
+    relationship_context = dict(state.get_chat_state().relationship_context or {})
+
+    social_arc = str(relationship_context.get("current_social_arc") or "").strip().lower()
+    continuity_by_arc = {
+        "warming": "stable",
+        "stable": "stable",
+        "cooling": "strained",
+        "repairing": "repairing",
+        "testing": "strained",
+        "unknown": "stable",
+    }
+
+    conversation_temperature = float(relationship_context.get("conversation_temperature") or 0.5)
+    if conversation_temperature <= 0.35:
+        trust_drift = -0.25
+    elif conversation_temperature < 0.5:
+        trust_drift = -0.1
+    elif conversation_temperature >= 0.75:
+        trust_drift = 0.12
+    elif conversation_temperature >= 0.6:
+        trust_drift = 0.06
+    else:
+        trust_drift = 0.0
+
+    repair_state = str(relationship_context.get("last_repair_state") or "").strip().lower()
+    repair_outcome = str(provided.get("repair_outcome") or "").strip()
+    if not repair_outcome:
+        if state.last_tool_result and not state.last_tool_result.get("success") and repair_state in {"needed", "in_progress"}:
+            repair_outcome = "blocked"
+        elif repair_state == "resolved":
+            repair_outcome = "resolved"
+
+    boundary_signal = str(provided.get("boundary_signal") or "").strip()
+    if not boundary_signal:
+        if relationship_context.get("last_user_feedback_about_tone") or conversation_temperature < 0.4:
+            boundary_signal = "cautious"
+        else:
+            boundary_signal = "open"
+
+    commitment_event = str(provided.get("commitment_event") or "").strip()
+    if not commitment_event and state.current_goal and state.task_status in {"waiting_input", "resumable_pause"}:
+        commitment_event = "held"
+
+    unresolved_repair = bool(provided.get("unresolved_repair"))
+    if not unresolved_repair:
+        unresolved_repair = repair_state in {"needed", "in_progress"} or repair_outcome in {"blocked", "failed"}
+
+    return {
+        "source": str(provided.get("source") or "runtime_v2"),
+        "counterpart_id": str(
+            provided.get("counterpart_id")
+            or ingress_context.get("counterpart_id")
+            or state.session_id
+        ),
+        "relationship_event": str(
+            provided.get("relationship_event")
+            or state.get_chat_state().last_chat_act
+            or relationship_context.get("last_relationship_shift")
+            or ""
+        ),
+        "relationship_continuity": str(
+            provided.get("relationship_continuity")
+            or continuity_by_arc.get(social_arc, "stable")
+        ),
+        "trust_drift": float(provided.get("trust_drift") if "trust_drift" in provided else trust_drift),
+        "commitment_event": commitment_event,
+        "commitment_breach": bool(provided.get("commitment_breach")),
+        "repair_outcome": repair_outcome,
+        "unresolved_repair": unresolved_repair,
+        "boundary_signal": boundary_signal,
+        "promotion_budget": str(provided.get("promotion_budget") or "review_only"),
+    }
+
+
 def _compact_self_model_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     context: Dict[str, Any] = {}
     for field_name in PHASE1_AUTHORITATIVE_FIELDS:
@@ -333,6 +430,11 @@ def _compact_developmental_self_context(snapshot: Dict[str, Any]) -> Dict[str, A
     return compact_developmental_self_context(state)
 
 
+def _compact_social_self_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    state = SocialSelfState.model_validate(snapshot)
+    return state.to_runtime_projection()
+
+
 def _inject_developmental_self_context(
     runtime_summary: Dict[str, Any],
     *,
@@ -346,12 +448,34 @@ def _inject_developmental_self_context(
     return runtime_summary
 
 
+def _inject_social_self_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+    social_self_store: Optional[SocialSelfStore] = None,
+) -> Dict[str, Any]:
+    store = social_self_store or SocialSelfStore()
+    snapshot = store.load_snapshot(_resolve_social_self_identity_handle(state))
+    if snapshot:
+        runtime_summary["social_self_context"] = _compact_social_self_context(snapshot)
+    return runtime_summary
+
+
 def _inject_developmental_context(
     runtime_summary: Dict[str, Any],
     *,
     state: RuntimeV2State,
 ) -> Dict[str, Any]:
     runtime_summary["developmental_context"] = _build_developmental_context(state)
+    return runtime_summary
+
+
+def _inject_social_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+) -> Dict[str, Any]:
+    runtime_summary["social_context"] = _build_social_context(state)
     return runtime_summary
 
 
@@ -434,6 +558,7 @@ def build_proto_self_ingress_event(
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
+    social_self_store: Optional[SocialSelfStore] = None,
 ) -> Dict[str, Any]:
     risk_level = assess_risk_level(user_input)
     restore_observation = (state.ingress_context or {}).get("restore_observation")
@@ -465,6 +590,11 @@ def build_proto_self_ingress_event(
             state=state,
             developmental_self_store=developmental_self_store,
         )
+        runtime_summary = _inject_social_self_context(
+            runtime_summary,
+            state=state,
+            social_self_store=social_self_store,
+        )
         runtime_summary.update(
             {
                 k: v
@@ -472,6 +602,7 @@ def build_proto_self_ingress_event(
                 if v is not None
             }
         )
+        runtime_summary = _inject_social_context(runtime_summary, state=state)
         runtime_summary = _inject_developmental_context(runtime_summary, state=state)
         payload = {
             "schema_version": schema_version,
@@ -559,6 +690,7 @@ def build_external_result_event(
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
+    social_self_store: Optional[SocialSelfStore] = None,
 ) -> Dict[str, Any]:
     failed = not tool_result.get("success")
     schema_version = resolve_proto_self_schema_version(state)
@@ -620,6 +752,15 @@ def build_external_result_event(
             payload["runtime_summary"],
             state=state,
             developmental_self_store=developmental_self_store,
+        )
+        payload["runtime_summary"] = _inject_social_self_context(
+            payload["runtime_summary"],
+            state=state,
+            social_self_store=social_self_store,
+        )
+        payload["runtime_summary"] = _inject_social_context(
+            payload["runtime_summary"],
+            state=state,
         )
         payload["runtime_summary"] = _inject_developmental_context(
             payload["runtime_summary"],
@@ -691,6 +832,7 @@ def build_finalized_result_event(
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
+    social_self_store: Optional[SocialSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -753,6 +895,15 @@ def build_finalized_result_event(
         state=state,
         developmental_self_store=developmental_self_store,
     )
+    payload["runtime_summary"] = _inject_social_self_context(
+        payload["runtime_summary"],
+        state=state,
+        social_self_store=social_self_store,
+    )
+    payload["runtime_summary"] = _inject_social_context(
+        payload["runtime_summary"],
+        state=state,
+    )
     payload["runtime_summary"] = _inject_developmental_context(
         payload["runtime_summary"],
         state=state,
@@ -780,6 +931,7 @@ def build_idle_check_event(
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
+    social_self_store: Optional[SocialSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -850,6 +1002,15 @@ def build_idle_check_event(
         state=state,
         developmental_self_store=developmental_self_store,
     )
+    event["runtime_summary"] = _inject_social_self_context(
+        event["runtime_summary"],
+        state=state,
+        social_self_store=social_self_store,
+    )
+    event["runtime_summary"] = _inject_social_context(
+        event["runtime_summary"],
+        state=state,
+    )
     event["runtime_summary"] = _inject_developmental_context(
         event["runtime_summary"],
         state=state,
@@ -875,6 +1036,7 @@ def build_developmental_tick_event(
     endogenous_drive_store: Optional[EndogenousDriveStore] = None,
     reflective_self_store: Optional[ReflectiveSelfStore] = None,
     developmental_self_store: Optional[DevelopmentalSelfStore] = None,
+    social_self_store: Optional[SocialSelfStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -911,6 +1073,12 @@ def build_developmental_tick_event(
         state=state,
         developmental_self_store=developmental_self_store,
     )
+    runtime_summary = _inject_social_self_context(
+        runtime_summary,
+        state=state,
+        social_self_store=social_self_store,
+    )
+    runtime_summary = _inject_social_context(runtime_summary, state=state)
     runtime_summary = _inject_developmental_context(
         runtime_summary,
         state=state,
@@ -989,6 +1157,7 @@ class RuntimeV2ProtoSelfRuntime:
     endogenous_drive_store: Optional[EndogenousDriveStore] = None
     reflective_self_store: Optional[ReflectiveSelfStore] = None
     developmental_self_store: Optional[DevelopmentalSelfStore] = None
+    social_self_store: Optional[SocialSelfStore] = None
 
     def _resolve_collector(self, evidence_collector: Optional[Any]) -> Optional[Any]:
         if evidence_collector is not None:
@@ -1473,6 +1642,277 @@ class RuntimeV2ProtoSelfRuntime:
         proto_self_result["developmental_writeback"] = writeback
         return writeback
 
+    def _apply_social_self_writeback(
+        self,
+        *,
+        proto_self_result: Dict[str, Any],
+        state: RuntimeV2State,
+    ) -> Optional[Dict[str, Any]]:
+        delta = dict(proto_self_result.get("social_self_delta") or {})
+        relation_candidates = list(proto_self_result.get("relation_update_candidates") or [])
+        trust_commitment_snapshot = dict(proto_self_result.get("trust_commitment_snapshot") or {})
+        social_policy_hints = dict(proto_self_result.get("social_policy_hints") or {})
+        repair_candidates = list(proto_self_result.get("repair_proposal_candidates") or [])
+        writeback_candidate = dict(proto_self_result.get("social_writeback_candidate") or {})
+        if not delta and not relation_candidates and not trust_commitment_snapshot and not writeback_candidate:
+            return None
+
+        trace_payload = dict(proto_self_result.get("trace_payload") or {})
+        trace_reference = str(
+            trace_payload.get("update_packet_hash")
+            or f"proto_self:{proto_self_result.get('event_id', 'unknown')}"
+        )
+
+        if writeback_candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": "social_writeback_requires_proposal_only"},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["social_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("behavioral_authority") not in {None, "none"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "social_writeback_behavioral_authority_must_remain_none",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["social_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("required_gate") not in {None, SOCIAL_WRITEBACK_GATE}:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": "social_writeback_requires_formal_gate"},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["social_writeback"] = writeback
+            return writeback
+
+        for candidate in [*relation_candidates[:3], *repair_candidates[:3]]:
+            if candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+                writeback = {
+                    "decision": {"gate_verdict": "reject", "reason": "social_candidate_requires_proposal_only"},
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["social_writeback"] = writeback
+                return writeback
+            if candidate.get("behavioral_authority") not in {None, "none"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "social_candidate_behavioral_authority_must_remain_none",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["social_writeback"] = writeback
+                return writeback
+            if candidate.get("required_gate") not in {None, SOCIAL_WRITEBACK_GATE}:
+                writeback = {
+                    "decision": {"gate_verdict": "reject", "reason": "social_candidate_requires_formal_gate"},
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["social_writeback"] = writeback
+                return writeback
+
+        identity_handle = _resolve_social_self_identity_handle(state)
+        store = self.social_self_store or SocialSelfStore(default_identity=identity_handle)
+        current_state = store.load(identity_handle) or SocialSelfState(identity_handle=identity_handle)
+        current_state.identity_handle = identity_handle
+        owner = SocialSelfOwner(initial_state=current_state, store=store)
+
+        surface_reasons = list(writeback_candidate.get("surface_reasons") or delta.get("surface_reasons") or [])
+        counterpart_id = str(
+            writeback_candidate.get("counterpart_id")
+            or trust_commitment_snapshot.get("counterpart_id")
+            or delta.get("counterpart_id")
+            or next(
+                (
+                    item.get("counterpart_id")
+                    for item in [*relation_candidates, *repair_candidates]
+                    if str(item.get("counterpart_id") or "").strip()
+                ),
+                state.session_id,
+            )
+        ).strip()
+
+        relationship_continuity_raw = str(
+            trust_commitment_snapshot.get("relationship_continuity")
+            or delta.get("relationship_continuity")
+            or next(
+                (
+                    item.get("relationship_continuity")
+                    for item in relation_candidates
+                    if str(item.get("relationship_continuity") or "").strip()
+                ),
+                "active",
+            )
+        ).strip().lower()
+        continuity_map = {
+            "stable": RelationshipContinuityStatus.ACTIVE,
+            "active": RelationshipContinuityStatus.ACTIVE,
+            "strained": RelationshipContinuityStatus.STRAINED,
+            "repairing": RelationshipContinuityStatus.REPAIRING,
+            "paused": RelationshipContinuityStatus.PAUSED,
+        }
+        continuity_status = continuity_map.get(relationship_continuity_raw, RelationshipContinuityStatus.ACTIVE)
+
+        boundary_mode_raw = str(
+            social_policy_hints.get("boundary_mode")
+            or writeback_candidate.get("boundary_mode")
+            or "cautious"
+        ).strip().lower()
+        try:
+            boundary_mode = SocialBoundaryMode(boundary_mode_raw)
+        except ValueError:
+            boundary_mode = SocialBoundaryMode.CAUTIOUS
+
+        changed_fields: list[str] = []
+        if counterpart_id:
+            relationship_event = str(
+                next(
+                    (
+                        item.get("relationship_event")
+                        for item in relation_candidates
+                        if str(item.get("relationship_event") or "").strip()
+                    ),
+                    "",
+                )
+                or writeback_candidate.get("relationship_event")
+                or "social_adjustment"
+            )
+            owner.upsert_relation_memory(
+                counterpart_id=counterpart_id,
+                relationship_summary=f"proto_self social continuity review: {relationship_event}",
+                interaction_role="user",
+                continuity_status=continuity_status,
+                source_refs=[trace_reference],
+            )
+            changed_fields.append("relation_memory")
+
+            trust_level = float(trust_commitment_snapshot.get("trust_signal_max") or 0.5)
+            trust_level = max(0.0, min(1.0, trust_level))
+            trust_delta = float(trust_commitment_snapshot.get("trust_drift") or 0.0)
+            owner.set_trust_state(
+                counterpart_id=counterpart_id,
+                trust_level=trust_level,
+                trust_basis=surface_reasons or [str(social_policy_hints.get("trust_bias") or "bounded_social_review")],
+                trust_delta=max(-1.0, min(1.0, trust_delta)),
+            )
+            changed_fields.append("trust_state")
+
+            caution_level = float(trust_commitment_snapshot.get("boundary_caution_max") or 0.0)
+            if caution_level <= 0.0:
+                caution_level = {
+                    SocialBoundaryMode.OPEN: 0.2,
+                    SocialBoundaryMode.CAUTIOUS: 0.5,
+                    SocialBoundaryMode.FIRM: 0.8,
+                    SocialBoundaryMode.REPAIR_ONLY: 0.9,
+                }[boundary_mode]
+            owner.set_social_boundary(
+                counterpart_id=counterpart_id,
+                caution_level=max(0.0, min(1.0, caution_level)),
+                boundary_mode=boundary_mode,
+                reason=f"proto_self_social_boundary:{boundary_mode.value}",
+                source_refs=[trace_reference],
+            )
+            changed_fields.append("social_boundary_state")
+
+        open_commitment_count = int(trust_commitment_snapshot.get("open_commitment_count") or 0)
+        breached_commitment_count = int(trust_commitment_snapshot.get("breached_commitment_count") or 0)
+        if counterpart_id and (
+            open_commitment_count > 0
+            or breached_commitment_count > 0
+            or social_policy_hints.get("commitment_guard") == "strict"
+        ):
+            commitment_status = (
+                SocialCommitmentStatus.BREACHED
+                if breached_commitment_count > 0 or "commitment_breach" in surface_reasons
+                else SocialCommitmentStatus.HELD
+                if open_commitment_count > 0
+                else SocialCommitmentStatus.OPEN
+            )
+            owner.record_commitment(
+                counterpart_id=counterpart_id,
+                commitment_id=f"social_commitment:{proto_self_result.get('event_id', 'unknown')}",
+                summary="proto_self social commitment review",
+                status=commitment_status,
+                source_refs=[trace_reference],
+            )
+            changed_fields.append("commitment_state")
+
+        proposal_count = 0
+        for candidate in repair_candidates[:3]:
+            repair = owner.propose_repair(
+                counterpart_id=str(candidate.get("counterpart_id") or counterpart_id or state.session_id),
+                issue_summary=str(
+                    candidate.get("reason")
+                    or "proto_self social repair candidate"
+                ),
+                proposed_adjustment={
+                    "social_self_delta": delta,
+                    "trust_commitment_snapshot": trust_commitment_snapshot,
+                    "social_policy_hints": social_policy_hints,
+                    "surface_reasons": list(candidate.get("surface_reasons") or surface_reasons),
+                },
+                justification=f"proto_self social proposal from {trace_reference}",
+                source_refs=[trace_reference],
+                requested_effects=list(candidate.get("requested_effects") or []),
+            )
+            owner.set_repair_status(repair.proposal_id, status=SocialRepairProposalStatus.HELD)
+            proposal_count += 1
+        if proposal_count:
+            changed_fields.append("repair_state")
+
+        owner.record_governance_event(
+            event_type="social_writeback",
+            reference_id=counterpart_id or trace_reference,
+            gate_verdict="allow_writeback",
+            details={
+                "trace_reference": trace_reference,
+                "proposal_candidate_count": proposal_count,
+                "relation_candidate_count": len(relation_candidates),
+                "proposal_only": True,
+                "behavioral_authority": "none",
+                "surface_reasons": surface_reasons,
+            },
+        )
+        changed_fields.append("governance_ledger")
+
+        try:
+            record = owner.persist(
+                update_source=str(writeback_candidate.get("source") or "proto_self_v2"),
+                trace_reference=trace_reference,
+            )
+            writeback = {
+                "decision": {
+                    "gate_verdict": "allow_writeback",
+                    "changed_fields": sorted(set(changed_fields)),
+                    "proposal_count": proposal_count,
+                    "relation_candidate_count": len(relation_candidates),
+                },
+                "record": {
+                    "revision_id": record.revision_id,
+                    "model_version": record.model_version,
+                    "trace_reference": record.trace_reference,
+                    "state_hash": record.state_hash,
+                },
+                "trace_reference": trace_reference,
+            }
+        except Exception as exc:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": str(exc)},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+        proto_self_result["social_writeback"] = writeback
+        return writeback
+
     def process_ingress(
         self,
         *,
@@ -1493,6 +1933,7 @@ class RuntimeV2ProtoSelfRuntime:
             endogenous_drive_store=self.endogenous_drive_store,
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
+            social_self_store=self.social_self_store,
         )
         proto_self_result = self.adapter.handle_event(proto_self_event)
         writeback = self._apply_self_model_writeback(proto_self_result=proto_self_result, state=state)
@@ -1505,6 +1946,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         developmental_writeback = self._apply_developmental_self_writeback(
+            proto_self_result=proto_self_result,
+            state=state,
+        )
+        social_writeback = self._apply_social_self_writeback(
             proto_self_result=proto_self_result,
             state=state,
         )
@@ -1545,6 +1990,14 @@ class RuntimeV2ProtoSelfRuntime:
             "developmental_audit_entries": proto_self_result.get("developmental_audit_entries") or [],
             "developmental_writeback_candidate": proto_self_result.get("developmental_writeback_candidate"),
             "developmental_writeback": developmental_writeback,
+            "social_self_delta": proto_self_result.get("social_self_delta") or {},
+            "relation_update_candidates": proto_self_result.get("relation_update_candidates") or [],
+            "trust_commitment_snapshot": proto_self_result.get("trust_commitment_snapshot") or {},
+            "social_policy_hints": proto_self_result.get("social_policy_hints") or {},
+            "repair_proposal_candidates": proto_self_result.get("repair_proposal_candidates") or [],
+            "social_writeback_candidate": proto_self_result.get("social_writeback_candidate"),
+            "social_context": (proto_self_result.get("trace_payload") or {}).get("social_context") or {},
+            "social_writeback": social_writeback,
         }
         state.record(
             "proto_self",
@@ -1556,10 +2009,12 @@ class RuntimeV2ProtoSelfRuntime:
                 "endogenous_drive_writeback": endogenous_drive_writeback,
                 "reflective_self_writeback": reflective_self_writeback,
                 "developmental_writeback": developmental_writeback,
+                "social_writeback": social_writeback,
                 "reflection_writeback_candidate_present": bool(proto_self_result.get("reflection_writeback_candidate")),
                 "developmental_writeback_candidate_present": bool(
                     proto_self_result.get("developmental_writeback_candidate")
                 ),
+                "social_writeback_candidate_present": bool(proto_self_result.get("social_writeback_candidate")),
                 "reflection_trigger": (
                     proto_self_result.get("reflection_note", {}).get("trigger")
                     if proto_self_result.get("reflection_note")
@@ -1589,6 +2044,7 @@ class RuntimeV2ProtoSelfRuntime:
             endogenous_drive_store=self.endogenous_drive_store,
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
+            social_self_store=self.social_self_store,
         )
         external_result = self.adapter.handle_event(external_result_event)
         writeback = self._apply_self_model_writeback(proto_self_result=external_result, state=state)
@@ -1601,6 +2057,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         developmental_writeback = self._apply_developmental_self_writeback(
+            proto_self_result=external_result,
+            state=state,
+        )
+        social_writeback = self._apply_social_self_writeback(
             proto_self_result=external_result,
             state=state,
         )
@@ -1646,6 +2106,18 @@ class RuntimeV2ProtoSelfRuntime:
             external_result.get("developmental_writeback_candidate")
         )
         state.proto_self_context["developmental_writeback"] = developmental_writeback
+        state.proto_self_context["social_self_delta"] = external_result.get("social_self_delta") or {}
+        state.proto_self_context["relation_update_candidates"] = external_result.get("relation_update_candidates") or []
+        state.proto_self_context["trust_commitment_snapshot"] = (
+            external_result.get("trust_commitment_snapshot") or {}
+        )
+        state.proto_self_context["social_policy_hints"] = external_result.get("social_policy_hints") or {}
+        state.proto_self_context["repair_proposal_candidates"] = (
+            external_result.get("repair_proposal_candidates") or []
+        )
+        state.proto_self_context["social_writeback_candidate"] = external_result.get("social_writeback_candidate")
+        state.proto_self_context["social_context"] = (external_result.get("trace_payload") or {}).get("social_context") or {}
+        state.proto_self_context["social_writeback"] = social_writeback
         if external_result.get("candidate_actions") is not None:
             state.proto_self_context["candidate_actions"] = external_result.get("candidate_actions") or []
         if external_result.get("policy_hint"):
@@ -1678,6 +2150,7 @@ class RuntimeV2ProtoSelfRuntime:
             endogenous_drive_store=self.endogenous_drive_store,
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
+            social_self_store=self.social_self_store,
         )
         if not finalized_event:
             return
@@ -1692,6 +2165,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         developmental_writeback = self._apply_developmental_self_writeback(
+            proto_self_result=finalized_result,
+            state=state,
+        )
+        social_writeback = self._apply_social_self_writeback(
             proto_self_result=finalized_result,
             state=state,
         )
@@ -1738,6 +2215,18 @@ class RuntimeV2ProtoSelfRuntime:
             finalized_result.get("developmental_writeback_candidate")
         )
         state.proto_self_context["developmental_writeback"] = developmental_writeback
+        state.proto_self_context["social_self_delta"] = finalized_result.get("social_self_delta") or {}
+        state.proto_self_context["relation_update_candidates"] = finalized_result.get("relation_update_candidates") or []
+        state.proto_self_context["trust_commitment_snapshot"] = (
+            finalized_result.get("trust_commitment_snapshot") or {}
+        )
+        state.proto_self_context["social_policy_hints"] = finalized_result.get("social_policy_hints") or {}
+        state.proto_self_context["repair_proposal_candidates"] = (
+            finalized_result.get("repair_proposal_candidates") or []
+        )
+        state.proto_self_context["social_writeback_candidate"] = finalized_result.get("social_writeback_candidate")
+        state.proto_self_context["social_context"] = (finalized_result.get("trace_payload") or {}).get("social_context") or {}
+        state.proto_self_context["social_writeback"] = social_writeback
         if finalized_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = finalized_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = finalized_result.get("policy_hint", {}).get("governor_hint")
@@ -1758,6 +2247,7 @@ class RuntimeV2ProtoSelfRuntime:
             endogenous_drive_store=self.endogenous_drive_store,
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
+            social_self_store=self.social_self_store,
         )
         if not idle_event:
             return
@@ -1772,6 +2262,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         developmental_writeback = self._apply_developmental_self_writeback(
+            proto_self_result=idle_result,
+            state=state,
+        )
+        social_writeback = self._apply_social_self_writeback(
             proto_self_result=idle_result,
             state=state,
         )
@@ -1819,6 +2313,14 @@ class RuntimeV2ProtoSelfRuntime:
             idle_result.get("developmental_writeback_candidate")
         )
         state.proto_self_context["developmental_writeback"] = developmental_writeback
+        state.proto_self_context["social_self_delta"] = idle_result.get("social_self_delta") or {}
+        state.proto_self_context["relation_update_candidates"] = idle_result.get("relation_update_candidates") or []
+        state.proto_self_context["trust_commitment_snapshot"] = idle_result.get("trust_commitment_snapshot") or {}
+        state.proto_self_context["social_policy_hints"] = idle_result.get("social_policy_hints") or {}
+        state.proto_self_context["repair_proposal_candidates"] = idle_result.get("repair_proposal_candidates") or []
+        state.proto_self_context["social_writeback_candidate"] = idle_result.get("social_writeback_candidate")
+        state.proto_self_context["social_context"] = (idle_result.get("trace_payload") or {}).get("social_context") or {}
+        state.proto_self_context["social_writeback"] = social_writeback
         if idle_result.get("policy_hint"):
             state.proto_self_context["policy_hint"] = idle_result.get("policy_hint")
             state.proto_self_context["governor_hint"] = idle_result.get("policy_hint", {}).get("governor_hint")
@@ -1857,6 +2359,7 @@ class RuntimeV2ProtoSelfRuntime:
             endogenous_drive_store=self.endogenous_drive_store,
             reflective_self_store=self.reflective_self_store,
             developmental_self_store=self.developmental_self_store,
+            social_self_store=self.social_self_store,
         )
         if not developmental_event:
             return None
@@ -1871,6 +2374,10 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         developmental_writeback = self._apply_developmental_self_writeback(
+            proto_self_result=developmental_result,
+            state=state,
+        )
+        social_writeback = self._apply_social_self_writeback(
             proto_self_result=developmental_result,
             state=state,
         )
@@ -1920,6 +2427,22 @@ class RuntimeV2ProtoSelfRuntime:
             developmental_result.get("developmental_writeback_candidate")
         )
         state.proto_self_context["developmental_writeback"] = developmental_writeback
+        state.proto_self_context["social_self_delta"] = developmental_result.get("social_self_delta") or {}
+        state.proto_self_context["relation_update_candidates"] = (
+            developmental_result.get("relation_update_candidates") or []
+        )
+        state.proto_self_context["trust_commitment_snapshot"] = (
+            developmental_result.get("trust_commitment_snapshot") or {}
+        )
+        state.proto_self_context["social_policy_hints"] = developmental_result.get("social_policy_hints") or {}
+        state.proto_self_context["repair_proposal_candidates"] = (
+            developmental_result.get("repair_proposal_candidates") or []
+        )
+        state.proto_self_context["social_writeback_candidate"] = developmental_result.get("social_writeback_candidate")
+        state.proto_self_context["social_context"] = (
+            developmental_result.get("trace_payload") or {}
+        ).get("social_context") or {}
+        state.proto_self_context["social_writeback"] = social_writeback
         state.proto_self_context["background_thought_candidates"] = list(
             developmental_summary.get("background_thought_candidates") or []
         )

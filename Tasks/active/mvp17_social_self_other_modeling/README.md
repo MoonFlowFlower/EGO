@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: proto_self_contract_connected
+status: runtime_bridge_connected
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP17_task_plan.md"
 predecessor: "WP11/MVP16"
@@ -45,7 +45,7 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - authority / contract freeze
 - formal owner package target
 - bounded proto-self social contract
-- EgoCore runtime social bridge target
+- EgoCore runtime social bridge
 - historical social / relation materials demotion
 - subagent-ready task decomposition
 
@@ -53,10 +53,11 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 
 - formal owner：`T10 completed`
 - proto_self_v2 contract：`T20 completed`
-- 主链接线：`not_started`
-- 启用状态：`proto_self_contract_only`
-- 当前 blocker：`EgoCore runtime bridge and formal mainline entry are not connected yet`
-- 当前最小动作：`T30_EGOCORE_RUNTIME_BRIDGE`
+- EgoCore runtime bridge：`T30 completed`
+- 主链接线：`current_runtime_mainline_connected`
+- 启用状态：`bounded_runtime_bridge_connected`
+- 当前 blocker：`legacy demotion / causal proof / controlled observation not started`
+- 当前最小动作：`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`
 
 ## T10 已证实内容
 
@@ -72,6 +73,14 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - trace payload 已镜像 `social_context`
 - social outputs 仍保持 `proposal_only + behavioral_authority = none`
 - legacy `relationship_context` / `emotiond.state.bond_trust` 不会被误当成正式 social contract 输入
+
+## T30 已证实内容
+
+- `RuntimeV2ProtoSelfRuntime` 已把 `social_self_context` 与 `social_context` 注入当前 runtime 主链
+- `social_self` proposal-only writeback 已能通过当前 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2` 主线回到 formal owner store
+- `social_writeback_candidate` 在宿主侧仍被锁定为 `proposal_only + behavioral_authority = none + required_gate = social_writeback_gate`
+- `state.proto_self_context` 已记录 `social_self_delta / relation_update_candidates / trust_commitment_snapshot / social_policy_hints / repair_proposal_candidates / social_writeback_candidate / social_writeback`
+- EgoCore 定向 social bridge 测试已通过，且同文件全量 runtime bridge 回归通过
 
 ## 当前不做
 
