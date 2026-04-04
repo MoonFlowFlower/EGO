@@ -7,14 +7,14 @@
 先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
 
 ## 裁决关系
-- 本文件负责 `WP0~WP14` 的阶段、依赖、Gate、证据等级和停止条件。
+- 本文件负责 `WP0~WP15` 的阶段、依赖、Gate、证据等级和停止条件。
 - `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
 - 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
 
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
-- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP13/MVP18`，其 authority freeze、`T10` formal owner package、`T20` proto-self embodied contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map、`T50` causal proof、`T60` single controlled observation、`T70` batch observation / aggregate 与 `T80` closeout / QA baseline 均已完成，当前已进入 `maintenance_mode`，不是 live embodied autonomy。
-- 当前下一阶段为 `WP14/MVP19` 的 `Cross-Axis Self-Integration / Self-Maintenance Arbitration`；authority freeze、phase-detail task plan、执行包、`T10` formal owner package、`T20` proto_self_v2 bounded contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map、`T50` causal validation、`T60` single controlled observation 与 `T70` batch observation / aggregate 已完成，当前 claim ceiling 固定为 `T70 only / controlled-axis V5-E5 observation_passed`，不代表 closeout、maintenance mode、或任何 authority expansion。
+- 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP14/MVP19`，其 authority freeze、`T10` formal owner package、`T20` proto_self_v2 bounded contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map、`T50` causal validation、`T60` single controlled observation、`T70` batch observation / aggregate 与 `T80` closeout / QA baseline 均已完成，当前已进入 `maintenance_mode`，不是 live integrated autonomy。
+- 当前下一阶段为 `WP15/MVP20` 的 `Host-Governed Self-Directed Initiative / Commitment Continuity`；当前只完成 authority freeze、phase-detail task plan、执行包、contracts、cards 与 subagent assignment，当前 claim ceiling 固定为 `authority_frozen / task_package_ready`，不代表实现、主链接线、`E4/E5`、observation、maintenance mode、或任何 authority expansion。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -35,6 +35,7 @@
 13. **WP12 Social Self / Other-Modeling（MVP17 第一正式切片）**
 14. **WP13 Embodied Loop / Environment Coupling（MVP18 第一正式切片）**
 15. **WP14 Cross-Axis Self-Integration / Self-Maintenance Arbitration（MVP19 第一正式切片）**
+16. **WP15 Host-Governed Self-Directed Initiative / Commitment Continuity（MVP20 第一正式切片）**
 
 ---
 
