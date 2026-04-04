@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: observation_started
+status: maintenance_mode
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP18_task_plan.md"
 predecessor: "WP12/MVP17"
@@ -60,10 +60,11 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 - causal validation：`T50 completed`
 - single controlled observation：`T60 completed`
 - batch controlled observation / aggregate：`T70 completed`
+- closeout / QA baseline：`T80 completed`
 - 主链接线：`current runtime embodied bridge present`
 - 启用状态：`controlled_mainline_observation`
-- 当前 blocker：`T80 closeout / QA baseline pending`
-- 当前最小动作：`start T80_CLOSEOUT_AND_QA_BASELINE; do not claim maintenance_mode before T80`
+- 当前 blocker：`none on the WP13 controlled axis`
+- 当前最小动作：`maintenance intake only; any next phase still requires a new authority package`
 
 ## T10 已证实内容
 
@@ -151,6 +152,17 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
   - `bounded_influence_present_count = 3`
 - 这证明当前 formal owner + current runtime mainline 已在 repeated controlled observation 轴上拿到 embodied proposal-only writeback 的 `V5/E5` aggregate；这仍不证明 closeout、`maintenance_mode`、或 authority 放开
 
+## T80 已证实内容
+
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/WP13_QA_BASELINE.md` 已冻结 `WP13` 的维护态 QA 基线
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/MAINTENANCE_LEDGER.md` 已建立维护样本 intake 与 reopen policy
+- `OpenEmotion/artifacts/mvp18/MVP18_COMPLETION_CURRENT.json` / `.md` 已冻结 `WP13` closeout artifact
+- 当前正式口径已收平为：
+  - `WP13/MVP18` 已在 formal owner + proposal-only embodied writeback + controlled observation 轴上进入 `maintenance_mode`
+  - 这不证明 `live autonomy`
+  - 这不证明 `OpenEmotion direct reply authority`
+  - 这不证明 `broader transport claims`
+
 ## 当前不做
 
 - 放开 live autonomy
@@ -161,11 +173,14 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 - autonomous tool expansion
 - 把 `WP12` maintenance institutionalization 重新解释成 `WP13` readiness
 - 把 historical consequence / intervention materials 直接当成当前 `WP13` formal proof
+- 在没有新 authority package 的前提下启动 `WP14`
 
 ## 执行入口
 
 - authority：`Tasks/MVP18_task_plan.md`
 - status：`STATUS.md`
+- QA baseline：`WP13_QA_BASELINE.md`
+- maintenance ledger：`MAINTENANCE_LEDGER.md`
 - legacy register：`LEGACY_REFERENCE_REGISTER.md`
 - contracts：`contracts/`
 - task cards：`cards/`

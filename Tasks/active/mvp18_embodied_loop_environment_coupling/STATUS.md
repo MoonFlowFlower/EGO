@@ -2,8 +2,8 @@
 
 ```yaml
 phase: WP13
-status: observation_started
-current_layer: implementation
+status: maintenance_mode
+current_layer: maintenance
 main_chain_status: current_runtime_embodied_consumer_present_legacy_reference_only
 enabled_status: controlled_mainline_observation
 trigger_evidence:
@@ -35,21 +35,21 @@ trigger_evidence:
   - current batch controlled observation artifact reports `report_count = 3`, `accepted_count = 3`, `proposal_only_discipline_count = 3`, `behavioral_authority_none_count = 3`
 verification_level: V5
 evidence_level: E5
-current_blocker: "T80 closeout / QA baseline pending"
-next_minimal_closure_action: "start T80_CLOSEOUT_AND_QA_BASELINE; do not claim maintenance_mode before T80"
+current_blocker: "none on the WP13 controlled axis"
+next_minimal_closure_action: "maintenance intake only; do not reopen WP13 or start WP14 without a new authority package"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP13/MVP18` 已完成 `T70_BATCH_OBSERVATION_AND_AGGREGATE`，当前 formal owner path、current runtime embodied consumer、legacy no-second-truth demotion、bounded embodied causal proof、首个 controlled `V4/E4` 样本与 repeated controlled `V5/E5` aggregate 已同时成立
-- 条件性完成：当前只证明 repeated controlled observation aggregate 已成立，不覆盖 closeout、`maintenance_mode`、或 authority 放开
-- 不可宣称完成：`MVP18` 已收口、已进入 `maintenance_mode`，或已放开 live autonomy / direct reply authority / broader transport claims
-- 后续处理：只能按 `T70 -> T80` 串行推进；不得回头扩写 `WP12`
+- 可宣称完成：`WP13/MVP18` 已在 formal owner path、current runtime embodied consumer、legacy no-second-truth demotion、bounded embodied causal proof、single controlled `V4/E4` 样本与 repeated controlled `V5/E5` aggregate 全部成立后，正式收口进入 `maintenance_mode`
+- 条件性完成：当前维护态只覆盖 formal owner + proposal-only embodied writeback + controlled observation 这一条轴，不覆盖 authority 放开
+- 不可宣称完成：`MVP18` 已证明 live autonomy、direct reply authority、broader transport claims，或可绕过 host governance
+- 后续处理：`WP13` 后续样本只进入 maintenance ledger；不得回头扩写 `WP12`
 
 ## 边界提醒
 
 - `WP12` 的 institutionalized maintenance 不是 `WP13` 的实现证据
 - `WP12` 新样本只写入其 maintenance ledger
 - provider `429/401` 仍按外部预算层风险记录
-- `embodied_self/*` 当前已是 formal owner 落点，且 current runtime thin bridge + `T40` legacy demotion + `T50` causal proof + `T60` single controlled observation + `T70` batch aggregate 已接入；但还没有 closeout / QA baseline
+- `embodied_self/*` 当前已是 formal owner 落点，且 current runtime thin bridge + `T40` legacy demotion + `T50` causal proof + `T60` single controlled observation + `T70` batch aggregate + `T80` closeout / QA baseline 已冻结
 - 不得出现“因为 `WP12` 已 institutionalized，所以 embodied loop 可以直接外发 / 直接拿 transport claim”这类边界回退

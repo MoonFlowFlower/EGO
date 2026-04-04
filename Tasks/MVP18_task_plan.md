@@ -1,6 +1,6 @@
 # MVP18 / WP13 Embodied Loop / Environment Coupling
 
-> 状态：WP13 observation started + T10 completed + T20 completed + T30 completed + T40 completed + T50 completed + T60 completed + T70 completed + T80 pending
+> 状态：WP13 maintenance_mode + T10 completed + T20 completed + T30 completed + T40 completed + T50 completed + T60 completed + T70 completed + T80 completed
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP13`
 > predecessor: `WP12/MVP17`
@@ -133,10 +133,10 @@
 - `WP13` may not reinterpret `WP12` controlled `E5` or institutionalized maintenance as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`implementation`
-- 当前状态：`observation_started`
-- 当前 blocker：`T80 closeout / QA baseline pending`
-- 当前最小闭环动作：只开 `T80_CLOSEOUT_AND_QA_BASELINE`，不提前宣称 maintenance_mode
+- 当前层级：`maintenance`
+- 当前状态：`maintenance_mode`
+- 当前 blocker：`none on the WP13 controlled axis`
+- 当前最小闭环动作：只允许 maintenance intake / regression handling；任何后续阶段都必须先冻结新的 authority package
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP13: Embodied Loop / Environment Coupling`
