@@ -89,6 +89,7 @@
 
 - `cmd.exe /c git commit ...`
 - `cmd.exe /c git push origin main`
+- 若改动触及 `WP12` maintenance docs / scripts / artifacts，且要给出 `WP12` maintenance 结论，发布前必须先跑 `PYTHONPATH=OpenEmotion python3 scripts/codex/run_wp12_maintenance_verification.py` 与 `python3 scripts/codex/verify_wp12_maintenance_gate.py --json`
 
 ## Acceptance / done definition
 
@@ -98,6 +99,23 @@
 - 交付前至少留下与任务匹配的最小验证：语法/导入、定向测试或脚本、`git diff --check`
 - 任务状态、验证等级、handoff 字段使用 `.agents/references/task-state-and-handoff.md`
 - 问题层级、验证/证据口径、completion claim 规则使用 `.agents/references/engineering-evidence-model.md`
+
+## Codex Memory Brain
+
+- 若当前环境已启用 `memory_brain` MCP，处理中高复杂度任务前，先把当前任务压缩成一个短 probe，再调用 `memory_build_context`
+- 压缩规则：
+  - 只保留 `真实目标 + 子系统/路径 + 关键约束或失败信号`
+  - 优先写成 `1-2` 句短描述，不把整份 spec / 长聊天原文直接喂给记忆检索
+  - 同时附 `2-5` 个稳定 tags，如模块名、bug class、decision theme
+- `memory_build_context` 默认参数应带当前 `repo + cwd/path`；除非任务明确要求，不要打开 cross-repo 注入
+- 若任务是架构修改、重复失败、或需要回看相似决策，再用同一份压缩 probe 补一次 `memory_search`
+- 任务收口前，若确实产生可复用决策/修复/工作流，先把结果压缩成适合持久化的 summary，再调用 `memory_store` 或 `memory_record_outcome`
+- 收口压缩规则：
+  - 写清 `改了什么 + 为什么有效/无效 + 适用范围/路径 + 证据来源`
+  - 优先 `2-4` 句因果摘要，不存长日志、长对话、原始 trace
+  - 未证实的猜测不入稳定记忆；必要时只存 `candidate`
+- canonical 晋升仍走 `memory_promote_candidate`；不要直接手写 `.codex/memory/*.jsonl`
+- hooks 只允许做 reminder / context injection 示例，默认不做无脑自动写入；真正写库必须经过模型判断或人工确认
 
 ## Codex Long-Run Harness
 

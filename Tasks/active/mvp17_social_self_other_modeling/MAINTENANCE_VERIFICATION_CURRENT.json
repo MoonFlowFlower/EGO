@@ -1,0 +1,178 @@
+{
+  "status": "pass",
+  "generated_at": "2026-04-04T14:35:37.111762+00:00",
+  "git_commit_short": "e14d6a1",
+  "authority_source": "Tasks/MVS_task_plan.md + Tasks/MVP17_task_plan.md + Tasks/active/mvp17_social_self_other_modeling/WP12_QA_BASELINE.md",
+  "baseline": "Tasks/active/mvp17_social_self_other_modeling/WP12_QA_BASELINE.md",
+  "layers_run": [
+    "Unit / Contract",
+    "Causal",
+    "Boundary / No-Bypass",
+    "Replay / Wiring",
+    "Controlled Observation"
+  ],
+  "commands_run": [
+    {
+      "label": "Layer A unit/contract",
+      "command": "python3 -m pytest -q -s --noconftest OpenEmotion/tests/mvp17/test_social_owner_infra.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "6 passed in 2.56s"
+    },
+    {
+      "label": "Layer B causal",
+      "command": "python3 -m pytest -q -s --noconftest OpenEmotion/tests/mvp17/test_social_causal_formal_proof.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "4 passed in 3.69s"
+    },
+    {
+      "label": "Layer C/D boundary+wiring",
+      "command": "python3 -m pytest -q -s --noconftest OpenEmotion/tests/mvp17/test_mainline_reference_demotion.py OpenEmotion/tests/mvp17/test_social_proto_self_integration.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "7 passed, 11 warnings in 5.64s"
+    },
+    {
+      "label": "Layer D egocore bridge",
+      "command": "python3 -m pytest -q -s --noconftest EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k social",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "3 passed, 33 deselected, 1 warning in 8.25s"
+    },
+    {
+      "label": "Layer C/D wiring verifier",
+      "command": "python3 OpenEmotion/tools/verify_mvp17_mainline_wiring.py --json",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "}"
+    },
+    {
+      "label": "Layer E observation tests",
+      "command": "python3 -m pytest -q -s --noconftest OpenEmotion/tests/mvp17/test_controlled_observation.py OpenEmotion/tests/mvp17/test_controlled_observation_batch.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "5 passed, 1 warning in 9.23s"
+    },
+    {
+      "label": "Layer B causal runner",
+      "command": "python3 OpenEmotion/tools/run_mvp17_causal_validation.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "}"
+    },
+    {
+      "label": "Layer E single observation runner",
+      "command": "python3 OpenEmotion/tools/run_mvp17_controlled_observation.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "[PSK-ADAPTER-09] No trace_bridge available!"
+    },
+    {
+      "label": "Layer E batch observation runner",
+      "command": "python3 OpenEmotion/tools/run_mvp17_controlled_observation_batch.py",
+      "returncode": 0,
+      "status": "pass",
+      "summary": "[PSK-ADAPTER-09] No trace_bridge available!"
+    }
+  ],
+  "checklist_pass_count": 10,
+  "checklist_total_count": 10,
+  "checklist_results": [
+    {
+      "item": "social_self owner uniqueness",
+      "status": "pass"
+    },
+    {
+      "item": "legacy surfaces remain reference/input-only",
+      "status": "pass"
+    },
+    {
+      "item": "single formal runtime mainline remains intact",
+      "status": "pass"
+    },
+    {
+      "item": "social owner store/governance/replay primitives still work",
+      "status": "pass"
+    },
+    {
+      "item": "trust/commitment/repair proposals still change bounded weighting",
+      "status": "pass"
+    },
+    {
+      "item": "text-only wording changes do not count as proof",
+      "status": "pass"
+    },
+    {
+      "item": "no direct reply/tool/transport authority",
+      "status": "pass"
+    },
+    {
+      "item": "trace and replay remain sufficient",
+      "status": "pass"
+    },
+    {
+      "item": "single controlled observation still passes at V4/E4",
+      "status": "pass"
+    },
+    {
+      "item": "batch controlled observation still passes at V5/E5",
+      "status": "pass"
+    }
+  ],
+  "causal_summary": {
+    "status": "pass",
+    "verification_level": "V3",
+    "evidence_level": "E3",
+    "pair_count": 4,
+    "passed_count": 4
+  },
+  "single_observation_summary": {
+    "status": "pass",
+    "verification_level": "V4",
+    "evidence_level": "E4",
+    "social_writeback_gate": "allow_writeback",
+    "proposal_only_discipline_consistent": true,
+    "behavioral_authority_none": true,
+    "replay_valid": true
+  },
+  "batch_observation_summary": {
+    "status": "pass",
+    "verification_level": "V5",
+    "evidence_level": "E5",
+    "report_count": 3,
+    "accepted_count": 3,
+    "proposal_only_discipline_count": 3,
+    "behavioral_authority_none_count": 3,
+    "bounded_influence_present_count": 3
+  },
+  "reopen": {
+    "decision": "no",
+    "reason": [
+      "formal owner uniqueness preserved",
+      "proposal discipline preserved",
+      "behavioral authority remains none",
+      "controlled observation remains stable on the WP12 axis"
+    ]
+  },
+  "current_claim": {
+    "allowed": [
+      "WP12_QA_BASELINE.md now has a canonical maintenance runner and publish gate",
+      "WP12/MVP17 remains in maintenance_mode on the formal owner + proposal-only social writeback + controlled observation axis",
+      "MAINTENANCE_VERIFICATION_CURRENT.md/.json now carry the baseline-driven maintenance verification result"
+    ],
+    "conditional": [
+      "verify_repo.py --mode full may still expose unrelated repo debt; this report does not claim full-repo clean"
+    ],
+    "disallowed": [
+      "live autonomy",
+      "OpenEmotion direct reply authority",
+      "broader transport claims"
+    ]
+  },
+  "does_not_prove": [
+    "live autonomy",
+    "OpenEmotion direct reply authority",
+    "broader transport claims"
+  ]
+}

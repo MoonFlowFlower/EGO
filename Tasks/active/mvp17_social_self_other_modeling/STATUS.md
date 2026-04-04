@@ -24,7 +24,7 @@ trigger_evidence:
 verification_level: V5
 evidence_level: E5
 current_blocker: "none on the formal owner + proposal-only social writeback + controlled observation axis"
-next_minimal_closure_action: "maintenance verification only; do not expand WP12 scope without a new authority package"
+next_minimal_closure_action: "maintenance verification only via canonical runner/gate; do not expand WP12 scope without a new authority package"
 ```
 
 ## 当前口径
@@ -32,7 +32,9 @@ next_minimal_closure_action: "maintenance verification only; do not expand WP12 
 - 可宣称完成：`WP12/MVP17` 已在 formal owner + proposal-only social writeback + controlled observation 轴上收口进入 `maintenance_mode`
 - 条件性完成：`MVP17` 的维护态只覆盖受治理主链轴，不覆盖 live social autonomy、direct reply authority、或 broader transport claims
 - 不可宣称完成：`MVP17` 已具备 live social autonomy / direct reply authority / broader transport claims
-- 后续处理：只能按 `WP12_QA_BASELINE.md` 和 `MAINTENANCE_LEDGER.md` 做维护态回归；不得回头扩写 `WP12` authority 包
+- 后续处理：只能按 `WP12_QA_BASELINE.md`、`MAINTENANCE_LEDGER.md` 和 `MAINTENANCE_VERIFICATION_CURRENT.*` 做维护态回归；不得回头扩写 `WP12` authority 包
+- canonical runner：`PYTHONPATH=OpenEmotion python3 scripts/codex/run_wp12_maintenance_verification.py`
+- publish gate：`python3 scripts/codex/verify_wp12_maintenance_gate.py --json`
 
 ## 边界提醒
 

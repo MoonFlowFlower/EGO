@@ -133,6 +133,7 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 ## T80 已证实内容
 
 - `Tasks/active/mvp17_social_self_other_modeling/WP12_QA_BASELINE.md` 已冻结为 `WP12` 维护态 QA 基线
+- `Tasks/active/mvp17_social_self_other_modeling/MAINTENANCE_VERIFICATION_CURRENT.md` 与 `.json` 已成为当前 canonical maintenance verification 报告落点
 - `OpenEmotion/artifacts/mvp17/MVP17_COMPLETION_CURRENT.md` 与 `.json` 已记录正式 closeout 口径
 - `Tasks/active/mvp17_social_self_other_modeling/MAINTENANCE_LEDGER.md` 已成为后续新增样本与维护态 intake 的唯一台账
 - 当前正式口径已收平为：`WP12/MVP17` 已在 formal owner + proposal-only social writeback + controlled observation 轴上进入 `maintenance_mode`
@@ -155,5 +156,8 @@ scope: "WP12 / MVP17 Social Self / Other-Modeling"
 - legacy register：`LEGACY_REFERENCE_REGISTER.md`
 - QA baseline：`WP12_QA_BASELINE.md`
 - maintenance ledger：`MAINTENANCE_LEDGER.md`
+- maintenance verification current：`MAINTENANCE_VERIFICATION_CURRENT.md`
+- canonical runner：`PYTHONPATH=OpenEmotion python3 scripts/codex/run_wp12_maintenance_verification.py`
+- publish gate：`python3 scripts/codex/verify_wp12_maintenance_gate.py --json`
 - contracts：`contracts/`
 - task cards：`cards/`

@@ -258,6 +258,44 @@ reopen 后，必须重新裁决：
 
 ### Current Claim
 
+- 本次可宣称：
+- 条件性说明：
+- 本次不可宣称：
+
+## 9. Canonical Maintenance Commands
+
+`WP12` 后续 maintenance verification 固定走同一套入口，不再靠口头理解或临时命令拼装：
+
+- canonical runner：
+  - `PYTHONPATH=OpenEmotion python3 scripts/codex/run_wp12_maintenance_verification.py`
+- non-mutating publish gate：
+  - `python3 scripts/codex/verify_wp12_maintenance_gate.py --json`
+
+规则：
+
+- canonical runner 负责真实执行本 baseline 的五层验证，并刷新：
+  - `Tasks/active/mvp17_social_self_other_modeling/MAINTENANCE_VERIFICATION_CURRENT.md`
+  - `Tasks/active/mvp17_social_self_other_modeling/MAINTENANCE_VERIFICATION_CURRENT.json`
+- canonical runner 默认追加一条 ledger entry 到 `MAINTENANCE_LEDGER.md`
+- gate verifier 只做结构和口径校验，不重新执行测试
+
+## 10. Publish Gate
+
+当改动触及以下任一面，且要给出 `WP12` maintenance 结论时，发布前必须先跑 canonical runner，再跑 gate verifier：
+
+- `Tasks/active/mvp17_social_self_other_modeling/*`
+- `scripts/codex/run_wp12_maintenance_verification.py`
+- `scripts/codex/verify_wp12_maintenance_gate.py`
+- `OpenEmotion/artifacts/mvp17/*`
+
+通过条件：
+
+- `MAINTENANCE_VERIFICATION_CURRENT.md/.json` 已刷新
+- `verify_wp12_maintenance_gate.py --json` 返回 `publish_gate_ready = true`
+- 报告继续明确：
+  - `WP12` 仍是 `maintenance_mode`
+  - 不证明 `live autonomy / direct reply authority / broader transport claims`
+
 - 允许的当前口径：
 - 本次不能证明什么：
 
