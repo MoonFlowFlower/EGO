@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: runtime_bridge_complete
+status: legacy_demotion_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP18_task_plan.md"
 predecessor: "WP12/MVP17"
@@ -56,14 +56,14 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 - formal owner：`T10 completed`
 - proto_self_v2 contract：`T20 completed`
 - EgoCore runtime bridge：`T30 completed`
-- legacy demotion / compat map：`T40 pending`
+- legacy demotion / compat map：`T40 completed`
 - causal validation：`T50 pending`
 - single controlled observation：`T60 pending`
 - batch controlled observation / aggregate：`T70 pending`
 - 主链接线：`current runtime embodied bridge present`
 - 启用状态：`not_started`
-- 当前 blocker：`T40 legacy demotion / compat map pending`
-- 当前最小动作：`start T40_LEGACY_DEMOTION_AND_COMPAT_MAP; do not implement observation before T40/T50`
+- 当前 blocker：`T50 causal validation pending`
+- 当前最小动作：`start T50_CAUSAL_VALIDATION; do not implement observation before T50`
 
 ## T10 已证实内容
 
@@ -88,6 +88,16 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
 - 当前 `state.proto_self_context` 已镜像 `environment_context` 与 `embodied_writeback`
 - embodied writeback 仍保持 `proposal_only + behavioral_authority = none + required_gate = embodied_writeback_gate`
 - 定向 runtime bridge tests 已在 `EgoCore/tests/test_runtime_v2_proto_self_runtime.py` 通过
+
+## T40 已证实内容
+
+- `Tasks/active/mvp18_embodied_loop_environment_coupling/LEGACY_REFERENCE_REGISTER.md` 现已显式登记当前 embodied / consequence / intervention 历史 surfaces 的 `technical reference / reference-only / input-only` 分类
+- `OpenEmotion/tools/verify_mvp18_mainline_wiring.py` 现在会同时验证：
+  - `OpenEmotion/openemotion/embodied_self/*` formal owner package 存在
+  - `proto_self_v2` 当前仍读取 bounded embodied / environment context
+  - `EgoCore` current runtime embodied consumer 仍是唯一 formal path
+  - 旧 `consequence / interventions / science_mode` surfaces 没有被重新抬成 second truth
+- `OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py` 已把 no-second-truth / demotion 断言固定成定向回归测试
 
 ## 当前不做
 

@@ -6,16 +6,23 @@
 
 ## Technical Reference, Not Authority
 
-以下文件可作为技术参考，但与 `Tasks/MVS_task_plan.md + Tasks/MVP18_task_plan.md` 冲突时，不拥有裁决权：
+以下文件可作为 technical reference，但与 `Tasks/MVS_task_plan.md + Tasks/MVP18_task_plan.md` 冲突时，不拥有裁决权：
 
 - `OpenEmotion/roadmap/VersionRoadmap.md`
 
 ## Reference-only / Input-only Surfaces
 
-以下代码与工具不属于 `WP13` formal owner path：
+以下代码与工具不属于 `WP13` formal owner path，且都必须被视为 `reference-only` 或 `input-only`：
 
 - `OpenEmotion/emotiond/consequence.py`
+  - classification: `reference-only`
+  - allowed role: historical consequence semantics / replay baseline / action-consequence input-only helper
 - `OpenEmotion/emotiond/science/interventions.py`
+  - classification: `reference-only`
+  - allowed role: historical causal-intervention reference / experiment baseline
+- `OpenEmotion/emotiond/science/science_mode.py`
+  - classification: `input-only`
+  - allowed role: historical intervention orchestration reference / reproducibility input surface
 
 这些 surfaces 在 `WP13` 中最多只允许承担：
 
@@ -23,12 +30,15 @@
 - replay / observation baseline
 - action-consequence input-only helper
 - historical comparison
+- experiment reproducibility input
 
 它们不得承担：
 
 - formal owner state
 - final embodied/environment coupling semantics
 - current-mainline closeout proof
+- current runtime embodied consumer
+- no-second-truth fallback owner
 
 ## Current Authority Reminder
 
@@ -36,7 +46,7 @@
 - `Tasks/MVP18_task_plan.md` 是 `WP13` phase-detail authority
 - `Tasks/active/mvp18_embodied_loop_environment_coupling/*` 是当前执行包
 
-All listed legacy code and docs above are `reference-only` or `input-only` for `WP13`.
+All listed legacy code and docs above are `technical reference`, `reference-only`, or `input-only` for `WP13`.
 
 Current formal owner reminder:
 

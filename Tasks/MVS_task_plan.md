@@ -14,7 +14,7 @@
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
 - 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP12/MVP17`，其 authority freeze、`T10` formal owner package、`T20` proto-self social contract integration、`T30` EgoCore runtime bridge、`T40` legacy demotion / compat map、`T50` causal proof、`T60` single controlled observation、`T70` batch observation / aggregate 与 `T80` closeout / QA baseline 均已完成，当前已进入 `maintenance_mode`，不是 live social autonomy。
-- 当前下一阶段已冻结为 `WP13/MVP18` 的 authority/task package，范围收窄为 `Embodied Loop / Environment Coupling (host-governed, proposal-only)`；`T10` formal owner package、`T20` proto-self contract integration 与 `T30` EgoCore runtime bridge 已完成，当前证据维持在 `V3/E3`，但仍未进入 legacy demotion、causal proof 或 observation。
+- 当前下一阶段已冻结为 `WP13/MVP18` 的 authority/task package，范围收窄为 `Embodied Loop / Environment Coupling (host-governed, proposal-only)`；`T10` formal owner package、`T20` proto-self contract integration、`T30` EgoCore runtime bridge 与 `T40` legacy demotion / compat map 已完成，当前证据维持在 `V3/E3`，但仍未进入 causal proof 或 observation。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -941,9 +941,9 @@
 
 **当前状态（2026-04-04）**
 - `WP13/MVP18` 当前层级是 `implementation`
-- 当前状态是 `proto_self_contract_complete`
+- 当前状态是 `legacy_demotion_complete`
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/embodied_self/*`
 - 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
 - 当前 phase 1 只冻结 `resource/slack pressure`、`action -> consequence` bounded writeback、`self/world boundary pressure` proposal；不实现更宽的 embodied loop
-- 当前已证实：`WP12` 已完成 maintenance institutionalization；当前 `WP13` 已完成 authority / contract / boundary freeze，已落地 `OpenEmotion/openemotion/embodied_self/*` formal owner package，并已把 `runtime_summary.embodied_self_context / environment_context` 通过 `proto_self_v2` bounded contract 接入 `KernelOutputV2` 与 trace
-- 当前 blocker：`WP13` 仍未开始 `T40` legacy demotion / compat map；当前不能宣称已进入 observation、已启用或有 `E4/E5`
+- 当前已证实：`WP12` 已完成 maintenance institutionalization；当前 `WP13` 已完成 authority / contract / boundary freeze，已落地 `OpenEmotion/openemotion/embodied_self/*` formal owner package，已把 `runtime_summary.embodied_self_context / environment_context` 通过 `proto_self_v2` bounded contract 接入 `KernelOutputV2` 与 trace，并已通过 `verify_mvp18_mainline_wiring.py` 证明旧 consequence / intervention historical surfaces 仍是 `technical reference / reference-only / input-only`
+- 当前 blocker：`WP13` 仍未开始 `T50` causal validation；当前不能宣称已进入 observation、已启用或有 `E4/E5`

@@ -1,6 +1,6 @@
 # MVP18 / WP13 Embodied Loop / Environment Coupling
 
-> 状态：WP13 runtime bridge complete + T10 completed + T20 completed + T30 completed + T40 pending
+> 状态：WP13 legacy demotion complete + T10 completed + T20 completed + T30 completed + T40 completed + T50 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP13`
 > predecessor: `WP12/MVP17`
@@ -134,9 +134,9 @@
 
 ## Current Phase Status
 - 当前层级：`implementation`
-- 当前状态：`runtime_bridge_complete`
-- 当前 blocker：`T40 legacy demotion / compat map pending`
-- 当前最小闭环动作：只开 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`，不提前进入 observation
+- 当前状态：`legacy_demotion_complete`
+- 当前 blocker：`T50 causal validation pending`
+- 当前最小闭环动作：只开 `T50_CAUSAL_VALIDATION`，不提前进入 observation
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP13: Embodied Loop / Environment Coupling`
