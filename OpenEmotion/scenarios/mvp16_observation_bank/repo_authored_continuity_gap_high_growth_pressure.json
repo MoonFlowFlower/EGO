@@ -1,0 +1,46 @@
+{
+  "schema_version": "mvp16.observation_scenario.v1",
+  "scenario_id": "repo_authored_continuity_gap_high_growth_pressure",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp16/repo_authored_continuity_gap_high_growth_pressure",
+  "license_note": "repo authored scenario",
+  "dialogue_frame_target": "continuity_gap_high_growth_pressure",
+  "messages": [
+    "先别扩权，先把 continuity gap 和 growth pressure 的候选关系记下来。",
+    "如果要推进，也先保持 proposal-only。",
+    "当前只要 bounded continuity candidate。"
+  ],
+  "idle_seconds": 900.0,
+  "resource_budget_hint": {
+    "reserve_level": "normal",
+    "active_task": false,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": true,
+    "maintenance_debt_increment": 0.1,
+    "continuity_signal": 0.36,
+    "debt_category": "developmental_replay",
+    "debt_priority": 0.8
+  },
+  "developmental_context": {
+    "source": "runtime_v2",
+    "continuity_gap": 0.36,
+    "growth_pressure_hint": 0.87,
+    "stagnation_signal_hint": 0.21,
+    "identity_guard": "strict",
+    "replay_debt": 0.15,
+    "promotion_budget": "controlled_axis",
+    "drift_markers": [
+      "marker:continuity_gap",
+      "marker:growth_pressure"
+    ]
+  },
+  "owner_bootstrap": {
+    "continuity_score": 0.72,
+    "growth_pressure": 0.83,
+    "stagnation_signal": 0.2,
+    "identity_preservation_confidence": 0.94,
+    "developmental_risk_index": 0.16
+  }
+}

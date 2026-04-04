@@ -1,0 +1,115 @@
+{
+  "schema_version": "mvp16.controlled_observation.batch.v1",
+  "generated_at": "2026-04-04T02:42:48.821246+00:00",
+  "git_commit_short": "bfd0782",
+  "scenario_bank_dir": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/scenarios/mvp16_observation_bank",
+  "report_count": 3,
+  "accepted_count": 3,
+  "replay_consistent_count": 3,
+  "developmental_proposal_present_count": 3,
+  "proposal_only_discipline_count": 3,
+  "behavioral_authority_none_count": 3,
+  "bounded_influence_present_count": 3,
+  "identity_preservation_violation_count": 0,
+  "distinct_targets": [
+    "continuity_gap_high_growth_pressure",
+    "drive_reflection_conflict_with_governed_adaptation",
+    "stagnation_high_identity_guard"
+  ],
+  "distinct_surface_reasons": [
+    "continuity_gap",
+    "growth_pressure",
+    "promotion_queue_present",
+    "proposal_history_present",
+    "replay_debt",
+    "stagnation_signal"
+  ],
+  "scenario_ids": [
+    "repo_authored_continuity_gap_high_growth_pressure",
+    "repo_authored_drive_reflection_conflict_with_governed_adaptation",
+    "repo_authored_stagnation_high_identity_guard"
+  ],
+  "source_breakdown": {
+    "repo_authored": 3
+  },
+  "reports": [
+    {
+      "scenario_id": "repo_authored_continuity_gap_high_growth_pressure",
+      "dialogue_frame_target": "continuity_gap_high_growth_pressure",
+      "source_class": "repo_authored",
+      "source_ref": "repo://mvp16/repo_authored_continuity_gap_high_growth_pressure",
+      "accepted": true,
+      "replay_valid": true,
+      "developmental_proposal_present": true,
+      "proposal_only_discipline_consistent": true,
+      "behavioral_authority_none": true,
+      "bounded_influence_present": true,
+      "identity_preservation_violation_count": 0,
+      "gate_verdict": "allow_writeback",
+      "revision_id": "developmental_rev_000004",
+      "surface_reasons": [
+        "proposal_history_present",
+        "promotion_queue_present",
+        "growth_pressure",
+        "continuity_gap",
+        "replay_debt"
+      ],
+      "report_json": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_batch_20260404_024108/repo_authored_continuity_gap_high_growth_pressure/mvp16_controlled_observation_report.json",
+      "report_md": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_batch_20260404_024108/repo_authored_continuity_gap_high_growth_pressure/mvp16_controlled_observation_report.md"
+    },
+    {
+      "scenario_id": "repo_authored_drive_reflection_conflict_with_governed_adaptation",
+      "dialogue_frame_target": "drive_reflection_conflict_with_governed_adaptation",
+      "source_class": "repo_authored",
+      "source_ref": "repo://mvp16/repo_authored_drive_reflection_conflict_with_governed_adaptation",
+      "accepted": true,
+      "replay_valid": true,
+      "developmental_proposal_present": true,
+      "proposal_only_discipline_consistent": true,
+      "behavioral_authority_none": true,
+      "bounded_influence_present": true,
+      "identity_preservation_violation_count": 0,
+      "gate_verdict": "allow_writeback",
+      "revision_id": "developmental_rev_000004",
+      "surface_reasons": [
+        "proposal_history_present",
+        "promotion_queue_present",
+        "growth_pressure",
+        "continuity_gap",
+        "stagnation_signal",
+        "replay_debt"
+      ],
+      "report_json": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_batch_20260404_024108/repo_authored_drive_reflection_conflict_with_governed_adaptation/mvp16_controlled_observation_report.json",
+      "report_md": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_batch_20260404_024108/repo_authored_drive_reflection_conflict_with_governed_adaptation/mvp16_controlled_observation_report.md"
+    },
+    {
+      "scenario_id": "repo_authored_stagnation_high_identity_guard",
+      "dialogue_frame_target": "stagnation_high_identity_guard",
+      "source_class": "repo_authored",
+      "source_ref": "repo://mvp16/repo_authored_stagnation_high_identity_guard",
+      "accepted": true,
+      "replay_valid": true,
+      "developmental_proposal_present": true,
+      "proposal_only_discipline_consistent": true,
+      "behavioral_authority_none": true,
+      "bounded_influence_present": true,
+      "identity_preservation_violation_count": 0,
+      "gate_verdict": "allow_writeback",
+      "revision_id": "developmental_rev_000004",
+      "surface_reasons": [
+        "proposal_history_present",
+        "promotion_queue_present",
+        "continuity_gap",
+        "stagnation_signal",
+        "replay_debt"
+      ],
+      "report_json": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_batch_20260404_024108/repo_authored_stagnation_high_identity_guard/mvp16_controlled_observation_report.json",
+      "report_md": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp16/controlled_batch_20260404_024108/repo_authored_stagnation_high_identity_guard/mvp16_controlled_observation_report.md"
+    }
+  ],
+  "status": "pass",
+  "verification_level": "V5",
+  "evidence_level": "E5",
+  "boundary": "This aggregate report proves controlled multi-sample developmental-self writeback stability on the formal runtime mainline with proposal-only continuity candidates. It does not claim live autonomy, direct reply authority, or broader transport evidence.",
+  "external_risk_note": "Provider 429/401 remains an external budget-layer risk; it is not counted as a WP11 blocker unless it regresses formal owner writeback."
+}
