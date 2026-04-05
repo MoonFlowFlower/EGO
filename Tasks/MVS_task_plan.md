@@ -1188,10 +1188,11 @@
 - 证据层级目标：E0 -> E1（authority / contract freeze）
 
 **当前状态（2026-04-04）**
-- `WP15/MVP20` 当前层级是 `planning`
-- 当前状态是 `authority_frozen / task_package_ready`
+- `WP15/MVP20` 当前层级是 `owner_package`
+- 当前状态是 `T10 completed`
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/initiative_self/*`
 - 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
-- 当前 phase 1 只冻结 self-directed initiative proposal semantics、commitment continuity / carryover semantics、bounded host-proactive candidate generation 与 `WP7~WP14` boundary freeze；不实现 runtime wiring、controlled observation 或 maintenance mode
+- 当前 phase 1 只冻结并已落地 self-directed initiative proposal semantics、commitment continuity / carryover semantics 的 formal owner package，以及 bounded host-proactive candidate generation 的 owner-side semantics；尚未进入 proto-self contract、runtime wiring、controlled observation 或 maintenance mode
 - 当前已证实：`Tasks/MVP20_task_plan.md` 与 `Tasks/active/mvp20_host_governed_initiative_continuity/*` 已把 capability ownership、authority source、IO contract、`WP7~WP14` boundary freeze、legacy demotion register、subagent assignment 与 task cards 收成一致 authority package
-- 当前 blocker：无实现层 blocker；下一步最小闭环动作是 `T10_FORMAL_OWNER_PACKAGE`
+- 当前已证实：`OpenEmotion/openemotion/initiative_self/*` formal owner package 已落地，且 `OpenEmotion/tests/mvp20/test_initiative_owner_infra.py` 已证明 owner state 覆盖 initiative state / initiative priority state / commitment continuity state / initiative proposal candidate / host-proactive candidate semantics / initiative ledger，同时验证 bounded projection、proposal-only governance、store roundtrip 与 replay primitives 成立
+- 当前 blocker：无 `T10` 轴内 blocker；下一步最小闭环动作是 `T20_PROTO_SELF_CONTRACT_INTEGRATION`

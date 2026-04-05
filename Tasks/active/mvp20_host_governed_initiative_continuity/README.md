@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: authority_frozen
+status: owner_package_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP20_task_plan.md"
 predecessor: "WP14/MVP19"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP15 / MVP20 Host-Governed Self-Directed Initiative / Commitment Continuity"
-claim_ceiling: "authority_frozen / task_package_ready only"
+claim_ceiling: "T10 completed only"
 ```
 
 ---
@@ -53,10 +53,10 @@ claim_ceiling: "authority_frozen / task_package_ready only"
 
 ## 当前状态
 
-- 执行包状态：`authority_frozen`
+- 执行包状态：`owner_package_complete`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
-- `T10` formal owner：`pending`
+- `T10` formal owner：`completed`
 - `T20` proto_self_v2 contract：`pending`
 - `T30` EgoCore runtime bridge：`pending`
 - `T40` legacy demotion / compat map：`pending`
@@ -67,8 +67,8 @@ claim_ceiling: "authority_frozen / task_package_ready only"
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`planning_only_no_current_runtime_consumer`
 - 启用状态：`not_enabled`
-- 当前 blocker：`none at authority-freeze scope`
-- 当前最小动作：`T10_FORMAL_OWNER_PACKAGE`
+- 当前 blocker：`none on the WP15 owner-package axis`
+- 当前最小动作：`T20_PROTO_SELF_CONTRACT_INTEGRATION`
 
 ## 当前已证实内容
 
@@ -80,6 +80,8 @@ claim_ceiling: "authority_frozen / task_package_ready only"
   - `host_proactive_candidate` 只是 governed candidate，不得直接触发 delivery / transport
 - `LEGACY_REFERENCE_REGISTER.md` 已把 `WP7` proactive tools、runtime proactive substrate 与旧 roadmap 材料登记为 technical reference / host substrate reference
 - `SUBAGENT_ASSIGNMENT.md` 与 `cards/T00..T90` 已把 worker mapping、write scope 与后续实现顺序收成可执行 package
+- `OpenEmotion/openemotion/initiative_self/*` 现已落地为 formal owner package，覆盖 initiative state、initiative priority state、commitment continuity state、initiative proposal candidate、host-proactive candidate semantics 与 initiative ledger
+- `OpenEmotion/tests/mvp20/test_initiative_owner_infra.py` 已验证 bounded projection、proposal-only governance、store roundtrip、replay primitives 与 legacy reference-only exclusion
 
 ## 当前不做
 
