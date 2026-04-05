@@ -26,6 +26,15 @@ from openemotion.embodied_self import (
     EmbodiedSelfOwner,
     EmbodiedSelfStore,
 )
+from openemotion.initiative_realization import (
+    REQUIRED_WRITEBACK_GATE as INITIATIVE_REALIZATION_WRITEBACK_GATE,
+    CommitmentFulfillmentStatus,
+    ControlledDeliveryCandidateStatus,
+    InitiativeRealizationOwner,
+    InitiativeRealizationStore,
+    RealizationMode,
+    RealizationProposalStatus,
+)
 from openemotion.initiative_self import (
     InitiativePriority,
     InitiativeSelfOwner,
@@ -1403,6 +1412,210 @@ def test_process_ingress_applies_gated_initiative_writeback_without_host_executi
     assert saved.host_proactive_candidate is not None
     assert saved.host_proactive_candidate.behavioral_authority == "none"
     assert saved.host_proactive_candidate.host_lane_hint == "host_proactive_outbox"
+    assert len(store.load_revision_log("openemotion")) == 2
+
+
+def test_process_ingress_applies_gated_initiative_realization_writeback_without_delivery_promotion(
+    tmp_path,
+):
+    store = InitiativeRealizationStore(base_dir=tmp_path)
+    owner = InitiativeRealizationOwner(store=store)
+    owner.set_realization_state(
+        dominant_mode=RealizationMode.REVIEW,
+        realization_pressure=0.22,
+        fulfillment_readiness=0.61,
+        hold_bias=0.44,
+        failure_recovery_bias=0.36,
+        rationale_summary="bounded_realization_seed",
+        source_refs=["seed"],
+    )
+    owner.set_delivery_readiness_state(
+        selected_lane=RealizationMode.REVIEW,
+        hold_weight=0.31,
+        review_weight=0.74,
+        prepare_weight=0.43,
+        mediate_weight=0.28,
+        fulfill_weight=0.17,
+        lane_reason="bounded_seed_readiness",
+        host_lane_hints=["host_reality_review"],
+        source_refs=["seed"],
+    )
+    owner.set_commitment_fulfillment_state(
+        status=CommitmentFulfillmentStatus.ACTIVE,
+        active_commitments_count=1,
+        ready_commitments_count=1,
+        realized_commitment_refs=[],
+        blocked_commitment_refs=[],
+        continuity_confidence=0.79,
+        fulfillment_summary="bounded_seed_continuity",
+        source_refs=["seed"],
+    )
+    owner.propose_realization(
+        candidate_id="realization_seed_1",
+        candidate_label="bounded_realization_seed",
+        selected_mode=RealizationMode.REVIEW,
+        proposed_effects={"review_queue": True},
+        justification="seeded review continuity",
+        source_refs=["seed"],
+        requested_effects=["governed_realization_review"],
+    )
+    owner.set_initiative_realization_candidate_status(status=RealizationProposalStatus.HELD)
+    owner.set_controlled_delivery_candidate(
+        candidate_id="delivery_seed_1",
+        candidate_label="bounded_controlled_delivery_seed",
+        readiness_basis="seeded_delivery_readiness",
+        delivery_readiness=0.72,
+        host_lane_hint="host_reality_review",
+        source_refs=["seed"],
+        requested_effects=["governed_controlled_delivery_review"],
+    )
+    owner.set_controlled_delivery_candidate_status(status=ControlledDeliveryCandidateStatus.HELD)
+    owner.persist(update_source="seed", trace_reference="seed_realization_bridge")
+
+    class Adapter:
+        def __init__(self):
+            self.last_event = None
+
+        def handle_event(self, event):
+            self.last_event = event
+            return {
+                "subject_profile": "seed.v1",
+                "policy_hint": {"governor_hint": {"risk": "low"}},
+                "candidate_actions": [{"action_type": "review_commitment"}],
+                "initiative_realization_delta": {
+                    "dominant_mode": "review",
+                    "selected_lane": "review",
+                    "realization_pressure": 0.63,
+                    "fulfillment_readiness": 0.78,
+                    "hold_bias": 0.22,
+                    "failure_recovery_bias": 0.41,
+                    "hold_weight": 0.22,
+                    "review_weight": 0.84,
+                    "prepare_weight": 0.37,
+                    "mediate_weight": 0.31,
+                    "fulfill_weight": 0.29,
+                    "active_commitments_count": 1,
+                    "ready_commitments_count": 1,
+                    "continuity_confidence": 0.83,
+                    "surface_reasons": ["delivery_continuity_gap", "realization_review"],
+                    "fulfillment_summary": "bounded_realization_followup",
+                },
+                "commitment_fulfillment_candidates": [
+                    {
+                        "candidate_id": "realization_candidate_1",
+                        "candidate_label": "bounded_realization_followup",
+                        "selected_mode": "review",
+                        "proposed_effects": {"review_commitment": True},
+                        "justification": "bounded delivery continuity review",
+                        "required_gate": "initiative_realization_writeback_gate",
+                        "behavioral_authority": "none",
+                        "effect_scope": "proposal_only",
+                        "requested_effects": ["governed_realization_review"],
+                        "source_refs": ["goal:followup"],
+                    }
+                ],
+                "delivery_readiness_snapshot": {
+                    "selected_lane": "review",
+                    "readiness_basis": "delivery_continuity_gap",
+                    "delivery_readiness": 0.78,
+                    "lane_reason": "bounded delivery continuity review",
+                },
+                "host_lane_hints": ["host_reality_review", "host_continuity_queue"],
+                "controlled_delivery_candidate": {
+                    "candidate_id": "controlled_delivery_candidate_1",
+                    "candidate_label": "governed_controlled_delivery_review",
+                    "readiness_basis": "delivery_continuity_gap",
+                    "delivery_readiness": 0.78,
+                    "host_lane_hint": "host_reality_review",
+                    "required_gate": "initiative_realization_writeback_gate",
+                    "behavioral_authority": "none",
+                    "effect_scope": "proposal_only",
+                    "requested_effects": ["governed_controlled_delivery_review"],
+                    "source_refs": ["goal:followup"],
+                },
+                "initiative_realization_audit_entries": [
+                    {
+                        "entry_type": "initiative_realization_surface",
+                        "selected_lane": "review",
+                        "surface_reasons": ["delivery_continuity_gap", "realization_review"],
+                    }
+                ],
+                "initiative_realization_writeback_candidate": {
+                    "source": "proto_self_v2",
+                    "required_gate": "initiative_realization_writeback_gate",
+                    "proposal_discipline": "proposal_only",
+                    "behavioral_authority": "none",
+                    "promotion_level": "controlled_axis",
+                    "selected_lane": "review",
+                },
+                "trace_payload": {
+                    "update_packet_hash": "hash_realization_bridge",
+                    "initiative_realization_context": {
+                        "contract_version": "mvp21.initiative_realization_contract.v1",
+                        "projection_field": "runtime_summary.initiative_realization_context",
+                        "host_hint_field": "runtime_summary.host_proactive_context",
+                        "selected_lane": "review",
+                        "dominant_mode": "review",
+                    },
+                    "host_proactive_context": {
+                        "source": "runtime_v2",
+                        "host_lane_hint": "host_reality_review",
+                        "host_lane_hints": ["host_reality_review", "host_continuity_queue"],
+                        "pending_realization_refs": ["goal:followup"],
+                        "delivery_readiness": 0.78,
+                        "readiness_basis": "delivery_continuity_gap",
+                    },
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter(), initiative_realization_store=store)
+    state = RuntimeV2State(session_id="session:test")
+    state.current_goal = "followup"
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "initiative_context": {
+            "source": "runtime_v2",
+            "initiative_trigger": "commitment_followup",
+            "continuity_ref": "goal:followup",
+            "pending_commitment_refs": ["goal:followup"],
+            "blocked_commitment_refs": [],
+            "reserve_level": "medium",
+            "recent_delivery_status": "sent",
+            "delivery_failure": False,
+            "idle_seconds": 1200.0,
+            "host_lane_hint": "host_reality_review",
+            "promotion_budget": "controlled_axis",
+        },
+    }
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_realization_bridge",
+        source="telegram",
+        user_input="把承诺闭环，但先走宿主审查通道。",
+        state=state,
+    )
+
+    saved = store.load("openemotion")
+
+    assert runtime.adapter.last_event["runtime_summary"]["initiative_realization_context"]["owner_revision"] == 1
+    assert runtime.adapter.last_event["runtime_summary"]["host_proactive_context"]["host_lane_hint"] == "host_reality_review"
+    assert state.proto_self_context["initiative_realization_delta"]["selected_lane"] == "review"
+    assert state.proto_self_context["controlled_delivery_candidate"]["behavioral_authority"] == "none"
+    assert (
+        state.proto_self_context["initiative_realization_writeback_candidate"]["required_gate"]
+        == INITIATIVE_REALIZATION_WRITEBACK_GATE
+    )
+    assert state.proto_self_context["initiative_realization_context"]["selected_lane"] == "review"
+    assert state.proto_self_context["host_proactive_context"]["pending_realization_refs"] == ["goal:followup"]
+    assert state.proto_self_context["initiative_realization_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+    assert saved is not None
+    assert saved.owner_revision == 2
+    assert saved.initiative_realization_candidate is not None
+    assert saved.initiative_realization_candidate.behavioral_authority == "none"
+    assert saved.controlled_delivery_candidate is not None
+    assert saved.controlled_delivery_candidate.behavioral_authority == "none"
+    assert saved.controlled_delivery_candidate.host_lane_hint == "host_reality_review"
     assert len(store.load_revision_log("openemotion")) == 2
 
 

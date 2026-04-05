@@ -27,6 +27,16 @@ from openemotion.initiative_self import (
     InitiativeSelfState,
     InitiativeSelfStore,
 )
+from openemotion.initiative_realization import (
+    REQUIRED_WRITEBACK_GATE as INITIATIVE_REALIZATION_WRITEBACK_GATE,
+    CommitmentFulfillmentStatus,
+    ControlledDeliveryCandidateStatus,
+    InitiativeRealizationOwner,
+    InitiativeRealizationState,
+    InitiativeRealizationStore,
+    RealizationMode,
+    RealizationProposalStatus,
+)
 from openemotion.developmental_self import (
     REQUIRED_WRITEBACK_GATE as DEVELOPMENTAL_WRITEBACK_GATE,
     ContinuityMarkerType,
@@ -87,8 +97,7 @@ DEFAULT_SOCIAL_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_EMBODIED_SELF_IDENTITY_HANDLE = "openemotion"
 DEFAULT_SELFHOOD_INTEGRATION_IDENTITY_HANDLE = "openemotion"
 DEFAULT_INITIATIVE_SELF_IDENTITY_HANDLE = "openemotion"
-
-
+DEFAULT_INITIATIVE_REALIZATION_IDENTITY_HANDLE = "openemotion"
 def assess_risk_level(user_input: str) -> str:
     return assess_message_risk_level(user_input)
 
@@ -212,6 +221,15 @@ def _resolve_initiative_self_identity_handle(state: RuntimeV2State) -> str:
         ingress_context.get("initiative_self_identity_handle")
         or ingress_context.get("identity_handle")
         or DEFAULT_INITIATIVE_SELF_IDENTITY_HANDLE
+    )
+
+
+def _resolve_initiative_realization_identity_handle(state: RuntimeV2State) -> str:
+    ingress_context = state.ingress_context or {}
+    return str(
+        ingress_context.get("initiative_realization_identity_handle")
+        or ingress_context.get("identity_handle")
+        or DEFAULT_INITIATIVE_REALIZATION_IDENTITY_HANDLE
     )
 
 
@@ -606,6 +624,81 @@ def _build_initiative_context(state: RuntimeV2State) -> Dict[str, Any]:
     }
 
 
+def _build_host_proactive_context(state: RuntimeV2State) -> Dict[str, Any]:
+    ingress_context = state.ingress_context or {}
+    provided = dict(ingress_context.get("host_proactive_context") or {})
+    initiative_context = _build_initiative_context(state)
+    proto_self_context = dict(state.proto_self_context or {})
+    commitment_snapshot = dict(proto_self_context.get("commitment_execution_snapshot") or {})
+    initiative_policy_hints = dict(proto_self_context.get("initiative_policy_hints") or {})
+    host_candidate = dict(proto_self_context.get("host_proactive_candidate") or {})
+    recent_delivery = _build_recent_delivery_outcome(state)
+    resource_budget = _build_resource_budget_hint(state)
+
+    host_lane_hints = list(provided.get("host_lane_hints") or host_candidate.get("host_lane_hints") or [])
+    host_lane_hint = str(
+        provided.get("host_lane_hint")
+        or host_candidate.get("host_lane_hint")
+        or initiative_context.get("host_lane_hint")
+        or "host_proactive_outbox"
+    )
+    if host_lane_hint and host_lane_hint not in host_lane_hints:
+        host_lane_hints.insert(0, host_lane_hint)
+
+    pending_realization_refs = list(
+        provided.get("pending_realization_refs")
+        or commitment_snapshot.get("carried_commitment_refs")
+        or initiative_context.get("pending_commitment_refs")
+        or []
+    )
+    readiness_basis = str(
+        provided.get("readiness_basis")
+        or host_candidate.get("continuity_basis")
+        or commitment_snapshot.get("commitment_mode")
+        or initiative_context.get("initiative_trigger")
+        or "bounded_commitment_followup"
+    )
+    delivery_readiness = provided.get("delivery_readiness")
+    if delivery_readiness is None:
+        delivery_readiness = host_candidate.get("delivery_readiness")
+    if delivery_readiness is None:
+        delivery_readiness = commitment_snapshot.get("continuity_confidence")
+    if delivery_readiness is None:
+        delivery_readiness = 0.0
+
+    return {
+        "source": str(provided.get("source") or "runtime_v2"),
+        "host_lane_hints": host_lane_hints,
+        "delivery_readiness": float(delivery_readiness or 0.0),
+        "readiness_basis": readiness_basis,
+        "host_lane_hint": host_lane_hint,
+        "reserve_level_hint": str(
+            provided.get("reserve_level_hint")
+            or resource_budget.get("reserve_level")
+            or initiative_context.get("reserve_level")
+            or ""
+        ),
+        "pending_realization_refs": pending_realization_refs,
+        "recent_delivery_success": bool(
+            provided.get("recent_delivery_success")
+            if "recent_delivery_success" in provided
+            else recent_delivery.get("success")
+        ),
+        "recent_delivery_status": str(
+            provided.get("recent_delivery_status")
+            or recent_delivery.get("status")
+            or initiative_context.get("recent_delivery_status")
+            or ""
+        ),
+        "promotion_budget": str(
+            provided.get("promotion_budget")
+            or host_candidate.get("promotion_level")
+            or initiative_context.get("promotion_budget")
+            or "review_only"
+        ),
+    }
+
+
 def _compact_self_model_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     context: Dict[str, Any] = {}
     for field_name in PHASE1_AUTHORITATIVE_FIELDS:
@@ -693,6 +786,11 @@ def _compact_initiative_self_context(snapshot: Dict[str, Any]) -> Dict[str, Any]
     return state.to_runtime_projection()
 
 
+def _compact_initiative_realization_context(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    state = InitiativeRealizationState.model_validate(snapshot)
+    return state.to_runtime_projection()
+
+
 def _inject_developmental_self_context(
     runtime_summary: Dict[str, Any],
     *,
@@ -758,6 +856,21 @@ def _inject_initiative_self_context(
     return runtime_summary
 
 
+def _inject_initiative_realization_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None,
+) -> Dict[str, Any]:
+    store = initiative_realization_store or InitiativeRealizationStore()
+    snapshot = store.load_snapshot(_resolve_initiative_realization_identity_handle(state))
+    if snapshot:
+        runtime_summary["initiative_realization_context"] = _compact_initiative_realization_context(
+            snapshot
+        )
+    return runtime_summary
+
+
 def _inject_developmental_context(
     runtime_summary: Dict[str, Any],
     *,
@@ -791,6 +904,15 @@ def _inject_initiative_context(
     state: RuntimeV2State,
 ) -> Dict[str, Any]:
     runtime_summary["initiative_context"] = _build_initiative_context(state)
+    return runtime_summary
+
+
+def _inject_host_proactive_context(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+) -> Dict[str, Any]:
+    runtime_summary["host_proactive_context"] = _build_host_proactive_context(state)
     return runtime_summary
 
 
@@ -877,6 +999,7 @@ def build_proto_self_ingress_event(
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
     selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
     initiative_self_store: Optional[InitiativeSelfStore] = None,
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None,
 ) -> Dict[str, Any]:
     risk_level = assess_risk_level(user_input)
     restore_observation = (state.ingress_context or {}).get("restore_observation")
@@ -928,6 +1051,11 @@ def build_proto_self_ingress_event(
             state=state,
             initiative_self_store=initiative_self_store,
         )
+        runtime_summary = _inject_initiative_realization_context(
+            runtime_summary,
+            state=state,
+            initiative_realization_store=initiative_realization_store,
+        )
         runtime_summary.update(
             {
                 k: v
@@ -939,6 +1067,7 @@ def build_proto_self_ingress_event(
         runtime_summary = _inject_developmental_context(runtime_summary, state=state)
         runtime_summary = _inject_environment_context(runtime_summary, state=state)
         runtime_summary = _inject_initiative_context(runtime_summary, state=state)
+        runtime_summary = _inject_host_proactive_context(runtime_summary, state=state)
         payload = {
             "schema_version": schema_version,
             "event_id": f"{session_id}_{turn_id}",
@@ -1029,6 +1158,7 @@ def build_external_result_event(
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
     selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
     initiative_self_store: Optional[InitiativeSelfStore] = None,
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None,
 ) -> Dict[str, Any]:
     failed = not tool_result.get("success")
     schema_version = resolve_proto_self_schema_version(state)
@@ -1111,6 +1241,11 @@ def build_external_result_event(
             state=state,
             initiative_self_store=initiative_self_store,
         )
+        payload["runtime_summary"] = _inject_initiative_realization_context(
+            payload["runtime_summary"],
+            state=state,
+            initiative_realization_store=initiative_realization_store,
+        )
         payload["runtime_summary"] = _inject_social_context(
             payload["runtime_summary"],
             state=state,
@@ -1124,6 +1259,10 @@ def build_external_result_event(
             state=state,
         )
         payload["runtime_summary"] = _inject_initiative_context(
+            payload["runtime_summary"],
+            state=state,
+        )
+        payload["runtime_summary"] = _inject_host_proactive_context(
             payload["runtime_summary"],
             state=state,
         )
@@ -1197,6 +1336,7 @@ def build_finalized_result_event(
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
     selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
     initiative_self_store: Optional[InitiativeSelfStore] = None,
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1279,6 +1419,11 @@ def build_finalized_result_event(
         state=state,
         initiative_self_store=initiative_self_store,
     )
+    payload["runtime_summary"] = _inject_initiative_realization_context(
+        payload["runtime_summary"],
+        state=state,
+        initiative_realization_store=initiative_realization_store,
+    )
     payload["runtime_summary"] = _inject_social_context(
         payload["runtime_summary"],
         state=state,
@@ -1292,6 +1437,10 @@ def build_finalized_result_event(
         state=state,
     )
     payload["runtime_summary"] = _inject_initiative_context(
+        payload["runtime_summary"],
+        state=state,
+    )
+    payload["runtime_summary"] = _inject_host_proactive_context(
         payload["runtime_summary"],
         state=state,
     )
@@ -1322,6 +1471,7 @@ def build_idle_check_event(
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
     selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
     initiative_self_store: Optional[InitiativeSelfStore] = None,
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1412,6 +1562,11 @@ def build_idle_check_event(
         state=state,
         initiative_self_store=initiative_self_store,
     )
+    event["runtime_summary"] = _inject_initiative_realization_context(
+        event["runtime_summary"],
+        state=state,
+        initiative_realization_store=initiative_realization_store,
+    )
     event["runtime_summary"] = _inject_social_context(
         event["runtime_summary"],
         state=state,
@@ -1425,6 +1580,10 @@ def build_idle_check_event(
         state=state,
     )
     event["runtime_summary"] = _inject_initiative_context(
+        event["runtime_summary"],
+        state=state,
+    )
+    event["runtime_summary"] = _inject_host_proactive_context(
         event["runtime_summary"],
         state=state,
     )
@@ -1453,6 +1612,7 @@ def build_developmental_tick_event(
     embodied_self_store: Optional[EmbodiedSelfStore] = None,
     selfhood_integration_store: Optional[SelfhoodIntegrationStore] = None,
     initiative_self_store: Optional[InitiativeSelfStore] = None,
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None,
 ) -> Optional[Dict[str, Any]]:
     if resolve_proto_self_schema_version(state) != "proto_self.v2":
         return None
@@ -1509,6 +1669,11 @@ def build_developmental_tick_event(
         state=state,
         initiative_self_store=initiative_self_store,
     )
+    runtime_summary = _inject_initiative_realization_context(
+        runtime_summary,
+        state=state,
+        initiative_realization_store=initiative_realization_store,
+    )
     runtime_summary = _inject_social_context(runtime_summary, state=state)
     runtime_summary = _inject_developmental_context(
         runtime_summary,
@@ -1516,6 +1681,7 @@ def build_developmental_tick_event(
     )
     runtime_summary = _inject_environment_context(runtime_summary, state=state)
     runtime_summary = _inject_initiative_context(runtime_summary, state=state)
+    runtime_summary = _inject_host_proactive_context(runtime_summary, state=state)
     if replay_seed is not None:
         runtime_summary["replay_seed"] = replay_seed
     return {
@@ -1606,6 +1772,7 @@ class RuntimeV2ProtoSelfRuntime:
             logger.warning(f"[E4-EVIDENCE] Failed to resolve collector: {exc}")
             return None
 
+    initiative_realization_store: Optional[InitiativeRealizationStore] = None
     def _capture_trace_in_ledger_or_bridge(
         self,
         *,
@@ -3331,6 +3498,356 @@ class RuntimeV2ProtoSelfRuntime:
     ) -> None:
         proto_self_event = build_proto_self_ingress_event(
             session_id=session_id,
+    def _apply_initiative_realization_writeback(
+        self,
+        *,
+        proto_self_result: Dict[str, Any],
+        state: RuntimeV2State,
+    ) -> Optional[Dict[str, Any]]:
+        delta = dict(proto_self_result.get("initiative_realization_delta") or {})
+        fulfillment_candidates = list(proto_self_result.get("commitment_fulfillment_candidates") or [])
+        readiness_snapshot = dict(proto_self_result.get("delivery_readiness_snapshot") or {})
+        host_lane_hints = list(proto_self_result.get("host_lane_hints") or [])
+        controlled_delivery_candidate = dict(proto_self_result.get("controlled_delivery_candidate") or {})
+        audit_entries = list(proto_self_result.get("initiative_realization_audit_entries") or [])
+        writeback_candidate = dict(proto_self_result.get("initiative_realization_writeback_candidate") or {})
+        if (
+            not delta
+            and not fulfillment_candidates
+            and not readiness_snapshot
+            and not controlled_delivery_candidate
+            and not writeback_candidate
+        ):
+            return None
+
+        trace_payload = dict(proto_self_result.get("trace_payload") or {})
+        trace_reference = str(
+            trace_payload.get("update_packet_hash")
+            or f"proto_self:{proto_self_result.get('event_id', 'unknown')}"
+        )
+
+        if writeback_candidate.get("proposal_discipline") not in {None, "proposal_only"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "initiative_realization_writeback_requires_proposal_only",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["initiative_realization_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("behavioral_authority") not in {None, "none"}:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "initiative_realization_writeback_behavioral_authority_must_remain_none",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["initiative_realization_writeback"] = writeback
+            return writeback
+        if writeback_candidate.get("required_gate") not in {
+            None,
+            INITIATIVE_REALIZATION_WRITEBACK_GATE,
+        }:
+            writeback = {
+                "decision": {
+                    "gate_verdict": "reject",
+                    "reason": "initiative_realization_writeback_requires_formal_gate",
+                },
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+            proto_self_result["initiative_realization_writeback"] = writeback
+            return writeback
+
+        if controlled_delivery_candidate:
+            if controlled_delivery_candidate.get("effect_scope") not in {None, "proposal_only"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "controlled_delivery_candidate_requires_proposal_only_scope",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["initiative_realization_writeback"] = writeback
+                return writeback
+            if controlled_delivery_candidate.get("behavioral_authority") not in {None, "none"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "controlled_delivery_candidate_behavioral_authority_must_remain_none",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["initiative_realization_writeback"] = writeback
+                return writeback
+            if controlled_delivery_candidate.get("required_gate") not in {
+                None,
+                INITIATIVE_REALIZATION_WRITEBACK_GATE,
+            }:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "controlled_delivery_candidate_requires_formal_gate",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["initiative_realization_writeback"] = writeback
+                return writeback
+
+        for candidate in fulfillment_candidates[:3]:
+            if candidate.get("effect_scope") not in {None, "proposal_only"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "initiative_realization_candidate_requires_proposal_only_scope",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["initiative_realization_writeback"] = writeback
+                return writeback
+            if candidate.get("behavioral_authority") not in {None, "none"}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "initiative_realization_candidate_behavioral_authority_must_remain_none",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["initiative_realization_writeback"] = writeback
+                return writeback
+            if candidate.get("required_gate") not in {None, INITIATIVE_REALIZATION_WRITEBACK_GATE}:
+                writeback = {
+                    "decision": {
+                        "gate_verdict": "reject",
+                        "reason": "initiative_realization_candidate_requires_formal_gate",
+                    },
+                    "record": None,
+                    "trace_reference": trace_reference,
+                }
+                proto_self_result["initiative_realization_writeback"] = writeback
+                return writeback
+
+        identity_handle = _resolve_initiative_realization_identity_handle(state)
+        store = self.initiative_realization_store or InitiativeRealizationStore(
+            default_identity=identity_handle
+        )
+        current_state = store.load(identity_handle) or InitiativeRealizationState(identity_handle=identity_handle)
+        current_state.identity_handle = identity_handle
+        owner = InitiativeRealizationOwner(initial_state=current_state, store=store)
+
+        selected_mode_raw = str(
+            readiness_snapshot.get("selected_lane")
+            or delta.get("selected_lane")
+            or delta.get("dominant_mode")
+            or "review"
+        ).strip().lower()
+        try:
+            selected_mode = RealizationMode(selected_mode_raw)
+        except ValueError:
+            selected_mode = RealizationMode.REVIEW
+
+        fulfillment_status_raw = str(
+            readiness_snapshot.get("fulfillment_status")
+            or delta.get("fulfillment_status")
+            or "active"
+        ).strip().lower()
+        status_map = {
+            "active": CommitmentFulfillmentStatus.ACTIVE,
+            "held": CommitmentFulfillmentStatus.HELD,
+            "ready": CommitmentFulfillmentStatus.READY,
+            "blocked": CommitmentFulfillmentStatus.BLOCKED,
+            "fulfilled": CommitmentFulfillmentStatus.FULFILLED,
+            "failed": CommitmentFulfillmentStatus.FAILED,
+        }
+        fulfillment_status = status_map.get(fulfillment_status_raw, CommitmentFulfillmentStatus.ACTIVE)
+
+        source_refs = list(delta.get("surface_reasons") or [])
+        if trace_reference not in source_refs:
+            source_refs.append(trace_reference)
+
+        owner.set_realization_state(
+            dominant_mode=selected_mode,
+            realization_pressure=max(0.0, min(1.0, float(delta.get("realization_pressure") or 0.0))),
+            fulfillment_readiness=max(
+                0.0,
+                min(
+                    1.0,
+                    float(
+                        readiness_snapshot.get("delivery_readiness")
+                        or delta.get("fulfillment_readiness")
+                        or 0.0
+                    ),
+                ),
+            ),
+            hold_bias=max(0.0, min(1.0, float(delta.get("hold_bias") or 0.0))),
+            failure_recovery_bias=max(
+                0.0, min(1.0, float(delta.get("failure_recovery_bias") or 0.0))
+            ),
+            rationale_summary=str(
+                delta.get("rationale_summary")
+                or readiness_snapshot.get("lane_reason")
+                or "bounded_realization_review"
+            ),
+            source_refs=source_refs,
+        )
+        owner.set_delivery_readiness_state(
+            selected_lane=selected_mode,
+            hold_weight=max(0.0, min(1.0, float(delta.get("hold_weight") or 0.0))),
+            review_weight=max(0.0, min(1.0, float(delta.get("review_weight") or 0.0))),
+            prepare_weight=max(0.0, min(1.0, float(delta.get("prepare_weight") or 0.0))),
+            mediate_weight=max(0.0, min(1.0, float(delta.get("mediate_weight") or 0.0))),
+            fulfill_weight=max(0.0, min(1.0, float(delta.get("fulfill_weight") or 0.0))),
+            lane_reason=str(readiness_snapshot.get("lane_reason") or "bounded_realization_lane"),
+            host_lane_hints=host_lane_hints,
+            source_refs=source_refs,
+        )
+        owner.set_commitment_fulfillment_state(
+            status=fulfillment_status,
+            active_commitments_count=int(delta.get("active_commitments_count") or 0),
+            ready_commitments_count=int(delta.get("ready_commitments_count") or 0),
+            realized_commitment_refs=list(delta.get("realized_commitment_refs") or []),
+            blocked_commitment_refs=list(delta.get("blocked_commitment_refs") or []),
+            continuity_confidence=max(
+                0.0,
+                min(1.0, float(delta.get("continuity_confidence") or 0.0)),
+            ),
+            fulfillment_summary=str(
+                delta.get("fulfillment_summary")
+                or readiness_snapshot.get("readiness_basis")
+                or "bounded_commitment_fulfillment"
+            ),
+            source_refs=source_refs,
+        )
+
+        proposal_count = 0
+        for candidate in fulfillment_candidates[:3]:
+            candidate_mode_raw = str(candidate.get("selected_mode") or selected_mode.value).strip().lower()
+            try:
+                candidate_mode = RealizationMode(candidate_mode_raw)
+            except ValueError:
+                candidate_mode = selected_mode
+            owner.propose_realization(
+                candidate_id=str(candidate.get("candidate_id") or f"realization:{candidate_mode.value}"),
+                candidate_label=str(candidate.get("candidate_label") or "bounded_realization_review"),
+                selected_mode=candidate_mode,
+                proposed_effects=dict(candidate.get("proposed_effects") or {}),
+                justification=str(candidate.get("justification") or "bounded_realization_review"),
+                source_refs=list(candidate.get("source_refs") or source_refs),
+                requested_effects=list(candidate.get("requested_effects") or []),
+            )
+            owner.set_initiative_realization_candidate_status(status=RealizationProposalStatus.HELD)
+            proposal_count += 1
+
+        controlled_delivery_present = False
+        if controlled_delivery_candidate:
+            owner.set_controlled_delivery_candidate(
+                candidate_id=str(
+                    controlled_delivery_candidate.get("candidate_id")
+                    or f"controlled_delivery:{selected_mode.value}"
+                ),
+                candidate_label=str(
+                    controlled_delivery_candidate.get("candidate_label")
+                    or "governed_controlled_delivery_review"
+                ),
+                readiness_basis=str(
+                    controlled_delivery_candidate.get("readiness_basis")
+                    or readiness_snapshot.get("readiness_basis")
+                    or "bounded_delivery_readiness"
+                ),
+                delivery_readiness=max(
+                    0.0,
+                    min(1.0, float(controlled_delivery_candidate.get("delivery_readiness") or 0.0)),
+                ),
+                host_lane_hint=str(
+                    controlled_delivery_candidate.get("host_lane_hint")
+                    or (host_lane_hints[0] if host_lane_hints else "host_proactive_outbox")
+                ),
+                source_refs=list(controlled_delivery_candidate.get("source_refs") or source_refs),
+                requested_effects=list(controlled_delivery_candidate.get("requested_effects") or []),
+            )
+            owner.set_controlled_delivery_candidate_status(status=ControlledDeliveryCandidateStatus.HELD)
+            controlled_delivery_present = True
+
+        for audit_entry in audit_entries[:10]:
+            owner.record_realization_event(
+                event_type=str(audit_entry.get("entry_type") or "initiative_realization_signal"),
+                reference_id=str(
+                    audit_entry.get("selected_lane")
+                    or audit_entry.get("candidate_id")
+                    or trace_reference
+                ),
+                gate_verdict="allow_writeback",
+                details={k: v for k, v in audit_entry.items() if k != "entry_type"},
+            )
+        owner.record_realization_event(
+            event_type="initiative_realization_writeback",
+            reference_id=str(
+                fulfillment_candidates[0].get("candidate_id")
+                if fulfillment_candidates
+                else controlled_delivery_candidate.get("candidate_id")
+                if controlled_delivery_candidate
+                else trace_reference
+            ),
+            gate_verdict="allow_writeback",
+            details={
+                "trace_reference": trace_reference,
+                "proposal_only": True,
+                "behavioral_authority": "none",
+                "proposal_count": proposal_count,
+                "controlled_delivery_present": controlled_delivery_present,
+                "selected_lane": selected_mode.value,
+            },
+        )
+
+        changed_fields = [
+            "realization_state",
+            "delivery_readiness_state",
+            "commitment_fulfillment_state",
+            "realization_ledger",
+        ]
+        if proposal_count:
+            changed_fields.append("initiative_realization_candidate")
+        if controlled_delivery_present:
+            changed_fields.append("controlled_delivery_candidate")
+
+        try:
+            record = owner.persist(
+                update_source=str(writeback_candidate.get("source") or "proto_self_v2"),
+                trace_reference=trace_reference,
+            )
+            writeback = {
+                "decision": {
+                    "gate_verdict": "allow_writeback",
+                    "changed_fields": sorted(set(changed_fields)),
+                    "proposal_count": proposal_count,
+                    "controlled_delivery_present": controlled_delivery_present,
+                },
+                "record": {
+                    "revision_id": record.revision_id,
+                    "model_version": record.model_version,
+                    "trace_reference": record.trace_reference,
+                    "state_hash": record.state_hash,
+                },
+                "trace_reference": trace_reference,
+            }
+        except Exception as exc:
+            writeback = {
+                "decision": {"gate_verdict": "reject", "reason": str(exc)},
+                "record": None,
+                "trace_reference": trace_reference,
+            }
+        proto_self_result["initiative_realization_writeback"] = writeback
+        return writeback
+
             turn_id=turn_id,
             source=source,
             user_input=user_input,
@@ -3355,6 +3872,7 @@ class RuntimeV2ProtoSelfRuntime:
             state=state,
         )
         developmental_writeback = self._apply_developmental_self_writeback(
+            initiative_realization_store=self.initiative_realization_store,
             proto_self_result=proto_self_result,
             state=state,
         )
@@ -3386,6 +3904,10 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context = {
             "subject_profile": proto_self_result.get("subject_profile"),
             "policy_hint": proto_self_result.get("policy_hint"),
+        initiative_realization_writeback = self._apply_initiative_realization_writeback(
+            proto_self_result=proto_self_result,
+            state=state,
+        )
             "response_tendency": proto_self_result.get("response_tendency"),
             "reflection_note": proto_self_result.get("reflection_note"),
             "candidate_actions": proto_self_result.get("candidate_actions") or [],
@@ -3467,6 +3989,27 @@ class RuntimeV2ProtoSelfRuntime:
                 "embodied_writeback": embodied_writeback,
                 "selfhood_integration_writeback": selfhood_integration_writeback,
                 "initiative_writeback": initiative_writeback,
+            "initiative_realization_delta": proto_self_result.get("initiative_realization_delta") or {},
+            "commitment_fulfillment_candidates": (
+                proto_self_result.get("commitment_fulfillment_candidates") or []
+            ),
+            "delivery_readiness_snapshot": proto_self_result.get("delivery_readiness_snapshot") or {},
+            "host_lane_hints": proto_self_result.get("host_lane_hints") or [],
+            "controlled_delivery_candidate": proto_self_result.get("controlled_delivery_candidate"),
+            "initiative_realization_audit_entries": (
+                proto_self_result.get("initiative_realization_audit_entries") or []
+            ),
+            "initiative_realization_writeback_candidate": (
+                proto_self_result.get("initiative_realization_writeback_candidate")
+            ),
+            "initiative_realization_context": (
+                proto_self_result.get("trace_payload") or {}
+            ).get("initiative_realization_context")
+            or proto_self_result.get("initiative_realization_context")
+            or {},
+            "host_proactive_context": (proto_self_result.get("trace_payload") or {}).get("host_proactive_context")
+            or {},
+            "initiative_realization_writeback": initiative_realization_writeback,
                 "reflection_writeback_candidate_present": bool(proto_self_result.get("reflection_writeback_candidate")),
                 "developmental_writeback_candidate_present": bool(
                     proto_self_result.get("developmental_writeback_candidate")
@@ -3482,6 +4025,7 @@ class RuntimeV2ProtoSelfRuntime:
                 "reflection_trigger": (
                     proto_self_result.get("reflection_note", {}).get("trigger")
                     if proto_self_result.get("reflection_note")
+                "initiative_realization_writeback": initiative_realization_writeback,
                     else None
                 ),
             },
@@ -3494,6 +4038,9 @@ class RuntimeV2ProtoSelfRuntime:
         turn_id: str,
         step: int,
         state: RuntimeV2State,
+                "initiative_realization_writeback_candidate_present": bool(
+                    proto_self_result.get("initiative_realization_writeback_candidate")
+                ),
         evidence_collector: Optional[Any] = None,
     ) -> None:
         if not state.last_tool_result:
@@ -3527,6 +4074,7 @@ class RuntimeV2ProtoSelfRuntime:
             proto_self_result=external_result,
             state=state,
         )
+            initiative_realization_store=self.initiative_realization_store,
         social_writeback = self._apply_social_self_writeback(
             proto_self_result=external_result,
             state=state,
@@ -3558,6 +4106,10 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["self_model_writeback"] = writeback
         state.proto_self_context["endogenous_drive_delta"] = external_result.get("endogenous_drive_delta") or {}
         state.proto_self_context["endogenous_drive_writeback"] = endogenous_drive_writeback
+        initiative_realization_writeback = self._apply_initiative_realization_writeback(
+            proto_self_result=external_result,
+            state=state,
+        )
         state.proto_self_context["drive_state_snapshot"] = external_result.get("drive_state_snapshot") or {}
         state.proto_self_context["priority_snapshot"] = external_result.get("priority_snapshot") or {}
         state.proto_self_context["candidate_bias_terms"] = external_result.get("candidate_bias_terms") or {}
@@ -3663,6 +4215,32 @@ class RuntimeV2ProtoSelfRuntime:
             )
 
     def process_finalized_result(
+        state.proto_self_context["initiative_realization_delta"] = (
+            external_result.get("initiative_realization_delta") or {}
+        )
+        state.proto_self_context["commitment_fulfillment_candidates"] = (
+            external_result.get("commitment_fulfillment_candidates") or []
+        )
+        state.proto_self_context["delivery_readiness_snapshot"] = (
+            external_result.get("delivery_readiness_snapshot") or {}
+        )
+        state.proto_self_context["host_lane_hints"] = external_result.get("host_lane_hints") or []
+        state.proto_self_context["controlled_delivery_candidate"] = external_result.get(
+            "controlled_delivery_candidate"
+        )
+        state.proto_self_context["initiative_realization_audit_entries"] = (
+            external_result.get("initiative_realization_audit_entries") or []
+        )
+        state.proto_self_context["initiative_realization_writeback_candidate"] = external_result.get(
+            "initiative_realization_writeback_candidate"
+        )
+        state.proto_self_context["initiative_realization_context"] = (
+            external_result.get("trace_payload") or {}
+        ).get("initiative_realization_context") or external_result.get("initiative_realization_context") or {}
+        state.proto_self_context["host_proactive_context"] = (
+            external_result.get("trace_payload") or {}
+        ).get("host_proactive_context") or {}
+        state.proto_self_context["initiative_realization_writeback"] = initiative_realization_writeback
         self,
         *,
         session_id: str,
@@ -3699,6 +4277,7 @@ class RuntimeV2ProtoSelfRuntime:
         )
         developmental_writeback = self._apply_developmental_self_writeback(
             proto_self_result=finalized_result,
+            initiative_realization_store=self.initiative_realization_store,
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
@@ -3732,6 +4311,10 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["self_model_delta"] = finalized_result.get("self_model_delta") or {}
         state.proto_self_context["self_model_writeback"] = writeback
         state.proto_self_context["endogenous_drive_delta"] = finalized_result.get("endogenous_drive_delta") or {}
+        initiative_realization_writeback = self._apply_initiative_realization_writeback(
+            proto_self_result=finalized_result,
+            state=state,
+        )
         state.proto_self_context["endogenous_drive_writeback"] = endogenous_drive_writeback
         state.proto_self_context["drive_state_snapshot"] = finalized_result.get("drive_state_snapshot") or {}
         state.proto_self_context["priority_snapshot"] = finalized_result.get("priority_snapshot") or {}
@@ -3838,6 +4421,36 @@ class RuntimeV2ProtoSelfRuntime:
         idle_event = build_idle_check_event(
             session_id=session_id,
             turn_id=turn_id,
+        state.proto_self_context["initiative_realization_delta"] = (
+            finalized_result.get("initiative_realization_delta") or {}
+        )
+        state.proto_self_context["commitment_fulfillment_candidates"] = (
+            finalized_result.get("commitment_fulfillment_candidates") or []
+        )
+        state.proto_self_context["delivery_readiness_snapshot"] = (
+            finalized_result.get("delivery_readiness_snapshot") or {}
+        )
+        state.proto_self_context["host_lane_hints"] = finalized_result.get("host_lane_hints") or []
+        state.proto_self_context["controlled_delivery_candidate"] = finalized_result.get(
+            "controlled_delivery_candidate"
+        )
+        state.proto_self_context["initiative_realization_audit_entries"] = (
+            finalized_result.get("initiative_realization_audit_entries") or []
+        )
+        state.proto_self_context["initiative_realization_writeback_candidate"] = finalized_result.get(
+            "initiative_realization_writeback_candidate"
+        )
+        state.proto_self_context["initiative_realization_context"] = (
+            finalized_result.get("trace_payload") or {}
+        ).get("initiative_realization_context") or finalized_result.get("initiative_realization_context") or {}
+        state.proto_self_context["host_proactive_context"] = (
+            finalized_result.get("trace_payload") or {}
+        ).get("host_proactive_context") or {}
+        state.proto_self_context["initiative_realization_writeback"] = initiative_realization_writeback
+        if finalized_result.get("subject_profile"):
+            state.proto_self_context["subject_profile"] = finalized_result.get("subject_profile")
+        if finalized_result.get("candidate_actions") is not None:
+            state.proto_self_context["candidate_actions"] = finalized_result.get("candidate_actions") or []
             state=state,
             self_model_store=self.self_model_store,
             endogenous_drive_store=self.endogenous_drive_store,
@@ -3862,6 +4475,7 @@ class RuntimeV2ProtoSelfRuntime:
         )
         developmental_writeback = self._apply_developmental_self_writeback(
             proto_self_result=idle_result,
+            initiative_realization_store=self.initiative_realization_store,
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
@@ -3895,6 +4509,10 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["candidate_actions"] = idle_result.get("candidate_actions") or []
         state.proto_self_context["self_model_delta"] = idle_result.get("self_model_delta") or {}
         state.proto_self_context["self_model_writeback"] = writeback
+        initiative_realization_writeback = self._apply_initiative_realization_writeback(
+            proto_self_result=idle_result,
+            state=state,
+        )
         state.proto_self_context["endogenous_drive_delta"] = idle_result.get("endogenous_drive_delta") or {}
         state.proto_self_context["endogenous_drive_writeback"] = endogenous_drive_writeback
         state.proto_self_context["drive_state_snapshot"] = idle_result.get("drive_state_snapshot") or {}
@@ -3992,6 +4610,32 @@ class RuntimeV2ProtoSelfRuntime:
         idle_seconds: float = 0.0,
         unresolved_tensions: Optional[list] = None,
         long_term_goals: Optional[list] = None,
+        state.proto_self_context["initiative_realization_delta"] = (
+            idle_result.get("initiative_realization_delta") or {}
+        )
+        state.proto_self_context["commitment_fulfillment_candidates"] = (
+            idle_result.get("commitment_fulfillment_candidates") or []
+        )
+        state.proto_self_context["delivery_readiness_snapshot"] = (
+            idle_result.get("delivery_readiness_snapshot") or {}
+        )
+        state.proto_self_context["host_lane_hints"] = idle_result.get("host_lane_hints") or []
+        state.proto_self_context["controlled_delivery_candidate"] = idle_result.get(
+            "controlled_delivery_candidate"
+        )
+        state.proto_self_context["initiative_realization_audit_entries"] = (
+            idle_result.get("initiative_realization_audit_entries") or []
+        )
+        state.proto_self_context["initiative_realization_writeback_candidate"] = idle_result.get(
+            "initiative_realization_writeback_candidate"
+        )
+        state.proto_self_context["initiative_realization_context"] = (
+            idle_result.get("trace_payload") or {}
+        ).get("initiative_realization_context") or idle_result.get("initiative_realization_context") or {}
+        state.proto_self_context["host_proactive_context"] = (
+            idle_result.get("trace_payload") or {}
+        ).get("host_proactive_context") or {}
+        state.proto_self_context["initiative_realization_writeback"] = initiative_realization_writeback
         observation_refs: Optional[list] = None,
         state_snapshot: Optional[Dict[str, Any]] = None,
         replay_seed: Optional[int] = None,
@@ -4034,6 +4678,7 @@ class RuntimeV2ProtoSelfRuntime:
         )
         developmental_writeback = self._apply_developmental_self_writeback(
             proto_self_result=developmental_result,
+            initiative_realization_store=self.initiative_realization_store,
             state=state,
         )
         social_writeback = self._apply_social_self_writeback(
@@ -4067,6 +4712,10 @@ class RuntimeV2ProtoSelfRuntime:
         state.proto_self_context["developmental_summary"] = developmental_summary
         state.proto_self_context["shadow_revision"] = developmental_summary.get("shadow_revision")
         state.proto_self_context["last_developmental_cycle"] = developmental_summary.get("cycle_id")
+        initiative_realization_writeback = self._apply_initiative_realization_writeback(
+            proto_self_result=developmental_result,
+            state=state,
+        )
         state.proto_self_context["self_model_delta"] = developmental_result.get("self_model_delta") or {}
         state.proto_self_context["self_model_writeback"] = writeback
         state.proto_self_context["endogenous_drive_delta"] = developmental_result.get("endogenous_drive_delta") or {}
@@ -4188,6 +4837,32 @@ class RuntimeV2ProtoSelfRuntime:
                     developmental_writeback or {}
                 ).get("decision", {}).get("gate_verdict"),
                 "developmental_proposal_candidate_count": len(
+        state.proto_self_context["initiative_realization_delta"] = (
+            developmental_result.get("initiative_realization_delta") or {}
+        )
+        state.proto_self_context["commitment_fulfillment_candidates"] = (
+            developmental_result.get("commitment_fulfillment_candidates") or []
+        )
+        state.proto_self_context["delivery_readiness_snapshot"] = (
+            developmental_result.get("delivery_readiness_snapshot") or {}
+        )
+        state.proto_self_context["host_lane_hints"] = developmental_result.get("host_lane_hints") or []
+        state.proto_self_context["controlled_delivery_candidate"] = developmental_result.get(
+            "controlled_delivery_candidate"
+        )
+        state.proto_self_context["initiative_realization_audit_entries"] = (
+            developmental_result.get("initiative_realization_audit_entries") or []
+        )
+        state.proto_self_context["initiative_realization_writeback_candidate"] = developmental_result.get(
+            "initiative_realization_writeback_candidate"
+        )
+        state.proto_self_context["initiative_realization_context"] = (
+            developmental_result.get("trace_payload") or {}
+        ).get("initiative_realization_context") or developmental_result.get("initiative_realization_context") or {}
+        state.proto_self_context["host_proactive_context"] = (
+            developmental_result.get("trace_payload") or {}
+        ).get("host_proactive_context") or {}
+        state.proto_self_context["initiative_realization_writeback"] = initiative_realization_writeback
                     developmental_result.get("developmental_proposal_candidates") or []
                 ),
                 "embodied_writeback_gate_verdict": (embodied_writeback or {}).get("decision", {}).get("gate_verdict"),
@@ -4215,3 +4890,6 @@ class RuntimeV2ProtoSelfRuntime:
         if collector is None:
             return
         collector.capture_response_plan(build_response_plan_payload(result=result))
+                "initiative_realization_writeback_gate_verdict": (
+                    initiative_realization_writeback or {}
+                ).get("decision", {}).get("gate_verdict"),

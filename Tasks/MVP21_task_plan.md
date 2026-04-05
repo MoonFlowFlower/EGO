@@ -1,6 +1,6 @@
 # MVP21 / WP16 Host-Governed Initiative Realization / Proactive Delivery Mediation
 
-> 状态：T20 complete / T30 pending
+> 状态：T30 complete / T40 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP16`
 > predecessor: `WP15/MVP20`
@@ -175,11 +175,11 @@
 - `WP16` may not reinterpret `WP15` maintenance institutionalization or controlled evidence as delivery authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`proto_self_contract`
-- 当前状态：`proto_self_contract_complete`
-- 当前 blocker：`none on the WP16 proto-self-contract axis`
-- 当前最小闭环动作：`T30_EGOCORE_RUNTIME_BRIDGE`
-- 当前 claim ceiling：`T20 complete only`
+- 当前层级：`runtime_bridge`
+- 当前状态：`runtime_bridge_complete`
+- 当前 blocker：`none on the WP16 runtime-bridge axis`
+- 当前最小闭环动作：`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`
+- 当前 claim ceiling：`T30 complete only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP16: Host-Governed Initiative Realization / Proactive Delivery Mediation`

@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP16
-status: proto_self_contract_complete
-current_layer: proto_self_contract
-main_chain_status: openemotion_proto_self_contract_only
-enabled_status: authority_owner_and_proto_self_only
+status: runtime_bridge_complete
+current_layer: runtime_bridge
+main_chain_status: current_runtime_initiative_realization_consumer_present
+enabled_status: authority_owner_proto_self_and_runtime_bridge
 trigger_evidence:
   - WP15/MVP20 is the predecessor and remains in maintenance_mode
   - WP16 authority package now exists under Tasks/*
@@ -24,18 +24,22 @@ trigger_evidence:
   - KernelOutputV2 and trace now expose initiative_realization_context, initiative_realization_delta, commitment_fulfillment_candidates, delivery_readiness_snapshot, host_lane_hints, controlled_delivery_candidate, initiative_realization_audit_entries, and initiative_realization_writeback_candidate
   - proposal discipline remains proposal_only true, behavioral_authority none, and required_gate initiative_realization_writeback_gate
   - targeted proto-self contract verification passed in OpenEmotion/tests/mvp21/test_realization_proto_self_integration.py
+  - EgoCore runtime_v2 now injects initiative_realization_context and host_proactive_context into the formal runtime mainline
+  - current runtime records initiative_realization_delta, commitment_fulfillment_candidates, delivery_readiness_snapshot, host_lane_hints, controlled_delivery_candidate, initiative_realization_writeback_candidate, initiative_realization_context, host_proactive_context, and initiative_realization_writeback on bounded host context
+  - runtime writeback remains proposal_only true, behavioral_authority none, and required_gate initiative_realization_writeback_gate
+  - targeted runtime bridge verification passed in EgoCore/tests/test_runtime_v2_proto_self_runtime.py
 verification_level: V3
 evidence_level: E3
-current_blocker: "none on the WP16 proto-self-contract axis"
-next_minimal_closure_action: "T30_EGOCORE_RUNTIME_BRIDGE"
+current_blocker: "none on the WP16 runtime-bridge axis"
+next_minimal_closure_action: "T40_LEGACY_DEMOTION_AND_COMPAT_MAP"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP16/MVP21` 已完成 authority freeze、`T10_FORMAL_OWNER_PACKAGE` 与 `T20_PROTO_SELF_CONTRACT_INTEGRATION`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，并已通过唯一 bounded proto-self consumer path 接到 `proto_self_v2`
-- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness + owner implementation + proto-self contract；不覆盖 EgoCore runtime bridge、causal proof、observation、closeout 或 maintenance
-- 不可宣称完成：`MVP21` 已接当前 runtime 主链、已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
-- 后续处理：下一步只能进入 `T30_EGOCORE_RUNTIME_BRIDGE`，不能越过 runtime bridge 直接宣称 controlled mainline / observation / maintenance
+- 可宣称完成：`WP16/MVP21` 已完成 authority freeze、`T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION` 与 `T30_EGOCORE_RUNTIME_BRIDGE`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，并已通过唯一 bounded consumer path 接到 `proto_self_v2` 与当前 EgoCore runtime 主链
+- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness + owner implementation + proto-self contract + current runtime bridge；不覆盖 causal proof、observation、closeout 或 maintenance
+- 不可宣称完成：`MVP21` 已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
+- 后续处理：下一步只能进入 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`，不能越过 demotion / compat map 直接宣称 causal proof、controlled mainline / observation 或 maintenance
 
 ## 边界提醒
 
