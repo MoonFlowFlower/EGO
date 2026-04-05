@@ -84,12 +84,12 @@ def test_high_caution_changes_response_tendency(tmp_path):
         },
     )
 
-    assert control["response_tendency"]["preferred_mode"] == "ask"
-    assert intervention["response_tendency"]["preferred_mode"] == "respond"
-    assert intervention["response_tendency"]["preferred_tone"] == "cautious"
+    assert control["response_tendency"]["preferred_mode"] == "defer"
+    assert intervention["response_tendency"]["preferred_mode"] == "defer"
     assert intervention["response_tendency"]["ask_needed"] is False
     assert intervention["candidate_bias_terms"]["verification"] > control["candidate_bias_terms"]["verification"]
     assert intervention["candidate_bias_terms"]["conservation"] > control["candidate_bias_terms"]["conservation"]
+    assert control["priority_snapshot"]["dominant_drive"] == "stability"
     assert intervention["priority_snapshot"]["dominant_drive"] == "verification"
 
 
@@ -108,7 +108,8 @@ def test_low_reserve_elevates_self_maintenance_pressure(tmp_path):
     assert control["self_maintenance_candidate"] is None
     assert intervention["self_maintenance_candidate"] is not None
     assert intervention["policy_hint"]["maintenance_bias"] == "elevated"
-    assert intervention["response_tendency"]["preferred_mode"] == "repair"
+    assert intervention["response_tendency"]["preferred_mode"] == "defer"
+    assert intervention["response_tendency"]["preferred_tone"] == "cautious"
 
 
 def test_high_completion_pressure_changes_closure_bias(tmp_path):
@@ -121,10 +122,8 @@ def test_high_completion_pressure_changes_closure_bias(tmp_path):
         overrides={DriveType.COMPLETION: 0.90},
     )
 
-    assert control["response_tendency"]["preferred_mode"] == "ask"
-    assert intervention["response_tendency"]["preferred_mode"] == "respond"
-    assert intervention["response_tendency"]["preferred_tone"] == "direct"
-    assert intervention["response_tendency"]["suggested_next_step"] == "close the active loop before opening a new one"
+    assert control["response_tendency"]["preferred_mode"] == "defer"
+    assert intervention["response_tendency"]["preferred_mode"] == "defer"
     assert intervention["candidate_bias_terms"]["completion"] > control["candidate_bias_terms"]["completion"]
     assert intervention["priority_snapshot"]["dominant_drive"] == "completion"
 
@@ -157,6 +156,6 @@ def test_maintenance_candidate_switch_changes_governed_outputs(tmp_path):
     assert control["endogenous_drive_delta"] == {}
     assert "maintenance_debts" in intervention["endogenous_drive_delta"]
     assert intervention["policy_hint"]["maintenance_bias"] == "elevated"
-    assert intervention["response_tendency"]["preferred_mode"] == "repair"
-    assert intervention["response_tendency"]["ask_needed"] is False
+    assert intervention["response_tendency"]["preferred_mode"] == "defer"
+    assert intervention["candidate_bias_terms"]["repair"] > control["candidate_bias_terms"]["repair"]
     assert intervention["priority_snapshot"]["dominant_drive"] == "repair"

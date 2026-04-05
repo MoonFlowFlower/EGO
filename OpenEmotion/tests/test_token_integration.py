@@ -1,11 +1,11 @@
 """
 Integration tests for emotiond token authentication.
 
-Tests that /event API correctly validates tokens:
-1. Correct token → processed (200)
-2. Wrong token → 403
-3. No token → 403
-4. High-impact subtype + correct token → processed (200)
+Tests that /event API correctly resolves event source from tokens:
+1. Correct token → elevated source accepted
+2. Wrong token → downgraded to user source semantics
+3. No token → downgraded to user source semantics
+4. High-impact subtype + correct token → processed (not 403)
 """
 
 import os
@@ -57,14 +57,14 @@ class TestTokenAuthentication:
         """Test that correct token returns 200/processed."""
         if not emotiond_available:
             pytest.skip("emotiond not available")
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {CORRECT_TOKEN}"
         }
-        
+
         response = requests.post(event_url, json=base_payload, headers=headers, timeout=10)
-        
+
         # Should be accepted (200 or 201) - not 403
         # May get 500 if DB not initialized, but NOT 403
         assert response.status_code in (200, 201, 500), \
@@ -74,41 +74,63 @@ class TestTokenAuthentication:
             data = response.json()
             assert data.get("server_source") != "user", "Should not be treated as user source"
 
-    def test_wrong_token_returns_forbidden(self, emotiond_available, event_url, base_payload):
-        """Test that wrong token returns 403 with user source."""
+    def test_wrong_token_downgrades_to_user_source(self, emotiond_available, event_url, base_payload):
+        """Wrong token should behave like user source, not elevated source."""
         if not emotiond_available:
             pytest.skip("emotiond not available")
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {WRONG_TOKEN}"
         }
-        
-        response = requests.post(event_url, json=base_payload, headers=headers, timeout=10)
-        
-        # Should get 403 with server_source: user
-        assert response.status_code == 403, \
-            f"Expected 403 with wrong token, got {response.status_code}"
-        
-        data = response.json()
-        assert data.get("server_source") == "user", "Should be treated as user source"
 
-    def test_no_token_returns_forbidden(self, emotiond_available, event_url, base_payload):
-        """Test that missing token returns 403 with user source."""
+        response = requests.post(event_url, json=base_payload, headers=headers, timeout=10)
+
+        # care is user-allowed, so wrong token should be treated as user source and still pass
+        assert response.status_code in (200, 201, 500), \
+            f"Expected user-source semantics with wrong token, got {response.status_code}: {response.text}"
+
+        restricted_payload = {
+            **base_payload,
+            "meta": {
+                **base_payload["meta"],
+                "subtype": "betrayal",
+            },
+        }
+        restricted = requests.post(event_url, json=restricted_payload, headers=headers, timeout=10)
+        assert restricted.status_code == 403, \
+            f"Expected 403 for restricted subtype with wrong token, got {restricted.status_code}"
+
+        data = restricted.json()
+        assert data.get("server_source") == "user", "Wrong token should be treated as user source"
+
+    def test_no_token_downgrades_to_user_source(self, emotiond_available, event_url, base_payload):
+        """Missing token should behave like user source, not elevated source."""
         if not emotiond_available:
             pytest.skip("emotiond not available")
-        
+
         headers = {
             "Content-Type": "application/json"
         }
-        
+
         response = requests.post(event_url, json=base_payload, headers=headers, timeout=10)
-        
-        assert response.status_code == 403, \
-            f"Expected 403 with no token, got {response.status_code}"
-        
-        data = response.json()
-        assert data.get("server_source") == "user", "Should be treated as user source"
+
+        assert response.status_code in (200, 201, 500), \
+            f"Expected user-source semantics with no token, got {response.status_code}: {response.text}"
+
+        restricted_payload = {
+            **base_payload,
+            "meta": {
+                **base_payload["meta"],
+                "subtype": "betrayal",
+            },
+        }
+        restricted = requests.post(event_url, json=restricted_payload, headers=headers, timeout=10)
+        assert restricted.status_code == 403, \
+            f"Expected 403 for restricted subtype with no token, got {restricted.status_code}"
+
+        data = restricted.json()
+        assert data.get("server_source") == "user", "Missing token should be treated as user source"
 
     @pytest.mark.skipif(not CORRECT_TOKEN, reason="EMOTIOND_OPENCLAW_TOKEN not set")
     @pytest.mark.parametrize("high_impact_subtype", ["care", "apology"])
@@ -118,7 +140,7 @@ class TestTokenAuthentication:
         """Test that subtypes work with correct token (not rejected as user)."""
         if not emotiond_available:
             pytest.skip("emotiond not available")
-        
+
         payload = {
             "type": "world_event",
             "actor": "test_actor",
@@ -128,14 +150,14 @@ class TestTokenAuthentication:
                 "seconds": 30
             }
         }
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {CORRECT_TOKEN}"
         }
-        
+
         response = requests.post(event_url, json=payload, headers=headers, timeout=10)
-        
+
         # Should NOT be 403 (may be 500 if DB issue, but not forbidden)
         assert response.status_code != 403, \
             f"Got 403 for {high_impact_subtype} with correct token - token auth failed"

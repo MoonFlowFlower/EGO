@@ -12,6 +12,8 @@ import asyncio
 import sys
 import os
 
+import pytest
+
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -27,25 +29,26 @@ def test_plan_response_has_intent_contract():
     print("✅ PlanResponse has intent_contract field")
 
 
+@pytest.mark.asyncio
 async def test_generate_plan_includes_contract():
     """Test that generate_plan() returns intent_contract"""
     from emotiond.core import generate_plan
     from emotiond.models import PlanRequest
-    
+
     # Create a minimal request
     request = PlanRequest(
         user_id="test_user",
         user_text="Hello",
         focus_target="test_user"
     )
-    
+
     try:
         result = await generate_plan(request)
-        
+
         # Check if intent_contract is in result
         assert hasattr(result, 'intent_contract'), "Result has no intent_contract attribute"
         print(f"✅ generate_plan() returns intent_contract")
-        
+
         if result.intent_contract:
             print(f"   intent_contract keys: {list(result.intent_contract.keys())[:5]}")
         else:
@@ -54,11 +57,12 @@ async def test_generate_plan_includes_contract():
         print(f"⚠️ generate_plan() test skipped: {e}")
 
 
+@pytest.mark.asyncio
 async def test_assistant_reply_triggers_checker():
     """Test that assistant_reply triggers intent checker"""
     from emotiond.core import process_event
     from emotiond.models import Event
-    
+
     # Create an assistant_reply event with test text
     event = Event(
         type="assistant_reply",
@@ -66,10 +70,10 @@ async def test_assistant_reply_triggers_checker():
         target="agent",
         text="My joy is 0.5"  # Should trigger numeric leak
     )
-    
+
     try:
         result = await process_event(event)
-        
+
         # Check if intent_check is in result
         if "intent_check" in result:
             print("✅ assistant_reply triggers intent checker")
@@ -88,11 +92,11 @@ def main():
     print("T06.5 Runtime Integration Test")
     print("=" * 60)
     print()
-    
+
     # Test 1: PlanResponse field
     test_plan_response_has_intent_contract()
     print()
-    
+
     # Test 2: generate_plan
     print("Test 2: generate_plan() includes contract")
     try:
@@ -100,7 +104,7 @@ def main():
     except Exception as e:
         print(f"   Skipped: {e}")
     print()
-    
+
     # Test 3: assistant_reply
     print("Test 3: assistant_reply triggers checker")
     try:
@@ -108,7 +112,7 @@ def main():
     except Exception as e:
         print(f"   Skipped: {e}")
     print()
-    
+
     print("=" * 60)
     print("T06.5 Integration Test Complete")
     print("=" * 60)

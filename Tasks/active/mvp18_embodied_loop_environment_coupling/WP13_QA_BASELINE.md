@@ -86,7 +86,7 @@
 
 固定入口：
 
-- `OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py`
+- `OpenEmotion/tests/mvp18/test_mvp18_mainline_reference_demotion.py`
 - `OpenEmotion/tools/verify_mvp18_mainline_wiring.py --json`
 
 通过信号：
@@ -253,4 +253,3 @@ reopen 后，必须重新裁决：
   - 明确保留 `live autonomy / direct reply authority / broader transport claims`
 - reopen decision：
   - `yes / no`
-

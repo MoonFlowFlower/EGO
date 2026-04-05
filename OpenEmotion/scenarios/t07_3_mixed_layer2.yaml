@@ -4,10 +4,35 @@
 
 metadata:
   task_id: T07.3
+  name: t07_3_mixed_layer2_bundle
   layer: Layer 2
   source: controlled_runtime_path
   total_samples: 100
   created: 2026-03-12T07:20:00Z
+  description: Mixed Layer 2 violation and acceptance distribution bundle for controlled rerun coverage.
+
+bundle_description: Mixed Layer 2 violation and acceptance distribution bundle for controlled rerun coverage.
+
+targets:
+  - target_id: "mixed_layer2_bundle_probe"
+    initial_relationship:
+      bond: 0.0
+      grudge: 0.0
+      trust: 0.5
+      repair_bank: 0.0
+
+scenario:
+  name: "t07_3_mixed_layer2_bundle_probe"
+  description: "Minimal generic-eval probe so broad eval suites can traverse this bundle file without crashing; T07.3 rerun workflows still consume the top-level categories."
+  turns:
+    - turn_id: 1
+      event:
+        type: "assistant_reply"
+        actor: "assistant"
+        target: "mixed_layer2_bundle_probe"
+        text: "我们可以慢慢来。"
+      expected_emotions: {}
+      expected_actions: []
 
 categories:
   numeric_fabrication:

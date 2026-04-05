@@ -155,6 +155,42 @@ def to_windows_path(path: Path) -> str:
     return str(resolved)
 
 
+def should_use_windows_interop(command: Sequence[str], cwd: Path) -> bool:
+    if os.name == "nt" or not command:
+        return False
+    executable = str(command[0]).lower()
+    return executable.endswith(".exe") and str(cwd).startswith("/mnt/") and shutil.which("cmd.exe") is not None
+
+
+def convert_command_for_windows(command: Sequence[str]) -> list[str]:
+    converted: list[str] = []
+    for index, arg in enumerate(command):
+        if index == 0 and str(arg).lower().endswith(".exe"):
+            converted.append(to_windows_path(Path(arg)))
+            continue
+        if isinstance(arg, str) and arg.startswith("/mnt/"):
+            candidate = Path(arg)
+            if candidate.exists():
+                converted.append(to_windows_path(candidate))
+                continue
+        converted.append(str(arg))
+    return converted
+
+
+def escape_cmd_set_value(value: str) -> str:
+    return value.replace("%", "%%").replace('"', '^"')
+
+
+def build_windows_env_prefix(env_overrides: dict[str, str] | None) -> str:
+    if not env_overrides:
+        return ""
+    assignments = [
+        f'set "{key}={escape_cmd_set_value(value)}"'
+        for key, value in env_overrides.items()
+    ]
+    return " && ".join(assignments) + " && "
+
+
 def run_bootstrap_command(command: Sequence[str], cwd: Path) -> None:
     env = os.environ.copy()
     if os.name != "nt":
@@ -215,7 +251,7 @@ def bootstrap_openemotion_windows_venv() -> OpenEmotionRuntime:
 
 
 def resolve_openemotion_runtime(*, dry_run: bool) -> OpenEmotionRuntime:
-    required_modules = ["fastapi", "pydantic", "pytest", "pytest_asyncio", "requests"]
+    required_modules = ["fastapi", "pydantic", "pytest", "pytest_asyncio", "requests", "dotenv", "anthropic"]
     for command, label in candidate_openemotion_python():
         if not python_missing_modules(command, required_modules):
             return OpenEmotionRuntime(command=list(command), label=label)
@@ -231,12 +267,20 @@ def resolve_openemotion_runtime(*, dry_run: bool) -> OpenEmotionRuntime:
     return bootstrap_openemotion_venv()
 
 
-def repo_local_pythonpath(entries: Sequence[Path]) -> str:
-    parts = [str(path) for path in entries]
-    existing = os.environ.get("PYTHONPATH")
-    if existing:
-        parts.append(existing)
-    return os.pathsep.join(parts)
+def repo_local_pythonpath(
+    entries: Sequence[Path], *, windows: bool = False, include_existing: bool = True
+) -> str:
+    if windows:
+        parts = [to_windows_path(path) for path in entries]
+        separator = ";"
+    else:
+        parts = [str(path) for path in entries]
+        separator = os.pathsep
+    if include_existing:
+        existing = os.environ.get("PYTHONPATH")
+        if existing:
+            parts.append(existing)
+    return separator.join(parts)
 
 
 def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
@@ -255,16 +299,30 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
     open_python_cmd, open_python_label = open_runtime.command, open_runtime.label
     open_runtime_missing = python_missing_modules(
         open_python_cmd,
-        ["fastapi", "pydantic", "pytest", "pytest_asyncio", "requests"],
+        ["fastapi", "pydantic", "pytest", "pytest_asyncio", "requests", "dotenv", "anthropic"],
     )
     open_smoke_missing = python_missing_modules(open_python_cmd, ["fastapi", "requests"])
+    open_runtime_uses_windows_paths = str(open_python_cmd[0]).lower().endswith(".exe")
     ego_pytest_env = {
         "PYTHONPATH": repo_local_pythonpath(
             [
+                ROOT,
                 ROOT / "EgoCore",
                 ROOT / "EgoCore" / "modules",
                 ROOT / "OpenEmotion",
             ]
+        )
+    }
+    openemotion_env = {
+        "PYTHONPATH": repo_local_pythonpath(
+            [
+                ROOT / "OpenEmotion",
+                ROOT,
+                ROOT / "EgoCore",
+                ROOT / "EgoCore" / "modules",
+            ],
+            windows=open_runtime_uses_windows_paths,
+            include_existing=False,
         )
     }
 
@@ -330,6 +388,7 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
                 source=source,
                 run_in_fast=False,
                 run_in_full=not open_runtime_missing,
+                env_overrides=openemotion_env,
                 precondition_reason=open_test_reason,
             )
         )
@@ -360,6 +419,7 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
                 source=f"OpenEmotion/verify_typecheck_simple.py via {open_python_label}",
                 run_in_fast=simple_reason is None,
                 run_in_full=False,
+                env_overrides=openemotion_env,
                 precondition_reason=simple_reason,
             )
         )
@@ -374,6 +434,7 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
                 source=f"OpenEmotion/verify_typecheck.py via {open_python_label}",
                 run_in_fast=False,
                 run_in_full=True,
+                env_overrides=openemotion_env,
             )
         )
 
@@ -391,6 +452,7 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
             source=f"OpenEmotion/test_smoke.py via {open_python_label}",
             run_in_fast=smoke_reason is None,
             run_in_full=False,
+            env_overrides=openemotion_env,
             precondition_reason=smoke_reason,
         )
     )
@@ -423,11 +485,12 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
                 "--output",
                 "artifacts/testbot/pr_summary.json",
             ],
-            cwd=ROOT / "OpenEmotion",
-            source=f"OpenEmotion/scripts/run_testbot_scenarios.py via {open_python_label}",
-            run_in_fast=False,
-            run_in_full=not open_runtime_missing,
-            precondition_reason=testbot_reason,
+                cwd=ROOT / "OpenEmotion",
+                source=f"OpenEmotion/scripts/run_testbot_scenarios.py via {open_python_label}",
+                run_in_fast=False,
+                run_in_full=not open_runtime_missing,
+                env_overrides=openemotion_env,
+                precondition_reason=testbot_reason,
         )
     )
 
@@ -492,12 +555,23 @@ def run_check(check: Check, *, dry_run: bool) -> Result:
                 returncode=1,
             )
     try:
-        proc = subprocess.run(
-            list(check.command),
-            cwd=check.cwd,
-            env=env,
-            text=True,
-        )
+        if should_use_windows_interop(check.command, check.cwd):
+            windows_cwd = to_windows_path(check.cwd)
+            windows_command = subprocess.list2cmdline(convert_command_for_windows(check.command))
+            env_prefix = build_windows_env_prefix(check.env_overrides)
+            proc = subprocess.run(
+                ["cmd.exe", "/c", f"{env_prefix}cd /d {windows_cwd} && {windows_command}"],
+                cwd=ROOT,
+                env=env,
+                text=True,
+            )
+        else:
+            proc = subprocess.run(
+                list(check.command),
+                cwd=check.cwd,
+                env=env,
+                text=True,
+            )
     finally:
         if managed_process is not None:
             stop_managed_process(managed_process)

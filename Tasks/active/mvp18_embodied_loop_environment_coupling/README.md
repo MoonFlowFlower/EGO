@@ -98,7 +98,7 @@ scope: "WP13 / MVP18 Embodied Loop / Environment Coupling"
   - `proto_self_v2` 当前仍读取 bounded embodied / environment context
   - `EgoCore` current runtime embodied consumer 仍是唯一 formal path
   - 旧 `consequence / interventions / science_mode` surfaces 没有被重新抬成 second truth
-- `OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py` 已把 no-second-truth / demotion 断言固定成定向回归测试
+- `OpenEmotion/tests/mvp18/test_mvp18_mainline_reference_demotion.py` 已把 no-second-truth / demotion 断言固定成定向回归测试
 
 ## T50 已证实内容
 

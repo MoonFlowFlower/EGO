@@ -3,14 +3,40 @@ Pytest configuration for OpenEmotion tests
 """
 import os
 import sys
+import importlib
 import pytest
 import pytest_asyncio
 import asyncio
 import tempfile
 import shutil
 import socket
+from pathlib import Path
 from emotiond.db import init_db
 from emotiond import api
+
+
+OPENEMOTION_ROOT = Path(__file__).resolve().parents[1]
+OPENEMOTION_TOOLS_ROOT = OPENEMOTION_ROOT / "tools"
+
+
+def _ensure_openemotion_tools_namespace() -> None:
+    openemotion_root_str = str(OPENEMOTION_ROOT)
+    if openemotion_root_str not in sys.path:
+        sys.path.insert(0, openemotion_root_str)
+
+    loaded_tools = sys.modules.get("tools")
+    loaded_tools_file = getattr(loaded_tools, "__file__", None)
+    if loaded_tools_file:
+        loaded_tools_path = Path(loaded_tools_file).resolve()
+        if not loaded_tools_path.is_relative_to(OPENEMOTION_TOOLS_ROOT):
+            for module_name in list(sys.modules):
+                if module_name == "tools" or module_name.startswith("tools."):
+                    del sys.modules[module_name]
+
+    importlib.import_module("tools")
+
+
+_ensure_openemotion_tools_namespace()
 
 
 def pytest_addoption(parser):

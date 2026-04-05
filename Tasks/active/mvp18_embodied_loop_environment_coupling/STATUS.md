@@ -23,7 +23,7 @@ trigger_evidence:
   - EgoCore runtime embodied bridge tests passed in test_runtime_v2_proto_self_runtime.py
   - legacy consequence / intervention historical surfaces explicitly classified as technical reference, reference-only, or input-only
   - `OpenEmotion/tools/verify_mvp18_mainline_wiring.py` now proves current runtime embodied consumer presence plus no-second-truth legacy demotion
-  - `OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py` now proves legacy consequence / intervention surfaces remain demoted
+  - `OpenEmotion/tests/mvp18/test_mvp18_mainline_reference_demotion.py` now proves legacy consequence / intervention surfaces remain demoted
   - paired causal validation now proves resource/slack pressure, consequence memory, and self/world boundary pressure alter bounded downstream embodied weighting
   - text-only outcome wording changes without metric shift do not create false downstream embodied behavioral proof
   - `OpenEmotion/tools/run_mvp18_controlled_observation.py` now produces the first controlled runtime-mainline embodied proposal-only writeback artifact

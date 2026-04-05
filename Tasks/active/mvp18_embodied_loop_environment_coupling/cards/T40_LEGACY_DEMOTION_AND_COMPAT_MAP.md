@@ -11,7 +11,7 @@ non_goals:
 write_scope:
   - OpenEmotion/emotiond/*
   - OpenEmotion/tools/verify_mvp18_mainline_wiring.py
-  - OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py
+  - OpenEmotion/tests/mvp18/test_mvp18_mainline_reference_demotion.py
   - Tasks/active/mvp18_embodied_loop_environment_coupling/LEGACY_REFERENCE_REGISTER.md
 read_scope:
   - Tasks/MVP18_task_plan.md
@@ -23,7 +23,7 @@ success_criteria:
   - legacy embodied surfaces are explicitly demoted
   - no-second-truth verifier exists
 verification_commands:
-  - pytest -q OpenEmotion/tests/mvp18/test_mainline_reference_demotion.py
+  - pytest -q OpenEmotion/tests/mvp18/test_mvp18_mainline_reference_demotion.py
 proof_required:
   - demotion tests and verifier
 rollback_point:
