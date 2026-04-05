@@ -14,7 +14,7 @@ predecessor: "WP14/MVP19"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP15 / MVP20 Host-Governed Self-Directed Initiative / Commitment Continuity"
-claim_ceiling: "single-sample V4/E4 only"
+claim_ceiling: "repeated/batch V5/E5 only"
 ```
 
 ---
@@ -62,13 +62,13 @@ claim_ceiling: "single-sample V4/E4 only"
 - `T40` legacy demotion / compat map：`completed`
 - `T50` causal validation：`completed`
 - `T60` single controlled observation：`completed`
-- `T70` batch controlled observation / aggregate：`pending`
+- `T70` batch controlled observation / aggregate：`completed`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`current_runtime_initiative_consumer_present_legacy_reference_only`
-- 启用状态：`single_controlled_observation_started`
+- 启用状态：`repeated_controlled_observation_passed`
 - 当前 blocker：`none on the WP15 runtime-bridge axis`
-- 当前最小动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
+- 当前最小动作：`T80_CLOSEOUT_AND_QA_BASELINE`
 
 ## 当前已证实内容
 
@@ -94,6 +94,17 @@ claim_ceiling: "single-sample V4/E4 only"
 - `OpenEmotion/tools/run_mvp20_causal_validation.py` 现已生成 `OpenEmotion/artifacts/mvp20/mvp20_causal_validation_current.md/.json`，当前 causal report 口径为 `V3/E3`
 - `OpenEmotion/tests/mvp20/test_controlled_observation.py` 现已验证 `MVP20` single controlled observation report shape、`allow_writeback` gate、`behavioral_authority_none` 与 `V4/E4` claim ceiling
 - `OpenEmotion/tools/run_mvp20_controlled_observation.py` 现已生成 `OpenEmotion/artifacts/mvp20/mvp20_controlled_observation_current.md/.json`，当前只证明首个 controlled runtime-mainline `V4/E4` single observation
+- `OpenEmotion/scenarios/mvp20_observation_bank/*` 现已提供 3 条 `repo_authored` batch scenarios，用于 MVP20 repeated controlled observation aggregate
+- `OpenEmotion/tests/mvp20/test_controlled_observation_batch.py` 已把 batch controlled observation 的最小 contract 固定成回归测试
+- 当前 batch controlled observation 结果为：
+  - `status = pass`
+  - `verification_level = V5`
+  - `evidence_level = E5`
+  - `report_count = 3`
+  - `accepted_count = 3`
+  - `proposal_only_discipline_count = 3`
+  - `behavioral_authority_none_count = 3`
+- 这证明当前 formal owner + current runtime mainline 已在 repeated controlled observation 轴上拿到 initiative proposal-only writeback 的 `V5/E5` aggregate；这仍不证明 closeout、`maintenance_mode`、或 authority 放开
 
 ## 当前不做
 

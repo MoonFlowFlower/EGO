@@ -180,10 +180,10 @@
 
 ## Current Phase Status
 - 当前层级：`implementation`
-- 当前状态：`T60 completed`
-- 当前 blocker：`none on the WP15 runtime-bridge axis`
-- 当前最小闭环动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
-- 当前 claim ceiling：`single-sample V4/E4 only`
+- 当前状态：`T70 completed`
+- 当前 blocker：`none on the WP15 batch-observation axis`
+- 当前最小闭环动作：`T80_CLOSEOUT_AND_QA_BASELINE`
+- 当前 claim ceiling：`repeated/batch V5/E5 only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP15: Host-Governed Self-Directed Initiative / Commitment Continuity`

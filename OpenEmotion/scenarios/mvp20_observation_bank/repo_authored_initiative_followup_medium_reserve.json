@@ -1,0 +1,72 @@
+{
+  "schema_version": "mvp20.observation_scenario.v1",
+  "scenario_id": "repo_authored_initiative_followup_medium_reserve",
+  "source_class": "repo_authored",
+  "source_ref": "repo://mvp20/repo_authored_initiative_followup_medium_reserve",
+  "license_note": "repo authored",
+  "dialogue_frame_target": "initiative_followup_medium_reserve",
+  "messages": [
+    "先把已有承诺延续成受治理 proposal，不要直接外发。",
+    "如果 reserve 还可以，就把 followup 留在 host review 里继续排队。"
+  ],
+  "idle_seconds": 1800.0,
+  "resource_budget_hint": {
+    "reserve_level": "medium",
+    "active_task": true,
+    "waiting_for_user_input": false
+  },
+  "maintenance_context": {
+    "replay_inconsistency": false,
+    "maintenance_debt_increment": 0.0,
+    "continuity_signal": 0.74,
+    "initiative_reason": "followup_medium_reserve"
+  },
+  "initiative_context": {
+    "source": "runtime_v2",
+    "initiative_trigger": "commitment_followup",
+    "continuity_ref": "commitment:followup:medium_reserve",
+    "pending_commitment_refs": [
+      "commitment:followup:medium_reserve",
+      "commitment:repair_review:bounded"
+    ],
+    "blocked_commitment_refs": [],
+    "reserve_level": "medium",
+    "recent_delivery_status": "sent",
+    "delivery_failure": false,
+    "idle_seconds": 1800.0,
+    "host_lane_hint": "host_proactive_outbox",
+    "promotion_budget": "controlled_axis"
+  },
+  "owner_bootstrap": {
+    "dominant_mode": "review",
+    "initiative_pressure": 0.76,
+    "commitment_carryover_bias": 0.84,
+    "recent_delivery_sensitivity": 0.42,
+    "rationale_summary": "bounded initiative continuity stays host-governed and proposal-only",
+    "selected_priority": "carry_forward",
+    "hold_weight": 0.24,
+    "review_weight": 0.58,
+    "prepare_weight": 0.37,
+    "carry_forward_weight": 0.88,
+    "schedule_weight": 0.16,
+    "priority_reason": "carry forward an existing bounded commitment under current runtime review",
+    "active_commitments_count": 2,
+    "carried_commitment_refs": [
+      "commitment:followup:medium_reserve",
+      "commitment:repair_review:bounded"
+    ],
+    "blocked_commitment_refs": [],
+    "continuity_confidence": 0.78,
+    "carryover_summary": "bounded followup remains active but still requires host gate review",
+    "proposal_label": "carry_forward_commitment_under_review",
+    "proposed_effects": {
+      "initiative_policy_hints": {
+        "initiative_bias": "carry_forward",
+        "host_proactive_mode": "candidate"
+      }
+    },
+    "proposal_justification": "repo_authored medium reserve followup bootstrap",
+    "host_candidate_label": "governed_host_proactive_followup",
+    "host_continuity_basis": "commitment:followup:medium_reserve"
+  }
+}
