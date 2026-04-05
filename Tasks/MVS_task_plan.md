@@ -1188,11 +1188,12 @@
 - 证据层级目标：E0 -> E1（authority / contract freeze）
 
 **当前状态（2026-04-04）**
-- `WP15/MVP20` 当前层级是 `owner_package`
-- 当前状态是 `T10 completed`
+- `WP15/MVP20` 当前层级是 `proto_self_contract`
+- 当前状态是 `T20 completed`
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/initiative_self/*`
 - 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
-- 当前 phase 1 只冻结并已落地 self-directed initiative proposal semantics、commitment continuity / carryover semantics 的 formal owner package，以及 bounded host-proactive candidate generation 的 owner-side semantics；尚未进入 proto-self contract、runtime wiring、controlled observation 或 maintenance mode
+- 当前 phase 1 只冻结并已落地 self-directed initiative proposal semantics、commitment continuity / carryover semantics 的 formal owner package，以及 bounded host-proactive candidate generation 的 owner-side semantics，并已把这些 surfaces 通过唯一 bounded contract 接入 `proto_self_v2`；尚未进入 runtime wiring、controlled observation 或 maintenance mode
 - 当前已证实：`Tasks/MVP20_task_plan.md` 与 `Tasks/active/mvp20_host_governed_initiative_continuity/*` 已把 capability ownership、authority source、IO contract、`WP7~WP14` boundary freeze、legacy demotion register、subagent assignment 与 task cards 收成一致 authority package
 - 当前已证实：`OpenEmotion/openemotion/initiative_self/*` formal owner package 已落地，且 `OpenEmotion/tests/mvp20/test_initiative_owner_infra.py` 已证明 owner state 覆盖 initiative state / initiative priority state / commitment continuity state / initiative proposal candidate / host-proactive candidate semantics / initiative ledger，同时验证 bounded projection、proposal-only governance、store roundtrip 与 replay primitives 成立
-- 当前 blocker：无 `T10` 轴内 blocker；下一步最小闭环动作是 `T20_PROTO_SELF_CONTRACT_INTEGRATION`
+- 当前已证实：`OpenEmotion/openemotion/proto_self_v2/initiative_self_context.py` 已把 `runtime_summary.initiative_self_context / initiative_context` 接入 `proto_self_v2`，并新增 `initiative_self_delta / initiative_proposal_candidates / commitment_execution_snapshot / initiative_policy_hints / host_proactive_candidate / initiative_audit_entries / initiative_writeback_candidate / trace_payload.initiative_context`；当前约束仍是 `proposal_only + behavioral_authority = none + required_gate = initiative_writeback_gate`
+- 当前 blocker：无 `T20` 轴内 blocker；下一步最小闭环动作是 `T30_EGOCORE_RUNTIME_BRIDGE`

@@ -179,11 +179,11 @@
 - `WP15` may not reinterpret `WP8~WP14` maintenance institutionalization or controlled evidence as live authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`owner_package`
-- 当前状态：`T10 completed`
-- 当前 blocker：`none on the WP15 owner-package axis`
-- 当前最小闭环动作：`T20_PROTO_SELF_CONTRACT_INTEGRATION`
-- 当前 claim ceiling：`T10 completed only`
+- 当前层级：`proto_self_contract`
+- 当前状态：`T20 completed`
+- 当前 blocker：`none on the WP15 proto-self contract axis`
+- 当前最小闭环动作：`T30_EGOCORE_RUNTIME_BRIDGE`
+- 当前 claim ceiling：`T20 completed only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP15: Host-Governed Self-Directed Initiative / Commitment Continuity`
@@ -206,7 +206,7 @@
 - 本文件完成不等于 `MVP20` 已开始 observation
 - 本文件完成不等于 `MVP20` 已进入 maintenance mode
 - `T10` 完成只证明 formal owner package 在 OpenEmotion owner 层落地，且 owner-level schema/state/store/governance/replay/projection 已通过定向验证；不证明 runtime mainline 或 observation
-- `T20` 完成只证明 `initiative_self` 已接入 `proto_self_v2` bounded contract；不证明 EgoCore runtime mainline 已消费
+- `T20` 完成只证明 `initiative_self` 已接入 `proto_self_v2` bounded contract，且 initiative outputs / trace mirror 已通过定向验证；不证明 EgoCore runtime mainline 已消费
 - `T30` 完成只证明当前 EgoCore runtime thin bridge 已接入正式主链；不证明 `E4/E5` controlled observation
 - `T40` 完成只证明 host proactive substrate / legacy demotion / compat map 已冻结并通过 no-second-truth verifier；不证明 causal influence 或 controlled observation
 - `T50` 完成只证明 initiative proposals 会改变 bounded downstream weighting，并留下 `V3/E3` causal proof；不证明 controlled observation
