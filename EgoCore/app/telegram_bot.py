@@ -91,7 +91,7 @@ from app.autonomy import (
 from app.core_bus import BusEvent, get_message_bus, get_session_worker_pool
 from app.session_store import SessionLogManager
 from app.agent_core import NativeToolCallingLoop
-from app.openemotion_hooks import NativeOpenEmotionHooks
+from app.openemotion_hooks import MandatorySubjectGate, NativeOpenEmotionHooks
 from app.telegram_runtime_fallback import TelegramRuntimeFallbackRunner
 from app.telegram_runtime_bridge import TelegramRuntimeBridge
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
@@ -264,6 +264,7 @@ class TelegramBot:
         self.runtime_v2_bridge = self.telegram_runtime_bridge
         self.native_loop = None
         self.native_openemotion_hooks = None
+        self.subject_gate = None
         self._setup_complete = False
         self._run_started = False
         # Stale reply suppression: remember latest ingress message per session.
@@ -469,6 +470,40 @@ class TelegramBot:
         verdict = apply_output_check(plan, state)
         if not verdict.passed:
             return False
+        session_id = str(
+            getattr(state, "session_id", None)
+            or f"telegram:chat:{getattr(getattr(update, 'effective_chat', None), 'id', 'unknown')}"
+        )
+        turn_suffix = (
+            str(getattr(getattr(update, "message", None), "message_id", "")).strip()
+            or uuid.uuid4().hex[:8]
+        )
+        turn_result = TelegramTurnResult(
+            status=status,
+            state=state,
+            reply=TelegramTurnReply(
+                reply_text=verdict.reply_text,
+                delivery_kind=delivery_kind,
+                status=status,
+            ),
+        )
+        subject_gate = self._get_subject_gate()
+        if subject_gate is not None:
+            gate_verdict = subject_gate.finalize_host_owned_result(
+                session_id=session_id,
+                turn_id=f"host_owned_{turn_suffix}",
+                result=turn_result,
+                state=state,
+                evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+            )
+            if not gate_verdict.ok:
+                await self._send_reply(
+                    update,
+                    gate_verdict.reply_text,
+                    use_markdown=False,
+                    finalize_evidence=finalize_evidence,
+                )
+                return False
         self._capture_pre_runtime_response_plan(plan, verdict)
         await self._send_reply(
             update,
@@ -2038,6 +2073,14 @@ class TelegramBot:
         if self.native_openemotion_hooks is None:
             self.native_openemotion_hooks = NativeOpenEmotionHooks()
         return self.native_openemotion_hooks
+
+    def _get_subject_gate(self) -> Optional[MandatorySubjectGate]:
+        if not self.use_runtime_v2:
+            return None
+        hooks = self._get_native_openemotion_hooks()
+        if self.subject_gate is None or getattr(self.subject_gate, "hooks", None) is not hooks:
+            self.subject_gate = MandatorySubjectGate(hooks=hooks)
+        return self.subject_gate
 
     def _finalize_native_openemotion_turn(
         self,

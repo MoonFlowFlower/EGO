@@ -6,6 +6,7 @@ import pytest
 
 import app.telegram_bot as telegram_bot_module
 from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus, AutonomyStopReason
+from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.runtime_v2.run_items import build_run_items_from_request
 from app.runtime_v2.cli import run_cli
 from app.telegram_bot import TelegramBot
@@ -625,6 +626,17 @@ async def test_telegram_bot_host_owned_reply_captures_explicit_response_plan(mon
 
     update = DummyUpdate()
     collector.start_sample(update.to_dict())
+    class FakeHooks:
+        enabled = True
+
+        def process_finalized_result(self, **kwargs):
+            return None
+
+        def capture_response_plan(self, **kwargs):
+            return None
+
+    monkeypatch.setattr(bot, "_get_native_openemotion_hooks", lambda: FakeHooks())
+    bot.subject_gate = None
 
     sent = await bot._send_host_owned_reply(
         update,
@@ -645,6 +657,56 @@ async def test_telegram_bot_host_owned_reply_captures_explicit_response_plan(mon
     assert sample.response_plan["status"] == "task_conflict_pending"
     assert sample.response_plan.get("inferred") is not True
     assert update.message.sent == ["当前已有一个活跃任务。"]
+
+
+@pytest.mark.asyncio
+async def test_telegram_bot_host_owned_reply_blocks_when_subject_gate_fails(monkeypatch):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    state = bot._get_runtime_state("telegram:dm:456")
+
+    class DummyMessage:
+        text = "继续"
+        message_id = 13
+        reply_to_message = None
+        sent = []
+
+        async def reply_text(self, text, parse_mode=None):
+            self.sent.append(text)
+            return SimpleNamespace(
+                chat=SimpleNamespace(id=123),
+                message_id=self.message_id + len(self.sent),
+                date=datetime.now(timezone.utc),
+            )
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = SimpleNamespace(id=123, type="private")
+        effective_user = SimpleNamespace(id=456, username="tester")
+
+    monkeypatch.setattr(
+        bot,
+        "_get_subject_gate",
+        lambda: SimpleNamespace(
+            finalize_host_owned_result=lambda **kwargs: SubjectGateVerdict.block(
+                stage="finalized_result",
+                reason="hooks_disabled",
+            )
+        ),
+    )
+
+    sent = await bot._send_host_owned_reply(
+        DummyUpdate(),
+        state=state,
+        reply_text="当前已有一个活跃任务。",
+        status="task_conflict_pending",
+        delivery_kind="final",
+        authority_source="host_pre_runtime",
+        reply_authority="host_degraded_fallback",
+        metadata={"conversation_act": "task_conflict"},
+    )
+
+    assert sent is False
+    assert DummyUpdate.message.sent == ["subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。"]
 
 
 @pytest.mark.asyncio
@@ -712,6 +774,17 @@ async def test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_meta
             }
 
     bot.app = type("A", (), {"bot": DummyBot()})()
+    class FakeHooks:
+        enabled = True
+
+        def process_finalized_result(self, **kwargs):
+            return None
+
+        def capture_response_plan(self, **kwargs):
+            return None
+
+    monkeypatch.setattr(bot, "_get_native_openemotion_hooks", lambda: FakeHooks())
+    bot.subject_gate = None
     update = DummyUpdate()
     collector.start_sample(update.to_dict())
 
