@@ -191,6 +191,13 @@ class KernelOutputV2:
     axis_arbitration_hints: Dict[str, Dict[str, Any]] = field(default_factory=dict)
     integration_audit_entries: List[Dict[str, Any]] = field(default_factory=list)
     self_integration_writeback_candidate: Optional[Dict[str, Any]] = None
+    initiative_self_delta: Dict[str, Any] = field(default_factory=dict)
+    initiative_proposal_candidates: List[Dict[str, Any]] = field(default_factory=list)
+    commitment_execution_snapshot: Dict[str, Any] = field(default_factory=dict)
+    initiative_policy_hints: Dict[str, Any] = field(default_factory=dict)
+    host_proactive_candidate: Optional[Dict[str, Any]] = None
+    initiative_audit_entries: List[Dict[str, Any]] = field(default_factory=list)
+    initiative_writeback_candidate: Optional[Dict[str, Any]] = None
     endogenous_drive_delta: Dict[str, Any] = field(default_factory=dict)
     drive_state_snapshot: Dict[str, Any] = field(default_factory=dict)
     priority_snapshot: Dict[str, Any] = field(default_factory=dict)
@@ -250,6 +257,13 @@ class KernelOutputV2:
             "axis_arbitration_hints": self.axis_arbitration_hints,
             "integration_audit_entries": self.integration_audit_entries,
             "self_integration_writeback_candidate": self.self_integration_writeback_candidate,
+            "initiative_self_delta": self.initiative_self_delta,
+            "initiative_proposal_candidates": self.initiative_proposal_candidates,
+            "commitment_execution_snapshot": self.commitment_execution_snapshot,
+            "initiative_policy_hints": self.initiative_policy_hints,
+            "host_proactive_candidate": self.host_proactive_candidate,
+            "initiative_audit_entries": self.initiative_audit_entries,
+            "initiative_writeback_candidate": self.initiative_writeback_candidate,
             "endogenous_drive_delta": self.endogenous_drive_delta,
             "drive_state_snapshot": self.drive_state_snapshot,
             "priority_snapshot": self.priority_snapshot,

@@ -29,6 +29,12 @@ from openemotion.proto_self_v2.reflective_self_context import (
     extract_runtime_reflective_self_context,
     summarize_runtime_reflective_self_context,
 )
+from openemotion.proto_self_v2.initiative_self_context import (
+    derive_initiative_outputs,
+    extract_runtime_initiative_context,
+    extract_runtime_initiative_self_context,
+    summarize_runtime_initiative_context,
+)
 from openemotion.proto_self_v2.social_self_context import (
     derive_social_outputs,
     extract_runtime_social_context,
@@ -80,6 +86,7 @@ def _build_constraint_summary(
         "social_self_context": summarize_runtime_social_self_context(runtime_summary),
         "selfhood_integration_context": selfhood_integration_summary
         or summarize_runtime_selfhood_integration_context(runtime_summary),
+        "initiative_self_context": summarize_runtime_initiative_context(runtime_summary),
     }
 
 
@@ -109,6 +116,10 @@ def _build_retrieval_summary(state: ProtoSelfStateV2, packet: UpdatePacketV2) ->
         "social_self_context_present": bool(extract_runtime_social_self_context(packet.runtime_summary)),
         "social_context_present": bool(extract_runtime_social_context(packet.runtime_summary)),
         "selfhood_integration_context_present": bool(selfhood_integration_summary.get("present")),
+        "initiative_self_context_present": bool(
+            extract_runtime_initiative_self_context(packet.runtime_summary)
+        ),
+        "initiative_context_present": bool(extract_runtime_initiative_context(packet.runtime_summary)),
     }
 
 
@@ -217,6 +228,10 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         social_outputs=social_outputs,
         embodied_outputs=embodied_outputs,
     )
+    initiative_outputs = derive_initiative_outputs(
+        packet.runtime_summary,
+        selfhood_outputs=selfhood_outputs,
+    )
     constraint_summary = _build_constraint_summary(
         state_v2,
         subject_profile=packet.subject_profile,
@@ -296,6 +311,14 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
         integration_audit_entries=selfhood_outputs["integration_audit_entries"],
         self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
+        initiative_context=initiative_outputs["initiative_context"],
+        initiative_self_delta=initiative_outputs["initiative_self_delta"],
+        initiative_proposal_candidates=initiative_outputs["initiative_proposal_candidates"],
+        commitment_execution_snapshot=initiative_outputs["commitment_execution_snapshot"],
+        initiative_policy_hints=initiative_outputs["initiative_policy_hints"],
+        host_proactive_candidate=initiative_outputs["host_proactive_candidate"],
+        initiative_audit_entries=initiative_outputs["initiative_audit_entries"],
+        initiative_writeback_candidate=initiative_outputs["initiative_writeback_candidate"],
         reflection_note=reflection_dict,
         policy_hint={
             **v1_output.policy_hint,
@@ -305,29 +328,34 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
             **reflective_outputs["policy_hint_patch"],
             **social_outputs["policy_hint_patch"],
             **selfhood_outputs["policy_hint_patch"],
+            **initiative_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            selfhood_outputs["response_tendency"].to_dict()
-            if selfhood_outputs["response_tendency"]
+            initiative_outputs["response_tendency"].to_dict()
+            if initiative_outputs["response_tendency"]
             else (
-                reflective_outputs["response_tendency"].to_dict()
-                if reflective_outputs["response_tendency"]
+                selfhood_outputs["response_tendency"].to_dict()
+                if selfhood_outputs["response_tendency"]
                 else (
-                    endogenous_drive_outputs["response_tendency"].to_dict()
-                    if endogenous_drive_outputs["response_tendency"]
+                    reflective_outputs["response_tendency"].to_dict()
+                    if reflective_outputs["response_tendency"]
                     else (
-                        social_outputs["response_tendency"].to_dict()
-                        if social_outputs["response_tendency"]
+                        endogenous_drive_outputs["response_tendency"].to_dict()
+                        if endogenous_drive_outputs["response_tendency"]
                         else (
-                            embodied_outputs["response_tendency"].to_dict()
-                            if embodied_outputs["response_tendency"]
+                            social_outputs["response_tendency"].to_dict()
+                            if social_outputs["response_tendency"]
                             else (
-                                developmental_outputs["response_tendency"].to_dict()
-                                if developmental_outputs["response_tendency"]
+                                embodied_outputs["response_tendency"].to_dict()
+                                if embodied_outputs["response_tendency"]
                                 else (
-                                    v1_output.response_tendency.to_dict()
-                                    if v1_output.response_tendency
-                                    else None
+                                    developmental_outputs["response_tendency"].to_dict()
+                                    if developmental_outputs["response_tendency"]
+                                    else (
+                                        v1_output.response_tendency.to_dict()
+                                        if v1_output.response_tendency
+                                        else None
+                                    )
                                 )
                             )
                         )
@@ -346,9 +374,11 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         **reflective_outputs["policy_hint_patch"],
         **social_outputs["policy_hint_patch"],
         **selfhood_outputs["policy_hint_patch"],
+        **initiative_outputs["policy_hint_patch"],
     }
     merged_response_tendency = (
-        selfhood_outputs["response_tendency"]
+        initiative_outputs["response_tendency"]
+        or selfhood_outputs["response_tendency"]
         or reflective_outputs["response_tendency"]
         or endogenous_drive_outputs["response_tendency"]
         or social_outputs["response_tendency"]
@@ -397,6 +427,13 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
         integration_audit_entries=selfhood_outputs["integration_audit_entries"],
         self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
+        initiative_self_delta=initiative_outputs["initiative_self_delta"],
+        initiative_proposal_candidates=initiative_outputs["initiative_proposal_candidates"],
+        commitment_execution_snapshot=initiative_outputs["commitment_execution_snapshot"],
+        initiative_policy_hints=initiative_outputs["initiative_policy_hints"],
+        host_proactive_candidate=initiative_outputs["host_proactive_candidate"],
+        initiative_audit_entries=initiative_outputs["initiative_audit_entries"],
+        initiative_writeback_candidate=initiative_outputs["initiative_writeback_candidate"],
         endogenous_drive_delta=endogenous_drive_outputs["endogenous_drive_delta"],
         drive_state_snapshot=endogenous_drive_outputs["drive_state_snapshot"],
         priority_snapshot=endogenous_drive_outputs["priority_snapshot"],
@@ -453,6 +490,12 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         output.confidence_meta["selfhood_integration_owner_revision"] = constraint_summary[
             "selfhood_integration_context"
         ].get("projection_owner_revision")
+    if constraint_summary["initiative_self_context"]["present"]:
+        output.confidence_meta = dict(output.confidence_meta)
+        output.confidence_meta["initiative_self_context_present"] = True
+        output.confidence_meta["initiative_self_owner_revision"] = constraint_summary[
+            "initiative_self_context"
+        ].get("owner_revision")
     return output
 
 
@@ -471,6 +514,10 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         developmental_outputs=developmental_outputs,
         social_outputs=social_outputs,
         embodied_outputs=embodied_outputs,
+    )
+    initiative_outputs = derive_initiative_outputs(
+        packet.runtime_summary,
+        selfhood_outputs=selfhood_outputs,
     )
     constraint_summary = _build_constraint_summary(
         state_v2,
@@ -537,6 +584,14 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
         integration_audit_entries=selfhood_outputs["integration_audit_entries"],
         self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
+        initiative_context=initiative_outputs["initiative_context"],
+        initiative_self_delta=initiative_outputs["initiative_self_delta"],
+        initiative_proposal_candidates=initiative_outputs["initiative_proposal_candidates"],
+        commitment_execution_snapshot=initiative_outputs["commitment_execution_snapshot"],
+        initiative_policy_hints=initiative_outputs["initiative_policy_hints"],
+        host_proactive_candidate=initiative_outputs["host_proactive_candidate"],
+        initiative_audit_entries=initiative_outputs["initiative_audit_entries"],
+        initiative_writeback_candidate=initiative_outputs["initiative_writeback_candidate"],
         policy_hint={
             "preferred_action_type": "wait",
             "risk_tolerance": "conservative",
@@ -555,26 +610,31 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             **reflective_outputs["policy_hint_patch"],
             **social_outputs["policy_hint_patch"],
             **selfhood_outputs["policy_hint_patch"],
+            **initiative_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            selfhood_outputs["response_tendency"].to_dict()
-            if selfhood_outputs["response_tendency"]
+            initiative_outputs["response_tendency"].to_dict()
+            if initiative_outputs["response_tendency"]
             else (
-                reflective_outputs["response_tendency"].to_dict()
-                if reflective_outputs["response_tendency"]
+                selfhood_outputs["response_tendency"].to_dict()
+                if selfhood_outputs["response_tendency"]
                 else (
-                    endogenous_drive_outputs["response_tendency"].to_dict()
-                    if endogenous_drive_outputs["response_tendency"]
+                    reflective_outputs["response_tendency"].to_dict()
+                    if reflective_outputs["response_tendency"]
                     else (
-                        social_outputs["response_tendency"].to_dict()
-                        if social_outputs["response_tendency"]
+                        endogenous_drive_outputs["response_tendency"].to_dict()
+                        if endogenous_drive_outputs["response_tendency"]
                         else (
-                            embodied_outputs["response_tendency"].to_dict()
-                            if embodied_outputs["response_tendency"]
+                            social_outputs["response_tendency"].to_dict()
+                            if social_outputs["response_tendency"]
                             else (
-                                developmental_outputs["response_tendency"].to_dict()
-                                if developmental_outputs["response_tendency"]
-                                else None
+                                embodied_outputs["response_tendency"].to_dict()
+                                if embodied_outputs["response_tendency"]
+                                else (
+                                    developmental_outputs["response_tendency"].to_dict()
+                                    if developmental_outputs["response_tendency"]
+                                    else None
+                                )
                             )
                         )
                     )
@@ -652,9 +712,11 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
             **reflective_outputs["policy_hint_patch"],
             **social_outputs["policy_hint_patch"],
             **selfhood_outputs["policy_hint_patch"],
+            **initiative_outputs["policy_hint_patch"],
         },
         response_tendency=(
-            selfhood_outputs["response_tendency"]
+            initiative_outputs["response_tendency"]
+            or selfhood_outputs["response_tendency"]
             or reflective_outputs["response_tendency"]
             or endogenous_drive_outputs["response_tendency"]
             or social_outputs["response_tendency"]
@@ -675,6 +737,13 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         axis_arbitration_hints=selfhood_outputs["axis_arbitration_hints"],
         integration_audit_entries=selfhood_outputs["integration_audit_entries"],
         self_integration_writeback_candidate=selfhood_outputs["self_integration_writeback_candidate"],
+        initiative_self_delta=initiative_outputs["initiative_self_delta"],
+        initiative_proposal_candidates=initiative_outputs["initiative_proposal_candidates"],
+        commitment_execution_snapshot=initiative_outputs["commitment_execution_snapshot"],
+        initiative_policy_hints=initiative_outputs["initiative_policy_hints"],
+        host_proactive_candidate=initiative_outputs["host_proactive_candidate"],
+        initiative_audit_entries=initiative_outputs["initiative_audit_entries"],
+        initiative_writeback_candidate=initiative_outputs["initiative_writeback_candidate"],
         reflective_self_delta=reflective_outputs["reflective_self_delta"],
         revision_proposal_candidates=reflective_outputs["revision_proposal_candidates"],
         confidence_adjustment_hints=reflective_outputs["confidence_adjustment_hints"],
@@ -688,6 +757,12 @@ def _process_developmental_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2
         output.confidence_meta["selfhood_integration_owner_revision"] = constraint_summary[
             "selfhood_integration_context"
         ].get("projection_owner_revision")
+    if constraint_summary["initiative_self_context"]["present"]:
+        output.confidence_meta = dict(output.confidence_meta)
+        output.confidence_meta["initiative_self_context_present"] = True
+        output.confidence_meta["initiative_self_owner_revision"] = constraint_summary[
+            "initiative_self_context"
+        ].get("owner_revision")
     return output
 
 
