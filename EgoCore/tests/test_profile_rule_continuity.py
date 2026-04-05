@@ -5,10 +5,14 @@ import app.telegram_bot as telegram_bot_module
 from app.config import load_config
 from app.memory.memory_manager import MemoryManager
 from app.memory.profile_memory import ProfileMemory
+from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.telegram_bot import TelegramBot
 from app.telegram_runtime_bridge import TelegramRuntimeBridge
 from app.runtime_v2.state import RuntimeV2State
 from app.tools import get_registry, setup_tools
+
+
+EGOCORE_ROOT = Path(__file__).resolve().parents[1]
 
 
 def _make_manager(tmp_path):
@@ -19,7 +23,11 @@ def _make_manager(tmp_path):
 
 
 def _ensure_tools_ready():
-    cfg = load_config(config_dir="EgoCore/config", env_file="EgoCore/.env", validate=False)
+    cfg = load_config(
+        config_dir=str(EGOCORE_ROOT / "config"),
+        env_file=str(EGOCORE_ROOT / ".env"),
+        validate=False,
+    )
     registry = get_registry()
     if not registry.list_tools():
         setup_tools(cfg.get("tools", {}) if hasattr(cfg, "get") else {})
@@ -36,6 +44,15 @@ def _make_bot(manager):
     bridge = _make_bridge(manager)
     bot.telegram_runtime_bridge = bridge
     bot.runtime_v2_bridge = bridge
+
+    class AllowingSubjectGate:
+        def process_ingress(self, **kwargs):
+            return SubjectGateVerdict.allow(stage="ingress")
+
+        def finalize_host_owned_result(self, **kwargs):
+            return SubjectGateVerdict.allow(stage="response_plan")
+
+    bot._get_subject_gate = lambda: AllowingSubjectGate()
     return bot
 
 

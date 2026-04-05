@@ -2068,15 +2068,11 @@ class TelegramBot:
         return self.native_loop
 
     def _get_native_openemotion_hooks(self) -> Optional[NativeOpenEmotionHooks]:
-        if not self.use_runtime_v2:
-            return None
         if self.native_openemotion_hooks is None:
             self.native_openemotion_hooks = NativeOpenEmotionHooks()
         return self.native_openemotion_hooks
 
     def _get_subject_gate(self) -> Optional[MandatorySubjectGate]:
-        if not self.use_runtime_v2:
-            return None
         hooks = self._get_native_openemotion_hooks()
         if self.subject_gate is None or getattr(self.subject_gate, "hooks", None) is not hooks:
             self.subject_gate = MandatorySubjectGate(hooks=hooks)
@@ -2085,16 +2081,71 @@ class TelegramBot:
     def _build_runtime_v2_subject_turn_id(
         self,
         *,
+        prefix: str = "runtime_v2",
         session_key: str,
         ingress_message_id: Optional[int],
         trace_id: Optional[str],
     ) -> str:
-        parts = ["runtime_v2", str(session_key or "unknown")]
+        parts = [str(prefix or "runtime_v2"), str(session_key or "unknown")]
         if ingress_message_id is not None:
             parts.append(f"msg{int(ingress_message_id)}")
         if trace_id:
             parts.append(str(trace_id))
         return ":".join(parts)
+
+    async def _ensure_subject_ingress(
+        self,
+        *,
+        update: Update,
+        session_key: str,
+        state: RuntimeV2State,
+        text: str,
+        trace_id: Optional[str],
+        ingress_message_id: Optional[int],
+        turn_prefix: str,
+        source: str = "telegram",
+    ) -> bool:
+        subject_gate = self._get_subject_gate()
+        if subject_gate is None:
+            logger.error(
+                "%s.subject_gate.missing session=%s msg_id=%s trace=%s",
+                turn_prefix,
+                session_key,
+                ingress_message_id,
+                trace_id,
+            )
+            await self._send_reply(update, "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。")
+            return False
+
+        verdict = subject_gate.process_ingress(
+            session_id=session_key,
+            turn_id=self._build_runtime_v2_subject_turn_id(
+                prefix=turn_prefix,
+                session_key=session_key,
+                ingress_message_id=ingress_message_id,
+                trace_id=trace_id,
+            ),
+            source=source,
+            user_input=text,
+            state=state,
+            evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+        )
+        if verdict.ok:
+            return True
+
+        logger.warning(
+            "%s.subject_gate.ingress.blocked session=%s msg_id=%s trace=%s reason=%s",
+            turn_prefix,
+            session_key,
+            ingress_message_id,
+            trace_id,
+            verdict.reason,
+        )
+        await self._send_reply(
+            update,
+            verdict.reply_text or "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+        )
+        return False
 
     async def _ensure_runtime_v2_subject_ingress(
         self,
@@ -2106,44 +2157,15 @@ class TelegramBot:
         trace_id: Optional[str],
         ingress_message_id: Optional[int],
     ) -> bool:
-        subject_gate = self._get_subject_gate()
-        if subject_gate is None:
-            logger.error(
-                "runtime_v2.subject_gate.missing session=%s msg_id=%s trace=%s",
-                session_key,
-                ingress_message_id,
-                trace_id,
-            )
-            await self._send_reply(update, "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。")
-            return False
-
-        verdict = subject_gate.process_ingress(
-            session_id=session_key,
-            turn_id=self._build_runtime_v2_subject_turn_id(
-                session_key=session_key,
-                ingress_message_id=ingress_message_id,
-                trace_id=trace_id,
-            ),
-            source="telegram",
-            user_input=text,
+        return await self._ensure_subject_ingress(
+            update=update,
+            session_key=session_key,
             state=state,
-            evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+            text=text,
+            trace_id=trace_id,
+            ingress_message_id=ingress_message_id,
+            turn_prefix="runtime_v2",
         )
-        if verdict.ok:
-            return True
-
-        logger.warning(
-            "runtime_v2.subject_gate.ingress.blocked session=%s msg_id=%s trace=%s reason=%s",
-            session_key,
-            ingress_message_id,
-            trace_id,
-            verdict.reason,
-        )
-        await self._send_reply(
-            update,
-            verdict.reply_text or "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
-        )
-        return False
 
     def _finalize_native_openemotion_turn(
         self,
@@ -2212,29 +2234,24 @@ class TelegramBot:
         except Exception as e:
             logger.warning(f"[E4-EVIDENCE] Failed to start capture: {e}")
 
-    def _capture_command_ingress(
+    async def _capture_command_ingress(
         self,
         *,
         update: Update,
         session_key: str,
         text: str,
-    ) -> None:
-        native_hooks = self._get_native_openemotion_hooks()
-        if not (native_hooks and native_hooks.enabled):
-            return
+    ) -> bool:
         state = self._get_runtime_state(session_key)
-        turn_id = f"cmd_{update.message.message_id if update.message else uuid.uuid4().hex[:8]}"
-        try:
-            native_hooks.process_ingress(
-                session_id=session_key,
-                turn_id=turn_id,
-                source="telegram",
-                user_input=text,
-                state=state,
-                evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
-            )
-        except Exception as e:
-            logger.exception("native_openemotion.command_ingress.failed session=%s err=%s", session_key, e)
+        ingress_message_id = update.message.message_id if update.message else None
+        return await self._ensure_subject_ingress(
+            update=update,
+            session_key=session_key,
+            state=state,
+            text=text,
+            trace_id=None,
+            ingress_message_id=ingress_message_id,
+            turn_prefix="command",
+        )
 
     async def handle_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle Telegram commands."""
@@ -2266,11 +2283,12 @@ class TelegramBot:
             username=username,
             text=text,
         )
-        self._capture_command_ingress(
+        if not await self._capture_command_ingress(
             update=update,
             session_key=session_key,
             text=text,
-        )
+        ):
+            return
 
         logger.info(f"Command received: /{command} from user {username or user_id}")
 
@@ -2806,14 +2824,37 @@ class TelegramBot:
             document.mime_type,
             document.file_name,
         ):
-            await update.message.reply_text(
-                f"收到文件「{document.file_name or 'unnamed'}」，"
-                f"但暂不支持此类型（{document.mime_type or 'unknown'}）。"
-                f"\n\n支持的类型：txt, md, log, json, yaml, csv"
+            state = self._get_runtime_state(session_key)
+            ingress_text = f"[用户发送了文件: {document.file_name or 'unnamed'}]"
+            if not await self._ensure_subject_ingress(
+                update=update,
+                session_key=session_key,
+                state=state,
+                text=ingress_text,
+                trace_id=trace_id,
+                ingress_message_id=msg_id,
+                turn_prefix="document",
+            ):
+                return
+            await self._send_host_owned_reply(
+                update,
+                state=state,
+                reply_text=(
+                    f"收到文件「{document.file_name or 'unnamed'}」，"
+                    f"但暂不支持此类型（{document.mime_type or 'unknown'}）。"
+                    f"\n\n支持的类型：txt, md, log, json, yaml, csv"
+                ),
+                status="document_unsupported_type",
+                delivery_kind="final",
+                authority_source="host_document_ingestion",
+                reply_authority="host_document",
+                metadata={"conversation_act": "document_unsupported_type"},
             )
             return
 
         async with self._typing_indicator(update):
+            state = self._get_runtime_state(session_key)
+            ingress_text = f"[用户发送了文件: {document.file_name or 'unnamed'}]"
             # 下载文件
             try:
                 file = await context.bot.get_file(document.file_id)
@@ -2821,7 +2862,26 @@ class TelegramBot:
                 content = bytes(content)
             except Exception as e:
                 logger.error(f"[trace={trace_id}] failed to download file: {e}")
-                await update.message.reply_text(f"文件下载失败：{e}")
+                if not await self._ensure_subject_ingress(
+                    update=update,
+                    session_key=session_key,
+                    state=state,
+                    text=ingress_text,
+                    trace_id=trace_id,
+                    ingress_message_id=msg_id,
+                    turn_prefix="document",
+                ):
+                    return
+                await self._send_host_owned_reply(
+                    update,
+                    state=state,
+                    reply_text=f"文件下载失败：{e}",
+                    status="document_download_failed",
+                    delivery_kind="final",
+                    authority_source="host_document_ingestion",
+                    reply_authority="host_document",
+                    metadata={"conversation_act": "document_download_failed"},
+                )
                 return
 
             # 构建文档信息
@@ -2843,7 +2903,26 @@ class TelegramBot:
 
             if not result.success:
                 logger.error(f"[trace={trace_id}] ingestion failed: {result.error}")
-                await update.message.reply_text(f"文件处理失败：{result.error}")
+                if not await self._ensure_subject_ingress(
+                    update=update,
+                    session_key=session_key,
+                    state=state,
+                    text=ingress_text,
+                    trace_id=trace_id,
+                    ingress_message_id=msg_id,
+                    turn_prefix="document",
+                ):
+                    return
+                await self._send_host_owned_reply(
+                    update,
+                    state=state,
+                    reply_text=f"文件处理失败：{result.error}",
+                    status="document_ingestion_failed",
+                    delivery_kind="final",
+                    authority_source="host_document_ingestion",
+                    reply_authority="host_document",
+                    metadata={"conversation_act": "document_ingestion_failed"},
+                )
                 return
 
             ingested = result.ingested_input
@@ -2887,7 +2966,26 @@ class TelegramBot:
                 reply = f"文件「{document.file_name}」已处理。\n\n{summary[:500]}"
                 if len(summary) > 500:
                     reply += "\n... (摘要已截断)"
-                await update.message.reply_text(reply)
+                if not await self._ensure_subject_ingress(
+                    update=update,
+                    session_key=session_key,
+                    state=state,
+                    text=ingress_text,
+                    trace_id=trace_id,
+                    ingress_message_id=msg_id,
+                    turn_prefix="document",
+                ):
+                    return
+                await self._send_host_owned_reply(
+                    update,
+                    state=state,
+                    reply_text=reply,
+                    status="document_processed",
+                    delivery_kind="final",
+                    authority_source="host_document_ingestion",
+                    reply_authority="host_document",
+                    metadata={"conversation_act": "document_processed"},
+                )
 
     def _resolve_session_key(self, update: Update, chat_id: int, user_id: int) -> str:
         """Resolve canonical session key for Telegram ingress."""
@@ -4358,6 +4456,19 @@ class TelegramBot:
         context_store = get_session_context_store()
 
         session_key = self._resolve_session_key(update, chat_id, user_id)
+        state = self._get_runtime_state(session_key)
+        ingress_message_id = update.message.message_id if update.message else None
+
+        if not await self._ensure_subject_ingress(
+            update=update,
+            session_key=session_key,
+            state=state,
+            text=text,
+            trace_id=trace_id,
+            ingress_message_id=ingress_message_id,
+            turn_prefix="new_runtime",
+        ):
+            return
 
         # 写入用户消息到会话上下文，供下一轮 OpenEmotion 读取
         context_store.add_turn(session_key, "user", text)
@@ -4390,7 +4501,7 @@ class TelegramBot:
             logger.error(f"[trace={trace_id}] run_agent timeout: session={session_key} text={text[:120]}")
             await self._send_host_owned_reply(
                 update,
-                state=self._get_runtime_state(session_key),
+                state=state,
                 reply_text="我收到了这条请求，但处理超时了。我马上重试，你也可以再发一次。",
                 status="new_runtime_timeout",
                 delivery_kind="final",
@@ -4403,7 +4514,7 @@ class TelegramBot:
             logger.exception(f"[trace={trace_id}] run_agent crashed: session={session_key} text={text[:120]} err={e}")
             await self._send_host_owned_reply(
                 update,
-                state=self._get_runtime_state(session_key),
+                state=state,
                 reply_text="我这一步中断了，但请求已经收到。请再发一次，我继续处理。",
                 status="new_runtime_error",
                 delivery_kind="final",
@@ -4444,7 +4555,7 @@ class TelegramBot:
             logger.info(f"[trace={trace_id}] sending final reply")
             await self._send_host_owned_reply(
                 update,
-                state=self._get_runtime_state(session_key),
+                state=state,
                 reply_text=result.reply_text,
                 status=str(getattr(result, "status", None).value if hasattr(getattr(result, "status", None), "value") else getattr(result, "status", "completed")),
                 delivery_kind="final",
@@ -4563,62 +4674,20 @@ class TelegramBot:
 
         CommandResult 通常是代码生成的格式化输出，支持 Markdown。
         """
-        if _EVIDENCE_COLLECTOR_AVAILABLE:
-            try:
-                collector = get_evidence_collector()
-                collector.capture_host_response_plan(
-                    status="command_result",
-                    delivery_kind="final",
-                    reply_text=result.message,
-                )
-            except Exception as e:
-                logger.warning(f"[E4-EVIDENCE] Failed to capture command response_plan: {e}")
-
-        sent_message = None
-        sent_text = result.message
-        try:
-            from telegram.helpers import escape_markdown
-            escaped_message = escape_markdown(result.message, version=1)
-            sent_message = await update.message.reply_text(escaped_message, parse_mode="Markdown")
-        except Exception as e:
-            logger.warning(f"Markdown send failed: {e}")
-            # Fallback to plain text
-            try:
-                sent_message = await update.message.reply_text(result.message)
-            except Exception as e2:
-                logger.error(f"Failed to send plain text: {e2}")
-                # 最后尝试截断
-                if len(result.message) > 4000:
-                    try:
-                        truncated = result.message[:4000] + "\n... (已截断)"
-                        sent_text = truncated
-                        sent_message = await update.message.reply_text(truncated)
-                    except Exception as e3:
-                        logger.error(f"Failed to send truncated: {e3}")
-
-        if sent_message and _EVIDENCE_COLLECTOR_AVAILABLE:
-            try:
-                collector = get_evidence_collector()
-                collector.capture_outbox_record(
-                    {
-                        "chat_id": sent_message.chat.id if sent_message.chat else None,
-                        "message_id": sent_message.message_id,
-                        "date": sent_message.date.isoformat() if sent_message.date else None,
-                        "text_length": len(sent_text),
-                        "success": True,
-                    }
-                )
-                sample = collector.finalize_sample()
-                if sample and _DEVELOPMENTAL_WRITEBACK_AVAILABLE:
-                    try:
-                        record_developmental_projection_from_finalized_sample(
-                            sample=sample,
-                            sample_artifacts_dir=collector.artifacts_dir,
-                        )
-                    except Exception as e:
-                        logger.warning(f"[MVP16-DEVELOPMENTAL] Failed to sync finalized command sample: {e}")
-            except Exception as e:
-                logger.warning(f"[E4-EVIDENCE] Failed to finalize command sample: {e}")
+        chat_id = update.effective_chat.id if update.effective_chat else 0
+        user_id = update.effective_user.id if update.effective_user else 0
+        session_key = self._resolve_session_key(update, chat_id, user_id)
+        await self._send_host_owned_reply(
+            update,
+            state=self._get_runtime_state(session_key),
+            reply_text=result.message,
+            status="command_result",
+            delivery_kind="final",
+            authority_source="host_command_result",
+            reply_authority="host_command",
+            metadata={"conversation_act": "command_result", "command_success": result.success},
+            use_markdown=True,
+        )
 
     def setup(self) -> None:
         """Set up bot handlers."""

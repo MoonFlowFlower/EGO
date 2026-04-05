@@ -136,8 +136,8 @@
 ## Progress
 
 - current_status: `in_progress`
-- current_milestone: `Milestone 2: Telegram Runtime_V2 Early-Return Closure`
-- milestone_state: `in_progress`
+- current_milestone: `Milestone 4: Background / Proactive Closure`
+- milestone_state: `pending`
 
 ## Decision log
 
@@ -157,9 +157,14 @@
 - `M2` 当前在收口：
   - `_handle_with_runtime_v2()` 中 authorized early-return cases 已先 subject ingress
   - `pending task conflict` 已通过 subject-gated finalize path
-  - `evidence followup reply` 与 `read_only_preflight` / `force_waiting_input` / `direct_reply_text` 正在补齐 subject-gated finalize / response-plan 强制路径
+  - `evidence followup reply` 与 `read_only_preflight` / `force_waiting_input` / `direct_reply_text` 已补齐 subject-gated finalize / response-plan 强制路径
+- `M3` 已完成：
+  - `handle_command()` / `_capture_command_ingress()` 已改为 mandatory subject ingress；authorized command ingress 不再是 silent best-effort
+  - `_send_result()` 已改为 subject-gated host-owned finalize path，authorized command result 不再 raw send
+  - `handle_document()` 的 unsupported / download failure / ingestion failure / non-runtime-v2 success reply 已统一走 subject ingress + host-owned finalize
+  - `_handle_with_new_runtime()` 已在 `run_agent()` 前执行 mandatory subject ingress；`success / timeout / crash` 均走 subject-gated finalize path
 - 当前仍未证明：
-  - command/result、document/ingestion、background/proactive 已完成 closure
+  - background/proactive 已完成 closure
   - fresh real window 已消除 authorized bypass
 
 ## Expected outcome

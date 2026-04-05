@@ -1163,6 +1163,9 @@ async def test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_meta
     class FakeHooks:
         enabled = True
 
+        def process_ingress(self, **kwargs):
+            return None
+
         def process_finalized_result(self, **kwargs):
             return None
 
@@ -1192,6 +1195,215 @@ async def test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_meta
     assert sample.response_plan["reply_authority"] == "host_runtime"
     assert sample.response_plan.get("inferred") is not True
     assert update.message.sent == ["这是宿主层的正常回复。"]
+
+
+@pytest.mark.asyncio
+async def test_telegram_bot_new_runtime_blocks_when_subject_ingress_fails(monkeypatch):
+    called = {"run_agent": False}
+
+    async def fake_run_agent(**kwargs):
+        called["run_agent"] = True
+        return SimpleNamespace(
+            status=SimpleNamespace(value="completed"),
+            duration_ms=1,
+            reply_text="不该发送",
+            request_id="req_should_not_run",
+        )
+
+    monkeypatch.setattr(telegram_bot_module, "run_agent", fake_run_agent)
+
+    bot = TelegramBot(token="test-token", use_runtime_v2=False)
+
+    class DummyBot:
+        async def send_chat_action(self, chat_id, action):
+            return None
+
+    bot.app = type("A", (), {"bot": DummyBot()})()
+
+    class BlockingGate:
+        def process_ingress(self, **kwargs):
+            return SubjectGateVerdict.block(stage="ingress", reason="hooks_disabled")
+
+    class DummyMessage:
+        text = "你好"
+        message_id = 14
+        reply_to_message = None
+        sent = []
+        date = datetime.now(timezone.utc)
+
+        async def reply_text(self, text, parse_mode=None):
+            self.sent.append(text)
+            return SimpleNamespace(
+                chat=SimpleNamespace(id=123),
+                message_id=self.message_id + len(self.sent),
+                date=datetime.now(timezone.utc),
+            )
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = SimpleNamespace(id=123, type="private")
+        effective_user = SimpleNamespace(id=456, username="tester")
+
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: BlockingGate())
+
+    await bot._handle_with_new_runtime(
+        DummyUpdate(),
+        text="你好",
+        chat_id=123,
+        user_id=456,
+        username="tester",
+        trace_id="trace_runtime_block",
+    )
+
+    assert called["run_agent"] is False
+    assert DummyUpdate.message.sent == ["subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。"]
+
+
+class _DocumentDummyMessage:
+    def __init__(self):
+        self.document = SimpleNamespace(
+            file_id="file_1",
+            file_unique_id="unique_1",
+            file_name="notes.txt",
+            mime_type="text/plain",
+            file_size=16,
+        )
+        self.caption = None
+        self.message_id = 31
+        self.reply_to_message = None
+        self.sent = []
+
+    async def reply_text(self, text, parse_mode=None):
+        self.sent.append(text)
+        return SimpleNamespace(
+            chat=SimpleNamespace(id=123),
+            message_id=self.message_id + len(self.sent),
+            date=datetime.now(timezone.utc),
+        )
+
+
+def _make_document_update():
+    return SimpleNamespace(
+        message=_DocumentDummyMessage(),
+        effective_chat=SimpleNamespace(id=123, type="private"),
+        effective_user=SimpleNamespace(id=456, username="tester"),
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("mode", "expected_text"),
+    [
+        ("unsupported", "暂不支持此类型"),
+        ("download_failure", "文件下载失败"),
+        ("ingestion_failure", "文件处理失败"),
+    ],
+)
+async def test_handle_document_failure_paths_use_subject_gate(monkeypatch, mode, expected_text):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    calls = []
+
+    class RecordingGate:
+        def process_ingress(self, **kwargs):
+            calls.append(("ingress", kwargs["user_input"]))
+            return SubjectGateVerdict.allow(stage="ingress")
+
+        def finalize_host_owned_result(self, **kwargs):
+            calls.append(("finalized_result", kwargs["result"].status))
+            return SubjectGateVerdict.allow(stage="response_plan")
+
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: RecordingGate())
+
+    if mode == "unsupported":
+        bot._ingestion_manager = SimpleNamespace(
+            is_supported_document=lambda mime_type, file_name: False,
+        )
+        context = None
+    elif mode == "download_failure":
+        bot._ingestion_manager = SimpleNamespace(
+            is_supported_document=lambda mime_type, file_name: True,
+        )
+
+        class FailingBot:
+            async def get_file(self, file_id):
+                raise RuntimeError("network down")
+
+        context = SimpleNamespace(bot=FailingBot())
+    else:
+        bot._ingestion_manager = SimpleNamespace(
+            is_supported_document=lambda mime_type, file_name: True,
+            ingest_telegram_document=lambda **kwargs: None,
+        )
+
+        class DummyFile:
+            async def download_as_bytearray(self):
+                return bytearray(b"content")
+
+        class DummyBot:
+            async def get_file(self, file_id):
+                return DummyFile()
+
+        async def fake_ingest_telegram_document(**kwargs):
+            return SimpleNamespace(success=False, error="bad input")
+
+        bot._ingestion_manager.ingest_telegram_document = fake_ingest_telegram_document
+        context = SimpleNamespace(bot=DummyBot())
+
+    update = _make_document_update()
+    if mode == "unsupported":
+        update.message.document.file_name = "notes.bin"
+        update.message.document.mime_type = "application/octet-stream"
+
+    await bot.handle_document(update, context)
+
+    assert calls[0][0] == "ingress"
+    assert calls[1][0] == "finalized_result"
+    assert expected_text in update.message.sent[0]
+
+
+@pytest.mark.asyncio
+async def test_handle_document_non_runtime_v2_success_uses_subject_gate(monkeypatch):
+    bot = TelegramBot(token="test-token", use_runtime_v2=False)
+    calls = []
+
+    class RecordingGate:
+        def process_ingress(self, **kwargs):
+            calls.append(("ingress", kwargs["user_input"]))
+            return SubjectGateVerdict.allow(stage="ingress")
+
+        def finalize_host_owned_result(self, **kwargs):
+            calls.append(("finalized_result", kwargs["result"].status))
+            return SubjectGateVerdict.allow(stage="response_plan")
+
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: RecordingGate())
+
+    class DummyFile:
+        async def download_as_bytearray(self):
+            return bytearray(b"content")
+
+    class DummyBot:
+        async def get_file(self, file_id):
+            return DummyFile()
+
+    async def fake_ingest_telegram_document(**kwargs):
+        return SimpleNamespace(
+            success=True,
+            error=None,
+            ingested_input=SimpleNamespace(summary="摘要内容", attachments=[]),
+        )
+
+    bot._ingestion_manager = SimpleNamespace(
+        is_supported_document=lambda mime_type, file_name: True,
+        ingest_telegram_document=fake_ingest_telegram_document,
+    )
+
+    update = _make_document_update()
+    await bot.handle_document(update, SimpleNamespace(bot=DummyBot()))
+
+    assert calls[0][0] == "ingress"
+    assert calls[1][0] == "finalized_result"
+    assert "文件" in update.message.sent[0]
+    assert "已处理" in update.message.sent[0]
 
 
 @pytest.mark.asyncio
