@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP16
-status: legacy_demotion_complete
-current_layer: legacy_demotion
+status: causal_proof_complete
+current_layer: causal_validation
 main_chain_status: current_runtime_initiative_realization_consumer_present_legacy_reference_only
-enabled_status: authority_owner_proto_self_runtime_and_demotion
+enabled_status: authority_owner_proto_self_runtime_demotion_and_causal_proof
 trigger_evidence:
   - WP15/MVP20 is the predecessor and remains in maintenance_mode
   - WP16 authority package now exists under Tasks/*
@@ -31,18 +31,20 @@ trigger_evidence:
   - host proactive runtime / delivery / outbox / transport substrate is now explicitly frozen as host_substrate_only / reference-only to WP16 semantics
   - `OpenEmotion/tools/verify_mvp21_mainline_wiring.py --json` now reports `current_runtime_initiative_realization_consumer_present_legacy_reference_only`
   - `OpenEmotion/tests/mvp21/test_mvp21_mainline_reference_demotion.py` now proves current runtime consumer remains the WP16 formal owner path while host proactive substrate and roadmap materials remain reference-only
+  - `OpenEmotion/tests/mvp21/test_realization_causal_formal_proof.py` now proves realization readiness / fulfillment / hold / failure recovery change bounded downstream tendency while text-only changes do not create structural effects
+  - `OpenEmotion/tools/run_mvp21_causal_validation.py` now emits `OpenEmotion/artifacts/mvp21/mvp21_causal_validation_current.{json,md}` with `status = pass`, `verification_level = V3`, `evidence_level = E3`, `pair_count = 4`, and `passed_count = 4`
 verification_level: V3
 evidence_level: E3
-current_blocker: "none on the WP16 legacy-demotion axis"
-next_minimal_closure_action: "T50_CAUSAL_VALIDATION"
+current_blocker: "none on the WP16 causal-proof axis"
+next_minimal_closure_action: "T60_CONTROLLED_OBSERVATION_SINGLE"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP16/MVP21` 已完成 authority freeze、`T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION`、`T30_EGOCORE_RUNTIME_BRIDGE` 与 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，并已通过唯一 bounded consumer path 接到 `proto_self_v2` 与当前 EgoCore runtime 主链
-- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness + owner implementation + proto-self contract + current runtime bridge + no-second-truth demotion proof；不覆盖 causal proof、observation、closeout 或 maintenance
+- 可宣称完成：`WP16/MVP21` 已完成 authority freeze、`T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION`、`T30_EGOCORE_RUNTIME_BRIDGE`、`T40_LEGACY_DEMOTION_AND_COMPAT_MAP` 与 `T50_CAUSAL_VALIDATION`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，并已通过唯一 bounded consumer path 接到 `proto_self_v2` 与当前 EgoCore runtime 主链
+- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness + owner implementation + proto-self contract + current runtime bridge + no-second-truth demotion proof + causal proof；不覆盖 controlled observation、closeout 或 maintenance
 - 不可宣称完成：`MVP21` 已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
-- 后续处理：下一步只能进入 `T50_CAUSAL_VALIDATION`，不能越过 causal proof 直接宣称 controlled mainline / observation 或 maintenance
+- 后续处理：下一步只能进入 `T60_CONTROLLED_OBSERVATION_SINGLE`，不能越过 single controlled observation 直接宣称 `E4/E5` 或 maintenance
 
 ## 边界提醒
 

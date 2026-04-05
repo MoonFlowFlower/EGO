@@ -1,6 +1,6 @@
 # MVP21 / WP16 Host-Governed Initiative Realization / Proactive Delivery Mediation
 
-> 状态：T40 complete / T50 pending
+> 状态：T50 complete / T60 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP16`
 > predecessor: `WP15/MVP20`
@@ -175,11 +175,11 @@
 - `WP16` may not reinterpret `WP15` maintenance institutionalization or controlled evidence as delivery authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`legacy_demotion`
-- 当前状态：`legacy_demotion_complete`
-- 当前 blocker：`none on the WP16 legacy-demotion axis`
-- 当前最小闭环动作：`T50_CAUSAL_VALIDATION`
-- 当前 claim ceiling：`T40 complete only`
+- 当前层级：`causal_validation`
+- 当前状态：`causal_proof_complete`
+- 当前 blocker：`none on the WP16 causal-proof axis`
+- 当前最小闭环动作：`T60_CONTROLLED_OBSERVATION_SINGLE`
+- 当前 claim ceiling：`T50 complete only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP16: Host-Governed Initiative Realization / Proactive Delivery Mediation`
