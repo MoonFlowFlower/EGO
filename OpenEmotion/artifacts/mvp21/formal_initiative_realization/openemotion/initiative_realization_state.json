@@ -1,0 +1,2222 @@
+{
+  "commitment_fulfillment_state": {
+    "active_commitments_count": 0,
+    "blocked_commitment_refs": [],
+    "continuity_confidence": 0.0,
+    "fulfillment_id": "phase1",
+    "fulfillment_summary": "bounded_commitment_fulfillment",
+    "last_updated": 1775412576.729348,
+    "ready_commitments_count": 0,
+    "realized_commitment_refs": [],
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_continuity_confidence",
+      "delivery_failure",
+      "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45"
+    ],
+    "status": "active"
+  },
+  "controlled_delivery_candidate": {
+    "behavioral_authority": "none",
+    "candidate_id": "controlled_delivery_candidate:realization_rev_000043",
+    "candidate_label": "governed_controlled_delivery",
+    "created_at": 1775412576.7294044,
+    "delivery_readiness": 0.5,
+    "effect_scope": "proposal_only",
+    "host_lane_hint": "host_proactive_outbox",
+    "readiness_basis": "idle",
+    "requested_effects": [
+      "review_realization_lane"
+    ],
+    "required_gate": "initiative_realization_writeback_gate",
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_continuity_confidence",
+      "delivery_failure",
+      "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45"
+    ],
+    "status": "held",
+    "updated_at": 1775412576.729412
+  },
+  "delivery_readiness_state": {
+    "fulfill_weight": 0.0,
+    "hold_weight": 0.0,
+    "host_lane_hints": [
+      "host_proactive_outbox"
+    ],
+    "lane_reason": "bounded_realization_lane",
+    "last_updated": 1775412576.729325,
+    "mediate_weight": 0.0,
+    "policy_mode": "proposal_only",
+    "prepare_weight": 0.0,
+    "readiness_id": "phase1",
+    "review_weight": 0.0,
+    "selected_lane": "review",
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_continuity_confidence",
+      "delivery_failure",
+      "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45"
+    ]
+  },
+  "identity_handle": "openemotion",
+  "initiative_realization_candidate": {
+    "behavioral_authority": "none",
+    "candidate_id": "commitment_fulfillment:realization_rev_000043",
+    "candidate_label": "bounded_realization_review",
+    "created_at": 1775412576.7293782,
+    "effect_scope": "proposal_only",
+    "justification": "bounded_realization_review",
+    "proposed_effects": {},
+    "requested_effects": [],
+    "required_gate": "initiative_realization_writeback_gate",
+    "selected_mode": "review",
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_continuity_confidence",
+      "delivery_failure",
+      "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45"
+    ],
+    "status": "held",
+    "updated_at": 1775412576.7293885
+  },
+  "last_revision_id": "realization_rev_000044",
+  "owner_revision": 44,
+  "realization_ledger": {
+    "persist_realization_rev_000001": {
+      "created_at": 1775409287.0808392,
+      "details": {
+        "persisted_at": 1775409287.0808322,
+        "trace_reference": "178883fe2e083153e7770df35fd1d3ef322de7b883c86872933e3a6be619509e",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000001",
+      "reference_id": "realization_rev_000001"
+    },
+    "persist_realization_rev_000002": {
+      "created_at": 1775409893.0354958,
+      "details": {
+        "persisted_at": 1775409893.0354896,
+        "trace_reference": "3067a60e63f514dd983728ecebcdee1ff4849bf3b0f73144dc3a6648182fed30",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000002",
+      "reference_id": "realization_rev_000002"
+    },
+    "persist_realization_rev_000003": {
+      "created_at": 1775412102.8994853,
+      "details": {
+        "persisted_at": 1775412102.8994806,
+        "trace_reference": "8eb88c6648826ec4983a8b8b4ae6c98b519b527e3ab087d6fa41ef1de6ea3125",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000003",
+      "reference_id": "realization_rev_000003"
+    },
+    "persist_realization_rev_000004": {
+      "created_at": 1775412114.223495,
+      "details": {
+        "persisted_at": 1775412114.22349,
+        "trace_reference": "8ea062b13a7537baed0ec11303873b9742b542a4f0146baeaf67bce47495c73c",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000004",
+      "reference_id": "realization_rev_000004"
+    },
+    "persist_realization_rev_000005": {
+      "created_at": 1775412129.2426524,
+      "details": {
+        "persisted_at": 1775412129.242648,
+        "trace_reference": "28973979c237467adac5c604fdb795a925444d52ca30cedc7f3b301b96a3b08f",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000005",
+      "reference_id": "realization_rev_000005"
+    },
+    "persist_realization_rev_000006": {
+      "created_at": 1775412140.156966,
+      "details": {
+        "persisted_at": 1775412140.1569595,
+        "trace_reference": "6f7dc8b71034ae9e1667372afafcfc8b05dca8a00df183edd4073c6343d99ade",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000006",
+      "reference_id": "realization_rev_000006"
+    },
+    "persist_realization_rev_000007": {
+      "created_at": 1775412156.7351613,
+      "details": {
+        "persisted_at": 1775412156.7351546,
+        "trace_reference": "7584862f78647a95d8446d04b3935f886eb25fa6b50e43ed376dd4ed1ddd83e5",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000007",
+      "reference_id": "realization_rev_000007"
+    },
+    "persist_realization_rev_000008": {
+      "created_at": 1775412171.5182233,
+      "details": {
+        "persisted_at": 1775412171.518219,
+        "trace_reference": "656d7a029aaba58e2770e0990a9a5123057e2f2f7af4e3ca55cbaaaab1dce720",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000008",
+      "reference_id": "realization_rev_000008"
+    },
+    "persist_realization_rev_000009": {
+      "created_at": 1775412183.2406318,
+      "details": {
+        "persisted_at": 1775412183.2406275,
+        "trace_reference": "27bb85e6d862c73fb105365c6a3d6b5fbc5054088f8ff4fe65ec94ab40f2687d",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000009",
+      "reference_id": "realization_rev_000009"
+    },
+    "persist_realization_rev_000010": {
+      "created_at": 1775412198.1151404,
+      "details": {
+        "persisted_at": 1775412198.1151354,
+        "trace_reference": "303c7d964f61104a56e43853b8041d5a12647abb9f261ea50ec123a6fce7ab97",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000010",
+      "reference_id": "realization_rev_000010"
+    },
+    "persist_realization_rev_000011": {
+      "created_at": 1775412211.2406647,
+      "details": {
+        "persisted_at": 1775412211.240659,
+        "trace_reference": "15bcedc63bf9da2df6f8adf7849177149205be2cd735d9a003d7f45177922ecd",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000011",
+      "reference_id": "realization_rev_000011"
+    },
+    "persist_realization_rev_000012": {
+      "created_at": 1775412240.604615,
+      "details": {
+        "persisted_at": 1775412240.6046097,
+        "trace_reference": "e218de9def4a746c47d31025dd6d1cf1050555bef0f72a9e1bf458f348f1c724",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000012",
+      "reference_id": "realization_rev_000012"
+    },
+    "persist_realization_rev_000013": {
+      "created_at": 1775412257.3114526,
+      "details": {
+        "persisted_at": 1775412257.3114457,
+        "trace_reference": "d2046e15483e131344188a8af12a27b0c3aea3b19bbb16a7d8eb95ed6c5187a3",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000013",
+      "reference_id": "realization_rev_000013"
+    },
+    "persist_realization_rev_000014": {
+      "created_at": 1775412268.5609303,
+      "details": {
+        "persisted_at": 1775412268.5609257,
+        "trace_reference": "6b498af1ab8d3569c09f811957c4e7ca74c162579dba7763727c4905fc0fafd7",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000014",
+      "reference_id": "realization_rev_000014"
+    },
+    "persist_realization_rev_000015": {
+      "created_at": 1775412283.0533898,
+      "details": {
+        "persisted_at": 1775412283.0533834,
+        "trace_reference": "c6345158f024e2de6f45240e9ff7588d2312bf389cf165ae46e0ac946e27522a",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000015",
+      "reference_id": "realization_rev_000015"
+    },
+    "persist_realization_rev_000016": {
+      "created_at": 1775412305.846544,
+      "details": {
+        "persisted_at": 1775412305.8465388,
+        "trace_reference": "1ca9edd21c1ac686bdb117b7f33ee243d6456348b5da430397ef252c741490dc",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000016",
+      "reference_id": "realization_rev_000016"
+    },
+    "persist_realization_rev_000017": {
+      "created_at": 1775412321.692229,
+      "details": {
+        "persisted_at": 1775412321.692224,
+        "trace_reference": "4b6247045b8fafc5eafcb8c31614c502455ce74ef0c7dc9a30b92c37324262d2",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000017",
+      "reference_id": "realization_rev_000017"
+    },
+    "persist_realization_rev_000018": {
+      "created_at": 1775412337.5550828,
+      "details": {
+        "persisted_at": 1775412337.5550776,
+        "trace_reference": "5f52c1335ea4d2e7ae9d0a35bd6a7e6365ea2ae8f50fcdcc71ffd5ed47c6d1f6",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000018",
+      "reference_id": "realization_rev_000018"
+    },
+    "persist_realization_rev_000019": {
+      "created_at": 1775412387.5591006,
+      "details": {
+        "persisted_at": 1775412387.5590947,
+        "trace_reference": "b3752c361503751469fae38da30fee4b5993a136ec74b52f6308ac71fb804054",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000019",
+      "reference_id": "realization_rev_000019"
+    },
+    "persist_realization_rev_000020": {
+      "created_at": 1775412393.3605146,
+      "details": {
+        "persisted_at": 1775412393.360509,
+        "trace_reference": "ce1e3455af4aa2a41b1515fc52dcaa63ec9446edebd99c36a82fac7f10932ad8",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000020",
+      "reference_id": "realization_rev_000020"
+    },
+    "persist_realization_rev_000021": {
+      "created_at": 1775412399.8550398,
+      "details": {
+        "persisted_at": 1775412399.8550346,
+        "trace_reference": "beca859ea0326ca6fe10c14a2dddc12ca06dace0bc4571b250bef06edceea4ad",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000021",
+      "reference_id": "realization_rev_000021"
+    },
+    "persist_realization_rev_000022": {
+      "created_at": 1775412403.3163633,
+      "details": {
+        "persisted_at": 1775412403.3163567,
+        "trace_reference": "c610682e5c18b3abfb6a70af36e0058d4ec6b0a52e9a21472ddd37607dd52caf",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000022",
+      "reference_id": "realization_rev_000022"
+    },
+    "persist_realization_rev_000023": {
+      "created_at": 1775412406.7126808,
+      "details": {
+        "persisted_at": 1775412406.7126753,
+        "trace_reference": "426a2e8490a14e9d60bb3636b614f9cef53b1f1202cf4d1923a7b2fd2c4dde67",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000023",
+      "reference_id": "realization_rev_000023"
+    },
+    "persist_realization_rev_000024": {
+      "created_at": 1775412410.0999527,
+      "details": {
+        "persisted_at": 1775412410.0999472,
+        "trace_reference": "a7ffd68dc443b4b884c962c2dc889af3531cf9e85f1ceaf2886cd804f74d19cd",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000024",
+      "reference_id": "realization_rev_000024"
+    },
+    "persist_realization_rev_000025": {
+      "created_at": 1775412414.3548272,
+      "details": {
+        "persisted_at": 1775412414.354822,
+        "trace_reference": "7394a9f85802ed3a858552f82f0c7564cf04cd8e01999a3ab09fa594883e3037",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000025",
+      "reference_id": "realization_rev_000025"
+    },
+    "persist_realization_rev_000026": {
+      "created_at": 1775412417.8255076,
+      "details": {
+        "persisted_at": 1775412417.825501,
+        "trace_reference": "977882e08f8eee2789fa3ff97232ee941377fc80bd85ab64145cb4e0ae5bf237",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000026",
+      "reference_id": "realization_rev_000026"
+    },
+    "persist_realization_rev_000027": {
+      "created_at": 1775412421.697932,
+      "details": {
+        "persisted_at": 1775412421.697926,
+        "trace_reference": "e07049b19af85148b24713f943a559ab916702bb87f484840de352d317fa606c",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000027",
+      "reference_id": "realization_rev_000027"
+    },
+    "persist_realization_rev_000028": {
+      "created_at": 1775412425.0019953,
+      "details": {
+        "persisted_at": 1775412425.0019896,
+        "trace_reference": "1b7f2e2bf725dd431e61329360bd4f53b4e2cf69bc0a562d80a78e295dc64176",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000028",
+      "reference_id": "realization_rev_000028"
+    },
+    "persist_realization_rev_000029": {
+      "created_at": 1775412428.5024507,
+      "details": {
+        "persisted_at": 1775412428.502445,
+        "trace_reference": "15b5653510e9f2a4f4f87627b2ea15a2b1b9b4d686ad1b4e7ecd883c9998acad",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000029",
+      "reference_id": "realization_rev_000029"
+    },
+    "persist_realization_rev_000030": {
+      "created_at": 1775412432.5290256,
+      "details": {
+        "persisted_at": 1775412432.52902,
+        "trace_reference": "f73296f07364989bb79c2fadb266069861442e3107c5f491f0f1f4679484feb3",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000030",
+      "reference_id": "realization_rev_000030"
+    },
+    "persist_realization_rev_000031": {
+      "created_at": 1775412436.0430436,
+      "details": {
+        "persisted_at": 1775412436.0430381,
+        "trace_reference": "875e60a2d3e2aeca640d500a133dff1f69e03ca8efe068b4528462fb6ca17378",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000031",
+      "reference_id": "realization_rev_000031"
+    },
+    "persist_realization_rev_000032": {
+      "created_at": 1775412439.741666,
+      "details": {
+        "persisted_at": 1775412439.7416606,
+        "trace_reference": "7c5bc40d2ffecba4602bef8d4d3ae9f2a899cafa4f46a89fbd55c7381528d22c",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000032",
+      "reference_id": "realization_rev_000032"
+    },
+    "persist_realization_rev_000033": {
+      "created_at": 1775412443.1967793,
+      "details": {
+        "persisted_at": 1775412443.196774,
+        "trace_reference": "ca026ef91c6c73e4ee957b0e78cc13cf1593e06f35672f07c31a166e663879ec",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000033",
+      "reference_id": "realization_rev_000033"
+    },
+    "persist_realization_rev_000034": {
+      "created_at": 1775412447.7389064,
+      "details": {
+        "persisted_at": 1775412447.738901,
+        "trace_reference": "dfb89ef72d6dfce0a9cd96f0fb3d96003d7d07acf826f153a972c7e21f4dd766",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000034",
+      "reference_id": "realization_rev_000034"
+    },
+    "persist_realization_rev_000035": {
+      "created_at": 1775412451.5462816,
+      "details": {
+        "persisted_at": 1775412451.5462756,
+        "trace_reference": "22d4b875d37817c676487fbdaf5a136d818b7ca5d3a9c17bc863c5da24351575",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000035",
+      "reference_id": "realization_rev_000035"
+    },
+    "persist_realization_rev_000036": {
+      "created_at": 1775412455.470319,
+      "details": {
+        "persisted_at": 1775412455.4703133,
+        "trace_reference": "3fcc94feb1d404c6fa974d0c628941cf06a70b1d75ab6802df4b524b27bc2315",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000036",
+      "reference_id": "realization_rev_000036"
+    },
+    "persist_realization_rev_000037": {
+      "created_at": 1775412459.1571271,
+      "details": {
+        "persisted_at": 1775412459.157122,
+        "trace_reference": "02410187b34ae54e6e244adf36221e0fcb7d74eecbc0358e1974107022e7bc78",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000037",
+      "reference_id": "realization_rev_000037"
+    },
+    "persist_realization_rev_000038": {
+      "created_at": 1775412463.0611494,
+      "details": {
+        "persisted_at": 1775412463.0611434,
+        "trace_reference": "f9393586687c54d9e0dc59e8eb7bb54f0f1d9d7774a321680024bd108fba2a24",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000038",
+      "reference_id": "realization_rev_000038"
+    },
+    "persist_realization_rev_000039": {
+      "created_at": 1775412466.4103,
+      "details": {
+        "persisted_at": 1775412466.4102943,
+        "trace_reference": "acca0f15bac7148d7ceddd0dd50123b8334fd598907971d416729651acf1dbce",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000039",
+      "reference_id": "realization_rev_000039"
+    },
+    "persist_realization_rev_000040": {
+      "created_at": 1775412469.7092,
+      "details": {
+        "persisted_at": 1775412469.7091944,
+        "trace_reference": "26c72c6273286d201a627a175d7c706956ae48d4c2e522e89c1ca5a424bb5605",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000040",
+      "reference_id": "realization_rev_000040"
+    },
+    "persist_realization_rev_000041": {
+      "created_at": 1775412484.9786353,
+      "details": {
+        "persisted_at": 1775412484.9786289,
+        "trace_reference": "ff674fc420f9a7bf808543e0746af208da1699246a719e3a8d81002df445f56b",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000041",
+      "reference_id": "realization_rev_000041"
+    },
+    "persist_realization_rev_000042": {
+      "created_at": 1775412492.2848656,
+      "details": {
+        "persisted_at": 1775412492.284859,
+        "trace_reference": "ec162b2049d8b754aa8c22215e6b6b5711c5fb993e6e01924ba1aac4339d04b6",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000042",
+      "reference_id": "realization_rev_000042"
+    },
+    "persist_realization_rev_000043": {
+      "created_at": 1775412565.4994445,
+      "details": {
+        "persisted_at": 1775412565.4994366,
+        "trace_reference": "fb1849c0b8e2832d8d0c6d3fe5720ea7ac10f54b2dcbf95bb2187ace9e07d340",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000043",
+      "reference_id": "realization_rev_000043"
+    },
+    "persist_realization_rev_000044": {
+      "created_at": 1775412576.7773166,
+      "details": {
+        "persisted_at": 1775412576.7773066,
+        "trace_reference": "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000044",
+      "reference_id": "realization_rev_000044"
+    },
+    "realization_ledger_1775409287_c0f373be": {
+      "created_at": 1775409287.0594692,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 0,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "178883fe2e083153e7770df35fd1d3ef322de7b883c86872933e3a6be619509e"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775409287_c0f373be",
+      "reference_id": "controlled_delivery_candidate:host"
+    },
+    "realization_ledger_1775409287_e2bf7cac": {
+      "created_at": 1775409287.0594518,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775409287_e2bf7cac",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775409892_31bca7ee": {
+      "created_at": 1775409892.9935687,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775409892_31bca7ee",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775409892_5f9b7c8f": {
+      "created_at": 1775409892.9935818,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "3067a60e63f514dd983728ecebcdee1ff4849bf3b0f73144dc3a6648182fed30"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775409892_5f9b7c8f",
+      "reference_id": "commitment_fulfillment:realization_rev_000001"
+    },
+    "realization_ledger_1775412102_aa480686": {
+      "created_at": 1775412102.8627625,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "8eb88c6648826ec4983a8b8b4ae6c98b519b527e3ab087d6fa41ef1de6ea3125"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412102_aa480686",
+      "reference_id": "commitment_fulfillment:realization_rev_000002"
+    },
+    "realization_ledger_1775412102_ae86fb98": {
+      "created_at": 1775412102.8627508,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412102_ae86fb98",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412114_02ba0756": {
+      "created_at": 1775412114.1945255,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "8ea062b13a7537baed0ec11303873b9742b542a4f0146baeaf67bce47495c73c"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412114_02ba0756",
+      "reference_id": "commitment_fulfillment:realization_rev_000003"
+    },
+    "realization_ledger_1775412114_1341db14": {
+      "created_at": 1775412114.194506,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412114_1341db14",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412129_b40f08c0": {
+      "created_at": 1775412129.2086837,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "28973979c237467adac5c604fdb795a925444d52ca30cedc7f3b301b96a3b08f"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412129_b40f08c0",
+      "reference_id": "commitment_fulfillment:realization_rev_000004"
+    },
+    "realization_ledger_1775412129_eb0a460f": {
+      "created_at": 1775412129.2086742,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412129_eb0a460f",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412140_255518a3": {
+      "created_at": 1775412140.114894,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "6f7dc8b71034ae9e1667372afafcfc8b05dca8a00df183edd4073c6343d99ade"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412140_255518a3",
+      "reference_id": "commitment_fulfillment:realization_rev_000005"
+    },
+    "realization_ledger_1775412140_f3751a25": {
+      "created_at": 1775412140.1148696,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412140_f3751a25",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412156_b14cd4e4": {
+      "created_at": 1775412156.702466,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "7584862f78647a95d8446d04b3935f886eb25fa6b50e43ed376dd4ed1ddd83e5"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412156_b14cd4e4",
+      "reference_id": "commitment_fulfillment:realization_rev_000006"
+    },
+    "realization_ledger_1775412156_c65084a5": {
+      "created_at": 1775412156.702456,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412156_c65084a5",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412171_0263dc9c": {
+      "created_at": 1775412171.4867861,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412171_0263dc9c",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412171_578ed6ab": {
+      "created_at": 1775412171.4867947,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "656d7a029aaba58e2770e0990a9a5123057e2f2f7af4e3ca55cbaaaab1dce720"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412171_578ed6ab",
+      "reference_id": "commitment_fulfillment:realization_rev_000007"
+    },
+    "realization_ledger_1775412183_72d868d6": {
+      "created_at": 1775412183.2128153,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412183_72d868d6",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412183_e9731f5a": {
+      "created_at": 1775412183.212824,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "27bb85e6d862c73fb105365c6a3d6b5fbc5054088f8ff4fe65ec94ab40f2687d"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412183_e9731f5a",
+      "reference_id": "commitment_fulfillment:realization_rev_000008"
+    },
+    "realization_ledger_1775412198_2e075d6a": {
+      "created_at": 1775412198.0880976,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "303c7d964f61104a56e43853b8041d5a12647abb9f261ea50ec123a6fce7ab97"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412198_2e075d6a",
+      "reference_id": "commitment_fulfillment:realization_rev_000009"
+    },
+    "realization_ledger_1775412198_a81260ae": {
+      "created_at": 1775412198.0880892,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412198_a81260ae",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412211_3cdf3502": {
+      "created_at": 1775412211.2086735,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "15bcedc63bf9da2df6f8adf7849177149205be2cd735d9a003d7f45177922ecd"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412211_3cdf3502",
+      "reference_id": "commitment_fulfillment:realization_rev_000010"
+    },
+    "realization_ledger_1775412211_9ced4aed": {
+      "created_at": 1775412211.208665,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412211_9ced4aed",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412240_0ca50267": {
+      "created_at": 1775412240.5735989,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412240_0ca50267",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412240_f0de698b": {
+      "created_at": 1775412240.5736074,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "e218de9def4a746c47d31025dd6d1cf1050555bef0f72a9e1bf458f348f1c724"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412240_f0de698b",
+      "reference_id": "commitment_fulfillment:realization_rev_000011"
+    },
+    "realization_ledger_1775412257_c050be84": {
+      "created_at": 1775412257.2747169,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "d2046e15483e131344188a8af12a27b0c3aea3b19bbb16a7d8eb95ed6c5187a3"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412257_c050be84",
+      "reference_id": "commitment_fulfillment:realization_rev_000012"
+    },
+    "realization_ledger_1775412257_e24072a1": {
+      "created_at": 1775412257.2747064,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412257_e24072a1",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412268_042293cc": {
+      "created_at": 1775412268.5270588,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "6b498af1ab8d3569c09f811957c4e7ca74c162579dba7763727c4905fc0fafd7"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412268_042293cc",
+      "reference_id": "commitment_fulfillment:realization_rev_000013"
+    },
+    "realization_ledger_1775412268_9da92fe9": {
+      "created_at": 1775412268.5270505,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412268_9da92fe9",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412283_6fc4d410": {
+      "created_at": 1775412283.0151992,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412283_6fc4d410",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412283_6fcc0824": {
+      "created_at": 1775412283.0152109,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "c6345158f024e2de6f45240e9ff7588d2312bf389cf165ae46e0ac946e27522a"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412283_6fcc0824",
+      "reference_id": "commitment_fulfillment:realization_rev_000014"
+    },
+    "realization_ledger_1775412305_922dad76": {
+      "created_at": 1775412305.811209,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "1ca9edd21c1ac686bdb117b7f33ee243d6456348b5da430397ef252c741490dc"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412305_922dad76",
+      "reference_id": "commitment_fulfillment:realization_rev_000015"
+    },
+    "realization_ledger_1775412305_e20bb04b": {
+      "created_at": 1775412305.8112009,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412305_e20bb04b",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412321_569eac3b": {
+      "created_at": 1775412321.6525857,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "4b6247045b8fafc5eafcb8c31614c502455ce74ef0c7dc9a30b92c37324262d2"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412321_569eac3b",
+      "reference_id": "commitment_fulfillment:realization_rev_000016"
+    },
+    "realization_ledger_1775412321_b57f5f38": {
+      "created_at": 1775412321.6525767,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412321_b57f5f38",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412337_071b9ef3": {
+      "created_at": 1775412337.5236387,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412337_071b9ef3",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412337_726565e6": {
+      "created_at": 1775412337.523648,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "5f52c1335ea4d2e7ae9d0a35bd6a7e6365ea2ae8f50fcdcc71ffd5ed47c6d1f6"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412337_726565e6",
+      "reference_id": "commitment_fulfillment:realization_rev_000017"
+    },
+    "realization_ledger_1775412387_1d844077": {
+      "created_at": 1775412387.5182612,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412387_1d844077",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412387_5cb13c10": {
+      "created_at": 1775412387.5182705,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "b3752c361503751469fae38da30fee4b5993a136ec74b52f6308ac71fb804054"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412387_5cb13c10",
+      "reference_id": "commitment_fulfillment:realization_rev_000018"
+    },
+    "realization_ledger_1775412393_10f75635": {
+      "created_at": 1775412393.3274171,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "ce1e3455af4aa2a41b1515fc52dcaa63ec9446edebd99c36a82fac7f10932ad8"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412393_10f75635",
+      "reference_id": "commitment_fulfillment:realization_rev_000019"
+    },
+    "realization_ledger_1775412393_90c7a18d": {
+      "created_at": 1775412393.3274088,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412393_90c7a18d",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412399_5978e091": {
+      "created_at": 1775412399.8148026,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "beca859ea0326ca6fe10c14a2dddc12ca06dace0bc4571b250bef06edceea4ad"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412399_5978e091",
+      "reference_id": "commitment_fulfillment:realization_rev_000020"
+    },
+    "realization_ledger_1775412399_ff31229e": {
+      "created_at": 1775412399.8147943,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412399_ff31229e",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412403_151db57d": {
+      "created_at": 1775412403.272452,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "c610682e5c18b3abfb6a70af36e0058d4ec6b0a52e9a21472ddd37607dd52caf"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412403_151db57d",
+      "reference_id": "commitment_fulfillment:realization_rev_000021"
+    },
+    "realization_ledger_1775412403_61600167": {
+      "created_at": 1775412403.272443,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412403_61600167",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412406_6d35c7c9": {
+      "created_at": 1775412406.6747227,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412406_6d35c7c9",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412406_9c9a83ab": {
+      "created_at": 1775412406.674731,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "426a2e8490a14e9d60bb3636b614f9cef53b1f1202cf4d1923a7b2fd2c4dde67"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412406_9c9a83ab",
+      "reference_id": "commitment_fulfillment:realization_rev_000022"
+    },
+    "realization_ledger_1775412410_60753108": {
+      "created_at": 1775412410.059373,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412410_60753108",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412410_791db1bd": {
+      "created_at": 1775412410.0593808,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "a7ffd68dc443b4b884c962c2dc889af3531cf9e85f1ceaf2886cd804f74d19cd"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412410_791db1bd",
+      "reference_id": "commitment_fulfillment:realization_rev_000023"
+    },
+    "realization_ledger_1775412414_10c63bc1": {
+      "created_at": 1775412414.3094523,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "7394a9f85802ed3a858552f82f0c7564cf04cd8e01999a3ab09fa594883e3037"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412414_10c63bc1",
+      "reference_id": "commitment_fulfillment:realization_rev_000024"
+    },
+    "realization_ledger_1775412414_75744626": {
+      "created_at": 1775412414.309444,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412414_75744626",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412417_0f344d3e": {
+      "created_at": 1775412417.774998,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "977882e08f8eee2789fa3ff97232ee941377fc80bd85ab64145cb4e0ae5bf237"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412417_0f344d3e",
+      "reference_id": "commitment_fulfillment:realization_rev_000025"
+    },
+    "realization_ledger_1775412417_90597633": {
+      "created_at": 1775412417.7749882,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412417_90597633",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412421_0e9fc4c7": {
+      "created_at": 1775412421.6582184,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412421_0e9fc4c7",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412421_77257578": {
+      "created_at": 1775412421.6582267,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "e07049b19af85148b24713f943a559ab916702bb87f484840de352d317fa606c"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412421_77257578",
+      "reference_id": "commitment_fulfillment:realization_rev_000026"
+    },
+    "realization_ledger_1775412424_5cf70516": {
+      "created_at": 1775412424.9542053,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412424_5cf70516",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412424_ede6af4c": {
+      "created_at": 1775412424.954214,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "1b7f2e2bf725dd431e61329360bd4f53b4e2cf69bc0a562d80a78e295dc64176"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412424_ede6af4c",
+      "reference_id": "commitment_fulfillment:realization_rev_000027"
+    },
+    "realization_ledger_1775412428_0adcb514": {
+      "created_at": 1775412428.4547398,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412428_0adcb514",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412428_e989df69": {
+      "created_at": 1775412428.4547489,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "15b5653510e9f2a4f4f87627b2ea15a2b1b9b4d686ad1b4e7ecd883c9998acad"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412428_e989df69",
+      "reference_id": "commitment_fulfillment:realization_rev_000028"
+    },
+    "realization_ledger_1775412432_507dd1b9": {
+      "created_at": 1775412432.4848812,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412432_507dd1b9",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412432_ff5f9736": {
+      "created_at": 1775412432.4848895,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "f73296f07364989bb79c2fadb266069861442e3107c5f491f0f1f4679484feb3"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412432_ff5f9736",
+      "reference_id": "commitment_fulfillment:realization_rev_000029"
+    },
+    "realization_ledger_1775412435_16df6c09": {
+      "created_at": 1775412435.9411929,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412435_16df6c09",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412435_1728fdac": {
+      "created_at": 1775412435.9412065,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "875e60a2d3e2aeca640d500a133dff1f69e03ca8efe068b4528462fb6ca17378"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412435_1728fdac",
+      "reference_id": "commitment_fulfillment:realization_rev_000030"
+    },
+    "realization_ledger_1775412439_4f181cec": {
+      "created_at": 1775412439.6889904,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412439_4f181cec",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412439_fb76595a": {
+      "created_at": 1775412439.6889994,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "7c5bc40d2ffecba4602bef8d4d3ae9f2a899cafa4f46a89fbd55c7381528d22c"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412439_fb76595a",
+      "reference_id": "commitment_fulfillment:realization_rev_000031"
+    },
+    "realization_ledger_1775412443_7c91276e": {
+      "created_at": 1775412443.1426225,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412443_7c91276e",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412443_ae3f845b": {
+      "created_at": 1775412443.1426306,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "ca026ef91c6c73e4ee957b0e78cc13cf1593e06f35672f07c31a166e663879ec"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412443_ae3f845b",
+      "reference_id": "commitment_fulfillment:realization_rev_000032"
+    },
+    "realization_ledger_1775412447_134eabd5": {
+      "created_at": 1775412447.6800866,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412447_134eabd5",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412447_30becb7a": {
+      "created_at": 1775412447.6800973,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "dfb89ef72d6dfce0a9cd96f0fb3d96003d7d07acf826f153a972c7e21f4dd766"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412447_30becb7a",
+      "reference_id": "commitment_fulfillment:realization_rev_000033"
+    },
+    "realization_ledger_1775412451_0191594c": {
+      "created_at": 1775412451.489575,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "22d4b875d37817c676487fbdaf5a136d818b7ca5d3a9c17bc863c5da24351575"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412451_0191594c",
+      "reference_id": "commitment_fulfillment:realization_rev_000034"
+    },
+    "realization_ledger_1775412451_bf466f9b": {
+      "created_at": 1775412451.489565,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412451_bf466f9b",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412455_7571fe04": {
+      "created_at": 1775412455.4131165,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "3fcc94feb1d404c6fa974d0c628941cf06a70b1d75ab6802df4b524b27bc2315"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412455_7571fe04",
+      "reference_id": "commitment_fulfillment:realization_rev_000035"
+    },
+    "realization_ledger_1775412455_ebad575a": {
+      "created_at": 1775412455.4131076,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412455_ebad575a",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412459_07916df6": {
+      "created_at": 1775412459.088997,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "02410187b34ae54e6e244adf36221e0fcb7d74eecbc0358e1974107022e7bc78"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412459_07916df6",
+      "reference_id": "commitment_fulfillment:realization_rev_000036"
+    },
+    "realization_ledger_1775412459_46ed7abe": {
+      "created_at": 1775412459.0889773,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "low_reserve"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412459_46ed7abe",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412462_650eb6d0": {
+      "created_at": 1775412462.998879,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "f9393586687c54d9e0dc59e8eb7bb54f0f1d9d7774a321680024bd108fba2a24"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412462_650eb6d0",
+      "reference_id": "commitment_fulfillment:realization_rev_000037"
+    },
+    "realization_ledger_1775412462_9651322b": {
+      "created_at": 1775412462.9988706,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412462_9651322b",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412466_387f5787": {
+      "created_at": 1775412466.3415134,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412466_387f5787",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412466_5b1c624d": {
+      "created_at": 1775412466.3415217,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "acca0f15bac7148d7ceddd0dd50123b8334fd598907971d416729651acf1dbce"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412466_5b1c624d",
+      "reference_id": "commitment_fulfillment:realization_rev_000038"
+    },
+    "realization_ledger_1775412469_2051b1a7": {
+      "created_at": 1775412469.6573281,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "26c72c6273286d201a627a175d7c706956ae48d4c2e522e89c1ca5a424bb5605"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412469_2051b1a7",
+      "reference_id": "commitment_fulfillment:realization_rev_000039"
+    },
+    "realization_ledger_1775412469_b4670c1e": {
+      "created_at": 1775412469.6573193,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412469_b4670c1e",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412484_6d8df9b9": {
+      "created_at": 1775412484.9055774,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "ff674fc420f9a7bf808543e0746af208da1699246a719e3a8d81002df445f56b"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412484_6d8df9b9",
+      "reference_id": "commitment_fulfillment:realization_rev_000040"
+    },
+    "realization_ledger_1775412484_722e0f78": {
+      "created_at": 1775412484.9055667,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412484_722e0f78",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412492_2d76c39b": {
+      "created_at": 1775412492.2169564,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "ec162b2049d8b754aa8c22215e6b6b5711c5fb993e6e01924ba1aac4339d04b6"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412492_2d76c39b",
+      "reference_id": "commitment_fulfillment:realization_rev_000041"
+    },
+    "realization_ledger_1775412492_3b3a339a": {
+      "created_at": 1775412492.2169464,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412492_3b3a339a",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412565_181369f5": {
+      "created_at": 1775412565.4562175,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "fb1849c0b8e2832d8d0c6d3fe5720ea7ac10f54b2dcbf95bb2187ace9e07d340"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412565_181369f5",
+      "reference_id": "commitment_fulfillment:realization_rev_000042"
+    },
+    "realization_ledger_1775412565_7d5b95dd": {
+      "created_at": 1775412565.4562006,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412565_7d5b95dd",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412576_1d1457b6": {
+      "created_at": 1775412576.7294836,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412576_1d1457b6",
+      "reference_id": "commitment_fulfillment:realization_rev_000043"
+    },
+    "realization_ledger_1775412576_56730b61": {
+      "created_at": 1775412576.729461,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_continuity_confidence",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412576_56730b61",
+      "reference_id": "review"
+    }
+  },
+  "realization_state": {
+    "dominant_mode": "review",
+    "failure_recovery_bias": 0.0,
+    "fulfillment_readiness": 0.0,
+    "hold_bias": 0.0,
+    "last_updated": 1775412576.729291,
+    "policy_mode": "proposal_only",
+    "rationale_summary": "bounded_realization_review",
+    "realization_id": "phase1",
+    "realization_pressure": 0.0,
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_continuity_confidence",
+      "delivery_failure",
+      "45aa4ed1477d49e0a26cd672da9ce3f88ca171058854aafeb2ffb02e1c485a45"
+    ]
+  },
+  "schema_version": "mvp21-owner-v1"
+}
