@@ -33,11 +33,17 @@
 
 - `EgoCore/app/runtime_v2/initiative_arbiter.py`
   - classification: `host_execution_substrate_reference_only`
+- `EgoCore/app/runtime_v2/initiative_scheduler.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/app/runtime_v2/proactive_delivery.py`
   - classification: `host_execution_substrate_reference_only`
 - `EgoCore/app/runtime_v2/proactive_outbox.py`
   - classification: `host_execution_substrate_reference_only`
 - `EgoCore/app/runtime_v2/proactive_outbox_drain.py`
+  - classification: `host_execution_substrate_reference_only`
+- `EgoCore/app/runtime_v2/proactive_telegram_policy.py`
+  - classification: `host_execution_substrate_reference_only`
+- `EgoCore/app/runtime_v2/proactive_telegram_cycle.py`
   - classification: `host_execution_substrate_reference_only`
 - `EgoCore/app/runtime_v2/telegram_proactive_transport.py`
   - classification: `host_execution_substrate_reference_only_if_present`
@@ -45,11 +51,19 @@
   - classification: `host_execution_substrate_reference_only_if_present`
 - `EgoCore/tools/run_mvp12_proactive_followup.py`
   - classification: `host_execution_substrate_reference_only`
+- `EgoCore/tools/run_mvp12_idle_scheduler.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_controlled_delivery.py`
   - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_proactive_outbox.py`
   - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_proactive_outbox_drain.py`
+  - classification: `host_execution_substrate_reference_only`
+- `EgoCore/tools/run_mvp12_telegram_proactive_transport.py`
+  - classification: `host_execution_substrate_reference_only`
+- `EgoCore/tools/run_mvp12_host_governed_proactive_telegram_cycle.py`
+  - classification: `host_execution_substrate_reference_only`
+- `EgoCore/tools/run_mvp12_shadow_observation.py`
   - classification: `host_execution_substrate_reference_only`
 
 Plain-language guard:
@@ -58,6 +72,7 @@ Plain-language guard:
 - host proactive runtime / outbox / transport substrate is not a fallback semantic owner
 - host substrate remains `host_substrate_only`, not initiative realization semantics
 - host delivery / transport evidence is not realization proof until `WP16` current-mainline wiring exists
+- host proactive transport or outbox evidence is not `WP16` causal proof, observation proof, or maintenance proof
 
 ## Upstream Authority, Read-only To WP16
 
@@ -103,4 +118,4 @@ Current formal owner reminder:
 - `WP16` 不能把 `WP7` proactive runtime substrate 重新解释成自己的 owner
 - `WP16` 不能把 `WP7` delivery / outbox / transport substrate 重新解释成 realization semantics
 - `WP16` 不能把 roadmap、旧执行报告、或 proactive delivery evidence 升格成 current-runtime authority
-- 后续 no-second-truth verifier 应以未来 `verify_mvp21_mainline_wiring.py` 为准
+- 后续 no-second-truth verifier 应以 `OpenEmotion/tools/verify_mvp21_mainline_wiring.py` 为准

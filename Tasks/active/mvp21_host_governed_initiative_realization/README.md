@@ -7,21 +7,21 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: runtime_bridge_complete
+status: legacy_demotion_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP21_task_plan.md"
 predecessor: "WP15/MVP20"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP16 / MVP21 Host-Governed Initiative Realization / Proactive Delivery Mediation"
-claim_ceiling: "T30 complete only"
+claim_ceiling: "T40 complete only"
 ```
 
 ---
 
 ## 真实目标
 
-在不放开 authority 边界的前提下，把 `WP16/MVP21` 的 formal owner target 冻结到 `OpenEmotion/openemotion/initiative_realization/*`，并把 `WP15` 的 initiative proposal outputs、`WP7` 的 proactive runtime substrate、以及 `WP8~WP15` 的 frozen read surfaces 全部收成可执行 authority package。当前已完成 formal owner package、`proto_self_v2` bounded contract 与 EgoCore runtime thin bridge，下一步是冻结 legacy demotion / compat map。
+在不放开 authority 边界的前提下，把 `WP16/MVP21` 的 formal owner target 冻结到 `OpenEmotion/openemotion/initiative_realization/*`，并把 `WP15` 的 initiative proposal outputs、`WP7` 的 proactive runtime substrate、以及 `WP8~WP15` 的 frozen read surfaces 全部收成可执行 authority package。当前已完成 formal owner package、`proto_self_v2` bounded contract、EgoCore runtime thin bridge 与 no-second-truth legacy demotion / compat map，下一步是进入 causal proof。
 
 ## 当前正式 owner target
 
@@ -53,22 +53,22 @@ claim_ceiling: "T30 complete only"
 
 ## 当前状态
 
-- 执行包状态：`runtime_bridge_complete`
+- 执行包状态：`legacy_demotion_complete`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
 - `T20` proto_self_v2 contract：`completed`
 - `T30` EgoCore runtime bridge：`completed`
-- `T40` legacy demotion / compat map：`pending`
+- `T40` legacy demotion / compat map：`completed`
 - `T50` causal validation：`pending`
 - `T60` single controlled observation：`pending`
 - `T70` batch controlled observation / aggregate：`pending`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
-- 主链接线：`current_runtime_initiative_realization_consumer_present`
-- 启用状态：`authority_owner_proto_self_and_runtime_bridge`
-- 当前 blocker：`none on the WP16 runtime-bridge axis`
-- 当前最小动作：`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`
+- 主链接线：`current_runtime_initiative_realization_consumer_present_legacy_reference_only`
+- 启用状态：`authority_owner_proto_self_runtime_and_demotion`
+- 当前 blocker：`none on the WP16 legacy-demotion axis`
+- 当前最小动作：`T50_CAUSAL_VALIDATION`
 
 ## 当前已证实内容
 
@@ -87,6 +87,9 @@ claim_ceiling: "T30 complete only"
 - `OpenEmotion/tests/mvp21/test_realization_proto_self_integration.py` 与回归套件已通过 `8 passed` 的定向 proto-self contract 验证
 - `EgoCore/app/runtime_v2/proto_self_runtime.py` 已把 `initiative_realization_context / host_proactive_context` 注入当前 formal runtime mainline，并把 `initiative_realization_delta / commitment_fulfillment_candidates / delivery_readiness_snapshot / host_lane_hints / controlled_delivery_candidate / initiative_realization_writeback_candidate / initiative_realization_context / host_proactive_context / initiative_realization_writeback` 记录到 `state.proto_self_context`
 - `EgoCore/tests/test_runtime_v2_proto_self_runtime.py` 已通过 realization runtime bridge 定向验证 `1 passed`，完整 runtime bridge 文件回归 `44 passed`
+- `LEGACY_REFERENCE_REGISTER.md` 已把 host proactive runtime / delivery / outbox / transport substrate 逐项登记为 `host_execution_substrate_reference_only` 或 `host_execution_substrate_reference_only_if_present`
+- `OpenEmotion/tools/verify_mvp21_mainline_wiring.py` 已证明 current runtime initiative realization consumer 仍是 formal owner path，而 historical host proactive substrate 与 roadmap materials 只保留 `host_substrate_only / reference-only`
+- `OpenEmotion/tests/mvp21/test_mvp21_mainline_reference_demotion.py` 已通过 no-second-truth demotion 定向验证
 
 ## 当前不做
 
