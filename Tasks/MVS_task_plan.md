@@ -7,13 +7,14 @@
 先把 **EgoCore 宿主壳收稳**，再把 **OpenEmotion 的 Proto-Self Kernel** 以最小闭环方式接进主链，先拿到 **MVS（最小可持续主体）** 的真实证据，再进入 Developmental Sandbox。
 
 ## 裁决关系
-- 本文件负责 `WP0~WP16` 的阶段、依赖、Gate、证据等级和停止条件。
+- 本文件负责 `WP0~WP17` 的阶段、依赖、Gate、证据等级和停止条件。
 - `Tasks/active/krd_mvs_mainline/` 只负责把 `WP0/WP1` 拆成可执行工作包与状态台账，不与本文件并列裁决。
 - 本任务按 **主线原地替换** 推进，不开平行实现、不走双轨切换、不保留 shadow implementation。
 
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
 - 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP16/MVP21`，其 formal owner、bounded proto-self contract、EgoCore runtime bridge、legacy demotion、causal `V3/E3`、single controlled `V4/E4`、batch controlled `V5/E5`、closeout / QA baseline 与 maintenance ledger 均已完成，当前已进入 `maintenance_mode`，不是 live initiative realization autonomy。
+- 当前下一阶段是 `WP17/MVP22`，当前只到 `authority_frozen / task_package_ready`；formal owner target 已冻结为 `OpenEmotion/openemotion/self_continuity/*`，但还没有 owner/runtime 实现、主链接线、或 `E4/E5` 证据。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -36,6 +37,7 @@
 15. **WP14 Cross-Axis Self-Integration / Self-Maintenance Arbitration（MVP19 第一正式切片）**
 16. **WP15 Host-Governed Self-Directed Initiative / Commitment Continuity（MVP20 第一正式切片）**
 17. **WP16 Host-Governed Initiative Realization / Proactive Delivery Mediation（MVP21 第一正式切片）**
+18. **WP17 Long-Horizon Self-Continuity / Realized Consequence Persistence（MVP22 第一正式切片）**
 
 ---
 
@@ -1319,3 +1321,105 @@
 - 当前已证实：`Tasks/active/mvp21_host_governed_initiative_realization/WP16_QA_BASELINE.md`、`MAINTENANCE_LEDGER.md` 与 `OpenEmotion/artifacts/mvp21/MVP21_COMPLETION_CURRENT.*` 已冻结，当前 `WP16` 正式口径仅限 formal owner + proposal-only initiative realization writeback + controlled observation 轴进入 `maintenance_mode`
 - 当前不可宣称：live autonomy、OpenEmotion direct reply authority、tool authority、broader transport claims、或任何 authority release
 - 当前 blocker：受控轴内无主 blocker；后续只做 maintenance verification / ledger intake，不扩 `WP16` scope
+
+---
+
+## WP17：Long-Horizon Self-Continuity / Realized Consequence Persistence
+**前提**：只有 `WP16/MVP21` 进入 `maintenance_mode` 后才启动。
+
+**归属**：OpenEmotion（long-horizon self-continuity / realized consequence persistence owner target）+ EgoCore（runtime / response contract / gate / audit / risk adjudication）
+
+**child authority**
+- `Tasks/MVP22_task_plan.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/`
+
+**本阶段当前范围**
+- authority / contract / boundary freeze
+- formal self_continuity owner package target 定义
+- bounded proto-self self_continuity contract target 定义
+- EgoCore runtime self_continuity bridge target 定义
+- `WP8~WP16` boundary freeze
+- legacy continuity / restart / roadmap materials demotion
+- subagent-ready task decomposition
+- 不把新能力塞回 `WP8~WP16`
+
+**任务**
+- capability ownership 固定为：
+  - `realized_history_state / commitment_persistence_state / identity_continuity_state / restart_restore_continuity_state / consequence_consolidation_state / continuity_break_risk_state / self_persistence_tendency / continuity_ledger` 归 `OpenEmotion/openemotion/self_continuity/*`
+  - runtime / session / task / tool / transport、response plan、outward response contract、ask / wait / block / escalate、trace / replay / gate / audit / maintenance ledger、real-world execution / risk adjudication 仍归 `EgoCore`
+- authority source 固定为：
+  - 顶层裁决：`Tasks/MVS_task_plan.md`
+  - `WP17` phase-detail authority：`Tasks/MVP22_task_plan.md`
+  - technical reference：`Tasks/MVP15_task_plan.md`、`Tasks/MVP16_task_plan.md`、`Tasks/MVP17_task_plan.md`、`Tasks/MVP18_task_plan.md`、`Tasks/MVP19_task_plan.md`、`Tasks/MVP20_task_plan.md`、`Tasks/MVP21_task_plan.md`、`OpenEmotion/roadmap/SELF_AWARE_AI_ROADMAP.md`、`OpenEmotion/roadmap/VersionRoadmap.md`
+- phase 1 formal intake 固定为：
+  - `runtime_summary.initiative_realization_context`
+  - `runtime_summary.selfhood_integration_context`
+  - `runtime_summary.self_model_context`
+  - `runtime_summary.reflective_self_context`
+  - `runtime_summary.developmental_self_context`
+  - `runtime_summary.social_self_context`
+  - `runtime_summary.embodied_self_context`
+  - `runtime_summary.maintenance_context`
+  - `runtime_summary.recent_delivery_outcome`
+  - `runtime_summary.restart_restore_observation_context`
+- phase 1 formal outputs 固定为：
+  - `self_continuity_delta`
+  - `realized_commitment_snapshot`
+  - `consequence_consolidation_candidates`
+  - `identity_continuity_hints`
+  - `continuity_break_alerts`
+  - `self_persistence_tendency`
+  - `self_continuity_writeback_candidate`
+  - `trace_payload.self_continuity_context`
+- output discipline 固定为：
+  - `proposal_only = true`
+  - `behavioral_authority = none`
+  - `required_gate = self_continuity_writeback_gate`
+- phase 1 scope 固定为：
+  - realized outcome consolidation
+  - cross-session / cross-restart continuity
+  - continuity-break detection
+  - identity-preserving tendency after realized success/failure
+- 显式锁定当前仍不放开的能力：
+  - direct reply / tool / transport authority
+  - open-world free-form autonomy
+  - upstream owner mutation
+  - live autonomy claims
+
+**交付物**
+- `Tasks/MVP22_task_plan.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/README.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/STATUS.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/LEGACY_REFERENCE_REGISTER.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/SUBAGENT_ASSIGNMENT.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/contracts/SELF_CONTINUITY_CAPABILITY_OWNERSHIP.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/contracts/SELF_CONTINUITY_AUTHORITY_SOURCE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/contracts/SELF_CONTINUITY_IO_CONTRACT.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/contracts/WP8_WP16_BOUNDARY_FREEZE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/contracts/LOCKED_NON_RELEASES.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T00_AUTHORITY_FREEZE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T10_FORMAL_OWNER_PACKAGE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T20_PROTO_SELF_CONTRACT_INTEGRATION.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T30_EGOCORE_RUNTIME_BRIDGE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T40_LEGACY_DEMOTION_AND_COMPAT_MAP.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T50_CAUSAL_VALIDATION.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T60_CONTROLLED_OBSERVATION_SINGLE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T70_BATCH_OBSERVATION_AND_AGGREGATE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T80_CLOSEOUT_AND_QA_BASELINE.md`
+- `Tasks/active/mvp22_long_horizon_self_continuity/cards/T90_SUBAGENT_ASSIGNMENT.md`
+
+**验收**
+- `Tasks/MVS_task_plan.md` 中已正式出现 `WP17`
+- `Tasks/MVP22_task_plan.md`、执行包 `README / STATUS / contracts / cards` 口径一致
+- `WP16` 继续处于 `maintenance_mode`，没有被 `WP17` reopen
+- `WP17` 文档没有把 self-continuity 漂成实现完成、主链接线、`E4/E5`、observation、或 maintenance mode
+- 证据层级目标：E0 -> E1（authority / contract freeze）
+
+**当前状态（2026-04-05）**
+- `WP17/MVP22` 当前层级是 `authority_freeze`
+- 当前状态是 `authority_frozen`
+- 当前 formal owner target 固定为 `OpenEmotion/openemotion/self_continuity/*`
+- 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
+- 当前已证实：`Tasks/MVP22_task_plan.md` 与 `Tasks/active/mvp22_long_horizon_self_continuity/*` 已把 capability ownership、authority source、IO contract、`WP8~WP16` boundary freeze、legacy demotion register、subagent assignment 与 task cards 收成一致 authority package
+- 当前不可宣称：implementation、mainline wiring、`E4/E5`、observation started、maintenance mode、live autonomy、OpenEmotion direct reply authority、tool authority、broader transport claims、或任何 authority release
+- 当前 blocker：无；下一步只允许 `T10_FORMAL_OWNER_PACKAGE`
