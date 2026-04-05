@@ -1,6 +1,6 @@
 # MVP21 / WP16 Host-Governed Initiative Realization / Proactive Delivery Mediation
 
-> 状态：T60 complete / T70 pending
+> 状态：T70 complete / T80 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP16`
 > predecessor: `WP15/MVP20`
@@ -175,11 +175,11 @@
 - `WP16` may not reinterpret `WP15` maintenance institutionalization or controlled evidence as delivery authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`causal_validation`
-- 当前状态：`observation_started`
-- 当前 blocker：`none on the WP16 single-observation axis`
-- 当前最小闭环动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
-- 当前 claim ceiling：`T60 complete only`
+- 当前层级：`controlled_observation_batch`
+- 当前状态：`controlled_observation_batch_complete`
+- 当前 blocker：`none on the WP16 controlled-axis E5 path`
+- 当前最小闭环动作：`T80_CLOSEOUT_AND_QA_BASELINE`
+- 当前 claim ceiling：`T70 complete only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP16: Host-Governed Initiative Realization / Proactive Delivery Mediation`
@@ -209,3 +209,22 @@
 - `T60` 完成只证明当前 formal owner + current runtime mainline 已拿到首个 controlled `V4/E4` single observation；不证明 repeated stability、`E5`、或 maintenance mode
 - `T70` 完成只证明当前 formal owner + current runtime mainline 已通过 repeated controlled observation aggregate 拿到 `V5/E5`；不证明 closeout、maintenance mode、或 authority 放开
 - `T80` 完成才证明当前 `WP16` closeout docs、completion artifact 与 QA baseline 已冻结，可以按 maintenance 口径维护；仍不证明 live autonomy、OpenEmotion direct reply authority、tool authority、或 broader transport maturity
+
+## Current Evidence Snapshot
+- current repeated controlled batch artifact:
+  - `OpenEmotion/artifacts/mvp21/mvp21_controlled_observation_batch_current.md`
+  - `OpenEmotion/artifacts/mvp21/mvp21_controlled_observation_batch_current.json`
+- current controlled-axis `V5/E5` result:
+  - `report_count = 3`
+  - `accepted_count = 3`
+  - `replay_consistent_count = 3`
+  - `initiative_realization_proposal_present_count = 3`
+  - `proposal_only_discipline_count = 3`
+  - `behavioral_authority_none_count = 3`
+  - `bounded_influence_present_count = 3`
+- this does not yet prove:
+  - `maintenance_mode`
+  - live autonomy
+  - OpenEmotion direct reply authority
+  - tool authority
+  - broader transport claims

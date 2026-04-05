@@ -1,0 +1,226 @@
+{
+  "commitment_fulfillment_state": {
+    "active_commitments_count": 0,
+    "blocked_commitment_refs": [],
+    "continuity_confidence": 0.74,
+    "fulfillment_id": "phase1",
+    "fulfillment_summary": "bounded_commitment_fulfillment",
+    "last_updated": 1775412994.9545946,
+    "ready_commitments_count": 0,
+    "realized_commitment_refs": [],
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_reserve",
+      "delivery_failure",
+      "38d34758b268b943f4b0b4d827aa737a81681c5cfeedacf71b349194341a1a05"
+    ],
+    "status": "active"
+  },
+  "controlled_delivery_candidate": {
+    "behavioral_authority": "none",
+    "candidate_id": "controlled_delivery_candidate:realization_rev_000002",
+    "candidate_label": "governed_controlled_delivery",
+    "created_at": 1775412994.9546416,
+    "delivery_readiness": 0.42,
+    "effect_scope": "proposal_only",
+    "host_lane_hint": "host_reality_review",
+    "readiness_basis": "delivery_failure_hold",
+    "requested_effects": [
+      "review_realization_lane"
+    ],
+    "required_gate": "initiative_realization_writeback_gate",
+    "source_refs": [
+      "realization:repair_review:bounded"
+    ],
+    "status": "held",
+    "updated_at": 1775412994.9546485
+  },
+  "delivery_readiness_state": {
+    "fulfill_weight": 0.0,
+    "hold_weight": 0.0,
+    "host_lane_hints": [
+      "host_reality_review",
+      "host_failure_repair_queue"
+    ],
+    "lane_reason": "bounded_realization_lane",
+    "last_updated": 1775412994.9545765,
+    "mediate_weight": 0.0,
+    "policy_mode": "proposal_only",
+    "prepare_weight": 0.0,
+    "readiness_id": "phase1",
+    "review_weight": 0.0,
+    "selected_lane": "review",
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_reserve",
+      "delivery_failure",
+      "38d34758b268b943f4b0b4d827aa737a81681c5cfeedacf71b349194341a1a05"
+    ]
+  },
+  "identity_handle": "openemotion",
+  "initiative_realization_candidate": {
+    "behavioral_authority": "none",
+    "candidate_id": "commitment_fulfillment:realization_rev_000002",
+    "candidate_label": "bounded_realization_review",
+    "created_at": 1775412994.9546206,
+    "effect_scope": "proposal_only",
+    "justification": "bounded_realization_review",
+    "proposed_effects": {},
+    "requested_effects": [],
+    "required_gate": "initiative_realization_writeback_gate",
+    "selected_mode": "review",
+    "source_refs": [
+      "realization:repair_review:bounded"
+    ],
+    "status": "held",
+    "updated_at": 1775412994.9546297
+  },
+  "last_revision_id": "realization_rev_000003",
+  "owner_revision": 3,
+  "realization_ledger": {
+    "persist_realization_rev_000001": {
+      "created_at": 1775412971.7671509,
+      "details": {
+        "persisted_at": 1775412971.7671442,
+        "trace_reference": "mvp21:controlled_bootstrap",
+        "update_source": "owner_bootstrap"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000001",
+      "reference_id": "realization_rev_000001"
+    },
+    "persist_realization_rev_000002": {
+      "created_at": 1775412978.479935,
+      "details": {
+        "persisted_at": 1775412978.4799254,
+        "trace_reference": "1b390dfe6d25874832095d76635bad1edb9b7dd7f74ca3e598d99d1be83fe685",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000002",
+      "reference_id": "realization_rev_000002"
+    },
+    "persist_realization_rev_000003": {
+      "created_at": 1775412995.0035262,
+      "details": {
+        "persisted_at": 1775412995.00352,
+        "trace_reference": "38d34758b268b943f4b0b4d827aa737a81681c5cfeedacf71b349194341a1a05",
+        "update_source": "proto_self_v2"
+      },
+      "event_type": "state_persisted",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "persist_realization_rev_000003",
+      "reference_id": "realization_rev_000003"
+    },
+    "realization_ledger_1775412971_f39d3397": {
+      "created_at": 1775412971.7369165,
+      "details": {
+        "delivery_candidate_id": "delivery_candidate_1775412971_66ce9c21"
+      },
+      "event_type": "initiative_realization_bootstrap",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412971_f39d3397",
+      "reference_id": "realization_1775412971_faf11244"
+    },
+    "realization_ledger_1775412978_9299f887": {
+      "created_at": 1775412978.4237714,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "high_hold_bias",
+          "high_failure_recovery_bias",
+          "high_active_commitments",
+          "low_reserve",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412978_9299f887",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412978_9bf883f4": {
+      "created_at": 1775412978.423785,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "1b390dfe6d25874832095d76635bad1edb9b7dd7f74ca3e598d99d1be83fe685"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412978_9bf883f4",
+      "reference_id": "commitment_fulfillment:realization_rev_000001"
+    },
+    "realization_ledger_1775412994_98854834": {
+      "created_at": 1775412994.9546936,
+      "details": {
+        "dominant_mode": "review",
+        "proposal_only": true,
+        "selected_lane": "review",
+        "surface_reasons": [
+          "low_realization_readiness",
+          "low_fulfillment_readiness",
+          "low_reserve",
+          "delivery_failure"
+        ]
+      },
+      "event_type": "initiative_realization_contract_surface",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412994_98854834",
+      "reference_id": "review"
+    },
+    "realization_ledger_1775412994_b6bfbccc": {
+      "created_at": 1775412994.9547179,
+      "details": {
+        "behavioral_authority": "none",
+        "controlled_delivery_present": true,
+        "proposal_count": 1,
+        "proposal_only": true,
+        "selected_lane": "review",
+        "trace_reference": "38d34758b268b943f4b0b4d827aa737a81681c5cfeedacf71b349194341a1a05"
+      },
+      "event_type": "initiative_realization_writeback",
+      "gate_name": "initiative_realization_writeback_gate",
+      "gate_verdict": "allow_writeback",
+      "ledger_id": "realization_ledger_1775412994_b6bfbccc",
+      "reference_id": "commitment_fulfillment:realization_rev_000002"
+    }
+  },
+  "realization_state": {
+    "dominant_mode": "review",
+    "failure_recovery_bias": 0.0,
+    "fulfillment_readiness": 0.0,
+    "hold_bias": 0.0,
+    "last_updated": 1775412994.9545546,
+    "policy_mode": "proposal_only",
+    "rationale_summary": "bounded_realization_review",
+    "realization_id": "phase1",
+    "realization_pressure": 0.0,
+    "source_refs": [
+      "low_realization_readiness",
+      "low_fulfillment_readiness",
+      "low_reserve",
+      "delivery_failure",
+      "38d34758b268b943f4b0b4d827aa737a81681c5cfeedacf71b349194341a1a05"
+    ]
+  },
+  "schema_version": "mvp21-owner-v1"
+}
