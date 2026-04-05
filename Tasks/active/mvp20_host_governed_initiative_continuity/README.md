@@ -7,7 +7,7 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: proto_self_contract_complete
+status: runtime_bridge_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP20_task_plan.md"
 predecessor: "WP14/MVP19"
@@ -58,17 +58,17 @@ claim_ceiling: "T20 completed only"
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
 - `T20` proto_self_v2 contract：`completed`
-- `T30` EgoCore runtime bridge：`pending`
+- `T30` EgoCore runtime bridge：`completed`
 - `T40` legacy demotion / compat map：`pending`
 - `T50` causal validation：`pending`
 - `T60` single controlled observation：`pending`
 - `T70` batch controlled observation / aggregate：`pending`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
-- 主链接线：`proto_self_initiative_consumer_present_runtime_bridge_pending`
-- 启用状态：`not_enabled`
-- 当前 blocker：`none on the WP15 proto-self contract axis`
-- 当前最小动作：`T30_EGOCORE_RUNTIME_BRIDGE`
+- 主链接线：`current_runtime_initiative_consumer_present_legacy_demotion_pending`
+- 启用状态：`current_runtime_wired_not_observed`
+- 当前 blocker：`none on the WP15 runtime-bridge axis`
+- 当前最小动作：`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`
 
 ## 当前已证实内容
 
@@ -85,6 +85,8 @@ claim_ceiling: "T20 completed only"
 - `OpenEmotion/openemotion/proto_self_v2/initiative_self_context.py` 现已把 `runtime_summary.initiative_self_context` 与 `runtime_summary.initiative_context` 通过唯一 bounded consumer path 接进 `proto_self_v2`
 - `KernelOutputV2` 与 trace 现已新增 `initiative_self_delta / initiative_proposal_candidates / commitment_execution_snapshot / initiative_policy_hints / host_proactive_candidate / initiative_audit_entries / initiative_writeback_candidate / trace_payload.initiative_context`
 - `OpenEmotion/tests/mvp20/test_initiative_proto_self_integration.py` 已验证 proposal-only discipline、legacy-not-consumed 与 bounded context/trace 输出
+- `EgoCore/app/runtime_v2/proto_self_runtime.py` 现已把 `initiative_self_context / initiative_context` 注入正式 runtime 主链，并把 initiative outputs 以 gated bounded writeback 形式挂回宿主上下文
+- `EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k initiative` 已验证 current runtime mainline wiring、proposal-only discipline 与 required gate 保持不变
 
 ## 当前不做
 

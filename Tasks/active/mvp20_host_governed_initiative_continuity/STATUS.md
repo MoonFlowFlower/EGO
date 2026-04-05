@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP15
-status: proto_self_contract_complete
-current_layer: proto_self_contract
-main_chain_status: proto_self_initiative_consumer_present_runtime_bridge_pending
-enabled_status: not_enabled
+status: runtime_bridge_complete
+current_layer: implementation
+main_chain_status: current_runtime_initiative_consumer_present_legacy_demotion_pending
+enabled_status: current_runtime_wired_not_observed
 trigger_evidence:
   - WP14/MVP19 is the predecessor and remains the last completed maintenance upstream
   - WP15 authority package now exists under Tasks/*
@@ -24,18 +24,22 @@ trigger_evidence:
   - KernelOutputV2 and trace now expose initiative_self_delta, initiative_proposal_candidates, commitment_execution_snapshot, initiative_policy_hints, host_proactive_candidate, initiative_audit_entries, initiative_writeback_candidate, and trace_payload.initiative_context
   - proposal discipline remains proposal_only true, behavioral_authority none, and required_gate initiative_writeback_gate
   - targeted proto-self contract verification passed in OpenEmotion/tests/mvp20/test_initiative_proto_self_integration.py
+  - EgoCore runtime_v2 now injects initiative_self_context and initiative_context into the formal runtime mainline
+  - current runtime mainline now records initiative_self_delta, initiative_proposal_candidates, commitment_execution_snapshot, initiative_policy_hints, host_proactive_candidate, initiative_audit_entries, initiative_writeback_candidate, initiative_context, and initiative_writeback in bounded host context
+  - initiative writeback remains gated to initiative_writeback_gate with proposal_only discipline and behavioral_authority none
+  - targeted runtime bridge verification passed in EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k initiative
 verification_level: V3
 evidence_level: E3
-current_blocker: "none on the WP15 proto-self contract axis"
-next_minimal_closure_action: "T30_EGOCORE_RUNTIME_BRIDGE"
+current_blocker: "none on the WP15 runtime-bridge axis"
+next_minimal_closure_action: "T40_LEGACY_DEMOTION_AND_COMPAT_MAP"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP15/MVP20` 已完成 `T20_PROTO_SELF_CONTRACT_INTEGRATION`，`initiative_self` 已通过唯一 bounded consumer path 接入 `proto_self_v2`
-- 条件性完成：当前只覆盖 owner 层 + proto-self contract 层；不覆盖 EgoCore runtime、controlled observation 或 maintenance
+- 可宣称完成：`WP15/MVP20` 已完成 `T30_EGOCORE_RUNTIME_BRIDGE`，当前 EgoCore runtime 主链已接入 bounded initiative context 与 gated initiative writeback
+- 条件性完成：当前只覆盖 owner 层 + proto-self contract + EgoCore runtime bridge；不覆盖 legacy demotion、causal proof、controlled observation 或 maintenance
 - 不可宣称完成：`MVP20` 已实现、已接主链、已 observation_started、已有 `E4/E5`、或已进入 `maintenance_mode`
-- 后续处理：下一步只能进入 `T30_EGOCORE_RUNTIME_BRIDGE`，不能跳过 runtime bridge 直接做 observation
+- 后续处理：下一步只能进入 `T40_LEGACY_DEMOTION_AND_COMPAT_MAP`，不能跳过 demotion 直接做 causal proof 或 observation
 
 ## 边界提醒
 
