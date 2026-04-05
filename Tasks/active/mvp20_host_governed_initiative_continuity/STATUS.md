@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP15
-status: causal_proof_complete
+status: observation_started
 current_layer: implementation
 main_chain_status: current_runtime_initiative_consumer_present_legacy_reference_only
-enabled_status: current_runtime_wired_not_observed
+enabled_status: single_controlled_observation_started
 trigger_evidence:
   - WP14/MVP19 is the predecessor and remains the last completed maintenance upstream
   - WP15 authority package now exists under Tasks/*
@@ -34,18 +34,20 @@ trigger_evidence:
   - OpenEmotion/tests/mvp20/test_mvp20_mainline_reference_demotion.py now proves host-substrate-only registration, roadmap reference-only registration, and current runtime consumer status
   - OpenEmotion/tests/mvp20/test_initiative_causal_formal_proof.py now proves bounded initiative downstream shifts for carry-forward activation, delivery-failure hold, continuity-fragility review, selfhood-guard override, and wording-only no-effect
   - OpenEmotion/tools/run_mvp20_causal_validation.py now emits the current V3/E3 causal artifact under OpenEmotion/artifacts/mvp20/mvp20_causal_validation_current.*
-verification_level: V3
-evidence_level: E3
+  - OpenEmotion/tests/mvp20/test_controlled_observation.py now proves the governed single-sample report shape and claim ceiling for MVP20 initiative controlled observation
+  - OpenEmotion/tools/run_mvp20_controlled_observation.py now emits the first controlled runtime-mainline single observation artifact under OpenEmotion/artifacts/mvp20/mvp20_controlled_observation_current.*
+verification_level: V4
+evidence_level: E4
 current_blocker: "none on the WP15 runtime-bridge axis"
-next_minimal_closure_action: "T60_CONTROLLED_OBSERVATION_SINGLE"
+next_minimal_closure_action: "T70_BATCH_OBSERVATION_AND_AGGREGATE"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP15/MVP20` 已完成 `T50_CAUSAL_VALIDATION`，当前 initiative formal owner、proto-self contract、EgoCore runtime bridge、no-second-truth legacy demotion 与 bounded causal proof 已全部成立
-- 条件性完成：当前只覆盖 owner 层 + proto-self contract + EgoCore runtime bridge + legacy demotion + bounded causal proof；不覆盖 controlled observation 或 maintenance
-- 不可宣称完成：`MVP20` 已实现、已接主链、已 observation_started、已有 `E4/E5`、或已进入 `maintenance_mode`
-- 后续处理：下一步只能进入 `T60_CONTROLLED_OBSERVATION_SINGLE`，不能跳过 single controlled observation 直接做 batch 或 maintenance
+- 可宣称完成：`WP15/MVP20` 已完成 `T60_CONTROLLED_OBSERVATION_SINGLE`，当前 initiative formal owner、proto-self contract、EgoCore runtime bridge、legacy demotion、bounded causal proof 与首个 controlled runtime-mainline `V4/E4` 样本已成立
+- 条件性完成：当前只覆盖 owner 层 + proto-self contract + EgoCore runtime bridge + legacy demotion + bounded causal proof + single controlled observation；不覆盖 repeated observation 或 maintenance
+- 不可宣称完成：`MVP20` 已有 `E5`、已进入 `maintenance_mode`、或已放开任何 authority
+- 后续处理：下一步只能进入 `T70_BATCH_OBSERVATION_AND_AGGREGATE`，不能跳过 batch 直接做 maintenance
 
 ## 边界提醒
 

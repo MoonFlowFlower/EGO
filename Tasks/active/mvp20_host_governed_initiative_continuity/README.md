@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: causal_proof_complete
+status: observation_started
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP20_task_plan.md"
 predecessor: "WP14/MVP19"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP15 / MVP20 Host-Governed Self-Directed Initiative / Commitment Continuity"
-claim_ceiling: "T50 completed only"
+claim_ceiling: "single-sample V4/E4 only"
 ```
 
 ---
@@ -53,7 +53,7 @@ claim_ceiling: "T50 completed only"
 
 ## 当前状态
 
-- 执行包状态：`causal_proof_complete`
+- 执行包状态：`observation_started`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
@@ -61,14 +61,14 @@ claim_ceiling: "T50 completed only"
 - `T30` EgoCore runtime bridge：`completed`
 - `T40` legacy demotion / compat map：`completed`
 - `T50` causal validation：`completed`
-- `T60` single controlled observation：`pending`
+- `T60` single controlled observation：`completed`
 - `T70` batch controlled observation / aggregate：`pending`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`current_runtime_initiative_consumer_present_legacy_reference_only`
-- 启用状态：`current_runtime_wired_not_observed`
+- 启用状态：`single_controlled_observation_started`
 - 当前 blocker：`none on the WP15 runtime-bridge axis`
-- 当前最小动作：`T60_CONTROLLED_OBSERVATION_SINGLE`
+- 当前最小动作：`T70_BATCH_OBSERVATION_AND_AGGREGATE`
 
 ## 当前已证实内容
 
@@ -92,6 +92,8 @@ claim_ceiling: "T50 completed only"
 - `OpenEmotion/tests/mvp20/test_mvp20_mainline_reference_demotion.py` 现已验证 no-second-truth demotion 与 current runtime consumer status
 - `OpenEmotion/tests/mvp20/test_initiative_causal_formal_proof.py` 现已通过 4 组 paired intervention/control 与 1 组 wording-only no-effect guard，证明 initiative / commitment continuity proposals 会改变 bounded downstream weighting，而不是只改文本
 - `OpenEmotion/tools/run_mvp20_causal_validation.py` 现已生成 `OpenEmotion/artifacts/mvp20/mvp20_causal_validation_current.md/.json`，当前 causal report 口径为 `V3/E3`
+- `OpenEmotion/tests/mvp20/test_controlled_observation.py` 现已验证 `MVP20` single controlled observation report shape、`allow_writeback` gate、`behavioral_authority_none` 与 `V4/E4` claim ceiling
+- `OpenEmotion/tools/run_mvp20_controlled_observation.py` 现已生成 `OpenEmotion/artifacts/mvp20/mvp20_controlled_observation_current.md/.json`，当前只证明首个 controlled runtime-mainline `V4/E4` single observation
 
 ## 当前不做
 

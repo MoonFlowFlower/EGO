@@ -1,0 +1,1081 @@
+{
+  "schema_version": "mvp20.controlled_observation.v1",
+  "generated_at": "2026-04-05T01:09:13.027712+00:00",
+  "git_commit_short": "56fc960",
+  "session_id": "session:mvp20:controlled:20260404_200855",
+  "observation_count": 2,
+  "observation_log": "/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion/artifacts/mvp20/controlled_mainline_20260405_010855/runtime_harness_observation.jsonl",
+  "scenario_manifest": null,
+  "observation_refs": [
+    {
+      "kind": "runtime_mainline_delivery",
+      "event_id": "mvp20_delivery_001_20260405_010907_067507",
+      "created_at": "2026-04-05T01:09:07.067503+00:00",
+      "text_preview": "明白，先以提案形式保留承诺，不做外发落地。这样后续还有调整空间。"
+    },
+    {
+      "kind": "runtime_mainline_delivery",
+      "event_id": "mvp20_delivery_002_20260405_010912_957188",
+      "created_at": "2026-04-05T01:09:12.957184+00:00",
+      "text_preview": "清楚了，host proactives 必须走 gated review 卡一道，不能跳过。"
+    }
+  ],
+  "initiative_self_delta": {
+    "proposal_candidate_count": 1,
+    "selected_priority": "hold",
+    "commitment_mode": "carry_forward",
+    "host_proactive_mode": "held",
+    "surface_reasons": [
+      "initiative_pressure",
+      "commitment_carryover",
+      "active_commitments",
+      "idle_window",
+      "integration_guard",
+      "integration_conflict"
+    ]
+  },
+  "initiative_self_delta_fields": [
+    "commitment_mode",
+    "host_proactive_mode",
+    "proposal_candidate_count",
+    "selected_priority",
+    "surface_reasons"
+  ],
+  "initiative_proposal_candidates": [
+    {
+      "proposal_id": "initiative:hold:2",
+      "proposal_label": "hold_initiative_under_guard",
+      "priority_mode": "hold",
+      "proposed_effects": {
+        "initiative_bias": "hold",
+        "commitment_mode": "carry_forward",
+        "host_proactive_mode": "held"
+      },
+      "justification": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+      "required_gate": "initiative_writeback_gate",
+      "effect_scope": "proposal_only",
+      "behavioral_authority": "none",
+      "requested_effects": [
+        "governed_initiative_review"
+      ],
+      "promotion_level": "controlled_axis"
+    }
+  ],
+  "commitment_execution_snapshot": {
+    "contract_version": "mvp20.initiative_contract.v1",
+    "owner_revision": 2,
+    "last_revision_id": "initiative_rev_000002",
+    "selected_priority": "hold",
+    "active_commitments_count": 2,
+    "blocked_commitments_count": 0,
+    "continuity_confidence": 0.78,
+    "commitment_mode": "carry_forward",
+    "reserve_level": "medium",
+    "recent_delivery_status": "sent",
+    "idle_seconds": 1800.0,
+    "integrated_priority": "guard"
+  },
+  "initiative_policy_hints": {
+    "initiative_bias": "hold",
+    "continuity_mode": "stable",
+    "commitment_mode": "carry_forward",
+    "host_proactive_mode": "held",
+    "reserve_bias": "bounded",
+    "delivery_bias": "normal"
+  },
+  "host_proactive_candidate": null,
+  "initiative_writeback_candidate": {
+    "source": "proto_self_v2",
+    "contract_version": "mvp20.initiative_contract.v1",
+    "required_gate": "initiative_writeback_gate",
+    "proposal_discipline": "proposal_only",
+    "behavioral_authority": "none",
+    "promotion_level": "controlled_axis",
+    "selected_priority": "hold",
+    "surface_reasons": [
+      "initiative_pressure",
+      "commitment_carryover",
+      "active_commitments",
+      "idle_window",
+      "integration_guard",
+      "integration_conflict"
+    ],
+    "owner_revision": 2
+  },
+  "initiative_context": {
+    "present": true,
+    "contract_version": "mvp20.initiative_contract.v1",
+    "projection_field": "runtime_summary.initiative_self_context",
+    "host_hint_field": "runtime_summary.initiative_context",
+    "projection_semantics": "runtime-local bounded projection of formal initiative self owner state",
+    "runtime_local_projection_field": "proto_self_v2.state.initiative_self",
+    "schema_version": "mvp20-owner-v1",
+    "owner_revision": 2,
+    "last_revision_id": "initiative_rev_000002",
+    "dominant_mode": "hold",
+    "initiative_pressure": 0.72,
+    "commitment_carryover_bias": 0.74,
+    "recent_delivery_sensitivity": 0.0,
+    "selected_priority": "hold",
+    "active_commitments_count": 2,
+    "blocked_commitments_count": 0,
+    "continuity_confidence": 0.78,
+    "has_initiative_proposal_candidate": true,
+    "has_host_proactive_candidate": true,
+    "source": "runtime_v2",
+    "initiative_trigger": "commitment_followup",
+    "continuity_ref": "commitment:followup:bounded",
+    "pending_commitment_refs": [
+      "commitment:followup:bounded",
+      "commitment:repair_review:bounded"
+    ],
+    "blocked_commitment_refs": [],
+    "reserve_level": "medium",
+    "recent_delivery_status": "sent",
+    "delivery_failure": false,
+    "idle_seconds": 1800.0,
+    "host_lane_hint": "host_proactive_outbox",
+    "promotion_budget": "controlled_axis",
+    "selfhood_selected_priority": "guard",
+    "selfhood_conflict_severity": "high"
+  },
+  "initiative_writeback": {
+    "decision": {
+      "gate_verdict": "allow_writeback",
+      "changed_fields": [
+        "commitment_continuity_state",
+        "initiative_ledger",
+        "initiative_priority_state",
+        "initiative_proposal_candidate",
+        "initiative_state"
+      ],
+      "proposal_count": 1,
+      "host_proactive_candidate_present": false
+    },
+    "record": {
+      "revision_id": "initiative_rev_000003",
+      "model_version": 3,
+      "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253",
+      "state_hash": "9fc41296af3f9f8c38d0938bd690129b74045db354d3dc5290e9563cd9049880"
+    },
+    "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+  },
+  "initiative_writeback_gate": "allow_writeback",
+  "initiative_proposal_present": true,
+  "proposal_only_discipline_consistent": true,
+  "behavioral_authority_none": true,
+  "bounded_influence_present": true,
+  "selected_priority": "hold",
+  "commitment_mode": "carry_forward",
+  "host_proactive_mode": "held",
+  "latest_revision": {
+    "model_version": 3,
+    "revision_id": "initiative_rev_000003",
+    "timestamp": "2026-04-05T01:09:08.379335+00:00",
+    "update_source": "proto_self_v2",
+    "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253",
+    "before_snapshot": {
+      "commitment_continuity_state": {
+        "active_commitments_count": 2,
+        "blocked_commitment_refs": [],
+        "carried_commitment_refs": [],
+        "carryover_summary": "carry_forward",
+        "continuity_confidence": 0.78,
+        "continuity_id": "phase1",
+        "last_updated": 1775351337.731062,
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "status": "active"
+      },
+      "host_proactive_candidate": {
+        "behavioral_authority": "none",
+        "candidate_id": "host_candidate_1775351335_fa28f0ef",
+        "candidate_label": "governed_host_proactive_followup",
+        "continuity_basis": "commitment:followup:bounded",
+        "created_at": 1775351335.990726,
+        "effect_scope": "proposal_only",
+        "host_lane_hint": "host_proactive_outbox",
+        "requested_effects": [],
+        "required_gate": "initiative_writeback_gate",
+        "source_refs": [
+          "mvp20:controlled_bootstrap"
+        ],
+        "status": "held",
+        "updated_at": 1775351335.9907343
+      },
+      "identity_handle": "openemotion",
+      "initiative_ledger": {
+        "initiative_ledger_1775351335_d780ed82": {
+          "created_at": 1775351335.9907439,
+          "details": {
+            "host_candidate_id": "host_candidate_1775351335_fa28f0ef"
+          },
+          "event_type": "initiative_bootstrap",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351335_d780ed82",
+          "reference_id": "initiative_1775351335_2f18c8be"
+        },
+        "initiative_ledger_1775351337_6cc76089": {
+          "created_at": 1775351337.7310975,
+          "details": {
+            "host_proactive_mode": "held",
+            "integrated_conflict": "none",
+            "integrated_priority": "conserve",
+            "selected_priority": "hold",
+            "surface_reasons": [
+              "initiative_pressure",
+              "commitment_carryover",
+              "active_commitments",
+              "idle_window",
+              "integration_guard"
+            ]
+          },
+          "event_type": "initiative_surface",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351337_6cc76089",
+          "reference_id": "hold"
+        },
+        "initiative_ledger_1775351337_840d88e9": {
+          "created_at": 1775351337.7311068,
+          "details": {
+            "behavioral_authority": "none",
+            "host_proactive_candidate_present": false,
+            "proposal_count": 1,
+            "proposal_only": true,
+            "reserve_bias": "bounded",
+            "selected_priority": "hold",
+            "trace_reference": "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+          },
+          "event_type": "initiative_writeback",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351337_840d88e9",
+          "reference_id": "initiative:hold:1"
+        },
+        "persist_initiative_rev_000001": {
+          "created_at": 1775351336.015285,
+          "details": {
+            "persisted_at": 1775351336.0152814,
+            "trace_reference": "mvp20:controlled_bootstrap",
+            "update_source": "owner_bootstrap"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_initiative_rev_000001",
+          "reference_id": "initiative_rev_000001"
+        },
+        "persist_initiative_rev_000002": {
+          "created_at": 1775351337.7782779,
+          "details": {
+            "persisted_at": 1775351337.7782738,
+            "trace_reference": "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_initiative_rev_000002",
+          "reference_id": "initiative_rev_000002"
+        }
+      },
+      "initiative_priority_state": {
+        "carry_forward_weight": 0.25,
+        "hold_weight": 1.0,
+        "last_updated": 1775351337.7310545,
+        "policy_mode": "proposal_only",
+        "prepare_weight": 0.3,
+        "priority_id": "phase1",
+        "priority_reason": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+        "review_weight": 0.35,
+        "schedule_weight": 0.2,
+        "selected_priority": "hold",
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "upstream_pressure_sources": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ]
+      },
+      "initiative_proposal_candidate": {
+        "behavioral_authority": "none",
+        "created_at": 1775351337.731071,
+        "effect_scope": "proposal_only",
+        "justification": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+        "priority_mode": "hold",
+        "proposal_id": "initiative:hold:1",
+        "proposal_label": "hold_initiative_under_guard",
+        "proposed_effects": {
+          "commitment_mode": "carry_forward",
+          "host_proactive_mode": "held",
+          "initiative_bias": "hold"
+        },
+        "requested_effects": [
+          "governed_initiative_review"
+        ],
+        "required_gate": "initiative_writeback_gate",
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "status": "held",
+        "updated_at": 1775351337.7310758
+      },
+      "initiative_state": {
+        "commitment_carryover_bias": 0.74,
+        "dominant_mode": "hold",
+        "initiative_id": "phase1",
+        "initiative_pressure": 0.72,
+        "last_updated": 1775351337.7310445,
+        "policy_mode": "proposal_only",
+        "rationale_summary": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+        "recent_delivery_sensitivity": 0.0,
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ]
+      },
+      "last_revision_id": "initiative_rev_000002",
+      "owner_revision": 2,
+      "schema_version": "mvp20-owner-v1"
+    },
+    "after_snapshot": {
+      "commitment_continuity_state": {
+        "active_commitments_count": 2,
+        "blocked_commitment_refs": [],
+        "carried_commitment_refs": [],
+        "carryover_summary": "carry_forward",
+        "continuity_confidence": 0.78,
+        "continuity_id": "phase1",
+        "last_updated": 1775351348.3430505,
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "status": "active"
+      },
+      "host_proactive_candidate": {
+        "behavioral_authority": "none",
+        "candidate_id": "host_candidate_1775351335_fa28f0ef",
+        "candidate_label": "governed_host_proactive_followup",
+        "continuity_basis": "commitment:followup:bounded",
+        "created_at": 1775351335.990726,
+        "effect_scope": "proposal_only",
+        "host_lane_hint": "host_proactive_outbox",
+        "requested_effects": [],
+        "required_gate": "initiative_writeback_gate",
+        "source_refs": [
+          "mvp20:controlled_bootstrap"
+        ],
+        "status": "held",
+        "updated_at": 1775351335.9907343
+      },
+      "identity_handle": "openemotion",
+      "initiative_ledger": {
+        "initiative_ledger_1775351335_d780ed82": {
+          "created_at": 1775351335.9907439,
+          "details": {
+            "host_candidate_id": "host_candidate_1775351335_fa28f0ef"
+          },
+          "event_type": "initiative_bootstrap",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351335_d780ed82",
+          "reference_id": "initiative_1775351335_2f18c8be"
+        },
+        "initiative_ledger_1775351337_6cc76089": {
+          "created_at": 1775351337.7310975,
+          "details": {
+            "host_proactive_mode": "held",
+            "integrated_conflict": "none",
+            "integrated_priority": "conserve",
+            "selected_priority": "hold",
+            "surface_reasons": [
+              "initiative_pressure",
+              "commitment_carryover",
+              "active_commitments",
+              "idle_window",
+              "integration_guard"
+            ]
+          },
+          "event_type": "initiative_surface",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351337_6cc76089",
+          "reference_id": "hold"
+        },
+        "initiative_ledger_1775351337_840d88e9": {
+          "created_at": 1775351337.7311068,
+          "details": {
+            "behavioral_authority": "none",
+            "host_proactive_candidate_present": false,
+            "proposal_count": 1,
+            "proposal_only": true,
+            "reserve_bias": "bounded",
+            "selected_priority": "hold",
+            "trace_reference": "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+          },
+          "event_type": "initiative_writeback",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351337_840d88e9",
+          "reference_id": "initiative:hold:1"
+        },
+        "initiative_ledger_1775351348_38356a79": {
+          "created_at": 1775351348.343084,
+          "details": {
+            "host_proactive_mode": "held",
+            "integrated_conflict": "high",
+            "integrated_priority": "guard",
+            "selected_priority": "hold",
+            "surface_reasons": [
+              "initiative_pressure",
+              "commitment_carryover",
+              "active_commitments",
+              "idle_window",
+              "integration_guard",
+              "integration_conflict"
+            ]
+          },
+          "event_type": "initiative_surface",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351348_38356a79",
+          "reference_id": "hold"
+        },
+        "initiative_ledger_1775351348_c8bb795c": {
+          "created_at": 1775351348.3430932,
+          "details": {
+            "behavioral_authority": "none",
+            "host_proactive_candidate_present": false,
+            "proposal_count": 1,
+            "proposal_only": true,
+            "reserve_bias": "bounded",
+            "selected_priority": "hold",
+            "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+          },
+          "event_type": "initiative_writeback",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351348_c8bb795c",
+          "reference_id": "initiative:hold:2"
+        },
+        "persist_initiative_rev_000001": {
+          "created_at": 1775351336.015285,
+          "details": {
+            "persisted_at": 1775351336.0152814,
+            "trace_reference": "mvp20:controlled_bootstrap",
+            "update_source": "owner_bootstrap"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_initiative_rev_000001",
+          "reference_id": "initiative_rev_000001"
+        },
+        "persist_initiative_rev_000002": {
+          "created_at": 1775351337.7782779,
+          "details": {
+            "persisted_at": 1775351337.7782738,
+            "trace_reference": "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_initiative_rev_000002",
+          "reference_id": "initiative_rev_000002"
+        },
+        "persist_initiative_rev_000003": {
+          "created_at": 1775351348.3794663,
+          "details": {
+            "persisted_at": 1775351348.3794625,
+            "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_initiative_rev_000003",
+          "reference_id": "initiative_rev_000003"
+        }
+      },
+      "initiative_priority_state": {
+        "carry_forward_weight": 0.25,
+        "hold_weight": 1.0,
+        "last_updated": 1775351348.343044,
+        "policy_mode": "proposal_only",
+        "prepare_weight": 0.3,
+        "priority_id": "phase1",
+        "priority_reason": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+        "review_weight": 0.35,
+        "schedule_weight": 0.2,
+        "selected_priority": "hold",
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "upstream_pressure_sources": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ]
+      },
+      "initiative_proposal_candidate": {
+        "behavioral_authority": "none",
+        "created_at": 1775351348.3430579,
+        "effect_scope": "proposal_only",
+        "justification": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+        "priority_mode": "hold",
+        "proposal_id": "initiative:hold:2",
+        "proposal_label": "hold_initiative_under_guard",
+        "proposed_effects": {
+          "commitment_mode": "carry_forward",
+          "host_proactive_mode": "held",
+          "initiative_bias": "hold"
+        },
+        "requested_effects": [
+          "governed_initiative_review"
+        ],
+        "required_gate": "initiative_writeback_gate",
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "status": "held",
+        "updated_at": 1775351348.343062
+      },
+      "initiative_state": {
+        "commitment_carryover_bias": 0.74,
+        "dominant_mode": "hold",
+        "initiative_id": "phase1",
+        "initiative_pressure": 0.72,
+        "last_updated": 1775351348.343035,
+        "policy_mode": "proposal_only",
+        "rationale_summary": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+        "recent_delivery_sensitivity": 0.0,
+        "source_refs": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ]
+      },
+      "last_revision_id": "initiative_rev_000003",
+      "owner_revision": 3,
+      "schema_version": "mvp20-owner-v1"
+    },
+    "diff": [
+      {
+        "after": 1775351348.3430505,
+        "before": 1775351337.731062,
+        "field_path": "commitment_continuity_state.last_updated"
+      },
+      {
+        "after": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "before": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "field_path": "commitment_continuity_state.source_refs"
+      },
+      {
+        "after": {
+          "created_at": 1775351348.343084,
+          "details": {
+            "host_proactive_mode": "held",
+            "integrated_conflict": "high",
+            "integrated_priority": "guard",
+            "selected_priority": "hold",
+            "surface_reasons": [
+              "initiative_pressure",
+              "commitment_carryover",
+              "active_commitments",
+              "idle_window",
+              "integration_guard",
+              "integration_conflict"
+            ]
+          },
+          "event_type": "initiative_surface",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351348_38356a79",
+          "reference_id": "hold"
+        },
+        "before": null,
+        "field_path": "initiative_ledger.initiative_ledger_1775351348_38356a79"
+      },
+      {
+        "after": {
+          "created_at": 1775351348.3430932,
+          "details": {
+            "behavioral_authority": "none",
+            "host_proactive_candidate_present": false,
+            "proposal_count": 1,
+            "proposal_only": true,
+            "reserve_bias": "bounded",
+            "selected_priority": "hold",
+            "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+          },
+          "event_type": "initiative_writeback",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "initiative_ledger_1775351348_c8bb795c",
+          "reference_id": "initiative:hold:2"
+        },
+        "before": null,
+        "field_path": "initiative_ledger.initiative_ledger_1775351348_c8bb795c"
+      },
+      {
+        "after": {
+          "created_at": 1775351348.3794663,
+          "details": {
+            "persisted_at": 1775351348.3794625,
+            "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253",
+            "update_source": "proto_self_v2"
+          },
+          "event_type": "state_persisted",
+          "gate_name": "initiative_writeback_gate",
+          "gate_verdict": "allow_writeback",
+          "ledger_id": "persist_initiative_rev_000003",
+          "reference_id": "initiative_rev_000003"
+        },
+        "before": null,
+        "field_path": "initiative_ledger.persist_initiative_rev_000003"
+      },
+      {
+        "after": 1775351348.343044,
+        "before": 1775351337.7310545,
+        "field_path": "initiative_priority_state.last_updated"
+      },
+      {
+        "after": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "before": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "field_path": "initiative_priority_state.source_refs"
+      },
+      {
+        "after": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "before": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "field_path": "initiative_priority_state.upstream_pressure_sources"
+      },
+      {
+        "after": 1775351348.3430579,
+        "before": 1775351337.731071,
+        "field_path": "initiative_proposal_candidate.created_at"
+      },
+      {
+        "after": "initiative:hold:2",
+        "before": "initiative:hold:1",
+        "field_path": "initiative_proposal_candidate.proposal_id"
+      },
+      {
+        "after": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "before": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "field_path": "initiative_proposal_candidate.source_refs"
+      },
+      {
+        "after": 1775351348.343062,
+        "before": 1775351337.7310758,
+        "field_path": "initiative_proposal_candidate.updated_at"
+      },
+      {
+        "after": 1775351348.343035,
+        "before": 1775351337.7310445,
+        "field_path": "initiative_state.last_updated"
+      },
+      {
+        "after": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "integration_conflict",
+          "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        ],
+        "before": [
+          "initiative_pressure",
+          "commitment_carryover",
+          "active_commitments",
+          "idle_window",
+          "integration_guard",
+          "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        ],
+        "field_path": "initiative_state.source_refs"
+      },
+      {
+        "after": "initiative_rev_000003",
+        "before": "initiative_rev_000002",
+        "field_path": "last_revision_id"
+      },
+      {
+        "after": 3,
+        "before": 2,
+        "field_path": "owner_revision"
+      }
+    ],
+    "gate_verdict": "allow_writeback",
+    "previous_state_hash": "ba010282eda97e8c40ec11c265b9a088ac5a26f3cb212e3447456f732c99a043",
+    "state_hash": "9fc41296af3f9f8c38d0938bd690129b74045db354d3dc5290e9563cd9049880"
+  },
+  "revision_count": 3,
+  "replay_valid": true,
+  "owner_snapshot": {
+    "schema_version": "mvp20-owner-v1",
+    "identity_handle": "openemotion",
+    "owner_revision": 3,
+    "last_revision_id": "initiative_rev_000003",
+    "initiative_state": {
+      "initiative_id": "phase1",
+      "policy_mode": "proposal_only",
+      "dominant_mode": "hold",
+      "initiative_pressure": 0.72,
+      "commitment_carryover_bias": 0.74,
+      "recent_delivery_sensitivity": 0.0,
+      "rationale_summary": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+      "source_refs": [
+        "initiative_pressure",
+        "commitment_carryover",
+        "active_commitments",
+        "idle_window",
+        "integration_guard",
+        "integration_conflict",
+        "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+      ],
+      "last_updated": 1775351348.343035
+    },
+    "initiative_priority_state": {
+      "priority_id": "phase1",
+      "policy_mode": "proposal_only",
+      "selected_priority": "hold",
+      "hold_weight": 1.0,
+      "review_weight": 0.35,
+      "prepare_weight": 0.3,
+      "carry_forward_weight": 0.25,
+      "schedule_weight": 0.2,
+      "priority_reason": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+      "upstream_pressure_sources": [
+        "initiative_pressure",
+        "commitment_carryover",
+        "active_commitments",
+        "idle_window",
+        "integration_guard",
+        "integration_conflict",
+        "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+      ],
+      "source_refs": [
+        "initiative_pressure",
+        "commitment_carryover",
+        "active_commitments",
+        "idle_window",
+        "integration_guard",
+        "integration_conflict",
+        "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+      ],
+      "last_updated": 1775351348.343044
+    },
+    "commitment_continuity_state": {
+      "continuity_id": "phase1",
+      "status": "active",
+      "active_commitments_count": 2,
+      "carried_commitment_refs": [],
+      "blocked_commitment_refs": [],
+      "continuity_confidence": 0.78,
+      "carryover_summary": "carry_forward",
+      "source_refs": [
+        "initiative_pressure",
+        "commitment_carryover",
+        "active_commitments",
+        "idle_window",
+        "integration_guard",
+        "integration_conflict",
+        "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+      ],
+      "last_updated": 1775351348.3430505
+    },
+    "initiative_proposal_candidate": {
+      "proposal_id": "initiative:hold:2",
+      "proposal_label": "hold_initiative_under_guard",
+      "priority_mode": "hold",
+      "proposed_effects": {
+        "commitment_mode": "carry_forward",
+        "host_proactive_mode": "held",
+        "initiative_bias": "hold"
+      },
+      "justification": "initiative_pressure, commitment_carryover, active_commitments, idle_window",
+      "required_gate": "initiative_writeback_gate",
+      "effect_scope": "proposal_only",
+      "behavioral_authority": "none",
+      "requested_effects": [
+        "governed_initiative_review"
+      ],
+      "status": "held",
+      "source_refs": [
+        "initiative_pressure",
+        "commitment_carryover",
+        "active_commitments",
+        "idle_window",
+        "integration_guard",
+        "integration_conflict",
+        "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+      ],
+      "created_at": 1775351348.3430579,
+      "updated_at": 1775351348.343062
+    },
+    "host_proactive_candidate": {
+      "candidate_id": "host_candidate_1775351335_fa28f0ef",
+      "candidate_label": "governed_host_proactive_followup",
+      "continuity_basis": "commitment:followup:bounded",
+      "host_lane_hint": "host_proactive_outbox",
+      "required_gate": "initiative_writeback_gate",
+      "effect_scope": "proposal_only",
+      "behavioral_authority": "none",
+      "requested_effects": [],
+      "status": "held",
+      "source_refs": [
+        "mvp20:controlled_bootstrap"
+      ],
+      "created_at": 1775351335.990726,
+      "updated_at": 1775351335.9907343
+    },
+    "initiative_ledger": {
+      "initiative_ledger_1775351335_d780ed82": {
+        "ledger_id": "initiative_ledger_1775351335_d780ed82",
+        "event_type": "initiative_bootstrap",
+        "reference_id": "initiative_1775351335_2f18c8be",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "host_candidate_id": "host_candidate_1775351335_fa28f0ef"
+        },
+        "created_at": 1775351335.9907439
+      },
+      "initiative_ledger_1775351337_6cc76089": {
+        "ledger_id": "initiative_ledger_1775351337_6cc76089",
+        "event_type": "initiative_surface",
+        "reference_id": "hold",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "host_proactive_mode": "held",
+          "integrated_conflict": "none",
+          "integrated_priority": "conserve",
+          "selected_priority": "hold",
+          "surface_reasons": [
+            "initiative_pressure",
+            "commitment_carryover",
+            "active_commitments",
+            "idle_window",
+            "integration_guard"
+          ]
+        },
+        "created_at": 1775351337.7310975
+      },
+      "initiative_ledger_1775351337_840d88e9": {
+        "ledger_id": "initiative_ledger_1775351337_840d88e9",
+        "event_type": "initiative_writeback",
+        "reference_id": "initiative:hold:1",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "behavioral_authority": "none",
+          "host_proactive_candidate_present": false,
+          "proposal_count": 1,
+          "proposal_only": true,
+          "reserve_bias": "bounded",
+          "selected_priority": "hold",
+          "trace_reference": "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744"
+        },
+        "created_at": 1775351337.7311068
+      },
+      "initiative_ledger_1775351348_38356a79": {
+        "ledger_id": "initiative_ledger_1775351348_38356a79",
+        "event_type": "initiative_surface",
+        "reference_id": "hold",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "host_proactive_mode": "held",
+          "integrated_conflict": "high",
+          "integrated_priority": "guard",
+          "selected_priority": "hold",
+          "surface_reasons": [
+            "initiative_pressure",
+            "commitment_carryover",
+            "active_commitments",
+            "idle_window",
+            "integration_guard",
+            "integration_conflict"
+          ]
+        },
+        "created_at": 1775351348.343084
+      },
+      "initiative_ledger_1775351348_c8bb795c": {
+        "ledger_id": "initiative_ledger_1775351348_c8bb795c",
+        "event_type": "initiative_writeback",
+        "reference_id": "initiative:hold:2",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "behavioral_authority": "none",
+          "host_proactive_candidate_present": false,
+          "proposal_count": 1,
+          "proposal_only": true,
+          "reserve_bias": "bounded",
+          "selected_priority": "hold",
+          "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253"
+        },
+        "created_at": 1775351348.3430932
+      },
+      "persist_initiative_rev_000001": {
+        "ledger_id": "persist_initiative_rev_000001",
+        "event_type": "state_persisted",
+        "reference_id": "initiative_rev_000001",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775351336.0152814,
+          "trace_reference": "mvp20:controlled_bootstrap",
+          "update_source": "owner_bootstrap"
+        },
+        "created_at": 1775351336.015285
+      },
+      "persist_initiative_rev_000002": {
+        "ledger_id": "persist_initiative_rev_000002",
+        "event_type": "state_persisted",
+        "reference_id": "initiative_rev_000002",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775351337.7782738,
+          "trace_reference": "4bf7586e750271967284e0aa368866005d17d84aa3762835986b649d433cf744",
+          "update_source": "proto_self_v2"
+        },
+        "created_at": 1775351337.7782779
+      },
+      "persist_initiative_rev_000003": {
+        "ledger_id": "persist_initiative_rev_000003",
+        "event_type": "state_persisted",
+        "reference_id": "initiative_rev_000003",
+        "gate_name": "initiative_writeback_gate",
+        "gate_verdict": "allow_writeback",
+        "details": {
+          "persisted_at": 1775351348.3794625,
+          "trace_reference": "be60dba933694eab1746ab4c9dac13f4507887db9311d94222a3e63a05ee1253",
+          "update_source": "proto_self_v2"
+        },
+        "created_at": 1775351348.3794663
+      }
+    }
+  },
+  "status": "pass",
+  "verification_level": "V4",
+  "evidence_level": "E4",
+  "boundary": "This report proves a controlled runtime-mainline initiative proposal-only writeback path. It does not prove live autonomy, direct reply authority, tool authority, or broader transport maturity.",
+  "external_risk_note": "Provider 429/401 remains an external budget-layer risk; it is not counted as a WP15 blocker unless it regresses formal owner initiative writeback."
+}
