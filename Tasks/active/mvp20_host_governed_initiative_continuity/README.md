@@ -7,14 +7,14 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: runtime_bridge_complete
+status: legacy_demotion_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP20_task_plan.md"
 predecessor: "WP14/MVP19"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP15 / MVP20 Host-Governed Self-Directed Initiative / Commitment Continuity"
-claim_ceiling: "T20 completed only"
+claim_ceiling: "T40 completed only"
 ```
 
 ---
@@ -53,22 +53,22 @@ claim_ceiling: "T20 completed only"
 
 ## 当前状态
 
-- 执行包状态：`proto_self_contract_complete`
+- 执行包状态：`legacy_demotion_complete`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
 - `T10` formal owner：`completed`
 - `T20` proto_self_v2 contract：`completed`
 - `T30` EgoCore runtime bridge：`completed`
-- `T40` legacy demotion / compat map：`pending`
+- `T40` legacy demotion / compat map：`completed`
 - `T50` causal validation：`pending`
 - `T60` single controlled observation：`pending`
 - `T70` batch controlled observation / aggregate：`pending`
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
-- 主链接线：`current_runtime_initiative_consumer_present_legacy_demotion_pending`
+- 主链接线：`current_runtime_initiative_consumer_present_legacy_reference_only`
 - 启用状态：`current_runtime_wired_not_observed`
 - 当前 blocker：`none on the WP15 runtime-bridge axis`
-- 当前最小动作：`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`
+- 当前最小动作：`T50_CAUSAL_VALIDATION`
 
 ## 当前已证实内容
 
@@ -87,6 +87,9 @@ claim_ceiling: "T20 completed only"
 - `OpenEmotion/tests/mvp20/test_initiative_proto_self_integration.py` 已验证 proposal-only discipline、legacy-not-consumed 与 bounded context/trace 输出
 - `EgoCore/app/runtime_v2/proto_self_runtime.py` 现已把 `initiative_self_context / initiative_context` 注入正式 runtime 主链，并把 initiative outputs 以 gated bounded writeback 形式挂回宿主上下文
 - `EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k initiative` 已验证 current runtime mainline wiring、proposal-only discipline 与 required gate 保持不变
+- `LEGACY_REFERENCE_REGISTER.md` 现已把 `WP7` host proactive substrate 明确冻结为 `host_execution_substrate_reference_only / host_substrate_only`，并明确旧 transport / outbox 证据不能冒充 `WP15` initiative proof
+- `OpenEmotion/tools/verify_mvp20_mainline_wiring.py` 现已能静态证明 current runtime initiative consumer 存在，同时 `WP7` proactive substrate 与旧 roadmap 材料保持 reference-only / host-substrate-only
+- `OpenEmotion/tests/mvp20/test_mvp20_mainline_reference_demotion.py` 现已验证 no-second-truth demotion 与 current runtime consumer status
 
 ## 当前不做
 

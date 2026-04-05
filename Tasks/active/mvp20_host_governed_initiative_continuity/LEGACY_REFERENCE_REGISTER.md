@@ -42,19 +42,32 @@
   - classification: `host_execution_substrate_reference_only`
 - `EgoCore/app/runtime_v2/proactive_telegram_policy.py`
   - classification: `host_execution_substrate_reference_only`
+- `EgoCore/app/runtime_v2/proactive_telegram_cycle.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_proactive_followup.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_idle_scheduler.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_controlled_delivery.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_proactive_outbox.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_proactive_outbox_drain.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_telegram_proactive_transport.py`
+  - classification: `host_execution_substrate_reference_only`
 - `EgoCore/tools/run_mvp12_host_governed_proactive_telegram_cycle.py`
+  - classification: `host_execution_substrate_reference_only`
+- `EgoCore/tools/run_mvp12_shadow_observation.py`
+  - classification: `host_execution_substrate_reference_only`
 
 Plain-language guard:
 
 - WP15 formal owner state must remain exclusive to `OpenEmotion/openemotion/initiative_self/*`
 - host proactive execution substrate is not a fallback semantic owner
+- host proactive substrate remains `host_substrate_only`, not initiative semantics
 - host proactive evidence is not initiative proof until `WP15` current-mainline wiring exists
+- host proactive transport or outbox evidence is not `WP15` causal proof, observation proof, or maintenance proof
 
 ## Upstream Authority, Read-only To WP15
 
@@ -97,5 +110,6 @@ Current formal owner reminder:
 ## No-Second-Truth Reminder
 
 - `WP15` 不能把 `WP7` proactive substrate 重新解释成自己的 owner
+- `WP15` 不能把 `WP7` host execution substrate 重新解释成 initiative semantics
 - `WP15` 不能把 roadmap、旧执行报告、或 proactive transport evidence 升格成 current-runtime authority
 - 后续 no-second-truth verifier 应以 `OpenEmotion/tools/verify_mvp20_mainline_wiring.py` 为准
