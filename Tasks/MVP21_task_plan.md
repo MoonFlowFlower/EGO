@@ -1,6 +1,6 @@
 # MVP21 / WP16 Host-Governed Initiative Realization / Proactive Delivery Mediation
 
-> 状态：authority_frozen / task_package_ready
+> 状态：T10 complete / T20 pending
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP16`
 > predecessor: `WP15/MVP20`
@@ -175,11 +175,11 @@
 - `WP16` may not reinterpret `WP15` maintenance institutionalization or controlled evidence as delivery authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`planning`
-- 当前状态：`authority_frozen / task_package_ready`
-- 当前 blocker：`none on the WP16 authority-freeze axis`
-- 当前最小闭环动作：`T10_FORMAL_OWNER_PACKAGE`
-- 当前 claim ceiling：`authority_frozen / task_package_ready only`
+- 当前层级：`owner_infra`
+- 当前状态：`formal_owner_package_complete`
+- 当前 blocker：`none on the WP16 formal-owner axis`
+- 当前最小闭环动作：`T20_PROTO_SELF_CONTRACT_INTEGRATION`
+- 当前 claim ceiling：`T10 complete only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP16: Host-Governed Initiative Realization / Proactive Delivery Mediation`
@@ -201,7 +201,7 @@
 - 本文件完成不等于 `MVP21` 已拿到 `E4/E5`
 - 本文件完成不等于 `MVP21` 已开始 observation
 - 本文件完成不等于 `MVP21` 已进入 maintenance mode
-- `T10` 完成只证明 formal owner package 在 OpenEmotion owner 层落地，且 owner-level schema/state/store/governance/replay/projection 已通过定向验证；不证明 runtime mainline 或 observation
+- `T10` 完成只证明 formal owner package 在 OpenEmotion owner 层落地，且 owner-level schema/state/store/governance/replay/projection 已通过定向验证；当前证据等级上限是 `V2/E2`，不证明 proto-self contract、runtime mainline 或 observation
 - `T20` 完成只证明 `initiative_realization` 已接入 `proto_self_v2` bounded contract，且 realization outputs / trace mirror 已通过定向验证；不证明 EgoCore runtime mainline 已消费
 - `T30` 完成只证明当前 EgoCore runtime thin bridge 已接入正式主链，并把 gated realization writeback 挂回 bounded host context；不证明 `E4/E5` controlled observation
 - `T40` 完成只证明 host proactive runtime substrate / legacy demotion / compat map 已冻结并通过 no-second-truth verifier；不证明 causal influence 或 controlled observation

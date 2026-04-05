@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP16
-status: authority_frozen
-current_layer: planning
+status: formal_owner_package_complete
+current_layer: owner_infra
 main_chain_status: not_implemented
-enabled_status: authority_only
+enabled_status: authority_and_owner_only
 trigger_evidence:
   - WP15/MVP20 is the predecessor and remains in maintenance_mode
   - WP16 authority package now exists under Tasks/*
@@ -16,18 +16,22 @@ trigger_evidence:
   - output discipline is frozen to proposal_only true, behavioral_authority none, and required_gate initiative_realization_writeback_gate
   - WP7 proactive runtime chain is frozen as host execution substrate / reference-only, not as initiative realization semantic owner
   - WP8~WP15 remain maintenance / frozen upstreams and may not be reopened by WP16
-verification_level: V1
-evidence_level: E1
-current_blocker: "none on the WP16 authority-freeze axis"
-next_minimal_closure_action: "T10_FORMAL_OWNER_PACKAGE"
+  - initiative realization formal owner package now exists under OpenEmotion/openemotion/initiative_realization/*
+  - owner state now covers realization state, delivery readiness state, commitment fulfillment state, initiative realization candidate, controlled delivery candidate semantics, and realization ledger
+  - owner package now includes governance validation, replay/history/store primitives, updater logic, and bounded runtime projection
+  - targeted owner infra verification passed in OpenEmotion/tests/mvp21/test_realization_owner_infra.py
+verification_level: V2
+evidence_level: E2
+current_blocker: "none on the WP16 formal-owner axis"
+next_minimal_closure_action: "T20_PROTO_SELF_CONTRACT_INTEGRATION"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP16/MVP21` 已完成 authority freeze，当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package
-- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness；不覆盖 owner implementation、proto-self contract、runtime bridge、causal proof、observation、closeout 或 maintenance
-- 不可宣称完成：`MVP21` 已实现、已接主链、已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
-- 后续处理：下一步只能进入 `T10_FORMAL_OWNER_PACKAGE`，不能越过 owner implementation 直接宣称 mainline / observation / maintenance
+- 可宣称完成：`WP16/MVP21` 已完成 authority freeze，并已完成 `T10_FORMAL_OWNER_PACKAGE`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 也已落到 `OpenEmotion/openemotion/initiative_realization/*`
+- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness + owner implementation；不覆盖 proto-self contract、runtime bridge、causal proof、observation、closeout 或 maintenance
+- 不可宣称完成：`MVP21` 已接主链、已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
+- 后续处理：下一步只能进入 `T20_PROTO_SELF_CONTRACT_INTEGRATION`，不能越过 proto-self contract 直接宣称 mainline / observation / maintenance
 
 ## 边界提醒
 

@@ -14,7 +14,7 @@
 ## 当前真实状态
 - 正式核心只有两个：**EgoCore**（对外宿主 / 运行时 / 执行 / 治理）与 **OpenEmotion**（identity / self-model / memory / appraisal / reflection 本体）。
 - 当前主线已从 **MVS** 推进到其后的受治理扩展阶段；当前最新已收口阶段是 `WP15/MVP20`，其 formal owner、bounded proto-self contract、EgoCore runtime bridge、legacy demotion、causal `V3/E3`、single controlled `V4/E4`、batch controlled `V5/E5`、closeout / QA baseline 与 maintenance ledger 均已完成，当前已进入 `maintenance_mode`，不是 live initiative autonomy。
-- 当前下一阶段为 `WP16/MVP21` 的 `Host-Governed Initiative Realization / Proactive Delivery Mediation`；当前只完成 authority freeze、phase-detail task plan、执行包、contracts、cards 与 subagent assignment，当前 claim ceiling 固定为 `authority_frozen / task_package_ready`，不代表实现、主链接线、`E4/E5`、observation、maintenance mode、或任何 authority expansion。
+- 当前下一阶段为 `WP16/MVP21` 的 `Host-Governed Initiative Realization / Proactive Delivery Mediation`；当前已完成 authority freeze 与 `T10_FORMAL_OWNER_PACKAGE`，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，当前 claim ceiling 固定为 `T10 complete only`，不代表 proto-self contract、runtime 主链接线、`E4/E5`、observation、maintenance mode、或任何 authority expansion。
 - 宿主壳已有多轮主链切片真实生效证据；Proto-Self 侧当前正式现实是 **`proto_self.v2 + seed_v0_2`**。
 - 旧 `openemotion/proto_self/` 仍可存在，但从本计划开始只作为 compatibility / deletion inventory，对未来功能不再是正式落点。
 - 所有验收必须遵守 E0-E6 证据分级，结论强度不得高于证据层级。
@@ -1312,10 +1312,10 @@
 - 证据层级目标：E0 -> E1（authority / contract freeze）
 
 **当前状态（2026-04-05）**
-- `WP16/MVP21` 当前层级是 `planning`
-- 当前状态是 `authority_frozen / task_package_ready`
+- `WP16/MVP21` 当前层级是 `owner_infra`
+- 当前状态是 `formal_owner_package_complete`
 - 当前 formal owner target 固定为 `OpenEmotion/openemotion/initiative_realization/*`
 - 当前正式主链接线目标固定为 `runtime_v2 -> proto_self_runtime -> proto_self_adapter -> proto_self_v2`
-- 当前已证实：`Tasks/MVP21_task_plan.md` 与 `Tasks/active/mvp21_host_governed_initiative_realization/*` 已把 capability ownership、authority source、IO contract、`WP7~WP15` boundary freeze、legacy demotion register、subagent assignment 与 task cards 收成一致 authority package
-- 当前不可宣称：`MVP21` 已实现、已接主链、已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
-- 当前 blocker：无 authority freeze blocker；下一步唯一正确起点是 `T10_FORMAL_OWNER_PACKAGE`
+- 当前已证实：`Tasks/MVP21_task_plan.md` 与 `Tasks/active/mvp21_host_governed_initiative_realization/*` 已把 capability ownership、authority source、IO contract、`WP7~WP15` boundary freeze、legacy demotion register、subagent assignment 与 task cards 收成一致 authority package；`OpenEmotion/openemotion/initiative_realization/*` 已形成 formal owner package，并通过 `OpenEmotion/tests/mvp21/test_realization_owner_infra.py = 6 passed`
+- 当前不可宣称：`MVP21` 已接主链、已有 `E4/E5`、已 observation_started、已 maintenance_mode、或已放开任何 authority
+- 当前 blocker：无 formal-owner blocker；下一步唯一正确起点是 `T20_PROTO_SELF_CONTRACT_INTEGRATION`

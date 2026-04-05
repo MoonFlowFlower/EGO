@@ -7,21 +7,21 @@ owner: "Codex"
 layer: 3
 type: dual_repo
 repos: [EgoCore, OpenEmotion]
-status: authority_frozen
+status: formal_owner_package_complete
 parent_authority: "Tasks/MVS_task_plan.md"
 phase_authority: "Tasks/MVP21_task_plan.md"
 predecessor: "WP15/MVP20"
 same_subject_line: true
 not_parallel_track: true
 scope: "WP16 / MVP21 Host-Governed Initiative Realization / Proactive Delivery Mediation"
-claim_ceiling: "authority_frozen / task_package_ready only"
+claim_ceiling: "T10 complete only"
 ```
 
 ---
 
 ## 真实目标
 
-在不放开 authority 边界的前提下，把 `WP16/MVP21` 的 formal owner target 冻结到 `OpenEmotion/openemotion/initiative_realization/*`，并把 `WP15` 的 initiative proposal outputs、`WP7` 的 proactive runtime substrate、以及 `WP8~WP15` 的 frozen read surfaces 全部收成可执行 authority package。
+在不放开 authority 边界的前提下，把 `WP16/MVP21` 的 formal owner target 冻结到 `OpenEmotion/openemotion/initiative_realization/*`，并把 `WP15` 的 initiative proposal outputs、`WP7` 的 proactive runtime substrate、以及 `WP8~WP15` 的 frozen read surfaces 全部收成可执行 authority package。当前已完成 formal owner package 本身，下一步是把它接到 `proto_self_v2` bounded contract。
 
 ## 当前正式 owner target
 
@@ -53,10 +53,10 @@ claim_ceiling: "authority_frozen / task_package_ready only"
 
 ## 当前状态
 
-- 执行包状态：`authority_frozen`
+- 执行包状态：`formal_owner_package_complete`
 - authority freeze：`completed`
 - `T00_AUTHORITY_FREEZE`：`completed`
-- `T10` formal owner：`pending`
+- `T10` formal owner：`completed`
 - `T20` proto_self_v2 contract：`pending`
 - `T30` EgoCore runtime bridge：`pending`
 - `T40` legacy demotion / compat map：`pending`
@@ -66,9 +66,9 @@ claim_ceiling: "authority_frozen / task_package_ready only"
 - `T80` closeout / QA baseline：`pending`
 - `T90` subagent assignment sync：`completed`
 - 主链接线：`not_implemented`
-- 启用状态：`authority_only`
-- 当前 blocker：`none on the WP16 authority-freeze axis`
-- 当前最小动作：`T10_FORMAL_OWNER_PACKAGE`
+- 启用状态：`authority_and_owner_only`
+- 当前 blocker：`none on the WP16 formal-owner axis`
+- 当前最小动作：`T20_PROTO_SELF_CONTRACT_INTEGRATION`
 
 ## 当前已证实内容
 
@@ -80,6 +80,8 @@ claim_ceiling: "authority_frozen / task_package_ready only"
   - `controlled_delivery_candidate` 与 `host_lane_hints` 只是 governed candidates，不得直接触发 delivery / outbox / transport
 - `LEGACY_REFERENCE_REGISTER.md` 已把 `WP7` proactive runtime / outbox / transport surfaces 与旧 roadmap 材料登记为 technical reference / host substrate reference
 - `SUBAGENT_ASSIGNMENT.md` 与 `cards/T00..T90` 已把 worker mapping、write scope 与后续实现顺序收成可执行 package
+- `OpenEmotion/openemotion/initiative_realization/*` 已形成 formal owner package，覆盖 realization state、delivery readiness state、commitment fulfillment state、initiative realization candidate、controlled delivery candidate、realization ledger，以及 store / replay / governance / updater / bounded projection
+- `OpenEmotion/tests/mvp21/test_realization_owner_infra.py` 已通过 `6 passed` 的定向 owner infra 验证
 
 ## 当前不做
 
