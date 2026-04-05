@@ -2,10 +2,10 @@
 
 ```yaml
 phase: WP16
-status: controlled_observation_batch_complete
-current_layer: controlled_observation_batch
+status: maintenance_mode
+current_layer: closeout_and_qa_baseline
 main_chain_status: current_runtime_initiative_realization_consumer_present_legacy_reference_only
-enabled_status: authority_owner_proto_self_runtime_demotion_causal_and_batch_observation
+enabled_status: authority_owner_proto_self_runtime_demotion_causal_batch_and_closeout
 trigger_evidence:
   - WP15/MVP20 is the predecessor and remains in maintenance_mode
   - WP16 authority package now exists under Tasks/*
@@ -40,16 +40,16 @@ trigger_evidence:
   - `OpenEmotion/tools/run_mvp21_controlled_observation_batch.py` now emits `OpenEmotion/artifacts/mvp21/mvp21_controlled_observation_batch_current.{json,md}` with `status = pass`, `verification_level = V5`, `evidence_level = E5`, `report_count = 3`, `accepted_count = 3`, `replay_consistent_count = 3`, `proposal_only_discipline_count = 3`, `behavioral_authority_none_count = 3`, and `bounded_influence_present_count = 3`
 verification_level: V5
 evidence_level: E5
-current_blocker: "none on the WP16 controlled-axis E5 path"
-next_minimal_closure_action: "T80_CLOSEOUT_AND_QA_BASELINE"
+current_blocker: "none on the WP16 controlled-axis maintenance path"
+next_minimal_closure_action: "maintenance verification only"
 ```
 
 ## 当前口径
 
-- 可宣称完成：`WP16/MVP21` 已完成 authority freeze、`T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION`、`T30_EGOCORE_RUNTIME_BRIDGE`、`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`、`T50_CAUSAL_VALIDATION`、`T60_CONTROLLED_OBSERVATION_SINGLE` 与 `T70_BATCH_OBSERVATION_AND_AGGREGATE`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，并已通过唯一 bounded consumer path 接到 `proto_self_v2` 与当前 EgoCore runtime 主链，拿到 repeated controlled runtime-mainline initiative realization observation aggregate
-- 条件性完成：当前只覆盖 authority / contract / boundary / task-package readiness + owner implementation + proto-self contract + current runtime bridge + no-second-truth demotion proof + causal proof + single controlled observation + repeated controlled batch observation；不覆盖 closeout 或 maintenance
-- 不可宣称完成：`MVP21` 已 maintenance_mode、或已放开任何 authority
-- 后续处理：下一步只能进入 `T80_CLOSEOUT_AND_QA_BASELINE`，不能越过 closeout 直接宣称 maintenance
+- 可宣称完成：`WP16/MVP21` 已完成 authority freeze、`T10_FORMAL_OWNER_PACKAGE`、`T20_PROTO_SELF_CONTRACT_INTEGRATION`、`T30_EGOCORE_RUNTIME_BRIDGE`、`T40_LEGACY_DEMOTION_AND_COMPAT_MAP`、`T50_CAUSAL_VALIDATION`、`T60_CONTROLLED_OBSERVATION_SINGLE`、`T70_BATCH_OBSERVATION_AND_AGGREGATE` 与 `T80_CLOSEOUT_AND_QA_BASELINE`；当前 formal owner target、authority source、IO contract、legacy demotion 边界、task cards 与 subagent assignment 已冻结为一致 package，formal owner package 已落到 `OpenEmotion/openemotion/initiative_realization/*`，并已通过唯一 bounded consumer path 接到 `proto_self_v2` 与当前 EgoCore runtime 主链，在 formal owner + proposal-only initiative realization writeback + controlled observation 轴上收口进入 `maintenance_mode`
+- 条件性完成：当前维护态只覆盖 controlled axis closeout，不扩 authority
+- 不可宣称完成：live autonomy、OpenEmotion direct reply authority、tool authority、broader transport claims、或任何 authority release
+- 后续处理：后续只允许 maintenance verification、maintenance ledger intake、artifact refresh、bugfix 或 wording correction；不得借机扩 `WP16` scope 或创建 `WP17` authority docs
 
 ## 边界提醒
 

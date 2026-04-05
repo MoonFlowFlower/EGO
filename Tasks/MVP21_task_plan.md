@@ -1,6 +1,6 @@
 # MVP21 / WP16 Host-Governed Initiative Realization / Proactive Delivery Mediation
 
-> 状态：T70 complete / T80 pending
+> 状态：T80 complete / maintenance_mode
 > parent_authority: `Tasks/MVS_task_plan.md`
 > phase: `WP16`
 > predecessor: `WP15/MVP20`
@@ -175,11 +175,11 @@
 - `WP16` may not reinterpret `WP15` maintenance institutionalization or controlled evidence as delivery authority or broader transport maturity
 
 ## Current Phase Status
-- 当前层级：`controlled_observation_batch`
-- 当前状态：`controlled_observation_batch_complete`
-- 当前 blocker：`none on the WP16 controlled-axis E5 path`
-- 当前最小闭环动作：`T80_CLOSEOUT_AND_QA_BASELINE`
-- 当前 claim ceiling：`T70 complete only`
+- 当前层级：`closeout_and_qa_baseline`
+- 当前状态：`maintenance_mode`
+- 当前 blocker：`none on the WP16 controlled-axis maintenance path`
+- 当前最小闭环动作：`maintenance verification only`
+- 当前 claim ceiling：`T80 complete only`
 
 ## Success Criteria
 - `Tasks/MVS_task_plan.md` 中已正式出现 `WP16: Host-Governed Initiative Realization / Proactive Delivery Mediation`
@@ -223,7 +223,6 @@
   - `behavioral_authority_none_count = 3`
   - `bounded_influence_present_count = 3`
 - this does not yet prove:
-  - `maintenance_mode`
   - live autonomy
   - OpenEmotion direct reply authority
   - tool authority
