@@ -232,7 +232,8 @@ class TelegramEvidenceCollector:
         if not sample:
             return
 
-        response_plan = deepcopy(plan)
+        response_plan = deepcopy(sample.response_plan or {})
+        response_plan.update(deepcopy(plan))
         if sample.restore_observation and not response_plan.get("restore_observation"):
             response_plan["restore_observation"] = deepcopy(sample.restore_observation)
         sample.response_plan = response_plan

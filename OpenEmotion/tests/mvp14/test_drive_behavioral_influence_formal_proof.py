@@ -68,7 +68,7 @@ def _run_case(
     return adapter.handle_event(event)
 
 
-def test_high_caution_changes_response_tendency(tmp_path):
+def test_high_caution_elevates_drive_bias_under_bounded_defer_tendency(tmp_path):
     control = _run_case(
         tmp_path=tmp_path / "control",
         overrides={
@@ -86,7 +86,12 @@ def test_high_caution_changes_response_tendency(tmp_path):
 
     assert control["response_tendency"]["preferred_mode"] == "defer"
     assert intervention["response_tendency"]["preferred_mode"] == "defer"
-    assert intervention["response_tendency"]["ask_needed"] is False
+    # Later bounded layers (self-integration / initiative) now keep live-chat
+    # tendency in a governed defer/ask posture for both cases. This proof only
+    # needs to show that endogenous-drive pressure still changes the bounded
+    # drive-facing semantics and dominant priority.
+    assert control["response_tendency"]["ask_needed"] is True
+    assert intervention["response_tendency"]["ask_needed"] is True
     assert intervention["candidate_bias_terms"]["verification"] > control["candidate_bias_terms"]["verification"]
     assert intervention["candidate_bias_terms"]["conservation"] > control["candidate_bias_terms"]["conservation"]
     assert control["priority_snapshot"]["dominant_drive"] == "stability"

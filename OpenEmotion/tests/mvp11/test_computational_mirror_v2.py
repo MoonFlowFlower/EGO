@@ -357,10 +357,15 @@ class MockDegradableExecutor:
         Args:
             capability: Initial capability state
         """
+        import random
+
         self.capability = capability or ExecutorCapability()
         self._execution_history: List[Dict[str, Any]] = []
         self._mirror = ComputationalMirror()
         self._mirror.update_capability(self.capability)
+        # Keep the executor deterministic so the success-rate assertions
+        # exercise capability math instead of flaking on random variance.
+        self._rng = random.Random(1)
     
     def set_capability(self, capability: ExecutorCapability) -> None:
         """Set executor capability."""
@@ -377,8 +382,6 @@ class MockDegradableExecutor:
         Returns:
             Outcome dict
         """
-        import random
-        
         action_type = action.get("type", "unknown")
         complexity = action.get("complexity", 0.5)
         
@@ -395,7 +398,7 @@ class MockDegradableExecutor:
             success_prob *= self.capability.precision
             
             # Determine outcome
-            if random.random() < success_prob:
+            if self._rng.random() < success_prob:
                 # Add simulated latency
                 latency = 0.1 * self.capability.latency_factor * (1.0 + complexity)
                 outcome = {

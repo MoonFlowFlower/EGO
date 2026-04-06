@@ -11,6 +11,7 @@ from app.runtime_v2.proto_self_runtime import (
     build_idle_check_event,
     build_proto_self_ingress_event,
     build_response_plan_payload,
+    normalize_chat_subject_surface,
     resolve_proto_self_schema_version,
     resolve_proto_self_subject_profile,
 )
@@ -2327,6 +2328,82 @@ def test_process_ingress_prefers_collector_for_trace_capture():
     assert runtime.trace_bridge.entries == []
 
 
+def test_normalize_chat_subject_surface_exposes_explicit_richer_fields_for_capture():
+    captured = {"result": None, "trace": None}
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "event_id": event["event_id"],
+                "policy_hint": {"risk_bias": "high"},
+                "response_tendency": {"preferred_mode": "ask"},
+                "reflection_note": None,
+                "trace_payload": {
+                    "schema_version": "proto_self.trace.v2",
+                    "event_id": event["event_id"],
+                },
+            }
+
+    class Collector:
+        def capture_normalized_event(self, event):
+            return None
+
+        def capture_openemotion_result(self, result):
+            captured["result"] = result
+
+        def capture_openemotion_trace(self, trace_payload, *, stage):
+            captured["trace"] = trace_payload
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter())
+    state = RuntimeV2State(session_id="session:test")
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_001",
+        source="telegram",
+        user_input="你好",
+        state=state,
+        evidence_collector=Collector(),
+    )
+
+    for field in (
+        "social_policy_hints",
+        "embodied_policy_hints",
+        "integrated_policy_hints",
+        "initiative_policy_hints",
+    ):
+        assert field in captured["result"]
+        assert captured["result"][field] == {}
+        assert state.proto_self_context[field] == {}
+
+    for field in (
+        "social_context",
+        "environment_context",
+        "selfhood_integration_context",
+        "initiative_realization_context",
+        "host_proactive_context",
+    ):
+        assert field in captured["trace"]
+        assert captured["trace"][field] == {}
+
+
+def test_normalize_chat_subject_surface_helper_keeps_existing_values():
+    result = normalize_chat_subject_surface(
+        {
+            "social_policy_hints": {"repair_bias": "elevated"},
+            "trace_payload": {
+                "schema_version": "proto_self.trace.v2",
+                "social_context": {"counterpart_id": "telegram:8420019401"},
+            },
+        }
+    )
+
+    assert result["social_policy_hints"] == {"repair_bias": "elevated"}
+    assert result["embodied_policy_hints"] == {}
+    assert result["trace_payload"]["social_context"] == {"counterpart_id": "telegram:8420019401"}
+    assert result["trace_payload"]["environment_context"] == {}
+
+
 def test_process_ingress_falls_back_to_trace_bridge_without_collector():
     class Adapter:
         def handle_event(self, event):
@@ -2366,6 +2443,11 @@ def test_process_ingress_falls_back_to_trace_bridge_without_collector():
             "schema_version": "proto_self.trace.v1",
             "event_id": "session:test_turn_001",
             "policy_hint": {"risk_bias": "normal"},
+            "social_context": {},
+            "environment_context": {},
+            "selfhood_integration_context": {},
+            "initiative_realization_context": {},
+            "host_proactive_context": {},
         }
     ]
 

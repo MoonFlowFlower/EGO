@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
@@ -35,6 +36,8 @@ CHAT_MAINLINE_SYSTEM_PROMPT = """你是 EgoCore runtime_v2 的 chat mainline。
 10. 如果用户在问当前会话里刚聊过的内容，允许基于这段对话里的明确锚点自然回应，例如“记得，你刚才在聊……”；但不要把这说成跨对话记忆或长期记忆。
 11. 如果当前 turn 是 thread_continue，表示“把刚才的话题继续展开”，默认顺着上一条聊天往下说，不要切回任务、状态或证据回放。
 12. 只有当上下文明确标出 resume_hint_eligible 时，才允许最多一句轻提示“如果你是说恢复任务，用 /resume”；不要把它说成硬拦截。
+13. 如果结构化上下文里带有 `chat_expression_hint`，在不违背其它规则时按它控制展开程度、语气和下一步偏向。
+14. `reply_mode=short` 时尽量 1 句；`reply_mode=normal` 时 1 到 2 句；`reply_mode=expand` 时最多 4 句。
 """
 
 
@@ -48,6 +51,8 @@ class ChatReplyEngine:
         restore_observation = _resolve_restore_observation(state)
         current_session_grounding = _resolve_current_session_recall_grounding(state)
         state.prepare_chat_turn(user_text=state.last_user_turn or "", chat_act=chat_act)
+        chat_expression_hint = _build_chat_expression_hint(state, conversation_act=chat_act)
+        response_tendency_summary = _build_response_tendency_summary(state, chat_expression_hint)
 
         try:
             candidate = await self._generate_reply(state)
@@ -70,7 +75,7 @@ class ChatReplyEngine:
                     state,
                     extra_system_hint=_build_intent_gate_regeneration_hint(intent_gate_preview, chat_act),
                 )
-            reply_text = str(candidate or "").strip()
+            reply_text = _apply_chat_expression_hint(str(candidate or "").strip(), chat_expression_hint)
             if not reply_text:
                 raise RuntimeError("empty_chat_reply")
             reply_authority = "model_chat"
@@ -85,6 +90,8 @@ class ChatReplyEngine:
             "message": reply_text,
             "chat_act": chat_act,
             "reply_authority": reply_authority,
+            "chat_expression_hint": chat_expression_hint,
+            "response_tendency_summary": response_tendency_summary,
         }
         state.record(
             "assistant",
@@ -94,6 +101,8 @@ class ChatReplyEngine:
                 "chat_act": chat_act,
                 "reply_authority": reply_authority,
                 "reply_origin": "chat_mainline",
+                "chat_expression_hint": chat_expression_hint,
+                "response_tendency_summary": response_tendency_summary,
             },
         )
         state.last_delivery_type = "chat"
@@ -108,6 +117,8 @@ class ChatReplyEngine:
                     "chat_act": chat_act,
                     "reply_origin": "chat_mainline",
                     "reply_authority": reply_authority,
+                    "chat_expression_hint": chat_expression_hint,
+                    "response_tendency_summary": response_tendency_summary,
                 },
             ),
             finish_reason="chat_mainline",
@@ -134,6 +145,11 @@ class ChatReplyEngine:
         proto_self = dict(context.get("proto_self_context") or {})
         tendency = dict(proto_self.get("response_tendency") or {})
         policy_hint = dict(proto_self.get("policy_hint") or {})
+        reflection_note = dict(proto_self.get("reflection_note") or {})
+        chat_expression_hint = _build_chat_expression_hint(
+            state,
+            conversation_act=context.get("conversation_act"),
+        )
 
         system_prompt = CHAT_MAINLINE_SYSTEM_PROMPT
         if extra_system_hint:
@@ -163,12 +179,22 @@ class ChatReplyEngine:
             "proto_self_context": {
                 "subject_profile": proto_self.get("subject_profile"),
                 "response_tendency": tendency,
+                "reflection_note": {
+                    "trigger": reflection_note.get("trigger"),
+                    "diagnosis": reflection_note.get("diagnosis"),
+                },
                 "policy_hint": {
                     "subject_profile": policy_hint.get("subject_profile"),
                     "ask_preferred": policy_hint.get("ask_preferred"),
                     "closure_bias": policy_hint.get("closure_bias"),
                     "risk_bias": policy_hint.get("risk_bias"),
                 },
+                "social_policy_hints": dict(proto_self.get("social_policy_hints") or {}),
+                "embodied_policy_hints": dict(proto_self.get("embodied_policy_hints") or {}),
+                "integrated_policy_hints": dict(proto_self.get("integrated_policy_hints") or {}),
+                "initiative_policy_hints": dict(proto_self.get("initiative_policy_hints") or {}),
+                "recent_tendency_summaries": _extract_recent_tendency_summaries(state),
+                "chat_expression_hint": chat_expression_hint,
             },
             "memory_claim_contract": _build_memory_claim_contract(state),
             "reply_rules": {
@@ -464,3 +490,149 @@ def _build_intent_gate_regeneration_hint(preview: Dict[str, Any], chat_act: str)
         parts.append("如果只是 presence_check，只需自然确认你在。")
     parts.append("不要回成固定模板，不要回放旧证据，不要拉回任务。")
     return "".join(parts)
+
+
+def _extract_recent_tendency_summaries(state: RuntimeV2State) -> List[Dict[str, Any]]:
+    summaries: List[Dict[str, Any]] = []
+    for entry in reversed(list(getattr(state, "history", None) or [])):
+        if len(summaries) >= 3:
+            break
+        if entry.get("role") != "assistant":
+            continue
+        content = dict(entry.get("content") or {})
+        if content.get("type") != "chat_reply":
+            continue
+        summary = dict(content.get("response_tendency_summary") or {})
+        if not summary:
+            continue
+        summaries.append(summary)
+    summaries.reverse()
+    return summaries
+
+
+def _build_chat_expression_hint(state: RuntimeV2State, *, conversation_act: Optional[str] = None) -> Dict[str, str]:
+    ingress = dict(state.ingress_context or {})
+    proto_self = dict(state.proto_self_context or {})
+    tendency = dict(proto_self.get("response_tendency") or {})
+    policy_hint = dict(proto_self.get("policy_hint") or {})
+    social_policy_hints = dict(proto_self.get("social_policy_hints") or {})
+    embodied_policy_hints = dict(proto_self.get("embodied_policy_hints") or {})
+    integrated_policy_hints = dict(proto_self.get("integrated_policy_hints") or {})
+    initiative_policy_hints = dict(proto_self.get("initiative_policy_hints") or {})
+
+    act = str(conversation_act or ingress.get("conversation_act") or "light_chitchat").strip() or "light_chitchat"
+    preferred_tone = str(tendency.get("preferred_tone") or "").strip().lower()
+    suggested_next_step = str(tendency.get("suggested_next_step") or "").strip()
+    selected_priority = str(
+        integrated_policy_hints.get("selected_priority")
+        or integrated_policy_hints.get("integration_posture")
+        or ""
+    ).strip()
+    initiative_priority = str(initiative_policy_hints.get("initiative_priority") or "").strip()
+    repair_bias = str(social_policy_hints.get("repair_bias") or "").strip()
+    resource_bias = str(embodied_policy_hints.get("resource_bias") or "").strip()
+
+    if act in {"presence_check", "social_keepalive"}:
+        reply_mode = "short"
+    elif act == "thread_continue" or initiative_priority in {"advance", "continue"}:
+        reply_mode = "expand"
+    else:
+        reply_mode = "normal"
+
+    if act == "tone_feedback" or repair_bias == "elevated":
+        tone_profile = "repairing"
+    elif preferred_tone in {"supportive", "warm", "direct", "cautious"}:
+        tone_profile = preferred_tone
+    elif preferred_tone == "calm":
+        tone_profile = "supportive"
+    else:
+        tone_profile = "cautious"
+
+    next_step_bias = "explore"
+    step_lower = suggested_next_step.lower()
+    if act == "thread_continue":
+        next_step_bias = "continue_thread"
+    elif "repair" in step_lower or repair_bias == "elevated":
+        next_step_bias = "clarify_or_repair"
+    elif selected_priority in {"guard", "stabilize"} or resource_bias == "conserve" or initiative_priority == "hold":
+        next_step_bias = "stabilize"
+    elif policy_hint.get("closure_bias"):
+        next_step_bias = "prioritize_closure"
+
+    reasons: List[str] = [f"conversation_act={act}"]
+    if selected_priority:
+        reasons.append(f"integration={selected_priority}")
+    if initiative_priority:
+        reasons.append(f"initiative={initiative_priority}")
+    if repair_bias:
+        reasons.append(f"social_repair={repair_bias}")
+    if resource_bias:
+        reasons.append(f"resource={resource_bias}")
+
+    return {
+        "reply_mode": reply_mode,
+        "tone_profile": tone_profile,
+        "next_step_bias": next_step_bias,
+        "why": "; ".join(reasons[:4]),
+    }
+
+
+def _build_response_tendency_summary(
+    state: RuntimeV2State,
+    chat_expression_hint: Dict[str, str],
+) -> Dict[str, Any]:
+    proto_self = dict(state.proto_self_context or {})
+    tendency = dict(proto_self.get("response_tendency") or {})
+    return {
+        "preferred_mode": str(tendency.get("preferred_mode") or ""),
+        "preferred_tone": str(tendency.get("preferred_tone") or ""),
+        "suggested_next_step": str(tendency.get("suggested_next_step") or ""),
+        "reply_mode": str(chat_expression_hint.get("reply_mode") or ""),
+        "tone_profile": str(chat_expression_hint.get("tone_profile") or ""),
+        "next_step_bias": str(chat_expression_hint.get("next_step_bias") or ""),
+    }
+
+
+def _apply_chat_expression_hint(reply_text: str, chat_expression_hint: Dict[str, str]) -> str:
+    text = str(reply_text or "").strip()
+    if not text:
+        return ""
+
+    units = _split_reply_units(text)
+    if not units:
+        return text
+
+    reply_mode = str(chat_expression_hint.get("reply_mode") or "normal").strip()
+    max_units = 2
+    if reply_mode == "short":
+        max_units = 1
+    elif reply_mode == "expand":
+        max_units = 4
+
+    shaped = "".join(units[:max_units]).strip()
+    return shaped or text
+
+
+def _split_reply_units(text: str) -> List[str]:
+    units: List[str] = []
+    buffer: List[str] = []
+
+    for char in str(text or ""):
+        if char == "\n":
+            chunk = "".join(buffer).strip()
+            if chunk:
+                units.append(chunk)
+            buffer = []
+            continue
+
+        buffer.append(char)
+        if char in "。！？!?":
+            chunk = "".join(buffer).strip()
+            if chunk:
+                units.append(chunk)
+            buffer = []
+
+    tail = "".join(buffer).strip()
+    if tail:
+        units.append(tail)
+    return units

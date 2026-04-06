@@ -151,6 +151,10 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
     if evidence_payload is not None:
         metadata["evidence_payload"] = evidence_payload
         metadata["evidence_binding_source_turn"] = evidence_payload.get("source_turn_id")
+    if "chat_expression_hint" in reply_metadata:
+        metadata["chat_expression_hint"] = dict(reply_metadata.get("chat_expression_hint") or {})
+    if "response_tendency_summary" in reply_metadata:
+        metadata["response_tendency_summary"] = dict(reply_metadata.get("response_tendency_summary") or {})
     intent_contract_source = _build_intent_contract_source(
         state,
         reply_authority=final_authority,

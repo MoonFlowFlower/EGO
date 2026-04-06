@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from app.llm_client import LLMResponse
@@ -123,6 +125,93 @@ async def test_chat_reply_engine_preserves_grounded_same_session_recall() -> Non
     assert result.reply_text == "记得，你刚才在聊意识光谱。"
     assert result.reply.metadata["reply_authority"] == "model_chat"
     assert engine.llm_client.calls == 1
+
+
+def test_chat_reply_engine_build_messages_include_richer_subject_surface_and_recent_tendencies() -> None:
+    engine = ChatReplyEngine()
+    state = RuntimeV2State(session_id="chat:richer-surface")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "thread_continue",
+    }
+    state.last_user_turn = "继续展开说"
+    state.proto_self_context = {
+        "response_tendency": {
+            "preferred_mode": "defer",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "route realization proposals to controlled host-lane review",
+        },
+        "policy_hint": {
+            "ask_preferred": True,
+            "closure_bias": True,
+            "risk_bias": "high",
+        },
+        "reflection_note": {
+            "trigger": "drive_spike",
+            "diagnosis": "significant internal state change detected",
+        },
+        "social_policy_hints": {"repair_bias": "elevated"},
+        "embodied_policy_hints": {"resource_bias": "conserve"},
+        "integrated_policy_hints": {"selected_priority": "guard"},
+        "initiative_policy_hints": {"initiative_priority": "hold"},
+    }
+    state.record(
+        "assistant",
+        {
+            "type": "chat_reply",
+            "response_tendency_summary": {
+                "preferred_mode": "respond",
+                "preferred_tone": "warm",
+                "suggested_next_step": "continue_thread",
+            },
+        },
+    )
+
+    messages = engine._build_messages(state)
+    payload_text = messages[1]["content"].split("\n\n", 1)[1]
+    payload = json.loads(payload_text)
+    proto_self_context = payload["proto_self_context"]
+
+    assert proto_self_context["reflection_note"]["trigger"] == "drive_spike"
+    assert proto_self_context["social_policy_hints"] == {"repair_bias": "elevated"}
+    assert proto_self_context["embodied_policy_hints"] == {"resource_bias": "conserve"}
+    assert proto_self_context["integrated_policy_hints"] == {"selected_priority": "guard"}
+    assert proto_self_context["initiative_policy_hints"] == {"initiative_priority": "hold"}
+    assert proto_self_context["recent_tendency_summaries"] == [
+        {
+            "preferred_mode": "respond",
+            "preferred_tone": "warm",
+            "suggested_next_step": "continue_thread",
+        }
+    ]
+    assert proto_self_context["chat_expression_hint"]["reply_mode"] == "expand"
+
+
+@pytest.mark.asyncio
+async def test_chat_reply_engine_applies_expression_hint_and_records_metadata() -> None:
+    engine = ChatReplyEngine()
+    engine.llm_client = _SequentialClient(["我在。刚看到你。可以继续说。"])
+
+    state = RuntimeV2State(session_id="chat:expression-hint")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "presence_check",
+    }
+    state.last_user_turn = "在吗"
+    state.proto_self_context = {
+        "response_tendency": {
+            "preferred_mode": "defer",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "route realization proposals to controlled host-lane review",
+        }
+    }
+
+    result = await engine.reply(state)
+
+    assert result.reply_text == "我在。"
+    assert result.reply.metadata["chat_expression_hint"]["reply_mode"] == "short"
+    assert result.reply.metadata["response_tendency_summary"]["preferred_mode"] == "defer"
+    assert state.history[-1]["content"]["chat_expression_hint"]["reply_mode"] == "short"
 
 
 @pytest.mark.asyncio

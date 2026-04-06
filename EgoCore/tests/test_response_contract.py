@@ -112,6 +112,42 @@ def test_build_runtime_result_response_plan_preserves_presence_conversation_act(
     assert state.to_decision_prompt_context()["ingress_context"]["conversation_act"] == "presence_check"
 
 
+def test_build_runtime_result_response_plan_preserves_chat_expression_metadata() -> None:
+    state = RuntimeV2State(session_id="s")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    result = RuntimeV2TurnResult(
+        status="chat",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="我在回应你。",
+            delivery_kind="chat",
+            status="chat",
+            metadata={
+                "chat_expression_hint": {
+                    "reply_mode": "normal",
+                    "tone_profile": "supportive",
+                    "next_step_bias": "explore",
+                    "why": "conversation_act=light_chitchat",
+                },
+                "response_tendency_summary": {
+                    "preferred_mode": "defer",
+                    "preferred_tone": "cautious",
+                    "suggested_next_step": "route realization proposals to controlled host-lane review",
+                },
+            },
+        ),
+    )
+
+    plan = build_runtime_result_response_plan(result.reply, state)
+
+    assert plan.metadata["chat_expression_hint"]["reply_mode"] == "normal"
+    assert plan.metadata["chat_expression_hint"]["tone_profile"] == "supportive"
+    assert plan.metadata["response_tendency_summary"]["preferred_mode"] == "defer"
+
+
 def test_build_runtime_result_response_plan_blocks_memory_claim_without_restore_authority() -> None:
     state = RuntimeV2State(session_id="s")
     state.ingress_context = {

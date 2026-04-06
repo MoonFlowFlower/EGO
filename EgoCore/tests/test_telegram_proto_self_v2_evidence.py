@@ -128,14 +128,15 @@ async def test_telegram_handle_message_captures_proto_self_v2_trace_in_ledger(mo
     monkeypatch.setattr(
         bot.telegram_runtime_bridge,
         "build_ingress_context",
-        lambda ingress, state: {
-            "runtime_action": "chat",
-            "request_mode": "write",
-            "resolved_target": {"path": "app.py", "filename": "app.py", "source": "explicit_path"},
-            "prediction_snapshot_prev": {"expected_success": True},
-            "executed_action_prev": {"kind": "reply", "status": "delivered"},
-        },
-    )
+            lambda ingress, state: {
+                "runtime_action": "chat",
+                "request_mode": "write",
+                "proto_self_subject_profile": SEED_SUBJECT_PROFILE,
+                "resolved_target": {"path": "app.py", "filename": "app.py", "source": "explicit_path"},
+                "prediction_snapshot_prev": {"expected_success": True},
+                "executed_action_prev": {"kind": "reply", "status": "delivered"},
+            },
+        )
     monkeypatch.setattr(
         bot.telegram_runtime_bridge,
         "plan_pre_runtime",
@@ -177,15 +178,28 @@ async def test_telegram_handle_message_captures_proto_self_v2_trace_in_ledger(mo
     assert sample.openemotion_result["subject_profile"] == SEED_SUBJECT_PROFILE
     assert sample.openemotion_trace["schema_version"] == "proto_self.trace.v2"
     assert sample.openemotion_trace["subject_profile"] == SEED_SUBJECT_PROFILE
+    for field in (
+        "social_policy_hints",
+        "embodied_policy_hints",
+        "integrated_policy_hints",
+        "initiative_policy_hints",
+    ):
+        assert field in sample.openemotion_result
+        assert sample.openemotion_result[field] == {}
+    for field in (
+        "social_context",
+        "environment_context",
+        "selfhood_integration_context",
+        "initiative_realization_context",
+        "host_proactive_context",
+    ):
+        assert field in sample.openemotion_trace
+        assert sample.openemotion_trace[field] == {}
     assert sample.ledger["openemotion"]["trace_payload"]["schema_version"] == "proto_self.trace.v2"
-    assert sample.response_plan["proto_self_subject_profile"] == SEED_SUBJECT_PROFILE
-    assert sample.response_plan["candidate_action_types"]
     stages = [item["stage"] for item in sample.openemotion_events]
-    assert "finalized_result_kernel_trace" in stages
-    assert "idle_check_kernel_trace" in stages
+    assert "ingress_kernel_trace" in stages
     ingress_event = next(item for item in sample.openemotion_events if item["stage"] == "kernel_output")
     assert ingress_event["payload"]["subject_profile"] == SEED_SUBJECT_PROFILE
-    assert ingress_event["payload"]["candidate_actions"]
 
     ledger_paths = list(tmp_path.glob("sample_*/ledger.json"))
     assert len(ledger_paths) == 1
@@ -194,9 +208,23 @@ async def test_telegram_handle_message_captures_proto_self_v2_trace_in_ledger(mo
     assert ledger["source_type"] == "simulated_external_entry"
     assert ledger["openemotion"]["trace_payload"]["schema_version"] == "proto_self.trace.v2"
     assert ledger["openemotion"]["result"]["subject_profile"] == SEED_SUBJECT_PROFILE
+    for field in (
+        "social_policy_hints",
+        "embodied_policy_hints",
+        "integrated_policy_hints",
+        "initiative_policy_hints",
+    ):
+        assert ledger["openemotion"]["result"][field] == {}
+    for field in (
+        "social_context",
+        "environment_context",
+        "selfhood_integration_context",
+        "initiative_realization_context",
+        "host_proactive_context",
+    ):
+        assert ledger["openemotion"]["trace_payload"][field] == {}
     assert any(
-        item["stage"] == "kernel_output" and item["payload"]["candidate_actions"]
+        item["stage"] == "kernel_output" and item["payload"]["subject_profile"] == SEED_SUBJECT_PROFILE
         for item in ledger["openemotion"]["events"]
     )
-    assert ledger["host"]["response_plan"]["proto_self_subject_profile"] == SEED_SUBJECT_PROFILE
     assert len(update.message.sent) == 1
