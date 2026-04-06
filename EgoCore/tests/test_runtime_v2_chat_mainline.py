@@ -1,4 +1,5 @@
 import json
+import httpx
 
 import pytest
 
@@ -338,6 +339,31 @@ async def test_chat_reply_engine_replaces_recent_result_identification_prompt_wi
     assert "bilili_lookalike.html" in result.reply_text
     assert "你说的页面是哪个呀" not in result.reply_text
     assert "没看到相关记录" not in result.reply_text
+
+
+@pytest.mark.asyncio
+async def test_chat_reply_engine_uses_contextual_rate_limit_fallback_for_fault_question() -> None:
+    engine = ChatReplyEngine()
+
+    class _RateLimitedClient:
+        def generate_with_messages(self, *_args, **_kwargs):
+            request = httpx.Request("POST", "https://qianfan.baidubce.com/v2/coding/chat/completions")
+            response = httpx.Response(status_code=429, request=request)
+            raise httpx.HTTPStatusError("rate limited", request=request, response=response)
+
+    engine.llm_client = _RateLimitedClient()
+    state = RuntimeV2State(session_id="chat:rate-limit-fault")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "social_keepalive",
+    }
+    state.last_user_turn = "所以是什么故障？"
+
+    result = await engine.reply(state)
+
+    assert "429" in result.reply_text or "限流" in result.reply_text
+    assert "刚才聊天生成出了点问题" not in result.reply_text
+    assert result.reply.metadata["reply_authority"] == "host_degraded_fallback"
 
 
 @pytest.mark.asyncio

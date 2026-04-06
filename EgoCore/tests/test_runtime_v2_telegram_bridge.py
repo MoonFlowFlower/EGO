@@ -229,3 +229,22 @@ def test_telegram_bridge_promotes_full_read_followup_to_previous_explicit_target
     assert ingress["request_mode"] == "analyze"
     assert ingress["resolved_target"]["source"] == "explicit_path"
     assert ingress["resolved_target"]["path"] == r"D:\Project\AIProject\MyProject\Ego\PROJECT_MEMORY.md"
+
+
+def test_telegram_bridge_promotes_recent_result_review_followup_to_analyze():
+    bridge = RuntimeV2TelegramBridge()
+    state = RuntimeV2State(session_id="telegram:dm:1")
+    state.recent_delivered_result_context = {
+        "binding_kind": "recent_delivered_result",
+        "target_name": "bilili_lookalike.html",
+        "target_path": r"D:\Project\AIProject\MyProject\Test2\bilili_lookalike.html",
+        "runtime_status": "completed_verified",
+    }
+
+    decision = bridge.inspect_ingress("你打开看看呢", state)
+    ingress = bridge.build_ingress_context(decision, state)
+
+    assert decision._parsed_intent_graph.primary_intent == "task_request"
+    assert decision._runtime_action == "execute_task"
+    assert ingress["request_mode"] == "analyze"
+    assert ingress["resolved_target"]["path"] == r"D:\Project\AIProject\MyProject\Test2\bilili_lookalike.html"

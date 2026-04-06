@@ -1755,14 +1755,31 @@ class RuntimeV2State:
         分析动作的目标绑定。
 
         优先级：
-        1. last_uploaded_artifact
-        2. pending_bundle
+        1. 最近刚交付的结果
+        2. last_uploaded_artifact
+        3. pending_bundle
         """
-        # 1. last_uploaded_artifact
+        recent_result = dict(self.recent_delivered_result_context or {})
+        recent_path = str(recent_result.get("target_path") or "").strip()
+        if recent_path:
+            if WINDOWS_PATH_RE.match(recent_path):
+                return {
+                    "path": recent_path,
+                    "filename": PureWindowsPath(recent_path).name or recent_path,
+                    "source": "recent_delivered_result",
+                }
+            if recent_path.startswith(("/", "/mnt/", "/home/", "/tmp/", "/Users/")):
+                return {
+                    "path": recent_path,
+                    "filename": PurePosixPath(recent_path).name or recent_path,
+                    "source": "recent_delivered_result",
+                }
+
+        # 2. last_uploaded_artifact
         if self.last_uploaded_artifact:
             return {**self.last_uploaded_artifact, "source": "last_uploaded"}
 
-        # 2. pending_bundle
+        # 3. pending_bundle
         if self.pending_artifacts:
             return {
                 "bundle": self.pending_artifacts,

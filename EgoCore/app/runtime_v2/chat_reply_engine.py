@@ -92,7 +92,12 @@ class ChatReplyEngine:
             reply_authority = "model_chat"
         except Exception as exc:
             logger.warning("runtime_v2.chat_mainline.degraded err=%s", exc)
-            reply_text = "我在。刚才聊天生成出了点问题，你可以继续说。"
+            reply_text = _build_degraded_chat_reply(
+                state,
+                chat_act=chat_act,
+                recent_result_followup=recent_result_followup,
+                error=exc,
+            )
             reply_authority = "host_degraded_fallback"
 
         state.finalize_chat_turn(assistant_reply=reply_text, chat_act=chat_act)
@@ -815,6 +820,65 @@ def _looks_like_recent_result_context_denial(reply_text: str, recent_result_foll
         "没看到相关记录",
     )
     return any(marker in body for marker in denial_markers)
+
+
+def _looks_like_fault_question(text: str) -> bool:
+    normalized = str(text or "").strip().lower()
+    if not normalized:
+        return False
+    markers = (
+        "什么问题",
+        "什么故障",
+        "出了什么问题",
+        "出了什么故障",
+        "为什么",
+        "怎么回事",
+        "why",
+        "what problem",
+        "what happened",
+    )
+    return any(marker in normalized for marker in markers)
+
+
+def _classify_chat_generation_error(error: Exception) -> str:
+    if isinstance(error, httpx.HTTPStatusError):
+        status_code = getattr(getattr(error, "response", None), "status_code", None)
+        if status_code == 429:
+            return "provider_rate_limited"
+    if isinstance(error, (httpx.TimeoutException, TimeoutError)):
+        return "provider_timeout"
+    return "generation_failed"
+
+
+def _build_degraded_chat_reply(
+    state: RuntimeV2State,
+    *,
+    chat_act: str,
+    recent_result_followup: Optional[Dict[str, Any]],
+    error: Exception,
+) -> str:
+    error_kind = _classify_chat_generation_error(error)
+    user_text = str(getattr(state, "last_user_turn", "") or "").strip()
+    if recent_result_followup:
+        base = _build_recent_result_followup_reply(recent_result_followup)
+        if error_kind == "provider_rate_limited":
+            return base + " 刚才聊天生成被限流了，但这不影响我继续基于这份结果往下看。"
+        return base
+    if _looks_like_fault_question(user_text):
+        if error_kind == "provider_rate_limited":
+            return "刚才是聊天提供方触发了限流（429），所以这几轮走了降级回复。你可以继续说，或者等几秒再发。"
+        if error_kind == "provider_timeout":
+            return "刚才聊天生成超时了，所以这轮走了降级回复。你可以继续说。"
+        return "刚才聊天生成出了故障，所以这轮走了降级回复。你可以继续说。"
+    if chat_act == "presence_check":
+        if error_kind == "provider_rate_limited":
+            return "我在。刚才聊天提供方限流了，但你可以继续说。"
+        return "我在。你继续说。"
+    if error_kind == "provider_rate_limited":
+        return "刚才聊天提供方限流了（429），这轮先走降级回复。你可以继续说，或者等几秒再发。"
+    if error_kind == "provider_timeout":
+        return "刚才聊天生成超时了，这轮先走降级回复。你可以继续说。"
+    return "我在。刚才聊天生成出了点问题，你可以继续说。"
 
 
 def _build_recent_result_followup_reply(recent_result_followup: Dict[str, Any]) -> str:

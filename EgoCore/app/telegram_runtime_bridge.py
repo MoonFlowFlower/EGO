@@ -283,6 +283,18 @@ class TelegramRuntimeBridge:
         "don't truncate",
         "do not truncate",
     )
+    RECENT_RESULT_REVIEW_PATTERNS = (
+        "打开看看",
+        "打开看",
+        "帮我看看",
+        "看一下",
+        "看看呢",
+        "评价一下",
+        "点评一下",
+        "review it",
+        "take a look",
+        "inspect it",
+    )
     WINDOWS_PATH_RE = re.compile(r"[A-Za-z]:[\\/](?:[A-Za-z0-9._() -]+[\\/])*[A-Za-z0-9._() -]+")
     UNIX_PATH_RE = re.compile(r"(?:/mnt|/home|/tmp|/Users)(?:/[A-Za-z0-9._() -]+)+")
 
@@ -593,6 +605,67 @@ class TelegramRuntimeBridge:
             promoted.actionable_targets.append(target_ref)
         return promoted
 
+    def _looks_like_recent_result_review_followup(self, text: str, state: RuntimeV2State) -> bool:
+        recent_result = dict(getattr(state, "recent_delivered_result_context", None) or {})
+        target_path = str(recent_result.get("target_path") or "").strip()
+        target_name = str(recent_result.get("target_name") or "").strip().lower()
+        if not target_path:
+            return False
+
+        normalized_turn = normalize_user_turn(text)
+        normalized = normalized_turn.lower_text
+        if not normalized:
+            return False
+
+        strong_review_markers = set(self.RECENT_RESULT_REVIEW_PATTERNS)
+        if any(marker in normalized_turn.text or marker in normalized for marker in strong_review_markers):
+            return True
+
+        weak_review_markers = {"打开", "查看", "看看", "看下", "inspect", "review", "read", "open"}
+        if not any(marker in normalized_turn.text or marker in normalized for marker in weak_review_markers):
+            return False
+
+        recent_ref_markers = {"这个页面", "这个文件", "这个结果", "刚做的", "刚刚做的", "刚才做的"}
+        if target_name:
+            recent_ref_markers.add(target_name)
+            stem = target_name.rsplit(".", 1)[0].strip()
+            if stem:
+                recent_ref_markers.add(stem)
+            if target_name.endswith(".html"):
+                recent_ref_markers.add("页面")
+        return any(marker in normalized_turn.text or marker in normalized for marker in recent_ref_markers)
+
+    def _promote_recent_result_review_followup(
+        self,
+        text: str,
+        graph: ParsedIntentGraph,
+        state: RuntimeV2State,
+    ) -> ParsedIntentGraph:
+        if not self._looks_like_recent_result_review_followup(text, state):
+            return graph
+
+        recent_result = dict(getattr(state, "recent_delivered_result_context", None) or {})
+        target_ref = str(recent_result.get("target_path") or "").strip() or None
+        segment = SemanticSegment(
+            text=text,
+            kind="task_request",
+            confidence=0.98,
+            refers_to_previous=True,
+            target_ref=target_ref,
+            request_mode="analyze",
+            priority=0,
+        )
+        promoted = ParsedIntentGraph(
+            segments=[segment],
+            primary_intent="task_request",
+            secondary_intents=[],
+            parser_source="heuristic_parser",
+            graph_version=graph.graph_version,
+        )
+        if target_ref:
+            promoted.actionable_targets.append(target_ref)
+        return promoted
+
     def _resolve_request_mode(self, decision: TelegramIngressDecision) -> Optional[str]:
         graph = decision._parsed_intent_graph
         if graph is not None:
@@ -801,6 +874,7 @@ class TelegramRuntimeBridge:
         normalized_turn = normalize_user_turn(text)
         graph = self._normalize_ambiguous_probe(normalized_turn.text, heuristic_parse(normalized_turn.text), state)
         graph = self._promote_execution_confirmation(normalized_turn.text, graph, state)
+        graph = self._promote_recent_result_review_followup(normalized_turn.text, graph, state)
         graph = self._promote_explicit_target_analyze_followup(normalized_turn.text, graph, state)
 
         logger.info(
@@ -903,6 +977,7 @@ class TelegramRuntimeBridge:
         normalized_turn = normalize_user_turn(text)
         graph = self._normalize_ambiguous_probe(normalized_turn.text, heuristic_parse(normalized_turn.text), state)
         graph = self._promote_execution_confirmation(normalized_turn.text, graph, state)
+        graph = self._promote_recent_result_review_followup(normalized_turn.text, graph, state)
         graph = self._promote_explicit_target_analyze_followup(normalized_turn.text, graph, state)
         requested_output = self._extract_requested_output(normalized_turn.text)
         runtime_action = decide_runtime_action(graph, state)
