@@ -106,12 +106,13 @@
   - `M3` 已完成
   - richer subject surface 已进入 current live artifacts
   - tendency 已开始改变 current live reply shaping
-- `M4` host-governed cadence 代码已落地：
+  - `M4` host-governed cadence 代码已落地：
   - `chat_cadence_mode`
   - `reply_now_short / reply_now_normal / reply_now_expand / hold_for_followup`
   - `hold_for_followup` 只进入现有 host-governed proactive substrate
 - 当前不能宣称：
   - `M4` 已有 fresh real Telegram proof
+  - `M5` 已通过
   - fresh real Telegram 已证明稳定可感变化
   - `hold_for_followup` 已在真实 Telegram 新窗口中证明生效
   - direct reply / tool / transport authority 已放开
@@ -140,5 +141,5 @@
 - [x] `M2` richer subject surface 已落地
 - [x] `M3` tendency-to-reply consumption 已落地并经 full verify
 - [ ] `M4` host-governed cadence fresh proof / full-verify closeout
-- [ ] `M5` fresh real Telegram proof
+- [ ] `M5` fresh real Telegram proof（当前 blocker：fresh window 缺少 ordinary-chat mainline 样本）
 - [ ] `M6` closeout

@@ -73,8 +73,8 @@
 ## Progress
 
 - current_status: `in_progress`
-- current_milestone: `Milestone 4: Host-Governed Cadence`
-- milestone_state: `implementation_done_verify_blocked`
+- current_milestone: `Milestone 5: Fresh Real Telegram Proof`
+- milestone_state: `blocked_on_fresh_sample_mix`
 
 ## Decision log
 
@@ -120,4 +120,16 @@
   - `TelegramRuntimeFallbackRunner` 现在会保留 runtime reply metadata，避免 cadence / expression hints 在 Telegram adapter 层丢失
   - focused tests、lint、`verify_repo.py --mode fast` 已通过
   - repo-wide `verify_repo.py --mode full` 已验证到全量 EgoCore suite 通过，但 OpenEmotion Windows interop 包装层未在本轮可接受时间内返回，当前按 verification blocker 记录
-- 下一步是在不改口径的前提下进入 `M5 Fresh Real Telegram Proof`
+- `M5 Fresh Real Telegram Proof` 已完成首轮 fresh-window 复盘：
+  - deploy commit = `72148b3`
+  - current artifact:
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.md`
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.json`
+  - 当前 fresh window 共有 `6` 条真实样本
+  - 样本分布为：
+    - `non_ordinary = 4`
+    - `ordinary_text_policy_or_control = 2`
+    - `ordinary_chat_mainline = 0`
+  - 因此当前没有 fresh ordinary-chat mainline 样本，也没有可用来证明 richer fields / tendency delta / cadence delta 的窗口
+  - `M5` 当前结论是 blocker，不是 pass
+- 下一步需要人为补一个 fresh ordinary-chat Telegram 窗口，再重跑 proof 脚本

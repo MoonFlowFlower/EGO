@@ -2,9 +2,9 @@
 
 ## Current milestone
 
-- name: `Milestone 4: Host-Governed Cadence`
+- name: `Milestone 5: Fresh Real Telegram Proof`
 - owner: `Codex`
-- state: implementation_done_verify_blocked
+- state: blocked_on_fresh_sample_mix
 
 ## Current state
 
@@ -77,6 +77,22 @@
   - `TelegramRuntimeFallbackRunner` 现在会保留 runtime reply metadata，避免 Telegram adapter 无声丢失 cadence / expression fields
   - M4 focused tests、lint、`verify_repo.py --mode fast` 已通过
   - repo-wide `verify_repo.py --mode full` 本轮已验证到全量 EgoCore suite 通过，但在 OpenEmotion Windows interop 包装层未在可接受时间内返回；当前按 verification blocker 记录
+- `M5 Fresh Real Telegram Proof` 已完成首轮 fresh-window 复盘：
+  - proof script:
+    - `scripts/codex/prove_live_chat_subjective_variability.py --since-commit 72148b3`
+  - current artifacts:
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.md`
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.json`
+  - fresh window 样本数：`6`
+  - 样本分布：
+    - `non_ordinary = 4`
+    - `ordinary_text_policy_or_control = 2`
+    - `ordinary_chat_mainline = 0`
+  - 当前 fresh window 中没有 ordinary-chat mainline 样本，因此：
+    - richer fields 没有 fresh ordinary-chat 证明
+    - tendency delta 没有 fresh ordinary-chat 证明
+    - cadence delta 没有 fresh ordinary-chat 证明
+  - `M5` 当前结论是 blocker，不是 pass
 
 ## Open risks
 
@@ -88,28 +104,36 @@
 - 当前 repo-wide full verify 仍有一个外部验证 blocker：
   - `verify_repo.py --mode full` 在 WSL 下进入 OpenEmotion Windows interop 包装层后未在本轮可接受时间内返回
   - 当前没有看到新的 M4 回归信号，但也不能把这一步误记成 full green
+- 当前 `M5` 的直接 blocker 已明确：
+  - deploy 后虽然有 fresh real Telegram 样本，但它们是 `/new`、`profile_rule_registered`、`profile_rule_enforced`
+  - 当前没有一条 fresh ordinary-chat mainline 样本进入证明窗口
 
 ## Next step
 
-- 进入 `M5 Fresh Real Telegram Proof`
-- 用 fresh real Telegram window 验证：
-  - ordinary chat 中 richer bounded fields 可见
-  - 同 session 至少一次 tendency 差异
-  - 同 session 至少一次 cadence 差异
-  - 若触发 `hold_for_followup`，则存在 finalized-result / response-plan / queued proactive artifact
-- 若需要正式 closeout，再补一轮 repo full verify，或单独解决 OpenEmotion Windows interop 包装层不返回问题
+- 用 Telegram 对话补一个 fresh ordinary-chat window：
+  - 先 `/new`
+  - 连续发送普通聊天而非 profile-rule / slash command：
+    - `你好`
+    - `我现在有点卡住了，你先帮我理一下`
+    - `继续`
+    - `你刚才为什么那样回答`
+- 然后重跑：
+  - `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit 72148b3`
+- 目标是拿到：
+  - ordinary-chat mainline 样本
+  - 至少一次 richer fields 可见
+  - 至少一次 tendency delta
+  - 至少一次 cadence delta 或 verified `hold_for_followup` artifact
 
 ## Last validation results
 
-- mode: `Milestone 4 host-governed cadence`
-- result: `pass`
+- mode: `Milestone 5 fresh real Telegram proof`
+- result: `blocked`
 - summary:
-  - `response_plan` 现在会保留 `chat_cadence_mode`
-  - current Telegram mainline 已接入 `reply_now_short / reply_now_normal / reply_now_expand / hold_for_followup`
-  - `hold_for_followup` 只进入现有 host-governed proactive outbox，且显式问题会被禁止
-  - targeted M4 tests、repo lint、`verify_repo.py --mode fast` 全部通过
-  - repo-wide `verify_repo.py --mode full` 已确认全量 EgoCore suite 通过；OpenEmotion Windows interop 包装层未在本轮可接受时间内返回
-  - `M4` 证明的是 host-governed cadence 实现已接入 current Telegram mainline；还不证明 fresh real Telegram 可感变化已成立
+  - fresh window 已按 deploy commit `72148b3` 之后的 real Telegram 样本复盘
+  - 当前窗口共有 `6` 条样本，但 `ordinary_chat_mainline = 0`
+  - 当前窗口没有可用于证明 richer fields / tendency delta / cadence delta 的 fresh ordinary-chat 证据
+  - `M5` blocker 不是当前 chat mainline 必然失效，而是当前 fresh 样本类型不满足证明条件
 
 ## Commands run / evidence
 
@@ -130,6 +154,8 @@
 - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_runtime_v2_chat_mainline.py EgoCore/tests/test_response_contract.py -q -s`
 - `python3 -m py_compile EgoCore/app/response_contract/response_plan.py EgoCore/app/runtime_v2/chat_reply_engine.py EgoCore/app/runtime_v2/proactive_outbox.py EgoCore/app/runtime_v2/proactive_outbox_drain.py EgoCore/app/telegram_bot.py EgoCore/app/telegram_runtime_result.py EgoCore/app/telegram_runtime_fallback.py EgoCore/tests/test_response_contract.py EgoCore/tests/test_runtime_v2_chat_mainline.py EgoCore/tests/test_runtime_v2_cli_and_telegram.py`
 - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_response_contract.py EgoCore/tests/test_runtime_v2_chat_mainline.py EgoCore/tests/test_runtime_v2_cli_and_telegram.py EgoCore/tests/test_proactive_outbox.py EgoCore/tests/test_telegram_proactive_transport.py -q -s`
+- `python3 -m py_compile scripts/codex/prove_live_chat_subjective_variability.py`
+- `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit 72148b3`
 - `python3 scripts/codex/lint_repo.py`
 - `python3 scripts/codex/verify_repo.py --mode fast`
 - `python3 scripts/codex/verify_repo.py --mode full`
@@ -141,11 +167,13 @@
   - `M2 Rich Subject Surface` 已完成
   - `M3 Tendency-to-Reply Consumption` 已完成
   - `M4 Host-Governed Cadence` 代码已接入 current Telegram mainline
+  - `M5` 首轮 fresh-window 复盘已完成，并已证明当前窗口不足以通过 acceptance
   - richer bounded subject fields 已进入 current live-artifact surface
   - tendency 已开始进入 current live reply shaping
   - `reply_now_short / reply_now_normal / reply_now_expand / hold_for_followup` 已在 host-governed contract 中建模
 - 当前不能宣称：
   - live Telegram chat 已具备稳定可感变化
+  - `M5` 已通过
   - `hold_for_followup` 已在 fresh real Telegram 新窗口中证明生效
   - repo-wide full verify 当前为 green
   - unrestricted autonomy / direct reply authority release

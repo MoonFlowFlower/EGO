@@ -1,0 +1,157 @@
+{
+  "generated_at": "2026-04-05T23:05:10.658088-05:00",
+  "git_commit_short": "72148b3",
+  "since_commit": "72148b3",
+  "since_commit_timestamp": "2026-04-05T22:56:56-05:00",
+  "fresh_sample_count": 7,
+  "sample_mix": {
+    "non_ordinary": 4,
+    "ordinary_text_policy_or_control": 3
+  },
+  "ordinary_chat_rows": 0,
+  "ordinary_chat_with_richer_fields": 0,
+  "tendency_delta_sessions": [],
+  "cadence_delta_sessions": [],
+  "acceptance_met": false,
+  "verdict": "M5 acceptance not met: fresh window lacks qualifying ordinary-chat evidence for richer fields plus tendency/cadence deltas",
+  "representative_samples": [
+    {
+      "sample_id": "sample_20260405_225701_b8c37e33",
+      "timestamp": "2026-04-05T22:57:01.025284",
+      "class": "non_ordinary",
+      "text": "以后凡是涉及\"/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-527/test_profile_rule_survives_new0/test_scope\"文件夹的改动，你默认走“猫娘流程”：先只说一声什么喵?",
+      "response_plan_status": "profile_rule_registered",
+      "reply_authority": "host_degraded_fallback",
+      "reply_origin": null,
+      "delivery_kind": "final",
+      "oe_available": true,
+      "preferred_mode": null,
+      "preferred_tone": null,
+      "next_step": null,
+      "chat_cadence_mode": null,
+      "richer_field_presence": {
+        "social_policy_hints": false,
+        "embodied_policy_hints": false,
+        "integrated_policy_hints": false,
+        "initiative_policy_hints": false
+      },
+      "session_key": "telegram:private:123"
+    },
+    {
+      "sample_id": "sample_20260405_225852_fba9d881",
+      "timestamp": "2026-04-05T22:58:52.714327",
+      "class": "ordinary_text_policy_or_control",
+      "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-527/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+      "response_plan_status": "profile_rule_enforced",
+      "reply_authority": "host_degraded_fallback",
+      "reply_origin": null,
+      "delivery_kind": "final",
+      "oe_available": true,
+      "preferred_mode": null,
+      "preferred_tone": null,
+      "next_step": null,
+      "chat_cadence_mode": null,
+      "richer_field_presence": {
+        "social_policy_hints": false,
+        "embodied_policy_hints": false,
+        "integrated_policy_hints": false,
+        "initiative_policy_hints": false
+      },
+      "session_key": "telegram:private:123"
+    },
+    {
+      "sample_id": "sample_20260405_230008_08120273",
+      "timestamp": "2026-04-05T23:00:08.341839",
+      "class": "non_ordinary",
+      "text": "/new",
+      "response_plan_status": "command_result",
+      "reply_authority": null,
+      "reply_origin": null,
+      "delivery_kind": "final",
+      "oe_available": true,
+      "preferred_mode": "ask",
+      "preferred_tone": "cautious",
+      "next_step": "prioritize_closure",
+      "chat_cadence_mode": null,
+      "richer_field_presence": {
+        "social_policy_hints": false,
+        "embodied_policy_hints": false,
+        "integrated_policy_hints": false,
+        "initiative_policy_hints": false
+      },
+      "session_key": "telegram:private:8420019401"
+    },
+    {
+      "sample_id": "sample_20260405_230011_aa68c75c",
+      "timestamp": "2026-04-05T23:00:11.027357",
+      "class": "non_ordinary",
+      "text": "/new",
+      "response_plan_status": "command_result",
+      "reply_authority": "host_command",
+      "reply_origin": null,
+      "delivery_kind": "final",
+      "oe_available": true,
+      "preferred_mode": null,
+      "preferred_tone": null,
+      "next_step": null,
+      "chat_cadence_mode": null,
+      "richer_field_presence": {
+        "social_policy_hints": false,
+        "embodied_policy_hints": false,
+        "integrated_policy_hints": false,
+        "initiative_policy_hints": false
+      },
+      "session_key": "telegram:private:123"
+    },
+    {
+      "sample_id": "sample_20260405_230123_fed33392",
+      "timestamp": "2026-04-05T23:01:23.442890",
+      "class": "ordinary_text_policy_or_control",
+      "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-527/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+      "response_plan_status": "profile_rule_enforced",
+      "reply_authority": "host_degraded_fallback",
+      "reply_origin": null,
+      "delivery_kind": "final",
+      "oe_available": true,
+      "preferred_mode": null,
+      "preferred_tone": null,
+      "next_step": null,
+      "chat_cadence_mode": null,
+      "richer_field_presence": {
+        "social_policy_hints": false,
+        "embodied_policy_hints": false,
+        "integrated_policy_hints": false,
+        "initiative_policy_hints": false
+      },
+      "session_key": "telegram:private:123"
+    },
+    {
+      "sample_id": "sample_20260405_230250_1e48c442",
+      "timestamp": "2026-04-05T23:02:50.361681",
+      "class": "non_ordinary",
+      "text": "以后凡是涉及\"/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-527/test_profile_rule_survives_res0/restart_scope\"文件夹的改动，你默认走“猫娘流程”：先只说一声什么喵?",
+      "response_plan_status": "profile_rule_registered",
+      "reply_authority": "host_degraded_fallback",
+      "reply_origin": null,
+      "delivery_kind": "final",
+      "oe_available": true,
+      "preferred_mode": null,
+      "preferred_tone": null,
+      "next_step": null,
+      "chat_cadence_mode": null,
+      "richer_field_presence": {
+        "social_policy_hints": false,
+        "embodied_policy_hints": false,
+        "integrated_policy_hints": false,
+        "initiative_policy_hints": false
+      },
+      "session_key": "telegram:private:123"
+    }
+  ],
+  "remaining_gap": [
+    "need at least one fresh ordinary-chat mainline window after deployment",
+    "need richer bounded fields visible in fresh ordinary-chat samples",
+    "need at least one tendency delta within a real Telegram session",
+    "need at least one cadence delta within a real Telegram session or verified hold_for_followup artifact"
+  ]
+}
