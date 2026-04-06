@@ -82,7 +82,7 @@ class ChatReplyEngine:
                     state,
                     extra_system_hint=_build_intent_gate_regeneration_hint(intent_gate_preview, chat_act),
                 )
-            if recent_result_followup and _looks_like_recent_result_context_denial(candidate):
+            if recent_result_followup and _looks_like_recent_result_context_denial(candidate, recent_result_followup):
                 fallback_reply = _build_recent_result_followup_reply(recent_result_followup)
                 if fallback_reply:
                     candidate = fallback_reply
@@ -750,10 +750,60 @@ def _build_recent_result_followup_system_hint(recent_result_followup: Optional[D
     )
 
 
-def _looks_like_recent_result_context_denial(reply_text: str) -> bool:
+def _reply_mentions_recent_result_anchor(reply_text: str, recent_result_followup: Dict[str, Any]) -> bool:
     body = str(reply_text or "").strip().lower()
     if not body:
         return False
+
+    target_name = str(recent_result_followup.get("target_name") or "").strip().lower()
+    target_path = str(recent_result_followup.get("target_path") or "").strip().lower()
+    reply_preview = str(recent_result_followup.get("reply_preview") or "").strip().lower()
+    anchors = {
+        "刚做的",
+        "刚完成的",
+        "这轮",
+        "已生成",
+        "已验证",
+        "已交付",
+    }
+    if target_name:
+        anchors.add(target_name)
+        stem = target_name.rsplit(".", 1)[0].strip().lower()
+        if stem:
+            anchors.add(stem)
+    if target_path:
+        anchors.add(target_path)
+    if reply_preview:
+        anchors.add(reply_preview[:40])
+    return any(anchor and anchor in body for anchor in anchors)
+
+
+def _looks_like_recent_result_context_denial(reply_text: str, recent_result_followup: Dict[str, Any]) -> bool:
+    body = str(reply_text or "").strip().lower()
+    if not body:
+        return False
+
+    if not _reply_mentions_recent_result_anchor(body, recent_result_followup):
+        identification_markers = (
+            "你说的是哪个",
+            "哪个页面",
+            "哪个文件",
+            "哪个结果",
+            "什么页面",
+            "什么文件",
+            "具体说说",
+            "具体一点",
+        )
+        missing_record_markers = (
+            "没看到相关记录",
+            "没有相关记录",
+            "没看到记录",
+            "没有记录",
+            "不清楚你说的是哪个",
+        )
+        if any(marker in body for marker in identification_markers + missing_record_markers):
+            return True
+
     denial_markers = (
         "没做过",
         "没有关于",
@@ -762,6 +812,7 @@ def _looks_like_recent_result_context_denial(reply_text: str) -> bool:
         "我这边没有",
         "我不记得",
         "收到了，但",
+        "没看到相关记录",
     )
     return any(marker in body for marker in denial_markers)
 

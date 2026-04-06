@@ -332,6 +332,114 @@ async def test_telegram_bot_task_delivery_persists_recent_result_context_for_cha
 
 
 @pytest.mark.asyncio
+async def test_telegram_bot_task_delivery_captures_compact_response_plan_metadata_for_followup_debug(monkeypatch, tmp_path):
+    collector = TelegramEvidenceCollector(
+        artifacts_dir=tmp_path,
+        source_type="simulated_external_entry",
+        channel="telegram",
+        evidence_level="E4",
+    )
+    monkeypatch.setattr(telegram_bot_module, "_EVIDENCE_COLLECTOR_AVAILABLE", True)
+    monkeypatch.setattr(telegram_bot_module, "get_evidence_collector", lambda: collector)
+
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+
+    class DummyMessage:
+        last_text = None
+        message_id = 12
+        reply_to_message = None
+        date = datetime.now(timezone.utc)
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+            return SimpleNamespace(
+                chat=SimpleNamespace(id=123),
+                message_id=self.message_id + 1,
+                date=datetime.now(timezone.utc),
+            )
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = SimpleNamespace(id=123, type="private")
+        effective_user = SimpleNamespace(id=456, username="tester")
+        update_id = 9012
+
+        def to_dict(self):
+            return {
+                "update_id": self.update_id,
+                "message": {
+                    "message_id": self.message.message_id,
+                    "date": self.message.date.isoformat(),
+                    "chat": {"id": self.effective_chat.id, "type": self.effective_chat.type},
+                    "from": {
+                        "id": self.effective_user.id,
+                        "is_bot": False,
+                        "username": self.effective_user.username,
+                    },
+                    "text": f"在 {tmp_path} 目录下创建 bilili_lookalike.html。",
+                },
+            }
+
+    update = DummyUpdate()
+    collector.start_sample(update.to_dict())
+    async def fake_publish_phase1_event(**kwargs):
+        return None
+
+    bot._publish_phase1_event = fake_publish_phase1_event
+
+    state = bot._get_runtime_state("telegram:dm:456")
+    state.start_turn()
+    target_path = str(tmp_path / "bilili_lookalike.html")
+    state.ingress_context = {
+        "runtime_action": "execute_task",
+        "requested_output": {"effective_path": target_path},
+    }
+    run_items = build_run_items_from_request(
+        f"在 {tmp_path} 目录下创建 bilili_lookalike.html。",
+        ingress_context=state.ingress_context,
+    )
+    for item in run_items:
+        item.status = "verified"
+    state.set_run_items(run_items)
+    state.last_tool_result = {
+        "success": True,
+        "tool": "file",
+        "stdout": "created bilili_lookalike.html",
+        "metadata": {"operation": "write", "path": target_path},
+    }
+
+    result = TelegramTurnResult(
+        status="completed_verified",
+        state=state,
+        reply=TelegramTurnReply(
+            reply_text="",
+            delivery_kind="final",
+            status="completed_verified",
+        ),
+    )
+
+    await bot._deliver_runtime_v2_result(
+        update,
+        state,
+        result,
+        is_challenge_turn=False,
+        ingress_message_id=update.message.message_id,
+        trace_id="trace-capture-recent-result-context",
+    )
+
+    samples = collector.get_samples()
+    assert len(samples) == 1
+    sample = samples[0]
+    assert sample.response_plan is not None
+    metadata = dict(sample.response_plan.get("metadata") or {})
+    assert metadata["result_binding_source_turn"] == state.active_turn_id
+    recent = metadata["recent_result_context"]
+    assert recent["target_name"] == "bilili_lookalike.html"
+    assert recent["target_path"] == target_path
+    assert recent["tool_result_summary"]["operation"] == "write"
+
+
+@pytest.mark.asyncio
 async def test_telegram_bot_chat_hold_for_followup_queues_outbox_without_immediate_send(monkeypatch):
     bot = TelegramBot(token="test-token", use_runtime_v2=True)
     bot._mvp12_proactive_telegram_autodrain_enabled = True

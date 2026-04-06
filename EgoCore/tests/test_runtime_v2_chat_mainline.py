@@ -308,6 +308,39 @@ async def test_chat_reply_engine_replaces_recent_result_context_denial_with_grou
 
 
 @pytest.mark.asyncio
+async def test_chat_reply_engine_replaces_recent_result_identification_prompt_with_grounded_followup_reply() -> None:
+    engine = ChatReplyEngine()
+    engine.llm_client = _SequentialClient(["你说的页面是哪个呀？我这边没看到相关记录，能具体说说吗？"])
+
+    state = RuntimeV2State(session_id="chat:recent-result-identification")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "social_keepalive",
+    }
+    state.last_user_turn = "你觉得你做的这个页面怎么样呀"
+    state.recent_delivered_result_context = {
+        "binding_kind": "recent_delivered_result",
+        "runtime_status": "completed_verified",
+        "reply_origin": "task_mainline",
+        "target_name": "bilili_lookalike.html",
+        "target_path": r"D:\Project\AIProject\MyProject\Test2\bilili_lookalike.html",
+        "reply_preview": "已完成这些任务：1. 已验证 bilili_lookalike.html",
+        "tool_result_summary": {
+            "tool": "file",
+            "success": True,
+            "operation": "write",
+            "path": r"D:\Project\AIProject\MyProject\Test2\bilili_lookalike.html",
+        },
+    }
+
+    result = await engine.reply(state)
+
+    assert "bilili_lookalike.html" in result.reply_text
+    assert "你说的页面是哪个呀" not in result.reply_text
+    assert "没看到相关记录" not in result.reply_text
+
+
+@pytest.mark.asyncio
 async def test_chat_reply_engine_applies_expression_hint_and_records_metadata() -> None:
     engine = ChatReplyEngine()
     engine.llm_client = _SequentialClient(["我在。刚看到你。可以继续说。"])

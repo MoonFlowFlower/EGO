@@ -439,10 +439,36 @@ class TelegramBot:
                     "intent_gate_violation_class": getattr(verdict, "intent_gate_violation_class", None),
                     "intent_gate_violation_types": list(getattr(verdict, "intent_gate_violation_types", ()) or ()),
                     "intent_gate_confidence": getattr(verdict, "intent_gate_confidence", None),
+                    "metadata": self._build_compact_response_plan_metadata(metadata),
                 },
             )
         except Exception as e:
             logger.warning(f"[E4-EVIDENCE] Failed to capture pre-runtime response_plan: {e}")
+
+    def _build_compact_response_plan_metadata(self, metadata: Optional[dict]) -> dict:
+        source = dict(metadata or {})
+        compact: dict = {}
+
+        recent_result_context = dict(source.get("recent_result_context") or {})
+        if recent_result_context:
+            compact["recent_result_context"] = {
+                "binding_kind": recent_result_context.get("binding_kind"),
+                "source_turn_id": recent_result_context.get("source_turn_id"),
+                "runtime_status": recent_result_context.get("runtime_status"),
+                "reply_origin": recent_result_context.get("reply_origin"),
+                "delivery_kind": recent_result_context.get("delivery_kind"),
+                "target_name": recent_result_context.get("target_name"),
+                "target_path": recent_result_context.get("target_path"),
+                "reply_preview": recent_result_context.get("reply_preview"),
+                "tool_result_summary": dict(recent_result_context.get("tool_result_summary") or {}),
+            }
+        if source.get("result_binding_source_turn"):
+            compact["result_binding_source_turn"] = source.get("result_binding_source_turn")
+        if source.get("chat_expression_hint"):
+            compact["chat_expression_hint"] = dict(source.get("chat_expression_hint") or {})
+        if source.get("response_tendency_summary"):
+            compact["response_tendency_summary"] = dict(source.get("response_tendency_summary") or {})
+        return compact
 
     def _build_pre_runtime_response_plan(self, reply_text: str, pre_runtime, state: RuntimeV2State):
         metadata = getattr(pre_runtime, "response_plan_metadata", None) or {}
@@ -625,6 +651,9 @@ class TelegramBot:
                         "intent_gate_violation_class": output_verdict.intent_gate_violation_class,
                         "intent_gate_violation_types": list(output_verdict.intent_gate_violation_types),
                         "intent_gate_confidence": output_verdict.intent_gate_confidence,
+                        "metadata": self._build_compact_response_plan_metadata(
+                            getattr(response_plan, "metadata", None)
+                        ),
                     },
                 )
             except Exception as e:
