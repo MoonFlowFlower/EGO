@@ -32,6 +32,7 @@ class TelegramRuntimeFallbackRunner:
         session_key: str,
         user_input: str,
         state: RuntimeV2State,
+        evidence_collector=None,
         progress_callback=None,
         run_event_callback=None,
     ) -> TelegramTurnResult:
@@ -41,6 +42,8 @@ class TelegramRuntimeFallbackRunner:
             "user_input": user_input,
         }
         parameters = inspect.signature(loop.run_turn_typed).parameters
+        if "evidence_collector" in parameters:
+            kwargs["evidence_collector"] = evidence_collector
         if "progress_callback" in parameters:
             kwargs["progress_callback"] = progress_callback
         if "run_event_callback" in parameters:
@@ -60,6 +63,7 @@ class TelegramRuntimeFallbackRunner:
                 request_id=getattr(reply, "request_id", None),
                 generation_id=getattr(reply, "generation_id", None),
                 turn_id=getattr(reply, "turn_id", None),
+                metadata=dict(getattr(reply, "metadata", None) or {}),
             )
         return TelegramTurnResult(
             status=result.status,

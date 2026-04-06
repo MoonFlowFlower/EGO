@@ -9,6 +9,8 @@ from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus, A
 from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.runtime_v2.run_items import RunConflictState, build_run_items_from_request
 from app.runtime_v2.cli import run_cli
+from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
+from app.telegram_runtime_fallback import TelegramRuntimeFallbackRunner
 from app.telegram_bot import TelegramBot
 from app.telegram_evidence_collector import TelegramEvidenceCollector
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
@@ -16,6 +18,30 @@ from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
 def test_runtime_v2_cli_entry_imports():
     assert callable(run_cli)
+
+
+def test_telegram_runtime_fallback_runner_preserves_reply_metadata() -> None:
+    runner = TelegramRuntimeFallbackRunner()
+    state = runner.get_loop().get_state("telegram:dm:metadata")
+    result = RuntimeV2TurnResult(
+        status="chat",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="我在。",
+            delivery_kind="chat",
+            status="chat",
+            metadata={
+                "chat_expression_hint": {"reply_mode": "short"},
+                "chat_cadence_mode": "reply_now_short",
+            },
+        ),
+    )
+
+    adapted = runner.adapt_result(result)
+
+    assert adapted.reply is not None
+    assert adapted.reply.metadata["chat_expression_hint"]["reply_mode"] == "short"
+    assert adapted.reply.metadata["chat_cadence_mode"] == "reply_now_short"
 
 
 @pytest.mark.asyncio
@@ -235,6 +261,172 @@ async def test_telegram_bot_delivery_applies_output_check_host_completion_fallba
 
     assert "已完成这些任务" in DummyUpdate.message.last_text
     assert any(event["kind"] == "tool_delivery_bridge" for event in events)
+
+
+@pytest.mark.asyncio
+async def test_telegram_bot_chat_hold_for_followup_queues_outbox_without_immediate_send(monkeypatch):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    bot._mvp12_proactive_telegram_autodrain_enabled = True
+
+    class DummyMessage:
+        text = "我先自己想一想这件事"
+        message_id = 88
+        last_text = None
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyChat:
+        id = 8420019401
+        type = "private"
+
+    class DummyUser:
+        id = 456
+        username = "moonlight"
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = DummyChat()
+        effective_user = DummyUser()
+
+    async def fake_publish_phase1_event(**kwargs):
+        return None
+
+    monkeypatch.setattr(bot, "_publish_phase1_event", fake_publish_phase1_event)
+
+    session_key = "telegram:dm:8420019401"
+    state = bot._get_runtime_state(session_key)
+    state.ingress_context = {"interaction_kind": "chat", "conversation_act": "light_chitchat"}
+    state.last_user_turn = DummyUpdate.message.text
+    chat_state = state.get_chat_state()
+    chat_state.recent_user_turns = ["你好", DummyUpdate.message.text]
+    chat_state.recent_assistant_replies = ["我在。"]
+    bot._remember_session_transport_binding(session_key, DummyChat.id)
+
+    result = TelegramTurnResult(
+        status="chat",
+        state=state,
+        reply=TelegramTurnReply(
+            reply_text="我刚想到一个更贴切的角度。",
+            delivery_kind="chat",
+            status="chat",
+            metadata={
+                "chat_act": "light_chitchat",
+                "reply_origin": "chat_mainline",
+                "reply_authority": "model_chat",
+                "chat_expression_hint": {
+                    "reply_mode": "hold",
+                    "tone_profile": "supportive",
+                    "next_step_bias": "stabilize",
+                    "why": "conversation_act=light_chitchat; initiative=hold",
+                },
+                "response_tendency_summary": {
+                    "preferred_mode": "defer",
+                    "preferred_tone": "supportive",
+                    "suggested_next_step": "let the thread breathe before re-engaging",
+                },
+            },
+        ),
+    )
+
+    await bot._deliver_runtime_v2_result(
+        DummyUpdate(),
+        state,
+        result,
+        is_challenge_turn=False,
+        ingress_message_id=DummyMessage.message_id,
+        trace_id="trace-hold",
+    )
+
+    assert DummyUpdate.message.last_text is None
+    assert state.active_turn_status == "terminal"
+    assert state.final_sent is False
+    assert state.has_pending_proactive_outbox_events()
+    queued = state.peek_proactive_outbox_events()[0]
+    assert queued["chat_cadence_mode"] == "hold_for_followup"
+    assert queued["reply_text"] == "我刚想到一个更贴切的角度。"
+    assert queued["reply_origin"] == "chat_mainline"
+    assert queued["reply_authority"] == "model_chat"
+
+
+@pytest.mark.asyncio
+async def test_telegram_bot_chat_hold_for_followup_blocked_for_explicit_question(monkeypatch):
+    bot = TelegramBot(token="test-token", use_runtime_v2=True)
+    bot._mvp12_proactive_telegram_autodrain_enabled = True
+
+    class DummyMessage:
+        text = "那你怎么看？"
+        message_id = 89
+        last_text = None
+
+        async def reply_text(self, text, parse_mode=None):
+            self.last_text = text
+
+    class DummyChat:
+        id = 8420019401
+        type = "private"
+
+    class DummyUser:
+        id = 456
+        username = "moonlight"
+
+    class DummyUpdate:
+        message = DummyMessage()
+        effective_chat = DummyChat()
+        effective_user = DummyUser()
+
+    async def fake_publish_phase1_event(**kwargs):
+        return None
+
+    monkeypatch.setattr(bot, "_publish_phase1_event", fake_publish_phase1_event)
+
+    session_key = "telegram:dm:8420019401"
+    state = bot._get_runtime_state(session_key)
+    state.ingress_context = {"interaction_kind": "chat", "conversation_act": "light_chitchat"}
+    state.last_user_turn = DummyUpdate.message.text
+    chat_state = state.get_chat_state()
+    chat_state.recent_user_turns = ["你好", DummyUpdate.message.text]
+    chat_state.recent_assistant_replies = ["我在。"]
+    bot._remember_session_transport_binding(session_key, DummyChat.id)
+
+    result = TelegramTurnResult(
+        status="chat",
+        state=state,
+        reply=TelegramTurnReply(
+            reply_text="我更倾向先从可验证行为标准开始拆。",
+            delivery_kind="chat",
+            status="chat",
+            metadata={
+                "chat_act": "light_chitchat",
+                "reply_origin": "chat_mainline",
+                "reply_authority": "model_chat",
+                "chat_expression_hint": {
+                    "reply_mode": "hold",
+                    "tone_profile": "supportive",
+                    "next_step_bias": "stabilize",
+                    "why": "conversation_act=light_chitchat; initiative=hold",
+                },
+                "response_tendency_summary": {
+                    "preferred_mode": "defer",
+                    "preferred_tone": "supportive",
+                    "suggested_next_step": "let the thread breathe before re-engaging",
+                },
+            },
+        ),
+    )
+
+    await bot._deliver_runtime_v2_result(
+        DummyUpdate(),
+        state,
+        result,
+        is_challenge_turn=False,
+        ingress_message_id=DummyMessage.message_id,
+        trace_id="trace-question",
+    )
+
+    assert DummyUpdate.message.last_text == "我更倾向先从可验证行为标准开始拆。"
+    assert state.final_sent is True
+    assert not state.has_pending_proactive_outbox_events()
 
 
 @pytest.mark.asyncio

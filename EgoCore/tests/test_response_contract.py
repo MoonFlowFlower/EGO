@@ -143,9 +143,41 @@ def test_build_runtime_result_response_plan_preserves_chat_expression_metadata()
 
     plan = build_runtime_result_response_plan(result.reply, state)
 
+    assert plan.chat_cadence_mode == "reply_now_normal"
+    assert plan.metadata["chat_cadence_mode"] == "reply_now_normal"
     assert plan.metadata["chat_expression_hint"]["reply_mode"] == "normal"
     assert plan.metadata["chat_expression_hint"]["tone_profile"] == "supportive"
     assert plan.metadata["response_tendency_summary"]["preferred_mode"] == "defer"
+
+
+def test_build_runtime_result_response_plan_maps_hold_reply_mode_to_hold_cadence() -> None:
+    state = RuntimeV2State(session_id="s")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    result = RuntimeV2TurnResult(
+        status="chat",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="我刚想到一个更贴切的角度。",
+            delivery_kind="chat",
+            status="chat",
+            metadata={
+                "chat_expression_hint": {
+                    "reply_mode": "hold",
+                    "tone_profile": "supportive",
+                    "next_step_bias": "stabilize",
+                    "why": "conversation_act=light_chitchat; initiative=hold",
+                },
+            },
+        ),
+    )
+
+    plan = build_runtime_result_response_plan(result.reply, state)
+
+    assert plan.chat_cadence_mode == "hold_for_followup"
+    assert plan.metadata["chat_cadence_mode"] == "hold_for_followup"
 
 
 def test_build_runtime_result_response_plan_blocks_memory_claim_without_restore_authority() -> None:

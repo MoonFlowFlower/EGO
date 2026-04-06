@@ -38,6 +38,7 @@ CHAT_MAINLINE_SYSTEM_PROMPT = """你是 EgoCore runtime_v2 的 chat mainline。
 12. 只有当上下文明确标出 resume_hint_eligible 时，才允许最多一句轻提示“如果你是说恢复任务，用 /resume”；不要把它说成硬拦截。
 13. 如果结构化上下文里带有 `chat_expression_hint`，在不违背其它规则时按它控制展开程度、语气和下一步偏向。
 14. `reply_mode=short` 时尽量 1 句；`reply_mode=normal` 时 1 到 2 句；`reply_mode=expand` 时最多 4 句。
+15. `reply_mode=hold` 时，把回复写成一条可独立发送的后续补充，不要写“我先不回/稍后再说”这类控制面说明。
 """
 
 
@@ -52,6 +53,7 @@ class ChatReplyEngine:
         current_session_grounding = _resolve_current_session_recall_grounding(state)
         state.prepare_chat_turn(user_text=state.last_user_turn or "", chat_act=chat_act)
         chat_expression_hint = _build_chat_expression_hint(state, conversation_act=chat_act)
+        chat_cadence_mode = _build_chat_cadence_mode(chat_expression_hint)
         response_tendency_summary = _build_response_tendency_summary(state, chat_expression_hint)
 
         try:
@@ -91,6 +93,7 @@ class ChatReplyEngine:
             "chat_act": chat_act,
             "reply_authority": reply_authority,
             "chat_expression_hint": chat_expression_hint,
+            "chat_cadence_mode": chat_cadence_mode,
             "response_tendency_summary": response_tendency_summary,
         }
         state.record(
@@ -102,6 +105,7 @@ class ChatReplyEngine:
                 "reply_authority": reply_authority,
                 "reply_origin": "chat_mainline",
                 "chat_expression_hint": chat_expression_hint,
+                "chat_cadence_mode": chat_cadence_mode,
                 "response_tendency_summary": response_tendency_summary,
             },
         )
@@ -118,6 +122,7 @@ class ChatReplyEngine:
                     "reply_origin": "chat_mainline",
                     "reply_authority": reply_authority,
                     "chat_expression_hint": chat_expression_hint,
+                    "chat_cadence_mode": chat_cadence_mode,
                     "response_tendency_summary": response_tendency_summary,
                 },
             ),
@@ -195,6 +200,7 @@ class ChatReplyEngine:
                 "initiative_policy_hints": dict(proto_self.get("initiative_policy_hints") or {}),
                 "recent_tendency_summaries": _extract_recent_tendency_summaries(state),
                 "chat_expression_hint": chat_expression_hint,
+                "chat_cadence_mode": _build_chat_cadence_mode(chat_expression_hint),
             },
             "memory_claim_contract": _build_memory_claim_contract(state),
             "reply_rules": {
@@ -522,6 +528,7 @@ def _build_chat_expression_hint(state: RuntimeV2State, *, conversation_act: Opti
 
     act = str(conversation_act or ingress.get("conversation_act") or "light_chitchat").strip() or "light_chitchat"
     preferred_tone = str(tendency.get("preferred_tone") or "").strip().lower()
+    preferred_mode = str(tendency.get("preferred_mode") or "").strip().lower()
     suggested_next_step = str(tendency.get("suggested_next_step") or "").strip()
     selected_priority = str(
         integrated_policy_hints.get("selected_priority")
@@ -531,9 +538,17 @@ def _build_chat_expression_hint(state: RuntimeV2State, *, conversation_act: Opti
     initiative_priority = str(initiative_policy_hints.get("initiative_priority") or "").strip()
     repair_bias = str(social_policy_hints.get("repair_bias") or "").strip()
     resource_bias = str(embodied_policy_hints.get("resource_bias") or "").strip()
+    last_user_turn = str(state.last_user_turn or "").strip()
 
     if act in {"presence_check", "social_keepalive"}:
         reply_mode = "short"
+    elif (
+        act == "light_chitchat"
+        and initiative_priority == "hold"
+        and preferred_mode == "defer"
+        and not _looks_explicit_question(last_user_turn)
+    ):
+        reply_mode = "hold"
     elif act == "thread_continue" or initiative_priority in {"advance", "continue"}:
         reply_mode = "expand"
     else:
@@ -588,6 +603,7 @@ def _build_response_tendency_summary(
         "preferred_tone": str(tendency.get("preferred_tone") or ""),
         "suggested_next_step": str(tendency.get("suggested_next_step") or ""),
         "reply_mode": str(chat_expression_hint.get("reply_mode") or ""),
+        "chat_cadence_mode": _build_chat_cadence_mode(chat_expression_hint),
         "tone_profile": str(chat_expression_hint.get("tone_profile") or ""),
         "next_step_bias": str(chat_expression_hint.get("next_step_bias") or ""),
     }
@@ -608,9 +624,53 @@ def _apply_chat_expression_hint(reply_text: str, chat_expression_hint: Dict[str,
         max_units = 1
     elif reply_mode == "expand":
         max_units = 4
+    elif reply_mode == "hold":
+        max_units = 2
 
     shaped = "".join(units[:max_units]).strip()
     return shaped or text
+
+
+def _build_chat_cadence_mode(chat_expression_hint: Dict[str, str]) -> str:
+    reply_mode = str(chat_expression_hint.get("reply_mode") or "normal").strip()
+    if reply_mode == "short":
+        return "reply_now_short"
+    if reply_mode == "expand":
+        return "reply_now_expand"
+    if reply_mode == "hold":
+        return "hold_for_followup"
+    return "reply_now_normal"
+
+
+def _looks_explicit_question(text: str) -> bool:
+    body = str(text or "").strip()
+    if not body:
+        return False
+    if "?" in body or "？" in body:
+        return True
+    lowered = body.lower()
+    question_markers = (
+        "什么",
+        "为什么",
+        "怎么",
+        "如何",
+        "吗",
+        "么",
+        "是不是",
+        "能不能",
+        "可不可以",
+        "要不要",
+        "该不该",
+        "行吗",
+        "好吗",
+        "what",
+        "why",
+        "how",
+        "should i",
+        "can you",
+        "could you",
+    )
+    return any(marker in lowered for marker in question_markers)
 
 
 def _split_reply_units(text: str) -> List[str]:

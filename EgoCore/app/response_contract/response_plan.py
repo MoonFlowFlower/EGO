@@ -22,6 +22,7 @@ class ResponsePlan:
     delivery_kind: str
     authority_source: str
     reply_authority: str
+    chat_cadence_mode: Optional[str] = None
     speaker_mode: str = "reflect"
     epistemic_status: str = "uncertain"
     commitment_level: str = "soft"
@@ -46,6 +47,11 @@ def build_direct_response_plan(
 ) -> ResponsePlan:
     metadata_dict = dict(metadata or {})
     conversation_act = str(metadata_dict.get("conversation_act") or _build_conversation_act(state)).strip() or "runtime_result"
+    chat_cadence_mode = _resolve_chat_cadence_mode(
+        kind=kind,
+        delivery_kind=delivery_kind,
+        metadata=metadata_dict,
+    )
     effective_restore = _resolve_restore_observation(state, restore_observation=restore_observation)
     current_session_grounding = _build_current_session_recall_grounding(state)
     expression_contract = _build_expression_contract(
@@ -64,6 +70,8 @@ def build_direct_response_plan(
     )
     metadata_dict.setdefault("conversation_act", conversation_act)
     metadata_dict.setdefault("reply_origin", _infer_reply_origin(state, kind, final_authority))
+    if chat_cadence_mode:
+        metadata_dict.setdefault("chat_cadence_mode", chat_cadence_mode)
     metadata_dict["memory_claim_reason"] = verdict.reason
     metadata_dict["memory_claim_allowed"] = verdict.allowed
     metadata_dict["memory_claim_detected"] = verdict.claim_detected
@@ -85,6 +93,7 @@ def build_direct_response_plan(
         delivery_kind=delivery_kind,
         authority_source=authority_source,
         reply_authority=final_authority,
+        chat_cadence_mode=chat_cadence_mode,
         speaker_mode=expression_contract["speaker_mode"],
         epistemic_status=expression_contract["epistemic_status"],
         commitment_level=expression_contract["commitment_level"],
@@ -135,12 +144,18 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
         current_session_grounding=current_session_grounding,
     )
     reply_origin = str(reply_metadata.get("reply_origin") or _infer_reply_origin(state, runtime_status, final_authority)).strip()
+    chat_cadence_mode = _resolve_chat_cadence_mode(
+        kind=runtime_status or "runtime_result",
+        delivery_kind=delivery_kind,
+        metadata=reply_metadata,
+    )
 
     metadata = {
         "runtime_status": runtime_status,
         "task_status": getattr(state, "task_status", None),
         "conversation_act": conversation_act,
         "reply_origin": reply_origin,
+        "chat_cadence_mode": chat_cadence_mode,
         "memory_claim_reason": verdict.reason,
         "memory_claim_allowed": verdict.allowed,
         "memory_claim_detected": verdict.claim_detected,
@@ -171,6 +186,7 @@ def build_runtime_result_response_plan(result: Any, state: Any) -> ResponsePlan:
         delivery_kind=delivery_kind,
         authority_source="response_contract.response_plan",
         reply_authority=final_authority,
+        chat_cadence_mode=chat_cadence_mode,
         speaker_mode=expression_contract["speaker_mode"],
         epistemic_status=expression_contract["epistemic_status"],
         commitment_level=expression_contract["commitment_level"],
@@ -227,6 +243,7 @@ def build_status_response_plan(
         delivery_kind="final",
         authority_source="response_contract.response_plan",
         reply_authority=final_authority,
+        chat_cadence_mode=None,
         speaker_mode=expression_contract["speaker_mode"],
         epistemic_status=expression_contract["epistemic_status"],
         commitment_level=expression_contract["commitment_level"],
@@ -246,6 +263,38 @@ _DEFAULT_MUST_NOT_UPGRADE = {
     "commitment_upgrade": True,
     "tone_upgrade": True,
 }
+_CHAT_CADENCE_MODES = {
+    "reply_now_short",
+    "reply_now_normal",
+    "reply_now_expand",
+    "hold_for_followup",
+}
+
+
+def _resolve_chat_cadence_mode(
+    *,
+    kind: str,
+    delivery_kind: str,
+    metadata: Dict[str, Any],
+) -> Optional[str]:
+    explicit = str(metadata.get("chat_cadence_mode") or "").strip()
+    if explicit in _CHAT_CADENCE_MODES:
+        return explicit
+
+    hint = dict(metadata.get("chat_expression_hint") or {})
+    reply_mode = str(hint.get("reply_mode") or "").strip()
+    if reply_mode == "short":
+        return "reply_now_short"
+    if reply_mode == "expand":
+        return "reply_now_expand"
+    if reply_mode == "hold":
+        return "hold_for_followup"
+
+    normalized_kind = str(kind or "").strip()
+    normalized_delivery = str(delivery_kind or "").strip()
+    if normalized_kind == "chat" or normalized_delivery == "chat":
+        return "reply_now_normal"
+    return None
 
 
 def _build_conversation_act(state: Any) -> str:

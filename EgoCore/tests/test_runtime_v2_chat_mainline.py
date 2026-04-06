@@ -185,6 +185,34 @@ def test_chat_reply_engine_build_messages_include_richer_subject_surface_and_rec
         }
     ]
     assert proto_self_context["chat_expression_hint"]["reply_mode"] == "expand"
+    assert proto_self_context["chat_cadence_mode"] == "reply_now_expand"
+
+
+def test_chat_reply_engine_build_messages_marks_hold_for_non_question_light_chitchat() -> None:
+    engine = ChatReplyEngine()
+    state = RuntimeV2State(session_id="chat:hold-cadence")
+    state.ingress_context = {
+        "interaction_kind": "chat",
+        "conversation_act": "light_chitchat",
+    }
+    state.last_user_turn = "我先自己想一想这件事"
+    state.proto_self_context = {
+        "response_tendency": {
+            "preferred_mode": "defer",
+            "preferred_tone": "supportive",
+            "suggested_next_step": "let the thread breathe before re-engaging",
+        },
+        "initiative_policy_hints": {"initiative_priority": "hold"},
+        "integrated_policy_hints": {"selected_priority": "guard"},
+    }
+
+    messages = engine._build_messages(state)
+    payload_text = messages[1]["content"].split("\n\n", 1)[1]
+    payload = json.loads(payload_text)
+    proto_self_context = payload["proto_self_context"]
+
+    assert proto_self_context["chat_expression_hint"]["reply_mode"] == "hold"
+    assert proto_self_context["chat_cadence_mode"] == "hold_for_followup"
 
 
 @pytest.mark.asyncio
@@ -210,7 +238,9 @@ async def test_chat_reply_engine_applies_expression_hint_and_records_metadata() 
 
     assert result.reply_text == "我在。"
     assert result.reply.metadata["chat_expression_hint"]["reply_mode"] == "short"
+    assert result.reply.metadata["chat_cadence_mode"] == "reply_now_short"
     assert result.reply.metadata["response_tendency_summary"]["preferred_mode"] == "defer"
+    assert result.reply.metadata["response_tendency_summary"]["chat_cadence_mode"] == "reply_now_short"
     assert state.history[-1]["content"]["chat_expression_hint"]["reply_mode"] == "short"
 
 

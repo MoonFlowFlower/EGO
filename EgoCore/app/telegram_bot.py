@@ -76,6 +76,7 @@ from app.runtime_v2.run_items import (
 )
 from app.runtime_v2.progress_events import ProgressEvent, is_terminal_event
 from app.runtime_v2.proactive_telegram_cycle import run_host_governed_proactive_cycle
+from app.runtime_v2.proactive_outbox import enqueue_controlled_proactive_outbox
 from app.runtime_v2.proactive_telegram_policy import (
     ProactiveTelegramEnablePolicy,
     evaluate_proactive_telegram_enable_policy,
@@ -359,6 +360,20 @@ class TelegramBot:
         artifact_id = target.get("artifact_id") or target.get("artifact_ref")
         return bool(str(artifact_id).startswith("artifact://"))
 
+    def _should_bypass_task_conflict_for_pending_artifact_execute(self, state: RuntimeV2State, ingress=None) -> bool:
+        if not self._is_artifact_execute_turn(state, ingress):
+            return False
+        ingress_context = state.ingress_context or {}
+        target = ingress_context.get("resolved_target") or {}
+        target_source = str(target.get("source") or "").strip()
+        if getattr(ingress, "is_confirm_execution", False):
+            return True
+        if state.waiting_for_user_input and getattr(state, "last_inferred_action", None) == "execute":
+            return True
+        if target_source in {"latest_task_artifact", "last_uploaded_task", "last_uploaded"}:
+            return not bool(state.current_goal or state.run_items)
+        return False
+
     def _has_explicit_path_target(self, state: RuntimeV2State) -> bool:
         target = (state.ingress_context or {}).get("resolved_target") or {}
         return bool(target.get("path")) and target.get("source") == "explicit_path"
@@ -591,6 +606,7 @@ class TelegramBot:
                     extra={
                         "authority_source": response_plan.authority_source,
                         "reply_authority": response_plan.reply_authority,
+                        "chat_cadence_mode": getattr(response_plan, "chat_cadence_mode", None),
                         "reply_origin": output_verdict.reply_origin,
                         "speaker_mode": response_plan.speaker_mode,
                         "epistemic_status": response_plan.epistemic_status,
@@ -643,7 +659,135 @@ class TelegramBot:
             trace_id=trace_id,
             ingress_message_id=ingress_message_id,
         )
-        return output_verdict
+        return output_verdict, response_plan
+
+    def _looks_like_explicit_chat_question(self, state: RuntimeV2State, update: Update) -> bool:
+        text = str(getattr(getattr(update, "message", None), "text", None) or state.last_user_turn or "").strip()
+        if not text:
+            return False
+        if "?" in text or "？" in text:
+            return True
+        lowered = text.lower()
+        question_markers = (
+            "什么",
+            "为什么",
+            "怎么",
+            "如何",
+            "吗",
+            "么",
+            "是不是",
+            "能不能",
+            "可不可以",
+            "要不要",
+            "该不该",
+            "行吗",
+            "好吗",
+            "what",
+            "why",
+            "how",
+            "should i",
+            "can you",
+            "could you",
+        )
+        return any(marker in lowered for marker in question_markers)
+
+    def _chat_hold_for_followup_allowed(
+        self,
+        *,
+        session_key: str,
+        state: RuntimeV2State,
+        update: Update,
+        result: TelegramTurnResult,
+        response_plan,
+        output_verdict,
+    ) -> tuple[bool, str]:
+        if str(getattr(response_plan, "chat_cadence_mode", "") or "").strip() != "hold_for_followup":
+            return False, "cadence_not_hold"
+        if result.status != "chat" or not bool(output_verdict.passed) or not str(output_verdict.reply_text or "").strip():
+            return False, "result_not_holdable"
+        if str(getattr(output_verdict, "applied_authority", "") or "").strip() != "model_chat":
+            return False, "authority_not_model_chat"
+        metadata = dict(getattr(response_plan, "metadata", None) or {})
+        conversation_act = str(metadata.get("conversation_act") or "").strip()
+        if conversation_act != "light_chitchat":
+            return False, "conversation_act_blocked"
+        if self._looks_like_explicit_chat_question(state, update):
+            return False, "explicit_question_blocked"
+        if str((state.ingress_context or {}).get("runtime_action") or "").strip() not in {"", "chat"}:
+            return False, "runtime_action_blocked"
+
+        resolved_chat_id = self._resolve_proactive_chat_id(session_key)
+        enable_policy_verdict = evaluate_proactive_telegram_enable_policy(
+            session_id=session_key,
+            state=state,
+            chat_id=resolved_chat_id,
+            policy=self._build_proactive_telegram_enable_policy(),
+        )
+        if not enable_policy_verdict.allowed:
+            return False, f"enable_policy:{enable_policy_verdict.reason}"
+        return True, "ok"
+
+    async def _enqueue_chat_hold_followup(
+        self,
+        *,
+        session_key: str,
+        state: RuntimeV2State,
+        response_plan,
+        output_verdict,
+        trace_id: Optional[str],
+        ingress_message_id: Optional[int],
+    ) -> dict[str, Any]:
+        metadata = dict(getattr(response_plan, "metadata", None) or {})
+        turn_ref = str(getattr(state, "active_turn_id", "") or "").strip() or str(ingress_message_id or uuid.uuid4().hex[:8])
+        emitted_delivery = {
+            "schema_version": "mvp12.controlled_delivery_record.v1",
+            "delivery_status": "artifact_emitted",
+            "reply_text": output_verdict.reply_text,
+            "text_length": len(str(output_verdict.reply_text or "")),
+            "delivery_kind": "chat",
+            "reply_authority": output_verdict.applied_authority,
+            "reply_origin": output_verdict.reply_origin,
+            "authority_source": response_plan.authority_source,
+            "chat_cadence_mode": getattr(response_plan, "chat_cadence_mode", None),
+            "chat_expression_hint": dict(metadata.get("chat_expression_hint") or {}),
+            "response_tendency_summary": dict(metadata.get("response_tendency_summary") or {}),
+            "transport_source": "chat_mainline_hold",
+            "initiative_mode": "host_governed_chat_hold_followup",
+            "initiative_candidate_id": f"chat-hold:{session_key}:{turn_ref}",
+            "initiative_source_cycle": turn_ref,
+        }
+        outbox_result = enqueue_controlled_proactive_outbox(
+            session_id=session_key,
+            state=state,
+            emitted_delivery=emitted_delivery,
+            outbox_lane="host_proactive_outbox",
+        )
+        if hasattr(state, "record"):
+            state.record(
+                "chat_cadence_hold",
+                {
+                    "status": outbox_result.status,
+                    "reason": outbox_result.reason,
+                    "reply_origin": output_verdict.reply_origin,
+                    "chat_cadence_mode": getattr(response_plan, "chat_cadence_mode", None),
+                    "text_preview": str(output_verdict.reply_text or "")[:120],
+                },
+            )
+        await self._publish_phase1_event(
+            session_key=session_key,
+            kind="telegram_chat_cadence_hold",
+            trace_id=trace_id,
+            message_id=ingress_message_id,
+            payload={
+                "status": outbox_result.status,
+                "reason": outbox_result.reason,
+                "chat_cadence_mode": getattr(response_plan, "chat_cadence_mode", None),
+                "reply_origin": output_verdict.reply_origin,
+                "reply_authority": output_verdict.applied_authority,
+                "queued_event": dict(outbox_result.queued_event or {}) if outbox_result.queued_event else None,
+            },
+        )
+        return outbox_result.to_dict()
 
     async def _build_profile_rule_preflight_reply(self, state: RuntimeV2State, rule_enforcement: dict) -> str:
         target = (state.ingress_context or {}).get("resolved_target") or {}
@@ -911,11 +1055,14 @@ class TelegramBot:
         *,
         update: Update,
         state: RuntimeV2State,
+        ingress=None,
         session_key: str,
         text: str,
         trace_id: Optional[str],
         ingress_message_id: Optional[int],
     ) -> bool:
+        if self._should_bypass_task_conflict_for_pending_artifact_execute(state, ingress):
+            return False
         active_run = self._get_conflicted_active_run(session_key)
         if active_run is None:
             return False
@@ -1551,6 +1698,9 @@ class TelegramBot:
                 "reply_authority": event.get("reply_authority"),
                 "reply_origin": event.get("reply_origin"),
                 "authority_source": event.get("authority_source"),
+                "chat_cadence_mode": event.get("chat_cadence_mode"),
+                "chat_expression_hint": dict(event.get("chat_expression_hint") or {}),
+                "response_tendency_summary": dict(event.get("response_tendency_summary") or {}),
                 "initiative_mode": event.get("initiative_mode"),
                 "initiative_candidate_id": event.get("initiative_candidate_id"),
                 "initiative_source_cycle": event.get("initiative_source_cycle"),
@@ -1584,6 +1734,7 @@ class TelegramBot:
                     "reply_text": reply_text[:1000],
                     "reply_authority": sent_record.get("reply_authority"),
                     "reply_origin": sent_record.get("reply_origin"),
+                    "chat_cadence_mode": sent_record.get("chat_cadence_mode"),
                     "initiative_candidate_id": sent_record.get("initiative_candidate_id"),
                     "outbox_lane": sent_record.get("outbox_lane"),
                     "transport_source": "telegram",
@@ -3272,6 +3423,7 @@ class TelegramBot:
             if await self._maybe_create_task_conflict(
                 update=update,
                 state=state,
+                ingress=ingress,
                 session_key=session_key,
                 text=text,
                 trace_id=trace_id,
@@ -3338,17 +3490,20 @@ class TelegramBot:
             state.task_status = "waiting_input"
             state.waiting_for_user_input = True
             waiting_text = await self._build_profile_rule_preflight_reply(state, pre_runtime.rule_enforcement)
+            response_plan_metadata = dict(getattr(pre_runtime, "response_plan_metadata", None) or {})
             await self._send_host_owned_reply(
                 update,
                 state=state,
                 reply_text=waiting_text,
-                status="read_only_preflight",
-                delivery_kind="final",
-                authority_source="response_contract.response_plan",
-                reply_authority="host_pre_runtime",
+                status=response_plan_metadata.get("status", "read_only_preflight"),
+                delivery_kind=response_plan_metadata.get("delivery_kind", "final"),
+                authority_source=response_plan_metadata.get("authority_source", "response_contract.response_plan"),
+                reply_authority=response_plan_metadata.get("reply_authority", "host_pre_runtime"),
                 metadata={
                     "conversation_act": "read_only_preflight",
                     "rule_enforcement": dict(getattr(pre_runtime, "rule_enforcement", {}) or {}),
+                    "matched_rule_ids": response_plan_metadata.get("matched_rule_ids") or [],
+                    "enforcement": response_plan_metadata.get("enforcement"),
                 },
             )
             return True
@@ -3371,15 +3526,20 @@ class TelegramBot:
             return True
 
         if getattr(pre_runtime, "direct_reply_text", None):
+            response_plan_metadata = dict(getattr(pre_runtime, "response_plan_metadata", None) or {})
             await self._send_host_owned_reply(
                 update,
                 state=state,
                 reply_text=pre_runtime.direct_reply_text,
-                status="direct_reply_text",
-                delivery_kind="final",
-                authority_source="response_contract.response_plan",
-                reply_authority="host_pre_runtime",
-                metadata={"conversation_act": "direct_reply_text"},
+                status=response_plan_metadata.get("status", "direct_reply_text"),
+                delivery_kind=response_plan_metadata.get("delivery_kind", "final"),
+                authority_source=response_plan_metadata.get("authority_source", "response_contract.response_plan"),
+                reply_authority=response_plan_metadata.get("reply_authority", "host_pre_runtime"),
+                metadata={
+                    "conversation_act": "direct_reply_text",
+                    "matched_rule_ids": response_plan_metadata.get("matched_rule_ids") or [],
+                    "enforcement": response_plan_metadata.get("enforcement"),
+                },
             )
             return True
 
@@ -3904,13 +4064,18 @@ class TelegramBot:
             return False
         runtime_action = getattr(ingress, "_runtime_action", None)
         interaction_kind = str(((state.ingress_context or {}).get("interaction_kind") or getattr(ingress, "interaction_kind", None) or "")).strip()
-        if interaction_kind == "chat":
-            return False
         resolved_target = (state.ingress_context or {}).get("resolved_target") or {}
         has_artifact_target = bool(
             str(resolved_target.get("artifact_id") or resolved_target.get("artifact_ref") or "").startswith("artifact://")
         )
         has_explicit_target = bool(resolved_target.get("path")) and resolved_target.get("source") == "explicit_path"
+        chat_like_execute = (
+            interaction_kind == "chat"
+            and runtime_action == "execute_task"
+            and (has_artifact_target or has_explicit_target or getattr(ingress, "is_confirm_execution", False))
+        )
+        if interaction_kind == "chat" and not chat_like_execute:
+            return False
         if getattr(ingress, "is_file_only", False) and runtime_action != "execute_task":
             return False
         if state.waiting_for_user_input and not (
@@ -4363,7 +4528,7 @@ class TelegramBot:
                 ingress_message_id=ingress_message_id,
             )
 
-        output_verdict = await self._finalize_runtime_delivery_contract(
+        output_verdict, response_plan = await self._finalize_runtime_delivery_contract(
             session_key=session_key,
             state=state,
             result=result,
@@ -4384,6 +4549,41 @@ class TelegramBot:
                 trace_id, session_key, ingress_message_id, latest_ingress_id
             )
             return
+
+        hold_allowed, hold_reason = self._chat_hold_for_followup_allowed(
+            session_key=session_key,
+            state=state,
+            update=update,
+            result=result,
+            response_plan=response_plan,
+            output_verdict=output_verdict,
+        )
+        if hold_allowed:
+            hold_result = await self._enqueue_chat_hold_followup(
+                session_key=session_key,
+                state=state,
+                response_plan=response_plan,
+                output_verdict=output_verdict,
+                trace_id=trace_id,
+                ingress_message_id=ingress_message_id,
+            )
+            if hold_result.get("status") == "queued":
+                state.mark_turn_terminal()
+                logger.info(
+                    "runtime_v2.delivery.held_for_followup trace=%s session=%s cadence=%s reason=%s",
+                    trace_id,
+                    session_key,
+                    getattr(response_plan, "chat_cadence_mode", None),
+                    hold_reason,
+                )
+                return
+            logger.info(
+                "runtime_v2.delivery.hold_fallback trace=%s session=%s cadence=%s hold_result=%s",
+                trace_id,
+                session_key,
+                getattr(response_plan, "chat_cadence_mode", None),
+                hold_result.get("reason"),
+            )
 
         # 日志点2: final delivery 记录 source ingress
         logger.info(

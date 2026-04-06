@@ -74,7 +74,7 @@
 
 - current_status: `in_progress`
 - current_milestone: `Milestone 4: Host-Governed Cadence`
-- milestone_state: `pending`
+- milestone_state: `implementation_done_verify_blocked`
 
 ## Decision log
 
@@ -109,4 +109,15 @@
   - bounded `chat_expression_hint` 已进入 runtime reply / assistant history / response plan metadata
   - `short / normal / expand` shaping 已作用到 current chat mainline
   - repo-wide full verify 通过
-- 下一步是 `M4 Host-Governed Cadence`
+- `M4 Host-Governed Cadence` 已完成代码落地：
+  - `response_plan` 现在会保留 `chat_cadence_mode`
+  - current Telegram mainline 现在支持 host-governed：
+    - `reply_now_short`
+    - `reply_now_normal`
+    - `reply_now_expand`
+    - `hold_for_followup`
+  - `hold_for_followup` 只在 ordinary chat + host policy allow + 非显式问题时进入现有 proactive substrate
+  - `TelegramRuntimeFallbackRunner` 现在会保留 runtime reply metadata，避免 cadence / expression hints 在 Telegram adapter 层丢失
+  - focused tests、lint、`verify_repo.py --mode fast` 已通过
+  - repo-wide `verify_repo.py --mode full` 已验证到全量 EgoCore suite 通过，但 OpenEmotion Windows interop 包装层未在本轮可接受时间内返回，当前按 verification blocker 记录
+- 下一步是在不改口径的前提下进入 `M5 Fresh Real Telegram Proof`

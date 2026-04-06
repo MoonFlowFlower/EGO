@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Optional
 
 
@@ -13,6 +13,7 @@ class TelegramTurnReply:
     request_id: Optional[str] = None
     generation_id: Optional[int] = None
     turn_id: Optional[str] = None
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -20,6 +21,8 @@ class TelegramTurnResult:
     status: str
     state: Any
     reply: Optional[TelegramTurnReply] = None
+    finish_reason: Optional[str] = None
+    checkpoint_payload: Optional[dict] = None
 
     @property
     def reply_text(self) -> str:
