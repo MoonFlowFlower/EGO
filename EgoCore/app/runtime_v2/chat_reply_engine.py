@@ -52,13 +52,17 @@ class ChatReplyEngine:
         chat_act = str(ingress.get("conversation_act") or "light_chitchat").strip() or "light_chitchat"
         restore_observation = _resolve_restore_observation(state)
         current_session_grounding = _resolve_current_session_recall_grounding(state)
+        recent_result_followup = _resolve_recent_result_followup(state)
         state.prepare_chat_turn(user_text=state.last_user_turn or "", chat_act=chat_act)
         chat_expression_hint = _build_chat_expression_hint(state, conversation_act=chat_act)
         chat_cadence_mode = _build_chat_cadence_mode(chat_expression_hint)
         response_tendency_summary = _build_response_tendency_summary(state, chat_expression_hint)
 
         try:
-            candidate = await self._generate_reply(state)
+            candidate = await self._generate_reply(
+                state,
+                extra_system_hint=_build_recent_result_followup_system_hint(recent_result_followup),
+            )
             if self._should_regenerate(candidate, state, chat_act):
                 candidate = await self._generate_reply(
                     state,
@@ -78,6 +82,10 @@ class ChatReplyEngine:
                     state,
                     extra_system_hint=_build_intent_gate_regeneration_hint(intent_gate_preview, chat_act),
                 )
+            if recent_result_followup and _looks_like_recent_result_context_denial(candidate):
+                fallback_reply = _build_recent_result_followup_reply(recent_result_followup)
+                if fallback_reply:
+                    candidate = fallback_reply
             reply_text = _apply_chat_expression_hint(str(candidate or "").strip(), chat_expression_hint)
             if not reply_text:
                 raise RuntimeError("empty_chat_reply")
@@ -550,8 +558,11 @@ def _build_chat_expression_hint(state: RuntimeV2State, *, conversation_act: Opti
     repair_bias = str(social_policy_hints.get("repair_bias") or "").strip()
     resource_bias = str(embodied_policy_hints.get("resource_bias") or "").strip()
     last_user_turn = str(state.last_user_turn or "").strip()
+    recent_result_followup = _resolve_recent_result_followup(state)
 
-    if act in {"presence_check", "social_keepalive"}:
+    if recent_result_followup is not None:
+        reply_mode = "normal"
+    elif act in {"presence_check", "social_keepalive"}:
         reply_mode = "short"
     elif (
         act == "light_chitchat"
@@ -682,6 +693,102 @@ def _looks_explicit_question(text: str) -> bool:
         "could you",
     )
     return any(marker in lowered for marker in question_markers)
+
+
+def _resolve_recent_result_followup(state: RuntimeV2State) -> Optional[Dict[str, Any]]:
+    context = dict(getattr(state, "recent_delivered_result_context", None) or {})
+    if not context:
+        return None
+
+    text = str(getattr(state, "last_user_turn", "") or "").strip()
+    if not text:
+        return None
+
+    lowered = text.lower()
+    target_name = str(context.get("target_name") or "").strip()
+    target_path = str(context.get("target_path") or "").strip()
+    stem = ""
+    if target_name:
+        stem = target_name.rsplit(".", 1)[0].strip().lower()
+
+    generic_ref = any(token in text for token in ("这个页面", "这个文件", "这个结果", "这个东西", "你做的这个"))
+    asks_judgment = any(token in text for token in ("怎么样", "咋样", "如何评价", "评价一下", "你觉得"))
+    explicit_match = False
+    if target_name and target_name.lower() in lowered:
+        explicit_match = True
+    elif stem and stem in lowered:
+        explicit_match = True
+    elif target_path and target_path.lower() in lowered:
+        explicit_match = True
+
+    html_page = target_name.lower().endswith(".html") if target_name else False
+    page_ref = html_page and "页面" in text
+    if not (explicit_match or (generic_ref and (asks_judgment or page_ref))):
+        return None
+
+    return {
+        "target_name": target_name or None,
+        "target_path": target_path or None,
+        "reply_preview": str(context.get("reply_preview") or "").strip() or None,
+        "tool_result_summary": dict(context.get("tool_result_summary") or {}),
+        "runtime_status": str(context.get("runtime_status") or "").strip() or None,
+        "delivery_kind": str(context.get("delivery_kind") or "").strip() or None,
+    }
+
+
+def _build_recent_result_followup_system_hint(recent_result_followup: Optional[Dict[str, Any]]) -> Optional[str]:
+    if not recent_result_followup:
+        return None
+    target_name = str(recent_result_followup.get("target_name") or "刚刚交付的结果").strip()
+    reply_preview = str(recent_result_followup.get("reply_preview") or "").strip()
+    return (
+        f"用户当前在追问你刚刚交付的结果：{target_name}。"
+        "不要否认自己做过它，不要说没有这段上下文。"
+        "只能基于当前会话与结构化结果做 grounded follow-up；"
+        "如果信息不够，就明确说目前只确认已生成/已验证，并给出下一步可做的点评或细化方向。"
+        + (f" 当前交付摘要：{reply_preview}" if reply_preview else "")
+    )
+
+
+def _looks_like_recent_result_context_denial(reply_text: str) -> bool:
+    body = str(reply_text or "").strip().lower()
+    if not body:
+        return False
+    denial_markers = (
+        "没做过",
+        "没有关于",
+        "没有这段上下文",
+        "没有这个页面的内容记录",
+        "我这边没有",
+        "我不记得",
+        "收到了，但",
+    )
+    return any(marker in body for marker in denial_markers)
+
+
+def _build_recent_result_followup_reply(recent_result_followup: Dict[str, Any]) -> str:
+    target_name = str(recent_result_followup.get("target_name") or "刚刚交付的结果").strip()
+    tool_summary = dict(recent_result_followup.get("tool_result_summary") or {})
+    operation = str(tool_summary.get("operation") or "").strip().lower()
+    target_path = str(recent_result_followup.get("target_path") or "").strip()
+    html_page = target_name.lower().endswith(".html")
+
+    if html_page:
+        return (
+            f"如果你是指刚做的 {target_name}，按这轮目标它已经生成并通过了当前验证。"
+            "就现在这版看，它更像一个静态外观页骨架；如果你要，我可以继续从布局、配色和信息密度这几个维度直接挑问题。"
+        )
+    if operation:
+        return (
+            f"如果你是指刚完成的 {target_name}，这轮已经按当前目标做完并验证过了。"
+            "如果你要，我可以继续评价这份结果现在的完成度，或者直接给出下一步最该改的点。"
+        )
+    if target_path:
+        return (
+            f"如果你是指刚落到 {target_path} 的那份结果，这轮已经生成并交付了。"
+            "如果你要，我可以继续从完成度和下一步可改动的方向来评价它。"
+        )
+    return "如果你是指刚完成的那份结果，这轮已经生成并交付了；如果你要，我可以继续评价它现在的完成度和下一步最该改的点。"
 
 
 def _split_reply_units(text: str) -> List[str]:
