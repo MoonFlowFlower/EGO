@@ -4,48 +4,41 @@ EGO 是 AI Agent 项目的总仓，负责集成 EgoCore（宿主）和 OpenEmoti
 
 ## 当前权威状态
 
-截至 2026-04-02，当前入口口径统一如下：
+截至 `2026-04-06`，当前正式口径如下：
 
-- **Proto-Self Kernel v1** 已完成真实 Telegram 主链接入，并完成 P4 真链修复
-  - `tool:file` blocked / success 已在真实样本中同 family、不同 identity
-  - 首次 retry-success 已在真实样本中点亮 `repair_closure=true`
-- **MVS E5 观察状态**：`/new continuity` 与 `restore continuity` 已有 `direct_real` 真实正证据，`restart continuity` 仍主要是跨证据链正证据
-  - 显式默认规则现已在真实链路中由 `profile_memory` 持久化并在多次 `/new` 后继续命中
-  - `restore continuity` 已有显式 `--restore --telegram` 主链、首条 post-restore 完整 E4 样本、以及 post-restore continuity probe
-  - `restart continuity` 已有“真实重启日志 + post-restart 命中样本”的跨证据链正证据，但 post-restart 命中样本仍非完整单样本 E4 bundle
-  - 当前仍不能宣称 `E5 稳定成立` 或 `Developmental Self` 准入通过
-- **Codex Assistant Memory**：开发助手侧结构化持久记忆已完成首轮真实新会话验收
-  - `CODEX_MEMORY.md` 是开发助手稳定记忆索引，不是第二份项目总记忆
-  - `PROJECT_MEMORY.md` 仍负责仓库级广义项目背景、边界、关键发现与里程碑
-  - `.codex/memory/*.jsonl` 是结构化源，`CODEX_MEMORY.md` 由其渲染
-  - `TaskHandoffRecord` 为当前任务主权威
-  - 同任务 `SessionCapsule` 可补充连续性，异任务 capsule 会被明确拒绝
-  - 当前仍是手动喂入/脚本辅助启动，不是全自动注入
-- **默认开发流程**：已升级为闭环自审流
-  - 正式改动默认执行 `Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
-  - 高风险任务强制独立 Reviewer subagent；低风险 `L1` 可只做自审
-  - 只有 `review_passed + verify_passed` 才允许自动推远端
-  - 正式说明文档：`docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
-- **EgoCore Telegram 正式主线** 是：
+- **双核边界**
+  - `EgoCore` 是唯一正式宿主：入口、runtime、工具执行、安全裁决、delivery、audit
+  - `OpenEmotion` 是唯一正式主体内核：`proto_self_v2 / self-model / drive / reflection / developmental / social / embodied / integration / initiative`
+- **Telegram 当前正式主链**
   - `telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
-  - 旧 `runtime_v2` 保留为兼容/桥接层，不再是 Telegram 当前正式执行口径
-- **MVP12 / WP7 controlled observation**：当前已按原路径重跑并达到 `pass`
-  - `scripts/run_runtime_mainline_observation.py`
-  - `OpenEmotion/tools/run_mvp12_controlled_evidence.py`
-  - `OpenEmotion/tools/aggregate_mvp12_observations.py`
-  - 当前 aggregate：`report_count = 7`、`direct_real_report_count = 6`、`direct_real_window_count_total = 12`、`governance_violation_total = 0`、`replay_consistent_all = true`、`span_hours = 14.098`
-  - 这表示 `WP7/MVP12` 的 controlled observation thresholds 已达标，但不等于 live authority handoff 或默认 live autonomy
-- **MVP12-A proactive follow-up**：allowlisted live host-governed Telegram proactive follow-up 已拿到 1 条真实 E4 样本
-  - 会话 `telegram:dm:8420019401` 已在约 15 分钟 idle 后收到真实主动 follow-up
-  - 当前仍只是单样本 E4，不是 V5/E5 稳定结论，不代表 OpenEmotion 获得直接说话权
-- **最新报告**
-  - `artifacts/closure_real_evidence/CLOSURE_REAL_EVIDENCE_REPORT.md`
-  - `artifacts/closure_repair_fix/CLOSURE_REPAIR_FIX_REPORT.md`
-  - `artifacts/mvs_e5_observation/MVS_E5_OBSERVATION_REPORT.md`
-  - `artifacts/mvs_e5_observation/OBSERVATION_SAMPLE_INDEX.md`
-  - `artifacts/mvs_e5_observation/TARGETED_CAPTURE_PLAN.md`
-  - `EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml`
-  - `PROJECT_MEMORY.md`
+  - 主体事件正式入口是 `RuntimeV2ProtoSelfRuntime`
+  - 当前 live provider/runtime 口径已经统一到单模型配置，provider/runtime 改动后必须过 repo 级 E2E gate，不能只做局部 smoke
+- **Proto-Self 当前正式状态**
+  - `proto_self_v2` 已是主体层默认主线
+  - Telegram 自然语言主线已命中 `proto_self.output.v2 + proto_self.trace.v2`
+  - live self-model projection 已接通；当 formal self-model store 为空时会自动 bootstrap baseline snapshot
+- **主体能力栈**
+  - `WP8 ~ WP16` 已在各自 controlled axis 上进入 `maintenance_mode`
+  - `WP17 / MVP22` 当前仅是 `authority_frozen / task_package_ready`
+  - 这些结论都不等于 direct reply authority、tool authority、transport authority 或哲学意义上的 consciousness
+- **Mandatory Subject Ingress**
+  - 当前目标不变量是：所有已授权事件都应先被主体知晓，再由宿主做现实裁决
+  - 当前 `M1 ~ M3` 已完成；`background/proactive` 等 closure 与 fresh live closeout 仍在后续收口
+- **Dashboard /flow**
+  - 已提供当前正式主链的只读解释层
+  - 页面固定展示 `Input -> Host Ingress -> Subject Understanding -> Reply Evolution -> Host Arbitration -> Output`
+  - `Reply Evolution` 当前是 `evidence_only_v1`，只覆盖 `chat_mainline`
+- **开发工作流**
+  - 正式改动默认执行 `Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
+  - provider/runtime 主链类改动，必须额外通过 `scripts/codex/run_provider_runtime_openemotion_e2e_gate.py`
+
+最新权威入口：
+- `PROJECT_MEMORY.md`
+- `docs/CURRENT_PROJECT_LOGIC_FLOW.md`
+- `EgoCore/README.md`
+- `artifacts/telegram_real_mainline_v1/dashboard_v1/README.md`
+- `docs/TELEGRAM_FLOW_VIEW_README.md`
+- `docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
 
 ## 最近更新
 

@@ -2,7 +2,7 @@
 
 一个轻量级、独立的 Agent Runtime，专注 Telegram 单 Agent 任务执行。
 
-## 当前权威状态（2026-03-28）
+## 当前权威状态（2026-04-06）
 
 - **Telegram 正式主线**：`telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
 - **Proto-Self 当前主线状态**：`proto_self.v2` 已是主体层 state writeback 默认主线
@@ -14,7 +14,20 @@
   - cross-day continuity：`1 / 2`，仍待 later-day 样本
 - **Live Telegram 进程版本绑定**
   - 当前 live process 已落 repo-tracked 版本报告
-  - 当前绑定 commit：`468d9a4`
+  - 当前绑定 commit 以 `artifacts/proto_self_v2/LIVE_TELEGRAM_PROCESS_VERSION.json` 为准
+- **Dashboard /flow 解释层**
+  - Dashboard 现在是正式只读解释层的一部分，不再是“EgoCore 不做 Dashboard”
+  - `/flow` 与 `/samples/<sample_id>/flow` 会把单条真实样本拆成：
+    - `Input`
+    - `Host Ingress`
+    - `Subject Understanding`
+    - `Reply Evolution`
+    - `Host Arbitration`
+    - `Output`
+  - `Reply Evolution` 当前是 `evidence_only_v1`，只覆盖 `chat_mainline`
+- **Provider/runtime 变更门槛**
+  - 任何影响 live mainline 的 provider/runtime 改动，都必须跑通到 OpenEmotion evidence
+  - 统一 gate：`python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key <telegram:...>`
 - **权威入口**
   - `docs/PROGRAM_STATE_UNIFIED.yaml`
   - `docs/00_MASTER_INDEX.md`
@@ -113,7 +126,8 @@
 
 **当前边界**:
 - 单 Agent Runtime（不做多 Agent）
-- Telegram 驱动（不做 Dashboard）
+- Telegram 驱动
+- Dashboard 只做只读解释层，不反写 runtime / OpenEmotion 状态
 - 最小闭环（不做大型 DSL）
 
 ### Unified Runner 验证
