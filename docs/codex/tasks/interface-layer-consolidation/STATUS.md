@@ -48,7 +48,7 @@
   - `python3 scripts/codex/verify_path_classification.py` 通过
   - `python3 scripts/codex/lint_repo.py` 通过
   - `python3 scripts/codex/verify_repo.py --mode fast` 通过
-  - `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401` 最新结果仍为 `all_passed=false`；当前 fresh window 只有 `sample_20260407_212157_aeb0a7fc` 一条 task sample，缺少 recent-result follow-up pair，claim ceiling 仍是 conditional
+  - `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401` 最新结果仍为 `all_passed=false`；但 `telegram_task_flow_pass` 已转为 `true`，当前只剩 `followup_continuity_pass=false`
 
 ## Decisions made
 
@@ -97,15 +97,14 @@
 
 ## External blocker details
 
-- 当前 provider/runtime E2E gate 的最新 fresh window 从 `sample_20260407_212157_aeb0a7fc` 开始，`sample_count = 1`
-- 该窗口当前只有：
+- 当前 provider/runtime E2E gate 的最新 fresh window 从 `sample_20260407_212157_aeb0a7fc` 开始，`sample_count = 2`
+- 该窗口当前包含：
   - `sample_20260407_212157_aeb0a7fc`：`task_mainline`
+  - `sample_20260407_231140_13fb940d`：`ordinary_chat`
 - 该窗口没有：
-  - fresh `ordinary_chat` task-flow pair
   - recent-result follow-up 样本
   - accepted `task_mainline -> recent-result follow-up` continuity pair
-- 因此当前失败项是：
-  - `telegram_task_flow_pass = false`
+- 因此当前唯一剩余失败项是：
   - `followup_continuity_pass = false`
 - 这仍然是 fresh live 样本缺口，不是仓内逻辑失败
 - 关闭 blocker 的最小 live 序列：
@@ -139,8 +138,8 @@
 - `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401`
 - latest provider/runtime gate snapshot:
   - `window_start_sample_id = sample_20260407_212157_aeb0a7fc`
-  - `sample_count = 1`
-  - `telegram_task_flow_pass = false`
+  - `sample_count = 2`
+  - `telegram_task_flow_pass = true`
   - `followup_continuity_pass = false`
   - `claim_ceiling = only conditional completion is allowed`
 - `python3 -m py_compile scripts/codex/verify_path_classification.py scripts/codex/verify_repo.py EgoCore/app/dashboard/server.py EgoCore/tests/test_dashboard_server.py`
