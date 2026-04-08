@@ -9,7 +9,7 @@
 ## Current state
 
 - current_layer: repo_authority_cleanup
-- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only
+- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only_oe_mvp13_archive_evidence_only
 - completion_class: conditional_complete
 
 ## Completed work
@@ -29,6 +29,7 @@
 - 已移除 `OpenEmotion/tools/main_chain_wiring_check.py` 对 `emotiond.self_model_mirror` 的真实 import；`OpenEmotion/tools/mvp13_daily_report.py` 也已改为 archive-based，不再真实 import mirror
 - 已将 `OpenEmotion/tools/e2e_self_model_adapter.py` 改为 archive/reference-only 报告，不再导入 live adapter
 - 已把 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 文案明确降级为 legacy compatibility harness；`OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 也已收紧为历史 shadow 证据口径
+- 已将 `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 收紧为 archive report，不再直接引用 live `emotiond/self_model_adapter.py` 文件路径
 - 已为 5 份 archive self-model 证明文档补充历史快照声明，明确它们不代表当前 formal mainline 或当前 authority
 
 ## Last validation results
@@ -37,7 +38,7 @@
 - result: passed
 - summary:
   - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"` -> `9 passed`
-  - `python3 -m py_compile OpenEmotion/tools/mvp13_daily_report.py OpenEmotion/tools/dual_repo_closed_loop_e2e.py OpenEmotion/tools/e2e_self_model_adapter.py OpenEmotion/tests/test_self_model_single_authority.py`
+  - `python3 -m py_compile OpenEmotion/tests/test_self_model_single_authority.py`
   - `python3 scripts/codex/verify_repo.py --mode fast` -> passed
   - scoped `git diff --check` -> passed
 
@@ -55,6 +56,7 @@
 - `self_model_mirror` 当前仍有 legacy daemon callers，但 `main_chain_wiring_check.py` 与 `mvp13_daily_report.py` 都不再作为真实 code caller；`OE_MVP:13` 也不再把 adapter 口径写成 current mainline
 - `dual_repo_closed_loop_e2e.py` 当前被明确标成 legacy compatibility harness，不再允许被误读为 formal mainline verifier
 - `e2e_self_model_adapter.py` 当前被明确标成 archive/reference-only 报告，不再允许被误读为 live adapter exercise harness
+- `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 当前不再把 live `emotiond/self_model_adapter.py` 文件路径列为 `OE_MVP:13` evidence
 - canonical/docs/artifact 当前只建立 admission boundary，不做物理迁移
 
 ## Open risks
@@ -74,7 +76,8 @@
 
 - 当前下一步：继续做 `delete admission proof and generated/docs cleanup`，优先收窄 `self_model_adapter / self_model_mirror` 的剩余 legacy daemon/docs callers；`drives / reflection / developmental` 仍不改语义
 - 当前下一步：先判定 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 是否仍需保留为 legacy compatibility proof surface；若答案是“保留”，则先转去收窄其他 non-formal docs/tool callers，而不是继续直接逼近 delete-ready
-- 当前下一步：先转去处理 `proto_self_restore` 的 file inventory residue；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留
+- 当前下一步：继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs callers；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留
+- 当前下一步：`proto_self_restore` 的 file inventory residue 保持待后续低风险切片处理
 
 ## Commands run / evidence
 

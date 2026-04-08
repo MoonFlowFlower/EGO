@@ -119,6 +119,7 @@ def test_legacy_wiring_tool_does_not_import_reference_only_mirror_module():
 def test_program_state_marks_adapter_evidence_as_historical_shadow_only():
     text = (REPO_ROOT / "OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml").read_text(encoding="utf-8")
     assert "OpenEmotion/docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md" in text
+    assert "OpenEmotion/emotiond/self_model_adapter.py" not in text
     assert "历史 SelfModelAdapter shadow wiring 证据" in text
     assert "adapter 非 formal mainline" in text
 

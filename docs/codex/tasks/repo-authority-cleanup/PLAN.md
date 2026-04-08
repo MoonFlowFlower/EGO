@@ -103,7 +103,7 @@
 - 2026-04-08: canonical/docs/artifact 先建立 boundary marker 和 gate，不做物理迁移；原因是当前 docs/scripts/artifacts 仍存在大量路径引用，先锁 admission 比盲目搬迁更安全
 - 2026-04-08: `proto_self_restore` 的 generated import-map stale edge 已通过重新生成 inventory 清除；原因是 package re-export 移除后，继续保留旧 generated caller 会误导 delete admission 结论
 - 2026-04-08: `mvp13_daily_report.py` 已改为 archive-based 历史报告，不再真实 import mirror；原因是 legacy report 继续持有 live mirror import 会污染 delete admission 口径
-- 2026-04-08: `e2e_self_model_adapter.py` 已改为 archive/reference-only 报告，不再导入 live adapter；原因是它的剩余价值只在历史 shadow artifact 总结，不应继续冒充 live adapter exercise harness
+- 2026-04-08: `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 已收紧为 archive report，不再引用 live `emotiond/self_model_adapter.py` 文件路径；原因是当前 authority source 不应继续把 legacy adapter 文件暴露成 current evidence surface
 
 ## Surprises / discoveries
 
@@ -121,5 +121,5 @@
   - `proto_self_restore` 是否已可直接删除
   - drives/reflection/developmental 的删除 admission 还不清楚
 - 下一步最小闭环动作：
-  - 继续收窄 `proto_self_restore` 的 file inventory residue
-  - 再进入 `self_model_adapter / self_model_mirror` 的 tool/docs caller 收窄
+  - 继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs caller
+  - `proto_self_restore` 的 file inventory residue 留作后续低风险切片
