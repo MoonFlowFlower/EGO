@@ -4,6 +4,9 @@ MVP13 SelfModel Mirror Adapter
 Provides read-only mirror of SelfModelV0 for new SelfModelManager.
 Does NOT write back to legacy state.
 
+Reference-only mirror surface. Not part of the current formal mainline and
+not a live self-model authority.
+
 Usage:
     from emotiond.self_model_mirror import SelfModelMirrorAdapter
     
@@ -18,6 +21,12 @@ import json
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+AUTHORITY_STATUS = "reference_only"
+FORMAL_MAINLINE_ENABLED = False
+LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"
+ACTIVE_RUNTIME_SUBSTRATE = "openemotion.proto_self.self_model"
+REFERENCE_ONLY_REASON = "read-only mirror kept for historical shadow/report tooling; current formal mainline reads the formal owner package directly"
 
 
 @dataclass
@@ -41,6 +50,7 @@ class SelfModelMirrorAdapter:
     
     Read-only: Does NOT write back to legacy state.
     Only writes to shadow artifacts for verification.
+    This is a reference-only mirror, not a runtime authority surface.
     """
     
     _instance: Optional["SelfModelMirrorAdapter"] = None

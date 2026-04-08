@@ -4,7 +4,9 @@ OpenEmotion Self-Model Module
 自我模型的正式本体模块。
 负责能力、限制、目标、承诺的定义和更新规则。
 
-此模块是 self-model 的唯一权威源。
+这是当前 formal mainline 上的 self-model formal owner surface。
+`proto_self` 中的 self-model 仍会参与运行时计算，但只作为
+compute/proposal substrate，不承担 formal owner 解释权。
 """
 
 from dataclasses import asdict, dataclass, field
@@ -13,6 +15,17 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 
 FORMAL_OWNER_SCHEMA_VERSION = "1.0.0"
+AUTHORITY_STATUS = "formal_owner"
+FORMAL_MAINLINE_ENABLED = True
+LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"
+ACTIVE_RUNTIME_SUBSTRATE = "openemotion.proto_self.self_model"
+ACTIVE_RUNTIME_SUBSTRATE_ROLE = "compute_proposal_only"
+LEGACY_COMPAT_SURFACES = ("emotiond.self_model_adapter",)
+LEGACY_REFERENCE_ONLY_SURFACES = ("emotiond.self_model_mirror",)
+FORMAL_MAINLINE_READERS = (
+    "EgoCore/app/runtime_v2/proto_self_runtime.py",
+    "OpenEmotion/openemotion/proto_self_v2/self_model_context.py",
+)
 
 PHASE1_AUTHORITATIVE_FIELDS = (
     "schema_version",
@@ -140,8 +153,9 @@ class SelfModel:
     """
     自我模型本体
 
-    这是系统能力和状态的唯一权威定义。
-    所有字段语义的解释权归 OpenEmotion。
+    这是当前 self-model formal owner 的权威定义。
+    所有字段语义的解释权归 OpenEmotion 的 formal owner surface。
+    当前 formal mainline 读取和 governed writeback 都以这份结构为准。
     """
 
     # 关联的身份

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import ast
 import sys
 from pathlib import Path
 
@@ -72,6 +73,40 @@ BANNED_SNIPPETS = {
     ],
 }
 
+CODE_REQUIRED_SNIPPETS = {
+    ROOT / "OpenEmotion" / "openemotion" / "self_model" / "model.py": [
+        'AUTHORITY_STATUS = "formal_owner"',
+        'FORMAL_MAINLINE_ENABLED = True',
+        'LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"',
+        'ACTIVE_RUNTIME_SUBSTRATE = "openemotion.proto_self.self_model"',
+    ],
+    ROOT / "OpenEmotion" / "emotiond" / "self_model_adapter.py": [
+        'AUTHORITY_STATUS = "compatibility_only"',
+        'FORMAL_MAINLINE_ENABLED = False',
+        'LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"',
+    ],
+    ROOT / "OpenEmotion" / "emotiond" / "self_model_mirror.py": [
+        'AUTHORITY_STATUS = "reference_only"',
+        'FORMAL_MAINLINE_ENABLED = False',
+        'LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"',
+    ],
+}
+
+
+def _imports_module(rel_path: str, module_prefix: str) -> bool:
+    source = (ROOT / rel_path).read_text(encoding="utf-8")
+    tree = ast.parse(source, filename=rel_path)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name == module_prefix or alias.name.startswith(f"{module_prefix}."):
+                    return True
+        if isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            if module == module_prefix or module.startswith(f"{module_prefix}."):
+                return True
+    return False
+
 
 def main() -> int:
     errors: list[str] = []
@@ -92,6 +127,32 @@ def main() -> int:
         for snippet in snippets:
             if snippet in text:
                 errors.append(f"{path.relative_to(ROOT)} still contains banned legacy authority snippet: {snippet}")
+
+    for path, snippets in CODE_REQUIRED_SNIPPETS.items():
+        if not path.exists():
+            errors.append(f"missing required code surface: {path.relative_to(ROOT)}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for snippet in snippets:
+            if snippet not in text:
+                errors.append(f"{path.relative_to(ROOT)} missing required authority constant: {snippet}")
+
+    for rel_path in (
+        "OpenEmotion/openemotion/proto_self_v2/kernel.py",
+        "OpenEmotion/openemotion/proto_self_v2/self_model_context.py",
+        "EgoCore/app/runtime_v2/proto_self_runtime.py",
+        "EgoCore/app/openemotion_adapter/proto_self_adapter.py",
+    ):
+        for module_prefix in ("emotiond.self_model_adapter", "emotiond.self_model_mirror"):
+            if _imports_module(rel_path, module_prefix):
+                errors.append(f"{rel_path} must not import legacy self-model surface {module_prefix}")
+
+    for rel_path in (
+        "OpenEmotion/openemotion/proto_self_v2/self_model_context.py",
+        "EgoCore/app/runtime_v2/proto_self_runtime.py",
+    ):
+        if not _imports_module(rel_path, "openemotion.self_model"):
+            errors.append(f"{rel_path} must import openemotion.self_model on the formal mainline")
 
     if errors:
         for error in errors:

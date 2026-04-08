@@ -1,7 +1,8 @@
 """
 Self-Model Adapter
 
-连接 openemotion.self_model 到 emotiond/core.py。
+Compatibility-only adapter that bridges legacy `emotiond/core.py` style flows
+to the formal `openemotion.self_model` owner surface.
 
 职责:
 - 提供 legacy SelfModelV0 兼容接口
@@ -11,6 +12,7 @@ Self-Model Adapter
 边界:
 - 不修改 openemotion.self_model 语义
 - 只做接口适配
+- 不属于当前 formal mainline
 """
 
 import logging
@@ -18,6 +20,12 @@ from typing import Any, Dict, List, Optional
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+AUTHORITY_STATUS = "compatibility_only"
+FORMAL_MAINLINE_ENABLED = False
+LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"
+ACTIVE_RUNTIME_SUBSTRATE = "openemotion.proto_self.self_model"
+COMPATIBILITY_REASON = "legacy daemon/tool bridge only; current formal mainline reads and writes the formal owner package directly"
 
 # 默认 identity_handle
 DEFAULT_IDENTITY_HANDLE = "openemotion-default"
@@ -28,9 +36,10 @@ ENABLE_OPENEMOTION_SELF_MODEL = True
 
 class SelfModelAdapter:
     """
-    Self-Model 适配器
+    Self-Model 兼容适配器。
     
     将 openemotion.self_model.SelfModel 适配为 legacy 接口。
+    这是 compatibility-only surface，不是当前 self-model authority。
     
     使用方式:
         adapter = SelfModelAdapter()
@@ -185,11 +194,11 @@ class SelfModelAdapter:
 
     def get_action_bias(self, action: str, target: Optional[str] = None) -> float:
         """
-        Return action bias for the real mainline decision surface.
+        Return action bias for legacy compatibility callers.
 
         Formal owner bias is preferred when available. Legacy remains a
-        bounded fallback so the mainline keeps working if the formal owner
-        adapter is unavailable.
+        bounded fallback for compatibility callers only; it is not part of
+        the current formal mainline.
         """
         self._metrics["total_calls"] += 1
 
