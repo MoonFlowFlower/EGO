@@ -1,5 +1,5 @@
 from emotiond import core
-from emotiond.self_model_adapter import SelfModelAdapter
+from openemotion.self_model import SelfModelStore
 from openemotion.self_model.model import create_default_self_model
 
 
@@ -13,32 +13,30 @@ def test_formal_owner_uses_action_confidence_namespace():
     assert model.get_action_bias("boundary") == 0.0
 
 
-def test_adapter_prefers_formal_owner_action_bias():
-    adapter = SelfModelAdapter(shadow_mode=True)
-    adapter._new_model.confidence_by_domain["action:approach"] = 1.0
+def test_formal_owner_store_prefers_action_bias(tmp_path):
+    store = SelfModelStore(base_dir=tmp_path)
+    model = create_default_self_model("openemotion")
+    model.confidence_by_domain["action:approach"] = 1.0
+    model.confidence_by_domain["action.withdraw"] = 0.0
+    store.save(model, update_source="test", trace_reference="test:formal_owner_store")
 
-    class LegacyBias:
-        def get_action_bias(self, action: str) -> float:
-            return -1.0
-
-    adapter._legacy_model = LegacyBias()
-
-    assert adapter.get_action_bias("approach") == 1.0
+    loaded = store.load("openemotion")
+    assert loaded is not None
+    assert loaded.get_action_bias("approach") == 1.0
 
 
-def test_select_action_uses_owner_backed_decision_surface(monkeypatch):
+def test_select_action_uses_owner_backed_decision_surface(monkeypatch, tmp_path):
     target = "owner_bias_target"
     core.relationship_manager._ensure_relationship_fields(target)
 
-    adapter = SelfModelAdapter(shadow_mode=False)
-    adapter._new_model.confidence_by_domain = {
+    store = SelfModelStore(base_dir=tmp_path / "self_model_store")
+    model = create_default_self_model(target)
+    model.confidence_by_domain = {
         "action:approach": 1.0,
         "action:withdraw": 0.0,
     }
-    adapter._legacy_model = None
-
-    monkeypatch.setattr(core, "_openemotion_self_model", adapter)
-    monkeypatch.setattr(core, "ENABLE_OPENEMOTION_SELF_MODEL", True)
+    store.save(model, update_source="test", trace_reference="test:owner_bias_target")
+    monkeypatch.setattr(core, "_formal_self_model_store", store)
     monkeypatch.setattr(core, "score_action", lambda action, state, relationship, pred: 0.0)
 
     def fake_get_auto_tune_param(name: str, default):

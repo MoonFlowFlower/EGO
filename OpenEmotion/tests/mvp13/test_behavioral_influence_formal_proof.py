@@ -7,11 +7,14 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
+from openemotion.self_model import SelfModelStore
+from openemotion.self_model.model import create_default_self_model
+
 
 @pytest_asyncio.fixture
-async def behavioral_proof_env(monkeypatch):
+async def behavioral_proof_env(monkeypatch, tmp_path):
     """Build an isolated emotiond API environment for Step04F proof tests."""
-    from emotiond import config, db, core, self_model_adapter
+    from emotiond import config, db, core
     import emotiond.api as api
 
     test_data_dir = tempfile.mkdtemp(prefix="emotiond_mvp13_behavior_")
@@ -23,7 +26,6 @@ async def behavioral_proof_env(monkeypatch):
 
     config = importlib.reload(config)
     db = importlib.reload(db)
-    self_model_adapter = importlib.reload(self_model_adapter)
     core = importlib.reload(core)
     api = importlib.reload(api)
 
@@ -59,26 +61,17 @@ async def behavioral_proof_env(monkeypatch):
     }
     core._target_predictions = {}
 
-    adapter = self_model_adapter.SelfModelAdapter(shadow_mode=False)
-
-    class LegacyMustNotDriveProof:
-        def get_action_bias(self, action: str) -> float:
-            raise AssertionError(
-                "Step04F proof must not depend on legacy-only self-model fields"
-            )
-
-    adapter._legacy_model = LegacyMustNotDriveProof()
+    store = SelfModelStore(base_dir=tmp_path / "self_model_store")
 
     def fake_get_auto_tune_param(name: str, default):
         if name == "self_bias_weight":
             return 1.0
         return default
 
-    monkeypatch.setattr(core, "_openemotion_self_model", adapter)
-    monkeypatch.setattr(core, "ENABLE_OPENEMOTION_SELF_MODEL", True)
+    monkeypatch.setattr(core, "_formal_self_model_store", store)
     monkeypatch.setattr(core, "get_auto_tune_param", fake_get_auto_tune_param)
 
-    yield {"api": api, "db": db, "core": core, "adapter": adapter}
+    yield {"api": api, "db": db, "core": core, "store": store}
 
     if original_db_path is not None:
         os.environ["EMOTIOND_DB_PATH"] = original_db_path
@@ -106,11 +99,12 @@ async def test_formal_owner_intervention_changes_same_decision_endpoint(
     api = modules["api"]
     db = modules["db"]
     core = modules["core"]
-    adapter = modules["adapter"]
+    store = modules["store"]
 
     target = "mvp13_behavior_target"
     target_id = "session:mvp13_behavior_target"
     core.relationship_manager._ensure_relationship_fields(target)
+    owner_model = create_default_self_model(target)
 
     request_payload = {
         "user_id": target,
@@ -122,10 +116,11 @@ async def test_formal_owner_intervention_changes_same_decision_endpoint(
     }
 
     async with build_client(api) as client:
-        adapter._new_model.confidence_by_domain = {
+        owner_model.confidence_by_domain = {
             "action:approach": 1.0,
             "action:withdraw": 0.0,
         }
+        store.save(owner_model, update_source="test", trace_reference="test:formal_owner_control")
         control = await client.post(
             f"/decision/target?test_mode=true&target_id={target_id}",
             json=request_payload,
@@ -137,10 +132,11 @@ async def test_formal_owner_intervention_changes_same_decision_endpoint(
         assert control_data["explanation"]["selected"] == "approach"
         assert control_data["explanation"]["candidates"][0]["action"] == "approach"
 
-        adapter._new_model.confidence_by_domain = {
+        owner_model.confidence_by_domain = {
             "action:approach": 0.0,
             "action:withdraw": 1.0,
         }
+        store.save(owner_model, update_source="test", trace_reference="test:formal_owner_intervention")
         intervention = await client.post(
             f"/decision/target?test_mode=true&target_id={target_id}",
             json=request_payload,

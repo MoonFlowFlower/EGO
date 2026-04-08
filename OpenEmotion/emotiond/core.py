@@ -49,18 +49,13 @@ from emotiond.self_model.legacy import (
     get_self_model_v0,
     reset_self_model_v0,
 )
+try:
+    from openemotion.self_model import SelfModelStore
+except ImportError:  # pragma: no cover - fallback for incomplete local runtimes
+    SelfModelStore = None
 
-# OpenEmotion Self-Model Adapter (P0 main-chain wiring)
-ENABLE_OPENEMOTION_SELF_MODEL = os.environ.get("ENABLE_OPENEMOTION_SELF_MODEL", "true").lower() == "true"
-if ENABLE_OPENEMOTION_SELF_MODEL:
-    try:
-        from emotiond.self_model_adapter import get_self_model_adapter
-        _openemotion_self_model = get_self_model_adapter()
-    except ImportError as e:
-        _openemotion_self_model = None
-        ENABLE_OPENEMOTION_SELF_MODEL = False
-else:
-    _openemotion_self_model = None
+_formal_self_model_store = SelfModelStore() if SelfModelStore is not None else None
+
 # MVP-5 D2: Allostasis Budget
 from emotiond.allostasis import (
     AllostasisBudget, get_budget, reset_budget,
@@ -101,17 +96,6 @@ try:
 except ImportError:
     _mvp15_reflection_adapter = None
 
-# MVP13: Mirror read mode (optional)
-ENABLE_MVP13_MIRROR = os.environ.get("ENABLE_MVP13_MIRROR", "true").lower() == "true"
-if ENABLE_MVP13_MIRROR:
-    try:
-        from emotiond.self_model_mirror import get_self_model_mirror
-        _mvp13_mirror = get_self_model_mirror()
-    except ImportError:
-        _mvp13_mirror = None
-        ENABLE_MVP13_MIRROR = False
-else:
-    _mvp13_mirror = None
 # Global allostasis budget instance
 _allostasis_budget: Optional[AllostasisBudget] = None
 
@@ -1023,24 +1007,6 @@ async def process_event(event: Event) -> Dict[str, Any]:
         self_conflict = self_model_v0_result.get("self_conflict", 0.0)
         self_model_hash = self_model_v0.compute_hash()
         
-        # OpenEmotion Self-Model Adapter (P0 main-chain wiring)
-        # Shadow mode: 双轨运行，收集对比数据
-        if _openemotion_self_model and ENABLE_OPENEMOTION_SELF_MODEL:
-            try:
-                _openemotion_self_model.apply_event(event_dict, ctx)
-            except Exception as e:
-                # Shadow mode: 不影响主链
-                pass
-        
-        # MVP13: Mirror read (read-only, no write to legacy)
-        if _mvp13_mirror and ENABLE_MVP13_MIRROR:
-            try:
-                mirrored_state = _mvp13_mirror.mirror_from_legacy(self_model_v0)
-                # Only for verification, does NOT affect main chain
-                logger.debug(f"[MVP13-MIRROR] Mirror success: {mirrored_state is not None}")
-            except Exception as e:
-                logger.debug(f"[MVP13-MIRROR] Error: {e}")
-        
         # Log to audit (events table already has the event, but we add self_model info)
         # The self_conflict and hash are included in the result below
 
@@ -1519,9 +1485,11 @@ def _get_owner_backed_action_bias(action: str, target: Optional[str]) -> float:
     if abs(self_bias_weight) <= 1e-9:
         return 0.0
 
-    if _openemotion_self_model and ENABLE_OPENEMOTION_SELF_MODEL:
+    if _formal_self_model_store is not None:
         try:
-            return self_bias_weight * float(_openemotion_self_model.get_action_bias(action, target=target))
+            formal_self_model = _formal_self_model_store.load(target)
+            if formal_self_model is not None and hasattr(formal_self_model, "get_action_bias"):
+                return self_bias_weight * float(formal_self_model.get_action_bias(action))
         except Exception:
             pass
 

@@ -109,6 +109,8 @@
 - 2026-04-08: `e2e_self_model_adapter.py` 的口径已明确为“读取 legacy artifact directory 中 historical shadow artifacts 的 archive report”；原因是它仍读取旧 shadow artifact 目录，但不应再被误读成 live adapter exercise surface
 - 2026-04-08: `main_chain_wiring_check.py`、`e2e_self_model_adapter.py`、`mvp13_daily_report.py` 已在 caller/fate ledger 中明确为 archive/reference-only surfaces，并从 `self_model_adapter / self_model_mirror` 的 remaining caller lists 中拆出；原因是它们是历史报告工具，不应再被计为 live callers
 - 2026-04-08: `verify_mvp15_mainline_wiring.py`、`mvp15_funnel_check.py`、`mvp15_funnel_tracker.py`、`mvp15_daily_validation.sh`、`setup_mvp15_cron.sh` 已在 caller/fate ledger 中明确为 archive/reference-only surfaces；原因是它们是 MVP15 历史验证/趋势/包装工具，不应再被计为 live callers
+- 2026-04-08: `OpenEmotion/emotiond/core.py` 已移除 `emotiond.self_model_adapter` / `emotiond.self_model_mirror` 的 live import 与 shadow side-effect 调用，bias 读取改为 formal owner `SelfModelStore` 优先；`OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 已降为 archive/proof-only harness，不再导入或实例化 live adapter；原因是这波只做 legacy caller consolidation，不改变 formal mainline 语义
+- 2026-04-08: `OpenEmotion/tests/mvp13/test_owner_backed_decision_surface.py` 与 `OpenEmotion/tests/mvp13/test_behavioral_influence_formal_proof.py` 已迁到 formal owner store proof path，不再依赖 live adapter 注入；原因是 proof harness 需要与当前单一 authority 对齐，避免继续把 adapter 伪装成 live surface
 
 ## Surprises / discoveries
 

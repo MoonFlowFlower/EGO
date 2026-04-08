@@ -95,6 +95,8 @@ def test_formal_mainline_uses_formal_owner_not_legacy_self_model_surfaces():
         "OpenEmotion/openemotion/proto_self_v2/self_model_context.py",
         "EgoCore/app/runtime_v2/proto_self_runtime.py",
         "EgoCore/app/openemotion_adapter/proto_self_adapter.py",
+        "OpenEmotion/emotiond/core.py",
+        "OpenEmotion/tools/dual_repo_closed_loop_e2e.py",
     ):
         assert _imports_module(rel_path, "emotiond.self_model_adapter") is False
         assert _imports_module(rel_path, "emotiond.self_model_mirror") is False
@@ -105,8 +107,24 @@ def test_egocore_does_not_take_self_model_runtime_ownership():
         "EgoCore/app/openemotion_hooks/native_hooks.py",
         "EgoCore/app/runtime_v2/proto_self_runtime.py",
         "EgoCore/app/openemotion_adapter/proto_self_adapter.py",
+        "OpenEmotion/emotiond/core.py",
     ):
         assert _imports_module(rel_path, "openemotion.proto_self.self_model") is False
+
+
+def test_emotiond_core_does_not_import_legacy_self_model_adapter_or_mirror():
+    assert _imports_module("OpenEmotion/emotiond/core.py", "emotiond.self_model_adapter") is False
+    assert _imports_module("OpenEmotion/emotiond/core.py", "emotiond.self_model_mirror") is False
+
+
+def test_dual_repo_closed_loop_e2e_is_archive_only_and_does_not_import_live_adapter():
+    source = (REPO_ROOT / "OpenEmotion/tools/dual_repo_closed_loop_e2e.py").read_text(encoding="utf-8")
+    assert "archive/proof-only" in source
+    assert "live adapter authority surfaces" in source
+    assert _imports_module(
+        "OpenEmotion/tools/dual_repo_closed_loop_e2e.py",
+        "emotiond.self_model_adapter",
+    ) is False
 
 
 def test_legacy_wiring_tool_does_not_import_reference_only_mirror_module():
@@ -134,6 +152,7 @@ def test_mvp13_daily_report_is_archive_based_and_does_not_import_live_mirror():
 def test_dual_repo_closed_loop_e2e_is_marked_legacy_compatibility_harness():
     source = (REPO_ROOT / "OpenEmotion/tools/dual_repo_closed_loop_e2e.py").read_text(encoding="utf-8")
     assert "legacy compatibility harness" in source
+    assert "archive/proof-only" in source
 
 
 def test_main_chain_wiring_check_is_historical_snapshot_only():
@@ -179,9 +198,12 @@ def test_caller_matrix_separates_archive_report_tools_from_adapter_and_mirror_ca
         line for line in text.splitlines()
         if "OpenEmotion/tools/main_chain_wiring_check.py" in line
         or "OpenEmotion/tools/e2e_self_model_adapter.py" in line
+        or "OpenEmotion/tools/dual_repo_closed_loop_e2e.py" in line
         or "OpenEmotion/tools/mvp13_daily_report.py" in line
     ]
 
     assert "OpenEmotion/tools/e2e_self_model_adapter.py" not in adapter_row
+    assert "OpenEmotion/tools/dual_repo_closed_loop_e2e.py" not in adapter_row
     assert "OpenEmotion/tools/mvp13_daily_report.py" not in mirror_row
-    assert len(archive_rows) == 3
+    assert "OpenEmotion/emotiond/core.py" not in mirror_row
+    assert len(archive_rows) == 4
