@@ -1,4 +1,4 @@
-# DUAL_REPO_MAINLINE.md - 双仓正式主链定义
+# DUAL_REPO_MAINLINE.md - 双仓主链历史定义快照
 
 > **权威源**: `docs/PROGRAM_STATE_UNIFIED.yaml`
 > **版本**: v1.0
@@ -8,15 +8,15 @@
 
 ---
 
-## 正式主链定义
+## 历史主链定义
 
-**唯一正式主体主链**：
+**当时定义的唯一主体主链**：
 
 ```
 User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决策与执行 → 结果回流 OpenEmotion → Telegram 回复
 ```
 
-### 主链组件
+### 历史主链组件
 
 | 组件 | 位置 | 角色 | 状态 |
 |------|------|------|------|
@@ -30,9 +30,9 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 
 ---
 
-## 禁止的并行主链
+## 当时禁止的并行主链
 
-以下路径**不得**作为正式主体主链存在：
+以下路径**在当时不得**作为正式主体主链存在：
 
 | 路径 | 状态 | 说明 |
 |------|------|------|
@@ -44,7 +44,7 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 
 ## 边界责任
 
-### OpenEmotion 负责
+### OpenEmotion 当时负责
 
 - identity invariants（身份不变量）
 - self-model（自我模型）
@@ -53,7 +53,7 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 - appraisal / reflection（评价与反思）
 - cycle processing（循环处理）
 
-### EgoCore 负责
+### EgoCore 当时负责
 
 - 用户入口（Telegram Bot）
 - 运行时（runtime）
@@ -65,13 +65,13 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 **规则**：
 - 允许 mirror / cache / shim
 - 不允许双主
-- 主体本体逻辑最终解释权在 OpenEmotion
+- 主体本体逻辑最终解释权在 OpenEmotion（历史定义）
 
 ---
 
 ## 验证状态
 
-### 已验证 (verified_e2e)
+### 当时已验证 (verified_e2e)
 
 | 能力 | 证据 |
 |------|------|
@@ -80,14 +80,14 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 | SelfModelAdapter | OpenEmotion/docs/E2E_SELF_MODEL_ADAPTER_REPORT.md |
 | CLOSED_LOOP_E2E_V3 | EgoCore/docs/DUAL_REPO_CLOSED_LOOP_E2E_V3_REPORT.md |
 
-### Shadow Running
+### 当时 Shadow Running
 
 | 能力 | 说明 |
 |------|------|
 | MVP14 (Drives) | Gate A/B passed |
 | MVP15 (Reflection) | Persistence integrity verified |
 
-### 代码存在（未验证）
+### 代码存在（未验证，历史快照）
 
 | 能力 | 说明 |
 |------|------|
@@ -122,7 +122,7 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 
 ---
 
-## 更新规则
+## 更新规则（历史文档）
 
 1. **唯一真相源**: `docs/PROGRAM_STATE_UNIFIED.yaml`
 2. **README 必须同步**: README 状态必须与 PROGRAM_STATE 一致

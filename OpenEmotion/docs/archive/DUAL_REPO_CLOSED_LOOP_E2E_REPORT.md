@@ -1,6 +1,6 @@
 # DUAL_REPO_CLOSED_LOOP_E2E_REPORT.md
 
-> 双仓闭环 E2E 验证报告  
+> 双仓闭环 E2E 历史验证报告
 > 生成时间: 2026-03-16T06:03:00  
 > 测试脚本: tools/dual_repo_closed_loop_e2e.py
 >
@@ -195,5 +195,5 @@ artifacts/self_model_adapter/shadow_*.json
 |------|------|
 | `tools/dual_repo_closed_loop_e2e.py` | 测试脚本 |
 | `artifacts/dual_repo_closed_loop/` | 测试产物 |
-| `emotiond/self_model_adapter.py` | 主链 wiring |
+| `emotiond/self_model_adapter.py` | 历史 wiring |
 | `docs/E2E_SELF_MODEL_ADAPTER_REPORT.md` | Adapter 验证报告 |

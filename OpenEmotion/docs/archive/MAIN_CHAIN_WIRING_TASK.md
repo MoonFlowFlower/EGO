@@ -1,4 +1,4 @@
-# 主链 Wiring 任务单 - MVP13/15 接入验证
+# 主链 Wiring 历史任务单 - MVP13/15 接入验证快照
 
 > 任务类型: 验证修复  
 > 优先级: P0  
@@ -14,7 +14,7 @@
 |------|------|
 | 归属仓库 | OpenEmotion |
 | 归属模块 | emotiond/core.py, openemotion/self_model, openemotion/identity |
-| 能力类型 | 主体本体接入主链 |
+| 能力类型 | 当时的主体本体接入主链候选 |
 
 ---
 
@@ -32,10 +32,10 @@
 
 | 问题 | 答案 |
 |------|------|
-| 是否需要 mirror | 是（过渡期） |
-| 为什么需要 | emotiond/core.py 当前依赖 legacy self_model，需要双轨运行验证 |
-| Mirror 位置 | emotiond/self_model_mirror.py (已存在) |
-| 真相源位置 | openemotion/self_model/ |
+| 是否需要 mirror | 是（过渡期，当时的 snapshot 口径） |
+| 为什么需要 | 当时的 emotiond/core.py 依赖 legacy self_model，需要双轨运行验证 |
+| Mirror 位置 | emotiond/self_model_mirror.py (历史存在) |
+| 真相源位置 | openemotion/self_model/（当前 formal owner 以后续 single-authority 口径为准） |
 
 ---
 
@@ -54,7 +54,7 @@
 | 问题 | 答案 |
 |------|------|
 | 失败由谁兜底 | OpenEmotion |
-| 失败影响范围 | emotiond/core.py 主链 |
+| 失败影响范围 | 当时的 emotiond/core.py wiring path |
 | 恢复策略 | 回退到 legacy self_model |
 
 ---
@@ -77,7 +77,7 @@
 - [ ] 1. 在 emotiond/core.py 中导入 openemotion.self_model
 - [ ] 2. 创建 adapter 或 bridge 连接新旧接口
 - [ ] 3. 添加 feature flag 控制 legacy/new 切换
-- [ ] 4. 在 shadow mode 下运行并收集数据
+- [ ] 4. 在当时的 shadow mode 下运行并收集数据
 - [ ] 5. 验证新 self_model 的输出与 legacy 一致或有改进
 
 ### 明确不做
@@ -94,9 +94,9 @@
 
 | 组件 | 路径 | 状态 |
 |------|------|------|
-| legacy self_model | emotiond/self_model.py | ✅ 主链使用 |
-| new self_model | openemotion/self_model/model.py | ⚠️ 未接入主链 |
-| mirror | emotiond/self_model_mirror.py | ✅ 存在 |
+| legacy self_model | emotiond/self_model.py | ✅ 当时的主链使用 |
+| new self_model | openemotion/self_model/model.py | ⚠️ 当时未接入主链 |
+| mirror | emotiond/self_model_mirror.py | ✅ 历史存在 |
 | schema | schemas/self_model.schema.json | ✅ 存在 |
 
 ### 需要创建
@@ -105,7 +105,7 @@
 |------|------|
 | self_model_adapter.py | 连接 openemotion.self_model 到 emotiond/core.py |
 | feature flag | 控制 legacy/new 切换 |
-| shadow mode | 双轨运行收集数据 |
+| shadow mode | 双轨运行收集数据（历史快照） |
 
 ---
 
@@ -135,7 +135,7 @@
 
 | 标准 | 状态 |
 |------|------|
-| 新 self_model 接入主链（shadow mode） | [ ] |
+| 新 self_model 接入主链（shadow mode，历史快照） | [ ] |
 | feature flag 控制 | [ ] |
 | shadow 数据收集 | [ ] |
 | PROGRAM_STATE_UNIFIED.yaml 更新 | [ ] |

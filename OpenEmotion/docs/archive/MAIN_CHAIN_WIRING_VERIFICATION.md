@@ -1,4 +1,4 @@
-# 主链 Wiring 验证报告
+# 主链 Wiring 历史快照报告
 
 > 生成时间: 2026-03-16T00:20:00
 > 验证脚本: tools/main_chain_wiring_check.py
@@ -36,7 +36,7 @@ emotiond/core.py 中:
 - from emotiond.self_model_mirror: True (mirror)
 ```
 
-**结论**: 新的 `openemotion.self_model` 没有被导入到主链。
+**结论**: 新的 `openemotion.self_model` 在当时的 wiring snapshot 里没有被导入到历史主链候选路径。
 
 ### 问题 2: SelfModel 实例化失败
 
@@ -52,7 +52,7 @@ SelfModel.__init__() missing 1 required positional argument: 'identity_handle'
 
 ### P0: 导入 OpenEmotion 模块
 
-1. 在 `emotiond/core.py` 添加:
+1. 在 `emotiond/core.py` 的当时历史 wiring 中添加:
    ```python
    from openemotion.self_model import SelfModel
    ```
@@ -64,7 +64,7 @@ SelfModel.__init__() missing 1 required positional argument: 'identity_handle'
            self._model = SelfModel(identity_handle=identity_handle)
    ```
 
-3. 在 shadow mode 下运行并收集数据
+3. 在当时的 shadow mode 下运行并收集数据
 
 ---
 

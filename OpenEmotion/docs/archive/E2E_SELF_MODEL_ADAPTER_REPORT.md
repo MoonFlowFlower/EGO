@@ -1,4 +1,4 @@
-# SelfModelAdapter E2E Verification Report
+# SelfModelAdapter E2E Historical Verification Snapshot
 
 > 生成时间: 2026-03-16T05:40:00  
 > 验证脚本: tools/e2e_self_model_adapter.py
@@ -80,7 +80,7 @@
 ENABLE_OPENEMOTION_SELF_MODEL = os.environ.get("ENABLE_OPENEMOTION_SELF_MODEL", "true").lower() == "true"
 ```
 
-### 主链接入点
+### 当时的接入点
 
 ```python
 # emotiond/core.py
@@ -88,7 +88,7 @@ if _openemotion_self_model and ENABLE_OPENEMOTION_SELF_MODEL:
     try:
         _openemotion_self_model.apply_event(event_dict, ctx)
     except Exception as e:
-        # Shadow mode: 不影响主链
+        # Shadow mode: historical snapshot only; not a current formal mainline path
         pass
 ```
 
@@ -116,8 +116,8 @@ if _openemotion_self_model and ENABLE_OPENEMOTION_SELF_MODEL:
 
 ## 8. 结论
 
-**SelfModelAdapter 已接入主链并在 shadow mode 下工作。**
+**这是历史验证快照，不代表当前 formal mainline 已接入或 authority 已变更。**
 
-- OpenEmotion SelfModel 已连接到 emotiond/core.py
-- Shadow 数据正在收集
-- 无错误，无主链影响
+- OpenEmotion SelfModel 当时连接到 emotiond/core.py 的 legacy wiring
+- Shadow 数据当时正在收集
+- 无错误，且未影响当时的主链
