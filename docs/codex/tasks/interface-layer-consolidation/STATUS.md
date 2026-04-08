@@ -29,11 +29,11 @@
   - `pending_result_continuation` 已进入 runtime state / response metadata / `/flow` 只读解释层
   - active continuation 下的未验证完成声明会被宿主 completion-claim guard 拦截
 - 已确认当前下一步不是顶层重构，而是“边界冻结下的收口式简化”
-- 已确认 compat/path 当前缺口：
-  - `EgoCore/docs/05_DEPRECATED_AND_SHIMS.md` 已存在，但还没作为 repo 级 drift gate 生效
-  - root / EgoCore / OpenEmotion README 与 logic flow 对 compat 路径的公开降级口径还不够统一
-- 已确认 `/flow` 当前缺口：
-  - `parser_source / request_mode / pending_result_continuation / correction_context` 还没有全部进入主视图
+- 已关闭 compat/path 公开约束缺口：
+  - `EgoCore/docs/05_DEPRECATED_AND_SHIMS.md` 已升级为 path classification register，并已接入 repo 级 drift gate
+  - root / EgoCore / OpenEmotion README 与 logic flow 已补上 compat 路径的公开降级口径
+- 已关闭 `/flow` continuation 审计缺口：
+  - `parser_source / request_mode / pending_result_continuation / correction_context` 已进入主视图
 
 ## Last validation results
 
