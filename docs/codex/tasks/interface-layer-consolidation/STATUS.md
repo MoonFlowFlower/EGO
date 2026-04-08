@@ -48,7 +48,8 @@
   - `python3 scripts/codex/verify_path_classification.py` 通过
   - `python3 scripts/codex/lint_repo.py` 通过
   - `python3 scripts/codex/verify_repo.py --mode fast` 通过
-  - `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401` 最新结果仍为 `all_passed=false`；但 `telegram_task_flow_pass` 已转为 `true`，当前只剩 `followup_continuity_pass=false`
+  - `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401` 已转为 `all_passed=true`
+  - `python3 scripts/codex/verify_repo.py --mode full` 已启动；当前没有失败输出，但本次收口时尚未返回最终 summary
 
 ## Decisions made
 
@@ -66,8 +67,7 @@
 
 - YAML 与 README 现状不一致，若 overlay 规则不严会长出第二真相源
 - subject ingress 第 0 链当前仍是 `conditional_pass`
-- provider/runtime E2E gate 的 `followup_continuity_pass` 当前 fresh window 未闭合
-- `verify_repo.py --mode full` 本轮未执行
+- `verify_repo.py --mode full` 当前仍在执行；未拿到最终 summary 前，不上调到 full-verified closeout
 - compat/path drift gate 若写得过宽，容易把历史说明文档误判成当前 blocker
 
 ## Latest regression / fix note
@@ -97,22 +97,17 @@
 
 ## External blocker details
 
-- 当前 provider/runtime E2E gate 的最新 fresh window 从 `sample_20260407_212157_aeb0a7fc` 开始，`sample_count = 2`
-- 该窗口当前包含：
-  - `sample_20260407_212157_aeb0a7fc`：`task_mainline`
-  - `sample_20260407_231140_13fb940d`：`ordinary_chat`
-- 该窗口没有：
-  - recent-result follow-up 样本
-  - accepted `task_mainline -> recent-result follow-up` continuity pair
-- 因此当前唯一剩余失败项是：
-  - `followup_continuity_pass = false`
-- 这仍然是 fresh live 样本缺口，不是仓内逻辑失败
-- 关闭 blocker 的最小 live 序列：
-  1. `/new`
-  2. 发送一个会产出文件或页面的任务
-  3. 等待任务完成
-  4. 紧接着发送一个 recent-result follow-up
-  5. 重跑 `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401`
+- 已关闭的 fresh live blocker：
+  - 最新 fresh window 从 `sample_20260407_231516_19bc00fe` 开始，`sample_count = 3`
+  - `telegram_task_flow_pass = true`
+  - `followup_continuity_pass = true`
+  - accepted pair:
+    - `task_sample_id = sample_20260407_231544_f6cf8b1b`
+    - `followup_sample_id = sample_20260407_231614_b84b0301`
+    - `target_name = google_lookalike.html`
+    - `followup_text = 你觉得你做的这个页面怎么样`
+- 当前剩余 closeout 事项：
+  - 等待 `python3 scripts/codex/verify_repo.py --mode full` 返回最终 summary
 
 ## Next step
 
@@ -137,11 +132,12 @@
 - `python3 scripts/codex/verify_repo.py --mode fast`
 - `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key telegram:dm:8420019401`
 - latest provider/runtime gate snapshot:
-  - `window_start_sample_id = sample_20260407_212157_aeb0a7fc`
-  - `sample_count = 2`
+  - `window_start_sample_id = sample_20260407_231516_19bc00fe`
+  - `sample_count = 3`
   - `telegram_task_flow_pass = true`
-  - `followup_continuity_pass = false`
-  - `claim_ceiling = only conditional completion is allowed`
+  - `followup_continuity_pass = true`
+  - `all_passed = true`
+  - `claim_ceiling = provider/runtime admission gate passed`
 - `python3 -m py_compile scripts/codex/verify_path_classification.py scripts/codex/verify_repo.py EgoCore/app/dashboard/server.py EgoCore/tests/test_dashboard_server.py`
 - `git diff --check -- README.md EgoCore/README.md OpenEmotion/README.md docs/CURRENT_PROJECT_LOGIC_FLOW.md docs/TELEGRAM_FLOW_VIEW_README.md EgoCore/docs/05_DEPRECATED_AND_SHIMS.md scripts/codex/verify_path_classification.py scripts/codex/verify_repo.py EgoCore/app/dashboard/server.py EgoCore/app/dashboard/static/dashboard.js EgoCore/tests/test_dashboard_server.py docs/codex/tasks/interface-layer-consolidation/PLAN.md docs/codex/tasks/interface-layer-consolidation/STATUS.md`
 - authority refs:
