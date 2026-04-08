@@ -146,6 +146,7 @@ def test_main_chain_wiring_check_is_historical_snapshot_only():
 def test_e2e_self_model_adapter_is_archive_based_and_does_not_import_live_adapter():
     source = (REPO_ROOT / "OpenEmotion/tools/e2e_self_model_adapter.py").read_text(encoding="utf-8")
     assert "archive/reference-only surface" in source
+    assert "legacy artifact directory" in source
     assert "formal mainline verifier" in source
     assert _imports_module(
         "OpenEmotion/tools/e2e_self_model_adapter.py",

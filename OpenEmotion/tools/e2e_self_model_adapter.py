@@ -3,8 +3,8 @@
 Historical archive report for SelfModelAdapter.
 
 This script is archive/reference-only. It no longer imports the live adapter
-or claims to verify the formal mainline. Instead, it summarizes archived
-shadow artifacts for compatibility review.
+or claims to verify the formal mainline. Instead, it summarizes historical
+shadow artifacts from a legacy artifact directory for compatibility review.
 """
 import json
 import glob
@@ -14,7 +14,7 @@ from typing import Dict, Any, List
 
 
 def collect_archive_metrics(num_samples: int = 100) -> Dict[str, Any]:
-    """Collect historical metrics from archived shadow artifacts."""
+    """Collect historical metrics from a legacy artifact directory of shadow artifacts."""
     artifact_dir = Path("artifacts/self_model_adapter")
     artifacts = sorted(glob.glob(str(artifact_dir / "shadow_*.json"))) if artifact_dir.exists() else []
 
@@ -32,10 +32,11 @@ def collect_archive_metrics(num_samples: int = 100) -> Dict[str, Any]:
 
 
 def generate_archive_report(metrics: Dict[str, Any]) -> str:
-    """Generate archive report markdown."""
+    """Generate archive report markdown for historical shadow artifacts."""
     report = f"""# SelfModelAdapter Archive Report
 
 > 这是历史兼容报告，不是 formal mainline verifier。
+> 仅汇总 legacy artifact directory 里的 historical shadow artifacts。
 > 日期: {datetime.now().strftime('%Y-%m-%d')}
 
 ---
@@ -64,7 +65,7 @@ def generate_archive_report(metrics: Dict[str, Any]) -> str:
 
 ## 3. 结论
 
-This script only summarizes archived shadow artifacts.
+This script only summarizes historical shadow artifacts from a legacy artifact directory.
 It does not assert a live adapter caller on the formal mainline.
 """
     return report
@@ -77,8 +78,8 @@ def main():
     parser.add_argument("--output", type=str, default="artifacts/archive/self_model_adapter")
     args = parser.parse_args()
 
-    print("=== SelfModelAdapter Archive Report ===")
-    print("Historical archive/reference-only surface")
+    print("=== SelfModelAdapter Historical Archive Report ===")
+    print("Historical archive/reference-only surface from a legacy artifact directory")
 
     metrics = collect_archive_metrics(args.samples)
     report = generate_archive_report(metrics)
