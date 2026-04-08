@@ -1,10 +1,11 @@
 """
 OpenEmotion Identity Invariants Module
 
-主体身份不变量的正式本体模块。
-负责身份定义、边界保护、变更规则。
+Reference-only identity authoring surface.
 
-此模块是 identity invariants 的唯一权威源。
+This module is intentionally not wired into the current formal mainline.
+The live runtime authority for identity remains
+`openemotion.proto_self.state.IdentityInvariants`.
 """
 
 import json
@@ -30,6 +31,12 @@ class ChangeTrigger(Enum):
     SAFETY_BOUNDARY_UPDATE = "safety_boundary_update"
     SCOPE_EXPANSION = "scope_expansion"
     DELEGATION_CHANGE = "delegation_change"
+
+
+AUTHORITY_STATUS = "reference_only"
+FORMAL_MAINLINE_ENABLED = False
+LIVE_RUNTIME_AUTHORITY = "openemotion.proto_self.state.IdentityInvariants"
+REFERENCE_ONLY_REASON = "identity runtime authority remains on the proto_self v1 substrate"
 
 
 @dataclass
@@ -60,10 +67,10 @@ class ForbiddenZone:
 @dataclass
 class IdentityInvariants:
     """
-    身份不变量本体
+    身份不变量参考实现。
 
-    这是系统身份的唯一权威定义。
-    所有字段语义的解释权归 OpenEmotion。
+    当前 formal mainline 不读取这份结构。
+    它保留为 authoring/reference surface，而不是 live runtime authority。
     """
 
     # 核心身份

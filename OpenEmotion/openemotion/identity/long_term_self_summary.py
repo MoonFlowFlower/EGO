@@ -1,10 +1,10 @@
 """
 OpenEmotion Long-Term Self Summary Module
 
-长期自我摘要的正式本体模块。
-负责摘要生成、刷新、一致性校验。
+Reference-only long-term identity summary surface.
 
-此模块是 long-term self summary 的唯一权威源。
+This module is intentionally not wired into the current formal mainline.
+It remains a support/reference library rather than a live runtime authority.
 """
 
 import json
@@ -12,6 +12,12 @@ from dataclasses import dataclass, asdict, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+
+AUTHORITY_STATUS = "reference_only"
+FORMAL_MAINLINE_ENABLED = False
+LIVE_RUNTIME_AUTHORITY = "openemotion.proto_self.state.IdentityInvariants"
+REFERENCE_ONLY_REASON = "long-term self summary is not consumed on the current formal mainline"
 
 
 @dataclass
@@ -65,10 +71,9 @@ class RecoveryHints:
 @dataclass
 class LongTermSelfSummary:
     """
-    长期自我摘要本体
+    长期自我摘要参考结构。
 
-    这是系统摘要的唯一权威定义。
-    所有字段语义的解释权归 OpenEmotion。
+    当前 formal mainline 不消费此结构；它保留为 support/reference surface。
     """
 
     # 摘要标识
@@ -176,7 +181,7 @@ def generate_summary(
     """
     从 identity 和 self-model 生成摘要
 
-    这是摘要生成的唯一正式入口。
+    这是 reference-only 的摘要生成入口，不代表当前 formal mainline owner。
     """
     now = datetime.now(timezone.utc)
 
