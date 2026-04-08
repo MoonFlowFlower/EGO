@@ -28,6 +28,7 @@
 - 已重新生成 `EgoCore/docs/generated/*`，清除 `proto_self_restore` 的 generated import-map stale edge；当前剩余 residue 收窄为 generated file inventory
 - 已移除 `OpenEmotion/tools/main_chain_wiring_check.py` 对 `emotiond.self_model_mirror` 的真实 import；`OpenEmotion/tools/mvp13_daily_report.py` 也已改为 archive-based，不再真实 import mirror
 - 已将 `OpenEmotion/tools/e2e_self_model_adapter.py` 改为 archive/reference-only 报告，不再导入 live adapter
+- 已把 `OpenEmotion/tools/main_chain_wiring_check.py`、`OpenEmotion/tools/e2e_self_model_adapter.py`、`OpenEmotion/tools/mvp13_daily_report.py` 在 caller/fate ledger 中明确为 archive/reference-only surfaces，不再计为 live callers
 - 已把 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 文案明确降级为 legacy compatibility harness；`OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 也已收紧为历史 shadow 证据口径
 - 已将 `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 收紧为 archive report，不再直接引用 live `emotiond/self_model_adapter.py` 文件路径
 - 已为 5 份 archive self-model 证明文档补充历史快照声明，明确它们不代表当前 formal mainline 或当前 authority
@@ -56,7 +57,7 @@
 - `drives / reflection / developmental` 本轮只做 caller/authority 定性，不改 owner/substrate 语义
 - `proto_self_restore` 当前 formal caller 仍为 0，且 package re-export 已被清除；删除 admission 现在只剩 generated file inventory residue
 - `proto_self_restore` 当前 formal caller 仍为 0，package re-export 与 generated import-map stale edge都已清除；删除 admission 现在只剩 generated file inventory residue
-- `self_model_mirror` 当前仍有 legacy daemon callers，但 `main_chain_wiring_check.py` 与 `mvp13_daily_report.py` 都不再作为真实 code caller；`OE_MVP:13` 也不再把 adapter 口径写成 current mainline
+- `self_model_mirror` 当前仍有 legacy daemon callers，但 archive report tools 已从 remaining caller lists 中退出；`main_chain_wiring_check.py` / `mvp13_daily_report.py` 不再作为真实 code caller，`OE_MVP:13` 也不再把 adapter 口径写成 current mainline
 - `dual_repo_closed_loop_e2e.py` 当前被明确标成 legacy compatibility harness，不再允许被误读为 formal mainline verifier
 - `e2e_self_model_adapter.py` 当前被明确标成 archive/reference-only 报告，不再允许被误读为 live adapter exercise harness
 - `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 当前不再把 live `emotiond/self_model_adapter.py` 文件路径列为 `OE_MVP:13` evidence
@@ -70,8 +71,8 @@
 - worktree 脏文件很多，提交必须极度 scoped
 - `proto_self_restore` 当前虽已无代码 caller，但 generated file inventory residue 仍在，不能直接删
 - `self_model_adapter / self_model_mirror` 当前仍不能删；`emotiond/core.py` 与少量 legacy tool callers 仍在
-- `self_model_mirror` 的 real tool caller 已进一步收窄，但 `mvp13_daily_report.py` 仍保留 archive-based 历史报表角色，因此还不能报 delete-ready
-- `self_model_adapter` 的 real tool caller 已进一步收窄，但 `dual_repo_closed_loop_e2e.py` 与 `emotiond/core.py` 仍在，因此还不能报 delete-ready
+- `self_model_mirror` 的 real tool caller 已进一步收窄，archive report tools 已转为独立 archive rows，但 `emotiond/core.py` 仍在，因此还不能报 delete-ready
+- `self_model_adapter` 的 real tool caller 已进一步收窄，archive report tools 已转为独立 archive rows，但 `dual_repo_closed_loop_e2e.py` 与 `emotiond/core.py` 仍在，因此还不能报 delete-ready
 - 当前 stop boundary：`OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 仍是有意保留的 legacy compatibility harness；在未先决定它是否应转 archive/reference-only 前，继续削它的 live adapter caller 有删除风险
 - archive self-model docs 已完成降噪，当前不再是 blocker
 - `self-model` dual-authority 已收口，但 legacy adapter/mirror 仍有 tool/docs caller，当前还不能删
@@ -82,7 +83,7 @@
 
 - 当前下一步：继续做 `delete admission proof and generated/docs cleanup`，优先收窄 `self_model_adapter / self_model_mirror` 的剩余 legacy daemon/docs callers；`drives / reflection / developmental` 仍不改语义
 - 当前下一步：先判定 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 是否仍需保留为 legacy compatibility proof surface；若答案是“保留”，则先转去收窄其他 non-formal docs/tool callers，而不是继续直接逼近 delete-ready
-- 当前下一步：继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs callers；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留
+- 当前下一步：继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs callers；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留，archive report tools 已从 blocker 中拆出
 - 当前下一步：`proto_self_restore` 的 file inventory residue 保持待后续低风险切片处理
 
 ## Commands run / evidence

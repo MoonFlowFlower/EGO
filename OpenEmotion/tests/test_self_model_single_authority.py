@@ -141,6 +141,8 @@ def test_main_chain_wiring_check_is_historical_snapshot_only():
     assert "Historical Snapshot" in source
     assert "formal mainline verifier" in source
     assert "live\nadapter or mirror authority" in source or "live adapter or mirror authority" in source
+    assert "emotiond.self_model_adapter" not in source
+    assert "emotiond.self_model_mirror" not in source
 
 
 def test_e2e_self_model_adapter_is_archive_based_and_does_not_import_live_adapter():
@@ -154,8 +156,32 @@ def test_e2e_self_model_adapter_is_archive_based_and_does_not_import_live_adapte
     ) is False
 
 
+def test_program_state_changelog_marks_main_chain_wiring_check_as_historical_snapshot():
+    source = (REPO_ROOT / "OpenEmotion/docs/PROGRAM_STATE_CHANGELOG.md").read_text(encoding="utf-8")
+    assert "tools/main_chain_wiring_check.py" in source
+    assert "历史快照证据 / historical snapshot evidence" in source
+    assert "historical snapshot evidence" in source
+    assert "OpenEmotion imported in core.py: False" in source
+
+
 def test_archive_self_model_docs_point_to_archive_report_path():
     dual_repo_mainline = (REPO_ROOT / "OpenEmotion/docs/archive/DUAL_REPO_MAINLINE.md").read_text(encoding="utf-8")
     closed_loop_report = (REPO_ROOT / "OpenEmotion/docs/archive/DUAL_REPO_CLOSED_LOOP_E2E_REPORT.md").read_text(encoding="utf-8")
     assert "OpenEmotion/docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md" in dual_repo_mainline
     assert "`docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md`" in closed_loop_report
+
+
+def test_caller_matrix_separates_archive_report_tools_from_adapter_and_mirror_callers():
+    text = (REPO_ROOT / "docs/codex/tasks/repo-authority-cleanup/CALLER_MATRIX.md").read_text(encoding="utf-8")
+    adapter_row = next(line for line in text.splitlines() if "OpenEmotion/emotiond/self_model_adapter.py" in line)
+    mirror_row = next(line for line in text.splitlines() if "OpenEmotion/emotiond/self_model_mirror.py" in line)
+    archive_rows = [
+        line for line in text.splitlines()
+        if "OpenEmotion/tools/main_chain_wiring_check.py" in line
+        or "OpenEmotion/tools/e2e_self_model_adapter.py" in line
+        or "OpenEmotion/tools/mvp13_daily_report.py" in line
+    ]
+
+    assert "OpenEmotion/tools/e2e_self_model_adapter.py" not in adapter_row
+    assert "OpenEmotion/tools/mvp13_daily_report.py" not in mirror_row
+    assert len(archive_rows) == 3

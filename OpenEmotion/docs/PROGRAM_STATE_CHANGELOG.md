@@ -12,7 +12,7 @@ CEO agent
 
 ### 触发证据
 - `OpenEmotion/roadmap/ROADMAP_STATE.json` - 验证系统假阳性修复已完成（resolved_blockers）
-- `tools/main_chain_wiring_check.py` - 确认 openemotion 未导入 core.py
+- `tools/main_chain_wiring_check.py` - 历史快照证据 / historical snapshot evidence: 确认 openemotion 未导入 core.py
 - 用户确认
 
 ### 变更内容
@@ -24,7 +24,7 @@ CEO agent
    - `VERIFICATION_SYSTEM` 状态改为 `verified_e2e`
 
 2. **主阻塞明确**: `mvp13_mvp15_wiring_not_proven`
-   - 证据: `tools/main_chain_wiring_check.py` 输出 `OpenEmotion imported in core.py: False`
+   - 证据: `tools/main_chain_wiring_check.py` 的历史快照输出 / historical snapshot output 显示 `OpenEmotion imported in core.py: False`
 
 3. **决策更新**: 
    - 主阻塞是 main-chain wiring 未证明，不是验证系统问题
