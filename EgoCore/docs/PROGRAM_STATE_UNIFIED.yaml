@@ -135,7 +135,7 @@ axes:
       - ref: "OE_MVP:14"
         state: "verified_e2e"
         evidence: "OpenEmotion/artifacts/mvp14/GATE_A_REPORT.md, GATE_B_REPORT.md, OpenEmotion/roadmap/SELF_AWARE_STEP_05_EXECUTION_REPORT_20260329.md, OpenEmotion/roadmap/SELF_AWARE_STEP_05A_EXECUTION_REPORT_20260329.md, OpenEmotion/roadmap/SELF_AWARE_STEP_05B_EXECUTION_REPORT_20260329.md, OpenEmotion/roadmap/SELF_AWARE_STEP_05C_EXECUTION_REPORT_20260329.md"
-        note: "formal owner remains emotiond/drives/*; Step05B boundedly converged the current API decision mainline in emotiond/core.py through emotiond/drive_adapter.py, and Step05C now proves paired owner-backed behavioral influence for emotiond/drives/* on the same emotiond /decision/target mainline. This still does not automatically equal Stage 5 passed"
+        note: "formal owner is openemotion/endogenous_drives/*; Step05B boundedly converged the current API decision mainline in emotiond/core.py through emotiond/drive_adapter.py as a compat/projection helper, and Step05C now proves paired owner-backed behavioral influence for the formal owner on the same emotiond /decision/target mainline. `emotiond/drives/*` remains thin compat re-export surface, and the current v1 DriveField/appraisal substrate is thin rather than authoritative"
       - ref: "OE_MVP:15"
         state: "verified_e2e"
         evidence: "OpenEmotion/artifacts/mvp15/MVP15_PERSISTENCE_INTEGRITY_REPORT.md, OpenEmotion/roadmap/SELF_AWARE_STEP_06_EXECUTION_REPORT_20260329.md, OpenEmotion/roadmap/SELF_AWARE_STEP_06A_EXECUTION_REPORT_20260329.md, OpenEmotion/roadmap/SELF_AWARE_STEP_06B_EXECUTION_REPORT_20260329.md"

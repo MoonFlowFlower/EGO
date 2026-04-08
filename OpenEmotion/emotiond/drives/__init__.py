@@ -1,21 +1,26 @@
 """
-MVP14: Endogenous Drives + Self-Maintenance
+Legacy drives compatibility surface.
 
-Provides internal pressure sources that influence prioritization
-within governed boundaries.
+The formal authority lives in ``openemotion.endogenous_drives``. This package
+keeps the older import paths available as thin re-exports so they cannot drift
+into a second implementation.
 """
 from __future__ import annotations
 
-from .schema import (
-    DriveState,
+from openemotion.endogenous_drives import (
     ActiveDrive,
+    DriveHistory,
+    DriveManager,
+    DriveState,
     DriveType,
+    EndogenousDriveOwner,
     HomeostaticSignal,
     MaintenanceDebt,
     RegulationTarget,
-    DriveHistory,
+    get_drive_manager,
+    reset_drive_manager,
 )
-from .manager import DriveManager, get_drive_manager, reset_drive_manager
+
 from .._legacy_drives import (
     DriveType as LegacyDriveType,
     DriveLevel,
@@ -33,6 +38,7 @@ __all__ = [
     "RegulationTarget",
     "DriveHistory",
     "DriveManager",
+    "EndogenousDriveOwner",
     "get_drive_manager",
     "reset_drive_manager",
     "LegacyDriveType",

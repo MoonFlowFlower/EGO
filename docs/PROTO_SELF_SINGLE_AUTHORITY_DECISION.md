@@ -25,7 +25,7 @@
 |---|---|---|---|---|---|
 | `identity invariants` | `openemotion.proto_self.state.IdentityInvariants` | `openemotion.proto_self.kernel` + `openemotion.proto_self.reducers` | 无 | `openemotion.identity.identity_invariants`, `openemotion.identity.long_term_self_summary` | 当前唯一 runtime authority 维持在 v1 substrate；identity formal owner 暂不接主链，按 reference-only 处理 |
 | `self-model` | `openemotion.self_model/*` | `openemotion.proto_self.self_model` + v1 `SelfModel` state | `OpenEmotion/emotiond/self_model_adapter.py` (deleted) | `OpenEmotion/emotiond/self_model_mirror.py` (deleted) | formal owner 是唯一 authority；legacy adapter/mirror 已物理删除，不再作为 live-ish blocker |
-| `drives / appraisal` | `openemotion.endogenous_drives/*` | `openemotion.proto_self.appraisal` + v1 `DriveField` | 无 | 无新增 reference-only | formal owner 是唯一 authority；v1 substrate 保留为 active compute/proposal layer，不再叙述成 authority |
+| `drives / appraisal` | `openemotion.endogenous_drives/*` | `openemotion.proto_self.appraisal` + v1 `DriveField` | `OpenEmotion/emotiond/drive_adapter.py`, `OpenEmotion/emotiond/drives/*` | 无新增 reference-only | formal owner 是唯一 authority；`drive_adapter.py` 只是 compat/projection helper，`emotiond/drives/*` 只是 thin compat re-export surfaces；v1 substrate 仅保留为 thin compute/proposal substrate，不再叙述成 authority |
 | `reflection / structured revision` | `openemotion.reflective_self/*` | `openemotion.proto_self.reflection` | 无 | `OpenEmotion/emotiond/reflection_adapter.py`, `OpenEmotion/emotiond/reflection_shadow.py`, `OpenEmotion/emotiond/reflection_engine/*`, `OpenEmotion/emotiond/reflection.py`, `OpenEmotion/emotiond/self_counterfactual.py` | formal owner 是唯一 authority；v1 `reflection_note` 只保留 transient trigger 语义，不再叙述成 structured revision authority |
 
 ### 当前必须明确的结论
@@ -35,6 +35,9 @@
   - `self-model` 的 base delta 计算
   - `drives / appraisal` 的 base delta 计算
   - `reflection` 的 lightweight trigger / `reflection_note`
+- 当前由 compat/projection helper 与 thin re-export surface 承接的 drives 路径：
+  - `OpenEmotion/emotiond/drive_adapter.py`
+  - `OpenEmotion/emotiond/drives/*`
 - 当前只是名义 owner、尚未真正接入 formal mainline 的能力：
   - `openemotion.identity.identity_invariants`
   - `openemotion.identity.long_term_self_summary`
@@ -50,6 +53,8 @@
 | `OpenEmotion/openemotion/self_model/*` | 保留 | 当前 self-model formal owner |
 | `OpenEmotion/openemotion/endogenous_drives/*` | 保留 | 当前 drives formal owner |
 | `OpenEmotion/openemotion/reflective_self/*` | 保留 | 当前 reflection / structured revision formal owner |
+| `OpenEmotion/emotiond/drive_adapter.py` | compatibility_only | compat/projection helper; bounded legacy snapshot helper over the formal drives owner |
+| `OpenEmotion/emotiond/drives/*` | compatibility_only | thin compat re-export surfaces for the formal drives owner |
 | `OpenEmotion/emotiond/self_model_adapter.py` | deleted | 已物理删除；history 仅保留在 cleanup ledger / archive report |
 | `EgoCore/app/openemotion_adapter/proto_self_restore.py` | 降级为 compat/shim | restore helper，不是当前 formal recovery path |
 | `OpenEmotion/openemotion/identity/identity_invariants.py` | reference-only | formal owner 名义存在，但当前未接 formal mainline |
@@ -75,6 +80,8 @@
 - 明确：
   - `proto_self_v2` 是 formal surface，不是这四类能力各自的 owner
   - `emotiond.developmental_core` 不在本轮处理范围内
+  - `drives / appraisal` 的 compat/projection helper 已收敛为 `OpenEmotion/emotiond/drive_adapter.py`
+  - `emotiond/drives/*` 已降为 thin compat re-export surfaces，不再拥有当前 authority
 
 ### 2. Public Surface
 

@@ -2,17 +2,17 @@
 MVP14 DriveState Adapter
 
 Provides backward-compatible interface for legacy DriveState (drive_homeostasis.py)
-while delegating to new DriveManager (drives/manager.py) in dual-run mode.
+while projecting into the formal owner drive surface under
+``openemotion.endogenous_drives``.
 
-This adapter enables:
-1. Legacy API continues to work
-2. New DriveManager runs in parallel
-3. Comparison logging for validation
-4. Gradual migration path
+This adapter is intentionally a compatibility/projection helper, not a second
+drives authority.
 """
 import logging
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
+
+from openemotion.endogenous_drives.action_bias import compute_action_bias_from_priority_snapshot
 
 logger = logging.getLogger(__name__)
 
@@ -53,50 +53,6 @@ class DriveStateAdapter:
         "social": "completion",
         "safety": "verification",
         "fatigue": "repair",
-    }
-
-    ACTION_DRIVE_WEIGHTS = {
-        "approach": {
-            "completion": 1.0,
-            "exploration": 0.6,
-            "coherence": 0.1,
-            "stability": -0.3,
-            "verification": -0.4,
-            "repair": -0.3,
-            "conservation": -0.6,
-        },
-        "repair_offer": {
-            "repair": 1.0,
-            "coherence": 0.8,
-            "verification": 0.3,
-            "completion": 0.2,
-            "conservation": -0.1,
-        },
-        "boundary": {
-            "verification": 1.0,
-            "stability": 0.6,
-            "coherence": 0.5,
-            "repair": 0.2,
-            "completion": -0.2,
-            "exploration": -0.3,
-        },
-        "withdraw": {
-            "conservation": 1.0,
-            "stability": 0.8,
-            "verification": 0.5,
-            "repair": 0.2,
-            "completion": -0.5,
-            "exploration": -0.7,
-        },
-        "attack": {
-            "stability": -1.0,
-            "coherence": -0.8,
-            "repair": -0.6,
-            "verification": -0.4,
-            "conservation": -0.3,
-            "completion": 0.1,
-            "exploration": 0.2,
-        },
     }
 
     def __init__(self, enable_dual_run: bool = True):
@@ -257,25 +213,16 @@ class DriveStateAdapter:
         """
         Compute action bias from the formal owner drive state.
 
-        This is the Step05C proof surface: the decision mainline may now
-        consume a bounded, auditable bias derived from emotiond/drives/*,
-        without re-promoting legacy drive_homeostasis as the formal owner.
+        This is the Step05C proof surface: the decision mainline may consume a
+        bounded, auditable bias derived from the formal owner package without
+        re-promoting the legacy drive_homeostasis surface as authority.
         """
         if not self.enable_dual_run or not self._new_manager:
             return 0.0
 
-        action_weights = self.ACTION_DRIVE_WEIGHTS.get(action)
-        if not action_weights:
-            return 0.0
-
         priority_bias = self._new_manager.get_priority_bias()
         self.metrics.new_calls += 1
-
-        total = 0.0
-        for drive_name, weight in action_weights.items():
-            total += float(priority_bias.get(drive_name, 0.0)) * float(weight)
-
-        return total
+        return compute_action_bias_from_priority_snapshot(action, priority_bias)
 
     def _get_new_modulation_params(self) -> Dict[str, Any]:
         """Get modulation params from new DriveManager."""

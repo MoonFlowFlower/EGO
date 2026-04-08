@@ -82,7 +82,8 @@ from emotiond.meta_cognitive_override import (
     get_override_guard
 )
 
-# MVP14: Drive adapter / bounded migration path
+# MVP14: Drive adapter / bounded migration path.
+# It remains only for legacy DriveState snapshot compatibility.
 ENABLE_MVP14_DUAL_RUN = os.environ.get("ENABLE_MVP14_DUAL_RUN", "true").lower() == "true"
 try:
     from emotiond.drive_adapter import get_drive_adapter
@@ -90,6 +91,7 @@ try:
 except ImportError:
     _mvp14_adapter = None
     ENABLE_MVP14_DUAL_RUN = False
+from openemotion.endogenous_drives.action_bias import compute_action_bias_from_priority_snapshot
 
 # Global allostasis budget instance
 _allostasis_budget: Optional[AllostasisBudget] = None
@@ -1476,18 +1478,19 @@ def _get_drive_owner_backed_action_bias(action: str) -> float:
     """
     Step05C: use the formal drive owner on the boundedly converged mainline.
 
-    The causal source remains emotiond/drives/*; emotiond/drive_adapter.py is
-    only the bounded compatibility and replay-friendly access surface.
+    The causal source is the formal owner package in openemotion.endogenous_drives.
+    emotiond/drive_adapter.py remains only as a bounded legacy snapshot helper.
     """
-    if not _mvp14_adapter or not ENABLE_MVP14_DUAL_RUN:
-        return 0.0
-
     drive_bias_weight = float(get_auto_tune_param("drive_bias_weight", 0.15))
     if abs(drive_bias_weight) <= 1e-9:
         return 0.0
 
     try:
-        return drive_bias_weight * float(_mvp14_adapter.get_owner_backed_action_bias(action))
+        from openemotion.endogenous_drives import get_drive_manager
+
+        manager = get_drive_manager()
+        priority_bias = manager.get_priority_bias()
+        return drive_bias_weight * compute_action_bias_from_priority_snapshot(action, priority_bias)
     except Exception:
         return 0.0
 

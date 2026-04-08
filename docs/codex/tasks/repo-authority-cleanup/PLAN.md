@@ -113,6 +113,7 @@
 - 2026-04-08: `OpenEmotion/tests/mvp13/test_owner_backed_decision_surface.py` 与 `OpenEmotion/tests/mvp13/test_behavioral_influence_formal_proof.py` 已迁到 formal owner store proof path，不再依赖 live adapter 注入；原因是 proof harness 需要与当前单一 authority 对齐，避免继续把 adapter 伪装成 live surface
 - 2026-04-08: `self_model_adapter` / `self_model_mirror` delete-admission finish wave 已完成：`OpenEmotion/tests/test_self_model_single_authority.py` 已改为更弱的 ledger/file-fate/admission test，legacy adapter/mirror 已物理删除，当前 docs/path register/program-state 已不再把它们叙述成 live-ish blockers
 - 2026-04-08: reflection legacy caller wave 已收口：`OpenEmotion/emotiond/core.py` 不再使用 `reflection_shadow`，reflection guidance 已改为 formal owner store-backed read；`OpenEmotion/tools/causal_intervention_experiments.py` 已降为 archive/reference-only reflection probe，`emotiond/reflection.py` 只保留 thin trigger/report substrate；原因是 reflection legacy runtime callers 必须移出 live authority 叙事，但当前 formal owner/report split 仍需保留最薄触发层
+- 2026-04-08: drives authority wave 已收口：`openemotion.endogenous_drives/*` 为唯一 formal owner，`OpenEmotion/emotiond/drive_adapter.py` 与 `OpenEmotion/emotiond/drives/*` 仅保留 compat/projection/helper surfaces，`OpenEmotion/openemotion/proto_self/appraisal.py + DriveField` 只保留 thin substrate；原因是 drives/appraisal 不能继续被写成 unresolved later wave
 
 ## Surprises / discoveries
 
@@ -126,9 +127,10 @@
 - 本轮已证明：
   - `identity` baseline 已在代码级收口，可直接作为 Phase 0 基线
   - `self-model` formal owner 已在 current mainline 上被 runtime 注入与 writeback 消费；legacy adapter/mirror 不在 formal caller 上
+  - `drives` formal owner 已在 current mainline 上通过 compat/projection helper 被消费；legacy wrapper surfaces 不在 formal caller 上
 - 还没证明：
   - `proto_self_restore` 是否已可直接删除
-  - drives/reflection/developmental 的删除 admission 还不清楚
+  - reflection/developmental 的删除 admission 还不清楚
 - 下一步最小闭环动作：
   - 继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs caller；archive report tools 已单独归档，不再计入这两个 delete-admission blocker
   - `proto_self_restore` 的 file inventory residue 留作后续低风险切片

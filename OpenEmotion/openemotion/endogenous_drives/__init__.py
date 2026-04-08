@@ -1,3 +1,4 @@
+from .action_bias import ACTION_DRIVE_WEIGHTS, compute_action_bias_from_priority_snapshot
 from .governance import DriveGovernanceVerdict, validate_drive_state
 from .history import DriveHistory, DriveHistoryEntry, DriveRevisionRecord
 from .maintenance import build_self_maintenance_candidate, compute_maintenance_status
@@ -42,6 +43,8 @@ __all__ = [
     "MaintenanceDebt",
     "RegulationTarget",
     "build_self_maintenance_candidate",
+    "ACTION_DRIVE_WEIGHTS",
+    "compute_action_bias_from_priority_snapshot",
     "compact_endogenous_drive_context",
     "compute_maintenance_status",
     "get_drive_manager",

@@ -2,18 +2,14 @@
 MVP14 T02: Drive Integration
 
 Connects drives to self-model and emotiond core systems.
+
+The formal owner lives in ``openemotion.endogenous_drives``. This bridge keeps
+the historical integration API alive while avoiding a second drive authority.
 """
-import time
 import logging
 from typing import Dict, Any, Optional
 
-from .schema import (
-    DriveState,
-    ActiveDrive,
-    DriveType,
-    HomeostaticSignal,
-)
-from .manager import DriveManager, get_drive_manager
+from openemotion.endogenous_drives import DriveManager, DriveType, get_drive_manager
 
 logger = logging.getLogger(__name__)
 

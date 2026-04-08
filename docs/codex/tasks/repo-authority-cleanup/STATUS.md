@@ -9,7 +9,7 @@
 ## Current state
 
 - current_layer: repo_authority_cleanup
-- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only_oe_mvp13_archive_evidence_only_archive_self_model_body_clarified_archive_self_model_paths_clarified_e2e_adapter_legacy_artifact_dir_clarified_self_model_adapter_core_and_dual_repo_live_callers_removed_mvp13_proof_tests_migrated_to_formal_owner_store_self_model_delete_admission_finished_adapter_mirror_deleted_reflection_legacy_runtime_callers_removed_reflection_probe_archive_only_reflection_trigger_substrate_retained
+- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only_oe_mvp13_archive_evidence_only_archive_self_model_body_clarified_archive_self_model_paths_clarified_e2e_adapter_legacy_artifact_dir_clarified_self_model_adapter_core_and_dual_repo_live_callers_removed_mvp13_proof_tests_migrated_to_formal_owner_store_self_model_delete_admission_finished_adapter_mirror_deleted_reflection_legacy_runtime_callers_removed_reflection_probe_archive_only_reflection_trigger_substrate_retained_drives_authority_wave_landed_drive_adapter_and_emotiond_drives_demoted_thin_substrate_retained
 - completion_class: conditional_complete
 
 ## Completed work
@@ -18,6 +18,7 @@
 - 已确认当前 formal mainline 不变：`native_hooks -> proto_self_runtime -> proto_self_adapter -> proto_self_v2/kernel`
 - 已确认 `identity` 代码级单一 authority baseline 已存在，可直接作为本轮基线复核
 - 已确认 `self-model` formal owner 当前在主链上被 runtime projection/writeback 消费
+- 已确认 `drives` formal owner 当前在主链上被 runtime projection/writeback 消费，`drive_adapter.py` 与 `emotiond/drives/*` 只保留 compat/projection/helper surfaces
 - 已确认 `proto_self_restore.py` 当前 formal caller 为 0，但仍存在 tools/docs/generated caller；`emotiond/self_model_adapter.py`、`emotiond/self_model_mirror.py` 已物理删除
 - 已完成 Phase 0 六个 ledger 首版落地：`AUTHORITY_MATRIX / CALLER_MATRIX / FILE_FATE_LEDGER / CANONICAL_DOCS_INDEX / ARTIFACT_LOG_INVENTORY / CONFLICT_REGISTER`
 - 已完成 `self-model` 代码级 authority 收口：formal owner 自证、legacy adapter/mirror 自降级、single-authority static regression 落地
@@ -48,8 +49,10 @@
 - mode: milestone-4 scoped verification
 - result: passed
 - summary:
-  - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"` -> `9 passed`
-  - `python3 -m py_compile OpenEmotion/tests/test_self_model_single_authority.py`
+  - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp14\test_mainline_wiring.py tests\mvp14\test_drive_integration.py tests\mvp14\test_e2e_gate_b.py tests\mvp14\test_drive_behavioral_influence_formal_proof.py openemotion\proto_self_v2\tests\test_endogenous_drive_read_integration.py -q"` -> `22 passed`
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k "drive or endogenous" -q -s` -> `2 passed`
+  - `python3 -m py_compile OpenEmotion/openemotion/endogenous_drives/action_bias.py OpenEmotion/openemotion/endogenous_drives/__init__.py OpenEmotion/emotiond/core.py OpenEmotion/emotiond/drive_adapter.py OpenEmotion/emotiond/drives/__init__.py OpenEmotion/emotiond/drives/manager.py OpenEmotion/emotiond/drives/schema.py OpenEmotion/emotiond/drives/integration.py OpenEmotion/tests/mvp14/test_mainline_wiring.py scripts/codex/verify_proto_self_single_authority.py`
+  - `python3 scripts/codex/verify_proto_self_single_authority.py` -> passed
   - `python3 scripts/codex/verify_repo.py --mode fast` -> passed
   - scoped `git diff --check` -> passed
 
@@ -58,10 +61,10 @@
 - 第一轮 milestone 固定为 `Phase 0 + identity baseline closeout + self-model authority wave`
 - `identity` 本轮不重复设计，只做 ledger/doc/gate 对齐
 - `self-model` 本轮采取最小代码收口：formal owner 自证 + legacy adapter/mirror 自降级 + no-dual-authority static assertion
-- `drives / reflection / developmental` 第一轮只进 ledger 与 conflict register，不进语义改造
+- `drives / reflection / developmental` 第一轮先做 ledger 与 conflict register；其中 drives 这一支已完成 authority wave，reflection/developmental 仍按后续波次处理
 - `self-model` 本轮后的唯一 authority 固定为 `openemotion.self_model/*`；`openemotion.proto_self.self_model` 仅保留 active compute/proposal substrate 角色
 - `emotiond/self_model_adapter.py` 固定为 `compatibility_only`，`emotiond/self_model_mirror.py` 固定为 `reference_only`
-- `drives / reflection / developmental` 本轮只做 caller/authority 定性，不改 owner/substrate 语义
+- `drives / reflection / developmental` 本轮只做 caller/authority 定性；drives 这一支已完成 authority wave，不再作为 later wave blocker
 - `proto_self_restore` 当前 formal caller 仍为 0，且 package re-export 已被清除；删除 admission 现在只剩 generated file inventory residue
 - `proto_self_restore` 当前 formal caller 仍为 0，package re-export 与 generated import-map stale edge都已清除；删除 admission 现在只剩 generated file inventory residue
 - `self_model_mirror` 当前仍有 legacy daemon callers，但 archive report tools 已从 remaining caller lists 中退出；`main_chain_wiring_check.py` / `mvp13_daily_report.py` 不再作为真实 code caller，`OE_MVP:13` 也不再把 adapter 口径写成 current mainline
@@ -85,7 +88,7 @@
 
 ## Next step
 
-- 当前下一步：继续做 `delete admission proof and generated/docs cleanup`，优先处理 `proto_self_restore` 的 generated/docs residue；`drives / reflection / developmental` 仍不改语义
+- 当前下一步：继续做 `delete admission proof and generated/docs cleanup`，优先处理 `proto_self_restore` 的 generated/docs residue；`reflection / developmental` 仍不改语义
 - 当前下一步：`dual_repo_closed_loop_e2e.py` 已转 archive/proof-only harness，下一步只需维持其 archive-only 口径，不再把它当 live blocker
 - 当前下一步：reflection legacy runtime caller 已收口，若继续推进只能决定是否把 `emotiond/reflection.py` 也纳入后续 trigger-substrate retirement 波；当前波次不再把 MVP15 archive 工具视为 blocker
 

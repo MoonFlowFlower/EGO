@@ -24,6 +24,8 @@
 | `EgoCore/app/runtime/agent_runner.py` | `compatibility_only` | `EgoCore` | 旧 runtime core 与历史执行链兼容 | `EgoCore/app/runtime_v2/*` | 仅旧链兼容，不是当前主 runtime | 旧 runtime 路径与测试进一步迁走 | 历史功能断裂 |
 | `EgoCore/app/runtime/request_classifier.py` | `compatibility_only` | `EgoCore` | 旧 request 分类与 host override 残留 | Runtime v2 + bridge | 仅兼容旧路径，不拥有当前意图解释权 | 旧 runtime 链不再依赖 | host override 回归 |
 | `EgoCore/app/runtime/request_registry.py` | `compatibility_only` | `EgoCore` | 旧 request lifecycle registry 残留 | Runtime v2 session/runtime state | 仅兼容旧路径，不拥有当前 request 生命周期权威 | 旧 runtime 测试迁移完成 | 链路回归 |
+| `OpenEmotion/emotiond/drive_adapter.py` | `compatibility_only` | `OpenEmotion` | drives/appraisal 兼容投影 helper | `OpenEmotion/openemotion/endogenous_drives/*` | 只是 formal owner 的 bounded projection helper，不是第二套实现 | formal owner 已有 live consumer 且 legacy caller 清零后再评估进一步收缩 | 恢复历史兼容 helper 文案 |
+| `OpenEmotion/emotiond/drives/*` | `compatibility_only` | `OpenEmotion` | drives 兼容 re-export wrapper surfaces | `OpenEmotion/openemotion/endogenous_drives/*` | 只是 thin compat re-export surfaces，不是 authority | formal owner 稳定且 wrapper caller 清零后再评估进一步收缩 | 恢复历史 wrapper 文案 |
 | `EgoCore/prompts/AGENT.md` | `formal` | `EgoCore` | 当前 Runtime v2 文件式 prompt | 无 | 当前正式 prompt surface | 无 | prompt 误改 |
 | `EgoCore/prompts/SOUL.md` | `formal` | `EgoCore` | 当前 Runtime v2 文件式 prompt | 无 | 当前正式 prompt surface | 无 | prompt 误改 |
 | `EgoCore/prompts/TOOLS.md` | `formal` | `EgoCore` | 当前 Runtime v2 文件式 prompt | 无 | 当前正式 prompt surface | 无 | prompt 误改 |
