@@ -108,6 +108,7 @@
 - 2026-04-08: archive self-model 文档中残留的 `docs/E2E_SELF_MODEL_ADAPTER_REPORT.md` 已统一改回 `docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md`，`main_chain_wiring_check.py` 也固定为 historical snapshot 口径；原因是 archive surface 不应继续引用非 archive 路径或暗示 live wiring verifier
 - 2026-04-08: `e2e_self_model_adapter.py` 的口径已明确为“读取 legacy artifact directory 中 historical shadow artifacts 的 archive report”；原因是它仍读取旧 shadow artifact 目录，但不应再被误读成 live adapter exercise surface
 - 2026-04-08: `main_chain_wiring_check.py`、`e2e_self_model_adapter.py`、`mvp13_daily_report.py` 已在 caller/fate ledger 中明确为 archive/reference-only surfaces，并从 `self_model_adapter / self_model_mirror` 的 remaining caller lists 中拆出；原因是它们是历史报告工具，不应再被计为 live callers
+- 2026-04-08: `verify_mvp15_mainline_wiring.py`、`mvp15_funnel_check.py`、`mvp15_funnel_tracker.py`、`mvp15_daily_validation.sh`、`setup_mvp15_cron.sh` 已在 caller/fate ledger 中明确为 archive/reference-only surfaces；原因是它们是 MVP15 历史验证/趋势/包装工具，不应再被计为 live callers
 
 ## Surprises / discoveries
 

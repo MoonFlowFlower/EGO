@@ -2,7 +2,7 @@
 """
 MVP15 Trigger Funnel Check
 
-Checks the MVP15 reflection trigger funnel and generates diagnostic report.
+Historical archive/reference-only check for the MVP15 reflection trigger funnel.
 
 Funnel stages:
     events_seen → eligible_for_reflection → reflection_invoked → artifact_generated → artifact_persisted
@@ -18,7 +18,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def check_funnel():
     """Check MVP15 funnel metrics."""
-    print("=== MVP15 Trigger Funnel Check ===\n")
+    print("=== MVP15 Trigger Funnel Check ===")
+    print("Historical archive/reference-only surface\n")
     
     try:
         from emotiond.reflection_shadow import get_reflection_shadow

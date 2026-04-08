@@ -6,6 +6,8 @@
 
 ## Reference-Only Task Materials
 
+- `reference-only` means the material is archived reference input only and must not be promoted to current formal owner/proof.
+
 - `Tasks/active/SELF_AWARE_STEP_06_mvp15_formal_proof.md`
 - `Tasks/active/SELF_AWARE_STEP_06A_reflection_mainline_resolution.md`
 - `Tasks/active/SELF_AWARE_STEP_06B_reflection_behavioral_relevance_formal_proof.md`
@@ -53,3 +55,4 @@
 - `Tasks/MVS_task_plan.md` 是顶层裁决源
 - `Tasks/MVP15_task_plan.md` 是 `WP10` phase-detail authority
 - 本文件只负责说明哪些旧材料不能被误升格为新的 formal owner / formal proof path
+- `OpenEmotion/tools/verify_mvp15_mainline_wiring.py`、`OpenEmotion/tools/mvp15_funnel_check.py`、`OpenEmotion/tools/mvp15_funnel_tracker.py`、`OpenEmotion/tools/mvp15_daily_validation.sh`、`OpenEmotion/tools/setup_mvp15_cron.sh` 只是 reference-only / archive surfaces，不是 current formal caller

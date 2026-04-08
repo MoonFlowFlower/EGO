@@ -2,7 +2,7 @@
 """
 MVP15 Funnel Trend Tracker
 
-Tracks MVP15 reflection funnel metrics over multiple days for post-fix validation.
+Historical archive/reference-only tracker for MVP15 reflection funnel metrics.
 
 Funnel stages:
     events_seen → eligible_for_reflection → reflection_invoked → artifact_generated → artifact_persisted
@@ -29,6 +29,7 @@ TRACKER_DIR.mkdir(parents=True, exist_ok=True)
 
 def record_day_metrics(day: int, notes: str = "") -> Dict[str, Any]:
     """Record funnel metrics for a specific day."""
+    print("Historical archive/reference-only surface")
     
     try:
         from emotiond.reflection_shadow import get_reflection_shadow
@@ -92,6 +93,7 @@ def generate_trend_report() -> str:
 
 > Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 > Validation Period: Day 1-3 post-fix
+> Surface role: archive/reference-only historical tracker
 
 ---
 

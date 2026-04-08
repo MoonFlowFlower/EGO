@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Static verifier for MVP15 current-runtime reflective wiring.
+Historical snapshot verifier for MVP15 reflective wiring.
 
 Purpose:
-- verify the current authority source has moved to openemotion/reflective_self
+- capture the reflective wiring state as an archive/reference-only snapshot
 - verify the current runtime mainline reads bounded reflective context
 - verify legacy emotiond reflection surfaces remain reference-only
 """
@@ -144,6 +144,7 @@ def main() -> int:
         print(json.dumps(report, ensure_ascii=True, indent=2))
     else:
         print(f"status: {report['status']}")
+        print("surface_role: archive/reference-only historical snapshot")
         print(
             "current_runtime_mainline.bounded_consumer_present: "
             f"{report['current_runtime_mainline']['bounded_consumer_present']}"

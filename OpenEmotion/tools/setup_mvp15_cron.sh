@@ -1,6 +1,6 @@
 #!/bin/bash
 # Setup MVP15 Validation Cron Job
-# Runs daily at 00:05 local time
+# Historical archive/reference-only cron wrapper, runs daily at 00:05 local time
 
 CRON_JOB="5 0 * * * /home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion/tools/mvp15_daily_validation.sh"
 

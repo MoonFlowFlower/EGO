@@ -29,6 +29,7 @@
 - 已移除 `OpenEmotion/tools/main_chain_wiring_check.py` 对 `emotiond.self_model_mirror` 的真实 import；`OpenEmotion/tools/mvp13_daily_report.py` 也已改为 archive-based，不再真实 import mirror
 - 已将 `OpenEmotion/tools/e2e_self_model_adapter.py` 改为 archive/reference-only 报告，不再导入 live adapter
 - 已把 `OpenEmotion/tools/main_chain_wiring_check.py`、`OpenEmotion/tools/e2e_self_model_adapter.py`、`OpenEmotion/tools/mvp13_daily_report.py` 在 caller/fate ledger 中明确为 archive/reference-only surfaces，不再计为 live callers
+- 已把 `OpenEmotion/tools/verify_mvp15_mainline_wiring.py`、`OpenEmotion/tools/mvp15_funnel_check.py`、`OpenEmotion/tools/mvp15_funnel_tracker.py`、`OpenEmotion/tools/mvp15_daily_validation.sh`、`OpenEmotion/tools/setup_mvp15_cron.sh` 在 caller/fate ledger 中明确为 archive/reference-only surfaces，不再计为 live callers
 - 已把 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 文案明确降级为 legacy compatibility harness；`OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 也已收紧为历史 shadow 证据口径
 - 已将 `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 收紧为 archive report，不再直接引用 live `emotiond/self_model_adapter.py` 文件路径
 - 已为 5 份 archive self-model 证明文档补充历史快照声明，明确它们不代表当前 formal mainline 或当前 authority
@@ -73,6 +74,7 @@
 - `self_model_adapter / self_model_mirror` 当前仍不能删；`emotiond/core.py` 与少量 legacy tool callers 仍在
 - `self_model_mirror` 的 real tool caller 已进一步收窄，archive report tools 已转为独立 archive rows，但 `emotiond/core.py` 仍在，因此还不能报 delete-ready
 - `self_model_adapter` 的 real tool caller 已进一步收窄，archive report tools 已转为独立 archive rows，但 `dual_repo_closed_loop_e2e.py` 与 `emotiond/core.py` 仍在，因此还不能报 delete-ready
+- `MVP15` reflection archive report / wrapper tools 已拆出为独立 archive rows，但 `emotiond/core.py` 仍然是 reflection legacy residue 的 live caller，所以 reflection 本体仍不能进入 delete-ready
 - 当前 stop boundary：`OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 仍是有意保留的 legacy compatibility harness；在未先决定它是否应转 archive/reference-only 前，继续削它的 live adapter caller 有删除风险
 - archive self-model docs 已完成降噪，当前不再是 blocker
 - `self-model` dual-authority 已收口，但 legacy adapter/mirror 仍有 tool/docs caller，当前还不能删
@@ -85,6 +87,7 @@
 - 当前下一步：先判定 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 是否仍需保留为 legacy compatibility proof surface；若答案是“保留”，则先转去收窄其他 non-formal docs/tool callers，而不是继续直接逼近 delete-ready
 - 当前下一步：继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs callers；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留，archive report tools 已从 blocker 中拆出
 - 当前下一步：`proto_self_restore` 的 file inventory residue 保持待后续低风险切片处理
+- 当前下一步：如果继续清理 reflection，只能先处理 `emotiond/core.py` 的 legacy caller 或把 reflection 也提升到独立 archive/reference-only 计划；当前波次不再把 MVP15 archive 工具视为 blocker
 
 ## Commands run / evidence
 

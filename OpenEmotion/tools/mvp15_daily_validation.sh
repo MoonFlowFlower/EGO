@@ -1,6 +1,6 @@
 #!/bin/bash
 # MVP15 Daily Validation Cron Script
-# Runs funnel tracking and integrity check daily
+# Historical archive/reference-only wrapper for funnel tracking and integrity check
 
 set -e
 
