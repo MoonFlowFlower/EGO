@@ -9,7 +9,7 @@
 ## Current state
 
 - current_layer: repo_authority_cleanup
-- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only_oe_mvp13_archive_evidence_only_archive_self_model_body_clarified
+- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only_oe_mvp13_archive_evidence_only_archive_self_model_body_clarified_archive_self_model_paths_clarified
 - completion_class: conditional_complete
 
 ## Completed work
@@ -32,6 +32,7 @@
 - 已将 `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 收紧为 archive report，不再直接引用 live `emotiond/self_model_adapter.py` 文件路径
 - 已为 5 份 archive self-model 证明文档补充历史快照声明，明确它们不代表当前 formal mainline 或当前 authority
 - 已进一步清理 5 份 archive self-model 文档内部的“主链/接入/可用”旧口径，统一改成历史 shadow / legacy compatibility snapshot 表述
+- 已将 archive self-model 文档中残留的非 archive 报告路径改回 `docs/archive/...`，并把 `main_chain_wiring_check.py` 固定为 historical snapshot 口径
 
 ## Last validation results
 
@@ -60,6 +61,7 @@
 - `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 当前不再把 live `emotiond/self_model_adapter.py` 文件路径列为 `OE_MVP:13` evidence
 - canonical/docs/artifact 当前只建立 admission boundary，不做物理迁移
 - archive self-model 文档当前只保留历史快照表述，不再把旧 wiring 结果写成 current formal mainline
+- archive self-model 文档当前也不再把 SelfModelAdapter 报告路径指向非 archive 文档位置
 
 ## Open risks
 

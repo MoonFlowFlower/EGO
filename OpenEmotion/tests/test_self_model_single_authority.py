@@ -136,6 +136,13 @@ def test_dual_repo_closed_loop_e2e_is_marked_legacy_compatibility_harness():
     assert "legacy compatibility harness" in source
 
 
+def test_main_chain_wiring_check_is_historical_snapshot_only():
+    source = (REPO_ROOT / "OpenEmotion/tools/main_chain_wiring_check.py").read_text(encoding="utf-8")
+    assert "Historical Snapshot" in source
+    assert "formal mainline verifier" in source
+    assert "live\nadapter or mirror authority" in source or "live adapter or mirror authority" in source
+
+
 def test_e2e_self_model_adapter_is_archive_based_and_does_not_import_live_adapter():
     source = (REPO_ROOT / "OpenEmotion/tools/e2e_self_model_adapter.py").read_text(encoding="utf-8")
     assert "archive/reference-only surface" in source
@@ -144,3 +151,10 @@ def test_e2e_self_model_adapter_is_archive_based_and_does_not_import_live_adapte
         "OpenEmotion/tools/e2e_self_model_adapter.py",
         "emotiond.self_model_adapter",
     ) is False
+
+
+def test_archive_self_model_docs_point_to_archive_report_path():
+    dual_repo_mainline = (REPO_ROOT / "OpenEmotion/docs/archive/DUAL_REPO_MAINLINE.md").read_text(encoding="utf-8")
+    closed_loop_report = (REPO_ROOT / "OpenEmotion/docs/archive/DUAL_REPO_CLOSED_LOOP_E2E_REPORT.md").read_text(encoding="utf-8")
+    assert "OpenEmotion/docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md" in dual_repo_mainline
+    assert "`docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md`" in closed_loop_report

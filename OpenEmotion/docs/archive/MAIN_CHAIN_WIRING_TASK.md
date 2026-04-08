@@ -35,7 +35,7 @@
 | 是否需要 mirror | 是（过渡期，当时的 snapshot 口径） |
 | 为什么需要 | 当时的 emotiond/core.py 依赖 legacy self_model，需要双轨运行验证 |
 | Mirror 位置 | emotiond/self_model_mirror.py (历史存在) |
-| 真相源位置 | openemotion/self_model/（当前 formal owner 以后续 single-authority 口径为准） |
+| 真相源位置 | openemotion/self_model/（历史 snapshot 口径） |
 
 ---
 
@@ -66,7 +66,7 @@
 | 是否有临时实现 | 是 |
 | 临时实现位置 | emotiond/self_model_mirror.py |
 | 删除/迁移时间 | MVP13 verified 后 |
-| 删除动作 | 移除 emotiond/self_model*.py |
+| 删除动作 | 移除 emotiond/self_model*.py（当时规划） |
 
 ---
 

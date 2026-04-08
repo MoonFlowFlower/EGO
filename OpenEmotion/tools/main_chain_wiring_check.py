@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """
-Main-Chain Wiring Verification Script
+Main-Chain Wiring Historical Snapshot
 
-Legacy compatibility verification for the old `emotiond/core.py` wiring path.
-This script is not the formal mainline verifier.
-
-NOT just module tests - checks that:
-1. New self_model is called by core.py
-2. Changes to new self_model affect core.py behavior
-3. Legacy and new can coexist in shadow mode
+Archive/reference-only surface for the old `emotiond/core.py` wiring path.
+This script is not the formal mainline verifier and no longer claims live
+adapter or mirror authority.
 """
 import sys
 from pathlib import Path
@@ -18,35 +14,29 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 def check_imports():
-    """Check if openemotion modules are imported in core.py."""
+    """Check historical markers in core.py."""
     print("=" * 60)
-    print("1. Checking imports in emotiond/core.py")
+    print("1. Checking historical markers in emotiond/core.py")
     print("=" * 60)
     
     core_path = Path(__file__).parent.parent / "emotiond" / "core.py"
     content = core_path.read_text()
     
     imports_openemotion = "from openemotion" in content or "import openemotion" in content
-    imports_self_model_adapter = "from emotiond.self_model_adapter" in content or "SelfModelAdapter" in content
     imports_self_model = "from emotiond.self_model" in content
-    imports_self_model_mirror = "from emotiond.self_model_mirror" in content
     enable_openemotion_flag = "ENABLE_OPENEMOTION_SELF_MODEL" in content
     
     print(f"  Imports openemotion modules: {imports_openemotion}")
-    print(f"  Imports SelfModelAdapter: {imports_self_model_adapter}")
     print(f"  ENABLE_OPENEMOTION_SELF_MODEL flag: {enable_openemotion_flag}")
     print(f"  Imports legacy self_model: {imports_self_model}")
-    print(f"  Imports self_model_mirror: {imports_self_model_mirror}")
     
-    # 判断是否已导入 OpenEmotion
-    openemotion_connected = imports_openemotion or imports_self_model_adapter
+    # Historical snapshot only: no live adapter or mirror signal here.
+    openemotion_connected = imports_openemotion
     
     return {
         "imports_openemotion": imports_openemotion,
-        "imports_self_model_adapter": imports_self_model_adapter,
         "enable_openemotion_flag": enable_openemotion_flag,
         "imports_legacy_self_model": imports_self_model,
-        "imports_mirror": imports_self_model_mirror,
         "openemotion_connected": openemotion_connected,
     }
 
@@ -115,13 +105,13 @@ def check_new_self_model_exists():
 def check_mirror_adapter():
     """Check whether the legacy mirror module still exists on disk."""
     print("\n" + "=" * 60)
-    print("4. Checking mirror adapter")
+    print("4. Checking historical mirror snapshot")
     print("=" * 60)
 
     mirror_path = Path(__file__).parent.parent / "emotiond" / "self_model_mirror.py"
     mirror_exists = mirror_path.exists()
-    print(f"  SelfModelMirrorAdapter module present: {mirror_exists}")
-    print("  Note: mirror is a legacy reference-only surface, not a formal mainline requirement")
+    print(f"  Historical mirror module present: {mirror_exists}")
+    print("  Note: mirror is a legacy reference-only snapshot, not a formal mainline requirement")
     return mirror_exists
 
 
@@ -169,7 +159,7 @@ def main():
     # Check 1: New self_model exists
     new_module_exists = results["new_self_model"]
     
-    # Check 2: Mirror adapter exists
+    # Check 2: Historical mirror snapshot exists
     mirror_exists = results["mirror_adapter"]
     
     # Check 3: Feature flags exist
@@ -186,7 +176,6 @@ def main():
     openemotion_imported = results["imports"]["openemotion_connected"]
     
     print(f"  New self_model module exists: {new_module_exists}")
-    print(f"  SelfModelAdapter imported: {results['imports']['imports_self_model_adapter']}")
     print(f"  Feature flags configured: {flags_exist}")
     print(f"  Shadow data collected: {shadow_data_exists}")
     print(f"  OpenEmotion connected to core.py: {openemotion_imported}")
@@ -195,23 +184,18 @@ def main():
     print("\n" + "-" * 60)
     
     if not openemotion_imported:
-        print("❌ WIRING NOT PROVEN")
+        print("❌ ARCHIVE SNAPSHOT INCOMPLETE")
         print("   OpenEmotion modules are NOT imported in emotiond/core.py")
-        print("   New self_model exists but is not connected to main chain")
+        print("   Historical snapshot cannot be reconstructed from current markers")
         return 1
-    elif not results["imports"]["imports_self_model_adapter"]:
-        print("⚠️ WIRING PARTIAL")
-        print("   OpenEmotion is imported directly, but SelfModelAdapter not used")
-        print("   Consider using adapter for shadow mode")
-        return 2
     elif not shadow_data_exists:
-        print("⚠️ WIRING EXISTS BUT NOT VERIFIED")
-        print("   SelfModelAdapter is imported, but no shadow data found")
-        print("   Need to run shadow mode and collect data")
+        print("⚠️ ARCHIVE SNAPSHOT EXISTS BUT NOT VERIFIED")
+        print("   Historical shadow data not found")
+        print("   Need archived shadow artifacts to complete the snapshot")
         return 2
     else:
-        print("✅ WIRING VERIFIED")
-        print("   SelfModelAdapter is imported and shadow data exists")
+        print("✅ ARCHIVE SNAPSHOT VERIFIED")
+        print("   Historical markers and archived shadow data are present")
         return 0
 
 

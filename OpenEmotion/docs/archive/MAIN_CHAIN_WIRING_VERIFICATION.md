@@ -18,7 +18,7 @@
 | 检查项 | 状态 | 说明 |
 |--------|------|------|
 | New self_model module exists | ❌ | 存在但需要 identity_handle 参数 |
-| Mirror adapter exists | ✅ | SelfModelMirrorAdapter 可用 |
+| Historical mirror snapshot present | ✅ | SelfModelMirrorAdapter 历史存在 |
 | Feature flags configured | ✅ | MVP13/14/15 flags 都是 true |
 | Shadow data collected | ✅ | MVP13: 4, MVP14: 4, MVP15: 1 |
 | OpenEmotion imported in core.py | ❌ | **未导入** |
@@ -36,7 +36,7 @@ emotiond/core.py 中:
 - from emotiond.self_model_mirror: True (mirror)
 ```
 
-**结论**: 新的 `openemotion.self_model` 在当时的 wiring snapshot 里没有被导入到历史主链候选路径。
+**结论**: 新的 `openemotion.self_model` 在当时的历史 wiring snapshot 里没有被导入到候选路径。
 
 ### 问题 2: SelfModel 实例化失败
 

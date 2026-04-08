@@ -105,6 +105,7 @@
 - 2026-04-08: `mvp13_daily_report.py` 已改为 archive-based 历史报告，不再真实 import mirror；原因是 legacy report 继续持有 live mirror import 会污染 delete admission 口径
 - 2026-04-08: `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 已收紧为 archive report，不再引用 live `emotiond/self_model_adapter.py` 文件路径；原因是当前 authority source 不应继续把 legacy adapter 文件暴露成 current evidence surface
 - 2026-04-08: 5 份 archive self-model 文档内部的“主链/接入/可用”旧口径已清理为历史 shadow / legacy compatibility snapshot 表述；原因是 archive docs 不应继续冒充 current formal mainline
+- 2026-04-08: archive self-model 文档中残留的 `docs/E2E_SELF_MODEL_ADAPTER_REPORT.md` 已统一改回 `docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md`，`main_chain_wiring_check.py` 也固定为 historical snapshot 口径；原因是 archive surface 不应继续引用非 archive 路径或暗示 live wiring verifier
 
 ## Surprises / discoveries
 

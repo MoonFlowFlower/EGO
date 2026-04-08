@@ -196,4 +196,4 @@ artifacts/self_model_adapter/shadow_*.json
 | `tools/dual_repo_closed_loop_e2e.py` | 测试脚本 |
 | `artifacts/dual_repo_closed_loop/` | 测试产物 |
 | `emotiond/self_model_adapter.py` | 历史 wiring |
-| `docs/E2E_SELF_MODEL_ADAPTER_REPORT.md` | Adapter 验证报告 |
+| `docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md` | Adapter 历史验证报告 |

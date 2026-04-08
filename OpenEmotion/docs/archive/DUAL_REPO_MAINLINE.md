@@ -77,7 +77,7 @@ User/Telegram → EgoCore ingress/runtime → OpenEmotion /cycle → EgoCore 决
 |------|------|
 | CYCLE_CORE_V1 | OpenEmotion/artifacts/eval/ws_c1_verification_20260319.md |
 | WS_C1 | 6/6 验收点通过，Telegram E2E 真实触发 |
-| SelfModelAdapter | OpenEmotion/docs/E2E_SELF_MODEL_ADAPTER_REPORT.md |
+| SelfModelAdapter | OpenEmotion/docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md |
 | CLOSED_LOOP_E2E_V3 | EgoCore/docs/DUAL_REPO_CLOSED_LOOP_E2E_V3_REPORT.md |
 
 ### 当时 Shadow Running
