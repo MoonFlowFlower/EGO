@@ -121,3 +121,25 @@ def test_program_state_marks_adapter_evidence_as_historical_shadow_only():
     assert "OpenEmotion/docs/archive/E2E_SELF_MODEL_ADAPTER_REPORT.md" in text
     assert "历史 SelfModelAdapter shadow wiring 证据" in text
     assert "adapter 非 formal mainline" in text
+
+
+def test_mvp13_daily_report_is_archive_based_and_does_not_import_live_mirror():
+    assert _imports_module(
+        "OpenEmotion/tools/mvp13_daily_report.py",
+        "emotiond.self_model_mirror",
+    ) is False
+
+
+def test_dual_repo_closed_loop_e2e_is_marked_legacy_compatibility_harness():
+    source = (REPO_ROOT / "OpenEmotion/tools/dual_repo_closed_loop_e2e.py").read_text(encoding="utf-8")
+    assert "legacy compatibility harness" in source
+
+
+def test_e2e_self_model_adapter_is_archive_based_and_does_not_import_live_adapter():
+    source = (REPO_ROOT / "OpenEmotion/tools/e2e_self_model_adapter.py").read_text(encoding="utf-8")
+    assert "archive/reference-only surface" in source
+    assert "formal mainline verifier" in source
+    assert _imports_module(
+        "OpenEmotion/tools/e2e_self_model_adapter.py",
+        "emotiond.self_model_adapter",
+    ) is False

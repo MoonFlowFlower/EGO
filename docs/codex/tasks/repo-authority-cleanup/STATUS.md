@@ -9,7 +9,7 @@
 ## Current state
 
 - current_layer: repo_authority_cleanup
-- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based
+- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based
 - completion_class: conditional_complete
 
 ## Completed work
@@ -27,6 +27,7 @@
 - 已新增 cleanup admission gate：`scripts/codex/verify_cleanup_admission.py`
 - 已重新生成 `EgoCore/docs/generated/*`，清除 `proto_self_restore` 的 generated import-map stale edge；当前剩余 residue 为 generated file inventory 与 compat/historical docs
 - 已移除 `OpenEmotion/tools/main_chain_wiring_check.py` 对 `emotiond.self_model_mirror` 的真实 import；`OpenEmotion/tools/mvp13_daily_report.py` 也已改为 archive-based，不再真实 import mirror
+- 已将 `OpenEmotion/tools/e2e_self_model_adapter.py` 改为 archive/reference-only 报告，不再导入 live adapter
 - 已把 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 文案明确降级为 legacy compatibility harness；`OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 也已收紧为历史 shadow 证据口径
 
 ## Last validation results
@@ -34,8 +35,8 @@
 - mode: milestone-4 scoped verification
 - result: passed
 - summary:
-  - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"` -> `6 passed`
-  - `python3 -m py_compile OpenEmotion/tools/mvp13_daily_report.py OpenEmotion/tools/dual_repo_closed_loop_e2e.py OpenEmotion/tests/test_self_model_single_authority.py`
+  - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"` -> `9 passed`
+  - `python3 -m py_compile OpenEmotion/tools/mvp13_daily_report.py OpenEmotion/tools/dual_repo_closed_loop_e2e.py OpenEmotion/tools/e2e_self_model_adapter.py OpenEmotion/tests/test_self_model_single_authority.py`
   - `python3 scripts/codex/verify_repo.py --mode fast` -> passed
   - scoped `git diff --check` -> passed
 
@@ -52,6 +53,7 @@
 - `proto_self_restore` 当前 formal caller 仍为 0，package re-export 与 generated import-map stale edge都已清除；删除 admission 现在只剩 generated file inventory 与 compat/historical docs residue
 - `self_model_mirror` 当前仍有 legacy daemon callers，但 `main_chain_wiring_check.py` 与 `mvp13_daily_report.py` 都不再作为真实 code caller；`OE_MVP:13` 也不再把 adapter 口径写成 current mainline
 - `dual_repo_closed_loop_e2e.py` 当前被明确标成 legacy compatibility harness，不再允许被误读为 formal mainline verifier
+- `e2e_self_model_adapter.py` 当前被明确标成 archive/reference-only 报告，不再允许被误读为 live adapter exercise harness
 - canonical/docs/artifact 当前只建立 admission boundary，不做物理迁移
 
 ## Open risks
@@ -60,6 +62,7 @@
 - `proto_self_restore` 当前虽已无代码 caller，但 generated file inventory 与 compat/historical docs residue 仍在，不能直接删
 - `self_model_adapter / self_model_mirror` 当前仍不能删；`emotiond/core.py` 与少量 legacy tool callers 仍在
 - `self_model_mirror` 的 real tool caller 已进一步收窄，但 `mvp13_daily_report.py` 仍保留 archive-based 历史报表角色，因此还不能报 delete-ready
+- `self_model_adapter` 的 real tool caller 已进一步收窄，但 `dual_repo_closed_loop_e2e.py` 与 `emotiond/core.py` 仍在，因此还不能报 delete-ready
 - `self-model` dual-authority 已收口，但 legacy adapter/mirror 仍有 tool/docs caller，当前还不能删
 - reflection legacy residue 仍有 `emotiond/core.py` caller；当前只能维持 `reference_only`
 - artifacts/logs 仍未物理迁移；archive/current 目录现在只是 boundary marker
@@ -98,3 +101,4 @@
 - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_doc_system_inventory_builder.py -q -s`
 - `python3 -m py_compile OpenEmotion/tools/mvp13_daily_report.py OpenEmotion/tools/dual_repo_closed_loop_e2e.py OpenEmotion/tests/test_self_model_single_authority.py`
 - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"`
+- `python3 -m py_compile OpenEmotion/tools/e2e_self_model_adapter.py OpenEmotion/tests/test_self_model_single_authority.py`
