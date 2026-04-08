@@ -12,6 +12,8 @@ C. 结构化契约稳定
 D. 双边 artifacts 可对账
 E. 红线不破
 F. 闭环可重复
+
+This is a legacy compatibility harness, not the formal mainline verifier.
 """
 import os
 import sys
