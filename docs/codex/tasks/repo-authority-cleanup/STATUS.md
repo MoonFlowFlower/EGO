@@ -9,7 +9,7 @@
 ## Current state
 
 - current_layer: repo_authority_cleanup
-- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified
+- main_chain_status: phase0_truth_map_landed_identity_baseline_confirmed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_proto_self_restore_inventory_residue_only
 - completion_class: conditional_complete
 
 ## Completed work
@@ -25,7 +25,7 @@
 - 已移除 `EgoCore/app/openemotion_adapter/__init__.py` 中对 `ProtoSelfRestore` 的 package re-export；当前只剩 docs/generated residue
 - 已建立 canonical/archive boundary marker：`docs/canonical/README.md`、`docs/archive/README.md`、`artifacts/current/README.md`、`artifacts/archive/README.md`
 - 已新增 cleanup admission gate：`scripts/codex/verify_cleanup_admission.py`
-- 已重新生成 `EgoCore/docs/generated/*`，清除 `proto_self_restore` 的 generated import-map stale edge；当前剩余 residue 为 generated file inventory 与 compat/historical docs
+- 已重新生成 `EgoCore/docs/generated/*`，清除 `proto_self_restore` 的 generated import-map stale edge；当前剩余 residue 收窄为 generated file inventory
 - 已移除 `OpenEmotion/tools/main_chain_wiring_check.py` 对 `emotiond.self_model_mirror` 的真实 import；`OpenEmotion/tools/mvp13_daily_report.py` 也已改为 archive-based，不再真实 import mirror
 - 已将 `OpenEmotion/tools/e2e_self_model_adapter.py` 改为 archive/reference-only 报告，不再导入 live adapter
 - 已把 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 文案明确降级为 legacy compatibility harness；`OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 也已收紧为历史 shadow 证据口径
@@ -50,8 +50,8 @@
 - `self-model` 本轮后的唯一 authority 固定为 `openemotion.self_model/*`；`openemotion.proto_self.self_model` 仅保留 active compute/proposal substrate 角色
 - `emotiond/self_model_adapter.py` 固定为 `compatibility_only`，`emotiond/self_model_mirror.py` 固定为 `reference_only`
 - `drives / reflection / developmental` 本轮只做 caller/authority 定性，不改 owner/substrate 语义
-- `proto_self_restore` 当前 formal caller 仍为 0，且 package re-export 已被清除；删除 admission 现在只剩 docs/generated residue
-- `proto_self_restore` 当前 formal caller 仍为 0，package re-export 与 generated import-map stale edge都已清除；删除 admission 现在只剩 generated file inventory 与 compat/historical docs residue
+- `proto_self_restore` 当前 formal caller 仍为 0，且 package re-export 已被清除；删除 admission 现在只剩 generated file inventory residue
+- `proto_self_restore` 当前 formal caller 仍为 0，package re-export 与 generated import-map stale edge都已清除；删除 admission 现在只剩 generated file inventory residue
 - `self_model_mirror` 当前仍有 legacy daemon callers，但 `main_chain_wiring_check.py` 与 `mvp13_daily_report.py` 都不再作为真实 code caller；`OE_MVP:13` 也不再把 adapter 口径写成 current mainline
 - `dual_repo_closed_loop_e2e.py` 当前被明确标成 legacy compatibility harness，不再允许被误读为 formal mainline verifier
 - `e2e_self_model_adapter.py` 当前被明确标成 archive/reference-only 报告，不再允许被误读为 live adapter exercise harness
@@ -60,7 +60,7 @@
 ## Open risks
 
 - worktree 脏文件很多，提交必须极度 scoped
-- `proto_self_restore` 当前虽已无代码 caller，但 generated file inventory 与 compat/historical docs residue 仍在，不能直接删
+- `proto_self_restore` 当前虽已无代码 caller，但 generated file inventory residue 仍在，不能直接删
 - `self_model_adapter / self_model_mirror` 当前仍不能删；`emotiond/core.py` 与少量 legacy tool callers 仍在
 - `self_model_mirror` 的 real tool caller 已进一步收窄，但 `mvp13_daily_report.py` 仍保留 archive-based 历史报表角色，因此还不能报 delete-ready
 - `self_model_adapter` 的 real tool caller 已进一步收窄，但 `dual_repo_closed_loop_e2e.py` 与 `emotiond/core.py` 仍在，因此还不能报 delete-ready
@@ -74,7 +74,7 @@
 
 - 当前下一步：继续做 `delete admission proof and generated/docs cleanup`，优先收窄 `self_model_adapter / self_model_mirror` 的剩余 legacy daemon/docs callers；`drives / reflection / developmental` 仍不改语义
 - 当前下一步：先判定 `OpenEmotion/tools/dual_repo_closed_loop_e2e.py` 是否仍需保留为 legacy compatibility proof surface；若答案是“保留”，则先转去收窄其他 non-formal docs/tool callers，而不是继续直接逼近 delete-ready
-- 当前下一步：先转去处理 `proto_self_restore` 的 inventory/docs residue；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留
+- 当前下一步：先转去处理 `proto_self_restore` 的 file inventory residue；`dual_repo_closed_loop_e2e.py` 暂按 legacy proof surface 保留
 
 ## Commands run / evidence
 

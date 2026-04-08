@@ -4,6 +4,7 @@
 - `EgoCore:app/main.py` — python-no-obvious-import-hit
 - `EgoCore:egocore/adapters/test_openemotion_adapter.py` — python-no-obvious-import-hit
 - `EgoCore:app/bridges/openemotion_bridge.py` — python-no-obvious-import-hit
+- `EgoCore:app/openemotion_adapter/proto_self_restore.py` — python-no-obvious-import-hit (known delete-candidate; inventory residue only)
 - `EgoCore:app/runtime/cron_driver.py` — python-no-obvious-import-hit
 - `EgoCore:app/runtime/artifact_state.py` — python-no-obvious-import-hit
 - `EgoCore:app/runtime/control_commands.py` — python-no-obvious-import-hit

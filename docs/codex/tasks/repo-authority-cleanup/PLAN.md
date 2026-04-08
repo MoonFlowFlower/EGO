@@ -110,7 +110,7 @@
 - 当前 worktree 已存在大量与本任务无关的脏文件；提交时必须严格 scoped
 - `self-model` legacy adapter/mirror 当前 formal caller 为 0，但仍有 tools/docs/generated caller
 - `proto_self_restore.py` formal caller 为 0，但 `EgoCore/app/openemotion_adapter/__init__.py` 仍 re-export 它，删除 admission 不能直接跳过
-- `proto_self_restore.py` 当前仍不能删；虽然 package re-export 和 generated import-map stale edge 已清掉，但 generated file inventory 与 compat/historical docs residue 还在
+- `proto_self_restore.py` 当前仍不能删；虽然 package re-export 和 generated import-map stale edge 已清掉，但 generated file inventory residue 还在
 
 ## Outcomes / retrospective
 
@@ -121,5 +121,5 @@
   - `proto_self_restore` 是否已可直接删除
   - drives/reflection/developmental 的删除 admission 还不清楚
 - 下一步最小闭环动作：
-  - 继续收窄 `proto_self_restore` 的 inventory/docs residue
+  - 继续收窄 `proto_self_restore` 的 file inventory residue
   - 再进入 `self_model_adapter / self_model_mirror` 的 tool/docs caller 收窄
