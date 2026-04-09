@@ -227,9 +227,9 @@ flowchart TD
 | `WP16 / MVP21` | initiative realization | `maintenance_mode` |
 | `WP17 / MVP22` | long-horizon self-continuity | `authority_frozen / task_package_ready` |
 
-### 4.4 当前四类能力的单一权威收口
+### 4.4 当前四类能力的单一权威收口（历史命名保留；实际已扩展到 developmental）
 
-当前这四类能力的 authority 以 `docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md` 为准：
+当前这五类能力的 authority 以 `docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md` 为准：
 
 | 能力 | formal owner | active substrate | 当前口径 |
 |---|---|---|---|
@@ -237,6 +237,23 @@ flowchart TD
 | `self-model` | `openemotion.self_model/*` | `openemotion.proto_self.self_model` + v1 `SelfModel` | formal owner 是唯一 authority；substrate 仍是 active compute/proposal layer；`OpenEmotion/emotiond/self_model_adapter.py` 与 `OpenEmotion/emotiond/self_model_mirror.py` 已从 repo 删除 |
 | `drives / appraisal` | `openemotion.endogenous_drives/*` | `openemotion.proto_self.appraisal` + v1 `DriveField` | formal owner 是唯一 authority；`drive_adapter.py` 只是 compat/projection helper；`emotiond/drives/*` 只是 thin compat re-export surfaces；substrate 仅保留为 thin compute/proposal layer |
 | `reflection / structured revision` | `openemotion.reflective_self/*` | `openemotion.proto_self.reflection` | formal owner 是唯一 authority；v1 `reflection_note` 只保留 transient trigger 语义 |
+| `developmental continuity` | `openemotion.developmental_self/*` | `OpenEmotion/emotiond/developmental_core/*` | formal owner 是唯一 authority；`proto_self_v2/developmental_self_context.py` + `proto_self_v2/developmental.py` 仍是 live caller/helper；`emotiond/developmental/*` 只是 wrapper/reference surface；MVP16 工具与测试只作为 proof/e2e harness |
+
+### 4.4.1 developmental live caller / proof 口径
+
+- `developmental` 当前 formal owner 是 `openemotion.developmental_self/*`
+- `OpenEmotion/emotiond/developmental_core/*` 当前仍是 implementation library，不是 authority
+- 当前 live caller path 仍包括：
+  - `EgoCore/app/runtime_v2/proto_self_runtime.py::_apply_developmental_self_writeback`
+  - `OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py`
+  - `OpenEmotion/openemotion/proto_self_v2/developmental.py`
+- 当前 proof/e2e harness 仍包括：
+  - `OpenEmotion/tests/mvp16/*`
+  - `OpenEmotion/tools/verify_mvp16_mainline_wiring.py`
+  - `OpenEmotion/tools/run_mvp16_controlled_observation*.py`
+  - `OpenEmotion/tools/run_mvp16_causal_validation.py`
+- `OpenEmotion/emotiond/developmental/*` 仅保留为 wrapper/reference surface
+- `OpenEmotion/emotiond/developmental/*` 只是 legacy wrapper/reference surface；`OpenEmotion/tests/mvp16/*` 与 `OpenEmotion/tools/verify_mvp16_mainline_wiring.py` 只是 proof/e2e harness
 
 ## 5. 当前“入口到出口”应如何理解
 

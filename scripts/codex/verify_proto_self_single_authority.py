@@ -18,6 +18,11 @@ PROGRAM_STATE = ROOT / "EgoCore" / "docs" / "PROGRAM_STATE_UNIFIED.yaml"
 TEST_FILE = ROOT / "OpenEmotion" / "tests" / "test_self_model_single_authority.py"
 IDENTITY_TEST_FILE = ROOT / "OpenEmotion" / "tests" / "test_identity_single_authority.py"
 DRIVES_WIRING_TEST = ROOT / "OpenEmotion" / "tests" / "mvp14" / "test_mainline_wiring.py"
+DEVELOPMENTAL_REFERENCE_DEMOTION_TEST = ROOT / "OpenEmotion" / "tests" / "mvp16" / "test_mainline_reference_demotion.py"
+DEVELOPMENTAL_OWNER_INFRA_TEST = ROOT / "OpenEmotion" / "tests" / "mvp16" / "test_developmental_owner_infra.py"
+DEVELOPMENTAL_PROTO_SELF_INTEGRATION_TEST = ROOT / "OpenEmotion" / "tests" / "mvp16" / "test_developmental_proto_self_integration.py"
+DEVELOPMENTAL_CAUSAL_PROOF_TEST = ROOT / "OpenEmotion" / "tests" / "mvp16" / "test_developmental_causal_formal_proof.py"
+DEVELOPMENTAL_WIRING_TOOL = ROOT / "OpenEmotion" / "tools" / "verify_mvp16_mainline_wiring.py"
 DELETED_PATHS = (
     ROOT / "OpenEmotion" / "emotiond" / "self_model_adapter.py",
     ROOT / "OpenEmotion" / "emotiond" / "self_model_mirror.py",
@@ -33,8 +38,12 @@ REQUIRED_DOC_SNIPPETS = {
         "`self-model`",
         "`drives / appraisal`",
         "`reflection / structured revision`",
+        "`developmental continuity`",
         "当前 formal mainline 固定为：",
         "legacy adapter/mirror 已物理删除",
+        "`OpenEmotion/emotiond/developmental_core/*`",
+        "`OpenEmotion/emotiond/developmental/*`",
+        "`OpenEmotion/tests/mvp16/*`",
     ],
     ROOT_README: [
         "docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md",
@@ -44,8 +53,11 @@ REQUIRED_DOC_SNIPPETS = {
     ],
     OPENEMOTION_README: [
         "../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md",
+        "`self-model / drives / reflection` 的 formal owner 已接入；drives 的 compat/projection helper 与 thin re-export surfaces 已收口，v1 substrate 仍是 thin compute/proposal layer",
         "`identity invariants` 当前仍由 v1 substrate 承担 runtime authority",
         "`self-model / drives / reflection` 的 formal owner 已接入；drives 的 compat/projection helper 与 thin re-export surfaces 已收口，v1 substrate 仍是 thin compute/proposal layer",
+        "`self-model / drives / reflection / developmental` 的 formal owner 已接入；drives 的 compat/projection helper 与 thin re-export surfaces 已收口，v1 substrate 仍是 thin compute/proposal layer",
+        "`developmental` 的 implementation library 是 `OpenEmotion/emotiond/developmental_core/*`；live caller path 仍是 `runtime_v2/proto_self_runtime.py::_apply_developmental_self_writeback` + `proto_self_v2/developmental_self_context.py` + `proto_self_v2/developmental.py`；`emotiond/developmental/*` 仅保留为 wrapper/reference surface，`MVP16` 工具与测试只作为 proof/e2e harness",
         "legacy adapter/mirror 已删除",
         "已从 repo 删除，不再是 formal mainline",
     ],
@@ -55,7 +67,17 @@ REQUIRED_DOC_SNIPPETS = {
         "`identity invariants` | `openemotion.proto_self.state.IdentityInvariants`",
         "formal owner 是唯一 authority；`drive_adapter.py` 只是 compat/projection helper；`emotiond/drives/*` 只是 thin compat re-export surfaces；substrate 仅保留为 thin compute/proposal layer",
         "v1 `reflection_note` 只保留 transient trigger 语义",
+        "`developmental continuity` | `openemotion.developmental_self/*` | `OpenEmotion/emotiond/developmental_core/*`",
+        "`OpenEmotion/emotiond/developmental/*` 只是 legacy wrapper/reference surface；`OpenEmotion/tests/mvp16/*` 与 `OpenEmotion/tools/verify_mvp16_mainline_wiring.py` 只是 proof/e2e harness",
         "已从 repo 删除",
+    ],
+    DEVELOPMENTAL_WIRING_TOOL: [
+        "current_runtime_developmental_consumer_present_legacy_reference_only",
+        "OpenEmotion/openemotion/developmental_self/*",
+        "OpenEmotion/emotiond/developmental_core/*",
+        "OpenEmotion/emotiond/developmental/*",
+        "OpenEmotion/tests/mvp16/*",
+        "OpenEmotion/tools/verify_mvp16_mainline_wiring.py",
     ],
     PATH_REGISTER: [
         "| `EgoCore/app/openemotion_adapter/proto_self_restore.py` | `compatibility_only` |",
@@ -131,11 +153,57 @@ CODE_REQUIRED_SNIPPETS = {
         'assert "compute_action_bias_from_priority_snapshot" in adapter_text',
         'assert "ACTION_DRIVE_WEIGHTS" in helper_text',
     ],
+    DEVELOPMENTAL_REFERENCE_DEMOTION_TEST: [
+        'assert report["formal_owner"]["developmental_self_package_present"] is True',
+        'assert report["current_runtime_mainline"]["proto_self_kernel_reads_developmental_context"] is True',
+        'assert report["current_runtime_mainline"]["runtime_v2_injects_developmental_context"] is True',
+        'assert report["current_runtime_mainline"]["runtime_v2_records_developmental_hooks"] is True',
+        'assert report["status"] == "current_runtime_developmental_consumer_present_legacy_reference_only"',
+    ],
+    DEVELOPMENTAL_OWNER_INFRA_TEST: [
+        'assert tuple(payload.keys()) == PHASE1_AUTHORITATIVE_FIELDS',
+        'assert RUNTIME_LOCAL_PROJECTION_FIELD == "proto_self_v2.state.developmental_self"',
+        'assert "runtime-local bounded projection" in RUNTIME_LOCAL_PROJECTION_SEMANTICS',
+        'assert not verdict.accepted',
+        'assert "invalid_behavioral_authority:proposal_1:reply" in verdict.violations',
+    ],
+    DEVELOPMENTAL_PROTO_SELF_INTEGRATION_TEST: [
+        'assert output.developmental_writeback_candidate is not None',
+        'assert output.developmental_writeback_candidate["required_gate"] == "developmental_writeback_gate"',
+        'assert output.developmental_proposal_candidates[0]["promotion_level"] == "controlled_axis"',
+        'assert output.developmental_self_delta["proposal_candidate_count"] == 1',
+        'assert output.trace_payload["developmental_context"]["host_hint_field"] == "runtime_summary.developmental_context"',
+    ],
+    DEVELOPMENTAL_CAUSAL_PROOF_TEST: [
+        'assert intervention.developmental_proposal_candidates',
+        'assert intervention.policy_hint["developmental_growth_bias"] == "elevated"',
+        'assert intervention.developmental_writeback_candidate["behavioral_authority"] == "none"',
+        'assert intervention.developmental_priority_hints["identity_preservation_guard"] == "strict"',
+        'assert control.developmental_proposal_candidates == []',
+    ],
     ROOT / "OpenEmotion" / "openemotion" / "self_model" / "model.py": [
         'AUTHORITY_STATUS = "formal_owner"',
         'FORMAL_MAINLINE_ENABLED = True',
         'LIVE_RUNTIME_AUTHORITY = "openemotion.self_model"',
         'ACTIVE_RUNTIME_SUBSTRATE = "openemotion.proto_self.self_model"',
+    ],
+    ROOT / "OpenEmotion" / "openemotion" / "developmental_self" / "__init__.py": [
+        "get_developmental_self_owner",
+        "reset_developmental_self_owner",
+        "DevelopmentalSelfOwner",
+        "REQUIRED_WRITEBACK_GATE",
+        "RUNTIME_LOCAL_PROJECTION_FIELD",
+    ],
+    ROOT / "OpenEmotion" / "openemotion" / "proto_self_v2" / "developmental.py": [
+        "from emotiond.developmental_core import",
+        "def run_developmental_cycle",
+        "DevelopmentalShadowState",
+    ],
+    ROOT / "OpenEmotion" / "openemotion" / "proto_self_v2" / "developmental_self_context.py": [
+        "REQUIRED_WRITEBACK_GATE",
+        "developmental_self_delta",
+        "developmental_writeback_candidate",
+        "runtime_summary.developmental_self_context",
     ],
     ROOT / "OpenEmotion" / "openemotion" / "endogenous_drives" / "action_bias.py": [
         "ACTION_DRIVE_WEIGHTS",
@@ -244,6 +312,8 @@ def main() -> int:
     for rel_path in (
         "OpenEmotion/openemotion/proto_self_v2/kernel.py",
         "OpenEmotion/openemotion/proto_self_v2/self_model_context.py",
+        "OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py",
+        "OpenEmotion/openemotion/proto_self_v2/developmental.py",
         "EgoCore/app/runtime_v2/proto_self_runtime.py",
         "EgoCore/app/openemotion_adapter/proto_self_adapter.py",
     ):
@@ -251,12 +321,56 @@ def main() -> int:
             if _imports_module(rel_path, module_prefix):
                 errors.append(f"{rel_path} must not import legacy self-model surface {module_prefix}")
 
+    if not DEVELOPMENTAL_REFERENCE_DEMOTION_TEST.exists():
+        errors.append(
+            f"missing required developmental reference demotion test: {DEVELOPMENTAL_REFERENCE_DEMOTION_TEST.relative_to(ROOT)}"
+        )
+    else:
+        developmental_reference_text = DEVELOPMENTAL_REFERENCE_DEMOTION_TEST.read_text(encoding="utf-8")
+        for snippet in CODE_REQUIRED_SNIPPETS[DEVELOPMENTAL_REFERENCE_DEMOTION_TEST]:
+            if snippet not in developmental_reference_text:
+                errors.append(
+                    f"{DEVELOPMENTAL_REFERENCE_DEMOTION_TEST.relative_to(ROOT)} missing required developmental proof assertion: {snippet}"
+                )
+
+    for developmental_test in (
+        DEVELOPMENTAL_OWNER_INFRA_TEST,
+        DEVELOPMENTAL_PROTO_SELF_INTEGRATION_TEST,
+        DEVELOPMENTAL_CAUSAL_PROOF_TEST,
+    ):
+        if not developmental_test.exists():
+            errors.append(f"missing required developmental test: {developmental_test.relative_to(ROOT)}")
+            continue
+        developmental_text = developmental_test.read_text(encoding="utf-8")
+        for snippet in CODE_REQUIRED_SNIPPETS[developmental_test]:
+            if snippet not in developmental_text:
+                errors.append(
+                    f"{developmental_test.relative_to(ROOT)} missing required developmental authority assertion: {snippet}"
+                )
+
     for rel_path in (
         "OpenEmotion/openemotion/proto_self_v2/self_model_context.py",
         "EgoCore/app/runtime_v2/proto_self_runtime.py",
     ):
         if not _imports_module(rel_path, "openemotion.self_model"):
             errors.append(f"{rel_path} must import openemotion.self_model on the formal mainline")
+
+    for rel_path in (
+        "EgoCore/app/runtime_v2/proto_self_runtime.py",
+        "OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py",
+    ):
+        if not _imports_module(rel_path, "openemotion.developmental_self"):
+            errors.append(f"{rel_path} must import openemotion.developmental_self on the formal developmental mainline")
+
+    if not _imports_module("OpenEmotion/openemotion/proto_self_v2/developmental.py", "emotiond.developmental_core"):
+        errors.append(
+            "OpenEmotion/openemotion/proto_self_v2/developmental.py must import emotiond.developmental_core as the live implementation library"
+        )
+
+    if _imports_module("OpenEmotion/emotiond/developmental/__init__.py", "openemotion.developmental_self"):
+        errors.append(
+            "OpenEmotion/emotiond/developmental/__init__.py must not import openemotion.developmental_self as a live authority surface"
+        )
 
     for rel_path in (
         "OpenEmotion/openemotion/proto_self_v2/kernel.py",

@@ -27,6 +27,7 @@
 | `self-model` | `openemotion.self_model/*` | `openemotion.proto_self.self_model` + v1 `SelfModel` state | `OpenEmotion/emotiond/self_model_adapter.py` (deleted) | `OpenEmotion/emotiond/self_model_mirror.py` (deleted) | formal owner 是唯一 authority；legacy adapter/mirror 已物理删除，不再作为 live-ish blocker |
 | `drives / appraisal` | `openemotion.endogenous_drives/*` | `openemotion.proto_self.appraisal` + v1 `DriveField` | `OpenEmotion/emotiond/drive_adapter.py`, `OpenEmotion/emotiond/drives/*` | 无新增 reference-only | formal owner 是唯一 authority；`drive_adapter.py` 只是 compat/projection helper，`emotiond/drives/*` 只是 thin compat re-export surfaces；v1 substrate 仅保留为 thin compute/proposal substrate，不再叙述成 authority |
 | `reflection / structured revision` | `openemotion.reflective_self/*` | `openemotion.proto_self.reflection` | 无 | `OpenEmotion/emotiond/reflection_adapter.py`, `OpenEmotion/emotiond/reflection_shadow.py`, `OpenEmotion/emotiond/reflection_engine/*`, `OpenEmotion/emotiond/reflection.py`, `OpenEmotion/emotiond/self_counterfactual.py` | formal owner 是唯一 authority；v1 `reflection_note` 只保留 transient trigger 语义，不再叙述成 structured revision authority |
+| `developmental continuity` | `openemotion.developmental_self/*` | `OpenEmotion/emotiond/developmental_core/*` | `OpenEmotion/emotiond/developmental/*` | `OpenEmotion/tests/mvp16/*`, `OpenEmotion/tools/verify_mvp16_mainline_wiring.py`, `OpenEmotion/tools/run_mvp16_controlled_observation*.py`, `OpenEmotion/tools/run_mvp16_causal_validation.py` | formal owner 是唯一 authority；implementation library 仍是 live but non-authoritative substrate；legacy wrappers 和 MVP16 harness 只保留作 proof/reference |
 
 ### 当前必须明确的结论
 
@@ -38,6 +39,17 @@
 - 当前由 compat/projection helper 与 thin re-export surface 承接的 drives 路径：
   - `OpenEmotion/emotiond/drive_adapter.py`
   - `OpenEmotion/emotiond/drives/*`
+- 当前 developmental 的 live caller path：
+  - `EgoCore/app/runtime_v2/proto_self_runtime.py::_apply_developmental_self_writeback`
+  - `OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py`
+  - `OpenEmotion/openemotion/proto_self_v2/developmental.py`
+- 当前 developmental 的 proof/e2e harness：
+  - `OpenEmotion/tests/mvp16/*`
+  - `OpenEmotion/tools/verify_mvp16_mainline_wiring.py`
+  - `OpenEmotion/tools/run_mvp16_controlled_observation*.py`
+  - `OpenEmotion/tools/run_mvp16_causal_validation.py`
+- 当前 developmental 的 compat/reference surface：
+  - `OpenEmotion/emotiond/developmental/*`
 - 当前只是名义 owner、尚未真正接入 formal mainline 的能力：
   - `openemotion.identity.identity_invariants`
   - `openemotion.identity.long_term_self_summary`
@@ -67,19 +79,27 @@
 | `OpenEmotion/emotiond/reflection_engine/*` | reference-only | 历史 reflection engine 参考面，不是当前 formal mainline |
 | `OpenEmotion/emotiond/reflection.py` | reference-only | 历史 reflection support residue，不是当前 reflection authority |
 | `OpenEmotion/emotiond/self_counterfactual.py` | reference-only | 历史 counterfactual support residue，不是当前 reflection authority |
+| `OpenEmotion/openemotion/developmental_self/*` | 保留 | 当前 formal developmental owner |
+| `OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py` | 保留 | current live developmental projection helper |
+| `OpenEmotion/openemotion/proto_self_v2/developmental.py` | 保留 | current live developmental consumer / implementation bridge |
+| `OpenEmotion/emotiond/developmental_core/*` | 保留 | current developmental implementation library |
+| `OpenEmotion/emotiond/developmental/*` | reference-only | legacy developmental wrapper surface，不是 current authority |
+| `OpenEmotion/tests/mvp16/*` | reference-only | developmental proof/e2e harness |
+| `OpenEmotion/tools/verify_mvp16_mainline_wiring.py` | reference-only | developmental proof/e2e wiring verifier |
 ## C. Minimum Change Plan
 
 ### 1. Decision Layer
 
 - 产出本决策文档
-- 明确四类能力的：
+- 明确五类能力的：
   - formal owner
   - active substrate
   - compat/shim
   - reference-only
+- 以及 developmental 的 live caller / proof harness / compat-reference 边界
 - 明确：
   - `proto_self_v2` 是 formal surface，不是这四类能力各自的 owner
-  - `emotiond.developmental_core` 不在本轮处理范围内
+  - `emotiond.developmental_core` 是 developmental 的 implementation library，不是 authority
   - `drives / appraisal` 的 compat/projection helper 已收敛为 `OpenEmotion/emotiond/drive_adapter.py`
   - `emotiond/drives/*` 已降为 thin compat re-export surfaces，不再拥有当前 authority
 
@@ -113,4 +133,5 @@
 - `OpenEmotion/emotiond/self_model_mirror.py` 已物理删除
 - 这两条路径不再属于 current blocker / compat consumer / live-ish blocker
 
-3. `identity invariants` 若将来要真正收口到 formal owner，必须另开任务，把 `openemotion.identity.identity_invariants` 接进 mainline；本轮不做这件事。
+3. `developmental` 当前已明确为单一 authority + implementation library split；若将来要进一步收缩实现库或 legacy wrappers，必须另开任务，不在本轮做删改。
+4. `identity invariants` 若将来要真正收口到 formal owner，必须另开任务，把 `openemotion.identity.identity_invariants` 接进 mainline；本轮不做这件事。

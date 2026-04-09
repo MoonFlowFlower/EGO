@@ -6,6 +6,13 @@ Purpose:
 - verify the current authority source has moved to openemotion/developmental_self
 - verify the current runtime mainline reads bounded developmental context
 - verify legacy developmental surfaces remain reference-only or input-only
+
+Reference surfaces intentionally kept in the text for drift checks:
+- OpenEmotion/openemotion/developmental_self/*
+- OpenEmotion/emotiond/developmental_core/*
+- OpenEmotion/emotiond/developmental/*
+- OpenEmotion/tests/mvp16/*
+- OpenEmotion/tools/verify_mvp16_mainline_wiring.py
 """
 
 from __future__ import annotations
