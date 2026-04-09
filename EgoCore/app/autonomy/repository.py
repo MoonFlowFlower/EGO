@@ -12,6 +12,55 @@ from .models import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus
 class AutonomyRunRepository:
     def __init__(self, db: Optional[Database] = None) -> None:
         self.db = db or get_db()
+        self._init_schema()
+
+    def _init_schema(self) -> None:
+        with self.db.cursor() as cur:
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS autonomy_runs (
+                    id TEXT PRIMARY KEY,
+                    session_key TEXT NOT NULL,
+                    surface TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    executor_kind TEXT NOT NULL,
+                    objective TEXT NOT NULL,
+                    current_phase TEXT NOT NULL,
+                    checkpoint_payload TEXT,
+                    runtime_state_snapshot TEXT,
+                    last_result_summary TEXT,
+                    metadata TEXT,
+                    hard_blocker_reason TEXT,
+                    resume_count INTEGER NOT NULL DEFAULT 0,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )
+                """
+            )
+            cur.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_autonomy_runs_session_key
+                ON autonomy_runs(session_key)
+                """
+            )
+            cur.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_autonomy_runs_status
+                ON autonomy_runs(status)
+                """
+            )
+            cur.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_autonomy_runs_surface
+                ON autonomy_runs(surface)
+                """
+            )
+            cur.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_autonomy_runs_updated_at
+                ON autonomy_runs(updated_at)
+                """
+            )
 
     def create(self, run: AutonomyRun) -> AutonomyRun:
         with self.db.cursor() as cur:
