@@ -68,7 +68,7 @@
 | `OpenEmotion/emotiond/drive_adapter.py` | compatibility_only | compat/projection helper; bounded legacy snapshot helper over the formal drives owner |
 | `OpenEmotion/emotiond/drives/*` | compatibility_only | thin compat re-export surfaces for the formal drives owner |
 | `OpenEmotion/emotiond/self_model_adapter.py` | deleted | 已物理删除；history 仅保留在 cleanup ledger / archive report |
-| `EgoCore/app/openemotion_adapter/proto_self_restore.py` | 降级为 compat/shim | restore helper，不是当前 formal recovery path |
+| `EgoCore/app/openemotion_adapter/proto_self_restore.py` | deleted | restore helper 已完成 delete admission；不再是当前 formal recovery path |
 | `OpenEmotion/openemotion/identity/identity_invariants.py` | reference-only | formal owner 名义存在，但当前未接 formal mainline |
 | `OpenEmotion/openemotion/identity/long_term_self_summary.py` | reference-only | support library 存在，但当前未接 formal mainline |
 | `OpenEmotion/emotiond/self_model_mirror.py` | deleted | 已物理删除；history 仅保留在 cleanup ledger / archive report |
@@ -125,13 +125,14 @@
 ## 下一步最小删改动作
 
 1. 先冻结这四类能力的 authority 口径，不再允许 README / logic flow / register 自相矛盾。
-2. 若未来继续推进删除 admission，只保留仍未完成收口的 compat/shim 残留路径，不再把已经物理删除的 `self_model_adapter / self_model_mirror` 当作 blocker。
+2. 删除 admission 只保留仍未完成收口的残留路径，不再把已经物理删除的 `self_model_adapter / self_model_mirror / proto_self_restore` 当作 blocker。
 
 ## Final Fate
 
 - `OpenEmotion/emotiond/self_model_adapter.py` 已物理删除
 - `OpenEmotion/emotiond/self_model_mirror.py` 已物理删除
-- 这两条路径不再属于 current blocker / compat consumer / live-ish blocker
+- `EgoCore/app/openemotion_adapter/proto_self_restore.py` 已物理删除
+- 这三条路径不再属于 current blocker / compat consumer / live-ish blocker
 
 3. `developmental` 当前已明确为单一 authority + implementation library split；若将来要进一步收缩实现库或 legacy wrappers，必须另开任务，不在本轮做删改。
 4. `identity invariants` 若将来要真正收口到 formal owner，必须另开任务，把 `openemotion.identity.identity_invariants` 接进 mainline；本轮不做这件事。

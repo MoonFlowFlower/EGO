@@ -76,7 +76,6 @@ EgoCore,app/openemotion_adapter/developmental_writeback.py,.py,2145
 EgoCore,app/openemotion_adapter/event_builder.py,.py,17835
 EgoCore,app/openemotion_adapter/proto_self_adapter.py,.py,8970
 EgoCore,app/openemotion_adapter/proto_self_contract_validator.py,.py,3320
-EgoCore,app/openemotion_adapter/proto_self_restore.py,.py,1984
 EgoCore,app/openemotion_adapter/proto_self_state_store.py,.py,13929
 EgoCore,app/openemotion_adapter/proto_self_trace_bridge.py,.py,2472
 EgoCore,app/openemotion_adapter/result_consumer.py,.py,4585
@@ -224,7 +223,7 @@ EgoCore,docs/01_PROJECT_OVERVIEW.md,.md,9017
 EgoCore,docs/02_SYSTEM_FLOW.md,.md,3247
 EgoCore,docs/03_BOUNDARY_AND_OWNERSHIP.md,.md,2521
 EgoCore,docs/04_CHANGE_ROUTING.md,.md,7127
-EgoCore,docs/05_DEPRECATED_AND_SHIMS.md,.md,9286
+EgoCore,docs/05_DEPRECATED_AND_SHIMS.md,.md,9736
 EgoCore,docs/06_AGENT_ONBOARDING.md,.md,2389
 EgoCore,docs/07_DOC_SYSTEM_MAINTENANCE.md,.md,2078
 EgoCore,docs/CONTRACT_RUNTIME_TRACE_SCHEMA.md,.md,1335
@@ -240,7 +239,7 @@ EgoCore,docs/OPERATIONS.md,.md,8762
 EgoCore,docs/P1 任务单：语义入口 + 自动首步执行 + continue_resume 绑定.txt,.txt,16110
 EgoCore,docs/P2-A.2 Operation Intent Mapping + Postcondition Validation.txt,.txt,13113
 EgoCore,docs/PACKAGING_IMPORT_BOUNDARY.md,.md,1126
-EgoCore,docs/PROGRAM_STATE_UNIFIED.yaml,.yaml,18080
+EgoCore,docs/PROGRAM_STATE_UNIFIED.yaml,.yaml,18206
 EgoCore,docs/Plan Injection Migration OpenClaw Hook Host → EgoCore Native Integration.txt,.txt,9812
 EgoCore,docs/RISK_SIGNAL_AUTHORITY.md,.md,1397
 EgoCore,docs/RUNTIME_V2_FILE_PROMPT_SYSTEM.md,.md,1446
@@ -289,10 +288,10 @@ EgoCore,docs/archive/p1a_natural_expression_acceptance.md,.md,3326
 EgoCore,docs/archive/social_chat_acceptance_report.md,.md,3083
 EgoCore,docs/archive/social_chat_delivery_report.md,.md,5770
 EgoCore,docs/cycle_is_all_you_need.pdf,.pdf,584000
-EgoCore,docs/generated/file_inventory.csv,.csv,110365
-EgoCore,docs/generated/import_or_reference_map.csv,.csv,429045
+EgoCore,docs/generated/file_inventory.csv,.csv,108524
+EgoCore,docs/generated/import_or_reference_map.csv,.csv,421931
 EgoCore,docs/generated/module_map.md,.md,10400
-EgoCore,docs/generated/orphan_candidates.md,.md,3361
+EgoCore,docs/generated/orphan_candidates.md,.md,3270
 EgoCore,docs/generated/recent_hotspots.md,.md,3166
 EgoCore,docs/generated/repo_inventory.md,.md,809
 EgoCore,docs/runtime_metrics_aggregator/SHADOW_THRESHOLDS.md,.md,1300
@@ -438,7 +437,7 @@ EgoCore,tests/test_mvp12_observation_aggregate.py,.py,2676
 EgoCore,tests/test_native_loop.py,.py,2749
 EgoCore,tests/test_native_loop_contract_runtime.py,.py,9605
 EgoCore,tests/test_normalize_user_turn.py,.py,1631
-EgoCore,tests/test_openemotion_adapter_shims.py,.py,2156
+EgoCore,tests/test_openemotion_adapter_shims.py,.py,2307
 EgoCore,tests/test_openemotion_degrade.py,.py,7277
 EgoCore,tests/test_output_check.py,.py,13805
 EgoCore,tests/test_p2_a2_intent.py,.py,9880
@@ -583,7 +582,7 @@ OpenEmotion,POLICIES/RESPONSE_INTENT_ALIGNMENT.md,.md,14423
 OpenEmotion,POLICIES/ROADMAP_EXECUTION_POLICY.md,.md,13207
 OpenEmotion,POLICIES/SELF_REPORT_ALIGNMENT.md,.md,11722
 OpenEmotion,POLICIES/双仓统一进度账 v1 设计稿.md,.md,12667
-OpenEmotion,README.md,.md,16800
+OpenEmotion,README.md,.md,18165
 OpenEmotion,TASK_PROTO_SELF_KERNEL_V1.md,.md,5910
 OpenEmotion,TaskManage/Version/LongTask.txt,.txt,6014
 OpenEmotion,TaskManage/Version/MVP-1.txt,.txt,4745
@@ -768,7 +767,7 @@ OpenEmotion,emotiond/attribution_mvp10.py,.py,18697
 OpenEmotion,emotiond/body_state.py,.py,42285
 OpenEmotion,emotiond/config.py,.py,8152
 OpenEmotion,emotiond/consequence.py,.py,36055
-OpenEmotion,emotiond/core.py,.py,111876
+OpenEmotion,emotiond/core.py,.py,113533
 OpenEmotion,emotiond/core.py.bak,.bak,87431
 OpenEmotion,emotiond/cross_target_telemetry.py,.py,16462
 OpenEmotion,emotiond/cycle_autonomy.py,.py,3470
@@ -788,13 +787,13 @@ OpenEmotion,emotiond/developmental_core/daemon_integration.py,.py,9380
 OpenEmotion,emotiond/developmental_core/hypothesis_generator.py,.py,27046
 OpenEmotion,emotiond/developmental_core/models.py,.py,4737
 OpenEmotion,emotiond/dmn_tick.py,.py,7430
-OpenEmotion,emotiond/drive_adapter.py,.py,12848
+OpenEmotion,emotiond/drive_adapter.py,.py,11525
 OpenEmotion,emotiond/drive_homeostasis.py,.py,6997
 OpenEmotion,emotiond/drives.py,.py,13243
-OpenEmotion,emotiond/drives/__init__.py,.py,889
-OpenEmotion,emotiond/drives/integration.py,.py,5802
-OpenEmotion,emotiond/drives/manager.py,.py,14685
-OpenEmotion,emotiond/drives/schema.py,.py,10136
+OpenEmotion,emotiond/drives/__init__.py,.py,1045
+OpenEmotion,emotiond/drives/integration.py,.py,5885
+OpenEmotion,emotiond/drives/manager.py,.py,865
+OpenEmotion,emotiond/drives/schema.py,.py,613
 OpenEmotion,emotiond/efe_policy.py,.py,26112
 OpenEmotion,emotiond/emoji_emotion.py,.py,21806
 OpenEmotion,emotiond/emotion_labels.py,.py,12656
@@ -991,7 +990,8 @@ OpenEmotion,openemotion/embodied_self/schemas.py,.py,3799
 OpenEmotion,openemotion/embodied_self/state.py,.py,5614
 OpenEmotion,openemotion/embodied_self/store.py,.py,5855
 OpenEmotion,openemotion/embodied_self/updater.py,.py,8578
-OpenEmotion,openemotion/endogenous_drives/__init__.py,.py,1568
+OpenEmotion,openemotion/endogenous_drives/__init__.py,.py,1736
+OpenEmotion,openemotion/endogenous_drives/action_bias.py,.py,1516
 OpenEmotion,openemotion/endogenous_drives/governance.py,.py,1323
 OpenEmotion,openemotion/endogenous_drives/history.py,.py,3324
 OpenEmotion,openemotion/endogenous_drives/maintenance.py,.py,1449
@@ -1091,7 +1091,7 @@ OpenEmotion,openemotion/reflective_self/history.py,.py,3241
 OpenEmotion,openemotion/reflective_self/replay.py,.py,1269
 OpenEmotion,openemotion/reflective_self/schemas.py,.py,2770
 OpenEmotion,openemotion/reflective_self/state.py,.py,4854
-OpenEmotion,openemotion/reflective_self/store.py,.py,5525
+OpenEmotion,openemotion/reflective_self/store.py,.py,5689
 OpenEmotion,openemotion/reflective_self/updater.py,.py,10054
 OpenEmotion,openemotion/self_model/__init__.py,.py,3328
 OpenEmotion,openemotion/self_model/governance.py,.py,15849
@@ -1490,13 +1490,13 @@ OpenEmotion,tests/mvp14/test_drive_behavioral_influence_formal_proof.py,.py,6853
 OpenEmotion,tests/mvp14/test_drive_infra.py,.py,10281
 OpenEmotion,tests/mvp14/test_drive_integration.py,.py,2212
 OpenEmotion,tests/mvp14/test_e2e_gate_b.py,.py,3269
-OpenEmotion,tests/mvp14/test_mainline_wiring.py,.py,1147
+OpenEmotion,tests/mvp14/test_mainline_wiring.py,.py,2080
 OpenEmotion,tests/mvp15/__init__.py,.py,23
-OpenEmotion,tests/mvp15/test_behavioral_relevance_formal_proof.py,.py,7724
+OpenEmotion,tests/mvp15/test_behavioral_relevance_formal_proof.py,.py,7973
 OpenEmotion,tests/mvp15/test_controlled_observation.py,.py,5787
 OpenEmotion,tests/mvp15/test_controlled_observation_batch.py,.py,6070
-OpenEmotion,tests/mvp15/test_mainline_reference_demotion.py,.py,2864
-OpenEmotion,tests/mvp15/test_mainline_resolution.py,.py,3533
+OpenEmotion,tests/mvp15/test_mainline_reference_demotion.py,.py,3778
+OpenEmotion,tests/mvp15/test_mainline_resolution.py,.py,3782
 OpenEmotion,tests/mvp15/test_mainline_wiring.py,.py,784
 OpenEmotion,tests/mvp15/test_reflection_infra.py,.py,9187
 OpenEmotion,tests/mvp15/test_reflection_proto_self_integration.py,.py,6491
@@ -1740,7 +1740,7 @@ OpenEmotion,tools/aggregate_mvp12_observations.py,.py,8905
 OpenEmotion,tools/aggregate_mvp16_observations.py,.py,5909
 OpenEmotion,tools/aggregate_mvp17_observations.py,.py,5812
 OpenEmotion,tools/build_doc_inventory.py,.py,4935
-OpenEmotion,tools/causal_intervention_experiments.py,.py,21868
+OpenEmotion,tools/causal_intervention_experiments.py,.py,21850
 OpenEmotion,tools/dual_repo_closed_loop_e2e.py,.py,11641
 OpenEmotion,tools/e2e_api_smoke_mvp11.sh,.sh,1411
 OpenEmotion,tools/e2e_memory_loop_check_v1.py,.py,20226
@@ -1765,8 +1765,8 @@ OpenEmotion,tools/mvp15_artifact_integrity_check.py,.py,9933
 OpenEmotion,tools/mvp15_artifact_quality.py,.py,6910
 OpenEmotion,tools/mvp15_daily_report.py,.py,8258
 OpenEmotion,tools/mvp15_daily_validation.sh,.sh,1682
-OpenEmotion,tools/mvp15_funnel_check.py,.py,3448
-OpenEmotion,tools/mvp15_funnel_tracker.py,.py,7546
+OpenEmotion,tools/mvp15_funnel_check.py,.py,5287
+OpenEmotion,tools/mvp15_funnel_tracker.py,.py,8265
 OpenEmotion,tools/mvp15_scenario_bank.py,.py,4385
 OpenEmotion,tools/mvp16_anomaly_handler.py,.py,5247
 OpenEmotion,tools/mvp16_daily_check.py,.py,14818
@@ -1822,7 +1822,7 @@ OpenEmotion,tools/v6k_daily_stability_check.sh,.sh,4419
 OpenEmotion,tools/verify_mvp12_daemon.py,.py,6609
 OpenEmotion,tools/verify_mvp14_mainline_wiring.py,.py,3447
 OpenEmotion,tools/verify_mvp15_mainline_wiring.py,.py,5690
-OpenEmotion,tools/verify_mvp16_mainline_wiring.py,.py,6562
+OpenEmotion,tools/verify_mvp16_mainline_wiring.py,.py,6841
 OpenEmotion,tools/verify_mvp17_mainline_wiring.py,.py,6942
 OpenEmotion,tools/verify_mvp18_mainline_wiring.py,.py,6409
 OpenEmotion,tools/verify_mvp19_mainline_wiring.py,.py,8020

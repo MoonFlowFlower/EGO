@@ -26,6 +26,7 @@ DEVELOPMENTAL_WIRING_TOOL = ROOT / "OpenEmotion" / "tools" / "verify_mvp16_mainl
 DELETED_PATHS = (
     ROOT / "OpenEmotion" / "emotiond" / "self_model_adapter.py",
     ROOT / "OpenEmotion" / "emotiond" / "self_model_mirror.py",
+    ROOT / "EgoCore" / "app" / "openemotion_adapter" / "proto_self_restore.py",
 )
 
 REQUIRED_DOC_SNIPPETS = {
@@ -80,7 +81,6 @@ REQUIRED_DOC_SNIPPETS = {
         "OpenEmotion/tools/verify_mvp16_mainline_wiring.py",
     ],
     PATH_REGISTER: [
-        "| `EgoCore/app/openemotion_adapter/proto_self_restore.py` | `compatibility_only` |",
         "| `OpenEmotion/emotiond/drive_adapter.py` | `compatibility_only` |",
         "| `OpenEmotion/emotiond/drives/*` | `compatibility_only` |",
         "| `OpenEmotion/openemotion/identity/identity_invariants.py` | `reference_only` |",
@@ -89,6 +89,7 @@ REQUIRED_DOC_SNIPPETS = {
         "active substrate` 也不等于 authority；单一权威收口以 `docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md` 为准",
         "- `OpenEmotion/emotiond/self_model_adapter.py`：已物理删除，历史 proof/archive evidence 仅保留在 cleanup ledger",
         "- `OpenEmotion/emotiond/self_model_mirror.py`：已物理删除，历史 proof/archive evidence 仅保留在 cleanup ledger",
+        "- `EgoCore/app/openemotion_adapter/proto_self_restore.py`：已物理删除，历史 proof/archive evidence 仅保留在 cleanup ledger",
     ],
     PROGRAM_STATE: [
         "formal owner is openemotion/endogenous_drives/*",

@@ -1,35 +1,35 @@
 # Repo Inventory
 
 ## EgoCore
-- root: `/home/moonlight/Project/Github/MyProject/EgoCore`
-- filtered file count: `397`
+- root: `/mnt/d/Project/AIProject/MyProject/Ego/EgoCore`
+- filtered file count: `562`
 - top areas:
-  - `app`: 137 files
-  - `docs`: 70 files
-  - `tests`: 69 files
-  - `modules`: 28 files
-  - `tools`: 27 files
+  - `app`: 188 files
+  - `tests`: 127 files
+  - `docs`: 77 files
+  - `modules`: 40 files
+  - `tools`: 38 files
+  - `scripts`: 23 files
   - `egocore`: 20 files
-  - `.`: 13 files
-  - `contracts`: 11 files
+  - `.`: 15 files
+  - `contracts`: 12 files
   - `config`: 9 files
   - `templates`: 4 files
   - `prompts`: 3 files
-  - `system_core`: 2 files
 
 ## OpenEmotion
-- root: `/home/moonlight/Project/Github/MyProject/Emotion/OpenEmotion`
-- filtered file count: `969`
+- root: `/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion`
+- filtered file count: `1278`
 - top areas:
-  - `tests`: 304 files
+  - `tests`: 364 files
   - `emotiond`: 157 files
-  - `docs`: 115 files
-  - `scripts`: 80 files
-  - `openemotion`: 50 files
-  - `tools`: 46 files
-  - `scenarios`: 45 files
+  - `openemotion`: 153 files
+  - `docs`: 117 files
+  - `tools`: 95 files
+  - `scripts`: 87 files
+  - `scenarios`: 81 files
+  - `roadmap`: 54 files
   - `TaskManage`: 36 files
-  - `.`: 29 files
+  - `.`: 27 files
   - `legacy`: 21 files
   - `schemas`: 18 files
-  - `eval`: 9 files

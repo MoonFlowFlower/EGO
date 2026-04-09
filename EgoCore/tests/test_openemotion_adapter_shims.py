@@ -53,5 +53,8 @@ def test_formal_mainline_files_do_not_import_restore_shim():
         assert _imports_module(rel_path, "app.openemotion_adapter.proto_self_restore") is False
 
 
-def test_restore_shim_file_is_retained_as_non_mainline_compat_surface():
-    assert (REPO_ROOT / "EgoCore/app/openemotion_adapter/proto_self_restore.py").exists()
+def test_restore_shim_file_is_deleted_and_no_longer_reexported():
+    rel_path = "EgoCore/app/openemotion_adapter/proto_self_restore.py"
+
+    assert not (REPO_ROOT / rel_path).exists()
+    assert _imports_module("EgoCore/app/openemotion_adapter/__init__.py", "app.openemotion_adapter.proto_self_restore") is False

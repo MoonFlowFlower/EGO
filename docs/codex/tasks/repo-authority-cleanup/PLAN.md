@@ -102,6 +102,7 @@
 - 2026-04-08: `proto_self_restore` 的 package re-export 可以安全移除；原因是全仓 caller 证明已显示代码 caller 只剩 `__init__.py` 自身，formal mainline 为 0
 - 2026-04-08: canonical/docs/artifact 先建立 boundary marker 和 gate，不做物理迁移；原因是当前 docs/scripts/artifacts 仍存在大量路径引用，先锁 admission 比盲目搬迁更安全
 - 2026-04-08: `proto_self_restore` 的 generated import-map stale edge 已通过重新生成 inventory 清除；原因是 package re-export 移除后，继续保留旧 generated caller 会误导 delete admission 结论
+- 2026-04-08: `proto_self_restore` 已在 residue wave 中物理删除；原因是 formal caller = 0，generated import-map stale edge 已清，generated file inventory residue 也已清除
 - 2026-04-08: `mvp13_daily_report.py` 已改为 archive-based 历史报告，不再真实 import mirror；原因是 legacy report 继续持有 live mirror import 会污染 delete admission 口径
 - 2026-04-08: `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 中 `OE_MVP:13` 的 evidence 已收紧为 archive report，不再引用 live `emotiond/self_model_adapter.py` 文件路径；原因是当前 authority source 不应继续把 legacy adapter 文件暴露成 current evidence surface
 - 2026-04-08: 5 份 archive self-model 文档内部的“主链/接入/可用”旧口径已清理为历史 shadow / legacy compatibility snapshot 表述；原因是 archive docs 不应继续冒充 current formal mainline
@@ -114,13 +115,14 @@
 - 2026-04-08: `self_model_adapter` / `self_model_mirror` delete-admission finish wave 已完成：`OpenEmotion/tests/test_self_model_single_authority.py` 已改为更弱的 ledger/file-fate/admission test，legacy adapter/mirror 已物理删除，当前 docs/path register/program-state 已不再把它们叙述成 live-ish blockers
 - 2026-04-08: reflection legacy caller wave 已收口：`OpenEmotion/emotiond/core.py` 不再使用 `reflection_shadow`，reflection guidance 已改为 formal owner store-backed read；`OpenEmotion/tools/causal_intervention_experiments.py` 已降为 archive/reference-only reflection probe，`emotiond/reflection.py` 只保留 thin trigger/report substrate；原因是 reflection legacy runtime callers 必须移出 live authority 叙事，但当前 formal owner/report split 仍需保留最薄触发层
 - 2026-04-08: drives authority wave 已收口：`openemotion.endogenous_drives/*` 为唯一 formal owner，`OpenEmotion/emotiond/drive_adapter.py` 与 `OpenEmotion/emotiond/drives/*` 仅保留 compat/projection/helper surfaces，`OpenEmotion/openemotion/proto_self/appraisal.py + DriveField` 只保留 thin substrate；原因是 drives/appraisal 不能继续被写成 unresolved later wave
+- 2026-04-08: developmental authority wave 已收口：`openemotion.developmental_self/*` 为唯一 formal owner，`OpenEmotion/emotiond/developmental_core/*` 继续作为 implementation library，`OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py` / `OpenEmotion/openemotion/proto_self_v2/developmental.py` / `EgoCore/app/runtime_v2/proto_self_runtime.py::_apply_developmental_self_writeback` 形成 live caller path，`OpenEmotion/emotiond/developmental/*` 与 `OpenEmotion/tests/mvp16/*` 仅保留 compat/reference / proof-e2e 角色；原因是 developmental 是单一 authority + implementation library split，不是双主也不是 dead code
 
 ## Surprises / discoveries
 
 - 当前 worktree 已存在大量与本任务无关的脏文件；提交时必须严格 scoped
 - `self-model` legacy adapter/mirror 当前 formal caller 为 0，但仍有 tools/docs/generated caller
-- `proto_self_restore.py` formal caller 为 0，但 `EgoCore/app/openemotion_adapter/__init__.py` 仍 re-export 它，删除 admission 不能直接跳过
-- `proto_self_restore.py` 当前仍不能删；虽然 package re-export 和 generated import-map stale edge 已清掉，但 generated file inventory residue 还在
+- `proto_self_restore.py` formal caller 为 0，但已物理删除；`EgoCore/app/openemotion_adapter/__init__.py` 的 re-export 与 generated import-map/file inventory residue 都已清掉
+- `proto_self_restore.py` 当前已 delete-done，不再是 blocker
 
 ## Outcomes / retrospective
 
@@ -129,8 +131,9 @@
   - `self-model` formal owner 已在 current mainline 上被 runtime 注入与 writeback 消费；legacy adapter/mirror 不在 formal caller 上
   - `drives` formal owner 已在 current mainline 上通过 compat/projection helper 被消费；legacy wrapper surfaces 不在 formal caller 上
 - 还没证明：
-  - `proto_self_restore` 是否已可直接删除
-  - reflection/developmental 的删除 admission 还不清楚
+  - `proto_self_restore` 已完成 delete-done，不再作为 blocker
+  - `developmental_core` 是否还需要进一步收缩实现库或 wrapper surfaces
 - 下一步最小闭环动作：
   - 继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs caller；archive report tools 已单独归档，不再计入这两个 delete-admission blocker
-  - `proto_self_restore` 的 file inventory residue 留作后续低风险切片
+  - `proto_self_restore` 不再作为后续低风险切片
+  - developmental 这一波只做 ledger / verifier / documentation 收口，不再回动 runtime semantics

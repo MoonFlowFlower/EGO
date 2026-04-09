@@ -32,7 +32,6 @@
 | `EgoCore/app/runtime_v2/prompt_files.py` | `formal` | `EgoCore` | 当前文件式 prompt loader | 无 | 当前正式 prompt loader | 无 | prompt surface 失效 |
 | `OpenEmotion/openemotion/*` | `formal` | `OpenEmotion` | 当前正式主体本体与 formal owner 实现 | 无 | 当前正式主体本体实现 | 无 | 主体本体误删 |
 | `OpenEmotion/emotiond/*` | `reference_only` | `OpenEmotion` | 历史服务/宿主处理面、迁移参考与残留支撑 | `OpenEmotion/openemotion/*` + EgoCore 正式宿主主链 | 不是当前 formal owner，也不是当前 Telegram 主链 | 当前残余引用与历史文档完成切分后再评估收缩 | 服务/历史链说明失真 |
-| `EgoCore/app/openemotion_adapter/proto_self_restore.py` | `compatibility_only` | `EgoCore` | restore helper 与历史状态恢复注入面 | `EgoCore/app/openemotion_adapter/proto_self_adapter.py` + current formal replay/writeback chain | 不是 formal recovery path，只能作为 compat/shim 保留 | formal caller 清零 + 删除 admission 通过 | 被误当当前恢复主链 |
 | `OpenEmotion/legacy/openclaw/*` | `deprecated_candidate` | `OpenEmotion` | 历史 OpenClaw 依赖残留 | EgoCore + OpenEmotion 正式双核 | 不是正式主链，只能作为历史残留候选 | 无引用确认 + 替代确认 | 误删后历史链测试断裂 |
 | `OpenEmotion/openclaw_skill/*` | `reference_only` | `OpenEmotion` | 兼容 OpenClaw skill 形态的参考面 | EgoCore + OpenEmotion 正式双核 | 不是 formal owner，不是当前 runtime authority | 确认无人使用后再删 | 兼容链断裂 |
 | `OpenEmotion/openemotion/identity/identity_invariants.py` | `reference_only` | `OpenEmotion` | 名义 identity owner surface，当前未接 formal mainline | `OpenEmotion/openemotion/proto_self/state.py` + `OpenEmotion/openemotion/proto_self/kernel.py` | 当前不能叙述成 live runtime authority | 若未来真接入 formal mainline，再重新分类 | 被误当 live identity owner |
@@ -49,6 +48,7 @@
 
 - `OpenEmotion/emotiond/self_model_adapter.py`：已物理删除，历史 proof/archive evidence 仅保留在 cleanup ledger
 - `OpenEmotion/emotiond/self_model_mirror.py`：已物理删除，历史 proof/archive evidence 仅保留在 cleanup ledger
+- `EgoCore/app/openemotion_adapter/proto_self_restore.py`：已物理删除，历史 proof/archive evidence 仅保留在 cleanup ledger
 
 ## 当前收口期约束
 
