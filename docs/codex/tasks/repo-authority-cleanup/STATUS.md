@@ -25,7 +25,7 @@
 - 已完成 `self-model` 代码级 authority 收口：formal owner 自证、legacy adapter/mirror 自降级、single-authority static regression 落地
 - 已完成 `identity` 代码级 authority 收口：唯一 live runtime authority 仍在 v1 substrate，reference-only owner surfaces 与 proof test 已对齐
 - 已完成 `drives / reflection / developmental` 的 caller/authority ledger 收口，不改语义；developmental 已从 unresolved split 收口为 single authority + implementation library split
-- 已完成 clean-clone / CI final closeout proof：在 `Ego-cleancloseout` clean clone 上，`verify_cleanup_admission.py`、`verify_proto_self_single_authority.py`、`verify_repo.py --mode fast`、settled-branch targeted tests、repo-level `git diff --check` 与 clean-clone `git status` 均已通过
+- 已完成 clean-clone / CI final closeout proof：在 `Ego-cleancloseout` clean clone 上，`verify_cleanup_admission.py`、`verify_proto_self_single_authority.py`、`verify_repo.py --mode fast`、settled-branch targeted tests、repo-level `git diff --check` 与 clean-clone `git status` 均已通过；targeted tests 期间曾写入 repo-tracked generated residue，后已通过显式 `git restore` / `rm -f` 清理并再次验证 clean 状态
 - 已为 clean-clone settled autonomy tests 补上最小 support module `EgoCore/app/autonomy/repository.py` 与 `autonomy_runs` schema bootstrap；该修复只为证明仓库可在 clean clone 中自举完成 settled tests，不改变 formal mainline 或 authority/runtime 语义
 - 已移除 `EgoCore/app/openemotion_adapter/__init__.py` 中对 `ProtoSelfRestore` 的 package re-export；当前只剩 docs/generated residue
 - 已建立 canonical/archive boundary marker：`docs/canonical/README.md`、`docs/archive/README.md`、`artifacts/current/README.md`、`artifacts/archive/README.md`
@@ -61,8 +61,11 @@
   - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_autonomy_orchestrator.py EgoCore/tests/test_openemotion_adapter_shims.py EgoCore/tests/test_doc_system_inventory_builder.py -q -s` -> `8 passed`
   - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp15 -q"` -> `49 passed`
   - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp16 -q"` -> `45 passed`
-  - `git diff --check` -> passed
-  - `git status --short --branch` -> clean (`## main...origin/main`)
+  - targeted tests dirtied repo-tracked generated residue under `EgoCore/docs/generated/*` and `OpenEmotion/artifacts/mvp12/*`
+  - `git restore --worktree --staged EgoCore/docs/generated OpenEmotion/artifacts/mvp12`
+  - `git clean -fd OpenEmotion/artifacts/mvp12`
+  - `git diff --check` -> passed after explicit cleanup
+  - `git status --short --branch` -> clean (`## main...origin/main`) after explicit cleanup
   - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego\OpenEmotion && set PYTHONPATH=D:\Project\AIProject\MyProject\Ego\OpenEmotion;D:\Project\AIProject\MyProject\Ego\EgoCore;D:\Project\AIProject\MyProject\Ego\EgoCore\modules && .venv\Scripts\python.exe -m pytest tests\test_identity_single_authority.py openemotion\proto_self\tests\test_kernel_identity.py -q"` -> `6 passed`
   - `python3 -m py_compile scripts/codex/verify_proto_self_single_authority.py OpenEmotion/tests/test_identity_single_authority.py`
   - `python3 scripts/codex/verify_proto_self_single_authority.py` -> passed
@@ -101,6 +104,7 @@
 - archive self-model docs 已完成降噪，当前不再是 blocker
 - `self-model` dual-authority 已收口；`self_model_adapter.py` 与 `self_model_mirror.py` 已物理删除，当前不再是 delete-ready blocker
 - artifacts/logs 仍未物理迁移；archive/current 目录现在只是 boundary marker，但不再阻塞 clean-clone / CI final closeout proof
+- clean-clone proof 的可重复性依赖 explicit generated-residue cleanup；未来重跑时必须在 targeted tests 之后再次执行 restore/remove 再验 clean
 
 ## Next step
 
@@ -149,5 +153,7 @@
 - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_autonomy_orchestrator.py EgoCore/tests/test_openemotion_adapter_shims.py EgoCore/tests/test_doc_system_inventory_builder.py -q -s`
 - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp15 -q"`
 - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp16 -q"`
+- `git restore --worktree --staged EgoCore/docs/generated OpenEmotion/artifacts/mvp12`
+- `git clean -fd OpenEmotion/artifacts/mvp12`
 - `git diff --check`
 - `git status --short --branch`

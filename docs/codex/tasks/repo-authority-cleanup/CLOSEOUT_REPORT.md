@@ -25,8 +25,10 @@
 - `EgoCore/tests/test_autonomy_orchestrator.py`, `EgoCore/tests/test_openemotion_adapter_shims.py`, and `EgoCore/tests/test_doc_system_inventory_builder.py` passed in the clean clone
 - `OpenEmotion/tests/mvp15` passed in the clean clone
 - `OpenEmotion/tests/mvp16` passed in the clean clone
-- clean clone `git diff --check` passed
-- clean clone `git status --short --branch` was clean: `## main...origin/main`
+- the targeted tests produced repo-tracked generated residue under `EgoCore/docs/generated/*` and `OpenEmotion/artifacts/mvp12/*`; the proof explicitly cleaned that residue before the final repo-level checks
+- explicit cleanup in the clean clone restored the generated inventory files and removed the transient `mvp12` artefacts, after which repo-level `git diff --check` and `git status --short --branch` were clean
+- clean clone `git diff --check` passed after the explicit cleanup step
+- clean clone `git status --short --branch` was clean after the explicit cleanup step: `## main...origin/main`
 - missing `app.autonomy.repository` support was repaired with a minimal schema/bootstrap module, which restored clean-clone reproducibility for the autonomy settled tests
 
 ## 关键未知
@@ -72,10 +74,14 @@
 - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_autonomy_orchestrator.py EgoCore/tests/test_openemotion_adapter_shims.py EgoCore/tests/test_doc_system_inventory_builder.py -q -s` -> `8 passed`
 - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp15 -q"` -> `49 passed`
 - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp16 -q"` -> `45 passed`
-- `git diff --check` -> passed
-- `git status --short --branch` -> clean
+- targeted tests dirtied repo-tracked generated files; explicit cleanup followed:
+  - `git restore --worktree --staged EgoCore/docs/generated OpenEmotion/artifacts/mvp12`
+  - `git clean -fd OpenEmotion/artifacts/mvp12`
+- `git diff --check` -> passed after the explicit cleanup step
+- `git status --short --branch` -> clean after the explicit cleanup step
 - `EgoCore/app/autonomy/repository.py` was added to restore `autonomy_runs` schema bootstrap for the clean-clone proof
 
 ## Final verdict
 - `repo_authority_cleanup` can now be marked `closeout-complete`
 - this is not a claim about real-channel live effect; it is a claim about proof completeness and boundary reproducibility in clean clone / CI workspace
+- the final clean-clone proof is only valid because it includes the explicit generated-residue cleanup step before the repo-level clean checks
