@@ -2,15 +2,15 @@
 
 ## Current milestone
 
-- name: Milestone 4 - Delete Admission Proof and Generated/Docs Cleanup
+- name: Milestone 5 - Clean-Clone / CI Final Closeout Proof
 - owner: Codex
-- state: in_progress
+- state: complete
 
 ## Current state
 
 - current_layer: repo_authority_cleanup
-- main_chain_status: phase0_truth_map_landed_identity_authority_wave_landed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_proto_self_restore_deleted_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_oe_mvp13_archive_evidence_only_archive_self_model_body_clarified_archive_self_model_paths_clarified_e2e_adapter_legacy_artifact_dir_clarified_self_model_adapter_core_and_dual_repo_live_callers_removed_mvp13_proof_tests_migrated_to_formal_owner_store_self_model_delete_admission_finished_adapter_mirror_deleted_reflection_legacy_runtime_callers_removed_reflection_probe_archive_only_reflection_trigger_substrate_retained_drives_authority_wave_landed_drive_adapter_and_emotiond_drives_demoted_thin_substrate_retained_developmental_authority_wave_landed_developmental_core_retained_as_active_substrate
-- completion_class: conditional_complete
+- main_chain_status: phase0_truth_map_landed_identity_authority_wave_landed_self_model_authority_wave_landed_milestone2_classification_landed_milestone3_admission_landed_milestone4_proto_self_restore_generated_edge_cleared_proto_self_restore_deleted_self_model_mirror_tool_import_removed_mvp13_report_archive_based_e2e_adapter_report_archive_based_archive_self_model_docs_clarified_oe_mvp13_archive_evidence_only_archive_self_model_body_clarified_archive_self_model_paths_clarified_e2e_adapter_legacy_artifact_dir_clarified_self_model_adapter_core_and_dual_repo_live_callers_removed_mvp13_proof_tests_migrated_to_formal_owner_store_self_model_delete_admission_finished_adapter_mirror_deleted_reflection_legacy_runtime_callers_removed_reflection_probe_archive_only_reflection_trigger_substrate_retained_drives_authority_wave_landed_drive_adapter_and_emotiond_drives_demoted_thin_substrate_retained_developmental_authority_wave_landed_developmental_core_retained_as_active_substrate_clean_clone_ci_final_closeout_proof_passed
+- completion_class: complete
 
 ## Completed work
 
@@ -25,6 +25,8 @@
 - 已完成 `self-model` 代码级 authority 收口：formal owner 自证、legacy adapter/mirror 自降级、single-authority static regression 落地
 - 已完成 `identity` 代码级 authority 收口：唯一 live runtime authority 仍在 v1 substrate，reference-only owner surfaces 与 proof test 已对齐
 - 已完成 `drives / reflection / developmental` 的 caller/authority ledger 收口，不改语义；developmental 已从 unresolved split 收口为 single authority + implementation library split
+- 已完成 clean-clone / CI final closeout proof：在 `Ego-cleancloseout` clean clone 上，`verify_cleanup_admission.py`、`verify_proto_self_single_authority.py`、`verify_repo.py --mode fast`、settled-branch targeted tests、repo-level `git diff --check` 与 clean-clone `git status` 均已通过
+- 已为 clean-clone settled autonomy tests 补上最小 support module `EgoCore/app/autonomy/repository.py` 与 `autonomy_runs` schema bootstrap；该修复只为证明仓库可在 clean clone 中自举完成 settled tests，不改变 formal mainline 或 authority/runtime 语义
 - 已移除 `EgoCore/app/openemotion_adapter/__init__.py` 中对 `ProtoSelfRestore` 的 package re-export；当前只剩 docs/generated residue
 - 已建立 canonical/archive boundary marker：`docs/canonical/README.md`、`docs/archive/README.md`、`artifacts/current/README.md`、`artifacts/archive/README.md`
 - 已建立 canonical/archive/current/archive/generated/dirty-worktree admission boundary：新增 `EgoCore/docs/generated/README.md`、`DIRTY_WORKTREE_BOUNDARY.md`、`CLEAN_CLONE_CLOSEOUT_PROOF.md`，并把 `verify_cleanup_admission.py` 扩展为强制检查这些 admission surfaces
@@ -49,9 +51,18 @@
 
 ## Last validation results
 
-- mode: milestone-4 scoped verification
+- mode: clean-clone / CI final closeout proof
 - result: passed
 - summary:
+  - clean clone path: `/mnt/d/Project/AIProject/MyProject/Ego-cleancloseout`
+  - `python3 scripts/codex/verify_cleanup_admission.py` -> passed
+  - `python3 scripts/codex/verify_proto_self_single_authority.py` -> passed
+  - `python3 scripts/codex/verify_repo.py --mode fast` -> passed
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_autonomy_orchestrator.py EgoCore/tests/test_openemotion_adapter_shims.py EgoCore/tests/test_doc_system_inventory_builder.py -q -s` -> `8 passed`
+  - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp15 -q"` -> `49 passed`
+  - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp16 -q"` -> `45 passed`
+  - `git diff --check` -> passed
+  - `git status --short --branch` -> clean (`## main...origin/main`)
   - `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego\OpenEmotion && set PYTHONPATH=D:\Project\AIProject\MyProject\Ego\OpenEmotion;D:\Project\AIProject\MyProject\Ego\EgoCore;D:\Project\AIProject\MyProject\Ego\EgoCore\modules && .venv\Scripts\python.exe -m pytest tests\test_identity_single_authority.py openemotion\proto_self\tests\test_kernel_identity.py -q"` -> `6 passed`
   - `python3 -m py_compile scripts/codex/verify_proto_self_single_authority.py OpenEmotion/tests/test_identity_single_authority.py`
   - `python3 scripts/codex/verify_proto_self_single_authority.py` -> passed
@@ -77,6 +88,8 @@
 - archive self-model 文档当前只保留历史快照表述，不再把旧 wiring 结果写成 current formal mainline
 - archive self-model 文档当前也不再把 SelfModelAdapter 报告路径指向非 archive 文档位置
 - `e2e_self_model_adapter.py` 当前虽仍读取 `artifacts/self_model_adapter`，但口径已明确为 legacy artifact directory 上的历史归档报告
+- clean-clone / CI final closeout proof 已完成；原因是 clean clone `Ego-cleancloseout` 上 `verify_cleanup_admission.py`、`verify_proto_self_single_authority.py`、`verify_repo.py --mode fast`、settled-branch targeted tests、repo-level `git diff --check` 与 clean-clone `git status` 均已通过
+- 为修复 clean-clone settled autonomy tests 的缺口，新增 `EgoCore/app/autonomy/repository.py` 并补齐 `autonomy_runs` schema bootstrap；原因是该支持层缺失会让 autonomy settled tests 在 clean clone 中无法落库，但这不改变 formal mainline 或 authority/runtime 语义
 
 ## Open risks
 
@@ -87,14 +100,12 @@
 - developmental caller matrix 已收口，当前不再是 blocker；后续若继续，只会是 `developmental_core` 进一步收缩或 wrapper/reference 物理归档
 - archive self-model docs 已完成降噪，当前不再是 blocker
 - `self-model` dual-authority 已收口；`self_model_adapter.py` 与 `self_model_mirror.py` 已物理删除，当前不再是 delete-ready blocker
-- artifacts/logs 仍未物理迁移；archive/current 目录现在只是 boundary marker
+- artifacts/logs 仍未物理迁移；archive/current 目录现在只是 boundary marker，但不再阻塞 clean-clone / CI final closeout proof
 
 ## Next step
 
-- 当前下一步：进入 `clean-clone / CI final closeout proof`，前提是 canonical/archive/current/archive/generated/dirty-worktree boundary 已固定；不再继续新的 authority cleanup
-- 当前下一步：`delete admission proof and generated/docs cleanup` 只保留为历史段落，`proto_self_restore` 已完成，不再作为 blocker；`developmental` 本波已收口，不再回动语义
-- 当前下一步：`dual_repo_closed_loop_e2e.py` 已转 archive/proof-only harness，下一步只需维持其 archive-only 口径，不再把它当 live blocker
-- 当前下一步：reflection legacy runtime caller 已收口，若继续推进只能决定是否把 `emotiond/reflection.py` 也纳入后续 trigger-substrate retirement 波；当前波次不再把 MVP15 archive 工具视为 blocker
+- 当前下一步：归档本任务并保留 closeout report 作为最终证据，不再继续新的 authority cleanup
+- 当前下一步：`delete admission proof and generated/docs cleanup`、`dual_repo_closed_loop_e2e.py`、reflection trigger substrate retirement 等剩余议题都已退回历史或后续独立波次，不再阻塞本任务 closeout
 
 ## Commands run / evidence
 
@@ -131,3 +142,12 @@
 - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"`
 - `python3 -m py_compile OpenEmotion/tools/e2e_self_model_adapter.py OpenEmotion/tests/test_self_model_single_authority.py`
 - `python3 scripts/codex/verify_repo.py --mode fast` (archive self-model docs clarification wave)
+- `git clone --branch main git@github.com:pen364692088/EGO.git /mnt/d/Project/AIProject/MyProject/Ego-cleancloseout`
+- `python3 scripts/codex/verify_cleanup_admission.py`
+- `python3 scripts/codex/verify_proto_self_single_authority.py`
+- `python3 scripts/codex/verify_repo.py --mode fast`
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_autonomy_orchestrator.py EgoCore/tests/test_openemotion_adapter_shims.py EgoCore/tests/test_doc_system_inventory_builder.py -q -s`
+- `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp15 -q"`
+- `cmd.exe /c "cd /d D:\Project\AIProject\MyProject\Ego-cleancloseout\OpenEmotion && .venv\Scripts\python.exe -m pytest tests\mvp16 -q"`
+- `git diff --check`
+- `git status --short --branch`

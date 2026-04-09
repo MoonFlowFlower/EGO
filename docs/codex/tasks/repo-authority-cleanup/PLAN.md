@@ -116,9 +116,9 @@
 
 ## Progress
 
-- current_status: in_progress
-- current_milestone: Milestone 4 - Delete Admission Proof and Generated/Docs Cleanup
-- milestone_state: executing
+- current_status: complete
+- current_milestone: Milestone 5 - Clean-Clone / CI Final Closeout Proof
+- milestone_state: complete
 
 ## Decision log
 
