@@ -162,14 +162,9 @@
 
 ## Outcomes / retrospective
 
-- 本轮已证明：
+- 本任务已在 repo/integration scope 上完成 closeout：
   - `identity` authority wave 已在代码级收口，可直接作为 Phase 0 基线
   - `self-model` formal owner 已在 current mainline 上被 runtime 注入与 writeback 消费；legacy adapter/mirror 不在 formal caller 上
   - `drives` formal owner 已在 current mainline 上通过 compat/projection helper 被消费；legacy wrapper surfaces 不在 formal caller 上
-- 还没证明：
   - `proto_self_restore` 已完成 delete-done，不再作为 blocker
-  - `developmental_core` 是否还需要进一步收缩实现库或 wrapper surfaces
-- 下一步最小闭环动作：
-  - 继续收窄 `self_model_adapter / self_model_mirror` 的 authority-source/docs caller；archive report tools 已单独归档，不再计入这两个 delete-admission blocker
-  - `proto_self_restore` 不再作为后续低风险切片
-  - developmental 这一波只做 ledger / verifier / documentation 收口，不再回动 runtime semantics
+- remaining items 已统一降到 `optional housekeeping / future cleanup backlog`，不再作为本任务的下一步必做项
