@@ -27,6 +27,7 @@
 - 已完成 `drives / reflection / developmental` 的 caller/authority ledger 收口，不改语义；developmental 已从 unresolved split 收口为 single authority + implementation library split
 - 已移除 `EgoCore/app/openemotion_adapter/__init__.py` 中对 `ProtoSelfRestore` 的 package re-export；当前只剩 docs/generated residue
 - 已建立 canonical/archive boundary marker：`docs/canonical/README.md`、`docs/archive/README.md`、`artifacts/current/README.md`、`artifacts/archive/README.md`
+- 已建立 canonical/archive/current/archive/generated/dirty-worktree admission boundary：新增 `EgoCore/docs/generated/README.md`、`DIRTY_WORKTREE_BOUNDARY.md`、`CLEAN_CLONE_CLOSEOUT_PROOF.md`，并把 `verify_cleanup_admission.py` 扩展为强制检查这些 admission surfaces
 - 已新增 cleanup admission gate：`scripts/codex/verify_cleanup_admission.py`
 - 已重新生成 `EgoCore/docs/generated/*`，清除 `proto_self_restore` 的 generated import-map stale edge；随后又完成 file inventory residue 清理，`proto_self_restore` 不再是 blocker
 - 已移除 `OpenEmotion/tools/main_chain_wiring_check.py` 对 `emotiond.self_model_mirror` 的真实 import；`OpenEmotion/tools/mvp13_daily_report.py` 也已改为 archive-based，不再真实 import mirror
@@ -90,7 +91,8 @@
 
 ## Next step
 
-- 当前下一步：继续做 `delete admission proof and generated/docs cleanup`，但 `proto_self_restore` 已完成，不再作为 blocker；`developmental` 本波已收口，不再回动语义
+- 当前下一步：进入 `clean-clone / CI final closeout proof`，前提是 canonical/archive/current/archive/generated/dirty-worktree boundary 已固定；不再继续新的 authority cleanup
+- 当前下一步：`delete admission proof and generated/docs cleanup` 只保留为历史段落，`proto_self_restore` 已完成，不再作为 blocker；`developmental` 本波已收口，不再回动语义
 - 当前下一步：`dual_repo_closed_loop_e2e.py` 已转 archive/proof-only harness，下一步只需维持其 archive-only 口径，不再把它当 live blocker
 - 当前下一步：reflection legacy runtime caller 已收口，若继续推进只能决定是否把 `emotiond/reflection.py` 也纳入后续 trigger-substrate retirement 波；当前波次不再把 MVP15 archive 工具视为 blocker
 

@@ -2,7 +2,7 @@
 
 ## Task summary
 
-把全仓收成“一个正式主链 + 一组单一 authority + 一套 canonical docs + 一条 archive 边界”。当前第一轮只做 `Phase 0 truth map + identity authority wave + self-model authority wave（风险可控时） + obvious delete-candidate ledger admission`。
+把全仓收成“一个正式主链 + 一组单一 authority + 一套 canonical docs + 一条 archive 边界”。当前第一轮已推进到 canonical/archive physical admission boundary；本轮继续固化 canonical/archive/current/archive/generated/dirty-worktree admission，并准备 clean-clone / CI final closeout proof surface。
 
 ## Milestones
 
@@ -86,6 +86,33 @@
   - `python3 scripts/codex/verify_repo.py --mode fast`
 - rollback note:
   - 若 generated/docs/tool caller 迁移不清晰，则只更新 ledger，不删文件；若已无 compat consumer，则优先物理删除 self_model_adapter / self_model_mirror
+
+### Milestone 5: Clean-Clone / CI Final Closeout Proof
+
+- scope:
+  - 固化 canonical/archive/current/archive/generated/dirty-worktree admission boundary
+  - 准备 clean-clone / CI final closeout proof surface
+  - 不做新的 authority cleanup，不做物理 archive moves
+- files / areas likely touched:
+  - `docs/codex/tasks/repo-authority-cleanup/*`
+  - `docs/canonical/README.md`
+  - `docs/archive/README.md`
+  - `artifacts/current/README.md`
+  - `artifacts/archive/README.md`
+  - `EgoCore/docs/generated/README.md`
+  - `scripts/codex/verify_cleanup_admission.py`
+  - `EgoCore/tools/build_doc_system_inventory.py`
+  - `EgoCore/tests/test_doc_system_inventory_builder.py`
+- acceptance:
+  - canonical/archive/current/archive/generated/dirty-worktree boundaries are explicit in repo-tracked docs
+  - cleanup admission gate enforces the boundary texts
+  - next minimal action is clean-clone / CI final closeout proof, not more authority cleanup
+- validation:
+  - `python3 scripts/codex/verify_cleanup_admission.py`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+  - scoped generated inventory builder tests
+- rollback note:
+  - 若 clean-clone / CI proof surface 不足，只保留 boundary docs 和 gate，不做 physical archive moves
 
 ## Progress
 

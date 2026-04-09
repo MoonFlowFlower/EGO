@@ -8,3 +8,5 @@ Rules:
 - This directory is a boundary marker, not an archive manifest by itself.
 - Historical docs must remain recoverable by path or redirect before any physical move.
 - Current canonical docs must never be moved here as part of a bulk cleanup.
+- Dirty worktree noise is non-authority.
+- Archive relocation remains admission-controlled until clean-clone / CI proof is available.

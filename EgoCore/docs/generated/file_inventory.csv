@@ -292,7 +292,7 @@ EgoCore,docs/generated/file_inventory.csv,.csv,108524
 EgoCore,docs/generated/import_or_reference_map.csv,.csv,421931
 EgoCore,docs/generated/module_map.md,.md,10400
 EgoCore,docs/generated/orphan_candidates.md,.md,3270
-EgoCore,docs/generated/recent_hotspots.md,.md,3166
+EgoCore,docs/generated/recent_hotspots.md,.md,146
 EgoCore,docs/generated/repo_inventory.md,.md,809
 EgoCore,docs/runtime_metrics_aggregator/SHADOW_THRESHOLDS.md,.md,1300
 EgoCore,egocore/__init__.py,.py,191
@@ -421,7 +421,7 @@ EgoCore,tests/test_core_bus.py,.py,794
 EgoCore,tests/test_dashboard_index_builder.py,.py,17233
 EgoCore,tests/test_dashboard_server.py,.py,22823
 EgoCore,tests/test_developmental_writeback.py,.py,6705
-EgoCore,tests/test_doc_system_inventory_builder.py,.py,657
+EgoCore,tests/test_doc_system_inventory_builder.py,.py,1135
 EgoCore,tests/test_execution_context_injection.py,.py,21545
 EgoCore,tests/test_file_tool_windows_paths.py,.py,966
 EgoCore,tests/test_host_governed_proactive_telegram_cycle.py,.py,5548
@@ -523,7 +523,7 @@ EgoCore,tests/test_telegram_session_commands.py,.py,23767
 EgoCore,tests/test_tool_delivery_bridge.py,.py,2170
 EgoCore,tests/test_tools_config_wiring.py,.py,1568
 EgoCore,tools/__init__.py,.py,61
-EgoCore,tools/build_doc_system_inventory.py,.py,6149
+EgoCore,tools/build_doc_system_inventory.py,.py,6765
 EgoCore,tools/c1_ws1_verification.py,.py,8485
 EgoCore,tools/c3_daily_report.sh,.sh,890
 EgoCore,tools/c3_shadow_observer.py,.py,6096
