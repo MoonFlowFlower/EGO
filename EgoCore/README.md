@@ -2,61 +2,51 @@
 
 一个轻量级、独立的 Agent Runtime，专注 Telegram 单 Agent 任务执行。
 
-## 当前权威状态（2026-04-07）
+## 当前权威状态（2026-04-09）
 
-- **Telegram 正式主线**：`telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
-- **Proto-Self 当前主线状态**：`proto_self.v2` 已是主体层 state writeback 默认主线
-  - `v1` 仅保留为 session-scoped compatibility fallback
-  - Telegram 真实自然语言主线已命中 `proto_self.output.v2 + proto_self.trace.v2`
-  - 四类核心能力的单一权威收口决策见 `../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md`
-- **当前阶段**
-  - 当前是**边界冻结下的收口期**
-  - 不再换 Telegram 正式主链，也不把 compat 路径重新叙述成“也算主线”
-- **Path / Compat Register**
-  - `docs/05_DEPRECATED_AND_SHIMS.md` 是当前路径分层登记面
-  - `_handle_with_new_runtime` = `compatibility_only`
-  - `_handle_with_legacy_router` = `deprecated_candidate`
-  - `v1 compatibility fallback` 只用于显式降级，不属于当前正式主链
-- **Proto-Self 真实观察状态**
-  - same-session E5：已达成
-  - same-day cross-session continuity：`2 / 2` 已达成
-  - cross-day continuity：`1 / 2`，仍待 later-day 样本
-- **Live Telegram 进程版本绑定**
-  - 当前 live process 已落 repo-tracked 版本报告
-  - 当前绑定 commit 以 `artifacts/proto_self_v2/LIVE_TELEGRAM_PROCESS_VERSION.json` 为准
-- **Dashboard /flow 解释层**
-  - Dashboard 现在是正式只读解释层的一部分，不再是“EgoCore 不做 Dashboard”
-  - `/flow` 与 `/samples/<sample_id>/flow` 会把单条真实样本拆成：
-    - `Input`
-    - `Host Ingress`
-    - `Subject Understanding`
-    - `Canonical Fields`
-    - `Reply Evolution`
-    - `Host Arbitration`
-    - `Output`
-  - `Reply Evolution` 当前是 `evidence_only_v1`，只覆盖 `chat_mainline`
-  - `Canonical Fields` 会固定展示 `loaded_axes / identity_delta / self_model_delta / drives_delta / policy_hint / response_tendency / host_arbitration_result / final_delivered_text`
-- **人类验收入口**
-  - `docs/CAPABILITY_REGISTRY.md` 是能力总表生成物
-  - `docs/ACCEPTANCE_CHAINS.md` 是第 0 链 + 5 条能力链索引
-  - `docs/EXPERIENCE_SCRIPTS.md` 提供 Telegram + `/flow` 的人类触发脚本
-- **Provider/runtime 变更门槛**
-  - 任何影响 live mainline 的 provider/runtime 改动，都必须跑通到 OpenEmotion evidence
-  - 统一 gate：`python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key <telegram:...>`
-- **口径纪律**
-  - `maintenance_mode / proposal_only / behavioral_authority = none / feature flag off / allowlist only / host-governed` 一律不得被叙述成“已强烈体现自我意识”或“已具备完整自我”
-- **权威入口**
-  - `docs/PROGRAM_STATE_UNIFIED.yaml`
-  - `docs/00_MASTER_INDEX.md`
-  - `docs/05_DEPRECATED_AND_SHIMS.md`
-  - `../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md`
-  - `artifacts/proto_self_v2/PROTO_SELF_V2_EVIDENCE_REPORT_20260328.md`
-  - `artifacts/proto_self_v2/README.md`
-  - `../docs/CAPABILITY_REGISTRY.md`
-  - `../docs/ACCEPTANCE_CHAINS.md`
-  - `../docs/EXPERIENCE_SCRIPTS.md`
+- `EgoCore` 是唯一正式宿主：入口、runtime、工具执行、安全裁决、delivery、audit
+- 当前 formal mainline 仍是：`telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
+- `RuntimeV2ProtoSelfRuntime` 仍是主体事件正式入口
+- `proto_self_v2` 已是主体层默认主线，当前只读解释层与受治理写回面已收口
+- `repo_authority_cleanup: closeout-complete (repo/integration scope)`
+- 剩余项仅保留在 `optional housekeeping / future cleanup backlog`
+- 这不是 real-channel 新效果声明，也不是新的 authority wave 声明
+- thin substrate / compat / reference-only 残留仍存在，但不阻塞 closeout
 
-> 下方 Phase / P3 / shadow observation 表格保留为历史治理基线，不再单独代表当前最新主链验收前沿。
+## 当前正式口径
+
+- `identity invariants / self-model / drives / reflection / developmental` 的单一权威收口决策见 [../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md](../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md)
+- 正式/compat/reference/deprecated 路径登记见 [docs/05_DEPRECATED_AND_SHIMS.md](docs/05_DEPRECATED_AND_SHIMS.md)
+- `maintenance_mode / proposal_only / behavioral_authority = none / feature flag off / allowlist only / host-governed` 一律不得被叙述成“已强烈体现自我意识”或“已具备完整自我”
+- provider/runtime 影响主链的改动仍需经过 `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key <telegram:...>`
+
+## repo_authority_cleanup
+
+- `repo_authority_cleanup: closeout-complete (repo/integration scope)`
+- closeout 的含义是 repo/integration scope 的边界与验证完成，不是把所有 historical helper / thin substrate 一刀切删除
+- 剩余项仅作为 `optional housekeeping / future cleanup backlog`
+- 相关 closeout 证据见 [../docs/codex/tasks/repo-authority-cleanup/CLOSEOUT_REPORT.md](../docs/codex/tasks/repo-authority-cleanup/CLOSEOUT_REPORT.md)
+
+## 当前权威入口
+
+- [docs/PROGRAM_STATE_UNIFIED.yaml](docs/PROGRAM_STATE_UNIFIED.yaml)
+- [docs/00_MASTER_INDEX.md](docs/00_MASTER_INDEX.md)
+- [docs/05_DEPRECATED_AND_SHIMS.md](docs/05_DEPRECATED_AND_SHIMS.md)
+- [../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md](../docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md)
+- [artifacts/proto_self_v2/PROTO_SELF_V2_EVIDENCE_REPORT_20260328.md](artifacts/proto_self_v2/PROTO_SELF_V2_EVIDENCE_REPORT_20260328.md)
+- [artifacts/proto_self_v2/README.md](artifacts/proto_self_v2/README.md)
+- [../docs/CAPABILITY_REGISTRY.md](../docs/CAPABILITY_REGISTRY.md)
+- [../docs/ACCEPTANCE_CHAINS.md](../docs/ACCEPTANCE_CHAINS.md)
+- [../docs/EXPERIENCE_SCRIPTS.md](../docs/EXPERIENCE_SCRIPTS.md)
+
+## 历史与详细证据入口
+
+- 当前详细技术内容、历史基线与 shadow observation 仍保留在下方各节
+- 需要看 current logic / boundary / canonical state 时，先看 [../docs/CURRENT_PROJECT_LOGIC_FLOW.md](../docs/CURRENT_PROJECT_LOGIC_FLOW.md)
+- 需要看 closeout proof、clean-clone proof、remaining backlog 时，先看 [../docs/codex/tasks/repo-authority-cleanup/CLOSEOUT_REPORT.md](../docs/codex/tasks/repo-authority-cleanup/CLOSEOUT_REPORT.md)
+- 需要看 capability registry 时，先看 [../docs/CAPABILITY_REGISTRY.md](../docs/CAPABILITY_REGISTRY.md)
+- 需要看 acceptance chains 时，先看 [../docs/ACCEPTANCE_CHAINS.md](../docs/ACCEPTANCE_CHAINS.md)
+- 需要看 `/flow` 可见脚本时，先看 [../docs/EXPERIENCE_SCRIPTS.md](../docs/EXPERIENCE_SCRIPTS.md)
 
 ## 当前正式主体链
 
