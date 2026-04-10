@@ -124,6 +124,24 @@ def test_build_proto_self_ingress_event_supports_v2_shape():
     assert event["external_outcome"] is None
 
 
+def test_build_proto_self_ingress_event_injects_h1_shadow_context(monkeypatch):
+    monkeypatch.setenv("EGO_ENABLE_H1_CANONICAL_SHADOW", "true")
+    monkeypatch.setenv("EGO_H1_CANONICAL_SHADOW_ALLOWLIST", "session:test")
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    event = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_h1_ingress",
+        source="telegram",
+        user_input="继续",
+        state=state,
+    )
+
+    assert event["runtime_summary"]["h1_canonical_shadow"]["enabled"] is True
+    assert event["runtime_summary"]["h1_canonical_shadow"]["shadow_only"] is True
+
+
 def test_v2_events_inject_formal_self_model_context(tmp_path):
     store = SelfModelStore(base_dir=tmp_path)
     baseline = create_default_self_model("openemotion")
@@ -2645,6 +2663,61 @@ def test_process_ingress_records_self_model_writeback_without_owner_promotion(tm
     assert saved.confidence_by_domain["reasoning"] == 0.97
     assert state.proto_self_context["self_model_delta"] == {"confidence_by_domain": {"reasoning": 0.97}}
     assert state.proto_self_context["self_model_writeback"]["decision"]["gate_verdict"] == "allow_writeback"
+
+
+def test_process_ingress_bridges_shadow_h1_without_promoting_live_policy(monkeypatch):
+    monkeypatch.setenv("EGO_ENABLE_H1_CANONICAL_SHADOW", "true")
+    monkeypatch.setenv("EGO_H1_CANONICAL_SHADOW_ALLOWLIST", "session:test")
+
+    class Adapter:
+        def handle_event(self, event):
+            return {
+                "schema_version": "proto_self.output.v2",
+                "event_id": event["event_id"],
+                "subject_profile": event.get("subject_profile"),
+                "self_model_delta": {},
+                "policy_hint": {"ask_preferred": False, "governor_hint": {"status": "bounded"}},
+                "response_tendency": {"preferred_mode": "respond", "ask_needed": False},
+                "reflection_note": None,
+                "candidate_actions": [],
+                "confidence_meta": {
+                    "shadow_h1_enabled": True,
+                    "shadow_h1_action_key": "tool:file",
+                    "shadow_h1_predicted_success": 0.22,
+                    "shadow_h1_threshold": 0.35,
+                    "shadow_h1_would_guard": True,
+                    "shadow_h1_would_ask": True,
+                },
+                "trace_payload": {
+                    "schema_version": "proto_self.trace.v2",
+                    "event_id": event["event_id"],
+                    "shadow_h1": {
+                        "enabled": True,
+                        "action_key": "tool:file",
+                        "predicted_success": 0.22,
+                        "threshold": 0.35,
+                        "would_guard": True,
+                        "would_ask": True,
+                        "source": "canonical_shadow",
+                    },
+                },
+            }
+
+    runtime = RuntimeV2ProtoSelfRuntime(adapter=Adapter())
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    runtime.process_ingress(
+        session_id="session:test",
+        turn_id="turn_h1_bridge",
+        source="telegram",
+        user_input="继续",
+        state=state,
+    )
+
+    assert state.proto_self_context["shadow_h1"]["action_key"] == "tool:file"
+    assert state.proto_self_context["shadow_h1"]["would_guard"] is True
+    assert state.proto_self_context["policy_hint"]["ask_preferred"] is False
 
 
 def test_process_developmental_tick_updates_shadow_summary_and_trace():
