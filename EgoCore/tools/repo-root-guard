@@ -19,6 +19,7 @@ Enforcement: MANDATORY for EgoCore
 
 import argparse
 import json
+import ntpath
 import os
 import subprocess
 import sys
@@ -111,6 +112,67 @@ class RepoRootGuard:
     def __init__(self, registry_path: Optional[str] = None, repo_name: str = "EgoCore"):
         self.registry = CanonicalRepoRegistry(registry_path)
         self.repo_name = repo_name
+
+    def _run_git(self, cwd: str, args: List[str]) -> Optional[str]:
+        try:
+            completed = subprocess.run(
+                ["git", "-C", cwd, *args],
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=3,
+            )
+        except Exception:
+            return None
+        value = completed.stdout.strip()
+        return value or None
+
+    def _normalize_path(self, value: str) -> str:
+        return ntpath.normpath(value.replace("/", "\\"))
+
+    def _matches_allowed_worktree(self, current_dir: str, canonical_root: str) -> bool:
+        if os.environ.get("EGO_ALLOW_GIT_WORKTREE_ROOT") != "1":
+            return False
+
+        explicit_repo_root = os.environ.get("EGO_REPO_ROOT")
+        if explicit_repo_root:
+            expected_root = self._normalize_path(str(Path(explicit_repo_root) / self.repo_name))
+            current_dir_norm = self._normalize_path(current_dir)
+            if current_dir_norm == expected_root or current_dir_norm.startswith(expected_root + "\\"):
+                return True
+
+        current_top = self._run_git(current_dir, ["rev-parse", "--show-toplevel"])
+        current_common = self._run_git(current_dir, ["rev-parse", "--git-common-dir"])
+        canonical_top = self._run_git(canonical_root, ["rev-parse", "--show-toplevel"])
+        canonical_common = self._run_git(canonical_root, ["rev-parse", "--git-common-dir"])
+
+        if not all([current_top, current_common, canonical_top, canonical_common]):
+            return False
+
+        try:
+            current_rel = ntpath.relpath(current_dir, current_top)
+            canonical_rel = ntpath.relpath(canonical_root, canonical_top)
+        except ValueError:
+            return False
+
+        current_common_abs = (
+            current_common
+            if ntpath.isabs(current_common) or os.path.isabs(current_common)
+            else ntpath.join(current_dir, current_common)
+        )
+        canonical_common_abs = (
+            canonical_common
+            if ntpath.isabs(canonical_common) or os.path.isabs(canonical_common)
+            else ntpath.join(canonical_root, canonical_common)
+        )
+        current_common_norm = self._normalize_path(current_common_abs)
+        canonical_common_norm = self._normalize_path(canonical_common_abs)
+        current_rel_norm = self._normalize_path(current_rel)
+        canonical_rel_norm = self._normalize_path(canonical_rel)
+        return (
+            current_common_norm == canonical_common_norm
+            and current_rel_norm == canonical_rel_norm
+        )
     
     def check(self) -> ValidationResult:
         """Check if current directory is the canonical repo"""
@@ -144,11 +206,11 @@ class RepoRootGuard:
             )
         
         # Normalize paths for cross-platform comparison
-        current_dir_norm = os.path.normpath(current_dir)
-        canonical_root_norm = os.path.normpath(canonical_root)
+        current_dir_norm = self._normalize_path(current_dir)
+        canonical_root_norm = self._normalize_path(canonical_root)
 
         # Check if current directory matches canonical root
-        if current_dir_norm == canonical_root_norm or current_dir_norm.startswith(canonical_root_norm + os.sep):
+        if current_dir_norm == canonical_root_norm or current_dir_norm.startswith(canonical_root_norm + "\\"):
             return ValidationResult(
                 status=RepoStatus.CANONICAL,
                 current_dir=current_dir,
@@ -156,6 +218,17 @@ class RepoRootGuard:
                 repo_name=self.repo_name,
                 can_auto_switch=False,
                 message=f"✅ Current directory is canonical repo: {self.repo_name}",
+                blocked_operations=[]
+            )
+
+        if self._matches_allowed_worktree(current_dir, canonical_root):
+            return ValidationResult(
+                status=RepoStatus.CANONICAL,
+                current_dir=current_dir,
+                canonical_root=canonical_root,
+                repo_name=self.repo_name,
+                can_auto_switch=False,
+                message=f"✅ Current directory is allowed git worktree for canonical repo: {self.repo_name}",
                 blocked_operations=[]
             )
         
