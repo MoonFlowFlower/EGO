@@ -127,6 +127,10 @@ def build_runtime_observation_record(
         "intent_gate_status": str(verdict.intent_gate_status or ""),
         "intent_gate_reason": str(verdict.intent_gate_reason or ""),
     }
+    proto_self_context = getattr(state, "proto_self_context", None) or {}
+    shadow_h1 = proto_self_context.get("shadow_h1")
+    if isinstance(shadow_h1, dict) and shadow_h1:
+        record["proto_self_shadow_h1"] = dict(shadow_h1)
     missing = validate_observation_record(record)
     if missing:
         raise ValueError(f"Invalid observation_record_v1 fields: {', '.join(missing)}")
