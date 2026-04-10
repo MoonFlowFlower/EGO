@@ -4,6 +4,9 @@ import importlib.util
 import json
 from pathlib import Path
 
+from app.runtime_v2.runtime_reply import RuntimeV2Reply, RuntimeV2TurnResult
+from app.runtime_v2.state import RuntimeV2State
+
 
 ROOT = Path(__file__).resolve().parents[2]
 COMMON_SCRIPT = ROOT / "scripts" / "runtime_mainline_observation_common.py"
@@ -138,3 +141,41 @@ def test_controlled_evidence_prefers_observation_log(tmp_path):
 
     assert len(observations) == 1
     assert observations[0]["transport_source"] == "runtime_harness"
+
+
+def test_build_runtime_observation_record_includes_shadow_h1():
+    module = _load_module(COMMON_SCRIPT, "runtime_mainline_observation_common")
+    state = RuntimeV2State(session_id="session:test")
+    state.proto_self_context = {
+        "shadow_h1": {
+            "enabled": True,
+            "action_key": "tool:file",
+            "predicted_success": 0.22,
+            "threshold": 0.35,
+            "would_guard": True,
+            "would_ask": True,
+            "source": "canonical_shadow",
+        }
+    }
+    result = RuntimeV2TurnResult(
+        status="completed_verified",
+        state=state,
+        reply=RuntimeV2Reply(
+            reply_text="已完成",
+            delivery_kind="final",
+            status="completed_verified",
+        ),
+    )
+
+    record = module.build_runtime_observation_record(
+        session_id="session:test",
+        turn_id="turn_001",
+        user_input="继续",
+        result=result,
+        state=state,
+        transport_source="runtime_harness",
+        source="runtime_harness",
+    )
+
+    assert record["proto_self_shadow_h1"]["action_key"] == "tool:file"
+    assert record["proto_self_shadow_h1"]["would_guard"] is True
