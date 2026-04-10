@@ -337,6 +337,7 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         controlled_delivery_candidate=initiative_realization_outputs["controlled_delivery_candidate"],
         initiative_realization_audit_entries=initiative_realization_outputs["initiative_realization_audit_entries"],
         initiative_realization_writeback_candidate=initiative_realization_outputs["initiative_realization_writeback_candidate"],
+        shadow_h1=v1_output.trace_payload.get("shadow_h1"),
     )
     merged_policy_hint = {
         **v1_output.policy_hint,
