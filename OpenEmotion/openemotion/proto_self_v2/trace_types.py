@@ -97,11 +97,12 @@ class ProtoSelfTracePayloadV2:
     controlled_delivery_candidate: Optional[Dict[str, Any]] = None
     initiative_realization_audit_entries: list = field(default_factory=list)
     initiative_realization_writeback_candidate: Optional[Dict[str, Any]] = None
+    shadow_h1: Optional[Dict[str, Any]] = None
     timestamp: str = ""
     legacy_trace_payload: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "kernel_version": self.kernel_version,
             "event_id": self.event_id,
@@ -193,6 +194,9 @@ class ProtoSelfTracePayloadV2:
             "timestamp": self.timestamp,
             "legacy_trace_payload": self.legacy_trace_payload,
         }
+        if self.shadow_h1 is not None:
+            payload["shadow_h1"] = self.shadow_h1
+        return payload
 
 
 def build_trace_payload_v2(**kwargs: Any) -> Dict[str, Any]:
