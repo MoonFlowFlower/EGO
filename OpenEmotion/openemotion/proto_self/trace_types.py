@@ -49,12 +49,13 @@ class ProtoSelfTracePayload:
 
     # 策略输出
     policy_hint: Dict[str, Any] = field(default_factory=dict)
+    shadow_h1: Optional[Dict[str, Any]] = None
 
     # 时间戳
     timestamp: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "event_id": self.event_id,
             "perceived": self.perceived,
@@ -72,6 +73,9 @@ class ProtoSelfTracePayload:
             "policy_hint": self.policy_hint,
             "timestamp": self.timestamp,
         }
+        if self.shadow_h1 is not None:
+            payload["shadow_h1"] = self.shadow_h1
+        return payload
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "ProtoSelfTracePayload":
@@ -91,6 +95,7 @@ class ProtoSelfTracePayload:
             order_invariance_candidate=data.get("order_invariance_candidate", ""),
             reflection_trigger=data.get("reflection_trigger"),
             policy_hint=data.get("policy_hint", {}),
+            shadow_h1=data.get("shadow_h1"),
             timestamp=data.get("timestamp", ""),
         )
 
@@ -111,6 +116,7 @@ def build_trace_payload(
     closure_consistency_score: float = 0.0,
     order_invariance_candidate: str = "",
     timestamp: str = "",
+    shadow_h1: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
     构建 trace payload 字典。
@@ -132,6 +138,7 @@ def build_trace_payload(
         order_invariance_candidate=order_invariance_candidate,
         reflection_trigger=reflection_trigger,
         policy_hint=policy_hint,
+        shadow_h1=shadow_h1,
         timestamp=timestamp,
     )
     return payload.to_dict()
