@@ -1,10 +1,13 @@
 import json
+import os
 from pathlib import Path
 
 from app.live_process_version import build_live_process_version_record, write_live_process_version_report
 
 
 def test_build_live_process_version_record_contains_required_fields():
+    os.environ["EGO_ENABLE_H1_CANONICAL_SHADOW"] = "true"
+    os.environ["EGO_H1_CANONICAL_SHADOW_ALLOWLIST"] = "telegram:dm:1"
     record = build_live_process_version_record(
         process_kind="telegram",
         argv=["python", "-m", "app.main", "--telegram"],
@@ -19,6 +22,8 @@ def test_build_live_process_version_record_contains_required_fields():
     assert isinstance(record["pid"], int)
     assert record["git_commit_sha"]
     assert record["git_commit_short"]
+    assert record["runtime_env_flags"]["EGO_ENABLE_H1_CANONICAL_SHADOW"] == "true"
+    assert record["runtime_env_flags"]["EGO_H1_CANONICAL_SHADOW_ALLOWLIST"] == "telegram:dm:1"
 
 
 def test_write_live_process_version_report_writes_json(tmp_path):
@@ -35,3 +40,4 @@ def test_write_live_process_version_report_writes_json(tmp_path):
     payload = json.loads(path.read_text(encoding="utf-8"))
     assert payload["process_kind"] == "telegram"
     assert payload["schema_version"] == "egocore.live_process_version.v1"
+    assert "runtime_env_flags" in payload
