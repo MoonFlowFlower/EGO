@@ -160,6 +160,34 @@ def test_trace_serialization():
     assert trace_obj.schema_version == "proto_self.trace.v1"
 
 
+def test_trace_serialization_preserves_shadow_h1_when_present():
+    state = ProtoSelfState.empty()
+
+    event = KernelEvent(
+        event_id="replay-test-shadow-h1",
+        timestamp=datetime.now().isoformat(),
+        actor="system",
+        source="runtime",
+        event_type="tool_result",
+        runtime_summary={
+            "h1_canonical_shadow": {
+                "enabled": True,
+                "shadow_only": True,
+                "allowlisted": True,
+                "source": "canonical_shadow",
+            }
+        },
+        external_result={"success": False, "tool": "file", "exit_code": 1, "error": "boom"},
+    )
+    output = process_event(state, event)
+
+    trace_dict = output.trace_payload
+    trace_obj = ProtoSelfTracePayload.from_dict(trace_dict)
+
+    assert trace_obj.shadow_h1 is not None
+    assert trace_obj.shadow_h1["action_key"] == "tool:file"
+
+
 def test_replay_uses_trace_not_current_store():
     """重放应该使用 trace 中记录的值，而不是当前 store 重算。"""
     state = ProtoSelfState.empty()

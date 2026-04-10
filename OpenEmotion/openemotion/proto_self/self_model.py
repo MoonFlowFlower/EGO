@@ -11,7 +11,16 @@ Proto-Self Kernel v1 - Self-Model Update
 
 from typing import Any, Dict
 
+from openemotion.proto_self.h1_shadow import (
+    H1_DEFAULT_SUCCESS,
+    build_h1_shadow_key,
+    resolve_h1_action_key,
+)
 from openemotion.proto_self.state import ProtoSelfState
+from openemotion.proto_self.trial1_shadow import (
+    trial1_variant_uses_mvs_core,
+    trial1_variant_uses_counterfactual,
+)
 
 
 def update_self_model(
@@ -30,6 +39,8 @@ def update_self_model(
         "current_focus": None,
         "current_mode": None,
         "self_confidence_by_domain": {},
+        "counterfactual_success_by_action_patch": {},
+        "recent_correction_tags_patch": {},
     }
 
     external_outcome_type = perceived.get("external_outcome_type")
@@ -54,5 +65,51 @@ def update_self_model(
     # 身份冲突 → 提升自我审查
     if perceived.get("identity_conflict", 0.0) > 0.5:
         delta["self_confidence_by_domain"] = {"self_monitoring": -0.1}
+
+    if perceived.get("trial1_shadow_active"):
+        variant_id = str(perceived.get("trial1_variant_id") or "")
+        if not trial1_variant_uses_mvs_core(variant_id):
+            return delta
+        probe_key = str(perceived.get("trial1_probe_key") or "")
+        outcome_type = perceived.get("external_outcome_type")
+        correction_strength = state.self_model.recent_correction_tags.get(probe_key, 0.0)
+        predicted_success = state.self_model.counterfactual_success_by_action.get(probe_key, 0.55)
+        if outcome_type in {"failure", "blocked", "partial"}:
+            delta["current_mode"] = "repair"
+            delta["current_focus"] = "error_recovery"
+            delta["recent_correction_tags_patch"][probe_key] = 1.0 if outcome_type != "partial" else 0.7
+            delta["self_confidence_by_domain"][probe_key] = -0.15 if outcome_type != "partial" else -0.08
+            if trial1_variant_uses_counterfactual(variant_id):
+                target = 0.12 if outcome_type == "blocked" else 0.18 if outcome_type == "failure" else 0.35
+                delta["counterfactual_success_by_action_patch"][probe_key] = target
+        elif outcome_type == "success" and correction_strength > 0.0:
+            delta["current_mode"] = "baseline"
+            delta["current_focus"] = "stabilized_retry"
+            delta["recent_correction_tags_patch"][probe_key] = max(0.0, correction_strength - 0.75)
+            delta["self_confidence_by_domain"][probe_key] = 0.10
+            if trial1_variant_uses_counterfactual(variant_id):
+                delta["counterfactual_success_by_action_patch"][probe_key] = max(0.65, predicted_success)
+        elif correction_strength >= 0.6:
+            delta["current_mode"] = "repair"
+            delta["current_focus"] = "guarded_retry"
+
+    if perceived.get("h1_shadow_active"):
+        action_key = resolve_h1_action_key(perceived)
+        outcome_type = perceived.get("external_outcome_type")
+        if action_key != "unknown" and outcome_type in {"failure", "blocked", "partial", "success"}:
+            shadow_key = build_h1_shadow_key(action_key)
+            correction_strength = state.self_model.recent_correction_tags.get(shadow_key, 0.0)
+            predicted_success = state.self_model.counterfactual_success_by_action.get(shadow_key, H1_DEFAULT_SUCCESS)
+            if outcome_type in {"failure", "blocked", "partial"}:
+                delta["recent_correction_tags_patch"][shadow_key] = 1.0 if outcome_type != "partial" else 0.7
+                if outcome_type == "blocked":
+                    delta["counterfactual_success_by_action_patch"][shadow_key] = 0.12
+                elif outcome_type == "failure":
+                    delta["counterfactual_success_by_action_patch"][shadow_key] = 0.18
+                else:
+                    delta["counterfactual_success_by_action_patch"][shadow_key] = 0.35
+            elif outcome_type == "success" and correction_strength > 0.0:
+                delta["recent_correction_tags_patch"][shadow_key] = max(0.0, correction_strength - 0.75)
+                delta["counterfactual_success_by_action_patch"][shadow_key] = max(0.65, predicted_success)
 
     return delta

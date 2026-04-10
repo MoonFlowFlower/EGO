@@ -38,6 +38,17 @@ class FakeLLMClient:
             raw_response={},
         )
 
+    def generate_with_messages(self, messages, **kwargs):
+        tool_message = next(m for m in messages if m.get("role") == "tool")
+        assert json.loads(tool_message["content"])["success"] is True
+        return LLMResponse(
+            content="已检查完成。",
+            model="fake",
+            provider="fake",
+            finish_reason="stop",
+            raw_response={},
+        )
+
 
 @pytest.mark.asyncio
 async def test_native_loop_runs_tool_call_and_returns_reply(monkeypatch):
