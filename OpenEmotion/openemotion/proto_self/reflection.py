@@ -37,8 +37,8 @@ def maybe_reflect(
     - 为下一轮状态更新提供依据
     - 不直接接管外部表达
     """
-    # 1. 外部失败
-    if perceived.get("external_outcome_type") == "failure":
+    # 1. 外部失败 / blocked
+    if perceived.get("external_outcome_type") in {"failure", "blocked"}:
         return ReflectionNote(
             trigger="external_failure",
             diagnosis="recent action did not achieve expected outcome",

@@ -43,6 +43,10 @@ def build_live_process_version_record(
 ) -> Dict[str, Any]:
     resolved_repo_root = Path(repo_root) if repo_root is not None else _repo_root()
     status_porcelain = _run_git(resolved_repo_root, ["status", "--short"])
+    env_flags = {
+        "EGO_ENABLE_H1_CANONICAL_SHADOW": os.environ.get("EGO_ENABLE_H1_CANONICAL_SHADOW"),
+        "EGO_H1_CANONICAL_SHADOW_ALLOWLIST": os.environ.get("EGO_H1_CANONICAL_SHADOW_ALLOWLIST"),
+    }
     return {
         "schema_version": "egocore.live_process_version.v1",
         "observed_at": datetime.now().isoformat(),
@@ -57,6 +61,7 @@ def build_live_process_version_record(
         "git_commit_short": _run_git(resolved_repo_root, ["rev-parse", "--short", "HEAD"]),
         "git_branch": _run_git(resolved_repo_root, ["branch", "--show-current"]),
         "git_dirty": bool(status_porcelain),
+        "runtime_env_flags": env_flags,
     }
 
 
