@@ -7,12 +7,13 @@
 - `STATUS.md`
 - `docs/TELEGRAM_REAL_MAINLINE_VALIDATION_V1.md`
 - `artifacts/telegram_real_mainline_v1/dashboard_v1/SUBJECT_MAINLINE_AUDIT_CURRENT.md`
+- `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_INGRESS_DASHBOARD_PREFLIGHT_CURRENT.md`
 - `docs/codex/tasks/mandatory-subject-ingress-all-turns/STATUS.md`
 
 ## Execution rules
 
 - 先读 `SPEC.md -> PLAN.md -> IMPLEMENT.md -> STATUS.md`
-- 当前允许执行到 `M4 Host-Governed Cadence`
+- 当前允许执行到 `M5a Dashboard Preflight`
 - 当前可写：
   - `docs/codex/tasks/live-chat-subjective-variability/*`
   - `EgoCore/app/runtime_v2/chat_reply_engine.py`
@@ -21,6 +22,8 @@
   - `EgoCore/tests/test_response_contract.py`
   - `EgoCore/app/runtime_v2/*`
   - `EgoCore/app/telegram_*`
+  - `EgoCore/app/dashboard/*`
+  - `scripts/codex/run_dashboard_chat_preflight.py`
   - `EgoCore/tests/test_runtime_v2_cli_and_telegram.py`
 - 不改 authority docs
 - 不回写历史 real Telegram artifacts
@@ -98,6 +101,29 @@
   - tool authority release
   - unrestricted autonomy
 
+## Locked M5a implementation target
+
+- `M5a` 只解决一件事：
+  - 在发布前用 dashboard-local bounded backend 做 ordinary-chat preflight
+- `M5a` 实现目标固定为：
+  - in-process runner，直接驱动 `DashboardChatService`
+  - preflight report 显式记录：
+    - richer fields
+    - tendency delta
+    - cadence delta 或 `hold_for_followup`
+    - subject ingress
+    - runtime finalized-result capture
+    - runtime response-plan capture
+    - response-plan / output-check
+- `M5a` 必须满足：
+  - `source = dashboard_local_preflight`
+  - `claim_ceiling = preflight_only`
+  - 不让 dashboard artifact 混入 real Telegram acceptance
+- `M5a` 不做：
+  - 浏览器自动化证明
+  - real Telegram acceptance 替代
+  - authority release
+
 ## Claim ceiling
 
 - 当前只能宣称：
@@ -110,8 +136,10 @@
   - `chat_cadence_mode`
   - `reply_now_short / reply_now_normal / reply_now_expand / hold_for_followup`
   - `hold_for_followup` 只进入现有 host-governed proactive substrate
+  - `M5a` dashboard preflight 已通过，但只属于 `dashboard_local_preflight / preflight_only`
 - 当前不能宣称：
   - `M4` 已有 fresh real Telegram proof
+  - dashboard preflight 已替代 real Telegram acceptance
   - `M5` 已通过
   - fresh real Telegram 已证明稳定可感变化
   - `hold_for_followup` 已在真实 Telegram 新窗口中证明生效
@@ -140,6 +168,7 @@
 - [x] richer fields 缺失已写明
 - [x] `M2` richer subject surface 已落地
 - [x] `M3` tendency-to-reply consumption 已落地并经 full verify
-- [ ] `M4` host-governed cadence fresh proof / full-verify closeout
+- [x] `M4` host-governed cadence 代码已落地
+- [x] `M5a` dashboard preflight 已通过（仅 `preflight_only`）
 - [ ] `M5` fresh real Telegram proof（当前 blocker：fresh window 缺少 ordinary-chat mainline 样本）
 - [ ] `M6` closeout

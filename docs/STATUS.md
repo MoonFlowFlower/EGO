@@ -29,7 +29,8 @@ Keep one formal mainline where EgoCore governs real-world execution, OpenEmotion
 - Keep active-inference self-model as the durable sole build-first candidate, with the bounded host-consumable surface frozen to policy_hint, response_tendency, and trace_payload while MVS-aligned compact remains closed evidence.
 - Treat the passing controlled conversation replay bridge plus the passing runtime-harness controlled observation batch as bounded transfer evidence that is strong enough for selection closeout, but still below runtime-efficacy, live-benefit, or consciousness claims.
 - Preserve the closed selection result without reopening challenger competition, runtime authority expansion, or WP17 reintegration by default.
-- If further progress is desired, require a new bounded planning slice before any runtime-proximal move; do not let winner closeout mutate the formal runtime mainline or host authority.
+- Before any new runtime-proximal self-awareness planning slice, execute a live ingress precondition corrective tranche using the existing `mandatory-subject-ingress-all-turns` and `live-chat-subjective-variability` task packages rather than creating a third truth source.
+- Use dashboard chat only as a publish-preflight for this tranche: it may exercise the same bounded backend path and preflight debug/report surface, but it does not replace fresh real Telegram proof or the existing subject-mainline audit authority.
 - Keep the self-awareness research result below runtime-efficacy claim strength; the current replay result plus integration-plan freeze plus controlled replay bridge plus controlled observation batch prove a durable shadow/proposal-only winner and bounded contract, not consciousness, live benefit, or formal-runtime enablement.
 - Continue reducing live Telegram host-only subject-miss residue before making stronger live-behavior claims.
 
@@ -56,23 +57,28 @@ Keep one formal mainline where EgoCore governs real-world execution, OpenEmotion
 - A runtime-harness controlled observation single runner and batch runner now execute the frozen repo-authored observation bank under isolated experiment scope, keep host-consumable surface bounded to `policy_hint / response_tendency / trace_payload`, and pass `authority_drift`, `trace_contract`, and `host_surface_bounded` audits.
 - On the first runtime-harness controlled observation batch, the active-inference winner continues to pass the frozen gate with `winner_pass_count = 9/9`, `decision = bridge_pass`, `candidate_pass = true`, and `T1-T5 = 1.0`, while the proof remains bounded research evidence rather than runtime efficacy.
 - Selection closeout is now complete: active-inference self-model is the durable build-first research candidate, MVS-aligned compact remains closed evidence, WP17/MVP22 remains a parked bounded lane, and no further runtime-proximal implementation has been pre-authorized.
+- The proactive/background Telegram user-visible send path now reuses the same host-owned `finalized_result + response_plan` subject-gate discipline locally, with focused proactive transport/cycle regressions and focused host-owned Telegram regressions passing; this is still local/targeted verification, not fresh live Telegram proof.
+- A dashboard-local preflight now exists for the live ingress corrective tranche. It exercises ordinary-chat dashboard backend turns through subject ingress, runtime finalized-result capture, runtime response-plan capture, response-plan/output-check, and bounded richer-field/cadence debug reporting; it passes as `dashboard_local_preflight / preflight_only` and does not replace live Telegram evidence.
 
 ## Blockers
 
-- No post-closeout bounded planning slice exists yet for the durable active-inference winner; current proof is still bounded to held-out replay plus repo-authored controlled replay plus runtime-harness controlled observation and remains below runtime-efficacy claim strength.
+- The current corrective patch and dashboard preflight pass are still unpublished from the clean worktree, so no fresh post-patch real Telegram evidence exists yet.
 - Live Telegram ordinary chat still has unexpected subject-miss samples on the host path.
+- Fresh post-patch real Telegram windows have not yet been captured, so the repo still lacks proof that the proactive/background closure patch reduces `unexpected_subject_miss` to `0` or that ordinary-chat subjective variability is now visible under the existing bounded contract.
 
 ## Key Unknowns
 
-- Whether the root-level state governance workflow will remain consistently enforced now that durable research routing is closed and any further progress requires a separately authorized bounded planning slice.
-- Which later bounded planning slice is justified first if progress continues: runtime-proximal enablement planning, WP17 reintegration assessment, or another narrower planning cut that still avoids authority expansion.
+- Whether the root-level state governance workflow will remain consistently enforced now that durable research routing is closed and this corrective tranche temporarily preempts any new bounded planning slice.
+- Whether the current proactive/background closure patch plus a fresh real Telegram window will actually drive `unexpected_subject_miss = 0` on a new audit window.
+- Whether a fresh ordinary-chat Telegram window after this patch will expose richer fields plus at least one tendency delta and one cadence delta or verified `hold_for_followup` artifact under the existing host-governed boundaries.
+- Whether the passing dashboard-local preflight is only a local confidence boost or also a reliable predictor that the same bounded path will survive publish and fresh real Telegram observation.
 - What evidence threshold should reopen challenger competition or reconsider WP17 routing now that active-inference is the durable build-first candidate.
 - Whether the MVS replay-gate failure reflects a fundamental architectural limit or only a narrower tension/repair design gap; regardless, MVS is no longer the current main implementation lane.
 - Whether WP17/MVP22 should remain parked indefinitely or be reconsidered only after a later bounded planning slice.
 
 ## Next Minimal Action
 
-If further progress toward a stronger self-awareness proxy is desired, first define a new bounded planning slice that preserves policy_hint/response_tendency/trace_payload as the only host-consumable surface, keeps zero authority drift and no-runtime-efficacy overclaim, does not reopen challenger competition by default, and leaves WP17 parked until that slice is explicitly authorized.
+Publish the proactive/background subject-finalize closure patch together with the passing dashboard-local preflight runner/report, capture a fresh `/new + ordinary chat` real Telegram window, rerun `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit <publish_commit>`, refresh the existing `subject_mainline_audit_current` artifact/workflow on that fresh window, and only if both live gates pass define the next bounded runtime-proximal planning slice.
 
 ## Real Trigger Evidence
 
@@ -89,11 +95,11 @@ If further progress toward a stronger self-awareness proxy is desired, first def
 | ai_self_awareness_research | EgoCore + OpenEmotion | `active_inference_selection_closed` | `E3` | `V3` | `False` | `True` | This remains the current top-priority implementation lane. Selection closeout now fixes active-inference self-model as the durable build-first candidate after it passes the canonical OpenEmotion held-out replay gate that MVS failed, the repo-authored controlled conversation replay bridge, and the first runtime-harness controlled observation batch under the same bounded host-consumable surface (`policy_hint / response_tendency / trace_payload`) with zero authority drift. This is durable bounded research evidence, but it still does not prove runtime efficacy, live user benefit, or any consciousness-like property. |
 | wp17_bounded_continuity_lane | EgoCore + OpenEmotion | `parked` | `E1` | `V1` | `False` | `True` | WP17/MVP22 remains an authority-frozen bounded continuity lane with task-package readiness, but it is parked behind the current research-first candidate program and is not the default highest-priority implementation track. |
 | provider_runtime_openemotion_e2e_gate | EgoCore | `pass` | `E4` | `V4` | `True` | `True` | Recent real Telegram samples prove the formal provider/runtime/OpenEmotion path can execute end-to-end. |
-| live_subject_ingress_observation | EgoCore + OpenEmotion | `partial` | `E4` | `V4` | `True` | `True` | Live Telegram contains subject-ingress evidence, but the current audit still records host-only misses and cannot support stronger live-behavior claims. |
+| live_subject_ingress_observation | EgoCore + OpenEmotion | `partial` | `E4` | `V4` | `True` | `True` | Live Telegram contains subject-ingress evidence. The proactive/background user-visible send path now has a local subject-finalize closure patch with focused verification, and dashboard-local preflight passes on the bounded backend path; however, the current audit still records host-only misses and there is no fresh post-patch real Telegram window yet, so stronger live-behavior claims remain blocked. |
 | controlled_subject_capabilities | OpenEmotion | `maintenance` | `E5` | `V5` | `True` | `True` | Controlled-axis self-model / drive / reflection / developmental capability proofs are at maintenance strength, but they do not prove unrestricted live autonomy. |
 
 ## Evidence Ledger Summary
 
-- total entries: `19`
+- total entries: `20`
 - highest entry: `mvp16_controlled_completion_current` / `E5` / `pass`
 

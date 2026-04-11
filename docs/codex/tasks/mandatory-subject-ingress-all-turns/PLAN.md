@@ -94,12 +94,35 @@
 - rollback note:
   - 若 proactive send 变得不稳定，宁可保留 host hold，不接受绕过 subject finalize 的 send
 
+### Milestone 5a: Dashboard Preflight
+
+- scope:
+  - 用 `DashboardChatService` 后端直驱做发布前最便宜主链预验证
+  - 只证明 ordinary-chat dashboard backend 路径里，subject ingress / runtime finalized-result / runtime response-plan / response-plan / output-check 能闭环
+  - 不把 dashboard chat 写成 real Telegram 替代
+- files / areas likely touched:
+  - `EgoCore/app/dashboard/*`
+  - `scripts/codex/run_dashboard_chat_preflight.py`
+  - `EgoCore/tests/test_dashboard_*`
+- acceptance:
+  - ordinary-chat dashboard preflight report 通过
+  - 每轮 `subject_gate.ingress.ok = true`
+  - 每轮 `runtime_subject_finalize_ok = true`
+  - 每轮 `runtime_subject_response_plan_ok = true`
+  - report 明确 `source = dashboard_local_preflight`、`claim_ceiling = preflight_only`
+- validation:
+  - 定向 dashboard/preflight tests
+  - `python3 scripts/codex/run_dashboard_chat_preflight.py`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 preflight 需要 candidate-private host API 或绕开 subject finalize 才能过，维持任务 open，不发布
+
 ### Milestone 5: Verification + Fresh Real Sample Audit
 
 - scope:
   - 跑定向测试、fast/full verify
   - 采 fresh real Telegram 样本
-  - 用现有审计脚本重跑新窗口
+  - 刷新现有 `subject_mainline_audit_current` audit artifact/workflow
 - files / areas likely touched:
   - `artifacts/telegram_real_mainline_v1/`
   - `docs/codex/tasks/telegram-subject-mainline-audit/` 只作为引用，不改 authority
@@ -111,7 +134,7 @@
   - `python3 scripts/codex/lint_repo.py`
   - `python3 scripts/codex/verify_repo.py --mode fast`
   - `python3 scripts/codex/verify_repo.py --mode full`
-  - fresh capture + audit rerun
+  - fresh capture + current audit artifact refresh
 - rollback note:
   - 若新窗口仍存在 authorized bypass，维持任务 open，不对外宣称修复完成
 
@@ -136,8 +159,8 @@
 ## Progress
 
 - current_status: `in_progress`
-- current_milestone: `Milestone 4: Background / Proactive Closure`
-- milestone_state: `pending`
+- current_milestone: `Milestone 5: Verification + Fresh Real Sample Audit`
+- milestone_state: `blocked_on_publish_and_fresh_real_telegram_window`
 
 ## Decision log
 
@@ -163,12 +186,25 @@
   - `_send_result()` 已改为 subject-gated host-owned finalize path，authorized command result 不再 raw send
   - `handle_document()` 的 unsupported / download failure / ingestion failure / non-runtime-v2 success reply 已统一走 subject ingress + host-owned finalize
   - `_handle_with_new_runtime()` 已在 `run_agent()` 前执行 mandatory subject ingress；`success / timeout / crash` 均走 subject-gated finalize path
+- `M4` 已完成本地代码闭环：
+  - `drain_pending_proactive_outbox_to_telegram()` 不再直接 raw send；现在会先构造 host-owned response plan、跑 output check、执行 `finalized_result + response_plan` subject gate，再允许真正 transport send
+  - proactive/background gate 失败时不再偷偷发送；会保留 outbox 事件并返回 `held`
+  - proactive transport 现在发送的是统一 egress 文本，而不是绕过 output check 的原始 draft
+  - 定向 proactive transport / cycle tests 与 focused host-owned Telegram tests 已通过，`verify_repo.py --mode fast` 已通过
+- `M5a` 已完成：
+  - 已新增 dashboard-local preflight runner / report
+  - ordinary-chat dashboard backend 路径现在可在 preflight artifact 中显式证明：
+    - subject ingress
+    - runtime finalized-result capture
+    - runtime response-plan capture
+    - response-plan / output-check presence
+    - no raw send without finalize
+  - 当前 preflight aggregate 已通过，但 claim ceiling 固定为 `preflight_only`
 - 当前仍未证明：
-  - background/proactive 已完成 closure
   - fresh real window 已消除 authorized bypass
 
 ## Expected outcome
 
 - authorized turn/event 不再存在“宿主先回了，主体完全不知晓”的主链漏洞
 - live Telegram 新窗口中，authorized host-only success reply 应清零
-- dashboard 新窗口里，`policy_driven_host_interception` 的语义从“没进主体”切换成“进主体后由宿主拦截”
+- dashboard preflight 只作为发布前低成本预验证；真正 acceptance 仍由 fresh real Telegram proof 决定

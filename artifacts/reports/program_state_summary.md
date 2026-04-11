@@ -8,6 +8,6 @@
 - verification: `V5`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: If further progress toward a stronger self-awareness proxy is desired, first define a new bounded planning slice that preserves policy_hint/response_tendency/trace_payload as the only host-consumable surface, keeps zero authority drift and no-runtime-efficacy overclaim, does not reopen challenger competition by default, and leaves WP17 parked until that slice is explicitly authorized.
+- next_minimal_action: Publish the proactive/background subject-finalize closure patch together with the passing dashboard-local preflight runner/report, capture a fresh `/new + ordinary chat` real Telegram window, rerun `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit <publish_commit>`, refresh the existing `subject_mainline_audit_current` artifact/workflow on that fresh window, and only if both live gates pass define the next bounded runtime-proximal planning slice.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 

@@ -2,15 +2,15 @@
 
 ## Current milestone
 
-- name: `Milestone 4: Background / Proactive Closure`
+- name: `Milestone 5: Verification + Fresh Real Sample Audit`
 - owner: `Codex`
-- state: pending
+- state: blocked_on_publish_and_fresh_real_telegram_window
 
 ## Current state
 
 - current_layer: `repo_mainline_repair`
-- main_chain_status: `command_document_legacy_closure_landed`
-- completion_class: `verify_passed`
+- main_chain_status: `dashboard_preflight_passed`
+- completion_class: `targeted_verify_passed`
 
 ## Completed work
 
@@ -36,21 +36,61 @@
   - `_send_result()` 已统一走 subject-gated host-owned finalize / response-plan
   - `handle_document()` 的 unsupported / download failure / ingestion failure / non-runtime-v2 success reply 已 subject-gated
   - `_handle_with_new_runtime()` 已在 `run_agent()` 前执行 mandatory subject ingress；`success / timeout / crash` 均保持 subject-gated finalize
+- `M4` 已完成本地代码闭环：
+  - `drain_pending_proactive_outbox_to_telegram()` 不再直接 raw send；现在会先构造 host-owned response plan、跑 output check、执行 `finalized_result + response_plan` subject gate，再允许真正 transport send
+  - proactive/background gate 失败时不再偷偷发送；会保留 outbox 事件并返回 `held`
+  - proactive transport 现在发送的是统一 egress 文本，而不是绕过 output check 的原始 draft
+  - 定向 proactive transport / cycle tests 与 focused host-owned Telegram tests 已通过，`verify_repo.py --mode fast` 已通过
+- `M5a Dashboard Preflight` 已通过：
+  - 新增 in-process dashboard preflight runner，直接驱动 `DashboardChatService`，不依赖浏览器或常驻 server
+  - ordinary-chat dashboard backend 路径现在会保留 subject ingress、runtime finalized-result capture、runtime response-plan capture、response-plan / output-check、以及 bounded richer debug surface
+  - current preflight artifact:
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_INGRESS_DASHBOARD_PREFLIGHT_CURRENT.md`
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_INGRESS_DASHBOARD_PREFLIGHT_CURRENT.json`
+  - aggregate verdict:
+    - `ordinary_chat_mainline = 5`
+    - `ordinary_chat_with_richer_fields = 5`
+    - `tendency_delta_present = true`
+    - `cadence_delta_present = true`
+    - `hold_for_followup_artifact = true`
+    - `subject_gate_all_ingress_ok = true`
+    - `response_contract_present = true`
+    - `no_raw_send_without_finalize = true`
+    - `acceptance_met = true`
+  - claim ceiling 固定为：
+    - `source = dashboard_local_preflight`
+    - `claim_ceiling = preflight_only`
 - 受影响测试已同步到新不变量：
   - command/session tests 默认不再假设“无 gate 也能成功回复”
   - context/profile continuity tests 已显式安装 allow gate，避免把旧 best-effort 预期误当成当前正确行为
 
 ## Open risks
 
-- `telegram_bot.py` 里的 background/proactive user-visible send path 仍未 closure，`M4` 前仍可能存在 authorized bypass
 - fresh real sample acceptance 依赖新采样窗口；历史红点不会自动消失
 - 文档 closeout 时必须防止 wording drift，把“主体知晓”误写成“authority 已释放”
+- 当前还没有 fresh real Telegram audit 证明：
+  - 新窗口 `unexpected_subject_miss = 0`
+  - `policy_driven_host_interception` 已统一成“进主体后由宿主拦截”
+  - proactive/system user-visible send 的 fresh live 窗口已不再绕过 subject finalize
+- dashboard preflight 只证明 bounded backend 预验证，不证明 live Telegram transport 结果
+- clean-worktree 上的 `python3 scripts/codex/verify_repo.py --mode fast` 当前没有过：
+  - 失败点在 `OpenEmotion test_smoke.py`
+  - 直接报错是 `127.0.0.1:18080/health` connection refused
+  - 当前更像 repo-local OpenEmotion smoke 环境阻塞，而不是本 tranche 的 targeted regression，但在 smoke 绿之前不能把 repo fast gate 记成 pass
 
 ## Next step
 
-- 进入 `M4 Background / Proactive Closure`
-- 把 proactive/system user-visible send path 接到同一套 mandatory subject finalize / response-plan 规则
-- 完成后再跑 fresh capture window，不能提前把历史红点当作已修复
+- 在发布当前 patch 后采一个 fresh real Telegram 窗口：
+  - 先 `/new`
+  - 再发 ordinary chat：
+    - `你好`
+    - `我现在有点卡住了，你先帮我理一下`
+    - `继续`
+    - `你刚才为什么那样回答`
+- 然后重跑：
+  - `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit <publish_commit>`
+  - 并刷新当前 `subject_mainline_audit_current` 的既有 audit artifact/workflow
+- 只有 fresh 窗口同时证明 live audit 与 ordinary-chat proof 条件都过线，才进入 `M6 Closeout`
 
 ## Last validation results
 
@@ -76,6 +116,35 @@
   - `python3 scripts/codex/lint_repo.py` pass
   - `python3 scripts/codex/verify_repo.py --mode fast` pass
   - scoped `git diff --check` 已通过
+- mode: `Milestone 4 targeted closeout`
+- result: `pass`
+- summary:
+  - proactive/background user-visible send path 现在先走 host-owned response plan + output check + `finalized_result + response_plan` subject gate，再允许真正 transport send
+  - gate 失败时 outbox 事件会保留并返回 `held`，不再静默发送
+  - `python3 -m py_compile EgoCore/app/telegram_bot.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py` pass
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s` pass (`8 passed`)
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest --basetemp=/tmp/ego_tranche_pytest EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_queues_outbox_without_immediate_send EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_blocked_for_explicit_question EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_captures_explicit_response_plan EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_blocks_when_subject_gate_fails EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_metadata -q -s` pass (`5 passed`)
+  - `python3 scripts/codex/lint_repo.py` pass
+  - `python3 scripts/codex/verify_repo.py --mode fast` pass
+  - scoped `git diff --check` 已通过
+- mode: `Milestone 5a dashboard preflight`
+- result: `pass`
+- summary:
+  - dashboard-local preflight 现在能在 bounded backend 上证明 ordinary-chat path 经历了 subject ingress、runtime finalized-result capture、runtime response-plan capture、response-plan / output-check，以及 bounded richer fields / cadence debug surface
+  - `python3 -m py_compile EgoCore/app/repo_paths.py EgoCore/app/dashboard/chat_service.py EgoCore/app/dashboard/preflight.py scripts/codex/run_dashboard_chat_preflight.py EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py` pass
+  - `PYTHONPATH=/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore/modules:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/OpenEmotion python3 -m pytest --basetemp=/tmp/ego_dashboard_preflight_pytest EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s` pass (`15 passed`)
+  - `python3 scripts/codex/run_dashboard_chat_preflight.py` pass
+  - artifact verdict = `dashboard preflight passed`, `source = dashboard_local_preflight`, `claim_ceiling = preflight_only`
+- mode: `repo-level fast verification after authority sync`
+- result: `blocked`
+- summary:
+  - `python3 scripts/codex/generate_program_state_views.py` pass
+  - `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check` pass
+  - `python3 scripts/codex/lint_repo.py` pass
+  - `git diff --check` pass
+  - `python3 scripts/codex/verify_repo.py --mode fast` failed on `OpenEmotion/test_smoke.py`
+  - direct error: `HTTPConnectionPool(host='127.0.0.1', port=18080): Max retries exceeded with url: /health`
+  - 当前按 repo-local OpenEmotion smoke blocker 记录，不能把 repo fast gate 记成 green
 
 ## Commands run / evidence
 
@@ -102,6 +171,16 @@
 - `python3 scripts/codex/lint_repo.py`
 - `python3 scripts/codex/verify_repo.py --mode fast`
 - `git diff --check -- EgoCore/app/telegram_bot.py EgoCore/tests/test_telegram_session_commands.py EgoCore/tests/test_runtime_v2_cli_and_telegram.py EgoCore/tests/test_telegram_context_command.py EgoCore/tests/test_profile_rule_continuity.py`
+- `python3 -m py_compile EgoCore/app/telegram_bot.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py`
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s`
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest --basetemp=/tmp/ego_tranche_pytest EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_queues_outbox_without_immediate_send EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_blocked_for_explicit_question EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_captures_explicit_response_plan EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_blocks_when_subject_gate_fails EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_metadata -q -s`
+- `PYTHONPATH=/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore/modules:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/OpenEmotion python3 -m pytest --basetemp=/tmp/ego_dashboard_preflight_pytest EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s`
+- `python3 scripts/codex/run_dashboard_chat_preflight.py`
+- `python3 scripts/codex/generate_program_state_views.py`
+- `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+- `python3 scripts/codex/lint_repo.py`
+- `python3 scripts/codex/verify_repo.py --mode fast`
+- `git diff --check`
 
 ## Claim ceiling
 
@@ -109,9 +188,12 @@
   - `M1 Subject Gate Skeleton` 已完成
   - `M2 Telegram Runtime_V2 Early-Return Closure` 已完成
   - `M3 Command / Document / Legacy Closure` 已完成
+  - `M4 Background / Proactive Closure` 已完成本地代码与定向验证
+  - `M5a Dashboard Preflight` 已通过，且明确属于 `dashboard_local_preflight / preflight_only`
   - 统一 gate abstraction 已建立
   - `_send_host_owned_reply()` 已成为第一条 enforced host-owned path
 - 当前不能宣称：
   - 已修复所有 authorized bypass
-  - 已实现包含 background/proactive 在内的全域 mandatory subject ingress
   - live 新窗口已变绿
+  - dashboard preflight 已替代 fresh real Telegram audit
+  - repo-level `verify_repo.py --mode fast` 当前为 green

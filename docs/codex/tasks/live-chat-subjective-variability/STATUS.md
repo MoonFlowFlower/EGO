@@ -4,12 +4,12 @@
 
 - name: `Milestone 5: Fresh Real Telegram Proof`
 - owner: `Codex`
-- state: blocked_on_fresh_sample_mix
+- state: blocked_on_publish_and_fresh_sample_mix
 
 ## Current state
 
 - current_layer: `repo_live_chat_corrective_slice`
-- main_chain_status: `host_governed_cadence_present`
+- main_chain_status: `dashboard_preflight_passed`
 - completion_class: `conditional_complete`
 
 ## Completed work
@@ -93,12 +93,34 @@
     - tendency delta 没有 fresh ordinary-chat 证明
     - cadence delta 没有 fresh ordinary-chat 证明
   - `M5` 当前结论是 blocker，不是 pass
+- `M5a Dashboard Preflight` 已通过：
+  - in-process dashboard preflight runner 现在会直接驱动 `DashboardChatService`，不依赖浏览器或 HTTP 录制
+  - current artifacts:
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_INGRESS_DASHBOARD_PREFLIGHT_CURRENT.md`
+    - `artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_INGRESS_DASHBOARD_PREFLIGHT_CURRENT.json`
+  - aggregate verdict:
+    - `ordinary_chat_mainline = 5`
+    - `ordinary_chat_with_richer_fields = 5`
+    - `tendency_delta_present = true`
+    - `cadence_delta_present = true`
+    - `hold_for_followup_artifact = true`
+    - `subject_gate_all_ingress_ok = true`
+    - `response_contract_present = true`
+    - `no_raw_send_without_finalize = true`
+    - `acceptance_met = true`
+  - claim ceiling 固定为：
+    - `source = dashboard_local_preflight`
+    - `claim_ceiling = preflight_only`
+- `mandatory-subject-ingress-all-turns / M4` 的 proactive/background user-visible send closure 已在本地落地并通过 targeted verify：
+  - proactive transport 现在会先走 host-owned response plan + output check + `finalized_result + response_plan` subject gate
+  - gate fail 时会保留 outbox 并返回 `held`
+  - 这一步减少了 fresh live proof 前的主链前置缺口，但还不是 fresh Telegram ordinary-chat proof 本身
 
 ## Open risks
 
 - 当前 baseline 已说明“主体已 ingress”，但还没有 live 可感变化证据
 - 当前 baseline 仍不能证明 chat-level downstream tendency change 强成立
-- 当前 corrective slice 仍依赖 `mandatory-subject-ingress-all-turns` 的后续 background/proactive closure，不能把两条任务线混成同一 claim
+- 当前 corrective slice 不再被 `mandatory-subject-ingress-all-turns / M4` 本地 closure 卡住，但仍需要 publish 后的新窗口 real proof
 - 当前还没有 fresh real Telegram window 证明同一 session 内已经出现稳定 tendency / cadence 差异；那是 `M5` 的范围
 - 当前还没有 `hold_for_followup` 的真实 Telegram 新窗口证据；那是 `M5` 的范围
 - 当前 repo-wide full verify 仍有一个外部验证 blocker：
@@ -107,10 +129,16 @@
 - 当前 `M5` 的直接 blocker 已明确：
   - deploy 后虽然有 fresh real Telegram 样本，但它们是 `/new`、`profile_rule_registered`、`profile_rule_enforced`
   - 当前没有一条 fresh ordinary-chat mainline 样本进入证明窗口
+- dashboard preflight 只证明 bounded backend 预验证，不证明 fresh live Telegram ordinary-chat proof
+- clean-worktree 上的 `python3 scripts/codex/verify_repo.py --mode fast` 当前没有过：
+  - 失败点在 `OpenEmotion test_smoke.py`
+  - 直接报错是 `127.0.0.1:18080/health` connection refused
+  - 当前更像 repo-local OpenEmotion smoke 环境阻塞，而不是本 slice 的 live-chat mainline regression，但在 smoke 绿之前不能把 repo fast gate 记成 pass
 
 ## Next step
 
 - 用 Telegram 对话补一个 fresh ordinary-chat window：
+  - 先发布当前 proactive/background corrective patch
   - 先 `/new`
   - 连续发送普通聊天而非 profile-rule / slash command：
     - `你好`
@@ -118,7 +146,7 @@
     - `继续`
     - `你刚才为什么那样回答`
 - 然后重跑：
-  - `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit 72148b3`
+  - `python3 scripts/codex/prove_live_chat_subjective_variability.py --since-commit <publish_commit>`
 - 目标是拿到：
   - ordinary-chat mainline 样本
   - 至少一次 richer fields 可见
@@ -134,6 +162,34 @@
   - 当前窗口共有 `6` 条样本，但 `ordinary_chat_mainline = 0`
   - 当前窗口没有可用于证明 richer fields / tendency delta / cadence delta 的 fresh ordinary-chat 证据
   - `M5` blocker 不是当前 chat mainline 必然失效，而是当前 fresh 样本类型不满足证明条件
+- mode: `precondition tranche dependency update`
+- result: `pass`
+- summary:
+  - `mandatory-subject-ingress-all-turns / M4` 已在本地补齐 proactive/background user-visible send 的 subject-finalize closure
+  - `python3 -m py_compile EgoCore/app/telegram_bot.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py` pass
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s` pass (`8 passed`)
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest --basetemp=/tmp/ego_tranche_pytest EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_queues_outbox_without_immediate_send EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_blocked_for_explicit_question EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_captures_explicit_response_plan EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_blocks_when_subject_gate_fails EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_metadata -q -s` pass (`5 passed`)
+  - `python3 scripts/codex/lint_repo.py` pass
+  - `python3 scripts/codex/verify_repo.py --mode fast` pass
+  - 当前仍未获得任何 post-patch fresh real Telegram ordinary-chat 样本，所以 `M5` 继续 blocked
+- mode: `Milestone 5a dashboard preflight`
+- result: `pass`
+- summary:
+  - dashboard preflight 现在能在 bounded backend 上先验证 ordinary-chat mainline、richer fields、tendency delta、cadence delta / hold-for-followup artifact
+  - `python3 -m py_compile EgoCore/app/repo_paths.py EgoCore/app/dashboard/chat_service.py EgoCore/app/dashboard/preflight.py scripts/codex/run_dashboard_chat_preflight.py EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py` pass
+  - `PYTHONPATH=/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore/modules:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/OpenEmotion python3 -m pytest --basetemp=/tmp/ego_dashboard_preflight_pytest EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s` pass (`15 passed`)
+  - `python3 scripts/codex/run_dashboard_chat_preflight.py` pass
+  - artifact verdict = `dashboard preflight passed`, `source = dashboard_local_preflight`, `claim_ceiling = preflight_only`
+- mode: `repo-level fast verification after authority sync`
+- result: `blocked`
+- summary:
+  - `python3 scripts/codex/generate_program_state_views.py` pass
+  - `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check` pass
+  - `python3 scripts/codex/lint_repo.py` pass
+  - `git diff --check` pass
+  - `python3 scripts/codex/verify_repo.py --mode fast` failed on `OpenEmotion/test_smoke.py`
+  - direct error: `HTTPConnectionPool(host='127.0.0.1', port=18080): Max retries exceeded with url: /health`
+  - 当前按 repo-local OpenEmotion smoke blocker 记录，不能把 repo fast gate 记成 green
 
 ## Commands run / evidence
 
@@ -159,6 +215,17 @@
 - `python3 scripts/codex/lint_repo.py`
 - `python3 scripts/codex/verify_repo.py --mode fast`
 - `python3 scripts/codex/verify_repo.py --mode full`
+- `python3 -m py_compile EgoCore/app/telegram_bot.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py`
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s`
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest --basetemp=/tmp/ego_tranche_pytest EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_queues_outbox_without_immediate_send EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_chat_hold_for_followup_blocked_for_explicit_question EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_captures_explicit_response_plan EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_host_owned_reply_blocks_when_subject_gate_fails EgoCore/tests/test_runtime_v2_cli_and_telegram.py::test_telegram_bot_new_runtime_direct_reply_uses_runtime_authority_metadata -q -s`
+- `python3 -m py_compile EgoCore/app/repo_paths.py EgoCore/app/dashboard/chat_service.py EgoCore/app/dashboard/preflight.py scripts/codex/run_dashboard_chat_preflight.py EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py`
+- `PYTHONPATH=/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/EgoCore/modules:/mnt/d/Project/AIProject/worktrees/ego-dashboard-preflight/OpenEmotion python3 -m pytest --basetemp=/tmp/ego_dashboard_preflight_pytest EgoCore/tests/test_dashboard_chat_service.py EgoCore/tests/test_dashboard_preflight.py EgoCore/tests/test_telegram_proactive_transport.py EgoCore/tests/test_host_governed_proactive_telegram_cycle.py -q -s`
+- `python3 scripts/codex/run_dashboard_chat_preflight.py`
+- `python3 scripts/codex/generate_program_state_views.py`
+- `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+- `python3 scripts/codex/lint_repo.py`
+- `python3 scripts/codex/verify_repo.py --mode fast`
+- `git diff --check`
 
 ## Claim ceiling
 
@@ -167,6 +234,7 @@
   - `M2 Rich Subject Surface` 已完成
   - `M3 Tendency-to-Reply Consumption` 已完成
   - `M4 Host-Governed Cadence` 代码已接入 current Telegram mainline
+  - `M5a Dashboard Preflight` 已通过，且明确属于 `dashboard_local_preflight / preflight_only`
   - `M5` 首轮 fresh-window 复盘已完成，并已证明当前窗口不足以通过 acceptance
   - richer bounded subject fields 已进入 current live-artifact surface
   - tendency 已开始进入 current live reply shaping
@@ -174,6 +242,8 @@
 - 当前不能宣称：
   - live Telegram chat 已具备稳定可感变化
   - `M5` 已通过
+  - dashboard preflight 已替代 real Telegram acceptance
   - `hold_for_followup` 已在 fresh real Telegram 新窗口中证明生效
+  - repo-level `verify_repo.py --mode fast` 当前为 green
   - repo-wide full verify 当前为 green
   - unrestricted autonomy / direct reply authority release

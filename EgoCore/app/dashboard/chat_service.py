@@ -137,8 +137,14 @@ def _compact_proto_self_context(proto_self_context: Optional[Dict[str, Any]]) ->
         "subject_profile": source.get("subject_profile"),
         "policy_hint": dict(source.get("policy_hint") or {}),
         "response_tendency": dict(source.get("response_tendency") or {}),
+        "social_policy_hints": dict(source.get("social_policy_hints") or {}),
+        "embodied_policy_hints": dict(source.get("embodied_policy_hints") or {}),
+        "integrated_policy_hints": dict(source.get("integrated_policy_hints") or {}),
+        "initiative_policy_hints": dict(source.get("initiative_policy_hints") or {}),
+        "chat_cadence_mode": source.get("chat_cadence_mode"),
         "candidate_actions": list(source.get("candidate_actions") or []),
         "governor_hint": dict(source.get("governor_hint") or {}),
+        "host_proactive_candidate_present": isinstance(source.get("host_proactive_candidate"), dict),
         "self_model_writeback": source.get("self_model_writeback"),
         "developmental_writeback": source.get("developmental_writeback"),
         "social_writeback": source.get("social_writeback"),
@@ -148,6 +154,33 @@ def _compact_proto_self_context(proto_self_context: Optional[Dict[str, Any]]) ->
         "initiative_realization_writeback": source.get("initiative_realization_writeback"),
         "finalized_result_present": isinstance(source.get("finalized_result"), dict),
         "external_result_present": isinstance(source.get("external_result"), dict),
+    }
+
+
+def _compact_subject_gate_verdict(verdict: Optional[SubjectGateVerdict]) -> Optional[Dict[str, Any]]:
+    if verdict is None:
+        return None
+    return {
+        "ok": verdict.ok,
+        "stage": verdict.stage,
+        "reason": verdict.reason,
+        "reply_text": verdict.reply_text,
+        "authority_source": verdict.authority_source,
+    }
+
+
+def _compact_runtime_reply_surface(result: Optional[Any]) -> Optional[Dict[str, Any]]:
+    reply = getattr(result, "reply", None)
+    if reply is None:
+        return None
+    metadata = dict(getattr(reply, "metadata", None) or {})
+    return {
+        "social_policy_hints": dict(metadata.get("social_policy_hints") or {}),
+        "embodied_policy_hints": dict(metadata.get("embodied_policy_hints") or {}),
+        "integrated_policy_hints": dict(metadata.get("integrated_policy_hints") or {}),
+        "initiative_policy_hints": dict(metadata.get("initiative_policy_hints") or {}),
+        "chat_cadence_mode": metadata.get("chat_cadence_mode"),
+        "host_proactive_candidate_present": isinstance(metadata.get("host_proactive_candidate"), dict),
     }
 
 
@@ -380,9 +413,12 @@ class DashboardChatService:
                 ingress=unified_ingress,
                 ingress_gate=ingress_gate,
                 finalize_gate=None,
+                runtime_finalized_gate=None,
+                runtime_response_plan_gate=None,
                 response_plan=None,
                 output_verdict=None,
                 delivery={"should_send": True, "delivery_kind": "final", "text": ingress_gate.reply_text},
+                runtime_result=None,
                 state=session.state,
             )
             self._store_debug(session, assistant_message, debug)
@@ -424,6 +460,45 @@ class DashboardChatService:
             evidence_collector=None,
         )
         output_verdict, response_plan = self._finalize_runtime_delivery_contract(session.state, result)
+        runtime_finalized_gate, runtime_response_plan_gate = self._capture_runtime_subject_contract(
+            session=session,
+            trace_id=trace_id,
+            result=result,
+        )
+        blocking_verdict = None
+        if not runtime_finalized_gate.ok:
+            blocking_verdict = runtime_finalized_gate
+        elif runtime_response_plan_gate is not None and not runtime_response_plan_gate.ok:
+            blocking_verdict = runtime_response_plan_gate
+        if blocking_verdict is not None:
+            assistant_message = self._append_message(
+                session,
+                role="assistant",
+                text=blocking_verdict.reply_text,
+                status="subject_gate_runtime_blocked",
+                delivery_kind="final",
+            )
+            debug = self._build_debug_payload(
+                trace_id=trace_id,
+                request=request,
+                ingress=unified_ingress,
+                ingress_gate=ingress_gate,
+                finalize_gate=None,
+                runtime_finalized_gate=runtime_finalized_gate,
+                runtime_response_plan_gate=runtime_response_plan_gate,
+                response_plan=response_plan,
+                output_verdict=output_verdict,
+                delivery={
+                    "should_send": True,
+                    "delivery_kind": "final",
+                    "text": blocking_verdict.reply_text,
+                },
+                runtime_result=result,
+                state=session.state,
+            )
+            self._store_debug(session, assistant_message, debug)
+            self._commit_session_update(session)
+            return self._build_turn_response(session, user_message=user_message, assistant_message=assistant_message, debug=debug)
         unified_turn = build_unified_turn_result(
             state=session.state,
             runtime_result=result,
@@ -458,6 +533,8 @@ class DashboardChatService:
             ingress=unified_ingress,
             ingress_gate=ingress_gate,
             finalize_gate=None,
+            runtime_finalized_gate=runtime_finalized_gate,
+            runtime_response_plan_gate=runtime_response_plan_gate,
             response_plan=response_plan,
             output_verdict=output_verdict,
             delivery={
@@ -465,6 +542,7 @@ class DashboardChatService:
                 "delivery_kind": unified_egress.delivery_kind,
                 "text": unified_egress.user_visible_text,
             },
+            runtime_result=result,
             state=session.state,
         )
         self._store_debug(session, assistant_message, debug)
@@ -607,9 +685,12 @@ class DashboardChatService:
                 ingress=ingress,
                 ingress_gate=ingress_gate,
                 finalize_gate=finalize_gate,
+                runtime_finalized_gate=None,
+                runtime_response_plan_gate=None,
                 response_plan=plan,
                 output_verdict=output_verdict,
                 delivery={"should_send": True, "delivery_kind": "final", "text": finalize_gate.reply_text},
+                runtime_result=turn_result,
                 state=session.state,
             )
             self._store_debug(session, assistant_message, debug)
@@ -649,6 +730,8 @@ class DashboardChatService:
             ingress=ingress,
             ingress_gate=ingress_gate,
             finalize_gate=finalize_gate,
+            runtime_finalized_gate=None,
+            runtime_response_plan_gate=None,
             response_plan=plan,
             output_verdict=output_verdict,
             delivery={
@@ -656,6 +739,7 @@ class DashboardChatService:
                 "delivery_kind": unified_egress.delivery_kind,
                 "text": unified_egress.user_visible_text,
             },
+            runtime_result=turn_result,
             state=session.state,
         )
         self._store_debug(session, assistant_message, debug)
@@ -801,6 +885,28 @@ class DashboardChatService:
         self._finalize_pending_result_continuation_after_response(state, response_plan, result.status)
         return output_verdict, response_plan
 
+    def _capture_runtime_subject_contract(
+        self,
+        *,
+        session: DashboardChatSession,
+        trace_id: str,
+        result: TelegramTurnResult,
+    ) -> tuple[SubjectGateVerdict, Optional[SubjectGateVerdict]]:
+        finalized_verdict = self.subject_gate.process_finalized_result(
+            session_id=session.session_id,
+            turn_id=f"dashboard_runtime:{trace_id}",
+            result=result,
+            state=session.state,
+            evidence_collector=None,
+        )
+        if not finalized_verdict.ok:
+            return finalized_verdict, None
+        response_plan_verdict = self.subject_gate.capture_response_plan(
+            result=result,
+            evidence_collector=None,
+        )
+        return finalized_verdict, response_plan_verdict
+
     def _build_task_conflict_reply(self, state: RuntimeV2State) -> str:
         conflict = state.get_pending_task_conflict()
         if conflict is None:
@@ -836,6 +942,7 @@ class DashboardChatService:
             "current_step": state.current_step,
             "last_delivery_type": state.last_delivery_type,
             "generation_id": state.generation_id,
+            "pending_proactive_outbox_count": len(getattr(state, "pending_proactive_outbox_events", []) or []),
             "ingress_context": _compact_ingress_context(ingress_context),
             "proto_self_scope": {
                 "state_scope": ingress_context.get("proto_self_state_scope") or ingress_context.get("state_scope") or "agent_global",
@@ -932,9 +1039,12 @@ class DashboardChatService:
         ingress: UnifiedIngressBundle,
         ingress_gate: SubjectGateVerdict,
         finalize_gate: Optional[SubjectGateVerdict],
+        runtime_finalized_gate: Optional[SubjectGateVerdict],
+        runtime_response_plan_gate: Optional[SubjectGateVerdict],
         response_plan: Optional[Any],
         output_verdict: Optional[Any],
         delivery: Dict[str, Any],
+        runtime_result: Optional[Any],
         state: RuntimeV2State,
     ) -> Dict[str, Any]:
         ingress_context = dict(ingress.ingress_context or {})
@@ -951,22 +1061,10 @@ class DashboardChatService:
                 "transport_meta": dict(request.transport_meta or {}),
             },
             "subject_gate": {
-                "ingress": {
-                    "ok": ingress_gate.ok,
-                    "stage": ingress_gate.stage,
-                    "reason": ingress_gate.reason,
-                    "reply_text": ingress_gate.reply_text,
-                    "authority_source": ingress_gate.authority_source,
-                },
-                "finalize": None
-                if finalize_gate is None
-                else {
-                    "ok": finalize_gate.ok,
-                    "stage": finalize_gate.stage,
-                    "reason": finalize_gate.reason,
-                    "reply_text": finalize_gate.reply_text,
-                    "authority_source": finalize_gate.authority_source,
-                },
+                "ingress": _compact_subject_gate_verdict(ingress_gate),
+                "finalize": _compact_subject_gate_verdict(finalize_gate),
+                "runtime_finalized_result": _compact_subject_gate_verdict(runtime_finalized_gate),
+                "runtime_response_plan": _compact_subject_gate_verdict(runtime_response_plan_gate),
             },
             "ingress": {
                 "runtime_action": getattr(decision, "_runtime_action", None),
@@ -989,6 +1087,7 @@ class DashboardChatService:
                 },
             },
             "proto_self": _compact_proto_self_context(state.proto_self_context),
+            "runtime_reply_surface": _compact_runtime_reply_surface(runtime_result),
             "response_plan": None
             if response_plan is None
             else {

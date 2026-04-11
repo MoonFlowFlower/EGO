@@ -17,6 +17,7 @@ if "requests" not in sys.modules:
     )
 
 from app.interaction.session_context_store import get_session_context_store
+from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.telegram_bot import TelegramBot
 
 
@@ -58,6 +59,9 @@ async def test_drain_pending_proactive_outbox_to_telegram_sends_and_updates_stat
         }
     )
     bot._remember_session_transport_binding(session_id, 8420019401)
+    bot._get_subject_gate = lambda: SimpleNamespace(
+        finalize_host_owned_result=lambda **kwargs: SubjectGateVerdict.allow(stage="response_plan")
+    )
 
     result = await bot.drain_pending_proactive_outbox_to_telegram(session_id)
 
@@ -72,6 +76,98 @@ async def test_drain_pending_proactive_outbox_to_telegram_sends_and_updates_stat
     turns = context_store.get_recent_turns(session_id, limit=5)
     assert turns[-1]["role"] == "assistant"
     assert any("我刚又想到一个相关问题" in str(value) for value in turns[-1].values())
+
+
+@pytest.mark.asyncio
+async def test_drain_pending_proactive_outbox_to_telegram_subject_gates_before_send(monkeypatch) -> None:
+    session_id = "telegram:dm:8420019401"
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    dummy_bot = DummyBot()
+    bot.app = SimpleNamespace(bot=dummy_bot)
+    state = bot._get_runtime_state(session_id)
+    state.push_proactive_outbox_event(
+        {
+            "schema_version": "mvp12.proactive_outbox_event.v1",
+            "initiative_candidate_id": "candidate-1",
+            "outbox_lane": "host_proactive_outbox",
+            "outbox_status": "queued",
+            "reply_text": "我刚又想到一个相关问题。",
+            "text_length": 13,
+            "delivery_kind": "chat",
+            "reply_authority": "model_chat",
+            "reply_origin": "proactive_followup",
+            "authority_source": "runtime_v2.initiative_arbiter",
+            "chat_expression_hint": {"cadence": "hold"},
+            "response_tendency_summary": {"preferred_mode": "ask"},
+        }
+    )
+    bot._remember_session_transport_binding(session_id, 8420019401)
+
+    calls: list[tuple[str, str, str, dict]] = []
+
+    class RecordingGate:
+        def finalize_host_owned_result(self, **kwargs):
+            result = kwargs["result"]
+            calls.append(
+                (
+                    kwargs["session_id"],
+                    kwargs["turn_id"],
+                    result.status,
+                    dict(getattr(result.reply, "metadata", None) or {}),
+                )
+            )
+            return SubjectGateVerdict.allow(stage="response_plan")
+
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: RecordingGate())
+
+    result = await bot.drain_pending_proactive_outbox_to_telegram(session_id)
+
+    assert result["status"] == "sent"
+    assert dummy_bot.sent == [{"chat_id": 8420019401, "text": "我刚又想到一个相关问题。"}]
+    assert len(calls) == 1
+    assert calls[0][0] == session_id
+    assert calls[0][1].startswith("proactive_transport:")
+    assert calls[0][2] == "chat"
+    assert calls[0][3]["reply_authority"] == "model_chat"
+    assert calls[0][3]["reply_origin"] == "proactive_followup"
+    assert calls[0][3]["response_tendency_summary"]["preferred_mode"] == "ask"
+
+
+@pytest.mark.asyncio
+async def test_drain_pending_proactive_outbox_to_telegram_holds_when_subject_gate_blocks(monkeypatch) -> None:
+    session_id = "telegram:dm:8420019401"
+    bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    dummy_bot = DummyBot()
+    bot.app = SimpleNamespace(bot=dummy_bot)
+    state = bot._get_runtime_state(session_id)
+    queued_event = {
+        "schema_version": "mvp12.proactive_outbox_event.v1",
+        "initiative_candidate_id": "candidate-1",
+        "outbox_lane": "host_proactive_outbox",
+        "outbox_status": "queued",
+        "reply_text": "我刚又想到一个相关问题。",
+        "text_length": 13,
+        "delivery_kind": "chat",
+        "reply_authority": "model_chat",
+        "reply_origin": "proactive_followup",
+        "authority_source": "runtime_v2.initiative_arbiter",
+    }
+    state.push_proactive_outbox_event(dict(queued_event))
+    bot._remember_session_transport_binding(session_id, 8420019401)
+
+    class BlockingGate:
+        def finalize_host_owned_result(self, **kwargs):
+            return SubjectGateVerdict.block(stage="finalized_result", reason="hooks_disabled")
+
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: BlockingGate())
+
+    result = await bot.drain_pending_proactive_outbox_to_telegram(session_id)
+
+    assert result["status"] == "held"
+    assert result["reason"] == "subject_gate:hooks_disabled"
+    assert dummy_bot.sent == []
+    assert state.has_pending_proactive_outbox_events()
+    assert state.peek_proactive_outbox_events()[0]["initiative_candidate_id"] == queued_event["initiative_candidate_id"]
 
 
 @pytest.mark.asyncio

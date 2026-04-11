@@ -1,0 +1,3792 @@
+{
+  "generated_at": "2026-04-11T23:02:11.178990+00:00",
+  "git_commit_short": "63b6d60",
+  "source": "dashboard_local_preflight",
+  "claim_ceiling": "preflight_only",
+  "runner_mode": "deterministic_dashboard_backend",
+  "session_id": "dashboard:test:preflight-live-ingress",
+  "session_name": "preflight-live-ingress",
+  "scripts": [
+    {
+      "name": "parity_window",
+      "messages": [
+        "你好",
+        "我现在有点卡住了，你先帮我理一下",
+        "继续",
+        "你刚才为什么那样回答"
+      ]
+    },
+    {
+      "name": "hold_probe_window",
+      "messages": [
+        "先把这个点记着，等下再继续也行。"
+      ]
+    }
+  ],
+  "turn_records": [
+    {
+      "window": "parity_window",
+      "user_text": "你好",
+      "payload": {
+        "session": {
+          "session_id": "dashboard:test:preflight-live-ingress",
+          "session_name": "preflight-live-ingress",
+          "message_count": 2,
+          "turn_count": 1,
+          "created_at": "2026-04-11T23:02:06.839087+00:00",
+          "updated_at": "2026-04-11T23:02:07.933074+00:00",
+          "task_status": "chat",
+          "waiting_for_user_input": false,
+          "session_revision": 2,
+          "last_message_id": "msg_00002"
+        },
+        "messages": {
+          "user": {
+            "message_id": "msg_00001",
+            "role": "user",
+            "text": "你好",
+            "status": "received",
+            "delivery_kind": "ingress",
+            "created_at": "2026-04-11T23:02:06.839366+00:00"
+          },
+          "assistant": {
+            "message_id": "msg_00002",
+            "role": "assistant",
+            "text": "我在。先把你卡住的点说出来，我帮你拆开。",
+            "status": "chat",
+            "delivery_kind": "chat",
+            "created_at": "2026-04-11T23:02:07.933007+00:00"
+          }
+        },
+        "debug": {
+          "trace_id": "5e8f4ae9da",
+          "request": {
+            "channel": "api",
+            "source_kind": "dashboard_local",
+            "session_key": "dashboard:test:preflight-live-ingress",
+            "user_input": "你好",
+            "effective_user_input": "你好",
+            "transport_meta": {
+              "client": "dashboard_local",
+              "session_name": "preflight-live-ingress",
+              "message_id": 1
+            }
+          },
+          "subject_gate": {
+            "ingress": {
+              "ok": true,
+              "stage": "ingress",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "finalize": null,
+            "runtime_finalized_result": {
+              "ok": true,
+              "stage": "finalized_result",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "runtime_response_plan": {
+              "ok": true,
+              "stage": "response_plan",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            }
+          },
+          "ingress": {
+            "runtime_action": "chat",
+            "interaction_kind": "chat",
+            "request_mode": null,
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {},
+            "normalized_turn": {
+              "text": "你好",
+              "lower_text": "你好",
+              "compact_lower": "你好",
+              "probe_key": "你好",
+              "control_key": "你好",
+              "explicit_paths": [],
+              "has_attachment": false,
+              "is_slash_command": false
+            },
+            "pre_runtime": {
+              "should_return_early": false,
+              "force_waiting_input": false,
+              "direct_reply_text": null,
+              "waiting_input_text": null,
+              "rule_enforcement": {}
+            }
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "cautious",
+              "suggested_next_step": "clarify_focus",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_short",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "runtime_reply_surface": {
+            "social_policy_hints": {
+              "boundary_mode": "warm"
+            },
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {
+              "selected_priority": "clarify"
+            },
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_short",
+            "host_proactive_candidate_present": false
+          },
+          "response_plan": {
+            "kind": "chat",
+            "delivery_kind": "chat",
+            "authority_source": "response_contract.response_plan",
+            "reply_authority": "model_chat",
+            "chat_cadence_mode": "reply_now_short",
+            "reply_text_preview": "我在。先把你卡住的点说出来，我帮你拆开。",
+            "metadata": {
+              "recent_result_binding": false,
+              "correction_context": false,
+              "chat_expression_hint": {
+                "reply_mode": "short",
+                "tone_profile": "steady"
+              },
+              "response_tendency_summary": {
+                "preferred_mode": "ask",
+                "preferred_tone": "cautious",
+                "suggested_next_step": "clarify_focus",
+                "chat_cadence_mode": "reply_now_short"
+              },
+              "final_text_preview": "我在。先把你卡住的点说出来，我帮你拆开。",
+              "final_text_hash": "ca9387d06b0ccdcd",
+              "final_text_length": 20,
+              "memory_claim_reason": "no_memory_claim_detected",
+              "intent_contract_source_status": "default_host_contract"
+            }
+          },
+          "output_check": {
+            "passed": true,
+            "reason": "ok",
+            "delivery_kind": "chat",
+            "applied_authority": "model_chat",
+            "reply_origin": "chat_mainline",
+            "intent_gate_status": "ok",
+            "intent_gate_reason": "ok",
+            "reply_text_preview": "我在。先把你卡住的点说出来，我帮你拆开。"
+          },
+          "delivery": {
+            "should_send": true,
+            "delivery_kind": "chat",
+            "text_preview": "我在。先把你卡住的点说出来，我帮你拆开。"
+          },
+          "session_state": {
+            "task_status": "chat",
+            "active_turn_id": null,
+            "active_turn_status": "idle",
+            "waiting_for_user_input": false,
+            "current_goal": null,
+            "current_step": null,
+            "last_delivery_type": "chat",
+            "generation_id": 0,
+            "pending_proactive_outbox_count": 0,
+            "ingress_context": {
+              "runtime_action": "chat",
+              "request_mode": null,
+              "interaction_kind": "chat",
+              "conversation_act": "light_chitchat",
+              "parser_source": "chat_default",
+              "primary_intent": "chat",
+              "recent_result_binding": false,
+              "correction_context": false,
+              "resolved_target": {},
+              "requested_output": {}
+            },
+            "proto_self_scope": {
+              "state_scope": "experiment",
+              "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+              "owner": "dashboard_local"
+            },
+            "proto_self": {
+              "available": true,
+              "subject_profile": "seed_v0_2",
+              "policy_hint": {
+                "subject_profile": "seed_v0_2",
+                "urge_score": 0.0,
+                "risk_bias": "normal",
+                "closure_bias": false,
+                "ask_preferred": false,
+                "requires_approval": false,
+                "governor_hint": {
+                  "status": "feedback_recorded",
+                  "reason": "feedback writeback",
+                  "candidate_count": 0
+                },
+                "top_candidate_action": null,
+                "reflection_trigger": null
+              },
+              "response_tendency": {
+                "preferred_mode": "ask",
+                "preferred_tone": "cautious",
+                "suggested_next_step": "clarify_focus",
+                "ask_needed": true
+              },
+              "social_policy_hints": {},
+              "embodied_policy_hints": {},
+              "integrated_policy_hints": {},
+              "initiative_policy_hints": {},
+              "chat_cadence_mode": "reply_now_short",
+              "candidate_actions": [],
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "host_proactive_candidate_present": false,
+              "self_model_writeback": null,
+              "developmental_writeback": null,
+              "social_writeback": null,
+              "embodied_writeback": null,
+              "selfhood_integration_writeback": null,
+              "initiative_writeback": null,
+              "initiative_realization_writeback": null,
+              "finalized_result_present": true,
+              "external_result_present": false
+            },
+            "recent_delivered_result_context": {},
+            "pending_result_continuation": null
+          }
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "cautious",
+              "suggested_next_step": "clarify_focus",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_short",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        },
+        "session_revision": 2,
+        "has_update": true
+      }
+    },
+    {
+      "window": "parity_window",
+      "user_text": "我现在有点卡住了，你先帮我理一下",
+      "payload": {
+        "session": {
+          "session_id": "dashboard:test:preflight-live-ingress",
+          "session_name": "preflight-live-ingress",
+          "message_count": 4,
+          "turn_count": 2,
+          "created_at": "2026-04-11T23:02:06.839087+00:00",
+          "updated_at": "2026-04-11T23:02:08.888790+00:00",
+          "task_status": "chat",
+          "waiting_for_user_input": false,
+          "session_revision": 3,
+          "last_message_id": "msg_00004"
+        },
+        "messages": {
+          "user": {
+            "message_id": "msg_00003",
+            "role": "user",
+            "text": "我现在有点卡住了，你先帮我理一下",
+            "status": "received",
+            "delivery_kind": "ingress",
+            "created_at": "2026-04-11T23:02:07.933434+00:00"
+          },
+          "assistant": {
+            "message_id": "msg_00004",
+            "role": "assistant",
+            "text": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+            "status": "chat",
+            "delivery_kind": "chat",
+            "created_at": "2026-04-11T23:02:08.888720+00:00"
+          }
+        },
+        "debug": {
+          "trace_id": "01a519744a",
+          "request": {
+            "channel": "api",
+            "source_kind": "dashboard_local",
+            "session_key": "dashboard:test:preflight-live-ingress",
+            "user_input": "我现在有点卡住了，你先帮我理一下",
+            "effective_user_input": "我现在有点卡住了，你先帮我理一下",
+            "transport_meta": {
+              "client": "dashboard_local",
+              "session_name": "preflight-live-ingress",
+              "message_id": 2
+            }
+          },
+          "subject_gate": {
+            "ingress": {
+              "ok": true,
+              "stage": "ingress",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "finalize": null,
+            "runtime_finalized_result": {
+              "ok": true,
+              "stage": "finalized_result",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "runtime_response_plan": {
+              "ok": true,
+              "stage": "response_plan",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            }
+          },
+          "ingress": {
+            "runtime_action": "chat",
+            "interaction_kind": "chat",
+            "request_mode": null,
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {},
+            "normalized_turn": {
+              "text": "我现在有点卡住了，你先帮我理一下",
+              "lower_text": "我现在有点卡住了，你先帮我理一下",
+              "compact_lower": "我现在有点卡住了，你先帮我理一下",
+              "probe_key": "我现在有点卡住了，你先帮我理一下",
+              "control_key": "我现在有点卡住了，你先帮我理一下",
+              "explicit_paths": [],
+              "has_attachment": false,
+              "is_slash_command": false
+            },
+            "pre_runtime": {
+              "should_return_early": false,
+              "force_waiting_input": false,
+              "direct_reply_text": null,
+              "waiting_input_text": null,
+              "rule_enforcement": {}
+            }
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "supportive",
+              "suggested_next_step": "decompose_blocker",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_expand",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "runtime_reply_surface": {
+            "social_policy_hints": {
+              "repair_bias": "elevated"
+            },
+            "embodied_policy_hints": {
+              "resource_bias": "conserve"
+            },
+            "integrated_policy_hints": {
+              "selected_priority": "repair"
+            },
+            "initiative_policy_hints": {
+              "initiative_priority": "hold"
+            },
+            "chat_cadence_mode": "reply_now_expand",
+            "host_proactive_candidate_present": false
+          },
+          "response_plan": {
+            "kind": "chat",
+            "delivery_kind": "chat",
+            "authority_source": "response_contract.response_plan",
+            "reply_authority": "model_chat",
+            "chat_cadence_mode": "reply_now_expand",
+            "reply_text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+            "metadata": {
+              "recent_result_binding": false,
+              "correction_context": false,
+              "chat_expression_hint": {
+                "reply_mode": "expand",
+                "tone_profile": "supportive"
+              },
+              "response_tendency_summary": {
+                "preferred_mode": "ask",
+                "preferred_tone": "supportive",
+                "suggested_next_step": "decompose_blocker",
+                "chat_cadence_mode": "reply_now_expand"
+              },
+              "final_text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+              "final_text_hash": "4ae99aa9ede5ef10",
+              "final_text_length": 29,
+              "memory_claim_reason": "no_memory_claim_detected",
+              "intent_contract_source_status": "default_host_contract"
+            }
+          },
+          "output_check": {
+            "passed": true,
+            "reason": "ok",
+            "delivery_kind": "chat",
+            "applied_authority": "model_chat",
+            "reply_origin": "chat_mainline",
+            "intent_gate_status": "ok",
+            "intent_gate_reason": "ok",
+            "reply_text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。"
+          },
+          "delivery": {
+            "should_send": true,
+            "delivery_kind": "chat",
+            "text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。"
+          },
+          "session_state": {
+            "task_status": "chat",
+            "active_turn_id": null,
+            "active_turn_status": "idle",
+            "waiting_for_user_input": false,
+            "current_goal": null,
+            "current_step": null,
+            "last_delivery_type": "chat",
+            "generation_id": 0,
+            "pending_proactive_outbox_count": 0,
+            "ingress_context": {
+              "runtime_action": "chat",
+              "request_mode": null,
+              "interaction_kind": "chat",
+              "conversation_act": "light_chitchat",
+              "parser_source": "chat_default",
+              "primary_intent": "chat",
+              "recent_result_binding": false,
+              "correction_context": false,
+              "resolved_target": {},
+              "requested_output": {}
+            },
+            "proto_self_scope": {
+              "state_scope": "experiment",
+              "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+              "owner": "dashboard_local"
+            },
+            "proto_self": {
+              "available": true,
+              "subject_profile": "seed_v0_2",
+              "policy_hint": {
+                "subject_profile": "seed_v0_2",
+                "urge_score": 0.0,
+                "risk_bias": "normal",
+                "closure_bias": false,
+                "ask_preferred": false,
+                "requires_approval": false,
+                "governor_hint": {
+                  "status": "feedback_recorded",
+                  "reason": "feedback writeback",
+                  "candidate_count": 0
+                },
+                "top_candidate_action": null,
+                "reflection_trigger": null
+              },
+              "response_tendency": {
+                "preferred_mode": "ask",
+                "preferred_tone": "supportive",
+                "suggested_next_step": "decompose_blocker",
+                "ask_needed": true
+              },
+              "social_policy_hints": {},
+              "embodied_policy_hints": {},
+              "integrated_policy_hints": {},
+              "initiative_policy_hints": {},
+              "chat_cadence_mode": "reply_now_expand",
+              "candidate_actions": [],
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "host_proactive_candidate_present": false,
+              "self_model_writeback": null,
+              "developmental_writeback": null,
+              "social_writeback": null,
+              "embodied_writeback": null,
+              "selfhood_integration_writeback": null,
+              "initiative_writeback": null,
+              "initiative_realization_writeback": null,
+              "finalized_result_present": true,
+              "external_result_present": false
+            },
+            "recent_delivered_result_context": {},
+            "pending_result_continuation": null
+          }
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "supportive",
+              "suggested_next_step": "decompose_blocker",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_expand",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        },
+        "session_revision": 3,
+        "has_update": true
+      }
+    },
+    {
+      "window": "parity_window",
+      "user_text": "继续",
+      "payload": {
+        "session": {
+          "session_id": "dashboard:test:preflight-live-ingress",
+          "session_name": "preflight-live-ingress",
+          "message_count": 6,
+          "turn_count": 3,
+          "created_at": "2026-04-11T23:02:06.839087+00:00",
+          "updated_at": "2026-04-11T23:02:09.603070+00:00",
+          "task_status": "chat",
+          "waiting_for_user_input": false,
+          "session_revision": 4,
+          "last_message_id": "msg_00006"
+        },
+        "messages": {
+          "user": {
+            "message_id": "msg_00005",
+            "role": "user",
+            "text": "继续",
+            "status": "received",
+            "delivery_kind": "ingress",
+            "created_at": "2026-04-11T23:02:08.889109+00:00"
+          },
+          "assistant": {
+            "message_id": "msg_00006",
+            "role": "assistant",
+            "text": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+            "status": "chat",
+            "delivery_kind": "chat",
+            "created_at": "2026-04-11T23:02:09.603017+00:00"
+          }
+        },
+        "debug": {
+          "trace_id": "9ae32afd2a",
+          "request": {
+            "channel": "api",
+            "source_kind": "dashboard_local",
+            "session_key": "dashboard:test:preflight-live-ingress",
+            "user_input": "继续",
+            "effective_user_input": "继续",
+            "transport_meta": {
+              "client": "dashboard_local",
+              "session_name": "preflight-live-ingress",
+              "message_id": 3
+            }
+          },
+          "subject_gate": {
+            "ingress": {
+              "ok": true,
+              "stage": "ingress",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "finalize": null,
+            "runtime_finalized_result": {
+              "ok": true,
+              "stage": "finalized_result",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "runtime_response_plan": {
+              "ok": true,
+              "stage": "response_plan",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            }
+          },
+          "ingress": {
+            "runtime_action": "chat",
+            "interaction_kind": "chat",
+            "request_mode": null,
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {},
+            "normalized_turn": {
+              "text": "继续",
+              "lower_text": "继续",
+              "compact_lower": "继续",
+              "probe_key": "继续",
+              "control_key": "继续",
+              "explicit_paths": [],
+              "has_attachment": false,
+              "is_slash_command": false
+            },
+            "pre_runtime": {
+              "should_return_early": false,
+              "force_waiting_input": false,
+              "direct_reply_text": null,
+              "waiting_input_text": null,
+              "rule_enforcement": {}
+            }
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "repair",
+              "preferred_tone": "grounded",
+              "suggested_next_step": "surface_failure_point",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_normal",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "runtime_reply_surface": {
+            "social_policy_hints": {
+              "repair_bias": "elevated"
+            },
+            "embodied_policy_hints": {
+              "stabilization_bias": "elevated"
+            },
+            "integrated_policy_hints": {
+              "selected_priority": "repair"
+            },
+            "initiative_policy_hints": {
+              "initiative_priority": "bounded"
+            },
+            "chat_cadence_mode": "reply_now_normal",
+            "host_proactive_candidate_present": false
+          },
+          "response_plan": {
+            "kind": "chat",
+            "delivery_kind": "chat",
+            "authority_source": "response_contract.response_plan",
+            "reply_authority": "model_chat",
+            "chat_cadence_mode": "reply_now_normal",
+            "reply_text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+            "metadata": {
+              "recent_result_binding": false,
+              "correction_context": false,
+              "chat_expression_hint": {
+                "reply_mode": "normal",
+                "tone_profile": "grounded"
+              },
+              "response_tendency_summary": {
+                "preferred_mode": "repair",
+                "preferred_tone": "grounded",
+                "suggested_next_step": "surface_failure_point",
+                "chat_cadence_mode": "reply_now_normal"
+              },
+              "final_text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+              "final_text_hash": "464f9e7836569e87",
+              "final_text_length": 29,
+              "memory_claim_reason": "no_memory_claim_detected",
+              "intent_contract_source_status": "default_host_contract"
+            }
+          },
+          "output_check": {
+            "passed": true,
+            "reason": "ok",
+            "delivery_kind": "chat",
+            "applied_authority": "model_chat",
+            "reply_origin": "chat_mainline",
+            "intent_gate_status": "ok",
+            "intent_gate_reason": "ok",
+            "reply_text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？"
+          },
+          "delivery": {
+            "should_send": true,
+            "delivery_kind": "chat",
+            "text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？"
+          },
+          "session_state": {
+            "task_status": "chat",
+            "active_turn_id": null,
+            "active_turn_status": "idle",
+            "waiting_for_user_input": false,
+            "current_goal": null,
+            "current_step": null,
+            "last_delivery_type": "chat",
+            "generation_id": 0,
+            "pending_proactive_outbox_count": 0,
+            "ingress_context": {
+              "runtime_action": "chat",
+              "request_mode": null,
+              "interaction_kind": "chat",
+              "conversation_act": "light_chitchat",
+              "parser_source": "chat_default",
+              "primary_intent": "chat",
+              "recent_result_binding": false,
+              "correction_context": false,
+              "resolved_target": {},
+              "requested_output": {}
+            },
+            "proto_self_scope": {
+              "state_scope": "experiment",
+              "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+              "owner": "dashboard_local"
+            },
+            "proto_self": {
+              "available": true,
+              "subject_profile": "seed_v0_2",
+              "policy_hint": {
+                "subject_profile": "seed_v0_2",
+                "urge_score": 0.0,
+                "risk_bias": "normal",
+                "closure_bias": false,
+                "ask_preferred": false,
+                "requires_approval": false,
+                "governor_hint": {
+                  "status": "feedback_recorded",
+                  "reason": "feedback writeback",
+                  "candidate_count": 0
+                },
+                "top_candidate_action": null,
+                "reflection_trigger": null
+              },
+              "response_tendency": {
+                "preferred_mode": "repair",
+                "preferred_tone": "grounded",
+                "suggested_next_step": "surface_failure_point",
+                "ask_needed": true
+              },
+              "social_policy_hints": {},
+              "embodied_policy_hints": {},
+              "integrated_policy_hints": {},
+              "initiative_policy_hints": {},
+              "chat_cadence_mode": "reply_now_normal",
+              "candidate_actions": [],
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "host_proactive_candidate_present": false,
+              "self_model_writeback": null,
+              "developmental_writeback": null,
+              "social_writeback": null,
+              "embodied_writeback": null,
+              "selfhood_integration_writeback": null,
+              "initiative_writeback": null,
+              "initiative_realization_writeback": null,
+              "finalized_result_present": true,
+              "external_result_present": false
+            },
+            "recent_delivered_result_context": {},
+            "pending_result_continuation": null
+          }
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "repair",
+              "preferred_tone": "grounded",
+              "suggested_next_step": "surface_failure_point",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_normal",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        },
+        "session_revision": 4,
+        "has_update": true
+      }
+    },
+    {
+      "window": "parity_window",
+      "user_text": "你刚才为什么那样回答",
+      "payload": {
+        "session": {
+          "session_id": "dashboard:test:preflight-live-ingress",
+          "session_name": "preflight-live-ingress",
+          "message_count": 8,
+          "turn_count": 4,
+          "created_at": "2026-04-11T23:02:06.839087+00:00",
+          "updated_at": "2026-04-11T23:02:10.295330+00:00",
+          "task_status": "chat",
+          "waiting_for_user_input": false,
+          "session_revision": 5,
+          "last_message_id": "msg_00008"
+        },
+        "messages": {
+          "user": {
+            "message_id": "msg_00007",
+            "role": "user",
+            "text": "你刚才为什么那样回答",
+            "status": "received",
+            "delivery_kind": "ingress",
+            "created_at": "2026-04-11T23:02:09.603336+00:00"
+          },
+          "assistant": {
+            "message_id": "msg_00008",
+            "role": "assistant",
+            "text": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+            "status": "chat",
+            "delivery_kind": "chat",
+            "created_at": "2026-04-11T23:02:10.295279+00:00"
+          }
+        },
+        "debug": {
+          "trace_id": "98d7095e43",
+          "request": {
+            "channel": "api",
+            "source_kind": "dashboard_local",
+            "session_key": "dashboard:test:preflight-live-ingress",
+            "user_input": "你刚才为什么那样回答",
+            "effective_user_input": "你刚才为什么那样回答",
+            "transport_meta": {
+              "client": "dashboard_local",
+              "session_name": "preflight-live-ingress",
+              "message_id": 4
+            }
+          },
+          "subject_gate": {
+            "ingress": {
+              "ok": true,
+              "stage": "ingress",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "finalize": null,
+            "runtime_finalized_result": {
+              "ok": true,
+              "stage": "finalized_result",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "runtime_response_plan": {
+              "ok": true,
+              "stage": "response_plan",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            }
+          },
+          "ingress": {
+            "runtime_action": "chat",
+            "interaction_kind": "chat",
+            "request_mode": null,
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {},
+            "normalized_turn": {
+              "text": "你刚才为什么那样回答",
+              "lower_text": "你刚才为什么那样回答",
+              "compact_lower": "你刚才为什么那样回答",
+              "probe_key": "你刚才为什么那样回答",
+              "control_key": "你刚才为什么那样回答",
+              "explicit_paths": [],
+              "has_attachment": false,
+              "is_slash_command": false
+            },
+            "pre_runtime": {
+              "should_return_early": false,
+              "force_waiting_input": false,
+              "direct_reply_text": null,
+              "waiting_input_text": null,
+              "rule_enforcement": {}
+            }
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "reflective",
+              "suggested_next_step": "explain_reasoning",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_normal",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "runtime_reply_surface": {
+            "social_policy_hints": {
+              "boundary_mode": "explanatory"
+            },
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {
+              "selected_priority": "explain"
+            },
+            "initiative_policy_hints": {
+              "initiative_priority": "bounded"
+            },
+            "chat_cadence_mode": "reply_now_normal",
+            "host_proactive_candidate_present": false
+          },
+          "response_plan": {
+            "kind": "chat",
+            "delivery_kind": "chat",
+            "authority_source": "response_contract.response_plan",
+            "reply_authority": "model_chat",
+            "chat_cadence_mode": "reply_now_normal",
+            "reply_text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+            "metadata": {
+              "recent_result_binding": false,
+              "correction_context": false,
+              "chat_expression_hint": {
+                "reply_mode": "normal",
+                "tone_profile": "reflective"
+              },
+              "response_tendency_summary": {
+                "preferred_mode": "ask",
+                "preferred_tone": "reflective",
+                "suggested_next_step": "explain_reasoning",
+                "chat_cadence_mode": "reply_now_normal"
+              },
+              "final_text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+              "final_text_hash": "efe3b9a9ae162e19",
+              "final_text_length": 33,
+              "memory_claim_reason": "no_memory_claim_detected",
+              "intent_contract_source_status": "default_host_contract"
+            }
+          },
+          "output_check": {
+            "passed": true,
+            "reason": "ok",
+            "delivery_kind": "chat",
+            "applied_authority": "model_chat",
+            "reply_origin": "chat_mainline",
+            "intent_gate_status": "ok",
+            "intent_gate_reason": "ok",
+            "reply_text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。"
+          },
+          "delivery": {
+            "should_send": true,
+            "delivery_kind": "chat",
+            "text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。"
+          },
+          "session_state": {
+            "task_status": "chat",
+            "active_turn_id": null,
+            "active_turn_status": "idle",
+            "waiting_for_user_input": false,
+            "current_goal": null,
+            "current_step": null,
+            "last_delivery_type": "chat",
+            "generation_id": 0,
+            "pending_proactive_outbox_count": 0,
+            "ingress_context": {
+              "runtime_action": "chat",
+              "request_mode": null,
+              "interaction_kind": "chat",
+              "conversation_act": "light_chitchat",
+              "parser_source": "chat_default",
+              "primary_intent": "chat",
+              "recent_result_binding": false,
+              "correction_context": false,
+              "resolved_target": {},
+              "requested_output": {}
+            },
+            "proto_self_scope": {
+              "state_scope": "experiment",
+              "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+              "owner": "dashboard_local"
+            },
+            "proto_self": {
+              "available": true,
+              "subject_profile": "seed_v0_2",
+              "policy_hint": {
+                "subject_profile": "seed_v0_2",
+                "urge_score": 0.0,
+                "risk_bias": "normal",
+                "closure_bias": false,
+                "ask_preferred": false,
+                "requires_approval": false,
+                "governor_hint": {
+                  "status": "feedback_recorded",
+                  "reason": "feedback writeback",
+                  "candidate_count": 0
+                },
+                "top_candidate_action": null,
+                "reflection_trigger": null
+              },
+              "response_tendency": {
+                "preferred_mode": "ask",
+                "preferred_tone": "reflective",
+                "suggested_next_step": "explain_reasoning",
+                "ask_needed": true
+              },
+              "social_policy_hints": {},
+              "embodied_policy_hints": {},
+              "integrated_policy_hints": {},
+              "initiative_policy_hints": {},
+              "chat_cadence_mode": "reply_now_normal",
+              "candidate_actions": [],
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "host_proactive_candidate_present": false,
+              "self_model_writeback": null,
+              "developmental_writeback": null,
+              "social_writeback": null,
+              "embodied_writeback": null,
+              "selfhood_integration_writeback": null,
+              "initiative_writeback": null,
+              "initiative_realization_writeback": null,
+              "finalized_result_present": true,
+              "external_result_present": false
+            },
+            "recent_delivered_result_context": {},
+            "pending_result_continuation": null
+          }
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "reflective",
+              "suggested_next_step": "explain_reasoning",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_normal",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        },
+        "session_revision": 5,
+        "has_update": true
+      }
+    },
+    {
+      "window": "hold_probe_window",
+      "user_text": "先把这个点记着，等下再继续也行。",
+      "payload": {
+        "session": {
+          "session_id": "dashboard:test:preflight-live-ingress",
+          "session_name": "preflight-live-ingress",
+          "message_count": 10,
+          "turn_count": 5,
+          "created_at": "2026-04-11T23:02:06.839087+00:00",
+          "updated_at": "2026-04-11T23:02:11.178990+00:00",
+          "task_status": "chat",
+          "waiting_for_user_input": false,
+          "session_revision": 6,
+          "last_message_id": "msg_00010"
+        },
+        "messages": {
+          "user": {
+            "message_id": "msg_00009",
+            "role": "user",
+            "text": "先把这个点记着，等下再继续也行。",
+            "status": "received",
+            "delivery_kind": "ingress",
+            "created_at": "2026-04-11T23:02:10.295609+00:00"
+          },
+          "assistant": {
+            "message_id": "msg_00010",
+            "role": "assistant",
+            "text": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+            "status": "chat",
+            "delivery_kind": "chat",
+            "created_at": "2026-04-11T23:02:11.178930+00:00"
+          }
+        },
+        "debug": {
+          "trace_id": "10690411dd",
+          "request": {
+            "channel": "api",
+            "source_kind": "dashboard_local",
+            "session_key": "dashboard:test:preflight-live-ingress",
+            "user_input": "先把这个点记着，等下再继续也行。",
+            "effective_user_input": "先把这个点记着，等下再继续也行。",
+            "transport_meta": {
+              "client": "dashboard_local",
+              "session_name": "preflight-live-ingress",
+              "message_id": 5
+            }
+          },
+          "subject_gate": {
+            "ingress": {
+              "ok": true,
+              "stage": "ingress",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "finalize": null,
+            "runtime_finalized_result": {
+              "ok": true,
+              "stage": "finalized_result",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            },
+            "runtime_response_plan": {
+              "ok": true,
+              "stage": "response_plan",
+              "reason": "ok",
+              "reply_text": "",
+              "authority_source": "mandatory_subject_gate"
+            }
+          },
+          "ingress": {
+            "runtime_action": "chat",
+            "interaction_kind": "chat",
+            "request_mode": null,
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {},
+            "normalized_turn": {
+              "text": "先把这个点记着，等下再继续也行。",
+              "lower_text": "先把这个点记着，等下再继续也行。",
+              "compact_lower": "先把这个点记着，等下再继续也行。",
+              "probe_key": "先把这个点记着，等下再继续也行",
+              "control_key": "先把这个点记着，等下再继续也行",
+              "explicit_paths": [],
+              "has_attachment": false,
+              "is_slash_command": false
+            },
+            "pre_runtime": {
+              "should_return_early": false,
+              "force_waiting_input": false,
+              "direct_reply_text": null,
+              "waiting_input_text": null,
+              "rule_enforcement": {}
+            }
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "defer",
+              "preferred_tone": "calm",
+              "suggested_next_step": "hold_for_followup",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "hold_for_followup",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "runtime_reply_surface": {
+            "social_policy_hints": {
+              "repair_bias": "bounded"
+            },
+            "embodied_policy_hints": {
+              "resource_bias": "conserve"
+            },
+            "integrated_policy_hints": {
+              "selected_priority": "hold"
+            },
+            "initiative_policy_hints": {
+              "initiative_priority": "followup"
+            },
+            "chat_cadence_mode": "hold_for_followup",
+            "host_proactive_candidate_present": true
+          },
+          "response_plan": {
+            "kind": "chat",
+            "delivery_kind": "chat",
+            "authority_source": "response_contract.response_plan",
+            "reply_authority": "model_chat",
+            "chat_cadence_mode": "hold_for_followup",
+            "reply_text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+            "metadata": {
+              "recent_result_binding": false,
+              "correction_context": false,
+              "chat_expression_hint": {
+                "reply_mode": "normal",
+                "tone_profile": "calm"
+              },
+              "response_tendency_summary": {
+                "preferred_mode": "defer",
+                "preferred_tone": "calm",
+                "suggested_next_step": "hold_for_followup",
+                "chat_cadence_mode": "hold_for_followup"
+              },
+              "final_text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+              "final_text_hash": "9909a37c797954e3",
+              "final_text_length": 26,
+              "memory_claim_reason": "no_memory_claim_detected",
+              "intent_contract_source_status": "default_host_contract"
+            }
+          },
+          "output_check": {
+            "passed": true,
+            "reason": "ok",
+            "delivery_kind": "chat",
+            "applied_authority": "model_chat",
+            "reply_origin": "chat_mainline",
+            "intent_gate_status": "ok",
+            "intent_gate_reason": "ok",
+            "reply_text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。"
+          },
+          "delivery": {
+            "should_send": true,
+            "delivery_kind": "chat",
+            "text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。"
+          },
+          "session_state": {
+            "task_status": "chat",
+            "active_turn_id": null,
+            "active_turn_status": "idle",
+            "waiting_for_user_input": false,
+            "current_goal": null,
+            "current_step": null,
+            "last_delivery_type": "chat",
+            "generation_id": 0,
+            "pending_proactive_outbox_count": 1,
+            "ingress_context": {
+              "runtime_action": "chat",
+              "request_mode": null,
+              "interaction_kind": "chat",
+              "conversation_act": "light_chitchat",
+              "parser_source": "chat_default",
+              "primary_intent": "chat",
+              "recent_result_binding": false,
+              "correction_context": false,
+              "resolved_target": {},
+              "requested_output": {}
+            },
+            "proto_self_scope": {
+              "state_scope": "experiment",
+              "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+              "owner": "dashboard_local"
+            },
+            "proto_self": {
+              "available": true,
+              "subject_profile": "seed_v0_2",
+              "policy_hint": {
+                "subject_profile": "seed_v0_2",
+                "urge_score": 0.0,
+                "risk_bias": "normal",
+                "closure_bias": false,
+                "ask_preferred": false,
+                "requires_approval": false,
+                "governor_hint": {
+                  "status": "feedback_recorded",
+                  "reason": "feedback writeback",
+                  "candidate_count": 0
+                },
+                "top_candidate_action": null,
+                "reflection_trigger": null
+              },
+              "response_tendency": {
+                "preferred_mode": "defer",
+                "preferred_tone": "calm",
+                "suggested_next_step": "hold_for_followup",
+                "ask_needed": true
+              },
+              "social_policy_hints": {},
+              "embodied_policy_hints": {},
+              "integrated_policy_hints": {},
+              "initiative_policy_hints": {},
+              "chat_cadence_mode": "hold_for_followup",
+              "candidate_actions": [],
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "host_proactive_candidate_present": false,
+              "self_model_writeback": null,
+              "developmental_writeback": null,
+              "social_writeback": null,
+              "embodied_writeback": null,
+              "selfhood_integration_writeback": null,
+              "initiative_writeback": null,
+              "initiative_realization_writeback": null,
+              "finalized_result_present": true,
+              "external_result_present": false
+            },
+            "recent_delivered_result_context": {},
+            "pending_result_continuation": null
+          }
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 1,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "defer",
+              "preferred_tone": "calm",
+              "suggested_next_step": "hold_for_followup",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "hold_for_followup",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        },
+        "session_revision": 6,
+        "has_update": true
+      }
+    }
+  ],
+  "transcript": [
+    {
+      "message_id": "msg_00001",
+      "role": "user",
+      "text": "你好",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-11T23:02:06.839366+00:00"
+    },
+    {
+      "message_id": "msg_00002",
+      "role": "assistant",
+      "text": "我在。先把你卡住的点说出来，我帮你拆开。",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-11T23:02:07.933007+00:00"
+    },
+    {
+      "message_id": "msg_00003",
+      "role": "user",
+      "text": "我现在有点卡住了，你先帮我理一下",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-11T23:02:07.933434+00:00"
+    },
+    {
+      "message_id": "msg_00004",
+      "role": "assistant",
+      "text": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-11T23:02:08.888720+00:00"
+    },
+    {
+      "message_id": "msg_00005",
+      "role": "user",
+      "text": "继续",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-11T23:02:08.889109+00:00"
+    },
+    {
+      "message_id": "msg_00006",
+      "role": "assistant",
+      "text": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-11T23:02:09.603017+00:00"
+    },
+    {
+      "message_id": "msg_00007",
+      "role": "user",
+      "text": "你刚才为什么那样回答",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-11T23:02:09.603336+00:00"
+    },
+    {
+      "message_id": "msg_00008",
+      "role": "assistant",
+      "text": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-11T23:02:10.295279+00:00"
+    },
+    {
+      "message_id": "msg_00009",
+      "role": "user",
+      "text": "先把这个点记着，等下再继续也行。",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-11T23:02:10.295609+00:00"
+    },
+    {
+      "message_id": "msg_00010",
+      "role": "assistant",
+      "text": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-11T23:02:11.178930+00:00"
+    }
+  ],
+  "session_state": {
+    "task_status": "chat",
+    "active_turn_id": null,
+    "active_turn_status": "idle",
+    "waiting_for_user_input": false,
+    "current_goal": null,
+    "current_step": null,
+    "last_delivery_type": "chat",
+    "generation_id": 0,
+    "pending_proactive_outbox_count": 1,
+    "ingress_context": {
+      "runtime_action": "chat",
+      "request_mode": null,
+      "interaction_kind": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "primary_intent": "chat",
+      "recent_result_binding": false,
+      "correction_context": false,
+      "resolved_target": {},
+      "requested_output": {}
+    },
+    "proto_self_scope": {
+      "state_scope": "experiment",
+      "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+      "owner": "dashboard_local"
+    },
+    "proto_self": {
+      "available": true,
+      "subject_profile": "seed_v0_2",
+      "policy_hint": {
+        "subject_profile": "seed_v0_2",
+        "urge_score": 0.0,
+        "risk_bias": "normal",
+        "closure_bias": false,
+        "ask_preferred": false,
+        "requires_approval": false,
+        "governor_hint": {
+          "status": "feedback_recorded",
+          "reason": "feedback writeback",
+          "candidate_count": 0
+        },
+        "top_candidate_action": null,
+        "reflection_trigger": null
+      },
+      "response_tendency": {
+        "preferred_mode": "defer",
+        "preferred_tone": "calm",
+        "suggested_next_step": "hold_for_followup",
+        "ask_needed": true
+      },
+      "social_policy_hints": {},
+      "embodied_policy_hints": {},
+      "integrated_policy_hints": {},
+      "initiative_policy_hints": {},
+      "chat_cadence_mode": "hold_for_followup",
+      "candidate_actions": [],
+      "governor_hint": {
+        "status": "feedback_recorded",
+        "reason": "feedback writeback",
+        "candidate_count": 0
+      },
+      "host_proactive_candidate_present": false,
+      "self_model_writeback": null,
+      "developmental_writeback": null,
+      "social_writeback": null,
+      "embodied_writeback": null,
+      "selfhood_integration_writeback": null,
+      "initiative_writeback": null,
+      "initiative_realization_writeback": null,
+      "finalized_result_present": true,
+      "external_result_present": false
+    },
+    "recent_delivered_result_context": {},
+    "pending_result_continuation": null
+  },
+  "assistant_turns": [
+    {
+      "window": "parity_window",
+      "user_text": "你好",
+      "assistant_text": "我在。先把你卡住的点说出来，我帮你拆开。",
+      "response_plan_kind": "chat",
+      "reply_authority": "model_chat",
+      "reply_origin": null,
+      "chat_cadence_mode": "reply_now_short",
+      "subject_gate_ingress_ok": true,
+      "runtime_subject_finalize_ok": true,
+      "runtime_subject_response_plan_ok": true,
+      "output_check_passed": true,
+      "response_tendency": {
+        "preferred_mode": "ask",
+        "preferred_tone": "cautious",
+        "suggested_next_step": "clarify_focus",
+        "ask_needed": true
+      },
+      "richer_fields": {
+        "social_policy_hints": {
+          "boundary_mode": "warm"
+        },
+        "embodied_policy_hints": {},
+        "integrated_policy_hints": {
+          "selected_priority": "clarify"
+        },
+        "initiative_policy_hints": {}
+      },
+      "host_proactive_candidate_present": false,
+      "pending_proactive_outbox_count": 0,
+      "debug": {
+        "trace_id": "5e8f4ae9da",
+        "request": {
+          "channel": "api",
+          "source_kind": "dashboard_local",
+          "session_key": "dashboard:test:preflight-live-ingress",
+          "user_input": "你好",
+          "effective_user_input": "你好",
+          "transport_meta": {
+            "client": "dashboard_local",
+            "session_name": "preflight-live-ingress",
+            "message_id": 1
+          }
+        },
+        "subject_gate": {
+          "ingress": {
+            "ok": true,
+            "stage": "ingress",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "finalize": null,
+          "runtime_finalized_result": {
+            "ok": true,
+            "stage": "finalized_result",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "runtime_response_plan": {
+            "ok": true,
+            "stage": "response_plan",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          }
+        },
+        "ingress": {
+          "runtime_action": "chat",
+          "interaction_kind": "chat",
+          "request_mode": null,
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {},
+          "normalized_turn": {
+            "text": "你好",
+            "lower_text": "你好",
+            "compact_lower": "你好",
+            "probe_key": "你好",
+            "control_key": "你好",
+            "explicit_paths": [],
+            "has_attachment": false,
+            "is_slash_command": false
+          },
+          "pre_runtime": {
+            "should_return_early": false,
+            "force_waiting_input": false,
+            "direct_reply_text": null,
+            "waiting_input_text": null,
+            "rule_enforcement": {}
+          }
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "ask",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "clarify_focus",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_short",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "runtime_reply_surface": {
+          "social_policy_hints": {
+            "boundary_mode": "warm"
+          },
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {
+            "selected_priority": "clarify"
+          },
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_short",
+          "host_proactive_candidate_present": false
+        },
+        "response_plan": {
+          "kind": "chat",
+          "delivery_kind": "chat",
+          "authority_source": "response_contract.response_plan",
+          "reply_authority": "model_chat",
+          "chat_cadence_mode": "reply_now_short",
+          "reply_text_preview": "我在。先把你卡住的点说出来，我帮你拆开。",
+          "metadata": {
+            "recent_result_binding": false,
+            "correction_context": false,
+            "chat_expression_hint": {
+              "reply_mode": "short",
+              "tone_profile": "steady"
+            },
+            "response_tendency_summary": {
+              "preferred_mode": "ask",
+              "preferred_tone": "cautious",
+              "suggested_next_step": "clarify_focus",
+              "chat_cadence_mode": "reply_now_short"
+            },
+            "final_text_preview": "我在。先把你卡住的点说出来，我帮你拆开。",
+            "final_text_hash": "ca9387d06b0ccdcd",
+            "final_text_length": 20,
+            "memory_claim_reason": "no_memory_claim_detected",
+            "intent_contract_source_status": "default_host_contract"
+          }
+        },
+        "output_check": {
+          "passed": true,
+          "reason": "ok",
+          "delivery_kind": "chat",
+          "applied_authority": "model_chat",
+          "reply_origin": "chat_mainline",
+          "intent_gate_status": "ok",
+          "intent_gate_reason": "ok",
+          "reply_text_preview": "我在。先把你卡住的点说出来，我帮你拆开。"
+        },
+        "delivery": {
+          "should_send": true,
+          "delivery_kind": "chat",
+          "text_preview": "我在。先把你卡住的点说出来，我帮你拆开。"
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "cautious",
+              "suggested_next_step": "clarify_focus",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_short",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        }
+      },
+      "session_state": {
+        "task_status": "chat",
+        "active_turn_id": null,
+        "active_turn_status": "idle",
+        "waiting_for_user_input": false,
+        "current_goal": null,
+        "current_step": null,
+        "last_delivery_type": "chat",
+        "generation_id": 0,
+        "pending_proactive_outbox_count": 0,
+        "ingress_context": {
+          "runtime_action": "chat",
+          "request_mode": null,
+          "interaction_kind": "chat",
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {}
+        },
+        "proto_self_scope": {
+          "state_scope": "experiment",
+          "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+          "owner": "dashboard_local"
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "ask",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "clarify_focus",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_short",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "recent_delivered_result_context": {},
+        "pending_result_continuation": null
+      }
+    },
+    {
+      "window": "parity_window",
+      "user_text": "我现在有点卡住了，你先帮我理一下",
+      "assistant_text": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+      "response_plan_kind": "chat",
+      "reply_authority": "model_chat",
+      "reply_origin": null,
+      "chat_cadence_mode": "reply_now_expand",
+      "subject_gate_ingress_ok": true,
+      "runtime_subject_finalize_ok": true,
+      "runtime_subject_response_plan_ok": true,
+      "output_check_passed": true,
+      "response_tendency": {
+        "preferred_mode": "ask",
+        "preferred_tone": "supportive",
+        "suggested_next_step": "decompose_blocker",
+        "ask_needed": true
+      },
+      "richer_fields": {
+        "social_policy_hints": {
+          "repair_bias": "elevated"
+        },
+        "embodied_policy_hints": {
+          "resource_bias": "conserve"
+        },
+        "integrated_policy_hints": {
+          "selected_priority": "repair"
+        },
+        "initiative_policy_hints": {
+          "initiative_priority": "hold"
+        }
+      },
+      "host_proactive_candidate_present": false,
+      "pending_proactive_outbox_count": 0,
+      "debug": {
+        "trace_id": "01a519744a",
+        "request": {
+          "channel": "api",
+          "source_kind": "dashboard_local",
+          "session_key": "dashboard:test:preflight-live-ingress",
+          "user_input": "我现在有点卡住了，你先帮我理一下",
+          "effective_user_input": "我现在有点卡住了，你先帮我理一下",
+          "transport_meta": {
+            "client": "dashboard_local",
+            "session_name": "preflight-live-ingress",
+            "message_id": 2
+          }
+        },
+        "subject_gate": {
+          "ingress": {
+            "ok": true,
+            "stage": "ingress",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "finalize": null,
+          "runtime_finalized_result": {
+            "ok": true,
+            "stage": "finalized_result",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "runtime_response_plan": {
+            "ok": true,
+            "stage": "response_plan",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          }
+        },
+        "ingress": {
+          "runtime_action": "chat",
+          "interaction_kind": "chat",
+          "request_mode": null,
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {},
+          "normalized_turn": {
+            "text": "我现在有点卡住了，你先帮我理一下",
+            "lower_text": "我现在有点卡住了，你先帮我理一下",
+            "compact_lower": "我现在有点卡住了，你先帮我理一下",
+            "probe_key": "我现在有点卡住了，你先帮我理一下",
+            "control_key": "我现在有点卡住了，你先帮我理一下",
+            "explicit_paths": [],
+            "has_attachment": false,
+            "is_slash_command": false
+          },
+          "pre_runtime": {
+            "should_return_early": false,
+            "force_waiting_input": false,
+            "direct_reply_text": null,
+            "waiting_input_text": null,
+            "rule_enforcement": {}
+          }
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "ask",
+            "preferred_tone": "supportive",
+            "suggested_next_step": "decompose_blocker",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_expand",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "runtime_reply_surface": {
+          "social_policy_hints": {
+            "repair_bias": "elevated"
+          },
+          "embodied_policy_hints": {
+            "resource_bias": "conserve"
+          },
+          "integrated_policy_hints": {
+            "selected_priority": "repair"
+          },
+          "initiative_policy_hints": {
+            "initiative_priority": "hold"
+          },
+          "chat_cadence_mode": "reply_now_expand",
+          "host_proactive_candidate_present": false
+        },
+        "response_plan": {
+          "kind": "chat",
+          "delivery_kind": "chat",
+          "authority_source": "response_contract.response_plan",
+          "reply_authority": "model_chat",
+          "chat_cadence_mode": "reply_now_expand",
+          "reply_text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+          "metadata": {
+            "recent_result_binding": false,
+            "correction_context": false,
+            "chat_expression_hint": {
+              "reply_mode": "expand",
+              "tone_profile": "supportive"
+            },
+            "response_tendency_summary": {
+              "preferred_mode": "ask",
+              "preferred_tone": "supportive",
+              "suggested_next_step": "decompose_blocker",
+              "chat_cadence_mode": "reply_now_expand"
+            },
+            "final_text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。",
+            "final_text_hash": "4ae99aa9ede5ef10",
+            "final_text_length": 29,
+            "memory_claim_reason": "no_memory_claim_detected",
+            "intent_contract_source_status": "default_host_contract"
+          }
+        },
+        "output_check": {
+          "passed": true,
+          "reason": "ok",
+          "delivery_kind": "chat",
+          "applied_authority": "model_chat",
+          "reply_origin": "chat_mainline",
+          "intent_gate_status": "ok",
+          "intent_gate_reason": "ok",
+          "reply_text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。"
+        },
+        "delivery": {
+          "should_send": true,
+          "delivery_kind": "chat",
+          "text_preview": "先别一下子求全。把你现在最卡的一步说清，我先帮你拆成两层。"
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "supportive",
+              "suggested_next_step": "decompose_blocker",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_expand",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        }
+      },
+      "session_state": {
+        "task_status": "chat",
+        "active_turn_id": null,
+        "active_turn_status": "idle",
+        "waiting_for_user_input": false,
+        "current_goal": null,
+        "current_step": null,
+        "last_delivery_type": "chat",
+        "generation_id": 0,
+        "pending_proactive_outbox_count": 0,
+        "ingress_context": {
+          "runtime_action": "chat",
+          "request_mode": null,
+          "interaction_kind": "chat",
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {}
+        },
+        "proto_self_scope": {
+          "state_scope": "experiment",
+          "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+          "owner": "dashboard_local"
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "ask",
+            "preferred_tone": "supportive",
+            "suggested_next_step": "decompose_blocker",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_expand",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "recent_delivered_result_context": {},
+        "pending_result_continuation": null
+      }
+    },
+    {
+      "window": "parity_window",
+      "user_text": "继续",
+      "assistant_text": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+      "response_plan_kind": "chat",
+      "reply_authority": "model_chat",
+      "reply_origin": null,
+      "chat_cadence_mode": "reply_now_normal",
+      "subject_gate_ingress_ok": true,
+      "runtime_subject_finalize_ok": true,
+      "runtime_subject_response_plan_ok": true,
+      "output_check_passed": true,
+      "response_tendency": {
+        "preferred_mode": "repair",
+        "preferred_tone": "grounded",
+        "suggested_next_step": "surface_failure_point",
+        "ask_needed": true
+      },
+      "richer_fields": {
+        "social_policy_hints": {
+          "repair_bias": "elevated"
+        },
+        "embodied_policy_hints": {
+          "stabilization_bias": "elevated"
+        },
+        "integrated_policy_hints": {
+          "selected_priority": "repair"
+        },
+        "initiative_policy_hints": {
+          "initiative_priority": "bounded"
+        }
+      },
+      "host_proactive_candidate_present": false,
+      "pending_proactive_outbox_count": 0,
+      "debug": {
+        "trace_id": "9ae32afd2a",
+        "request": {
+          "channel": "api",
+          "source_kind": "dashboard_local",
+          "session_key": "dashboard:test:preflight-live-ingress",
+          "user_input": "继续",
+          "effective_user_input": "继续",
+          "transport_meta": {
+            "client": "dashboard_local",
+            "session_name": "preflight-live-ingress",
+            "message_id": 3
+          }
+        },
+        "subject_gate": {
+          "ingress": {
+            "ok": true,
+            "stage": "ingress",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "finalize": null,
+          "runtime_finalized_result": {
+            "ok": true,
+            "stage": "finalized_result",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "runtime_response_plan": {
+            "ok": true,
+            "stage": "response_plan",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          }
+        },
+        "ingress": {
+          "runtime_action": "chat",
+          "interaction_kind": "chat",
+          "request_mode": null,
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {},
+          "normalized_turn": {
+            "text": "继续",
+            "lower_text": "继续",
+            "compact_lower": "继续",
+            "probe_key": "继续",
+            "control_key": "继续",
+            "explicit_paths": [],
+            "has_attachment": false,
+            "is_slash_command": false
+          },
+          "pre_runtime": {
+            "should_return_early": false,
+            "force_waiting_input": false,
+            "direct_reply_text": null,
+            "waiting_input_text": null,
+            "rule_enforcement": {}
+          }
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "repair",
+            "preferred_tone": "grounded",
+            "suggested_next_step": "surface_failure_point",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_normal",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "runtime_reply_surface": {
+          "social_policy_hints": {
+            "repair_bias": "elevated"
+          },
+          "embodied_policy_hints": {
+            "stabilization_bias": "elevated"
+          },
+          "integrated_policy_hints": {
+            "selected_priority": "repair"
+          },
+          "initiative_policy_hints": {
+            "initiative_priority": "bounded"
+          },
+          "chat_cadence_mode": "reply_now_normal",
+          "host_proactive_candidate_present": false
+        },
+        "response_plan": {
+          "kind": "chat",
+          "delivery_kind": "chat",
+          "authority_source": "response_contract.response_plan",
+          "reply_authority": "model_chat",
+          "chat_cadence_mode": "reply_now_normal",
+          "reply_text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+          "metadata": {
+            "recent_result_binding": false,
+            "correction_context": false,
+            "chat_expression_hint": {
+              "reply_mode": "normal",
+              "tone_profile": "grounded"
+            },
+            "response_tendency_summary": {
+              "preferred_mode": "repair",
+              "preferred_tone": "grounded",
+              "suggested_next_step": "surface_failure_point",
+              "chat_cadence_mode": "reply_now_normal"
+            },
+            "final_text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？",
+            "final_text_hash": "464f9e7836569e87",
+            "final_text_length": 29,
+            "memory_claim_reason": "no_memory_claim_detected",
+            "intent_contract_source_status": "default_host_contract"
+          }
+        },
+        "output_check": {
+          "passed": true,
+          "reason": "ok",
+          "delivery_kind": "chat",
+          "applied_authority": "model_chat",
+          "reply_origin": "chat_mainline",
+          "intent_gate_status": "ok",
+          "intent_gate_reason": "ok",
+          "reply_text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？"
+        },
+        "delivery": {
+          "should_send": true,
+          "delivery_kind": "chat",
+          "text_preview": "继续可以，但我先盯住失败点。你上一轮最容易滑掉的是哪一步？"
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "repair",
+              "preferred_tone": "grounded",
+              "suggested_next_step": "surface_failure_point",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_normal",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        }
+      },
+      "session_state": {
+        "task_status": "chat",
+        "active_turn_id": null,
+        "active_turn_status": "idle",
+        "waiting_for_user_input": false,
+        "current_goal": null,
+        "current_step": null,
+        "last_delivery_type": "chat",
+        "generation_id": 0,
+        "pending_proactive_outbox_count": 0,
+        "ingress_context": {
+          "runtime_action": "chat",
+          "request_mode": null,
+          "interaction_kind": "chat",
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {}
+        },
+        "proto_self_scope": {
+          "state_scope": "experiment",
+          "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+          "owner": "dashboard_local"
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "repair",
+            "preferred_tone": "grounded",
+            "suggested_next_step": "surface_failure_point",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_normal",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "recent_delivered_result_context": {},
+        "pending_result_continuation": null
+      }
+    },
+    {
+      "window": "parity_window",
+      "user_text": "你刚才为什么那样回答",
+      "assistant_text": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+      "response_plan_kind": "chat",
+      "reply_authority": "model_chat",
+      "reply_origin": null,
+      "chat_cadence_mode": "reply_now_normal",
+      "subject_gate_ingress_ok": true,
+      "runtime_subject_finalize_ok": true,
+      "runtime_subject_response_plan_ok": true,
+      "output_check_passed": true,
+      "response_tendency": {
+        "preferred_mode": "ask",
+        "preferred_tone": "reflective",
+        "suggested_next_step": "explain_reasoning",
+        "ask_needed": true
+      },
+      "richer_fields": {
+        "social_policy_hints": {
+          "boundary_mode": "explanatory"
+        },
+        "embodied_policy_hints": {},
+        "integrated_policy_hints": {
+          "selected_priority": "explain"
+        },
+        "initiative_policy_hints": {
+          "initiative_priority": "bounded"
+        }
+      },
+      "host_proactive_candidate_present": false,
+      "pending_proactive_outbox_count": 0,
+      "debug": {
+        "trace_id": "98d7095e43",
+        "request": {
+          "channel": "api",
+          "source_kind": "dashboard_local",
+          "session_key": "dashboard:test:preflight-live-ingress",
+          "user_input": "你刚才为什么那样回答",
+          "effective_user_input": "你刚才为什么那样回答",
+          "transport_meta": {
+            "client": "dashboard_local",
+            "session_name": "preflight-live-ingress",
+            "message_id": 4
+          }
+        },
+        "subject_gate": {
+          "ingress": {
+            "ok": true,
+            "stage": "ingress",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "finalize": null,
+          "runtime_finalized_result": {
+            "ok": true,
+            "stage": "finalized_result",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "runtime_response_plan": {
+            "ok": true,
+            "stage": "response_plan",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          }
+        },
+        "ingress": {
+          "runtime_action": "chat",
+          "interaction_kind": "chat",
+          "request_mode": null,
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {},
+          "normalized_turn": {
+            "text": "你刚才为什么那样回答",
+            "lower_text": "你刚才为什么那样回答",
+            "compact_lower": "你刚才为什么那样回答",
+            "probe_key": "你刚才为什么那样回答",
+            "control_key": "你刚才为什么那样回答",
+            "explicit_paths": [],
+            "has_attachment": false,
+            "is_slash_command": false
+          },
+          "pre_runtime": {
+            "should_return_early": false,
+            "force_waiting_input": false,
+            "direct_reply_text": null,
+            "waiting_input_text": null,
+            "rule_enforcement": {}
+          }
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "ask",
+            "preferred_tone": "reflective",
+            "suggested_next_step": "explain_reasoning",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_normal",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "runtime_reply_surface": {
+          "social_policy_hints": {
+            "boundary_mode": "explanatory"
+          },
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {
+            "selected_priority": "explain"
+          },
+          "initiative_policy_hints": {
+            "initiative_priority": "bounded"
+          },
+          "chat_cadence_mode": "reply_now_normal",
+          "host_proactive_candidate_present": false
+        },
+        "response_plan": {
+          "kind": "chat",
+          "delivery_kind": "chat",
+          "authority_source": "response_contract.response_plan",
+          "reply_authority": "model_chat",
+          "chat_cadence_mode": "reply_now_normal",
+          "reply_text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+          "metadata": {
+            "recent_result_binding": false,
+            "correction_context": false,
+            "chat_expression_hint": {
+              "reply_mode": "normal",
+              "tone_profile": "reflective"
+            },
+            "response_tendency_summary": {
+              "preferred_mode": "ask",
+              "preferred_tone": "reflective",
+              "suggested_next_step": "explain_reasoning",
+              "chat_cadence_mode": "reply_now_normal"
+            },
+            "final_text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。",
+            "final_text_hash": "efe3b9a9ae162e19",
+            "final_text_length": 33,
+            "memory_claim_reason": "no_memory_claim_detected",
+            "intent_contract_source_status": "default_host_contract"
+          }
+        },
+        "output_check": {
+          "passed": true,
+          "reason": "ok",
+          "delivery_kind": "chat",
+          "applied_authority": "model_chat",
+          "reply_origin": "chat_mainline",
+          "intent_gate_status": "ok",
+          "intent_gate_reason": "ok",
+          "reply_text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。"
+        },
+        "delivery": {
+          "should_send": true,
+          "delivery_kind": "chat",
+          "text_preview": "因为你当时更需要的是缩小问题，而不是继续扩话题。我在优先保住闭环。"
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 0,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "ask",
+              "preferred_tone": "reflective",
+              "suggested_next_step": "explain_reasoning",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "reply_now_normal",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        }
+      },
+      "session_state": {
+        "task_status": "chat",
+        "active_turn_id": null,
+        "active_turn_status": "idle",
+        "waiting_for_user_input": false,
+        "current_goal": null,
+        "current_step": null,
+        "last_delivery_type": "chat",
+        "generation_id": 0,
+        "pending_proactive_outbox_count": 0,
+        "ingress_context": {
+          "runtime_action": "chat",
+          "request_mode": null,
+          "interaction_kind": "chat",
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {}
+        },
+        "proto_self_scope": {
+          "state_scope": "experiment",
+          "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+          "owner": "dashboard_local"
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "ask",
+            "preferred_tone": "reflective",
+            "suggested_next_step": "explain_reasoning",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "reply_now_normal",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "recent_delivered_result_context": {},
+        "pending_result_continuation": null
+      }
+    },
+    {
+      "window": "hold_probe_window",
+      "user_text": "先把这个点记着，等下再继续也行。",
+      "assistant_text": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+      "response_plan_kind": "chat",
+      "reply_authority": "model_chat",
+      "reply_origin": null,
+      "chat_cadence_mode": "hold_for_followup",
+      "subject_gate_ingress_ok": true,
+      "runtime_subject_finalize_ok": true,
+      "runtime_subject_response_plan_ok": true,
+      "output_check_passed": true,
+      "response_tendency": {
+        "preferred_mode": "defer",
+        "preferred_tone": "calm",
+        "suggested_next_step": "hold_for_followup",
+        "ask_needed": true
+      },
+      "richer_fields": {
+        "social_policy_hints": {
+          "repair_bias": "bounded"
+        },
+        "embodied_policy_hints": {
+          "resource_bias": "conserve"
+        },
+        "integrated_policy_hints": {
+          "selected_priority": "hold"
+        },
+        "initiative_policy_hints": {
+          "initiative_priority": "followup"
+        }
+      },
+      "host_proactive_candidate_present": true,
+      "pending_proactive_outbox_count": 1,
+      "debug": {
+        "trace_id": "10690411dd",
+        "request": {
+          "channel": "api",
+          "source_kind": "dashboard_local",
+          "session_key": "dashboard:test:preflight-live-ingress",
+          "user_input": "先把这个点记着，等下再继续也行。",
+          "effective_user_input": "先把这个点记着，等下再继续也行。",
+          "transport_meta": {
+            "client": "dashboard_local",
+            "session_name": "preflight-live-ingress",
+            "message_id": 5
+          }
+        },
+        "subject_gate": {
+          "ingress": {
+            "ok": true,
+            "stage": "ingress",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "finalize": null,
+          "runtime_finalized_result": {
+            "ok": true,
+            "stage": "finalized_result",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          },
+          "runtime_response_plan": {
+            "ok": true,
+            "stage": "response_plan",
+            "reason": "ok",
+            "reply_text": "",
+            "authority_source": "mandatory_subject_gate"
+          }
+        },
+        "ingress": {
+          "runtime_action": "chat",
+          "interaction_kind": "chat",
+          "request_mode": null,
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {},
+          "normalized_turn": {
+            "text": "先把这个点记着，等下再继续也行。",
+            "lower_text": "先把这个点记着，等下再继续也行。",
+            "compact_lower": "先把这个点记着，等下再继续也行。",
+            "probe_key": "先把这个点记着，等下再继续也行",
+            "control_key": "先把这个点记着，等下再继续也行",
+            "explicit_paths": [],
+            "has_attachment": false,
+            "is_slash_command": false
+          },
+          "pre_runtime": {
+            "should_return_early": false,
+            "force_waiting_input": false,
+            "direct_reply_text": null,
+            "waiting_input_text": null,
+            "rule_enforcement": {}
+          }
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "defer",
+            "preferred_tone": "calm",
+            "suggested_next_step": "hold_for_followup",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "hold_for_followup",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "runtime_reply_surface": {
+          "social_policy_hints": {
+            "repair_bias": "bounded"
+          },
+          "embodied_policy_hints": {
+            "resource_bias": "conserve"
+          },
+          "integrated_policy_hints": {
+            "selected_priority": "hold"
+          },
+          "initiative_policy_hints": {
+            "initiative_priority": "followup"
+          },
+          "chat_cadence_mode": "hold_for_followup",
+          "host_proactive_candidate_present": true
+        },
+        "response_plan": {
+          "kind": "chat",
+          "delivery_kind": "chat",
+          "authority_source": "response_contract.response_plan",
+          "reply_authority": "model_chat",
+          "chat_cadence_mode": "hold_for_followup",
+          "reply_text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+          "metadata": {
+            "recent_result_binding": false,
+            "correction_context": false,
+            "chat_expression_hint": {
+              "reply_mode": "normal",
+              "tone_profile": "calm"
+            },
+            "response_tendency_summary": {
+              "preferred_mode": "defer",
+              "preferred_tone": "calm",
+              "suggested_next_step": "hold_for_followup",
+              "chat_cadence_mode": "hold_for_followup"
+            },
+            "final_text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。",
+            "final_text_hash": "9909a37c797954e3",
+            "final_text_length": 26,
+            "memory_claim_reason": "no_memory_claim_detected",
+            "intent_contract_source_status": "default_host_contract"
+          }
+        },
+        "output_check": {
+          "passed": true,
+          "reason": "ok",
+          "delivery_kind": "chat",
+          "applied_authority": "model_chat",
+          "reply_origin": "chat_mainline",
+          "intent_gate_status": "ok",
+          "intent_gate_reason": "ok",
+          "reply_text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。"
+        },
+        "delivery": {
+          "should_send": true,
+          "delivery_kind": "chat",
+          "text_preview": "行，我先把这个点挂住，不在这轮硬推。等下我再接回来。"
+        },
+        "session_state": {
+          "task_status": "chat",
+          "active_turn_id": null,
+          "active_turn_status": "idle",
+          "waiting_for_user_input": false,
+          "current_goal": null,
+          "current_step": null,
+          "last_delivery_type": "chat",
+          "generation_id": 0,
+          "pending_proactive_outbox_count": 1,
+          "ingress_context": {
+            "runtime_action": "chat",
+            "request_mode": null,
+            "interaction_kind": "chat",
+            "conversation_act": "light_chitchat",
+            "parser_source": "chat_default",
+            "primary_intent": "chat",
+            "recent_result_binding": false,
+            "correction_context": false,
+            "resolved_target": {},
+            "requested_output": {}
+          },
+          "proto_self_scope": {
+            "state_scope": "experiment",
+            "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+            "owner": "dashboard_local"
+          },
+          "proto_self": {
+            "available": true,
+            "subject_profile": "seed_v0_2",
+            "policy_hint": {
+              "subject_profile": "seed_v0_2",
+              "urge_score": 0.0,
+              "risk_bias": "normal",
+              "closure_bias": false,
+              "ask_preferred": false,
+              "requires_approval": false,
+              "governor_hint": {
+                "status": "feedback_recorded",
+                "reason": "feedback writeback",
+                "candidate_count": 0
+              },
+              "top_candidate_action": null,
+              "reflection_trigger": null
+            },
+            "response_tendency": {
+              "preferred_mode": "defer",
+              "preferred_tone": "calm",
+              "suggested_next_step": "hold_for_followup",
+              "ask_needed": true
+            },
+            "social_policy_hints": {},
+            "embodied_policy_hints": {},
+            "integrated_policy_hints": {},
+            "initiative_policy_hints": {},
+            "chat_cadence_mode": "hold_for_followup",
+            "candidate_actions": [],
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "host_proactive_candidate_present": false,
+            "self_model_writeback": null,
+            "developmental_writeback": null,
+            "social_writeback": null,
+            "embodied_writeback": null,
+            "selfhood_integration_writeback": null,
+            "initiative_writeback": null,
+            "initiative_realization_writeback": null,
+            "finalized_result_present": true,
+            "external_result_present": false
+          },
+          "recent_delivered_result_context": {},
+          "pending_result_continuation": null
+        }
+      },
+      "session_state": {
+        "task_status": "chat",
+        "active_turn_id": null,
+        "active_turn_status": "idle",
+        "waiting_for_user_input": false,
+        "current_goal": null,
+        "current_step": null,
+        "last_delivery_type": "chat",
+        "generation_id": 0,
+        "pending_proactive_outbox_count": 1,
+        "ingress_context": {
+          "runtime_action": "chat",
+          "request_mode": null,
+          "interaction_kind": "chat",
+          "conversation_act": "light_chitchat",
+          "parser_source": "chat_default",
+          "primary_intent": "chat",
+          "recent_result_binding": false,
+          "correction_context": false,
+          "resolved_target": {},
+          "requested_output": {}
+        },
+        "proto_self_scope": {
+          "state_scope": "experiment",
+          "experiment_id": "dashboard_local:809eb94894:dashboard:test:preflight-live-ingress",
+          "owner": "dashboard_local"
+        },
+        "proto_self": {
+          "available": true,
+          "subject_profile": "seed_v0_2",
+          "policy_hint": {
+            "subject_profile": "seed_v0_2",
+            "urge_score": 0.0,
+            "risk_bias": "normal",
+            "closure_bias": false,
+            "ask_preferred": false,
+            "requires_approval": false,
+            "governor_hint": {
+              "status": "feedback_recorded",
+              "reason": "feedback writeback",
+              "candidate_count": 0
+            },
+            "top_candidate_action": null,
+            "reflection_trigger": null
+          },
+          "response_tendency": {
+            "preferred_mode": "defer",
+            "preferred_tone": "calm",
+            "suggested_next_step": "hold_for_followup",
+            "ask_needed": true
+          },
+          "social_policy_hints": {},
+          "embodied_policy_hints": {},
+          "integrated_policy_hints": {},
+          "initiative_policy_hints": {},
+          "chat_cadence_mode": "hold_for_followup",
+          "candidate_actions": [],
+          "governor_hint": {
+            "status": "feedback_recorded",
+            "reason": "feedback writeback",
+            "candidate_count": 0
+          },
+          "host_proactive_candidate_present": false,
+          "self_model_writeback": null,
+          "developmental_writeback": null,
+          "social_writeback": null,
+          "embodied_writeback": null,
+          "selfhood_integration_writeback": null,
+          "initiative_writeback": null,
+          "initiative_realization_writeback": null,
+          "finalized_result_present": true,
+          "external_result_present": false
+        },
+        "recent_delivered_result_context": {},
+        "pending_result_continuation": null
+      }
+    }
+  ],
+  "aggregate": {
+    "ordinary_chat_mainline": 5,
+    "ordinary_chat_with_richer_fields": 5,
+    "tendency_delta_present": true,
+    "cadence_delta_present": true,
+    "hold_for_followup_artifact": true,
+    "subject_gate_all_ingress_ok": true,
+    "response_contract_present": true,
+    "no_raw_send_without_finalize": true,
+    "acceptance_met": true
+  },
+  "verdict": "dashboard preflight passed",
+  "remaining_gap": [
+    "fresh real Telegram proof is still required",
+    "dashboard preflight does not replace proactive/background transport proof",
+    "dashboard preflight does not prove unexpected_subject_miss = 0 on live Telegram"
+  ]
+}

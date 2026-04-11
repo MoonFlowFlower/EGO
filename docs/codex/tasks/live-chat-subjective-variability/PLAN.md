@@ -56,9 +56,20 @@
   - 只允许宣称 host-governed cadence choice 已接入 current Telegram mainline
   - 不允许宣称 unrestricted autonomy
 
+### Milestone 5a: Dashboard Preflight
+
+- scope:
+  - 用 `DashboardChatService` 后端直驱做发布前最便宜的 ordinary-chat mainline 预验证
+  - 先在 dashboard-local bounded backend 上验证 richer fields、tendency delta、cadence delta 或 `hold_for_followup`
+  - 不把 dashboard chat 写成 real Telegram acceptance 替代
+- claim ceiling:
+  - 只允许宣称 `dashboard_local_preflight / preflight_only`
+  - 不允许宣称 fresh real Telegram proof 已成立
+
 ### Milestone 5: Fresh Real Telegram Proof
 
 - scope:
+  - 先发布当前 corrective patch
   - 重采 fresh Telegram window
   - 用真实样本证明 richer fields、tendency shift、cadence shift
 - claim ceiling:
@@ -74,7 +85,7 @@
 
 - current_status: `in_progress`
 - current_milestone: `Milestone 5: Fresh Real Telegram Proof`
-- milestone_state: `blocked_on_fresh_sample_mix`
+- milestone_state: `blocked_on_publish_and_fresh_sample_mix`
 
 ## Decision log
 
@@ -85,6 +96,7 @@
 - `M2` 先补 richer subject surface，再做 tendency consumption，再做 cadence
 - `M2` 只修 current Telegram mainline artifact surface，不改 `chat_reply_engine` / `response_plan`
 - `M3` 已把 richer bounded context 接进 current chat mainline reply shaping，并保持 host-governed 边界不变
+- dashboard chat 只允许作为 preflight，不作为 Telegram acceptance 替代
 
 ## Expected outcome
 
@@ -120,6 +132,20 @@
   - `TelegramRuntimeFallbackRunner` 现在会保留 runtime reply metadata，避免 cadence / expression hints 在 Telegram adapter 层丢失
   - focused tests、lint、`verify_repo.py --mode fast` 已通过
   - repo-wide `verify_repo.py --mode full` 已验证到全量 EgoCore suite 通过，但 OpenEmotion Windows interop 包装层未在本轮可接受时间内返回，当前按 verification blocker 记录
+- `M5a Dashboard Preflight` 已完成：
+  - 已新增 dashboard-local preflight runner / report
+  - 当前 aggregate 已证明：
+    - `ordinary_chat_mainline = 5`
+    - `ordinary_chat_with_richer_fields = 5`
+    - `tendency_delta_present = true`
+    - `cadence_delta_present = true`
+    - `hold_for_followup_artifact = true`
+    - `subject_gate_all_ingress_ok = true`
+    - `response_contract_present = true`
+    - `no_raw_send_without_finalize = true`
+  - 但 claim ceiling 仍固定为：
+    - `source = dashboard_local_preflight`
+    - `claim_ceiling = preflight_only`
 - `M5 Fresh Real Telegram Proof` 已完成首轮 fresh-window 复盘：
   - deploy commit = `72148b3`
   - current artifact:
@@ -132,4 +158,4 @@
     - `ordinary_chat_mainline = 0`
   - 因此当前没有 fresh ordinary-chat mainline 样本，也没有可用来证明 richer fields / tendency delta / cadence delta 的窗口
   - `M5` 当前结论是 blocker，不是 pass
-- 下一步需要人为补一个 fresh ordinary-chat Telegram 窗口，再重跑 proof 脚本
+- 下一步需要在发布当前 corrective patch 后，人为补一个 fresh ordinary-chat Telegram 窗口，再重跑 proof 脚本

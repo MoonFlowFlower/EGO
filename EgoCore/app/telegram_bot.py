@@ -66,6 +66,13 @@ from app.runtime_v2 import (
     RuntimeV2PromptFiles,
     RuntimeV2State,
 )
+from app.runtime_v2.unified_channel_contract import (
+    build_telegram_transport_meta,
+    build_telegram_unified_request,
+    build_unified_egress,
+    build_unified_ingress,
+    build_unified_turn_result,
+)
 from app.runtime_v2.run_items import (
     RunConflictState,
     RunEvent,
@@ -409,7 +416,7 @@ class TelegramBot:
             last_explicit_target=state.last_explicit_target,
         )
 
-    def _capture_pre_runtime_response_plan(self, plan, verdict) -> None:
+    def _capture_host_owned_response_plan(self, plan, verdict) -> None:
         if not _EVIDENCE_COLLECTOR_AVAILABLE:
             return
         metadata = dict(getattr(plan, "metadata", None) or {})
@@ -447,6 +454,9 @@ class TelegramBot:
             )
         except Exception as e:
             logger.warning(f"[E4-EVIDENCE] Failed to capture pre-runtime response_plan: {e}")
+
+    def _capture_pre_runtime_response_plan(self, plan, verdict) -> None:
+        self._capture_host_owned_response_plan(plan, verdict)
 
     def _build_compact_response_plan_metadata(self, metadata: Optional[dict]) -> dict:
         source = dict(metadata or {})
@@ -577,20 +587,51 @@ class TelegramBot:
             state=state,
         )
 
-    async def _send_host_owned_reply(
+    def _build_host_owned_reply_metadata(self, *, plan: Any, verdict: Any) -> dict[str, Any]:
+        metadata = dict(getattr(plan, "metadata", None) or {})
+        reply_text = str(getattr(verdict, "reply_text", getattr(plan, "reply_text", "")) or "").strip()
+        reply_metadata = self._build_compact_response_plan_metadata(metadata)
+        reply_metadata.update(
+            {
+                "reply_authority": getattr(plan, "reply_authority", metadata.get("reply_authority")),
+                "reply_origin": getattr(verdict, "reply_origin", metadata.get("reply_origin")),
+                "chat_cadence_mode": (
+                    getattr(plan, "chat_cadence_mode", None) or metadata.get("chat_cadence_mode")
+                ),
+                "output_check_reason": getattr(verdict, "reason", None),
+                "intent_gate_status": getattr(verdict, "intent_gate_status", None),
+                "intent_gate_reason": getattr(verdict, "intent_gate_reason", None),
+                "intent_gate_would_block": getattr(verdict, "intent_gate_would_block", None),
+                "intent_gate_violation_class": getattr(verdict, "intent_gate_violation_class", None),
+                "intent_gate_violation_types": list(
+                    getattr(verdict, "intent_gate_violation_types", ()) or ()
+                ),
+                "intent_gate_confidence": getattr(verdict, "intent_gate_confidence", None),
+                "final_text_preview": reply_text[:200] or None,
+                "final_text_hash": (
+                    hashlib.sha256(reply_text.encode("utf-8")).hexdigest()[:16] if reply_text else None
+                ),
+                "final_text_length": len(reply_text),
+            }
+        )
+        return reply_metadata
+
+    def _prepare_subject_gated_host_owned_delivery(
         self,
-        update: Update,
         *,
         state: RuntimeV2State,
+        session_id: str,
+        turn_id: str,
         reply_text: str,
         status: str,
-        delivery_kind: str = "final",
-        authority_source: str = "host_pre_runtime",
-        reply_authority: str = "host_response_contract",
+        delivery_kind: str,
+        authority_source: str,
+        reply_authority: str,
         metadata: Optional[dict[str, Any]] = None,
-        use_markdown: bool = False,
-        finalize_evidence: bool = True,
-    ) -> bool:
+        channel: str = "telegram",
+        source_kind: str = "telegram_real",
+        transport_meta: Optional[dict[str, Any]] = None,
+    ) -> dict[str, Any]:
         plan_metadata = {"status": status}
         if metadata:
             plan_metadata.update(metadata)
@@ -605,45 +646,148 @@ class TelegramBot:
         )
         verdict = apply_output_check(plan, state)
         if not verdict.passed:
-            return False
-        session_id = str(
-            getattr(state, "session_id", None)
-            or f"telegram:chat:{getattr(getattr(update, 'effective_chat', None), 'id', 'unknown')}"
-        )
-        turn_suffix = (
-            str(getattr(getattr(update, "message", None), "message_id", "")).strip()
-            or uuid.uuid4().hex[:8]
-        )
+            return {
+                "ok": False,
+                "reason": "output_check_blocked",
+                "response_plan": plan,
+                "output_verdict": verdict,
+            }
+
         turn_result = TelegramTurnResult(
             status=status,
             state=state,
             reply=TelegramTurnReply(
                 reply_text=verdict.reply_text,
-                delivery_kind=delivery_kind,
+                delivery_kind=verdict.delivery_kind,
                 status=status,
+                metadata=self._build_host_owned_reply_metadata(plan=plan, verdict=verdict),
             ),
         )
+
+        gate_verdict = None
         subject_gate = self._get_subject_gate()
         if subject_gate is not None:
             gate_verdict = subject_gate.finalize_host_owned_result(
                 session_id=session_id,
-                turn_id=f"host_owned_{turn_suffix}",
+                turn_id=turn_id,
                 result=turn_result,
                 state=state,
                 evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
             )
             if not gate_verdict.ok:
+                return {
+                    "ok": False,
+                    "reason": f"subject_gate:{gate_verdict.reason}",
+                    "gate_verdict": gate_verdict,
+                    "response_plan": plan,
+                    "output_verdict": verdict,
+                    "turn_result": turn_result,
+                }
+
+        self._capture_host_owned_response_plan(plan, verdict)
+        unified_turn = build_unified_turn_result(
+            state=state,
+            runtime_result=turn_result,
+            response_plan=plan,
+            output_verdict=verdict,
+            metadata={
+                "channel": channel,
+                "source_kind": source_kind,
+                "authority_source": authority_source,
+                "reply_authority": reply_authority,
+            },
+        )
+        unified_egress = build_unified_egress(
+            unified_turn,
+            state,
+            transport_meta=dict(transport_meta or {}),
+        )
+        return {
+            "ok": True,
+            "reason": "ok",
+            "response_plan": plan,
+            "output_verdict": verdict,
+            "turn_result": turn_result,
+            "gate_verdict": gate_verdict,
+            "unified_turn": unified_turn,
+            "unified_egress": unified_egress,
+        }
+
+    def _build_unified_telegram_request(
+        self,
+        *,
+        update: Update,
+        session_key: str,
+        text: str,
+        chat_id: int,
+        user_id: int,
+        username: Optional[str],
+        source_kind: str = "telegram_real",
+        extra_context: Optional[str] = None,
+    ):
+        raw_event = update.to_dict() if hasattr(update, "to_dict") else None
+        message_id = getattr(getattr(update, "message", None), "message_id", None)
+        return build_telegram_unified_request(
+            session_key=session_key,
+            text=text,
+            chat_id=chat_id,
+            user_id=user_id,
+            username=username,
+            message_id=message_id,
+            source_kind=source_kind,
+            raw_event=raw_event,
+            extra_context=extra_context,
+        )
+
+    async def _send_host_owned_reply(
+        self,
+        update: Update,
+        *,
+        state: RuntimeV2State,
+        reply_text: str,
+        status: str,
+        delivery_kind: str = "final",
+        authority_source: str = "host_pre_runtime",
+        reply_authority: str = "host_response_contract",
+        metadata: Optional[dict[str, Any]] = None,
+        use_markdown: bool = False,
+        finalize_evidence: bool = True,
+    ) -> bool:
+        prepared = self._prepare_subject_gated_host_owned_delivery(
+            state=state,
+            session_id=str(
+                getattr(state, "session_id", None)
+                or f"telegram:chat:{getattr(getattr(update, 'effective_chat', None), 'id', 'unknown')}"
+            ),
+            turn_id=f"host_owned_{(str(getattr(getattr(update, 'message', None), 'message_id', '')).strip() or uuid.uuid4().hex[:8])}",
+            reply_text=reply_text,
+            status=status,
+            delivery_kind=delivery_kind,
+            authority_source=authority_source,
+            reply_authority=reply_authority,
+            metadata=metadata,
+            channel="telegram",
+            source_kind="telegram_real",
+            transport_meta=build_telegram_transport_meta(
+                chat_id=getattr(getattr(update, "effective_chat", None), "id", None),
+                user_id=getattr(getattr(update, "effective_user", None), "id", None),
+                username=getattr(getattr(update, "effective_user", None), "username", None),
+                message_id=getattr(getattr(update, "message", None), "message_id", None),
+            ),
+        )
+        if not prepared.get("ok"):
+            gate_verdict = prepared.get("gate_verdict")
+            if gate_verdict is not None:
                 await self._send_reply(
                     update,
                     gate_verdict.reply_text,
                     use_markdown=False,
                     finalize_evidence=finalize_evidence,
                 )
-                return False
-        self._capture_pre_runtime_response_plan(plan, verdict)
+            return False
         await self._send_reply(
             update,
-            verdict.reply_text,
+            prepared["unified_egress"].user_visible_text,
             use_markdown=use_markdown,
             finalize_evidence=finalize_evidence,
         )
@@ -1793,6 +1937,7 @@ class TelegramBot:
 
         sent_records: list[dict[str, Any]] = []
         remaining_events: list[dict[str, Any]] = list(deferred_events)
+        blocking_reason: Optional[str] = None
         context_store = get_session_context_store()
         chat_state = state.get_chat_state()
 
@@ -1809,6 +1954,7 @@ class TelegramBot:
                 continue
 
             request_id = str(event.get("initiative_candidate_id") or "").strip() or None
+            delivery_status = str(event.get("delivery_kind") or "").strip() or "chat"
             delivery_identity = self._build_delivery_identity(
                 session_key=session_key,
                 ingress_message_id=None,
@@ -1828,9 +1974,63 @@ class TelegramBot:
                 )
                 continue
 
+            prepared = self._prepare_subject_gated_host_owned_delivery(
+                state=state,
+                session_id=session_key,
+                turn_id=self._build_runtime_v2_subject_turn_id(
+                    prefix="proactive_transport",
+                    session_key=session_key,
+                    ingress_message_id=None,
+                    trace_id=request_id,
+                ),
+                reply_text=reply_text,
+                status=delivery_status,
+                delivery_kind=delivery_status,
+                authority_source=str(event.get("authority_source") or "runtime_v2.proactive_transport"),
+                reply_authority=str(event.get("reply_authority") or "host_response_contract"),
+                metadata={
+                    "conversation_act": "proactive_followup",
+                    "reply_origin": event.get("reply_origin"),
+                    "chat_cadence_mode": event.get("chat_cadence_mode"),
+                    "chat_expression_hint": dict(event.get("chat_expression_hint") or {}),
+                    "response_tendency_summary": dict(event.get("response_tendency_summary") or {}),
+                    "initiative_mode": event.get("initiative_mode"),
+                    "initiative_candidate_id": event.get("initiative_candidate_id"),
+                    "initiative_source_cycle": event.get("initiative_source_cycle"),
+                    "initiative_source_hash": event.get("initiative_source_hash"),
+                    "initiative_score": event.get("initiative_score"),
+                },
+                channel="telegram",
+                source_kind="telegram_proactive",
+                transport_meta=build_telegram_transport_meta(
+                    chat_id=resolved_chat_id,
+                    user_id=None,
+                    username=None,
+                    message_id=None,
+                ),
+            )
+            if not prepared.get("ok"):
+                gate_verdict = prepared.get("gate_verdict")
+                reason = str(prepared.get("reason") or "host_owned_delivery_blocked")
+                state.record(
+                    "proactive_followup_transport",
+                    {
+                        "status": "subject_gate_blocked" if gate_verdict is not None else "output_check_blocked",
+                        "reason": reason,
+                        "initiative_candidate_id": event.get("initiative_candidate_id"),
+                        "reply_origin": event.get("reply_origin"),
+                        "reply_authority": event.get("reply_authority"),
+                    },
+                )
+                blocking_reason = reason
+                remaining_events.append(dict(event))
+                remaining_events.extend(dict(item) for item in active_events[index + 1 :])
+                break
+
+            delivered_text = str(prepared["unified_egress"].user_visible_text or "").strip()
             send_result = await self._send_chat_message(
                 resolved_chat_id,
-                reply_text,
+                delivered_text,
                 finalize_evidence=finalize_evidence,
             )
             if int(send_result.get("sent_count") or 0) <= 0:
@@ -1839,8 +2039,8 @@ class TelegramBot:
                 break
 
             self._delivery_dedupe_policy.mark_sent(delivery_identity)
-            context_store.add_turn(session_key, "assistant", reply_text)
-            chat_state.finalize_turn(assistant_reply=reply_text, chat_act="thread_continue")
+            context_store.add_turn(session_key, "assistant", delivered_text)
+            chat_state.finalize_turn(assistant_reply=delivered_text, chat_act="thread_continue")
             sent_record = {
                 "schema_version": "mvp12.telegram_outbox_record.v1",
                 "session_id": session_key,
@@ -1848,7 +2048,7 @@ class TelegramBot:
                 "transport_source": "telegram",
                 "delivery_status": "sent",
                 "outbox_status": "sent",
-                "reply_text": reply_text,
+                "reply_text": delivered_text,
                 "text_length": event.get("text_length") or len(reply_text),
                 "reply_authority": event.get("reply_authority"),
                 "reply_origin": event.get("reply_origin"),
@@ -1876,7 +2076,7 @@ class TelegramBot:
                     "reply_origin": sent_record.get("reply_origin"),
                     "reply_authority": sent_record.get("reply_authority"),
                     "message_id": sent_record.get("last_message_id"),
-                    "text_preview": reply_text[:120],
+                    "text_preview": delivered_text[:120],
                 },
             )
             await self._publish_phase1_event(
@@ -1886,7 +2086,7 @@ class TelegramBot:
                 message_id=sent_record.get("last_message_id"),
                 payload={
                     "chat_id": resolved_chat_id,
-                    "reply_text": reply_text[:1000],
+                    "reply_text": delivered_text[:1000],
                     "reply_authority": sent_record.get("reply_authority"),
                     "reply_origin": sent_record.get("reply_origin"),
                     "chat_cadence_mode": sent_record.get("chat_cadence_mode"),
@@ -1907,10 +2107,10 @@ class TelegramBot:
             reason = "ok"
         elif sent_records:
             status = "partial"
-            reason = "send_failed_midway"
+            reason = blocking_reason or "send_failed_midway"
         else:
             status = "held"
-            reason = "send_failed"
+            reason = blocking_reason or "send_failed"
         return {
             "status": status,
             "reason": reason,

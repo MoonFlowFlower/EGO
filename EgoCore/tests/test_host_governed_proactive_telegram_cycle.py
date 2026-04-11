@@ -16,6 +16,7 @@ if "requests" not in sys.modules:
         ),
     )
 
+from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.telegram_bot import TelegramBot
 
 
@@ -80,6 +81,9 @@ async def test_run_host_governed_proactive_telegram_cycle_sends_after_idle() -> 
     bot, state = await _build_host_governed_fixture(session_id)
     bot._mvp12_proactive_telegram_autodrain_enabled = True
     bot._mvp12_proactive_allowed_chat_ids = {8420019401}
+    bot._get_subject_gate = lambda: SimpleNamespace(
+        finalize_host_owned_result=lambda **kwargs: SubjectGateVerdict.allow(stage="response_plan")
+    )
     last_activity_at = state.get_chat_state().last_activity_at
     assert last_activity_at == 100.0
 
@@ -121,6 +125,36 @@ async def test_run_host_governed_proactive_telegram_cycle_holds_when_transport_g
     assert result["enable_policy"]["status"] == "allow"
     assert result["transport_gate"]["reason"] == "idle_window_too_short"
     assert result["transport_result"] is None
+    assert state.has_pending_proactive_outbox_events()
+
+
+@pytest.mark.asyncio
+async def test_run_host_governed_proactive_telegram_cycle_holds_when_subject_finalize_blocks(monkeypatch) -> None:
+    session_id = "telegram:dm:8420019401"
+    bot, state = await _build_host_governed_fixture(session_id)
+    bot._mvp12_proactive_telegram_autodrain_enabled = True
+    bot._mvp12_proactive_allowed_chat_ids = {8420019401}
+    last_activity_at = state.get_chat_state().last_activity_at
+    assert last_activity_at == 100.0
+
+    class BlockingGate:
+        def finalize_host_owned_result(self, **kwargs):
+            return SubjectGateVerdict.block(stage="finalized_result", reason="hooks_disabled")
+
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: BlockingGate())
+
+    result = await bot.run_host_governed_proactive_telegram_cycle(
+        session_id,
+        now_ts=last_activity_at + 900.0,
+        live_mode=True,
+        max_events=1,
+        enforce_enable_policy=True,
+    )
+
+    assert result["status"] == "held"
+    assert result["reason"] == "subject_gate:hooks_disabled"
+    assert result["transport_result"]["status"] == "held"
+    assert result["transport_result"]["reason"] == "subject_gate:hooks_disabled"
     assert state.has_pending_proactive_outbox_events()
 
 

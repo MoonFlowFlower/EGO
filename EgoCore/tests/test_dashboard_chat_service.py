@@ -28,6 +28,14 @@ class _AllowSubjectGate:
         self.calls.append(("ingress", kwargs))
         return SubjectGateVerdict.allow(stage="ingress")
 
+    def process_finalized_result(self, **kwargs):
+        self.calls.append(("finalized_result", kwargs))
+        return SubjectGateVerdict.allow(stage="finalized_result")
+
+    def capture_response_plan(self, **kwargs):
+        self.calls.append(("response_plan", kwargs))
+        return SubjectGateVerdict.allow(stage="response_plan")
+
     def finalize_host_owned_result(self, **kwargs):
         self.calls.append(("finalize", kwargs))
         return SubjectGateVerdict.allow(stage="response_plan")
@@ -44,6 +52,16 @@ class _BlockingSubjectGate:
     def finalize_host_owned_result(self, **kwargs):
         self.calls.append(("finalize", kwargs))
         return SubjectGateVerdict.allow(stage="response_plan")
+
+
+class _BlockingRuntimeFinalizeSubjectGate(_AllowSubjectGate):
+    def process_finalized_result(self, **kwargs):
+        self.calls.append(("finalized_result", kwargs))
+        return SubjectGateVerdict.block(
+            stage="finalized_result",
+            reason="hooks_disabled",
+            reply_text="runtime finalize blocked by subject gate",
+        )
 
 
 class _CountingRunner:
@@ -132,7 +150,11 @@ def test_dashboard_chat_service_keeps_named_sessions_continuous_and_isolated(mon
     )
     assert second["debug"]["response_plan"]["reply_authority"] == "model_chat"
     assert second["debug"]["output_check"]["passed"] is True
+    assert second["debug"]["subject_gate"]["runtime_finalized_result"]["ok"] is True
+    assert second["debug"]["subject_gate"]["runtime_response_plan"]["ok"] is True
     assert subject_gate.calls and subject_gate.calls[0][0] == "ingress"
+    assert any(name == "finalized_result" for name, _ in subject_gate.calls)
+    assert any(name == "response_plan" for name, _ in subject_gate.calls)
 
 
 def test_dashboard_chat_service_blocks_before_runtime_when_subject_gate_rejects(monkeypatch) -> None:
@@ -154,6 +176,28 @@ def test_dashboard_chat_service_blocks_before_runtime_when_subject_gate_rejects(
     assert payload["debug"]["subject_gate"]["ingress"]["ok"] is False
     assert payload["debug"]["response_plan"] is None
     assert runner.call_count == 0
+
+
+def test_dashboard_chat_service_blocks_runtime_delivery_when_runtime_finalize_rejects(monkeypatch) -> None:
+    bridge = TelegramRuntimeBridge()
+    _patch_semantic_to_heuristic(monkeypatch, bridge)
+    runner = _CountingRunner()
+    subject_gate = _BlockingRuntimeFinalizeSubjectGate()
+    service = DashboardChatService(
+        bridge=bridge,
+        runner=runner,
+        subject_gate=subject_gate,
+        llm_client_resolver=lambda: None,
+    )
+
+    session_id = service.ensure_session("runtime-finalize-block").session_id
+    payload = service.send_message(session_id, "hello")
+
+    assert runner.call_count == 1
+    assert payload["messages"]["assistant"]["text"] == "runtime finalize blocked by subject gate"
+    assert payload["debug"]["subject_gate"]["runtime_finalized_result"]["ok"] is False
+    assert payload["debug"]["subject_gate"]["runtime_response_plan"] is None
+    assert payload["debug"]["response_plan"]["reply_authority"] == "model_chat"
 
 
 def test_dashboard_chat_service_serializes_parallel_messages_per_session(monkeypatch) -> None:

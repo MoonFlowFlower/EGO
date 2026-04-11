@@ -37,9 +37,13 @@ program:
     claims.
   - Preserve the closed selection result without reopening challenger competition,
     runtime authority expansion, or WP17 reintegration by default.
-  - If further progress is desired, require a new bounded planning slice before any
-    runtime-proximal move; do not let winner closeout mutate the formal runtime mainline
-    or host authority.
+  - Before any new runtime-proximal self-awareness planning slice, execute a live
+    ingress precondition corrective tranche using the existing `mandatory-subject-ingress-all-turns`
+    and `live-chat-subjective-variability` task packages rather than creating a third
+    truth source.
+  - 'Use dashboard chat only as a publish-preflight for this tranche: it may exercise
+    the same bounded backend path and preflight debug/report surface, but it does
+    not replace fresh real Telegram proof or the existing subject-mainline audit authority.'
   - Keep the self-awareness research result below runtime-efficacy claim strength;
     the current replay result plus integration-plan freeze plus controlled replay
     bridge plus controlled observation batch prove a durable shadow/proposal-only
@@ -114,20 +118,37 @@ program:
     build-first research candidate, MVS-aligned compact remains closed evidence, WP17/MVP22
     remains a parked bounded lane, and no further runtime-proximal implementation
     has been pre-authorized.'
+  - The proactive/background Telegram user-visible send path now reuses the same host-owned
+    `finalized_result + response_plan` subject-gate discipline locally, with focused
+    proactive transport/cycle regressions and focused host-owned Telegram regressions
+    passing; this is still local/targeted verification, not fresh live Telegram proof.
+  - A dashboard-local preflight now exists for the live ingress corrective tranche.
+    It exercises ordinary-chat dashboard backend turns through subject ingress, runtime
+    finalized-result capture, runtime response-plan capture, response-plan/output-check,
+    and bounded richer-field/cadence debug reporting; it passes as `dashboard_local_preflight
+    / preflight_only` and does not replace live Telegram evidence.
   blocked_by:
-  - No post-closeout bounded planning slice exists yet for the durable active-inference
-    winner; current proof is still bounded to held-out replay plus repo-authored controlled
-    replay plus runtime-harness controlled observation and remains below runtime-efficacy
-    claim strength.
+  - The current corrective patch and dashboard preflight pass are still unpublished
+    from the clean worktree, so no fresh post-patch real Telegram evidence exists
+    yet.
   - Live Telegram ordinary chat still has unexpected subject-miss samples on the host
     path.
+  - Fresh post-patch real Telegram windows have not yet been captured, so the repo
+    still lacks proof that the proactive/background closure patch reduces `unexpected_subject_miss`
+    to `0` or that ordinary-chat subjective variability is now visible under the existing
+    bounded contract.
   key_unknowns:
   - Whether the root-level state governance workflow will remain consistently enforced
-    now that durable research routing is closed and any further progress requires
-    a separately authorized bounded planning slice.
-  - 'Which later bounded planning slice is justified first if progress continues:
-    runtime-proximal enablement planning, WP17 reintegration assessment, or another
-    narrower planning cut that still avoids authority expansion.'
+    now that durable research routing is closed and this corrective tranche temporarily
+    preempts any new bounded planning slice.
+  - Whether the current proactive/background closure patch plus a fresh real Telegram
+    window will actually drive `unexpected_subject_miss = 0` on a new audit window.
+  - Whether a fresh ordinary-chat Telegram window after this patch will expose richer
+    fields plus at least one tendency delta and one cadence delta or verified `hold_for_followup`
+    artifact under the existing host-governed boundaries.
+  - Whether the passing dashboard-local preflight is only a local confidence boost
+    or also a reliable predictor that the same bounded path will survive publish and
+    fresh real Telegram observation.
   - What evidence threshold should reopen challenger competition or reconsider WP17
     routing now that active-inference is the durable build-first candidate.
   - Whether the MVS replay-gate failure reflects a fundamental architectural limit
@@ -135,11 +156,12 @@ program:
     current main implementation lane.
   - Whether WP17/MVP22 should remain parked indefinitely or be reconsidered only after
     a later bounded planning slice.
-  next_minimal_action: If further progress toward a stronger self-awareness proxy
-    is desired, first define a new bounded planning slice that preserves policy_hint/response_tendency/trace_payload
-    as the only host-consumable surface, keeps zero authority drift and no-runtime-efficacy
-    overclaim, does not reopen challenger competition by default, and leaves WP17
-    parked until that slice is explicitly authorized.
+  next_minimal_action: Publish the proactive/background subject-finalize closure patch
+    together with the passing dashboard-local preflight runner/report, capture a fresh
+    `/new + ordinary chat` real Telegram window, rerun `python3 scripts/codex/prove_live_chat_subjective_variability.py
+    --since-commit <publish_commit>`, refresh the existing `subject_mainline_audit_current`
+    artifact/workflow on that fresh window, and only if both live gates pass define
+    the next bounded runtime-proximal planning slice.
   last_verified_commit: 78e90a2
   last_verified_at: '2026-04-07T23:17:51-05:00'
   status_owner: EgoCore
@@ -148,8 +170,9 @@ program:
     now fixes active-inference as the durable build-first winner after it passes the
     canonical held-out replay gate, the repo-authored controlled conversation replay
     bridge, and the first runtime-harness controlled observation batch under the same
-    bounded host surface; and stronger runtime/live claims remain blocked pending
-    any separately authorized bounded planning slice.
+    bounded host surface; and stronger runtime/live claims remain blocked until the
+    current live ingress precondition corrective tranche is published and revalidated
+    on a fresh real Telegram window.
   claim_thresholds:
     mainline_claim_requires: E4
     enabled_claim_requires: E4
@@ -224,8 +247,11 @@ workstreams:
   verification_level: V4
   mainline_connected: true
   enabled: true
-  summary: Live Telegram contains subject-ingress evidence, but the current audit
-    still records host-only misses and cannot support stronger live-behavior claims.
+  summary: Live Telegram contains subject-ingress evidence. The proactive/background
+    user-visible send path now has a local subject-finalize closure patch with focused
+    verification, and dashboard-local preflight passes on the bounded backend path;
+    however, the current audit still records host-only misses and there is no fresh
+    post-patch real Telegram window yet, so stronger live-behavior claims remain blocked.
 - id: controlled_subject_capabilities
   owner: OpenEmotion
   status: maintenance
