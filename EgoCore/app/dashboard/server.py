@@ -307,6 +307,7 @@ def _build_final_text_surface(
 def _asset_version() -> int:
     candidates = [
         STATIC_DIR / "dashboard.js",
+        STATIC_DIR / "dashboard_chat_state.js",
         STATIC_DIR / "dashboard.css",
     ]
     return int(max(path.stat().st_mtime for path in candidates if path.exists()))
@@ -1296,6 +1297,7 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
     <section class="meta-bar" id="meta-bar"></section>
     <section class="content" id="app"></section>
   </main>
+  <script src="/static/dashboard_chat_state.js?v={asset_version}"></script>
   <script src="/static/dashboard.js?v={asset_version}"></script>
 </body>
 </html>"""

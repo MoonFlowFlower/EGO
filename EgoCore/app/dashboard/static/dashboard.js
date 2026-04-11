@@ -2,6 +2,7 @@ const view = document.body.dataset.view;
 const sampleId = document.body.dataset.sampleId;
 const metaBar = document.getElementById("meta-bar");
 const app = document.getElementById("app");
+const ChatState = window.DashboardChatState || {};
 const POLL_MS = 5000;
 const CHAT_WAIT_TIMEOUT_MS = 25000;
 const VIEW_ROUTES = {
@@ -21,7 +22,6 @@ const UI_STATE = {
   chatSelectedMessageId: null,
   chatDraft: "",
   chatSessionNameDraft: "",
-  chatBusy: false,
   chatError: "",
   chatCopyFeedback: "",
   chatCurrentRevision: 0,
@@ -29,8 +29,16 @@ const UI_STATE = {
   chatPendingLabel: "",
   chatDraftFocused: false,
   chatWatchGeneration: 0,
+  chatWatchController: null,
   chatSessionsPayload: null,
   chatDetail: null,
+  chatDetailCache: new Map(),
+  chatPending: {
+    create: null,
+    switch: null,
+    send: null,
+  },
+  chatSelectionToken: 0,
   chatCopyFeedbackTimer: null,
 };
 
@@ -113,6 +121,11 @@ const I18N = {
       user: "用户输入",
       send: "发送",
       sending: "发送中",
+      typing: "正在处理",
+      working: "处理中",
+      loading: "载入中",
+      creating: "创建中",
+      failed: "失败",
       session: "会话",
       create_session: "新建会话",
       session_name: "会话名",
@@ -133,6 +146,8 @@ const I18N = {
       session_revision: "Revision",
       apply_updates: "应用新消息",
       pending_updates: "有新消息，点此刷新",
+      loading_session: "正在载入这个会话…",
+      creating_session: "正在创建这个会话…",
     },
     pages: {
       chat: {
@@ -428,6 +443,11 @@ const I18N = {
       user: "User",
       send: "Send",
       sending: "Sending",
+      typing: "Working",
+      working: "Working",
+      loading: "Loading",
+      creating: "Creating",
+      failed: "Failed",
       session: "Session",
       create_session: "Create session",
       session_name: "Session name",
@@ -448,6 +468,8 @@ const I18N = {
       session_revision: "Revision",
       apply_updates: "Apply updates",
       pending_updates: "New messages available",
+      loading_session: "Loading this session...",
+      creating_session: "Creating this session...",
     },
     pages: {
       chat: {
@@ -826,8 +848,8 @@ function lookupCodeLabel(group, code) {
   return CODE_LABELS[UI_STATE.locale]?.[group]?.[code] ?? CODE_LABELS.zh?.[group]?.[code] ?? null;
 }
 
-async function fetchJson(path) {
-  const response = await fetch(path);
+async function fetchJson(path, options = {}) {
+  const response = await fetch(path, options);
   if (!response.ok) {
     throw new Error(`Request failed: ${response.status}`);
   }
@@ -921,6 +943,97 @@ function updateChatLiveIndicators() {
   }
 }
 
+function getChatSessionDescriptor(sessionId) {
+  return (UI_STATE.chatSessionsPayload?.sessions || []).find((item) => item.session_id === sessionId) || null;
+}
+
+function setCachedChatDetail(sessionId, detail) {
+  if (!sessionId || !detail) return;
+  UI_STATE.chatDetailCache.set(sessionId, detail);
+}
+
+function getCachedChatDetail(sessionId) {
+  return UI_STATE.chatDetailCache.get(sessionId) || null;
+}
+
+function buildChatSessionDetail(session, options = {}) {
+  if (ChatState.buildSessionDetail) {
+    return ChatState.buildSessionDetail(session, options);
+  }
+  return {
+    session: { ...(session || {}) },
+    transcript: [...(options.transcript || [])],
+    last_debug: options.last_debug || null,
+    debug_history: { ...(options.debug_history || {}) },
+    session_state: { ...(options.session_state || {}) },
+    session_revision: Number(options.session_revision || session?.session_revision || 0),
+    has_update: Boolean(options.has_update),
+    loading_state: options.loading_state || null,
+  };
+}
+
+function upsertChatSessionDescriptor(descriptor, { replaceSessionId = null } = {}) {
+  if (!descriptor) return UI_STATE.chatSessionsPayload;
+  if (ChatState.upsertSessionDescriptor) {
+    UI_STATE.chatSessionsPayload = ChatState.upsertSessionDescriptor(UI_STATE.chatSessionsPayload, descriptor, {
+      replaceSessionId,
+    });
+    return UI_STATE.chatSessionsPayload;
+  }
+  const sessions = [...(UI_STATE.chatSessionsPayload?.sessions || [])].filter(
+    (item) => item.session_id !== descriptor.session_id && item.session_id !== replaceSessionId,
+  );
+  UI_STATE.chatSessionsPayload = {
+    default_session_id: UI_STATE.chatSessionsPayload?.default_session_id || descriptor.session_id,
+    sessions: [descriptor, ...sessions],
+  };
+  return UI_STATE.chatSessionsPayload;
+}
+
+function removeChatSessionDescriptor(sessionId) {
+  if (!sessionId) return UI_STATE.chatSessionsPayload;
+  if (ChatState.removeSessionDescriptor) {
+    UI_STATE.chatSessionsPayload = ChatState.removeSessionDescriptor(UI_STATE.chatSessionsPayload, sessionId);
+    return UI_STATE.chatSessionsPayload;
+  }
+  UI_STATE.chatSessionsPayload = {
+    default_session_id: UI_STATE.chatSessionsPayload?.default_session_id || null,
+    sessions: [...(UI_STATE.chatSessionsPayload?.sessions || [])].filter((item) => item.session_id !== sessionId),
+  };
+  return UI_STATE.chatSessionsPayload;
+}
+
+function persistChatSessionId(sessionId) {
+  if (!sessionId) return;
+  window.localStorage.setItem("dashboard:chatSessionId", sessionId);
+}
+
+function buildTempChatSessionId() {
+  return `dashboard:temp:${Date.now().toString(36)}:${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function buildLocalMessageId(kind) {
+  return `local_${kind}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+}
+
+function isTempChatSessionId(sessionId) {
+  return String(sessionId || "").startsWith("dashboard:temp:");
+}
+
+function currentChatPendingKind(sessionId) {
+  if (UI_STATE.chatPending.send?.sessionId === sessionId) return "send";
+  if (UI_STATE.chatPending.switch?.sessionId === sessionId) return "switch";
+  if (UI_STATE.chatPending.create?.tempSessionId === sessionId) return "create";
+  return null;
+}
+
+function clearChatPending(kind, token = null) {
+  const pending = UI_STATE.chatPending[kind];
+  if (!pending) return;
+  if (token !== null && pending.token !== token) return;
+  UI_STATE.chatPending[kind] = null;
+}
+
 function buildChatPendingLabel(previousDetail, nextDetail) {
   const previousMessages = previousDetail?.transcript?.length || 0;
   const nextMessages = nextDetail?.transcript?.length || 0;
@@ -932,6 +1045,9 @@ function rememberChatPayload(sessionsPayload, detail) {
   UI_STATE.chatSessionsPayload = sessionsPayload;
   UI_STATE.chatDetail = detail;
   UI_STATE.chatCurrentRevision = Number(detail?.session_revision || detail?.session?.session_revision || 0);
+  if (detail?.session?.session_id) {
+    setCachedChatDetail(detail.session.session_id, detail);
+  }
 }
 
 function clearChatPendingPayload() {
@@ -967,6 +1083,14 @@ async function applyPendingChatUpdate() {
   UI_STATE.chatPendingLabel = "";
   rememberChatPayload(pending.sessionsPayload, pending.detail);
   renderChatFromState();
+}
+
+function focusChatDraftToEnd() {
+  const textarea = document.getElementById("chat-draft");
+  if (!textarea) return;
+  textarea.focus();
+  const length = textarea.value.length;
+  textarea.setSelectionRange(length, length);
 }
 
 function buildChatHistoryText(detail) {
@@ -2032,6 +2156,9 @@ function renderChat(sessionsPayload, detail) {
   const session = detail?.session || {};
   const transcript = detail?.transcript || [];
   const debugHistory = detail?.debug_history || {};
+  const pendingSend = UI_STATE.chatPending.send?.sessionId === session.session_id;
+  const pendingSwitch = UI_STATE.chatPending.switch?.sessionId === session.session_id;
+  const pendingCreate = UI_STATE.chatPending.create?.tempSessionId === session.session_id;
   const latestAssistant = resolveLatestAssistantMessage(detail);
   if (!UI_STATE.chatSelectedMessageId || !debugHistory[UI_STATE.chatSelectedMessageId]) {
     UI_STATE.chatSelectedMessageId = latestAssistant?.message_id || null;
@@ -2041,41 +2168,59 @@ function renderChat(sessionsPayload, detail) {
 
   const sessionButtons = sessions.length
     ? sessions
-        .map((item) => `
-          <button
-            type="button"
-            class="chat-session-button${item.session_id === session.session_id ? " active" : ""}"
-            data-chat-session-id="${escapeHtml(item.session_id)}"
-          >
-            <span>${escapeHtml(item.session_name)}</span>
-            <small>${escapeHtml(`${t("common.message_count")}: ${item.message_count} · ${t("common.session_revision")}: ${item.session_revision || 0}`)}</small>
-          </button>
-        `)
+        .map((item) => {
+          const pendingKind = currentChatPendingKind(item.session_id);
+          const pendingLabel = pendingKind ? t(`common.${pendingKind === "send" ? "typing" : pendingKind === "switch" ? "loading" : "creating"}`) : null;
+          return `
+            <button
+              type="button"
+              class="chat-session-button${item.session_id === session.session_id ? " active" : ""}${pendingKind ? ` pending ${pendingKind}` : ""}"
+              data-chat-session-id="${escapeHtml(item.session_id)}"
+            >
+              <span>${escapeHtml(item.session_name)}</span>
+              <small>${escapeHtml(`${t("common.message_count")}: ${item.message_count} · ${t("common.session_revision")}: ${item.session_revision || 0}`)}</small>
+              ${pendingLabel ? `<small>${escapeHtml(pendingLabel)}</small>` : ""}
+            </button>
+          `;
+        })
         .join("")
     : `<div class="empty">${escapeHtml(t("common.no_data"))}</div>`;
+
+  const transcriptEmptyLabel =
+    detail?.loading_state === "creating"
+      ? t("common.creating_session")
+      : detail?.loading_state === "loading"
+        ? t("common.loading_session")
+        : t("common.empty_chat");
 
   const transcriptHtml = transcript.length
     ? transcript
         .map((message) => {
-          const selectable = message.role === "assistant";
+          const selectable = message.role === "assistant" && !message.typing;
           const tag = selectable ? "button" : "article";
           const attrs = selectable ? `type="button" data-chat-message-id="${escapeHtml(message.message_id)}"` : "";
+          const statusLabel = message.typing
+            ? t("common.typing")
+            : message.local_failed
+              ? t("common.failed")
+              : message.status || t("common.unknown");
+          const bodyText = message.typing ? t("common.typing") : message.text;
           return `
-            <${tag} class="chat-message ${escapeHtml(message.role)}${message.message_id === UI_STATE.chatSelectedMessageId ? " active" : ""}" ${attrs}>
+            <${tag} class="chat-message ${escapeHtml(message.role)}${message.message_id === UI_STATE.chatSelectedMessageId ? " active" : ""}${message.typing ? " typing" : ""}${message.optimistic ? " pending" : ""}${message.local_failed ? " failed" : ""}" ${attrs}>
               <header>
                 <strong>${escapeHtml(t(`common.${message.role}`))}</strong>
                 <span>${escapeHtml(formatDateTime(message.created_at))}</span>
               </header>
-              <p>${escapeHtml(message.text)}</p>
+              <p>${escapeHtml(bodyText)}</p>
               <footer>
                 <span>${escapeHtml(message.delivery_kind || t("common.none"))}</span>
-                <span>${escapeHtml(message.status || t("common.unknown"))}</span>
+                <span>${escapeHtml(statusLabel)}</span>
               </footer>
             </${tag}>
           `;
         })
         .join("")
-    : `<div class="empty">${escapeHtml(t("common.empty_chat"))}</div>`;
+    : `<div class="empty">${escapeHtml(transcriptEmptyLabel)}</div>`;
 
   const debugCards = selectedDebug
     ? [
@@ -2148,7 +2293,7 @@ function renderChat(sessionsPayload, detail) {
         </div>
         <div class="chat-create-row">
           <input id="chat-session-name" class="chat-input" type="text" value="${escapeHtml(UI_STATE.chatSessionNameDraft)}" placeholder="${escapeHtml(t("common.session_name"))}">
-          <button type="button" class="subtle-button" data-chat-create>${escapeHtml(t("common.create_session"))}</button>
+          <button type="button" class="subtle-button" data-chat-create ${UI_STATE.chatPending.create ? "disabled" : ""}>${escapeHtml(UI_STATE.chatPending.create ? t("common.creating") : t("common.create_session"))}</button>
         </div>
         <div class="chat-session-list">${sessionButtons}</div>
       </aside>
@@ -2161,6 +2306,8 @@ function renderChat(sessionsPayload, detail) {
           <div class="pill-row">
             <span class="pill ok">${escapeHtml(`${t("common.message_count")}: ${transcript.length}`)}</span>
             <span class="pill">${escapeHtml(`${t("common.session_revision")}: ${detail?.session_revision || session.session_revision || 0}`)}</span>
+            ${pendingSend ? `<span class="pill warning">${escapeHtml(t("common.typing"))}</span>` : ""}
+            ${(pendingSwitch || pendingCreate) ? `<span class="pill warning">${escapeHtml(pendingCreate ? t("common.creating") : t("common.loading"))}</span>` : ""}
             ${selectedAssistant ? `<span class="pill">${escapeHtml(`${t("common.selected_turn")}: ${selectedAssistant.message_id}`)}</span>` : ""}
           </div>
         </div>
@@ -2174,7 +2321,7 @@ function renderChat(sessionsPayload, detail) {
           <textarea id="chat-draft" class="chat-textarea" placeholder="${escapeHtml(t("pages.chat.subtitle"))}">${escapeHtml(UI_STATE.chatDraft)}</textarea>
           <div class="chat-actions">
             <span class="muted">${escapeHtml(session.updated_at ? formatDateTime(session.updated_at) : "")}</span>
-            <button type="button" class="subtle-button active" data-chat-send ${UI_STATE.chatBusy ? "disabled" : ""}>${escapeHtml(UI_STATE.chatBusy ? t("common.sending") : t("common.send"))}</button>
+            <button type="button" class="subtle-button active" data-chat-send ${pendingSend || pendingCreate ? "disabled" : ""}>${escapeHtml(pendingSend ? t("common.sending") : t("common.send"))}</button>
           </div>
         </div>
       </section>
@@ -2197,12 +2344,12 @@ async function ensureChatSession() {
     UI_STATE.chatSessionId = sessionsPayload.default_session_id;
   }
   if (UI_STATE.chatSessionId) {
-    window.localStorage.setItem("dashboard:chatSessionId", UI_STATE.chatSessionId);
+    persistChatSessionId(UI_STATE.chatSessionId);
   }
   return sessionsPayload;
 }
 
-async function fetchChatDetail({ afterRevision = null, waitTimeoutMs = null } = {}) {
+async function fetchChatDetail({ sessionId = UI_STATE.chatSessionId, afterRevision = null, waitTimeoutMs = null, signal = null } = {}) {
   const query = new URLSearchParams();
   if (afterRevision !== null && afterRevision !== undefined) {
     query.set("after_revision", String(afterRevision));
@@ -2211,28 +2358,122 @@ async function fetchChatDetail({ afterRevision = null, waitTimeoutMs = null } = 
     query.set("wait_timeout_ms", String(waitTimeoutMs));
   }
   const suffix = query.toString() ? `?${query.toString()}` : "";
-  return fetchJson(`/api/dashboard/chat/sessions/${encodeURIComponent(UI_STATE.chatSessionId)}${suffix}`);
+  return fetchJson(`/api/dashboard/chat/sessions/${encodeURIComponent(sessionId)}${suffix}`, signal ? { signal } : {});
 }
 
 async function refreshChat({ allowDefer = false } = {}) {
-  const sessionsPayload = await ensureChatSession();
-  const detail = await fetchChatDetail();
+  UI_STATE.chatSessionsPayload = await ensureChatSession();
+  const cached = getCachedChatDetail(UI_STATE.chatSessionId);
+  if (cached) {
+    rememberChatPayload(upsertChatSessionDescriptor(cached.session), cached);
+    renderChatFromState();
+  }
+  const detail = await fetchChatDetail({ sessionId: UI_STATE.chatSessionId });
+  UI_STATE.chatError = "";
+  applyChatSnapshot(upsertChatSessionDescriptor(detail.session), detail, { allowDefer });
+}
+
+function stopChatWatchLoop() {
+  if (UI_STATE.chatWatchController) {
+    UI_STATE.chatWatchController.abort();
+    UI_STATE.chatWatchController = null;
+  }
+  UI_STATE.chatWatchGeneration += 1;
+}
+
+function activateChatSession(sessionId, { descriptor = null, loadingState = "loading" } = {}) {
+  const fallbackDescriptor = descriptor || getChatSessionDescriptor(sessionId) || {
+    session_id: sessionId,
+    session_name: sessionId,
+    message_count: 0,
+    turn_count: 0,
+    created_at: null,
+    updated_at: null,
+    task_status: null,
+    waiting_for_user_input: false,
+    session_revision: 0,
+    last_message_id: null,
+  };
+  const cached = getCachedChatDetail(sessionId);
+  UI_STATE.chatSessionId = sessionId;
+  UI_STATE.chatSelectedMessageId = null;
+  UI_STATE.chatError = "";
+  clearChatPendingPayload();
+  persistChatSessionId(sessionId);
+  const detail = cached
+    ? cached
+    : buildChatSessionDetail(fallbackDescriptor, {
+        transcript: [],
+        session_state: {
+          task_status: fallbackDescriptor.task_status,
+          waiting_for_user_input: Boolean(fallbackDescriptor.waiting_for_user_input),
+        },
+        session_revision: fallbackDescriptor.session_revision || 0,
+        loading_state: loadingState,
+      });
+  rememberChatPayload(upsertChatSessionDescriptor(fallbackDescriptor), detail);
+  renderChatFromState();
+}
+
+async function loadChatSessionDetail(sessionId, { selectionToken = null, allowDefer = false, signal = null } = {}) {
+  const detail = await fetchChatDetail({ sessionId, signal });
+  const sessionsPayload = upsertChatSessionDescriptor(detail.session);
+  if (selectionToken !== null && selectionToken !== UI_STATE.chatSelectionToken) {
+    setCachedChatDetail(sessionId, detail);
+    return detail;
+  }
+  if (sessionId !== UI_STATE.chatSessionId) {
+    setCachedChatDetail(sessionId, detail);
+    UI_STATE.chatSessionsPayload = sessionsPayload;
+    renderChatFromState();
+    return detail;
+  }
   UI_STATE.chatError = "";
   applyChatSnapshot(sessionsPayload, detail, { allowDefer });
+  return detail;
+}
+
+function selectChatSession(sessionId) {
+  const token = UI_STATE.chatSelectionToken + 1;
+  UI_STATE.chatSelectionToken = token;
+  UI_STATE.chatPending.switch = { sessionId, token };
+  activateChatSession(sessionId, {
+    descriptor: getChatSessionDescriptor(sessionId),
+    loadingState: getCachedChatDetail(sessionId) ? null : "loading",
+  });
+  stopChatWatchLoop();
+  loadChatSessionDetail(sessionId, { selectionToken: token })
+    .catch((error) => {
+      if (token !== UI_STATE.chatSelectionToken || sessionId !== UI_STATE.chatSessionId) return;
+      UI_STATE.chatError = error.message;
+      renderChatFromState();
+    })
+    .finally(() => {
+      clearChatPending("switch", token);
+      if (sessionId === UI_STATE.chatSessionId) {
+        renderChatFromState();
+        restartChatWatchLoop();
+      }
+    });
 }
 
 async function watchChatUpdates(generation) {
   while (isChatView() && generation === UI_STATE.chatWatchGeneration) {
     const sessionId = UI_STATE.chatSessionId;
-    const afterRevision = UI_STATE.chatCurrentRevision || 0;
-    if (!sessionId) {
+    const activeDetail = getCachedChatDetail(sessionId) || UI_STATE.chatDetail;
+    const afterRevision = Number(activeDetail?.session_revision || activeDetail?.session?.session_revision || 0);
+    if (!sessionId || isTempChatSessionId(sessionId)) {
       await delay(250);
       continue;
     }
+    const controller = new AbortController();
+    UI_STATE.chatWatchController = controller;
     try {
       const detail = await fetchChatDetail({
+        sessionId,
         afterRevision,
         waitTimeoutMs: CHAT_WAIT_TIMEOUT_MS,
+        signal: controller.signal,
       });
       if (generation !== UI_STATE.chatWatchGeneration || sessionId !== UI_STATE.chatSessionId) {
         continue;
@@ -2240,69 +2481,215 @@ async function watchChatUpdates(generation) {
       const hadError = Boolean(UI_STATE.chatError);
       UI_STATE.chatError = "";
       if (detail?.has_update && Number(detail?.session_revision || 0) !== Number(afterRevision || 0)) {
-        const sessionsPayload = await ensureChatSession();
-        applyChatSnapshot(sessionsPayload, detail, { allowDefer: true });
+        applyChatSnapshot(upsertChatSessionDescriptor(detail.session), detail, { allowDefer: true });
       } else if (hadError) {
         renderChatFromState();
       }
     } catch (error) {
+      if (controller.signal.aborted || generation !== UI_STATE.chatWatchGeneration) {
+        break;
+      }
       if (generation !== UI_STATE.chatWatchGeneration) break;
       UI_STATE.chatError = error.message;
       updateChatLiveIndicators();
       await delay(1500);
+    } finally {
+      if (UI_STATE.chatWatchController === controller) {
+        UI_STATE.chatWatchController = null;
+      }
     }
   }
 }
 
 function restartChatWatchLoop() {
   if (!isChatView()) return;
-  UI_STATE.chatWatchGeneration += 1;
-  watchChatUpdates(UI_STATE.chatWatchGeneration).catch(() => {});
+  stopChatWatchLoop();
+  const generation = UI_STATE.chatWatchGeneration;
+  watchChatUpdates(generation).catch(() => {});
 }
 
 async function createChatSessionFromDraft() {
-  UI_STATE.chatBusy = true;
+  if (UI_STATE.chatPending.create) return;
+  const name = String(UI_STATE.chatSessionNameDraft || "").trim() || "default";
+  const tempSessionId = buildTempChatSessionId();
+  const nowIso = new Date().toISOString();
+  const previousSessionId = UI_STATE.chatSessionId;
+  const token = UI_STATE.chatSelectionToken + 1;
+  UI_STATE.chatSelectionToken = token;
+  UI_STATE.chatPending.create = {
+    tempSessionId,
+    previousSessionId,
+    token,
+    name,
+  };
   UI_STATE.chatError = "";
+  UI_STATE.chatSessionNameDraft = "";
+  const tempDescriptor = {
+    session_id: tempSessionId,
+    session_name: name,
+    message_count: 0,
+    turn_count: 0,
+    created_at: nowIso,
+    updated_at: nowIso,
+    task_status: "creating",
+    waiting_for_user_input: false,
+    session_revision: 0,
+    last_message_id: null,
+    pending_state: "creating",
+  };
+  const tempDetail = buildChatSessionDetail(tempDescriptor, {
+    transcript: [],
+    session_state: {
+      task_status: "creating",
+      waiting_for_user_input: false,
+    },
+    session_revision: 0,
+    loading_state: "creating",
+  });
+  stopChatWatchLoop();
+  activateChatSession(tempSessionId, { descriptor: tempDescriptor, loadingState: "creating" });
+  rememberChatPayload(upsertChatSessionDescriptor(tempDescriptor), tempDetail);
+  renderChatFromState();
   try {
     const payload = await requestJson("/api/dashboard/chat/sessions", {
       method: "POST",
-      body: JSON.stringify({ name: String(UI_STATE.chatSessionNameDraft || "").trim() || "default" }),
+      body: JSON.stringify({ name }),
     });
-    UI_STATE.chatSessionId = payload?.session?.session_id || UI_STATE.chatSessionId;
-    UI_STATE.chatSessionNameDraft = "";
-    UI_STATE.chatSelectedMessageId = null;
-    await refreshChat();
-    restartChatWatchLoop();
+    const realSessionId = payload?.session?.session_id;
+    if (!realSessionId) {
+      throw new Error("Session creation returned no session id.");
+    }
+    const realDetail = buildChatSessionDetail(payload.session, {
+      transcript: [],
+      session_state: payload.session_state || {},
+      session_revision: payload.session_revision || payload?.session?.session_revision || 0,
+      has_update: true,
+    });
+    UI_STATE.chatDetailCache.delete(tempSessionId);
+    setCachedChatDetail(realSessionId, realDetail);
+    const nextPayload = upsertChatSessionDescriptor(payload.session, { replaceSessionId: tempSessionId });
+    const shouldAdoptRealSession = UI_STATE.chatSessionId === tempSessionId && UI_STATE.chatPending.create?.token === token;
+    if (shouldAdoptRealSession) {
+      UI_STATE.chatSessionId = realSessionId;
+      persistChatSessionId(realSessionId);
+      rememberChatPayload(nextPayload, realDetail);
+      renderChatFromState();
+      loadChatSessionDetail(realSessionId, { selectionToken: token })
+        .catch((error) => {
+          if (token !== UI_STATE.chatSelectionToken || UI_STATE.chatSessionId !== realSessionId) return;
+          UI_STATE.chatError = error.message;
+          renderChatFromState();
+        })
+        .finally(() => restartChatWatchLoop());
+    } else {
+      UI_STATE.chatSessionsPayload = nextPayload;
+      renderChatFromState();
+    }
   } catch (error) {
     UI_STATE.chatError = error.message;
-    await refreshChat();
+    UI_STATE.chatSessionNameDraft = name;
+    UI_STATE.chatDetailCache.delete(tempSessionId);
+    removeChatSessionDescriptor(tempSessionId);
+    if (UI_STATE.chatSessionId === tempSessionId) {
+      if (previousSessionId) {
+        activateChatSession(previousSessionId, {
+          descriptor: getChatSessionDescriptor(previousSessionId) || getCachedChatDetail(previousSessionId)?.session,
+          loadingState: getCachedChatDetail(previousSessionId) ? null : "loading",
+        });
+        loadChatSessionDetail(previousSessionId, { selectionToken: UI_STATE.chatSelectionToken }).catch(() => {});
+      } else {
+        UI_STATE.chatDetail = null;
+      }
+      renderChatFromState();
+    }
   } finally {
-    UI_STATE.chatBusy = false;
+    clearChatPending("create", token);
     renderChatFromState();
+    if (!isTempChatSessionId(UI_STATE.chatSessionId)) {
+      restartChatWatchLoop();
+    }
   }
 }
 
 async function sendChatDraft() {
   const text = String(UI_STATE.chatDraft || "").trim();
-  if (!text || !UI_STATE.chatSessionId || UI_STATE.chatBusy) return;
-  UI_STATE.chatBusy = true;
+  if (!text || !UI_STATE.chatSessionId || UI_STATE.chatPending.send || isTempChatSessionId(UI_STATE.chatSessionId)) return;
+  const sessionId = UI_STATE.chatSessionId;
+  const userMessageId = buildLocalMessageId("user");
+  const typingMessageId = buildLocalMessageId("typing");
+  const nowIso = new Date().toISOString();
+  const token = Date.now();
+  UI_STATE.chatPending.send = {
+    sessionId,
+    token,
+    userMessageId,
+    typingMessageId,
+    draftText: text,
+  };
   UI_STATE.chatError = "";
+  const baseDetail =
+    getCachedChatDetail(sessionId) ||
+    UI_STATE.chatDetail ||
+    buildChatSessionDetail(getChatSessionDescriptor(sessionId) || { session_id: sessionId, session_name: sessionId }, {});
+  const optimisticDetail = ChatState.buildOptimisticSend
+    ? ChatState.buildOptimisticSend(baseDetail, {
+        text,
+        nowIso,
+        userMessageId,
+        typingMessageId,
+      })
+    : baseDetail;
+  UI_STATE.chatDraft = "";
+  rememberChatPayload(upsertChatSessionDescriptor(optimisticDetail.session), optimisticDetail);
+  renderChatFromState();
+  stopChatWatchLoop();
   try {
-    const payload = await requestJson(`/api/dashboard/chat/sessions/${encodeURIComponent(UI_STATE.chatSessionId)}/messages`, {
+    const payload = await requestJson(`/api/dashboard/chat/sessions/${encodeURIComponent(sessionId)}/messages`, {
       method: "POST",
       body: JSON.stringify({ text }),
     });
-    UI_STATE.chatDraft = "";
-    UI_STATE.chatDraftFocused = false;
-    UI_STATE.chatSelectedMessageId = payload?.messages?.assistant?.message_id || UI_STATE.chatSelectedMessageId;
-    await refreshChat();
-    restartChatWatchLoop();
+    const currentDetail = getCachedChatDetail(sessionId) || optimisticDetail;
+    const canonicalDetail = ChatState.reconcileSendSuccess
+      ? ChatState.reconcileSendSuccess(currentDetail, payload, {
+          userMessageId,
+          typingMessageId,
+        })
+      : currentDetail;
+    const nextPayload = upsertChatSessionDescriptor(payload.session || canonicalDetail.session);
+    setCachedChatDetail(sessionId, canonicalDetail);
+    if (UI_STATE.chatSessionId === sessionId) {
+      UI_STATE.chatSelectedMessageId = payload?.messages?.assistant?.message_id || UI_STATE.chatSelectedMessageId;
+      rememberChatPayload(nextPayload, canonicalDetail);
+      renderChatFromState();
+    } else {
+      UI_STATE.chatSessionsPayload = nextPayload;
+      renderChatFromState();
+    }
   } catch (error) {
     UI_STATE.chatError = error.message;
-    await refreshChat();
+    const currentDetail = getCachedChatDetail(sessionId) || optimisticDetail;
+    const failedDetail = ChatState.markSendFailed
+      ? ChatState.markSendFailed(currentDetail, {
+          userMessageId,
+          typingMessageId,
+          errorMessage: error.message,
+        })
+      : currentDetail;
+    const nextPayload = upsertChatSessionDescriptor(failedDetail.session);
+    setCachedChatDetail(sessionId, failedDetail);
+    if (UI_STATE.chatSessionId === sessionId) {
+      UI_STATE.chatDraft = text;
+      rememberChatPayload(nextPayload, failedDetail);
+      renderChatFromState();
+      window.setTimeout(focusChatDraftToEnd, 0);
+    } else {
+      UI_STATE.chatSessionsPayload = nextPayload;
+      renderChatFromState();
+    }
   } finally {
-    UI_STATE.chatBusy = false;
+    clearChatPending("send", token);
     renderChatFromState();
+    restartChatWatchLoop();
   }
 }
 
@@ -2348,13 +2735,7 @@ document.addEventListener("click", (event) => {
   }
   const sessionButton = event.target.closest("[data-chat-session-id]");
   if (sessionButton) {
-    UI_STATE.chatSessionId = sessionButton.dataset.chatSessionId;
-    UI_STATE.chatSelectedMessageId = null;
-    UI_STATE.chatError = "";
-    clearChatPendingPayload();
-    refresh()
-      .then(() => restartChatWatchLoop())
-      .catch(() => {});
+    selectChatSession(sessionButton.dataset.chatSessionId);
     return;
   }
   const chatMessageButton = event.target.closest("[data-chat-message-id]");

@@ -501,6 +501,10 @@ pre {
   color: var(--ink);
 }
 
+.chat-session-button.pending {
+  border-style: dashed;
+}
+
 .chat-session-button.active,
 .chat-message.active {
   border-color: rgba(15, 118, 110, 0.45);
@@ -544,6 +548,19 @@ pre {
   cursor: pointer;
 }
 
+.chat-message.pending {
+  border-style: dashed;
+}
+
+.chat-message.typing {
+  background: rgba(15, 118, 110, 0.12);
+}
+
+.chat-message.failed {
+  border-color: rgba(185, 28, 28, 0.28);
+  background: rgba(185, 28, 28, 0.06);
+}
+
 .chat-message header,
 .chat-message footer,
 .chat-actions {
@@ -557,6 +574,11 @@ pre {
   margin: 12px 0;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.chat-message.typing p::after {
+  content: " ...";
+  animation: typing-pulse 1s ease-in-out infinite;
 }
 
 .chat-composer {
@@ -601,6 +623,16 @@ pre {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes typing-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
   }
 }
 

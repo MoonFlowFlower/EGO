@@ -719,6 +719,7 @@ def test_dashboard_server_exposes_chat_tab_and_local_chat_api(tmp_path: Path) ->
         DashboardRequestHandler.chat_service = None
 
     assert 'data-view="chat"' in html
+    assert "/static/dashboard_chat_state.js?v=" in html
     assert sessions["default_session_id"] == "dashboard:test:default"
     assert created["session"]["session_name"] == "smoke"
     assert detail["session"]["session_id"] == "dashboard:test:default"
