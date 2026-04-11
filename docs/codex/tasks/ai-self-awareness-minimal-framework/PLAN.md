@@ -812,12 +812,57 @@
 - rollback note:
   - 若实现无法继续保持 `runtime_harness + bounded host surface + canonical scorer`，立即回退到 `Milestone 19` planning freeze
 
+### Milestone 21: Selection Closeout and Runtime Priority Reset
+
+- type: decision
+- question:
+  - 在 held-out replay、controlled replay bridge、和 runtime-harness controlled observation batch 都通过后，当前 repo 应如何正式收口 winner 结论与下一轮优先级，而不越权升级成 runtime efficacy 或 live-benefit claim
+- current framing:
+  - `Milestone 20` 已证明：
+    - `active-inference self-model` 在 runtime-harness controlled observation 下继续通过 frozen gate
+    - `authority_drift = 0`
+    - `trace_contract = pass`
+    - `host surface bounded = pass`
+  - 当前仍然禁止：
+    - runtime authority 扩张
+    - parallel runtime lane
+    - candidate-private host API
+    - live-efficacy overclaim
+- hypotheses:
+  - 当前 bounded evidence 已足够把 active-inference 固定为当前 durable build-first candidate
+  - 当前仍不足以跳过 planning 直接做 formal runtime enablement
+- scope:
+  - repo-level selection closeout
+  - `PROGRAM_STATE_UNIFIED` / `OVERALL_PROGRESS` / task package / evidence ledger 同步
+  - 明确下一轮若继续靠近 formal runtime，只能先进入 bounded planning slice
+- experiments planned:
+  - selection closeout wording audit
+  - repo-priority reset audit
+  - next bounded planning slice framing
+- kill criteria:
+  - 若 closeout 需要宣称 runtime efficacy、live benefit、或新增 authority path 才能成立，当前 framing 失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `docs/PROGRAM_STATE_UNIFIED.yaml`
+  - `docs/OVERALL_PROGRESS.md`
+  - `artifacts/evidence_ledger/index.yaml`
+- acceptance:
+  - 明确回答：
+    - 当前 winner 是否已足够固定为唯一 build-first candidate
+    - 当前还能说什么，不能说什么
+    - `WP17 / MVP22` 继续 parked、reintegration planning、还是进一步降级
+    - 下一轮如果继续靠近 formal runtime，唯一允许的入口是什么
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 selection closeout 发现当前证据仍不足以稳定 current winner 结论，立即保持 `Milestone 20` 通过但未 closeout 的状态，不提前升级 repo-priority routing
+
 ## Progress
 
-- current_status: `active_inference_controlled_observation_plan_frozen`
-- current_milestone: `Milestone 20: Controlled Observation Runner`
+- current_status: `active_inference_controlled_observation_passed`
+- current_milestone: `Milestone 21: Selection Closeout and Runtime Priority Reset`
 - milestone_state: `pending`
-- candidate_vs_proof: `active_inference_controlled_replay_bridge_passed`
+- candidate_vs_proof: `active_inference_controlled_observation_passed`
 
 ## Decision log
 
@@ -828,6 +873,7 @@
 - 2026-04-09: Inventor 把最小生存核压缩为 `compact self_state + counterfactual simulator + outcome comparator/writeback + hard boundary guard + recent failure memory`。
 - 2026-04-09: Scientist 固定 synthetic battery 为 `continuity / boundary / counterfactual / calibration / persistence` 五条轴，并要求控制 `prompt-only self`、`baseline-chat`、`baseline-memory`。
 - 2026-04-09: `Stage 1 (30)` 只保留 `full_self_model_counterfactual` 与 `recursive_workspace_self_slot`；`autobiographical_continuity` 与 `self_other_mirror_loop` 被淘汰。
+- 2026-04-11: `Milestone 20` 证明 runtime-harness controlled observation batch 也已通过，下一步不再是实现 runner，而是做 selection closeout 与 repo-priority reset，同时继续禁止 runtime efficacy overclaim。
 - 2026-04-09: `Stage 2 (100)` 消融表明 `counterfactual`、`boundary_guard`、`writeback` 任何一个缺失都无法成为稳定最小解；`recursive_workspace_self_slot` 在这一轮被淘汰。
 - 2026-04-09: `Stage 3 (300)` 压力实验后仅 `full_self_model_counterfactual` 与 `compact_self_model_counterfactual` 继续存活。
 - 2026-04-09: `Stage 4 (1000)` 长连续性实验后，`compact self-state + boundary + counterfactual + writeback` 仍然存活，因此当前 synthetic 最小框架已经出现；`full` 版本更强，但不是最小核。

@@ -142,6 +142,95 @@ def _proto_self_state_scope_context(state: RuntimeV2State) -> Dict[str, Any]:
     return context
 
 
+def _inject_private_research_runtime_summary_overrides(
+    runtime_summary: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+) -> Dict[str, Any]:
+    ingress_context = state.ingress_context or {}
+    overrides = dict(ingress_context.get("proto_self_runtime_summary_overrides") or {})
+    if not overrides:
+        return runtime_summary
+
+    updated = dict(runtime_summary or {})
+
+    raw_mvs_replay = overrides.get("mvs_replay")
+    if isinstance(raw_mvs_replay, dict):
+        mvs_replay: Dict[str, Any] = {}
+        if raw_mvs_replay.get("enabled") is not None:
+            mvs_replay["enabled"] = bool(raw_mvs_replay.get("enabled"))
+        if raw_mvs_replay.get("shadow_only") is not None:
+            mvs_replay["shadow_only"] = bool(raw_mvs_replay.get("shadow_only"))
+        for key in (
+            "variant_id",
+            "action_family",
+            "family",
+            "case_id",
+            "step_id",
+            "source_type",
+            "slice_id",
+            "scenario_id",
+            "segment_id",
+        ):
+            value = raw_mvs_replay.get(key)
+            if value is None:
+                continue
+            text = str(value).strip()
+            if text:
+                mvs_replay[key] = text
+        if mvs_replay:
+            updated["mvs_replay"] = mvs_replay
+
+    raw_controlled_observation = overrides.get("controlled_observation")
+    if isinstance(raw_controlled_observation, dict):
+        controlled_observation: Dict[str, Any] = {}
+        if raw_controlled_observation.get("enabled") is not None:
+            controlled_observation["enabled"] = bool(raw_controlled_observation.get("enabled"))
+        if raw_controlled_observation.get("shadow_only") is not None:
+            controlled_observation["shadow_only"] = bool(raw_controlled_observation.get("shadow_only"))
+        for key in (
+            "trial_id",
+            "scenario_id",
+            "family",
+            "source_type",
+            "segment_id",
+            "state_snapshot_ref",
+        ):
+            value = raw_controlled_observation.get(key)
+            if value is None:
+                continue
+            text = str(value).strip()
+            if text:
+                controlled_observation[key] = text
+        if controlled_observation:
+            updated["controlled_observation"] = controlled_observation
+
+    return updated
+
+
+def _inject_private_proto_self_safety_overrides(
+    safety_context: Dict[str, Any],
+    *,
+    state: RuntimeV2State,
+) -> Dict[str, Any]:
+    ingress_context = state.ingress_context or {}
+    raw_overrides = dict(ingress_context.get("proto_self_safety_context_overrides") or {})
+    if not raw_overrides:
+        return safety_context
+
+    updated = dict(safety_context or {})
+    risk_level = raw_overrides.get("risk_level")
+    if risk_level is not None:
+        normalized = str(risk_level).strip().lower()
+        if normalized in {"low", "medium", "high", "critical"}:
+            updated["risk_level"] = normalized
+
+    if raw_overrides.get("boundary_touched") is not None:
+        updated["boundary_touched"] = bool(raw_overrides.get("boundary_touched"))
+
+    return updated
+
+
 def _seed_runtime_summary(state: RuntimeV2State) -> Dict[str, Any]:
     ingress_context = state.ingress_context or {}
     resolved_target = _resolved_target(state)
@@ -171,6 +260,7 @@ def _seed_runtime_summary(state: RuntimeV2State) -> Dict[str, Any]:
         "maintenance_context": _build_maintenance_context(state),
     }
     summary.update(_proto_self_state_scope_context(state))
+    summary = _inject_private_research_runtime_summary_overrides(summary, state=state)
     return _inject_h1_canonical_shadow_context(summary, state=state)
 
 
@@ -1173,6 +1263,10 @@ def build_proto_self_ingress_event(
     initiative_realization_store: Optional[InitiativeRealizationStore] = None,
 ) -> Dict[str, Any]:
     risk_level = assess_risk_level(user_input)
+    safety_context = _inject_private_proto_self_safety_overrides(
+        {"risk_level": risk_level},
+        state=state,
+    )
     restore_observation = (state.ingress_context or {}).get("restore_observation")
     schema_version = resolve_proto_self_schema_version(state)
     if schema_version == "proto_self.v2":
@@ -1262,9 +1356,7 @@ def build_proto_self_ingress_event(
                 "blocked_tasks": 0,
             },
             "runtime_summary": runtime_summary,
-            "safety_context": {
-                "risk_level": risk_level,
-            },
+            "safety_context": safety_context,
             "executed_action_prev": ingress_context.get("executed_action_prev"),
             "external_outcome": None,
             "intervention_context": ingress_context.get("intervention_context", {}),
@@ -1283,7 +1375,7 @@ def build_proto_self_ingress_event(
                     "resolved_target_name": _resolved_target(state).get("filename"),
                 },
                 runtime_summary=_seed_runtime_summary(state),
-                safety_context={"risk_level": risk_level, "blocked": False},
+                safety_context={**safety_context, "blocked": False},
             )
         return payload
     runtime_summary = _inject_h1_canonical_shadow_context(
@@ -1312,9 +1404,7 @@ def build_proto_self_ingress_event(
             "blocked_tasks": 0,
         },
         "runtime_summary": runtime_summary,
-        "safety_context": {
-            "risk_level": risk_level,
-        },
+        "safety_context": safety_context,
         "external_result": None,
     }
 
@@ -1364,6 +1454,7 @@ def build_external_result_event(
                 {
                     "runtime": "runtime_v2",
                     **_proto_self_state_scope_context(state),
+                    **_seed_runtime_summary(state),
                 },
                 state=state,
                 self_model_store=self_model_store,

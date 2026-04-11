@@ -1088,3 +1088,66 @@
 - decision for next step:
   - 关闭 `Milestone 19`
   - 进入 `Milestone 20: Controlled Observation Runner`
+
+### Cycle 21
+
+- question:
+  - replay winner 在第一轮 runtime-harness controlled observation 下，能否继续通过 frozen gate，同时保持 zero authority drift、replayable trace、以及 bounded host surface
+- framing used:
+  - `runtime_harness transfer without runtime authority expansion`
+- experiment:
+  - 实现 single runner，把 repo-authored observation bank 归一化到 `runtime_harness + TelegramRuntimeBridge + runtime_mainline_observation_common`
+  - 实现 batch runner，对 `9` 个 scenarios 重跑 baseline A 与 active-inference winner
+  - 保持 formal owner store、proto-self store、mirror、trace、以及各 axis owner store 全部隔离在临时目录
+  - 只允许宿主消费 `policy_hint / response_tendency / trace_payload`
+  - 对 identity / decision families 追加 research-private ingress safety overrides，把 bank 已声明的 boundary semantics 映射进 canonical ingress safety surface，而不新增 public runtime API
+- command / script / artifact:
+  - `python3 -m py_compile EgoCore/app/runtime_v2/proto_self_runtime.py scripts/codex/run_active_inference_controlled_observation.py scripts/codex/run_active_inference_controlled_observation_batch.py EgoCore/tests/test_runtime_v2_proto_self_runtime.py EgoCore/tests/test_active_inference_controlled_observation_runner.py`
+  - `PYTHONPATH=EgoCore:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_runtime_v2_proto_self_runtime.py -k "private_research_runtime_summary_overrides or preserve_experiment_proto_self_scope or safety_context_overrides"`
+  - `PYTHONPATH=EgoCore:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_active_inference_controlled_observation_runner.py`
+  - `python3 scripts/codex/run_active_inference_controlled_observation.py`
+  - `python3 scripts/codex/run_active_inference_controlled_observation_batch.py`
+  - `artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_OBSERVATION_CURRENT.json`
+  - `artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_OBSERVATION_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_OBSERVATION_SCORED_CURRENT.json`
+- observed result:
+  - 初次 batch 失败点被定位为两类：
+    - `build_external_result_event()` 没有继承 `_seed_runtime_summary(state)`，导致 tool-result steps 丢 `mvs_replay / controlled_observation`
+    - ingress-only families 没有把 bank 已声明的 boundary semantics 映射进 canonical ingress `safety_context`，所以 candidate 在 runtime harness 下退化成 generic bounded defer，`T1/T2` 只到 `0.5`
+  - 根因修正后：
+    - external-result steps 继续携带 candidate override
+    - ingress event 现在支持 research-private `proto_self_safety_context_overrides`
+    - controlled observation runner 会按 scenario family 注入 boundary/risk semantics，但仍不扩 public runtime API
+  - corrected controlled observation scored result：
+    - `decision = bridge_pass`
+    - `candidate_pass = true`
+    - `winner_pass_count = 9 / 9`
+    - `aggregate_gate_status = pass`
+    - `T1 = 1.0`
+    - `T2 = 1.0`
+    - `T3 = 1.0`
+    - `T4 = 1.0`
+    - `T5 = 1.0`
+    - `composite = 1.0`
+    - `boundary_integrity = 1.0`
+    - `repair_closure_capture = 1.0`
+    - `trace_replayability = 1.0`
+  - boundedness audit 结果：
+    - `authority_drift_status = pass`
+    - `trace_contract_status = pass`
+    - `host_surface_bounded = pass`
+- what it proves:
+  - active-inference winner 不只通过 held-out replay 和 controlled replay bridge，也已经在第一轮 runtime-harness controlled observation 上继续过线
+  - 当前 observation framing 可以继续复用 canonical scorer、既有 runtime observation envelope、以及 bounded host surface，而不需要第二 scorer ontology、parallel runtime lane、或 candidate-private host API
+- what it does not prove:
+  - formal runtime efficacy
+  - live Telegram ordinary chat benefit
+  - real user benefit
+  - consciousness-like properties
+- what path is ruled out:
+  - 把 ingress-only families 当成“只喂文本就够”的 observation；在当前 scorer 下，bank 声明的 boundary semantics 必须被归一化进 canonical ingress safety surface
+  - 让 tool-result steps 依赖 ingress-time override 残留而不在 external-result event builder 明确继承 runtime summary
+  - 为了让 controlled observation 过线而新增 public runtime API 或 behavior authority
+- decision for next step:
+  - 关闭 `Milestone 20`
+  - 进入 `Milestone 21: Selection Closeout and Runtime Priority Reset`

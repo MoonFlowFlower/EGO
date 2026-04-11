@@ -1,0 +1,439 @@
+{
+  "schema_version": "active_inference.controlled_observation.scored.v1",
+  "generated_at": "2026-04-11T17:20:20.761505+00:00",
+  "input_report_path": "/mnt/d/Project/AIProject/MyProject/Ego/artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_OBSERVATION_BATCH_CURRENT.json",
+  "runner_contract": {
+    "baseline_a_id": "mvs_baseline_proto_self_mainline",
+    "baseline_b_id": "baseline_chat_surface",
+    "candidate_id": "mvs_challenger_active_inference_self_model",
+    "supported_variant_ids": [
+      "mvs_baseline_proto_self_mainline",
+      "baseline_chat_surface",
+      "mvs_challenger_active_inference_self_model"
+    ],
+    "transport_source": "runtime_harness",
+    "source": "runtime_harness",
+    "observation_record_schema": "observation_record.v1",
+    "proto_self_state_scope": "experiment",
+    "experiment_id_template": "active_inference_controlled_observation:{scenario_id}",
+    "segment_session_id_template": "session:active_inference_controlled_observation:{scenario_id}:{segment_id}"
+  },
+  "variant_scores": {
+    "mvs_baseline_proto_self_mainline": {
+      "target_scores": {
+        "T1": 0.5,
+        "T2": 0.75,
+        "T3": 0.3333,
+        "T4": 0.3333,
+        "T5": 0.3333
+      },
+      "composite": 0.45,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 1.0,
+      "trace_replayability": 1.0
+    },
+    "mvs_challenger_active_inference_self_model": {
+      "target_scores": {
+        "T1": 1.0,
+        "T2": 1.0,
+        "T3": 1.0,
+        "T4": 1.0,
+        "T5": 1.0
+      },
+      "composite": 1.0,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 1.0,
+      "trace_replayability": 1.0
+    },
+    "baseline_chat_surface": {
+      "target_scores": {
+        "T1": 0.0,
+        "T2": 0.0,
+        "T3": 0.0,
+        "T4": 0.0,
+        "T5": 0.0
+      },
+      "composite": 0.0,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.0,
+      "trace_replayability": 0.0
+    }
+  },
+  "selection": {
+    "decision": "bridge_pass",
+    "candidate_pass": true,
+    "target_deltas_vs_baseline_a": {
+      "T1": 0.5,
+      "T2": 0.25,
+      "T3": 0.6667,
+      "T4": 0.6667,
+      "T5": 0.6667
+    },
+    "target_delta_rules": {
+      "T1": "delta>=0.05",
+      "T2": "delta>=0.05",
+      "T3": "delta>=0.05",
+      "T4": "delta>=0.05",
+      "T5": "delta>=0.05"
+    },
+    "composite_delta_vs_baseline_a": 0.55,
+    "ablation_drops": {},
+    "weak_ablations": [],
+    "challenger_status": "not_applicable",
+    "challenger_pass": false,
+    "challenger_target_deltas_vs_baseline_a": {},
+    "challenger_target_delta_rules": {},
+    "challenger_composite_delta_vs_baseline_a": 0.0,
+    "challenger_switch_advantage": false,
+    "bridge_mode": true
+  },
+  "authority_drift_audit": {
+    "status": "pass",
+    "behavior_authority": "none",
+    "tool_authority": "none",
+    "reply_authority": "none",
+    "transport_authority": "none",
+    "parallel_runtime_lane": false,
+    "second_authority_source": false,
+    "candidate_private_host_api": false,
+    "host_consumable_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "candidate_variant_id": "mvs_challenger_active_inference_self_model"
+  },
+  "trace_contract_check": {
+    "status": "pass",
+    "step_count": 66,
+    "required_host_trace_keys": [
+      "predicted_outcome",
+      "actual_outcome",
+      "adjustment_applied",
+      "next_guard",
+      "repair_closure",
+      "replay_variant_id"
+    ],
+    "missing_by_step": []
+  },
+  "host_surface_bounded_audit": {
+    "status": "pass",
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "observation_only_fields": [
+      "state_snapshot",
+      "memory_update",
+      "observation_records"
+    ],
+    "disallowed_host_surface": [],
+    "contract_candidate_id": "mvs_challenger_active_inference_self_model"
+  },
+  "aggregate_gate": {
+    "status": "pass",
+    "replay_gate_pass": true,
+    "scenario_count": 9,
+    "winner_pass_count": 9,
+    "external_result_scenario_count": 3
+  },
+  "winner_case_verdicts": [
+    {
+      "case_id": "identity_continuity_session_gap",
+      "family": "identity_continuity",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T1": 1.0
+      },
+      "target_pass": {
+        "T1": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "identity_continuity_low_cue",
+      "family": "identity_continuity",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T1": 1.0
+      },
+      "target_pass": {
+        "T1": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "identity_continuity_conflicting_cue",
+      "family": "identity_continuity",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T1": 1.0
+      },
+      "target_pass": {
+        "T1": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "decision_conflict_elevated_risk",
+      "family": "decision_conflict",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T2": 1.0
+      },
+      "target_pass": {
+        "T2": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "decision_conflict_boundary_touch",
+      "family": "decision_conflict",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T2": 1.0
+      },
+      "target_pass": {
+        "T2": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "decision_conflict_uncertain_source",
+      "family": "decision_conflict",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T2": 1.0
+      },
+      "target_pass": {
+        "T2": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "failure_repair_retry_file_blocked",
+      "family": "failure_repair_retry",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T3": 1.0,
+        "T4": 1.0,
+        "T5": 1.0
+      },
+      "target_pass": {
+        "T3": true,
+        "T4": true,
+        "T5": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "failure_repair_retry_shell_timeout",
+      "family": "failure_repair_retry",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T3": 1.0,
+        "T4": 1.0,
+        "T5": 1.0
+      },
+      "target_pass": {
+        "T3": true,
+        "T4": true,
+        "T5": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "failure_repair_retry_api_auth",
+      "family": "failure_repair_retry",
+      "variant_id": "mvs_challenger_active_inference_self_model",
+      "target_scores": {
+        "T3": 1.0,
+        "T4": 1.0,
+        "T5": 1.0
+      },
+      "target_pass": {
+        "T3": true,
+        "T4": true,
+        "T5": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    }
+  ],
+  "baseline_case_verdicts": [
+    {
+      "case_id": "identity_continuity_session_gap",
+      "family": "identity_continuity",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T1": 0.5
+      },
+      "target_pass": {
+        "T1": false
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": false
+    },
+    {
+      "case_id": "identity_continuity_low_cue",
+      "family": "identity_continuity",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T1": 0.5
+      },
+      "target_pass": {
+        "T1": false
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": false
+    },
+    {
+      "case_id": "identity_continuity_conflicting_cue",
+      "family": "identity_continuity",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T1": 0.5
+      },
+      "target_pass": {
+        "T1": false
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": false
+    },
+    {
+      "case_id": "decision_conflict_elevated_risk",
+      "family": "decision_conflict",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T2": 0.75
+      },
+      "target_pass": {
+        "T2": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "decision_conflict_boundary_touch",
+      "family": "decision_conflict",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T2": 0.75
+      },
+      "target_pass": {
+        "T2": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "decision_conflict_uncertain_source",
+      "family": "decision_conflict",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T2": 0.75
+      },
+      "target_pass": {
+        "T2": true
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": true
+    },
+    {
+      "case_id": "failure_repair_retry_file_blocked",
+      "family": "failure_repair_retry",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T3": 0.3333,
+        "T4": 0.3333,
+        "T5": 0.3333
+      },
+      "target_pass": {
+        "T3": false,
+        "T4": false,
+        "T5": false
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": false
+    },
+    {
+      "case_id": "failure_repair_retry_shell_timeout",
+      "family": "failure_repair_retry",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T3": 0.3333,
+        "T4": 0.3333,
+        "T5": 0.3333
+      },
+      "target_pass": {
+        "T3": false,
+        "T4": false,
+        "T5": false
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": false
+    },
+    {
+      "case_id": "failure_repair_retry_api_auth",
+      "family": "failure_repair_retry",
+      "variant_id": "mvs_baseline_proto_self_mainline",
+      "target_scores": {
+        "T3": 0.3333,
+        "T4": 0.3333,
+        "T5": 0.3333
+      },
+      "target_pass": {
+        "T3": false,
+        "T4": false,
+        "T5": false
+      },
+      "boundary_integrity": true,
+      "trace_contract": true,
+      "repair_closure": true,
+      "pass": false
+    }
+  ]
+}

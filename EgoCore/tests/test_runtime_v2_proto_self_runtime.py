@@ -2230,6 +2230,110 @@ def test_v2_event_builders_preserve_experiment_proto_self_scope_across_dashboard
         assert event["seed_event"]["runtime_summary"]["experiment_id"] == experiment_id
 
 
+def test_v2_event_builders_preserve_private_research_runtime_summary_overrides():
+    experiment_id = "active_inference_controlled_observation:failure_repair_retry_file_blocked"
+    state = RuntimeV2State(session_id="session:observation:test")
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "proto_self_state_scope": "experiment",
+        "proto_self_experiment_id": experiment_id,
+        "proto_self_runtime_summary_overrides": {
+            "mvs_replay": {
+                "enabled": True,
+                "shadow_only": True,
+                "variant_id": "mvs_challenger_active_inference_self_model",
+                "action_family": "tool:file",
+                "scenario_id": "failure_repair_retry_file_blocked",
+                "segment_id": "seg_a",
+            },
+            "controlled_observation": {
+                "enabled": True,
+                "shadow_only": True,
+                "trial_id": "active_inference_controlled_observation",
+                "scenario_id": "failure_repair_retry_file_blocked",
+                "family": "failure_repair_retry",
+                "source_type": "repo_authored_observation_scenario",
+                "segment_id": "seg_a",
+                "state_snapshot_ref": "fresh_runtime_state",
+            },
+        },
+    }
+    result = RuntimeV2TurnResult(
+        status="completed_verified",
+        state=state,
+        reply=RuntimeV2Reply(reply_text="已完成", delivery_kind="final", status="completed_verified"),
+    )
+
+    ingress_event = build_proto_self_ingress_event(
+        session_id=state.session_id,
+        turn_id="turn_obs_ingress",
+        source="runtime_harness",
+        user_input="继续同一条 bounded lane。",
+        state=state,
+    )
+    external_event = build_external_result_event(
+        session_id=state.session_id,
+        turn_id="turn_obs_external",
+        step=0,
+        tool_result={"success": False, "tool": "file", "exit_code": 1, "error": "permission denied"},
+        state=state,
+    )
+    finalized_event = build_finalized_result_event(
+        session_id=state.session_id,
+        turn_id="turn_obs_finalized",
+        result=result,
+        state=state,
+    )
+
+    for event in [ingress_event, external_event, finalized_event]:
+        assert event is not None
+        runtime_summary = event["runtime_summary"]
+        assert runtime_summary["state_scope"] == "experiment"
+        assert runtime_summary["experiment_id"] == experiment_id
+        assert runtime_summary["mvs_replay"] == {
+            "enabled": True,
+            "shadow_only": True,
+            "variant_id": "mvs_challenger_active_inference_self_model",
+            "action_family": "tool:file",
+            "scenario_id": "failure_repair_retry_file_blocked",
+            "segment_id": "seg_a",
+        }
+        assert runtime_summary["controlled_observation"] == {
+            "enabled": True,
+            "shadow_only": True,
+            "trial_id": "active_inference_controlled_observation",
+            "scenario_id": "failure_repair_retry_file_blocked",
+            "family": "failure_repair_retry",
+            "source_type": "repo_authored_observation_scenario",
+            "segment_id": "seg_a",
+            "state_snapshot_ref": "fresh_runtime_state",
+        }
+
+
+def test_build_proto_self_ingress_event_preserves_private_safety_context_overrides():
+    state = RuntimeV2State(session_id="session:observation:safety")
+    state.ingress_context = {
+        "proto_self_version": "v2",
+        "proto_self_safety_context_overrides": {
+            "risk_level": "high",
+            "boundary_touched": True,
+        },
+    }
+
+    event = build_proto_self_ingress_event(
+        session_id=state.session_id,
+        turn_id="turn_obs_safety",
+        source="runtime_harness",
+        user_input="继续，但如果边界不稳就别直接执行。",
+        state=state,
+    )
+
+    assert event["safety_context"] == {
+        "risk_level": "high",
+        "boundary_touched": True,
+    }
+
+
 def test_build_proto_self_ingress_event_injects_formal_self_model_context(tmp_path):
     store = SelfModelStore(base_dir=tmp_path)
     baseline = create_default_self_model("openemotion")
