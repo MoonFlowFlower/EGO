@@ -26,8 +26,8 @@ Keep one formal mainline where EgoCore governs real-world execution, OpenEmotion
 - Institutionalize repo-level project-state governance at the repo root without creating a second authority source.
 - Keep one formal runtime mainline and one research implementation lane; do not merge candidate routing into a second runtime authority source.
 - Treat the self-awareness candidate program as the current top-priority implementation lane while keeping WP17/MVP22 parked as a bounded continuity lane until replay-gated results justify reintegration.
-- Promote active-inference self-model to the sole build-first candidate now that the formal shadow-only MVS replay gate has failed its frozen thresholds; keep MVS-aligned compact as closed evidence, not as a continuing main implementation lane.
-- Keep the self-awareness research result below runtime-efficacy claim strength; the current replay result only proves a shadow/proposal-only selection outcome, not consciousness, live benefit, or formal-runtime enablement.
+- Keep active-inference self-model as the sole build-first candidate now that it has passed the same formal shadow-only held-out replay gate that MVS failed; keep MVS-aligned compact as closed evidence, not as a continuing main implementation lane.
+- Keep the self-awareness research result below runtime-efficacy claim strength; the current replay result proves a shadow/proposal-only selection outcome and held-out replay pass, not consciousness, live benefit, or formal-runtime enablement.
 - Continue reducing live Telegram host-only subject-miss residue before making stronger live-behavior claims.
 
 ## Completed Since Last Update
@@ -44,22 +44,25 @@ Keep one formal mainline where EgoCore governs real-world execution, OpenEmotion
 - Repo-level routing now explicitly separates the single formal runtime mainline from the single research implementation lane, parks WP17/MVP22 as a bounded continuity lane, and freezes candidate competition to `MVS-aligned compact` vs `active-inference self-model`.
 - A canonical 60-episode held-out replay corpus, raw validator runner, scored gate, and shadow-only MVS formal prototype slice now exist on the formal OpenEmotion path.
 - The corrected replay scorer now shows the MVS-aligned compact formal slice passes T1/T2/T3/T5 and all required ablation-necessity drops, but fails the frozen replay gate on T4 tension causality and repair_closure_capture; by the frozen selection rule, the repo must switch the build-first lane to `active-inference self-model`.
+- A minimal shadow-only active-inference formal slice now exists on the same OpenEmotion path and runs against the same canonical held-out replay corpus and scorer contract.
+- The replay scorer now applies a ceiling-aware per-target delta rule for saturated Baseline-A targets, preventing impossible +0.05 requirements when a baseline target is already at the ceiling.
+- Under the corrected held-out replay gate, the active-inference challenger passes T1-T5, composite, boundary_integrity, repair_closure_capture, and trace_replayability on the same canonical corpus, so the selection decision remains `switch_to_active_inference` with a replay-validated shadow-only winner.
 
 ## Blockers
 
-- No replay-validated passing build-first candidate exists yet; the formal MVS slice failed the frozen replay gate and the active-inference challenger has not yet been implemented on the same gate.
+- No controlled-integration or controlled-observation evidence exists yet for the replay-validated active-inference winner; current proof remains shadow-only and replay-only.
 - Live Telegram ordinary chat still has unexpected subject-miss samples on the host path.
 
 ## Key Unknowns
 
 - Whether the root-level state governance workflow will remain consistently enforced now that formal runtime priority and research implementation priority are explicitly decoupled.
-- Whether the active-inference build-first candidate will actually pass the same held-out replay gate once implemented as a shadow/proposal-only formal slice.
+- Whether the replay-validated active-inference slice will preserve its gains once it is wired into a controlled integration plan and replayed-conversation / controlled-observation setting.
 - Whether the MVS replay-gate failure reflects a fundamental architectural limit or only a narrower tension/repair design gap; regardless, MVS is no longer the current main implementation lane.
 - Whether WP17/MVP22 still deserves reintegration after replay-validated candidate results arrive.
 
 ## Next Minimal Action
 
-Implement only the smallest active-inference self-model slice needed to exercise the same held-out replay gate, keep it shadow/proposal-only, keep MVS-aligned compact archived as closed evidence rather than a live challenger, and leave WP17/MVP22 parked until the new selection gate is resolved.
+Freeze a controlled integration plan for the replay-validated active-inference slice, define the bounded host-consumable contract and observation gate without granting behavior authority, and keep WP17/MVP22 parked until controlled evidence shows whether reintegration is warranted.
 
 ## Real Trigger Evidence
 
@@ -73,7 +76,7 @@ Implement only the smallest active-inference self-model slice needed to exercise
 | repo_authority_cleanup | EgoCore | `closeout-complete` | `E3` | `V3` | `True` | `True` | Repo/integration boundary cleanup is reproducibly closed out in clean-clone / CI space, but that closeout does not itself prove new real-channel behavior. |
 | program_state_governance | EgoCore | `integrating` | `E3` | `V2` | `False` | `True` | Root-level program state, derived views, evidence ledger, templates, and integrity gates are being wired into the repo governance path. |
 | codex_exploration_cycles | EgoCore | `integrating` | `E3` | `V2` | `False` | `True` | Exploration-mode long-run tasks now have explicit reformulation, hypothesis, experiment, logging, and candidate-vs-proof discipline. |
-| ai_self_awareness_research | EgoCore + OpenEmotion | `replay_gate_switch_to_active_inference` | `E3` | `V3` | `False` | `True` | This remains the current top-priority implementation lane. A formal shadow-only MVS replay gate now exists on the OpenEmotion path, but the corrected scored result fails frozen thresholds on tension causality and repair-closure capture, so `active-inference self-model` is now the sole build-first candidate while `MVS-aligned compact` is demoted to closed evidence. |
+| ai_self_awareness_research | EgoCore + OpenEmotion | `active_inference_replay_gate_pass_shadow_only` | `E3` | `V3` | `False` | `True` | This remains the current top-priority implementation lane. A formal shadow-only active-inference slice now runs on the same canonical OpenEmotion held-out replay gate that MVS failed, and it currently passes that gate with ceiling-aware saturated-target handling while `MVS-aligned compact` remains closed evidence. This still does not prove runtime efficacy or live user benefit. |
 | wp17_bounded_continuity_lane | EgoCore + OpenEmotion | `parked` | `E1` | `V1` | `False` | `True` | WP17/MVP22 remains an authority-frozen bounded continuity lane with task-package readiness, but it is parked behind the current research-first candidate program and is not the default highest-priority implementation track. |
 | provider_runtime_openemotion_e2e_gate | EgoCore | `pass` | `E4` | `V4` | `True` | `True` | Recent real Telegram samples prove the formal provider/runtime/OpenEmotion path can execute end-to-end. |
 | live_subject_ingress_observation | EgoCore + OpenEmotion | `partial` | `E4` | `V4` | `True` | `True` | Live Telegram contains subject-ingress evidence, but the current audit still records host-only misses and cannot support stronger live-behavior claims. |
@@ -81,6 +84,6 @@ Implement only the smallest active-inference self-model slice needed to exercise
 
 ## Evidence Ledger Summary
 
-- total entries: `13`
+- total entries: `14`
 - highest entry: `mvp16_controlled_completion_current` / `E5` / `pass`
 

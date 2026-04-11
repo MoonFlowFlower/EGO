@@ -48,6 +48,7 @@ def test_mvs_contract_stays_frozen() -> None:
     assert contract["baseline_a_id"] == "mvs_baseline_proto_self_mainline"
     assert contract["baseline_b_id"] == "baseline_chat_surface"
     assert contract["candidate_id"] == "mvs_candidate_aligned_compact"
+    assert contract["challenger_id"] == "mvs_challenger_active_inference_self_model"
     assert contract["ablation_ids"] == [
         "mvs_minus_counterfactual_writeback",
         "mvs_minus_viability_pressure",

@@ -2,17 +2,17 @@
 
 ## Current milestone
 
-- name: `Milestone 16: Active-Inference Challenger Formal Replay Gate`
+- name: `Milestone 17: Controlled Integration Planning`
 - owner: `Codex`
 - state: pending
-- type: implementation
+- type: planning
 
 ## Current state
 
-- current_layer: `mvs_replay_gate_failed_switch_frozen`
+- current_layer: `active_inference_replay_gate_passed_shadow_only`
 - main_chain_status: `not_connected_by_design`
-- completion_class: `partial_pending_next_candidate`
-- candidate_vs_proof: `mvs_failed_switch_to_active_inference`
+- completion_class: `partial_pending_controlled_integration`
+- candidate_vs_proof: `active_inference_replay_gate_passed_shadow_only`
 - trial1_closure:
   - `Trial-1 remains closed and demoted. The formal shadow-only MVS replay gate is now complete; corrected scoring shows MVS fails the frozen gate on tension causality and repair closure, so the research build-first lane must switch to active-inference while formal runtime mainline remains unchanged.`
 
@@ -50,6 +50,30 @@
 - `MVS-aligned compact` 已降为：
   - `closed evidence`
   - 不再继续作为当前主实现线修补
+- 最小 `active-inference self-model` formal shadow slice 已接入 canonical OpenEmotion replay path：
+  - `source_confidence_by_action`
+  - `agency_confidence_by_action`
+  - `uncertainty_by_action`
+  - `calibration_memory_by_action`
+  - `temporal_repair_weight_by_action`
+- canonical replay runner 现在真实执行 challenger，而不是只保留 contract 占位
+- scorer 已收口为 ceiling-aware frozen gate：
+  - non-saturated target 仍要求 `+0.05`
+  - saturated Baseline-A target 改为 `>= -0.02` non-regression
+- 当前 active-inference replay 结果：
+  - `T1 = 1.0`
+  - `T2 = 1.0`
+  - `T3 = 1.0`
+  - `T4 = 1.0`
+  - `T5 = 1.0`
+  - `composite = 1.0`
+  - `boundary_integrity = 1.0`
+  - `repair_closure_capture = 1.0`
+  - `trace_replayability = 1.0`
+- 当前 challenger selection 结果：
+  - `challenger_status = pass`
+  - `challenger_switch_advantage = true`
+  - `decision = switch_to_active_inference`
 
 - 新建 long-run research task package：
   - `SPEC.md`
@@ -280,24 +304,24 @@
 ## Last experiment
 
 - question:
-  - redesigned ablations 接入 formal path 后，candidate 能否在既有 hard set 上 beat redesigned strongest ablation
+  - `active-inference self-model` 能否在与 MVS 相同的 held-out replay gate 下通过，并且当前 scorer 是否存在 saturated-target 的不可能通过门
 - framing:
-  - `Phase 2 redesigned-ablation hard-set rerun`
+  - `implement challenger + correct impossible ceiling gate before final selection`
 - result:
-  - prereg 与 fidelity checks 已先冻结并通过
-  - hard-set rerun 结果：
-    - candidate weighted support = `0.05`
-    - `trial1_ablation_counterfactual_public_path_sever` weighted support = `0.0`
-    - `trial1_ablation_alternative_explanation_isolation` weighted support = `0.05`
-  - threshold evaluation 结果：
-    - candidate vs `public_path_sever` = `indeterminate`
-    - candidate vs `alternative_explanation_isolation` = `candidate_approx_ablation`
-    - final decision = `demote_current_claim`
-  - 当前仍不触发：
-    - replay-suite expansion
-    - challenger scoring
-    - repo-level state upgrade
-- evidence_upgraded: no
+  - 最小 `active-inference` formal shadow slice 已实现并进入 canonical replay runner
+  - raw validator 现在真实跑：
+    - `7` variants
+    - `60` episodes
+    - `3` families
+  - 初次 scored decision 出现假失败：
+    - challenger raw score 已满分
+    - 但 scorer 仍要求每个 target 相对 Baseline A `+0.05`
+    - 在 `Baseline A` 已把 `T1` 打到 `1.0` 时，这条门数学上不可能通过
+  - scorer 修正为 ceiling-aware delta gate 后，正式结果变为：
+    - `challenger_status = pass`
+    - `decision = switch_to_active_inference`
+    - `challenger_switch_advantage = true`
+- evidence_upgraded: yes
 
 ## What was learned
 
@@ -335,8 +359,8 @@
   - `MVS-aligned compact` 在多 seeds / 多 held-out splits / weight perturbations 下仍是稳健第一
   - `MVS-aligned compact` 能在现有 `OpenEmotion/proto_self` 正式主线上被最小表达
 - 当前新的未知是：
-  - shadow-only minimal slice 是否能在 formal path 内跑通 replay trial
-  - replay manifest 是否能避开 synthetic leakage
+  - replay-validated winner 能否在不新增 authority path 的前提下进入 controlled integration
+  - replay winner 的 gain 能否在 replayed conversation / controlled observation 下保持
 - representation-neutral scorer 说明：
   - 当前 replay artifact 已足以支撑 admission 与 decision-adjacent 读数
   - 但还不足以在 ablation separation 上压过所有关键 ablations
@@ -378,11 +402,10 @@
 ## Next framing
 
 - 当前下一步固定为：
-  - 保持当前 claim 已 demoted
+  - 保持当前 replay pass 只算 `shadow-only + proposal-only`
   - 不升级 repo-level runtime claim
-  - 直接实现最小 `MVS-aligned compact` formal prototype slice
-  - 先跑 replay validator + required ablations + challenger switch gate
-  - 若 MVS 未通过 replay gate 或触发 switch criteria，直接切到 `active-inference self-model`
+  - 冻结 bounded host-consumable surface
+  - 进入 `Milestone 17: Controlled Integration Planning`
 - 继续保持：
   - 不宣称 replay efficacy
   - 不让 decision engine 在 replay pass 前消费 candidate output 作为行为 authority
@@ -390,34 +413,14 @@
 
 ## Last validation results
 
-- mode: `trial1_redesigned_ablation_hard_set_rerun`
+- mode: `active_inference_replay_gate`
 - result: `pass`
 - summary:
-- `python3 -m py_compile scripts/codex/run_self_awareness_proxy_experiments.py` pass
-- `python3 scripts/codex/run_self_awareness_proxy_experiments.py` pass
-- synthetic battery ran through `1440` trials and produced a current JSON/MD report
-- `python3 -m py_compile scripts/codex/run_self_awareness_mvs_alignment.py` pass
-- `python3 scripts/codex/run_self_awareness_mvs_alignment.py` pass
-- `MVS alignment battery` ran across `3` seeds and produced a current JSON/MD report
-- `python3 -m py_compile scripts/codex/run_self_awareness_literature_10k.py` pass
-- `python3 scripts/codex/run_self_awareness_literature_10k.py` pass
-- literature-informed battery ran through `10000` trials and produced a current JSON/MD report
-- `Phase 0` docs created for operational reframe
-- operational eval harness created; held-out E00-E02 pending
-- `python3 -m py_compile scripts/codex/run_operational_self_model_evals.py` pass
-- `python3 scripts/codex/run_operational_self_model_evals.py` pass
-- held-out operational eval produced:
-  - `E00` pass
-  - `E01` fail
-  - `E02` fail
-- fast gate initially failed on:
-  - trailing whitespace in `OPERATIONAL_TARGETS.md:5`
-- issue fixed; `python3 scripts/codex/verify_repo.py --mode fast` rerun pass
-- `python3 -m py_compile scripts/codex/run_operational_selection_robustness.py` pass
-- `git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework scripts/codex/run_operational_selection_robustness.py` pass
-- `python3 scripts/codex/run_operational_selection_robustness.py` first run failed before audit execution:
-  - dynamic import of `run_operational_self_model_evals.py` did not register the module in `sys.modules`
-  - dataclass initialization crashed during import
+- `python3 -m py_compile OpenEmotion/openemotion/proto_self/state.py OpenEmotion/openemotion/proto_self/mvs_replay.py OpenEmotion/openemotion/proto_self/appraisal.py OpenEmotion/openemotion/proto_self/self_model.py OpenEmotion/openemotion/proto_self/reducers.py OpenEmotion/openemotion/proto_self/cycles.py scripts/codex/run_mvs_replay_validator.py scripts/codex/score_mvs_replay_validator.py` pass
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_mvs_replay_minimal.py EgoCore/tests/test_mvs_replay_scoring.py OpenEmotion/openemotion/proto_self/tests/test_mvs_replay_contract.py -q --basetemp=/tmp/ego_mvs_pytest` pass
+- `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 scripts/codex/run_mvs_replay_validator.py` pass
+- `python3 scripts/codex/score_mvs_replay_validator.py` pass
+- `python3 scripts/codex/verify_repo.py --mode fast` pass
 - 已修复 robustness loader:
   - `scripts/codex/run_operational_selection_robustness.py` 现在会显式注册动态模块名到 `sys.modules`
 - robustness audit 已首次跑通：

@@ -662,12 +662,48 @@
 - rollback note:
   - 若实现试图引入第二 authority path，立即回退
 
+### Milestone 17: Controlled Integration Planning
+
+- type: planning
+- question:
+  - 在 active-inference 已通过同一 held-out replay gate 后，如何把它收成不新增 authority source 的 bounded integration plan
+- current framing:
+  - replay winner 已确定
+  - 现在不再比较候选，而是冻结 host-consumable surface 与 controlled observation bridge
+- hypotheses:
+  - `policy_hint + response_tendency + trace_payload` 已足够作为当前 shadow-only integration surface
+  - 若 integration 还要求新的 direct behavior authority，则当前 winner 仍不能升级
+- scope:
+  - 冻结 bounded host contract
+  - 冻结 replay-to-controlled-observation bridge
+  - 明确下一轮 evidence 升级条件
+- experiments planned:
+  - contract freeze
+  - observation bridge design
+  - authority drift audit
+- kill criteria:
+  - 若 integration plan 只能靠新增 authority path 或 parallel runtime lane 才成立，则必须停下重构 framing
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `docs/PROGRAM_STATE_UNIFIED.yaml`
+  - `docs/OVERALL_PROGRESS.md`
+  - `artifacts/evidence_ledger/index.yaml`
+- acceptance:
+  - 明确回答：
+    - replay winner 能以什么 surface 进入 controlled integration
+    - 哪些边界仍然不能放开
+    - 下一轮 observation gate 如何定义
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 planning 试图偷渡 runtime authority 或重开第三条候选线，立即回退
+
 ## Progress
 
-- current_status: `active_inference_formal_replay_gate_pending`
-- current_milestone: `Milestone 16: Active-Inference Challenger Formal Replay Gate`
+- current_status: `active_inference_replay_gate_passed_shadow_only`
+- current_milestone: `Milestone 17: Controlled Integration Planning`
 - milestone_state: `pending`
-- candidate_vs_proof: `candidate_found`
+- candidate_vs_proof: `active_inference_replay_gate_passed_shadow_only`
 
 ## Decision log
 
@@ -830,6 +866,24 @@
 - 2026-04-11: 进入 `Milestone 16`：
   - `active-inference self-model` 升为新的 sole build-first candidate
   - 下一步只实现最小 `active-inference` formal shadow slice，并复用同一 replay gate
+- 2026-04-11: `Milestone 16` 已完成：
+  - 最小 `active-inference` formal shadow slice 已接入 canonical OpenEmotion replay path
+  - canonical replay runner 现在真实执行 challenger，而不再只保留 contract 占位
+  - held-out replay validator 结果：
+    - `T1 = 1.0`
+    - `T2 = 1.0`
+    - `T3 = 1.0`
+    - `T4 = 1.0`
+    - `T5 = 1.0`
+    - `composite = 1.0`
+    - `boundary_integrity = 1.0`
+    - `repair_closure_capture = 1.0`
+    - `trace_replayability = 1.0`
+  - scorer 已收口为 ceiling-aware target-delta gate：
+    - non-saturated target 仍要求 `+0.05`
+    - saturated Baseline-A target 改为 `>= -0.02` non-regression
+  - 当前 selection decision = `switch_to_active_inference`
+  - 下一步进入 `Milestone 17: Controlled Integration Planning`
 
 ## Surprises / discoveries
 

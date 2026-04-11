@@ -71,6 +71,11 @@ class SelfModel:
     boundary_confidence_by_action: Dict[str, float] = field(default_factory=dict)
     world_assumption_confidence: Dict[str, float] = field(default_factory=dict)
     recent_correction_tags: Dict[str, float] = field(default_factory=dict)
+    source_confidence_by_action: Dict[str, float] = field(default_factory=dict)
+    agency_confidence_by_action: Dict[str, float] = field(default_factory=dict)
+    uncertainty_by_action: Dict[str, float] = field(default_factory=dict)
+    calibration_memory_by_action: Dict[str, float] = field(default_factory=dict)
+    temporal_repair_weight_by_action: Dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -83,6 +88,11 @@ class SelfModel:
             "boundary_confidence_by_action": self.boundary_confidence_by_action,
             "world_assumption_confidence": self.world_assumption_confidence,
             "recent_correction_tags": self.recent_correction_tags,
+            "source_confidence_by_action": self.source_confidence_by_action,
+            "agency_confidence_by_action": self.agency_confidence_by_action,
+            "uncertainty_by_action": self.uncertainty_by_action,
+            "calibration_memory_by_action": self.calibration_memory_by_action,
+            "temporal_repair_weight_by_action": self.temporal_repair_weight_by_action,
         }
 
     @classmethod
@@ -97,6 +107,11 @@ class SelfModel:
             boundary_confidence_by_action=data.get("boundary_confidence_by_action", {}),
             world_assumption_confidence=data.get("world_assumption_confidence", {}),
             recent_correction_tags=data.get("recent_correction_tags", {}),
+            source_confidence_by_action=data.get("source_confidence_by_action", {}),
+            agency_confidence_by_action=data.get("agency_confidence_by_action", {}),
+            uncertainty_by_action=data.get("uncertainty_by_action", {}),
+            calibration_memory_by_action=data.get("calibration_memory_by_action", {}),
+            temporal_repair_weight_by_action=data.get("temporal_repair_weight_by_action", {}),
         )
 
 

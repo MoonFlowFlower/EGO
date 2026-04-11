@@ -287,6 +287,7 @@ def mvs_variant_uses_counterfactual(variant_id: str) -> bool:
     normalized = normalize_mvs_variant_id(variant_id)
     return normalized in {
         MVS_CANDIDATE_ID,
+        MVS_CHALLENGER_ID,
         MVS_ABLATION_MINUS_VIABILITY_ID,
         MVS_ABLATION_MINUS_CORRECTIVE_TRACE_ID,
         MVS_ABLATION_MINUS_BOUNDARY_ID,
@@ -302,6 +303,7 @@ def mvs_variant_uses_viability(variant_id: str) -> bool:
     normalized = normalize_mvs_variant_id(variant_id)
     return normalized in {
         MVS_CANDIDATE_ID,
+        MVS_CHALLENGER_ID,
         MVS_ABLATION_MINUS_COUNTERFACTUAL_ID,
         MVS_ABLATION_MINUS_CORRECTIVE_TRACE_ID,
         MVS_ABLATION_MINUS_BOUNDARY_ID,
@@ -315,6 +317,7 @@ def mvs_variant_uses_corrective_trace(variant_id: str) -> bool:
     normalized = normalize_mvs_variant_id(variant_id)
     return normalized in {
         MVS_CANDIDATE_ID,
+        MVS_CHALLENGER_ID,
         MVS_ABLATION_MINUS_COUNTERFACTUAL_ID,
         MVS_ABLATION_MINUS_VIABILITY_ID,
         MVS_ABLATION_MINUS_BOUNDARY_ID,
@@ -328,6 +331,7 @@ def mvs_variant_uses_boundary_confidence(variant_id: str) -> bool:
     normalized = normalize_mvs_variant_id(variant_id)
     return normalized in {
         MVS_CANDIDATE_ID,
+        MVS_CHALLENGER_ID,
         MVS_ABLATION_MINUS_COUNTERFACTUAL_ID,
         MVS_ABLATION_MINUS_VIABILITY_ID,
         MVS_ABLATION_MINUS_CORRECTIVE_TRACE_ID,
@@ -338,11 +342,16 @@ def mvs_variant_uses_mvs_core(variant_id: str) -> bool:
     normalized = normalize_mvs_variant_id(variant_id)
     return normalized in {
         MVS_CANDIDATE_ID,
+        MVS_CHALLENGER_ID,
         MVS_ABLATION_MINUS_COUNTERFACTUAL_ID,
         MVS_ABLATION_MINUS_VIABILITY_ID,
         MVS_ABLATION_MINUS_CORRECTIVE_TRACE_ID,
         MVS_ABLATION_MINUS_BOUNDARY_ID,
     } or variant_id in LEGACY_DIAGNOSTIC_VARIANT_IDS
+
+
+def mvs_variant_uses_active_inference_core(variant_id: str) -> bool:
+    return normalize_mvs_variant_id(variant_id) == MVS_CHALLENGER_ID
 
 
 def mvs_variant_uses_counterfactual_public_path(variant_id: str) -> bool:

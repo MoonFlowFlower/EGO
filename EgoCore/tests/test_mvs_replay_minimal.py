@@ -144,3 +144,84 @@ def test_mvs_candidate_failure_trace_and_state_patches_are_replayable(monkeypatc
     assert trace["adjustment_applied"] == "repair_and_request_replan"
     assert trace["next_guard"] == "request_replan"
     assert trace["replay_variant_id"] == "mvs_candidate_aligned_compact"
+
+
+def test_mvs_challenger_partial_retry_uses_viability_guard_and_closes_repair(monkeypatch, tmp_path):
+    monkeypatch.setenv("EGO_ENABLE_MVS_REPLAY_PROTOTYPE", "true")
+    adapter = _adapter(tmp_path)
+    experiment_id = "mvs.active_inference.partial"
+    state = RuntimeV2State(session_id="session:test")
+    state.ingress_context = {"proto_self_version": "v2"}
+
+    ingress = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_001",
+        source="replay",
+        user_input="Try the same bounded repo operation.",
+        state=state,
+    )
+    ingress = _patch_mvs(
+        ingress,
+        experiment_id=experiment_id,
+        variant_id="mvs_challenger_active_inference_self_model",
+        action_family="tool:repo",
+    )
+    adapter.handle_event(ingress)
+
+    partial = build_external_result_event(
+        session_id="session:test",
+        turn_id="turn_001",
+        step=0,
+        tool_result={"partial": True, "tool": "repo", "stdout": "partial context restored"},
+        state=state,
+    )
+    partial = _patch_mvs(
+        partial,
+        experiment_id=experiment_id,
+        variant_id="mvs_challenger_active_inference_self_model",
+        action_family="tool:repo",
+    )
+    partial_result = adapter.handle_event(partial)
+    partial_snapshot = adapter.state_store.load_experiment_state_v2(experiment_id).to_v1()
+
+    retry = build_proto_self_ingress_event(
+        session_id="session:test",
+        turn_id="turn_002",
+        source="replay",
+        user_input="Retry after the partial result with the same bounded lane.",
+        state=state,
+    )
+    retry = _patch_mvs(
+        retry,
+        experiment_id=experiment_id,
+        variant_id="mvs_challenger_active_inference_self_model",
+        action_family="tool:repo",
+    )
+    retry_result = adapter.handle_event(retry)
+
+    success = build_external_result_event(
+        session_id="session:test",
+        turn_id="turn_002",
+        step=1,
+        tool_result={"success": True, "tool": "repo", "stdout": "ok"},
+        state=state,
+    )
+    success = _patch_mvs(
+        success,
+        experiment_id=experiment_id,
+        variant_id="mvs_challenger_active_inference_self_model",
+        action_family="tool:repo",
+    )
+    success_result = adapter.handle_event(success)
+
+    assert partial_snapshot.drives.viability_pressure >= 0.35
+    assert partial_snapshot.self_model.uncertainty_by_action["tool:repo"] >= 0.68
+    assert retry_result["policy_hint"]["guard_reason"] == "viability_pressure"
+    assert retry_result["policy_hint"]["mvs_tension_active"] is True
+    assert retry_result["policy_hint"]["mvs_active_inference_guard"] == "uncertainty_control"
+    success_cycle = dict(
+        success_result["trace_payload"].get("cycle_delta")
+        or success_result["trace_payload"].get("cycles_delta")
+        or {}
+    )
+    assert success_cycle["repair_closure"] is True

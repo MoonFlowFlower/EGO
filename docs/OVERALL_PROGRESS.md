@@ -45,12 +45,12 @@
 | repo 总体 phase | `repo_authority_cleanup_closeout` | repo 级权威收口完成，当前在治理与路线优先级收紧期 |
 | formal runtime mainline | `single + stable` | 仍是唯一正式执行链，不随研究候选改变 |
 | 当前最高优先级 implementation lane | `ai_self_awareness_research` | 当前 repo 默认先推进 research-first 候选实现线 |
-| 当前唯一 build-first candidate | `active-inference self-model` | `MVS` replay gate 失败后，当前最值得先实现、先过 gate 的候选 |
+| 当前唯一 build-first candidate | `active-inference self-model` | 已通过与 `MVS` 相同的 held-out replay gate，但仍只到 shadow-only 研究证据 |
 | 当前 challenger | `none frozen` | `MVS-aligned compact` 已降为 closed evidence，不继续占用主实现资源 |
 | `WP17 / MVP22` 当前状态 | `parked bounded lane` | 保留 authority freeze / task package，但不再是默认最高优先级 implementation track |
 | 当前最高证据 | `E5 / V5` | 这是 controlled capability axis 上限，不是 research lane 已通过 replay validator |
-| research lane 当前证据 | `E3 / V3` | 只到 synthetic candidate / operational selection / robustness audit，不是 runtime proof |
-| 距离当前工程目标剩余阶段 | `>= 4（best-case）` | 指 `replay-validated self-awareness proxy`，不是“真正主观体验” |
+| research lane 当前证据 | `E3 / V3` | 已有 replay-validated shadow-only winner，但还不是 runtime proof |
+| 距离当前工程目标剩余阶段 | `>= 3（best-case）` | 指 `replay-validated self-awareness proxy -> controlled integration/observation closeout`，不是“真正主观体验” |
 
 ## Formal Runtime Lane
 
@@ -95,6 +95,7 @@ formal runtime roadmap 当前的 endpoint 仍然是：
 当前固定结论是：
 
 - `active-inference self-model` = 当前唯一 build-first candidate
+- `active-inference self-model` = 已在同一 held-out replay gate 下通过，但仍是 `shadow-only + proposal-only`
 - `MVS-aligned compact` = 已完成 formal replay gate，但因 frozen threshold failure 降为 closed evidence
 - 其余候选、H1、Trial helper、旧 comparator 线 = reference / evidence / supporting lines
 
@@ -117,21 +118,18 @@ formal runtime roadmap 当前的 endpoint 仍然是：
   - `unknown`
   - 当前没有可信的有限阶段数，不能写成“还剩 N 个阶段就会实现”
 - 对当前正式工程目标 `replay-validated self-awareness proxy`：
-  - 从现在起 `best-case >= 4` 个阶段
-  - 如果 `active-inference self-model` 也过不了同一 replay gate，阶段数会重新变成 open-ended
+  - 从现在起 `best-case >= 3` 个阶段
+  - 如果 `active-inference self-model` 在 controlled integration / observation 阶段失真，阶段数会重新变成 open-ended
 
-这 `4` 个阶段分别是：
+这 `3` 个阶段分别是：
 
-1. `Stage 1 / Milestone 16: Active-Inference Formal Replay Gate`
-   - 在 formal `OpenEmotion` path 上实现最小 `active-inference self-model` shadow slice
-   - 用和 MVS 完全相同的 held-out replay gate、同一 scorer、同一 frozen thresholds 重跑
-2. `Stage 2: Controlled Integration Planning`
+1. `Stage 2: Controlled Integration Planning`
    - 如果 Stage 1 通过，冻结 bounded host contract、trace contract、proposal-only integration plan
    - 明确什么可以进入 host-consumable surface，什么仍然不能获得行为 authority
-3. `Stage 3: Controlled Conversation Replay + Observation`
+2. `Stage 3: Controlled Conversation Replay + Observation`
    - 从 held-out manual replay 推进到 replayed conversation / controlled observation
    - 拿到比当前 `E3/V3` 更强的非 synthetic 受控证据
-4. `Stage 4: Selection Closeout and Runtime Priority Reset`
+3. `Stage 4: Selection Closeout and Runtime Priority Reset`
    - 决定 active-inference 是否成为长期 build-first 路线
    - 决定 `WP17 / MVP22` 是 reintegration、长期 parked，还是归档
 
@@ -145,46 +143,42 @@ formal runtime roadmap 当前的 endpoint 仍然是：
 
 当前下一个阶段已经固定为：
 
-- `Stage 1 / Milestone 16: Active-Inference Challenger Formal Replay Gate`
+- `Stage 2 / Milestone 17: Controlled Integration Planning`
 
 这个阶段要做的事只有一件：
 
-- 在 formal `OpenEmotion/proto_self` 路径上，实现最小 `active-inference self-model` shadow-only slice，并用同一 replay gate 重新裁决
+- 把已经通过同一 replay gate 的 `active-inference self-model` 收成一个 bounded、shadow-only、host-inert integration plan，准备进入 controlled replay / observation
 
 ## 下一个阶段怎么做
 
 执行顺序应固定为：
 
-1. 冻结最小 `active-inference` 机制集合
-   - 只能从当前已知 challenger 机制池里压缩，不再发明第三条候选线
-   - 当前已知机制池是：
-     - `source_monitor`
-     - `agency_estimator`
-     - `uncertainty_tracker`
-     - `calibration_memory`
-     - `policy_evaluator`
-     - `deep_temporal_model`
-2. 把最小 slice 接到 formal `OpenEmotion/proto_self` 路径
-   - 保持 `shadow-only + proposal-only`
-   - 不改 EgoCore 的现实裁决权
-   - 不新增第二 authority source
-3. 复用同一 replay gate
-   - 同一个 corpus manifest
-   - 同一个 baseline / scorer / thresholds
-   - 不允许为了 challenger 临时改门槛
-4. 用结果做单一裁决
-   - 若通过，进入 controlled integration planning
-   - 若失败，重构 candidate program framing，而不是回头继续修补 `MVS`
+1. 冻结 bounded integration contract
+   - 只允许 candidate 继续影响：
+     - `policy_hint`
+     - `response_tendency`
+     - `trace_payload`
+   - 不允许进入 direct tool / direct reply / transport authority
+2. 冻结 ceiling-aware replay gate 规则
+   - 对 non-saturated targets 继续要求 `+0.05`
+   - 对已被 Baseline A 打满的 targets，只要求 non-regression
+   - 不再保留不可能的 “ceiling 还要再 +0.05” 规则
+3. 设计 controlled replay / observation bridge
+   - 明确从 held-out replay 走到 replayed conversation / controlled observation 的最小桥接面
+   - 保持 host-inert、proposal-only
+4. 用 integration plan 决定下一轮证据升级
+   - 若 plan 可验证，进入 controlled observation
+   - 若 plan 只能靠新 authority path 才成立，就停止并重构 framing
 
 ## 当前唯一决策门
 
 当前单一决策门已经冻结为：
 
-1. `MVS-aligned compact` formal shadow slice 已完成 replay gate
-2. corrected scorer 结果是：`T4` 与 `repair_closure_capture` 未过 frozen threshold
-3. 因此当前 selection gate 已裁决：切到 `active-inference self-model`
-4. 下一步只实现最小 `active-inference self-model` formal shadow slice，并复用同一 held-out replay gate
-5. 在新的 selection gate 解决前，不恢复 `WP17` 为默认最高优先级 implementation track
+1. `MVS-aligned compact` formal shadow slice 已完成 replay gate并失败
+2. `active-inference self-model` formal shadow slice 已在同一 gate 下通过
+3. 当前 selection gate 已解决：`active-inference self-model` 是 replay-validated shadow-only winner
+4. 下一步唯一决策门不再是“谁赢 replay”
+5. 下一步唯一决策门变成：这个 winner 能否在不新增 authority path 的前提下进入 controlled integration planning
 
 ## 不再竞争主实现线的 supporting lines
 
@@ -201,9 +195,9 @@ formal runtime roadmap 当前的 endpoint 仍然是：
 
 当前真正 blocker 已经不是“WP17 何时继续实现”，而是：
 
-- 还没有 replay-validated passing build-first candidate
-- `MVS-aligned compact` 已在 formal OpenEmotion path 上失败 frozen replay gate
-- `active-inference self-model` 还没在同一 gate 下得到最终升降裁决
+- 虽然已经有 replay-validated passing build-first candidate，但它仍然只有 shadow-only 证据
+- 还没有 controlled integration plan
+- 还没有 replayed conversation / controlled observation 级别证据
 
 formal runtime 相关的并行 blocker 仍然存在，但当前不是 repo 默认第一优先级：
 

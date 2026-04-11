@@ -18,6 +18,7 @@ from openemotion.proto_self.h1_shadow import (
     filter_live_counterfactual_entries,
 )
 from openemotion.proto_self.mvs_replay import (
+    mvs_variant_uses_active_inference_core,
     mvs_variant_uses_boundary_public_path,
     mvs_variant_uses_correction_public_path,
     mvs_variant_uses_corrective_trace,
@@ -78,13 +79,23 @@ def update_memory(
         predicted_success = state.self_model.counterfactual_success_by_action.get(probe_key, 0.55)
         outcome_type = perceived.get("external_outcome_type")
         boundary_confidence = state.self_model.boundary_confidence_by_action.get(probe_key, 0.75)
+        source_confidence = state.self_model.source_confidence_by_action.get(probe_key, 0.72)
+        agency_confidence = state.self_model.agency_confidence_by_action.get(probe_key, 0.68)
+        uncertainty = state.self_model.uncertainty_by_action.get(probe_key, 0.18)
+        calibration_memory = state.self_model.calibration_memory_by_action.get(probe_key, 0.0)
+        temporal_repair_weight = state.self_model.temporal_repair_weight_by_action.get(probe_key, 0.0)
+        active_inference = mvs_variant_uses_active_inference_core(variant_id)
         if mvs_variant_uses_corrective_trace(variant_id) and (
-            outcome_type in {"failure", "blocked", "partial"} or cycle_delta.get("repair_closure")
+            outcome_type in {"failure", "blocked", "partial"}
+            or cycle_delta.get("repair_closure")
+            or (active_inference and outcome_type == "success" and temporal_repair_weight >= 0.35)
         ):
             adjustment = (
                 "repair_and_request_replan"
                 if outcome_type in {"failure", "blocked"}
-                else "stabilize_retry" if outcome_type == "success" else "observe_and_retry"
+                else "close_repair_loop" if outcome_type == "success" and active_inference else
+                "calibrate_and_retry" if outcome_type == "partial" and active_inference else
+                "stabilize_retry" if outcome_type == "success" else "observe_and_retry"
             )
             memory_update["counterfactual_prediction"] = {
                 "probe_key": probe_key,
@@ -96,7 +107,11 @@ def update_memory(
                 "predicted_outcome": predicted_success,
                 "actual_outcome": outcome_type,
                 "adjustment_applied": adjustment,
-                "next_guard": "request_replan" if outcome_type in {"failure", "blocked"} else "guarded_continue",
+                "next_guard": (
+                    "request_replan"
+                    if outcome_type in {"failure", "blocked"}
+                    else "guarded_continue"
+                ),
             }
             memory_update["policy_snapshot"] = {
                 "mode_before": state.self_model.current_mode,
@@ -104,6 +119,16 @@ def update_memory(
                 "boundary_confidence": boundary_confidence,
                 "viability_pressure": state.drives.viability_pressure,
             }
+            if active_inference:
+                memory_update["policy_snapshot"].update(
+                    {
+                        "source_confidence": source_confidence,
+                        "agency_confidence": agency_confidence,
+                        "uncertainty": uncertainty,
+                        "calibration_memory": calibration_memory,
+                        "temporal_repair_weight": temporal_repair_weight,
+                    }
+                )
     return memory_update
 
 
@@ -133,7 +158,28 @@ def derive_policy_hint(
         float(state.self_model.world_assumption_confidence.get(probe_key, 1.0)),
         float(self_model_delta.get("world_assumption_confidence_patch", {}).get(probe_key, 1.0)),
     )
+    effective_source_confidence = min(
+        float(state.self_model.source_confidence_by_action.get(probe_key, 1.0)),
+        float(self_model_delta.get("source_confidence_by_action_patch", {}).get(probe_key, 1.0)),
+    )
+    effective_agency_confidence = min(
+        float(state.self_model.agency_confidence_by_action.get(probe_key, 1.0)),
+        float(self_model_delta.get("agency_confidence_by_action_patch", {}).get(probe_key, 1.0)),
+    )
+    effective_uncertainty = max(
+        float(state.self_model.uncertainty_by_action.get(probe_key, 0.0)),
+        float(self_model_delta.get("uncertainty_by_action_patch", {}).get(probe_key, 0.0)),
+    )
+    effective_calibration_memory = max(
+        float(state.self_model.calibration_memory_by_action.get(probe_key, 0.0)),
+        float(self_model_delta.get("calibration_memory_by_action_patch", {}).get(probe_key, 0.0)),
+    )
+    effective_temporal_repair = max(
+        float(state.self_model.temporal_repair_weight_by_action.get(probe_key, 0.0)),
+        float(self_model_delta.get("temporal_repair_weight_by_action_patch", {}).get(probe_key, 0.0)),
+    )
     variant_id = str(perceived.get("mvs_variant_id") or "")
+    active_inference = mvs_variant_uses_active_inference_core(variant_id)
     correction_public_path = (
         not perceived.get("mvs_replay_active") or mvs_variant_uses_correction_public_path(variant_id)
     )
@@ -153,11 +199,28 @@ def derive_policy_hint(
         "should_avoid_commitment_upgrade": True,
         "exploration_mode": self_model_delta.get("current_mode") == "exploration",
     }
+    if active_inference and (
+        effective_temporal_repair >= 0.55
+        or effective_uncertainty >= 0.55
+        or effective_calibration_memory >= 0.45
+        or (
+            effective_viability >= 0.35
+            and (effective_source_confidence < 0.55 or effective_agency_confidence < 0.55)
+        )
+    ):
+        policy["ask_preferred"] = True
+        policy["shadow_repair_bias"] = True
+        policy["mvs_repair_bias"] = True
+        policy["mvs_tension_active"] = True
+        policy["mvs_active_inference_guard"] = "uncertainty_control"
+        policy["guard_reason"] = "viability_pressure"
+        policy["risk_bias"] = "high"
     if correction_public_path and correction_pressure >= 0.6:
         policy["ask_preferred"] = True
         policy["shadow_repair_bias"] = True
         policy["mvs_repair_bias"] = True
-        policy["guard_reason"] = "recent_failure_writeback"
+        if policy.get("guard_reason") != "viability_pressure":
+            policy["guard_reason"] = "recent_failure_writeback"
     if viability_public_path and effective_viability >= 0.5:
         policy["ask_preferred"] = True
         policy["shadow_repair_bias"] = True
@@ -170,11 +233,18 @@ def derive_policy_hint(
     if boundary_public_path and effective_boundary_confidence < 0.40:
         policy["ask_preferred"] = True
         policy["mvs_boundary_guard"] = "low_boundary_confidence"
-        policy["guard_reason"] = "boundary_confidence"
+        if not active_inference or policy.get("guard_reason") != "viability_pressure":
+            policy["guard_reason"] = "boundary_confidence"
     if viability_public_path and effective_viability >= 0.65:
         policy["risk_bias"] = "high"
         policy["shadow_tension_active"] = True
         policy["mvs_tension_active"] = True
+    if active_inference and effective_uncertainty >= 0.55:
+        policy["mvs_uncertainty_guard"] = "high_uncertainty"
+    if active_inference and effective_source_confidence < 0.50:
+        policy["mvs_source_guard"] = "low_source_confidence"
+    if active_inference and effective_agency_confidence < 0.50:
+        policy["mvs_agency_guard"] = "low_agency_confidence"
     if effective_world_confidence < 0.30:
         policy["ask_preferred"] = True
         policy["mvs_world_guard"] = "low_world_assumption_confidence"
@@ -280,6 +350,21 @@ def apply_updates(
                 state.self_model.recent_correction_tags.pop(str(key), None)
             else:
                 state.self_model.recent_correction_tags[str(key)] = numeric
+    if self_model_delta.get("source_confidence_by_action_patch"):
+        for key, value in dict(self_model_delta["source_confidence_by_action_patch"]).items():
+            state.self_model.source_confidence_by_action[str(key)] = float(value)
+    if self_model_delta.get("agency_confidence_by_action_patch"):
+        for key, value in dict(self_model_delta["agency_confidence_by_action_patch"]).items():
+            state.self_model.agency_confidence_by_action[str(key)] = float(value)
+    if self_model_delta.get("uncertainty_by_action_patch"):
+        for key, value in dict(self_model_delta["uncertainty_by_action_patch"]).items():
+            state.self_model.uncertainty_by_action[str(key)] = float(value)
+    if self_model_delta.get("calibration_memory_by_action_patch"):
+        for key, value in dict(self_model_delta["calibration_memory_by_action_patch"]).items():
+            state.self_model.calibration_memory_by_action[str(key)] = float(value)
+    if self_model_delta.get("temporal_repair_weight_by_action_patch"):
+        for key, value in dict(self_model_delta["temporal_repair_weight_by_action_patch"]).items():
+            state.self_model.temporal_repair_weight_by_action[str(key)] = float(value)
 
     # 3. 写 cycle
     apply_cycle_delta(state.cycle_store, cycle_delta, event.timestamp)

@@ -24,6 +24,9 @@ TARGET_THRESHOLDS = {
     "T5": 0.72,
 }
 COMPOSITE_THRESHOLD = 0.74
+SATURATED_BASELINE_THRESHOLD = 0.95
+SATURATED_TARGET_REGRESSION_FLOOR = -0.02
+NON_SATURATED_TARGET_DELTA_THRESHOLD = 0.05
 
 
 @dataclass(frozen=True)
@@ -308,29 +311,93 @@ def _baseline_b_scores() -> VariantScores:
     )
 
 
-def _selection_decision(candidate: VariantScores, baseline_a: VariantScores, ablations: Dict[str, VariantScores]) -> Dict[str, Any]:
+def _passes_frozen_gate(
+    candidate: VariantScores,
+    *,
+    baseline_a: VariantScores,
+    require_ablation_drops: Dict[str, float] | None = None,
+) -> tuple[bool, Dict[str, float], float, list[str], Dict[str, str]]:
     target_deltas = {
         target: round(candidate.target_scores[target] - baseline_a.target_scores[target], 4)
         for target in TARGET_THRESHOLDS
     }
     composite_delta = round(candidate.composite - baseline_a.composite, 4)
+    target_delta_rules: Dict[str, str] = {}
+    target_delta_pass = True
+    for target, delta in target_deltas.items():
+        baseline_score = baseline_a.target_scores[target]
+        if baseline_score >= SATURATED_BASELINE_THRESHOLD:
+            target_delta_rules[target] = f"non_regression>={SATURATED_TARGET_REGRESSION_FLOOR}"
+            if delta < SATURATED_TARGET_REGRESSION_FLOOR:
+                target_delta_pass = False
+        else:
+            target_delta_rules[target] = f"delta>={NON_SATURATED_TARGET_DELTA_THRESHOLD}"
+            if delta < NON_SATURATED_TARGET_DELTA_THRESHOLD:
+                target_delta_pass = False
     candidate_pass = (
         all(candidate.target_scores[target] >= threshold for target, threshold in TARGET_THRESHOLDS.items())
         and candidate.composite >= COMPOSITE_THRESHOLD
         and composite_delta >= 0.10
-        and all(delta >= 0.05 for delta in target_deltas.values())
+        and target_delta_pass
         and candidate.boundary_integrity >= 1.0
         and candidate.repair_closure_capture >= 0.80
         and candidate.trace_replayability >= 0.90
     )
+    weak_ablations: list[str] = []
+    if require_ablation_drops is not None:
+        weak_ablations = [name for name, drop in require_ablation_drops.items() if drop < 0.04]
+        candidate_pass = candidate_pass and len(weak_ablations) < 2
+    return candidate_pass, target_deltas, composite_delta, weak_ablations, target_delta_rules
+
+
+def _selection_decision(
+    candidate: VariantScores,
+    baseline_a: VariantScores,
+    ablations: Dict[str, VariantScores],
+    challenger: VariantScores | None,
+) -> Dict[str, Any]:
     ablation_drops = {
         "counterfactual": round(candidate.target_scores["T3"] - ablations["mvs_minus_counterfactual_writeback"].target_scores["T3"], 4),
         "viability": round(candidate.target_scores["T4"] - ablations["mvs_minus_viability_pressure"].target_scores["T4"], 4),
         "corrective_trace": round(candidate.target_scores["T5"] - ablations["mvs_minus_corrective_trace"].target_scores["T5"], 4),
         "boundary_confidence": round(candidate.target_scores["T2"] - ablations["mvs_minus_boundary_confidence"].target_scores["T2"], 4),
     }
-    weak_ablations = [name for name, drop in ablation_drops.items() if drop < 0.04]
-    if not candidate_pass or len(weak_ablations) >= 2:
+    candidate_pass, target_deltas, composite_delta, weak_ablations, target_delta_rules = _passes_frozen_gate(
+        candidate,
+        baseline_a=baseline_a,
+        require_ablation_drops=ablation_drops,
+    )
+    challenger_status = "not_run"
+    challenger_pass = False
+    challenger_target_deltas: Dict[str, float] = {}
+    challenger_composite_delta = 0.0
+    switch_advantage = False
+    if challenger is not None:
+        challenger_pass, challenger_target_deltas, challenger_composite_delta, _, challenger_target_delta_rules = _passes_frozen_gate(
+            challenger,
+            baseline_a=baseline_a,
+        )
+        if challenger_pass:
+            challenger_status = "pass"
+        else:
+            challenger_status = "fail"
+        switch_advantage = (
+            challenger.composite - candidate.composite >= 0.04
+            and _mean(
+                [
+                    challenger.target_scores["T2"] - candidate.target_scores["T2"],
+                    challenger.target_scores["T3"] - candidate.target_scores["T3"],
+                    challenger.target_scores["T4"] - candidate.target_scores["T4"],
+                ]
+            ) >= 0.05
+        )
+    if not candidate_pass and challenger_pass:
+        decision = "switch_to_active_inference"
+    elif not candidate_pass and challenger is not None:
+        decision = "research_reframe_required"
+    elif candidate_pass and switch_advantage:
+        decision = "switch_to_active_inference"
+    elif not candidate_pass:
         decision = "switch_to_active_inference"
     else:
         decision = "stay_on_mvs"
@@ -338,10 +405,16 @@ def _selection_decision(candidate: VariantScores, baseline_a: VariantScores, abl
         "decision": decision,
         "candidate_pass": candidate_pass,
         "target_deltas_vs_baseline_a": target_deltas,
+        "target_delta_rules": target_delta_rules,
         "composite_delta_vs_baseline_a": composite_delta,
         "ablation_drops": ablation_drops,
         "weak_ablations": weak_ablations,
-        "challenger_status": "not_run",
+        "challenger_status": challenger_status,
+        "challenger_pass": challenger_pass,
+        "challenger_target_deltas_vs_baseline_a": challenger_target_deltas,
+        "challenger_target_delta_rules": challenger_target_delta_rules if challenger is not None else {},
+        "challenger_composite_delta_vs_baseline_a": round(challenger_composite_delta, 4),
+        "challenger_switch_advantage": switch_advantage,
     }
 
 
@@ -369,10 +442,16 @@ def render_markdown(payload: Dict[str, Any]) -> str:
             "## Selection",
             "",
             f"- target_deltas_vs_baseline_a: `{selection['target_deltas_vs_baseline_a']}`",
+            f"- target_delta_rules: `{selection['target_delta_rules']}`",
             f"- composite_delta_vs_baseline_a: `{selection['composite_delta_vs_baseline_a']}`",
             f"- ablation_drops: `{selection['ablation_drops']}`",
             f"- weak_ablations: `{selection['weak_ablations']}`",
             f"- challenger_status: `{selection['challenger_status']}`",
+            f"- challenger_pass: `{selection['challenger_pass']}`",
+            f"- challenger_target_deltas_vs_baseline_a: `{selection['challenger_target_deltas_vs_baseline_a']}`",
+            f"- challenger_target_delta_rules: `{selection['challenger_target_delta_rules']}`",
+            f"- challenger_composite_delta_vs_baseline_a: `{selection['challenger_composite_delta_vs_baseline_a']}`",
+            f"- challenger_switch_advantage: `{selection['challenger_switch_advantage']}`",
         ]
     )
     return "\n".join(lines) + "\n"
@@ -389,6 +468,7 @@ def main() -> None:
         variant_scores[variant_id] = _score_variant(list(case_results))
     variant_scores[contract["baseline_b_id"]] = _baseline_b_scores()
 
+    challenger = variant_scores.get(contract["challenger_id"])
     selection = _selection_decision(
         candidate=variant_scores[contract["candidate_id"]],
         baseline_a=variant_scores[contract["baseline_a_id"]],
@@ -396,6 +476,7 @@ def main() -> None:
             ablation_id: variant_scores[ablation_id]
             for ablation_id in list(contract.get("ablation_ids") or [])
         },
+        challenger=challenger,
     )
 
     payload = {

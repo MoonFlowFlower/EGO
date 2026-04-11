@@ -24,6 +24,7 @@ from app.runtime_v2.state import RuntimeV2State
 from openemotion.proto_self.mvs_replay import (
     MVS_BASELINE_A_ID,
     MVS_CANDIDATE_ID,
+    MVS_CHALLENGER_ID,
     MVS_REPLAY_FEATURE_FLAG_ENV,
     MVS_ABLATION_MINUS_BOUNDARY_ID,
     MVS_ABLATION_MINUS_CORRECTIVE_TRACE_ID,
@@ -48,6 +49,7 @@ DEFAULT_VARIANTS = [
     MVS_ABLATION_MINUS_VIABILITY_ID,
     MVS_ABLATION_MINUS_CORRECTIVE_TRACE_ID,
     MVS_ABLATION_MINUS_BOUNDARY_ID,
+    MVS_CHALLENGER_ID,
 ]
 
 
@@ -105,6 +107,11 @@ def _summarize_state(adapter: ProtoSelfAdapter, *, experiment_id: str) -> Dict[s
         "boundary_confidence_by_action": dict(state.self_model.boundary_confidence_by_action),
         "world_assumption_confidence": dict(state.self_model.world_assumption_confidence),
         "recent_correction_tags": dict(state.self_model.recent_correction_tags),
+        "source_confidence_by_action": dict(state.self_model.source_confidence_by_action),
+        "agency_confidence_by_action": dict(state.self_model.agency_confidence_by_action),
+        "uncertainty_by_action": dict(state.self_model.uncertainty_by_action),
+        "calibration_memory_by_action": dict(state.self_model.calibration_memory_by_action),
+        "temporal_repair_weight_by_action": dict(state.self_model.temporal_repair_weight_by_action),
         "episodic_count": len(state.episodic_trace),
         "revision_counter": state.revision_counter,
         "last_corrective_trace": dict(last_episode.get("corrective_trace") or {}),

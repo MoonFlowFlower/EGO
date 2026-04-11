@@ -14,6 +14,7 @@ import hashlib
 from typing import Any, Dict
 
 from openemotion.proto_self.schemas import KernelEvent
+from openemotion.proto_self.mvs_replay import mvs_variant_uses_active_inference_core
 from openemotion.proto_self.state import ProtoSelfState
 
 
@@ -53,6 +54,7 @@ def consolidate_cycles(
         action_signature=action_signature,
         outcome_signature=outcome_signature,
         mode_signature=mode_signature,
+        perceived=perceived,
     )
     order_invariance_candidate = _build_order_invariance_candidate(
         state=state,
@@ -281,13 +283,18 @@ def _is_repair_closure(
     action_signature: str,
     outcome_signature: str,
     mode_signature: str,
+    perceived: Dict[str, Any],
 ) -> bool:
     if outcome_signature != "success":
         return False
-    return _has_recent_repair_precursor(state=state, action_signature=action_signature)
+    return _has_recent_repair_precursor(
+        state=state,
+        action_signature=action_signature,
+        allow_partial=mvs_variant_uses_active_inference_core(str(perceived.get("mvs_variant_id") or "")),
+    )
 
 
-def _has_recent_repair_precursor(*, state: ProtoSelfState, action_signature: str) -> bool:
+def _has_recent_repair_precursor(*, state: ProtoSelfState, action_signature: str, allow_partial: bool) -> bool:
     action_family = action_signature.split(":", 1)[-1]
     for record in reversed(state.episodic_trace):
         perceived_summary = record.perceived_summary or {}
@@ -304,6 +311,8 @@ def _has_recent_repair_precursor(*, state: ProtoSelfState, action_signature: str
 
         previous_outcome = _extract_record_outcome_signature(record)
         if previous_outcome in {"failure", "blocked"}:
+            return True
+        if allow_partial and previous_outcome == "partial":
             return True
         if previous_outcome == "success":
             return False

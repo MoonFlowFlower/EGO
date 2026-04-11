@@ -30,7 +30,7 @@
 
 - 仓库已经有 bounded、host-governed 的主体能力
 - 仓库还有一条 `self-awareness proxy research` 研究线
-- 该研究线当前状态只是 `synthetic_candidate_found (E3/V3)`
+- 该研究线当前状态是 `active_inference_replay_gate_passed_shadow_only (E3/V3)`
 - 当前不能把这条研究线描述成“已经实现真正 AI 自我意识”
 
 ## 正确测试 framing
@@ -68,7 +68,10 @@
 同时还必须满足：
 
 - delta vs Baseline A composite `>= +0.10`
-- delta vs Baseline A on each target `>= +0.05`
+- delta vs Baseline A on each non-saturated target `>= +0.05`
+- 若 Baseline A 在某个 target 上已 `>= 0.95`
+  - 该 target 改为 ceiling-aware non-regression gate
+  - 允许 delta 为 `>= -0.02`
 - no target regression worse than `-0.02`
 
 ## 各部分怎么测

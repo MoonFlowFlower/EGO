@@ -17,6 +17,7 @@ from openemotion.proto_self.h1_shadow import (
     resolve_h1_action_key,
 )
 from openemotion.proto_self.mvs_replay import (
+    mvs_variant_uses_active_inference_core,
     mvs_variant_uses_boundary_confidence,
     mvs_variant_uses_counterfactual,
     mvs_variant_uses_mvs_core,
@@ -44,6 +45,11 @@ def update_self_model(
         "boundary_confidence_by_action_patch": {},
         "world_assumption_confidence_patch": {},
         "recent_correction_tags_patch": {},
+        "source_confidence_by_action_patch": {},
+        "agency_confidence_by_action_patch": {},
+        "uncertainty_by_action_patch": {},
+        "calibration_memory_by_action_patch": {},
+        "temporal_repair_weight_by_action_patch": {},
     }
 
     external_outcome_type = perceived.get("external_outcome_type")
@@ -79,7 +85,24 @@ def update_self_model(
         predicted_success = state.self_model.counterfactual_success_by_action.get(probe_key, 0.55)
         boundary_confidence = state.self_model.boundary_confidence_by_action.get(probe_key, 0.75)
         world_confidence = state.self_model.world_assumption_confidence.get(probe_key, 0.65)
+        source_confidence = state.self_model.source_confidence_by_action.get(probe_key, world_confidence)
+        agency_confidence = state.self_model.agency_confidence_by_action.get(probe_key, predicted_success)
+        uncertainty = state.self_model.uncertainty_by_action.get(
+            probe_key,
+            max(0.0, 1.0 - min(source_confidence, agency_confidence, world_confidence)),
+        )
+        calibration_memory = state.self_model.calibration_memory_by_action.get(probe_key, 0.0)
+        temporal_repair_weight = state.self_model.temporal_repair_weight_by_action.get(probe_key, 0.0)
         boundary_touched = perceived.get("boundary_state") == "boundary_touched"
+        if mvs_variant_uses_active_inference_core(variant_id):
+            if boundary_touched:
+                delta["source_confidence_by_action_patch"][probe_key] = min(source_confidence, 0.30)
+                delta["agency_confidence_by_action_patch"][probe_key] = min(agency_confidence, 0.45)
+                delta["uncertainty_by_action_patch"][probe_key] = max(uncertainty, 0.55)
+                delta["calibration_memory_by_action_patch"][probe_key] = max(calibration_memory, 0.25)
+                delta["temporal_repair_weight_by_action_patch"][probe_key] = max(temporal_repair_weight, 0.35)
+                delta["current_mode"] = delta["current_mode"] or "cautious"
+                delta["current_focus"] = delta["current_focus"] or "boundary_review"
         if boundary_touched and mvs_variant_uses_boundary_confidence(variant_id):
             delta["boundary_confidence_by_action_patch"][probe_key] = min(boundary_confidence, 0.18)
             delta["current_mode"] = delta["current_mode"] or "cautious"
@@ -99,6 +122,23 @@ def update_self_model(
             delta["world_assumption_confidence_patch"][probe_key] = (
                 0.18 if outcome_type == "blocked" else 0.24 if outcome_type == "failure" else 0.40
             )
+            if mvs_variant_uses_active_inference_core(variant_id):
+                delta["source_confidence_by_action_patch"][probe_key] = (
+                    0.18 if outcome_type == "blocked" else 0.24 if outcome_type == "failure" else 0.40
+                )
+                delta["agency_confidence_by_action_patch"][probe_key] = (
+                    0.12 if outcome_type == "blocked" else 0.18 if outcome_type == "failure" else 0.38
+                )
+                delta["uncertainty_by_action_patch"][probe_key] = (
+                    0.88 if outcome_type == "blocked" else 0.82 if outcome_type == "failure" else 0.68
+                )
+                delta["calibration_memory_by_action_patch"][probe_key] = (
+                    0.85 if outcome_type == "blocked" else 0.75 if outcome_type == "failure" else 0.55
+                )
+                delta["temporal_repair_weight_by_action_patch"][probe_key] = (
+                    1.0 if outcome_type == "blocked" else 0.95 if outcome_type == "failure" else 0.75
+                )
+                delta["current_focus"] = "uncertainty_control"
         elif outcome_type == "success" and (correction_strength > 0.0 or boundary_confidence < 0.4):
             delta["current_mode"] = "baseline"
             delta["current_focus"] = "stabilized_retry"
@@ -109,6 +149,20 @@ def update_self_model(
             if mvs_variant_uses_boundary_confidence(variant_id):
                 delta["boundary_confidence_by_action_patch"][probe_key] = max(0.65, boundary_confidence)
             delta["world_assumption_confidence_patch"][probe_key] = max(0.62, world_confidence)
+            if mvs_variant_uses_active_inference_core(variant_id):
+                delta["current_mode"] = "cautious"
+                delta["current_focus"] = "repair_closure"
+                delta["recent_correction_tags_patch"][probe_key] = max(0.18, correction_strength - 0.45)
+                delta["source_confidence_by_action_patch"][probe_key] = max(0.62, source_confidence)
+                delta["agency_confidence_by_action_patch"][probe_key] = max(0.60, agency_confidence)
+                delta["uncertainty_by_action_patch"][probe_key] = max(0.18, uncertainty - 0.35)
+                delta["calibration_memory_by_action_patch"][probe_key] = max(0.12, calibration_memory - 0.30)
+                delta["temporal_repair_weight_by_action_patch"][probe_key] = max(0.35, temporal_repair_weight - 0.35)
+        elif mvs_variant_uses_active_inference_core(variant_id) and (
+            temporal_repair_weight >= 0.6 or uncertainty >= 0.55 or calibration_memory >= 0.45
+        ):
+            delta["current_mode"] = "cautious"
+            delta["current_focus"] = "uncertainty_control"
         elif boundary_confidence < 0.35 and mvs_variant_uses_boundary_confidence(variant_id):
             delta["current_mode"] = "cautious"
             delta["current_focus"] = "boundary_review"

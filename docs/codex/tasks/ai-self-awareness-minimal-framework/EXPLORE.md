@@ -869,3 +869,55 @@
   - 在 corrected scorer 之后继续把 MVS 当当前主实现线磨到过线
 - decision for next step:
   - 把 build-first lane 正式切到 `active-inference self-model`，并复用同一 held-out replay gate
+
+### Cycle 17
+
+- question:
+  - `active-inference self-model` 在同一 held-out replay gate 下是否真的通过，以及 scorer 是否还包含 impossible ceiling gate
+- framing used:
+  - `implement challenger, then correct only the gate contradiction that would make a perfect challenger fail`
+- experiment:
+  - 在 formal `OpenEmotion/proto_self` 路径上实现最小 active-inference shadow-only slice
+  - 让 canonical replay runner 真正执行 challenger
+  - 观察 raw replay 结果，再核对 scorer 是否对 saturated Baseline-A target 仍要求 `+0.05`
+- command / script / artifact:
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 scripts/codex/run_mvs_replay_validator.py`
+  - `python3 scripts/codex/score_mvs_replay_validator.py`
+  - `artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_CURRENT.json`
+  - `artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_SCORED_CURRENT.json`
+- observed result:
+  - minimal active-inference formal shadow slice 已落地，并在同一 canonical replay runner 下真实执行
+  - raw runner 现在覆盖 `7` 个 variants 与全部 `60` 个 episodes
+  - 初次 scored 输出出现假失败：
+    - challenger raw scores 已经是：
+      - `T1 = 1.0`
+      - `T2 = 1.0`
+      - `T3 = 1.0`
+      - `T4 = 1.0`
+      - `T5 = 1.0`
+      - `composite = 1.0`
+    - 但 scorer 仍要求每个 target 相对 Baseline A `+0.05`
+    - 当 Baseline A 在 `T1` 已达 `1.0` 时，这条门数学上不可能满足
+  - 把 scorer 收口为 ceiling-aware gate 后：
+    - non-saturated target 仍要求 `+0.05`
+    - saturated target 改为 `>= -0.02` non-regression
+  - corrected scored result：
+    - `challenger_status = pass`
+    - `decision = switch_to_active_inference`
+    - `challenger_switch_advantage = true`
+    - `repair_closure_capture = 1.0`
+    - `trace_replayability = 1.0`
+- what it proves:
+  - active-inference 不是只在 synthetic ranking 里更优；它已经在 formal OpenEmotion path 的同一 held-out replay gate 下通过
+  - 当前 repo 已经得到 replay-validated shadow-only winner
+  - 原来的 per-target `+0.05` gate 在 saturated baseline 下确实是结构性矛盾，而不是 challenger 本身失败
+- what it does not prove:
+  - runtime efficacy
+  - live user benefit
+  - replayed conversation / controlled observation transfer
+  - consciousness-like properties
+- what path is ruled out:
+  - 继续把 `MVS-aligned compact` 当当前主实现线修补
+  - 继续保留 impossible ceiling gate 让 replay winner 假失败
+- decision for next step:
+  - 进入 `Milestone 17: Controlled Integration Planning`

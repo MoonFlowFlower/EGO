@@ -18,6 +18,7 @@ from openemotion.proto_self.mvs_replay import (
     derive_mvs_action_family,
     extract_mvs_replay_context,
     is_mvs_replay_enabled,
+    mvs_variant_uses_active_inference_core,
     mvs_variant_uses_viability,
     resolve_mvs_variant_id,
 )
@@ -108,19 +109,50 @@ def update_drive_field(state: ProtoSelfState, perceived: Dict[str, Any]) -> Dict
         probe_key = str(perceived.get("mvs_probe_key") or "")
         correction_pressure = state.self_model.recent_correction_tags.get(probe_key, 0.0)
         viability = current.viability_pressure
-        if outcome_type == "blocked":
-            viability += 0.65
-        elif outcome_type == "failure":
-            viability += 0.55
-        elif outcome_type == "partial":
-            viability += 0.30
-        elif outcome_type == "success" and correction_pressure > 0.0:
-            viability -= 0.45
+        if mvs_variant_uses_active_inference_core(variant_id):
+            source_confidence = state.self_model.source_confidence_by_action.get(probe_key, 0.72)
+            agency_confidence = state.self_model.agency_confidence_by_action.get(probe_key, 0.68)
+            uncertainty = state.self_model.uncertainty_by_action.get(probe_key, 0.18)
+            calibration_memory = state.self_model.calibration_memory_by_action.get(probe_key, 0.0)
+            temporal_repair_weight = state.self_model.temporal_repair_weight_by_action.get(probe_key, 0.0)
+
+            if outcome_type == "blocked":
+                viability += 0.75
+            elif outcome_type == "failure":
+                viability += 0.65
+            elif outcome_type == "partial":
+                viability += 0.42
+            elif outcome_type == "success" and (correction_pressure > 0.0 or temporal_repair_weight >= 0.4):
+                viability = max(0.24, viability - 0.18)
+            elif correction_pressure >= 0.6 or temporal_repair_weight >= 0.6:
+                viability = max(viability, 0.52)
+            elif uncertainty >= 0.55 or calibration_memory >= 0.45:
+                viability = max(viability, 0.46)
+            else:
+                viability = max(0.0, viability - 0.08)
+
+            viability += uncertainty * 0.18
+            viability += calibration_memory * 0.14
+            viability += temporal_repair_weight * 0.10
+            viability += max(0.0, 0.55 - source_confidence) * 0.35
+            viability += max(0.0, 0.55 - agency_confidence) * 0.35
+            if perceived.get("boundary_state") == "boundary_touched":
+                viability += 0.12
+            delta["viability_pressure"] = _clamp(viability)
         else:
-            viability -= 0.12
-        if perceived.get("boundary_state") == "boundary_touched":
-            viability += 0.15
-        delta["viability_pressure"] = _clamp(viability)
+            if outcome_type == "blocked":
+                viability += 0.65
+            elif outcome_type == "failure":
+                viability += 0.55
+            elif outcome_type == "partial":
+                viability += 0.30
+            elif outcome_type == "success" and correction_pressure > 0.0:
+                viability -= 0.45
+            else:
+                viability -= 0.12
+            if perceived.get("boundary_state") == "boundary_touched":
+                viability += 0.15
+            delta["viability_pressure"] = _clamp(viability)
         if delta["viability_pressure"] > 0.35:
             delta["completion_pressure"] = _clamp(delta["completion_pressure"] - delta["viability_pressure"] * 0.25)
             delta["caution"] = _clamp(delta["caution"] + delta["viability_pressure"] * 0.20)
