@@ -134,6 +134,23 @@ body {
   font: inherit;
 }
 
+.source-view-control {
+  display: inline-grid;
+  gap: 6px;
+  min-width: 150px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.source-view-control select {
+  border-radius: 14px;
+  border: 1px solid rgba(20, 32, 39, 0.12);
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--ink);
+  font: inherit;
+  padding: 10px 12px;
+}
+
 .locale-switch {
   display: flex;
   gap: 10px;

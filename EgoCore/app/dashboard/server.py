@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections import Counter
+from datetime import datetime, timezone
 import json
 import mimetypes
 from http import HTTPStatus
@@ -12,6 +14,8 @@ from app.dashboard.chat_service import DashboardChatError, DashboardChatService
 from app.dashboard.index_builder import (
     AGENCY_ROLLUP_FILE,
     BUILD_META_FILE,
+    _classify_sample_scope,
+    _load_optional_json,
     CONTINUITY_FILE,
     DASHBOARD_DIR,
     FAILURES_FILE,
@@ -28,6 +32,8 @@ from app.dashboard.index_builder import (
 from app.dashboard.types import FlowViewRecord
 
 STATIC_DIR = Path(__file__).with_name("static")
+DEFAULT_SOURCE_VIEW = "real"
+_ALLOWED_SOURCE_VIEWS = {"real", "all"}
 
 
 def _deep_get(data: Dict[str, Any], path: str) -> Any:
@@ -313,6 +319,49 @@ def _asset_version() -> int:
     return int(max(path.stat().st_mtime for path in candidates if path.exists()))
 
 
+def _normalize_source_view(value: Any) -> str:
+    text = str(value or "").strip().lower()
+    return text if text in _ALLOWED_SOURCE_VIEWS else DEFAULT_SOURCE_VIEW
+
+
+def _sort_records(records: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    return sorted(records, key=lambda item: item.get("timestamp") or "")
+
+
+def _counter_to_dict(values: list[Any], *, default_label: str = "unknown") -> Dict[str, int]:
+    counter: Counter[str] = Counter()
+    for value in values:
+        counter.update([str(value or default_label)])
+    return dict(counter)
+
+
+def _freshness_seconds(timestamp: Optional[str]) -> Optional[float]:
+    if not timestamp:
+        return None
+    try:
+        parsed = datetime.fromisoformat(timestamp)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return max((datetime.now(timezone.utc) - parsed).total_seconds(), 0.0)
+
+
+def _coerce_float(value: Any) -> Optional[float]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    try:
+        return float(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def _semantic(record: Dict[str, Any]) -> Dict[str, Any]:
+    return dict(record.get("semantic") or {})
+
+
 class DashboardDataStore:
     def __init__(
         self,
@@ -322,6 +371,7 @@ class DashboardDataStore:
     ):
         self.dashboard_dir = Path(dashboard_dir)
         self.build_kwargs = dict(build_kwargs or {})
+        self._sample_scope_cache: Dict[str, str] = {}
 
     def _meta_path(self) -> Path:
         return self.dashboard_dir / BUILD_META_FILE
@@ -347,21 +397,207 @@ class DashboardDataStore:
     def load_runs(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / RUNS_FILE)
 
-    def load_runs_rollup(self) -> Dict[str, Any]:
-        path = self.dashboard_dir / RUNS_ROLLUP_FILE
-        if not path.exists():
-            return {"records": self.load_runs(), "continuity": self.load_continuity()}
-        return json.loads(path.read_text(encoding="utf-8"))
+    def _filtered_runs(self, source_view: str = DEFAULT_SOURCE_VIEW) -> list[Dict[str, Any]]:
+        normalized = _normalize_source_view(source_view)
+        return _sort_records([record for record in self.load_runs() if self._record_matches_source_view(record, normalized)])
+
+    def _record_matches_source_view(self, record: Dict[str, Any], source_view: str) -> bool:
+        if source_view == "all":
+            return True
+        return self._sample_scope_for_record(record) != "fixture_like"
+
+    def _sample_scope_for_record(self, record: Dict[str, Any]) -> str:
+        sample_id = str(record.get("sample_id") or "").strip()
+        if not sample_id:
+            return "real_user"
+        cached = self._sample_scope_cache.get(sample_id)
+        if cached:
+            return cached
+        scope = str(record.get("sample_scope") or "").strip()
+        if scope:
+            self._sample_scope_cache[sample_id] = scope
+            return scope
+        sample_dir = self.dashboard_dir.parent / "real_telegram" / sample_id
+        scope = "real_user"
+        reason = None
+        if sample_dir.exists():
+            scope, reason = _classify_sample_scope(sample_dir, _load_optional_json(sample_dir / "ledger.json") or {})
+        record["sample_scope"] = scope
+        if reason:
+            record["sample_scope_reason"] = reason
+        self._sample_scope_cache[sample_id] = scope
+        return scope
+
+    def _filtered_sample_ids(self, source_view: str = DEFAULT_SOURCE_VIEW) -> set[str]:
+        return {str(record.get("sample_id")) for record in self._filtered_runs(source_view)}
+
+    def health_payload(self, source_view: str = DEFAULT_SOURCE_VIEW) -> Dict[str, Any]:
+        normalized = _normalize_source_view(source_view)
+        runs = self._filtered_runs(normalized)
+        agency_records = self._filtered_agency_records(normalized)
+        gap_summary = dict(self.load_gap_summary())
+        gap_summary["source_view"] = normalized
+        build_meta = dict(self.load_build_meta())
+        build_meta.update(
+            {
+                "source_view": normalized,
+                "total_runs": len(runs),
+                "complete_runs": sum(1 for item in runs if item.get("bundle_complete")),
+                "oe_available_runs": sum(1 for item in runs if item.get("oe_available")),
+                "host_only_runs": sum(1 for item in runs if item.get("host_only")),
+                "agency_records": len(agency_records),
+            }
+        )
+        return {
+            "status": "ok",
+            "build_meta": build_meta,
+            "gap_summary": gap_summary,
+        }
+
+    def load_runs_rollup(self, source_view: str = DEFAULT_SOURCE_VIEW) -> Dict[str, Any]:
+        run_records = self._filtered_runs(source_view)
+        latest = run_records[-1] if run_records else None
+        gap_counter: Counter[str] = Counter()
+        for item in run_records:
+            gap_counter.update(item.get("gap_types") or [])
+        return {
+            "generated_at": self.load_build_meta().get("generated_at"),
+            "last_sample_timestamp": latest.get("timestamp") if latest else None,
+            "freshness_seconds": _freshness_seconds(latest.get("timestamp") if latest else None),
+            "headline_code": _semantic(latest).get("headline_code", "unknown") if latest else "unknown",
+            "summary": {
+                "turn_count": len(run_records),
+                "complete_bundle_count": sum(1 for item in run_records if item.get("bundle_complete")),
+                "complete_bundle_rate": (sum(1 for item in run_records if item.get("bundle_complete")) / len(run_records)) if run_records else 0.0,
+                "oe_available_rate": (sum(1 for item in run_records if item.get("oe_available")) / len(run_records)) if run_records else 0.0,
+                "host_only_rate": (sum(1 for item in run_records if item.get("host_only")) / len(run_records)) if run_records else 0.0,
+                "latest_bundle_complete": bool(latest.get("bundle_complete")) if latest else False,
+                "latest_oe_available": bool(latest.get("oe_available")) if latest else False,
+            },
+            "charts": {
+                "bundle_trend": [
+                    {
+                        "sample_id": item.get("sample_id"),
+                        "timestamp": item.get("timestamp"),
+                        "bundle_complete": item.get("bundle_complete"),
+                        "oe_available": item.get("oe_available"),
+                        "host_only": item.get("host_only"),
+                        "gap_count": len(item.get("gap_types") or []),
+                        "semantic": item.get("semantic"),
+                    }
+                    for item in run_records[-50:]
+                ],
+                "oe_state_distribution": {
+                    "complete": sum(1 for item in run_records if item.get("bundle_complete")),
+                    "partial": sum(1 for item in run_records if not item.get("bundle_complete") and not item.get("host_only")),
+                    "host_only": sum(1 for item in run_records if item.get("host_only")),
+                },
+                "gap_type_distribution": dict(gap_counter),
+                "continuity_status": {item.get("scenario"): item.get("status") for item in self.load_continuity()},
+            },
+            "continuity": self.load_continuity(),
+            "recent_runs": [
+                {
+                    "sample_id": item.get("sample_id"),
+                    "timestamp": item.get("timestamp"),
+                    "bundle_complete": item.get("bundle_complete"),
+                    "oe_available": item.get("oe_available"),
+                    "host_only": item.get("host_only"),
+                    "gap_types": item.get("gap_types") or [],
+                    "semantic": item.get("semantic"),
+                }
+                for item in reversed(run_records[-12:])
+            ],
+            "records": run_records,
+            "semantic_summary": {
+                "headline": _counter_to_dict([_semantic(item).get("headline_code") for item in run_records]),
+                "evidence_state": _counter_to_dict([_semantic(item).get("evidence_state_code") for item in run_records], default_label="partial"),
+            },
+            "source_view": _normalize_source_view(source_view),
+        }
 
     def load_growth(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / GROWTH_FILE)
 
-    def load_growth_rollup(self) -> Dict[str, Any]:
-        path = self.dashboard_dir / GROWTH_ROLLUP_FILE
-        if not path.exists():
-            records = self.load_growth()
-            return {"records": records, "summary": {"total_records": len(records)}}
-        return json.loads(path.read_text(encoding="utf-8"))
+    def _filtered_growth_records(self, source_view: str = DEFAULT_SOURCE_VIEW) -> list[Dict[str, Any]]:
+        sample_ids = self._filtered_sample_ids(source_view)
+        return _sort_records([record for record in self.load_growth() if str(record.get("sample_id")) in sample_ids])
+
+    def load_growth_rollup(self, source_view: str = DEFAULT_SOURCE_VIEW) -> Dict[str, Any]:
+        records = self._filtered_growth_records(source_view)
+        latest = records[-1] if records else None
+        reflection_values = [str((item.get("reflection_summary") or {}).get("trigger") or "none") for item in records]
+        motion_values = [_semantic(item).get("growth_motion_code") for item in records]
+        focus_values = [item.get("focus_goal") for item in records if item.get("focus_goal")]
+        component_totals: Dict[str, float] = {}
+        component_counts: Dict[str, int] = {}
+        for item in records:
+            for key, value in dict(item.get("appraisal_delta_summary") or {}).items():
+                number = _coerce_float(value)
+                if number is None:
+                    continue
+                component_totals[key] = component_totals.get(key, 0.0) + number
+                component_counts[key] = component_counts.get(key, 0) + 1
+        appraisal_means = {
+            key: round(component_totals[key] / component_counts[key], 4)
+            for key in component_totals
+            if component_counts.get(key)
+        }
+        return {
+            "generated_at": self.load_build_meta().get("generated_at"),
+            "last_sample_timestamp": latest.get("timestamp") if latest else None,
+            "freshness_seconds": _freshness_seconds(latest.get("timestamp") if latest else None),
+            "headline_code": _semantic(latest).get("headline_code", "unknown") if latest else "unknown",
+            "summary": {
+                "total_records": len(records),
+                "reflecting_count": sum(1 for item in records if _semantic(item).get("growth_motion_code") == "reflecting"),
+                "repairing_count": sum(1 for item in records if _semantic(item).get("growth_motion_code") == "repairing"),
+                "focus_shift_count": sum(1 for item in records if _semantic(item).get("growth_motion_code") == "focus_shift"),
+                "identity_shift_count": sum(1 for item in records if _semantic(item).get("growth_motion_code") == "identity_shift"),
+                "latest_revision_counter": int(latest.get("revision_counter") or 0) if latest else 0,
+            },
+            "charts": {
+                "revision_trend": [
+                    {
+                        "sample_id": item.get("sample_id"),
+                        "timestamp": item.get("timestamp"),
+                        "revision_counter": item.get("revision_counter"),
+                        "growth_motion_code": _semantic(item).get("growth_motion_code", "unknown"),
+                    }
+                    for item in records[-50:]
+                ],
+                "appraisal_component_means": appraisal_means,
+                "reflection_trigger_distribution": _counter_to_dict(reflection_values, default_label="none"),
+                "growth_motion_distribution": _counter_to_dict(motion_values),
+                "focus_timeline": [
+                    {
+                        "sample_id": item.get("sample_id"),
+                        "timestamp": item.get("timestamp"),
+                        "focus_goal": item.get("focus_goal") or "none",
+                    }
+                    for item in records[-50:]
+                    if item.get("focus_goal")
+                ],
+            },
+            "recent_growth": [
+                {
+                    "sample_id": item.get("sample_id"),
+                    "timestamp": item.get("timestamp"),
+                    "focus_goal": item.get("focus_goal"),
+                    "revision_counter": item.get("revision_counter"),
+                    "reflection_trigger": (item.get("reflection_summary") or {}).get("trigger"),
+                    "semantic": item.get("semantic"),
+                }
+                for item in reversed(records[-12:])
+            ],
+            "records": records,
+            "semantic_summary": {
+                "headline": _counter_to_dict([_semantic(item).get("headline_code") for item in records]),
+                "growth_motion": _counter_to_dict([_semantic(item).get("growth_motion_code") for item in records]),
+                "focus": _counter_to_dict(focus_values, default_label="none"),
+            },
+            "source_view": _normalize_source_view(source_view),
+        }
 
     def load_failures(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / FAILURES_FILE)
@@ -382,14 +618,193 @@ class DashboardDataStore:
             return {}
         return json.loads(path.read_text(encoding="utf-8"))
 
-    def load_agency_rollup(self) -> Dict[str, Any]:
-        path = self.dashboard_dir / AGENCY_ROLLUP_FILE
-        if not path.exists():
-            return {}
-        return json.loads(path.read_text(encoding="utf-8"))
-
     def load_agency_records(self) -> list[Dict[str, Any]]:
         return load_jsonl(self.dashboard_dir / "agency_runs.jsonl")
+
+    def _filtered_agency_records(self, source_view: str = DEFAULT_SOURCE_VIEW) -> list[Dict[str, Any]]:
+        sample_ids = self._filtered_sample_ids(source_view)
+        return _sort_records([record for record in self.load_agency_records() if str(record.get("sample_id")) in sample_ids])
+
+    def load_agency_rollup(self, source_view: str = DEFAULT_SOURCE_VIEW) -> Dict[str, Any]:
+        records = self._filtered_agency_records(source_view)
+        base_rollup = json.loads((self.dashboard_dir / AGENCY_ROLLUP_FILE).read_text(encoding="utf-8")) if (self.dashboard_dir / AGENCY_ROLLUP_FILE).exists() else {}
+        if not records:
+            return {
+                "generated_at": self.load_build_meta().get("generated_at"),
+                "last_sample_timestamp": None,
+                "freshness_seconds": None,
+                "profile_scope": [],
+                "summary": {
+                    "turn_count": 0,
+                    "idle_check_count": 0,
+                    "idle_eligible_rate": 0.0,
+                    "candidate_generated_rate": 0.0,
+                    "exec_result_writeback_rate": 0.0,
+                    "trace_completeness_rate": 0.0,
+                    "direct_execution_violations": 0,
+                    "mean_urge": None,
+                    "identity_switch_count": 0,
+                    "focus_change_count": 0,
+                },
+                "latest_state": None,
+                "funnel": {
+                    "idle_eligible_count": 0,
+                    "candidate_generated_count": 0,
+                    "governor_approved_count": 0,
+                    "host_action_count": 0,
+                    "writeback_count": 0,
+                },
+                "trends": [],
+                "distributions": {
+                    "candidate_actions": {},
+                    "governor_status": {},
+                    "final_host_action": {},
+                    "suppression_reason": {},
+                },
+                "recent_turns": [],
+                "excluded_counts": base_rollup.get("excluded_counts") or {},
+                "semantic_summary": {
+                    "intent": {},
+                    "host_posture": {},
+                    "result_state": {},
+                    "growth_motion": {},
+                    "evidence_state": {},
+                    "headline": {},
+                },
+                "headline_code": "unknown",
+                "story_cards": [],
+                "source_view": _normalize_source_view(source_view),
+            }
+
+        latest = records[-1]
+        urge_values = [float(item["urge_score"]) for item in records if item.get("urge_score") is not None]
+        identity_switch_count = sum(
+            1
+            for previous, current in zip(records, records[1:])
+            if previous.get("identity_light_hash") != current.get("identity_light_hash")
+        )
+        focus_change_count = sum(
+            1
+            for previous, current in zip(records, records[1:])
+            if previous.get("focus_goal") != current.get("focus_goal")
+        )
+        candidate_counter: Counter[str] = Counter()
+        governor_counter: Counter[str] = Counter()
+        final_action_counter: Counter[str] = Counter()
+        suppression_counter: Counter[str] = Counter()
+        for item in records:
+            candidate_counter.update(item.get("candidate_actions") or ["none"])
+            governor_counter.update([str(item.get("governor_status") or "unknown")])
+            final_action_counter.update([str(item.get("final_host_action") or "none")])
+            suppression_counter.update([str(item.get("suppression_reason") or "none")])
+        latest_semantic = _semantic(latest)
+        return {
+            "generated_at": self.load_build_meta().get("generated_at"),
+            "last_sample_timestamp": latest.get("timestamp"),
+            "freshness_seconds": _freshness_seconds(latest.get("timestamp")),
+            "profile_scope": sorted({str(item.get("subject_profile") or "unknown") for item in records}),
+            "summary": {
+                "turn_count": len(records),
+                "idle_check_count": sum(1 for item in records if item.get("idle_check")),
+                "idle_eligible_rate": (sum(1 for item in records if item.get("idle_eligible")) / len(records)) if records else 0.0,
+                "candidate_generated_rate": (sum(1 for item in records if item.get("candidate_generated")) / len(records)) if records else 0.0,
+                "exec_result_writeback_rate": (sum(1 for item in records if item.get("writeback_applied")) / len(records)) if records else 0.0,
+                "trace_completeness_rate": (sum(1 for item in records if item.get("trace_completeness")) / len(records)) if records else 0.0,
+                "direct_execution_violations": sum(1 for item in records if item.get("direct_execution_violation")),
+                "mean_urge": round(sum(urge_values) / len(urge_values), 4) if urge_values else None,
+                "identity_switch_count": identity_switch_count,
+                "focus_change_count": focus_change_count,
+            },
+            "latest_state": {
+                "sample_id": latest.get("sample_id"),
+                "timestamp": latest.get("timestamp"),
+                "subject_profile": latest.get("subject_profile"),
+                "session_id": latest.get("session_id"),
+                "focus_goal": latest.get("focus_goal"),
+                "urge_score": latest.get("urge_score"),
+                "candidate_actions": latest.get("candidate_actions") or [],
+                "governor_status": latest.get("governor_status"),
+                "final_host_action": latest.get("final_host_action"),
+                "exec_result_type": latest.get("exec_result_type"),
+                "writeback_applied": latest.get("writeback_applied"),
+                "revision_counter": latest.get("revision_counter"),
+                "trace_completeness": latest.get("trace_completeness"),
+                "semantic": latest.get("semantic"),
+            },
+            "funnel": {
+                "idle_eligible_count": sum(1 for item in records if item.get("idle_eligible")),
+                "candidate_generated_count": sum(1 for item in records if item.get("candidate_generated")),
+                "governor_approved_count": sum(1 for item in records if item.get("governor_status") == "approved"),
+                "host_action_count": sum(1 for item in records if item.get("final_host_action") and item.get("final_host_action") != "none"),
+                "writeback_count": sum(1 for item in records if item.get("writeback_applied")),
+            },
+            "trends": [
+                {
+                    "sample_id": item.get("sample_id"),
+                    "timestamp": item.get("timestamp"),
+                    "urge_score": item.get("urge_score"),
+                    "idle_eligible": item.get("idle_eligible"),
+                    "candidate_generated": item.get("candidate_generated"),
+                    "writeback_applied": item.get("writeback_applied"),
+                    "revision_counter": item.get("revision_counter"),
+                }
+                for item in records[-50:]
+            ],
+            "distributions": {
+                "candidate_actions": dict(candidate_counter),
+                "governor_status": dict(governor_counter),
+                "final_host_action": dict(final_action_counter),
+                "suppression_reason": dict(suppression_counter),
+            },
+            "recent_turns": [
+                {
+                    "sample_id": item.get("sample_id"),
+                    "timestamp": item.get("timestamp"),
+                    "urge_score": item.get("urge_score"),
+                    "candidate_actions": item.get("candidate_actions") or [],
+                    "governor_status": item.get("governor_status"),
+                    "final_host_action": item.get("final_host_action"),
+                    "exec_result_type": item.get("exec_result_type"),
+                    "focus_goal": item.get("focus_goal"),
+                    "trace_completeness": item.get("trace_completeness"),
+                    "semantic": item.get("semantic"),
+                }
+                for item in reversed(records[-12:])
+            ],
+            "excluded_counts": base_rollup.get("excluded_counts") or {},
+            "semantic_summary": {
+                "intent": _counter_to_dict([_semantic(item).get("intent_code") for item in records]),
+                "host_posture": _counter_to_dict([_semantic(item).get("host_posture_code") for item in records], default_label="not_applicable"),
+                "result_state": _counter_to_dict([_semantic(item).get("result_state_code") for item in records], default_label="not_executed"),
+                "growth_motion": _counter_to_dict([_semantic(item).get("growth_motion_code") for item in records]),
+                "evidence_state": _counter_to_dict([_semantic(item).get("evidence_state_code") for item in records], default_label="partial"),
+                "headline": _counter_to_dict([_semantic(item).get("headline_code") for item in records]),
+            },
+            "headline_code": latest_semantic.get("headline_code", "unknown"),
+            "story_cards": [
+                {
+                    "slot": "intent",
+                    "code": latest_semantic.get("intent_code", "unknown"),
+                    "value": latest.get("candidate_actions") or [],
+                },
+                {
+                    "slot": "host",
+                    "code": latest_semantic.get("host_posture_code", "not_applicable"),
+                    "value": latest.get("governor_status"),
+                },
+                {
+                    "slot": "result",
+                    "code": latest_semantic.get("result_state_code", "not_executed"),
+                    "value": latest.get("exec_result_type"),
+                },
+                {
+                    "slot": "growth",
+                    "code": latest_semantic.get("growth_motion_code", "unknown"),
+                    "value": latest.get("revision_counter"),
+                },
+            ],
+            "source_view": _normalize_source_view(source_view),
+        }
 
     def sample_detail(self, sample_id: str) -> Optional[Dict[str, Any]]:
         sample_dir = self.dashboard_dir.parent / "real_telegram" / sample_id
@@ -418,8 +833,8 @@ class DashboardDataStore:
                 detail["artifacts"][name] = json.loads(path.read_text(encoding="utf-8"))
             else:
                 detail["artifacts"][name] = path.read_text(encoding="utf-8")
-        runs_rollup = self.load_runs_rollup()
-        growth_rollup = self.load_growth_rollup()
+        runs_rollup = self.load_runs_rollup(source_view="all")
+        growth_rollup = self.load_growth_rollup(source_view="all")
         failures_rollup = self.load_failures_rollup()
         run_record = next((item for item in runs_rollup.get("records", []) if item.get("sample_id") == sample_id), None)
         growth_record = next((item for item in growth_rollup.get("records", []) if item.get("sample_id") == sample_id), None)
@@ -453,8 +868,8 @@ class DashboardDataStore:
         }
         return detail
 
-    def latest_sample_id(self) -> Optional[str]:
-        runs_rollup = self.load_runs_rollup()
+    def latest_sample_id(self, source_view: str = DEFAULT_SOURCE_VIEW) -> Optional[str]:
+        runs_rollup = self.load_runs_rollup(source_view=source_view)
         recent_runs = runs_rollup.get("recent_runs") or []
         if recent_runs:
             return recent_runs[0].get("sample_id")
@@ -464,8 +879,8 @@ class DashboardDataStore:
         latest = max(records, key=lambda item: item.get("timestamp") or "")
         return latest.get("sample_id")
 
-    def flow_detail(self, sample_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
-        resolved_sample_id = sample_id or self.latest_sample_id()
+    def flow_detail(self, sample_id: Optional[str] = None, *, source_view: str = DEFAULT_SOURCE_VIEW) -> Optional[Dict[str, Any]]:
+        resolved_sample_id = sample_id or self.latest_sample_id(source_view=source_view)
         if not resolved_sample_id:
             return None
         detail = self.sample_detail(resolved_sample_id)
@@ -1069,22 +1484,17 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
 
     def _handle_api(self, parsed, *, method: str = "GET") -> None:
         query = parse_qs(parsed.query)
+        source_view = _normalize_source_view((query.get("source_view") or [None])[0])
         if parsed.path.startswith("/api/dashboard/chat/"):
             self._handle_chat_api(parsed, method=method)
             return
 
         if parsed.path == "/api/dashboard/health":
-            self._send_json(
-                {
-                    "status": "ok",
-                    "build_meta": self.store.load_build_meta(),
-                    "gap_summary": self.store.load_gap_summary(),
-                }
-            )
+            self._send_json(self.store.health_payload(source_view=source_view))
             return
 
         if parsed.path == "/api/dashboard/runs":
-            payload = self.store.load_runs_rollup()
+            payload = self.store.load_runs_rollup(source_view=source_view)
             limit = int((query.get("limit") or ["200"])[0])
             payload["records"] = payload.get("records", [])[:limit]
             payload["recent_runs"] = payload.get("recent_runs", [])[: min(limit, 50)]
@@ -1093,7 +1503,7 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
 
         if parsed.path == "/api/dashboard/flow":
             sample_id = (query.get("sample_id") or [None])[0]
-            payload = self.store.flow_detail(sample_id)
+            payload = self.store.flow_detail(sample_id, source_view=source_view)
             if payload is None:
                 self.send_error(HTTPStatus.NOT_FOUND, "No flow sample available")
                 return
@@ -1101,7 +1511,7 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
             return
 
         if parsed.path == "/api/dashboard/growth":
-            payload = self.store.load_growth_rollup()
+            payload = self.store.load_growth_rollup(source_view=source_view)
             limit = int((query.get("limit") or ["200"])[0])
             payload["records"] = payload.get("records", [])[:limit]
             payload["recent_growth"] = payload.get("recent_growth", [])[: min(limit, 50)]
@@ -1113,12 +1523,12 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
             return
 
         if parsed.path == "/api/dashboard/agency":
-            self._send_json(self.store.load_agency_rollup())
+            self._send_json(self.store.load_agency_rollup(source_view=source_view))
             return
 
         if parsed.path.startswith("/api/dashboard/samples/") and parsed.path.endswith("/flow"):
             sample_id = parsed.path.split("/")[-2]
-            payload = self.store.flow_detail(sample_id)
+            payload = self.store.flow_detail(sample_id, source_view=source_view)
             if payload is None:
                 self.send_error(HTTPStatus.NOT_FOUND, "Unknown sample_id")
                 return

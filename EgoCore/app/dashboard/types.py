@@ -29,6 +29,9 @@ class RunIndexRecord:
     continuity_tags: List[str]
     repair_closure: bool
     artifact_refs: Dict[str, str]
+    source_type: Optional[str] = None
+    sample_scope: str = "real_user"
+    sample_scope_reason: Optional[str] = None
     response_plan_status: Optional[str] = None
     closure_family_id: Optional[str] = None
     session_id: Optional[str] = None
@@ -242,6 +245,9 @@ class DashboardBuildSummary:
     oe_available_runs: int
     host_only_runs: int
     failure_cases: int
+    dashboard_schema_version: int = 1
+    real_user_runs: int = 0
+    fixture_like_runs: int = 0
     continuity_status: Dict[str, str] = field(default_factory=dict)
     gap_type_counts: Dict[str, int] = field(default_factory=dict)
     plasticity_chain_count: int = 0

@@ -26,12 +26,16 @@ def _make_sample(
     events: list[dict] | None = None,
     response_plan_override: dict | None = None,
     normalized_runtime_summary: dict | None = None,
+    chat_id: int = 8420019401,
+    user_id: int = 8420019401,
+    username: str | None = None,
 ) -> None:
     sample_dir = real_dir / sample_id
     sample_dir.mkdir(parents=True, exist_ok=True)
     ledger = {
         "sample_id": sample_id,
         "timestamp": "2026-03-27T10:00:00+00:00",
+        "source_type": "real_channel",
         "replay_hash": "hash",
         "ids": {
             "session_id": "telegram:dm:1",
@@ -99,7 +103,17 @@ def _make_sample(
         },
     }
     _write_json(sample_dir / "ledger.json", ledger)
-    _write_json(sample_dir / "raw_update.json", {"update_id": 1, "message": {"text": "hello"}})
+    raw_update = {
+        "update_id": 1,
+        "message": {
+            "text": "hello",
+            "chat": {"id": chat_id, "type": "private"},
+            "from": {"id": user_id, "username": username},
+        },
+    }
+    ledger["inputs"] = {"raw_update": raw_update}
+    _write_json(sample_dir / "ledger.json", ledger)
+    _write_json(sample_dir / "raw_update.json", raw_update)
     if oe_available:
         _write_json(
             sample_dir / "normalized_event.json",
@@ -170,7 +184,14 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
             },
         ],
     )
-    _make_sample(real_dir, "sample_20260327_100100_bbbbbbbb", oe_available=False)
+    _make_sample(
+        real_dir,
+        "sample_20260327_100100_bbbbbbbb",
+        oe_available=False,
+        chat_id=123,
+        user_id=456,
+        username="moonlight",
+    )
     observation_dir.mkdir(parents=True, exist_ok=True)
     (observation_dir / "OBSERVATION_SAMPLE_INDEX.md").write_text("### `/new`\n- sample_20260327_100000_aaaaaaaa\n", encoding="utf-8")
     (observation_dir / "MVS_E5_OBSERVATION_REPORT.md").write_text("- scripts/restart_egocore.sh --telegram\n", encoding="utf-8")
@@ -199,10 +220,12 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
         base = f"http://127.0.0.1:{server.server_address[1]}"
         health = json.loads(urlopen(f"{base}/api/dashboard/health").read().decode("utf-8"))
         runs = json.loads(urlopen(f"{base}/api/dashboard/runs").read().decode("utf-8"))
+        runs_all = json.loads(urlopen(f"{base}/api/dashboard/runs?source_view=all").read().decode("utf-8"))
         growth = json.loads(urlopen(f"{base}/api/dashboard/growth").read().decode("utf-8"))
         failures = json.loads(urlopen(f"{base}/api/dashboard/failures").read().decode("utf-8"))
         agency = json.loads(urlopen(f"{base}/api/dashboard/agency").read().decode("utf-8"))
         flow = json.loads(urlopen(f"{base}/api/dashboard/flow").read().decode("utf-8"))
+        flow_all = json.loads(urlopen(f"{base}/api/dashboard/flow?source_view=all").read().decode("utf-8"))
         sample_flow = json.loads(
             urlopen(f"{base}/api/dashboard/samples/sample_20260327_100000_aaaaaaaa/flow").read().decode("utf-8")
         )
@@ -219,8 +242,10 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
         server.server_close()
 
     assert health["status"] == "ok"
+    assert health["build_meta"]["source_view"] == "real"
     assert runs["records"]
-    assert runs["summary"]["turn_count"] == 2
+    assert runs["summary"]["turn_count"] == 1
+    assert runs_all["summary"]["turn_count"] == 2
     assert runs["recent_runs"]
     assert "charts" in runs
     assert growth["records"]
@@ -233,8 +258,10 @@ def test_dashboard_server_exposes_read_only_api(tmp_path: Path) -> None:
     assert agency["latest_state"]["final_host_action"] == "file"
     assert agency["headline_code"] == "changed_after_result"
     assert agency["story_cards"]
-    assert flow["sample_id"] == "sample_20260327_100100_bbbbbbbb"
-    assert flow["chain_status"]["overall_status"] == "host_only"
+    assert flow["sample_id"] == "sample_20260327_100000_aaaaaaaa"
+    assert flow["chain_status"]["overall_status"] == "pass"
+    assert flow_all["sample_id"] == "sample_20260327_100100_bbbbbbbb"
+    assert flow_all["chain_status"]["overall_status"] == "host_only"
     assert sample_flow["sample_id"] == "sample_20260327_100000_aaaaaaaa"
     assert sample_flow["subject_summary"]["oe_available"] is True
     assert sample_flow["canonical_fields_summary"]["loaded_axes"] == []

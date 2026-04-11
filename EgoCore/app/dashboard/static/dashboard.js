@@ -5,6 +5,7 @@ const app = document.getElementById("app");
 const ChatState = window.DashboardChatState || {};
 const POLL_MS = 5000;
 const CHAT_WAIT_TIMEOUT_MS = 25000;
+const SOURCE_VIEW_STORAGE_KEY = "dashboard:sourceView";
 const VIEW_ROUTES = {
   runs: "/runs",
   flow: "/flow",
@@ -18,6 +19,7 @@ const UI_STATE = {
   locale: "zh",
   detailOpen: new Set(),
   artifactModes: new Map(),
+  sourceView: "real",
   chatSessionId: null,
   chatSelectedMessageId: null,
   chatDraft: "",
@@ -90,10 +92,13 @@ const I18N = {
       summary_only: "摘要优先",
       profile: "Profile",
       locale: "语言",
+      source_view: "数据视图",
       status: "状态",
       reason: "原因",
       unknown: "未知",
       none: "无",
+      real_data: "真实数据",
+      all_data: "所有数据",
       raw_artifact: "原始证据",
       translated_summary: "摘要说明",
       because: "原因",
@@ -412,10 +417,13 @@ const I18N = {
       summary_only: "Summary first",
       profile: "Profile",
       locale: "Language",
+      source_view: "Data View",
       status: "Status",
       reason: "Reason",
       unknown: "unknown",
       none: "none",
+      real_data: "Real Data",
+      all_data: "All Data",
       raw_artifact: "Raw evidence",
       translated_summary: "Summary",
       because: "Because",
@@ -1147,6 +1155,39 @@ function detectLocale() {
   return browserLanguage.startsWith("zh") ? "zh" : "en";
 }
 
+function detectSourceView() {
+  const stored = window.localStorage.getItem(SOURCE_VIEW_STORAGE_KEY);
+  return stored === "all" ? "all" : "real";
+}
+
+function getSourceView() {
+  return UI_STATE.sourceView === "all" ? "all" : "real";
+}
+
+function shouldShowSourceViewControl() {
+  return !sampleId && ["runs", "flow", "growth", "agency"].includes(view);
+}
+
+function buildApiPath(path, { includeSourceView = true } = {}) {
+  if (!includeSourceView || !shouldShowSourceViewControl()) return path;
+  const url = new URL(path, window.location.origin);
+  url.searchParams.set("source_view", getSourceView());
+  return `${url.pathname}${url.search}`;
+}
+
+function renderSourceViewControl() {
+  if (!shouldShowSourceViewControl()) return "";
+  return `
+    <label class="source-view-control">
+      <span>${escapeHtml(t("common.source_view"))}</span>
+      <select id="source-view-select" data-source-view>
+        <option value="real"${getSourceView() === "real" ? " selected" : ""}>${escapeHtml(t("common.real_data"))}</option>
+        <option value="all"${getSourceView() === "all" ? " selected" : ""}>${escapeHtml(t("common.all_data"))}</option>
+      </select>
+    </label>
+  `;
+}
+
 function setLocale(locale) {
   UI_STATE.locale = locale === "en" ? "en" : "zh";
   window.localStorage.setItem("dashboard:locale", UI_STATE.locale);
@@ -1216,6 +1257,7 @@ function applyChrome() {
 
 function pageIntro(title, subtitle, extras = [], options = {}) {
   const showAutoRefresh = options.showAutoRefresh ?? true;
+  const introExtras = [renderSourceViewControl(), ...extras].filter(Boolean);
   return `
     <section class="panel intro-panel">
       <div class="intro-head">
@@ -1225,7 +1267,7 @@ function pageIntro(title, subtitle, extras = [], options = {}) {
         </div>
         <div class="pill-row">
           ${showAutoRefresh ? `<span class="pill ok">${escapeHtml(t("common.auto_refresh"))}</span>` : ""}
-          ${extras.join("")}
+          ${introExtras.join("")}
         </div>
       </div>
     </section>
@@ -2694,13 +2736,13 @@ async function sendChatDraft() {
 }
 
 async function refresh() {
-  const health = await fetchJson("/api/dashboard/health");
+  const health = await fetchJson(buildApiPath("/api/dashboard/health"));
   renderMeta(health.build_meta || {}, health.gap_summary || {});
 
   if (view === "flow") {
     const path = sampleId
       ? `/api/dashboard/samples/${encodeURIComponent(sampleId)}/flow`
-      : "/api/dashboard/flow";
+      : buildApiPath("/api/dashboard/flow");
     renderFlow(await fetchJson(path));
     return;
   }
@@ -2709,7 +2751,7 @@ async function refresh() {
     return;
   }
   if (view === "growth") {
-    renderGrowth(await fetchJson("/api/dashboard/growth"));
+    renderGrowth(await fetchJson(buildApiPath("/api/dashboard/growth")));
     return;
   }
   if (view === "failures") {
@@ -2717,14 +2759,14 @@ async function refresh() {
     return;
   }
   if (view === "agency") {
-    renderAgency(await fetchJson("/api/dashboard/agency"));
+    renderAgency(await fetchJson(buildApiPath("/api/dashboard/agency")));
     return;
   }
   if (view === "sample" && sampleId) {
     renderSample(await fetchJson(`/api/dashboard/samples/${encodeURIComponent(sampleId)}`));
     return;
   }
-  renderRuns(await fetchJson("/api/dashboard/runs"));
+  renderRuns(await fetchJson(buildApiPath("/api/dashboard/runs")));
 }
 
 document.addEventListener("click", (event) => {
@@ -2794,6 +2836,16 @@ document.addEventListener("input", (event) => {
   }
 });
 
+document.addEventListener("change", (event) => {
+  if (event.target.matches("[data-source-view]")) {
+    UI_STATE.sourceView = event.target.value === "all" ? "all" : "real";
+    window.localStorage.setItem(SOURCE_VIEW_STORAGE_KEY, UI_STATE.sourceView);
+    refresh().catch((error) => {
+      app.innerHTML = `<section class="panel"><div class="empty">${escapeHtml(error.message)}</div></section>`;
+    });
+  }
+});
+
 document.addEventListener("focusin", (event) => {
   if (event.target.id === "chat-draft") {
     UI_STATE.chatDraftFocused = true;
@@ -2818,6 +2870,7 @@ document.addEventListener("keydown", (event) => {
 
 async function start() {
   UI_STATE.locale = detectLocale();
+  UI_STATE.sourceView = detectSourceView();
   applyChrome();
   if (window.location.pathname === "/") {
     const preferredView = window.localStorage.getItem("dashboard:lastView");

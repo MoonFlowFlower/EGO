@@ -50,6 +50,11 @@ DATA_SCHEMA_DOC = "DATA_SCHEMA.md"
 README_DOC = "README.md"
 
 SAMPLE_ID_RE = re.compile(r"sample_\d{8}_\d{6}_[0-9a-f]{8}")
+DASHBOARD_SCHEMA_VERSION = 2
+
+_FIXTURE_SESSION_IDS = {"telegram:dm:456"}
+_FIXTURE_CHAT_USER_PAIRS = {(123, 456)}
+_FIXTURE_USERNAMES = {"moonlight", "mo*******", "tester"}
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
@@ -60,6 +65,13 @@ def _load_optional_json(path: Path) -> Optional[Dict[str, Any]]:
     if not path.exists():
         return None
     return _load_json(path)
+
+
+def _load_raw_update(sample_dir: Path, ledger: Dict[str, Any]) -> Dict[str, Any]:
+    raw_update = (ledger.get("inputs") or {}).get("raw_update")
+    if isinstance(raw_update, dict) and raw_update:
+        return raw_update
+    return _load_optional_json(sample_dir / "raw_update.json") or {}
 
 
 def _rel(path: Path) -> str:
@@ -136,6 +148,39 @@ def _deep_get(data: Dict[str, Any], *paths: str) -> Any:
         if found:
             return current
     return None
+
+
+def _coerce_int(value: Any) -> Optional[int]:
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value)
+    try:
+        return int(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def _classify_sample_scope(sample_dir: Path, ledger: Dict[str, Any]) -> Tuple[str, Optional[str]]:
+    ids = ledger.get("ids") or {}
+    for key in ("session_id", "thread_id"):
+        value = ids.get(key)
+        if value in _FIXTURE_SESSION_IDS:
+            return "fixture_like", f"fixture_{key}"
+
+    raw_update = _load_raw_update(sample_dir, ledger)
+    message = raw_update.get("message") or {}
+    chat_id = _coerce_int(_deep_get(message, "chat.id"))
+    user_id = _coerce_int(_deep_get(message, "from.id"))
+    username = str(_deep_get(message, "from.username") or "").strip().lower()
+
+    if chat_id is not None and user_id is not None and (chat_id, user_id) in _FIXTURE_CHAT_USER_PAIRS:
+        return "fixture_like", "fixture_transport_ids"
+    if chat_id is not None and chat_id == 123 and username in _FIXTURE_USERNAMES:
+        return "fixture_like", "fixture_transport_username"
+    return "real_user", None
 
 
 def _normalize_action_name(value: Any) -> str:
@@ -1117,6 +1162,7 @@ def _build_run_record(sample_dir: Path) -> RunIndexRecord:
     completeness = _derive_completeness(sample_dir, ledger)
     oe_available = _is_oe_available(ledger, completeness)
     host_only = bool(response_plan) and not oe_available
+    sample_scope, sample_scope_reason = _classify_sample_scope(sample_dir, ledger)
     gap_types = _classify_gap_types(
         completeness,
         host_only=host_only,
@@ -1135,6 +1181,9 @@ def _build_run_record(sample_dir: Path) -> RunIndexRecord:
         continuity_tags=[],
         repair_closure=bool(cycle_delta.get("repair_closure")),
         artifact_refs=_artifact_refs(sample_dir),
+        source_type=ledger.get("source_type"),
+        sample_scope=sample_scope,
+        sample_scope_reason=sample_scope_reason,
         response_plan_status=response_plan.get("status"),
         closure_family_id=cycle_delta.get("closure_family_id"),
         session_id=ids.get("session_id"),
@@ -1754,6 +1803,9 @@ def build_dashboard_indexes(
         oe_available_runs=gap_summary["oe_available_runs"],
         host_only_runs=gap_summary["host_only_runs"],
         failure_cases=len(failure_records),
+        dashboard_schema_version=DASHBOARD_SCHEMA_VERSION,
+        real_user_runs=sum(1 for record in run_records if record.sample_scope != "fixture_like"),
+        fixture_like_runs=sum(1 for record in run_records if record.sample_scope == "fixture_like"),
         continuity_status={record.scenario: record.status for record in continuity_records},
         gap_type_counts=gap_summary["gap_type_counts"],
         plasticity_chain_count=len(plasticity_chains),
