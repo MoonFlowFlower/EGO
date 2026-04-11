@@ -13,6 +13,17 @@ Proto-Self Kernel v1 - Reducers
 from typing import Any, Dict, Optional
 
 from openemotion.proto_self.schemas import KernelEvent, ReflectionNote, ResponseTendency
+from openemotion.proto_self.h1_shadow import (
+    filter_live_correction_entries,
+    filter_live_counterfactual_entries,
+)
+from openemotion.proto_self.mvs_replay import (
+    mvs_variant_uses_boundary_public_path,
+    mvs_variant_uses_correction_public_path,
+    mvs_variant_uses_corrective_trace,
+    mvs_variant_uses_counterfactual_public_path,
+    mvs_variant_uses_viability_public_path,
+)
 from openemotion.proto_self.state import EpisodicRecord, ProtoSelfState
 
 
@@ -56,15 +67,49 @@ def update_memory(
     - cycle 相关 promotion hint
     - reflection note promotion hint
     """
-    return {
+    memory_update = {
         "append_episode": True,
         "cycle_promotion_candidate": cycle_delta.get("cycle_id"),
         "promote_reflection": bool(reflection_note and reflection_note.promote_to_memory),
     }
+    if perceived.get("mvs_replay_active"):
+        variant_id = str(perceived.get("mvs_variant_id") or "")
+        probe_key = str(perceived.get("mvs_probe_key") or "")
+        predicted_success = state.self_model.counterfactual_success_by_action.get(probe_key, 0.55)
+        outcome_type = perceived.get("external_outcome_type")
+        boundary_confidence = state.self_model.boundary_confidence_by_action.get(probe_key, 0.75)
+        if mvs_variant_uses_corrective_trace(variant_id) and (
+            outcome_type in {"failure", "blocked", "partial"} or cycle_delta.get("repair_closure")
+        ):
+            adjustment = (
+                "repair_and_request_replan"
+                if outcome_type in {"failure", "blocked"}
+                else "stabilize_retry" if outcome_type == "success" else "observe_and_retry"
+            )
+            memory_update["counterfactual_prediction"] = {
+                "probe_key": probe_key,
+                "predicted_success": predicted_success,
+            }
+            memory_update["corrective_trace"] = {
+                "trigger": reflection_note.trigger if reflection_note else outcome_type,
+                "probe_key": probe_key,
+                "predicted_outcome": predicted_success,
+                "actual_outcome": outcome_type,
+                "adjustment_applied": adjustment,
+                "next_guard": "request_replan" if outcome_type in {"failure", "blocked"} else "guarded_continue",
+            }
+            memory_update["policy_snapshot"] = {
+                "mode_before": state.self_model.current_mode,
+                "repair_closure": bool(cycle_delta.get("repair_closure")),
+                "boundary_confidence": boundary_confidence,
+                "viability_pressure": state.drives.viability_pressure,
+            }
+    return memory_update
 
 
 def derive_policy_hint(
     state: ProtoSelfState,
+    perceived: Dict[str, Any],
     appraisal_delta: Dict[str, Any],
     self_model_delta: Dict[str, Any],
     identity_delta: Dict[str, Any],
@@ -74,13 +119,66 @@ def derive_policy_hint(
     
     现有路线已经明确表达主权要由 EgoCore 程序端控制。
     """
-    return {
+    live_correction_tags = filter_live_correction_entries(state.self_model.recent_correction_tags)
+    live_counterfactual = filter_live_counterfactual_entries(state.self_model.counterfactual_success_by_action)
+    correction_pressure = max(live_correction_tags.values(), default=0.0)
+    lowest_prediction = min(live_counterfactual.values(), default=1.0)
+    effective_viability = appraisal_delta.get("viability_pressure", state.drives.viability_pressure)
+    probe_key = str(perceived.get("mvs_probe_key") or perceived.get("action_class_seed") or "")
+    effective_boundary_confidence = min(
+        float(state.self_model.boundary_confidence_by_action.get(probe_key, 1.0)),
+        float(self_model_delta.get("boundary_confidence_by_action_patch", {}).get(probe_key, 1.0)),
+    )
+    effective_world_confidence = min(
+        float(state.self_model.world_assumption_confidence.get(probe_key, 1.0)),
+        float(self_model_delta.get("world_assumption_confidence_patch", {}).get(probe_key, 1.0)),
+    )
+    variant_id = str(perceived.get("mvs_variant_id") or "")
+    correction_public_path = (
+        not perceived.get("mvs_replay_active") or mvs_variant_uses_correction_public_path(variant_id)
+    )
+    counterfactual_public_path = (
+        not perceived.get("mvs_replay_active") or mvs_variant_uses_counterfactual_public_path(variant_id)
+    )
+    viability_public_path = (
+        not perceived.get("mvs_replay_active") or mvs_variant_uses_viability_public_path(variant_id)
+    )
+    boundary_public_path = (
+        not perceived.get("mvs_replay_active") or mvs_variant_uses_boundary_public_path(variant_id)
+    )
+    policy = {
         "risk_bias": "high" if appraisal_delta.get("caution", 0.0) > 0.7 else "normal",
         "closure_bias": appraisal_delta.get("completion_pressure", 0.0) > 0.6,
         "ask_preferred": appraisal_delta.get("caution", 0.0) > 0.8,
         "should_avoid_commitment_upgrade": True,
         "exploration_mode": self_model_delta.get("current_mode") == "exploration",
     }
+    if correction_public_path and correction_pressure >= 0.6:
+        policy["ask_preferred"] = True
+        policy["shadow_repair_bias"] = True
+        policy["mvs_repair_bias"] = True
+        policy["guard_reason"] = "recent_failure_writeback"
+    if viability_public_path and effective_viability >= 0.5:
+        policy["ask_preferred"] = True
+        policy["shadow_repair_bias"] = True
+        policy["mvs_repair_bias"] = True
+        policy["guard_reason"] = "viability_pressure"
+    if counterfactual_public_path and lowest_prediction < 0.35:
+        policy["ask_preferred"] = True
+        policy["shadow_counterfactual_guard"] = "low_success_prediction"
+        policy["mvs_counterfactual_guard"] = "low_success_prediction"
+    if boundary_public_path and effective_boundary_confidence < 0.40:
+        policy["ask_preferred"] = True
+        policy["mvs_boundary_guard"] = "low_boundary_confidence"
+        policy["guard_reason"] = "boundary_confidence"
+    if viability_public_path and effective_viability >= 0.65:
+        policy["risk_bias"] = "high"
+        policy["shadow_tension_active"] = True
+        policy["mvs_tension_active"] = True
+    if effective_world_confidence < 0.30:
+        policy["ask_preferred"] = True
+        policy["mvs_world_guard"] = "low_world_assumption_confidence"
+    return policy
 
 
 def derive_response_tendency(
@@ -91,7 +189,9 @@ def derive_response_tendency(
     推导响应倾向：影响下一步行为的内部偏置。
     """
     # 确定首选模式
-    if policy_hint.get("ask_preferred"):
+    if policy_hint.get("shadow_repair_bias") and not policy_hint.get("ask_preferred"):
+        preferred_mode = "repair"
+    elif policy_hint.get("ask_preferred"):
         preferred_mode = "ask"
     elif state.self_model.current_mode == "repair":
         preferred_mode = "repair"
@@ -107,7 +207,9 @@ def derive_response_tendency(
         preferred_tone = "calm"
 
     # 确定下一步建议
-    if state.self_model.current_focus == "closure":
+    if policy_hint.get("shadow_repair_bias"):
+        suggested_next_step = "request_replan"
+    elif state.self_model.current_focus == "closure":
         suggested_next_step = "prioritize_closure"
     elif state.self_model.current_mode == "repair":
         suggested_next_step = "clarify_or_repair"
@@ -152,12 +254,32 @@ def apply_updates(
     state.drives.caution = appraisal_delta.get("caution", state.drives.caution)
     state.drives.completion_pressure = appraisal_delta.get("completion_pressure", state.drives.completion_pressure)
     state.drives.social_tension = appraisal_delta.get("social_tension", state.drives.social_tension)
+    state.drives.viability_pressure = appraisal_delta.get("viability_pressure", state.drives.viability_pressure)
 
     # 2. 写 self_model
     if self_model_delta.get("current_focus") is not None:
         state.self_model.current_focus = self_model_delta["current_focus"]
     if self_model_delta.get("current_mode") is not None:
         state.self_model.current_mode = self_model_delta["current_mode"]
+    if self_model_delta.get("self_confidence_by_domain"):
+        for key, value in dict(self_model_delta["self_confidence_by_domain"]).items():
+            state.self_model.self_confidence_by_domain[str(key)] = float(value)
+    if self_model_delta.get("counterfactual_success_by_action_patch"):
+        for key, value in dict(self_model_delta["counterfactual_success_by_action_patch"]).items():
+            state.self_model.counterfactual_success_by_action[str(key)] = float(value)
+    if self_model_delta.get("boundary_confidence_by_action_patch"):
+        for key, value in dict(self_model_delta["boundary_confidence_by_action_patch"]).items():
+            state.self_model.boundary_confidence_by_action[str(key)] = float(value)
+    if self_model_delta.get("world_assumption_confidence_patch"):
+        for key, value in dict(self_model_delta["world_assumption_confidence_patch"]).items():
+            state.self_model.world_assumption_confidence[str(key)] = float(value)
+    if self_model_delta.get("recent_correction_tags_patch"):
+        for key, value in dict(self_model_delta["recent_correction_tags_patch"]).items():
+            numeric = max(0.0, float(value))
+            if numeric <= 0.0:
+                state.self_model.recent_correction_tags.pop(str(key), None)
+            else:
+                state.self_model.recent_correction_tags[str(key)] = numeric
 
     # 3. 写 cycle
     apply_cycle_delta(state.cycle_store, cycle_delta, event.timestamp)
@@ -174,6 +296,9 @@ def apply_updates(
                 },
                 external_result=event.external_result,
                 appraisal_snapshot=appraisal_delta,
+                counterfactual_prediction=dict(memory_update.get("counterfactual_prediction") or {}),
+                corrective_trace=dict(memory_update.get("corrective_trace") or {}),
+                policy_snapshot=dict(memory_update.get("policy_snapshot") or {}),
             )
         )
 

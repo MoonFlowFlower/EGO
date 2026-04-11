@@ -44,6 +44,11 @@ class ProtoSelfTracePayloadV2:
     reflection_note: Optional[Dict[str, Any]] = None
     policy_hint: Dict[str, Any] = field(default_factory=dict)
     response_tendency: Optional[Dict[str, Any]] = None
+    predicted_outcome: Any = None
+    actual_outcome: Any = None
+    adjustment_applied: Optional[str] = None
+    next_guard: Optional[str] = None
+    replay_variant_id: Optional[str] = None
     candidate_actions: list = field(default_factory=list)
     governor_hint: Dict[str, Any] = field(default_factory=dict)
     executed_action: Optional[Dict[str, Any]] = None
@@ -97,11 +102,12 @@ class ProtoSelfTracePayloadV2:
     controlled_delivery_candidate: Optional[Dict[str, Any]] = None
     initiative_realization_audit_entries: list = field(default_factory=list)
     initiative_realization_writeback_candidate: Optional[Dict[str, Any]] = None
+    shadow_h1: Optional[Dict[str, Any]] = None
     timestamp: str = ""
     legacy_trace_payload: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "kernel_version": self.kernel_version,
             "event_id": self.event_id,
@@ -137,6 +143,11 @@ class ProtoSelfTracePayloadV2:
             "reflection_note": self.reflection_note,
             "policy_hint": self.policy_hint,
             "response_tendency": self.response_tendency,
+            "predicted_outcome": self.predicted_outcome,
+            "actual_outcome": self.actual_outcome,
+            "adjustment_applied": self.adjustment_applied,
+            "next_guard": self.next_guard,
+            "replay_variant_id": self.replay_variant_id,
             "candidate_actions": self.candidate_actions,
             "governor_hint": self.governor_hint,
             "executed_action": self.executed_action,
@@ -193,6 +204,9 @@ class ProtoSelfTracePayloadV2:
             "timestamp": self.timestamp,
             "legacy_trace_payload": self.legacy_trace_payload,
         }
+        if self.shadow_h1 is not None:
+            payload["shadow_h1"] = self.shadow_h1
+        return payload
 
 
 def build_trace_payload_v2(**kwargs: Any) -> Dict[str, Any]:

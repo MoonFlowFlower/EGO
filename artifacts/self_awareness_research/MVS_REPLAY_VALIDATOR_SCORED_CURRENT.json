@@ -1,0 +1,118 @@
+{
+  "schema_version": "mvs.replay_validator_scored.v1",
+  "generated_at": "2026-04-11T07:51:36.121102+00:00",
+  "input_report": "/mnt/d/Project/AIProject/MyProject/Ego/artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_CURRENT.json",
+  "variant_scores": {
+    "mvs_baseline_proto_self_mainline": {
+      "target_scores": {
+        "T1": 1.0,
+        "T2": 0.75,
+        "T3": 0.3333,
+        "T4": 0.3333,
+        "T5": 0.25
+      },
+      "composite": 0.5333,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.75,
+      "trace_replayability": 1.0
+    },
+    "mvs_candidate_aligned_compact": {
+      "target_scores": {
+        "T1": 1.0,
+        "T2": 1.0,
+        "T3": 1.0,
+        "T4": 0.5833,
+        "T5": 0.9167
+      },
+      "composite": 0.9,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.75,
+      "trace_replayability": 1.0
+    },
+    "mvs_minus_counterfactual_writeback": {
+      "target_scores": {
+        "T1": 1.0,
+        "T2": 1.0,
+        "T3": 0.6667,
+        "T4": 0.5833,
+        "T5": 0.9167
+      },
+      "composite": 0.8333,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.75,
+      "trace_replayability": 1.0
+    },
+    "mvs_minus_viability_pressure": {
+      "target_scores": {
+        "T1": 1.0,
+        "T2": 1.0,
+        "T3": 1.0,
+        "T4": 0.3333,
+        "T5": 0.9167
+      },
+      "composite": 0.85,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.75,
+      "trace_replayability": 1.0
+    },
+    "mvs_minus_corrective_trace": {
+      "target_scores": {
+        "T1": 1.0,
+        "T2": 1.0,
+        "T3": 1.0,
+        "T4": 0.5833,
+        "T5": 0.25
+      },
+      "composite": 0.7667,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.75,
+      "trace_replayability": 1.0
+    },
+    "mvs_minus_boundary_confidence": {
+      "target_scores": {
+        "T1": 0.75,
+        "T2": 0.75,
+        "T3": 1.0,
+        "T4": 0.6667,
+        "T5": 0.9167
+      },
+      "composite": 0.8167,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.75,
+      "trace_replayability": 1.0
+    },
+    "baseline_chat_surface": {
+      "target_scores": {
+        "T1": 0.0,
+        "T2": 0.0,
+        "T3": 0.0,
+        "T4": 0.0,
+        "T5": 0.0
+      },
+      "composite": 0.0,
+      "boundary_integrity": 1.0,
+      "repair_closure_capture": 0.0,
+      "trace_replayability": 0.0
+    }
+  },
+  "selection": {
+    "decision": "switch_to_active_inference",
+    "candidate_pass": false,
+    "target_deltas_vs_baseline_a": {
+      "T1": 0.0,
+      "T2": 0.25,
+      "T3": 0.6667,
+      "T4": 0.25,
+      "T5": 0.6667
+    },
+    "composite_delta_vs_baseline_a": 0.3667,
+    "ablation_drops": {
+      "counterfactual": 0.3333,
+      "viability": 0.25,
+      "corrective_trace": 0.6667,
+      "boundary_confidence": 0.25
+    },
+    "weak_ablations": [],
+    "challenger_status": "not_run"
+  }
+}

@@ -13,6 +13,7 @@ Proto-Self Kernel v1 - Reflection
 from typing import Any, Dict, Optional
 
 from openemotion.proto_self.schemas import KernelEvent, ReflectionNote
+from openemotion.proto_self.mvs_replay import mvs_variant_uses_boundary_confidence
 from openemotion.proto_self.state import ProtoSelfState
 
 
@@ -37,14 +38,20 @@ def maybe_reflect(
     - 为下一轮状态更新提供依据
     - 不直接接管外部表达
     """
-    # 1. 外部失败
-    if perceived.get("external_outcome_type") == "failure":
+    # 1. 外部失败 / blocked
+    if perceived.get("external_outcome_type") in {"failure", "blocked"}:
+        probe_key = str(perceived.get("mvs_probe_key") or "")
+        boundary_confidence = state.self_model.boundary_confidence_by_action.get(probe_key, 0.75)
         return ReflectionNote(
             trigger="external_failure",
             diagnosis="recent action did not achieve expected outcome",
             proposed_adjustment={
                 "current_mode": "repair",
                 "raise_caution": True,
+                "counterfactual_probe_key": probe_key,
+                "viability_pressure": appraisal_delta.get("viability_pressure", state.drives.viability_pressure),
+                "boundary_confidence": boundary_confidence,
+                "next_guard": "request_replan",
             },
             promote_to_memory=True,
         )
@@ -56,6 +63,22 @@ def maybe_reflect(
             diagnosis="event conflicts with core commitments or boundaries",
             proposed_adjustment={
                 "strengthen_boundary_review": True,
+            },
+            promote_to_memory=False,
+        )
+
+    if (
+        perceived.get("mvs_replay_active")
+        and mvs_variant_uses_boundary_confidence(str(perceived.get("mvs_variant_id") or ""))
+        and perceived.get("boundary_state") == "boundary_touched"
+    ):
+        return ReflectionNote(
+            trigger="boundary_conflict",
+            diagnosis="boundary-sensitive action requires guarded continuation",
+            proposed_adjustment={
+                "current_mode": "cautious",
+                "boundary_review_key": str(perceived.get("mvs_probe_key") or ""),
+                "next_guard": "bounded_review",
             },
             promote_to_memory=False,
         )
@@ -92,7 +115,7 @@ def _is_drive_spike(appraisal_delta: Dict[str, Any]) -> bool:
     
     简化实现：任一 drive 变化超过阈值。
     """
-    for key in ["coherence_pressure", "caution", "curiosity", "completion_pressure", "social_tension"]:
+    for key in ["coherence_pressure", "caution", "curiosity", "completion_pressure", "social_tension", "viability_pressure"]:
         val = appraisal_delta.get(key, 0.0)
         if abs(val) > 0.5:
             return True

@@ -67,6 +67,10 @@ class SelfModel:
     current_focus: Optional[str] = None
     current_mode: str = "baseline"  # baseline / cautious / repair / exploration
     self_confidence_by_domain: Dict[str, float] = field(default_factory=dict)
+    counterfactual_success_by_action: Dict[str, float] = field(default_factory=dict)
+    boundary_confidence_by_action: Dict[str, float] = field(default_factory=dict)
+    world_assumption_confidence: Dict[str, float] = field(default_factory=dict)
+    recent_correction_tags: Dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -75,6 +79,10 @@ class SelfModel:
             "current_focus": self.current_focus,
             "current_mode": self.current_mode,
             "self_confidence_by_domain": self.self_confidence_by_domain,
+            "counterfactual_success_by_action": self.counterfactual_success_by_action,
+            "boundary_confidence_by_action": self.boundary_confidence_by_action,
+            "world_assumption_confidence": self.world_assumption_confidence,
+            "recent_correction_tags": self.recent_correction_tags,
         }
 
     @classmethod
@@ -85,6 +93,10 @@ class SelfModel:
             current_focus=data.get("current_focus"),
             current_mode=data.get("current_mode", "baseline"),
             self_confidence_by_domain=data.get("self_confidence_by_domain", {}),
+            counterfactual_success_by_action=data.get("counterfactual_success_by_action", {}),
+            boundary_confidence_by_action=data.get("boundary_confidence_by_action", {}),
+            world_assumption_confidence=data.get("world_assumption_confidence", {}),
+            recent_correction_tags=data.get("recent_correction_tags", {}),
         )
 
 
@@ -106,6 +118,7 @@ class DriveField:
     caution: float = 0.0             # 谨慎程度
     completion_pressure: float = 0.0 # 完成压力
     social_tension: float = 0.0      # 社交张力
+    viability_pressure: float = 0.0  # 当前动作继续推进的可行性压力
 
     def to_dict(self) -> Dict[str, float]:
         return {
@@ -114,6 +127,7 @@ class DriveField:
             "caution": self.caution,
             "completion_pressure": self.completion_pressure,
             "social_tension": self.social_tension,
+            "viability_pressure": self.viability_pressure,
         }
 
     @classmethod
@@ -124,6 +138,7 @@ class DriveField:
             caution=data.get("caution", 0.0),
             completion_pressure=data.get("completion_pressure", 0.0),
             social_tension=data.get("social_tension", 0.0),
+            viability_pressure=data.get("viability_pressure", 0.0),
         )
 
 
@@ -231,6 +246,9 @@ class EpisodicRecord:
     action_hint: Dict[str, Any] = field(default_factory=dict)
     external_result: Optional[Dict[str, Any]] = None
     appraisal_snapshot: Dict[str, float] = field(default_factory=dict)
+    counterfactual_prediction: Dict[str, Any] = field(default_factory=dict)
+    corrective_trace: Dict[str, Any] = field(default_factory=dict)
+    policy_snapshot: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -239,6 +257,9 @@ class EpisodicRecord:
             "action_hint": self.action_hint,
             "external_result": self.external_result,
             "appraisal_snapshot": self.appraisal_snapshot,
+            "counterfactual_prediction": self.counterfactual_prediction,
+            "corrective_trace": self.corrective_trace,
+            "policy_snapshot": self.policy_snapshot,
         }
 
     @classmethod
@@ -249,6 +270,9 @@ class EpisodicRecord:
             action_hint=data.get("action_hint", {}),
             external_result=data.get("external_result"),
             appraisal_snapshot=data.get("appraisal_snapshot", {}),
+            counterfactual_prediction=data.get("counterfactual_prediction", {}),
+            corrective_trace=data.get("corrective_trace", {}),
+            policy_snapshot=data.get("policy_snapshot", {}),
         )
 
 

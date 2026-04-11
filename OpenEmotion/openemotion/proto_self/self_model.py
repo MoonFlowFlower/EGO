@@ -11,6 +11,16 @@ Proto-Self Kernel v1 - Self-Model Update
 
 from typing import Any, Dict
 
+from openemotion.proto_self.h1_shadow import (
+    H1_DEFAULT_SUCCESS,
+    build_h1_shadow_key,
+    resolve_h1_action_key,
+)
+from openemotion.proto_self.mvs_replay import (
+    mvs_variant_uses_boundary_confidence,
+    mvs_variant_uses_counterfactual,
+    mvs_variant_uses_mvs_core,
+)
 from openemotion.proto_self.state import ProtoSelfState
 
 
@@ -30,6 +40,10 @@ def update_self_model(
         "current_focus": None,
         "current_mode": None,
         "self_confidence_by_domain": {},
+        "counterfactual_success_by_action_patch": {},
+        "boundary_confidence_by_action_patch": {},
+        "world_assumption_confidence_patch": {},
+        "recent_correction_tags_patch": {},
     }
 
     external_outcome_type = perceived.get("external_outcome_type")
@@ -54,5 +68,73 @@ def update_self_model(
     # 身份冲突 → 提升自我审查
     if perceived.get("identity_conflict", 0.0) > 0.5:
         delta["self_confidence_by_domain"] = {"self_monitoring": -0.1}
+
+    if perceived.get("mvs_replay_active"):
+        variant_id = str(perceived.get("mvs_variant_id") or "")
+        if not mvs_variant_uses_mvs_core(variant_id):
+            return delta
+        probe_key = str(perceived.get("mvs_probe_key") or "")
+        outcome_type = perceived.get("external_outcome_type")
+        correction_strength = state.self_model.recent_correction_tags.get(probe_key, 0.0)
+        predicted_success = state.self_model.counterfactual_success_by_action.get(probe_key, 0.55)
+        boundary_confidence = state.self_model.boundary_confidence_by_action.get(probe_key, 0.75)
+        world_confidence = state.self_model.world_assumption_confidence.get(probe_key, 0.65)
+        boundary_touched = perceived.get("boundary_state") == "boundary_touched"
+        if boundary_touched and mvs_variant_uses_boundary_confidence(variant_id):
+            delta["boundary_confidence_by_action_patch"][probe_key] = min(boundary_confidence, 0.18)
+            delta["current_mode"] = delta["current_mode"] or "cautious"
+            delta["current_focus"] = delta["current_focus"] or "boundary_review"
+        if outcome_type in {"failure", "blocked", "partial"}:
+            delta["current_mode"] = "repair"
+            delta["current_focus"] = "error_recovery"
+            delta["recent_correction_tags_patch"][probe_key] = 1.0 if outcome_type != "partial" else 0.7
+            delta["self_confidence_by_domain"][probe_key] = -0.15 if outcome_type != "partial" else -0.08
+            if mvs_variant_uses_counterfactual(variant_id):
+                target = 0.12 if outcome_type == "blocked" else 0.18 if outcome_type == "failure" else 0.35
+                delta["counterfactual_success_by_action_patch"][probe_key] = target
+            if mvs_variant_uses_boundary_confidence(variant_id):
+                delta["boundary_confidence_by_action_patch"][probe_key] = (
+                    0.12 if outcome_type == "blocked" else 0.18 if outcome_type == "failure" else 0.28
+                )
+            delta["world_assumption_confidence_patch"][probe_key] = (
+                0.18 if outcome_type == "blocked" else 0.24 if outcome_type == "failure" else 0.40
+            )
+        elif outcome_type == "success" and (correction_strength > 0.0 or boundary_confidence < 0.4):
+            delta["current_mode"] = "baseline"
+            delta["current_focus"] = "stabilized_retry"
+            delta["recent_correction_tags_patch"][probe_key] = max(0.0, correction_strength - 0.75)
+            delta["self_confidence_by_domain"][probe_key] = 0.10
+            if mvs_variant_uses_counterfactual(variant_id):
+                delta["counterfactual_success_by_action_patch"][probe_key] = max(0.68, predicted_success)
+            if mvs_variant_uses_boundary_confidence(variant_id):
+                delta["boundary_confidence_by_action_patch"][probe_key] = max(0.65, boundary_confidence)
+            delta["world_assumption_confidence_patch"][probe_key] = max(0.62, world_confidence)
+        elif boundary_confidence < 0.35 and mvs_variant_uses_boundary_confidence(variant_id):
+            delta["current_mode"] = "cautious"
+            delta["current_focus"] = "boundary_review"
+        elif correction_strength >= 0.6:
+            delta["current_mode"] = "repair"
+            delta["current_focus"] = "guarded_retry"
+        elif world_confidence < 0.30:
+            delta["current_focus"] = "assumption_check"
+
+    if perceived.get("h1_shadow_active"):
+        action_key = resolve_h1_action_key(perceived)
+        outcome_type = perceived.get("external_outcome_type")
+        if action_key != "unknown" and outcome_type in {"failure", "blocked", "partial", "success"}:
+            shadow_key = build_h1_shadow_key(action_key)
+            correction_strength = state.self_model.recent_correction_tags.get(shadow_key, 0.0)
+            predicted_success = state.self_model.counterfactual_success_by_action.get(shadow_key, H1_DEFAULT_SUCCESS)
+            if outcome_type in {"failure", "blocked", "partial"}:
+                delta["recent_correction_tags_patch"][shadow_key] = 1.0 if outcome_type != "partial" else 0.7
+                if outcome_type == "blocked":
+                    delta["counterfactual_success_by_action_patch"][shadow_key] = 0.12
+                elif outcome_type == "failure":
+                    delta["counterfactual_success_by_action_patch"][shadow_key] = 0.18
+                else:
+                    delta["counterfactual_success_by_action_patch"][shadow_key] = 0.35
+            elif outcome_type == "success" and correction_strength > 0.0:
+                delta["recent_correction_tags_patch"][shadow_key] = max(0.0, correction_strength - 0.75)
+                delta["counterfactual_success_by_action_patch"][shadow_key] = max(0.65, predicted_success)
 
     return delta

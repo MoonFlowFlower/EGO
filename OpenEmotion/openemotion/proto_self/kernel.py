@@ -21,6 +21,11 @@ from openemotion.proto_self.schemas import (
     ResponseTendency,
     SCHEMA_VERSION,
 )
+from openemotion.proto_self.h1_shadow import (
+    build_shadow_h1_confidence_meta,
+    build_shadow_h1_summary,
+    filter_live_correction_entries,
+)
 from openemotion.proto_self.state import ProtoSelfState
 from openemotion.proto_self.trace_types import build_trace_payload
 
@@ -57,7 +62,7 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
     memory_update = _update_memory(state, perceived, cycle_delta, reflection_note)
 
     # 8. 策略推导
-    policy_hint = _derive_policy_hint(state, appraisal_delta, self_model_delta, identity_delta)
+    policy_hint = _derive_policy_hint(state, perceived, appraisal_delta, self_model_delta, identity_delta)
 
     # 9. 响应倾向
     response_tendency = _derive_response_tendency(state, policy_hint)
@@ -74,6 +79,10 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
         memory_update=memory_update,
         reflection_note=reflection_note,
     )
+    shadow_h1_summary = build_shadow_h1_summary(
+        state=next_state,
+        perceived=perceived,
+    )
 
     # 11. 构建 trace payload
     trace_payload = build_trace_payload(
@@ -85,6 +94,11 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
         identity_delta=identity_delta,
         reflection_trigger=reflection_note.trigger if reflection_note else None,
         policy_hint=policy_hint,
+        predicted_outcome=(memory_update.get("counterfactual_prediction") or {}).get("predicted_success"),
+        actual_outcome=(memory_update.get("corrective_trace") or {}).get("actual_outcome"),
+        adjustment_applied=(memory_update.get("corrective_trace") or {}).get("adjustment_applied"),
+        next_guard=(memory_update.get("corrective_trace") or {}).get("next_guard"),
+        replay_variant_id=str(perceived.get("mvs_variant_id") or ""),
         closure_signature=cycle_delta.get("closure_signature", cycle_delta.get("cycle_id", "")),
         closure_family_id=cycle_delta.get("closure_family_id", ""),
         action_signature=cycle_delta.get("action_signature", "unknown"),
@@ -92,7 +106,11 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
         closure_consistency_score=cycle_delta.get("closure_consistency_score", 0.0),
         order_invariance_candidate=cycle_delta.get("order_invariance_candidate", ""),
         timestamp=event.timestamp,
+        shadow_h1=shadow_h1_summary,
     )
+    confidence_meta = _compute_confidence_meta(next_state)
+    if shadow_h1_summary is not None:
+        confidence_meta.update(build_shadow_h1_confidence_meta(shadow_h1_summary))
 
     # 12. 构建输出
     return KernelOutput(
@@ -105,7 +123,7 @@ def process_event(state: ProtoSelfState, event: KernelEvent) -> KernelOutput:
         reflection_note=reflection_note,
         policy_hint=policy_hint,
         response_tendency=response_tendency,
-        confidence_meta=_compute_confidence_meta(next_state),
+        confidence_meta=confidence_meta,
         trace_payload=trace_payload,
     )
 
@@ -199,6 +217,7 @@ def _update_memory(
 
 def _derive_policy_hint(
     state: ProtoSelfState,
+    perceived: Dict[str, Any],
     appraisal_delta: Dict[str, Any],
     self_model_delta: Dict[str, Any],
     identity_delta: Dict[str, Any],
@@ -207,7 +226,7 @@ def _derive_policy_hint(
     推导策略提示：只产出倾向，不抢 EgoCore 裁决权。
     """
     from openemotion.proto_self.reducers import derive_policy_hint
-    return derive_policy_hint(state, appraisal_delta, self_model_delta, identity_delta)
+    return derive_policy_hint(state, perceived, appraisal_delta, self_model_delta, identity_delta)
 
 
 def _derive_response_tendency(
@@ -253,9 +272,13 @@ def _compute_confidence_meta(state: ProtoSelfState) -> Dict[str, Any]:
     """
     计算置信度元数据。
     """
+    live_correction_tags = filter_live_correction_entries(state.self_model.recent_correction_tags)
     return {
         "identity_confidence": state.identity.identity_confidence,
         "revision_count": state.revision_counter,
         "cycle_count": len(state.cycle_store.signatures),
         "episodic_count": len(state.episodic_trace),
+        "viability_pressure": state.drives.viability_pressure,
+        "min_boundary_confidence": min(state.self_model.boundary_confidence_by_action.values(), default=1.0),
+        "max_correction_tag": max(live_correction_tags.values(), default=0.0),
     }

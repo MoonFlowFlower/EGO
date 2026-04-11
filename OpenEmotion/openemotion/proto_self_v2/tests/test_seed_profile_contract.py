@@ -1,3 +1,4 @@
+from openemotion.proto_self.h1_shadow import build_h1_shadow_key
 from openemotion.proto_self_v2.kernel import process_update_packet
 from openemotion.proto_self_v2.schemas import UpdateEventV2, UpdatePacketV2
 from openemotion.proto_self_v2.seed_schemas import (
@@ -261,3 +262,65 @@ def test_seed_permission_rings_require_approval_for_write_candidate():
     assert output.candidate_actions[0]["action_type"] == "write_file"
     assert output.candidate_actions[0]["requires_approval"] is True
     assert output.policy_hint["governor_hint"]["status"] == "approval_gate"
+
+
+def test_seed_exec_result_preserves_shadow_h1_for_tool_feedback_path():
+    state = _seed_state(curiosity=0.35, completion=0.25, caution=0.10)
+    shadow_key = build_h1_shadow_key("tool:read_artifact")
+    state.self_model.counterfactual_success_by_action[shadow_key] = 0.18
+    state.self_model.recent_correction_tags[shadow_key] = 1.0
+    packet = _seed_packet(
+        event_id="seed_exec_h1_001",
+        event_type="exec_result",
+        payload={
+            "action_type": "read_artifact",
+            "status": "failure",
+            "target": "PROJECT_MEMORY.md",
+            "observed_gain": 0.0,
+            "error": "file not found",
+            "details": {"tool": "read_artifact"},
+        },
+        runtime_summary={
+            "h1_canonical_shadow": {
+                "enabled": True,
+                "shadow_only": True,
+                "allowlisted": True,
+                "source": "canonical_shadow",
+            }
+        },
+        safety_context={"risk_level": "medium", "blocked": True},
+    )
+
+    output = process_update_packet(state, packet)
+
+    assert output.trace_payload["shadow_h1"]["action_key"] == "tool:read_artifact"
+    assert output.trace_payload["shadow_h1"]["would_guard"] is True
+    assert output.confidence_meta["shadow_h1_enabled"] is True
+    assert output.confidence_meta["shadow_h1_action_key"] == "tool:read_artifact"
+
+
+def test_seed_user_event_does_not_emit_shadow_h1_without_tool_feedback_path():
+    state = _seed_state(curiosity=0.40, completion=0.75, caution=0.05)
+    shadow_key = build_h1_shadow_key("tool:read_artifact")
+    state.self_model.counterfactual_success_by_action[shadow_key] = 0.18
+    state.self_model.recent_correction_tags[shadow_key] = 1.0
+    packet = _seed_packet(
+        event_id="seed_user_h1_001",
+        event_type="user_event",
+        payload={"resolved_target_path": "app.py"},
+        runtime_summary={
+            "resolved_target_path": "app.py",
+            "active_task": False,
+            "h1_canonical_shadow": {
+                "enabled": True,
+                "shadow_only": True,
+                "allowlisted": True,
+                "source": "canonical_shadow",
+            },
+        },
+    )
+
+    output = process_update_packet(state, packet)
+
+    assert "shadow_h1" not in output.trace_payload
+    assert "shadow_h1_enabled" not in output.confidence_meta

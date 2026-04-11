@@ -3,6 +3,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
+from openemotion.proto_self.h1_shadow import (
+    extract_h1_shadow_context,
+    is_h1_shadow_enabled,
+    normalize_h1_action_key,
+)
 from openemotion.proto_self.schemas import ReflectionNote, ResponseTendency
 from openemotion.proto_self_v2.seed_affordances import Affordance, extract_affordances
 from openemotion.proto_self_v2.seed_governor_lite import GovernorLite
@@ -191,6 +196,7 @@ class ProtoSelfSeedKernel:
         runtime = event.runtime_summary or {}
         safety = event.safety_context or {}
         pending_commitment = runtime.get("pending_commitment") or state.focus_goal.pending_commitment
+        h1_shadow_active = is_h1_shadow_enabled(runtime)
         return {
             "event_type": event.event_type,
             "source": event.source,
@@ -203,7 +209,23 @@ class ProtoSelfSeedKernel:
             "resolved_target_name": runtime.get("resolved_target_name") or payload.get("resolved_target_name"),
             "recent_failure_target": runtime.get("recent_failure_target"),
             "raw_text": payload.get("raw_text"),
+            "runtime_summary": runtime,
+            "h1_shadow_active": h1_shadow_active,
+            "h1_shadow": extract_h1_shadow_context(runtime) if h1_shadow_active else {},
+            "action_class_seed": self._derive_action_class_seed(event),
         }
+
+    def _derive_action_class_seed(self, event: KernelEvent) -> Optional[str]:
+        if event.event_type != "exec_result":
+            return None
+        action_type = normalize_h1_action_key((event.payload or {}).get("action_type"))
+        if not action_type or action_type == "unknown":
+            return None
+        if action_type.startswith("host_") or action_type.startswith("host:"):
+            return None
+        if action_type.startswith("tool:"):
+            return action_type
+        return f"tool:{action_type}"
 
     def _update_drives(self, state: ProtoSelfSeedState, event: KernelEvent, perceived: Dict[str, Any]) -> None:
         if perceived["resolved_target_path"] or perceived["resolved_target_name"]:

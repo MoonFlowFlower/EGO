@@ -49,12 +49,18 @@ class ProtoSelfTracePayload:
 
     # 策略输出
     policy_hint: Dict[str, Any] = field(default_factory=dict)
+    predicted_outcome: Any = None
+    actual_outcome: Any = None
+    adjustment_applied: Optional[str] = None
+    next_guard: Optional[str] = None
+    replay_variant_id: Optional[str] = None
+    shadow_h1: Optional[Dict[str, Any]] = None
 
     # 时间戳
     timestamp: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "event_id": self.event_id,
             "perceived": self.perceived,
@@ -70,8 +76,16 @@ class ProtoSelfTracePayload:
             "order_invariance_candidate": self.order_invariance_candidate,
             "reflection_trigger": self.reflection_trigger,
             "policy_hint": self.policy_hint,
+            "predicted_outcome": self.predicted_outcome,
+            "actual_outcome": self.actual_outcome,
+            "adjustment_applied": self.adjustment_applied,
+            "next_guard": self.next_guard,
+            "replay_variant_id": self.replay_variant_id,
             "timestamp": self.timestamp,
         }
+        if self.shadow_h1 is not None:
+            payload["shadow_h1"] = self.shadow_h1
+        return payload
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "ProtoSelfTracePayload":
@@ -91,6 +105,12 @@ class ProtoSelfTracePayload:
             order_invariance_candidate=data.get("order_invariance_candidate", ""),
             reflection_trigger=data.get("reflection_trigger"),
             policy_hint=data.get("policy_hint", {}),
+            predicted_outcome=data.get("predicted_outcome"),
+            actual_outcome=data.get("actual_outcome"),
+            adjustment_applied=data.get("adjustment_applied"),
+            next_guard=data.get("next_guard"),
+            replay_variant_id=data.get("replay_variant_id"),
+            shadow_h1=data.get("shadow_h1"),
             timestamp=data.get("timestamp", ""),
         )
 
@@ -104,6 +124,11 @@ def build_trace_payload(
     identity_delta: Dict[str, Any],
     reflection_trigger: Optional[str],
     policy_hint: Dict[str, Any],
+    predicted_outcome: Any = None,
+    actual_outcome: Any = None,
+    adjustment_applied: Optional[str] = None,
+    next_guard: Optional[str] = None,
+    replay_variant_id: Optional[str] = None,
     closure_signature: str = "",
     closure_family_id: str = "",
     action_signature: str = "",
@@ -111,6 +136,7 @@ def build_trace_payload(
     closure_consistency_score: float = 0.0,
     order_invariance_candidate: str = "",
     timestamp: str = "",
+    shadow_h1: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
     构建 trace payload 字典。
@@ -132,6 +158,12 @@ def build_trace_payload(
         order_invariance_candidate=order_invariance_candidate,
         reflection_trigger=reflection_trigger,
         policy_hint=policy_hint,
+        predicted_outcome=predicted_outcome,
+        actual_outcome=actual_outcome,
+        adjustment_applied=adjustment_applied,
+        next_guard=next_guard,
+        replay_variant_id=replay_variant_id,
+        shadow_h1=shadow_h1,
         timestamp=timestamp,
     )
     return payload.to_dict()

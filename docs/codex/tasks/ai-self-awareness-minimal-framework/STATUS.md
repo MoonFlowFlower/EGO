@@ -2,21 +2,54 @@
 
 ## Current milestone
 
-- name: `Milestone 14: Trial-1 Redesigned Ablation Hard-Set Rerun`
+- name: `Milestone 16: Active-Inference Challenger Formal Replay Gate`
 - owner: `Codex`
-- state: completed
-- type: exploration
+- state: pending
+- type: implementation
 
 ## Current state
 
-- current_layer: `trial1_closed_subclaim_demoted`
+- current_layer: `mvs_replay_gate_failed_switch_frozen`
 - main_chain_status: `not_connected_by_design`
-- completion_class: `conditional_complete`
-- candidate_vs_proof: `candidate_found`
+- completion_class: `partial_pending_next_candidate`
+- candidate_vs_proof: `mvs_failed_switch_to_active_inference`
 - trial1_closure:
-  - `Trial-1 closed. E3 controlled-integration evidence supports demotion of the public-efficacy claim for counterfactual_writeback. Formal runtime mainline remains unchanged; the research build-first candidate remains MVS-aligned compact, and this submechanism is unproven, not promoted.`
+  - `Trial-1 remains closed and demoted. The formal shadow-only MVS replay gate is now complete; corrected scoring shows MVS fails the frozen gate on tension causality and repair closure, so the research build-first lane must switch to active-inference while formal runtime mainline remains unchanged.`
 
 ## Completed work
+
+- formal shadow-only MVS replay gate 已落地：
+  - `MVS_REPLAY_CORPUS_MANIFEST.json`
+  - `MVS_REPLAY_VALIDATOR_CURRENT.json`
+  - `MVS_REPLAY_VALIDATOR_CURRENT.md`
+  - `MVS_REPLAY_VALIDATOR_SCORED_CURRENT.json`
+  - `MVS_REPLAY_VALIDATOR_SCORED_CURRENT.md`
+- canonical replay corpus 已冻结：
+  - `60` episodes
+  - `3` families
+  - `20` external-result episodes
+- 最小 `MVS-aligned compact` formal slice 已接入 `OpenEmotion/proto_self` 正式路径，但保持 `shadow-only + proposal-only`
+- corrected scorer 已修复为读取 canonical v2 trace surface，而不是把 replayability / repair closure 错判成 `0`
+- formal replay gate corrected result：
+  - `T1 = 1.0`
+  - `T2 = 1.0`
+  - `T3 = 1.0`
+  - `T4 = 0.5833`
+  - `T5 = 0.9167`
+  - `composite = 0.9`
+  - `boundary_integrity = 1.0`
+  - `repair_closure_capture = 0.75`
+  - `trace_replayability = 1.0`
+- required ablation necessity 已全部过线：
+  - `counterfactual = 0.3333`
+  - `viability = 0.25`
+  - `corrective_trace = 0.6667`
+  - `boundary_confidence = 0.25`
+- selection gate 已裁决：
+  - `switch_to_active_inference`
+- `MVS-aligned compact` 已降为：
+  - `closed evidence`
+  - 不再继续作为当前主实现线修补
 
 - 新建 long-run research task package：
   - `SPEC.md`
@@ -436,6 +469,16 @@
 
 ## Decisions made
 
+- corrected scorer 才是唯一允许触发 selection gate 的正式读数；v2 trace shape / legacy nested trace mismatch 不能当成 candidate fail
+- formal MVS replay gate 现在已经足够回答“继续 MVS 还是切 challenger”，因此不再继续 patch 第三条候选线
+- 当前正式选择是：
+  - `active-inference self-model` = sole build-first candidate
+  - `MVS-aligned compact` = closed evidence
+- MVS 当前真实 failure 不是 trace wiring，而是：
+  - `T4 tension causality` 低于 frozen threshold
+  - `repair_closure_capture` 低于 frozen threshold
+- replay gate fail 后，下一步只能去做 `active-inference` formal shadow slice；不能回头继续把 MVS 当当前主线磨到过线
+
 - 当前任务只宣称“研究协议与任务包已落地”，不宣称任何候选有效
 - `candidate_found` / `proof_pending` / `proof_passed` 必须全程分离
 - 在 synthetic result 出现前不进入正式实现切片
@@ -465,18 +508,18 @@
 - 容易退化成文案化“自我叙述”竞赛，而不是真正的对照实验
 - 若实验日志不持续更新，长任务会很快失真
 - proof gap:
-  - 当前只有 synthetic proxy / MVS-alignment / literature-informed / held-out operational eval 结果；还没有 replay conversation eval、`OpenEmotion` prototype、主链接线、或真实用户验证
+  - 当前虽已有 formal MVS replay gate，但还没有 passing build-first candidate、replay conversation eval、主链接线、或真实用户验证
 - design gap:
   - 当前仍没有可升级 repo-level state 的 stronger replay evidence
 - validator gap:
-  - replay validator spec 与 ranking robustness audit 已有
-  - 但 formal OpenEmotion prototype slice 还没接上 replay gate，challenger 也还没在同一 gate 下受裁决
+  - MVS gate 已跑通，但 `active-inference` 还没在同一 gate 下受裁决
 - route gap:
-  - 若 MVS 在 replay gate 上继续失败，repo 必须切到 `active-inference self-model`，而不是继续修补第三条候选线
-- current Trial-1 gap:
-  - candidate 对 `public_path_sever` 有 public signal，但只到 `0.05`
-  - candidate 与 `alternative_explanation_isolation` 持平
-  - 因此 strongest-ablation rule 仍未通过
+  - 若 `active-inference` 也 fail，repo 需要重构 candidate program framing，而不是回头继续 patch MVS
+- current MVS replay gap:
+  - `T4 tension causality = 0.5833 < 0.70`
+  - `repair_closure_capture = 0.75 < 0.80`
+  - delayed-feedback family 没有稳定点亮 `repair_closure`
+  - retry-step public guard 仍主要表现为 `boundary_confidence`，而不是足够稳定的 `viability_pressure`
 
 ## Next step
 
@@ -484,9 +527,10 @@
   - 保持 `counterfactual_writeback` claim 已 demoted
   - 不升级 repo-level state beyond simulation-only scope
   - 当前最高优先级 implementation lane 固定为：
-    - `MVS-aligned compact` formal prototype slice
-  - 当前唯一 challenger 固定为：
     - `active-inference self-model`
+  - 当前不再保留 live MVS challenger；`MVS-aligned compact` 已归档为 closed evidence
+  - 直接实现最小 `active-inference self-model` formal shadow slice
+  - 复用同一 held-out replay gate 与 frozen threshold
   - `WP17/MVP22` 继续保持 parked bounded lane，等待 replay-gated 结果后再决定 reintegration
 
 ## Commands run / evidence
@@ -518,6 +562,11 @@
 - `docs/codex/tasks/ai-self-awareness-minimal-framework/EVALS.md`
 - `scripts/codex/run_operational_self_model_evals.py`
 - `scripts/codex/run_operational_selection_robustness.py`
+- `python3 scripts/codex/build_mvs_replay_corpus_manifest.py`
+- `python3 scripts/codex/run_mvs_replay_validator.py`
+- `python3 scripts/codex/score_mvs_replay_validator.py`
+- `artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_CURRENT.json`
+- `artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_SCORED_CURRENT.json`
 - `artifacts/self_awareness_research/SELF_MODEL_SELECTION_ROBUSTNESS_CURRENT.json`
 - `artifacts/self_awareness_research/SELF_MODEL_SELECTION_ROBUSTNESS_CURRENT.md`
 - `docs/codex/tasks/ai-self-awareness-minimal-framework/RANKING_ROBUSTNESS_AUDIT.md`

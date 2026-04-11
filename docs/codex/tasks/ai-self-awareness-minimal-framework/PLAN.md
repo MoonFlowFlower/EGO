@@ -586,11 +586,87 @@
 - rollback note:
   - 若 redesigned strongest ablation 仍不能在 public scorer 面上形成 faithful comparator，就回退为 `redesign_more`，不推进 challenger compare 或 replay-suite expansion
 
+### Milestone 15: MVS Formal Replay Gate and Selection Decision
+
+- type: implementation
+- question:
+  - 最小 `MVS-aligned compact` formal shadow slice 能否在 formal OpenEmotion path 上通过冻结的 held-out replay gate，并决定 repo 是否继续 MVS 还是切到 `active-inference`
+- current framing:
+  - 只实现最小 formal slice
+  - 只接 formal replay corpus / scorer / required ablations
+  - 保持 `shadow-only + proposal-only`
+  - 若 fail，直接按 frozen rule 切到 `active-inference`
+- hypotheses:
+  - `MVS-aligned compact` 会在 formal path 上保留 T1/T2/T3/T5 的大部分优势
+  - 若 fail，最可能失败在 `tension causality` 或 `repair closure`
+- scope:
+  - 新增 canonical replay corpus manifest
+  - 在 `OpenEmotion/proto_self` 实现最小 MVS formal slice
+  - 产出 raw / scored replay artifacts
+  - 执行 selection gate
+- experiments planned:
+  - `python3 scripts/codex/build_mvs_replay_corpus_manifest.py`
+  - `python3 scripts/codex/run_mvs_replay_validator.py`
+  - `python3 scripts/codex/score_mvs_replay_validator.py`
+- kill criteria:
+  - 若 corrected scorer 下 candidate 未过 frozen replay thresholds，则必须切线，不能继续 patch MVS
+- files / areas likely touched:
+  - `OpenEmotion/openemotion/proto_self/*`
+  - `OpenEmotion/openemotion/proto_self_v2/*`
+  - `scripts/codex/*mvs*`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 必须产出：
+    - canonical replay manifest
+    - raw validator artifacts
+    - scored validator artifacts
+    - final selection decision
+- validation:
+  - `python3 -m py_compile ...MVS replay slice...`
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_mvs_replay_minimal.py EgoCore/tests/test_mvs_replay_scoring.py OpenEmotion/openemotion/proto_self/tests/test_mvs_replay_contract.py -q`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 fail 原因来自 scorer / trace contract mismatch，先修 scorer，再重跑；只有 corrected scorer 下的结果才允许触发切线
+
+### Milestone 16: Active-Inference Challenger Formal Replay Gate
+
+- type: implementation
+- question:
+  - 在 MVS formal replay gate fail 后，`active-inference self-model` 能否作为新的 sole build-first candidate 在同一 held-out replay gate 下过线
+- current framing:
+  - 不再继续 patch MVS
+  - 只实现最小 `active-inference` shadow-only formal slice
+  - 复用同一 replay manifest / scorer / thresholds
+- hypotheses:
+  - `active-inference self-model` 更有机会补上 `T4 tension causality` 与 `repair_closure_capture`
+- scope:
+  - 冻结 `active-inference` 最小 formal slice
+  - 复用既有 replay gate，不改 threshold
+- experiments planned:
+  - `active-inference` minimal slice implementation
+  - same replay validator rerun
+- kill criteria:
+  - 若 `active-inference` 也 fail，则 repo 需要重新审视 research-first candidate framing，而不是回头继续 patch MVS
+- files / areas likely touched:
+  - `OpenEmotion/openemotion/*`
+  - `scripts/codex/*`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 明确回答：
+    - `active-inference` 是否过同一 replay gate
+    - repo 是否获得新的 build-first winner
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若实现试图引入第二 authority path，立即回退
+
 ## Progress
 
-- current_status: `trial1_redesigned_ablation_rerun_completed`
-- current_milestone: `Milestone 14: Trial-1 Redesigned Ablation Hard-Set Rerun`
-- milestone_state: `completed`
+- current_status: `active_inference_formal_replay_gate_pending`
+- current_milestone: `Milestone 16: Active-Inference Challenger Formal Replay Gate`
+- milestone_state: `pending`
 - candidate_vs_proof: `candidate_found`
 
 ## Decision log
@@ -724,6 +800,36 @@
     - replay-suite expansion
     - challenger scoring
     - repo-level state upgrade
+- 2026-04-11: 进入 `Milestone 15`：
+  - 在 formal OpenEmotion path 上实现最小 `MVS-aligned compact` shadow-only replay slice
+  - 冻结 canonical replay corpus manifest、raw validator、scored gate
+  - 允许 corrected scorer 修复 v2 trace surface / legacy trace contract mismatch，但不允许改 frozen threshold
+- 2026-04-11: `Milestone 15` 已完成：
+  - canonical replay corpus manifest 已冻结为 `60` episodes / `3` families / `20` external-result episodes
+  - formal shadow-only MVS slice 已在 `OpenEmotion/proto_self` 主路径可运行
+  - corrected scorer 结果：
+    - `T1 = 1.0`
+    - `T2 = 1.0`
+    - `T3 = 1.0`
+    - `T4 = 0.5833`
+    - `T5 = 0.9167`
+    - `composite = 0.9`
+    - `boundary_integrity = 1.0`
+    - `repair_closure_capture = 0.75`
+    - `trace_replayability = 1.0`
+  - required ablation drops 全部通过：
+    - `counterfactual = 0.3333`
+    - `viability = 0.25`
+    - `corrective_trace = 0.6667`
+    - `boundary_confidence = 0.25`
+  - final selection decision:
+    - `switch_to_active_inference`
+  - MVS 降级为：
+    - `closed evidence`
+    - 不再继续作为当前主实现线修补
+- 2026-04-11: 进入 `Milestone 16`：
+  - `active-inference self-model` 升为新的 sole build-first candidate
+  - 下一步只实现最小 `active-inference` formal shadow slice，并复用同一 replay gate
 
 ## Surprises / discoveries
 

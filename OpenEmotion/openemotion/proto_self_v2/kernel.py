@@ -4,6 +4,10 @@ import hashlib
 import json
 from typing import Any, Dict
 
+from openemotion.proto_self.h1_shadow import (
+    build_shadow_h1_confidence_meta,
+    build_shadow_h1_summary,
+)
 from openemotion.proto_self.kernel import process_event as process_event_v1
 from openemotion.proto_self.schemas import ResponseTendency
 from openemotion.proto_self.state import ProtoSelfState
@@ -169,6 +173,10 @@ def _process_seed_profile(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) ->
     seed_result = seed_kernel.process_event(state_v2.seed_state, seed_event)
     state_v2.revision_counter = max(state_v2.revision_counter, state_v2.seed_state.revision_counter)
     revision_after = state_v2.seed_state.revision_counter
+    shadow_h1_summary = build_shadow_h1_summary(
+        state=state_v2.to_v1(),
+        perceived=seed_result.trace_payload.get("perceived", {}),
+    )
 
     trace_payload = build_trace_payload_v2(
         event_id=packet.event_id,
@@ -197,9 +205,19 @@ def _process_seed_profile(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) ->
         exec_result=seed_result.trace_payload.get("exec_result"),
         seed_state_delta=seed_result.state_delta,
         seed_state_snapshot=seed_result.trace_payload.get("seed_state_snapshot", {}),
+        shadow_h1=shadow_h1_summary,
         timestamp=packet.timestamp,
         legacy_trace_payload=seed_result.trace_payload,
     )
+    confidence_meta = {
+        "seed_identity_confidence": state_v2.seed_state.identity_light.identity_confidence,
+        "seed_revision_counter": state_v2.seed_state.revision_counter,
+        "seed_recent_outcomes_count": len(state_v2.seed_state.recent_outcomes),
+        "self_model_context_present": constraint_summary["self_model_context"]["present"],
+        "social_self_context_present": constraint_summary["social_self_context"]["present"],
+    }
+    if shadow_h1_summary is not None:
+        confidence_meta.update(build_shadow_h1_confidence_meta(shadow_h1_summary))
     return KernelOutputV2(
         event_id=packet.event_id,
         subject_profile=SEED_SUBJECT_PROFILE,
@@ -209,13 +227,7 @@ def _process_seed_profile(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) ->
         reflection_note=seed_result.reflection_note,
         policy_hint=seed_result.policy_hint,
         response_tendency=seed_result.response_tendency,
-        confidence_meta={
-            "seed_identity_confidence": state_v2.seed_state.identity_light.identity_confidence,
-            "seed_revision_counter": state_v2.seed_state.revision_counter,
-            "seed_recent_outcomes_count": len(state_v2.seed_state.recent_outcomes),
-            "self_model_context_present": constraint_summary["self_model_context"]["present"],
-            "social_self_context_present": constraint_summary["social_self_context"]["present"],
-        },
+        confidence_meta=confidence_meta,
         trace_payload=trace_payload,
     )
 
@@ -289,6 +301,11 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         reflection_context=reflective_outputs["reflection_context"],
         cycles_delta=v1_output.trace_payload.get("cycle_delta", {}),
         predictive_reflective_delta=predictive_reflective_delta,
+        predicted_outcome=v1_output.trace_payload.get("predicted_outcome"),
+        actual_outcome=v1_output.trace_payload.get("actual_outcome"),
+        adjustment_applied=v1_output.trace_payload.get("adjustment_applied"),
+        next_guard=v1_output.trace_payload.get("next_guard"),
+        replay_variant_id=v1_output.trace_payload.get("replay_variant_id"),
         developmental_self_delta=developmental_outputs["developmental_self_delta"],
         developmental_proposal_candidates=developmental_outputs["developmental_proposal_candidates"],
         developmental_continuity_snapshot=developmental_outputs["developmental_continuity_snapshot"],
@@ -337,6 +354,7 @@ def _process_default_v2(state_v2: ProtoSelfStateV2, packet: UpdatePacketV2) -> K
         controlled_delivery_candidate=initiative_realization_outputs["controlled_delivery_candidate"],
         initiative_realization_audit_entries=initiative_realization_outputs["initiative_realization_audit_entries"],
         initiative_realization_writeback_candidate=initiative_realization_outputs["initiative_realization_writeback_candidate"],
+        shadow_h1=v1_output.trace_payload.get("shadow_h1"),
     )
     merged_policy_hint = {
         **v1_output.policy_hint,

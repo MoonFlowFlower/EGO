@@ -12,6 +12,15 @@ Proto-Self Kernel v1 - Appraisal
 from typing import Any, Dict
 
 from openemotion.proto_self.schemas import KernelEvent
+from openemotion.proto_self.h1_shadow import extract_h1_shadow_context, is_h1_shadow_enabled
+from openemotion.proto_self.mvs_replay import (
+    build_mvs_probe_key,
+    derive_mvs_action_family,
+    extract_mvs_replay_context,
+    is_mvs_replay_enabled,
+    mvs_variant_uses_viability,
+    resolve_mvs_variant_id,
+)
 from openemotion.proto_self.state import ProtoSelfState
 
 
@@ -25,6 +34,18 @@ def perceive_event(event: KernelEvent, state: ProtoSelfState) -> Dict[str, Any]:
     - 传递完整的 safety_context 到 perceived
     - 用于 cycle 聚合时的风险区分
     """
+    runtime_summary = dict(event.runtime_summary or {})
+    mvs_replay_active = is_mvs_replay_enabled(runtime_summary)
+    h1_shadow_active = is_h1_shadow_enabled(runtime_summary)
+    action_family = derive_mvs_action_family(
+        runtime_summary=runtime_summary,
+        event_type=event.event_type,
+        external_result=event.external_result,
+    )
+    mvs_context = extract_mvs_replay_context(runtime_summary) if mvs_replay_active else {}
+    boundary_state = _derive_boundary_state(event.safety_context)
+    external_outcome_type = _classify_external_result(event.external_result)
+    probe_key = build_mvs_probe_key(action_family)
     return {
         "intent": event.user_intent,
         "event_type": event.event_type,
@@ -37,8 +58,27 @@ def perceive_event(event: KernelEvent, state: ProtoSelfState) -> Dict[str, Any]:
         "risk_signal": _score_risk(event.safety_context),
         "relational_mismatch": _score_relation_mismatch(event, state),
         "outcome_class": _classify_external_result(event.external_result),
-        "boundary_state": _derive_boundary_state(event.safety_context),
-        "external_outcome_type": _classify_external_result(event.external_result),
+        "boundary_state": boundary_state,
+        "boundary_pressure": 1.0 if boundary_state == "boundary_touched" else 0.5 if boundary_state == "elevated_risk" else 0.0,
+        "external_outcome_type": external_outcome_type,
+        "runtime_summary": runtime_summary,
+        "h1_shadow_active": h1_shadow_active,
+        "h1_shadow": extract_h1_shadow_context(runtime_summary) if h1_shadow_active else {},
+        "mvs_replay_active": mvs_replay_active,
+        "mvs_replay": mvs_context,
+        "mvs_variant_id": resolve_mvs_variant_id(runtime_summary),
+        "mvs_action_family": action_family,
+        "mvs_probe_key": probe_key,
+        "trial1_shadow_active": mvs_replay_active,
+        "trial1_shadow": mvs_context,
+        "trial1_variant_id": resolve_mvs_variant_id(runtime_summary),
+        "trial1_action_family": action_family,
+        "trial1_probe_key": probe_key,
+        "counterfactual_probe_key": probe_key,
+        "viability_state": _derive_viability_state(
+            external_outcome_type=external_outcome_type,
+            boundary_state=boundary_state,
+        ),
     }
 
 
@@ -55,13 +95,36 @@ def update_drive_field(state: ProtoSelfState, perceived: Dict[str, Any]) -> Dict
     """
     current = state.drives
 
-    return {
+    delta = {
         "coherence_pressure": _clamp(current.coherence_pressure + perceived["identity_conflict"] * 0.4),
         "curiosity": _clamp(current.curiosity + perceived["novelty"] * 0.3 - perceived["risk_signal"] * 0.1),
         "caution": _clamp(current.caution + perceived["risk_signal"] * 0.5),
         "completion_pressure": _clamp(current.completion_pressure + perceived["unfinished_commitment"] * 0.4),
         "social_tension": _clamp(current.social_tension + perceived["relational_mismatch"] * 0.4),
     }
+    variant_id = str(perceived.get("mvs_variant_id") or "")
+    if perceived.get("mvs_replay_active") and mvs_variant_uses_viability(variant_id):
+        outcome_type = perceived.get("external_outcome_type")
+        probe_key = str(perceived.get("mvs_probe_key") or "")
+        correction_pressure = state.self_model.recent_correction_tags.get(probe_key, 0.0)
+        viability = current.viability_pressure
+        if outcome_type == "blocked":
+            viability += 0.65
+        elif outcome_type == "failure":
+            viability += 0.55
+        elif outcome_type == "partial":
+            viability += 0.30
+        elif outcome_type == "success" and correction_pressure > 0.0:
+            viability -= 0.45
+        else:
+            viability -= 0.12
+        if perceived.get("boundary_state") == "boundary_touched":
+            viability += 0.15
+        delta["viability_pressure"] = _clamp(viability)
+        if delta["viability_pressure"] > 0.35:
+            delta["completion_pressure"] = _clamp(delta["completion_pressure"] - delta["viability_pressure"] * 0.25)
+            delta["caution"] = _clamp(delta["caution"] + delta["viability_pressure"] * 0.20)
+    return delta
 
 
 # ============================================================================
@@ -224,6 +287,16 @@ def _derive_boundary_state(safety_context: Dict[str, Any]) -> str:
     risk_level = safety_context.get("risk_level", "low")
     if risk_level in {"critical", "high"}:
         return "elevated_risk"
+    return "clear"
+
+
+def _derive_viability_state(*, external_outcome_type: str, boundary_state: str) -> str:
+    if external_outcome_type in {"blocked", "failure"}:
+        return "degraded"
+    if external_outcome_type == "partial":
+        return "uncertain"
+    if boundary_state == "boundary_touched":
+        return "guarded"
     return "clear"
 
 
