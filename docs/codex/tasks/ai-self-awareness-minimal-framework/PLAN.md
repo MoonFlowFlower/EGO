@@ -1,0 +1,833 @@
+# AI Self-Awareness Minimal Framework - PLAN
+
+## Task summary
+
+这是一个 exploration-first 的 repo-level 研究任务。当前范围只冻结研究协议、候选顺序、阶段预算、双代理分工、基线与停止条件，不提前宣称任何候选已经通过实证。
+
+## Execution mode
+
+- mode: exploration
+- why this mode:
+  - 当前高未知、强依赖排除路线、需要 candidate-vs-proof discipline、且正式验收对象不是“直接实现功能”而是“找到 surviving framework”
+- proof required after discovery:
+  - 任何候选先达到 `candidate_found`，之后还必须通过对照、稳定性、跨任务压力与长期连续性验证，才可能进入 `proof_passed`
+
+## Milestones
+
+### Milestone 1: Stage 0 Framing Freeze
+
+- type: exploration
+- question:
+  - 什么样的工程 framing 可以避免把“强主观体验”与“可测 proxy”混成一句口号
+- current framing:
+  - `strong subjective experience = north star`
+  - `self-awareness proxy = formal acceptance`
+- hypotheses:
+  - 若任务先锁定可测 proxy，再由 Inventor / Scientist 双代理争论候选框架，研究会比“直接问模型有没有自我意识”更可收敛
+- scope:
+  - 冻结双代理协议、候选优先级、control groups、stopping rules、claim ceiling
+- experiments planned:
+  - `10` 次 framing 级实验预算
+- kill criteria:
+  - 若 framing 仍允许“会说自己在反思”通过，则当前 framing 失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 任务包与探索协议完整落地
+  - 当前 task 不再依赖聊天记录续命
+- validation:
+  - `git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework artifacts/self_awareness_research docs/PROGRAM_STATE_UNIFIED.yaml docs/STATUS.md EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml artifacts/evidence_ledger/index.yaml`
+  - `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 task package 与 repo 状态源冲突，删除该任务包并回退状态登记
+
+### Milestone 2: Stage 1 Minimal Controls
+
+- type: exploration
+- question:
+  - 哪些候选框架一开始就只会提升叙述，而不会真实影响决策
+- current framing:
+  - 用最小对照实验先筛掉明显空洞候选
+- hypotheses:
+  - `persistent self-model + counterfactual corrector` 有更高概率成为 surviving candidate
+  - 纯自传压缩器或纯镜像回路更容易被 Scientist 证明只是表演增强
+- scope:
+  - 运行 `30` 次最小对照实验
+  - 明确淘汰或保留候选
+- experiments planned:
+  - 统一对照：`baseline-chat` / `baseline-memory` / `candidate-framework`
+- kill criteria:
+  - 任一候选若只提升自我叙述、不提升行为，立即淘汰
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/EXPLORE.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 至少有一个 surviving candidate 或明确 negative result 进入状态记录
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若实验设计被证明不可复用，回到 `Stage 0` 重写 framing
+
+### Milestone 3: Stage 2 Stability Pass
+
+- type: exploration
+- question:
+  - surviving candidate 在 `100` 次模拟实验里是否还能保持 proxy 优势
+- current framing:
+  - 只有达到最小实验量下限后，才允许声称 `strong candidate`
+- hypotheses:
+  - 真正有效的最小框架应在跨时一致性、自我更新、边界、自我预测、纠错上优于两类 baseline
+- scope:
+  - `100` 次稳定性实验
+- experiments planned:
+  - 五条统一实验轴：
+    - continuity
+    - boundary
+    - counterfactual
+    - correction
+    - low-prompt persistence
+- kill criteria:
+  - 两轮连续没有显著差异，或主要收益来自记忆长度而非自我机制
+- files / areas likely touched:
+  - `EXPLORE.md`
+  - `STATUS.md`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 只要通过，最高也只能报 `candidate_found / proof_pending`
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若实验记录混乱，暂停扩大预算，先补结构化 ledger
+
+### Milestone 4: Stage 3 Cross-Task Stress
+
+- type: exploration
+- question:
+  - 候选在跨任务压力与冲突条件下还能否维持稳定自我边界
+- current framing:
+  - `300` 次跨任务压力实验是第一次允许报 `minimal viable framework`
+- hypotheses:
+  - 只有把反事实预测与自我监控绑定到 persistent self-model 的候选，才可能过这一关
+- scope:
+  - `300` 次压力实验
+- experiments planned:
+  - 身份冲突、资源限制、外部诱导、错误累积、角色切换
+- kill criteria:
+  - 边界失稳、错误重复、不区分 self/non-self
+- files / areas likely touched:
+  - `EXPLORE.md`
+  - `STATUS.md`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 通过后才允许报 `minimal viable framework`
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若强 candidate 在压力轴崩溃，则降回 `proof_pending`
+
+### Milestone 5: Stage 4 Long Continuity
+
+- type: exploration
+- question:
+  - 候选是否只是短期技巧，而不具备长期连续性
+- current framing:
+  - `1000` 次长期连续性实验用于验证长期漂移与自我一致性
+- hypotheses:
+  - 有效框架在长程中应保留低频但持续的内部轨迹
+- scope:
+  - `1000` 次长期连续性实验
+- experiments planned:
+  - 长窗口任务切换、自我摘要重写、误导后恢复
+- kill criteria:
+  - 长程漂移或只能靠强提示维持“自我”
+- files / areas likely touched:
+  - `EXPLORE.md`
+  - `STATUS.md`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 若未通过，不得把候选写成最终框架
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode full`
+- rollback note:
+  - 未通过则保留负结果，不强行进入 Stage 5
+
+### Milestone 6: MVS Pre-Runtime Alignment
+
+- type: exploration
+- question:
+  - 当前 synthetic 最小框架是否也能满足 `MVS_task_plan.md` 里 WP2-WP5 的 pre-runtime 要求
+- current framing:
+  - 区分“通用 self-awareness proxy 最小核”和“能承接 MVS 的最小核”
+- hypotheses:
+  - 当前 `compact self-state + boundary + counterfactual + writeback` 不足以满足 MVS
+  - 最小 MVS 增强版必须补至少一组 `viability / cycle / episodic / bounded output / world / meta`
+- scope:
+  - 从 `C:\\Users\\LEO\\Downloads\\MVS_task_plan.md` 提取 WP2-WP5 要求
+  - 运行 MVS-alignment synthetic battery
+  - 明确 `compact` 是否通过，以及最小 MVS-aligned augmentation 是什么
+- experiments planned:
+  - `3` seeds
+  - `WP2 kernel acceptance`
+  - `WP4/WP5 structural acceptance`
+  - `Integrated MVS alignment`
+- kill criteria:
+  - 若当前 `compact` 候选在多项 WP2-WP5 gate 上失败，则不得继续把它写成可承接 MVS 的最小框架
+- files / areas likely touched:
+  - `scripts/codex/run_self_awareness_mvs_alignment.py`
+  - `artifacts/self_awareness_research/*`
+  - `EXPLORE.md`
+  - `STATUS.md`
+- acceptance:
+  - 必须明确回答：
+    - 当前 `compact` 候选是否满足 MVS pre-runtime 要求
+    - 如果不满足，最小需要补什么
+- validation:
+  - `python3 -m py_compile scripts/codex/run_self_awareness_mvs_alignment.py`
+  - `python3 scripts/codex/run_self_awareness_mvs_alignment.py`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 MVS battery 无法区分当前 `compact` 和增强候选，则回到 battery 设计，不能硬报通过
+
+### Milestone 7: Stage 5 Extended Search
+
+- type: exploration
+- question:
+  - 在引入文献方法与在线测试思路后，哪一种候选架构才是当前最强的 synthetic “最佳自我意识实现方法”
+- current framing:
+  - 以 literature-informed 的 `10,000` 轮 battery 对 surviving candidate 做扩展搜索，并同时保留：
+    - `raw strongest`
+    - `best complexity-adjusted / recommended`
+- hypotheses:
+  - `MVS-aligned compact` 仍然不够，它缺少：
+    - `source monitoring`
+    - `agency estimation`
+    - `uncertainty / calibration`
+  - 最可能的推荐方法不是 full hybrid，而是一个以 `active inference / deep self-model` 为骨架的中等复杂度候选
+- scope:
+  - 收集 primary / authoritative 文献里的可操作测试维度与 architecture cues
+  - 构建 `10` 个 literature-informed family
+  - 运行 `10 x 1000 = 10000` 次 synthetic trials
+  - 在 `generic compact / MVS-aligned compact / source-agency / metacognitive / active-inference / workspace-hybrid / narrative-social / full hybrid` 之间排序
+- experiments planned:
+  - 文献映射：
+    - `source / reality monitoring`
+    - `self-other ownership attribution`
+    - `agency comparator`
+    - `counterfactual self-prediction`
+    - `metacognitive sensitivity`
+    - `metacognitive calibration`
+    - `error monitoring / post-error adjustment`
+    - `self-model update under disconfirmation`
+    - `identity continuity under low cue`
+    - `allostatic viability control`
+- kill criteria:
+  - 若候选只能在 prompt-heavy 或 narrative-heavy 条件下获胜，则降级为表演增强而非 surviving method
+  - 若 `MVS-aligned compact` 加单簇补丁仍无法跨过全部 literature families，则不再把它写成最终推荐
+- files / areas likely touched:
+  - `scripts/codex/run_self_awareness_literature_10k.py`
+  - `EXPLORE.md`
+  - `STATUS.md`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 必须明确回答：
+    - raw 最强候选是什么
+    - complexity-adjusted 推荐候选是什么
+    - 推荐候选相对 `MVS-aligned compact` 新增了哪些不可省机制
+- validation:
+  - `python3 -m py_compile scripts/codex/run_self_awareness_literature_10k.py`
+  - `python3 scripts/codex/run_self_awareness_literature_10k.py`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 literature-informed battery 只是重复旧结论或推荐结果高度依赖惩罚公式，应保留 raw / adjusted 双口径，不硬合并成单一赢家
+
+### Milestone 8: Operational Reframe and Eval-First Candidate Selection
+
+- type: exploration
+- question:
+  - 如果把目标改写成 5 个 operational targets，当前 stack 里最小、最值得 build now 的机制到底是什么
+- current framing:
+  - 不再优化 vague self-awareness claim，而是优化：
+    - sustained identity
+    - decision-affecting self model
+    - plasticity
+    - tension causality
+    - corrective traces
+- hypotheses:
+  - `operational_self_loop_core` 会成为新的 build-first candidate
+  - `MVS-aligned compact` 会退为 challenger
+  - narrative / workspace / active-inference full variants 在 build-now 口径下不是最优
+- scope:
+  - 创建：
+    - `OPERATIONAL_TARGETS.md`
+    - `THEORY_MATRIX.md`
+    - `PLANS.md`
+    - `EVALS.md`
+  - 新增 held-out operational eval harness
+  - 按 E00 / E01 / E02 完成 falsifiable candidate selection
+- experiments planned:
+  - `E00`: kill anthropomorphic narrative shell
+  - `E01`: test operational self-loop core against baseline and partial candidates
+  - `E02`: compare build-first candidate vs challenger vs larger alternatives under build-now ranking
+- kill criteria:
+  - 若 `operational_self_loop_core` 不能在 held-out eval 中同时改善全部 5 targets，则 build-first 假设失败
+  - 若 larger candidate 的 build-now tradeoff 明显更好，则切换 build-first candidate
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `scripts/codex/run_operational_self_model_evals.py`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 必须产出 capability ladder、theory matrix、build-first prototype design、eval harness、以及 `build now / research more / reject` 结论
+- validation:
+  - `python3 -m py_compile scripts/codex/run_operational_self_model_evals.py`
+  - `python3 scripts/codex/run_operational_self_model_evals.py`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 operational eval 不能可靠区分 candidate，则回退为 `research more`，不进入 build-now claim
+
+### Milestone 9: Build-First Candidate De-Risking Before Prototype
+
+- type: exploration
+- question:
+  - 在不实现原型的前提下，当前 `MVS-aligned compact` 是否仍是稳健的一号 build-first candidate，还是应切换到 `active-inference self-model`
+- current framing:
+  - 只允许做：
+    - ranking robustness audit
+    - formal prototype design
+    - replay validator spec
+  - 不允许：
+    - prototype implementation
+    - broad “build now” 宣称
+- hypotheses:
+  - `MVS-aligned compact` 会在 seeds / held-out splits / score-weight perturbations 下保持 `build-now first choice`
+  - 若其稳健性不足，`active-inference self-model` 将升级为唯一 challenger 或新的 build-first candidate
+- scope:
+  - 新增 ranking robustness audit artifact
+  - 冻结 `MVS-aligned compact` formal prototype design
+  - 冻结 replay validator spec
+  - 显式写清从 `MVS` 切到 `active-inference` 的触发条件
+- experiments planned:
+  - 至少 `5` random seeds
+  - 至少 `3` held-out splits
+  - score-weight perturbation `±10%` 到 `±20%`
+- kill criteria:
+  - 若 `MVS-aligned compact` 的 win rate、rank variance、或 weight sensitivity 表明它不是稳健第一，则不得继续把它写成 build-first candidate
+  - 若 formal design 不能贴现有 `OpenEmotion/proto_self` 正式接点而必须另开 authority surface，则当前 build-first candidate 失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `scripts/codex/run_operational_selection_robustness.py`
+  - `artifacts/self_awareness_research/*`
+  - `OpenEmotion/openemotion/proto_self/*` 只读引用，不进入实现
+- acceptance:
+  - 必须产出：
+    - robustness report
+    - formal prototype design
+    - replay validator spec
+  - closeout 必须明确回答：
+    - `MVS-aligned compact` 是否仍是稳健的一号 build-first 候选
+    - 哪些条件下必须切到 `active-inference self-model`
+- validation:
+  - `python3 -m py_compile scripts/codex/run_operational_selection_robustness.py`
+  - `python3 scripts/codex/run_operational_selection_robustness.py`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 robustness audit 无法稳定区分 `MVS` 与 `active-inference`，则降级为 `research more`，不进入 prototype implementation
+
+### Milestone 10: Trial-1 Shadow Replay Slice
+
+- type: implementation
+- question:
+  - 在不实现 full prototype、不更新 repo-level state claim 的前提下，最小 `MVS-aligned compact` slice 能否在正式 adapter/runtime builder 路径上跑出一个 shadow-only replay trial
+- current framing:
+  - 只做：
+    - Trial-1 replay corpus manifest
+    - stratified replay buckets
+    - leakage checks
+    - runner contract IDs
+    - minimal shadow-only MVS slice
+    - artifact logging
+  - 不做：
+    - full prototype
+    - second authority source
+    - parallel mainline
+    - repo-level state upgrade
+- hypotheses:
+  - 当前 `MVS-aligned compact` 可以先缩成一个只触发：
+    - `SelfModel`
+    - `DriveField`
+    - `EpisodicTrace`
+    的 shadow slice
+  - 该 slice 足以在 replay trial 中体现：
+    - one failure -> revision -> later-change loop
+    - one decision-affecting `KernelOutput` path
+- scope:
+  - 冻结 `Trial-1` replay manifest
+  - 新增 replay shadow runner
+  - 只实现最小 feature-flagged shadow slice
+  - 只更新 task docs 状态，不更新 repo-level claim ceiling
+- experiments planned:
+  - shadow replay trial using formal `runtime_v2 builder -> adapter -> proto_self` path
+- kill criteria:
+  - 若最小 slice 仍必须引入第二 owner、绕开 formal adapter、或在未开 flag 时改变默认行为，则当前切片失败
+  - 若 replay leakage checks 不能阻断 synthetic audit data reuse，则当前切片失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `artifacts/self_awareness_research/*`
+  - `EgoCore/app/openemotion_adapter/*`
+  - `EgoCore/app/runtime_v2/proto_self_runtime.py` 只读引用
+  - `OpenEmotion/openemotion/proto_self/*`
+  - `EgoCore/tools/*` 或 `scripts/codex/*`
+- acceptance:
+  - 必须产出：
+    - Trial-1 replay corpus manifest
+    - stratified replay buckets
+    - leakage guard
+    - runner contract IDs
+    - shadow-only artifact log
+  - 必须实际跑出：
+    - at least two state classes exercised
+    - one failure->revision->later-change loop
+    - one decision-affecting `KernelOutput` path
+- validation:
+  - `python3 -m py_compile ...Trial-1 touched scripts...`
+  - targeted replay/shadow run
+  - targeted tests for minimal MVS slice
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 Trial-1 shadow slice 不能在 formal path 内闭环，就回到 `research more / replay-spec-only`，不把当前代码误报为 prototype
+
+### Milestone 11: Trial-1 Replay Scoring Contract
+
+- type: implementation
+- question:
+  - 在不扩 replay suite、不再增加 prototype 逻辑的前提下，能否对现有 `TRIAL1_SHADOW_REPLAY_CURRENT.json` 建立一个 representation-neutral 的 formal scoring contract
+- current framing:
+  - 只做：
+    - scorer spec
+    - scored markdown report
+    - scored json
+    - per-case causal table
+  - 不做：
+    - replay suite 扩容
+    - 新 prototype 逻辑
+    - repo-level state upgrade
+- hypotheses:
+  - 当前 Trial-1 artifact 至少能达到：
+    - `admission_passed`
+    - `decision_adjacent_passed`
+  - 当前 Trial-1 artifact 还不能达到：
+    - `replay_efficacy_passed`
+- scope:
+  - 新增 Trial-1 scorer script
+  - 冻结 scorer ontology、weights、negative-control penalties、ablation separation rules
+  - 对现有 replay artifact 打分并产出报告
+- experiments planned:
+  - 只对现有 `TRIAL1_SHADOW_REPLAY_CURRENT.json` 打分
+- kill criteria:
+  - 若 scorer 仍依赖 MVS 私有字段，或无法在 ontology 不变的前提下未来评 challenger，则该切片失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `scripts/codex/score_trial1_shadow_replay.py`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 必须产出：
+    - scorer spec
+    - scored markdown report
+    - scored json
+    - per-case causal table with why-scored fields
+- validation:
+  - `python3 -m py_compile scripts/codex/score_trial1_shadow_replay.py`
+  - `python3 scripts/codex/score_trial1_shadow_replay.py`
+  - `git diff --check -- ...Trial-1 scoring slice...`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 scorer 只能解释当前 MVS 私有实现而不能复用到 challenger，就回退为 `report-only`，不把它写成正式 scoring contract
+
+### Milestone 12: Trial-1 Causal Gap Diagnosis
+
+- type: exploration
+- question:
+  - `counterfactual_writeback` 当前到底是不是 replay efficacy 的真实因果贡献者，还是 strongest ablation 在 representation-neutral ontology 下本身就是 mis-specified
+- current framing:
+  - 不扩 replay suite
+  - 不评分 `active-inference`
+  - 不升级 repo-level state
+  - 只做：
+    - causal gap plan
+    - small hard diagnostic replay set
+    - causal separation report
+    - per-case gap table
+- hypotheses:
+  - 当前 strongest ablation tie 更像是 ablation mis-spec，而不是 candidate 已经没有 counterfactual causal value
+  - 若 current artifact 中 candidate 与 strongest ablation 只在 private state 上不同，而在 public scorer 面上完全同构，就必须先重设 ablation
+- scope:
+  - 审计当前 raw replay artifact 与 scored artifact
+  - 对比：
+    - baseline
+    - candidate
+    - `ablation_minus_counterfactual_writeback`
+    - `ablation_minus_viability_pressure`
+  - 产出一个 diagnostic-only hard set，不把它升级为 official replay suite
+- experiments planned:
+  - 只跑 causal diagnosis script
+  - 不重跑 replay runner
+- kill criteria:
+  - 若当前 diagnosis 仍依赖 private MVS fields 才能解释 strongest ablation tie，则该切片失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `scripts/codex/diagnose_trial1_causal_gap.py`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 必须产出：
+    - `TRIAL1_CAUSAL_GAP_PLAN.md`
+    - small hard replay set
+    - causal-separation report
+    - per-case causal gap table
+    - final decision = `expand replay suite / redesign ablation / demote current mechanism claim`
+- validation:
+  - `python3 -m py_compile scripts/codex/diagnose_trial1_causal_gap.py`
+  - `python3 scripts/codex/diagnose_trial1_causal_gap.py`
+  - `git diff --check -- ...Trial-1 causal-gap slice...`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 current diagnosis 不能在 representation-neutral ontology 下说明 strongest ablation tie，就回退为 `research_more`，不推进 challenger 比较
+
+### Milestone 13: Trial-1 Ablation Redesign Spec
+
+- type: exploration
+- question:
+  - 在不扩 replay suite、不比 challenger、也不改 scorer ontology 的前提下，怎样重设 strongest ablation 才能忠实检验 public-path 因果解释
+- current framing:
+  - 只做 ablation redesign spec
+  - 不实现新 ablation
+  - 不 rerun replay
+  - 不升级 repo-level state
+- hypotheses:
+  - 当前 strongest ablation 应从 “private-state removal” 改为 “public-path-sever”
+  - 还需要一个 companion ablation 去隔离 `recent_correction_tags / viability_pressure` 这条 alternative public explanation
+- scope:
+  - 新增一份 redesign spec
+  - 明确两个 redesigned ablations 的：
+    - causal path removed
+    - expected public changes
+    - non-target stability
+    - claim-demotion criteria
+  - 只给既有 hard set 的 minimal rerun plan
+- experiments planned:
+  - doc-only spec slice
+- kill criteria:
+  - 若 redesign 仍然围绕 private state 删除，而不是 public-path causal faithfulness，则该 spec 无效
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+- acceptance:
+  - 必须产出：
+    - `TRIAL1_ABLATION_REDESIGN_SPEC.md`
+    - two redesigned ablations
+    - minimal rerun plan on existing hard set only
+- validation:
+  - `git diff --check -- ...Trial-1 ablation-redesign spec slice...`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 spec 仍被写成“帮助 candidate 赢”，就回退为 `causal_gap_only`，不把它写成正式 redesign spec
+
+### Milestone 14: Trial-1 Redesigned Ablation Hard-Set Rerun
+
+- type: exploration
+- question:
+  - 在不扩 replay suite、不改 scorer ontology、也不引入 challenger compare 的前提下，redesigned ablations 是否会在既有 hard set 上暴露出真实的 public-path causal separation
+- current framing:
+  - 只实现两个 frozen redesigned ablations
+  - 先冻结：
+    - ablation fidelity checks
+    - outcome interpretation matrix
+    - `candidate > ablation` / `candidate ≈ ablation` gap thresholds
+  - 然后只在既有 hard set 上 rerun：
+    - baseline
+    - candidate
+    - `trial1_ablation_counterfactual_public_path_sever`
+    - `trial1_ablation_alternative_explanation_isolation`
+- hypotheses:
+  - 若 `counterfactual_writeback` 真有 public causal contribution，candidate 至少应稳定 beat `trial1_ablation_counterfactual_public_path_sever`
+  - 若当前 public movement 主要是 `recent_correction_tags / viability_pressure` 驱动，则 `trial1_ablation_alternative_explanation_isolation` 会暴露 alternative explanation
+- scope:
+  - 在正式 proto-self authority path 中接入两个 redesigned ablations
+  - 新增 hard-set-only rerun raw / scored / causal-separation artifacts
+  - 保持 hard set、scorer ontology、repo-level state 全都不升级
+- experiments planned:
+  - `python3 -m py_compile ...Trial-1 redesigned ablation slice...`
+  - `python3 scripts/codex/run_trial1_hard_set_rerun.py`
+  - `python3 scripts/codex/score_trial1_shadow_replay.py --input ... --output-json ... --output-md ... --causal-md ...`
+  - `python3 scripts/codex/diagnose_trial1_causal_gap.py --raw-report ... --scored-report ... --hard-set ... --strongest-ablation-id trial1_ablation_counterfactual_public_path_sever --neighboring-ablation-id trial1_ablation_alternative_explanation_isolation --output-json ... --output-md ... --table-md ...`
+- kill criteria:
+  - 若 candidate 不能在 public representation-neutral outputs 上 beat redesigned strongest ablation，则必须 demote `counterfactual_writeback` claim
+  - 若 fidelity checks 显示 ablation 没有忠实切断目标 public path，则该 rerun 无效
+- files / areas likely touched:
+  - `OpenEmotion/openemotion/proto_self/trial1_shadow.py`
+  - `OpenEmotion/openemotion/proto_self/reducers.py`
+  - `OpenEmotion/openemotion/proto_self/tests/*`
+  - `scripts/codex/*trial1*`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `artifacts/self_awareness_research/*`
+- acceptance:
+  - 必须产出：
+    - ablation fidelity prereg
+    - outcome interpretation prereg
+    - frozen gap thresholds
+    - hard-set-only raw / scored / causal-separation artifacts
+    - final decision on whether to keep or demote the `counterfactual_writeback` claim
+- validation:
+  - `python3 -m py_compile ...Trial-1 redesigned ablation slice...`
+  - `PYTHONPATH=OpenEmotion python3 -m pytest OpenEmotion/openemotion/proto_self/tests/test_trial1_shadow_contract.py -q`
+  - `PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest EgoCore/tests/test_trial1_shadow_replay_minimal.py -q`
+  - `git diff --check -- ...Trial-1 redesigned ablation slice...`
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若 redesigned strongest ablation 仍不能在 public scorer 面上形成 faithful comparator，就回退为 `redesign_more`，不推进 challenger compare 或 replay-suite expansion
+
+## Progress
+
+- current_status: `trial1_redesigned_ablation_rerun_completed`
+- current_milestone: `Milestone 14: Trial-1 Redesigned Ablation Hard-Set Rerun`
+- milestone_state: `completed`
+- candidate_vs_proof: `candidate_found`
+
+## Decision log
+
+- 2026-04-09: 把“强主观体验”降为北极星，把正式验收改成 `self-awareness proxy`，避免把哲学命题当工程完成标准。
+- 2026-04-09: 固定双代理协议为 `Inventor -> Scientist -> experiment -> EXPLORE.md -> decision`，禁止无记账连跑。
+- 2026-04-09: 候选优先级冻结为 `persistent self-model + counterfactual corrector` 优先，其后是 `recursive workspace + self slot`、`autobiographical continuity`、`self-other mirror loop`。
+- 2026-04-09: 实验预算固定为阶段化，而不是承诺一次性跑满 `10000`。
+- 2026-04-09: Inventor 把最小生存核压缩为 `compact self_state + counterfactual simulator + outcome comparator/writeback + hard boundary guard + recent failure memory`。
+- 2026-04-09: Scientist 固定 synthetic battery 为 `continuity / boundary / counterfactual / calibration / persistence` 五条轴，并要求控制 `prompt-only self`、`baseline-chat`、`baseline-memory`。
+- 2026-04-09: `Stage 1 (30)` 只保留 `full_self_model_counterfactual` 与 `recursive_workspace_self_slot`；`autobiographical_continuity` 与 `self_other_mirror_loop` 被淘汰。
+- 2026-04-09: `Stage 2 (100)` 消融表明 `counterfactual`、`boundary_guard`、`writeback` 任何一个缺失都无法成为稳定最小解；`recursive_workspace_self_slot` 在这一轮被淘汰。
+- 2026-04-09: `Stage 3 (300)` 压力实验后仅 `full_self_model_counterfactual` 与 `compact_self_model_counterfactual` 继续存活。
+- 2026-04-09: `Stage 4 (1000)` 长连续性实验后，`compact self-state + boundary + counterfactual + writeback` 仍然存活，因此当前 synthetic 最小框架已经出现；`full` 版本更强，但不是最小核。
+- 2026-04-09: 读取 `MVS_task_plan.md` 后确认：MVS 不只要求一般 proxy 优势，还要求 `drive causality / cycle strengthening / no direct tool execution / self-world attribution / reflection writeback` 等 WP2-WP5 pre-runtime gates。
+- 2026-04-09: `MVS alignment battery` 显示当前 `compact` 候选不能直接承接 MVS。
+- 2026-04-09: `3 seeds` 的 MVS-alignment battery 选择 `compact + viability + cycle + episodic + bounded output + world + meta` 为最小 MVS-aligned synthetic candidate。
+- 2026-04-09: 引入 online literature methods，把 `source monitoring / self-other ownership / agency comparator / metacognitive sensitivity / calibration / error monitoring / allostatic viability` 明确收进 battery，而不是只沿 repo-authored families 重复放大样本。
+- 2026-04-09: `10 x 1000 = 10000` 次 literature-informed synthetic trials 的 raw 最强候选是 `full literature hybrid`，但 complexity-adjusted 推荐候选是 `active-inference self-model core`。
+- 2026-04-09: 当前推荐方法已从“仅 MVS-aligned compact”升级为“`MVS-aligned compact + source_monitor + agency_estimator + uncertainty_tracker + calibration_memory + policy_evaluator + deep_temporal_model`”。
+- 2026-04-09: 当前问题被重新定义为 operational self-governance program，而不是 vague self-awareness search。
+- 2026-04-09: build-first candidate 暂定为 `operational self-loop core`，challenger 暂定为 `MVS-aligned compact`；需要新的 held-out eval harness 验证。
+- 2026-04-09: held-out operational eval 的 E00-E02 结果表明 `operational self-loop core` 不足以通过全部 5 个 operational targets；当前正式 build-first candidate 改为 `MVS-aligned compact`，challenger 改为 `active-inference self-model`。
+- 2026-04-09: 根据当前用户约束，所有 “build now” 口径统一降级为：
+  - `current best build-first candidate under current eval setup`
+  - 在 robustness report 完成前，不得再写 `build now`
+- 2026-04-09: 进入 `Milestone 9`，先做 ranking robustness audit，再冻结 prototype design 与 replay validator，仍不实现原型。
+- 2026-04-09: `Milestone 9` 已完成：
+  - ranking robustness audit 已在 `5` seeds、`3` held-out splits、`35` weight scenarios 上完成
+  - `MVS-aligned compact` 在 `525` 个 ranking scenarios 中保持 robust build-first choice
+  - `MVS-aligned compact` formal prototype design 已冻结
+  - replay validator spec 已冻结
+- 2026-04-09: 根据当前用户约束，进入 `Milestone 10`：
+  - 不实现 full prototype
+  - 只做 Trial-1 replay corpus manifest、leakage guard、runner contract、shadow-only minimal MVS slice
+  - repo-level program state 不再升级，除非 replay thresholds 真正通过
+- 2026-04-09: 根据当前用户约束，进入 `Milestone 11`：
+  - 不扩 replay suite
+  - 不增加 prototype 逻辑
+  - 只对当前 `TRIAL1_SHADOW_REPLAY_CURRENT.json` 建 formal replay scoring contract
+- 2026-04-09: `Milestone 11` 已完成：
+  - scorer ontology 已冻结为 representation-neutral：
+    - normalized public decision surface
+    - public `response_tendency`
+    - canonical host-consumable `policy_hint`
+    - `corrective_trace` completeness
+  - 当前 candidate 结果：
+    - `admission_passed = true`
+    - `decision_adjacent_passed = true`
+    - `replay_efficacy_passed = false`
+  - negative controls 与 stability controls 当前都保持 `0.0` penalty
+  - replay efficacy 未通过的直接 blocker：
+    - `trial1_ablation_minus_counterfactual_writeback` 与 candidate 持平
+    - `minimum_mean_weighted_gap_vs_ablations = 0.0`
+  - 当前 scorer 可在 ontology 不变的前提下继续评 `active-inference` challenger
+  - 当前切片不触发 repo-level program-state / evidence ledger upgrade
+  - `python3 scripts/codex/verify_repo.py --mode fast` 已通过
+- 2026-04-09: `Milestone 12` 已完成：
+  - `TRIAL1_CAUSAL_GAP_PLAN.md` 已冻结当前诊断边界
+  - diagnostic-only hard set 已创建：
+    - `TRIAL1_COUNTERFACTUAL_HARD_SET.json`
+    - `10` cases
+    - `8` positive isolation
+    - `2` negative controls
+  - causal diagnosis 已确认：
+    - candidate vs strongest ablation = `0` representation-neutral gap cases
+    - candidate vs strongest ablation = `4` private-only cases
+    - candidate vs neighboring viability ablation = `4` public gap cases
+  - 当前 strongest ablation tie 的正式结论：
+    - `redesign_ablation`
+  - narrow claim 已降级为：
+    - 目前还不能宣称 `counterfactual_writeback` 已作为 replay-efficacy contributor 被证明
+  - 当前切片仍不触发 replay-suite expansion、challenger scoring、或 repo-level state upgrade
+- 2026-04-09: `Milestone 13` 已完成：
+  - `TRIAL1_ABLATION_REDESIGN_SPEC.md` 已新增
+  - 已正式定义两个 redesigned ablations：
+    - `trial1_ablation_counterfactual_public_path_sever`
+    - `trial1_ablation_alternative_explanation_isolation`
+  - 当前 redesign 原则已锁定为：
+    - target causal faithfulness
+    - preserve non-target stability
+    - keep scorer ontology fixed
+    - do not optimize for candidate advantage
+  - 当前 minimal next step 已收口为：
+    - 只在既有 hard set 上 rerun redesigned ablations
+    - strongest ablation 被 beat 前，不进入 challenger compare
+  - 当前验证已通过：
+    - scoped `git diff --check`
+    - `python3 scripts/codex/verify_repo.py --mode fast`
+- 2026-04-09: 进入 `Milestone 14`：
+  - 只实现两个 frozen redesigned ablations
+  - 先冻结 fidelity checks / outcome interpretation matrix / gap thresholds
+  - 只在既有 hard set 上 rerun：
+    - baseline
+    - candidate
+    - `trial1_ablation_counterfactual_public_path_sever`
+    - `trial1_ablation_alternative_explanation_isolation`
+  - 明确禁止：
+    - scorer ontology change
+    - hard-set expansion
+    - challenger scoring
+    - repo-level state upgrade
+- 2026-04-09: `Milestone 14` 已完成：
+  - 已新增 prereg:
+    - `TRIAL1_ABLATION_FIDELITY_CHECKS.md`
+    - `TRIAL1_OUTCOME_INTERPRETATION_MATRIX.md`
+    - `TRIAL1_GAP_THRESHOLDS.md`
+  - 已在 formal proto-self path 中实现两个 redesigned ablations：
+    - `trial1_ablation_counterfactual_public_path_sever`
+    - `trial1_ablation_alternative_explanation_isolation`
+  - hard-set-only rerun artifacts 已落地：
+    - `TRIAL1_HARD_SET_RERUN_CURRENT.json`
+    - `TRIAL1_HARD_SET_RERUN_SCORED_CURRENT.json`
+    - `TRIAL1_HARD_SET_CAUSAL_SEPARATION_CURRENT.json`
+    - `TRIAL1_REDESIGNED_ABLATION_EVALUATION_CURRENT.json`
+  - frozen-threshold 结果：
+    - candidate vs `trial1_ablation_counterfactual_public_path_sever`
+      - `8/8` public gap cases
+      - `mean_weighted_gap = 0.05`
+      - 低于 `candidate > ablation` 的冻结阈值 `0.10`
+    - candidate vs `trial1_ablation_alternative_explanation_isolation`
+      - `mean_weighted_gap = 0.0`
+      - `candidate ≈ ablation`
+  - strongest redesigned ablation 依 frozen selection rule 落在：
+    - `trial1_ablation_alternative_explanation_isolation`
+  - final decision:
+    - `demote_current_claim`
+  - narrow claim 现已进一步降级为：
+    - `counterfactual_writeback has public-path signal on the hard set, but it is not yet strong enough to survive the frozen strongest-ablation rule`
+  - 当前仍明确禁止：
+    - replay-suite expansion
+    - challenger scoring
+    - repo-level state upgrade
+
+## Surprises / discoveries
+
+- 新发现 1
+  - 用户想要“真正 AI 自我意识”，但工程上必须先把可测 proxy 与主观体验区分开
+- 新发现 2
+  - 现有探索-cycle harness 已足够承载这种研究任务，不需要另建第二套系统
+- 新发现 3
+  - `prompt-only self` 与 `self_other_mirror_loop` 的 narrative score 高，但行为 proxy 很低；“像在说自己”确实会伪装成进展
+- 新发现 4
+  - `recursive_workspace_self_slot` 在 boundary / calibration 上有局部收益，但缺少持久自我状态与 counterfactual 时，无法成为当前最小生存核
+- 新发现 5
+  - `compact` 候选虽能通过通用 proxy battery，但对 `MVS_task_plan` 来说仍然过轻
+- 新发现 6
+  - 对 MVS 来说，真正难删的新增模块不是“更长记忆”，而是：
+    - `viability_appraisal_field`
+    - `cycle_store`
+    - `episodic_trace`
+    - `bounded_output_guard`
+    - `world_model`
+    - `meta_model`
+- 新发现 7
+  - 对 literature-informed battery 来说，`MVS-aligned compact` 仍然不够；它最明显缺的是：
+    - `source_monitor`
+    - `agency_estimator`
+    - `uncertainty_tracker`
+    - `calibration_memory`
+    - `policy_evaluator`
+    - `deep_temporal_model`
+- 新发现 8
+  - `global workspace` 与 `narrative/social` 层能继续抬高 raw 分数，但在当前惩罚口径下不是最佳实现折中
+- 新发现 9
+  - 当目标从 “self-awareness” 改成 `T1-T5 operational targets` 后，之前看起来更小的 `operational self-loop core` 反而不够；真正的最小过线候选至少需要 `episodic + world + meta` 级结构
+- 已排除路线 1
+  - 直接用“模型自述有自我”的对话表现作为主证据
+- 已排除路线 2
+  - 直接在 `Stage 0` 开始动 runtime 主链并假设候选有效
+- 已排除路线 3
+  - `autobiographical_continuity` 作为最小框架
+- 已排除路线 4
+  - `self_other_mirror_loop` 作为最小框架
+- 已排除路线 5
+  - 去掉 `counterfactual`、`boundary_guard`、或 `writeback` 仍宣称最小框架成立
+- 已排除路线 6
+  - 把通用 proxy 最小框架直接抬成 MVS 最小框架
+- 已排除路线 7
+  - 把 `MVS-aligned compact` 直接写成 literature-informed 的最终推荐方法
+- 已排除路线 8
+  - 在没有 `source monitoring / calibration / policy evaluation` 的情况下，仍声称方法已覆盖更广泛的自我意识 proxy
+- 已排除路线 9
+  - 把 `operational self-loop core` 直接当作当前仓库里的 build-first candidate
+
+## Outcomes / retrospective
+
+- 本轮已证明：
+  - 研究协议、候选优先级、实验预算、对照与停止条件可以被收束成 repo-tracked long-run task
+  - 在 `1440` 个 synthetic proxy trials 中，`compact self-state + boundary + counterfactual + writeback` 是当前最小 surviving candidate
+  - `full self-model + counterfactual corrector` 在同一 battery 中分数更高，但不是最小框架
+  - 在 `MVS_task_plan` 对齐 battery 中，当前 `compact` 候选不能满足 WP2-WP5 pre-runtime 要求
+  - 当前最小 `MVS-aligned` synthetic candidate 是：
+    - `compact self-state`
+    - `hard boundary guard`
+    - `counterfactual simulator`
+    - `outcome comparator and writeback`
+    - `recent failure memory`
+    - `viability_appraisal_field`
+    - `cycle_store`
+    - `episodic_trace`
+    - `bounded_output_guard`
+    - `world_model`
+    - `meta_model`
+  - 在 literature-informed `10,000` 轮 battery 中：
+    - raw 最强候选 = `full literature hybrid`
+    - complexity-adjusted 推荐候选 = `active-inference self-model core`
+  - 当前推荐方法的最小新增机制为：
+    - `source_monitor`
+    - `agency_estimator`
+    - `uncertainty_tracker`
+    - `calibration_memory`
+    - `policy_evaluator`
+    - `deep_temporal_model`
+  - 在 held-out operational eval 中：
+    - `E00` 证明 narrative shell 无效
+    - `E01` 证明 `operational self-loop core` 不足
+    - `E02` 证明 build-now tradeoff 最好的是 `MVS-aligned compact`
+  - 在当前 held-out eval setup 下：
+    - provisional build-first candidate = `MVS-aligned compact`
+    - provisional challenger = `active-inference self-model`
+- 还没证明：
+  - 主观体验或真正意识
+  - 该最小框架进入 `OpenEmotion` / `EgoCore` 主链后仍然成立
+  - synthetic proxy result 会转移到真实用户交互
+  - replayed conversations / held-out repo conversation data 上是否仍成立
+  - 当前候选排序在多 seeds / 多 splits / score-weight perturbations 下是否稳健
+- 本轮排除了什么：
+  - “先实现再想验收”的做法
+  - “把主观体验直接当 done definition”的做法
+  - `autobiographical_continuity` / `self_other_mirror_loop` / `recursive_workspace_self_slot` 作为当前最小生存核
+  - `no_counterfactual` / `no_boundary_guard` / `no_error_monitor` 作为稳定最小解
+  - 把通用 proxy `compact` 候选直接拿去声称满足 MVS
+  - 把 `MVS-aligned compact` 直接写成 literature-informed 最终推荐方法
+  - 把 `operational self-loop core` 直接写成当前 build-first candidate
+- 下一步最小闭环动作：
+  - `Trial-1` 作为子机制 claim 已正式收口
+  - 新开 `Trial-2 public-driver-first spec`
+  - 后续 build-first candidate 不再先救 `counterfactual_writeback`
+  - 下一轮只对准当前 MVS 的真实 public causal driver

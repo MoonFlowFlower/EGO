@@ -2,11 +2,16 @@
 
 一个轻量级、独立的 Agent Runtime，专注 Telegram 单 Agent 任务执行。
 
-## 当前权威状态（2026-04-09）
+## 当前权威状态（2026-04-11）
 
 - `EgoCore` 是唯一正式宿主：入口、runtime、工具执行、安全裁决、delivery、audit
 - 当前 formal mainline 仍是：`telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
 - `RuntimeV2ProtoSelfRuntime` 仍是主体事件正式入口
+- formal runtime mainline 与 research implementation lane 不是一回事；前者继续单一稳定，后者允许按证据切换 build-first candidate
+- 当前 repo 的最高优先级 implementation lane 已切到 `self-awareness candidate program`
+- 当前唯一 build-first candidate 是 `MVS-aligned compact`
+- 当前唯一 challenger 是 `active-inference self-model`
+- `WP17 / MVP22` 当前降为 parked bounded lane，不再是默认最高优先级 implementation track
 - `proto_self_v2` 已是主体层默认主线，当前只读解释层与受治理写回面已收口
 - `repo_authority_cleanup: closeout-complete (repo/integration scope)`
 - 当前 repo 处于 `边界冻结下的收口期`

@@ -23,8 +23,17 @@ program:
   current_focus:
   - Institutionalize repo-level project-state governance at the repo root without
     creating a second authority source.
-  - Keep README / logic flow / capability / acceptance views aligned to the same repo-level
-    status source.
+  - Keep one formal runtime mainline and one research implementation lane; do not
+    merge candidate routing into a second runtime authority source.
+  - Treat the self-awareness candidate program as the current top-priority implementation
+    lane while keeping WP17/MVP22 parked as a bounded continuity lane until replay-gated
+    results justify reintegration.
+  - Keep MVS-aligned compact as the sole build-first candidate and active-inference
+    self-model as the sole challenger until replay validator / switch criteria decide
+    otherwise.
+  - Keep the self-awareness research result at synthetic-proxy scope until replay
+    validators and a formal OpenEmotion prototype exist; neither build-first routing
+    nor challenger status may be overclaimed as runtime evidence.
   - Continue reducing live Telegram host-only subject-miss residue before making stronger
     live-behavior claims.
   completed_since_last:
@@ -33,22 +42,54 @@ program:
     current-authority wording.
   - provider/runtime/OpenEmotion E2E gate currently passes on a recent real Telegram
     session window.
+  - A Codex long-run research task package now freezes the first self-awareness exploration
+    protocol, candidate order, control groups, and staged experiment budget.
+  - A 1440-trial synthetic proxy battery now points to `compact self-state + boundary
+    + counterfactual + writeback` as the smallest surviving candidate under the current
+    research simulator.
+  - A separate MVS-alignment synthetic battery now shows generic `compact` is insufficient
+    for WP2-WP5 pre-runtime gates; the smallest MVS-aligned candidate adds viability,
+    cycle, episodic trace, bounded output, world, and meta structure.
+  - A literature-informed 10,000-trial synthetic battery now ranks `full literature
+    hybrid` as the raw strongest candidate and `active-inference self-model core`
+    as the best complexity-adjusted recommended method.
+  - A new held-out operational eval reframes the task around 5 operational targets
+    and selects `MVS-aligned compact` as the current build-first candidate under the
+    present eval setup, with `active-inference self-model` retained as challenger.
+  - A ranking robustness audit across 5 seeds, 3 held-out splits, and 35 weight scenarios
+    now keeps `MVS-aligned compact` as the robust synthetic build-first choice, and
+    the repo also contains a formal MVS prototype design plus replay validator spec.
+  - Repo-level routing now explicitly separates the single formal runtime mainline
+    from the single research implementation lane, parks WP17/MVP22 as a bounded continuity
+    lane, and freezes candidate competition to `MVS-aligned compact` vs `active-inference
+    self-model`.
   blocked_by:
+  - No replay-validated formal candidate slice exists yet; the research-first implementation
+    lane is still unproven beyond synthetic / controlled eval.
   - Live Telegram ordinary chat still has unexpected subject-miss samples on the host
     path.
   key_unknowns:
   - Whether the root-level state governance workflow will remain consistently enforced
-    across routine future PRs.
-  - How quickly remaining hand-written current-state prose can be reduced in favor
-    of derived views.
-  next_minimal_action: Use the root program-state authority, evidence ledger, and
-    integrity gate in the next routine PR and record that first closed-loop proof
-    in the ledger.
+    now that formal runtime priority and research implementation priority are explicitly
+    decoupled.
+  - Whether the operationally selected and synthetically robustness-checked MVS-aligned
+    compact candidate will still pass held-out replay validators once implemented
+    against the formal OpenEmotion path.
+  - Whether the active-inference challenger will outperform MVS strongly enough to
+    trigger an early build-first switch once both are judged on the same replay gate.
+  - Whether WP17/MVP22 still deserves reintegration after replay-validated candidate
+    results arrive.
+  next_minimal_action: Implement only the smallest MVS-aligned compact slice needed
+    to exercise the replay validator, keep it shadow/proposal-only, keep active-inference
+    as the only challenger, and leave WP17/MVP22 parked until the selection gate is
+    resolved.
   last_verified_commit: 78e90a2
   last_verified_at: '2026-04-07T23:17:51-05:00'
   status_owner: EgoCore
-  status_note: Overall repo/integration authority closeout is complete, but stronger
-    live-telegram subject claims remain blocked by residual host-only misses.
+  status_note: Formal runtime mainline remains unique and stable; the current top-priority
+    implementation lane is the self-awareness candidate program, while stronger live
+    claims remain blocked by residual host-only subject misses and the lack of replay-validated
+    candidate proof.
   claim_thresholds:
     mainline_claim_requires: E4
     enabled_claim_requires: E4
@@ -73,6 +114,37 @@ workstreams:
   enabled: true
   summary: Root-level program state, derived views, evidence ledger, templates, and
     integrity gates are being wired into the repo governance path.
+- id: codex_exploration_cycles
+  owner: EgoCore
+  status: integrating
+  evidence_level: E3
+  verification_level: V2
+  mainline_connected: false
+  enabled: true
+  summary: Exploration-mode long-run tasks now have explicit reformulation, hypothesis,
+    experiment, logging, and candidate-vs-proof discipline.
+- id: ai_self_awareness_research
+  owner: EgoCore + OpenEmotion
+  status: synthetic_candidate_found
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: true
+  summary: This is the current top-priority implementation lane. Synthetic batteries
+    now keep `MVS-aligned compact` as the sole build-first candidate, `active-inference
+    self-model` as the sole challenger, and older H1 / trial / comparator lines as
+    supporting evidence only, while all claims remain at simulation-only scope until
+    replay-gated formal-prototype results exist.
+- id: wp17_bounded_continuity_lane
+  owner: EgoCore + OpenEmotion
+  status: parked
+  evidence_level: E1
+  verification_level: V1
+  mainline_connected: false
+  enabled: true
+  summary: WP17/MVP22 remains an authority-frozen bounded continuity lane with task-package
+    readiness, but it is parked behind the current research-first candidate program
+    and is not the default highest-priority implementation track.
 - id: provider_runtime_openemotion_e2e_gate
   owner: EgoCore
   status: pass
