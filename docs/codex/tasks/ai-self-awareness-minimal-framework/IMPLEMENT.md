@@ -6,6 +6,7 @@
 - `PLAN.md`
 - `EXPLORE.md`
 - `STATUS.md`
+- `CONTROLLED_INTEGRATION_PLAN.md`
 - `docs/PROGRAM_STATE_UNIFIED.yaml`
 - `artifacts/evidence_ledger/index.yaml`
 
@@ -14,6 +15,7 @@
 - 先读 `SPEC.md -> PLAN.md -> IMPLEMENT.md -> STATUS.md`
 - 本任务当前是 `research-first`，但不再是纯文档探索；每次只推进 `STATUS.md` 中的 `Current milestone`
 - 若当前 milestone 属于 exploration，必须先读并更新 `EXPLORE.md`
+- 若当前 milestone 已进入 `Milestone 18` 及之后的 controlled integration / bridge 阶段，先读 `CONTROLLED_INTEGRATION_PLAN.md`
 - 若当前 milestone 属于 formal prototype / replay gate，实现必须保持 `shadow-only + proposal-only`，不得改 formal runtime authority
 - Inventor 与 Scientist 的输出统一落在 `EXPLORE.md`，不新建并行日志系统
 

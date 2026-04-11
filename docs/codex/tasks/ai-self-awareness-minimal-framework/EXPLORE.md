@@ -921,3 +921,56 @@
   - 继续保留 impossible ceiling gate 让 replay winner 假失败
 - decision for next step:
   - 进入 `Milestone 17: Controlled Integration Planning`
+
+### Cycle 18
+
+- question:
+  - replay-validated winner 在不新增 authority path 的前提下，究竟能以什么 bounded surface 进入下一轮受控验证
+- framing used:
+  - `freeze contract before any runtime-shadow expansion`
+- experiment:
+  - 审计当前 EgoCore decision injection 面与 OpenEmotion canonical trace surface
+  - 明确哪些字段已经是宿主真实消费面，哪些仍应保留为 OpenEmotion private state
+  - 冻结 first bridge target、authority drift audit、rollback rule 与下一里程碑实施顺序
+- command / script / artifact:
+  - `rg -n "policy_hint|response_tendency|trace_payload" EgoCore/app/runtime_v2 OpenEmotion/openemotion/proto_self OpenEmotion/openemotion/proto_self_v2`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/CONTROLLED_INTEGRATION_PLAN.md`
+- observed result:
+  - 当前宿主真实消费面已经存在，不需要为 winner 发明新 public API：
+    - `policy_hint`
+    - `response_tendency`
+    - `trace_payload`
+  - active-inference 的新增 action-map 状态：
+    - `source_confidence_by_action`
+    - `agency_confidence_by_action`
+    - `uncertainty_by_action`
+    - `calibration_memory_by_action`
+    - `temporal_repair_weight_by_action`
+    继续保留为 OpenEmotion private state
+  - canonical trace surface 已足够承接后续 bridge：
+    - `predicted_outcome`
+    - `actual_outcome`
+    - `adjustment_applied`
+    - `next_guard`
+    - `repair_closure`
+  - 第一站 bridge 最优选择不是 live Telegram / dashboard，而是：
+    - `replayed conversations / repo-authored conversation slices`
+  - authority drift planning freeze 已明确：
+    - `tool/reply/transport authority = none`
+    - `parallel_runtime_lane = false`
+    - `second_authority_source = false`
+- what it proves:
+  - 当前 winner 已可以被收成一个 bounded、host-inert、proposal-only 的 controlled integration plan
+  - 下一步 bridge 不需要新增 runtime authority 或第二 scorer ontology
+- what it does not prove:
+  - replayed conversation transfer 已通过
+  - runtime efficacy
+  - live user benefit
+  - formal runtime enablement
+- what path is ruled out:
+  - 先做 runtime shadow 扩张再回头补 contract
+  - 让 EgoCore 直接读取 candidate-private active-inference action maps
+  - 新建第二套 replay scorer 或 parallel runtime lane
+- decision for next step:
+  - 关闭 `Milestone 17`
+  - 进入 `Milestone 18: Controlled Conversation Replay Bridge`

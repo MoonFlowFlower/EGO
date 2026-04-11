@@ -698,10 +698,47 @@
 - rollback note:
   - 若 planning 试图偷渡 runtime authority 或重开第三条候选线，立即回退
 
+### Milestone 18: Controlled Conversation Replay Bridge
+
+- type: implementation
+- question:
+  - 在不新增 authority path 与 scorer ontology 的前提下，如何把 repo-authored conversation slices 映射到 canonical replay gate
+- current framing:
+  - `Milestone 17` 已冻结 bounded host contract
+  - 当前只允许 winner 通过 `policy_hint / response_tendency / trace_payload` 进入受控验证
+- hypotheses:
+  - conversation-turn normalization 到 `KernelEvent + external_result + state snapshot` 已足够支撑 bridge
+  - 现有 canonical scorer 已足够对 replayed conversations 打分，不需要第二套 ontology
+- scope:
+  - 冻结 conversation-slice manifest
+  - 实现 controlled replay bridge runner
+  - 输出 baseline A / active-inference winner / optional baseline B lower-bound 结果表
+  - 输出 authority drift audit 与 trace contract check
+- experiments planned:
+  - repo-authored conversation manifest build
+  - conversation-to-replay normalization
+  - canonical scorer rerun on replayed conversations
+- kill criteria:
+  - 若 bridge 需要新增 runtime public API、candidate-private host API、parallel runtime lane、或第二 scorer ontology，则当前 framing 失败
+- files / areas likely touched:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
+  - `scripts/codex/*`
+  - `artifacts/self_awareness_research/*`
+  - 与 canonical replay contract 直接相关的最小测试
+- acceptance:
+  - 明确回答：
+    - replayed conversations 上 winner 是否继续通过 frozen replay gate
+    - authority drift 是否仍为 `0`
+    - trace contract 是否仍可 replay
+- validation:
+  - `python3 scripts/codex/verify_repo.py --mode fast`
+- rollback note:
+  - 若实现引入新的 authority surface 或第二 scorer 语义，立即回退到 `Milestone 17` 的 planning freeze
+
 ## Progress
 
-- current_status: `active_inference_replay_gate_passed_shadow_only`
-- current_milestone: `Milestone 17: Controlled Integration Planning`
+- current_status: `active_inference_controlled_integration_plan_frozen`
+- current_milestone: `Milestone 18: Controlled Conversation Replay Bridge`
 - milestone_state: `pending`
 - candidate_vs_proof: `active_inference_replay_gate_passed_shadow_only`
 
@@ -838,6 +875,23 @@
     - repo-level state upgrade
 - 2026-04-11: 进入 `Milestone 15`：
   - 在 formal OpenEmotion path 上实现最小 `MVS-aligned compact` shadow-only replay slice
+- 2026-04-11: `Milestone 17` 已完成 planning freeze：
+  - 新增 `CONTROLLED_INTEGRATION_PLAN.md`
+  - 当前 winner 的 host-consumable surface 固定为：
+    - `policy_hint`
+    - `response_tendency`
+    - `trace_payload`
+  - `source_confidence_by_action / agency_confidence_by_action / uncertainty_by_action / calibration_memory_by_action / temporal_repair_weight_by_action` 全部继续保留为 OpenEmotion private state
+  - authority drift audit 已冻结为：
+    - `tool/reply/transport authority = none`
+    - `parallel_runtime_lane = false`
+    - `second_authority_source = false`
+  - 第一站 bridge 已固定为：
+    - `replayed conversations / repo-authored conversation slices`
+    - 不提前做 runtime shadow 扩张
+  - baseline B 后续只保留下界对照角色，不再参与 build-first selection
+  - 下一实际编码里程碑固定为：
+    - `Milestone 18: Controlled Conversation Replay Bridge`
   - 冻结 canonical replay corpus manifest、raw validator、scored gate
   - 允许 corrected scorer 修复 v2 trace surface / legacy trace contract mismatch，但不允许改 frozen threshold
 - 2026-04-11: `Milestone 15` 已完成：
@@ -883,7 +937,8 @@
     - non-saturated target 仍要求 `+0.05`
     - saturated Baseline-A target 改为 `>= -0.02` non-regression
   - 当前 selection decision = `switch_to_active_inference`
-  - 下一步进入 `Milestone 17: Controlled Integration Planning`
+  - 当前已完成 `Milestone 17: Controlled Integration Planning`
+  - 下一步进入 `Milestone 18: Controlled Conversation Replay Bridge`
 
 ## Surprises / discoveries
 
@@ -987,7 +1042,7 @@
   - 把 `MVS-aligned compact` 直接写成 literature-informed 最终推荐方法
   - 把 `operational self-loop core` 直接写成当前 build-first candidate
 - 下一步最小闭环动作：
-  - `Trial-1` 作为子机制 claim 已正式收口
-  - 新开 `Trial-2 public-driver-first spec`
-  - 后续 build-first candidate 不再先救 `counterfactual_writeback`
-  - 下一轮只对准当前 MVS 的真实 public causal driver
+  - 实现 `Milestone 18: Controlled Conversation Replay Bridge`
+  - 先冻结 repo-authored conversation manifest
+  - 只把 conversation turns 归一化到 canonical replay gate
+  - 不新增 runtime authority、不新增 scorer ontology、不过早进入 controlled observation

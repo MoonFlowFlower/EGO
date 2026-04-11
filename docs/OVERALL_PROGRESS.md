@@ -45,12 +45,12 @@
 | repo 总体 phase | `repo_authority_cleanup_closeout` | repo 级权威收口完成，当前在治理与路线优先级收紧期 |
 | formal runtime mainline | `single + stable` | 仍是唯一正式执行链，不随研究候选改变 |
 | 当前最高优先级 implementation lane | `ai_self_awareness_research` | 当前 repo 默认先推进 research-first 候选实现线 |
-| 当前唯一 build-first candidate | `active-inference self-model` | 已通过与 `MVS` 相同的 held-out replay gate，但仍只到 shadow-only 研究证据 |
+| 当前唯一 build-first candidate | `active-inference self-model` | 已通过与 `MVS` 相同的 held-out replay gate，并已冻结 bounded controlled integration plan，但仍只到 shadow-only 研究证据 |
 | 当前 challenger | `none frozen` | `MVS-aligned compact` 已降为 closed evidence，不继续占用主实现资源 |
 | `WP17 / MVP22` 当前状态 | `parked bounded lane` | 保留 authority freeze / task package，但不再是默认最高优先级 implementation track |
 | 当前最高证据 | `E5 / V5` | 这是 controlled capability axis 上限，不是 research lane 已通过 replay validator |
 | research lane 当前证据 | `E3 / V3` | 已有 replay-validated shadow-only winner，但还不是 runtime proof |
-| 距离当前工程目标剩余阶段 | `>= 3（best-case）` | 指 `replay-validated self-awareness proxy -> controlled integration/observation closeout`，不是“真正主观体验” |
+| 距离当前工程目标剩余阶段 | `>= 3（best-case）` | 指 `controlled replay bridge -> controlled observation -> selection closeout`，不是“真正主观体验” |
 
 ## Formal Runtime Lane
 
@@ -119,23 +119,23 @@ formal runtime roadmap 当前的 endpoint 仍然是：
   - 当前没有可信的有限阶段数，不能写成“还剩 N 个阶段就会实现”
 - 对当前正式工程目标 `replay-validated self-awareness proxy`：
   - 从现在起 `best-case >= 3` 个阶段
-  - 如果 `active-inference self-model` 在 controlled integration / observation 阶段失真，阶段数会重新变成 open-ended
+  - 如果 `active-inference self-model` 在 controlled replay / controlled observation 阶段失真，阶段数会重新变成 open-ended
 
 这 `3` 个阶段分别是：
 
-1. `Stage 2: Controlled Integration Planning`
-   - 如果 Stage 1 通过，冻结 bounded host contract、trace contract、proposal-only integration plan
-   - 明确什么可以进入 host-consumable surface，什么仍然不能获得行为 authority
-2. `Stage 3: Controlled Conversation Replay + Observation`
-   - 从 held-out manual replay 推进到 replayed conversation / controlled observation
+1. `Stage 3: Controlled Conversation Replay Bridge`
+   - 把 repo-authored conversation slices 归一化到 canonical replay gate
+   - 先证明 winner 在更接近真实 conversation flow 的桥接面上不失真
+2. `Stage 4: Controlled Observation`
+   - 只有 replayed conversations 继续过线后，才规划更接近 formal runtime 的 controlled observation
    - 拿到比当前 `E3/V3` 更强的非 synthetic 受控证据
-3. `Stage 4: Selection Closeout and Runtime Priority Reset`
+3. `Stage 5: Selection Closeout and Runtime Priority Reset`
    - 决定 active-inference 是否成为长期 build-first 路线
    - 决定 `WP17 / MVP22` 是 reintegration、长期 parked，还是归档
 
 最重要的边界是：
 
-- 这 `4` 个阶段对应的是“工程上更强的 self-awareness proxy”
+- 这 `3` 个阶段对应的是“工程上更强的 self-awareness proxy”
 - 不对应“证明真正主观体验”
 - 所以阶段数是工程路线图，不是意识本体论结论
 
@@ -143,32 +143,37 @@ formal runtime roadmap 当前的 endpoint 仍然是：
 
 当前下一个阶段已经固定为：
 
-- `Stage 2 / Milestone 17: Controlled Integration Planning`
+- `Stage 3 / Milestone 18: Controlled Conversation Replay Bridge`
 
 这个阶段要做的事只有一件：
 
-- 把已经通过同一 replay gate 的 `active-inference self-model` 收成一个 bounded、shadow-only、host-inert integration plan，准备进入 controlled replay / observation
+- 把已经冻结 contract 的 `active-inference self-model` 接到 repo-authored conversation slices 上，继续复用 canonical replay gate，而不扩张 runtime authority
 
 ## 下一个阶段怎么做
 
 执行顺序应固定为：
 
-1. 冻结 bounded integration contract
-   - 只允许 candidate 继续影响：
+1. 冻结 repo-authored conversation manifest
+   - family 继续覆盖：
+     - `identity_continuity`
+     - `decision_conflict`
+     - `failure_repair_retry`
+   - 保持 `>= 30%` 带 `external_result`
+2. 实现 conversation-to-replay normalization
+   - 只归一化到既有：
+     - `KernelEvent`
+     - `external_result`
+     - `state snapshot`
+   - 不发明第二套 scorer ontology
+3. 保持 bounded host contract 不变
+   - 允许宿主继续消费的只有：
      - `policy_hint`
      - `response_tendency`
      - `trace_payload`
-   - 不允许进入 direct tool / direct reply / transport authority
-2. 冻结 ceiling-aware replay gate 规则
-   - 对 non-saturated targets 继续要求 `+0.05`
-   - 对已被 Baseline A 打满的 targets，只要求 non-regression
-   - 不再保留不可能的 “ceiling 还要再 +0.05” 规则
-3. 设计 controlled replay / observation bridge
-   - 明确从 held-out replay 走到 replayed conversation / controlled observation 的最小桥接面
-   - 保持 host-inert、proposal-only
-4. 用 integration plan 决定下一轮证据升级
-   - 若 plan 可验证，进入 controlled observation
-   - 若 plan 只能靠新 authority path 才成立，就停止并重构 framing
+   - 不允许 direct tool / direct reply / transport authority
+4. 用 controlled replay bridge 决定是否进入下一轮证据升级
+   - 若 replayed conversations 继续过线，再规划 controlled observation
+   - 若 bridge 只能靠新 authority path 或新 scorer 才成立，就停止并重构 framing
 
 ## 当前唯一决策门
 
@@ -178,7 +183,7 @@ formal runtime roadmap 当前的 endpoint 仍然是：
 2. `active-inference self-model` formal shadow slice 已在同一 gate 下通过
 3. 当前 selection gate 已解决：`active-inference self-model` 是 replay-validated shadow-only winner
 4. 下一步唯一决策门不再是“谁赢 replay”
-5. 下一步唯一决策门变成：这个 winner 能否在不新增 authority path 的前提下进入 controlled integration planning
+5. 下一步唯一决策门变成：这个 winner 能否在 repo-authored conversation slices 上继续过线，而且不新增 authority path
 
 ## 不再竞争主实现线的 supporting lines
 
@@ -196,7 +201,7 @@ formal runtime roadmap 当前的 endpoint 仍然是：
 当前真正 blocker 已经不是“WP17 何时继续实现”，而是：
 
 - 虽然已经有 replay-validated passing build-first candidate，但它仍然只有 shadow-only 证据
-- 还没有 controlled integration plan
+- controlled integration plan 虽已冻结，但 bridge 还没实现
 - 还没有 replayed conversation / controlled observation 级别证据
 
 formal runtime 相关的并行 blocker 仍然存在，但当前不是 repo 默认第一优先级：
