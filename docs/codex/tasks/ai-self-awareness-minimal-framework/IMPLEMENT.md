@@ -8,6 +8,7 @@
 - `STATUS.md`
 - `CONTROLLED_INTEGRATION_PLAN.md`
 - `CONTROLLED_OBSERVATION_PLAN.md`
+- `SELECTION_CLOSEOUT.md`
 - `docs/PROGRAM_STATE_UNIFIED.yaml`
 - `artifacts/evidence_ledger/index.yaml`
 
@@ -18,6 +19,7 @@
 - 若当前 milestone 属于 exploration，必须先读并更新 `EXPLORE.md`
 - 若当前 milestone 已进入 `Milestone 18` 及之后的 controlled integration / bridge 阶段，先读 `CONTROLLED_INTEGRATION_PLAN.md`
 - 若当前 milestone 已进入 `Milestone 19` 及之后的 controlled observation planning / implementation 阶段，再读 `CONTROLLED_OBSERVATION_PLAN.md`
+- 若当前 milestone 已进入 `Milestone 21` 或之后的 selection closeout / post-closeout 阶段，再读 `SELECTION_CLOSEOUT.md`
 - 若当前 milestone 属于 formal prototype / replay gate，实现必须保持 `shadow-only + proposal-only`，不得改 formal runtime authority
 - Inventor 与 Scientist 的输出统一落在 `EXPLORE.md`，不新建并行日志系统
 

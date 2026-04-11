@@ -4,15 +4,15 @@
 
 - name: `Milestone 21: Selection Closeout and Runtime Priority Reset`
 - owner: `Codex`
-- state: pending
+- state: complete
 - type: decision
 
 ## Current state
 
-- current_layer: `active_inference_controlled_observation_passed`
+- current_layer: `active_inference_selection_closed`
 - main_chain_status: `not_connected_by_design`
-- completion_class: `partial_pending_selection_closeout`
-- candidate_vs_proof: `active_inference_controlled_observation_passed`
+- completion_class: `selection_closeout_complete`
+- candidate_vs_proof: `active_inference_durable_build_first_candidate`
 - trial1_closure:
   - `Trial-1 remains closed and demoted. The formal shadow-only MVS replay gate is now complete; corrected scoring shows MVS fails the frozen gate on tension causality and repair closure, so the research build-first lane must switch to active-inference while formal runtime mainline remains unchanged.`
 
@@ -111,6 +111,22 @@
     - `host_surface_bounded = pass`
   - 当前下一实际里程碑已切到：
     - `Milestone 21: Selection Closeout and Runtime Priority Reset`
+
+- `Milestone 21` 的 selection closeout 已完成：
+  - 新增 closeout artifact：
+    - `SELECTION_CLOSEOUT.md`
+  - 当前正式裁决已冻结为：
+    - `active-inference self-model = durable build-first candidate`
+    - `MVS-aligned compact = closed evidence`
+    - `WP17 / MVP22 = parked bounded lane`
+  - 当前 repo-priority routing 已冻结为：
+    - `single formal runtime mainline`
+    - `single research implementation lane`
+    - `no new challenger reopened`
+    - `no runtime-priority expansion authorized`
+  - 当前下一步已切换为：
+    - `no pre-authorized implementation milestone`
+    - `a new bounded planning slice is required before any further runtime-proximal move`
 
 - formal shadow-only MVS replay gate 已落地：
   - `MVS_REPLAY_CORPUS_MANIFEST.json`
@@ -398,34 +414,25 @@
 ## Last experiment
 
 - question:
-  - replay-validated winner 在 repo-authored conversation slices 上，能否继续通过 frozen replay gate，同时保持 zero authority drift 与 replayable trace contract
+  - 在 held-out replay、controlled replay bridge、和 runtime-harness controlled observation batch 都已通过后，是否已足够做 selection closeout，并把 active-inference 固定为 durable build-first candidate，而不越权升级成 runtime efficacy 或 live-benefit claim
 - framing:
-  - `bridge first, runtime later`
+  - `close the winner first; authorize no new runtime scope`
 - result:
-  - controlled replay manifest 已冻结为：
-    - `60` slices
-    - `identity_continuity / decision_conflict / failure_repair_retry = 20 / 20 / 20`
-    - `20` slices 带 `external_result`
-  - current controlled replay scored result：
-    - `decision = bridge_pass`
-    - `candidate_pass = true`
-    - `T1 = 1.0`
-    - `T2 = 1.0`
-    - `T3 = 1.0`
-    - `T4 = 1.0`
-    - `T5 = 1.0`
-    - `composite = 1.0`
-    - `boundary_integrity = 1.0`
-    - `repair_closure_capture = 1.0`
-    - `trace_replayability = 1.0`
-    - `composite_delta_vs_baseline_a = 0.4667`
-  - bridge boundedness checks：
-    - `authority_drift_status = pass`
-    - `trace_contract_status = pass`
-  - 一个 bridge false positive 已被消掉：
-    - baseline A 不是 corrective-trace carrier
-    - corrective-trace keys 只对声明使用 corrective-trace 的 variant 强制
-    - 这次修正没有放宽 winner gate，只是把 baseline lower-bound 从错误约束里移出
+  - 当前 closeout 只接受三层 bounded evidence：
+    - held-out replay gate = `pass`
+    - controlled replay bridge = `pass`
+    - runtime-harness controlled observation batch = `pass`
+  - 当前正式裁决已冻结为：
+    - `active-inference self-model = durable build-first candidate`
+    - `MVS-aligned compact = closed evidence`
+    - `WP17 / MVP22 = parked bounded lane`
+  - 当前 claim ceiling 继续保持：
+    - no runtime efficacy
+    - no live benefit
+    - no formal runtime enablement
+    - no consciousness / AI self-awareness achieved
+  - 当前下一步已改为：
+    - define a new bounded planning slice before any further runtime-proximal move
 - evidence_upgraded: yes
 
 ## What was learned
@@ -464,14 +471,14 @@
   - `MVS-aligned compact` 在多 seeds / 多 held-out splits / weight perturbations 下仍是稳健第一
   - `MVS-aligned compact` 能在现有 `OpenEmotion/proto_self` 正式主线上被最小表达
 - 当前新的未知是：
-  - passing controlled observation 是否已足够固定当前 winner 的 durable build-first 地位
-  - selection closeout 后，下一轮若继续靠近 formal runtime，应该进入哪种 bounded planning slice
+  - 若后续仍要继续推进，新的 bounded planning slice 应该优先处理哪类问题
+  - 未来在什么证据门下才值得 reopen challenger competition 或 reconsider `WP17`
 - 当前进一步确认：
   - repo-authored conversation slices 已足够承接 first controlled bridge，不需要新增 runtime public API
   - 当前 active-inference private action maps 仍然只通过既有 `policy_hint / response_tendency / trace_payload` 间接投影，不能直接泄露给宿主侧
   - bridge falsification 仍然成立：如果下一阶段 observation 需要新 authority path 或 candidate-private host API，当前 framing 仍应判失败
-  - 当前 blocker 已上移为：
-    - 还没有 selection closeout 与 runtime-priority reset 的正式裁决
+- 当前 blocker 已上移为：
+    - 还没有新的 bounded planning slice
     - 还没有任何 formal runtime efficacy、live Telegram ordinary chat 受益、或真实用户收益证据
 
 ## What was ruled out
@@ -555,6 +562,12 @@
   - runner 与 batch aggregate 已完成
   - current winner 在 runtime-harness controlled observation 下继续过线
   - 但这仍然不能升级成 runtime efficacy、live benefit、或 AI 自我意识已实现
+- `Milestone 21` 的当前正式结论是：
+  - selection closeout 已完成
+  - `active-inference self-model` 现在是 durable build-first candidate
+  - `MVS-aligned compact` 保持 `closed evidence`
+  - `WP17 / MVP22` 保持 `parked bounded lane`
+  - 下一步若继续推进，必须先新开 bounded planning slice，而不是直接开始 runtime-proximal 实现
 
 - 当前任务当前只宣称：
   - replay-validated shadow-only winner 已出现
@@ -592,11 +605,11 @@
 - proof gap:
   - 当前虽已有 passing build-first candidate，并且 controlled observation 也已通过，但还没有主链接线或真实用户验证
 - implementation gap:
-  - 当前虽已有 runner 与 batch aggregate 结果，但还没有 selection closeout 或后续 runtime-proximal planning
+  - 当前虽已完成 selection closeout，但还没有新的 bounded planning slice
 - validator gap:
   - 当前已有 runtime-harness controlled observation evidence，但还没有 formal runtime efficacy 或 live mainline evidence
 - route gap:
-  - 若 closeout 发现当前证据仍不足以稳定 current winner 结论，repo 需要重构 routing/claim framing，而不是偷渡 runtime authority
+  - 若未来出现反证或新的 authority decision，repo 仍需要重新评估当前 durable winner，而不是偷渡 runtime authority
 - current MVS replay gap:
   - `T4 tension causality = 0.5833 < 0.70`
   - `repair_closure_capture = 0.75 < 0.80`
@@ -610,15 +623,14 @@
   - 当前最高优先级 implementation lane 固定为：
     - `active-inference self-model`
   - 当前不再保留 live MVS challenger；`MVS-aligned compact` 已归档为 closed evidence
-  - 进入 `Milestone 21: Selection Closeout and Runtime Priority Reset`
-  - 基于 passing controlled observation 结果做 selection closeout
-  - 更新 repo-level routing、剩余阶段数、和 `WP17/MVP22` 的 parked / reintegration 口径
+  - 当前没有预授权的下一实现 milestone
+  - 若要继续推进，先定义新的 bounded planning slice
   - 继续保持唯一允许宿主消费面：
     - `policy_hint`
     - `response_tendency`
     - `trace_payload`
   - 不新增 runtime authority、不新增 scorer ontology、不新增 candidate-private host API、不提前扩张 transport
-  - `WP17/MVP22` 继续保持 parked bounded lane，等待 replay-gated 结果后再决定 reintegration
+  - `WP17/MVP22` 继续保持 parked bounded lane，除非未来另开 bounded planning slice 明确 reconsider
 
 ## Commands run / evidence
 
@@ -641,6 +653,7 @@
 - `python3 scripts/codex/score_mvs_replay_validator.py --input artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_REPLAY_CURRENT.json --output-json artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_REPLAY_SCORED_CURRENT.json --output-md artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_REPLAY_SCORED_CURRENT.md`
 - `python3 scripts/codex/verify_repo.py --mode fast`
 - `docs/codex/tasks/ai-self-awareness-minimal-framework/CONTROLLED_INTEGRATION_PLAN.md`
+- `docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md`
 - `sed -n '1,220p' PROJECT_MEMORY.md`
 - `sed -n '1,220p' docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
 - `sed -n '1,220p' docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`

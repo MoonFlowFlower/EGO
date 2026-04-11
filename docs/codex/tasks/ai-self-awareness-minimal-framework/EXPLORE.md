@@ -1151,3 +1151,58 @@
 - decision for next step:
   - 关闭 `Milestone 20`
   - 进入 `Milestone 21: Selection Closeout and Runtime Priority Reset`
+
+### Cycle 22
+
+- question:
+  - 在 held-out replay、controlled replay bridge、和 runtime-harness controlled observation batch 都已通过后，当前 repo 是否已足够做 selection closeout，并把 `active-inference self-model` 固定为 durable build-first candidate，而不越权升级成 runtime efficacy 或 live-benefit claim
+- framing used:
+  - `close the winner first; authorize no new runtime scope`
+- experiment:
+  - 审计三层 bounded evidence 是否已经覆盖：
+    - replay gate
+    - controlled replay bridge
+    - runtime-harness controlled observation batch
+  - 对照当前 repo routing / claim ceiling / parked `WP17` 边界
+  - 决定当前能否正式关闭 selection 竞争，而不同时预授权下一层 runtime-proximal planning
+- command / script / artifact:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md`
+  - `artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_REPLAY_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_OBSERVATION_SCORED_CURRENT.json`
+  - `docs/PROGRAM_STATE_UNIFIED.yaml`
+  - `docs/OVERALL_PROGRESS.md`
+- observed result:
+  - 三层 bounded evidence 已经同时成立：
+    - held-out replay gate = `pass`
+    - controlled replay bridge = `pass`
+    - runtime-harness controlled observation batch = `pass`
+  - 当前 closeout 已足够冻结：
+    - `active-inference self-model = durable build-first candidate`
+    - `MVS-aligned compact = closed evidence`
+    - `WP17 / MVP22 = parked bounded lane`
+  - 当前仍然不允许：
+    - runtime efficacy claim
+    - live Telegram ordinary chat benefit claim
+    - formal runtime enablement claim
+    - consciousness / AI self-awareness achieved claim
+  - 当前也不需要：
+    - reopen challenger competition
+    - 直接预授权下一层 runtime-proximal planning
+- what it proves:
+  - current winner 现在可以从“passing controlled observation result”正式收口为 durable build-first candidate
+  - repo-priority routing 现在可以在不扩 authority 的前提下正式关闭当前 selection
+- what it does not prove:
+  - formal runtime efficacy
+  - live Telegram transfer
+  - real user benefit
+  - consciousness-like properties
+  - 下一层 bounded planning slice 已经自动被授权
+- what path is ruled out:
+  - 借 selection closeout 偷渡 runtime-proximal implementation
+  - 把 `MVS` 继续保留成 live challenger
+  - 现在就把 `WP17` 拉回默认最高优先级 implementation track
+- decision for next step:
+  - 关闭 `Milestone 21`
+  - 当前 research lane 的 selection 已收口
+  - 若还要继续推进，先新开 bounded planning slice，而不是直接开下一实现 milestone

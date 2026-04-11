@@ -859,10 +859,10 @@
 
 ## Progress
 
-- current_status: `active_inference_controlled_observation_passed`
+- current_status: `active_inference_selection_closed`
 - current_milestone: `Milestone 21: Selection Closeout and Runtime Priority Reset`
-- milestone_state: `pending`
-- candidate_vs_proof: `active_inference_controlled_observation_passed`
+- milestone_state: `complete`
+- candidate_vs_proof: `active_inference_durable_build_first_candidate`
 
 ## Decision log
 
@@ -898,6 +898,11 @@
 - 2026-04-09: 根据当前用户约束，进入 `Milestone 10`：
   - 不实现 full prototype
   - 只做 Trial-1 replay corpus manifest、leakage guard、runner contract、shadow-only minimal MVS slice
+- 2026-04-11: `Milestone 21` 已完成 selection closeout：
+  - `active-inference self-model` 正式固定为当前 durable build-first candidate
+  - `MVS-aligned compact` 继续保持 `closed evidence`
+  - `WP17 / MVP22` 继续保持 `parked bounded lane`
+  - 下一步若继续推进，只能先新开 bounded planning slice，而不是直接预授权 runtime-proximal 实现
   - repo-level program state 不再升级，除非 replay thresholds 真正通过
 - 2026-04-09: 根据当前用户约束，进入 `Milestone 11`：
   - 不扩 replay suite
