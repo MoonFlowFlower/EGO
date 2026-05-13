@@ -1,0 +1,1 @@
+User event: The intended bounded step failed during execution because the chosen route did not work. The agent should not keep assuming the same route is viable; it should propose a retry or a different tool path.
