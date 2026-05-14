@@ -2,7 +2,7 @@
 
 ## Current Milestone
 
-`phase2a_archive_reconciliation`
+`phase2b_dirty_worktree_triage`
 
 ## Status
 
@@ -10,12 +10,12 @@
 
 ## Current Slice
 
-This slice reconciles the already half-applied archive migration for two superseded docs and historical cleanup bundles `P0` through `P7`.
+This slice classifies the remaining large dirty worktree into cleanup scope, runtime scope, formal authority/evidence scope, operational exhaust, generated/mirror surfaces, and unknown untracked paths.
 
 ## Does Not Change
 
 - No runtime behavior.
-- No new archive class beyond the already admitted / half-applied moved slice.
+- No new archive move or archive class.
 - No split-repo migration.
 - No `PROGRAM_STATE_UNIFIED.yaml` update.
 - No formal evidence ledger update.
@@ -30,6 +30,8 @@ This slice reconciles the already half-applied archive migration for two superse
 - Archived docs and `P0` through `P7` cleanup bundles remain findable through `docs/archive/ARCHIVE_INDEX.yaml`.
 - `verify_archive_reconciliation.py` passes and is included in `verify_repo.py --mode fast`.
 - Current authority paths and the active default lane remain unchanged.
+- `scripts/codex/audit_worktree_noise.py --json` classifies the remaining dirty surface.
+- `WORKTREE_TRIAGE.md` records `authority_dirty`, `formal_runtime_dirty`, `operational_exhaust`, and the cleanup return gate.
 
 ## Verification
 
@@ -52,6 +54,20 @@ This slice reconciles the already half-applied archive migration for two superse
 - `python3 scripts/codex/verify_mainline_clarity.py` passed.
 - `python3 scripts/codex/verify_repo.py --mode fast` passed with the archive reconciliation gate included.
 - Scoped whitespace check for the archive reconciliation surface passed.
+
+## Phase 2B Verification Target
+
+- `python3 -m py_compile scripts/codex/audit_worktree_noise.py scripts/codex/verify_mainline_clarity.py` passed.
+- `python3 scripts/codex/audit_worktree_noise.py --json` passed and classified `7319` dirty paths.
+- `python3 scripts/codex/verify_mainline_clarity.py` passed with the worktree audit gate.
+- `python3 scripts/codex/verify_route_convergence.py` passed with exactly one active default lane.
+- `python3 scripts/codex/verify_archive_reconciliation.py` passed.
+- `python3 scripts/codex/verify_repo.py --mode fast` passed; OpenEmotion live health smoke remained skipped because the local health endpoint was unavailable.
+- `git diff --check -- docs/codex/tasks/repo-mainline-clarity-v1 scripts/codex` passed.
+
+## Phase 2B Return Gate
+
+After Phase 2B, default next action is to stop cleanup and return to `subject_system_v1_governed_proactivity` fresh live recheck unless a later explicit small cleanup slice admits one path class with its own verifier.
 
 ## Known Limitation
 

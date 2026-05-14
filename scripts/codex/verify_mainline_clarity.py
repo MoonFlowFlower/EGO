@@ -18,6 +18,8 @@ from route_convergence_common import (
 ROOT = Path(__file__).resolve().parents[2]
 README_PATH = ROOT / "README.md"
 QUICKSTART_PATH = ROOT / "docs" / "MAINLINE_QUICKSTART.md"
+WORKTREE_TRIAGE_PATH = ROOT / "docs" / "codex" / "tasks" / "repo-mainline-clarity-v1" / "WORKTREE_TRIAGE.md"
+AUDIT_WORKTREE_NOISE_PATH = ROOT / "scripts" / "codex" / "audit_worktree_noise.py"
 
 
 REQUIRED_README_REFS = (
@@ -36,6 +38,35 @@ REQUIRED_QUICKSTART_REFS = (
     "not a second runtime",
     "docs/PROGRAM_STATE_UNIFIED.yaml",
     "docs/codex/tasks/TASK_LANE_INDEX.md",
+)
+
+REQUIRED_TRIAGE_REFS = (
+    "authority_dirty",
+    "formal_runtime_dirty",
+    "operational_exhaust",
+    "No runtime behavior changes",
+    "Return gate",
+    "subject_system_v1_governed_proactivity",
+)
+
+FORBIDDEN_CLEANUP_STAGE_PATHS = (
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "artifacts/evidence_ledger/index.yaml",
+)
+
+FORBIDDEN_CLEANUP_STAGE_PREFIXES = (
+    "temp/",
+    "logs/",
+    "EgoCore/logs/",
+    "OpenEmotion/logs/",
+    ".pytest_cache/",
+)
+
+FORBIDDEN_CLEANUP_STAGE_SUFFIXES = (
+    ".jsonl",
+    ".log",
+    ".pyc",
+    ".pyo",
 )
 
 
@@ -57,9 +88,15 @@ def _matches_prefix(path: str, prefix: str) -> bool:
 
 
 def _check_staged_operational_exhaust(errors: list[str]) -> None:
-    staged_added = _git_lines(["diff", "--cached", "--name-only", "--diff-filter=A"])
+    staged_added = _git_lines(["diff", "--cached", "--name-only"])
     blocked: list[str] = []
     for path in staged_added:
+        if path in FORBIDDEN_CLEANUP_STAGE_PATHS:
+            blocked.append(f"{path} (authority_or_formal_evidence_do_not_stage_in_cleanup)")
+            continue
+        if path.startswith(FORBIDDEN_CLEANUP_STAGE_PREFIXES) or path.endswith(FORBIDDEN_CLEANUP_STAGE_SUFFIXES):
+            blocked.append(f"{path} (operational_exhaust)")
+            continue
         for rule in HYGIENE_RULES:
             if _matches_prefix(path, rule.path_prefix):
                 blocked.append(f"{path} ({rule.class_name})")
@@ -80,6 +117,62 @@ def _check_text_contains(path: Path, required: tuple[str, ...], errors: list[str
             errors.append(f"{path.relative_to(ROOT)} missing `{item}`")
 
 
+def _check_worktree_audit(errors: list[str]) -> None:
+    if not AUDIT_WORKTREE_NOISE_PATH.exists():
+        errors.append("missing scripts/codex/audit_worktree_noise.py")
+        return
+
+    proc = subprocess.run(
+        ["python3", "scripts/codex/audit_worktree_noise.py", "--json"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        errors.append(f"audit_worktree_noise.py failed: {proc.stderr.strip()}")
+        return
+    try:
+        payload = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        errors.append(f"audit_worktree_noise.py emitted invalid JSON: {exc}")
+        return
+
+    required_categories = {
+        "formal_runtime_dirty",
+        "authority_dirty",
+        "formal_evidence_dirty",
+        "operational_exhaust",
+        "generated_or_mirror",
+        "untracked_unknown",
+        "cleanup_candidate",
+    }
+    categories = payload.get("categories")
+    if not isinstance(categories, dict):
+        errors.append("audit_worktree_noise.py payload missing categories")
+        return
+    missing = sorted(required_categories - set(categories))
+    if missing:
+        errors.append(f"audit_worktree_noise.py missing categories: {', '.join(missing)}")
+
+    by_path: dict[str, str] = {}
+    for category, items in categories.items():
+        if not isinstance(items, list):
+            continue
+        for item in items:
+            if isinstance(item, dict) and isinstance(item.get("path"), str):
+                by_path[item["path"]] = category
+
+    expected_if_dirty = {
+        "docs/PROGRAM_STATE_UNIFIED.yaml": "authority_dirty",
+        "artifacts/evidence_ledger/index.yaml": "formal_evidence_dirty",
+    }
+    for path, expected_category in expected_if_dirty.items():
+        actual = by_path.get(path)
+        if actual is not None and actual != expected_category:
+            errors.append(f"{path} classified as {actual}, expected {expected_category}")
+
+
 def main() -> int:
     errors: list[str] = []
     state = load_program_state()
@@ -92,6 +185,8 @@ def main() -> int:
 
     _check_text_contains(README_PATH, REQUIRED_README_REFS, errors)
     _check_text_contains(QUICKSTART_PATH, REQUIRED_QUICKSTART_REFS, errors)
+    _check_text_contains(WORKTREE_TRIAGE_PATH, REQUIRED_TRIAGE_REFS, errors)
+    _check_worktree_audit(errors)
 
     if not REPO_SURFACE_MAP_PATH.exists():
         errors.append("missing generated docs/REPO_SURFACE_MAP.md")

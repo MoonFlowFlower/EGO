@@ -18,6 +18,13 @@ Phase 2A only reconciles the already half-applied archive migration:
 - Wire the verifier into `verify_repo.py --mode fast`.
 - Do not authorize any new archive class or broader physical move in this slice.
 
+Phase 2B does not move files. It adds dirty-worktree triage:
+
+- Add `scripts/codex/audit_worktree_noise.py` as a read-only classifier for `git status --porcelain`.
+- Record the remaining dirty surface in `WORKTREE_TRIAGE.md`.
+- Treat EgoCore/OpenEmotion runtime changes, formal state, formal evidence, logs, JSONL, cache, and unknown untracked paths as outside cleanup scope.
+- Add a return gate: either admit a later small cleanup class explicitly, or stop cleanup and return to `subject_system_v1_governed_proactivity` fresh live recheck.
+
 ## Phase 3: Split / Restructure
 
 Deferred. Only consider if Phase 1-2 still fail onboarding, CI isolation, or authority-boundary clarity.
@@ -30,6 +37,7 @@ python3 scripts/codex/generate_route_convergence_views.py
 python3 scripts/codex/verify_route_convergence.py
 python3 scripts/codex/verify_mainline_clarity.py
 python3 scripts/codex/verify_archive_reconciliation.py
+python3 scripts/codex/audit_worktree_noise.py --json
 python3 scripts/codex/check_program_state_integrity.py --skip-diff-check
 python3 scripts/codex/verify_repo.py --mode fast
 git diff --check -- docs scripts .gitignore README.md
