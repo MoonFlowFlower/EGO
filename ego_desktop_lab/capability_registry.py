@@ -63,6 +63,13 @@ CAPABILITIES: tuple[Capability, ...] = (
         "suggestion_card",
     ),
     Capability(
+        "respond_to_feedback",
+        "Acknowledge user feedback, record a session-local feedback outcome, and ask for concrete correction signal.",
+        True,
+        False,
+        "suggestion_card",
+    ),
+    Capability(
         "unsupported_or_out_of_scope",
         "Explain that the request is outside current shell capability and ask for a bounded next step.",
         True,

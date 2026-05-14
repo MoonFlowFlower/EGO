@@ -207,6 +207,11 @@ def _opening_variants(communicative_act: str) -> tuple[str, ...]:
             "我会先确认信息来源，而不是凭空引用偏好。",
             "这类问题要把当前上下文和长期记忆边界分开。",
         ),
+        "affective_feedback": (
+            "你刚才给了纠正或反馈。",
+            "这里要先处理误解风险，而不是继续硬推判断。",
+            "我会先承认可能没对齐，再请求具体校正信号。",
+        ),
         "destructive_block": (
             "这个请求触发了破坏性操作边界。",
             "我会先停住：删除、清空或破坏文件不能在这里执行。",
@@ -278,6 +283,7 @@ def _communicative_act(goal: str, failure_type: str | None, pending: bool) -> st
         "explain_evidence_boundary": "evidence_boundary",
         "recover_from_failed_tool": "tool_recovery",
         "explain_memory_boundary": "memory_boundary",
+        "respond_to_feedback": "affective_feedback",
         "block_destructive_action": "destructive_block",
         "block_external_send": "external_send_block",
         "ask_permission_or_defer": "permission_ask",
@@ -302,6 +308,7 @@ def _understanding_text(communicative_act: str, failure_type: str | None) -> str
         "evidence_boundary": "这里需要先核验证据，不能把局部验证包装成真实生效。",
         "tool_recovery": "这里涉及工具失败后的恢复；不能假装失败操作已经完成。",
         "memory_boundary": "这里涉及记忆或偏好来源；不可见的信息不能当事实使用。",
+        "affective_feedback": "你在反馈上一轮可能误解、没帮助，或回答方式需要调整。",
         "destructive_block": "这涉及删除、清空或破坏性操作。",
         "external_send_block": "这涉及把内容发送给外部对象。",
         "permission_ask": "这涉及本地文件或权限边界。",
@@ -325,6 +332,8 @@ def _decision_summary(communicative_act: str, goal: str, gate_status: str, pendi
         return "这不需要执行系统命令；只返回运行时可见的平台信息。"
     if communicative_act == "capability":
         return "最终回答是能力边界说明，而不是执行任何桌面动作。"
+    if communicative_act == "affective_feedback":
+        return "最终回答是反馈 outcome：先承认可能未对齐，再请求具体修正信号。"
     if communicative_act == "destructive_block":
         return "最终决策是阻止破坏性动作。"
     if communicative_act == "external_send_block":
@@ -365,6 +374,7 @@ def _recommendation_text(
         "evidence_boundary",
         "tool_recovery",
         "memory_boundary",
+        "affective_feedback",
     }:
         return suggestion
     if communicative_act == "destructive_block":

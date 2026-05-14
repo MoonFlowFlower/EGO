@@ -32,6 +32,11 @@ from ego_desktop_lab.session_store import (
     shell_session_record_from_view,
 )
 from ego_desktop_lab.strict_admission import run_strict_admission_experiment
+from ego_desktop_lab.subjective_loop_contract import (
+    SubjectEvidence,
+    build_subject_event,
+    build_subject_evidence,
+)
 
 
 CLAIM_CEILING = "lab-only minimal desktop shell product cut"
@@ -46,6 +51,7 @@ class ShellRunResult:
     saved_misjudged_path: Path | None = None
     strict_admission_summary: dict[str, object] | None = None
     command_decision: CommandDecision | None = None
+    subject_evidence: SubjectEvidence | None = None
     dialogue_state: DialogueState | None = None
     reply_history: tuple[str, ...] = ()
 
@@ -87,6 +93,17 @@ def run_shell(
             timestamp=timestamp,
         )
         view = build_decision_view_from_semantic_result(semantic_result)
+    subject_event = build_subject_event(
+        user_event,
+        source="lab_shell",
+        recent_dialogue=reply_history,
+        safety_pre_route=_safety_pre_route_from_view(view),
+    )
+    subject_evidence = build_subject_evidence(
+        view,
+        subject_event,
+        previous_feedback_signal=dialogue_state.last_feedback_signal if dialogue_state else None,
+    )
     strict_summary = _strict_admission_sidecar_summary() if provider_mode == "strict_admission_experiment" else None
 
     output = _format_shell_output(
@@ -122,6 +139,7 @@ def run_shell(
         saved_misjudged_path=saved_path,
         strict_admission_summary=strict_summary,
         command_decision=command_decision,
+        subject_evidence=subject_evidence,
         dialogue_state=dialogue_state_from_view(view),
         reply_history=updated_reply_history,
     )
@@ -662,6 +680,15 @@ def _user_event_text(text: str | None, scenario_path: Path | None) -> str:
 
 def _bool_text(value: bool) -> str:
     return "true" if value else "false"
+
+
+def _safety_pre_route_from_view(view: DecisionView) -> str | None:
+    canonical = view.canonical_decision or {}
+    selected = canonical.get("after_selected_intention")
+    goal = selected.get("goal") if isinstance(selected, dict) else None
+    if goal in {"block_destructive_action", "block_external_send", "ask_permission_or_defer"}:
+        return str(goal)
+    return None
 
 
 def _interactive_help() -> str:

@@ -11,6 +11,7 @@ from typing import Any, Mapping
 from ego_desktop_lab.capability_registry import capability_summary, get_capability
 from ego_desktop_lab.decision_view import DecisionView
 from ego_desktop_lab.semantic_provider import route_text_to_safety_scenario_id
+from ego_desktop_lab.subjective_loop_contract import classify_feedback_signal
 
 
 CLAIM_CEILING = "lab-only conversation command layer proof"
@@ -22,6 +23,8 @@ class DialogueState:
     last_command_type: str | None = None
     last_missing_info: tuple[str, ...] = ()
     last_reply_was_pending: bool = False
+    last_feedback_signal: str | None = None
+    last_feedback_summary: str | None = None
 
 
 @dataclass(frozen=True)
@@ -54,7 +57,15 @@ def route_conversation_command(
         return None
     normalized = " ".join(stripped.lower().split())
     state = dialogue_state or DialogueState()
+    feedback_signal = classify_feedback_signal(stripped)
 
+    if feedback_signal is not None:
+        return _decision(
+            "respond_to_feedback",
+            stripped,
+            _feedback_response(feedback_signal),
+            "user gave affective or corrective feedback; create session-local feedback outcome before continuing",
+        )
     if _is_time_query(normalized):
         current = now or datetime.now().astimezone()
         return _decision(
@@ -84,7 +95,10 @@ def route_conversation_command(
             "你期望的结果",
             "限制条件或权限边界",
         )
-        prefix = "上一轮缺的信息是" if state.last_reply_was_pending else "如果要继续判断，我需要"
+        if state.last_feedback_signal in {"misunderstood", "negative"}:
+            prefix = "上一轮你指出我可能误解了；这次我需要先确认"
+        else:
+            prefix = "上一轮缺的信息是" if state.last_reply_was_pending else "如果要继续判断，我需要"
         return _decision(
             "ask_clarification",
             stripped,
@@ -208,11 +222,19 @@ def dialogue_state_from_view(view: DecisionView) -> DialogueState:
         or goal_binding.get("binding_status") == "pending_goal_binding"
     )
     missing = ("具体目标", "期望结果", "限制条件或权限边界") if pending else ()
+    feedback_signal = classify_feedback_signal(view.user_event or "")
+    feedback_summary = None
+    if feedback_signal in {"misunderstood", "negative"}:
+        feedback_summary = "user reported misunderstanding or low usefulness; next turn should reduce assumptions"
+    elif feedback_signal == "helpful":
+        feedback_summary = "user reported usefulness; preserve session strategy cautiously"
     return DialogueState(
         last_user_event=view.user_event,
         last_command_type=command_type,
         last_missing_info=missing,
         last_reply_was_pending=pending,
+        last_feedback_signal=feedback_signal,
+        last_feedback_summary=feedback_summary,
     )
 
 
@@ -280,6 +302,14 @@ def _is_memory_boundary_query(text: str) -> bool:
         or "mentioned a preference last week" in text
         or "没有在当前上下文" in text
     )
+
+
+def _feedback_response(feedback_signal: str) -> str:
+    if feedback_signal == "helpful":
+        return "收到，我会把这次反馈当成当前会话内的正向信号，但不会写入长期记忆。下一步我会尽量沿用这类更有帮助的回答方式。"
+    if feedback_signal == "misunderstood":
+        return "我先不辩解；这说明上一轮理解可能偏了。请告诉我具体错在目标、事实、权限边界还是表达方式，我会按这个重新判断。"
+    return "我先承认这次回复可能没有对齐你的期望，不继续硬推原判断。请指出最关键的不对之处：目标、事实、限制条件，还是表达方式。"
 
 
 def _platform_summary() -> str:
