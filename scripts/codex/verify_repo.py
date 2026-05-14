@@ -504,6 +504,20 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
             )
         )
 
+    archive_reconciliation_verify = ROOT / "scripts" / "codex" / "verify_archive_reconciliation.py"
+    if archive_reconciliation_verify.exists():
+        checks.append(
+            Check(
+                category="governance",
+                name="Archive reconciliation path gate",
+                command=["python3", "scripts/codex/verify_archive_reconciliation.py"],
+                cwd=ROOT,
+                source="scripts/codex/verify_archive_reconciliation.py",
+                run_in_fast=True,
+                run_in_full=True,
+            )
+        )
+
     if open_typecheck_simple.exists():
         simple_reason = None
         if open_runtime_missing:

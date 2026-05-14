@@ -49,6 +49,10 @@
 - 已将 `OpenEmotion/tests/test_self_model_single_authority.py` 重写为更弱的 ledger/file-fate/admission test，不再 import legacy adapter/mirror modules
 - 已确认 `OpenEmotion/emotiond/self_model_adapter.py` 与 `OpenEmotion/emotiond/self_model_mirror.py` 已物理删除，当前 delete-ready 结论已升级为 delete-done
 - 已完成 reflection legacy caller wave：`OpenEmotion/emotiond/core.py` 不再依赖 `reflection_shadow`，reflection guidance 改为 formal owner store-backed read；`OpenEmotion/tools/causal_intervention_experiments.py` 已降为 archive/reference-only reflection probe；`emotiond/reflection.py` 仅保留 thin trigger/report substrate
+- 已建立 repo 级 archive lookup surface：`docs/archive/ARCHIVE_INDEX.yaml` 现在记录第一批 admitted medium migration 与 protected keep-current surfaces，不承担 authority source 角色
+- 已完成第一批 admitted medium migration：`docs/EGO 验收证据分级协议 v1.md`、`docs/EGO_DEVELOPMENT_CLOSED_LOOP_V1.md` 与历史 cleanup bundles `artifacts/P0`–`P7` 已迁到 archive paths；对应 cleanup ledgers 与历史 task-pack 引用也已改到新路径
+- 这轮 archive governance slice 已通过 repo-level closeout 验证：`generate_program_state_views.py`、`check_program_state_integrity.py --skip-diff-check`、`verify_repo.py --mode fast`、archive/evidence YAML parse 与 scoped `git diff --check` 均已通过
+- 当前 archive/governance closeout 已冻结在 `single archive index + first admitted medium migration`；后续不再默认继续 archive 整理
 
 ## Last validation results
 
@@ -88,12 +92,13 @@
 - `dual_repo_closed_loop_e2e.py` 当前被明确标成 legacy compatibility harness，不再允许被误读为 formal mainline verifier
 - `e2e_self_model_adapter.py` 当前被明确标成 archive/reference-only 报告，不再允许被误读为 live adapter exercise harness
 - `OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` 当前不再把 live `emotiond/self_model_adapter.py` 文件路径列为 `OE_MVP:13` evidence
-- canonical/docs/artifact 当前只建立 admission boundary，不做物理迁移
+- canonical/docs/artifact 当前已从“只建 boundary 不动路径”升级到“single archive index + 第一批 admitted medium migration”；更广泛的物理迁移仍不在本任务范围
 - archive self-model 文档当前只保留历史快照表述，不再把旧 wiring 结果写成 current formal mainline
 - archive self-model 文档当前也不再把 SelfModelAdapter 报告路径指向非 archive 文档位置
 - `e2e_self_model_adapter.py` 当前虽仍读取 `artifacts/self_model_adapter`，但口径已明确为 legacy artifact directory 上的历史归档报告
 - clean-clone / CI final closeout proof 已完成；原因是 clean clone `Ego-cleancloseout` 上 `verify_cleanup_admission.py`、`verify_proto_self_single_authority.py`、`verify_repo.py --mode fast`、settled-branch targeted tests、repo-level `git diff --check` 与 clean-clone `git status` 均已通过
 - 为修复 clean-clone settled autonomy tests 的缺口，新增 `EgoCore/app/autonomy/repository.py` 并补齐 `autonomy_runs` schema bootstrap；原因是该支持层缺失会让 autonomy settled tests 在 clean clone 中无法落库，但这不改变 formal mainline 或 authority/runtime 语义
+- archive/governance 当前不再是 execution owner；未来若继续整理，只允许走两条路：小范围 housekeeping，或先补 caller proof 再开启新的 admitted archive move
 
 ## Optional housekeeping / future cleanup backlog
 
@@ -110,13 +115,14 @@
 - developmental caller matrix 已收口，当前不再是 blocker；后续若继续，只会是 `developmental_core` 进一步收缩或 wrapper/reference 物理归档
 - archive self-model docs 已完成降噪，当前不再是 blocker
 - `self-model` dual-authority 已收口；`self_model_adapter.py` 与 `self_model_mirror.py` 已物理删除，当前不再是 delete-ready blocker
-- artifacts/logs 仍未物理迁移；archive/current 目录现在只是 boundary marker，但不再阻塞 clean-clone / CI final closeout proof
+- artifacts/logs 当前只完成了第一批 admitted medium migration；大量 reference-only / operational-exhaust surfaces 仍未物理迁移，后续仍需 caller proof 与 archive admission
 - clean-clone proof 的可重复性依赖 explicit generated-residue cleanup；未来重跑时必须在 targeted tests 之后再次执行 restore/remove 再验 clean
+- 当前没有“必须继续整理”的 active blocker；remaining items 只构成可选 housekeeping backlog
 
 ## Next step
 
-- 当前下一步：仅保留 `optional housekeeping / future cleanup backlog`，不再继续新的 authority cleanup
-- 当前下一步：`delete admission proof and generated/docs cleanup`、`dual_repo_closed_loop_e2e.py`、reflection trigger substrate retirement 等剩余议题都已退回 backlog，不再阻塞本任务 closeout
+- 当前下一步：冻结当前 archive/governance closeout，不再继续新的 archive moves
+- 当前下一步：只有显式授权或决定性 `caller = 0` 证据，才重开新的 archive/cleanup slice；否则 remaining items 继续留在 `optional housekeeping / future cleanup backlog`
 
 ## Commands run / evidence
 
@@ -153,6 +159,14 @@
 - `cmd.exe /c "OpenEmotion\\.venv\\Scripts\\python.exe -m pytest OpenEmotion\\tests\\test_self_model_single_authority.py -q"`
 - `python3 -m py_compile OpenEmotion/tools/e2e_self_model_adapter.py OpenEmotion/tests/test_self_model_single_authority.py`
 - `python3 scripts/codex/verify_repo.py --mode fast` (archive self-model docs clarification wave)
+- `mv docs/EGO 验收证据分级协议 v1.md docs/archive/EGO 验收证据分级协议 v1.md`
+- `mv docs/EGO_DEVELOPMENT_CLOSED_LOOP_V1.md docs/archive/EGO_DEVELOPMENT_CLOSED_LOOP_V1.md`
+- `mv artifacts/P0 artifacts/P1 artifacts/P2 artifacts/P3 artifacts/P4 artifacts/P5 artifacts/P6 artifacts/P7 artifacts/archive/repo_cleanup_history/`
+- `python3 - <<'PY'` (YAML parse check for `docs/archive/ARCHIVE_INDEX.yaml` and `artifacts/evidence_ledger/index.yaml`)
+- `python3 scripts/codex/generate_program_state_views.py`
+- `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+- `python3 scripts/codex/verify_repo.py --mode fast`
+- `git diff --check -- docs/archive/ARCHIVE_INDEX.yaml artifacts/archive/repo_cleanup_history/README.md docs/archive/README.md artifacts/archive/README.md docs/codex/tasks/repo-authority-cleanup/CANONICAL_DOCS_INDEX.md docs/codex/tasks/repo-authority-cleanup/ARTIFACT_LOG_INVENTORY.md docs/codex/tasks/repo-authority-cleanup/FILE_FATE_LEDGER.md docs/codex/tasks/repo-authority-cleanup/PLAN.md docs/codex/tasks/repo-authority-cleanup/STATUS.md docs/PROGRAM_STATE_UNIFIED.yaml docs/OVERALL_PROGRESS.md artifacts/evidence_ledger/index.yaml Tasks/task_pack_260325/templates/04_你给Codex的最短口令清单.md Tasks/task_pack_260325/tasks/P0_真实状态审计与过度报喜清理.md Tasks/task_pack_260325/tasks/P1_RuntimeV2Loop_主链瘦身手术.md Tasks/task_pack_260325/tasks/P2_主体状态持久化重构.md Tasks/task_pack_260325/tasks/P3_ProtoSelf_契约单一化.md Tasks/task_pack_260325/tasks/P4_Trace_Evidence_Replay_统一账本.md Tasks/task_pack_260325/tasks/P5_Packaging_Import_边界治理.md Tasks/task_pack_260325/tasks/P6_垃圾代码_历史Shim_重复真相源清坟.md Tasks/task_pack_260325/tasks/P7_风险信号单一化.md docs/archive/EGO\\ 验收证据分级协议\\ v1.md docs/archive/EGO_DEVELOPMENT_CLOSED_LOOP_V1.md artifacts/archive/repo_cleanup_history/P0 artifacts/archive/repo_cleanup_history/P1 artifacts/archive/repo_cleanup_history/P2 artifacts/archive/repo_cleanup_history/P3 artifacts/archive/repo_cleanup_history/P4 artifacts/archive/repo_cleanup_history/P5 artifacts/archive/repo_cleanup_history/P6 artifacts/archive/repo_cleanup_history/P7`
 - `git clone --branch main git@github.com:pen364692088/EGO.git /mnt/d/Project/AIProject/MyProject/Ego-cleancloseout`
 - `python3 scripts/codex/verify_cleanup_admission.py`
 - `python3 scripts/codex/verify_proto_self_single_authority.py`

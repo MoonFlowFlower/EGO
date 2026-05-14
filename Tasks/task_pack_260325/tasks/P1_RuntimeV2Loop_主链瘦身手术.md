@@ -69,8 +69,8 @@ loop.py 最终只保留 turn orchestration；临时 helper 若新增，必须登
 若一步到位拆组件风险高，先做纯函数级收口与依赖注入，为下一轮再抽类做准备。
 
 ## 强制产出
-- artifacts/P1/TASK_REPORT.md
-- artifacts/P1/RESPONSIBILITY_MAP.md
+- artifacts/archive/repo_cleanup_history/P1/TASK_REPORT.md
+- artifacts/archive/repo_cleanup_history/P1/RESPONSIBILITY_MAP.md
 - loop.py 重构提交
 - 对应新增/更新测试
 - CHANGE_PLAN.md（记录新旧职责对应关系）

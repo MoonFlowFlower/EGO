@@ -69,8 +69,8 @@ P5
 若一次性删 hack 风险大，先将 hack 限缩到单一入口并补工程迁移计划。
 
 ## 强制产出
-- artifacts/P5/TASK_REPORT.md
-- artifacts/P5/IMPORT_HACK_INVENTORY.md
+- artifacts/archive/repo_cleanup_history/P5/TASK_REPORT.md
+- artifacts/archive/repo_cleanup_history/P5/IMPORT_HACK_INVENTORY.md
 - 工程配置改动
 - 多环境验证记录
 - 文档更新

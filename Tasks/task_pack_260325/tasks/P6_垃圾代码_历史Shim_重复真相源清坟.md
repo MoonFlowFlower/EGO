@@ -67,9 +67,9 @@ P6
 若自动判断风险高，先输出‘待人工确认候选清单’，只删零引用确定垃圾。
 
 ## 强制产出
-- artifacts/P6/TASK_REPORT.md
-- artifacts/P6/CLEANUP_MATRIX.md
-- artifacts/P6/SHIM_REGISTER.md
+- artifacts/archive/repo_cleanup_history/P6/TASK_REPORT.md
+- artifacts/archive/repo_cleanup_history/P6/CLEANUP_MATRIX.md
+- artifacts/archive/repo_cleanup_history/P6/SHIM_REGISTER.md
 - 删除/隔离提交
 - 文档更新
 

@@ -2,7 +2,7 @@
 
 ## Task summary
 
-把全仓收成“一个正式主链 + 一组单一 authority + 一套 canonical docs + 一条 archive 边界”。当前任务状态已收口为 `repo_authority_cleanup: closeout-complete (repo/integration scope)`；remaining items only live in `optional housekeeping / future cleanup backlog`.
+把全仓收成“一个正式主链 + 一组单一 authority + 一套 canonical docs + 一条 archive 边界”。当前任务状态已收口为 `repo_authority_cleanup: closeout-complete (repo/integration scope)`；archive/governance 当前冻结在 `single archive index + first admitted medium migration`，remaining items only live in `optional housekeeping / future cleanup backlog` and do not reopen by default.
 
 ## Milestones
 
@@ -127,6 +127,8 @@
   - archive/reference-only docs further compression
   - optional physical archive of non-authoritative proof surfaces
   - any future non-authoritative generated-residue tidy-up
+- reopen 规则：
+  - 只有显式授权，或 reference-only surface 已拿到决定性 `caller = 0` proof，才开启新的 archive/cleanup slice
 
 ## Decision log
 
@@ -152,6 +154,8 @@
 - 2026-04-08: reflection legacy caller wave 已收口：`OpenEmotion/emotiond/core.py` 不再使用 `reflection_shadow`，reflection guidance 已改为 formal owner store-backed read；`OpenEmotion/tools/causal_intervention_experiments.py` 已降为 archive/reference-only reflection probe，`emotiond/reflection.py` 只保留 thin trigger/report substrate；原因是 reflection legacy runtime callers 必须移出 live authority 叙事，但当前 formal owner/report split 仍需保留最薄触发层
 - 2026-04-08: drives authority wave 已收口：`openemotion.endogenous_drives/*` 为唯一 formal owner，`OpenEmotion/emotiond/drive_adapter.py` 与 `OpenEmotion/emotiond/drives/*` 仅保留 compat/projection/helper surfaces，`OpenEmotion/openemotion/proto_self/appraisal.py + DriveField` 只保留 thin substrate；原因是 drives/appraisal 不能继续被写成 unresolved later wave
 - 2026-04-08: developmental authority wave 已收口：`openemotion.developmental_self/*` 为唯一 formal owner，`OpenEmotion/emotiond/developmental_core/*` 继续作为 implementation library，`OpenEmotion/openemotion/proto_self_v2/developmental_self_context.py` / `OpenEmotion/openemotion/proto_self_v2/developmental.py` / `EgoCore/app/runtime_v2/proto_self_runtime.py::_apply_developmental_self_writeback` 形成 live caller path，`OpenEmotion/emotiond/developmental/*` 与 `OpenEmotion/tests/mvp16/*` 仅保留 compat/reference / proof-e2e 角色；原因是 developmental 是单一 authority + implementation library split，不是双主也不是 dead code
+- 2026-04-13: closeout 之后的 archive governance 采用“中等迁移 + 单一索引”而不是单一大仓。`docs/archive/ARCHIVE_INDEX.yaml` 现在作为 repo-level lookup surface 落地，并已完成第一批 admitted medium migration：两份 superseded top-level docs 和历史 cleanup bundles `P0` through `P7` 已迁入 archive paths；当前 authority/current evidence surfaces 则明确保留原位。原因是目标是降噪并保留可追溯性，而不是制造第二真相源或误搬 current surfaces。
+- 2026-04-13: 当前 archive/governance closeout 已冻结在 `single archive index + first admitted medium migration`。默认不再继续新的 archive moves；只有显式授权或决定性 `caller = 0` proof 才重开。原因是 archive/governance 已不再是当前 execution owner，继续整理的边际收益低于打扰主线的成本。
 
 ## Surprises / discoveries
 

@@ -69,8 +69,8 @@ P3
 若全量收口风险高，先从高风险字段（如 risk）开始做分阶段废弃。
 
 ## 强制产出
-- artifacts/P3/TASK_REPORT.md
-- artifacts/P3/SCHEMA_DIFF.md
+- artifacts/archive/repo_cleanup_history/P3/TASK_REPORT.md
+- artifacts/archive/repo_cleanup_history/P3/SCHEMA_DIFF.md
 - canonical schema 文档/代码
 - contract tests
 - 废弃字段迁移计划

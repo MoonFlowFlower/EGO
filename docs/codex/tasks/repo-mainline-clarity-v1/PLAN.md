@@ -10,7 +10,13 @@
 
 ## Phase 2: Controlled Physical Archive
 
-Deferred. Only begin after Phase 1 is stable and each move has caller/reference audit.
+Phase 2A only reconciles the already half-applied archive migration:
+
+- Accept the moved docs under `docs/archive/`.
+- Accept historical cleanup bundles `P0` through `P7` under `artifacts/archive/repo_cleanup_history/`.
+- Add `scripts/codex/verify_archive_reconciliation.py` as the path/index/current-reference gate.
+- Wire the verifier into `verify_repo.py --mode fast`.
+- Do not authorize any new archive class or broader physical move in this slice.
 
 ## Phase 3: Split / Restructure
 
@@ -23,6 +29,7 @@ python3 -m py_compile scripts/codex/route_convergence_common.py scripts/codex/ge
 python3 scripts/codex/generate_route_convergence_views.py
 python3 scripts/codex/verify_route_convergence.py
 python3 scripts/codex/verify_mainline_clarity.py
+python3 scripts/codex/verify_archive_reconciliation.py
 python3 scripts/codex/check_program_state_integrity.py --skip-diff-check
 python3 scripts/codex/verify_repo.py --mode fast
 git diff --check -- docs scripts .gitignore README.md

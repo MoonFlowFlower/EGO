@@ -69,9 +69,9 @@ EgoCore 治理层兜底。
 若一次性统一不了，先统一索引与 ID 关联，再逐步合并文件形态。
 
 ## 强制产出
-- artifacts/P4/TASK_REPORT.md
-- artifacts/P4/LEDGER_MODEL.md
-- artifacts/P4/ARTIFACT_FLOW_MAP.md
+- artifacts/archive/repo_cleanup_history/P4/TASK_REPORT.md
+- artifacts/archive/repo_cleanup_history/P4/LEDGER_MODEL.md
+- artifacts/archive/repo_cleanup_history/P4/ARTIFACT_FLOW_MAP.md
 - 至少一条端到端样本证据包
 - 对应代码与测试
 
