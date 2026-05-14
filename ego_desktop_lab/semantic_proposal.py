@@ -43,6 +43,13 @@ SEMANTIC_FAILURE_TYPES = frozenset(
 
 BINDING_BOUND = "bound"
 BINDING_PENDING_GOAL = "pending_goal_binding"
+MISSING_BINDING_CONDITIONS = frozenset(
+    {
+        "no_matching_goal",
+        "ambiguous_goal_reference",
+        "event_not_goal_specific",
+    }
+)
 
 FORBIDDEN_CLAIM_TERMS = (
     "consciousness",
@@ -78,6 +85,9 @@ class SemanticProposal:
     related_goal_id: str | None = None
     binding_status: str = BINDING_PENDING_GOAL
     proposed_goal_operation: str | None = None
+    binding_rationale: str | None = None
+    binding_confidence: float | None = None
+    missing_condition: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "source_event_id", str(self.source_event_id))
@@ -93,6 +103,12 @@ class SemanticProposal:
         object.__setattr__(self, "binding_status", str(self.binding_status))
         if self.proposed_goal_operation is not None:
             object.__setattr__(self, "proposed_goal_operation", str(self.proposed_goal_operation))
+        if self.binding_rationale is not None:
+            object.__setattr__(self, "binding_rationale", str(self.binding_rationale))
+        if self.binding_confidence is not None:
+            object.__setattr__(self, "binding_confidence", clamp01(self.binding_confidence))
+        if self.missing_condition is not None:
+            object.__setattr__(self, "missing_condition", str(self.missing_condition))
 
 
 SEMANTIC_PROPOSAL_KEYS = frozenset(
@@ -108,6 +124,9 @@ SEMANTIC_PROPOSAL_KEYS = frozenset(
         "related_goal_id",
         "binding_status",
         "proposed_goal_operation",
+        "binding_rationale",
+        "binding_confidence",
+        "missing_condition",
     }
 )
 
@@ -131,13 +150,23 @@ def validate_semantic_proposal_payload(
         evidence_gap = float(payload.get("evidence_gap", 0.0))
         goal_relevance = float(payload.get("goal_relevance", 0.0))
         risk_hint = float(payload.get("risk_hint", 0.0))
+        binding_confidence = (
+            float(payload["binding_confidence"]) if "binding_confidence" in payload else None
+        )
     except (TypeError, ValueError):
-        return None, ProposalValidationResult("semantic", False, "confidence and appraisal hints must be numeric")
-    if not all(0.0 <= value <= 1.0 for value in (confidence, evidence_gap, goal_relevance, risk_hint)):
         return None, ProposalValidationResult(
             "semantic",
             False,
-            "confidence, evidence_gap, goal_relevance, and risk_hint must be between 0.0 and 1.0",
+            "confidence, appraisal hints, and binding_confidence must be numeric",
+        )
+    numeric_values = (confidence, evidence_gap, goal_relevance, risk_hint)
+    if binding_confidence is not None:
+        numeric_values = (*numeric_values, binding_confidence)
+    if not all(0.0 <= value <= 1.0 for value in numeric_values):
+        return None, ProposalValidationResult(
+            "semantic",
+            False,
+            "confidence, evidence_gap, goal_relevance, risk_hint, and binding_confidence must be between 0.0 and 1.0",
         )
 
     candidate_failure_type = str(payload["candidate_failure_type"])
@@ -171,6 +200,15 @@ def validate_semantic_proposal_payload(
             False,
             f"binding_status must be {expected_binding} for this related_goal_id",
         )
+    missing_condition = _normalize_optional_string(payload.get("missing_condition"))
+    if missing_condition is not None and missing_condition not in MISSING_BINDING_CONDITIONS:
+        return None, ProposalValidationResult("semantic", False, "missing_condition is not recognized")
+    if related_goal_id and missing_condition is not None:
+        return None, ProposalValidationResult(
+            "semantic",
+            False,
+            "missing_condition is only valid when binding_status is pending_goal_binding",
+        )
 
     proposal = SemanticProposal(
         source_event_id=source_event_id,
@@ -184,6 +222,9 @@ def validate_semantic_proposal_payload(
         related_goal_id=related_goal_id,
         binding_status=expected_binding,
         proposed_goal_operation=payload.get("proposed_goal_operation"),
+        binding_rationale=_normalize_optional_string(payload.get("binding_rationale")),
+        binding_confidence=binding_confidence,
+        missing_condition=missing_condition,
     )
     return proposal, ProposalValidationResult("semantic", True, "semantic proposal accepted")
 

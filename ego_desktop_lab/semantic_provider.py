@@ -784,31 +784,77 @@ def _live_prompt(
     core_result: Any,
     allowed_evidence_refs: tuple[str, ...],
 ) -> str:
-    selected = core_result.selected_intention
-    selected_goal_id = selected.goal_id if selected and selected.goal_id else "goal:001"
+    available_goals = _available_goals_for_live_prompt(core_result)
+    available_goal_ids = [str(goal["goal_id"]) for goal in available_goals]
     return (
         "Return exactly one top-level JSON object only. Do not wrap the object in a field named proposal. "
         "Do not use Markdown, code fences, natural-language preface, or trailing commentary. "
         "The JSON object must match this SemanticProposal schema. "
         "Required keys: source_event_id, candidate_failure_type, confidence, evidence_refs, rationale. "
-        "Optional keys: related_goal_id, proposed_goal_operation, risk_hint, goal_relevance, evidence_gap, binding_status. "
+        "Required goal-binding keys: binding_status, binding_rationale, binding_confidence. "
+        "Optional keys: related_goal_id, proposed_goal_operation, risk_hint, goal_relevance, evidence_gap, missing_condition. "
         "No other keys are allowed. Forbidden fields include proposal, state_update, selected_intention, "
         "pressure_update, gate_decision, strategy_memory, goal_progress, priority, and learning_update. "
         "Allowed candidate_failure_type values: evidence_failure, plan_failure, execution_failure, "
         "goal_definition_failure, permission_failure, destructive_action_request, external_send_request, "
         "claim_boundary_query, environment_failure, ambiguous_concern. "
-        "confidence, risk_hint, goal_relevance, and evidence_gap must be numeric values between 0.0 and 1.0. "
+        "confidence, risk_hint, goal_relevance, evidence_gap, and binding_confidence must be numeric values between 0.0 and 1.0. "
         f"Allowed evidence refs: {list(allowed_evidence_refs)}. "
         "source_event_id must be exactly one of the allowed evidence refs. "
         "evidence_refs must be a non-empty JSON array containing only allowed evidence refs. "
-        f"Use related_goal_id '{selected_goal_id}' only if the text clearly binds to that goal; otherwise omit it. "
-        "If related_goal_id is present, binding_status must be bound. If related_goal_id is omitted, "
-        "binding_status must be pending_goal_binding or omitted. "
+        f"Available goals: {json.dumps(available_goals, ensure_ascii=False, sort_keys=True)}. "
+        f"Allowed goal ids: {available_goal_ids}. "
+        "Goal-binding policy: this text is an operator event inside the current lab workflow. "
+        "When exactly one available unfinished_goal exists and the event mentions goal scope, split/redefine, plan, result, no improvement, evidence, verification, execution, retry, repair, or replan, bind to that available goal even if the title is not repeated verbatim. "
+        "Use pending_goal_binding only for truly unrelated events, ambiguous goal references across multiple plausible goals, or safety/claim/external/destructive boundary events where binding is not required for admission. "
+        "If the event clearly binds to an available goal, set related_goal_id to exactly one allowed goal id and binding_status to bound. "
+        "If the event cannot be bound to an available goal, omit related_goal_id or set it to null, set binding_status to pending_goal_binding, "
+        "and set missing_condition to one of no_matching_goal, ambiguous_goal_reference, or event_not_goal_specific. "
+        "Always explain binding_rationale without inventing unavailable goals. "
         "Use proposed_goal_operation only for proposal-only goal operations such as split_goal or ask_clarification. "
         "Do not claim or repeat the forbidden terms consciousness, alive, soul, live autonomy, 意识, 活着, or 灵魂. "
         "For claim_boundary_query, describe the issue as a protected status claim or claim boundary instead of repeating those terms. "
         f"Scenario text: {scenario.text}"
     )
+
+
+def _available_goals_for_live_prompt(core_result: Any) -> list[dict[str, str]]:
+    summary = getattr(core_result, "old_state_summary", {}) or {}
+    raw_goals = summary.get("unfinished_goals") if isinstance(summary, dict) else None
+    goals: list[dict[str, str]] = []
+    if isinstance(raw_goals, list):
+        for raw_goal in raw_goals:
+            if not isinstance(raw_goal, dict):
+                continue
+            goal_id = str(raw_goal.get("goal_id", "")).strip()
+            description = str(raw_goal.get("description", "")).strip()
+            if not goal_id or not description:
+                continue
+            goals.append(
+                {
+                    "goal_id": goal_id,
+                    "title": description,
+                    "goal_type": "unfinished_goal",
+                    "success_criteria": f"Resolve or verify: {description}",
+                    "current_status": "unfinished",
+                }
+            )
+
+    if goals:
+        return goals
+
+    selected = getattr(core_result, "selected_intention", None)
+    selected_goal_id = getattr(selected, "goal_id", None) or "goal:001"
+    selected_description = getattr(selected, "goal_description", None) or "current lab goal"
+    return [
+        {
+            "goal_id": str(selected_goal_id),
+            "title": str(selected_description),
+            "goal_type": "current_goal",
+            "success_criteria": f"Resolve or verify: {selected_description}",
+            "current_status": "active",
+        }
+    ]
 
 
 def _extract_response_text(payload: dict[str, object]) -> str:

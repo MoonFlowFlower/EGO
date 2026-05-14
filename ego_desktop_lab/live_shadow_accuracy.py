@@ -13,6 +13,7 @@ from ego_desktop_lab.semantic_intelligence import (
     run_semantic_text_event,
 )
 from ego_desktop_lab.semantic_proposal import (
+    BINDING_BOUND,
     BINDING_PENDING_GOAL,
     ProposalValidationResult,
     SemanticProposal,
@@ -53,7 +54,10 @@ class LiveShadowAccuracyObservation:
     hallucinated_evidence_detected: bool
     overclassification_flag: bool
     goal_binding_accuracy: str
+    binding_mismatch_with_mock: bool
+    binding_confidence: float | None
     safety_pre_router_preempted_live: bool
+    safety_preempted_binding_not_required: bool
     live_output_did_not_alter_canonical_decision: bool
     canonical_decision_before: dict[str, object]
     canonical_decision_after: dict[str, object]
@@ -149,6 +153,11 @@ def run_live_shadow_accuracy_case(
         validator_result,
         tuple(live.evidence_record.semantic_allowed_evidence_refs or ()),
     )
+    safety_binding_exempt = bool(
+        live.semantic_provider_trace.get("pre_router_applied")
+        and admitted_failure_type in SAFETY_FAILURE_TYPES
+    )
+    goal_binding_accuracy = _goal_binding_accuracy(live.semantic_proposal, live_proposal)
 
     return LiveShadowAccuracyObservation(
         case_id=case.case_id,
@@ -161,8 +170,11 @@ def run_live_shadow_accuracy_case(
         mismatch_with_mock=bool(live_proposal is not None and live_failure_type != admitted_failure_type),
         hallucinated_evidence_detected=hallucinated,
         overclassification_flag=_overclassification_flag(live, live_proposal),
-        goal_binding_accuracy=_goal_binding_accuracy(live.semantic_proposal, live_proposal),
+        goal_binding_accuracy=goal_binding_accuracy,
+        binding_mismatch_with_mock=_binding_mismatch_with_mock(goal_binding_accuracy, safety_binding_exempt),
+        binding_confidence=_binding_confidence(live_proposal, parsed_live_proposal),
         safety_pre_router_preempted_live=bool(live.semantic_provider_trace.get("pre_router_applied")),
+        safety_preempted_binding_not_required=safety_binding_exempt,
         live_output_did_not_alter_canonical_decision=canonical_before == canonical_after,
         canonical_decision_before=canonical_before,
         canonical_decision_after=canonical_after,
@@ -193,6 +205,7 @@ def build_live_shadow_accuracy_payload(
         "live_output_admission_policy": "shadow-only; never admitted into canonical decision",
         "no_live_fallback": "missing env, missing API key, or unavailable live provider is recorded as skipped/unavailable",
         "schema_compliance_summary": _schema_compliance_summary(observations),
+        "goal_binding_summary": _goal_binding_summary(observations),
         "observations": [item.to_dict() for item in observations],
     }
 
@@ -334,6 +347,50 @@ def _schema_compliance_summary(
     }
 
 
+def _goal_binding_summary(
+    observations: tuple[LiveShadowAccuracyObservation, ...],
+) -> dict[str, object]:
+    eligible = tuple(item for item in observations if item.source != "safety_text")
+    attempted = tuple(
+        item
+        for item in eligible
+        if item.parsed_live_proposal is not None
+        and (
+            "binding_status" in item.parsed_live_proposal
+            or "related_goal_id" in item.parsed_live_proposal
+            or "binding_confidence" in item.parsed_live_proposal
+            or "binding_rationale" in item.parsed_live_proposal
+            or "missing_condition" in item.parsed_live_proposal
+        )
+    )
+    bound = tuple(
+        item
+        for item in attempted
+        if item.parsed_live_proposal is not None
+        and item.parsed_live_proposal.get("binding_status") == BINDING_BOUND
+    )
+    pending = tuple(
+        item
+        for item in attempted
+        if item.parsed_live_proposal is not None
+        and item.parsed_live_proposal.get("binding_status") == BINDING_PENDING_GOAL
+    )
+    matched = tuple(item for item in attempted if item.goal_binding_accuracy == "matches_admitted_goal")
+    confidence_values = [item.binding_confidence for item in attempted if item.binding_confidence is not None]
+    return {
+        "goal_binding_attempted_count": len(attempted),
+        "goal_binding_bound_count": len(bound),
+        "goal_binding_pending_count": len(pending),
+        "goal_binding_accuracy_rate_shadow_only": round(len(matched) / len(attempted), 6)
+        if attempted
+        else 0.0,
+        "binding_mismatch_with_mock": sum(1 for item in attempted if item.binding_mismatch_with_mock),
+        "binding_confidence_avg": round(sum(confidence_values) / len(confidence_values), 6)
+        if confidence_values
+        else None,
+    }
+
+
 def _overclassification_flag(
     result: SemanticScenarioResult,
     live_proposal: SemanticProposal | None,
@@ -376,6 +433,26 @@ def _goal_binding_accuracy(
     if live_proposal.related_goal_id:
         return "overbound_goal"
     return "pending_or_unbound_matches"
+
+
+def _binding_mismatch_with_mock(goal_binding_accuracy: str, safety_binding_exempt: bool) -> bool:
+    if safety_binding_exempt:
+        return False
+    return goal_binding_accuracy not in {"matches_admitted_goal", "pending_or_unbound_matches"}
+
+
+def _binding_confidence(
+    live_proposal: SemanticProposal | None,
+    parsed_payload: dict[str, object] | None,
+) -> float | None:
+    if live_proposal is not None:
+        return live_proposal.binding_confidence
+    if parsed_payload is None or "binding_confidence" not in parsed_payload:
+        return None
+    try:
+        return round(float(parsed_payload["binding_confidence"]), 6)
+    except (TypeError, ValueError):
+        return None
 
 
 def _failure_type(proposal: SemanticProposal | None) -> str | None:

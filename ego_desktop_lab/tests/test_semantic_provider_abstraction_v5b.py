@@ -258,11 +258,19 @@ def test_live_shadow_prompt_requires_full_schema(monkeypatch, tmp_path: Path) ->
     assert "Return exactly one top-level JSON object only" in prompt
     assert "Do not wrap the object in a field named proposal" in prompt
     assert "Required keys: source_event_id, candidate_failure_type, confidence, evidence_refs, rationale" in prompt
-    assert "Optional keys: related_goal_id, proposed_goal_operation, risk_hint, goal_relevance, evidence_gap, binding_status" in prompt
+    assert "Required goal-binding keys: binding_status, binding_rationale, binding_confidence" in prompt
+    assert "Optional keys: related_goal_id, proposed_goal_operation, risk_hint, goal_relevance, evidence_gap, missing_condition" in prompt
     assert "No other keys are allowed" in prompt
     assert "Forbidden fields include proposal, state_update, selected_intention, pressure_update, gate_decision" in prompt
     assert "source_event_id must be exactly one of the allowed evidence refs" in prompt
     assert "evidence_refs must be a non-empty JSON array containing only allowed evidence refs" in prompt
+    assert "Available goals:" in prompt
+    assert '"goal_id": "goal:001"' in prompt
+    assert '"goal_type": "unfinished_goal"' in prompt
+    assert '"success_criteria": "Resolve or verify: verify whether reflection changes behavior"' in prompt
+    assert "When exactly one available unfinished_goal exists" in prompt
+    assert "bind to that available goal even if the title is not repeated verbatim" in prompt
+    assert "missing_condition to one of no_matching_goal, ambiguous_goal_reference, or event_not_goal_specific" in prompt
     assert "For claim_boundary_query, describe the issue as a protected status claim or claim boundary" in prompt
     assert captured["body"]["reasoning"] == {"enabled": True}
 
