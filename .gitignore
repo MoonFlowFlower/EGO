@@ -37,6 +37,20 @@ ENV/
 *.tmp
 *.temp
 
+# Repo hygiene: operational exhaust
+OpenEmotion/artifacts/mvp12/cycle_traces/
+EgoCore/artifacts/proto_self_store/
+EgoCore/logs/
+EgoCore/data/session_logs/
+artifacts/dashboard_runtime_logs/
+artifacts/launcher_meta/
+temp/
+.pytest_cache/
+logs/
+EgoCore/temp/
+EgoCore/tmp/
+OpenEmotion/logs/
+
 # Backup directories
 *.local_backup/
 *.temp/

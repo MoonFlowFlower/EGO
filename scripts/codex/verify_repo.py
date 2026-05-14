@@ -476,6 +476,34 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
             )
         )
 
+    route_convergence_verify = ROOT / "scripts" / "codex" / "verify_route_convergence.py"
+    if route_convergence_verify.exists():
+        checks.append(
+            Check(
+                category="governance",
+                name="Route-convergence drift gate",
+                command=["python3", "scripts/codex/verify_route_convergence.py"],
+                cwd=ROOT,
+                source="scripts/codex/verify_route_convergence.py",
+                run_in_fast=True,
+                run_in_full=True,
+            )
+        )
+
+    mainline_clarity_verify = ROOT / "scripts" / "codex" / "verify_mainline_clarity.py"
+    if mainline_clarity_verify.exists():
+        checks.append(
+            Check(
+                category="governance",
+                name="Mainline clarity and staged-exhaust gate",
+                command=["python3", "scripts/codex/verify_mainline_clarity.py"],
+                cwd=ROOT,
+                source="scripts/codex/verify_mainline_clarity.py",
+                run_in_fast=True,
+                run_in_full=True,
+            )
+        )
+
     if open_typecheck_simple.exists():
         simple_reason = None
         if open_runtime_missing:
@@ -513,6 +541,8 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
         smoke_reason = "missing OpenEmotion/test_smoke.py"
     elif open_smoke_missing:
         smoke_reason = f"{open_python_label} missing modules: {', '.join(open_smoke_missing)}"
+    elif not health_endpoint_available():
+        smoke_reason = "OpenEmotion health endpoint unavailable at http://127.0.0.1:18080/health"
     checks.append(
         Check(
             category="e2e/smoke",
@@ -524,6 +554,7 @@ def detect_checks(open_runtime: OpenEmotionRuntime) -> List[Check]:
             run_in_full=False,
             env_overrides=openemotion_env,
             precondition_reason=smoke_reason,
+            requires_health_endpoint=True,
         )
     )
 
