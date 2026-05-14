@@ -25,6 +25,14 @@ from ego_desktop_lab.llm_adapter import (
     parse_llm_json,
     run_llm_cognition_adapter,
 )
+from ego_desktop_lab.live_shadow_accuracy import (
+    LiveShadowAccuracyCase,
+    LiveShadowAccuracyObservation,
+    build_live_llm_shadow_accuracy_report,
+    build_live_shadow_accuracy_cases,
+    build_live_shadow_accuracy_payload,
+    run_live_shadow_accuracy_case,
+)
 from ego_desktop_lab.goal_reframe import GoalReframeProposal
 from ego_desktop_lab.goal_operation import GoalOperationProposal, StructuredSubgoal
 from ego_desktop_lab.goal_progress import FailureType, GoalProgressState, update_goal_progress
@@ -91,6 +99,8 @@ __all__ = [
     "LearningConfig",
     "LearningUpdate",
     "LLMCognitionAdapterResult",
+    "LiveShadowAccuracyCase",
+    "LiveShadowAccuracyObservation",
     "LiveLLMShadowProvider",
     "MockLLMAdapter",
     "MockSemanticProvider",
@@ -125,6 +135,9 @@ __all__ = [
     "build_decision_view_from_semantic_result",
     "build_llm_cognition_adapter_report",
     "build_llm_executive_proposal_report",
+    "build_live_llm_shadow_accuracy_report",
+    "build_live_shadow_accuracy_cases",
+    "build_live_shadow_accuracy_payload",
     "build_real_semantic_intelligence_report",
     "build_semantic_policy_calibration_report",
     "build_stability_generalization_report",
@@ -138,6 +151,7 @@ __all__ = [
     "route_failure_type",
     "parse_llm_json",
     "run_learning_cycle",
+    "run_live_shadow_accuracy_case",
     "run_agent_cycle",
     "run_llm_cognition_adapter",
     "run_oscillation_control_cycle",
