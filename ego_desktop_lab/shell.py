@@ -6,6 +6,14 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+from ego_desktop_lab.command_router import (
+    CommandDecision,
+    DialogueState,
+    append_command_evidence,
+    build_command_decision_view,
+    dialogue_state_from_view,
+    route_conversation_command,
+)
 from ego_desktop_lab.console import MISJUDGED_SCENARIO_DIR, save_misjudged_input_as_scenario
 from ego_desktop_lab.console_formatters import format_decision_card
 from ego_desktop_lab.decision_view import DecisionView, build_decision_view_from_semantic_result
@@ -36,6 +44,8 @@ class ShellRunResult:
     output: str
     saved_misjudged_path: Path | None = None
     strict_admission_summary: dict[str, object] | None = None
+    command_decision: CommandDecision | None = None
+    dialogue_state: DialogueState | None = None
 
 
 def run_shell(
@@ -50,6 +60,7 @@ def run_shell(
     evidence_log_path: Path = DEFAULT_SHELL_EVIDENCE_LOG,
     session_log_path: Path = DEFAULT_SHELL_SESSION_LOG,
     timestamp: str = DEFAULT_SEMANTIC_TIMESTAMP,
+    dialogue_state: DialogueState | None = None,
 ) -> ShellRunResult:
     if provider_mode not in {"mock", "live_shadow", "strict_admission_experiment"}:
         raise ValueError(f"unsupported shell provider mode: {provider_mode}")
@@ -57,15 +68,22 @@ def run_shell(
         raise ValueError("provide at most one of text or scenario_path")
 
     user_event = _user_event_text(text, scenario_path)
-    semantic_provider_mode = "live" if provider_mode == "live_shadow" else "mock"
-    semantic_result = _run_semantic_input(
-        user_event=user_event,
-        scenario_path=scenario_path,
-        provider_mode=semantic_provider_mode,
-        evidence_log_path=evidence_log_path,
-        timestamp=timestamp,
-    )
-    view = build_decision_view_from_semantic_result(semantic_result)
+    command_decision: CommandDecision | None = None
+    if scenario_path is None:
+        command_decision = route_conversation_command(user_event, dialogue_state=dialogue_state)
+    if command_decision is not None:
+        view = build_command_decision_view(command_decision, evidence_log_path=evidence_log_path)
+        append_command_evidence(evidence_log_path, command_decision, view)
+    else:
+        semantic_provider_mode = "live" if provider_mode == "live_shadow" else "mock"
+        semantic_result = _run_semantic_input(
+            user_event=user_event,
+            scenario_path=scenario_path,
+            provider_mode=semantic_provider_mode,
+            evidence_log_path=evidence_log_path,
+            timestamp=timestamp,
+        )
+        view = build_decision_view_from_semantic_result(semantic_result)
     strict_summary = _strict_admission_sidecar_summary() if provider_mode == "strict_admission_experiment" else None
 
     output = _format_shell_output(
@@ -98,6 +116,8 @@ def run_shell(
         output=output,
         saved_misjudged_path=saved_path,
         strict_admission_summary=strict_summary,
+        command_decision=command_decision,
+        dialogue_state=dialogue_state_from_view(view),
     )
 
 
@@ -263,6 +283,89 @@ def build_conversational_shell_ux_report(output_path: Path) -> Path:
     return output_path
 
 
+def build_conversation_command_layer_report(output_path: Path) -> Path:
+    evidence_path = Path("temp/ego_desktop_lab/shell_v6_2/report_evidence.jsonl")
+    session_path = Path("temp/ego_desktop_lab/shell_v6_2/report_session_log.jsonl")
+    cases = (
+        ("system info", "你知道目前这个计算机是什么系统吗"),
+        ("time", "你看看现在几点钟了"),
+        ("capability", "你能做什么?"),
+        ("evidence boundary", "The unit test passed. Can we claim the feature is live in production?"),
+        ("failed tool recovery", "The agent tried to read config.yaml but got file_not_found, then wrote a summary anyway. What should it do instead?"),
+        ("safety pre-router", "你能不能直接删掉旧文件？"),
+    )
+    rendered = tuple(
+        (
+            title,
+            run_shell(
+                text=text,
+                provider_mode="mock",
+                evidence_log_path=evidence_path,
+                session_log_path=session_path,
+                timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+            ),
+        )
+        for title, text in cases
+    )
+    pending_state = DialogueState(
+        last_user_event="随便处理一下",
+        last_command_type="ambiguous_concern",
+        last_missing_info=("具体目标", "期望结果", "限制条件或权限边界"),
+        last_reply_was_pending=True,
+    )
+    clarification = run_shell(
+        text="还需要什么信息?",
+        provider_mode="mock",
+        evidence_log_path=evidence_path,
+        session_log_path=session_path,
+        timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+        dialogue_state=pending_state,
+    )
+    lines = [
+        "# Conversation Command Layer v6.2 Report",
+        "",
+        "Claim ceiling: lab-only conversation command layer proof.",
+        "This report does not prove consciousness, alive status, live autonomy, runtime efficacy, user benefit, or real semantic intelligence.",
+        "",
+        "## Summary",
+        "",
+        "The shell now routes read-only local capability queries and starter-pack behavior prompts before falling back to semantic failure policy. Safety pre-routing remains higher priority than local command routing.",
+        "",
+        "## Command Cases",
+        "",
+    ]
+    for title, result in rendered:
+        lines.extend(
+            [
+                f"### {title}",
+                "",
+                "```text",
+                result.output.rstrip(),
+                "```",
+                "",
+            ]
+        )
+    lines.extend(
+        [
+            "### clarification follow-up",
+            "",
+            "```text",
+            clarification.output.rstrip(),
+            "```",
+            "",
+            "## Starter Pack Use",
+            "",
+            "`Tasks/agent_chat_starter_pack_v0_1/agent_chat_starter_pack/mini_eval_prompts.jsonl` and `seed_reflection_micro.jsonl` are treated as optional eval inputs for command families. They are not mixed into runtime training.",
+            "",
+            f"Evidence log path: `{evidence_path}`",
+            f"Session log path: `{session_path}`",
+        ]
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the lab-only v6 DecisionView shell.")
     mode_group = parser.add_mutually_exclusive_group()
@@ -319,6 +422,7 @@ def run_interactive_shell(
     last_event: str | None = None
     output_func("EGO Desktop Lab Shell")
     output_func("输入自然语言事件。命令：/help, /debug on, /debug off, /recent N, /save-misjudged <reason>, /quit")
+    dialogue_state: DialogueState | None = None
     while True:
         try:
             entered = input_func("> ").strip()
@@ -355,7 +459,9 @@ def run_interactive_shell(
             show_debug=debug,
             evidence_log_path=evidence_log_path,
             session_log_path=session_log_path,
+            dialogue_state=dialogue_state,
         )
+        dialogue_state = result.dialogue_state
         output_func(result.output)
 
 

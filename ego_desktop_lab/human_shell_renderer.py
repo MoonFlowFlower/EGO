@@ -40,6 +40,14 @@ def _decision_line(goal: str, failure_type: str | None, goal_binding: Mapping[st
     if _pending_binding(failure_type, goal_binding):
         return "我还不能把这句话可靠地绑定到一个具体目标，所以先不推动任何后续策略。"
     labels = {
+        "answer_local_time": "我可以直接回答这个只读时间问题。",
+        "answer_local_system_info": "我可以直接回答 Python runtime 可见的系统信息。",
+        "answer_capability_question": "我可以说明当前外壳能做什么、不能做什么。",
+        "ask_clarification": "我会先把缺的信息说清楚。",
+        "explain_evidence_boundary": "我会先说明证据边界，避免把局部验证说成真实生效。",
+        "recover_from_failed_tool": "我会先说明失败恢复方式，避免假装工具调用成功。",
+        "explain_memory_boundary": "我会先说明记忆边界，避免把不可见偏好当成事实。",
+        "unsupported_or_out_of_scope": "我会说明当前能力边界，并请求更小的下一步。",
         "verify_before_claim": "我会先建议核验证据，而不是直接下结论。",
         "repair_or_replan_goal": "我会建议先修复或重规划当前路线。",
         "retry_or_change_tool": "我会建议换一条执行路线或工具路径。",
@@ -101,6 +109,14 @@ def _split_goal_text(goal_operation: Mapping[str, Any] | None) -> str:
 
 def _failure_summary(failure_type: str | None) -> str:
     labels = {
+        "answer_local_time": "这是一个只读时间查询。",
+        "answer_local_system_info": "这是一个只读系统信息查询。",
+        "answer_capability_question": "这是一个能力边界询问。",
+        "ask_clarification": "这是一个澄清追问。",
+        "explain_evidence_boundary": "这是一个证据边界问题。",
+        "recover_from_failed_tool": "这是一个失败工具调用恢复问题。",
+        "explain_memory_boundary": "这是一个记忆边界问题。",
+        "unsupported_or_out_of_scope": "这超出了当前实验外壳的能力范围。",
         "evidence_failure": "这需要先核验证据，不能直接下结论。",
         "plan_failure": "这更像是计划没有带来改善，需要修复或重规划。",
         "execution_failure": "这更像是执行路径或工具路线失败。",
