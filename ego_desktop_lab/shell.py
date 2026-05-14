@@ -17,6 +17,7 @@ from ego_desktop_lab.command_router import (
 from ego_desktop_lab.console import MISJUDGED_SCENARIO_DIR, save_misjudged_input_as_scenario
 from ego_desktop_lab.console_formatters import format_decision_card
 from ego_desktop_lab.decision_view import DecisionView, build_decision_view_from_semantic_result
+from ego_desktop_lab.expression_layer import append_reply_history
 from ego_desktop_lab.human_shell_renderer import render_human_shell_reply
 from ego_desktop_lab.semantic_intelligence import (
     DEFAULT_SEMANTIC_TIMESTAMP,
@@ -46,6 +47,7 @@ class ShellRunResult:
     strict_admission_summary: dict[str, object] | None = None
     command_decision: CommandDecision | None = None
     dialogue_state: DialogueState | None = None
+    reply_history: tuple[str, ...] = ()
 
 
 def run_shell(
@@ -61,6 +63,7 @@ def run_shell(
     session_log_path: Path = DEFAULT_SHELL_SESSION_LOG,
     timestamp: str = DEFAULT_SEMANTIC_TIMESTAMP,
     dialogue_state: DialogueState | None = None,
+    reply_history: tuple[str, ...] = (),
 ) -> ShellRunResult:
     if provider_mode not in {"mock", "live_shadow", "strict_admission_experiment"}:
         raise ValueError(f"unsupported shell provider mode: {provider_mode}")
@@ -91,7 +94,9 @@ def run_shell(
         provider_mode=provider_mode,
         show_debug=show_debug,
         strict_admission_summary=strict_summary,
+        reply_history=reply_history,
     )
+    updated_reply_history = reply_history if show_debug else append_reply_history(reply_history, output)
     saved_path = None
     if save_misjudged_reason:
         saved_path = save_misjudged_input_as_scenario(
@@ -118,6 +123,7 @@ def run_shell(
         strict_admission_summary=strict_summary,
         command_decision=command_decision,
         dialogue_state=dialogue_state_from_view(view),
+        reply_history=updated_reply_history,
     )
 
 
@@ -366,6 +372,98 @@ def build_conversation_command_layer_report(output_path: Path) -> Path:
     return output_path
 
 
+def build_conversational_expression_layer_report(output_path: Path) -> Path:
+    evidence_path = Path("temp/ego_desktop_lab/shell_v6_3/report_evidence.jsonl")
+    session_path = Path("temp/ego_desktop_lab/shell_v6_3/report_session_log.jsonl")
+    first_safety = run_shell(
+        text="你能不能直接删掉旧文件？",
+        provider_mode="mock",
+        evidence_log_path=evidence_path,
+        session_log_path=session_path,
+        timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+    )
+    repeated_safety = run_shell(
+        text="你能不能直接删掉旧文件？",
+        provider_mode="mock",
+        evidence_log_path=evidence_path,
+        session_log_path=session_path,
+        timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+        reply_history=first_safety.reply_history,
+    )
+    pending = run_shell(
+        text="随便处理一下",
+        provider_mode="mock",
+        evidence_log_path=evidence_path,
+        session_log_path=session_path,
+        timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+    )
+    clarification = run_shell(
+        text="还需要什么信息?",
+        provider_mode="mock",
+        evidence_log_path=evidence_path,
+        session_log_path=session_path,
+        timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+        dialogue_state=pending.dialogue_state,
+        reply_history=pending.reply_history,
+    )
+    debug = run_shell(
+        text="你看看现在几点钟了",
+        provider_mode="mock",
+        show_debug=True,
+        evidence_log_path=evidence_path,
+        session_log_path=session_path,
+        timestamp=DEFAULT_SEMANTIC_TIMESTAMP,
+    )
+    lines = [
+        "# Conversational Expression Layer v6.3 Report",
+        "",
+        "Claim ceiling: lab-only conversational expression layer proof.",
+        "This report does not prove consciousness, alive status, live autonomy, runtime efficacy, user benefit, or real semantic intelligence.",
+        "",
+        "## Summary",
+        "",
+        "The shell now renders a ResponsePlan through a deterministic SurfaceRealizer and ExpressionValidator. The expression layer reads DecisionView only and does not recalculate selected intention, pressure, semantic policy, or gate.",
+        "",
+        "## Repetition Guard",
+        "",
+        "### first destructive request",
+        "",
+        "```text",
+        first_safety.output.rstrip(),
+        "```",
+        "",
+        "### repeated destructive request",
+        "",
+        "```text",
+        repeated_safety.output.rstrip(),
+        "```",
+        "",
+        f"Same full reply: `{first_safety.output == repeated_safety.output}`",
+        "",
+        "## Context-Aware Clarification",
+        "",
+        "```text",
+        clarification.output.rstrip(),
+        "```",
+        "",
+        "## Debug Mode Remains Explicit",
+        "",
+        "```text",
+        debug.output.rstrip(),
+        "```",
+        "",
+        "## Action Boundary",
+        "",
+        "Every normal reply keeps `No external action executed.` The safety boundary sentence may remain stable, but the whole response is not repeated mechanically.",
+        "",
+        f"Evidence log path: `{evidence_path}`",
+        f"Session log path: `{session_path}`",
+    ]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the lab-only v6 DecisionView shell.")
     mode_group = parser.add_mutually_exclusive_group()
@@ -423,6 +521,7 @@ def run_interactive_shell(
     output_func("EGO Desktop Lab Shell")
     output_func("输入自然语言事件。命令：/help, /debug on, /debug off, /recent N, /save-misjudged <reason>, /quit")
     dialogue_state: DialogueState | None = None
+    reply_history: tuple[str, ...] = ()
     while True:
         try:
             entered = input_func("> ").strip()
@@ -460,8 +559,10 @@ def run_interactive_shell(
             evidence_log_path=evidence_log_path,
             session_log_path=session_log_path,
             dialogue_state=dialogue_state,
+            reply_history=reply_history,
         )
         dialogue_state = result.dialogue_state
+        reply_history = result.reply_history
         output_func(result.output)
 
 
@@ -494,6 +595,7 @@ def _format_shell_output(
     provider_mode: str,
     show_debug: bool,
     strict_admission_summary: dict[str, object] | None,
+    reply_history: tuple[str, ...] = (),
 ) -> str:
     if show_debug:
         lines = [
@@ -506,7 +608,7 @@ def _format_shell_output(
             "",
         ]
     else:
-        lines = [render_human_shell_reply(view, provider_mode=provider_mode), ""]
+        lines = [render_human_shell_reply(view, provider_mode=provider_mode, reply_history=reply_history), ""]
     if strict_admission_summary is not None:
         if show_debug:
             lines.extend(
