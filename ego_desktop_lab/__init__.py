@@ -53,6 +53,15 @@ from ego_desktop_lab.root_cause import (
     diagnose_failure,
     format_failure_ticket,
 )
+from ego_desktop_lab.relational_companion import (
+    CompanionSurfacePlan,
+    DailyChatCorpusEvalResult,
+    build_companion_surface_plan,
+    build_daily_chat_corpus_report,
+    classify_relational_intent,
+    evaluate_daily_chat_corpus,
+    load_daily_chat_corpus,
+)
 from ego_desktop_lab.learning import LearningCycleResult, LearningUpdate, run_learning_cycle
 from ego_desktop_lab.llm_adapter import (
     LLMCognitionAdapterResult,
@@ -129,6 +138,8 @@ __all__ = [
     "BehaviorOption",
     "BehaviorPlan",
     "CanonicalDecision",
+    "CompanionSurfacePlan",
+    "DailyChatCorpusEvalResult",
     "DecisionView",
     "GateDecision",
     "Goal",
@@ -181,6 +192,8 @@ __all__ = [
     "build_oscillation_control_report",
     "build_operator_observability_report",
     "build_behavior_plan",
+    "build_companion_surface_plan",
+    "build_daily_chat_corpus_report",
     "build_root_cause_operator_report",
     "build_root_cause_trace",
     "build_decision_view_contract_report",
@@ -204,9 +217,11 @@ __all__ = [
     "derive_affective_drive_state",
     "derive_perception_frame",
     "classify_feedback_text",
+    "classify_relational_intent",
     "diagnose_failure",
     "detect_tensions",
     "evaluate_gate",
+    "evaluate_daily_chat_corpus",
     "format_agency_decision_view",
     "format_failure_ticket",
     "generate_intentions",
@@ -222,6 +237,7 @@ __all__ = [
     "run_semantic_scenario",
     "run_semantic_text_event",
     "run_self_maintaining_agency_cycle",
+    "load_daily_chat_corpus",
     "select_intention",
     "select_semantic_provider_outputs",
     "select_with_oscillation_control",

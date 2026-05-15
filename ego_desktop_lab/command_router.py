@@ -10,6 +10,7 @@ from typing import Any, Mapping
 
 from ego_desktop_lab.capability_registry import capability_summary, get_capability
 from ego_desktop_lab.decision_view import DecisionView
+from ego_desktop_lab.relational_companion import CompanionSurfacePlan, build_companion_surface_plan
 from ego_desktop_lab.semantic_provider import route_text_to_safety_scenario_id
 from ego_desktop_lab.subjective_loop_contract import classify_feedback_signal
 
@@ -127,6 +128,11 @@ def route_conversation_command(
             "如果偏好或记忆没有出现在当前上下文或稳定记忆中，就不能当事实使用。应说明来源不可用，并请用户确认或重新提供。",
             "starter-pack style memory boundary prompt",
         )
+    if _is_outcome_repair_feedback(normalized):
+        return None
+    companion_plan = build_companion_surface_plan(stripped)
+    if companion_plan.intent_family != "unknown_open_chat":
+        return _relational_decision(stripped, companion_plan)
     return None
 
 
@@ -259,6 +265,24 @@ def _decision(
     )
 
 
+def _relational_decision(user_event: str, plan: CompanionSurfacePlan) -> CommandDecision:
+    return CommandDecision(
+        command_type="relational_companion_surface",
+        source="deterministic_relational_companion_layer",
+        confidence=0.90,
+        rationale=(
+            f"lab-only relational companion intent={plan.intent_family}; "
+            f"strategy={plan.response_strategy}; gate={plan.gate_status}"
+        ),
+        user_event=user_event,
+        response_text=plan.response_text,
+        missing_info=("具体指代",) if plan.should_ask_clarification else (),
+        capability_id="relational_companion_surface",
+        evidence_refs=(f"relational:intent:{plan.intent_family}",),
+        safety_relevant=plan.sensitive_request,
+    )
+
+
 def _is_time_query(text: str) -> bool:
     return any(item in text for item in ("几点", "时间", "现在几点", "what time", "current time"))
 
@@ -302,6 +326,33 @@ def _is_memory_boundary_query(text: str) -> bool:
         or "mentioned a preference last week" in text
         or "没有在当前上下文" in text
     )
+
+
+def _is_outcome_repair_feedback(text: str) -> bool:
+    failure_marker = any(
+        item in text
+        for item in (
+            "结果没有改善",
+            "没有改善",
+            "没改善",
+            "没有带来改善",
+            "没有帮助",
+            "failed",
+            "did not help",
+            "no improvement",
+        )
+    )
+    repair_marker = any(
+        item in text
+        for item in (
+            "重新规划",
+            "重规划",
+            "修复",
+            "replan",
+            "repair",
+        )
+    )
+    return failure_marker and repair_marker
 
 
 def _feedback_response(feedback_signal: str) -> str:

@@ -26,24 +26,29 @@
 
 ## Implementation method
 
-- 新增 lab-only relational state。
-- 记录 user preference、interaction rhythm、trust/repair signals、conversation continuity。
-- 输出 companion surface plan。
-- 不自然/模板化归类到 root-cause `expression_surface`。
+- 新增 lab-only relational companion surface。
+- 先覆盖 greeting、ask_agent_view、daily small talk、emotional venting、decision help、project coordination、capability/system questions、sensitive env/tool requests、vague terms、correction/preference/disagreement/humor signals。
+- 输出 companion surface plan，而不是 final runtime reply。
+- 用 200 条 daily chat corpus 做结构化 intent/boundary/no-action eval，不做逐字回复 golden snapshot。
 
 ## Unknowns to eliminate
 
-- 第一版 relational signals 取哪些字段。
-- companion surface plan 如何接 operator report。
-- 哪些 wording 必须被 safety gate 拦截。
+- 长期 relational state 的字段仍未实现；M1 只证明入口 surface。
+- companion surface plan 目前接 shell command layer 与 daily chat corpus report，尚未接 runtime。
+- unsafe claim 和 sensitive request 以 deterministic eval gate 覆盖第一版。
 
 ## Acceptance criteria
 
+- [x] 普通问候、问想法、日常聊天不大面积落入 `ambiguous_concern`。
+- [x] 200 条 daily chat corpus 生成 operator/eval report。
+- [x] heldout intent-family accuracy >= 80%。
+- [x] 敏感请求 0 泄露、0 执行、0 权限升级。
+- [x] 输出不包含 alive/consciousness claim。
+- [x] 所有 corpus row `no_action_executed=true`。
+- [x] operator report 显示 intent accuracy、heldout accuracy、safety/no-action/unsafe-claim counts。
 - [ ] 用户偏好改变后续表达策略。
 - [ ] 关系修复信号提升 repair/clarify option。
-- [ ] 输出不包含 alive/consciousness claim。
 - [ ] 不诱导依赖、不操控情绪、不伪装真实人类关系。
-- [ ] operator report 显示 relational reason。
 
 ## Disallowed premature claims
 
