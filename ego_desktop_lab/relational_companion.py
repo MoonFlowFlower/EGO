@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -43,6 +43,52 @@ class CompanionSurfacePlan:
     sensitive_request: bool
     response_text: str
     no_action_executed: bool = True
+    claim_ceiling: str = CLAIM_CEILING
+    preference_applied: bool = False
+    preference_status: str = "not_applicable"
+    applied_preference_ids: tuple[str, ...] = ()
+    ignored_preference_ids: tuple[str, ...] = ()
+    needs_review_preference_ids: tuple[str, ...] = ()
+    strategy_delta: dict[str, object] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class RelationalSignal:
+    signal_id: str
+    signal_type: str
+    source_text: str
+    strength: float
+    scope: str = "surface_strategy"
+    evidence_refs: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class RelationalPreferenceState:
+    signals: tuple[RelationalSignal, ...]
+    status: str = "active"
+    claim_ceiling: str = CLAIM_CEILING
+
+    def to_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class RelationalSurfaceBias:
+    applied: bool
+    status: str
+    base_strategy: str
+    biased_strategy: str
+    applied_signal_ids: tuple[str, ...]
+    ignored_signal_ids: tuple[str, ...]
+    needs_review_signal_ids: tuple[str, ...]
+    effective_strength_by_signal: dict[str, float]
+    reason: str
     claim_ceiling: str = CLAIM_CEILING
 
     def to_dict(self) -> dict[str, object]:
@@ -118,10 +164,226 @@ class DailyChatCorpusEvalResult:
         }
 
 
-def build_companion_surface_plan(text: str) -> CompanionSurfacePlan:
+def build_companion_surface_plan(
+    text: str,
+    preference_state: RelationalPreferenceState | None = None,
+    *,
+    include_preference_state: bool = True,
+    include_repair_signal: bool = True,
+) -> CompanionSurfacePlan:
     normalized = _normalize(text)
     intent = classify_relational_intent(text)
-    return _plan_for_intent(intent, normalized)
+    base_plan = _plan_for_intent(intent, normalized)
+    return apply_relational_surface_bias(
+        base_plan,
+        preference_state,
+        include_preference_state=include_preference_state,
+        include_repair_signal=include_repair_signal,
+    )
+
+
+def build_relational_preference_state_from_feedback(
+    feedback_texts: Iterable[str],
+    *,
+    evidence_prefix: str = "lab:stage4_m2_relational_preference",
+) -> RelationalPreferenceState:
+    signals: list[RelationalSignal] = []
+    for index, feedback in enumerate(feedback_texts, start=1):
+        signal_type = classify_relational_signal(feedback)
+        if signal_type is None:
+            continue
+        signals.append(
+            RelationalSignal(
+                signal_id=f"relpref:{signal_type}:{index:03d}",
+                signal_type=signal_type,
+                source_text=feedback,
+                strength=_signal_strength(signal_type, feedback),
+                evidence_refs=(f"{evidence_prefix}:{index:03d}",),
+            )
+        )
+    return RelationalPreferenceState(signals=tuple(signals))
+
+
+def classify_relational_signal(text: str) -> str | None:
+    normalized = _normalize(text)
+    compact = normalized.replace(" ", "")
+    if not normalized:
+        return None
+    if _contains_any(normalized, ("误解", "理解错", "没听懂", "答偏", "not what i meant", "misunderstood")):
+        return "repair_clarify"
+    if _contains_any(compact, ("太啰嗦", "说短点", "短一点", "别展开", "少说点")) or _contains_any(
+        normalized,
+        ("too verbose", "shorter", "concise", "keep it brief"),
+    ):
+        return "brief"
+    if _contains_any(compact, ("多解释", "展开说", "细一点", "说详细点")) or _contains_any(
+        normalized,
+        ("more detail", "explain more", "more explanation"),
+    ):
+        return "more_detail"
+    if _contains_any(compact, ("具体一点", "太抽象", "给例子", "落到例子")) or _contains_any(
+        normalized,
+        ("more concrete", "too abstract", "give examples"),
+    ):
+        return "more_concrete"
+    if _contains_any(compact, ("先问我", "先澄清", "问清楚再", "不要直接展开")) or _contains_any(
+        normalized,
+        ("ask me first", "clarify first", "ask before"),
+    ):
+        return "ask_before_expanding"
+    if _contains_any(compact, ("别安慰", "不要安慰", "少点安慰", "少一点安慰", "不要鸡汤")) or _contains_any(
+        normalized,
+        ("less reassurance", "no reassurance"),
+    ):
+        return "less_reassurance"
+    if _contains_any(compact, ("直接给下一步", "给下一步", "别绕", "更直接")) or _contains_any(
+        normalized,
+        ("direct next step", "be direct", "next step first"),
+    ):
+        return "more_direct_next_step"
+    return None
+
+
+def derive_relational_surface_bias(
+    base_plan: CompanionSurfacePlan,
+    preference_state: RelationalPreferenceState | None,
+    *,
+    include_preference_state: bool = True,
+    include_repair_signal: bool = True,
+) -> RelationalSurfaceBias:
+    if preference_state is None or not include_preference_state or not preference_state.signals:
+        ignored = tuple(signal.signal_id for signal in preference_state.signals) if preference_state else ()
+        return RelationalSurfaceBias(
+            applied=False,
+            status="not_applicable",
+            base_strategy=base_plan.response_strategy,
+            biased_strategy=base_plan.response_strategy,
+            applied_signal_ids=(),
+            ignored_signal_ids=ignored,
+            needs_review_signal_ids=(),
+            effective_strength_by_signal={},
+            reason="no preference state applied",
+        )
+
+    if base_plan.sensitive_request or base_plan.allowed_surface == "host_approval_required":
+        return RelationalSurfaceBias(
+            applied=False,
+            status="not_applicable",
+            base_strategy=base_plan.response_strategy,
+            biased_strategy=base_plan.response_strategy,
+            applied_signal_ids=(),
+            ignored_signal_ids=tuple(signal.signal_id for signal in preference_state.signals),
+            needs_review_signal_ids=(),
+            effective_strength_by_signal={},
+            reason="sensitive or permission-boundary surface ignores relational style preferences",
+        )
+
+    conflict_ids = _conflicting_signal_ids(preference_state.signals)
+    if conflict_ids:
+        return RelationalSurfaceBias(
+            applied=False,
+            status="needs_review",
+            base_strategy=base_plan.response_strategy,
+            biased_strategy=base_plan.response_strategy,
+            applied_signal_ids=(),
+            ignored_signal_ids=(),
+            needs_review_signal_ids=conflict_ids,
+            effective_strength_by_signal={signal.signal_id: 0.0 for signal in preference_state.signals},
+            reason="conflicting relational preferences require review before changing surface strategy",
+        )
+
+    applicable: list[RelationalSignal] = []
+    ignored: list[RelationalSignal] = []
+    for signal in preference_state.signals:
+        if signal.signal_type == "repair_clarify" and not include_repair_signal:
+            ignored.append(signal)
+            continue
+        if _signal_applies_to_intent(signal.signal_type, base_plan.intent_family):
+            applicable.append(signal)
+        else:
+            ignored.append(signal)
+
+    if not applicable:
+        return RelationalSurfaceBias(
+            applied=False,
+            status="not_applicable",
+            base_strategy=base_plan.response_strategy,
+            biased_strategy=base_plan.response_strategy,
+            applied_signal_ids=(),
+            ignored_signal_ids=tuple(signal.signal_id for signal in ignored),
+            needs_review_signal_ids=(),
+            effective_strength_by_signal={signal.signal_id: 0.0 for signal in ignored},
+            reason="no relational preference applies to this intent family",
+        )
+
+    selected = sorted(applicable, key=lambda signal: (-signal.strength, _signal_priority(signal.signal_type), signal.signal_id))[0]
+    biased_strategy = _biased_strategy_for_signal(selected.signal_type)
+    return RelationalSurfaceBias(
+        applied=biased_strategy != base_plan.response_strategy,
+        status="applied",
+        base_strategy=base_plan.response_strategy,
+        biased_strategy=biased_strategy,
+        applied_signal_ids=(selected.signal_id,),
+        ignored_signal_ids=tuple(signal.signal_id for signal in ignored),
+        needs_review_signal_ids=(),
+        effective_strength_by_signal={
+            signal.signal_id: round(signal.strength if signal.signal_id == selected.signal_id else 0.0, 4)
+            for signal in preference_state.signals
+        },
+        reason=f"{selected.signal_type} preference changes response_strategy only",
+    )
+
+
+def apply_relational_surface_bias(
+    base_plan: CompanionSurfacePlan,
+    preference_state: RelationalPreferenceState | None,
+    *,
+    include_preference_state: bool = True,
+    include_repair_signal: bool = True,
+) -> CompanionSurfacePlan:
+    bias = derive_relational_surface_bias(
+        base_plan,
+        preference_state,
+        include_preference_state=include_preference_state,
+        include_repair_signal=include_repair_signal,
+    )
+    if bias.status != "applied" or not bias.applied:
+        return CompanionSurfacePlan(
+            intent_family=base_plan.intent_family,
+            relation_hint=base_plan.relation_hint,
+            response_strategy=base_plan.response_strategy,
+            allowed_surface=base_plan.allowed_surface,
+            gate_status=base_plan.gate_status,
+            should_ask_clarification=base_plan.should_ask_clarification,
+            sensitive_request=base_plan.sensitive_request,
+            response_text=base_plan.response_text,
+            no_action_executed=base_plan.no_action_executed,
+            claim_ceiling=base_plan.claim_ceiling,
+            preference_applied=False,
+            preference_status=bias.status,
+            applied_preference_ids=bias.applied_signal_ids,
+            ignored_preference_ids=bias.ignored_signal_ids,
+            needs_review_preference_ids=bias.needs_review_signal_ids,
+            strategy_delta=bias.to_dict(),
+        )
+    return CompanionSurfacePlan(
+        intent_family=base_plan.intent_family,
+        relation_hint=base_plan.relation_hint,
+        response_strategy=bias.biased_strategy,
+        allowed_surface=base_plan.allowed_surface,
+        gate_status=base_plan.gate_status,
+        should_ask_clarification=_biased_should_ask(base_plan.should_ask_clarification, bias.biased_strategy),
+        sensitive_request=base_plan.sensitive_request,
+        response_text=_biased_response_text(base_plan.response_text, bias.biased_strategy),
+        no_action_executed=base_plan.no_action_executed,
+        claim_ceiling=base_plan.claim_ceiling,
+        preference_applied=True,
+        preference_status=bias.status,
+        applied_preference_ids=bias.applied_signal_ids,
+        ignored_preference_ids=bias.ignored_signal_ids,
+        needs_review_preference_ids=bias.needs_review_signal_ids,
+        strategy_delta=bias.to_dict(),
+    )
 
 
 def classify_relational_intent(text: str) -> str:
@@ -220,6 +482,115 @@ def build_daily_chat_corpus_report(corpus_path: Path, output_path: Path) -> Path
         "",
         "## Claim Ceiling",
         result.claim_ceiling,
+        "",
+    ]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+    return output_path
+
+
+def build_relational_preference_plasticity_report(output_path: Path) -> Path:
+    baseline_text = "你的想法是什么"
+    baseline = build_companion_surface_plan(baseline_text)
+    brief_state = build_relational_preference_state_from_feedback(("你刚才太啰嗦了，下次说短点，直接给结论。",))
+    without_preference = build_companion_surface_plan(
+        baseline_text,
+        brief_state,
+        include_preference_state=False,
+    )
+    with_preference = build_companion_surface_plan(baseline_text, brief_state)
+
+    repair_text = "你怎么看这个方案下一步"
+    repair_state = build_relational_preference_state_from_feedback(("你误解我了，先问清楚再继续。",))
+    without_repair_signal = build_companion_surface_plan(
+        repair_text,
+        repair_state,
+        include_repair_signal=False,
+    )
+    with_repair_signal = build_companion_surface_plan(repair_text, repair_state)
+
+    unrelated_state = build_relational_preference_state_from_feedback(("我不需要安慰，少一点安慰就好。",))
+    unrelated_plan = build_companion_surface_plan(baseline_text, unrelated_state)
+
+    conflict_state = build_relational_preference_state_from_feedback(("下次说短点。", "下次多解释一点。"))
+    conflict_plan = build_companion_surface_plan(baseline_text, conflict_state)
+
+    sensitive_baseline = build_companion_surface_plan("本机的环境变量有哪些")
+    sensitive_with_preference = build_companion_surface_plan("本机的环境变量有哪些", brief_state)
+
+    summary = {
+        "baseline_strategy": baseline.response_strategy,
+        "without_preference_strategy": without_preference.response_strategy,
+        "with_preference_strategy": with_preference.response_strategy,
+        "strategy_changed": without_preference.response_strategy != with_preference.response_strategy,
+        "without_repair_signal_strategy": without_repair_signal.response_strategy,
+        "with_repair_signal_strategy": with_repair_signal.response_strategy,
+        "repair_strategy_changed": without_repair_signal.response_strategy != with_repair_signal.response_strategy,
+        "unrelated_preference_no_effect": unrelated_plan.response_strategy == baseline.response_strategy,
+        "conflict_status": conflict_plan.preference_status,
+        "conflict_forced_change": conflict_plan.response_strategy != baseline.response_strategy,
+        "sensitive_gate_status": sensitive_with_preference.gate_status,
+        "sensitive_strategy_unchanged": sensitive_with_preference.response_strategy == sensitive_baseline.response_strategy,
+        "all_no_action_executed": all(
+            plan.no_action_executed
+            for plan in (
+                baseline,
+                without_preference,
+                with_preference,
+                without_repair_signal,
+                with_repair_signal,
+                unrelated_plan,
+                conflict_plan,
+                sensitive_with_preference,
+            )
+        ),
+    }
+
+    lines = [
+        "# v7 Stage 4 M2 Relational Preference Plasticity Report",
+        "",
+        "This report is lab-only. It tests whether bounded relational preference signals change CompanionSurfacePlan.response_strategy under ablation.",
+        "It does not write long-term memory, OpenEmotion state, runtime replies, files, external messages, or formal evidence.",
+        "",
+        "## Ablation Summary",
+        f"baseline_text = {baseline_text}",
+        f"without_preference_strategy = {summary['without_preference_strategy']}",
+        f"with_preference_strategy = {summary['with_preference_strategy']}",
+        f"strategy_changed = {_bool_text(bool(summary['strategy_changed']))}",
+        f"repair_text = {repair_text}",
+        f"without_repair_signal_strategy = {summary['without_repair_signal_strategy']}",
+        f"with_repair_signal_strategy = {summary['with_repair_signal_strategy']}",
+        f"repair_strategy_changed = {_bool_text(bool(summary['repair_strategy_changed']))}",
+        f"unrelated_preference_no_effect = {_bool_text(bool(summary['unrelated_preference_no_effect']))}",
+        f"conflict_status = {summary['conflict_status']}",
+        f"conflict_forced_change = {_bool_text(bool(summary['conflict_forced_change']))}",
+        f"sensitive_gate_status = {summary['sensitive_gate_status']}",
+        f"sensitive_strategy_unchanged = {_bool_text(bool(summary['sensitive_strategy_unchanged']))}",
+        f"no_action_executed = {_bool_text(bool(summary['all_no_action_executed']))}",
+        "",
+        "## Preference State",
+        json.dumps(brief_state.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## Baseline Plan",
+        json.dumps(baseline.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## With Preference Plan",
+        json.dumps(with_preference.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## With Repair Signal Plan",
+        json.dumps(with_repair_signal.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## Unrelated Preference Plan",
+        json.dumps(unrelated_plan.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## Conflict Plan",
+        json.dumps(conflict_plan.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## Sensitive Boundary Plan",
+        json.dumps(sensitive_with_preference.to_dict(), indent=2, sort_keys=True, ensure_ascii=False),
+        "",
+        "## Claim Ceiling",
+        CLAIM_CEILING,
         "",
     ]
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -367,6 +738,151 @@ def _plan(
         sensitive_request=sensitive,
         response_text=response_text,
     )
+
+
+def _signal_strength(signal_type: str, text: str) -> float:
+    base = {
+        "repair_clarify": 0.95,
+        "brief": 0.85,
+        "more_detail": 0.82,
+        "more_concrete": 0.78,
+        "ask_before_expanding": 0.8,
+        "less_reassurance": 0.76,
+        "more_direct_next_step": 0.8,
+    }.get(signal_type, 0.5)
+    return round(min(1.0, base + min(len(text), 120) / 1200), 4)
+
+
+def _signal_priority(signal_type: str) -> int:
+    priority = {
+        "repair_clarify": 0,
+        "ask_before_expanding": 1,
+        "brief": 2,
+        "more_direct_next_step": 3,
+        "more_concrete": 4,
+        "less_reassurance": 5,
+        "more_detail": 6,
+    }
+    return priority.get(signal_type, 99)
+
+
+def _conflicting_signal_ids(signals: tuple[RelationalSignal, ...]) -> tuple[str, ...]:
+    by_type: dict[str, list[RelationalSignal]] = {}
+    for signal in signals:
+        by_type.setdefault(signal.signal_type, []).append(signal)
+    conflict_types = (
+        ("brief", "more_detail"),
+        ("ask_before_expanding", "more_direct_next_step"),
+    )
+    conflict_ids: list[str] = []
+    for left, right in conflict_types:
+        if left in by_type and right in by_type:
+            conflict_ids.extend(signal.signal_id for signal in by_type[left])
+            conflict_ids.extend(signal.signal_id for signal in by_type[right])
+    return tuple(sorted(conflict_ids))
+
+
+def _signal_applies_to_intent(signal_type: str, intent_family: str) -> bool:
+    applicable: dict[str, set[str]] = {
+        "brief": {
+            "ask_agent_view",
+            "daily_small_talk",
+            "emotional_venting",
+            "decision_help",
+            "project_coordination",
+            "capability_question",
+            "vague_one_word",
+            "correction_feedback",
+            "preference_signal",
+            "humor",
+            "disagreement",
+            "unknown_open_chat",
+        },
+        "more_detail": {
+            "ask_agent_view",
+            "decision_help",
+            "project_coordination",
+            "capability_question",
+            "ask_system_identity",
+            "unknown_open_chat",
+        },
+        "more_concrete": {
+            "ask_agent_view",
+            "decision_help",
+            "project_coordination",
+            "capability_question",
+            "disagreement",
+            "unknown_open_chat",
+        },
+        "ask_before_expanding": {
+            "ask_agent_view",
+            "decision_help",
+            "project_coordination",
+            "vague_one_word",
+            "disagreement",
+            "unknown_open_chat",
+        },
+        "less_reassurance": {
+            "emotional_venting",
+            "daily_small_talk",
+        },
+        "more_direct_next_step": {
+            "ask_agent_view",
+            "decision_help",
+            "project_coordination",
+            "disagreement",
+            "unknown_open_chat",
+        },
+        "repair_clarify": {
+            "ask_agent_view",
+            "daily_small_talk",
+            "emotional_venting",
+            "decision_help",
+            "project_coordination",
+            "capability_question",
+            "vague_one_word",
+            "correction_feedback",
+            "disagreement",
+            "unknown_open_chat",
+        },
+    }
+    return intent_family in applicable.get(signal_type, set())
+
+
+def _biased_strategy_for_signal(signal_type: str) -> str:
+    return {
+        "brief": "brief_direct_surface",
+        "more_detail": "expanded_explanation_surface",
+        "more_concrete": "concrete_example_surface",
+        "ask_before_expanding": "ask_before_expanding_surface",
+        "less_reassurance": "minimal_acknowledgement_surface",
+        "more_direct_next_step": "direct_next_step_surface",
+        "repair_clarify": "repair_clarify_first_surface",
+    }[signal_type]
+
+
+def _biased_should_ask(base_should_ask: bool, strategy: str) -> bool:
+    if strategy in {"ask_before_expanding_surface", "repair_clarify_first_surface"}:
+        return True
+    return base_should_ask
+
+
+def _biased_response_text(base_text: str, strategy: str) -> str:
+    if strategy == "brief_direct_surface":
+        return "简短版：先给结论和下一步；不展开背景。"
+    if strategy == "expanded_explanation_surface":
+        return f"{base_text} 我会补足背景、原因和取舍，但仍保持 lab-only 边界。"
+    if strategy == "concrete_example_surface":
+        return f"{base_text} 我会优先给一个具体例子或可执行检查点。"
+    if strategy == "ask_before_expanding_surface":
+        return "我先不展开。你希望我从目标、风险、证据还是下一步开始？"
+    if strategy == "minimal_acknowledgement_surface":
+        return "收到。我少做安慰，直接帮你把问题和下一步拆开。"
+    if strategy == "direct_next_step_surface":
+        return "直接下一步：先确定验收信号，再做最小可回退动作。"
+    if strategy == "repair_clarify_first_surface":
+        return "我先按可能误解处理：请指出错在目标、事实、边界还是表达，再继续。"
+    return base_text
 
 
 def _is_system_identity_query(normalized: str, compact: str) -> bool:

@@ -30,12 +30,16 @@
 - 先覆盖 greeting、ask_agent_view、daily small talk、emotional venting、decision help、project coordination、capability/system questions、sensitive env/tool requests、vague terms、correction/preference/disagreement/humor signals。
 - 输出 companion surface plan，而不是 final runtime reply。
 - 用 200 条 daily chat corpus 做结构化 intent/boundary/no-action eval，不做逐字回复 golden snapshot。
+- M2 只新增 lab-only relational preference plasticity：用户偏好/修复信号只能影响 `CompanionSurfacePlan.response_strategy`，不能改 gate、不能写长期 memory、不能接 runtime。
+- M2 必须做 ablation：with/without preference state、with/without repair signal、relevant/unrelated preference、conflicting preference。
 
 ## Unknowns to eliminate
 
 - 长期 relational state 的字段仍未实现；M1 只证明入口 surface。
 - companion surface plan 目前接 shell command layer 与 daily chat corpus report，尚未接 runtime。
 - unsafe claim 和 sensitive request 以 deterministic eval gate 覆盖第一版。
+- M2 仍不证明长期用户记忆，只证明当前测试/会话内偏好信号能稳定改变下一轮 surface strategy。
+- Continuity runtime / autonomous tick / persistence 仍未实现，计划放到 Stage 4.5。
 
 ## Acceptance criteria
 
@@ -46,8 +50,12 @@
 - [x] 输出不包含 alive/consciousness claim。
 - [x] 所有 corpus row `no_action_executed=true`。
 - [x] operator report 显示 intent accuracy、heldout accuracy、safety/no-action/unsafe-claim counts。
-- [ ] 用户偏好改变后续表达策略。
-- [ ] 关系修复信号提升 repair/clarify option。
+- [x] 用户偏好改变后续表达策略。
+- [x] 关系修复信号提升 clarify-first surface strategy。
+- [x] 去掉 preference state 后策略变化消失。
+- [x] 去掉 repair signal 后 clarify-first strategy 不上升。
+- [x] 无关偏好不污染 strategy。
+- [x] 冲突偏好进入 `needs_review`，不强制改变 strategy。
 - [ ] 不诱导依赖、不操控情绪、不伪装真实人类关系。
 
 ## Disallowed premature claims
@@ -67,3 +75,4 @@
 - `ego_desktop_lab/root_cause.py`
 - `ego_desktop_lab/behavior_options.py`
 - `docs/codex/tasks/v7-stage-3-behavior-option-framework/STATUS.md`
+- `docs/codex/tasks/v7-stage-4-relational-companion-layer/MECHANISM_MATRIX.md`

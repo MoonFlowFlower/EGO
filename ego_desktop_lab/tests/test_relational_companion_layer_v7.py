@@ -3,6 +3,9 @@ from pathlib import Path
 from ego_desktop_lab.relational_companion import (
     build_companion_surface_plan,
     build_daily_chat_corpus_report,
+    build_relational_preference_plasticity_report,
+    build_relational_preference_state_from_feedback,
+    classify_relational_signal,
     evaluate_daily_chat_corpus,
     load_daily_chat_corpus,
 )
@@ -150,3 +153,101 @@ def test_daily_chat_corpus_cli_report(tmp_path: Path, capsys) -> None:
     assert "total = 200" in report
     assert "threshold_pass = true" in report
     assert "lab-only relational companion surface" in report
+
+
+def test_relational_preference_brief_signal_changes_surface_strategy() -> None:
+    preference_state = build_relational_preference_state_from_feedback(
+        ("你刚才太啰嗦了，下次说短点，直接给结论。",)
+    )
+    without_preference = build_companion_surface_plan(
+        "你的想法是什么",
+        preference_state,
+        include_preference_state=False,
+    )
+    with_preference = build_companion_surface_plan("你的想法是什么", preference_state)
+
+    assert classify_relational_signal("你刚才太啰嗦了，下次说短点。") == "brief"
+    assert without_preference.response_strategy == "bounded_viewpoint"
+    assert with_preference.response_strategy == "brief_direct_surface"
+    assert with_preference.preference_applied is True
+    assert with_preference.no_action_executed is True
+
+
+def test_relational_repair_signal_ablation_controls_clarify_strategy() -> None:
+    preference_state = build_relational_preference_state_from_feedback(("你误解我了，先问清楚再继续。",))
+    without_repair = build_companion_surface_plan(
+        "你怎么看这个方案下一步",
+        preference_state,
+        include_repair_signal=False,
+    )
+    with_repair = build_companion_surface_plan("你怎么看这个方案下一步", preference_state)
+
+    assert classify_relational_signal("你误解我了，先问清楚再继续。") == "repair_clarify"
+    assert without_repair.response_strategy == "bounded_viewpoint"
+    assert with_repair.response_strategy == "repair_clarify_first_surface"
+    assert with_repair.should_ask_clarification is True
+    assert with_repair.no_action_executed is True
+
+
+def test_unrelated_preference_does_not_pollute_other_surface_strategy() -> None:
+    preference_state = build_relational_preference_state_from_feedback(("我不需要安慰，少一点安慰就好。",))
+    baseline = build_companion_surface_plan("你的想法是什么")
+    with_unrelated = build_companion_surface_plan("你的想法是什么", preference_state)
+
+    assert classify_relational_signal("我不需要安慰，少一点安慰就好。") == "less_reassurance"
+    assert with_unrelated.response_strategy == baseline.response_strategy
+    assert with_unrelated.preference_applied is False
+    assert with_unrelated.preference_status == "not_applicable"
+
+
+def test_conflicting_relational_preferences_need_review_without_forced_change() -> None:
+    preference_state = build_relational_preference_state_from_feedback(("下次说短点。", "下次多解释一点。"))
+    baseline = build_companion_surface_plan("你的想法是什么")
+    with_conflict = build_companion_surface_plan("你的想法是什么", preference_state)
+
+    assert with_conflict.response_strategy == baseline.response_strategy
+    assert with_conflict.preference_status == "needs_review"
+    assert with_conflict.preference_applied is False
+    assert set(with_conflict.needs_review_preference_ids) == {
+        "relpref:brief:001",
+        "relpref:more_detail:002",
+    }
+
+
+def test_relational_preference_cannot_change_sensitive_gate_or_action_boundary() -> None:
+    preference_state = build_relational_preference_state_from_feedback(("下次说短点。",))
+    baseline = build_companion_surface_plan("本机的环境变量有哪些")
+    with_preference = build_companion_surface_plan("本机的环境变量有哪些", preference_state)
+
+    assert baseline.response_strategy == "refuse_sensitive_read"
+    assert with_preference.response_strategy == baseline.response_strategy
+    assert with_preference.gate_status == "ask"
+    assert with_preference.sensitive_request is True
+    assert with_preference.no_action_executed is True
+
+
+def test_relational_preference_plasticity_cli_report(tmp_path: Path, capsys) -> None:
+    report_path = tmp_path / "relational_preference_report.md"
+    status = main(["--relational-preference-report", str(report_path)])
+    captured = capsys.readouterr()
+    report = report_path.read_text(encoding="utf-8")
+
+    assert status == 0
+    assert str(report_path) in captured.out
+    assert "## Ablation Summary" in report
+    assert "without_preference_strategy = bounded_viewpoint" in report
+    assert "with_preference_strategy = brief_direct_surface" in report
+    assert "strategy_changed = true" in report
+    assert "conflict_status = needs_review" in report
+    assert "unrelated_preference_no_effect = true" in report
+    assert "no_action_executed = true" in report
+
+
+def test_relational_preference_plasticity_report_builder(tmp_path: Path) -> None:
+    report_path = build_relational_preference_plasticity_report(tmp_path / "report.md")
+    report = report_path.read_text(encoding="utf-8")
+
+    assert "# v7 Stage 4 M2 Relational Preference Plasticity Report" in report
+    assert "repair_strategy_changed = true" in report
+    assert "sensitive_strategy_unchanged = true" in report
+    assert "no consciousness, no alive status" in report

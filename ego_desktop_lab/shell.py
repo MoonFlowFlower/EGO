@@ -36,7 +36,10 @@ from ego_desktop_lab.root_cause import (
     build_root_cause_trace,
     diagnose_failure,
 )
-from ego_desktop_lab.relational_companion import build_daily_chat_corpus_report
+from ego_desktop_lab.relational_companion import (
+    build_daily_chat_corpus_report,
+    build_relational_preference_plasticity_report,
+)
 from ego_desktop_lab.semantic_intelligence import (
     DEFAULT_SEMANTIC_TIMESTAMP,
     run_semantic_scenario,
@@ -1440,6 +1443,11 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         help="Write the v7 Stage 4 daily chat corpus eval report to this path.",
     )
+    parser.add_argument(
+        "--relational-preference-report",
+        type=Path,
+        help="Write the v7 Stage 4 M2 relational preference plasticity report to this path.",
+    )
     parser.add_argument("--show-debug", action="store_true", help="Show debug-only refs.")
     parser.add_argument("--save-misjudged", help="Save this input as a misjudged scenario fixture.")
     parser.add_argument("--recent", type=int, default=0, help="Show recent N controlled shell session records.")
@@ -1472,6 +1480,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.daily_chat_corpus is not None:
         report_path = args.daily_chat_corpus_report or Path("/tmp/ego_stage4_daily_chat_report.md")
         report_path = build_daily_chat_corpus_report(args.daily_chat_corpus, report_path)
+        print(report_path)
+        return 0
+    if args.relational_preference_report is not None:
+        report_path = build_relational_preference_plasticity_report(args.relational_preference_report)
         print(report_path)
         return 0
 
