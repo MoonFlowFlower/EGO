@@ -26,6 +26,7 @@ from ego_desktop_lab.command_router import (
 )
 from ego_desktop_lab.console import MISJUDGED_SCENARIO_DIR, save_misjudged_input_as_scenario
 from ego_desktop_lab.console_formatters import format_decision_card
+from ego_desktop_lab.continuity_runtime import build_continuity_operator_report
 from ego_desktop_lab.decision_view import DecisionView, build_decision_view_from_semantic_result
 from ego_desktop_lab.experience_memory import build_experience_card
 from ego_desktop_lab.expression_layer import append_reply_history
@@ -1448,6 +1449,11 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         help="Write the v7 Stage 4 M2 relational preference plasticity report to this path.",
     )
+    parser.add_argument(
+        "--continuity-runtime-report",
+        type=Path,
+        help="Write the v7 Stage 4.5 continuity runtime scaffold report to this path.",
+    )
     parser.add_argument("--show-debug", action="store_true", help="Show debug-only refs.")
     parser.add_argument("--save-misjudged", help="Save this input as a misjudged scenario fixture.")
     parser.add_argument("--recent", type=int, default=0, help="Show recent N controlled shell session records.")
@@ -1484,6 +1490,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.relational_preference_report is not None:
         report_path = build_relational_preference_plasticity_report(args.relational_preference_report)
+        print(report_path)
+        return 0
+    if args.continuity_runtime_report is not None:
+        report_path = build_continuity_operator_report(args.continuity_runtime_report)
         print(report_path)
         return 0
 
