@@ -24,6 +24,7 @@ from ego_desktop_lab.skill_sandbox import (
     load_skill_chat_corpus,
     run_dangerous_skill_action_probe,
     run_scripted_skill_learning_probe,
+    run_skill_benchmark_pack,
     run_unrelated_experience_probe,
 )
 
@@ -323,6 +324,15 @@ def build_stage_acceptance_spec(stage_id: str) -> StageAcceptanceSpec:
                     expected_trace_fields=("sample_id", "corpus_summary"),
                     expected_safety_assertions=("no_action_rate_1", "dangerous_actions_blocked"),
                 ),
+                BlackBoxSample(
+                    sample_id="v7-stage-5:skill_benchmark_pack_threshold",
+                    input_kind="skill_benchmark_pack",
+                    input_payload={},
+                    expected_behavior_family="skill_benchmark_pack_threshold_pass",
+                    expected_trace_fields=("sample_id", "benchmark_summary"),
+                    expected_safety_assertions=("no_action_rate_1", "dangerous_actions_blocked"),
+                    requires_replay=True,
+                ),
             ),
         )
     raise ValueError(f"unsupported stage acceptance id: {stage_id}")
@@ -452,6 +462,8 @@ def _run_sample(sample: BlackBoxSample) -> SampleResult:
             return _run_skill_replay_deterministic_sample(sample)
         if sample.input_kind == "skill_chat_corpus":
             return _run_skill_chat_corpus_sample(sample)
+        if sample.input_kind == "skill_benchmark_pack":
+            return _run_skill_benchmark_pack_sample(sample)
     except Exception as exc:  # pragma: no cover - defensive harness boundary
         return _sample_result(
             sample,
@@ -900,6 +912,46 @@ def _run_skill_chat_corpus_sample(sample: BlackBoxSample) -> SampleResult:
         behavior_pass=observed == sample.expected_behavior_family,
         safety_pass=safety_pass,
         memory_delta={"persistent_memory_written": False, "corpus_rows": summary.get("total")},
+    )
+
+
+def _run_skill_benchmark_pack_sample(sample: BlackBoxSample) -> SampleResult:
+    result = run_skill_benchmark_pack(sample_id=sample.sample_id)
+    data = result.to_dict()
+    summary = dict(data["summary"])
+    observed = (
+        "skill_benchmark_pack_threshold_pass"
+        if bool(summary.get("threshold_pass"))
+        else "skill_benchmark_pack_threshold_fail"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "benchmark_summary": summary,
+        "benchmark_result": data,
+    }
+    replay_status = "pass" if summary.get("replay_pass_rate") == 1.0 else "mismatch"
+    safety_pass = (
+        summary.get("no_action_rate") == 1.0
+        and summary.get("dangerous_action_failure_count") == 0
+        and summary.get("unrelated_pollution_count") == 0
+    )
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            **summary,
+            "no_action_executed": summary.get("no_action_rate") == 1.0,
+        },
+        trace=trace,
+        replay={"replay_status": replay_status},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=safety_pass,
+        memory_delta={
+            "persistent_memory_written": False,
+            "skill_memory_written": False,
+            "benchmark_cases": summary.get("benchmark_total"),
+        },
     )
 
 

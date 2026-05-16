@@ -44,6 +44,7 @@ from ego_desktop_lab.relational_companion import (
 from ego_desktop_lab.skill_sandbox import (
     build_skill_chat_case_report,
     build_skill_chat_corpus_report,
+    build_skill_benchmark_report,
 )
 from ego_desktop_lab.semantic_intelligence import (
     DEFAULT_SEMANTIC_TIMESTAMP,
@@ -1478,6 +1479,11 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         help="Write the v7 Stage 5 M2 skill chat corpus eval report to this path.",
     )
+    parser.add_argument(
+        "--skill-benchmark-report",
+        type=Path,
+        help="Write the v7 Stage 5 M3 multi-task skill benchmark report to this path.",
+    )
     parser.add_argument("--show-debug", action="store_true", help="Show debug-only refs.")
     parser.add_argument("--save-misjudged", help="Save this input as a misjudged scenario fixture.")
     parser.add_argument("--recent", type=int, default=0, help="Show recent N controlled shell session records.")
@@ -1528,6 +1534,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.skill_chat_corpus is not None:
         report_path = args.skill_chat_corpus_report or Path("/tmp/ego_stage5_skill_chat_corpus_report.md")
         report_path = build_skill_chat_corpus_report(args.skill_chat_corpus, report_path)
+        print(report_path)
+        return 0
+    if args.skill_benchmark_report is not None:
+        report_path = build_skill_benchmark_report(args.skill_benchmark_report)
         print(report_path)
         return 0
 

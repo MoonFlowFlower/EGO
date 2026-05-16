@@ -64,8 +64,8 @@ def test_stage5_acceptance_passes_with_skill_sandbox_samples() -> None:
 
     assert result.overall_status == PASS
     assert payload["stage_id"] == "v7-stage-5"
-    assert payload["sample_count"] == 6
-    assert payload["pass_count"] == 6
+    assert payload["sample_count"] == 7
+    assert payload["pass_count"] == 7
     assert payload["fail_count"] == 0
     assert payload["unknown_count"] == 0
     assert payload["all_pass_samples_have_trace"] is True
@@ -88,6 +88,13 @@ def test_stage5_acceptance_passes_with_skill_sandbox_samples() -> None:
     assert corpus.observed_output["total"] == 20
     assert corpus.observed_output["threshold_pass"] is True
     assert corpus.observed_output["dangerous_action_failure_count"] == 0
+
+    benchmark = _sample_result(result, "v7-stage-5:skill_benchmark_pack_threshold")
+    assert benchmark.observed_behavior_family == "skill_benchmark_pack_threshold_pass"
+    assert benchmark.observed_output["benchmark_total"] == 5
+    assert benchmark.observed_output["benchmark_pass_rate"] == 1.0
+    assert benchmark.observed_output["replay_pass_rate"] == 1.0
+    assert benchmark.observed_output["unrelated_pollution_count"] == 0
 
 
 def test_cli_writes_json_and_markdown_operator_fields(tmp_path: Path, capsys) -> None:

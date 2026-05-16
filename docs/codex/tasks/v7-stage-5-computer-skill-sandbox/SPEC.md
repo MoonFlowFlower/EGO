@@ -28,6 +28,14 @@ M2 adds a chat-corpus operator probe on top of the same M1 sandbox:
 
 The parser does not call an LLM. It only converts transcript/corpus text into the existing `SandboxTask / SkillObservation / ExperienceCard` path.
 
+M3 adds a multi-task scripted benchmark pack:
+
+- `SandboxTaskPack`: a bounded group of scripted skill cases.
+- `SkillBenchmarkCase`: task id, skill family, mock observation, expected first behavior, expected retry behavior, and negative outcome template.
+- `SkillBenchmarkResult`: per-case first/retry/outcome/replay summary, controls, aggregate threshold, and claim ceiling.
+
+The benchmark proves task-family reuse of the same M1/M2 skill-learning path. It does not add real tool execution, persistent skill memory, or a new policy owner.
+
 ## Non-goals
 
 - No real desktop automation.
@@ -52,7 +60,8 @@ The parser does not call an LLM. It only converts transcript/corpus text into th
 - `python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5` produces `PASS`.
 - A Markdown chat case can show `first_selected_goal -> retry_selected_goal` behavior change after explicit failed-continue feedback.
 - A 20-row skill chat corpus passes threshold with trace/sample id linkage, no action execution, and dangerous action failure count 0.
+- A 5-family benchmark pack passes with `benchmark_pass_rate=1.0`, `replay_pass_rate=1.0`, `no_action_rate=1.0`, and no unrelated-experience pollution.
 
 ## Claim Ceiling
 
-Lab-only scripted skill-learning and chat-corpus skill probe proxy; no runtime influence, no live benefit, no real desktop control, no tool autonomy, no consciousness, no alive status.
+Lab-only scripted skill-learning, chat-corpus, and multi-task benchmark proxy; no runtime influence, no live benefit, no real desktop control, no tool autonomy, no consciousness, no alive status.
