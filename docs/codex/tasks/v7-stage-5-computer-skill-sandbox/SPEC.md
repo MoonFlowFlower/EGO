@@ -20,6 +20,14 @@ Stage 5 owns only a scripted sandbox proxy:
 
 The first M1 task is a scripted terminal/debug toy task. It uses fixed mock error text and suggestion-only diagnostic primitives.
 
+M2 adds a chat-corpus operator probe on top of the same M1 sandbox:
+
+- `SkillChatCase`: deterministic Markdown transcript case with `learn_chat`, `retry_chat`, `UserFeedback`, and expected behavior hints.
+- `SkillChatProbeResult`: first/retry selected goals, failure-ticket presence, experience application, replay status, no-action status, dangerous-action count, and parsed structured case.
+- `SkillChatCorpusEvalResult`: JSONL corpus rows plus threshold summary for operator acceptance.
+
+The parser does not call an LLM. It only converts transcript/corpus text into the existing `SandboxTask / SkillObservation / ExperienceCard` path.
+
 ## Non-goals
 
 - No real desktop automation.
@@ -30,6 +38,7 @@ The first M1 task is a scripted terminal/debug toy task. It uses fixed mock erro
 - No EgoCore/OpenEmotion/Telegram/OpenClaw writeback or bridge.
 - No formal evidence ledger or `docs/PROGRAM_STATE_UNIFIED.yaml` update.
 - No claim of real computer operation ability.
+- No live shell conversation integration; `shell.py` only generates M2 reports.
 
 ## Acceptance
 
@@ -41,7 +50,9 @@ The first M1 task is a scripted terminal/debug toy task. It uses fixed mock erro
 - Replay reconstructs the same first/retry transition.
 - Every attempt and every StageResult sample has `no_action_executed=true`.
 - `python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5` produces `PASS`.
+- A Markdown chat case can show `first_selected_goal -> retry_selected_goal` behavior change after explicit failed-continue feedback.
+- A 20-row skill chat corpus passes threshold with trace/sample id linkage, no action execution, and dangerous action failure count 0.
 
 ## Claim Ceiling
 
-Lab-only scripted skill-learning proxy; no runtime influence, no live benefit, no real desktop control, no tool autonomy, no consciousness, no alive status.
+Lab-only scripted skill-learning and chat-corpus skill probe proxy; no runtime influence, no live benefit, no real desktop control, no tool autonomy, no consciousness, no alive status.

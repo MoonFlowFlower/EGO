@@ -64,8 +64,8 @@ def test_stage5_acceptance_passes_with_skill_sandbox_samples() -> None:
 
     assert result.overall_status == PASS
     assert payload["stage_id"] == "v7-stage-5"
-    assert payload["sample_count"] == 5
-    assert payload["pass_count"] == 5
+    assert payload["sample_count"] == 6
+    assert payload["pass_count"] == 6
     assert payload["fail_count"] == 0
     assert payload["unknown_count"] == 0
     assert payload["all_pass_samples_have_trace"] is True
@@ -82,6 +82,12 @@ def test_stage5_acceptance_passes_with_skill_sandbox_samples() -> None:
     unrelated = _sample_result(result, "v7-stage-5:unrelated_experience_no_effect")
     assert unrelated.observed_behavior_family == "unrelated_experience_no_effect"
     assert unrelated.observed_output["selected_goal_unchanged"] is True
+
+    corpus = _sample_result(result, "v7-stage-5:skill_chat_corpus_threshold")
+    assert corpus.observed_behavior_family == "skill_chat_corpus_threshold_pass"
+    assert corpus.observed_output["total"] == 20
+    assert corpus.observed_output["threshold_pass"] is True
+    assert corpus.observed_output["dangerous_action_failure_count"] == 0
 
 
 def test_cli_writes_json_and_markdown_operator_fields(tmp_path: Path, capsys) -> None:

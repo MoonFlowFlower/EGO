@@ -28,6 +28,15 @@
   - replay deterministic
 - Keep Stage 5 artifacts as lab acceptance only.
 
+## Milestone 3: Chat-Corpus Skill Probe
+
+- Add deterministic Markdown chat case parsing for skill sandbox probes.
+- Keep parsing limited to `case_name / learn_chat / retry_chat / UserFeedback / expected`; no LLM parser.
+- Add `--skill-chat-case` and `--skill-chat-corpus` shell report entrypoints.
+- Add `ego_desktop_lab/corpora/skill_chat_corpus_v7.jsonl` with at least 20 rows.
+- Add a Stage 5 `skill_chat_corpus_threshold` sample to Stage 4.6 stage acceptance.
+- Keep the probe lab-only and report-only; do not integrate it into live shell conversation execution.
+
 ## Validation
 
 ```bash
@@ -38,6 +47,15 @@ python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5 --out /tmp/ego_st
 TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests -q
 scripts/run_verify.sh fast
 git diff --check -- ego_desktop_lab docs/codex/tasks/v7-stage-*
+```
+
+M2 validation addendum:
+
+```bash
+python3 -m py_compile ego_desktop_lab/skill_sandbox.py ego_desktop_lab/shell.py ego_desktop_lab/stage_acceptance.py ego_desktop_lab/tests/test_skill_chat_case_v7_m2.py
+TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_skill_chat_case_v7_m2.py -q
+python3 -m ego_desktop_lab.shell --skill-chat-corpus ego_desktop_lab/corpora/skill_chat_corpus_v7.jsonl --skill-chat-corpus-report /tmp/ego_stage5_skill_chat_corpus_report.md
+python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5 --out /tmp/ego_stage5_stage_result.json
 ```
 
 ## Rollback
