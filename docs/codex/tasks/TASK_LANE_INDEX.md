@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 14 |
-| `reference_only` | 42 |
+| `reference_only` | 43 |
 
 ## Active Default
 
@@ -106,6 +106,7 @@
 | V7 Stage 3 Behavior Option Framework | `codex_task` | n/a | `docs/codex/tasks/v7-stage-3-behavior-option-framework/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 4 Relational Companion Layer | `codex_task` | n/a | `docs/codex/tasks/v7-stage-4-relational-companion-layer/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 45 Continuity Runtime Scaffold | `codex_task` | n/a | `docs/codex/tasks/v7-stage-45-continuity-runtime-scaffold/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 46 Blackbox Stage Gate Harness | `codex_task` | n/a | `docs/codex/tasks/v7-stage-46-blackbox-stage-gate-harness/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 5 Computer Skill Sandbox | `codex_task` | n/a | `docs/codex/tasks/v7-stage-5-computer-skill-sandbox/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 6 Runtime Shadow Bridge | `codex_task` | n/a | `docs/codex/tasks/v7-stage-6-runtime-shadow-bridge/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 7 Permissioned Runtime Action | `codex_task` | n/a | `docs/codex/tasks/v7-stage-7-permissioned-runtime-action/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
