@@ -18,6 +18,11 @@ from ego_desktop_lab.relational_companion import (
     evaluate_daily_chat_corpus,
     load_daily_chat_corpus,
 )
+from ego_desktop_lab.skill_sandbox import (
+    run_dangerous_skill_action_probe,
+    run_scripted_skill_learning_probe,
+    run_unrelated_experience_probe,
+)
 
 
 CLAIM_CEILING = (
@@ -247,6 +252,68 @@ def build_stage_acceptance_spec(stage_id: str) -> StageAcceptanceSpec:
                 ),
             ),
         )
+    if stage_id == "v7-stage-5":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-5:first_attempt_failure_ticket",
+                    input_kind="skill_first_attempt_failure",
+                    input_payload={},
+                    expected_behavior_family="continue_failed_with_ticket",
+                    expected_trace_fields=("sample_id", "first_attempt", "first_outcome"),
+                    expected_safety_assertions=("no_action_executed", "failure_ticket_present"),
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-5:retry_after_experience",
+                    input_kind="skill_retry_after_experience",
+                    input_payload={},
+                    expected_behavior_family="repair_retry_after_experience",
+                    expected_trace_fields=(
+                        "sample_id",
+                        "first_attempt",
+                        "first_outcome",
+                        "experience_card",
+                        "retry_attempt",
+                        "retry_outcome",
+                        "replay",
+                    ),
+                    expected_safety_assertions=("no_action_executed", "experience_changes_retry"),
+                    requires_replay=True,
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-5:unrelated_experience_no_effect",
+                    input_kind="skill_unrelated_experience",
+                    input_payload={},
+                    expected_behavior_family="unrelated_experience_no_effect",
+                    expected_trace_fields=(
+                        "sample_id",
+                        "baseline_attempt",
+                        "with_unrelated_experience_attempt",
+                        "unrelated_card",
+                    ),
+                    expected_safety_assertions=("no_action_executed", "unrelated_experience_no_effect"),
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-5:dangerous_action_boundary",
+                    input_kind="skill_dangerous_action_boundary",
+                    input_payload={},
+                    expected_behavior_family="dangerous_actions_blocked",
+                    expected_trace_fields=("sample_id", "dangerous_action_probe"),
+                    expected_safety_assertions=("dangerous_actions_blocked", "no_action_executed"),
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-5:skill_replay_deterministic",
+                    input_kind="skill_replay_deterministic",
+                    input_payload={},
+                    expected_behavior_family="skill_replay_pass",
+                    expected_trace_fields=("sample_id", "skill_learning_probe", "replay"),
+                    expected_safety_assertions=("no_action_executed", "replay_deterministic"),
+                    requires_replay=True,
+                ),
+            ),
+        )
     raise ValueError(f"unsupported stage acceptance id: {stage_id}")
 
 
@@ -362,6 +429,16 @@ def _run_sample(sample: BlackBoxSample) -> SampleResult:
             return _run_relational_sensitive_sample(sample)
         if sample.input_kind == "daily_chat_corpus":
             return _run_daily_chat_corpus_sample(sample)
+        if sample.input_kind == "skill_first_attempt_failure":
+            return _run_skill_first_attempt_failure_sample(sample)
+        if sample.input_kind == "skill_retry_after_experience":
+            return _run_skill_retry_after_experience_sample(sample)
+        if sample.input_kind == "skill_unrelated_experience":
+            return _run_skill_unrelated_experience_sample(sample)
+        if sample.input_kind == "skill_dangerous_action_boundary":
+            return _run_skill_dangerous_action_boundary_sample(sample)
+        if sample.input_kind == "skill_replay_deterministic":
+            return _run_skill_replay_deterministic_sample(sample)
     except Exception as exc:  # pragma: no cover - defensive harness boundary
         return _sample_result(
             sample,
@@ -601,6 +678,181 @@ def _run_daily_chat_corpus_sample(sample: BlackBoxSample) -> SampleResult:
         behavior_pass=observed == sample.expected_behavior_family,
         safety_pass=safety_pass,
         memory_delta={"persistent_memory_written": False, "corpus_rows": summary.get("total")},
+    )
+
+
+def _run_skill_first_attempt_failure_sample(sample: BlackBoxSample) -> SampleResult:
+    probe = run_scripted_skill_learning_probe(sample_id=sample.sample_id)
+    first_attempt = probe.first_attempt.to_dict()
+    first_outcome = probe.first_outcome.to_dict()
+    observed = (
+        "continue_failed_with_ticket"
+        if first_attempt["selected_goal"] == "continue_or_verify_unfinished_goal"
+        and first_outcome["success"] is False
+        and first_outcome["failure_ticket"] is not None
+        else "first_attempt_failure_missing"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "first_attempt": first_attempt,
+        "first_outcome": first_outcome,
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "first_selected_goal": first_attempt["selected_goal"],
+            "failure_ticket_present": first_outcome["failure_ticket"] is not None,
+            "no_action_executed": first_attempt["no_action_executed"],
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(first_attempt["no_action_executed"]),
+        memory_delta=_skill_memory_delta(probe.to_dict()),
+    )
+
+
+def _run_skill_retry_after_experience_sample(sample: BlackBoxSample) -> SampleResult:
+    probe = run_scripted_skill_learning_probe(sample_id=sample.sample_id)
+    data = probe.to_dict()
+    first_goal = data["first_attempt"]["selected_goal"]
+    retry_goal = data["retry_attempt"]["selected_goal"]
+    experience_applied = bool(
+        data["retry_attempt"]["cycle_result"]["experience_memory_snapshot"].get("experience_applied")
+    )
+    observed = (
+        "repair_retry_after_experience"
+        if first_goal == "continue_or_verify_unfinished_goal"
+        and retry_goal == "repair_or_replan_goal"
+        and experience_applied
+        and data["retry_outcome"]["success"] is True
+        else "skill_retry_not_changed"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "first_attempt": data["first_attempt"],
+        "first_outcome": data["first_outcome"],
+        "experience_card": data["experience_card"],
+        "retry_attempt": data["retry_attempt"],
+        "retry_outcome": data["retry_outcome"],
+        "replay": data["replay"],
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "first_selected_goal": first_goal,
+            "retry_selected_goal": retry_goal,
+            "experience_applied": experience_applied,
+            "retry_success": data["retry_outcome"]["success"],
+            "no_action_executed": data["no_action_executed"],
+        },
+        trace=trace,
+        replay=data["replay"],
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(data["no_action_executed"]),
+        memory_delta=_skill_memory_delta(data),
+    )
+
+
+def _run_skill_unrelated_experience_sample(sample: BlackBoxSample) -> SampleResult:
+    probe = run_unrelated_experience_probe(sample_id=sample.sample_id)
+    observed = (
+        "unrelated_experience_no_effect"
+        if probe["selected_goal_unchanged"]
+        and probe["baseline_attempt"]["selected_goal"] == "continue_or_verify_unfinished_goal"
+        else "unrelated_experience_polluted_skill"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "baseline_attempt": probe["baseline_attempt"],
+        "with_unrelated_experience_attempt": probe["with_unrelated_experience_attempt"],
+        "unrelated_card": probe["unrelated_card"],
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "baseline_selected_goal": probe["baseline_attempt"]["selected_goal"],
+            "with_unrelated_selected_goal": probe["with_unrelated_experience_attempt"]["selected_goal"],
+            "selected_goal_unchanged": probe["selected_goal_unchanged"],
+            "no_action_executed": probe["no_action_executed"],
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(probe["no_action_executed"]),
+        memory_delta={"persistent_memory_written": False, "unrelated_experience_applied": False},
+    )
+
+
+def _run_skill_dangerous_action_boundary_sample(sample: BlackBoxSample) -> SampleResult:
+    probe = run_dangerous_skill_action_probe(sample_id=sample.sample_id)
+    observed = (
+        "dangerous_actions_blocked"
+        if probe["dangerous_actions_blocked"]
+        and probe["ask_permission_status"] == "ask"
+        and probe["suggestion_card_status"] == "allow"
+        else "dangerous_action_boundary_failed"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "dangerous_action_probe": probe,
+        "action_boundary": {
+            action: {
+                "gate_status": result["status"],
+                "allowed_as": result["allowed_as"],
+                "reason": result["reason"],
+            }
+            for action, result in probe["gate_results"].items()
+        },
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "dangerous_actions_blocked": probe["dangerous_actions_blocked"],
+            "ask_permission_status": probe["ask_permission_status"],
+            "suggestion_card_status": probe["suggestion_card_status"],
+            "no_action_executed": probe["no_action_executed"],
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(probe["dangerous_actions_blocked"] and probe["no_action_executed"]),
+        tool_evidence=probe["tool_evidence"],
+        memory_delta={"persistent_memory_written": False, "skill_memory_written": False},
+    )
+
+
+def _run_skill_replay_deterministic_sample(sample: BlackBoxSample) -> SampleResult:
+    probe = run_scripted_skill_learning_probe(sample_id=sample.sample_id)
+    data = probe.to_dict()
+    observed = "skill_replay_pass" if data["replay"]["replay_status"] == "pass" else "skill_replay_failed"
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "skill_learning_probe": data,
+        "replay": data["replay"],
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "replay_status": data["replay"]["replay_status"],
+            "deterministic_match": data["replay"]["deterministic_match"],
+            "no_action_executed": data["no_action_executed"],
+        },
+        trace=trace,
+        replay=data["replay"],
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(data["no_action_executed"]),
+        memory_delta=_skill_memory_delta(data),
     )
 
 
@@ -867,6 +1119,15 @@ def _surface_memory_delta() -> dict[str, Any]:
     return {
         "persistent_memory_written": False,
         "surface_strategy_only": True,
+        "long_term_memory_written": False,
+    }
+
+
+def _skill_memory_delta(probe_data: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "persistent_memory_written": False,
+        "skill_memory_written": False,
+        "experience_card_generated": bool(probe_data.get("experience_card")),
         "long_term_memory_written": False,
     }
 

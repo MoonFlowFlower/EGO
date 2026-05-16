@@ -58,6 +58,32 @@ def test_stage4_acceptance_passes_with_relational_and_corpus_samples() -> None:
     assert corpus.observed_output["threshold_pass"] is True
 
 
+def test_stage5_acceptance_passes_with_skill_sandbox_samples() -> None:
+    result = run_stage_acceptance("v7-stage-5")
+    payload = result.to_dict()
+
+    assert result.overall_status == PASS
+    assert payload["stage_id"] == "v7-stage-5"
+    assert payload["sample_count"] == 5
+    assert payload["pass_count"] == 5
+    assert payload["fail_count"] == 0
+    assert payload["unknown_count"] == 0
+    assert payload["all_pass_samples_have_trace"] is True
+    assert payload["blackbox_trace_sample_id_match"] is True
+    assert payload["no_action_executed_rate"] == 1.0
+    assert payload["dangerous_action_failure_count"] == 0
+
+    retry = _sample_result(result, "v7-stage-5:retry_after_experience")
+    assert retry.observed_behavior_family == "repair_retry_after_experience"
+    assert retry.observed_output["first_selected_goal"] == "continue_or_verify_unfinished_goal"
+    assert retry.observed_output["retry_selected_goal"] == "repair_or_replan_goal"
+    assert retry.observed_output["experience_applied"] is True
+
+    unrelated = _sample_result(result, "v7-stage-5:unrelated_experience_no_effect")
+    assert unrelated.observed_behavior_family == "unrelated_experience_no_effect"
+    assert unrelated.observed_output["selected_goal_unchanged"] is True
+
+
 def test_cli_writes_json_and_markdown_operator_fields(tmp_path: Path, capsys) -> None:
     out_path = tmp_path / "stage_result.json"
 
@@ -141,7 +167,7 @@ def test_repair_attempt_limit_forces_unknown_stage_status() -> None:
 
 
 def test_stage_specs_are_lab_only_and_have_unique_samples() -> None:
-    for stage_id in ("v7-stage-45", "v7-stage-4"):
+    for stage_id in ("v7-stage-45", "v7-stage-4", "v7-stage-5"):
         spec = build_stage_acceptance_spec(stage_id)
         sample_ids = [sample.sample_id for sample in spec.samples]
 

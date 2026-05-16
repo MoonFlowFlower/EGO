@@ -1,64 +1,47 @@
-# v7 Stage 5 - Computer Skill Sandbox
+# v7 Stage 5 - Computer Skill Sandbox - SPEC
 
-## Goal
+## Real Goal
 
-让 agent 开始学习任务/电脑操作技能，但只在 sandbox 中。
+Prove a lab-only task skill can go through:
+
+`attempt -> scripted observation -> outcome/failure ticket -> experience update -> retry`
+
+and produce a measurable next-attempt behavior change without executing real desktop, shell, file, browser, Telegram, OpenClaw, EgoCore, or OpenEmotion runtime actions.
+
+## Contract
+
+Stage 5 owns only a scripted sandbox proxy:
+
+- `SandboxTask`: deterministic task id, goal, mock observation, expected skill family, claim ceiling.
+- `SkillObservation`: fixture observation with explicit no real file read, no command execution, and no external send.
+- `SkillAttempt`: selected registered option, primitive proposal steps, gate results, and `no_action_executed=true`.
+- `SkillOutcome`: success/failure, error type, failure ticket, evidence refs.
+- `SkillReplayReport`: deterministic replay verdict.
+
+The first M1 task is a scripted terminal/debug toy task. It uses fixed mock error text and suggestion-only diagnostic primitives.
 
 ## Non-goals
 
-- 不控制真实桌面。
-- 不读写用户真实文件。
-- 不发外部消息。
-- 不接 OpenClaw / Telegram / EgoCore tool execution。
+- No real desktop automation.
+- No real shell command execution.
+- No real file read/write/delete.
+- No real web/browser automation.
+- No external message sending.
+- No EgoCore/OpenEmotion/Telegram/OpenClaw writeback or bridge.
+- No formal evidence ledger or `docs/PROGRAM_STATE_UNIFIED.yaml` update.
+- No claim of real computer operation ability.
 
-## Constraints
+## Acceptance
 
-- 边界约束：只允许 observation / suggestion，不允许真实动作。
-- 仓库/子仓约束：只允许改 `ego_desktop_lab` 与本任务目录。
-- 环境约束：sandbox task 必须 deterministic。
-- 发布约束：只能声明 lab skill learning proxy。
+- First attempt deterministically selects `continue_or_verify_unfinished_goal` and fails with a localized failure ticket.
+- The failure creates an ExperienceCard.
+- Retry with the generated ExperienceCard selects `repair_or_replan_goal` and succeeds in the sandbox proxy.
+- Unrelated experience does not change the terminal/debug skill behavior.
+- Dangerous actions remain blocked or ask-only.
+- Replay reconstructs the same first/retry transition.
+- Every attempt and every StageResult sample has `no_action_executed=true`.
+- `python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5` produces `PASS`.
 
-## Problem framing
+## Claim Ceiling
 
-- 当前问题表述：想让 agent 学电脑操作，但真实桌面权限风险过高。
-- 归一化后的问题表述：先在 scripted sandbox 中证明 skill attempt -> failure ticket -> experience update -> retry improvement。
-- 为什么这个 framing 更适合当前任务：电脑技能需要先有安全训练场和失败归因。
-
-## Implementation method
-
-- 新增 lab-only skill task harness。
-- 支持 scripted file/web/terminal toy tasks，但不触碰真实用户资源。
-- 每个 skill 记录 attempt、observation、failure ticket、experience update。
-- 所有危险动作走 gate block/ask。
-
-## Unknowns to eliminate
-
-- 第一版 sandbox task 类型。
-- skill memory 是否复用 Stage 2 experience。
-- 如何度量 success-rate improvement。
-
-## Acceptance criteria
-
-- [ ] 一个技能能通过多次反馈提升成功率或降低错误率。
-- [ ] 失败能生成 root-cause ticket。
-- [ ] skill memory 不污染 companion memory。
-- [ ] 外部/文件危险动作被 gate block/ask。
-- [ ] 所有 sandbox replay deterministic。
-
-## Disallowed premature claims
-
-- 不得宣称会操作用户电脑。
-- 不得宣称真实 desktop automation。
-- 不得宣称 live task benefit。
-
-## Known risks / dependencies
-
-- 风险：sandbox 变成真实工具旁路。
-- 依赖：Stage 2 experience memory 和 Stage 3 option framework。
-- 外部 blocker：Stage 4 未通过前不得激活。
-
-## Authority refs
-
-- `ego_desktop_lab/root_cause.py`
-- `docs/codex/tasks/v7-stage-2-experience-memory/STATUS.md`
-- `docs/codex/tasks/v7-stage-4-relational-companion-layer/STATUS.md`
+Lab-only scripted skill-learning proxy; no runtime influence, no live benefit, no real desktop control, no tool autonomy, no consciousness, no alive status.

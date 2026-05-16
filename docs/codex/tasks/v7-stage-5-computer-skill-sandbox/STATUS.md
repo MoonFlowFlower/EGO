@@ -1,62 +1,73 @@
 # v7 Stage 5 - Computer Skill Sandbox - STATUS
 
-## Current milestone
+## Current Milestone
 
-- name: blocked_until_stage_4_pass
-- owner: future Codex implementer subagent
-- state: not_started
+- name: Scripted Toy Skill Harness
+- owner: Codex
+- state: local_pass
 - type: implementation
 
-## Current state
+## Current State
 
-- activation: locked
-- current_layer: ego_desktop_lab lab-only skill sandbox
+- activation: active
+- current_layer: `ego_desktop_lab` lab-only skill sandbox
 - main_chain_status: not connected to runtime
-- completion_class: task_packet_ready
-- candidate_vs_proof: proof_pending
+- completion_class: local_skill_learning_proxy_pass
+- candidate_vs_proof: proof_passed
 
-## Completed work
+## Completed Work
 
-- Task package created.
+- Activated Stage 5 behind Stage 4.6 acceptance.
+- Added lab-only scripted terminal/debug sandbox task.
+- Added SkillAttempt, SkillObservation, SkillOutcome, SkillReplayReport, and SkillLearningProbeResult records.
+- Added failure-ticket generation for the first bad attempt.
+- Reused Stage 2 ExperienceCard flow to change retry behavior.
+- Added unrelated-experience negative control.
+- Added dangerous-action boundary probe.
+- Integrated Stage 5 into Stage 4.6 stage acceptance harness.
 
-## Last experiment
+## Last Experiment
 
-- question: none yet
-- framing: none yet
-- result: not_started
+- question: can a scripted task skill fail, generate experience, and retry with a different behavior under replay without external action?
+- framing: skill sandbox is a deterministic proxy, not real desktop automation.
+- result: local_skill_learning_proxy_pass
 - evidence_upgraded: no
 
-## What was learned
+## What Was Learned
 
-- Computer skill learning must start in sandbox.
+- A failed continue attempt can generate an ExperienceCard that shifts the next attempt to repair/replan in the matching sandbox context.
+- Unrelated experience does not pollute the terminal/debug skill context.
+- The stage gate can check Stage 5 through the same `stage_result.json` shape as Stage 4/4.5.
 
-## What was ruled out
+## What Was Ruled Out
 
-- Real desktop action in this stage.
+- Real shell execution, file access, web/browser automation, desktop control, Telegram delivery, EgoCore/OpenEmotion writeback.
+- Treating sandbox success as real computer-operation proof.
+- Advancing on a black-box behavior result without trace/replay/no-action evidence.
 
-## Next framing
+## Last Validation Results
 
-Prove skill improvement before runtime or desktop bridge.
+- mode: Stage 5 local skill sandbox
+- result: pass
+- summary: Targeted skill sandbox tests, Stage 5 acceptance report, full `ego_desktop_lab` tests, fast verifier, and scoped diff check passed locally.
 
-## Last validation results
+## Open Risks
 
-- mode: documentation package only
-- result: pending
-- summary: implementation not started
+- The toy task is intentionally narrow and does not predict real OSWorld/desktop success.
+- Skill learning is in-memory and fixture-scoped only.
+- Full-green runtime verification remains a separate frontier.
 
-## Decisions made
+## Next Step
 
-- Stage 5 locked until Stage 4 passes.
+- Operator inspect `/tmp/ego_stage5_stage_result.md`.
+- If accepted, plan the next Stage 5 slice around broader scripted task variety or a sandbox benchmark suite, still without real tool execution.
 
-## Open risks
+## Commands Run / Evidence
 
-- Sandbox task may not predict real desktop behavior.
-- proof gap: no real OSWorld-like benchmark yet.
-
-## Next step
-
-Activate only after Stage 4 reaches deterministic_pass.
-
-## Commands run / evidence
-
-- Pending implementation.
+- `python3 -m py_compile ego_desktop_lab/skill_sandbox.py ego_desktop_lab/stage_acceptance.py ego_desktop_lab/tests/test_skill_sandbox_v7.py`
+- `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_skill_sandbox_v7.py -q`
+- `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_stage_acceptance_v7_46.py -q`
+- `python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5 --out /tmp/ego_stage5_stage_result.json`
+- `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests -q`
+- `scripts/run_verify.sh fast`
+- `git diff --check -- ego_desktop_lab docs/codex/tasks/v7-stage-*`
