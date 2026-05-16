@@ -65,6 +65,10 @@ from app.runtime_v2 import (
     RuntimeV2FallbackRunner,
     RuntimeV2PromptFiles,
     RuntimeV2State,
+    build_telegram_unified_request,
+    build_unified_egress,
+    build_unified_ingress,
+    build_unified_turn_result,
 )
 from app.runtime_v2.run_items import (
     RunConflictState,
@@ -1008,6 +1012,114 @@ class TelegramBot:
 
     def _build_invalid_task_conflict_reply(self) -> str:
         return "当前没有待确认的新任务。"
+
+    def _prepare_subject_gated_host_owned_delivery(
+        self,
+        *,
+        state: RuntimeV2State,
+        session_id: str,
+        turn_id: str,
+        reply_text: str,
+        status: str,
+        delivery_kind: str = "final",
+        authority_source: str = "host_pre_runtime",
+        reply_authority: str = "host_response_contract",
+        metadata: Optional[dict[str, Any]] = None,
+        channel: str = "telegram",
+        source_kind: str = "telegram_prepared",
+        transport_meta: Optional[dict[str, Any]] = None,
+    ) -> dict[str, Any]:
+        plan = build_direct_response_plan(
+            reply_text,
+            kind=status,
+            delivery_kind=delivery_kind,
+            authority_source=authority_source,
+            reply_authority=reply_authority,
+            metadata=dict(metadata or {}),
+            state=state,
+        )
+        output_verdict = apply_output_check(plan, state)
+        turn_result = TelegramTurnResult(
+            status=status,
+            state=state,
+            reply=TelegramTurnReply(
+                reply_text=output_verdict.reply_text,
+                delivery_kind=output_verdict.delivery_kind,
+                status=status,
+            ),
+        )
+        gate_verdict = None
+        subject_gate = self._get_subject_gate()
+        if subject_gate is not None:
+            gate_verdict = subject_gate.finalize_host_owned_result(
+                session_id=session_id,
+                turn_id=turn_id,
+                result=turn_result,
+                state=state,
+                evidence_collector=get_evidence_collector() if _EVIDENCE_COLLECTOR_AVAILABLE else None,
+            )
+            if not gate_verdict.ok:
+                blocked_result = TelegramTurnResult(
+                    status="subject_gate_finalize_blocked",
+                    state=state,
+                    reply=TelegramTurnReply(
+                        reply_text=gate_verdict.reply_text,
+                        delivery_kind="final",
+                        status="subject_gate_finalize_blocked",
+                    ),
+                )
+                unified_turn = build_unified_turn_result(
+                    state=state,
+                    runtime_result=blocked_result,
+                    response_plan=plan,
+                    output_verdict=output_verdict,
+                    metadata={
+                        "channel": channel,
+                        "source_kind": source_kind,
+                        "authority_source": authority_source,
+                        "reply_authority": reply_authority,
+                        "subject_gate_reason": gate_verdict.reason,
+                    },
+                )
+                unified_egress = build_unified_egress(
+                    unified_turn,
+                    state,
+                    transport_meta=dict(transport_meta or {}),
+                )
+                return {
+                    "response_plan": plan,
+                    "output_verdict": output_verdict,
+                    "subject_gate_verdict": gate_verdict,
+                    "runtime_result": blocked_result,
+                    "unified_turn": unified_turn,
+                    "unified_egress": unified_egress,
+                }
+
+        unified_turn = build_unified_turn_result(
+            state=state,
+            runtime_result=turn_result,
+            response_plan=plan,
+            output_verdict=output_verdict,
+            metadata={
+                "channel": channel,
+                "source_kind": source_kind,
+                "authority_source": authority_source,
+                "reply_authority": reply_authority,
+            },
+        )
+        unified_egress = build_unified_egress(
+            unified_turn,
+            state,
+            transport_meta=dict(transport_meta or {}),
+        )
+        return {
+            "response_plan": plan,
+            "output_verdict": output_verdict,
+            "subject_gate_verdict": gate_verdict,
+            "runtime_result": turn_result,
+            "unified_turn": unified_turn,
+            "unified_egress": unified_egress,
+        }
 
     async def _apply_pending_task_conflict_resolution(
         self,
@@ -3494,16 +3606,34 @@ class TelegramBot:
             },
         )
 
-        # 如果有额外上下文（如文件内容），合并到用户输入
-        if extra_context:
-            text = f"{text}\n\n{extra_context}"
-
-        ingress = await self.telegram_runtime_bridge.inspect_ingress_semantic(
-            text,
+        raw_event = update.to_dict() if hasattr(update, "to_dict") else {
+            "update_id": getattr(update, "update_id", None),
+            "message": {
+                "message_id": ingress_message_id,
+                "chat": {"id": chat_id, "type": getattr(getattr(update, "effective_chat", None), "type", None)},
+                "from": {"id": user_id, "username": username},
+                "text": text,
+            },
+        }
+        unified_ingress = await build_unified_ingress(
+            build_telegram_unified_request(
+                session_key=session_key,
+                text=text,
+                chat_id=chat_id,
+                user_id=user_id,
+                username=username,
+                message_id=ingress_message_id,
+                source_kind="telegram_real",
+                raw_event=raw_event,
+                extra_context=extra_context,
+            ),
             state,
+            bridge=self.telegram_runtime_bridge,
             llm_client=self._get_semantic_parse_client(),
         )
-        state.ingress_context = self.telegram_runtime_bridge.build_ingress_context(ingress, state)
+        text = unified_ingress.request.effective_user_input
+        ingress = unified_ingress.semantic_decision
+        state.ingress_context = dict(unified_ingress.ingress_context or {})
         if state.proto_self_version_override:
             state.ingress_context = dict(state.ingress_context or {})
             state.ingress_context["proto_self_version"] = state.proto_self_version_override
@@ -3558,7 +3688,7 @@ class TelegramBot:
         if normalized_turn.probe_key not in READ_LIST_FOLLOWUP_PROBE_KEYS:
             state.clear_last_delivered_evidence_context()
 
-        pre_runtime = self.telegram_runtime_bridge.plan_pre_runtime(ingress, state)
+        pre_runtime = unified_ingress.pre_runtime_action
         runtime_action = getattr(ingress, "_runtime_action", None)
         logger.info("runtime_v2.turn.start session=%s text=%r ingress=%s parser_source=%s",
                     session_key, text[:200], ingress,

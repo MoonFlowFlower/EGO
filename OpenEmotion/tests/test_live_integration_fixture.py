@@ -23,6 +23,10 @@ import requests
 from pathlib import Path
 
 
+def _is_windows_runtime() -> bool:
+    return os.name == "nt" or sys.platform.startswith(("win32", "cygwin", "msys"))
+
+
 def _path_exists(path: Path) -> bool:
     """Windows can raise OSError on broken venv paths; treat that as missing."""
     try:
@@ -37,12 +41,20 @@ def resolve_emotiond_python(project_root: Path) -> str:
     if override:
         return override
 
-    candidates = [
-        project_root / ".venv" / "Scripts" / "python.exe",
-        project_root / "venv" / "Scripts" / "python.exe",
-        project_root / ".venv" / "bin" / "python",
-        project_root / "venv" / "bin" / "python",
-    ]
+    if _is_windows_runtime():
+        candidates = [
+            project_root / ".venv" / "Scripts" / "python.exe",
+            project_root / "venv" / "Scripts" / "python.exe",
+            project_root / ".venv" / "bin" / "python",
+            project_root / "venv" / "bin" / "python",
+        ]
+    else:
+        candidates = [
+            project_root / ".venv" / "bin" / "python",
+            project_root / "venv" / "bin" / "python",
+            project_root / ".venv" / "Scripts" / "python.exe",
+            project_root / "venv" / "Scripts" / "python.exe",
+        ]
     for candidate in candidates:
         if _path_exists(candidate):
             return str(candidate)

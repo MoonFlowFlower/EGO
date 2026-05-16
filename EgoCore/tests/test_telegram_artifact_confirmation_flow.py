@@ -4,6 +4,7 @@ from typing import Any, Dict, List
 
 import pytest
 
+from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.telegram_bot import TelegramBot
 from app.telegram_runtime_result import TelegramTurnReply, TelegramTurnResult
 
@@ -37,9 +38,27 @@ class DummyUpdate:
         self.effective_user = DummyUser()
 
 
+class _AllowingSubjectGate:
+    def process_ingress(self, **kwargs):
+        return SubjectGateVerdict.allow(stage="ingress")
+
+    def finalize_host_owned_result(self, **kwargs):
+        return SubjectGateVerdict.allow(stage="response_plan")
+
+
+def _install_allowing_subject_gate(monkeypatch, bot):
+    monkeypatch.setattr(bot, "_get_subject_gate", lambda: _AllowingSubjectGate())
+
+
+def _disable_autonomy_for_routing_fixture(bot):
+    bot.autonomy_orchestrator = None
+
+
 @pytest.mark.asyncio
 async def test_uploaded_task_file_executes_immediately_on_native_mainline(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    _install_allowing_subject_gate(monkeypatch, bot)
+    _disable_autonomy_for_routing_fixture(bot)
     bot.native_loop = object()
     events: List[Dict[str, Any]] = []
 
@@ -93,6 +112,8 @@ async def test_uploaded_task_file_executes_immediately_on_native_mainline(monkey
 @pytest.mark.asyncio
 async def test_execute_confirmation_ingress_is_bound_to_pending_task(monkeypatch):
     bot = TelegramBot(token="dummy", use_runtime_v2=True)
+    _install_allowing_subject_gate(monkeypatch, bot)
+    _disable_autonomy_for_routing_fixture(bot)
     session_key = "telegram:dm:8420019401"
     state = bot._get_runtime_state(session_key)
     state.add_pending_artifact("artifact://task-sheet", "任务单.txt", "artifact://task-sheet")

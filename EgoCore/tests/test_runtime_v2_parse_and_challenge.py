@@ -74,7 +74,7 @@ async def test_challenge_turn_does_not_get_absorbed_as_busy_placeholder(monkeypa
             reply=RuntimeV2Reply(reply_text='我继续检查刚才那个文件。', delivery_kind='progress', status='waiting_input'),
         )
 
-    async def fake_runner_run_turn(*, session_key, user_input, state):
+    async def fake_runner_run_turn(*, session_key, user_input, state, **kwargs):
         return bot.runtime_v2_fallback_runner.adapt_result(await fake_run_turn_typed(session_key, user_input))
 
     monkeypatch.setattr(bot, '_should_use_native_loop', lambda ingress, state: False)
@@ -133,7 +133,7 @@ async def test_runtime_v2_typing_starts_before_semantic_parse_finishes(monkeypat
         )
 
     monkeypatch.setattr(bot.runtime_v2_bridge, 'inspect_ingress_semantic', fake_inspect)
-    async def fake_runner_run_turn(*, session_key, user_input, state):
+    async def fake_runner_run_turn(*, session_key, user_input, state, **kwargs):
         return bot.runtime_v2_fallback_runner.adapt_result(await fake_run_turn_typed(session_key, user_input))
 
     monkeypatch.setattr(bot.runtime_v2_fallback_runner, 'run_turn', fake_runner_run_turn)

@@ -16,7 +16,7 @@ if "requests" not in sys.modules:
     )
 
 import app.telegram_bot as telegram_bot_module
-from app.config import load_config
+from app.config import get_config, load_config
 from app.autonomy import AutonomyExecutorKind, AutonomyRun, AutonomyRunStatus
 from app.openemotion_hooks.subject_gate import SubjectGateVerdict
 from app.runtime_v2.run_items import RunConflictState, RunItem
@@ -181,9 +181,11 @@ async def test_status_command_returns_runtime_style_card(monkeypatch):
 
     await bot.handle_command(DummyUpdate(), None)
     text = DummyUpdate.message.last_text
+    chat_cfg = get_config().get_llm_config_for_use_case("chat")
+    expected_model = f"{chat_cfg['provider']}/{chat_cfg['model']}"
     assert bot.runtime_v2_loop is None
     assert "EgoCore Runtime" in text
-    assert "openrouter/stepfun/step-3.5-flash" in text
+    assert expected_model in text
     assert "Session ID:" in text
     assert "native\\_loop" in text
     assert "task\\_status" in text and "running" in text

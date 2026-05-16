@@ -466,7 +466,9 @@ async def build_unified_ingress(
         llm_client=llm_client,
     )
     ingress_context = bridge.build_ingress_context(decision, state)
+    state.ingress_context = dict(ingress_context or {})
     pre_runtime_action = bridge.plan_pre_runtime(decision, state)
+    ingress_context = dict(state.ingress_context or ingress_context or {})
     return UnifiedIngressBundle(
         request=request,
         semantic_decision=decision,

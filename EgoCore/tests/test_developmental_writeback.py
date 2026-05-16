@@ -150,7 +150,7 @@ async def test_real_telegram_mainline_turn_writes_developmental_projection(monke
 
     monkeypatch.setattr(loop.decision_engine, "decide", fake_decide)
 
-    async def fake_run_turn(*, session_key, user_input, state):
+    async def fake_run_turn(*, session_key, user_input, state, **kwargs):
         loop._states[session_key] = state
         result = await loop.run_turn_typed(session_id=session_key, user_input=user_input, source="telegram")
         return bot.telegram_runtime_fallback_runner.adapt_result(result)
