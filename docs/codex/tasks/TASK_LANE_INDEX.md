@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 14 |
-| `reference_only` | 33 |
+| `reference_only` | 41 |
 
 ## Active Default
 
@@ -100,4 +100,12 @@
 | Proto Self Seed Real Rollout | `codex_task` | n/a | `docs/codex/tasks/proto-self-seed-real-rollout/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Simulated Shadow H1 Mainline Sampling | `codex_task` | n/a | `docs/codex/tasks/simulated-shadow-h1-mainline-sampling/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Subjective Loop V1 Product Cut | `codex_task` | n/a | `docs/codex/tasks/subjective-loop-v1-product-cut/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 0 Operator Observability | `codex_task` | n/a | `docs/codex/tasks/v7-stage-0-operator-observability/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 1 Deterministic Agency Kernel | `codex_task` | n/a | `docs/codex/tasks/v7-stage-1-deterministic-agency-kernel/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 2 Experience Memory | `codex_task` | n/a | `docs/codex/tasks/v7-stage-2-experience-memory/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 3 Behavior Option Framework | `codex_task` | n/a | `docs/codex/tasks/v7-stage-3-behavior-option-framework/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 4 Relational Companion Layer | `codex_task` | n/a | `docs/codex/tasks/v7-stage-4-relational-companion-layer/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 5 Computer Skill Sandbox | `codex_task` | n/a | `docs/codex/tasks/v7-stage-5-computer-skill-sandbox/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 6 Runtime Shadow Bridge | `codex_task` | n/a | `docs/codex/tasks/v7-stage-6-runtime-shadow-bridge/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 7 Permissioned Runtime Action | `codex_task` | n/a | `docs/codex/tasks/v7-stage-7-permissioned-runtime-action/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Wp12 Maintenance Institutionalization | `codex_task` | n/a | `docs/codex/tasks/wp12-maintenance-institutionalization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |

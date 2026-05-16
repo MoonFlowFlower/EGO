@@ -6,21 +6,22 @@
 
 开始任何正式任务前，先按顺序读取：
 
-1. `PROJECT_MEMORY.md`
-2. `docs/PROGRAM_STATE_UNIFIED.yaml`
-3. `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
-4. `docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
-5. `README.md`
-6. 如果改 `EgoCore/`，再读 `EgoCore/README.md`
-7. 如果改 `OpenEmotion/`，再读 `OpenEmotion/README.md`
-8. 如果存在当前任务单，优先读 `Tasks/active/` 下的 spec / plan / acceptance / status / review 文档
-9. 如果任务已进入 Codex 长任务闭环，再读 `docs/codex/tasks/<slug>/SPEC.md`、`PLAN.md`、`IMPLEMENT.md`、`STATUS.md`
+1. `docs/PROGRAM_STATE_UNIFIED.yaml`
+2. 如果存在当前任务单，优先读 `Tasks/active/` 下的 spec / plan / acceptance / status / review 文档
+3. 如果任务已进入 Codex 长任务闭环，再读 `docs/codex/tasks/<slug>/SPEC.md`、`PLAN.md`、`IMPLEMENT.md`、`STATUS.md`
+4. `PROJECT_MEMORY.md`
+5. `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
+6. `docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
+7. `README.md`
+8. 如果改 `EgoCore/`，再读 `EgoCore/README.md`
+9. 如果改 `OpenEmotion/`，再读 `OpenEmotion/README.md`
 
 读取优先级：
 
 - 当前任务 spec / acceptance / status
 - `docs/PROGRAM_STATE_UNIFIED.yaml`
-- `PROJECT_MEMORY.md`
+- active lane / current codex task docs
+- `PROJECT_MEMORY.md`（只作广义背景，不覆盖 current authority）
 - Playbook / package README
 - 历史报告与观察文档
 
@@ -111,6 +112,43 @@
 - 如果 required check 无法运行，报告 `unavailable` 和具体原因；不得把 unavailable 降级写成 pass。
 - 最终报告必须列出 changed files、commands run、test results、evidence paths、unresolved risks、next smallest safe step。
 
+## Fixed collaboration loop
+
+对持续研发 / 研究回合，默认采用固定协作分工：
+
+- 用户负责：
+  - 方向
+  - 风险边界
+  - 是否升级 gate
+- Codex 负责：
+  - 问题重构
+  - 最小实现
+  - 验证
+  - 记账
+  - 结论口径
+
+默认每轮先压成：
+
+1. `Stage Card`
+2. `One Hypothesis`
+3. `One Change Surface`
+4. `Three-Level Verify`
+5. `Reviewer Verdict`
+6. `Ledger Update`
+
+默认不要把实现细节抛回给用户；只有命中以下条件才停下来要用户拍板：
+
+- 高影响路线取舍
+- 需要提升 claim ceiling / 升级 gate
+- 缺账号、审批、真实入口、人工观察等外部依赖
+- 当前 framing 被证明不值得继续
+- 继续推进会明显扩大 scope 或改变产品方向
+
+具体合同见：
+
+- `docs/FIXED_COLLABORATION_LOOP_V1.md`
+- `docs/RESEARCH_CAMPAIGN_CONTRACT.md`
+
 ## Codex Memory Brain
 
 - 若当前环境已启用 `memory_brain` MCP，处理中高复杂度任务前，先把当前任务压缩成一个短 probe，再调用 `memory_build_context`
@@ -132,6 +170,7 @@
 
 - 长任务正式工作目录固定为 `docs/codex/tasks/<slug>/`
 - 开工前按顺序读取：`SPEC.md -> PLAN.md -> IMPLEMENT.md -> STATUS.md`
+- 若任务属于 research / verify / observation / proof / high-unknown，再补读 `EXPLORE.md`
 - `STATUS.md` 的 `Current milestone` 是当前执行源；每次只推进一个 milestone
 - milestone 完成后默认运行：`python3 scripts/codex/verify_repo.py --mode fast`
 - milestone 收口、高风险改动、或任务 closeout 前运行：`python3 scripts/codex/verify_repo.py --mode full`
@@ -140,6 +179,22 @@
 - 保持 diff scoped，不顺手扩 scope；已有 `Tasks/active/*.md` 或 step/task 文档时，只作为 authority refs 引入，不复制为第二真相源
 - 仓库存在 smoke/e2e 能力时，相关长任务必须纳入 smoke/e2e 类验证
 - prompt 含 `LONGRUN` 时，进入持续推进模式：默认不为常规实现细节征求用户；只有命中缺外部凭据/审批、authority source 冲突、或验证证明当前 slice 无法闭环时才停
+
+探索型 long-run 任务默认规则：
+
+- 默认模式：`Question Reformulation -> Hypothesis -> Experiment -> Log -> Decision`
+- 每次实验后，必须先更新 `EXPLORE.md`，再开始下一轮
+- 记录最少包括：
+  - 当前 framing
+  - 假设
+  - 最小实验
+  - 观察结果
+  - 证明了什么
+  - 不能证明什么
+  - 排除了什么路线
+  - 下一步为什么这么走
+- 连续两轮低增益时，必须显式换 framing，而不是继续原路线 brute force
+- `candidate_found` 不等于 `proof_passed`；找到候选方案后必须切到 proof / verify 口径
 
 ## Change constraints / do-not rules
 
