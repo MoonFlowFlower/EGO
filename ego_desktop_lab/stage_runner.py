@@ -20,6 +20,7 @@ DEFAULT_STAGE_SEQUENCE = (
     "v7-stage-7",
     "v7-stage-8",
     "v7-stage-81",
+    "v7-stage-82",
     "v7-stage-9",
     "v7-stage-10",
 )

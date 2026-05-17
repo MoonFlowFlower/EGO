@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import platform
+import re
 import sys
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -26,6 +27,7 @@ class DialogueState:
     last_reply_was_pending: bool = False
     last_feedback_signal: str | None = None
     last_feedback_summary: str | None = None
+    preferred_reply_style: str | None = None
 
 
 @dataclass(frozen=True)
@@ -83,6 +85,28 @@ def route_conversation_command(
             f"我能看到的运行环境是：{system_info}。这是 Python runtime 可见的平台信息；我没有执行系统命令，也没有读取你的文件。",
             "user asked for computer/system information; local runtime can answer read-only",
         )
+    math_answer = _basic_math_answer(stripped)
+    if math_answer is not None:
+        return _decision(
+            "basic_math_answer",
+            stripped,
+            math_answer,
+            "user asked a basic arithmetic question; answer deterministically without tools",
+        )
+    if _is_style_preference_feedback(normalized):
+        return _decision(
+            "style_preference_feedback",
+            stripped,
+            "收到。当前会话内我会优先直接回答问题；如果涉及实时数据、文件、命令或权限边界，我仍会明确说明不能直接执行或不能编造。",
+            "user requested answer-only style; store session-local surface preference",
+        )
+    if _is_fresh_external_info_query(normalized):
+        return _decision(
+            "fresh_external_info_request",
+            stripped,
+            "当前 lab shell 没有接入实时天气、新闻、行情或网页查询工具，所以我不能编造最新结果。需要实时数据时，后续只能通过 permissioned tool sandbox 或人工提供来源。",
+            "user asked for fresh external information; no live tool route is attached",
+        )
     if _is_capability_query(normalized):
         return _decision(
             "answer_capability_question",
@@ -127,6 +151,13 @@ def route_conversation_command(
             stripped,
             "如果偏好或记忆没有出现在当前上下文或稳定记忆中，就不能当事实使用。应说明来源不可用，并请用户确认或重新提供。",
             "starter-pack style memory boundary prompt",
+        )
+    if _is_llm_open_question_query(normalized):
+        return _decision(
+            "llm_open_question_answer",
+            stripped,
+            "这个问题适合由 LLM 生成 answer draft；当前回答必须经过 admission validator，且不能声称执行工具、读取文件或获取实时数据。",
+            "open-ended question admitted only as LLM answer draft; canonical decision and gate remain host-owned",
         )
     if _is_outcome_repair_feedback(normalized):
         return None
@@ -234,6 +265,7 @@ def dialogue_state_from_view(view: DecisionView) -> DialogueState:
         feedback_summary = "user reported misunderstanding or low usefulness; next turn should reduce assumptions"
     elif feedback_signal == "helpful":
         feedback_summary = "user reported usefulness; preserve session strategy cautiously"
+    preferred = "answer_only" if command_type == "style_preference_feedback" else None
     return DialogueState(
         last_user_event=view.user_event,
         last_command_type=command_type,
@@ -241,6 +273,7 @@ def dialogue_state_from_view(view: DecisionView) -> DialogueState:
         last_reply_was_pending=pending,
         last_feedback_signal=feedback_signal,
         last_feedback_summary=feedback_summary,
+        preferred_reply_style=preferred,
     )
 
 
@@ -293,6 +326,72 @@ def _is_system_info_query(text: str) -> bool:
 
 def _is_capability_query(text: str) -> bool:
     return any(item in text for item in ("你能做什么", "能做哪些", "可以做什么", "支持什么", "什么能力", "capabilities", "what can you do"))
+
+
+def _basic_math_answer(text: str) -> str | None:
+    compact = text.replace("？", "?").replace("，", ",").strip()
+    match = re.fullmatch(r"\s*(-?\d+)\s*\+\s*(-?\d+)\s*(?:=|等于)?\s*(?:几|多少)?\s*\??\s*", compact)
+    if not match:
+        return None
+    left = int(match.group(1))
+    right = int(match.group(2))
+    return f"{left}+{right}={left + right}"
+
+
+def _is_style_preference_feedback(text: str) -> bool:
+    return any(
+        item in text
+        for item in (
+            "回答问题即可",
+            "直接回答问题",
+            "只回答问题",
+            "别解释过程",
+            "不用展开",
+            "answer only",
+            "just answer",
+        )
+    )
+
+
+def _is_fresh_external_info_query(text: str) -> bool:
+    return any(
+        item in text
+        for item in (
+            "天气",
+            "气温",
+            "下雨",
+            "新闻",
+            "最新",
+            "实时",
+            "当前价格",
+            "现在价格",
+            "行情",
+            "weather",
+            "forecast",
+            "latest",
+            "realtime",
+            "current price",
+        )
+    )
+
+
+def _is_llm_open_question_query(text: str) -> bool:
+    if any(item in text for item in ("ego", "stage", "阶段", "项目", "验收", "测试", "下一步")):
+        return False
+    return any(
+        item in text
+        for item in (
+            "怎么看待",
+            "你怎么看",
+            "你认为",
+            "评价一下",
+            "解释一下",
+            "介绍一下",
+            "为什么",
+            "what do you think",
+            "explain",
+        )
+    )
 
 
 def _is_what_info_needed_query(text: str) -> bool:

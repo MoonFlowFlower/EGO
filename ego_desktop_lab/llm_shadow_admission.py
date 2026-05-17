@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import urllib.request
 from dataclasses import asdict, dataclass, is_dataclass
 from pathlib import Path
 from typing import Any, Mapping, Protocol
@@ -94,11 +96,25 @@ class LLMExpressionDraft:
 
 
 @dataclass(frozen=True)
+class LLMAnswerDraft:
+    answer_text: str
+    freshness_class: str
+    uses_external_data: bool
+    requires_tool: bool
+    source_decision_hash: str
+    no_action_evidence: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return _jsonable(asdict(self))
+
+
+@dataclass(frozen=True)
 class LLMShadowProviderBundle:
     provider_name: str
     semantic_payload: dict[str, Any] | None
     expression_payload: dict[str, Any] | None
     observation: dict[str, Any]
+    answer_payload: dict[str, Any] | None = None
 
 
 class LLMShadowAdmissionProvider(Protocol):
@@ -117,9 +133,12 @@ class LLMAdmissionResult:
     no_action_executed: bool
     provider_name: str
     deterministic_text: str
+    admitted_answer_text: str | None
     admitted_expression_text: str | None
     semantic_proposal: dict[str, Any] | None
+    answer_draft: dict[str, Any] | None
     expression_draft: dict[str, Any] | None
+    answer_admission_status: str
     source_decision_hash: str
     post_decision_hash: str
     trace: dict[str, Any]
@@ -169,17 +188,24 @@ class LiveLLMShadowAdmissionProvider:
             fallback_ref=evidence_ref,
             selected_goal=selected_goal,
         )
+        answer_payload, answer_observation = _live_answer_payload(
+            view,
+            source_hash=source_hash,
+            evidence_ref=evidence_ref,
+        )
         observation = {
-            "status": "observed" if semantic_payload else "optional_unavailable",
+            "status": "observed" if (semantic_payload or answer_payload) else "optional_unavailable",
             "semantic_provider": result.provider_name,
             "semantic_provider_reason": result.reason,
             "semantic_provider_observation": result.observation,
+            "answer_provider_observation": answer_observation,
         }
         return LLMShadowProviderBundle(
             provider_name=self.provider_name,
             semantic_payload=semantic_payload,
             expression_payload=None,
             observation=observation,
+            answer_payload=answer_payload,
         )
 
 
@@ -228,6 +254,7 @@ class DeterministicLLMShadowAdmissionProvider:
             semantic_payload=semantic,
             expression_payload=expression,
             observation={"status": "observed", "unsafe_mode": self.unsafe_mode},
+            answer_payload=_deterministic_answer_payload(view, source_hash),
         )
 
 
@@ -250,8 +277,10 @@ def run_llm_shadow_admission(
     selected_goal_before = _selected_goal(data)
     bundle = provider.generate(request)
     semantic, semantic_reasons = _admit_semantic(bundle.semantic_payload, expected_ref=f"decision:{source_hash}")
+    answer, answer_reasons = _admit_answer(bundle.answer_payload, data, source_hash)
     expression, expression_reasons = _admit_expression(bundle.expression_payload, data, source_hash)
-    reasons = tuple(dict.fromkeys([*semantic_reasons, *expression_reasons]))
+    reasons = tuple(dict.fromkeys([*semantic_reasons, *answer_reasons, *expression_reasons]))
+    admitted_answer = answer.answer_text if answer and not answer_reasons else None
     admitted_text = expression.draft_text if expression and not expression_reasons else None
     post_hash = source_decision_hash(data)
     selected_goal_after = _selected_goal(data)
@@ -262,6 +291,7 @@ def run_llm_shadow_admission(
         "provider": bundle.provider_name,
         "provider_observation": dict(bundle.observation),
         "semantic_shadow_status": "observed" if semantic else "rejected",
+        "answer_admission_status": "admitted" if admitted_answer else ("rejected" if answer_reasons else "not_provided"),
         "expression_admission_status": "admitted" if admitted_text else "rejected",
         "canonical_decision": data.get("canonical_decision"),
         "gate_decision": data.get("gate_decision"),
@@ -277,9 +307,12 @@ def run_llm_shadow_admission(
         no_action_executed=bool(data.get("no_action_executed", True)),
         provider_name=bundle.provider_name,
         deterministic_text=deterministic.rendered_text,
+        admitted_answer_text=admitted_answer,
         admitted_expression_text=admitted_text,
         semantic_proposal=semantic.to_dict() if semantic else None,
+        answer_draft=answer.to_dict() if answer else None,
         expression_draft=expression.to_dict() if expression else None,
+        answer_admission_status="admitted" if admitted_answer else ("rejected" if answer_reasons else "not_provided"),
         source_decision_hash=source_hash,
         post_decision_hash=post_hash,
         trace=trace,
@@ -290,10 +323,18 @@ def render_llm_admitted_expression(
     view: Mapping[str, Any] | Any,
     *,
     provider: LLMShadowAdmissionProvider | None = None,
+    provider_mode: str = "fake",
 ) -> tuple[str, LLMAdmissionResult]:
+    if provider is None:
+        provider = LiveLLMShadowAdmissionProvider() if provider_mode == "live" else DeterministicLLMShadowAdmissionProvider()
     result = run_llm_shadow_admission(view, provider=provider)
+    if result.admitted_answer_text:
+        return result.admitted_answer_text, result
     if result.admitted_expression_text:
         return result.admitted_expression_text, result
+    data = _view_to_dict(view)
+    if provider_mode == "live" and _selected_goal(data) == "llm_open_question_answer":
+        return f"{result.deterministic_text}\n\nLLM provider unavailable; deterministic fallback used.", result
     return result.deterministic_text, result
 
 
@@ -451,6 +492,50 @@ def _admit_expression(
     return (None, reasons) if reasons else (draft, [])
 
 
+def _admit_answer(
+    payload: Mapping[str, Any] | None,
+    view: Mapping[str, Any],
+    expected_hash: str,
+) -> tuple[LLMAnswerDraft | None, list[str]]:
+    if not payload:
+        return None, []
+    draft = LLMAnswerDraft(
+        answer_text=str(payload.get("answer_text") or ""),
+        freshness_class=str(payload.get("freshness_class") or "unknown"),
+        uses_external_data=bool(payload.get("uses_external_data", False)),
+        requires_tool=bool(payload.get("requires_tool", False)),
+        source_decision_hash=str(payload.get("source_decision_hash") or ""),
+        no_action_evidence=str(payload.get("no_action_evidence") or ""),
+    )
+    reasons: list[str] = []
+    if not draft.answer_text.strip():
+        reasons.append("answer_empty")
+    if draft.source_decision_hash != expected_hash:
+        reasons.append("answer_source_decision_hash_mismatch")
+    if NO_ACTION_TEXT not in draft.no_action_evidence:
+        reasons.append("answer_missing_no_action_evidence")
+    if draft.uses_external_data:
+        reasons.append("answer_claims_external_data")
+    if draft.requires_tool:
+        reasons.append("answer_requires_tool")
+    lowered = draft.answer_text.lower()
+    for marker in FORBIDDEN_CLAIM_MARKERS:
+        if marker.lower() in lowered:
+            reasons.append(f"forbidden_claim:{marker}")
+            break
+    for marker in FORBIDDEN_ACTION_MARKERS:
+        if marker.lower() in lowered:
+            reasons.append(f"forbidden_action_claim:{marker}")
+            break
+    for marker in DEBUG_LEAK_MARKERS:
+        if marker in draft.answer_text:
+            reasons.append(f"debug_or_json_leak:{marker}")
+            break
+    if _selected_goal(view) == "fresh_external_info_request" and draft.freshness_class != "unavailable":
+        reasons.append("fresh_external_answer_not_unavailable")
+    return (None, reasons) if reasons else (draft, [])
+
+
 @dataclass(frozen=True)
 class _AdmissionScenario:
     text: str
@@ -487,6 +572,161 @@ def _semantic_payload_from_live_result(
         "task_hint": str(payload.get("related_goal_id") or selected_goal),
         "confidence": _safe_float(payload.get("confidence"), default=0.0),
         "evidence_refs": [str(item) for item in evidence_refs],
+    }
+
+
+def _deterministic_answer_payload(view: Mapping[str, Any], source_hash: str) -> dict[str, Any] | None:
+    selected_goal = _selected_goal(view)
+    text = str(view.get("user_event") or "")
+    if selected_goal == "basic_math_answer":
+        answer = str(view.get("rendered_suggestion") or view.get("suggestion") or "")
+        return _answer_payload(answer, source_hash, freshness_class="stable")
+    if selected_goal == "llm_open_question_answer":
+        return _answer_payload(_deterministic_open_answer(text), source_hash, freshness_class="general")
+    if selected_goal == "fresh_external_info_request":
+        return _answer_payload(
+            "当前未接入实时天气、新闻、行情或网页查询工具，所以我不能编造最新结果。",
+            source_hash,
+            freshness_class="unavailable",
+        )
+    return None
+
+
+def _deterministic_open_answer(text: str) -> str:
+    normalized = text.lower()
+    if "特朗普" in normalized or "trump" in normalized:
+        return (
+            "特朗普是高度争议的交易型政治人物。支持者看重他反建制、强调本国利益和强硬谈判；"
+            "批评者认为他加剧社会撕裂、削弱制度规范并增加政策不确定性。"
+            "我不持个人政治立场，只能按公开稳定认知做结构化分析。"
+        )
+    return "这是一个开放问题。我的回答只能作为 lab-only answer draft：先给观点，再标出不确定性和不能证明的部分。"
+
+
+def _answer_payload(
+    answer_text: str,
+    source_hash: str,
+    *,
+    freshness_class: str,
+) -> dict[str, Any]:
+    return {
+        "answer_text": answer_text,
+        "freshness_class": freshness_class,
+        "uses_external_data": False,
+        "requires_tool": False,
+        "source_decision_hash": source_hash,
+        "no_action_evidence": NO_ACTION_TEXT,
+    }
+
+
+def _live_answer_payload(
+    view: Mapping[str, Any],
+    *,
+    source_hash: str,
+    evidence_ref: str,
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    selected_goal = _selected_goal(view)
+    if selected_goal not in {"llm_open_question_answer", "basic_math_answer"}:
+        return None, {"status": "not_requested", "reason": f"selected_goal={selected_goal}"}
+    if os.environ.get("EGO_DESKTOP_LAB_ENABLE_LIVE_LLM") != "1":
+        return None, {"status": "optional_unavailable", "reason": "EGO_DESKTOP_LAB_ENABLE_LIVE_LLM is not 1"}
+    try:
+        raw_text, observation = _call_live_answer_model(str(view.get("user_event") or ""), evidence_ref=evidence_ref)
+    except Exception as exc:  # pragma: no cover - live provider is optional and environment-dependent.
+        return None, {"status": "optional_unavailable", "reason": str(exc)}
+    payload = _parse_live_answer_payload(raw_text, source_hash)
+    if payload is None:
+        return None, {**observation, "status": "optional_unavailable", "reason": "live answer did not return valid JSON"}
+    return payload, observation
+
+
+def _call_live_answer_model(text: str, *, evidence_ref: str) -> tuple[str, dict[str, Any]]:
+    from ego_desktop_lab.semantic_provider import (
+        _codex_config_model,
+        _extract_response_text,
+        _resolve_live_bearer_token,
+        _uses_openrouter_base_url,
+    )
+
+    prompt = _live_answer_prompt(text, evidence_ref=evidence_ref)
+    openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+    if openrouter_key or _uses_openrouter_base_url():
+        base_url = os.environ.get("EGO_DESKTOP_LAB_LIVE_LLM_BASE_URL", "https://openrouter.ai/api/v1").rstrip("/")
+        model = os.environ.get("EGO_DESKTOP_LAB_LIVE_LLM_MODEL") or "tencent/hy3-preview"
+        if not openrouter_key:
+            raise RuntimeError("OPENROUTER_API_KEY is missing")
+        body = json.dumps(
+            {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+            }
+        ).encode("utf-8")
+        request = urllib.request.Request(
+            f"{base_url}/chat/completions",
+            data=body,
+            headers={
+                "Authorization": f"Bearer {openrouter_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": os.environ.get("EGO_DESKTOP_LAB_LIVE_LLM_REFERER", "https://localhost/ego_desktop_lab"),
+                "X-Title": os.environ.get("EGO_DESKTOP_LAB_LIVE_LLM_TITLE", "ego_desktop_lab live answer admission"),
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=30) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+        raw = _extract_response_text(payload)
+        return raw, {"status": "observed", "api_provider": "openrouter", "model": model}
+
+    bearer_token, auth_source, auth_reason = _resolve_live_bearer_token()
+    model = os.environ.get("EGO_DESKTOP_LAB_LIVE_LLM_MODEL") or _codex_config_model()
+    if not bearer_token or not model:
+        raise RuntimeError(auth_reason if not bearer_token else "EGO_DESKTOP_LAB_LIVE_LLM_MODEL is missing")
+    body = json.dumps({"model": model, "input": prompt}).encode("utf-8")
+    request = urllib.request.Request(
+        "https://api.openai.com/v1/responses",
+        data=body,
+        headers={
+            "Authorization": f"Bearer {bearer_token}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    raw = _extract_response_text(payload)
+    return raw, {"status": "observed", "api_provider": "openai", "auth_source": auth_source, "model": model}
+
+
+def _live_answer_prompt(text: str, *, evidence_ref: str) -> str:
+    return (
+        "Return exactly one JSON object, no Markdown and no extra text. "
+        "Schema: answer_text string, freshness_class one of stable/general/unavailable, "
+        "uses_external_data boolean, requires_tool boolean, evidence_refs array. "
+        "You may answer general knowledge, math, reasoning, and non-fresh political analysis. "
+        "Do not claim personal political emotion, consciousness, life, real autonomy, file access, command execution, external send, web browsing, weather lookup, or live data access. "
+        "If the user asks for weather, latest news, current price, or live data, answer_text must say the lab shell has no live tool route; set freshness_class=unavailable, uses_external_data=false, requires_tool=false. "
+        "Keep Chinese answers concise unless the user asks for detail. "
+        f"evidence_refs must include exactly: {evidence_ref}. "
+        f"User text: {text}"
+    )
+
+
+def _parse_live_answer_payload(raw_text: str, source_hash: str) -> dict[str, Any] | None:
+    if not raw_text:
+        return None
+    try:
+        payload = json.loads(raw_text)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(payload, Mapping):
+        return None
+    return {
+        "answer_text": str(payload.get("answer_text") or ""),
+        "freshness_class": str(payload.get("freshness_class") or "general"),
+        "uses_external_data": bool(payload.get("uses_external_data", False)),
+        "requires_tool": bool(payload.get("requires_tool", False)),
+        "source_decision_hash": source_hash,
+        "no_action_evidence": NO_ACTION_TEXT,
     }
 
 

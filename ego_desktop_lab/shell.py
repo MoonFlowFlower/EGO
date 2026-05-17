@@ -111,6 +111,7 @@ def run_shell(
     dialogue_state: DialogueState | None = None,
     reply_history: tuple[str, ...] = (),
     llm_expression_admitted: bool = False,
+    llm_expression_provider: str = "fake",
 ) -> ShellRunResult:
     if provider_mode not in {"mock", "live_shadow", "strict_admission_experiment"}:
         raise ValueError(f"unsupported shell provider mode: {provider_mode}")
@@ -156,7 +157,7 @@ def run_shell(
         reply_history=reply_history,
     )
     if llm_expression_admitted and not show_debug:
-        output, llm_result = render_llm_admitted_expression(view)
+        output, llm_result = render_llm_admitted_expression(view, provider_mode=llm_expression_provider)
         llm_summary = llm_result.to_dict()
     updated_reply_history = reply_history if show_debug else append_reply_history(reply_history, output)
     saved_path = None
@@ -1575,6 +1576,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Opt in to admitted LLM expression draft rendering; canonical decision and gate remain unchanged.",
     )
     parser.add_argument(
+        "--llm-expression-provider",
+        choices=("fake", "live"),
+        default="live",
+        help="Provider for --llm-expression-admitted. CLI defaults to live; tests can use fake.",
+    )
+    parser.add_argument(
         "--live-shadow-samples",
         type=Path,
         help="Read a v7 Stage 8 live-shadow human trial sample pack JSONL file.",
@@ -1678,6 +1685,7 @@ def main(argv: list[str] | None = None) -> int:
                 provider_mode=_provider_mode_from_args(args),
                 show_debug=args.show_debug,
                 llm_expression_admitted=args.llm_expression_admitted,
+                llm_expression_provider=args.llm_expression_provider,
             )
         text = DEFAULT_DEMO_EVENT
 
@@ -1689,6 +1697,7 @@ def main(argv: list[str] | None = None) -> int:
         save_misjudged_reason=args.save_misjudged,
         recent_limit=max(args.recent, 0),
         llm_expression_admitted=args.llm_expression_admitted,
+        llm_expression_provider=args.llm_expression_provider,
     )
     print(result.output)
     return 0
@@ -1703,6 +1712,7 @@ def run_interactive_shell(
     input_func=input,
     output_func=print,
     llm_expression_admitted: bool = False,
+    llm_expression_provider: str = "fake",
 ) -> int:
     debug = show_debug
     last_event: str | None = None
@@ -1749,6 +1759,7 @@ def run_interactive_shell(
             dialogue_state=dialogue_state,
             reply_history=reply_history,
             llm_expression_admitted=llm_expression_admitted,
+            llm_expression_provider=llm_expression_provider,
         )
         dialogue_state = result.dialogue_state
         reply_history = result.reply_history

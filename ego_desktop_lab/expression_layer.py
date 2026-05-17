@@ -278,6 +278,10 @@ def _communicative_act(goal: str, failure_type: str | None, pending: bool) -> st
     mapping = {
         "answer_local_time": "local_time",
         "answer_local_system_info": "local_system_info",
+        "basic_math_answer": "basic_answer",
+        "llm_open_question_answer": "llm_answer",
+        "fresh_external_info_request": "fresh_external_boundary",
+        "style_preference_feedback": "style_preference",
         "answer_capability_question": "capability",
         "ask_clarification": "clarification",
         "explain_evidence_boundary": "evidence_boundary",
@@ -303,6 +307,10 @@ def _understanding_text(communicative_act: str, failure_type: str | None) -> str
     labels = {
         "local_time": "你在问当前时间；这可以由本地运行时只读回答。",
         "local_system_info": "你在问当前计算机/运行环境是什么系统；我只能回答 Python runtime 可见的信息。",
+        "basic_answer": "你在问一个可直接回答的基础问题。",
+        "llm_answer": "你在问开放性问题；回答只能作为 LLM draft 通过 admission 后展示。",
+        "fresh_external_boundary": "你在问实时或外部新鲜信息；当前 shell 没有对应工具路线。",
+        "style_preference": "你在设置当前会话内的回答风格偏好。",
         "capability": "你在问这个实验外壳能做什么、不能做什么。",
         "clarification": "你在追问继续判断还缺哪些信息。",
         "evidence_boundary": "这里需要先核验证据，不能把局部验证包装成真实生效。",
@@ -330,6 +338,14 @@ def _decision_summary(communicative_act: str, goal: str, gate_status: str, pendi
         return "这不需要进入语义策略链；直接返回本地运行时可见时间。"
     if communicative_act == "local_system_info":
         return "这不需要执行系统命令；只返回运行时可见的平台信息。"
+    if communicative_act == "basic_answer":
+        return "这不需要工具或外部查询；直接给出确定性答案。"
+    if communicative_act == "llm_answer":
+        return "最终可见回答必须来自通过 admission 的 answer draft；canonical decision 和 gate 不变。"
+    if communicative_act == "fresh_external_boundary":
+        return "当前没有实时外部数据工具路线；不能编造天气、新闻、行情或价格。"
+    if communicative_act == "style_preference":
+        return "这是当前会话内表达偏好，不写入长期记忆。"
     if communicative_act == "capability":
         return "最终回答是能力边界说明，而不是执行任何桌面动作。"
     if communicative_act == "affective_feedback":
@@ -369,6 +385,10 @@ def _recommendation_text(
     if communicative_act in {
         "local_time",
         "local_system_info",
+        "basic_answer",
+        "llm_answer",
+        "fresh_external_boundary",
+        "style_preference",
         "capability",
         "clarification",
         "evidence_boundary",
