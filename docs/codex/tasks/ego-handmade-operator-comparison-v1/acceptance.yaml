@@ -1,0 +1,37 @@
+task: ego-handmade-operator-comparison-v1
+claim_ceiling: Ego_handmade operator comparison local candidate pass
+allowed_paths:
+  - Ego_handmade/**
+  - docs/codex/tasks/ego-handmade-operator-comparison-v1/**
+forbidden_paths:
+  - EgoCore/**
+  - OpenEmotion/**
+  - ego_desktop_lab/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+forbidden_claims:
+  - EGO mainline replacement
+  - EgoCore/OpenEmotion/ego_desktop_lab demotion
+  - live runtime efficacy
+  - live user benefit
+  - stable long-term memory efficacy
+  - consciousness
+checks:
+  - id: py_compile
+    command: python3 -m py_compile Ego_handmade/agent_base.py Ego_handmade/memory_system.py Ego_handmade/operator_comparison.py Ego_handmade/primitives/subject_context.py Ego_handmade/primitives/evals.py Ego_handmade/primitives/runtime_gate.py
+  - id: targeted_tests
+    command: TMPDIR=/tmp python3 -m pytest -q Ego_handmade/tests/test_operator_cut.py Ego_handmade/tests/test_memory_system.py Ego_handmade/tests/test_extracted_primitives.py Ego_handmade/tests/test_operator_comparison.py
+  - id: diff_check
+    command: git diff --check -- Ego_handmade docs/codex/tasks/ego-handmade-operator-comparison-v1
+comparison_gate:
+  paraphrase_cases: 20
+  operator_scenarios: 5
+  required_dimensions:
+    - semantic_preserved
+    - natural_response_candidate
+    - no_keyword_route
+    - no_template_fallback
+    - side_effect_gate
+    - trace_readable
+    - recovery_strategy
+  baseline_policy: record reference/unavailable honestly; do not fake old-system execution

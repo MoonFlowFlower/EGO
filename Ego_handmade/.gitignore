@@ -3,6 +3,7 @@ __pycache__/
 .team/
 artifacts/*.jsonl
 artifacts/*.tmp
+artifacts/comparison/
 memory/history.jsonl
 memory/MEMORY.md
 memory/candidate_core_updates.jsonl
