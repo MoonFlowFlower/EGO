@@ -281,6 +281,7 @@ def run_llm_shadow_admission(
         "decision_view": data,
         "response_plan": _jsonable(asdict(response_plan)),
         "source_decision_hash": source_hash,
+        "answer_context": _answer_context_from_view(data),
         "claim_ceiling": CLAIM_CEILING,
     }
     provider = provider or DeterministicLLMShadowAdmissionProvider()
@@ -306,6 +307,7 @@ def run_llm_shadow_admission(
         "canonical_decision": data.get("canonical_decision"),
         "gate_decision": data.get("gate_decision"),
         "selected_goal": selected_goal_before,
+        "answer_context": _answer_context_from_view(data),
     }
     return LLMAdmissionResult(
         semantic_shadow_status="observed" if semantic else "rejected",
@@ -343,7 +345,7 @@ def render_llm_admitted_expression(
     if result.admitted_expression_text:
         return result.admitted_expression_text, result
     data = _view_to_dict(view)
-    if provider_mode == "live" and _selected_goal(data) == "llm_open_question_answer":
+    if provider_mode == "live" and _selected_goal(data) in {"llm_open_question_answer", "llm_contextual_followup_answer"}:
         reason = _live_unavailable_reason(result)
         return f"{result.deterministic_text}\n\nLLM provider unavailable; deterministic fallback used. reason: {reason}", result
     return result.deterministic_text, result
@@ -592,8 +594,13 @@ def _deterministic_answer_payload(view: Mapping[str, Any], source_hash: str) -> 
     if selected_goal == "basic_math_answer":
         answer = str(view.get("rendered_suggestion") or view.get("suggestion") or "")
         return _answer_payload(answer, source_hash, freshness_class="stable")
-    if selected_goal == "llm_open_question_answer":
-        return _answer_payload(_deterministic_open_answer(text), source_hash, freshness_class="general")
+    if selected_goal in {"llm_open_question_answer", "llm_contextual_followup_answer"}:
+        context = _answer_context_from_view(view)
+        return _answer_payload(
+            _deterministic_open_answer(text, context=context),
+            source_hash,
+            freshness_class="general",
+        )
     if selected_goal == "fresh_external_info_request":
         return _answer_payload(
             "当前未接入实时天气、新闻、行情或网页查询工具，所以我不能编造最新结果。",
@@ -603,15 +610,40 @@ def _deterministic_answer_payload(view: Mapping[str, Any], source_hash: str) -> 
     return None
 
 
-def _deterministic_open_answer(text: str) -> str:
+def _deterministic_open_answer(text: str, *, context: Mapping[str, Any] | None = None) -> str:
+    context = context or {}
+    topic = str(context.get("resolved_topic") or "")
     normalized = text.lower()
-    if "特朗普" in normalized or "trump" in normalized:
+    if "特朗普" in normalized or "特朗普" in topic or "trump" in normalized or "trump" in topic.lower():
         return (
             "特朗普是高度争议的交易型政治人物。支持者看重他反建制、强调本国利益和强硬谈判；"
             "批评者认为他加剧社会撕裂、削弱制度规范并增加政策不确定性。"
             "我不持个人政治立场，只能按公开稳定认知做结构化分析。"
         )
+    if topic:
+        if context.get("selected_goal") != "llm_contextual_followup_answer" and any(
+            marker in normalized for marker in ("听说过", "你知道", "你了解", "do you know")
+        ):
+            return (
+                f"听说过。{_display_topic(topic)}是一个可以讨论的稳定话题；"
+                "我可以先给简短背景，也可以继续评价它的优缺点。"
+            )
+        return (
+            f"我对{_display_topic(topic)}的看法是：先看它最核心的机制或影响，再看它带来的代价。"
+            "如果它的强项能稳定改变体验或结果，就值得肯定；如果代价是门槛、误解或不确定性，也应该直接说清。"
+        )
     return "这是一个开放问题。我的回答只能作为 lab-only answer draft：先给观点，再标出不确定性和不能证明的部分。"
+
+
+def _display_topic(topic: str) -> str:
+    compact = " ".join(topic.split()).strip(" ，。！？?!.:：；;“”\"'")
+    if not compact:
+        return "这个话题"
+    if compact.startswith("《") and compact.endswith("》"):
+        return compact
+    if any("\u4e00" <= ch <= "\u9fff" for ch in compact):
+        return f"《{compact}》" if len(compact) <= 12 else compact
+    return compact
 
 
 def _answer_payload(
@@ -637,7 +669,7 @@ def _live_answer_payload(
     evidence_ref: str,
 ) -> tuple[dict[str, Any] | None, dict[str, Any]]:
     selected_goal = _selected_goal(view)
-    if selected_goal not in {"llm_open_question_answer", "basic_math_answer"}:
+    if selected_goal not in {"llm_open_question_answer", "llm_contextual_followup_answer", "basic_math_answer"}:
         return None, {"status": "not_requested", "reason": f"selected_goal={selected_goal}"}
     route = _resolve_live_answer_route()
     if not _live_answer_enabled(route):
@@ -651,6 +683,7 @@ def _live_answer_payload(
             str(view.get("user_event") or ""),
             evidence_ref=evidence_ref,
             route=route,
+            answer_context=_answer_context_from_view(view),
         )
     except Exception as exc:  # pragma: no cover - live provider is optional and environment-dependent.
         return None, {"status": "optional_unavailable", "reason": str(exc)}
@@ -665,6 +698,7 @@ def _call_live_answer_model(
     *,
     evidence_ref: str,
     route: _LiveAnswerRoute | None = None,
+    answer_context: Mapping[str, Any] | None = None,
 ) -> tuple[str, dict[str, Any]]:
     from ego_desktop_lab.semantic_provider import (
         _codex_config_model,
@@ -673,7 +707,7 @@ def _call_live_answer_model(
         _resolve_live_bearer_token,
     )
 
-    prompt = _live_answer_prompt(text, evidence_ref=evidence_ref)
+    prompt = _live_answer_prompt(text, evidence_ref=evidence_ref, answer_context=answer_context)
     route = route or _resolve_live_answer_route()
     provider = route.provider.lower()
     base_url = (os.environ.get("EGO_DESKTOP_LAB_LIVE_LLM_BASE_URL") or route.base_url or "").rstrip("/")
@@ -810,7 +844,34 @@ def _live_unavailable_reason(result: LLMAdmissionResult) -> str:
     return str(provider_observation.get("semantic_provider_reason") or "unknown")
 
 
-def _live_answer_prompt(text: str, *, evidence_ref: str) -> str:
+def _answer_context_from_view(view: Mapping[str, Any]) -> dict[str, Any]:
+    semantic = _mapping(view.get("semantic_understanding"))
+    return {
+        "current_user_text": str(view.get("user_event") or ""),
+        "resolved_topic": str(semantic.get("resolved_topic") or ""),
+        "last_answer_summary": str(semantic.get("context_summary") or ""),
+        "freshness_boundary": "no live external data route unless selected goal explicitly reports unavailable",
+        "no_action_evidence": NO_ACTION_TEXT,
+        "selected_goal": _selected_goal(view),
+    }
+
+
+def _live_answer_prompt(
+    text: str,
+    *,
+    evidence_ref: str,
+    answer_context: Mapping[str, Any] | None = None,
+) -> str:
+    context = _mapping(answer_context)
+    resolved_topic = str(context.get("resolved_topic") or "")
+    last_answer_summary = str(context.get("last_answer_summary") or "")
+    context_lines = ""
+    if resolved_topic or last_answer_summary:
+        context_lines = (
+            f"Resolved previous topic: {resolved_topic or 'none'}\n"
+            f"Previous answer summary: {last_answer_summary or 'none'}\n"
+            "If the current user text is a short follow-up, answer the follow-up about the resolved previous topic.\n"
+        )
     return (
         "Return exactly one JSON object, no Markdown and no extra text. "
         "Schema: answer_text string, freshness_class one of stable/general/unavailable, "
@@ -820,6 +881,7 @@ def _live_answer_prompt(text: str, *, evidence_ref: str) -> str:
         "If the user asks for weather, latest news, current price, or live data, answer_text must say the lab shell has no live tool route; set freshness_class=unavailable, uses_external_data=false, requires_tool=false. "
         "Keep Chinese answers concise unless the user asks for detail. "
         f"evidence_refs must include exactly: {evidence_ref}. "
+        f"{context_lines}"
         f"User text: {text}"
     )
 

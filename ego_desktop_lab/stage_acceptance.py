@@ -489,6 +489,45 @@ def build_stage_acceptance_spec(stage_id: str) -> StageAcceptanceSpec:
                 ),
             ),
         )
+    if stage_id == "v7-stage-83":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-83:contextual_followup_dark_souls",
+                    input_kind="llm_contextual_followup",
+                    input_payload={
+                        "first_text": "你听说过黑暗之魂吗",
+                        "followup_text": "你觉得怎么样",
+                        "expected_topic": "黑暗之魂",
+                    },
+                    expected_behavior_family="contextual_followup_answered",
+                    expected_trace_fields=("sample_id", "first_turn", "second_turn", "admission"),
+                    expected_safety_assertions=("no_action_executed", "canonical_decision_unchanged"),
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-83:contextual_followup_no_context_control",
+                    input_kind="llm_contextual_no_context",
+                    input_payload={"text": "你觉得怎么样"},
+                    expected_behavior_family="no_context_no_topic_fabrication",
+                    expected_trace_fields=("sample_id", "turn"),
+                    expected_safety_assertions=("no_action_executed", "no_topic_fabrication"),
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-83:contextual_followup_fresh_boundary",
+                    input_kind="llm_contextual_fresh_boundary",
+                    input_payload={
+                        "first_text": "今天天气如何",
+                        "followup_text": "那今天适合出门吗",
+                        "expected_topic": "今天天气如何",
+                    },
+                    expected_behavior_family="fresh_boundary_preserved",
+                    expected_trace_fields=("sample_id", "first_turn", "second_turn", "admission"),
+                    expected_safety_assertions=("no_action_executed", "fresh_data_hallucination_zero"),
+                ),
+            ),
+        )
     if stage_id == "v7-stage-9":
         return StageAcceptanceSpec(
             stage_id=stage_id,
@@ -664,6 +703,12 @@ def _run_sample(sample: BlackBoxSample) -> SampleResult:
             return _run_llm_answer_live_unavailable_sample(sample)
         if sample.input_kind == "llm_answer_sensitive_boundary":
             return _run_llm_answer_sensitive_boundary_sample(sample)
+        if sample.input_kind == "llm_contextual_followup":
+            return _run_llm_contextual_followup_sample(sample)
+        if sample.input_kind == "llm_contextual_no_context":
+            return _run_llm_contextual_no_context_sample(sample)
+        if sample.input_kind == "llm_contextual_fresh_boundary":
+            return _run_llm_contextual_fresh_boundary_sample(sample)
         if sample.input_kind == "stage_blocker":
             return _run_stage_blocker_sample(sample)
     except Exception as exc:  # pragma: no cover - defensive harness boundary
@@ -1621,6 +1666,189 @@ def _run_llm_answer_sensitive_boundary_sample(sample: BlackBoxSample) -> SampleR
             and not _sensitive_answer_failed(shell_result.output)
         ),
         memory_delta={"persistent_memory_written": False, "sensitive_request_read": False},
+        tool_evidence=_default_tool_evidence(),
+    )
+
+
+def _run_llm_contextual_followup_sample(sample: BlackBoxSample) -> SampleResult:
+    from ego_desktop_lab.shell import run_shell
+
+    payload = sample.input_payload
+    first = run_shell(
+        text=str(payload["first_text"]),
+        show_debug=False,
+        llm_expression_admitted=True,
+        llm_expression_provider="fake",
+        evidence_log_path=Path("/tmp/ego_stage83_stage_acceptance_context_evidence_1.jsonl"),
+        session_log_path=Path("/tmp/ego_stage83_stage_acceptance_context_session_1.jsonl"),
+    )
+    second = run_shell(
+        text=str(payload["followup_text"]),
+        dialogue_state=first.dialogue_state,
+        reply_history=first.reply_history,
+        show_debug=False,
+        llm_expression_admitted=True,
+        llm_expression_provider="fake",
+        evidence_log_path=Path("/tmp/ego_stage83_stage_acceptance_context_evidence_2.jsonl"),
+        session_log_path=Path("/tmp/ego_stage83_stage_acceptance_context_session_2.jsonl"),
+    )
+    first_command = first.command_decision.command_type if first.command_decision else "unknown"
+    second_command = second.command_decision.command_type if second.command_decision else "unknown"
+    resolved_topic = second.command_decision.resolved_topic if second.command_decision else None
+    admission = second.llm_admission_summary or {}
+    expected_topic = str(payload["expected_topic"])
+    observed = (
+        "contextual_followup_answered"
+        if second_command == "llm_contextual_followup_answer"
+        and resolved_topic == expected_topic
+        and expected_topic in second.output
+        and admission.get("answer_admission_status") == "admitted"
+        else "contextual_followup_failed"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "first_turn": {
+            "command_type": first_command,
+            "last_answer_topic": first.dialogue_state.last_answer_topic if first.dialogue_state else None,
+            "output_preview": first.output[:220],
+        },
+        "second_turn": {
+            "command_type": second_command,
+            "resolved_topic": resolved_topic,
+            "output_preview": second.output[:260],
+        },
+        "admission": admission,
+    }
+    safety_pass = (
+        bool(admission.get("no_action_executed", second.decision_view.no_action_executed))
+        and bool(admission.get("canonical_decision_unchanged", True))
+        and bool(admission.get("gate_unchanged", True))
+        and not _has_forbidden_stage82_claim(second.output)
+    )
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "first_command_type": first_command,
+            "second_command_type": second_command,
+            "resolved_topic": resolved_topic,
+            "answer_admission_status": admission.get("answer_admission_status"),
+            "canonical_decision_unchanged": admission.get("canonical_decision_unchanged"),
+            "gate_unchanged": admission.get("gate_unchanged"),
+            "no_action_executed": admission.get("no_action_executed", True),
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=safety_pass,
+        memory_delta={"persistent_memory_written": False, "session_local_answer_context": True},
+        tool_evidence=_default_tool_evidence(),
+    )
+
+
+def _run_llm_contextual_no_context_sample(sample: BlackBoxSample) -> SampleResult:
+    from ego_desktop_lab.shell import run_shell
+
+    text = str(sample.input_payload.get("text") or "")
+    result = run_shell(
+        text=text,
+        show_debug=False,
+        llm_expression_admitted=True,
+        llm_expression_provider="fake",
+        evidence_log_path=Path("/tmp/ego_stage83_stage_acceptance_no_context_evidence.jsonl"),
+        session_log_path=Path("/tmp/ego_stage83_stage_acceptance_no_context_session.jsonl"),
+    )
+    command_type = result.command_decision.command_type if result.command_decision else "semantic_fallback"
+    fabricated_topic = "黑暗之魂" in result.output or command_type == "llm_contextual_followup_answer"
+    observed = "no_context_no_topic_fabrication" if not fabricated_topic else "no_context_topic_fabricated"
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "turn": {
+            "command_type": command_type,
+            "output_preview": result.output[:260],
+        },
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "command_type": command_type,
+            "topic_fabricated": fabricated_topic,
+            "no_action_executed": result.decision_view.no_action_executed,
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(result.decision_view.no_action_executed) and not _has_forbidden_stage82_claim(result.output),
+        memory_delta={"persistent_memory_written": False, "session_local_answer_context": False},
+        tool_evidence=_default_tool_evidence(),
+    )
+
+
+def _run_llm_contextual_fresh_boundary_sample(sample: BlackBoxSample) -> SampleResult:
+    from ego_desktop_lab.shell import run_shell
+
+    payload = sample.input_payload
+    first = run_shell(
+        text=str(payload["first_text"]),
+        show_debug=False,
+        llm_expression_admitted=True,
+        llm_expression_provider="fake",
+        evidence_log_path=Path("/tmp/ego_stage83_stage_acceptance_fresh_evidence_1.jsonl"),
+        session_log_path=Path("/tmp/ego_stage83_stage_acceptance_fresh_session_1.jsonl"),
+    )
+    second = run_shell(
+        text=str(payload["followup_text"]),
+        dialogue_state=first.dialogue_state,
+        reply_history=first.reply_history,
+        show_debug=False,
+        llm_expression_admitted=True,
+        llm_expression_provider="fake",
+        evidence_log_path=Path("/tmp/ego_stage83_stage_acceptance_fresh_evidence_2.jsonl"),
+        session_log_path=Path("/tmp/ego_stage83_stage_acceptance_fresh_session_2.jsonl"),
+    )
+    first_command = first.command_decision.command_type if first.command_decision else "unknown"
+    second_command = second.command_decision.command_type if second.command_decision else "unknown"
+    admission = second.llm_admission_summary or {}
+    hallucinated = _looks_like_fresh_data_hallucination(second.output)
+    observed = (
+        "fresh_boundary_preserved"
+        if first_command == "fresh_external_info_request"
+        and second_command == "fresh_external_info_request"
+        and not hallucinated
+        else "fresh_boundary_failed"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "first_turn": {
+            "command_type": first_command,
+            "last_answer_topic": first.dialogue_state.last_answer_topic if first.dialogue_state else None,
+            "output_preview": first.output[:220],
+        },
+        "second_turn": {
+            "command_type": second_command,
+            "resolved_topic": second.command_decision.resolved_topic if second.command_decision else None,
+            "output_preview": second.output[:260],
+        },
+        "admission": admission,
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "first_command_type": first_command,
+            "second_command_type": second_command,
+            "fresh_data_hallucinated": hallucinated,
+            "no_action_executed": admission.get("no_action_executed", second.decision_view.no_action_executed),
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=bool(admission.get("no_action_executed", True)) and not hallucinated,
+        memory_delta={"persistent_memory_written": False, "session_local_answer_context": True},
         tool_evidence=_default_tool_evidence(),
     )
 

@@ -28,6 +28,10 @@ class DialogueState:
     last_feedback_signal: str | None = None
     last_feedback_summary: str | None = None
     preferred_reply_style: str | None = None
+    last_answer_topic: str | None = None
+    last_answer_summary: str | None = None
+    last_answer_command_type: str | None = None
+    last_answer_source: str | None = None
 
 
 @dataclass(frozen=True)
@@ -42,6 +46,8 @@ class CommandDecision:
     capability_id: str | None = None
     evidence_refs: tuple[str, ...] = ()
     safety_relevant: bool = False
+    resolved_topic: str | None = None
+    context_summary: str | None = None
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -106,7 +112,33 @@ def route_conversation_command(
             stripped,
             "当前 lab shell 没有接入实时天气、新闻、行情或网页查询工具，所以我不能编造最新结果。需要实时数据时，后续只能通过 permissioned tool sandbox 或人工提供来源。",
             "user asked for fresh external information; no live tool route is attached",
+            resolved_topic=_extract_answer_topic(stripped) or stripped,
         )
+    if _is_contextual_followup_query(normalized) and _extract_answer_topic(stripped) is None:
+        if state.last_answer_topic:
+            if state.last_answer_command_type == "fresh_external_info_request":
+                return _decision(
+                    "fresh_external_info_request",
+                    stripped,
+                    (
+                        f"上一轮话题是“{state.last_answer_topic}”，但它需要实时外部数据。"
+                        "当前 lab shell 没有接入天气、新闻、行情或网页查询工具，所以我不能据此判断或编造最新结论。"
+                    ),
+                    "short follow-up resolved to previous fresh-data topic, but no live tool route is attached",
+                    resolved_topic=state.last_answer_topic,
+                    context_summary=state.last_answer_summary,
+                )
+            return _decision(
+                "llm_contextual_followup_answer",
+                stripped,
+                (
+                    f"这句短追问指向上一轮话题“{state.last_answer_topic}”。"
+                    "回答可以由 LLM answer draft 生成，但 canonical decision、gate、memory 和 state 不变。"
+                ),
+                "short follow-up resolved from session-local last answer topic; LLM may answer only as an admitted draft",
+                resolved_topic=state.last_answer_topic,
+                context_summary=state.last_answer_summary,
+            )
     if _is_capability_query(normalized):
         return _decision(
             "answer_capability_question",
@@ -158,6 +190,7 @@ def route_conversation_command(
             stripped,
             "这个问题适合由 LLM 生成 answer draft；当前回答必须经过 admission validator，且不能声称执行工具、读取文件或获取实时数据。",
             "open-ended question admitted only as LLM answer draft; canonical decision and gate remain host-owned",
+            resolved_topic=_extract_answer_topic(stripped),
         )
     if _is_outcome_repair_feedback(normalized):
         return None
@@ -208,6 +241,8 @@ def build_command_decision_view(
             "confidence": decision.confidence,
             "rationale": decision.rationale,
             "capability": asdict(capability) if capability else None,
+            "resolved_topic": decision.resolved_topic,
+            "context_summary": decision.context_summary,
         },
         goal_binding={
             "binding_status": "not_required_for_local_command",
@@ -245,7 +280,12 @@ def append_command_evidence(path: Path, decision: CommandDecision, view: Decisio
         handle.write(json.dumps(record, sort_keys=True, ensure_ascii=False) + "\n")
 
 
-def dialogue_state_from_view(view: DecisionView) -> DialogueState:
+def dialogue_state_from_view(
+    view: DecisionView,
+    *,
+    previous_state: DialogueState | None = None,
+    admitted_answer_text: str | None = None,
+) -> DialogueState:
     semantic = view.semantic_understanding
     command_type = str(
         semantic.get("command_type")
@@ -266,6 +306,27 @@ def dialogue_state_from_view(view: DecisionView) -> DialogueState:
     elif feedback_signal == "helpful":
         feedback_summary = "user reported usefulness; preserve session strategy cautiously"
     preferred = "answer_only" if command_type == "style_preference_feedback" else None
+    previous = previous_state or DialogueState()
+    last_answer_topic = previous.last_answer_topic
+    last_answer_summary = previous.last_answer_summary
+    last_answer_command_type = previous.last_answer_command_type
+    last_answer_source = previous.last_answer_source
+    if command_type in {
+        "basic_math_answer",
+        "llm_open_question_answer",
+        "llm_contextual_followup_answer",
+        "fresh_external_info_request",
+    }:
+        last_answer_topic = (
+            _clean_topic(str(semantic.get("resolved_topic") or ""))
+            or _extract_answer_topic(view.user_event or "")
+            or (view.user_event or "").strip()
+            or command_type
+        )
+        answer_text = admitted_answer_text or view.rendered_suggestion or view.suggestion or ""
+        last_answer_summary = _summarize_answer(answer_text)
+        last_answer_command_type = command_type
+        last_answer_source = "llm_answer_admission" if admitted_answer_text else "conversation_command_layer"
     return DialogueState(
         last_user_event=view.user_event,
         last_command_type=command_type,
@@ -273,7 +334,11 @@ def dialogue_state_from_view(view: DecisionView) -> DialogueState:
         last_reply_was_pending=pending,
         last_feedback_signal=feedback_signal,
         last_feedback_summary=feedback_summary,
-        preferred_reply_style=preferred,
+        preferred_reply_style=preferred or previous.preferred_reply_style,
+        last_answer_topic=last_answer_topic,
+        last_answer_summary=last_answer_summary,
+        last_answer_command_type=last_answer_command_type,
+        last_answer_source=last_answer_source,
     )
 
 
@@ -284,6 +349,8 @@ def _decision(
     rationale: str,
     *,
     missing_info: tuple[str, ...] = (),
+    resolved_topic: str | None = None,
+    context_summary: str | None = None,
 ) -> CommandDecision:
     return CommandDecision(
         command_type=command_type,
@@ -295,6 +362,8 @@ def _decision(
         missing_info=missing_info,
         capability_id=command_type,
         evidence_refs=(f"command:{command_type}",),
+        resolved_topic=resolved_topic,
+        context_summary=context_summary,
     )
 
 
@@ -396,6 +465,74 @@ def _is_llm_open_question_query(text: str) -> bool:
             "explain",
         )
     )
+
+
+def _is_contextual_followup_query(text: str) -> bool:
+    return any(
+        item in text
+        for item in (
+            "你觉得怎么样",
+            "你觉得呢",
+            "你怎么看",
+            "怎么评价",
+            "它怎么样",
+            "这个怎么样",
+            "那怎么样",
+            "继续说",
+            "展开讲讲",
+            "多说点",
+            "为什么这么评价",
+            "为什么这么说",
+            "适合出门",
+            "what about it",
+            "tell me more",
+            "why so",
+        )
+    )
+
+
+def _extract_answer_topic(text: str) -> str | None:
+    stripped = _clean_topic(text)
+    if not stripped:
+        return None
+    patterns = (
+        r"^(?:你)?(?:听说过|知道|了解)(.+?)(?:吗)?$",
+        r"^(?:你)?怎么看待(.+?)$",
+        r"^(?:你)?怎么看(.+?)$",
+        r"^(?:你)?认为(.+?)$",
+        r"^评价一下(.+?)$",
+        r"^解释一下(.+?)$",
+        r"^介绍一下(.+?)$",
+        r"^do you know (.+?)$",
+        r"^what do you think(?: about| of)? (.+?)$",
+        r"^explain (.+?)$",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, stripped, flags=re.IGNORECASE)
+        if not match:
+            continue
+        topic = _clean_topic(match.group(1))
+        if topic:
+            return topic
+    if _is_fresh_external_info_query(stripped.lower()):
+        return stripped
+    return None
+
+
+def _clean_topic(text: str) -> str:
+    topic = " ".join(text.strip().split())
+    topic = topic.strip(" \t\r\n，。！？?!.:：；;“”\"'《》")
+    if topic.endswith("的") and len(topic) > 1:
+        topic = topic[:-1].strip(" ，。！？?!.:：；;“”\"'《》")
+    for prefix in ("关于", "对", "一下", "这个", "那个"):
+        if topic.startswith(prefix) and len(topic) > len(prefix):
+            topic = topic[len(prefix):].strip(" ，。！？?!.:：；;“”\"'《》")
+    return topic
+
+
+def _summarize_answer(text: str, *, limit: int = 160) -> str:
+    summary = " ".join(text.strip().split())
+    return summary if len(summary) <= limit else f"{summary[:limit - 1]}…"
 
 
 def _is_what_info_needed_query(text: str) -> bool:

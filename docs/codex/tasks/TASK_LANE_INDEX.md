@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 14 |
-| `reference_only` | 48 |
+| `reference_only` | 49 |
 
 ## Active Default
 
@@ -114,5 +114,6 @@
 | V7 Stage 8 Live Shadow Human Trial | `codex_task` | n/a | `docs/codex/tasks/v7-stage-8-live-shadow-human-trial/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 81 Llm Semantic Expression Shadow Admission | `codex_task` | n/a | `docs/codex/tasks/v7-stage-81-llm-semantic-expression-shadow-admission/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 82 Live Llm Answer Draft Admission | `codex_task` | n/a | `docs/codex/tasks/v7-stage-82-live-llm-answer-draft-admission/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| V7 Stage 83 Context Aware Llm Answer Followup | `codex_task` | n/a | `docs/codex/tasks/v7-stage-83-context-aware-llm-answer-followup/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 9 Proposal Only Runtime Integration | `codex_task` | n/a | `docs/codex/tasks/v7-stage-9-proposal-only-runtime-integration/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Wp12 Maintenance Institutionalization | `codex_task` | n/a | `docs/codex/tasks/wp12-maintenance-institutionalization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |

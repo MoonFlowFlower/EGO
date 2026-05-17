@@ -148,6 +148,7 @@ def run_shell(
     )
     strict_summary = _strict_admission_sidecar_summary() if provider_mode == "strict_admission_experiment" else None
     llm_summary = None
+    admitted_answer_text = None
 
     output = _format_shell_output(
         view,
@@ -159,6 +160,7 @@ def run_shell(
     if llm_expression_admitted and not show_debug:
         output, llm_result = render_llm_admitted_expression(view, provider_mode=llm_expression_provider)
         llm_summary = llm_result.to_dict()
+        admitted_answer_text = llm_result.admitted_answer_text
     updated_reply_history = reply_history if show_debug else append_reply_history(reply_history, output)
     saved_path = None
     if save_misjudged_reason:
@@ -187,7 +189,11 @@ def run_shell(
         llm_admission_summary=llm_summary,
         command_decision=command_decision,
         subject_evidence=subject_evidence,
-        dialogue_state=dialogue_state_from_view(view),
+        dialogue_state=dialogue_state_from_view(
+            view,
+            previous_state=dialogue_state,
+            admitted_answer_text=admitted_answer_text,
+        ),
         reply_history=updated_reply_history,
     )
 

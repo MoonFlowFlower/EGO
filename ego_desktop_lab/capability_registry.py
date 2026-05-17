@@ -42,6 +42,13 @@ CAPABILITIES: tuple[Capability, ...] = (
         "suggestion_card",
     ),
     Capability(
+        "llm_contextual_followup_answer",
+        "Admit an LLM answer draft for a session-local short follow-up resolved to the previous answer topic.",
+        True,
+        False,
+        "suggestion_card",
+    ),
+    Capability(
         "fresh_external_info_request",
         "Refuse to fabricate fresh external data when no live tool route is attached.",
         True,

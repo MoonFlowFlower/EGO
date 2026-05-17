@@ -280,6 +280,7 @@ def _communicative_act(goal: str, failure_type: str | None, pending: bool) -> st
         "answer_local_system_info": "local_system_info",
         "basic_math_answer": "basic_answer",
         "llm_open_question_answer": "llm_answer",
+        "llm_contextual_followup_answer": "llm_answer",
         "fresh_external_info_request": "fresh_external_boundary",
         "style_preference_feedback": "style_preference",
         "answer_capability_question": "capability",
