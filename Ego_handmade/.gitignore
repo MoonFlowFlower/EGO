@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.team/
+artifacts/*.jsonl
+artifacts/*.tmp
+memory/history.jsonl
+memory/MEMORY.md
+memory/candidate_core_updates.jsonl
+memory/episodic/*.md
+memory/telemetry/*.jsonl

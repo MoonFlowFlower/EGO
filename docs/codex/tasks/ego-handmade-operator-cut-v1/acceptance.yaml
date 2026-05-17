@@ -1,0 +1,37 @@
+task: ego-handmade-operator-cut-v1
+claim_ceiling: Ego_handmade local memory-system candidate pass
+forbidden_claims:
+  - EGO mainline replacement
+  - EgoCore or OpenEmotion demotion
+  - OpenEmotion memory evolution
+  - formal long-term memory efficacy
+  - live autonomy
+  - runtime efficacy
+  - user benefit
+  - consciousness
+allowed_paths:
+  - Ego_handmade/**
+  - docs/codex/tasks/ego-handmade-operator-cut-v1/**
+forbidden_paths:
+  - EgoCore/**
+  - OpenEmotion/**
+  - ego_desktop_lab/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+checks:
+  - id: py_compile
+    command: python3 -m py_compile Ego_handmade/agent_base.py Ego_handmade/memory_system.py
+  - id: targeted_tests
+    command: TMPDIR=/tmp python3 -m pytest -q Ego_handmade/tests/test_operator_cut.py Ego_handmade/tests/test_memory_system.py
+memory_system_gate:
+  storage_root: Ego_handmade/memory
+  default_mode: CLI default-on, programmatic default-off
+  core_write_gate: /remember
+  auto_compaction_outputs:
+    - Ego_handmade/memory/episodic/*.md
+    - Ego_handmade/memory/candidate_core_updates.jsonl
+  forbidden_memory_writes:
+    - PROJECT_MEMORY.md
+    - OpenEmotion/**
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - artifacts/evidence_ledger/**
