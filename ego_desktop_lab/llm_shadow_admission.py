@@ -131,6 +131,58 @@ class LLMAdmissionResult:
         return _jsonable(payload)
 
 
+@dataclass(frozen=True)
+class LiveLLMShadowAdmissionProvider:
+    provider_name = "live_llm_shadow_admission_adapter"
+
+    def generate(self, request: Mapping[str, Any]) -> LLMShadowProviderBundle:
+        from ego_desktop_lab.semantic_provider import (
+            LiveLLMShadowProvider,
+            SemanticProviderRequest,
+        )
+
+        view = _mapping(request.get("decision_view"))
+        source_hash = str(request.get("source_decision_hash") or source_decision_hash(view))
+        evidence_ref = f"decision:{source_hash}"
+        selected_goal = _selected_goal(view)
+        result = LiveLLMShadowProvider().generate(
+            SemanticProviderRequest(
+                scenario=_AdmissionScenario(
+                    text=str(view.get("user_event") or ""),
+                    scenario_id=f"llm-shadow-admission:{source_hash}",
+                ),
+                core_result=_AdmissionCoreResult(
+                    old_state_summary={
+                        "unfinished_goals": [
+                            {
+                                "goal_id": selected_goal,
+                                "description": selected_goal,
+                            }
+                        ]
+                    }
+                ),
+                allowed_evidence_refs=(evidence_ref,),
+            )
+        )
+        semantic_payload = _semantic_payload_from_live_result(
+            result.raw_outputs.get("semantic"),
+            fallback_ref=evidence_ref,
+            selected_goal=selected_goal,
+        )
+        observation = {
+            "status": "observed" if semantic_payload else "optional_unavailable",
+            "semantic_provider": result.provider_name,
+            "semantic_provider_reason": result.reason,
+            "semantic_provider_observation": result.observation,
+        }
+        return LLMShadowProviderBundle(
+            provider_name=self.provider_name,
+            semantic_payload=semantic_payload,
+            expression_payload=None,
+            observation=observation,
+        )
+
+
 class DeterministicLLMShadowAdmissionProvider:
     provider_name = "deterministic_fake_llm_shadow_provider"
 
@@ -397,6 +449,45 @@ def _admit_expression(
     if gate.get("status") in {"block", "ask"} and _sounds_like_action_execution(draft.draft_text):
         reasons.append("expression_contradicts_gate")
     return (None, reasons) if reasons else (draft, [])
+
+
+@dataclass(frozen=True)
+class _AdmissionScenario:
+    text: str
+    scenario_id: str
+
+
+@dataclass(frozen=True)
+class _AdmissionCoreResult:
+    old_state_summary: dict[str, Any]
+
+
+def _semantic_payload_from_live_result(
+    raw_text: str | None,
+    *,
+    fallback_ref: str,
+    selected_goal: str,
+) -> dict[str, Any] | None:
+    if not raw_text:
+        return None
+    try:
+        payload = json.loads(raw_text)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(payload, Mapping):
+        return None
+    evidence_refs = payload.get("evidence_refs")
+    if not isinstance(evidence_refs, list):
+        evidence_refs = [fallback_ref]
+    return {
+        "intent_family": str(payload.get("candidate_failure_type") or payload.get("intent_family") or "unknown"),
+        "user_need": str(payload.get("rationale") or payload.get("user_need") or ""),
+        "risk_hint": str(payload.get("risk_hint") or "unknown"),
+        "relation_hint": str(payload.get("binding_status") or "shadow_only"),
+        "task_hint": str(payload.get("related_goal_id") or selected_goal),
+        "confidence": _safe_float(payload.get("confidence"), default=0.0),
+        "evidence_refs": [str(item) for item in evidence_refs],
+    }
 
 
 def _selected_goal(view: Mapping[str, Any]) -> str:

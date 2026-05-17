@@ -2,6 +2,7 @@ from pathlib import Path
 
 from ego_desktop_lab.llm_shadow_admission import (
     DeterministicLLMShadowAdmissionProvider,
+    LiveLLMShadowAdmissionProvider,
     evaluate_llm_shadow_ab_cases,
     run_llm_shadow_admission,
 )
@@ -89,6 +90,31 @@ def test_consciousness_or_alive_claim_is_rejected(tmp_path: Path) -> None:
     assert data["expression_admission_status"] == "rejected"
     assert any("forbidden_claim" in reason for reason in data["rejection_reasons"])
     assert data["admitted_expression_text"] is None
+
+
+def test_live_llm_shadow_adapter_is_optional_and_cannot_admit_expression_without_payload(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.delenv("EGO_DESKTOP_LAB_ENABLE_LIVE_LLM", raising=False)
+    shell_result = run_shell(
+        text="你怎么看 EGO 现在这个方向？",
+        evidence_log_path=tmp_path / "evidence.jsonl",
+        session_log_path=tmp_path / "session.jsonl",
+    )
+
+    admission = run_llm_shadow_admission(
+        shell_result.decision_view,
+        provider=LiveLLMShadowAdmissionProvider(),
+    )
+    data = admission.to_dict()
+
+    assert data["canonical_decision_unchanged"] is True
+    assert data["gate_unchanged"] is True
+    assert data["no_action_executed"] is True
+    assert data["semantic_shadow_status"] == "rejected"
+    assert data["expression_admission_status"] == "rejected"
+    assert data["trace"]["provider_observation"]["status"] == "optional_unavailable"
 
 
 def test_30_prompt_ab_report_preserves_decision_gate_and_no_action(tmp_path: Path) -> None:

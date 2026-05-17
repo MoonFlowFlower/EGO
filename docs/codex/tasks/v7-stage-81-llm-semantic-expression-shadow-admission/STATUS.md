@@ -18,6 +18,7 @@
 
 - Added lab-only LLM semantic/expression admission records.
 - Added fake-provider deterministic admission path for tests.
+- Added a thin optional adapter around the existing `LiveLLMShadowProvider`; missing credentials stay `optional_unavailable` and cannot affect deterministic PASS.
 - Added opt-in shell expression rendering; default shell remains deterministic.
 - Added Stage 8.1 report CLI.
 - Added Stage 8.1 stage acceptance entry.
@@ -26,7 +27,7 @@
 ## Verification
 
 - `python3 -m py_compile ego_desktop_lab/llm_shadow_admission.py ego_desktop_lab/shell.py ego_desktop_lab/stage_acceptance.py ego_desktop_lab/tests/test_llm_shadow_admission_v7_81.py` -> pass
-- `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_llm_shadow_admission_v7_81.py -q` -> `7 passed`
+- `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_llm_shadow_admission_v7_81.py -q` -> `8 passed`
 - `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_minimal_desktop_shell_v6.py ego_desktop_lab/tests/test_relational_companion_layer_v7.py ego_desktop_lab/tests/test_live_shadow_human_trial_v7.py -q` -> `38 passed`
 - `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests -q` -> `326 passed`
 - `python3 -m ego_desktop_lab.shell --llm-shadow-admission-report /tmp/ego_stage81_llm_shadow_admission_report.md` -> pass
