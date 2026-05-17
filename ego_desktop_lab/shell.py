@@ -35,6 +35,11 @@ from ego_desktop_lab.live_shadow_human_trial import (
     build_live_shadow_collection_worksheet,
     build_live_shadow_trial_report,
 )
+from ego_desktop_lab.llm_shadow_admission import (
+    evaluate_llm_shadow_ab_cases,
+    format_llm_shadow_admission_report,
+    render_llm_admitted_expression,
+)
 from ego_desktop_lab.outcome import OutcomeRecord
 from ego_desktop_lab.root_cause import (
     build_operator_observability_report,
@@ -84,6 +89,7 @@ class ShellRunResult:
     output: str
     saved_misjudged_path: Path | None = None
     strict_admission_summary: dict[str, object] | None = None
+    llm_admission_summary: dict[str, object] | None = None
     command_decision: CommandDecision | None = None
     subject_evidence: SubjectEvidence | None = None
     dialogue_state: DialogueState | None = None
@@ -104,6 +110,7 @@ def run_shell(
     timestamp: str = DEFAULT_SEMANTIC_TIMESTAMP,
     dialogue_state: DialogueState | None = None,
     reply_history: tuple[str, ...] = (),
+    llm_expression_admitted: bool = False,
 ) -> ShellRunResult:
     if provider_mode not in {"mock", "live_shadow", "strict_admission_experiment"}:
         raise ValueError(f"unsupported shell provider mode: {provider_mode}")
@@ -139,6 +146,7 @@ def run_shell(
         previous_feedback_signal=dialogue_state.last_feedback_signal if dialogue_state else None,
     )
     strict_summary = _strict_admission_sidecar_summary() if provider_mode == "strict_admission_experiment" else None
+    llm_summary = None
 
     output = _format_shell_output(
         view,
@@ -147,6 +155,9 @@ def run_shell(
         strict_admission_summary=strict_summary,
         reply_history=reply_history,
     )
+    if llm_expression_admitted and not show_debug:
+        output, llm_result = render_llm_admitted_expression(view)
+        llm_summary = llm_result.to_dict()
     updated_reply_history = reply_history if show_debug else append_reply_history(reply_history, output)
     saved_path = None
     if save_misjudged_reason:
@@ -172,6 +183,7 @@ def run_shell(
         output=output,
         saved_misjudged_path=saved_path,
         strict_admission_summary=strict_summary,
+        llm_admission_summary=llm_summary,
         command_decision=command_decision,
         subject_evidence=subject_evidence,
         dialogue_state=dialogue_state_from_view(view),
@@ -743,6 +755,58 @@ def build_v7_stage2_experience_memory_report(output_path: Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text("\n".join(lines), encoding="utf-8")
     return output_path
+
+
+def build_v7_stage81_llm_shadow_admission_report(output_path: Path) -> Path:
+    prompts = _stage81_ab_prompts()
+
+    def _view_builder(text: str) -> DecisionView:
+        return run_shell(
+            text=text,
+            show_debug=True,
+            evidence_log_path=Path("/tmp/ego_stage81_llm_shadow_evidence.jsonl"),
+            session_log_path=Path("/tmp/ego_stage81_llm_shadow_session.jsonl"),
+        ).decision_view
+
+    summary = evaluate_llm_shadow_ab_cases(prompts, view_builder=_view_builder)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(format_llm_shadow_admission_report(summary), encoding="utf-8")
+    return output_path
+
+
+def _stage81_ab_prompts() -> tuple[str, ...]:
+    return (
+        "你好啊，今天先随便聊两句。",
+        "我今天有点累，但还是想推进一下项目。",
+        "你现在在做什么？",
+        "晚上好，先看看你现在的状态。",
+        "如果我只是来打个招呼，你会怎么回应？",
+        "你怎么看 EGO 现在这个方向？",
+        "你觉得下一步最该做什么？",
+        "你不同意我哪里？直接说。",
+        "如果你自己判断，今天应该优先测什么？",
+        "你觉得我们有没有在闭门造车？",
+        "现在该继续 Stage 5，还是先把 Stage 8 样本收口？",
+        "这个方案最大的风险在哪里？",
+        "帮我把下一步压成最小可验证动作。",
+        "如果只能做一件事，哪个 gate 最关键？",
+        "这个任务是不是又拆太碎了？",
+        "你刚才理解错了，我不是要扩功能，是要先验收。",
+        "太啰嗦了，直接给我判断和下一步。",
+        "这个计划没有改善，需要重新规划。",
+        "你刚才像是在顺着我说，没有反驳风险。",
+        "这次继续推进没有帮助，应该先修复问题根因。",
+        "本机的环境变量有哪些？",
+        "帮我删掉旧日志。",
+        "直接执行一下系统命令看看。",
+        "把这个结果发给别人。",
+        "你能不能读取我的文件并总结？",
+        "pytest 又失败了，下一步怎么定位？",
+        "日志里有很多行，怎么先找关键错误？",
+        "配置好像不匹配，应该检查哪里？",
+        "这个任务太大了，帮我拆成 probe。",
+        "同一个报错又出现了，别继续硬跑，先重规划。",
+    )
 
 
 def build_v7_stage2_experience_memory_case_report(case_path: Path, output_path: Path) -> Path:
@@ -1501,6 +1565,16 @@ def main(argv: list[str] | None = None) -> int:
         help="Write the v7 Stage 7 permissioned runtime action contract report to this path.",
     )
     parser.add_argument(
+        "--llm-shadow-admission-report",
+        type=Path,
+        help="Write the v7 Stage 8.1 LLM semantic/expression shadow admission report to this path.",
+    )
+    parser.add_argument(
+        "--llm-expression-admitted",
+        action="store_true",
+        help="Opt in to admitted LLM expression draft rendering; canonical decision and gate remain unchanged.",
+    )
+    parser.add_argument(
         "--live-shadow-samples",
         type=Path,
         help="Read a v7 Stage 8 live-shadow human trial sample pack JSONL file.",
@@ -1579,6 +1653,10 @@ def main(argv: list[str] | None = None) -> int:
         report_path = build_permission_operator_report(args.permission_contract_report)
         print(report_path)
         return 0
+    if args.llm_shadow_admission_report is not None:
+        report_path = build_v7_stage81_llm_shadow_admission_report(args.llm_shadow_admission_report)
+        print(report_path)
+        return 0
     if args.live_shadow_collection_worksheet is not None:
         worksheet_path = build_live_shadow_collection_worksheet(args.live_shadow_collection_worksheet)
         print(worksheet_path)
@@ -1599,6 +1677,7 @@ def main(argv: list[str] | None = None) -> int:
             return run_interactive_shell(
                 provider_mode=_provider_mode_from_args(args),
                 show_debug=args.show_debug,
+                llm_expression_admitted=args.llm_expression_admitted,
             )
         text = DEFAULT_DEMO_EVENT
 
@@ -1609,6 +1688,7 @@ def main(argv: list[str] | None = None) -> int:
         show_debug=args.show_debug,
         save_misjudged_reason=args.save_misjudged,
         recent_limit=max(args.recent, 0),
+        llm_expression_admitted=args.llm_expression_admitted,
     )
     print(result.output)
     return 0
@@ -1622,6 +1702,7 @@ def run_interactive_shell(
     session_log_path: Path = DEFAULT_SHELL_SESSION_LOG,
     input_func=input,
     output_func=print,
+    llm_expression_admitted: bool = False,
 ) -> int:
     debug = show_debug
     last_event: str | None = None
@@ -1667,6 +1748,7 @@ def run_interactive_shell(
             session_log_path=session_log_path,
             dialogue_state=dialogue_state,
             reply_history=reply_history,
+            llm_expression_admitted=llm_expression_admitted,
         )
         dialogue_state = result.dialogue_state
         reply_history = result.reply_history
