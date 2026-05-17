@@ -31,7 +31,10 @@ from ego_desktop_lab.decision_view import DecisionView, build_decision_view_from
 from ego_desktop_lab.experience_memory import build_experience_card
 from ego_desktop_lab.expression_layer import append_reply_history
 from ego_desktop_lab.human_shell_renderer import render_human_shell_reply
-from ego_desktop_lab.live_shadow_human_trial import build_live_shadow_trial_report
+from ego_desktop_lab.live_shadow_human_trial import (
+    build_live_shadow_collection_worksheet,
+    build_live_shadow_trial_report,
+)
 from ego_desktop_lab.outcome import OutcomeRecord
 from ego_desktop_lab.root_cause import (
     build_operator_observability_report,
@@ -1503,6 +1506,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Read a v7 Stage 8 live-shadow human trial sample pack JSONL file.",
     )
     parser.add_argument(
+        "--live-shadow-collection-worksheet",
+        type=Path,
+        help="Write a v7 Stage 8 operator worksheet for collecting 30 real live-shadow samples.",
+    )
+    parser.add_argument(
         "--live-shadow-report",
         type=Path,
         help="Write the v7 Stage 8 live-shadow human trial report to this path.",
@@ -1570,6 +1578,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.permission_contract_report is not None:
         report_path = build_permission_operator_report(args.permission_contract_report)
         print(report_path)
+        return 0
+    if args.live_shadow_collection_worksheet is not None:
+        worksheet_path = build_live_shadow_collection_worksheet(args.live_shadow_collection_worksheet)
+        print(worksheet_path)
         return 0
     if args.live_shadow_samples is not None:
         report_path = args.live_shadow_report or Path("/tmp/ego_stage8_live_shadow_report.md")

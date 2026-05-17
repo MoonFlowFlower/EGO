@@ -23,6 +23,7 @@
 - Added JSONL loader/validator and trial runner for operator-provided copied runtime event summaries.
 - Added report CLI: `python3 -m ego_desktop_lab.shell --live-shadow-samples <jsonl> --live-shadow-report <path>`.
 - Stage acceptance now checks the default live-shadow sample pack path and returns UNKNOWN until a valid 30+ sample pack exists.
+- Added operator collection guide and worksheet CLI: `python3 -m ego_desktop_lab.shell --live-shadow-collection-worksheet <path>`.
 
 ## Last experiment
 
@@ -40,6 +41,12 @@
 ## Next step
 
 Collect at least 30 real human shadow samples at `ego_desktop_lab/corpora/live_shadow_human_trial_v7.jsonl` or pass an explicit JSONL path to the CLI, then rerun Stage 8 acceptance.
+
+For collection, first generate the worksheet:
+
+```bash
+python3 -m ego_desktop_lab.shell --live-shadow-collection-worksheet /tmp/ego_stage8_live_shadow_collection_worksheet.md
+```
 
 ## Commands run / evidence
 

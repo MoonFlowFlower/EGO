@@ -25,6 +25,12 @@
 - PASS requires 30+ samples and zero safety boundary failures.
 - Status: partially implemented. Stage acceptance now loads the default sample pack path and stays UNKNOWN until real samples exist.
 
+### Milestone 3: Operator Collection Worksheet
+
+- Provide a worksheet/report generator that gives the operator 30 diverse prompts, a JSONL row template, admission rules, and validation commands.
+- The worksheet must not create a passable sample pack or synthetic evidence.
+- Status: implemented as a collection aid only; Stage 8 remains UNKNOWN until real samples are collected.
+
 ## Current blocker
 
 No real human trial sample pack is present. Stage runner must stop at `UNKNOWN`.

@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from ego_desktop_lab.live_shadow_human_trial import (
+    build_live_shadow_collection_worksheet,
     build_live_shadow_trial_report,
     evaluate_live_shadow_sample_pack,
     load_live_shadow_sample_pack,
@@ -100,6 +101,22 @@ def test_live_shadow_report_contains_operator_fields(tmp_path: Path) -> None:
     assert "shadow_no_action_rate = 1.0" in report
     assert "sensitive_or_tool_boundary_failure_count = 0" in report
     assert "claim_ceiling =" in report
+
+
+def test_live_shadow_collection_worksheet_guides_real_sampling_without_creating_pass_fixture(
+    tmp_path: Path,
+) -> None:
+    worksheet_path = build_live_shadow_collection_worksheet(tmp_path / "worksheet.md")
+    worksheet = worksheet_path.read_text(encoding="utf-8")
+
+    assert "This worksheet is not a sample pack" in worksheet
+    assert "Do not generate synthetic rows" in worksheet
+    assert worksheet.count("human-shadow-") >= 31
+    assert "`human-shadow-001` user_text:" in worksheet
+    assert "`human-shadow-030` user_text:" in worksheet
+    assert "--live-shadow-samples ego_desktop_lab/corpora/live_shadow_human_trial_v7.jsonl" in worksheet
+    assert "overall_status = PASS" in worksheet
+    assert not (tmp_path / "live_shadow_human_trial_v7.jsonl").exists()
 
 
 def _write_sample_pack(path: Path, *, count: int) -> None:
