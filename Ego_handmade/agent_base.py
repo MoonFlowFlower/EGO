@@ -56,8 +56,10 @@ except ImportError:
 
 try:
     from .memory_system import MemoryCompactor, OperatorMemoryStore, TokenTelemetry
+    from .primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
 except ImportError:  # allow `python Ego_handmade/agent_base.py`
     from memory_system import MemoryCompactor, OperatorMemoryStore, TokenTelemetry
+    from primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
 
 
 def configure_utf8_stdio() -> None:
@@ -730,7 +732,7 @@ class SkillLoader:
 SKILL_LOADER = SkillLoader(DEFAULT_SKILLS_DIR)
 
 
-def build_system_prompt(operator_memory_context: str = "") -> str:
+def build_system_prompt(operator_memory_context: str = "", subject_context: str = "") -> str:
     prompt = (
         DEFAULT_BASE_SYSTEM_PROMPT.strip()
         + "\n\n【行事规矩】"
@@ -760,6 +762,8 @@ def build_system_prompt(operator_memory_context: str = "") -> str:
     )
     if operator_memory_context.strip():
         prompt += "\n\n" + operator_memory_context.strip()
+    if subject_context.strip():
+        prompt += "\n\n" + subject_context.strip()
     return prompt
 
 
@@ -1985,6 +1989,7 @@ class Planner:
         kernel_output: KernelOutput,
         memory: Optional[ConversationMemory] = None,
         operator_memory_context: str = "",
+        subject_context: str = "",
     ) -> AgentAction:
         tendency = kernel_output.response_tendency
         if tendency and tendency.ask_needed:
@@ -1994,16 +1999,6 @@ class Planner:
                 reason="kernel_tendency_ask_needed",
             )
 
-        text = event.raw_text or ""
-        lower = text.lower()
-
-        if any(x in lower for x in ["time", "时间", "现在几点"]):
-            return AgentAction(
-                action_type=ActionType.TOOL_CALL,
-                tool_call=ToolCall(tool_name="current_time", args={}),
-                reason="user_asked_time",
-            )
-
         prompt = (
             "Current policy hint:\n"
             f"{json.dumps(kernel_output.policy_hint, ensure_ascii=False)}\n\n"
@@ -2011,8 +2006,13 @@ class Planner:
             f"{to_jsonable(kernel_output.response_tendency)}\n\n"
             "Instruction: answer the latest user message in the conversation messages only."
         )
-        if operator_memory_context.strip():
-            prompt = operator_memory_context.strip() + "\n\n" + prompt
+        context_blocks = [
+            block.strip()
+            for block in (operator_memory_context, subject_context)
+            if block.strip()
+        ]
+        if context_blocks:
+            prompt = "\n\n".join(context_blocks) + "\n\n" + prompt
         memory_messages = memory.as_messages() if memory else None
         try:
             draft = self.llm.complete(prompt, messages=memory_messages)
@@ -2307,6 +2307,7 @@ class AgentRuntime:
         todo_list: Optional[TodoList] = None,
         operator_memory: Optional[OperatorMemoryStore] = None,
         memory_compactor: Optional[MemoryCompactor] = None,
+        subject_context_enabled: bool = True,
     ) -> None:
         self.kernel = kernel or ProtoSelfKernel()
         self.planner = planner or Planner()
@@ -2318,6 +2319,7 @@ class AgentRuntime:
         self.todo_list = todo_list or TodoList()
         self.operator_memory = operator_memory
         self.memory_compactor = memory_compactor or (MemoryCompactor(operator_memory) if operator_memory else None)
+        self.subject_context_enabled = subject_context_enabled
         self.session_id = new_id("session")
         self.subagent_counter = 0
         self.team: Optional[AgentTeamManager] = None
@@ -2330,8 +2332,19 @@ class AgentRuntime:
             return ""
         return self.operator_memory.build_context().render_for_prompt()
 
-    def build_runtime_system_prompt(self) -> str:
-        return build_system_prompt(self.render_operator_memory_context())
+    def build_subject_context(self, user_text: str) -> SubjectContextSnapshot:
+        return build_minimal_subject_context(
+            user_text,
+            operator_memory_available=self.operator_memory is not None,
+        )
+
+    def render_subject_context(self, user_text: str) -> str:
+        if not self.subject_context_enabled:
+            return ""
+        return self.build_subject_context(user_text).render_for_prompt()
+
+    def build_runtime_system_prompt(self, subject_context: str = "") -> str:
+        return build_system_prompt(self.render_operator_memory_context(), subject_context)
 
     def remember_operator_note(self, text: str) -> Dict[str, Any]:
         if self.operator_memory is None:
@@ -2624,9 +2637,19 @@ class AgentRuntime:
 
         state = self.state_store.load_latest()
         kernel_output = self.kernel.process_event(state, event)
+        subject_context_snapshot = (
+            self.build_subject_context(text)
+            if self.subject_context_enabled
+            else SubjectContextSnapshot(raw_user_text=text)
+        )
+        subject_context_prompt = (
+            subject_context_snapshot.render_for_prompt()
+            if self.subject_context_enabled
+            else ""
+        )
 
         tool_trace: List[Dict[str, Any]] = []
-        tool_loop_result = self._try_llm_tool_loop(event, kernel_output)
+        tool_loop_result = self._try_llm_tool_loop(event, kernel_output, subject_context_prompt)
         if tool_loop_result is not None:
             action, gate_result, external_result, reply_text, tool_trace = tool_loop_result
         else:
@@ -2635,6 +2658,7 @@ class AgentRuntime:
                 kernel_output,
                 memory=self.memory,
                 operator_memory_context=self.render_operator_memory_context(),
+                subject_context=subject_context_prompt,
             )
             gate_result = self.gate.check(event, candidate)
 
@@ -2698,6 +2722,7 @@ class AgentRuntime:
                 "tail": self.memory.as_messages(max_messages=6),
             },
             "operator_memory": operator_memory_record,
+            "subject_context": subject_context_snapshot,
             "todo": self.todo_list.summary(),
             "outcome_event": outcome_event,
             "outcome_kernel_output": outcome_kernel_output,
@@ -2722,6 +2747,7 @@ class AgentRuntime:
         self,
         event: AgentEvent,
         kernel_output: KernelOutput,
+        subject_context: str = "",
     ) -> Optional[tuple[AgentAction, GateResult, Dict[str, Any], str, List[Dict[str, Any]]]]:
         """
         Use OpenAI/OpenRouter-compatible tool calling when the LLM client supports chat(...).
@@ -2756,7 +2782,7 @@ class AgentRuntime:
             for loop_idx in range(DEFAULT_MAX_TOOL_LOOPS):
                 result: LLMChatResult = chat_fn(
                     messages,
-                    system_prompt=self.build_runtime_system_prompt(),
+                    system_prompt=self.build_runtime_system_prompt(subject_context),
                     policy_context=policy_context,
                     tools=tool_schemas,
                     stream=False,
@@ -2944,6 +2970,7 @@ def build_demo_runtime(
     *,
     enable_operator_memory: bool = False,
     operator_memory_dir: Optional[str | Path] = None,
+    subject_context_enabled: bool = True,
 ) -> AgentRuntime:
     tools = ToolRegistry()
 
@@ -3132,6 +3159,7 @@ def build_demo_runtime(
         gate=gate,
         todo_list=todo_list,
         operator_memory=operator_memory,
+        subject_context_enabled=subject_context_enabled,
     )
 
     tools.register(

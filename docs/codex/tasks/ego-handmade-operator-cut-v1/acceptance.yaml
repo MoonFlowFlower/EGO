@@ -1,5 +1,5 @@
 task: ego-handmade-operator-cut-v1
-claim_ceiling: Ego_handmade local memory-system candidate pass
+claim_ceiling: Ego_handmade replacement candidate with extracted primitives
 forbidden_claims:
   - EGO mainline replacement
   - EgoCore or OpenEmotion demotion
@@ -20,9 +20,26 @@ forbidden_paths:
   - artifacts/evidence_ledger/**
 checks:
   - id: py_compile
-    command: python3 -m py_compile Ego_handmade/agent_base.py Ego_handmade/memory_system.py
+    command: python3 -m py_compile Ego_handmade/agent_base.py Ego_handmade/memory_system.py Ego_handmade/primitives/subject_context.py Ego_handmade/primitives/evals.py Ego_handmade/primitives/runtime_gate.py
   - id: targeted_tests
-    command: TMPDIR=/tmp python3 -m pytest -q Ego_handmade/tests/test_operator_cut.py Ego_handmade/tests/test_memory_system.py
+    command: TMPDIR=/tmp python3 -m pytest -q Ego_handmade/tests/test_operator_cut.py Ego_handmade/tests/test_memory_system.py Ego_handmade/tests/test_extracted_primitives.py
+extracted_primitives_gate:
+  inventory: Ego_handmade/docs/ALGORITHM_INVENTORY.md
+  runtime_path: user text -> LLM understanding -> candidate response/plan -> gate
+  primitives:
+    - Ego_handmade/primitives/subject_context.py
+    - Ego_handmade/primitives/runtime_gate.py
+    - Ego_handmade/primitives/evals.py
+  paraphrase_gate:
+    suite: Dark Souls Chinese paraphrases
+    required_cases: 20
+    expected_behavior: answer_with_viewpoint_about_user_named_topic
+  forbidden_runtime_patterns:
+    - keyword route before LLM understanding
+    - semantic router as first handler
+    - template fallback for open-ended user meaning
+    - subject context state mutation
+    - automatic demotion or archive of old projects
 memory_system_gate:
   storage_root: Ego_handmade/memory
   default_mode: CLI default-on, programmatic default-off
