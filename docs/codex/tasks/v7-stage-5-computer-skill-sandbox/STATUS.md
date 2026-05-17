@@ -2,17 +2,17 @@
 
 ## Current Milestone
 
-- name: Multi-Task Skill Benchmark Pack
+- name: Operator Closeout
 - owner: Codex
-- state: local_pass
-- type: implementation
+- state: operator_accepted
+- type: closeout
 
 ## Current State
 
 - activation: active
 - current_layer: `ego_desktop_lab` lab-only skill sandbox
 - main_chain_status: not connected to runtime
-- completion_class: local_multi_task_skill_benchmark_pass
+- completion_class: local_multi_task_skill_benchmark_operator_accepted
 - candidate_vs_proof: proof_passed
 
 ## Completed Work
@@ -34,12 +34,13 @@
 - Added benchmark no-feedback, unrelated-experience, and dangerous-action controls.
 - Added `--skill-benchmark-report` report-only shell entrypoint.
 - Extended Stage 5 acceptance with `skill_benchmark_pack_threshold`.
+- Stage 5 operator closeout now passes through `v7-stage-5` StageResult with trace/no-action/safety linkage.
 
 ## Last Experiment
 
 - question: can the same skill sandbox learning loop generalize across multiple scripted computer-skill task families with replay/no-action evidence?
 - framing: benchmark tasks are deterministic proxies, not real desktop automation or real command/file execution.
-- result: local_multi_task_skill_benchmark_pass
+- result: local_multi_task_skill_benchmark_operator_accepted
 - evidence_upgraded: no
 
 ## What Was Learned
@@ -66,7 +67,7 @@
 
 - mode: Stage 5 M3 multi-task skill benchmark
 - result: pass
-- summary: Targeted M3 benchmark tests, M1/M2 regressions, Stage 5 acceptance report, full `ego_desktop_lab` tests, fast verifier, and scoped diff check passed locally.
+- summary: Targeted M3 benchmark tests, M1/M2 regressions, Stage 5 acceptance report, full `ego_desktop_lab` tests, fast verifier, scoped diff check, and Stage 5 closeout StageResult passed locally.
 
 ## Open Risks
 
@@ -78,8 +79,8 @@
 
 ## Next Step
 
-- Operator inspect `/tmp/ego_stage5_skill_benchmark_report.md`, `/tmp/ego_stage5_skill_chat_corpus_report.md`, and `/tmp/ego_stage5_stage_result.md`.
-- If accepted, plan the next Stage 5 slice around broader scripted task variety or a sandbox benchmark suite, still without real tool execution.
+- Stage 6 Runtime Shadow Bridge is unlocked for shadow-only implementation.
+- Do not add broader Stage 5 toy tasks unless Stage 6/runner evidence exposes a concrete sandbox gap.
 
 ## Commands Run / Evidence
 
@@ -93,6 +94,7 @@
 - `python3 -m py_compile ego_desktop_lab/skill_sandbox.py ego_desktop_lab/shell.py ego_desktop_lab/stage_acceptance.py ego_desktop_lab/tests/test_skill_benchmark_pack_v7_m3.py`
 - `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_skill_benchmark_pack_v7_m3.py -q`
 - `python3 -m ego_desktop_lab.shell --skill-benchmark-report /tmp/ego_stage5_skill_benchmark_report.md`
+- `python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-5 --out /tmp/ego_stage5_closeout_stage_result.json`
 - `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests -q`
 - `scripts/run_verify.sh fast`
 - `git diff --check -- ego_desktop_lab docs/codex/tasks/v7-stage-*`

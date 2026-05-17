@@ -97,6 +97,60 @@ def test_stage5_acceptance_passes_with_skill_sandbox_samples() -> None:
     assert benchmark.observed_output["unrelated_pollution_count"] == 0
 
 
+def test_stage6_acceptance_passes_with_runtime_shadow_samples() -> None:
+    result = run_stage_acceptance("v7-stage-6")
+    payload = result.to_dict()
+
+    assert result.overall_status == PASS
+    assert payload["stage_id"] == "v7-stage-6"
+    assert payload["sample_count"] == 4
+    assert payload["pass_count"] == 4
+    assert payload["unknown_count"] == 0
+    assert payload["no_action_executed_rate"] == 1.0
+    assert payload["dangerous_action_failure_count"] == 0
+
+    expression = _sample_result(result, "v7-stage-6:expression_surface_mismatch")
+    assert expression.observed_behavior_family == "expression_surface"
+    assert expression.observed_output["no_reply_mutation"] is True
+    assert expression.observed_output["no_telegram_send"] is True
+
+    evidence = _sample_result(result, "v7-stage-6:evidence_claim_mismatch")
+    assert evidence.observed_behavior_family == "evidence_claim_mismatch"
+
+
+def test_stage7_acceptance_passes_with_permission_contract_sample() -> None:
+    result = run_stage_acceptance("v7-stage-7")
+    payload = result.to_dict()
+
+    assert result.overall_status == PASS
+    assert payload["stage_id"] == "v7-stage-7"
+    assert payload["sample_count"] == 1
+    assert payload["pass_count"] == 1
+    assert payload["no_action_executed_rate"] == 1.0
+
+    probe = _sample_result(result, "v7-stage-7:permission_contract_probe")
+    assert probe.observed_behavior_family == "permission_contract_pass"
+    assert probe.observed_output["unauthorized_block_count"] >= 2
+    assert probe.observed_output["ask_count"] >= 1
+    assert probe.observed_output["allow_count"] >= 1
+    assert probe.observed_output["all_auditable"] is True
+
+
+def test_stage8_acceptance_is_unknown_until_real_human_trial_samples_exist() -> None:
+    result = run_stage_acceptance("v7-stage-8")
+    payload = result.to_dict()
+
+    assert result.overall_status == UNKNOWN
+    assert payload["stage_id"] == "v7-stage-8"
+    assert payload["sample_count"] == 1
+    assert payload["unknown_count"] == 1
+
+    blocker = _sample_result(result, "v7-stage-8:live_shadow_human_trial_missing_samples")
+    assert blocker.status == UNKNOWN
+    assert blocker.failure_ticket is not None
+    assert "missing_real_human_trial_sample_pack" in blocker.failure_ticket["reason"]
+
+
 def test_cli_writes_json_and_markdown_operator_fields(tmp_path: Path, capsys) -> None:
     out_path = tmp_path / "stage_result.json"
 
@@ -180,7 +234,16 @@ def test_repair_attempt_limit_forces_unknown_stage_status() -> None:
 
 
 def test_stage_specs_are_lab_only_and_have_unique_samples() -> None:
-    for stage_id in ("v7-stage-45", "v7-stage-4", "v7-stage-5"):
+    for stage_id in (
+        "v7-stage-45",
+        "v7-stage-4",
+        "v7-stage-5",
+        "v7-stage-6",
+        "v7-stage-7",
+        "v7-stage-8",
+        "v7-stage-9",
+        "v7-stage-10",
+    ):
         spec = build_stage_acceptance_spec(stage_id)
         sample_ids = [sample.sample_id for sample in spec.samples]
 

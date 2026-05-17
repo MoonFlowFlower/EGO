@@ -37,10 +37,12 @@ from ego_desktop_lab.root_cause import (
     build_root_cause_trace,
     diagnose_failure,
 )
+from ego_desktop_lab.permissioned_runtime_action import build_permission_operator_report
 from ego_desktop_lab.relational_companion import (
     build_daily_chat_corpus_report,
     build_relational_preference_plasticity_report,
 )
+from ego_desktop_lab.runtime_shadow_bridge import build_runtime_shadow_operator_report
 from ego_desktop_lab.skill_sandbox import (
     build_skill_chat_case_report,
     build_skill_chat_corpus_report,
@@ -1484,6 +1486,16 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         help="Write the v7 Stage 5 M3 multi-task skill benchmark report to this path.",
     )
+    parser.add_argument(
+        "--runtime-shadow-report",
+        type=Path,
+        help="Write the v7 Stage 6 runtime shadow bridge report to this path.",
+    )
+    parser.add_argument(
+        "--permission-contract-report",
+        type=Path,
+        help="Write the v7 Stage 7 permissioned runtime action contract report to this path.",
+    )
     parser.add_argument("--show-debug", action="store_true", help="Show debug-only refs.")
     parser.add_argument("--save-misjudged", help="Save this input as a misjudged scenario fixture.")
     parser.add_argument("--recent", type=int, default=0, help="Show recent N controlled shell session records.")
@@ -1538,6 +1550,14 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.skill_benchmark_report is not None:
         report_path = build_skill_benchmark_report(args.skill_benchmark_report)
+        print(report_path)
+        return 0
+    if args.runtime_shadow_report is not None:
+        report_path = build_runtime_shadow_operator_report(args.runtime_shadow_report)
+        print(report_path)
+        return 0
+    if args.permission_contract_report is not None:
+        report_path = build_permission_operator_report(args.permission_contract_report)
         print(report_path)
         return 0
 

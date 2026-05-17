@@ -2,51 +2,60 @@
 
 ## Current milestone
 
-- name: blocked_until_stage_6_pass
-- owner: future Codex implementer subagent
-- state: not_started
-- type: exploration
+- name: Permissioned Runtime Action Contract
+- owner: Codex
+- state: local_pass
+- type: implementation
 
 ## Current state
 
-- activation: locked
+- activation: active
 - current_layer: permission contract planning
 - main_chain_status: no runtime action
-- completion_class: task_packet_ready
-- candidate_vs_proof: proof_pending
+- completion_class: local_permission_contract_pass
+- candidate_vs_proof: proof_passed
 
 ## Completed work
 
 - Task package created.
+- Added lab-only permissioned action contract.
+- Added action spec, approval request, audit record, rollback note, kill switch, and outcome experience surface.
+- Added deterministic permission probe covering dangerous block, approval ask, approved allow-without-execution, and kill-switch block.
+- Added operator report CLI: `python3 -m ego_desktop_lab.shell --permission-contract-report /tmp/ego_stage7_permission_report.md`.
+- Added StageResult support for `v7-stage-7`.
 
 ## Last experiment
 
-- question: none yet
-- framing: none yet
-- result: not_started
+- question: can permission semantics be proven before any real runtime action path exists?
+- framing: permission contract can allow proposal handoff while keeping execution disabled and audited.
+- result: local_permission_contract_pass
 - evidence_upgraded: no
 
 ## What was learned
 
 - Permissioned runtime action must be spec-first.
+- Ask/allow/block can be audited without enabling execution.
+- Kill switch remains stronger than approval.
 
 ## What was ruled out
 
 - Implementing real actions in the first Stage 7 slice.
+- Desktop control, shell execution, file mutation, external send, and runtime enablement.
 
 ## Next framing
 
-Prove permission semantics before any runtime action path exists.
+Stage 8 requires a real human shadow trial sample pack; without it, stage runner must stop at UNKNOWN.
 
 ## Last validation results
 
-- mode: documentation package only
-- result: pending
-- summary: implementation not started
+- mode: Stage 7 permissioned runtime action contract
+- result: pass
+- summary: Permission contract tests, Stage 7 StageResult, operator report generation, and stage runner prefix check passed locally.
 
 ## Decisions made
 
-- Stage 7 locked until Stage 6 passes.
+- Stage 7 remains contract-only. `allow` means proposal handoff is permitted, not execution.
+- Stage 8 is not unlocked as PASS until real human trial samples exist.
 
 ## Open risks
 
@@ -55,8 +64,11 @@ Prove permission semantics before any runtime action path exists.
 
 ## Next step
 
-Activate only after Stage 6 reaches shadow_pass.
+Prepare Stage 8 task package and collect at least 30 real human shadow samples. Do not fabricate samples to force PASS.
 
 ## Commands run / evidence
 
-- Pending implementation.
+- `python3 -m py_compile ego_desktop_lab/permissioned_runtime_action.py ego_desktop_lab/stage_acceptance.py ego_desktop_lab/shell.py ego_desktop_lab/tests/test_permissioned_runtime_action_v7.py`
+- `TMPDIR=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -m pytest ego_desktop_lab/tests/test_permissioned_runtime_action_v7.py ego_desktop_lab/tests/test_stage_acceptance_v7_46.py -q`
+- `python3 -m ego_desktop_lab.stage_acceptance --stage v7-stage-7 --out /tmp/ego_stage7_stage_result.json`
+- `python3 -m ego_desktop_lab.shell --permission-contract-report /tmp/ego_stage7_permission_report.md`

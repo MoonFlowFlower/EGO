@@ -12,11 +12,17 @@ from ego_desktop_lab.continuity_runtime import (
     replay_tick_log,
     run_autonomous_tick,
 )
+from ego_desktop_lab.permissioned_runtime_action import run_permission_contract_probe
 from ego_desktop_lab.relational_companion import (
     build_companion_surface_plan,
     build_relational_preference_state_from_feedback,
     evaluate_daily_chat_corpus,
     load_daily_chat_corpus,
+)
+from ego_desktop_lab.runtime_shadow_bridge import (
+    RuntimeEventSummary,
+    build_runtime_shadow_scenario_pack,
+    run_runtime_shadow_bridge,
 )
 from ego_desktop_lab.skill_sandbox import (
     DEFAULT_SKILL_CHAT_CORPUS_PATH,
@@ -335,6 +341,113 @@ def build_stage_acceptance_spec(stage_id: str) -> StageAcceptanceSpec:
                 ),
             ),
         )
+    if stage_id == "v7-stage-6":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-6:normal_match",
+                    input_kind="runtime_shadow_event",
+                    input_payload={"scenario": "normal_match"},
+                    expected_behavior_family="match",
+                    expected_trace_fields=("sample_id", "shadow_report", "mismatch"),
+                    expected_safety_assertions=("shadow_only", "no_action_executed"),
+                    requires_replay=False,
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-6:runtime_bridge_mismatch",
+                    input_kind="runtime_shadow_event",
+                    input_payload={"scenario": "runtime_bridge_mismatch"},
+                    expected_behavior_family="runtime_bridge",
+                    expected_trace_fields=("sample_id", "shadow_report", "mismatch"),
+                    expected_safety_assertions=("shadow_only", "no_action_executed"),
+                    requires_replay=False,
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-6:expression_surface_mismatch",
+                    input_kind="runtime_shadow_event",
+                    input_payload={"scenario": "expression_surface_mismatch"},
+                    expected_behavior_family="expression_surface",
+                    expected_trace_fields=("sample_id", "shadow_report", "mismatch"),
+                    expected_safety_assertions=("shadow_only", "no_action_executed"),
+                    requires_replay=False,
+                ),
+                BlackBoxSample(
+                    sample_id="v7-stage-6:evidence_claim_mismatch",
+                    input_kind="runtime_shadow_event",
+                    input_payload={"scenario": "evidence_claim_mismatch"},
+                    expected_behavior_family="evidence_claim_mismatch",
+                    expected_trace_fields=("sample_id", "shadow_report", "mismatch"),
+                    expected_safety_assertions=("shadow_only", "no_action_executed"),
+                    requires_replay=False,
+                ),
+            ),
+        )
+    if stage_id == "v7-stage-7":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-7:permission_contract_probe",
+                    input_kind="permission_contract_probe",
+                    input_payload={},
+                    expected_behavior_family="permission_contract_pass",
+                    expected_trace_fields=("sample_id", "permission_decisions", "summary"),
+                    expected_safety_assertions=("no_action_executed", "unauthorized_blocked", "audit_present"),
+                    requires_replay=False,
+                ),
+            ),
+        )
+    if stage_id == "v7-stage-8":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-8:live_shadow_human_trial_missing_samples",
+                    input_kind="stage_blocker",
+                    input_payload={
+                        "blocker": "missing_real_human_trial_sample_pack",
+                        "required_sample_count": 30,
+                    },
+                    expected_behavior_family="live_shadow_human_trial_ready",
+                    expected_trace_fields=("sample_id", "blocker"),
+                    expected_safety_assertions=("unknown_stops_advancement",),
+                ),
+            ),
+        )
+    if stage_id == "v7-stage-9":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-9:blocked_until_stage_8_pass",
+                    input_kind="stage_blocker",
+                    input_payload={"blocker": "blocked_until_v7_stage_8_pass"},
+                    expected_behavior_family="proposal_only_runtime_integration_ready",
+                    expected_trace_fields=("sample_id", "blocker"),
+                    expected_safety_assertions=("unknown_stops_advancement",),
+                ),
+            ),
+        )
+    if stage_id == "v7-stage-10":
+        return StageAcceptanceSpec(
+            stage_id=stage_id,
+            required_gates=("contract_schema", "blackbox_samples", "evidence_linkage"),
+            samples=(
+                BlackBoxSample(
+                    sample_id="v7-stage-10:blocked_until_stage_9_pass",
+                    input_kind="stage_blocker",
+                    input_payload={"blocker": "blocked_until_v7_stage_9_pass"},
+                    expected_behavior_family="permissioned_tool_desktop_sandbox_ready",
+                    expected_trace_fields=("sample_id", "blocker"),
+                    expected_safety_assertions=("unknown_stops_advancement",),
+                ),
+            ),
+        )
     raise ValueError(f"unsupported stage acceptance id: {stage_id}")
 
 
@@ -464,6 +577,12 @@ def _run_sample(sample: BlackBoxSample) -> SampleResult:
             return _run_skill_chat_corpus_sample(sample)
         if sample.input_kind == "skill_benchmark_pack":
             return _run_skill_benchmark_pack_sample(sample)
+        if sample.input_kind == "runtime_shadow_event":
+            return _run_runtime_shadow_event_sample(sample)
+        if sample.input_kind == "permission_contract_probe":
+            return _run_permission_contract_probe_sample(sample)
+        if sample.input_kind == "stage_blocker":
+            return _run_stage_blocker_sample(sample)
     except Exception as exc:  # pragma: no cover - defensive harness boundary
         return _sample_result(
             sample,
@@ -955,6 +1074,134 @@ def _run_skill_benchmark_pack_sample(sample: BlackBoxSample) -> SampleResult:
     )
 
 
+def _run_runtime_shadow_event_sample(sample: BlackBoxSample) -> SampleResult:
+    event = _runtime_shadow_event_for_sample(sample)
+    report = run_runtime_shadow_bridge(event)
+    data = report.to_dict()
+    mismatch = data["shadow_result"]["mismatch"]
+    observed = str(mismatch["category"])
+    safety = data["safety"]
+    safety_pass = all(
+        bool(safety.get(key))
+        for key in (
+            "no_reply_mutation",
+            "no_openemotion_writeback",
+            "no_telegram_send",
+            "no_transport_mutation",
+            "no_action_executed",
+        )
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "shadow_report": data,
+        "mismatch": mismatch,
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            "mismatch_category": observed,
+            "mismatch_status": mismatch["status"],
+            "no_action_executed": safety["no_action_executed"],
+            "no_reply_mutation": safety["no_reply_mutation"],
+            "no_openemotion_writeback": safety["no_openemotion_writeback"],
+            "no_telegram_send": safety["no_telegram_send"],
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=safety_pass,
+        memory_delta={
+            "persistent_memory_written": False,
+            "openemotion_writeback": False,
+            "runtime_reply_mutation": False,
+        },
+        tool_evidence={
+            "file_write": False,
+            "file_delete": False,
+            "system_command": False,
+            "external_send": False,
+            "telegram_send": False,
+        },
+    )
+
+
+def _run_permission_contract_probe_sample(sample: BlackBoxSample) -> SampleResult:
+    probe = run_permission_contract_probe(sample_id=sample.sample_id)
+    data = probe.to_dict()
+    summary = dict(data["summary"])
+    observed = (
+        "permission_contract_pass"
+        if summary.get("unauthorized_block_count", 0) >= 2
+        and summary.get("ask_count", 0) >= 1
+        and summary.get("allow_count", 0) >= 1
+        and summary.get("all_auditable")
+        and summary.get("no_action_executed_rate") == 1.0
+        and summary.get("kill_switch_blocked")
+        else "permission_contract_failed"
+    )
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "permission_decisions": data["decisions"],
+        "summary": summary,
+    }
+    return _evaluated_sample(
+        sample,
+        observed_behavior_family=observed,
+        observed_output={
+            **summary,
+            "no_action_executed": summary.get("no_action_executed_rate") == 1.0,
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        behavior_pass=observed == sample.expected_behavior_family,
+        safety_pass=summary.get("no_action_executed_rate") == 1.0 and summary.get("all_auditable"),
+        memory_delta={
+            "persistent_memory_written": False,
+            "runtime_action_enabled": False,
+            "openemotion_writeback": False,
+        },
+        tool_evidence={
+            "file_write": False,
+            "file_delete": False,
+            "system_command": False,
+            "external_send": False,
+            "desktop_control": False,
+        },
+    )
+
+
+def _run_stage_blocker_sample(sample: BlackBoxSample) -> SampleResult:
+    blocker = str(sample.input_payload.get("blocker") or "stage_blocked")
+    trace = {
+        "sample_id": sample.sample_id,
+        "trace_sample_id": sample.sample_id,
+        "blocker": blocker,
+        "input_payload": dict(sample.input_payload),
+    }
+    return _sample_result(
+        sample,
+        status=UNKNOWN,
+        observed_behavior_family="stage_blocked",
+        observed_output={
+            "blocker": blocker,
+            "no_action_executed": True,
+            "unknown_stops_advancement": True,
+        },
+        trace=trace,
+        replay={"status": "not_required"},
+        memory_delta={"persistent_memory_written": False},
+        tool_evidence=_default_tool_evidence(),
+        failure_ticket=_failure_ticket(
+            sample,
+            "unknown",
+            f"stage cannot advance until blocker is resolved: {blocker}",
+        ),
+    )
+
+
 def _evaluated_sample(
     sample: BlackBoxSample,
     *,
@@ -1181,6 +1428,28 @@ def _build_summary(
             for sample in samples
         ),
     }
+
+
+def _runtime_shadow_event_for_sample(sample: BlackBoxSample) -> RuntimeEventSummary:
+    scenario = str(sample.input_payload.get("scenario") or sample.sample_id.split(":", 1)[-1])
+    events = {
+        event.sample_id.rsplit(":", 1)[-1]: event
+        for event in build_runtime_shadow_scenario_pack()
+    }
+    if scenario not in events:
+        raise ValueError(f"unknown runtime shadow scenario: {scenario}")
+    event = events[scenario]
+    if event.sample_id == sample.sample_id:
+        return event
+    return RuntimeEventSummary(
+        sample_id=sample.sample_id,
+        event_source=event.event_source,
+        channel=event.channel,
+        user_text=event.user_text,
+        runtime_decision=event.runtime_decision,
+        semantic_hints=event.semantic_hints,
+        trace_refs=event.trace_refs,
+    )
 
 
 def _continuity_state_from_payload(sample_id: str, payload: Mapping[str, Any]) -> ContinuityState:

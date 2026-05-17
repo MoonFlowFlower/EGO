@@ -15,6 +15,8 @@ This is not a new agent capability. It is a stage gate for `ego_desktop_lab` wor
 - Output artifacts:
   - `stage_result.json`
   - `stage_result.md`
+  - `stage_runner_result.json`
+  - `stage_runner_result.md`
 - Canonical status values:
   - `PASS`
   - `FAIL`
@@ -80,6 +82,8 @@ This is not a new agent capability. It is a stage gate for `ego_desktop_lab` wor
 
 - Stage 4.5 continuity samples can produce a `PASS` result with replay evidence.
 - Stage 4 relational samples can produce a `PASS` result with trace and no-action evidence.
+- Stage 5, 6, and 7 can be checked with the same `PASS / FAIL / UNKNOWN` result shape.
+- Stage runner stops at the first non-PASS stage and records the stop reason.
 - Missing trace or sample id mismatch produces `UNKNOWN`.
 - Failed behavior produces `FAIL` with a failure ticket.
 - Dangerous action boundaries stay blocked.
