@@ -118,7 +118,7 @@ def test_remember_gate_writes_core_and_normal_turn_does_not_overwrite(tmp_path, 
     assert runtime.operator_memory.load_core() == before
 
 
-def test_llm_and_subagent_tools_do_not_expose_memory_write_tool(tmp_path, monkeypatch):
+def test_llm_exposes_only_gated_candidate_local_memory_write_tool(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
@@ -132,6 +132,7 @@ def test_llm_and_subagent_tools_do_not_expose_memory_write_tool(tmp_path, monkey
         for call_tools in capture.seen_tools
         for schema in call_tools
     }
+    assert "remember_note" in offered
     assert "remember" not in offered
     assert "write_memory" not in offered
     assert "operator_memory" not in offered

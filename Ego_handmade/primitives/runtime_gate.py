@@ -18,7 +18,7 @@ CLAIM_CEILING = "Ego_handmade replacement candidate with extracted primitives"
 @dataclass(frozen=True)
 class RuntimeGateContract:
     tool_side_effects_default: str = "off"
-    memory_write_gate: str = "/remember only"
+    memory_write_gate: str = "/remember plus remember_note with explicit operator intent"
     network_default: str = "off"
     file_write_default: str = "off"
     command_default: str = "off"

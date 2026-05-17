@@ -43,7 +43,7 @@ extracted_primitives_gate:
 memory_system_gate:
   storage_root: Ego_handmade/memory
   default_mode: CLI default-on, programmatic default-off
-  core_write_gate: /remember
+  core_write_gate: /remember plus remember_note with explicit operator intent
   auto_compaction_outputs:
     - Ego_handmade/memory/episodic/*.md
     - Ego_handmade/memory/candidate_core_updates.jsonl

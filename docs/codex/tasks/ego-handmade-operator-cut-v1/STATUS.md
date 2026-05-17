@@ -20,7 +20,7 @@
 - syntax check passes for `Ego_handmade/agent_base.py`
 - syntax check passes for `Ego_handmade/memory_system.py`
 - memory artifacts stay under `Ego_handmade/memory/`
-- `/remember` remains the only v1 direct core-memory write gate
+- core-memory write remains explicit-operator-gated; `ego-handmade-operator-permission-gates-v1` extends this from `/remember` to `/remember` plus `remember_note` with explicit latest-user memory intent
 - algorithm inventory classifies old-system capabilities as `keep / rewrite / discard / reference-only`
 - subject context is readonly candidate context, not a router, reply owner, state writer, or memory authority
 - Dark Souls paraphrase suite has 20 cases and preserves one expected operator behavior
@@ -38,6 +38,10 @@ Evidence:
 - `git diff --check -- Ego_handmade docs/codex/tasks/ego-handmade-operator-cut-v1` passed.
 - `printf '/remember manual smoke marker: 中文记忆注入检查\n你好\nexit\n' | AGENT_MEMORY=1 python3 Ego_handmade/agent_base.py` passed.
 - `printf '/memory_context\nexit\n' | AGENT_MEMORY=1 python3 Ego_handmade/agent_base.py` passed and showed the remembered Chinese note under candidate-local operator memory context.
+
+Later permission-gate note:
+
+- `ego-handmade-operator-permission-gates-v1` supersedes the earlier `/remember only` wording with an explicit operator memory-write gate: `/remember` or model-callable `remember_note` when the latest user message clearly asks the agent to remember something. This does not promote `Ego_handmade/memory` to repo authority.
 
 New extracted-primitive outputs:
 

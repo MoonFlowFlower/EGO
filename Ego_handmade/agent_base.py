@@ -173,6 +173,21 @@ DEFAULT_RUN_COMMAND_ALLOWED_PREFIXES = [
     if item.strip()
 ]
 
+MEMORY_WRITE_INTENT_PATTERNS = (
+    r"\bplease remember\b",
+    r"\bremember\s+(that|this|to)\b",
+    r"\bremember\s*:",
+    r"\bsave\s+this\b",
+    r"记住",
+    r"记一下",
+    r"请记得",
+    r"以后记得",
+    r"以后请记得",
+    r"把.{0,20}记下来",
+    r"记录到记忆",
+    r"写入记忆",
+)
+
 DEFAULT_NEUTRAL_SYSTEM_PROMPT = """你是一个本地 operator-cut agent 候选。
 你的目标是帮助用户完成任务，同时保持清晰边界、可验证结果和最小副作用。
 不要声称未验证的能力、自治、意识、主线替代或外部动作完成。
@@ -751,6 +766,10 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n13. 区分两种调度：dispatch_subagent 是临时派差；spawn_teammate 是固定班底，有名字、角色、状态和 inbox；默认关闭时不得假装已经组队。"
         + "\n14. 固定队友回禀也只是工作报告，不等于事实已验证；关键结论仍要看工具证据和主 agent 判断。"
         + "\n15. 不要编造不存在的 skill；只能从当前可用技能列表中选择。"
+        + "\n16. read_file / glob_files / grep_files 是 workspace 内只读工具；需要查看本地文件时优先使用它们，不要假装已经读取。"
+        + "\n17. write_file、run_command、web_fetch 只有在对应工具出现在工具列表且 gate 允许时才可使用；未出现时必须说明当前禁用。"
+        + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。"
+        + "\n19. operator memory 是 Ego_handmade candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
         + "\n\n可派遣子代理类型：xiaohuangmen, sili_suitang, dongchang_tanshi, shangbao_dianbu, neiguan_yingzao"
         + (
             "\n\nAgent Team 工具：spawn_teammate, list_teammates, send_message, read_inbox, broadcast, shutdown_teammate"
@@ -903,6 +922,22 @@ def _resolve_workspace_path(path: str) -> Path:
         raise ValueError(f"path outside workspace: {resolved}") from exc
 
     return resolved
+
+
+def _has_explicit_memory_write_intent(text: str) -> bool:
+    raw = (text or "").strip()
+    if not raw:
+        return False
+    lowered = raw.lower()
+    return any(re.search(pattern, lowered, flags=re.IGNORECASE) for pattern in MEMORY_WRITE_INTENT_PATTERNS)
+
+
+def _gate_workspace_path(reason_prefix: str, path: str) -> Optional[GateResult]:
+    try:
+        _resolve_workspace_path(path)
+    except ValueError:
+        return GateResult(False, f"{reason_prefix}_outside_workspace")
+    return None
 
 
 def read_file_tool(path: str, max_chars: int = DEFAULT_FILE_TOOL_MAX_CHARS) -> Dict[str, Any]:
@@ -2071,6 +2106,18 @@ class SafetyGate:
                 return GateResult(False, f"tool_not_allowed:{action.tool_call.tool_name}")
             if risk == "high":
                 return GateResult(False, "high_risk_tool_call_blocked")
+            if action.tool_call.tool_name in {"read_file", "write_file"}:
+                path_result = _gate_workspace_path("path", str(action.tool_call.args.get("path", "")))
+                if path_result is not None:
+                    return path_result
+            if action.tool_call.tool_name == "grep_files":
+                path_result = _gate_workspace_path("path", str(action.tool_call.args.get("path", ".")))
+                if path_result is not None:
+                    return path_result
+            if action.tool_call.tool_name == "glob_files":
+                pattern = str(action.tool_call.args.get("pattern", ""))
+                if ".." in Path(pattern).parts:
+                    return GateResult(False, "invalid_glob_pattern")
             if action.tool_call.tool_name == "run_command":
                 command = str(action.tool_call.args.get("command", ""))
                 if not DEFAULT_ENABLE_RUN_COMMAND:
@@ -2083,6 +2130,12 @@ class SafetyGate:
                 return GateResult(False, "write_file_disabled")
             if action.tool_call.tool_name == "web_fetch" and not DEFAULT_ENABLE_WEB_FETCH:
                 return GateResult(False, "web_fetch_disabled")
+            if action.tool_call.tool_name == "remember_note":
+                if not _has_explicit_memory_write_intent(event.raw_text or ""):
+                    return GateResult(False, "memory_write_requires_explicit_user_intent")
+                if not str(action.tool_call.args.get("text", "")).strip():
+                    return GateResult(False, "empty_memory_note")
+                return GateResult(True, "operator_memory_write_intent_allowed")
             return GateResult(True, "tool_call_allowed")
 
         if action.action_type in {ActionType.RESPOND, ActionType.ASK, ActionType.BLOCK}:
@@ -3079,6 +3132,7 @@ def build_demo_runtime(
     )
 
     todo_list = TodoList()
+    operator_memory = build_operator_memory_store(operator_memory_dir) if enable_operator_memory else None
     tools.register(
         "load_skill",
         load_skill_tool,
@@ -3130,16 +3184,24 @@ def build_demo_runtime(
         },
     )
 
-    # Main agent sees high-level orchestration tools. Low-level file/web/write tools are for
-    # subagents/teammates through their own narrow SafetyGate.
+    # Main agent sees low-risk read tools by default. Side-effect tools stay opt-in.
     allowed_tools = [
         "current_time",
+        "read_file",
+        "glob_files",
+        "grep_files",
         "load_skill",
         "update_todos",
         "dispatch_subagent",
     ]
     if DEFAULT_ENABLE_RUN_COMMAND:
         allowed_tools.append("run_command")
+    if DEFAULT_ENABLE_WEB_FETCH:
+        allowed_tools.append("web_fetch")
+    if DEFAULT_ENABLE_WRITE_FILE:
+        allowed_tools.append("write_file")
+    if operator_memory is not None:
+        allowed_tools.append("remember_note")
     if DEFAULT_ENABLE_AGENT_TEAM:
         allowed_tools.extend([
             "spawn_teammate",
@@ -3152,7 +3214,6 @@ def build_demo_runtime(
 
     planner = Planner(llm=build_llm_from_config())
     gate = SafetyGate(allowed_tools=allowed_tools)
-    operator_memory = build_operator_memory_store(operator_memory_dir) if enable_operator_memory else None
     runtime = AgentRuntime(
         tools=tools,
         planner=planner,
@@ -3160,6 +3221,23 @@ def build_demo_runtime(
         todo_list=todo_list,
         operator_memory=operator_memory,
         subject_context_enabled=subject_context_enabled,
+    )
+
+    tools.register(
+        "remember_note",
+        runtime.remember_operator_note,
+        description=(
+            "把用户明确要求记住的内容写入 Ego_handmade candidate-local MEMORY.md。"
+            "只能在用户消息含有明确记忆意图时调用；不是 EGO repo authority。"
+        ),
+        input_schema={
+            "type": "object",
+            "properties": {
+                "text": {"type": "string", "description": "要写入 candidate-local core memory 的原文或压缩记忆。"},
+            },
+            "required": ["text"],
+            "additionalProperties": False,
+        },
     )
 
     tools.register(
@@ -3263,19 +3341,34 @@ def build_demo_runtime(
     return runtime
 
 
+def render_runtime_permission_status(runtime: AgentRuntime) -> str:
+    memory_status = "disabled"
+    memory_dir = ""
+    if runtime.operator_memory_enabled() and runtime.operator_memory:
+        memory_status = "enabled"
+        memory_dir = str(runtime.operator_memory.memory_dir)
+    lines = [
+        "Runtime permission status:",
+        f"- operator_memory: {memory_status}"
+        + (f" | dir={memory_dir}" if memory_dir else ""),
+        "- core_memory_write: /remember <text>"
+        + (" + remember_note tool with explicit user intent" if runtime.operator_memory_enabled() else " only when operator memory is enabled"),
+        f"- file_read_tools: {'enabled' if {'read_file', 'glob_files', 'grep_files'}.issubset(runtime.gate.allowed_tools) else 'restricted'}",
+        f"- write_file: {'enabled' if DEFAULT_ENABLE_WRITE_FILE and 'write_file' in runtime.gate.allowed_tools else 'disabled'}",
+        f"- run_command: {'enabled' if DEFAULT_ENABLE_RUN_COMMAND and 'run_command' in runtime.gate.allowed_tools else 'disabled'}",
+        f"- web_fetch: {'enabled' if DEFAULT_ENABLE_WEB_FETCH and 'web_fetch' in runtime.gate.allowed_tools else 'disabled'}",
+        f"- workspace: {DEFAULT_AGENT_WORKSPACE}",
+        f"- trace_path: {DEFAULT_TRACE_PATH}",
+    ]
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
     runtime = build_demo_runtime(enable_operator_memory=env_flag("AGENT_MEMORY", True))
 
     print("Agent demo. Type 'exit' to quit.")
     print(f"LLM provider: {getattr(runtime.planner.llm, 'provider', 'unknown')} | model: {getattr(runtime.planner.llm, 'model', 'unknown')}")
-    print(
-        "operator_memory: "
-        + (
-            f"enabled | dir={runtime.operator_memory.memory_dir}"
-            if runtime.operator_memory_enabled() and runtime.operator_memory
-            else "disabled"
-        )
-    )
+    print(render_runtime_permission_status(runtime))
     while True:
         msg = input("> ").strip()
         if msg.lower() in {"exit", "quit"}:
@@ -3310,15 +3403,8 @@ if __name__ == "__main__":
             continue
         if msg.lower() in {"/tools", "tools"}:
             print(json.dumps(runtime.tools.openai_tool_schemas(allowed_tool_names=runtime.gate.allowed_tools), ensure_ascii=False, indent=2))
-            print(f"run_command enabled: {DEFAULT_ENABLE_RUN_COMMAND}")
-            print(f"web_fetch enabled: {DEFAULT_ENABLE_WEB_FETCH}")
-            print(f"write_file enabled: {DEFAULT_ENABLE_WRITE_FILE}")
             print(f"agent_team enabled: {DEFAULT_ENABLE_AGENT_TEAM}")
-            print(f"operator_memory enabled: {runtime.operator_memory_enabled()}")
-            if runtime.operator_memory:
-                print(f"operator_memory_dir: {runtime.operator_memory.memory_dir}")
-            print(f"workspace: {DEFAULT_AGENT_WORKSPACE}")
-            print(f"trace_path: {DEFAULT_TRACE_PATH}")
+            print(render_runtime_permission_status(runtime))
             continue
         if msg.lower() in {"/subagents", "subagents"}:
             for name, spec in SUBAGENT_SPECS.items():

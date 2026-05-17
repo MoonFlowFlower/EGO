@@ -1,0 +1,41 @@
+task: ego-handmade-operator-permission-gates-v1
+claim_ceiling: Ego_handmade local permission-gate candidate pass
+allowed_paths:
+  - Ego_handmade/**
+  - docs/codex/tasks/ego-handmade-operator-permission-gates-v1/**
+  - docs/codex/tasks/ego-handmade-operator-cut-v1/acceptance.yaml
+  - docs/codex/tasks/ego-handmade-operator-cut-v1/STATUS.md
+forbidden_paths:
+  - EgoCore/**
+  - OpenEmotion/**
+  - ego_desktop_lab/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+forbidden_claims:
+  - EGO mainline replacement
+  - EgoCore or OpenEmotion demotion
+  - formal long-term memory efficacy
+  - live autonomy
+  - runtime efficacy
+  - stable user benefit
+  - consciousness
+permission_gate:
+  default_read_tools:
+    - read_file
+    - glob_files
+    - grep_files
+  opt_in_side_effect_tools:
+    write_file: AGENT_ENABLE_WRITE_FILE
+    run_command: AGENT_ENABLE_RUN_COMMAND
+    web_fetch: AGENT_ENABLE_WEB_FETCH
+  core_memory_write_gate:
+    - /remember <text>
+    - remember_note(text) with explicit latest-user memory intent
+  workspace_containment: required
+checks:
+  - id: py_compile
+    command: python3 -m py_compile Ego_handmade/agent_base.py Ego_handmade/memory_system.py
+  - id: targeted_tests
+    command: TMPDIR=/tmp python3 -m pytest -q Ego_handmade/tests/test_operator_cut.py Ego_handmade/tests/test_memory_system.py Ego_handmade/tests/test_extracted_primitives.py Ego_handmade/tests/test_operator_comparison.py Ego_handmade/tests/test_permission_gates.py
+  - id: diff_check
+    command: git diff --check -- Ego_handmade docs/codex/tasks/ego-handmade-operator-permission-gates-v1 docs/codex/tasks/ego-handmade-operator-cut-v1/acceptance.yaml docs/codex/tasks/ego-handmade-operator-cut-v1/STATUS.md
