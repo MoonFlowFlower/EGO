@@ -9,8 +9,8 @@
 
 | surface | paths | role | authority boundary |
 |---|---|---|---|
-| `operator_runtime` | `Ego_handmade/` | Current default operator-first runtime candidate: natural language understanding, approvals, memory, trace, and human trial gates. | Default implementation surface for new operator experience work; claims remain local/candidate unless human-observable gates pass. |
-| `legacy_reference` | `legacy/ego-pre-handmade-mainline/EgoCore/`<br>`legacy/ego-pre-handmade-mainline/OpenEmotion/`<br>`legacy/ego-pre-handmade-mainline/ego_desktop_lab/` | Pre-handmade runtime, subject kernel, and lab harness retained as reference/fallback/algorithm sources. | Not the default implementation lane; do not re-promote without a new Stage Card and evidence gate. |
+| `operator_runtime` | `EgoOperator/` | Current default operator-first runtime candidate: natural language understanding, approvals, memory, trace, and human trial gates. | Default implementation surface for new operator experience work; claims remain local/candidate unless human-observable gates pass. |
+| `legacy_reference` | `legacy/ego-pre-handmade-mainline/EgoCore/`<br>`legacy/ego-pre-handmade-mainline/OpenEmotion/`<br>`legacy/ego-pre-handmade-mainline/ego_desktop_lab/` | Pre-EgoOperator runtime, subject kernel, and lab harness retained as reference/fallback/algorithm sources. | Not the default implementation lane; do not re-promote without a new Stage Card and evidence gate. |
 | `governance` | `docs/PROGRAM_STATE_UNIFIED.yaml`<br>`docs/codex/tasks/TASK_LANE_INDEX.md`<br>`docs/REPO_HYGIENE_POLICY.md`<br>`docs/MAINLINE_QUICKSTART.md` | Human and agent route map for current mainline, lane ownership, and cleanup boundaries. | PROGRAM_STATE_UNIFIED is source of truth; generated views are route maps only. |
 | `evidence` | `artifacts/evidence_ledger/`<br>`accepted CURRENT reports` | Accepted evidence and replayable proof surfaces. | Evidence supports claims but does not become runtime owner. |
 | `archive_reference` | `docs/archive/`<br>`artifacts/archive/`<br>`closed-evidence task dirs` | Historical, diagnostic, or closed proof material. | Findable reference only; not current implementation authority. |
@@ -18,7 +18,7 @@
 
 ## Rules
 
-- `Ego_handmade/` is the default operator-first implementation surface.
+- `EgoOperator/` is the default operator-first implementation surface.
 - `legacy/ego-pre-handmade-mainline/ego_desktop_lab/` is a reference harness, not a second runtime authority.
 - Legacy Shell / Telegram paths are reference/fallback only unless a future task explicitly restores them.
 - Closed evidence and archive/reference surfaces remain findable but do not compete with the active default lane.

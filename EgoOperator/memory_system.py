@@ -1,7 +1,7 @@
 """
-Candidate-local operator memory for Ego_handmade.
+Candidate-local operator memory for EgoOperator.
 
-This module is deliberately scoped to Ego_handmade. It is not the EGO formal
+This module is deliberately scoped to EgoOperator. It is not the EGO formal
 memory authority and must not write PROJECT_MEMORY, OpenEmotion memory, or the
 repo evidence ledger.
 """
@@ -70,7 +70,7 @@ def _resolve_under(path: str | Path, root: str | Path) -> Path:
     try:
         resolved.relative_to(root_path)
     except ValueError as exc:
-        raise ValueError(f"memory path outside Ego_handmade workspace: {resolved}") from exc
+        raise ValueError(f"memory path outside EgoOperator workspace: {resolved}") from exc
     return resolved
 
 
@@ -153,7 +153,7 @@ class MemoryContext:
 
         parts = [
             "[Operator Memory Context]",
-            "Scope: candidate-local Ego_handmade operator memory only.",
+            "Scope: candidate-local EgoOperator operator memory only.",
             "Authority: not repo authority, not OpenEmotion memory, not evidence ledger.",
         ]
         if self.memory_dir:
@@ -291,7 +291,7 @@ class OperatorMemoryStore:
         current = self.load_core().strip()
         if not current:
             current = (
-                "# Ego_handmade Operator Memory\n\n"
+                "# EgoOperator Operator Memory\n\n"
                 "Candidate-local notes only. This file is not EGO repo authority.\n"
             )
         note = f"- {_iso_now(self.clock)} [{source}] {clean}"
@@ -761,7 +761,7 @@ class MemoryCompactor:
         llm: Any,
     ) -> Dict[str, Any]:
         prompt = (
-            "Compress these Ego_handmade operator-memory messages into strict JSON.\n"
+            "Compress these EgoOperator operator-memory messages into strict JSON.\n"
             "Return exactly: {\"episode\": \"...\", \"candidate_core_update\": \"...\"}.\n"
             "Do not overwrite MEMORY.md. Candidate core update is for operator review only.\n\n"
             f"session_id={session_id}\nevent_id={event_id}\n"

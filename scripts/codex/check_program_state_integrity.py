@@ -46,7 +46,7 @@ CORE_DIR_PREFIXES = [
     ".github/",
     "docs/",
     "scripts/codex/",
-    "Ego_handmade/",
+    "EgoOperator/",
     "legacy/ego-pre-handmade-mainline/EgoCore/app/runtime_v2/",
     "legacy/ego-pre-handmade-mainline/EgoCore/app/openemotion_adapter/",
     "legacy/ego-pre-handmade-mainline/EgoCore/app/openemotion_hooks/",

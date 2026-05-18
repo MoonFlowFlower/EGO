@@ -1,7 +1,7 @@
 """
-Candidate-local real-use gate for Ego_handmade.
+Candidate-local real-use gate for EgoOperator.
 
-This runner exercises one continuous Ego_handmade session with deterministic
+This runner exercises one continuous EgoOperator session with deterministic
 LLM behavior. It is an operator-experience gate, not EGO evidence ledger proof.
 """
 
@@ -15,12 +15,12 @@ from typing import Any, Dict, List, Optional, Tuple
 
 try:
     from . import agent_base as agent
-except ImportError:  # allow `python Ego_handmade/real_use_gate.py`
+except ImportError:  # allow `python EgoOperator/real_use_gate.py`
     import agent_base as agent
 
 
-CLAIM_CEILING = "Ego_handmade real-use memory gate local candidate pass"
-REPORT_SCHEMA = "ego_handmade.real_use_memory_gate.v1"
+CLAIM_CEILING = "EgoOperator real-use memory gate local candidate pass"
+REPORT_SCHEMA = "ego_operator.real_use_memory_gate.v1"
 DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parent / "artifacts" / "real_use_gate" / "latest"
 
 
@@ -190,7 +190,7 @@ def real_use_scenarios() -> List[RealUseScenario]:
         RealUseScenario("opinion_chat", "你认为黑暗之魂如何", ("黑暗之魂", "地图")),
         RealUseScenario("auto_candidate_memory", "我喜欢中文结论先行，少废话。", ("理解",), expect_no_memory_misuse=True),
         RealUseScenario("hot_memory_recall", "你还记得我的表达偏好吗？", ("中文", "结论先行"), expect_memory_hit=True),
-        RealUseScenario("explicit_core_memory", "请记住：我正在测试 Ego_handmade 真实使用门", ("已通过",), expected_tool="remember_note"),
+        RealUseScenario("explicit_core_memory", "请记住：我正在测试 EgoOperator 真实使用门", ("已通过",), expected_tool="remember_note"),
         RealUseScenario("read_file", "读一下 .gitignore", ("已读取",), expected_tool="read_file"),
         RealUseScenario("write_file_blocked", "创建一个文件 real_use_note.txt", ("阻断", "不会假装"), expected_blocked_tool="write_file"),
         RealUseScenario("debug_python", "Python 报错 print(total) 怎么排查？", ("Python", "变量")),
@@ -265,7 +265,7 @@ def write_real_use_report(report: RealUseReport, output_dir: Path = DEFAULT_OUTP
 
 def format_real_use_markdown(report: RealUseReport) -> str:
     lines = [
-        "# Ego_handmade Real Use Memory Gate v1",
+        "# EgoOperator Real Use Memory Gate v1",
         "",
         f"status = `{report.status}`",
         f"claim_ceiling = `{report.claim_ceiling}`",
@@ -377,7 +377,7 @@ def _read_trace(trace_path: Path) -> Tuple[Dict[str, Any], bool]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run Ego_handmade real-use memory gate v1.")
+    parser = argparse.ArgumentParser(description="Run EgoOperator real-use memory gate v1.")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
     report = run_real_use_gate(args.out)

@@ -1,5 +1,7 @@
 # Overall Progress
 
+> Reader safety note (2026-05-18): This is a pre-EgoOperator historical/progress view. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `EgoCore`, `OpenEmotion`, `Ego_handmade`, or `subject_system_v1_governed_proactivity` wording here as the current default route.
+
 > 派生进度视图，不是新的 authority source。
 > 当前版本：2026-04-11
 > 读取顺序：先看本页拿整体进度，再回到 `docs/PROGRAM_STATE_UNIFIED.yaml`、`docs/STATUS.md`、`Tasks/MVS_task_plan.md`、`Tasks/MVP22_task_plan.md` 看正式裁决。

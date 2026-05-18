@@ -1,5 +1,7 @@
 # Repo Mainline Clarity v1 Plan
 
+> Reader safety note (2026-05-18): This is pre-EgoOperator supporting task history. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `subject_system_v1_governed_proactivity` wording here as the current default route.
+
 ## Phase 1: Mainline View
 
 - Add `docs/MAINLINE_QUICKSTART.md` as the first human onboarding page.

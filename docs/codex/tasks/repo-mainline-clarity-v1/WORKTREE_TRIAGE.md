@@ -1,5 +1,7 @@
 # Repo Mainline Clarity v1 Phase 2B Worktree Triage
 
+> Reader safety note (2026-05-18): This is pre-EgoOperator supporting task history. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `subject_system_v1_governed_proactivity` wording here as the current default route.
+
 ## Purpose
 
 Phase 2B is a readability and return-gate slice. It does not move files, delete files, change runtime behavior, update `PROGRAM_STATE_UNIFIED.yaml`, or update the formal evidence ledger.

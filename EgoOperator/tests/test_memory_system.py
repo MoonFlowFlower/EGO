@@ -40,7 +40,7 @@ class BadCompactionLLM:
 
 
 def test_cli_memory_default_on_writes_only_after_first_turn(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     memory_dir = tmp_path / "memory"
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=memory_dir)
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
@@ -81,12 +81,12 @@ def test_operator_memory_path_containment_blocks_escape(tmp_path):
     root = tmp_path / "root"
     outside = tmp_path / "outside" / "memory"
 
-    with pytest.raises(ValueError, match="outside Ego_handmade workspace"):
+    with pytest.raises(ValueError, match="outside EgoOperator workspace"):
         OperatorMemoryStore(outside, containment_root=root)
 
 
 def test_core_memory_injected_as_candidate_local_context(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     capture = CapturePromptLLM()
@@ -98,13 +98,13 @@ def test_core_memory_injected_as_candidate_local_context(tmp_path, monkeypatch):
     runtime.handle_user_message("继续")
 
     prompt = capture.system_prompts[-1]
-    assert "candidate-local Ego_handmade operator memory" in prompt
+    assert "candidate-local EgoOperator operator memory" in prompt
     assert "用户偏好：中文、结论先行" in prompt
     assert "PROGRAM_STATE_UNIFIED" not in prompt
 
 
 def test_remember_gate_writes_core_and_normal_turn_does_not_overwrite(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     runtime.planner.llm = CapturePromptLLM()
@@ -119,7 +119,7 @@ def test_remember_gate_writes_core_and_normal_turn_does_not_overwrite(tmp_path, 
 
 
 def test_llm_exposes_only_gated_candidate_local_memory_write_tool(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     capture = CapturePromptLLM()
@@ -193,7 +193,7 @@ def test_candidate_memory_does_not_enter_core_or_prompt_until_hot(tmp_path):
 
 
 def test_hot_context_injects_pinned_candidate_and_records_hit(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     capture = CapturePromptLLM()
@@ -240,7 +240,7 @@ def test_archived_and_forgotten_memory_are_excluded_from_hot_context(tmp_path):
 
 
 def test_auto_candidate_capture_from_preference_turn_does_not_write_core(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     runtime.planner.llm = CapturePromptLLM()

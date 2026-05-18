@@ -8,31 +8,32 @@
 
 | field | value |
 |---|---|
-| current_phase | `ego_handmade_first_transition_legacy_demotion_recorded_local_candidate_pending_human_observation` |
+| current_phase | `ego_operator_first_transition_naming_docs_safety_recorded_local_candidate_pending_human_observation` |
 | current_layer | `transition / operator-first` |
 | highest_evidence_level | `E3` |
 | verification_level | `V3` |
 | mainline_connected | `True` |
 | enabled | `True` |
-| last_verified_commit | `0ea8c21` |
-| last_verified_at | `2026-05-18T01:42:12Z` |
+| last_verified_commit | `af561e0d` |
+| last_verified_at | `2026-05-18T03:48:22Z` |
 
 ## North Star
 
-Keep one default operator-first path where Ego_handmade preserves natural-language understanding before gates, while legacy EgoCore/OpenEmotion evidence remains reference-only and repo-level claims never outrun evidence.
+Keep one default operator-first path where EgoOperator preserves natural-language understanding before gates, while legacy EgoCore/OpenEmotion evidence remains reference-only and repo-level claims never outrun evidence.
 
 ## Current Focus
 
-- Treat `Ego_handmade` as the active default operator-first implementation lane and current execution owner.
+- Treat `EgoOperator` as the active default operator-first implementation lane and current execution owner.
 - Keep legacy `EgoCore / OpenEmotion / ego_desktop_lab` under `legacy/ego-pre-handmade-mainline/` as reference/fallback/algorithm sources only.
-- Preserve `Ego_handmade`'s core path: `user text -> LLM understanding -> proposal/plan -> runtime gate -> trace`, and do not reintroduce keyword-first semantic routing or template fallback as the default entry.
+- Preserve `EgoOperator`'s core path: `user text -> LLM understanding -> proposal/plan -> runtime gate -> trace`, and do not reintroduce keyword-first semantic routing or template fallback as the default entry.
 - Future work may delete old templates, rewrite the main loop, sacrifice legacy interfaces, and prioritize experience over compatibility, but major route/state/permission/memory changes still require a Stage Card.
 - Use human-observable operator samples as part of acceptance when experience is the target; tests alone are not sufficient proof of natural interaction quality.
 - Keep all claims bounded to local candidate / transition evidence until real user operation proves stable behavior.
 
 ## Completed Since Last Update
 
-- The repo now records an `Ego_handmade-first` transition: `Ego_handmade` is the default operator runtime candidate, old `EgoCore / OpenEmotion / ego_desktop_lab` have been moved under `legacy/ego-pre-handmade-mainline/`, and route/state/docs now treat the old governed-proactivity lane as legacy evidence rather than the active default. This is a repo transition record only; it does not prove stable real user benefit, live autonomy, durable memory efficacy, runtime efficacy, or consciousness.
+- The repo now records the `EgoOperator` naming and docs reader-safety transition: tracked runtime files moved from `Ego_handmade/` to `EgoOperator/`, current authority/docs/scripts point at `ego_operator_first_transition`, and high-risk pre-EgoOperator reader entry docs carry safety banners/cross-links. This is a naming/docs safety transition record only; it does not prove stable real user benefit, live autonomy, durable memory efficacy, runtime efficacy, or consciousness.
+- The repo previously recorded an `EgoOperator-first` transition under the former `Ego_handmade` name: `EgoOperator` is the default operator runtime candidate, old `EgoCore / OpenEmotion / ego_desktop_lab` have been moved under `legacy/ego-pre-handmade-mainline/`, and route/state/docs treat the old governed-proactivity lane as legacy evidence rather than the active default. This is a repo transition record only; it does not prove stable real user benefit, live autonomy, durable memory efficacy, runtime efficacy, or consciousness.
 - The current lane now has a bounded local `subject final text candidate ownership` pass: OpenEmotion `subject_system_v1` candidates expose `final_text_candidate / language_hint / style_intent / content_grounding / generation_trace`, thought-probe synthesis binds generated visible candidates to their topic anchor, EgoCore delivery consumes only `final_text_candidate` for proactive visible text, and missing/template-like/unanchored/rejected candidates become `retry_later` or `held` instead of host-generated fallback templates. Public dialogue corpora are recorded only in an offline-eval manifest (`DailyDialog / XDailyDialog / CS-Dialogue / LCCC`) and are not imported into runtime prompts or product logic. This remains local proof only; no fresh always-on-listener live closeout is admitted.
 - After the local `direct human continuation` patch, the always-on Telegram listener was restarted with explicit proactive autodrain environment and direct Windows Python execution. A fresh local operator status check reports one matching Telegram process (`matching_process_count=1`, `conflict_possible=false`, `listener_pid=49892`) and `check_telegram_proactive_soak_status.py` reports `armed` for allowlisted `telegram:dm:` / `8420019401`. This is process-hygiene evidence only; it is not a fresh live proactive send, direct-share reply, or BTC/web boundary recheck.
 - Fresh live Telegram evidence on `2026-04-26 13:54-20:04` shows the explicit-recontact path can send proactive messages, but the visible messages were still too template-like: the listener emitted `围绕“随机的分享”，我想把刚才那个未完的点轻轻接回来。现在继续吗？` and later the chat lane answered direct-start requests with askback such as `你接着起个头？` / `由我直接起个头？` / `最近有没有碰到...`. This is admitted as a live quality regression, not a live closeout.
@@ -75,34 +76,35 @@ Keep one default operator-first path where Ego_handmade preserves natural-langua
 
 ## Key Unknowns
 
-- Whether `Ego_handmade` remains more natural after longer real LLM sessions, not just deterministic NoLLM tests.
+- Whether `EgoOperator` remains more natural after longer real LLM sessions, not just deterministic NoLLM tests.
 - Whether local memory stays useful without prompt pollution across multi-day operator use.
-- Which legacy algorithms should be reimplemented as Ego_handmade primitives, and which should remain reference-only.
+- Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only.
 - Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic.
 - What evidence threshold should trigger any future deletion of legacy code rather than reference preservation.
 
 ## Next Minimal Action
 
-Run a focused Ego_handmade human-operator trial on the new default path: collect multiple Chinese natural-dialogue samples, memory write/recall, file approval, debugging, and refusal-recovery cases. Keep the claim ceiling at `Ego_handmade-first repo transition / legacy demotion recorded` until those samples show stable natural interaction without memory pollution or gate confusion.
+Run a focused EgoOperator human-operator trial on the renamed default path: collect multiple Chinese natural-dialogue samples, memory write/recall, file approval, debugging, and refusal-recovery cases. Keep the claim ceiling at `EgoOperator naming/docs safety transition recorded` until those samples show stable natural interaction without memory pollution or gate confusion.
 
 ## Real Trigger Evidence
 
-- `ego_handmade_mainline_demotion_v1_local_transition`: Repo-level docs, route views, and directory layout record `Ego_handmade` as the default operator-first transition lane while preserving legacy projects as reference/fallback material.
-- `ego_handmade_operator_runtime_contract_local_candidate_pass`: Local Ego_handmade tests previously passed for runtime modes, transaction approval, memory, permission gates, comparison harness, and human-trial scaffolding.
+- `ego_operator_rename_docs_safety_v1_local_transition`: Repo-level docs, route views, runtime path naming, and reader-safety banners record `EgoOperator` as the current operator-first route name, formerly `Ego_handmade`.
+- `ego_operator_mainline_demotion_v1_local_transition`: Repo-level docs, route views, and directory layout record `EgoOperator` as the default operator-first transition lane while preserving legacy projects as reference/fallback material.
+- `ego_operator_operator_runtime_contract_local_candidate_pass`: Local EgoOperator tests previously passed for runtime modes, transaction approval, memory, permission gates, comparison harness, and human-trial scaffolding.
 
 ## Workstreams
 
 | id | owner | status | evidence | verification | mainline_connected | enabled | summary |
 |---|---|---|---|---|---|---|---|
-| ego_handmade_first_transition | Ego_handmade | `legacy_demotion_recorded__operator_first_default__human_observation_pending` | `E3` | `V3` | `True` | `True` | `Ego_handmade` is now the default operator-first implementation lane. The transition preserves old `EgoCore / OpenEmotion / ego_desktop_lab` under `legacy/ego-pre-handmade-mainline/` and records the repo rule shift toward natural-language understanding first, transaction gates, candidate-local memory, trace, and human-observable trial evidence. Current proof is local/repo-level only and does not establish stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness. |
+| ego_operator_first_transition | EgoOperator | `naming_docs_safety_recorded__operator_first_default__human_observation_pending` | `E3` | `V3` | `True` | `True` | `EgoOperator` is now the default operator-first implementation lane, formerly tracked as `Ego_handmade`. The transition preserves old `EgoCore / OpenEmotion / ego_desktop_lab` under `legacy/ego-pre-handmade-mainline/`, records the repo rule shift toward natural-language understanding first, and adds reader-safety banners to high-risk pre-EgoOperator entry docs. Current proof is local/repo-level only and does not establish stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness. |
 | repo_authority_cleanup | EgoCore | `closeout-complete` | `E3` | `V3` | `True` | `True` | Repo/integration boundary cleanup is reproducibly closed out in clean-clone / CI space, but that closeout does not itself prove new real-channel behavior. |
 | program_state_governance | EgoCore | `pass` | `E3` | `V3` | `False` | `True` | Root-level program state, derived views, evidence ledger, templates, integrity gates, and a fixed collaboration-loop contract are being wired into the repo governance path. |
 | codex_exploration_cycles | EgoCore | `integrating` | `E3` | `V2` | `False` | `True` | Exploration-mode long-run tasks now have explicit reformulation, hypothesis, experiment, logging, and candidate-vs-proof discipline, and the current `Ego` repo now also has a bounded `codex-autopilot` reconnect proof (`doctor` + fresh smoke closeout + `file_first` resume confirmation) on a formal repo-root config. |
 | ai_self_awareness_research | EgoCore + OpenEmotion | `selection_closed_handoff` | `E3` | `V3` | `False` | `True` | Selection closeout is complete and now serves as bounded research evidence plus routing handoff. It fixes active-inference self-model as the durable build-first candidate after it passes the canonical OpenEmotion held-out replay gate that MVS failed, the repo-authored controlled conversation replay bridge, and the first runtime-harness controlled observation batch under the same bounded host-consumable surface (`policy_hint / response_tendency / trace_payload`) with zero authority drift. A post-closeout `SubjectCore` supplement inside the same closed lane now freezes a unified facade framing, a brain-inspired mid-level motif map, a minimal compare harness spec, repo-authored compare inputs, compare reporting outputs, a normalized-record planning-side scorer stub with truthful no-run fallback, a full-coverage compare result (`36 / 36` records, `pass`, `no clear winner`) now interpreted as a completed architecture reading, one internal-only `SubjectCore` facade/snapshot contract, one integrity eval, one host-boundary eval, a follow-on eval artifact schema, one repo-authored follow-on sample pack, one batch runner, one aggregate batch artifact with richer proposal-family coverage through two positive proposal-set-closure samples, one post-compare coherence schema, one coherence runner, one saturation gate, and now a first explicitly user-authorized bounded runtime-adjacent probe that admits a baseline green sample plus closure-ready chained-replacement and chained-rollback green samples to the same frozen host surface while still blocking closure / authority failures before projection. This remains below formal runtime integration, runtime efficacy, live user benefit, and any consciousness-like claim. |
-| subject_system_v1_governed_proactivity | EgoCore + OpenEmotion | `legacy_reference__pre_handmade_evidence_preserved` | `E4` | `V4` | `False` | `True` | Pre-handmade governed-proactivity evidence is preserved as legacy/reference material under `legacy/ego-pre-handmade-mainline/`. It no longer owns the default implementation lane. Its local and live samples remain useful for comparison and rollback, but the user-visible experience regressions that motivated `Ego_handmade-first` are not treated as the current route to continue patching. |
+| subject_system_v1_governed_proactivity | EgoCore + OpenEmotion | `legacy_reference__pre_ego_operator_evidence_preserved` | `E4` | `V4` | `False` | `True` | Pre-EgoOperator governed-proactivity evidence is preserved as legacy/reference material under `legacy/ego-pre-handmade-mainline/`. It no longer owns the default implementation lane. Its local and live samples remain useful for comparison and rollback, but the user-visible experience regressions that motivated `EgoOperator-first` are not treated as the current route to continue patching. |
 | active_inference_mainline_activation | EgoCore + OpenEmotion | `closed_evidence__dashboard_stage1_3_frozen` | `E3` | `V3` | `True` | `True` | This workstream is now frozen predecessor evidence, not the active frontier. It preserves the dashboard-only / single-entry Stage 1-3 bounded closeout for the earlier active-inference tranche, including the deterministic `12-case / 3-family` Stage 3 stance-integrity pass, but it no longer owns repo-priority implementation. Its retained evidence is useful as closed historical proof and comparative context only; it does not authorize new runtime work, cross-entry proof, runtime efficacy, or consciousness claims. |
 | repo_cleanup_route_convergence | EgoCore | `supporting_active` | `E2` | `V2` | `False` | `True` | Supporting repo-governance lane that keeps the single default route legible. It now maintains a frozen archive closeout (`single archive index + first admitted medium migration`), authority-first onboarding order, the tracked-vs-operational-exhaust hygiene policy, the dashboard_v1 artifact manifest, and the Stage 1 comparative audit without changing runtime ownership or inflating the current claim ceiling. Generated route/hygiene views now refresh from the default program-state generation path, and fast verify includes a dedicated route-convergence drift gate. New archive moves are not default work and require explicit authorization or decisive caller proof. |
-| wp17_bounded_continuity_lane | EgoCore + OpenEmotion | `parked` | `E1` | `V1` | `False` | `True` | WP17/MVP22 remains an authority-frozen bounded continuity lane with task-package readiness, but it is parked behind `ego_handmade_first_transition` and is not the default highest-priority implementation track. |
+| wp17_bounded_continuity_lane | EgoCore + OpenEmotion | `parked` | `E1` | `V1` | `False` | `True` | WP17/MVP22 remains an authority-frozen bounded continuity lane with task-package readiness, but it is parked behind `ego_operator_first_transition` and is not the default highest-priority implementation track. |
 | provider_runtime_openemotion_e2e_gate | EgoCore | `pass` | `E4` | `V4` | `True` | `True` | Recent real Telegram samples prove the formal provider/runtime/OpenEmotion path can execute end-to-end. |
 | live_subject_ingress_observation | EgoCore + OpenEmotion | `partial` | `E4` | `V4` | `True` | `True` | Live Telegram currently contains subject-ingress evidence, and the proactive/background user-visible send path now has a local subject-finalize closure patch with focused verification. Fresh unified-ingress proof is now required again for Stage 1/2/3 acceptance, with entrypoint-tagged accounting so Telegram and dashboard-chat evidence do not get mixed. Dashboard chat now also has strengthened single-entry live-window evidence from three consecutive clean autonomous runs, including a mixed-source hybrid window with provenance, but current evidence remains partial and below live-benefit claims. |
 | unified_host_contract_correctness | EgoCore | `pass` | `E3` | `V3` | `True` | `True` | This tranche is now the frozen acceptance floor and predecessor to `active_inference_mainline_activation`. A bounded in-process parity runner shows that `dashboard_local` and `telegram_prepared` share the same canonical host contract under equivalent ordinary-chat, hold-for-followup, and pre-runtime direct-reply inputs while only adapter-specific transport fields differ. This proves host contract correctness below the transport layer, not fresh real Telegram behavior or runtime efficacy. |
@@ -120,6 +122,6 @@ Run a focused Ego_handmade human-operator trial on the new default path: collect
 
 ## Evidence Ledger Summary
 
-- total entries: `101`
+- total entries: `102`
 - highest entry: `mvp16_controlled_completion_current` / `E5` / `pass`
 

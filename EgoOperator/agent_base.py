@@ -58,7 +58,7 @@ except ImportError:
 try:
     from .memory_system import MemoryCompactor, MemoryContext, OperatorMemoryStore, TokenTelemetry
     from .primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
-except ImportError:  # allow `python Ego_handmade/agent_base.py`
+except ImportError:  # allow `python EgoOperator/agent_base.py`
     from memory_system import MemoryCompactor, MemoryContext, OperatorMemoryStore, TokenTelemetry
     from primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
 
@@ -111,7 +111,7 @@ def repair_mojibake(text: str) -> str:
 # -----------------------------
 # Safer default: do NOT paste real keys into committed code.
 # Use: export OPENROUTER_API_KEY="sk-or-..."
-EGO_HANDMADE_ROOT = Path(__file__).resolve().parent
+EGO_OPERATOR_ROOT = Path(__file__).resolve().parent
 
 
 def env_flag(name: str, default: bool) -> bool:
@@ -130,7 +130,7 @@ DEFAULT_OPENROUTER_BASE_URL = os.getenv(
 )
 # Optional OpenRouter headers. Leave blank if you do not need leaderboard/referrer metadata.
 DEFAULT_OPENROUTER_SITE_URL = os.getenv("OPENROUTER_SITE_URL", "")
-DEFAULT_OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME", "EGO Agent Base")
+DEFAULT_OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME", "EgoOperator")
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
 DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "4"))
@@ -145,7 +145,7 @@ DEFAULT_WRITE_ALLOWLIST = tuple(
     for item in os.getenv("AGENT_WRITE_ALLOWLIST", "").split(",")
     if item.strip()
 )
-DEFAULT_AGENT_WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(EGO_HANDMADE_ROOT))).resolve()
+DEFAULT_AGENT_WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(EGO_OPERATOR_ROOT))).resolve()
 DEFAULT_FILE_TOOL_MAX_CHARS = int(os.getenv("AGENT_FILE_TOOL_MAX_CHARS", "12000"))
 DEFAULT_GLOB_MAX_RESULTS = int(os.getenv("AGENT_GLOB_MAX_RESULTS", "200"))
 DEFAULT_GREP_MAX_MATCHES = int(os.getenv("AGENT_GREP_MAX_MATCHES", "100"))
@@ -157,7 +157,7 @@ DEFAULT_TEAM_DIR = Path(os.getenv("AGENT_TEAM_DIR", str(Path(__file__).parent / 
 DEFAULT_TEAM_MAX_TURNS = int(os.getenv("AGENT_TEAM_MAX_TURNS", "12"))
 DEFAULT_TEAM_IDLE_SLEEP_SECONDS = float(os.getenv("AGENT_TEAM_IDLE_SLEEP_SECONDS", "1.0"))
 DEFAULT_TRACE_PATH = Path(
-    os.getenv("AGENT_TRACE_PATH", str(EGO_HANDMADE_ROOT / "artifacts" / "agent_trace.jsonl"))
+    os.getenv("AGENT_TRACE_PATH", str(EGO_OPERATOR_ROOT / "artifacts" / "agent_trace.jsonl"))
 ).resolve()
 
 VALID_TEAM_MSG_TYPES = {
@@ -776,7 +776,7 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n16. read_file / glob_files / grep_files 是 workspace 内只读工具；需要查看本地文件时优先使用它们，不要假装已经读取。"
         + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。"
-        + "\n19. operator memory 是 Ego_handmade candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
+        + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
         + "\n20. write_file、run_command、web_fetch 是副作用工具；除非 runtime mode、approval lease 和 gate 同时允许，否则只能生成 proposal 或说明受限。"
         + "\n\n可派遣子代理类型：xiaohuangmen, sili_suitang, dongchang_tanshi, shangbao_dianbu, neiguan_yingzao"
         + (
@@ -3491,9 +3491,9 @@ def build_llm_from_config() -> LLMClient:
 
 
 def build_operator_memory_store(memory_dir: Optional[str | Path] = None) -> OperatorMemoryStore:
-    raw_target = Path(memory_dir) if memory_dir is not None else Path(os.getenv("AGENT_MEMORY_DIR", str(EGO_HANDMADE_ROOT / "memory")))
-    target = raw_target if raw_target.is_absolute() else EGO_HANDMADE_ROOT / raw_target
-    return OperatorMemoryStore(target, containment_root=EGO_HANDMADE_ROOT)
+    raw_target = Path(memory_dir) if memory_dir is not None else Path(os.getenv("AGENT_MEMORY_DIR", str(EGO_OPERATOR_ROOT / "memory")))
+    target = raw_target if raw_target.is_absolute() else EGO_OPERATOR_ROOT / raw_target
+    return OperatorMemoryStore(target, containment_root=EGO_OPERATOR_ROOT)
 
 
 def build_operator_memory_from_env(*, default_enabled: bool) -> Optional[OperatorMemoryStore]:
@@ -3737,7 +3737,7 @@ def build_demo_runtime(
         "remember_note",
         runtime.remember_operator_note,
         description=(
-            "把用户明确要求记住的内容写入 Ego_handmade candidate-local MEMORY.md。"
+            "把用户明确要求记住的内容写入 EgoOperator candidate-local MEMORY.md。"
             "只能在用户消息含有明确记忆意图时调用；不是 EGO repo authority。"
         ),
         input_schema={
@@ -3882,7 +3882,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
 if __name__ == "__main__":
     runtime = build_demo_runtime(enable_operator_memory=env_flag("AGENT_MEMORY", True))
 
-    print("Agent demo. Type 'exit' to quit.")
+    print("EgoOperator CLI. Type 'exit' to quit.")
     print(f"LLM provider: {getattr(runtime.planner.llm, 'provider', 'unknown')} | model: {getattr(runtime.planner.llm, 'model', 'unknown')}")
     print(render_runtime_permission_status(runtime))
     while True:

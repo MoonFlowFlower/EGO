@@ -1,5 +1,7 @@
 # Current Project Logic Flow
 
+> Reader safety note (2026-05-18): This is a pre-EgoOperator historical logic-flow record. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `EgoCore`, `OpenEmotion`, `Ego_handmade`, or `subject_system_v1_governed_proactivity` wording here as the current default route.
+
 更新时间：`2026-04-09`
 
 本文件描述 **当前正式项目逻辑流程**，用于回答三个问题：

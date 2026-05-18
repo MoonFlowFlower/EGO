@@ -53,16 +53,22 @@ class HygieneRule:
 
 
 TASK_OVERRIDES: dict[str, dict[str, Any]] = {
-    "ego-mainline-demotion-v1": {
+    "ego-operator-rename-docs-safety-v1": {
         "lane": "active_default",
-        "label": "Ego Handmade First Transition",
-        "why": "Current default operator-first implementation lane and repo transition owner after legacy demotion.",
-        "workstream_id": "ego_handmade_first_transition",
+        "label": "EgoOperator Rename + Docs Safety v1",
+        "why": "Current EgoOperator naming and reader-safety transition owner; records the active operator-first route name and current-doc cross-links.",
+        "workstream_id": "ego_operator_first_transition",
+    },
+    "ego-mainline-demotion-v1": {
+        "lane": "closed_evidence",
+        "label": "Ego Mainline Demotion v1",
+        "why": "Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence.",
+        "workstream_id": "ego_operator_first_transition",
     },
     "subject-system-v1-governed-proactivity": {
         "lane": "closed_evidence",
         "label": "Subject System v1 Governed Proactivity",
-        "why": "Legacy pre-handmade governed-proactivity evidence; preserved for reference and fallback, not the active default route.",
+        "why": "Legacy pre-EgoOperator governed-proactivity evidence; preserved for reference and fallback, not the active default route.",
         "workstream_id": "subject_system_v1_governed_proactivity",
     },
     "active-inference-mainline-activation": {
@@ -266,7 +272,7 @@ HYGIENE_RULES = (
 SURFACE_MAP_ROWS = (
     {
         "surface": "operator_runtime",
-        "paths": ("Ego_handmade/",),
+        "paths": ("EgoOperator/",),
         "role": "Current default operator-first runtime candidate: natural language understanding, approvals, memory, trace, and human trial gates.",
         "authority": "Default implementation surface for new operator experience work; claims remain local/candidate unless human-observable gates pass.",
     },
@@ -277,7 +283,7 @@ SURFACE_MAP_ROWS = (
             "legacy/ego-pre-handmade-mainline/OpenEmotion/",
             "legacy/ego-pre-handmade-mainline/ego_desktop_lab/",
         ),
-        "role": "Pre-handmade runtime, subject kernel, and lab harness retained as reference/fallback/algorithm sources.",
+        "role": "Pre-EgoOperator runtime, subject kernel, and lab harness retained as reference/fallback/algorithm sources.",
         "authority": "Not the default implementation lane; do not re-promote without a new Stage Card and evidence gate.",
     },
     {
@@ -515,7 +521,7 @@ def render_repo_surface_map() -> str:
             "",
             "## Rules",
             "",
-            "- `Ego_handmade/` is the default operator-first implementation surface.",
+            "- `EgoOperator/` is the default operator-first implementation surface.",
             "- `legacy/ego-pre-handmade-mainline/ego_desktop_lab/` is a reference harness, not a second runtime authority.",
             "- Legacy Shell / Telegram paths are reference/fallback only unless a future task explicitly restores them.",
             "- Closed evidence and archive/reference surfaces remain findable but do not compete with the active default lane.",

@@ -61,7 +61,7 @@ def test_real_provider_observations_can_reach_candidate_pass():
     assert report.known_scenario_coverage == len(trial.human_trial_scenarios())
     assert report.invalid_observation_count == 0
     assert report.average_operator_score == 5.0
-    assert report.claim_ceiling == "Ego_handmade human operator trial local candidate report"
+    assert report.claim_ceiling == "EgoOperator human operator trial local candidate report"
 
 
 def test_no_llm_observations_remain_smoke_only():

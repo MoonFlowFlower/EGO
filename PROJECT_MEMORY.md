@@ -1,5 +1,7 @@
 # PROJECT_MEMORY.md
 
+> Reader safety note (2026-05-18): This is a pre-EgoOperator historical/background memory file. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `EgoCore`, `OpenEmotion`, `Ego_handmade`, or `subject_system_v1_governed_proactivity` wording here as the current default route.
+
 > AIProject 核心记忆 - Claude Code 持续更新
 > 最后更新: 2026-04-11
 

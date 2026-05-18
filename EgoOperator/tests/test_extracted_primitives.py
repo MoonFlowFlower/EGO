@@ -140,6 +140,6 @@ def test_runtime_gate_contract_keeps_demotion_and_live_claims_forbidden():
 
     assert contract["tool_side_effects_default"] == "off"
     assert contract["memory_write_gate"] == "/remember plus remember_note with explicit operator intent"
-    assert contract["claim_ceiling"] == "Ego_handmade replacement candidate with extracted primitives"
+    assert contract["claim_ceiling"] == "EgoOperator replacement candidate with extracted primitives"
     assert "EgoCore or OpenEmotion demotion" in contract["forbidden_claims"]
     assert "live autonomy" in contract["forbidden_claims"]

@@ -20,14 +20,14 @@
 | `active_default` | 1 |
 | `supporting_active` | 5 |
 | `parked` | 1 |
-| `closed_evidence` | 15 |
+| `closed_evidence` | 16 |
 | `reference_only` | 55 |
 
 ## Active Default
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| Ego Handmade First Transition | `codex_task` | `ego_handmade_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Current default operator-first implementation lane and repo transition owner after legacy demotion. Current workstream status: `legacy_demotion_recorded__operator_first_default__human_observation_pending`. |
+| EgoOperator Rename + Docs Safety v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-operator-rename-docs-safety-v1/` | Current EgoOperator naming and reader-safety transition owner; records the active operator-first route name and current-doc cross-links. Current workstream status: `naming_docs_safety_recorded__operator_first_default__human_observation_pending`. |
 
 ## Supporting Active
 
@@ -51,6 +51,7 @@
 |---|---|---|---|---|
 | Active-Inference Mainline Activation | `codex_task` | `active_inference_mainline_activation` | `docs/codex/tasks/active-inference-mainline-activation/` | Frozen dashboard-only bounded predecessor tranche; preserve as closed evidence, not the active default route. Current workstream status: `closed_evidence__dashboard_stage1_3_frozen`. |
 | AI Self-Awareness Minimal Framework | `codex_task` | `ai_self_awareness_research` | `docs/codex/tasks/ai-self-awareness-minimal-framework/` | Selection closeout and MVS demotion authority live here; this is closed research evidence, not the current runtime owner. Current workstream status: `selection_closed_handoff`. |
+| Ego Mainline Demotion v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence. Current workstream status: `naming_docs_safety_recorded__operator_first_default__human_observation_pending`. |
 | MVS-Aligned Compact Closed Evidence | `authority_refs` | n/a | `docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md`<br>`docs/codex/tasks/ai-self-awareness-minimal-framework/MVS_ALIGNED_COMPACT_PROTOTYPE_DESIGN.md` | Closed evidence only; selection closeout keeps it out of the default implementation track. |
 | Repo Authority Cleanup | `codex_task` | `repo_authority_cleanup` | `docs/codex/tasks/repo-authority-cleanup/` | Repo/integration boundary cleanup is closed out and no longer competes for current execution ownership. Current workstream status: `closeout-complete`. |
 | Runtime Proximal Basic Standard Admission Planning | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-basic-standard-admission-planning/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
@@ -63,7 +64,7 @@
 | Runtime Proximal Post Stronger Selection Coherence Runner Implementation | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-post-stronger-selection-coherence-runner-implementation/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Stronger Admission Planning | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-stronger-admission-planning/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Stronger Admission Runner Implementation | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-stronger-admission-runner-implementation/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
-| Subject System v1 Governed Proactivity | `codex_task` | `subject_system_v1_governed_proactivity` | `docs/codex/tasks/subject-system-v1-governed-proactivity/` | Legacy pre-handmade governed-proactivity evidence; preserved for reference and fallback, not the active default route. Current workstream status: `legacy_reference__pre_handmade_evidence_preserved`. |
+| Subject System v1 Governed Proactivity | `codex_task` | `subject_system_v1_governed_proactivity` | `docs/codex/tasks/subject-system-v1-governed-proactivity/` | Legacy pre-EgoOperator governed-proactivity evidence; preserved for reference and fallback, not the active default route. Current workstream status: `legacy_reference__pre_ego_operator_evidence_preserved`. |
 
 ## Reference Only
 

@@ -31,8 +31,8 @@ REQUIRED_README_REFS = (
 )
 
 REQUIRED_QUICKSTART_REFS = (
-    "ego_handmade_first_transition",
-    "Ego_handmade/agent_base.py",
+    "ego_operator_first_transition",
+    "EgoOperator/agent_base.py",
     "legacy/ego-pre-handmade-mainline/EgoCore",
     "legacy/ego-pre-handmade-mainline/OpenEmotion",
     "legacy/ego-pre-handmade-mainline/ego_desktop_lab",
@@ -64,6 +64,10 @@ CLEANUP_STAGE_PREFIXES = (
     "docs/codex/tasks/repo-mainline-clarity-v1/",
     "scripts/codex/audit_worktree_noise.py",
     "scripts/codex/verify_mainline_clarity.py",
+)
+
+READER_SAFETY_STAGE_PREFIXES = (
+    "docs/codex/tasks/ego-operator-rename-docs-safety-v1/",
 )
 
 FORBIDDEN_CLEANUP_STAGE_PATHS = (
@@ -125,7 +129,11 @@ def _is_legacy_migration_addition(path: str, deleted_paths: set[str]) -> bool:
 def _check_staged_operational_exhaust(errors: list[str]) -> None:
     staged_paths = _git_lines(["diff", "--cached", "--name-only"])
     deleted_paths = set(_git_lines(["diff", "--cached", "--name-only", "--no-renames", "--diff-filter=D"]))
-    cleanup_stage_active = any(
+    reader_safety_stage_active = any(
+        any(_matches_prefix(path, prefix) for prefix in READER_SAFETY_STAGE_PREFIXES)
+        for path in staged_paths
+    )
+    cleanup_stage_active = not reader_safety_stage_active and any(
         any(_matches_prefix(path, prefix) for prefix in CLEANUP_STAGE_PREFIXES)
         for path in staged_paths
     )
@@ -246,8 +254,8 @@ def main() -> int:
     active = [entry for entry in entries if entry.lane == "active_default"]
     if len(active) != 1:
         errors.append(f"expected exactly one active_default lane, found {len(active)}")
-    elif active[0].key != "ego-mainline-demotion-v1":
-        errors.append("active_default lane must stay `ego-mainline-demotion-v1` during Ego_handmade-first transition")
+    elif active[0].key != "ego-operator-rename-docs-safety-v1":
+        errors.append("active_default lane must stay `ego-operator-rename-docs-safety-v1` during EgoOperator naming/docs safety transition")
 
     _check_text_contains(README_PATH, REQUIRED_README_REFS, errors)
     _check_text_contains(QUICKSTART_PATH, REQUIRED_QUICKSTART_REFS, errors)

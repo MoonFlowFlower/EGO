@@ -12,7 +12,7 @@ import real_use_gate
 
 
 def _prepare_tmp_gate_root(tmp_path, monkeypatch):
-    monkeypatch.setattr(real_use_gate.agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(real_use_gate.agent, "EGO_OPERATOR_ROOT", tmp_path)
     monkeypatch.setattr(real_use_gate.agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
     (tmp_path / ".gitignore").write_text("artifacts/real_use_gate/\nmemory/*.jsonl\n", encoding="utf-8")
     return tmp_path / "real_use"
@@ -23,9 +23,9 @@ def test_real_use_gate_runs_practical_scenarios(tmp_path, monkeypatch):
 
     report = real_use_gate.run_real_use_gate(out_dir)
 
-    assert report.schema_version == "ego_handmade.real_use_memory_gate.v1"
+    assert report.schema_version == "ego_operator.real_use_memory_gate.v1"
     assert report.status == "local_candidate_pass"
-    assert report.claim_ceiling == "Ego_handmade real-use memory gate local candidate pass"
+    assert report.claim_ceiling == "EgoOperator real-use memory gate local candidate pass"
     assert report.scenario_count >= 10
     assert all(obs.score == 5 for obs in report.observations)
     assert not any(obs.memory_misuse for obs in report.observations)
@@ -58,6 +58,6 @@ def test_real_use_gate_writes_json_and_markdown_reports(tmp_path, monkeypatch):
     markdown = markdown_path.read_text(encoding="utf-8")
     assert payload["schema_version"] == report.schema_version
     assert payload["status"] == "local_candidate_pass"
-    assert "Ego_handmade Real Use Memory Gate v1" in markdown
+    assert "EgoOperator Real Use Memory Gate v1" in markdown
     assert "memory_misuse" in markdown
     assert "ä½" not in markdown

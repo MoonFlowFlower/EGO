@@ -1,5 +1,7 @@
 # Codex 闭环自审开发流
 
+> Reader safety note (2026-05-18): This workflow predates the EgoOperator rename and may mention older repo routes. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; treat this file as process guidance, not current mainline ownership.
+
 > 适用范围：EGO 总仓内由 Codex/Claude Code 一类开发助手执行的正式工程改动
 > 默认档位：高强度自检
 

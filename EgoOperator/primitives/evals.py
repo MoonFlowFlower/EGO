@@ -1,5 +1,5 @@
 """
-Evaluation primitives for Ego_handmade.
+Evaluation primitives for EgoOperator.
 
 These are harness-level checks, not runtime routers. They describe expected
 operator behavior for paraphrases and verify that subject context preserves the
@@ -13,7 +13,7 @@ from typing import Iterable, List, Optional
 
 try:
     from .subject_context import build_minimal_subject_context
-except ImportError:  # allow direct execution from Ego_handmade/
+except ImportError:  # allow direct execution from EgoOperator/
     from subject_context import build_minimal_subject_context
 
 

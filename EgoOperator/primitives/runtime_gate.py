@@ -1,5 +1,5 @@
 """
-Runtime-gate primitive contracts for Ego_handmade.
+Runtime-gate primitive contracts for EgoOperator.
 
 This module captures the reusable gate boundary from the old systems as a
 small local contract. It does not execute tools and does not import old runtime
@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass
 from typing import Dict, Tuple
 
 
-CLAIM_CEILING = "Ego_handmade replacement candidate with extracted primitives"
+CLAIM_CEILING = "EgoOperator replacement candidate with extracted primitives"
 
 
 @dataclass(frozen=True)
@@ -22,7 +22,7 @@ class RuntimeGateContract:
     network_default: str = "off"
     file_write_default: str = "off"
     command_default: str = "off"
-    trace_scope: str = "Ego_handmade/artifacts/"
+    trace_scope: str = "EgoOperator/artifacts/"
     claim_ceiling: str = CLAIM_CEILING
     forbidden_claims: Tuple[str, ...] = (
         "EGO mainline replacement",

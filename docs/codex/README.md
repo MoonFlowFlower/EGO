@@ -1,5 +1,7 @@
 # Codex Long-Run Harness
 
+> Reader safety note (2026-05-18): This docs workspace contains pre-EgoOperator task history as well as current task records. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not infer the active default lane from older task names or examples.
+
 这套 harness 用于在当前仓库里把复杂任务收成一个可持续推进的闭环：
 
 ```text

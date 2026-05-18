@@ -1,5 +1,7 @@
 # Repo Mainline Clarity Return Gate Review
 
+> Reader safety note (2026-05-18): This is pre-EgoOperator supporting task history. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; the `subject_system_v1_governed_proactivity` mainline claim below is historical.
+
 ## Verdict
 
 The repo has one clear mainline, but the worktree is not clean enough to treat cleanup as the next default action.

@@ -1,7 +1,7 @@
 """
-Candidate-local operator comparison harness for Ego_handmade.
+Candidate-local operator comparison harness for EgoOperator.
 
-This harness evaluates Ego_handmade with deterministic fake LLM behavior and
+This harness evaluates EgoOperator with deterministic fake LLM behavior and
 records old systems as reference baselines only. It does not execute or mutate
 EgoCore, OpenEmotion, or ego_desktop_lab.
 """
@@ -17,13 +17,13 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 try:
     from . import agent_base as agent
     from .primitives import evals
-except ImportError:  # allow `python Ego_handmade/operator_comparison.py`
+except ImportError:  # allow `python EgoOperator/operator_comparison.py`
     import agent_base as agent
     from primitives import evals
 
 
-CLAIM_CEILING = "Ego_handmade operator comparison local candidate pass"
-REPORT_SCHEMA = "ego_handmade.operator_comparison.v1"
+CLAIM_CEILING = "EgoOperator operator comparison local candidate pass"
+REPORT_SCHEMA = "ego_operator.operator_comparison.v1"
 DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parent / "artifacts" / "comparison" / "latest"
 TEMPLATE_FALLBACK_MARKERS = (
     "I can help with that. I will stay within the current safety and evidence boundaries.",
@@ -338,7 +338,7 @@ def write_comparison_report(report: ComparisonReport, output_dir: Path = DEFAULT
 def format_comparison_markdown(report: ComparisonReport) -> str:
     data = report.to_dict()
     lines = [
-        "# Ego_handmade Operator Comparison v1",
+        "# EgoOperator Operator Comparison v1",
         "",
         f"status = `{data['status']}`",
         f"claim_ceiling = `{data['claim_ceiling']}`",
@@ -490,7 +490,7 @@ def _jsonable(value: Any) -> Any:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Run Ego_handmade operator comparison v1.")
+    parser = argparse.ArgumentParser(description="Run EgoOperator operator comparison v1.")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT_DIR, help="Output directory for JSON/Markdown report.")
     args = parser.parse_args(argv)
 

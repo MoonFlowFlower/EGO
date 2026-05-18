@@ -129,7 +129,7 @@ def test_write_file_opt_in_now_uses_transaction_proposal_by_default(tmp_path, mo
 
 
 def test_remember_note_tool_visible_only_when_operator_memory_enabled(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
 
     disabled = agent.build_demo_runtime(enable_operator_memory=False)
     enabled = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
@@ -140,7 +140,7 @@ def test_remember_note_tool_visible_only_when_operator_memory_enabled(tmp_path, 
 
 
 def test_remember_note_requires_explicit_user_intent_and_writes_core(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     runtime.planner.llm = ToolThenFinalLLM("remember_note", {"text": "用户偏好：中文、结论先行"})
@@ -157,7 +157,7 @@ def test_remember_note_requires_explicit_user_intent_and_writes_core(tmp_path, m
 
 
 def test_remember_note_without_explicit_intent_is_blocked_and_core_unchanged(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     runtime.planner.llm = ToolThenFinalLLM("remember_note", {"text": "不该写入的偏好"})
@@ -172,7 +172,7 @@ def test_remember_note_without_explicit_intent_is_blocked_and_core_unchanged(tmp
 
 
 def test_remember_question_is_not_treated_as_memory_write_intent(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     runtime.planner.llm = ToolThenFinalLLM("remember_note", {"text": "不该写入"})
@@ -185,7 +185,7 @@ def test_remember_question_is_not_treated_as_memory_write_intent(tmp_path, monke
 
 
 def test_slash_remember_path_still_writes_core_memory(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
 
     result = runtime.remember_operator_note("手动记忆：不要提升 claim ceiling")
@@ -195,7 +195,7 @@ def test_slash_remember_path_still_writes_core_memory(tmp_path, monkeypatch):
 
 
 def test_normal_chat_writes_history_but_does_not_create_core_memory(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     runtime.planner.llm = CaptureToolsLLM()
@@ -210,7 +210,7 @@ def test_normal_chat_writes_history_but_does_not_create_core_memory(tmp_path, mo
 
 
 def test_runtime_permission_status_reports_memory_and_tool_gates(tmp_path, monkeypatch):
-    monkeypatch.setattr(agent, "EGO_HANDMADE_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     monkeypatch.setattr(agent, "DEFAULT_ENABLE_WRITE_FILE", False)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
 

@@ -1,5 +1,5 @@
 """
-Readonly subject-context primitive for Ego_handmade.
+Readonly subject-context primitive for EgoOperator.
 
 The purpose is to preserve the useful subject-system idea of self/appraisal/
 reflection context without importing the old runtime architecture or turning
@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 
 
 DEFAULT_CONTEXT_MAX_CHARS = 1200
-SUBJECT_CONTEXT_SCHEMA = "ego_handmade.subject_context.v1"
+SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
 CLAIM_CEILING = "candidate-local subject context only"
 
 
@@ -27,13 +27,13 @@ def _bounded(text: str, max_chars: int = DEFAULT_CONTEXT_MAX_CHARS) -> str:
 @dataclass(frozen=True)
 class SubjectContextSnapshot:
     schema_version: str = SUBJECT_CONTEXT_SCHEMA
-    source: str = "ego_handmade.primitives.subject_context"
+    source: str = "ego_operator.primitives.subject_context"
     readonly: bool = True
     authority: str = "proposal/context only; not repo authority"
     claim_ceiling: str = CLAIM_CEILING
     raw_user_text: str = ""
     self_model_summary: str = (
-        "Ego_handmade is an operator-first candidate runtime: the LLM reads the "
+        "EgoOperator is an operator-first candidate runtime: the LLM reads the "
         "user text first, proposes a response or tool plan, and outer gates "
         "admit side effects."
     )
@@ -61,7 +61,7 @@ class SubjectContextSnapshot:
     def render_for_prompt(self) -> str:
         parts = [
             "[Subject Context Candidate]",
-            "Scope: Ego_handmade candidate-local readonly subject context.",
+            "Scope: EgoOperator candidate-local readonly subject context.",
             "Authority: proposal/context only; not EGO repo authority, not OpenEmotion memory, not evidence ledger.",
             "Runtime rule: user text -> LLM understanding -> candidate response/plan -> gate.",
             f"Claim ceiling: {self.claim_ceiling}.",

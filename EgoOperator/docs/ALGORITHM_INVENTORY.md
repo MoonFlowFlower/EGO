@@ -1,8 +1,8 @@
-# Ego_handmade Algorithm Inventory
+# EgoOperator Algorithm Inventory
 
 Status: `replacement candidate / operator cut`
 
-Claim ceiling: `Ego_handmade replacement candidate with extracted primitives`.
+Claim ceiling: `EgoOperator replacement candidate with extracted primitives`.
 
 This inventory records what is worth extracting from `EgoCore`, `OpenEmotion`,
 and `ego_desktop_lab` without importing their runtime architecture. The
@@ -41,7 +41,7 @@ No item below authorizes demoting, archiving, or modifying the old projects.
 
 - Transport ideas such as Telegram/CLI profiles, but only after the operator
   candidate passes local gates.
-- Trace/replay formatting can be simplified into Ego_handmade-local JSONL.
+- Trace/replay formatting can be simplified into EgoOperator-local JSONL.
 - Team/subagent dispatch can remain isolated worker reports, not shared state.
 
 ### Discard
@@ -98,7 +98,7 @@ No item below authorizes demoting, archiving, or modifying the old projects.
 
 ### Rewrite
 
-- Eval harnesses become local primitive tests under `Ego_handmade/tests/`.
+- Eval harnesses become local primitive tests under `EgoOperator/tests/`.
 - Lab reports should compare candidate behavior; they must not become runtime
   routing tables.
 
@@ -121,6 +121,6 @@ No item below authorizes demoting, archiving, or modifying the old projects.
 ## Next Gate
 
 Run the 20-case Dark Souls paraphrase gate and the five-scenario operator
-comparison. Only if `Ego_handmade` stays better on experience, explainability,
+comparison. Only if `EgoOperator` stays better on experience, explainability,
 side-effect control, and trace readability should a separate
 `ego-mainline-demotion-v1` task be opened.

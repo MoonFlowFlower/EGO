@@ -15,7 +15,7 @@ def test_comparison_runs_paraphrase_gate_and_five_scenarios(tmp_path):
     report = comparison.run_comparison(tmp_path / "comparison")
 
     assert report.status == "local_candidate_pass_reference_baseline_unavailable"
-    assert report.claim_ceiling == "Ego_handmade operator comparison local candidate pass"
+    assert report.claim_ceiling == "EgoOperator operator comparison local candidate pass"
     assert report.paraphrase_gate["status"] == "pass"
     assert report.paraphrase_gate["case_count"] == 20
     assert len(report.scenarios) == 5
@@ -29,10 +29,10 @@ def test_comparison_writes_json_and_markdown_reports(tmp_path):
 
     payload = json.loads(json_path.read_text(encoding="utf-8"))
     markdown = markdown_path.read_text(encoding="utf-8")
-    assert payload["schema_version"] == "ego_handmade.operator_comparison.v1"
+    assert payload["schema_version"] == "ego_operator.operator_comparison.v1"
     assert payload["status"] == report.status
     assert "黑暗之魂" in payload["scenarios"][0]["reply_text"]
-    assert "Ego_handmade Operator Comparison v1" in markdown
+    assert "EgoOperator Operator Comparison v1" in markdown
     assert "Baseline References" in markdown
     assert "ä½" not in markdown
 

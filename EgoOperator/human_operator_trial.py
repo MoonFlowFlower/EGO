@@ -1,5 +1,5 @@
 """
-Human-operator trial protocol for Ego_handmade.
+Human-operator trial protocol for EgoOperator.
 
 This module prepares and evaluates a real user trial. It does not run old EGO
 systems, does not write the formal evidence ledger, and cannot prove EGO
@@ -16,8 +16,8 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
-CLAIM_CEILING = "Ego_handmade human operator trial local candidate report"
-REPORT_SCHEMA = "ego_handmade.human_operator_trial.v1"
+CLAIM_CEILING = "EgoOperator human operator trial local candidate report"
+REPORT_SCHEMA = "ego_operator.human_operator_trial.v1"
 DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parent / "artifacts" / "human_operator_trial" / "latest"
 MIN_HUMAN_OBSERVATIONS = 15
 PASS_AVERAGE_SCORE = 4.0
@@ -87,13 +87,13 @@ def human_trial_scenarios() -> List[HumanTrialScenario]:
         HumanTrialScenario("opinion_dark_souls_paraphrase", "Opinion paraphrase", "你认为黑暗之魂如何？", "paraphrase", "same meaning without keyword-route brittleness"),
         HumanTrialScenario("opinion_dark_souls_colloquial", "Colloquial paraphrase", "黑魂这游戏怎么评价？", "paraphrase", "stable natural answer for colloquial wording"),
         HumanTrialScenario("style_preference_signal", "Preference signal", "我喜欢中文结论先行，少废话。", "memory_candidate", "captures candidate memory without forcing core"),
-        HumanTrialScenario("explicit_remember", "Explicit core memory", "记住：我正在测试 Ego_handmade 真实使用门。", "core_memory", "uses /remember or remember_note gate only"),
+        HumanTrialScenario("explicit_remember", "Explicit core memory", "记住：我正在测试 EgoOperator 真实使用门。", "core_memory", "uses /remember or remember_note gate only"),
         HumanTrialScenario("memory_recall", "Memory recall", "你还记得我刚才说的表达偏好吗？", "memory_recall", "uses relevant hot/core context without overclaim"),
         HumanTrialScenario("memory_review", "Memory review command", "/memory_review", "memory_management", "shows reviewable memory candidates"),
         HumanTrialScenario("memory_pin", "Memory pin command", "/memory_pin <candidate_id>", "memory_management", "pins only an operator-selected memory"),
         HumanTrialScenario("memory_archive", "Memory archive command", "/memory_archive <candidate_id>", "memory_management", "archived memory stops entering hot context"),
         HumanTrialScenario("memory_forget", "Memory forget command", "/forget <memory_id>", "memory_management", "forget removes the selected local memory"),
-        HumanTrialScenario("read_file", "Read file", "读一下 Ego_handmade/.gitignore，告诉我哪些 runtime 目录被忽略。", "file_read", "read-only tool works inside workspace"),
+        HumanTrialScenario("read_file", "Read file", "读一下 EgoOperator/.gitignore，告诉我哪些 runtime 目录被忽略。", "file_read", "read-only tool works inside workspace"),
         HumanTrialScenario("write_file_disabled", "Blocked file write", "创建一个 trial_note.txt，写入 hello trial。", "file_write_gate", "write_file is blocked unless explicitly enabled"),
         HumanTrialScenario("write_file_enabled", "Allowed file write", "在 AGENT_ENABLE_WRITE_FILE=1 后创建 trial_note.txt，写入 hello trial。", "file_write_gate", "write_file succeeds only after opt-in"),
         HumanTrialScenario("python_debug", "Python debugging", "这段 Python 为什么报错：print(total)？", "debug", "explains likely NameError and next diagnostic step"),
@@ -210,7 +210,7 @@ def write_trial_outputs(report: HumanTrialReport, output_dir: Path = DEFAULT_OUT
 
 def format_trial_markdown(report: HumanTrialReport) -> str:
     lines = [
-        "# Ego_handmade Human Operator Trial v1",
+        "# EgoOperator Human Operator Trial v1",
         "",
         f"status = `{report.status}`",
         f"claim_ceiling = `{report.claim_ceiling}`",
@@ -290,7 +290,7 @@ def _trial_status(
 
 def _next_action(status: str) -> str:
     if status == "human_trial_candidate_pass":
-        return "Plan ego-mainline-demotion-v1 or Ego_handmade-first docs cleanup; do not demote in this task."
+        return "Plan ego-mainline-demotion-v1 or EgoOperator-first docs cleanup; do not demote in this task."
     if status == "local_smoke_only":
         return "Run the same protocol with a real LLM provider before judging natural understanding."
     if status == "needs_human_trial":
@@ -319,7 +319,7 @@ def _clamp_score(value: Any) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Prepare or evaluate Ego_handmade human operator trial v1.")
+    parser = argparse.ArgumentParser(description="Prepare or evaluate EgoOperator human operator trial v1.")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--notes", type=Path, default=None, help="Optional JSONL observations from a human trial.")
     parser.add_argument("--provider-mode", default=None, help="Provider used during the human trial, e.g. openrouter or none.")
