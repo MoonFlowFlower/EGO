@@ -33,6 +33,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable, Deque, Dict, List, Optional, Protocol
 import fnmatch
+import glob as globlib
 import hashlib
 import json
 import os
@@ -124,6 +125,21 @@ def env_flag(name: str, default: bool) -> bool:
     return raw.strip().lower() in {"1", "true", "yes", "on"}
 
 
+WINDOWS_DRIVE_PATH_RE = re.compile(r"^([A-Za-z]):[\\/](.*)$")
+
+
+def _coerce_local_path(path: str | Path) -> Path:
+    text = str(path or ".").strip().strip('"')
+    if os.name != "nt":
+        match = WINDOWS_DRIVE_PATH_RE.match(text)
+        if match:
+            drive = match.group(1).lower()
+            tail = match.group(2).replace("\\", "/")
+            return (Path("/mnt") / drive / tail).expanduser()
+        text = text.replace("\\", "/")
+    return Path(text).expanduser()
+
+
 DEFAULT_LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openrouter")
 DEFAULT_OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")  # or paste temporarily: "<OPENROUTER_API_KEY>"
 DEFAULT_OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash")
@@ -136,7 +152,8 @@ DEFAULT_OPENROUTER_SITE_URL = os.getenv("OPENROUTER_SITE_URL", "")
 DEFAULT_OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME", "EgoOperator")
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
-DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "4"))
+DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "50"))
+DEFAULT_TOOL_LOOP_HARD_CAP = int(os.getenv("AGENT_TOOL_LOOP_HARD_CAP", "150"))
 DEFAULT_VERBOSE_TOOLS = env_flag("AGENT_VERBOSE_TOOLS", True)
 DEFAULT_VERBOSE_TODOS = env_flag("AGENT_VERBOSE_TODOS", True)
 DEFAULT_VERBOSE_SUBAGENTS = env_flag("AGENT_VERBOSE_SUBAGENTS", True)
@@ -149,7 +166,22 @@ DEFAULT_WRITE_ALLOWLIST = tuple(
     for item in os.getenv("AGENT_WRITE_ALLOWLIST", "").split(",")
     if item.strip()
 )
-DEFAULT_AGENT_WORKSPACE = Path(os.getenv("AGENT_WORKSPACE", str(EGO_OPERATOR_ROOT))).resolve()
+DEFAULT_AGENT_WORKSPACE = _coerce_local_path(os.getenv("AGENT_WORKSPACE", str(EGO_OPERATOR_ROOT))).resolve()
+DEFAULT_AGENT_ALLOWED_ROOTS = tuple(
+    dict.fromkeys(
+        [
+            DEFAULT_AGENT_WORKSPACE,
+            *(
+                _coerce_local_path(item).resolve()
+                for item in os.getenv(
+                    "AGENT_ALLOWED_ROOTS",
+                    str(EGO_OPERATOR_ROOT.parents[1] if len(EGO_OPERATOR_ROOT.parents) > 1 else DEFAULT_AGENT_WORKSPACE),
+                ).split(",")
+                if item.strip()
+            ),
+        ]
+    )
+)
 DEFAULT_FILE_TOOL_MAX_CHARS = int(os.getenv("AGENT_FILE_TOOL_MAX_CHARS", "12000"))
 DEFAULT_GLOB_MAX_RESULTS = int(os.getenv("AGENT_GLOB_MAX_RESULTS", "200"))
 DEFAULT_GREP_MAX_MATCHES = int(os.getenv("AGENT_GREP_MAX_MATCHES", "100"))
@@ -939,23 +971,87 @@ class TodoList:
 
 
 
+def _iter_allowed_roots() -> List[Path]:
+    roots: List[Path] = []
+    for root in (DEFAULT_AGENT_WORKSPACE, *DEFAULT_AGENT_ALLOWED_ROOTS):
+        try:
+            resolved = _coerce_local_path(root).resolve()
+        except Exception:
+            continue
+        if resolved not in roots:
+            roots.append(resolved)
+    return roots
+
+
+def _matching_allowed_root(path: Path) -> Optional[Path]:
+    for root in _iter_allowed_roots():
+        try:
+            path.relative_to(root)
+            return root
+        except ValueError:
+            continue
+    return None
+
+
+def _path_within_workspace(path: Path) -> bool:
+    try:
+        path.relative_to(DEFAULT_AGENT_WORKSPACE)
+        return True
+    except ValueError:
+        return False
+
+
+def _format_local_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(DEFAULT_AGENT_WORKSPACE).as_posix()
+    except ValueError:
+        return str(path.resolve())
+
+
+def _operation_path_key(path: str | Path) -> str:
+    return _format_local_path(_resolve_workspace_path(str(path)))
+
+
 def _resolve_workspace_path(path: str) -> Path:
     """
-    Resolve a user-supplied path under DEFAULT_AGENT_WORKSPACE.
+    Resolve a user-supplied path under DEFAULT_AGENT_WORKSPACE or an allowed root.
 
-    Absolute paths are allowed only if they are already inside the workspace.
-    This prevents a subagent from casually reading/writing arbitrary system files.
+    Absolute paths are allowed only if they stay inside the workspace or
+    AGENT_ALLOWED_ROOTS. This keeps file operations local while allowing the
+    operator to work across the current MyProject tree.
     """
-    raw = Path(str(path or ".")).expanduser()
+    raw = _coerce_local_path(path or ".")
     candidate = raw if raw.is_absolute() else DEFAULT_AGENT_WORKSPACE / raw
     resolved = candidate.resolve()
 
-    try:
-        resolved.relative_to(DEFAULT_AGENT_WORKSPACE)
-    except ValueError as exc:
-        raise ValueError(f"path outside workspace: {resolved}") from exc
+    if _matching_allowed_root(resolved) is None:
+        allowed = ", ".join(str(root) for root in _iter_allowed_roots())
+        raise ValueError(f"path outside workspace or allowed roots: {resolved}; allowed_roots=[{allowed}]")
 
     return resolved
+
+
+def _file_write_preflight_warnings(path: str, content: str) -> List[str]:
+    warnings: List[str] = []
+    text = content or ""
+    if not text.strip():
+        warnings.append("empty_content")
+
+    suffix = _coerce_local_path(path or "").suffix.lower()
+    if suffix in {".html", ".htm"}:
+        lowered = text.lower()
+        if "<!doctype" not in lowered:
+            warnings.append("html_missing_doctype")
+        if "<html" not in lowered:
+            warnings.append("html_missing_html_tag")
+        if "<head" not in lowered:
+            warnings.append("html_missing_head_tag")
+        if "<body" not in lowered:
+            warnings.append("html_missing_body_tag")
+        if text.count("<") != text.count(">"):
+            warnings.append("html_unbalanced_angle_brackets")
+
+    return warnings
 
 
 def _has_explicit_memory_write_intent(text: str) -> bool:
@@ -1020,18 +1116,29 @@ def write_file_tool(path: str, content: str, create_parents: bool = True) -> Dic
 def glob_files_tool(pattern: str, max_results: int = DEFAULT_GLOB_MAX_RESULTS) -> Dict[str, Any]:
     try:
         pattern = str(pattern or "*").strip()
-        if not pattern or ".." in Path(pattern).parts:
+        normalized_pattern_path = _coerce_local_path(pattern)
+        if not pattern or ".." in normalized_pattern_path.parts:
             return {"status": "blocked", "reason": "invalid_pattern", "pattern": pattern}
         matches = []
-        for p in DEFAULT_AGENT_WORKSPACE.glob(pattern):
-            try:
-                rel = str(p.resolve().relative_to(DEFAULT_AGENT_WORKSPACE))
-            except ValueError:
+        search_pattern = (
+            str(normalized_pattern_path)
+            if normalized_pattern_path.is_absolute()
+            else str(DEFAULT_AGENT_WORKSPACE / normalized_pattern_path)
+        )
+        for raw_match in globlib.glob(search_pattern, recursive=True):
+            p = Path(raw_match).resolve()
+            if _matching_allowed_root(p) is None:
                 continue
-            matches.append(rel + ("/" if p.is_dir() else ""))
+            matches.append(_format_local_path(p) + ("/" if p.is_dir() else ""))
             if len(matches) >= max_results:
                 break
-        return {"status": "ok", "workspace": str(DEFAULT_AGENT_WORKSPACE), "matches": sorted(matches), "truncated": len(matches) >= max_results}
+        return {
+            "status": "ok",
+            "workspace": str(DEFAULT_AGENT_WORKSPACE),
+            "allowed_roots": [str(root) for root in _iter_allowed_roots()],
+            "matches": sorted(matches),
+            "truncated": len(matches) >= max_results,
+        }
     except Exception as exc:
         return {"status": "failed", "error": repr(exc), "pattern": pattern}
 
@@ -1057,7 +1164,7 @@ def grep_files_tool(
                 for lineno, line in enumerate(file_path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1):
                     if regex.search(line):
                         matches.append({
-                            "path": str(file_path.resolve().relative_to(DEFAULT_AGENT_WORKSPACE)),
+                            "path": _format_local_path(file_path),
                             "line": lineno,
                             "text": line[:500],
                         })
@@ -2137,7 +2244,7 @@ def _content_hash(content: str) -> str:
 
 
 def _workspace_relative_posix(path: str) -> str:
-    return _resolve_workspace_path(path).relative_to(DEFAULT_AGENT_WORKSPACE).as_posix()
+    return _operation_path_key(path)
 
 
 def _web_fetch_payload(url: str, extract_mode: str, max_chars: int) -> str:
@@ -2184,6 +2291,7 @@ class OperationProposal:
     decision_reason: str = ""
     lease_id: Optional[str] = None
     execution_result: Optional[Dict[str, Any]] = None
+    preflight_warnings: List[str] = field(default_factory=list)
 
     def preview(self, max_chars: int = 800) -> str:
         text = self.content or ""
@@ -2280,7 +2388,7 @@ class PermissionBroker:
             return {"status": "blocked", "reason": "runtime_mode_chat_blocks_operation_proposals"}
         try:
             resolved = _resolve_workspace_path(path)
-            rel_path = resolved.relative_to(DEFAULT_AGENT_WORKSPACE).as_posix()
+            rel_path = _workspace_relative_posix(path)
         except ValueError:
             return {"status": "blocked", "reason": "path_outside_workspace", "path": path}
 
@@ -2306,6 +2414,7 @@ class PermissionBroker:
             overwrite=bool(overwrite),
             reason=reason or "file write requested by operator task",
             source=source,
+            preflight_warnings=_file_write_preflight_warnings(rel_path, content or ""),
         )
         self.proposals[proposal.proposal_id] = proposal
 
@@ -2472,7 +2581,7 @@ class PermissionBroker:
         new_overwrite = proposal.overwrite if overwrite is None else bool(overwrite)
         try:
             resolved = _resolve_workspace_path(new_path)
-            rel_path = resolved.relative_to(DEFAULT_AGENT_WORKSPACE).as_posix()
+            rel_path = _workspace_relative_posix(new_path)
         except ValueError:
             return {"status": "blocked", "reason": "path_outside_workspace", "path": new_path}
         allowlist_result = self._write_allowlist_result(rel_path)
@@ -2488,6 +2597,7 @@ class PermissionBroker:
         proposal.create_parents = new_create_parents
         proposal.overwrite = new_overwrite
         proposal.reason = reason if reason is not None else proposal.reason
+        proposal.preflight_warnings = _file_write_preflight_warnings(rel_path, proposal.content)
         return {"status": "edited", "proposal": proposal.to_dict(), "action_card": self.format_action_card(proposal_id)}
 
     def execute_file_write_with_lease(
@@ -2693,7 +2803,7 @@ class PermissionBroker:
                 f"- payload_sha256: {proposal.content_hash}",
                 f"- reason: {proposal.reason}",
             ])
-        return "\n".join([
+        lines = [
             "Pending operation approval:",
             f"- id: {proposal.proposal_id}",
             f"- action: {proposal.action}",
@@ -2701,9 +2811,14 @@ class PermissionBroker:
             f"- overwrite: {proposal.overwrite}",
             f"- content_sha256: {proposal.content_hash}",
             f"- reason: {proposal.reason}",
+        ]
+        if proposal.preflight_warnings:
+            lines.append(f"- preflight_warnings: {', '.join(proposal.preflight_warnings)}")
+        lines.extend([
             "- preview:",
             proposal.preview(),
         ])
+        return "\n".join(lines)
 
     def _write_allowlist_result(self, rel_path: str) -> Optional[Dict[str, Any]]:
         if not self.write_allowlist:
@@ -3973,7 +4088,21 @@ class AgentRuntime:
         final_gate = GateResult(True, "text_action_allowed")
 
         try:
-            for loop_idx in range(DEFAULT_MAX_TOOL_LOOPS):
+            soft_cap = max(1, int(DEFAULT_MAX_TOOL_LOOPS))
+            hard_cap = max(soft_cap, int(DEFAULT_TOOL_LOOP_HARD_CAP))
+            loop_idx = 0
+            while loop_idx < hard_cap:
+                if loop_idx > 0 and loop_idx % soft_cap == 0:
+                    messages.append({
+                        "role": "system",
+                        "content": (
+                            "[tool_loop_checkpoint]\n"
+                            f"You have used {loop_idx} tool-call rounds, reaching the soft budget of {soft_cap}. "
+                            "If current results are enough, stop calling tools and answer now. "
+                            f"If more work is necessary, continue with the minimum next tool calls. Hard cap is {hard_cap}."
+                        ),
+                    })
+
                 result: LLMChatResult = chat_fn(
                     messages,
                     system_prompt=self.build_runtime_system_prompt(subject_context, event.raw_text or ""),
@@ -4108,10 +4237,39 @@ class AgentRuntime:
                         "content": json.dumps(to_jsonable(tool_output), ensure_ascii=False),
                     })
 
-            content = "工具调用循环超过上限，已停止继续调用。"
-            action = AgentAction(action_type=ActionType.BLOCK, content=content, reason="tool_loop_limit")
-            gate = GateResult(False, "tool_loop_limit")
-            return action, gate, {"status": "blocked", "reason": "tool_loop_limit"}, content, tool_trace
+                pending_outputs = [
+                    entry["output"]
+                    for entry in tool_trace[-len(result.tool_calls):]
+                    if isinstance(entry.get("output"), dict)
+                    and entry["output"].get("status") == "pending_approval"
+                ]
+                if pending_outputs:
+                    content = self._format_pending_approval_reply(pending_outputs)
+                    action = AgentAction(action_type=ActionType.RESPOND, content=content, reason="pending_approval_ready")
+                    gate = self.gate.check(event, action)
+                    external_result = {
+                        "status": "pending_approval",
+                        "pending_count": len(pending_outputs),
+                        "pending": [
+                            {
+                                "proposal_id": (output.get("proposal") or {}).get("proposal_id"),
+                                "action": (output.get("proposal") or {}).get("action"),
+                                "next": output.get("next"),
+                            }
+                            for output in pending_outputs
+                        ],
+                    }
+                    return action, gate, external_result, content, tool_trace
+
+                loop_idx += 1
+
+            content = (
+                f"已达到工具循环 hard cap ({hard_cap})，已停止继续调用。\n"
+                f"当前已完成 {len(tool_trace)} 次工具调用。请根据已有结果批准、调整或重试。"
+            )
+            action = AgentAction(action_type=ActionType.BLOCK, content=content, reason="tool_loop_hard_cap")
+            gate = GateResult(False, "tool_loop_hard_cap")
+            return action, gate, {"status": "blocked", "reason": "tool_loop_hard_cap", "tool_calls": len(tool_trace)}, content, tool_trace
 
         except Exception as exc:
             self.planner.last_llm_meta = {
@@ -4122,6 +4280,29 @@ class AgentRuntime:
                 "tool_loop": True,
             }
             return None
+
+    def _format_pending_approval_reply(self, pending_outputs: List[Dict[str, Any]]) -> str:
+        cards: List[str] = []
+        approve_commands: List[str] = []
+        for output in pending_outputs:
+            action_card = str(output.get("action_card") or "").strip()
+            if action_card:
+                cards.append(action_card)
+            proposal = output.get("proposal") or {}
+            proposal_id = str(proposal.get("proposal_id") or "").strip()
+            if proposal_id:
+                approve_commands.append(f"/approve {proposal_id}")
+
+        lines = ["已生成待审批操作，当前不会继续调用工具。"]
+        if cards:
+            lines.extend(["", *cards])
+        if approve_commands:
+            lines.append("")
+            lines.append("批准执行：")
+            for command in approve_commands:
+                lines.append(f"- {command}")
+        lines.append("也可以使用 /reject <proposal_id> 拒绝；文件写入 proposal 可用 /edit_approval <proposal_id> {...} 修改。")
+        return "\n".join(lines)
 
 
 # -----------------------------
@@ -4585,6 +4766,8 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- run_command: {'trusted direct enabled' if DEFAULT_ENABLE_RUN_COMMAND and 'run_command' in runtime.gate.allowed_tools else 'disabled'}",
         f"- web_fetch: {'safe public auto enabled' if safe_auto_web_fetch_enabled() and 'web_fetch' in runtime.gate.allowed_tools else ('trusted direct enabled' if DEFAULT_ENABLE_WEB_FETCH and 'web_fetch' in runtime.gate.allowed_tools else 'transaction approval required')}",
         f"- write_allowlist: {', '.join(DEFAULT_WRITE_ALLOWLIST) if DEFAULT_WRITE_ALLOWLIST else '(workspace-contained; no extra allowlist)'}",
+        f"- allowed_roots: {', '.join(str(root) for root in _iter_allowed_roots())}",
+        f"- tool_loop_budget: soft={DEFAULT_MAX_TOOL_LOOPS} | hard={DEFAULT_TOOL_LOOP_HARD_CAP}",
         f"- pending_approvals: {runtime.permission_broker.describe()['pending_count']}",
         f"- pending_heartbeats: {runtime.list_heartbeats().get('count', 0)}",
         "- subagent_side_effects: disabled; subagents may only report proposed_action",

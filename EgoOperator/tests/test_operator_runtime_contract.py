@@ -127,6 +127,57 @@ class ApprovalAwareLLM:
         return "好了。"
 
 
+class FileApprovalAwareLLM:
+    provider = "fake"
+    model = "file-approval-aware"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self, expected_path_fragment: str) -> None:
+        self.expected_path_fragment = expected_path_fragment
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        joined = json.dumps(messages, ensure_ascii=False)
+        if self.expected_path_fragment in joined and "path_written" in joined:
+            return agent.LLMChatResult(content=f"好了，文件已创建：{self.expected_path_fragment}", tool_calls=[])
+        return agent.LLMChatResult(content="还没看到文件写入结果。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "好了。"
+
+
+class LoopingToolLLM:
+    provider = "fake"
+    model = "looping-tool"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.system_messages_seen = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        self.system_messages_seen += len([
+            message
+            for message in messages
+            if message.get("role") == "system" and "tool_loop_checkpoint" in str(message.get("content", ""))
+        ])
+        return agent.LLMChatResult(
+            content="继续调用工具。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id=f"call_time_{self.calls}",
+                    name="current_time",
+                    arguments={},
+                )
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "继续。"
+
+
 class HeartbeatProposalThenFinalLLM:
     provider = "fake"
     model = "heartbeat-proposal-then-final"
@@ -163,6 +214,7 @@ class HeartbeatProposalThenFinalLLM:
 
 def _runtime(tmp_path, monkeypatch, *, mode="approve", allowlist=(), web_policy="approval-only"):
     monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
     monkeypatch.setattr(agent, "DEFAULT_WRITE_ALLOWLIST", tuple(allowlist))
     monkeypatch.setattr(agent, "DEFAULT_ENABLE_WRITE_FILE", False)
     monkeypatch.setattr(agent, "DEFAULT_ENABLE_RUN_COMMAND", False)
@@ -194,6 +246,72 @@ def test_approve_mode_creates_pending_file_write_and_approval_executes(tmp_path,
     assert approved["status"] == "ok"
     assert (tmp_path / "test" / "test_1.html").read_text(encoding="utf-8") == "<h1>流月</h1>"
     assert approved["execution"]["content_hash"] == result["proposal"]["content_hash"]
+
+
+def test_absolute_path_under_allowed_root_can_create_pending_file_write(tmp_path, monkeypatch):
+    workspace = tmp_path / "Ego" / "EgoOperator"
+    workspace.mkdir(parents=True)
+    allowed_root = tmp_path / "MyProject"
+    target = allowed_root / "Test" / "index.html"
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+
+    proposal = runtime.propose_file_write(
+        str(target),
+        "<!doctype html><html><head><title>T</title></head><body>ok</body></html>",
+        reason="external allowed root smoke",
+    )
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+
+    assert proposal["status"] == "pending_approval"
+    assert proposal["proposal"]["path"] == str(target.resolve())
+    assert approved["status"] == "ok"
+    assert target.read_text(encoding="utf-8").startswith("<!doctype html>")
+
+
+def test_path_outside_allowed_roots_is_blocked(tmp_path, monkeypatch):
+    workspace = tmp_path / "workspace"
+    allowed_root = tmp_path / "allowed"
+    outside = tmp_path / "outside" / "blocked.html"
+    workspace.mkdir()
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+
+    blocked = runtime.propose_file_write(str(outside), "bad")
+
+    assert blocked["status"] == "blocked"
+    assert blocked["reason"] == "path_outside_workspace"
+
+
+def test_absolute_glob_under_allowed_root_returns_matches(tmp_path, monkeypatch):
+    workspace = tmp_path / "workspace"
+    allowed_root = tmp_path / "MyProject"
+    target = allowed_root / "Test" / "index.html"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8")
+    workspace.mkdir()
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+
+    result = agent.glob_files_tool(str(allowed_root / "Test" / "*.html"))
+
+    assert result["status"] == "ok"
+    assert str(target.resolve()) in result["matches"]
+
+
+def test_html_preflight_warnings_are_non_blocking(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+
+    proposal = runtime.propose_file_write("test/bad.html", "<html><head></head>")
+
+    assert proposal["status"] == "pending_approval"
+    warnings = proposal["proposal"]["preflight_warnings"]
+    assert "html_missing_doctype" in warnings
+    assert "html_missing_body_tag" in warnings
+    assert "preflight_warnings" in proposal["action_card"]
 
 
 def test_reject_keeps_file_unwritten(tmp_path, monkeypatch):
@@ -491,6 +609,59 @@ def test_llm_tool_loop_records_pending_proposal_in_trace(tmp_path, monkeypatch):
     assert tool_output["status"] == "pending_approval"
     assert tool_output["proposal"]["action"] == "write_file"
     assert trace["operator_runtime"]["permission_broker"]["pending_count"] == 1
+    assert "/approve" in result.reply_text
+    assert "工具调用循环超过上限" not in result.reply_text
+
+
+def test_pending_approval_finalizes_without_hitting_tool_loop_limit(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = ProposalThenFinalLLM()
+    monkeypatch.setattr(agent, "DEFAULT_MAX_TOOL_LOOPS", 1)
+    monkeypatch.setattr(agent, "DEFAULT_TOOL_LOOP_HARD_CAP", 3)
+
+    result = runtime.handle_user_message("帮我创建 test/test_1.html")
+
+    assert result.external_result["status"] == "pending_approval"
+    assert "/approve" in result.reply_text
+    assert "hard cap" not in result.reply_text
+    assert "工具调用循环超过上限" not in result.reply_text
+
+
+def test_approved_file_write_result_is_available_to_next_turn(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    target = tmp_path / "external" / "index.html"
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    proposal = runtime.propose_file_write(
+        str(target),
+        "<!doctype html><html><head><title>T</title></head><body>ok</body></html>",
+        reason="external file",
+    )
+
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+    runtime.planner.llm = FileApprovalAwareLLM(str(target.resolve()))
+    result = runtime.handle_user_message("好了吗")
+
+    assert approved["status"] == "ok"
+    assert target.exists()
+    assert str(target.resolve()) in runtime.memory.render()
+    assert str(target.resolve()) in result.reply_text
+
+
+def test_tool_loop_soft_checkpoint_and_hard_cap_stop_runaway_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = LoopingToolLLM()
+    runtime.planner.llm = llm
+    monkeypatch.setattr(agent, "DEFAULT_MAX_TOOL_LOOPS", 2)
+    monkeypatch.setattr(agent, "DEFAULT_TOOL_LOOP_HARD_CAP", 5)
+
+    result = runtime.handle_user_message("一直查时间")
+
+    assert result.action.reason == "tool_loop_hard_cap"
+    assert result.gate.reason == "tool_loop_hard_cap"
+    assert "hard cap (5)" in result.reply_text
+    assert result.external_result["tool_calls"] == 5
+    assert llm.calls == 5
+    assert llm.system_messages_seen >= 2
 
 
 def test_llm_tool_loop_records_pending_web_fetch_proposal_in_trace(tmp_path, monkeypatch):
