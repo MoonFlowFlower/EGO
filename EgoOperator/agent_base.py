@@ -126,6 +126,9 @@ def env_flag(name: str, default: bool) -> bool:
 
 
 WINDOWS_DRIVE_PATH_RE = re.compile(r"^([A-Za-z]):[\\/](.*)$")
+WINDOWS_ABSOLUTE_PATH_TEXT_RE = re.compile(r"([A-Za-z]:[\\/][A-Za-z0-9_. \-()\\/]+)")
+POSIX_ABSOLUTE_PATH_TEXT_RE = re.compile(r"(/mnt/[A-Za-z]/[A-Za-z0-9_. \-()/]+|/[A-Za-z0-9_. \-()/]+)")
+PATH_TEXT_TRAILING_CHARS = " \t\r\n\"'`，。；;：:、,.!?！？)]}>"
 
 
 def _coerce_local_path(path: str | Path) -> Path:
@@ -831,7 +834,7 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n14. 固定队友回禀也只是工作报告，不等于事实已验证；关键结论仍要看工具证据和主 agent 判断。"
         + "\n15. 不要编造不存在的 skill；只能从当前可用技能列表中选择。"
         + "\n16. read_file / glob_files / grep_files 是 workspace 内只读工具；需要查看本地文件时优先使用它们，不要假装已经读取。"
-        + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；不要让子代理直接写文件，也不要在未批准时声称已写入。"
+        + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
         + "\n20. write_file、run_command、web_fetch 是受控工具；安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch 生成可审批操作包。"
@@ -1052,6 +1055,128 @@ def _file_write_preflight_warnings(path: str, content: str) -> List[str]:
             warnings.append("html_unbalanced_angle_brackets")
 
     return warnings
+
+
+@dataclass(frozen=True)
+class PathIntent:
+    raw_path: str
+    resolved_path: str
+    is_directory: bool
+
+
+def _extract_local_path_intents(text: str) -> List[PathIntent]:
+    intents: List[PathIntent] = []
+    seen: set[str] = set()
+    for pattern in (WINDOWS_ABSOLUTE_PATH_TEXT_RE, POSIX_ABSOLUTE_PATH_TEXT_RE):
+        for match in pattern.finditer(text or ""):
+            raw_path = match.group(1).strip(PATH_TEXT_TRAILING_CHARS)
+            if not raw_path:
+                continue
+            try:
+                resolved = _resolve_workspace_path(raw_path)
+            except ValueError:
+                continue
+            key = str(resolved)
+            if key in seen:
+                continue
+            seen.add(key)
+            is_directory = raw_path.endswith(("\\", "/")) or resolved.is_dir() or not resolved.suffix
+            intents.append(PathIntent(raw_path=raw_path, resolved_path=key, is_directory=is_directory))
+    return intents
+
+
+def _path_is_relative_to(path: Path, root: Path) -> bool:
+    try:
+        path.relative_to(root)
+        return True
+    except ValueError:
+        return False
+
+
+def _suffix_after_anchor_name(proposed_path: Path, anchor_name: str) -> Optional[Path]:
+    if not anchor_name:
+        return None
+    parts = proposed_path.parts
+    anchor_lower = anchor_name.lower()
+    for index in range(len(parts) - 1, -1, -1):
+        if parts[index].lower() == anchor_lower and index + 1 < len(parts):
+            return Path(*parts[index + 1 :])
+    if proposed_path.name:
+        return Path(proposed_path.name)
+    return None
+
+
+def _path_intent_adjustment(user_text: str, proposed_path: str) -> tuple[str, Dict[str, Any]]:
+    intents = _extract_local_path_intents(user_text)
+    if not intents:
+        return proposed_path, {"status": "not_applicable"}
+
+    try:
+        resolved_proposed = _resolve_workspace_path(proposed_path)
+    except ValueError as exc:
+        return proposed_path, {
+            "status": "blocked",
+            "reason": "proposed_path_outside_allowed_roots",
+            "proposed_path": proposed_path,
+            "error": str(exc),
+        }
+
+    matches: List[PathIntent] = []
+    for intent in intents:
+        intended = Path(intent.resolved_path)
+        if intent.is_directory:
+            if _path_is_relative_to(resolved_proposed, intended):
+                matches.append(intent)
+        elif resolved_proposed == intended:
+            matches.append(intent)
+
+    if matches:
+        return proposed_path, {
+            "status": "matched",
+            "intended_path": matches[0].resolved_path,
+            "proposed_path": str(resolved_proposed),
+        }
+
+    if len(intents) != 1:
+        return proposed_path, {
+            "status": "blocked",
+            "reason": "path_intent_ambiguous",
+            "intended_paths": [intent.resolved_path for intent in intents],
+            "proposed_path": str(resolved_proposed),
+        }
+
+    intent = intents[0]
+    intended = Path(intent.resolved_path)
+    if intent.is_directory:
+        suffix = _suffix_after_anchor_name(resolved_proposed, intended.name)
+        if suffix is None:
+            return proposed_path, {
+                "status": "blocked",
+                "reason": "path_intent_mismatch",
+                "intended_path": intent.resolved_path,
+                "proposed_path": str(resolved_proposed),
+            }
+        corrected = (intended / suffix).resolve()
+    else:
+        corrected = intended
+
+    if _matching_allowed_root(corrected) is None:
+        return proposed_path, {
+            "status": "blocked",
+            "reason": "corrected_path_outside_allowed_roots",
+            "intended_path": intent.resolved_path,
+            "proposed_path": str(resolved_proposed),
+            "corrected_path": str(corrected),
+        }
+
+    return str(corrected), {
+        "status": "corrected",
+        "reason": "path_intent_fidelity",
+        "raw_intent_path": intent.raw_path,
+        "intended_path": intent.resolved_path,
+        "proposed_path": str(resolved_proposed),
+        "corrected_path": str(corrected),
+    }
 
 
 def _has_explicit_memory_write_intent(text: str) -> bool:
@@ -4155,15 +4280,52 @@ class AgentRuntime:
                 })
 
                 def _execute_main_tool_call(call: LLMToolCall) -> tuple[str, GateResult, Dict[str, Any], Dict[str, Any]]:
+                    effective_arguments = dict(call.arguments)
+                    path_intent: Dict[str, Any] = {"status": "not_applicable"}
+                    if call.name == "propose_file_write":
+                        corrected_path, path_intent = _path_intent_adjustment(
+                            event.raw_text or "",
+                            str(effective_arguments.get("path", "")),
+                        )
+                        if path_intent.get("status") == "corrected":
+                            effective_arguments["path"] = corrected_path
+                        elif path_intent.get("status") == "blocked":
+                            gate_result = GateResult(False, str(path_intent.get("reason", "path_intent_mismatch")))
+                            tool_output = {
+                                "status": "blocked",
+                                "reason": "path_intent_mismatch",
+                                "tool_name": call.name,
+                                "path_intent": path_intent,
+                                "do_not_claim_success": True,
+                                "user_visible_correction": (
+                                    "File write path did not match the user's explicit path intent. "
+                                    "Do not say the file was created; ask for correction or propose the exact intended path."
+                                ),
+                            }
+                            trace_entry = {
+                                "loop_idx": loop_idx,
+                                "tool_call": {
+                                    "id": call.id,
+                                    "name": call.name,
+                                    "arguments": effective_arguments,
+                                    "original_arguments": call.arguments,
+                                    "path_intent": path_intent,
+                                },
+                                "gate": gate_result,
+                                "output": tool_output,
+                            }
+                            return call.id, gate_result, tool_output, trace_entry
+
+                    effective_call = LLMToolCall(id=call.id, name=call.name, arguments=effective_arguments)
                     candidate = AgentAction(
                         action_type=ActionType.TOOL_CALL,
-                        tool_call=ToolCall(tool_name=call.name, args=call.arguments),
+                        tool_call=ToolCall(tool_name=effective_call.name, args=effective_call.arguments),
                         reason="llm_requested_tool_call",
                     )
                     gate_result = self.gate.check(event, candidate)
 
                     if DEFAULT_VERBOSE_TOOLS:
-                        print(f"[执行工具]: {call.name} {json.dumps(call.arguments, ensure_ascii=False)}")
+                        print(f"[执行工具]: {effective_call.name} {json.dumps(effective_call.arguments, ensure_ascii=False)}")
 
                     if gate_result.allowed:
                         tool_output = self.tools.execute(candidate.tool_call) if candidate.tool_call else {
@@ -4174,14 +4336,16 @@ class AgentRuntime:
                         tool_output = {
                             "status": "blocked",
                             "reason": gate_result.reason,
-                            "tool_name": call.name,
+                            "tool_name": effective_call.name,
                             "do_not_claim_success": True,
                         }
-                        if call.name == "remember_note":
+                        if effective_call.name == "remember_note":
                             tool_output["user_visible_correction"] = (
                                 "Memory was not written. Do not say it was remembered; "
                                 "tell the operator it was not saved and ask for explicit /remember or remember intent."
                             )
+                    if path_intent.get("status") == "corrected" and isinstance(tool_output, dict):
+                        tool_output["path_intent"] = path_intent
 
                     if DEFAULT_VERBOSE_TOOLS:
                         print(f"[工具输出]: {json.dumps(to_jsonable(tool_output), ensure_ascii=False)[:1200]}")
@@ -4190,12 +4354,15 @@ class AgentRuntime:
                         "loop_idx": loop_idx,
                         "tool_call": {
                             "id": call.id,
-                            "name": call.name,
-                            "arguments": call.arguments,
+                            "name": effective_call.name,
+                            "arguments": effective_call.arguments,
                         },
                         "gate": gate_result,
                         "output": tool_output,
                     }
+                    if path_intent.get("status") != "not_applicable":
+                        trace_entry["tool_call"]["original_arguments"] = call.arguments
+                        trace_entry["tool_call"]["path_intent"] = path_intent
                     return call.id, gate_result, tool_output, trace_entry
 
                 results_by_id: Dict[str, tuple[GateResult, Dict[str, Any], Dict[str, Any]]] = {}

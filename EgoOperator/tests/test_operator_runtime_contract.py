@@ -46,6 +46,40 @@ class ProposalThenFinalLLM:
         return "已生成待审批写入 proposal。"
 
 
+class WrongRelativeFileProposalLLM:
+    provider = "fake"
+    model = "wrong-relative-file-proposal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self, path: str = "../Test/index.html") -> None:
+        self.path = path
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我会先生成可审批写入 proposal。",
+                tool_calls=[
+                    agent.LLMToolCall(
+                        id="call_wrong_path",
+                        name="propose_file_write",
+                        arguments={
+                            "path": self.path,
+                            "content": "<!doctype html><html><head><title>T</title></head><body>ok</body></html>",
+                            "reason": "operator requested a simple test page",
+                            "create_parents": True,
+                        },
+                    )
+                ],
+            )
+        return agent.LLMChatResult(content="已生成待审批写入 proposal，请使用 /approve 执行。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批写入 proposal。"
+
+
 class WebProposalThenFinalLLM:
     provider = "fake"
     model = "web-proposal-then-final"
@@ -269,6 +303,51 @@ def test_absolute_path_under_allowed_root_can_create_pending_file_write(tmp_path
     assert proposal["proposal"]["path"] == str(target.resolve())
     assert approved["status"] == "ok"
     assert target.read_text(encoding="utf-8").startswith("<!doctype html>")
+
+
+def test_file_path_intent_corrects_wrong_relative_proposal(tmp_path, monkeypatch):
+    workspace = tmp_path / "MyProject" / "Ego" / "EgoOperator"
+    allowed_root = tmp_path / "MyProject"
+    intended_dir = allowed_root / "Test"
+    wrong_dir = allowed_root / "Ego" / "Test"
+    workspace.mkdir(parents=True)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    runtime.planner.llm = WrongRelativeFileProposalLLM("../Test/index.html")
+
+    result = runtime.handle_user_message(f"在{intended_dir}下创建一个测试用的简单网页")
+    proposal = runtime.list_pending_approvals()["items"][0]
+    approved = runtime.approve_pending_operation(proposal["proposal_id"])
+
+    assert result.external_result["status"] == "pending_approval"
+    assert proposal["path"] == str((intended_dir / "index.html").resolve())
+    assert proposal["resolved_path"] == str((intended_dir / "index.html").resolve())
+    assert approved["status"] == "ok"
+    assert (intended_dir / "index.html").exists()
+    assert not (wrong_dir / "index.html").exists()
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    path_intent = trace["tool_trace"][0]["tool_call"]["path_intent"]
+    assert path_intent["status"] == "corrected"
+    assert path_intent["intended_path"] == str(intended_dir.resolve())
+    assert path_intent["proposed_path"] == str((wrong_dir / "index.html").resolve())
+    assert path_intent["corrected_path"] == str((intended_dir / "index.html").resolve())
+
+
+def test_windows_path_intent_extracts_as_wsl_normalized_allowed_path(monkeypatch):
+    workspace = Path("/mnt/d/Project/AIProject/MyProject/Ego/EgoOperator")
+    allowed_root = Path("/mnt/d/Project/AIProject/MyProject")
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+
+    intents = agent._extract_local_path_intents(r"在D:\Project\AIProject\MyProject\Test下创建一个测试网页")
+
+    assert len(intents) == 1
+    assert intents[0].raw_path == r"D:\Project\AIProject\MyProject\Test"
+    assert intents[0].resolved_path == "/mnt/d/Project/AIProject/MyProject/Test"
+    assert intents[0].is_directory is True
 
 
 def test_path_outside_allowed_roots_is_blocked(tmp_path, monkeypatch):
