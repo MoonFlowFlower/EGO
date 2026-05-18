@@ -46,6 +46,41 @@ class ProposalThenFinalLLM:
         return "已生成待审批写入 proposal。"
 
 
+class WebProposalThenFinalLLM:
+    provider = "fake"
+    model = "web-proposal-then-final"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self, url: str = "https://example.com", max_chars: int = 200) -> None:
+        self.url = url
+        self.max_chars = max_chars
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我会先生成可审批联网读取 proposal。",
+                tool_calls=[
+                    agent.LLMToolCall(
+                        id="call_web_proposal",
+                        name="propose_web_fetch",
+                        arguments={
+                            "url": self.url,
+                            "extract_mode": "text",
+                            "max_chars": self.max_chars,
+                            "reason": "operator asked for fresh web data",
+                        },
+                    )
+                ],
+            )
+        return agent.LLMChatResult(content="已生成待审批联网读取 proposal，请使用 /approve 执行。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批联网读取 proposal。"
+
+
 def _runtime(tmp_path, monkeypatch, *, mode="approve", allowlist=()):
     monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
     monkeypatch.setattr(agent, "DEFAULT_WRITE_ALLOWLIST", tuple(allowlist))
@@ -55,6 +90,13 @@ def _runtime(tmp_path, monkeypatch, *, mode="approve", allowlist=()):
     runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode=mode)
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     return runtime
+
+
+def _tool_names(runtime: agent.AgentRuntime) -> set[str]:
+    return {
+        schema["function"]["name"]
+        for schema in runtime.tools.openai_tool_schemas(allowed_tool_names=runtime.gate.allowed_tools)
+    }
 
 
 def test_approve_mode_creates_pending_file_write_and_approval_executes(tmp_path, monkeypatch):
@@ -149,6 +191,84 @@ def test_subagent_side_effect_tools_are_not_exposed():
         assert "write_file" not in spec.allowed_tools
         assert "run_command" not in spec.allowed_tools
         assert "web_fetch" not in spec.allowed_tools
+        assert "propose_web_fetch" not in spec.allowed_tools
+
+
+def test_approve_mode_exposes_web_fetch_proposal_not_direct_tool(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+
+    names = _tool_names(runtime)
+
+    assert "propose_web_fetch" in names
+    assert "web_fetch" not in names
+
+
+def test_web_fetch_proposal_requires_approval_and_executes_with_lease(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    calls = []
+
+    def fake_fetch(url: str, extract_mode: str = "text", max_chars: int = agent.DEFAULT_WEB_FETCH_MAX_CHARS):
+        calls.append((url, extract_mode, max_chars))
+        return {"status": "ok", "url": url, "content": "Example Domain", "truncated": False}
+
+    monkeypatch.setattr(agent, "_web_fetch_execute", fake_fetch)
+
+    proposal = runtime.propose_web_fetch("https://example.com", max_chars=120, reason="fresh data")
+
+    assert proposal["status"] == "pending_approval"
+    assert calls == []
+
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+
+    assert approved["status"] == "ok"
+    assert approved["execution"]["content"] == "Example Domain"
+    assert calls == [("https://example.com", "text", 120)]
+    assert runtime.permission_broker.leases[approved["approval"]["lease_id"]].consumed is True
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[-1])
+    assert trace["event_type"] == "permission_decision"
+    assert trace["decision"] == "approve"
+    assert trace["proposal"]["action"] == "web_fetch"
+    assert trace["result"]["lease_id"] == approved["approval"]["lease_id"]
+    assert trace["execution"]["status"] == "ok"
+
+
+def test_web_fetch_lease_blocks_url_and_payload_mismatch(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    proposal = runtime.propose_web_fetch("https://example.com", max_chars=120)
+    approval = runtime.permission_broker.approve(proposal["proposal"]["proposal_id"])
+    lease_id = approval["lease_id"]
+
+    wrong_url = runtime.permission_broker.execute_web_fetch_with_lease(
+        lease_id,
+        url="https://example.org",
+        max_chars=120,
+    )
+    wrong_limit = runtime.permission_broker.execute_web_fetch_with_lease(
+        lease_id,
+        url="https://example.com",
+        max_chars=121,
+    )
+
+    assert wrong_url["reason"] == "lease_url_mismatch"
+    assert wrong_limit["reason"] == "lease_content_hash_mismatch"
+
+
+def test_web_fetch_proposal_blocks_unsafe_urls(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+
+    cases = {
+        "ftp://example.com": "only_http_https_allowed",
+        "http://localhost": "localhost_not_allowed",
+        "http://127.0.0.1": "private_or_reserved_host_not_allowed",
+        "http://10.0.0.1": "private_or_reserved_host_not_allowed",
+        "http://192.168.0.1": "private_or_reserved_host_not_allowed",
+        "http://[::1]": "private_or_reserved_host_not_allowed",
+    }
+
+    for url, reason in cases.items():
+        result = runtime.propose_web_fetch(url)
+        assert result["status"] == "blocked"
+        assert result["reason"] == reason
 
 
 def test_llm_tool_loop_records_pending_proposal_in_trace(tmp_path, monkeypatch):
@@ -163,4 +283,18 @@ def test_llm_tool_loop_records_pending_proposal_in_trace(tmp_path, monkeypatch):
     tool_output = trace["tool_trace"][0]["output"]
     assert tool_output["status"] == "pending_approval"
     assert tool_output["proposal"]["action"] == "write_file"
+    assert trace["operator_runtime"]["permission_broker"]["pending_count"] == 1
+
+
+def test_llm_tool_loop_records_pending_web_fetch_proposal_in_trace(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = WebProposalThenFinalLLM()
+
+    result = runtime.handle_user_message("帮我读取 https://example.com")
+
+    assert "待审批" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    tool_output = trace["tool_trace"][0]["output"]
+    assert tool_output["status"] == "pending_approval"
+    assert tool_output["proposal"]["action"] == "web_fetch"
     assert trace["operator_runtime"]["permission_broker"]["pending_count"] == 1

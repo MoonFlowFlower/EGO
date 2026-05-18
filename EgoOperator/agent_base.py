@@ -36,12 +36,15 @@ import fnmatch
 import hashlib
 import json
 import os
+import ipaddress
 import re
 import shlex
+import socket
 import subprocess
 import threading
 import sys
 import time
+import urllib.parse
 import urllib.request
 import uuid
 
@@ -777,7 +780,7 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
-        + "\n20. write_file、run_command、web_fetch 是副作用工具；除非 runtime mode、approval lease 和 gate 同时允许，否则只能生成 proposal 或说明受限。"
+        + "\n20. write_file、run_command、web_fetch 是副作用工具；需要联网读取时优先调用 propose_web_fetch 生成可审批操作包，除非 runtime mode、approval lease 和 gate 同时允许，否则只能生成 proposal 或说明受限。"
         + "\n\n可派遣子代理类型：xiaohuangmen, sili_suitang, dongchang_tanshi, shangbao_dianbu, neiguan_yingzao"
         + (
             "\n\nAgent Team 工具：spawn_teammate, list_teammates, send_message, read_inbox, broadcast, shutdown_teammate"
@@ -1060,6 +1063,132 @@ class _TextExtractor(HTMLParser):
         return re.sub(r"\n{3,}", "\n\n", "".join(self._parts)).strip()
 
 
+def _is_disallowed_web_fetch_ip(raw_ip: str) -> bool:
+    try:
+        ip = ipaddress.ip_address(raw_ip)
+    except ValueError:
+        return True
+    return (not ip.is_global) or any((
+        ip.is_loopback,
+        ip.is_private,
+        ip.is_link_local,
+        ip.is_multicast,
+        ip.is_unspecified,
+        ip.is_reserved,
+    ))
+
+
+def _resolve_web_fetch_host_ips(hostname: str, port: Optional[int]) -> List[str]:
+    infos = socket.getaddrinfo(hostname, port, type=socket.SOCK_STREAM)
+    return sorted({info[4][0] for info in infos})
+
+
+def validate_web_fetch_request(
+    url: str,
+    extract_mode: str = "text",
+    max_chars: int = DEFAULT_WEB_FETCH_MAX_CHARS,
+    *,
+    resolve_host: bool = False,
+) -> Dict[str, Any]:
+    raw_url = str(url or "").strip()
+    parsed = urllib.parse.urlparse(raw_url)
+    if parsed.scheme not in {"http", "https"}:
+        return {"status": "blocked", "reason": "only_http_https_allowed", "url": url}
+    if not parsed.netloc or not parsed.hostname:
+        return {"status": "blocked", "reason": "invalid_url", "url": url}
+    if parsed.username or parsed.password:
+        return {"status": "blocked", "reason": "url_credentials_not_allowed", "url": url}
+
+    try:
+        port = parsed.port
+    except ValueError:
+        return {"status": "blocked", "reason": "invalid_url_port", "url": url}
+
+    hostname = parsed.hostname.strip().lower()
+    if hostname == "localhost" or hostname.endswith(".localhost"):
+        return {"status": "blocked", "reason": "localhost_not_allowed", "url": url}
+
+    try:
+        literal_ip = ipaddress.ip_address(hostname)
+    except ValueError:
+        literal_ip = None
+    if literal_ip is not None and _is_disallowed_web_fetch_ip(str(literal_ip)):
+        return {"status": "blocked", "reason": "private_or_reserved_host_not_allowed", "url": url}
+
+    if resolve_host:
+        try:
+            resolved_ips = _resolve_web_fetch_host_ips(hostname, port)
+        except OSError as exc:
+            return {"status": "blocked", "reason": "host_resolution_failed", "url": url, "error": repr(exc)}
+        if not resolved_ips:
+            return {"status": "blocked", "reason": "host_resolution_empty", "url": url}
+        for resolved_ip in resolved_ips:
+            if _is_disallowed_web_fetch_ip(resolved_ip):
+                return {
+                    "status": "blocked",
+                    "reason": "private_or_reserved_resolved_host_not_allowed",
+                    "url": url,
+                    "resolved_ip": resolved_ip,
+                }
+
+    mode = str(extract_mode or "text").strip().lower()
+    if mode not in WEB_FETCH_EXTRACT_MODES:
+        return {
+            "status": "blocked",
+            "reason": "unsupported_extract_mode",
+            "extract_mode": extract_mode,
+            "valid": sorted(WEB_FETCH_EXTRACT_MODES),
+        }
+
+    try:
+        limit = int(max_chars)
+    except (TypeError, ValueError):
+        return {"status": "blocked", "reason": "invalid_max_chars", "max_chars": max_chars}
+    if limit <= 0:
+        return {"status": "blocked", "reason": "invalid_max_chars", "max_chars": max_chars}
+    limit = min(limit, DEFAULT_WEB_FETCH_MAX_CHARS)
+
+    normalized = urllib.parse.urlunparse(parsed._replace(fragment=""))
+    return {
+        "status": "ok",
+        "url": normalized,
+        "extract_mode": mode,
+        "max_chars": limit,
+        "host": hostname,
+    }
+
+
+def _web_fetch_execute(url: str, extract_mode: str = "text", max_chars: int = DEFAULT_WEB_FETCH_MAX_CHARS) -> Dict[str, Any]:
+    validation = validate_web_fetch_request(url, extract_mode, max_chars, resolve_host=True)
+    if validation.get("status") != "ok":
+        return validation
+
+    safe_url = str(validation["url"])
+    mode = str(validation["extract_mode"])
+    limit = int(validation["max_chars"])
+    byte_limit = max(1024, limit * 4)
+
+    req = urllib.request.Request(safe_url, headers={"User-Agent": "EgoOperator/1.0"})
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        raw_bytes = resp.read(byte_limit + 1)
+
+    response_truncated = len(raw_bytes) > byte_limit
+    raw = raw_bytes[:byte_limit].decode("utf-8", errors="replace")
+    if mode == "raw":
+        content = raw
+    else:
+        parser = _TextExtractor()
+        parser.feed(raw)
+        content = parser.get_text()
+    return {
+        "status": "ok",
+        "url": safe_url,
+        "extract_mode": mode,
+        "content": content[:limit],
+        "truncated": response_truncated or len(content) > limit,
+    }
+
+
 def web_fetch_tool(url: str, extract_mode: str = "text", max_chars: int = DEFAULT_WEB_FETCH_MAX_CHARS) -> Dict[str, Any]:
     if not DEFAULT_ENABLE_WEB_FETCH:
         return {
@@ -1068,19 +1197,7 @@ def web_fetch_tool(url: str, extract_mode: str = "text", max_chars: int = DEFAUL
             "hint": "Set AGENT_ENABLE_WEB_FETCH=1 to allow outbound HTTP reads.",
         }
     try:
-        if not re.match(r"^https?://", url or ""):
-            return {"status": "blocked", "reason": "only_http_https_allowed", "url": url}
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            raw = resp.read().decode("utf-8", errors="replace")
-        if extract_mode == "raw":
-            content = raw
-        else:
-            parser = _TextExtractor()
-            parser.feed(raw)
-            content = parser.get_text()
-        limit = max(0, min(max_chars, DEFAULT_WEB_FETCH_MAX_CHARS))
-        return {"status": "ok", "url": url, "content": content[:limit], "truncated": len(content) > limit}
+        return _web_fetch_execute(url, extract_mode, max_chars)
     except Exception as exc:
         return {"status": "failed", "error": repr(exc), "url": url}
 
@@ -1962,6 +2079,7 @@ class AgentAction:
 
 VALID_RUNTIME_MODES = {"chat", "plan", "approve", "trusted-workspace"}
 SIDE_EFFECT_TOOLS = {"write_file", "run_command", "web_fetch"}
+WEB_FETCH_EXTRACT_MODES = {"text", "raw"}
 
 
 def normalize_runtime_mode(mode: Optional[str]) -> str:
@@ -1975,6 +2093,18 @@ def _content_hash(content: str) -> str:
 
 def _workspace_relative_posix(path: str) -> str:
     return _resolve_workspace_path(path).relative_to(DEFAULT_AGENT_WORKSPACE).as_posix()
+
+
+def _web_fetch_payload(url: str, extract_mode: str, max_chars: int) -> str:
+    return json.dumps(
+        {
+            "url": url,
+            "extract_mode": extract_mode,
+            "max_chars": max_chars,
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    )
 
 
 @dataclass
@@ -2129,6 +2259,47 @@ class PermissionBroker:
             "next": f"Use /approve {proposal.proposal_id}, /reject {proposal.proposal_id}, or /edit_approval {proposal.proposal_id} {{...}}.",
         }
 
+    def propose_web_fetch(
+        self,
+        *,
+        url: str,
+        extract_mode: str = "text",
+        max_chars: int = DEFAULT_WEB_FETCH_MAX_CHARS,
+        reason: str = "",
+        source: str = "tool",
+    ) -> Dict[str, Any]:
+        if self.runtime_mode == "chat":
+            return {"status": "blocked", "reason": "runtime_mode_chat_blocks_operation_proposals"}
+
+        validation = validate_web_fetch_request(url, extract_mode, max_chars, resolve_host=False)
+        if validation.get("status") != "ok":
+            return validation
+
+        payload = _web_fetch_payload(
+            str(validation["url"]),
+            str(validation["extract_mode"]),
+            int(validation["max_chars"]),
+        )
+        proposal = OperationProposal(
+            proposal_id=new_id("proposal"),
+            action="web_fetch",
+            path=str(validation["url"]),
+            resolved_path=str(validation["url"]),
+            content=payload,
+            content_hash=_content_hash(payload),
+            create_parents=False,
+            overwrite=False,
+            reason=reason or "web fetch requested by operator task",
+            source=source,
+        )
+        self.proposals[proposal.proposal_id] = proposal
+        return {
+            "status": "pending_approval",
+            "proposal": proposal.to_dict(),
+            "action_card": self.format_action_card(proposal.proposal_id),
+            "next": f"Use /approve {proposal.proposal_id} or /reject {proposal.proposal_id}.",
+        }
+
     def approve(self, proposal_id: str, *, reason: str = "operator_approved") -> Dict[str, Any]:
         proposal = self.proposals.get(proposal_id)
         if proposal is None:
@@ -2256,10 +2427,92 @@ class PermissionBroker:
             proposal.execution_result = result
             return result
 
+    def execute_web_fetch_with_lease(
+        self,
+        lease_id: str,
+        *,
+        url: str,
+        extract_mode: str = "text",
+        max_chars: int = DEFAULT_WEB_FETCH_MAX_CHARS,
+    ) -> Dict[str, Any]:
+        lease = self.leases.get(lease_id)
+        if lease is None:
+            return {"status": "blocked", "reason": "unknown_lease", "lease_id": lease_id}
+        if lease.consumed:
+            return {"status": "blocked", "reason": "lease_already_consumed", "lease_id": lease_id}
+        proposal = self.proposals.get(lease.proposal_id)
+        if proposal is None:
+            return {"status": "blocked", "reason": "proposal_missing_for_lease", "lease_id": lease_id}
+        if proposal.action != "web_fetch" or lease.action != "web_fetch":
+            return {"status": "blocked", "reason": "unsupported_lease_action", "lease_id": lease_id}
+
+        validation = validate_web_fetch_request(url, extract_mode, max_chars, resolve_host=False)
+        if validation.get("status") != "ok":
+            return validation
+
+        actual_payload = _web_fetch_payload(
+            str(validation["url"]),
+            str(validation["extract_mode"]),
+            int(validation["max_chars"]),
+        )
+        actual_hash = _content_hash(actual_payload)
+        if str(validation["url"]) != lease.path:
+            return {"status": "blocked", "reason": "lease_url_mismatch", "expected": lease.path, "actual": validation["url"]}
+        if actual_hash != lease.content_hash:
+            return {
+                "status": "blocked",
+                "reason": "lease_content_hash_mismatch",
+                "expected": lease.content_hash,
+                "actual": actual_hash,
+            }
+
+        try:
+            lease.consumed = True
+            result = _web_fetch_execute(
+                str(validation["url"]),
+                str(validation["extract_mode"]),
+                int(validation["max_chars"]),
+            )
+            result.update({
+                "lease_id": lease.lease_id,
+                "proposal_id": proposal.proposal_id,
+                "content_hash": actual_hash,
+            })
+            proposal.status = "executed" if result.get("status") == "ok" else "execution_failed"
+            proposal.execution_result = result
+            return result
+        except Exception as exc:
+            result = {
+                "status": "failed",
+                "error": repr(exc),
+                "url": str(validation["url"]),
+                "lease_id": lease.lease_id,
+                "proposal_id": proposal.proposal_id,
+                "content_hash": actual_hash,
+            }
+            proposal.status = "execution_failed"
+            proposal.execution_result = result
+            return result
+
     def format_action_card(self, proposal_id: str) -> str:
         proposal = self.proposals.get(proposal_id)
         if proposal is None:
             return f"[unknown proposal: {proposal_id}]"
+        if proposal.action == "web_fetch":
+            try:
+                payload = json.loads(proposal.content)
+            except json.JSONDecodeError:
+                payload = {}
+            return "\n".join([
+                "Pending operation approval:",
+                f"- id: {proposal.proposal_id}",
+                f"- action: {proposal.action}",
+                f"- url: {payload.get('url', proposal.path)}",
+                f"- extract_mode: {payload.get('extract_mode', 'text')}",
+                f"- max_chars: {payload.get('max_chars', DEFAULT_WEB_FETCH_MAX_CHARS)}",
+                f"- payload_sha256: {proposal.content_hash}",
+                f"- reason: {proposal.reason}",
+            ])
         return "\n".join([
             "Pending operation approval:",
             f"- id: {proposal.proposal_id}",
@@ -2458,6 +2711,18 @@ class SafetyGate:
                 path_result = _gate_workspace_path("path", str(action.tool_call.args.get("path", "")))
                 if path_result is not None:
                     return path_result
+                return GateResult(True, "operation_proposal_allowed")
+            if action.tool_call.tool_name == "propose_web_fetch":
+                if self.runtime_mode == "chat":
+                    return GateResult(False, "runtime_mode_chat_blocks_operation_proposals")
+                validation = validate_web_fetch_request(
+                    str(action.tool_call.args.get("url", "")),
+                    str(action.tool_call.args.get("extract_mode", "text")),
+                    action.tool_call.args.get("max_chars", DEFAULT_WEB_FETCH_MAX_CHARS),
+                    resolve_host=False,
+                )
+                if validation.get("status") != "ok":
+                    return GateResult(False, str(validation.get("reason", "invalid_web_fetch_request")))
                 return GateResult(True, "operation_proposal_allowed")
             if action.tool_call.tool_name in SIDE_EFFECT_TOOLS and self.runtime_mode in {"chat", "plan", "approve"}:
                 return GateResult(False, f"{action.tool_call.tool_name}_requires_transaction_approval")
@@ -2786,8 +3051,49 @@ class AgentRuntime:
             source="main_agent_tool",
         )
 
+    def propose_web_fetch(
+        self,
+        url: str,
+        extract_mode: str = "text",
+        max_chars: int = DEFAULT_WEB_FETCH_MAX_CHARS,
+        reason: str = "",
+    ) -> Dict[str, Any]:
+        return self.permission_broker.propose_web_fetch(
+            url=url,
+            extract_mode=extract_mode,
+            max_chars=max_chars,
+            reason=reason,
+            source="main_agent_tool",
+        )
+
     def list_pending_approvals(self, include_closed: bool = False) -> Dict[str, Any]:
         return self.permission_broker.list_proposals(include_closed=include_closed)
+
+    def _record_permission_decision(
+        self,
+        *,
+        proposal_id: str,
+        decision: str,
+        result: Dict[str, Any],
+        execution: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        proposal = self.permission_broker.proposals.get(proposal_id)
+        try:
+            self.trace_store.write({
+                "event_type": "permission_decision",
+                "timestamp": utc_now(),
+                "runtime_mode": self.runtime_mode,
+                "decision": decision,
+                "proposal": proposal.to_dict() if proposal else None,
+                "result": result,
+                "execution": execution,
+                "operator_runtime": {
+                    "permission_broker": self.permission_broker.describe(),
+                },
+            })
+        except Exception:
+            # Permission execution must not fail just because audit persistence failed.
+            pass
 
     def approve_pending_operation(self, proposal_id: str) -> Dict[str, Any]:
         approval = self.permission_broker.approve(proposal_id)
@@ -2797,17 +3103,46 @@ class AgentRuntime:
         lease_id = str(approval.get("lease_id") or "")
         if proposal is None or not lease_id:
             return {"status": "failed", "reason": "approved_proposal_missing"}
-        execution = self.permission_broker.execute_file_write_with_lease(
-            lease_id,
-            path=proposal.path,
-            content=proposal.content,
-            create_parents=proposal.create_parents,
-            overwrite=proposal.overwrite,
+        if proposal.action == "write_file":
+            execution = self.permission_broker.execute_file_write_with_lease(
+                lease_id,
+                path=proposal.path,
+                content=proposal.content,
+                create_parents=proposal.create_parents,
+                overwrite=proposal.overwrite,
+            )
+        elif proposal.action == "web_fetch":
+            try:
+                payload = json.loads(proposal.content)
+            except json.JSONDecodeError:
+                execution = {"status": "failed", "reason": "invalid_web_fetch_proposal_payload"}
+            else:
+                execution = self.permission_broker.execute_web_fetch_with_lease(
+                    lease_id,
+                    url=str(payload.get("url", proposal.path)),
+                    extract_mode=str(payload.get("extract_mode", "text")),
+                    max_chars=int(payload.get("max_chars", DEFAULT_WEB_FETCH_MAX_CHARS)),
+                )
+        else:
+            execution = {"status": "failed", "reason": "unsupported_proposal_action", "action": proposal.action}
+        result = {"status": execution.get("status", "failed"), "approval": approval, "execution": execution}
+        self._record_permission_decision(
+            proposal_id=proposal_id,
+            decision="approve",
+            result=approval,
+            execution=execution,
         )
-        return {"status": execution.get("status", "failed"), "approval": approval, "execution": execution}
+        return result
 
     def reject_pending_operation(self, proposal_id: str, reason: str = "operator_rejected") -> Dict[str, Any]:
-        return self.permission_broker.reject(proposal_id, reason=reason)
+        result = self.permission_broker.reject(proposal_id, reason=reason)
+        if result.get("status") == "rejected":
+            self._record_permission_decision(
+                proposal_id=proposal_id,
+                decision="reject",
+                result=result,
+            )
+        return result
 
     def edit_pending_file_write(self, proposal_id: str, updates: Dict[str, Any]) -> Dict[str, Any]:
         return self.permission_broker.edit_file_write_proposal(
@@ -3682,6 +4017,7 @@ def build_demo_runtime(
     ]
     if selected_runtime_mode in {"plan", "approve", "trusted-workspace"}:
         allowed_tools.append("propose_file_write")
+        allowed_tools.append("propose_web_fetch")
     if DEFAULT_ENABLE_RUN_COMMAND and selected_runtime_mode == "trusted-workspace":
         allowed_tools.append("run_command")
     if DEFAULT_ENABLE_WEB_FETCH and selected_runtime_mode == "trusted-workspace":
@@ -3729,6 +4065,26 @@ def build_demo_runtime(
                 "overwrite": {"type": "boolean", "description": "是否明确请求覆盖已有文件。"},
             },
             "required": ["path", "content"],
+            "additionalProperties": False,
+        },
+    )
+
+    tools.register(
+        "propose_web_fetch",
+        runtime.propose_web_fetch,
+        description=(
+            "生成一个待 operator 审批的网页读取 proposal。"
+            "不会直接联网；批准后 runtime 用一次性 lease 执行，并拒绝 localhost/private/reserved 主机。"
+        ),
+        input_schema={
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "完整 http/https URL。"},
+                "extract_mode": {"type": "string", "enum": ["text", "raw"], "description": "提取模式，默认 text。"},
+                "max_chars": {"type": "integer", "description": "最大返回字符数。"},
+                "reason": {"type": "string", "description": "为什么需要读取这个网页。"},
+            },
+            "required": ["url"],
             "additionalProperties": False,
         },
     )
@@ -3867,9 +4223,10 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         "- layered_memory_commands: /memory_review, /memory_pin, /memory_unpin, /memory_archive, /forget",
         f"- file_read_tools: {'enabled' if {'read_file', 'glob_files', 'grep_files'}.issubset(runtime.gate.allowed_tools) else 'restricted'}",
         f"- file_write_proposals: {'enabled' if 'propose_file_write' in runtime.gate.allowed_tools else 'disabled'}",
+        f"- web_fetch_proposals: {'enabled' if 'propose_web_fetch' in runtime.gate.allowed_tools else 'disabled'}",
         f"- write_file: {'trusted direct enabled' if DEFAULT_ENABLE_WRITE_FILE and 'write_file' in runtime.gate.allowed_tools else 'transaction approval required'}",
         f"- run_command: {'trusted direct enabled' if DEFAULT_ENABLE_RUN_COMMAND and 'run_command' in runtime.gate.allowed_tools else 'disabled'}",
-        f"- web_fetch: {'trusted direct enabled' if DEFAULT_ENABLE_WEB_FETCH and 'web_fetch' in runtime.gate.allowed_tools else 'disabled'}",
+        f"- web_fetch: {'trusted direct enabled' if DEFAULT_ENABLE_WEB_FETCH and 'web_fetch' in runtime.gate.allowed_tools else 'transaction approval required'}",
         f"- write_allowlist: {', '.join(DEFAULT_WRITE_ALLOWLIST) if DEFAULT_WRITE_ALLOWLIST else '(workspace-contained; no extra allowlist)'}",
         f"- pending_approvals: {runtime.permission_broker.describe()['pending_count']}",
         "- subagent_side_effects: disabled; subagents may only report proposed_action",
