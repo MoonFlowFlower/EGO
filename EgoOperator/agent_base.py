@@ -142,7 +142,7 @@ def _coerce_local_path(path: str | Path) -> Path:
 
 DEFAULT_LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openrouter")
 DEFAULT_OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")  # or paste temporarily: "<OPENROUTER_API_KEY>"
-DEFAULT_OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash")
+DEFAULT_OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash:free")
 DEFAULT_OPENROUTER_BASE_URL = os.getenv(
     "OPENROUTER_BASE_URL",
     "https://openrouter.ai/api/v1/chat/completions",
@@ -1915,7 +1915,7 @@ class LLMConfig:
 
     Fill these fields directly for quick local tests, or prefer environment variables:
       export OPENROUTER_API_KEY="sk-or-..."
-      export OPENROUTER_MODEL="deepseek/deepseek-v4-flash"
+      export OPENROUTER_MODEL="deepseek/deepseek-v4-flash:free"
     """
     provider: str = DEFAULT_LLM_PROVIDER
     api_key: str = DEFAULT_OPENROUTER_API_KEY
@@ -4315,7 +4315,7 @@ def build_llm_from_config() -> LLMClient:
 
     For real OpenRouter calls, set:
       export OPENROUTER_API_KEY="sk-or-..."
-      export OPENROUTER_MODEL="deepseek/deepseek-v4-flash"
+      export OPENROUTER_MODEL="deepseek/deepseek-v4-flash:free"
 
     If no key is present, the agent still runs with NoLLM.
     """
