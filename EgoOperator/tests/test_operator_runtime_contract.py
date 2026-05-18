@@ -81,6 +81,40 @@ class WebProposalThenFinalLLM:
         return "已生成待审批联网读取 proposal。"
 
 
+class HeartbeatProposalThenFinalLLM:
+    provider = "fake"
+    model = "heartbeat-proposal-then-final"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self, delay_seconds: int = 0, message: str = "继续测试 EgoOperator") -> None:
+        self.delay_seconds = delay_seconds
+        self.message = message
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我会先生成可审批 heartbeat proposal。",
+                tool_calls=[
+                    agent.LLMToolCall(
+                        id="call_heartbeat_proposal",
+                        name="propose_heartbeat",
+                        arguments={
+                            "delay_seconds": self.delay_seconds,
+                            "message": self.message,
+                            "reason": "operator asked for bounded follow-up",
+                        },
+                    )
+                ],
+            )
+        return agent.LLMChatResult(content="已生成待审批 heartbeat proposal，请使用 /approve 执行。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批 heartbeat proposal。"
+
+
 def _runtime(tmp_path, monkeypatch, *, mode="approve", allowlist=()):
     monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
     monkeypatch.setattr(agent, "DEFAULT_WRITE_ALLOWLIST", tuple(allowlist))
@@ -192,6 +226,7 @@ def test_subagent_side_effect_tools_are_not_exposed():
         assert "run_command" not in spec.allowed_tools
         assert "web_fetch" not in spec.allowed_tools
         assert "propose_web_fetch" not in spec.allowed_tools
+        assert "propose_heartbeat" not in spec.allowed_tools
 
 
 def test_approve_mode_exposes_web_fetch_proposal_not_direct_tool(tmp_path, monkeypatch):
@@ -271,6 +306,57 @@ def test_web_fetch_proposal_blocks_unsafe_urls(tmp_path, monkeypatch):
         assert result["reason"] == reason
 
 
+def test_heartbeat_proposal_requires_approval_and_generates_due_candidate(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+
+    proposal = runtime.propose_heartbeat(delay_seconds=0, message="继续测试 EgoOperator", reason="smoke")
+
+    assert proposal["status"] == "pending_approval"
+    assert runtime.list_heartbeats()["count"] == 0
+
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+
+    assert approved["status"] == "ok"
+    heartbeat_id = approved["execution"]["heartbeat_id"]
+    assert runtime.list_heartbeats()["items"][0]["heartbeat_id"] == heartbeat_id
+
+    due = runtime.collect_due_heartbeat_candidates()
+
+    assert due["status"] == "ok"
+    assert due["count"] == 1
+    candidate = due["candidates"][0]["candidate_message"]
+    assert "候选跟进" in candidate
+    assert "继续测试 EgoOperator" in candidate
+    assert "突然想到" not in candidate
+    assert "自主意识" not in candidate
+
+
+def test_cancelled_heartbeat_does_not_generate_candidate(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    proposal = runtime.propose_heartbeat(delay_seconds=0, message="不应该触发", reason="smoke")
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+    heartbeat_id = approved["execution"]["heartbeat_id"]
+
+    cancelled = runtime.cancel_heartbeat(heartbeat_id)
+    due = runtime.collect_due_heartbeat_candidates()
+
+    assert cancelled["status"] == "cancelled"
+    assert due["count"] == 0
+
+
+def test_llm_heartbeat_proposal_requires_explicit_user_intent(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = HeartbeatProposalThenFinalLLM()
+
+    runtime.handle_user_message("普通聊天：你好")
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    tool_output = trace["tool_trace"][0]["output"]
+    assert tool_output["status"] == "blocked"
+    assert tool_output["reason"] == "heartbeat_requires_explicit_user_intent"
+    assert runtime.list_heartbeats()["count"] == 0
+
+
 def test_llm_tool_loop_records_pending_proposal_in_trace(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.planner.llm = ProposalThenFinalLLM()
@@ -297,4 +383,18 @@ def test_llm_tool_loop_records_pending_web_fetch_proposal_in_trace(tmp_path, mon
     tool_output = trace["tool_trace"][0]["output"]
     assert tool_output["status"] == "pending_approval"
     assert tool_output["proposal"]["action"] == "web_fetch"
+    assert trace["operator_runtime"]["permission_broker"]["pending_count"] == 1
+
+
+def test_llm_tool_loop_records_pending_heartbeat_proposal_in_trace(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = HeartbeatProposalThenFinalLLM()
+
+    result = runtime.handle_user_message("待会儿提醒我继续测试 EgoOperator")
+
+    assert "待审批" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    tool_output = trace["tool_trace"][0]["output"]
+    assert tool_output["status"] == "pending_approval"
+    assert tool_output["proposal"]["action"] == "heartbeat"
     assert trace["operator_runtime"]["permission_broker"]["pending_count"] == 1

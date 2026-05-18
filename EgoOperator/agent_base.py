@@ -27,7 +27,7 @@ from __future__ import annotations
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field, is_dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from html.parser import HTMLParser
 from pathlib import Path
@@ -196,6 +196,21 @@ MEMORY_WRITE_INTENT_PATTERNS = (
     r"把.{0,20}记下来",
     r"记录到记忆",
     r"写入记忆",
+)
+
+HEARTBEAT_INTENT_PATTERNS = (
+    r"\bremind me\b",
+    r"\bfollow up\b",
+    r"\bcheck back\b",
+    r"\bping me\b",
+    r"提醒我",
+    r"稍后提醒",
+    r"待会儿提醒",
+    r"之后提醒",
+    r"主动找我",
+    r"定时跟进",
+    r"稍后跟进",
+    r"到时候叫我",
 )
 
 DEFAULT_NEUTRAL_SYSTEM_PROMPT = """你是一个本地 operator-cut agent 候选。
@@ -781,6 +796,7 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
         + "\n20. write_file、run_command、web_fetch 是副作用工具；需要联网读取时优先调用 propose_web_fetch 生成可审批操作包，除非 runtime mode、approval lease 和 gate 同时允许，否则只能生成 proposal 或说明受限。"
+        + "\n21. 若用户明确要求稍后提醒、主动找我或定时跟进，只能调用 propose_heartbeat 生成 bounded heartbeat proposal；到期也只是候选提醒，不代表自主意识或后台独立行动。"
         + "\n\n可派遣子代理类型：xiaohuangmen, sili_suitang, dongchang_tanshi, shangbao_dianbu, neiguan_yingzao"
         + (
             "\n\nAgent Team 工具：spawn_teammate, list_teammates, send_message, read_inbox, broadcast, shutdown_teammate"
@@ -941,6 +957,14 @@ def _has_explicit_memory_write_intent(text: str) -> bool:
         return False
     lowered = raw.lower()
     return any(re.search(pattern, lowered, flags=re.IGNORECASE) for pattern in MEMORY_WRITE_INTENT_PATTERNS)
+
+
+def _has_explicit_heartbeat_intent(text: str) -> bool:
+    raw = (text or "").strip()
+    if not raw:
+        return False
+    lowered = raw.lower()
+    return any(re.search(pattern, lowered, flags=re.IGNORECASE) for pattern in HEARTBEAT_INTENT_PATTERNS)
 
 
 def _gate_workspace_path(reason_prefix: str, path: str) -> Optional[GateResult]:
@@ -2107,6 +2131,20 @@ def _web_fetch_payload(url: str, extract_mode: str, max_chars: int) -> str:
     )
 
 
+def _heartbeat_payload(heartbeat_id: str, delay_seconds: int, due_at: str, message: str, reason: str) -> str:
+    return json.dumps(
+        {
+            "heartbeat_id": heartbeat_id,
+            "delay_seconds": delay_seconds,
+            "due_at": due_at,
+            "message": message,
+            "reason": reason,
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+
+
 @dataclass
 class OperationProposal:
     proposal_id: str
@@ -2147,6 +2185,22 @@ class CapabilityLease:
     content_hash: str
     created_at: str = field(default_factory=lambda: utc_now())
     consumed: bool = False
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class HeartbeatRecord:
+    heartbeat_id: str
+    proposal_id: str
+    due_at: str
+    message: str
+    reason: str
+    status: str = "pending"
+    created_at: str = field(default_factory=lambda: utc_now())
+    fired_at: Optional[str] = None
+    candidate_message: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -2290,6 +2344,51 @@ class PermissionBroker:
             create_parents=False,
             overwrite=False,
             reason=reason or "web fetch requested by operator task",
+            source=source,
+        )
+        self.proposals[proposal.proposal_id] = proposal
+        return {
+            "status": "pending_approval",
+            "proposal": proposal.to_dict(),
+            "action_card": self.format_action_card(proposal.proposal_id),
+            "next": f"Use /approve {proposal.proposal_id} or /reject {proposal.proposal_id}.",
+        }
+
+    def propose_heartbeat(
+        self,
+        *,
+        delay_seconds: int,
+        message: str,
+        reason: str = "",
+        source: str = "tool",
+    ) -> Dict[str, Any]:
+        if self.runtime_mode == "chat":
+            return {"status": "blocked", "reason": "runtime_mode_chat_blocks_operation_proposals"}
+
+        try:
+            delay = int(delay_seconds)
+        except (TypeError, ValueError):
+            return {"status": "blocked", "reason": "invalid_delay_seconds", "delay_seconds": delay_seconds}
+        if delay < 0 or delay > 7 * 24 * 60 * 60:
+            return {"status": "blocked", "reason": "delay_out_of_bounds", "delay_seconds": delay}
+
+        clean_message = str(message or "").strip()
+        if not clean_message:
+            return {"status": "blocked", "reason": "empty_heartbeat_message"}
+        heartbeat_id = new_id("heartbeat")
+        due_at = (datetime.now(timezone.utc) + timedelta(seconds=delay)).isoformat()
+        clean_reason = reason or "operator requested bounded follow-up"
+        payload = _heartbeat_payload(heartbeat_id, delay, due_at, clean_message, clean_reason)
+        proposal = OperationProposal(
+            proposal_id=new_id("proposal"),
+            action="heartbeat",
+            path=heartbeat_id,
+            resolved_path=heartbeat_id,
+            content=payload,
+            content_hash=_content_hash(payload),
+            create_parents=False,
+            overwrite=False,
+            reason=clean_reason,
             source=source,
         )
         self.proposals[proposal.proposal_id] = proposal
@@ -2494,6 +2593,50 @@ class PermissionBroker:
             proposal.execution_result = result
             return result
 
+    def execute_heartbeat_with_lease(self, lease_id: str, *, payload: Dict[str, Any]) -> Dict[str, Any]:
+        lease = self.leases.get(lease_id)
+        if lease is None:
+            return {"status": "blocked", "reason": "unknown_lease", "lease_id": lease_id}
+        if lease.consumed:
+            return {"status": "blocked", "reason": "lease_already_consumed", "lease_id": lease_id}
+        proposal = self.proposals.get(lease.proposal_id)
+        if proposal is None:
+            return {"status": "blocked", "reason": "proposal_missing_for_lease", "lease_id": lease_id}
+        if proposal.action != "heartbeat" or lease.action != "heartbeat":
+            return {"status": "blocked", "reason": "unsupported_lease_action", "lease_id": lease_id}
+
+        actual_payload = _heartbeat_payload(
+            str(payload.get("heartbeat_id", "")),
+            int(payload.get("delay_seconds", 0)),
+            str(payload.get("due_at", "")),
+            str(payload.get("message", "")),
+            str(payload.get("reason", "")),
+        )
+        actual_hash = _content_hash(actual_payload)
+        if str(payload.get("heartbeat_id", "")) != lease.path:
+            return {"status": "blocked", "reason": "lease_heartbeat_id_mismatch", "expected": lease.path, "actual": payload.get("heartbeat_id")}
+        if actual_hash != lease.content_hash:
+            return {
+                "status": "blocked",
+                "reason": "lease_content_hash_mismatch",
+                "expected": lease.content_hash,
+                "actual": actual_hash,
+            }
+
+        lease.consumed = True
+        result = {
+            "status": "ok",
+            "heartbeat_id": str(payload.get("heartbeat_id", "")),
+            "due_at": str(payload.get("due_at", "")),
+            "message": str(payload.get("message", "")),
+            "lease_id": lease.lease_id,
+            "proposal_id": proposal.proposal_id,
+            "content_hash": actual_hash,
+        }
+        proposal.status = "executed"
+        proposal.execution_result = result
+        return result
+
     def format_action_card(self, proposal_id: str) -> str:
         proposal = self.proposals.get(proposal_id)
         if proposal is None:
@@ -2510,6 +2653,22 @@ class PermissionBroker:
                 f"- url: {payload.get('url', proposal.path)}",
                 f"- extract_mode: {payload.get('extract_mode', 'text')}",
                 f"- max_chars: {payload.get('max_chars', DEFAULT_WEB_FETCH_MAX_CHARS)}",
+                f"- payload_sha256: {proposal.content_hash}",
+                f"- reason: {proposal.reason}",
+            ])
+        if proposal.action == "heartbeat":
+            try:
+                payload = json.loads(proposal.content)
+            except json.JSONDecodeError:
+                payload = {}
+            return "\n".join([
+                "Pending operation approval:",
+                f"- id: {proposal.proposal_id}",
+                f"- action: {proposal.action}",
+                f"- heartbeat_id: {payload.get('heartbeat_id', proposal.path)}",
+                f"- due_at: {payload.get('due_at', '')}",
+                f"- delay_seconds: {payload.get('delay_seconds', '')}",
+                f"- message: {payload.get('message', '')}",
                 f"- payload_sha256: {proposal.content_hash}",
                 f"- reason: {proposal.reason}",
             ])
@@ -2723,6 +2882,14 @@ class SafetyGate:
                 )
                 if validation.get("status") != "ok":
                     return GateResult(False, str(validation.get("reason", "invalid_web_fetch_request")))
+                return GateResult(True, "operation_proposal_allowed")
+            if action.tool_call.tool_name == "propose_heartbeat":
+                if self.runtime_mode == "chat":
+                    return GateResult(False, "runtime_mode_chat_blocks_operation_proposals")
+                if not _has_explicit_heartbeat_intent(event.raw_text or ""):
+                    return GateResult(False, "heartbeat_requires_explicit_user_intent")
+                if not str(action.tool_call.args.get("message", "")).strip():
+                    return GateResult(False, "empty_heartbeat_message")
                 return GateResult(True, "operation_proposal_allowed")
             if action.tool_call.tool_name in SIDE_EFFECT_TOOLS and self.runtime_mode in {"chat", "plan", "approve"}:
                 return GateResult(False, f"{action.tool_call.tool_name}_requires_transaction_approval")
@@ -3000,6 +3167,7 @@ class AgentRuntime:
         self.gate.set_mode(self.runtime_mode)
         self.session_id = new_id("session")
         self.subagent_counter = 0
+        self.heartbeats: Dict[str, HeartbeatRecord] = {}
         self.team: Optional[AgentTeamManager] = None
         self._last_operator_memory_context: Optional[MemoryContext] = None
 
@@ -3066,6 +3234,19 @@ class AgentRuntime:
             source="main_agent_tool",
         )
 
+    def propose_heartbeat(
+        self,
+        delay_seconds: int,
+        message: str,
+        reason: str = "",
+    ) -> Dict[str, Any]:
+        return self.permission_broker.propose_heartbeat(
+            delay_seconds=delay_seconds,
+            message=message,
+            reason=reason,
+            source="main_agent_tool",
+        )
+
     def list_pending_approvals(self, include_closed: bool = False) -> Dict[str, Any]:
         return self.permission_broker.list_proposals(include_closed=include_closed)
 
@@ -3123,6 +3304,23 @@ class AgentRuntime:
                     extract_mode=str(payload.get("extract_mode", "text")),
                     max_chars=int(payload.get("max_chars", DEFAULT_WEB_FETCH_MAX_CHARS)),
                 )
+        elif proposal.action == "heartbeat":
+            try:
+                payload = json.loads(proposal.content)
+            except json.JSONDecodeError:
+                execution = {"status": "failed", "reason": "invalid_heartbeat_proposal_payload"}
+            else:
+                execution = self.permission_broker.execute_heartbeat_with_lease(lease_id, payload=payload)
+                if execution.get("status") == "ok":
+                    record = HeartbeatRecord(
+                        heartbeat_id=str(payload.get("heartbeat_id", "")),
+                        proposal_id=proposal.proposal_id,
+                        due_at=str(payload.get("due_at", "")),
+                        message=str(payload.get("message", "")),
+                        reason=str(payload.get("reason", "")),
+                    )
+                    self.heartbeats[record.heartbeat_id] = record
+                    execution["heartbeat"] = record.to_dict()
         else:
             execution = {"status": "failed", "reason": "unsupported_proposal_action", "action": proposal.action}
         result = {"status": execution.get("status", "failed"), "approval": approval, "execution": execution}
@@ -3153,6 +3351,54 @@ class AgentRuntime:
             create_parents=updates.get("create_parents") if "create_parents" in updates else None,
             overwrite=updates.get("overwrite") if "overwrite" in updates else None,
         )
+
+    def list_heartbeats(self, include_closed: bool = False) -> Dict[str, Any]:
+        items = [
+            record.to_dict()
+            for record in self.heartbeats.values()
+            if include_closed or record.status in {"pending", "candidate_ready"}
+        ]
+        return {"status": "ok", "count": len(items), "items": items}
+
+    def cancel_heartbeat(self, heartbeat_id: str, reason: str = "operator_cancelled") -> Dict[str, Any]:
+        record = self.heartbeats.get(heartbeat_id)
+        if record is None:
+            return {"status": "failed", "reason": "unknown_heartbeat", "heartbeat_id": heartbeat_id}
+        if record.status not in {"pending", "candidate_ready"}:
+            return {"status": "failed", "reason": f"heartbeat_not_cancelable:{record.status}", "heartbeat": record.to_dict()}
+        record.status = "cancelled"
+        record.reason = f"{record.reason}; cancel_reason={reason}"
+        return {"status": "cancelled", "heartbeat": record.to_dict()}
+
+    def collect_due_heartbeat_candidates(self, now: Optional[str] = None) -> Dict[str, Any]:
+        try:
+            now_dt = datetime.fromisoformat(now) if now else datetime.now(timezone.utc)
+            if now_dt.tzinfo is None:
+                now_dt = now_dt.replace(tzinfo=timezone.utc)
+        except ValueError:
+            return {"status": "failed", "reason": "invalid_now", "now": now}
+
+        candidates: List[Dict[str, Any]] = []
+        for record in self.heartbeats.values():
+            if record.status != "pending":
+                continue
+            try:
+                due_dt = datetime.fromisoformat(record.due_at)
+                if due_dt.tzinfo is None:
+                    due_dt = due_dt.replace(tzinfo=timezone.utc)
+            except ValueError:
+                continue
+            if due_dt > now_dt:
+                continue
+            record.status = "candidate_ready"
+            record.fired_at = now_dt.isoformat()
+            record.candidate_message = (
+                "候选跟进：你之前明确授权我在这个时间提醒/跟进："
+                f"{record.message}"
+            )
+            candidates.append(record.to_dict())
+
+        return {"status": "ok", "count": len(candidates), "candidates": candidates}
 
     def remember_operator_note(self, text: str) -> Dict[str, Any]:
         if self.operator_memory is None:
@@ -4018,6 +4264,7 @@ def build_demo_runtime(
     if selected_runtime_mode in {"plan", "approve", "trusted-workspace"}:
         allowed_tools.append("propose_file_write")
         allowed_tools.append("propose_web_fetch")
+        allowed_tools.append("propose_heartbeat")
     if DEFAULT_ENABLE_RUN_COMMAND and selected_runtime_mode == "trusted-workspace":
         allowed_tools.append("run_command")
     if DEFAULT_ENABLE_WEB_FETCH and selected_runtime_mode == "trusted-workspace":
@@ -4085,6 +4332,25 @@ def build_demo_runtime(
                 "reason": {"type": "string", "description": "为什么需要读取这个网页。"},
             },
             "required": ["url"],
+            "additionalProperties": False,
+        },
+    )
+
+    tools.register(
+        "propose_heartbeat",
+        runtime.propose_heartbeat,
+        description=(
+            "生成一个待 operator 审批的 bounded heartbeat proposal。"
+            "只在用户明确要求稍后提醒/主动找我/定时跟进时使用；批准后只登记候选提醒，不自动发送。"
+        ),
+        input_schema={
+            "type": "object",
+            "properties": {
+                "delay_seconds": {"type": "integer", "description": "从现在起多少秒后到期，0 到 604800。"},
+                "message": {"type": "string", "description": "到期时生成的候选提醒内容。"},
+                "reason": {"type": "string", "description": "为什么需要这个 bounded heartbeat。"},
+            },
+            "required": ["delay_seconds", "message"],
             "additionalProperties": False,
         },
     )
@@ -4224,11 +4490,13 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- file_read_tools: {'enabled' if {'read_file', 'glob_files', 'grep_files'}.issubset(runtime.gate.allowed_tools) else 'restricted'}",
         f"- file_write_proposals: {'enabled' if 'propose_file_write' in runtime.gate.allowed_tools else 'disabled'}",
         f"- web_fetch_proposals: {'enabled' if 'propose_web_fetch' in runtime.gate.allowed_tools else 'disabled'}",
+        f"- heartbeat_proposals: {'enabled' if 'propose_heartbeat' in runtime.gate.allowed_tools else 'disabled'}",
         f"- write_file: {'trusted direct enabled' if DEFAULT_ENABLE_WRITE_FILE and 'write_file' in runtime.gate.allowed_tools else 'transaction approval required'}",
         f"- run_command: {'trusted direct enabled' if DEFAULT_ENABLE_RUN_COMMAND and 'run_command' in runtime.gate.allowed_tools else 'disabled'}",
         f"- web_fetch: {'trusted direct enabled' if DEFAULT_ENABLE_WEB_FETCH and 'web_fetch' in runtime.gate.allowed_tools else 'transaction approval required'}",
         f"- write_allowlist: {', '.join(DEFAULT_WRITE_ALLOWLIST) if DEFAULT_WRITE_ALLOWLIST else '(workspace-contained; no extra allowlist)'}",
         f"- pending_approvals: {runtime.permission_broker.describe()['pending_count']}",
+        f"- pending_heartbeats: {runtime.list_heartbeats().get('count', 0)}",
         "- subagent_side_effects: disabled; subagents may only report proposed_action",
         f"- workspace: {DEFAULT_AGENT_WORKSPACE}",
         f"- trace_path: {DEFAULT_TRACE_PATH}",
@@ -4261,6 +4529,18 @@ if __name__ == "__main__":
             continue
         if msg.lower() in {"/approvals", "approvals"}:
             print(json.dumps(runtime.list_pending_approvals(), ensure_ascii=False, indent=2))
+            continue
+        if msg.lower() in {"/heartbeats", "heartbeats"}:
+            print(json.dumps(runtime.list_heartbeats(include_closed=True), ensure_ascii=False, indent=2))
+            continue
+        if msg.lower() in {"/heartbeat_due", "heartbeat_due"}:
+            print(json.dumps(runtime.collect_due_heartbeat_candidates(), ensure_ascii=False, indent=2))
+            continue
+        if msg.lower().startswith("/cancel_heartbeat "):
+            parts = msg.split(maxsplit=2)
+            heartbeat_id = parts[1].strip() if len(parts) > 1 else ""
+            reason = parts[2].strip() if len(parts) > 2 else "operator_cancelled"
+            print(json.dumps(runtime.cancel_heartbeat(heartbeat_id, reason=reason), ensure_ascii=False, indent=2))
             continue
         if msg.lower().startswith("/approve "):
             proposal_id = msg.split(maxsplit=1)[1].strip()
