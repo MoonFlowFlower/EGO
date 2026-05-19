@@ -172,6 +172,7 @@ DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
 DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "50"))
 DEFAULT_TOOL_LOOP_HARD_CAP = int(os.getenv("AGENT_TOOL_LOOP_HARD_CAP", "150"))
+DEFAULT_UNBACKED_APPROVAL_REPAIR_ATTEMPTS = int(os.getenv("AGENT_UNBACKED_APPROVAL_REPAIR_ATTEMPTS", "2"))
 DEFAULT_VERBOSE_TOOLS = env_flag("AGENT_VERBOSE_TOOLS", True)
 DEFAULT_VERBOSE_TODOS = env_flag("AGENT_VERBOSE_TODOS", True)
 DEFAULT_VERBOSE_SUBAGENTS = env_flag("AGENT_VERBOSE_SUBAGENTS", True)
@@ -4469,31 +4470,41 @@ class AgentRuntime:
 
                     approval_claim = self._detect_unbacked_approval_reply(content)
                     if approval_claim.get("status") == "unbacked_approval_claim":
-                        if unbacked_approval_repairs < 1:
+                        max_unbacked_repairs = max(0, int(DEFAULT_UNBACKED_APPROVAL_REPAIR_ATTEMPTS))
+                        if unbacked_approval_repairs < max_unbacked_repairs:
                             unbacked_approval_repairs += 1
                             messages.append({
                                 "role": "system",
                                 "content": (
                                     "[unbacked_approval_repair]\n"
+                                    f"Attempt {unbacked_approval_repairs}/{max_unbacked_repairs}. "
                                     "The previous assistant text appeared to show a pending approval card, but no real "
                                     "runtime proposal exists for that id. Do not invent proposal ids, content hashes, "
-                                    "or /approve commands. If a file write is needed, call propose_file_write now. "
-                                    "If you cannot call the tool, answer in Chinese that no proposal was created."
+                                    "or /approve commands. Do not ask the user to repeat the request. "
+                                    "If a file write is needed, call propose_file_write now with the user's requested "
+                                    "path and content. If another gated side effect is needed, call the matching "
+                                    "proposal tool. If you cannot call a proposal tool, answer in Chinese that no real "
+                                    "proposal was created and no side effect ran."
                                 ),
                             })
                             loop_idx += 1
                             continue
-                        content = self._format_unbacked_approval_recovery_reply(approval_claim, tool_trace)
+                        content = self._format_unbacked_approval_recovery_reply(
+                            approval_claim,
+                            tool_trace,
+                            repair_attempts=unbacked_approval_repairs,
+                        )
                         final_action = AgentAction(
                             action_type=ActionType.RESPOND,
                             content=content,
-                            reason="llm_unbacked_approval_recovered",
+                            reason="llm_unbacked_approval_auto_repair_exhausted",
                         )
                         final_gate = self.gate.check(event, final_action)
                         return final_action, final_gate, {
-                            "status": "unbacked_approval_claim",
+                            "status": "unbacked_approval_auto_repair_exhausted",
                             "side_effects_executed": False,
                             "tool_calls": len(tool_trace),
+                            "auto_repair_attempts": unbacked_approval_repairs,
                             "approval_claim": approval_claim,
                         }, content, tool_trace
 
@@ -4809,13 +4820,15 @@ class AgentRuntime:
         self,
         approval_claim: Dict[str, Any],
         tool_trace: List[Dict[str, Any]],
+        repair_attempts: int = 0,
     ) -> str:
         unknown_ids = approval_claim.get("unknown_proposal_ids") or approval_claim.get("proposal_ids") or []
         lines = [
-            "模型刚才生成了待审批文本，但 runtime 没有对应的真实 proposal，所以我没有把它当成可批准操作。",
+            "模型连续生成了待审批文本，但 runtime 没有对应的真实 proposal，所以我没有把它当成可批准操作。",
             f"可疑 proposal id：{', '.join(unknown_ids) if unknown_ids else '未提供真实 id'}。",
+            f"已自动尝试修复：{repair_attempts} 次。",
             f"当前已完成工具调用：{len(tool_trace)} 次。",
-            "没有执行文件创建或修改；请重试同一句请求，我会要求模型必须调用 propose_file_write 生成真实审批项。",
+            "没有执行文件创建或修改；本轮没有生成可执行的真实审批项。",
         ]
         return "\n".join(lines)
 

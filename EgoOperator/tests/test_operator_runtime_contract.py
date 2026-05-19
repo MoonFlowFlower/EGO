@@ -221,6 +221,54 @@ class HallucinatedApprovalThenProposalLLM:
         return "已生成待审批写入 proposal。"
 
 
+class HallucinatedApprovalTwiceThenProposalLLM:
+    provider = "fake"
+    model = "hallucinated-approval-twice-then-proposal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls <= 2:
+            fake_id = f"proposal_fake_attempt_{self.calls}"
+            return agent.LLMChatResult(
+                content=(
+                    "已生成待审批操作，当前不会继续调用工具。\n\n"
+                    "Pending operation approval:\n"
+                    f"- id: {fake_id}\n"
+                    "- action: write_file\n"
+                    "- path: test/index.html\n\n"
+                    "批准执行：\n"
+                    f"- /approve {fake_id}"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "unbacked_approval_repair" in joined
+        assert "Attempt 2/2" in joined
+        return agent.LLMChatResult(
+            content="我会改为调用真实 proposal 工具。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_real_proposal_after_second_hallucination",
+                    name="propose_file_write",
+                    arguments={
+                        "path": "test/index.html",
+                        "content": "<!doctype html><html><head><title>T</title></head><body>ok</body></html>",
+                        "reason": "operator requested a simple test page",
+                        "create_parents": True,
+                    },
+                )
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批写入 proposal。"
+
+
 class AlwaysHallucinatedApprovalLLM:
     provider = "fake"
     model = "always-hallucinated-approval"
@@ -1086,6 +1134,26 @@ def test_hallucinated_approval_card_triggers_repair_and_real_proposal(tmp_path, 
     assert not (tmp_path / "test" / "index.html").exists()
 
 
+def test_hallucinated_approval_card_auto_repairs_twice_before_real_proposal(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = HallucinatedApprovalTwiceThenProposalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("帮我创建 test/index.html")
+    pending = runtime.list_pending_approvals()["items"]
+
+    assert llm.calls == 3
+    assert result.external_result["status"] == "pending_approval"
+    assert len(pending) == 1
+    assert pending[0]["proposal_id"] not in {"proposal_fake_attempt_1", "proposal_fake_attempt_2"}
+    assert pending[0]["path"] == "test/index.html"
+    assert "/approve proposal_fake_attempt_1" not in result.reply_text
+    assert "/approve proposal_fake_attempt_2" not in result.reply_text
+    assert f"/approve {pending[0]['proposal_id']}" in result.reply_text
+    assert "请重试同一句请求" not in result.reply_text
+    assert not (tmp_path / "test" / "index.html").exists()
+
+
 def test_repeated_hallucinated_approval_card_returns_non_executable_recovery(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     llm = AlwaysHallucinatedApprovalLLM()
@@ -1093,10 +1161,13 @@ def test_repeated_hallucinated_approval_card_returns_non_executable_recovery(tmp
 
     result = runtime.handle_user_message("帮我创建 test/index.html")
 
-    assert llm.calls == 2
-    assert result.external_result["status"] == "unbacked_approval_claim"
+    assert llm.calls == 3
+    assert result.external_result["status"] == "unbacked_approval_auto_repair_exhausted"
+    assert result.external_result["auto_repair_attempts"] == 2
     assert "没有对应的真实 proposal" in result.reply_text
+    assert "已自动尝试修复：2 次" in result.reply_text
     assert "没有执行文件创建或修改" in result.reply_text
+    assert "请重试同一句请求" not in result.reply_text
     assert "proposal_6f7e8d9c0b1a" in result.reply_text
     assert "/approve proposal_6f7e8d9c0b1a" not in result.reply_text
     assert runtime.list_pending_approvals()["count"] == 0
