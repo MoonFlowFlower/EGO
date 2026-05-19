@@ -1,0 +1,247 @@
+{
+  "schema_version": "dashboard_live_session_export.v1",
+  "generated_at": "2026-04-13T00:35:09.449565+00:00",
+  "report_kind": "entrypoint_tagged_live_session_observation",
+  "claim_ceiling": "single_entry_live_window_observation",
+  "provenance": {
+    "observation_source": "autonomous_dashboard_runner"
+  },
+  "entrypoint_contract": {
+    "entrypoint": "dashboard_chat",
+    "source_kind": "dashboard_local",
+    "rule": "This export captures one fresh dashboard_chat live session through the public dashboard service. It proves only this sampled entrypoint/window and does not auto-promote to telegram, Stage 1 pass, or cross-entrypoint proof."
+  },
+  "fetch": {
+    "base_url": "http://127.0.0.1:8787",
+    "session_id": "dashboard:test:codex-stage1-20260413-003336",
+    "session_revision": 6
+  },
+  "session": {
+    "session_id": "dashboard:test:codex-stage1-20260413-003336",
+    "session_name": "codex-stage1-20260413-003336",
+    "message_count": 10,
+    "turn_count": 5,
+    "created_at": "2026-04-13T00:33:37.014073+00:00",
+    "updated_at": "2026-04-13T00:35:07.830781+00:00",
+    "task_status": "idle",
+    "waiting_for_user_input": false,
+    "session_revision": 6,
+    "last_message_id": "msg_00010"
+  },
+  "session_state": {
+    "task_status": "idle",
+    "waiting_for_user_input": false,
+    "proto_self_scope": {
+      "state_scope": "experiment",
+      "experiment_id": "dashboard_local:0eb8fdb9ea:dashboard:test:codex-stage1-20260413-003336",
+      "owner": "dashboard_local"
+    },
+    "proto_self_available": true
+  },
+  "summary": {
+    "message_count": 10,
+    "assistant_turn_count": 5,
+    "ordinary_chat_turn_count": 5,
+    "execute_task_turn_count": 0,
+    "subject_gate_ok_count": 5,
+    "oe_available_count": 5,
+    "mainline_candidate_count": 5,
+    "host_only_count": 0,
+    "degraded_count": 0,
+    "runtime_action_counts": {
+      "chat": 5
+    },
+    "parser_source_counts": {
+      "semantic_parser": 2,
+      "chat_default": 3
+    },
+    "reply_authority_counts": {
+      "model_chat": 5
+    },
+    "verdict": "ordinary_chat_mainline_observed"
+  },
+  "assistant_turns": [
+    {
+      "message_id": "msg_00002",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你好啊",
+      "assistant_text_preview": "你好呀！今天感觉怎么样？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "semantic_parser",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00004",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "还记得我吗",
+      "assistant_text_preview": "记得呀，你刚才在打招呼，你好！",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00006",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你现在想继续聊什么？",
+      "assistant_text_preview": "我都可以，看你今天想聊点轻松的，还是有什么想分享的？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "semantic_parser",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00008",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "我们继续聊聊。",
+      "assistant_text_preview": "那最近有什么新鲜事吗？或者你感兴趣的话题，我们可以聊聊。",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00010",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你觉得什么方法适合中国人学习英语？",
+      "assistant_text_preview": "我觉得沉浸式学习挺有效的，比如多听英文播客、看原版影视，再配合每天坚持口语练习。关键是找到自己感兴趣的内容，让学英语变得自然一点。",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "mainline_candidate": true,
+      "host_only": false
+    }
+  ],
+  "transcript": [
+    {
+      "message_id": "msg_00001",
+      "role": "user",
+      "text": "你好啊",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T00:33:37.069567+00:00"
+    },
+    {
+      "message_id": "msg_00002",
+      "role": "assistant",
+      "text": "你好呀！今天感觉怎么样？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T00:33:46.406984+00:00"
+    },
+    {
+      "message_id": "msg_00003",
+      "role": "user",
+      "text": "还记得我吗",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T00:33:47.710381+00:00"
+    },
+    {
+      "message_id": "msg_00004",
+      "role": "assistant",
+      "text": "记得呀，你刚才在打招呼，你好！",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T00:33:58.757879+00:00"
+    },
+    {
+      "message_id": "msg_00005",
+      "role": "user",
+      "text": "你现在想继续聊什么？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T00:34:05.779613+00:00"
+    },
+    {
+      "message_id": "msg_00006",
+      "role": "assistant",
+      "text": "我都可以，看你今天想聊点轻松的，还是有什么想分享的？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T00:34:13.442461+00:00"
+    },
+    {
+      "message_id": "msg_00007",
+      "role": "user",
+      "text": "我们继续聊聊。",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T00:34:14.751694+00:00"
+    },
+    {
+      "message_id": "msg_00008",
+      "role": "assistant",
+      "text": "那最近有什么新鲜事吗？或者你感兴趣的话题，我们可以聊聊。",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T00:34:51.379140+00:00"
+    },
+    {
+      "message_id": "msg_00009",
+      "role": "user",
+      "text": "你觉得什么方法适合中国人学习英语？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T00:34:53.705353+00:00"
+    },
+    {
+      "message_id": "msg_00010",
+      "role": "assistant",
+      "text": "我觉得沉浸式学习挺有效的，比如多听英文播客、看原版影视，再配合每天坚持口语练习。关键是找到自己感兴趣的内容，让学英语变得自然一点。",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T00:35:07.830730+00:00"
+    }
+  ]
+}

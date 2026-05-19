@@ -1,0 +1,29 @@
+{
+  "status": "controlled_pass",
+  "evidence_level": "controlled_axis_v5e5",
+  "verification_level": "controlled_pass",
+  "summary": "Endogenous drives produce bounded causal influence on candidate bias and maintenance tendency in controlled proofs.",
+  "what_it_proves": [
+    "verification / conservation / repair pressure can change candidate bias terms",
+    "dominant drive and maintenance bias are not fixed constants"
+  ],
+  "what_it_does_not_prove": [
+    "live autonomy",
+    "direct transport authority",
+    "direct OpenEmotion reply authority"
+  ],
+  "sources": [
+    "OpenEmotion/artifacts/mvp14/MVP14_COMPLETION_CURRENT.json",
+    "OpenEmotion/tests/mvp14/test_drive_behavioral_influence_formal_proof.py"
+  ],
+  "details": {
+    "maintenance_mode": true,
+    "completion_boundary": {
+      "controlled_observation": true,
+      "live_autonomy": false,
+      "transport_evidence": false,
+      "direct_reply_authority": false
+    }
+  },
+  "next_step": "Inspect `/flow` canonical fields for drives_delta once live samples carry non-empty drive changes."
+}

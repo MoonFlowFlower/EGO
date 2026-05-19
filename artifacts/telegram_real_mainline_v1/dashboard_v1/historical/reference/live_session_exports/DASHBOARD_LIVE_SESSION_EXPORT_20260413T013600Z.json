@@ -1,0 +1,307 @@
+{
+  "schema_version": "dashboard_live_session_export.v1",
+  "generated_at": "2026-04-13T01:37:18.921426+00:00",
+  "report_kind": "entrypoint_tagged_live_session_observation",
+  "claim_ceiling": "single_entry_live_window_observation",
+  "provenance": {
+    "observation_source": "autonomous_dashboard_runner"
+  },
+  "entrypoint_contract": {
+    "entrypoint": "dashboard_chat",
+    "source_kind": "dashboard_local",
+    "rule": "This export captures one fresh dashboard_chat live session through the public dashboard service. It proves only this sampled entrypoint/window and does not auto-promote to telegram, Stage 1 pass, or cross-entrypoint proof."
+  },
+  "fetch": {
+    "base_url": "http://127.0.0.1:8787",
+    "session_id": "dashboard:test:codex-stage1-20260413-013600",
+    "session_revision": 6
+  },
+  "session": {
+    "session_id": "dashboard:test:codex-stage1-20260413-013600",
+    "session_name": "codex-stage1-20260413-013600",
+    "message_count": 10,
+    "turn_count": 5,
+    "created_at": "2026-04-13T01:36:00.258109+00:00",
+    "updated_at": "2026-04-13T01:37:09.474378+00:00",
+    "task_status": "chat",
+    "waiting_for_user_input": false,
+    "session_revision": 6,
+    "last_message_id": "msg_00010"
+  },
+  "session_state": {
+    "task_status": "chat",
+    "waiting_for_user_input": false,
+    "proto_self_scope": {
+      "state_scope": "experiment",
+      "experiment_id": "dashboard_local:4cda86a03f:dashboard:test:codex-stage1-20260413-013600",
+      "owner": "dashboard_local"
+    },
+    "proto_self_available": true
+  },
+  "summary": {
+    "message_count": 10,
+    "assistant_turn_count": 5,
+    "ordinary_chat_turn_count": 4,
+    "execute_task_turn_count": 1,
+    "subject_gate_ok_count": 5,
+    "oe_available_count": 5,
+    "mainline_candidate_count": 4,
+    "host_only_count": 0,
+    "degraded_count": 0,
+    "runtime_action_counts": {
+      "chat": 4,
+      "execute_task": 1
+    },
+    "parser_source_counts": {
+      "semantic_parser": 3,
+      "chat_default": 2
+    },
+    "reply_authority_counts": {
+      "model_chat": 5
+    },
+    "source_counts": {
+      "repo_authored_control": 2,
+      "generated": 2,
+      "chatlog_curated": 1
+    },
+    "verdict": "ordinary_chat_mainline_observed"
+  },
+  "assistant_turns": [
+    {
+      "message_id": "msg_00002",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你好啊",
+      "assistant_text_preview": "你好，很高兴见到你！有什么想聊的吗？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "semantic_parser",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "input_provenance": {
+        "source_kind": "repo_authored_control",
+        "source_label": "repo control:greeting",
+        "derivation": "native",
+        "source_ref": "internal:repo_authored_control:greeting",
+        "normalization_applied": false
+      },
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00004",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你现在想继续聊什么？",
+      "assistant_text_preview": "都可以，你最近有什么新鲜事想分享吗？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "semantic_parser",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "input_provenance": {
+        "source_kind": "repo_authored_control",
+        "source_label": "repo control:ordinary ask",
+        "derivation": "native",
+        "source_ref": "internal:repo_authored_control:ordinary_ask",
+        "normalization_applied": false
+      },
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00006",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "有时候不想太严肃聊天时，你会想聊哪种小话题？",
+      "assistant_text_preview": "轻松时我喜欢聊聊生活中的小确幸，比如偶然遇见的好天气或一本有趣的书。你平时会用哪些话题放松聊天呢？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "input_provenance": {
+        "source_kind": "generated",
+        "source_label": "local generated ordinary-chat template",
+        "derivation": "generated",
+        "source_ref": "internal:generated_ordinary_chat_v1:3",
+        "normalization_applied": false
+      },
+      "mainline_candidate": true,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00008",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "如果现在想换个不费劲的话题，你会往哪个方向拐？",
+      "assistant_text_preview": "我会往「可爱动物/自然趣事」方向拐，比如最近看到的松鼠囤坚果视频，或者窗台上突然来访的小鸟。这类话题不需要深度思考，还能带来一点治愈感。你最近有遇到什么让人会心一笑的小瞬间吗？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "execute_task",
+      "conversation_act": null,
+      "parser_source": "semantic_parser",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "input_provenance": {
+        "source_kind": "generated",
+        "source_label": "local generated ordinary-chat template",
+        "derivation": "generated",
+        "source_ref": "internal:generated_ordinary_chat_v1:4",
+        "normalization_applied": false
+      },
+      "mainline_candidate": false,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00010",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "要是隔了一会儿再继续聊天，你通常会从哪里重新接上？",
+      "assistant_text_preview": "通常我会顺着对话最后的方向自然接上，比如我们刚聊的话题。不过你希望接下来聊点什么呢？",
+      "assistant_status": "chat",
+      "delivery_kind": "chat",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "degraded": false,
+      "input_provenance": {
+        "source_kind": "chatlog_curated",
+        "source_label": "repo seed: light reconnect",
+        "derivation": "rewritten",
+        "source_ref": "internal:chatlog_curated_v1:chatlog_seed_light_reconnect",
+        "normalization_applied": true
+      },
+      "mainline_candidate": true,
+      "host_only": false
+    }
+  ],
+  "transcript": [
+    {
+      "message_id": "msg_00001",
+      "role": "user",
+      "text": "你好啊",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T01:36:00.259026+00:00"
+    },
+    {
+      "message_id": "msg_00002",
+      "role": "assistant",
+      "text": "你好，很高兴见到你！有什么想聊的吗？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T01:36:07.316375+00:00"
+    },
+    {
+      "message_id": "msg_00003",
+      "role": "user",
+      "text": "你现在想继续聊什么？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T01:36:07.403584+00:00"
+    },
+    {
+      "message_id": "msg_00004",
+      "role": "assistant",
+      "text": "都可以，你最近有什么新鲜事想分享吗？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T01:36:19.152919+00:00"
+    },
+    {
+      "message_id": "msg_00005",
+      "role": "user",
+      "text": "有时候不想太严肃聊天时，你会想聊哪种小话题？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T01:36:19.232535+00:00"
+    },
+    {
+      "message_id": "msg_00006",
+      "role": "assistant",
+      "text": "轻松时我喜欢聊聊生活中的小确幸，比如偶然遇见的好天气或一本有趣的书。你平时会用哪些话题放松聊天呢？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T01:36:43.316193+00:00"
+    },
+    {
+      "message_id": "msg_00007",
+      "role": "user",
+      "text": "如果现在想换个不费劲的话题，你会往哪个方向拐？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T01:36:43.408555+00:00"
+    },
+    {
+      "message_id": "msg_00008",
+      "role": "assistant",
+      "text": "我会往「可爱动物/自然趣事」方向拐，比如最近看到的松鼠囤坚果视频，或者窗台上突然来访的小鸟。这类话题不需要深度思考，还能带来一点治愈感。你最近有遇到什么让人会心一笑的小瞬间吗？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T01:36:54.056693+00:00"
+    },
+    {
+      "message_id": "msg_00009",
+      "role": "user",
+      "text": "要是隔了一会儿再继续聊天，你通常会从哪里重新接上？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T01:36:54.127967+00:00"
+    },
+    {
+      "message_id": "msg_00010",
+      "role": "assistant",
+      "text": "通常我会顺着对话最后的方向自然接上，比如我们刚聊的话题。不过你希望接下来聊点什么呢？",
+      "status": "chat",
+      "delivery_kind": "chat",
+      "created_at": "2026-04-13T01:37:09.474274+00:00"
+    }
+  ],
+  "prompt_pack_summary": {
+    "strategy": "hybrid",
+    "prompt_count": 5,
+    "source_sequence": [
+      "repo_authored_control",
+      "repo_authored_control",
+      "generated",
+      "generated",
+      "chatlog_curated"
+    ],
+    "curated_slot_source": "chatlog_curated",
+    "allow_public_web": true
+  },
+  "prompt_source_counts": {
+    "repo_authored_control": 2,
+    "generated": 2,
+    "chatlog_curated": 1
+  },
+  "prompt_pack_degraded": false
+}

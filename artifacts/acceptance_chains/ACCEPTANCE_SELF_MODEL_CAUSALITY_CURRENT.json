@@ -1,0 +1,30 @@
+{
+  "status": "controlled_pass",
+  "evidence_level": "controlled_axis_v5e5",
+  "verification_level": "controlled_pass",
+  "summary": "Self-model owner-backed causal influence is maintained on the controlled axis; live direct authority is not claimed.",
+  "what_it_proves": [
+    "self-model changes can alter downstream choice/tendency on the controlled axis",
+    "formal self-model owner remains the authority source for this capability"
+  ],
+  "what_it_does_not_prove": [
+    "direct reply authority",
+    "tool authority",
+    "unrestricted autonomy",
+    "philosophical consciousness"
+  ],
+  "sources": [
+    "OpenEmotion/artifacts/mvp13/MVP13_COMPLETION_CURRENT.json",
+    "OpenEmotion/tests/mvp13/test_behavioral_influence_formal_proof.py"
+  ],
+  "details": {
+    "maintenance_mode": true,
+    "completion_boundary": {
+      "controlled_observation": true,
+      "live_autonomy": false,
+      "transport_evidence": false,
+      "direct_reply_authority": false
+    }
+  },
+  "next_step": "Use `/flow` plus live self-model projection to inspect where the controlled capability is actually loaded in a real turn."
+}

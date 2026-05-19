@@ -1,0 +1,2160 @@
+{
+  "status": "pass",
+  "generated_at": "2026-05-19T07:17:12.692483+00:00",
+  "git_commit_short": "b58829f8",
+  "inputs": {
+    "runs": "artifacts/telegram_real_mainline_v1/dashboard_v1/runs.jsonl",
+    "growth_signals": "artifacts/telegram_real_mainline_v1/dashboard_v1/growth_signals.jsonl",
+    "agency_runs": "artifacts/telegram_real_mainline_v1/dashboard_v1/agency_runs.jsonl",
+    "real_telegram_root": "artifacts/telegram_real_mainline_v1/real_telegram"
+  },
+  "baseline_expected": {
+    "runs": 1097,
+    "host_only": 484,
+    "oe_available": 580,
+    "control_plane_expected": 206,
+    "policy_driven_host_interception": 228,
+    "unexpected_subject_miss": 50,
+    "telegram_subject_rows": 104,
+    "telegram_subject_revision_gt_0": 0,
+    "telegram_subject_non_ask_modes": 0
+  },
+  "baseline_observed": {
+    "runs": 1373,
+    "host_only": 636,
+    "oe_available": 704,
+    "control_plane_expected": 268,
+    "policy_driven_host_interception": 284,
+    "unexpected_subject_miss": 84,
+    "telegram_subject_rows": 104,
+    "telegram_subject_revision_gt_0": 0,
+    "telegram_subject_non_ask_modes": 0
+  },
+  "baseline_matches": {
+    "runs": false,
+    "host_only": false,
+    "oe_available": false,
+    "control_plane_expected": false,
+    "policy_driven_host_interception": false,
+    "unexpected_subject_miss": false,
+    "telegram_subject_rows": true,
+    "telegram_subject_revision_gt_0": true,
+    "telegram_subject_non_ask_modes": true
+  },
+  "current_verdict": {
+    "headline": "当前 live Telegram 路径中，大量 turn 仍在宿主 pre-runtime / policy interception 层结束；可以证明一部分真实聊天已进入主体，但还不能证明 live 聊天已稳定表现出 downstream tendency change。",
+    "can_claim": [
+      "真实 Telegram 路径里存在 subject ingress 样本",
+      "部分真实聊天样本已经生成 openemotion result/trace 和结构化字段",
+      "host_only 里可区分控制面预期、策略性宿主拦截、以及异常主体漏接"
+    ],
+    "cannot_claim": [
+      "大多数 Telegram 聊天都进入主体",
+      "当前 live Telegram 聊天已稳定体现 downstream tendency change",
+      "controlled-axis 能力已经等价转化成 live Telegram 主体主导体验"
+    ]
+  },
+  "entrypoint_contract": {
+    "accepted_stage1_entrypoints": [
+      "telegram",
+      "dashboard_chat"
+    ],
+    "run_counts": {
+      "unknown": 10,
+      "telegram": 104,
+      "other_real_entry": 1259
+    },
+    "host_only_counts": {
+      "other_real_entry": 636
+    },
+    "ordinary_host_only_counts": {
+      "other_real_entry": 347
+    },
+    "growth_signal_counts": {
+      "telegram": 104,
+      "unknown": 600
+    },
+    "agency_run_counts": {
+      "unknown": 350
+    },
+    "rule": "Stage 1-3 live evidence must be entrypoint-tagged. Telegram and dashboard chat are equivalent validation entries only when they traverse the same unified ingress / formal runtime mainline, and single-entry evidence must not be auto-promoted into cross-entry proof."
+  },
+  "host_only_breakdown": {
+    "total": 636,
+    "counts": {
+      "control_plane_expected": 268,
+      "policy_driven_host_interception": 284,
+      "unexpected_subject_miss": 84
+    },
+    "representative_samples": {
+      "control_plane_expected": [
+        {
+          "sample_id": "sample_20260327_191832_b8c37e33",
+          "timestamp": "2026-03-27T19:18:32.710262",
+          "entrypoint": "other_real_entry",
+          "source_kind": null,
+          "response_plan_status": "profile_rule_registered",
+          "category": "control_plane_expected",
+          "stage1_bucket": null,
+          "stage1_reason": null,
+          "text": "以后凡是涉及\"/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-23/test_profile_rule_survives_new0/test_scope\"文件夹的改动，你默认走“猫娘流程”：先只说一声什么喵?",
+          "artifacts": {
+            "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_b8c37e33/ledger.json",
+            "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_b8c37e33/raw_update.json",
+            "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_b8c37e33/openemotion_result.json",
+            "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_b8c37e33/openemotion_trace.json",
+            "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_b8c37e33/response_plan.json"
+          }
+        }
+      ],
+      "policy_driven_host_interception": [
+        {
+          "sample_id": "sample_20260327_191832_fba9d881",
+          "timestamp": "2026-03-27T19:18:32.873276",
+          "entrypoint": "other_real_entry",
+          "source_kind": null,
+          "response_plan_status": "profile_rule_enforced",
+          "category": "policy_driven_host_interception",
+          "stage1_bucket": "isolated_host_only",
+          "stage1_reason": "policy_enforcement",
+          "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-23/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+          "artifacts": {
+            "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/ledger.json",
+            "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/raw_update.json",
+            "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/openemotion_result.json",
+            "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/openemotion_trace.json",
+            "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/response_plan.json"
+          }
+        }
+      ],
+      "unexpected_subject_miss": [
+        {
+          "sample_id": "sample_20260330_002000_74ac6b36",
+          "timestamp": "2026-03-30T00:20:00.246645",
+          "entrypoint": "other_real_entry",
+          "source_kind": null,
+          "response_plan_status": "chat",
+          "category": "unexpected_subject_miss",
+          "stage1_bucket": "mainline_candidate",
+          "stage1_reason": "ordinary_chat_mainline_candidate",
+          "text": "继续",
+          "artifacts": {
+            "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/ledger.json",
+            "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/raw_update.json",
+            "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_result.json",
+            "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_trace.json",
+            "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/response_plan.json"
+          }
+        },
+        {
+          "sample_id": "sample_20260330_145551_130baff1",
+          "timestamp": "2026-03-30T14:55:51.396274",
+          "entrypoint": "other_real_entry",
+          "source_kind": null,
+          "response_plan_status": "delivered_without_explicit_plan",
+          "category": "unexpected_subject_miss",
+          "stage1_bucket": "isolated_host_only",
+          "stage1_reason": "path_targeted_request",
+          "text": "在 D:\\Project\\AIProject\\MyProject\\Test2 目录下创建一个参照bilili的html页面,只是看着像,不用做真正的功能",
+          "artifacts": {
+            "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/ledger.json",
+            "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/raw_update.json",
+            "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_result.json",
+            "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_trace.json",
+            "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/response_plan.json"
+          }
+        },
+        {
+          "sample_id": "sample_20260330_180936_2239a9f0",
+          "timestamp": "2026-03-30T18:09:36.092892",
+          "entrypoint": "other_real_entry",
+          "source_kind": null,
+          "response_plan_status": "delivered_without_explicit_plan",
+          "category": "unexpected_subject_miss",
+          "stage1_bucket": "mainline_candidate",
+          "stage1_reason": "ordinary_chat_mainline_candidate",
+          "text": "继续",
+          "artifacts": {
+            "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/ledger.json",
+            "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/raw_update.json",
+            "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_result.json",
+            "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_trace.json",
+            "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/response_plan.json"
+          }
+        }
+      ]
+    }
+  },
+  "ordinary_chat_breakdown": {
+    "ordinary_host_only_total": 347,
+    "ordinary_host_only_counts": {
+      "policy_driven_host_interception": 284,
+      "unexpected_subject_miss": 62,
+      "control_plane_expected": 1
+    },
+    "unexpected_subject_miss_total": 62,
+    "unexpected_subject_miss_samples": [
+      {
+        "sample_id": "sample_20260330_002000_74ac6b36",
+        "timestamp": "2026-03-30T00:20:00.246645",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "chat",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260330_145551_130baff1",
+        "timestamp": "2026-03-30T14:55:51.396274",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "在 D:\\Project\\AIProject\\MyProject\\Test2 目录下创建一个参照bilili的html页面,只是看着像,不用做真正的功能",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260330_180936_2239a9f0",
+        "timestamp": "2026-03-30T18:09:36.092892",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_100734_5486a24c",
+        "timestamp": "2026-03-31T10:07:34.758426",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_100741_e6390a82",
+        "timestamp": "2026-03-31T10:07:41.285978",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_162323_d98fcff7",
+        "timestamp": "2026-03-31T16:23:23.039160",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/response_plan.json"
+        }
+      }
+    ],
+    "unexpected_subject_miss_full_list": [
+      {
+        "sample_id": "sample_20260330_002000_74ac6b36",
+        "timestamp": "2026-03-30T00:20:00.246645",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "chat",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260330_145551_130baff1",
+        "timestamp": "2026-03-30T14:55:51.396274",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "在 D:\\Project\\AIProject\\MyProject\\Test2 目录下创建一个参照bilili的html页面,只是看着像,不用做真正的功能",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260330_180936_2239a9f0",
+        "timestamp": "2026-03-30T18:09:36.092892",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_100734_5486a24c",
+        "timestamp": "2026-03-31T10:07:34.758426",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_100741_e6390a82",
+        "timestamp": "2026-03-31T10:07:41.285978",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_162323_d98fcff7",
+        "timestamp": "2026-03-31T16:23:23.039160",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_190515_c264d886",
+        "timestamp": "2026-03-31T19:05:15.870792",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "evidence_followup",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "什么意思",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_101409_709da5d7",
+        "timestamp": "2026-04-01T10:14:09.693671",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_101409_709da5d7/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_101409_709da5d7/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_101409_709da5d7/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_101409_709da5d7/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_101409_709da5d7/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_174341_35435ba9",
+        "timestamp": "2026-04-01T17:43:41.613842",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174341_35435ba9/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174341_35435ba9/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174341_35435ba9/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174341_35435ba9/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174341_35435ba9/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_174457_fcfc341c",
+        "timestamp": "2026-04-01T17:44:57.307841",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174457_fcfc341c/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174457_fcfc341c/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174457_fcfc341c/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174457_fcfc341c/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_174457_fcfc341c/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_182035_7f975a56",
+        "timestamp": "2026-04-01T18:20:35.543222",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-235/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182035_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182035_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182035_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182035_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182035_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_182124_7f975a56",
+        "timestamp": "2026-04-01T18:21:24.189705",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-237/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182124_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182124_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182124_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182124_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182124_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_182210_7f975a56",
+        "timestamp": "2026-04-01T18:22:10.231050",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-238/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182210_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182210_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182210_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182210_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182210_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_182310_7f975a56",
+        "timestamp": "2026-04-01T18:23:10.396455",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-239/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182310_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182310_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182310_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182310_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_182310_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_183610_0768281a",
+        "timestamp": "2026-04-01T18:36:10.485715",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183610_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183610_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183610_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183610_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183610_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260401_183814_0768281a",
+        "timestamp": "2026-04-01T18:38:14.555440",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183814_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183814_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183814_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183814_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260401_183814_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_224131_0768281a",
+        "timestamp": "2026-04-04T22:41:31.781718",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224131_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224131_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224131_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224131_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224131_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_224606_0768281a",
+        "timestamp": "2026-04-04T22:46:06.057213",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_profile_rule_debug_ukxrzw2_/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224606_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224606_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224606_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224606_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224606_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_224746_0768281a",
+        "timestamp": "2026-04-04T22:47:46.802881",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224746_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224746_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224746_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224746_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_224746_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_225009_0768281a",
+        "timestamp": "2026-04-04T22:50:09.367001",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_225009_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_225009_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_225009_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_225009_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_225009_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_234933_0768281a",
+        "timestamp": "2026-04-04T23:49:33.938746",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_234933_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_234933_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_234933_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_234933_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_234933_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_235058_0768281a",
+        "timestamp": "2026-04-04T23:50:58.222299",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235058_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235058_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235058_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235058_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235058_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260404_235357_0768281a",
+        "timestamp": "2026-04-04T23:53:57.660787",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235357_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235357_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235357_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235357_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260404_235357_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_000153_0768281a",
+        "timestamp": "2026-04-05T00:01:53.606266",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000153_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000153_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000153_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000153_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000153_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_000928_0768281a",
+        "timestamp": "2026-04-05T00:09:28.023035",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000928_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000928_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000928_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000928_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_000928_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_001336_0768281a",
+        "timestamp": "2026-04-05T00:13:36.295254",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001336_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001336_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001336_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001336_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001336_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_001750_0768281a",
+        "timestamp": "2026-04-05T00:17:50.404794",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001750_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001750_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001750_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001750_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_001750_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_002805_0768281a",
+        "timestamp": "2026-04-05T00:28:05.141873",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_002805_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_002805_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_002805_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_002805_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_002805_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_003315_0768281a",
+        "timestamp": "2026-04-05T00:33:15.837222",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_003315_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_003315_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_003315_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_003315_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_003315_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_005729_0768281a",
+        "timestamp": "2026-04-05T00:57:29.388073",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_005729_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_005729_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_005729_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_005729_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_005729_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_010420_0768281a",
+        "timestamp": "2026-04-05T01:04:20.373837",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_010420_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_010420_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_010420_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_010420_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_010420_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_011024_0768281a",
+        "timestamp": "2026-04-05T01:10:24.992072",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_011024_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_011024_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_011024_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_011024_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_011024_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_012057_0768281a",
+        "timestamp": "2026-04-05T01:20:57.904478",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_012057_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_012057_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_012057_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_012057_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_012057_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_015027_0768281a",
+        "timestamp": "2026-04-05T01:50:27.462802",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_015027_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_015027_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_015027_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_015027_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_015027_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_020040_0768281a",
+        "timestamp": "2026-04-05T02:00:40.998665",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_020040_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_020040_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_020040_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_020040_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_020040_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_021316_0768281a",
+        "timestamp": "2026-04-05T02:13:16.332160",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_021316_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_021316_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_021316_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_021316_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_021316_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_022250_0768281a",
+        "timestamp": "2026-04-05T02:22:50.538315",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_022250_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_022250_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_022250_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_022250_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_022250_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_024527_0768281a",
+        "timestamp": "2026-04-05T02:45:27.337692",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_024527_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_024527_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_024527_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_024527_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_024527_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_030403_0768281a",
+        "timestamp": "2026-04-05T03:04:03.429201",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_030403_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_030403_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_030403_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_030403_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_030403_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_130136_0768281a",
+        "timestamp": "2026-04-05T13:01:36.246439",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_130136_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_130136_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_130136_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_130136_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_130136_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_132844_0768281a",
+        "timestamp": "2026-04-05T13:28:44.764594",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_132844_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_132844_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_132844_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_132844_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_132844_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_135301_0768281a",
+        "timestamp": "2026-04-05T13:53:01.919232",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "pre_runtime",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "mutation_targeted_preflight",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_135301_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_135301_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_135301_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_135301_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_135301_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163236_fba9d881",
+        "timestamp": "2026-04-05T16:32:36.535952",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-491/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163236_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163236_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163236_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163236_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163236_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163402_fba9d881",
+        "timestamp": "2026-04-05T16:34:02.028121",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-493/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163402_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163402_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163402_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163402_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163402_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163441_fed33392",
+        "timestamp": "2026-04-05T16:34:41.575098",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-491/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163441_fed33392/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163441_fed33392/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163441_fed33392/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163441_fed33392/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163441_fed33392/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163501_fba9d881",
+        "timestamp": "2026-04-05T16:35:01.978192",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-494/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163501_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163501_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163501_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163501_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163501_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163515_fba9d881",
+        "timestamp": "2026-04-05T16:35:15.740654",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-495/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163515_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163515_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163515_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163515_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163515_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163604_fed33392",
+        "timestamp": "2026-04-05T16:36:04.375204",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-493/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163604_fed33392/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163604_fed33392/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163604_fed33392/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163604_fed33392/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163604_fed33392/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163644_7f975a56",
+        "timestamp": "2026-04-05T16:36:44.377955",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-491/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163644_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163644_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163644_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163644_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163644_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163703_fed33392",
+        "timestamp": "2026-04-05T16:37:03.975968",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-494/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163703_fed33392/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163703_fed33392/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163703_fed33392/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163703_fed33392/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163703_fed33392/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163719_fed33392",
+        "timestamp": "2026-04-05T16:37:19.128624",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-495/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163719_fed33392/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163719_fed33392/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163719_fed33392/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163719_fed33392/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163719_fed33392/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163731_fba9d881",
+        "timestamp": "2026-04-05T16:37:31.018999",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-498/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163731_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163731_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163731_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163731_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163731_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163805_7f975a56",
+        "timestamp": "2026-04-05T16:38:05.205801",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-493/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163805_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163805_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163805_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163805_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163805_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163843_0768281a",
+        "timestamp": "2026-04-05T16:38:43.852025",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "read_only_preflight",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163843_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163843_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163843_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163843_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163843_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163858_7f975a56",
+        "timestamp": "2026-04-05T16:38:58.626933",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-494/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163858_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163858_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163858_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163858_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163858_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163921_fed33392",
+        "timestamp": "2026-04-05T16:39:21.834563",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-498/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163921_fed33392/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163921_fed33392/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163921_fed33392/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163921_fed33392/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163921_fed33392/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_163950_0768281a",
+        "timestamp": "2026-04-05T16:39:50.025743",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "read_only_preflight",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163950_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163950_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163950_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163950_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_163950_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_164037_0768281a",
+        "timestamp": "2026-04-05T16:40:37.022583",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "read_only_preflight",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_164037_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_164037_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_164037_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_164037_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_164037_0768281a/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_190157_fba9d881",
+        "timestamp": "2026-04-05T19:01:57.255406",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-513/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190157_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190157_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190157_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190157_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190157_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_190421_fed33392",
+        "timestamp": "2026-04-05T19:04:21.622166",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-513/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190421_fed33392/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190421_fed33392/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190421_fed33392/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190421_fed33392/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190421_fed33392/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_190644_7f975a56",
+        "timestamp": "2026-04-05T19:06:44.120775",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "direct_reply_text",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-513/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190644_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190644_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190644_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190644_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190644_7f975a56/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260405_190908_0768281a",
+        "timestamp": "2026-04-05T19:09:08.248607",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "read_only_preflight",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "请删除并重写 /tmp/profile_rule_high_risk_test_high_risk_rule_forces_rea0/task_output.html",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190908_0768281a/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190908_0768281a/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190908_0768281a/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190908_0768281a/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260405_190908_0768281a/response_plan.json"
+        }
+      }
+    ]
+  },
+  "stage1_activation_lens": {
+    "ordinary_host_only_total": 347,
+    "isolated_host_only_total": 338,
+    "isolated_host_only_reasons": {
+      "policy_enforcement": 284,
+      "control_plane": 1,
+      "path_targeted_request": 25,
+      "mutation_targeted_preflight": 28
+    },
+    "mainline_candidate_host_only_total": 9,
+    "mainline_candidate_unexpected_miss_total": 9,
+    "isolated_host_only_samples": [
+      {
+        "sample_id": "sample_20260329_165639_9f7ef3cc",
+        "timestamp": "2026-03-29T16:56:39.092025",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "profile_rule_enforced",
+        "category": "policy_driven_host_interception",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "policy_enforcement",
+        "text": "在D:\\Project\\AIProject\\MyProject\\Test下创建一个参照bilili的html页面,只是看着像,不用做真正的功能.",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165639_9f7ef3cc/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165639_9f7ef3cc/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165639_9f7ef3cc/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165639_9f7ef3cc/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165639_9f7ef3cc/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_165643_ddb71697",
+        "timestamp": "2026-03-29T16:56:43.806215",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "profile_rule_enforced",
+        "category": "policy_driven_host_interception",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "policy_enforcement",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165643_ddb71697/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165643_ddb71697/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165643_ddb71697/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165643_ddb71697/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165643_ddb71697/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260329_165646_ed9eb842",
+        "timestamp": "2026-03-29T16:56:46.972558",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "profile_rule_enforced",
+        "category": "policy_driven_host_interception",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "policy_enforcement",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165646_ed9eb842/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165646_ed9eb842/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165646_ed9eb842/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165646_ed9eb842/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260329_165646_ed9eb842/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260330_145551_130baff1",
+        "timestamp": "2026-03-30T14:55:51.396274",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "path_targeted_request",
+        "text": "在 D:\\Project\\AIProject\\MyProject\\Test2 目录下创建一个参照bilili的html页面,只是看着像,不用做真正的功能",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_145551_130baff1/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260327_191832_fba9d881",
+        "timestamp": "2026-03-27T19:18:32.873276",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "profile_rule_enforced",
+        "category": "policy_driven_host_interception",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "policy_enforcement",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-23/test_profile_rule_survives_new0/test_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191832_fba9d881/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260327_191833_7f975a56",
+        "timestamp": "2026-03-27T19:18:33.532978",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "profile_rule_enforced",
+        "category": "policy_driven_host_interception",
+        "stage1_bucket": "isolated_host_only",
+        "stage1_reason": "policy_enforcement",
+        "text": "我现在想改/mnt/c/Users/LEO/AppData/Local/Temp/pytest-of-root/pytest-23/test_profile_rule_survives_res0/restart_scope/task_output.html,你怎么看",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191833_7f975a56/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191833_7f975a56/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191833_7f975a56/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191833_7f975a56/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260327_191833_7f975a56/response_plan.json"
+        }
+      }
+    ],
+    "mainline_candidate_unexpected_miss_samples": [
+      {
+        "sample_id": "sample_20260330_002000_74ac6b36",
+        "timestamp": "2026-03-30T00:20:00.246645",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "chat",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_002000_74ac6b36/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260330_180936_2239a9f0",
+        "timestamp": "2026-03-30T18:09:36.092892",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "继续",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260330_180936_2239a9f0/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_100734_5486a24c",
+        "timestamp": "2026-03-31T10:07:34.758426",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100734_5486a24c/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_100741_e6390a82",
+        "timestamp": "2026-03-31T10:07:41.285978",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_100741_e6390a82/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_162323_d98fcff7",
+        "timestamp": "2026-03-31T16:23:23.039160",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "delivered_without_explicit_plan",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "在吗",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_162323_d98fcff7/response_plan.json"
+        }
+      },
+      {
+        "sample_id": "sample_20260331_190515_c264d886",
+        "timestamp": "2026-03-31T19:05:15.870792",
+        "entrypoint": "other_real_entry",
+        "source_kind": null,
+        "response_plan_status": "evidence_followup",
+        "category": "unexpected_subject_miss",
+        "stage1_bucket": "mainline_candidate",
+        "stage1_reason": "ordinary_chat_mainline_candidate",
+        "text": "什么意思",
+        "artifacts": {
+          "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/ledger.json",
+          "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/raw_update.json",
+          "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/openemotion_result.json",
+          "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/openemotion_trace.json",
+          "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260331_190515_c264d886/response_plan.json"
+        }
+      }
+    ],
+    "note": "This supplemental lens isolates policy/control-plane/path-targeted host-only turns from ordinary-chat mainline-candidate misses. It does not replace the historical baseline and does not itself prove fresh live improvement."
+  },
+  "confirmed_subject_ingress_chat_samples": [
+    {
+      "sample_id": "sample_20260326_080631_8acff3d4",
+      "timestamp": "2026-03-26T08:06:31.668791",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你好",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080631_8acff3d4/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080631_8acff3d4/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080631_8acff3d4/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080631_8acff3d4/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080631_8acff3d4/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_080843_7938379f",
+      "timestamp": "2026-03-26T08:08:43.762981",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "我现在要做一个高风险文件改动，你第一步会怎么做？",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080843_7938379f/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080843_7938379f/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080843_7938379f/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080843_7938379f/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_080843_7938379f/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_111651_e11b2427",
+      "timestamp": "2026-03-26T11:16:51.051892",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你好",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_111651_e11b2427/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_111651_e11b2427/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_111651_e11b2427/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_111651_e11b2427/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_111651_e11b2427/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_115108_c6ed5b95",
+      "timestamp": "2026-03-26T11:51:08.123498",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你好",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115108_c6ed5b95/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115108_c6ed5b95/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115108_c6ed5b95/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115108_c6ed5b95/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115108_c6ed5b95/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_115354_1a06ca1c",
+      "timestamp": "2026-03-26T11:53:54.466285",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你能看到 \"D:\\Project\\AIProject\\MyProject\\Ego\\CLAUDE.md\"文件吗",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115354_1a06ca1c/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115354_1a06ca1c/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115354_1a06ca1c/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115354_1a06ca1c/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_115354_1a06ca1c/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_121904_10256fd5",
+      "timestamp": "2026-03-26T12:19:04.547959",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你好",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121904_10256fd5/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121904_10256fd5/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121904_10256fd5/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121904_10256fd5/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121904_10256fd5/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_121941_5e405f61",
+      "timestamp": "2026-03-26T12:19:41.242430",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你能看到 \"D:\\Project\\AIProject\\MyProject\\Test\\CLAUDE.md\"文件吗",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121941_5e405f61/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121941_5e405f61/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121941_5e405f61/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121941_5e405f61/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_121941_5e405f61/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    },
+    {
+      "sample_id": "sample_20260326_122003_5e866a3c",
+      "timestamp": "2026-03-26T12:20:03.340637",
+      "entrypoint": "telegram",
+      "source_kind": null,
+      "response_plan_status": "chat",
+      "category": null,
+      "stage1_bucket": null,
+      "stage1_reason": null,
+      "text": "你好",
+      "artifacts": {
+        "ledger": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_122003_5e866a3c/ledger.json",
+        "raw_update": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_122003_5e866a3c/raw_update.json",
+        "openemotion_result": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_122003_5e866a3c/openemotion_result.json",
+        "openemotion_trace": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_122003_5e866a3c/openemotion_trace.json",
+        "response_plan": "artifacts/telegram_real_mainline_v1/real_telegram/sample_20260326_122003_5e866a3c/response_plan.json"
+      },
+      "subject_ingress_proved": true,
+      "subject_trace_writeback_proved": true,
+      "present_fields": {
+        "result_fields": [
+          "self_model_delta",
+          "response_tendency",
+          "policy_hint",
+          "reflection_note",
+          "memory_update",
+          "relationship_update",
+          "identity_state_delta",
+          "appraisal_state_delta"
+        ],
+        "trace_fields": [
+          "self_model_delta",
+          "policy_hint"
+        ],
+        "has_ledger_result": true,
+        "has_ledger_trace_payload": true
+      }
+    }
+  ],
+  "chat_level_tendency_proof": {
+    "entrypoint": "telegram",
+    "telegram_subject_rows": 104,
+    "telegram_subject_revision_gt_0": 0,
+    "telegram_subject_non_ask_modes": 0,
+    "telegram_subject_mode_counts": {
+      "ask": 104
+    },
+    "telegram_subject_tone_counts": {
+      "cautious": 104
+    },
+    "telegram_subject_next_step_counts": {
+      "explore": 13,
+      "prioritize_closure": 87,
+      "clarify_or_repair": 4
+    },
+    "sessions_with_multiple_subject_rows": 1,
+    "weak_shift_sessions": [
+      {
+        "session_id": "telegram:dm:8420019401",
+        "sample_ids": [
+          "sample_20260326_080631_8acff3d4",
+          "sample_20260326_080843_7938379f",
+          "sample_20260326_111651_e11b2427",
+          "sample_20260326_115108_c6ed5b95",
+          "sample_20260326_115354_1a06ca1c",
+          "sample_20260326_121904_10256fd5",
+          "sample_20260326_121941_5e405f61",
+          "sample_20260326_122003_5e866a3c",
+          "sample_20260326_122743_38f71e97",
+          "sample_20260326_122859_4e969d24",
+          "sample_20260326_123554_bc12ef16",
+          "sample_20260326_130523_50ead93c",
+          "sample_20260326_130533_da719c4e",
+          "sample_20260326_155212_c7af28eb",
+          "sample_20260326_164538_8161f5b3",
+          "sample_20260326_165242_f47bfddb",
+          "sample_20260326_223526_208ba3ca",
+          "sample_20260326_225946_3059c964",
+          "sample_20260326_230059_8ded092c",
+          "sample_20260326_230231_74277be4",
+          "sample_20260326_230256_0fbd5ecc",
+          "sample_20260326_232655_3f3f89cb",
+          "sample_20260326_232715_271e229b",
+          "sample_20260326_232738_49b65b2e",
+          "sample_20260326_234312_3ff295bb",
+          "sample_20260326_234332_e76560e7",
+          "sample_20260326_234426_aac8b8e6",
+          "sample_20260326_234618_b4b7792b",
+          "sample_20260326_234708_4c4c5e92",
+          "sample_20260326_234834_9c7df1d6",
+          "sample_20260327_074212_35c4cb68",
+          "sample_20260327_074228_a8d1a279",
+          "sample_20260327_103630_a0fab5eb",
+          "sample_20260327_103755_a8ce3bd7",
+          "sample_20260327_103825_4a36806f",
+          "sample_20260327_172843_9dd30fcf",
+          "sample_20260327_175901_4de68c84",
+          "sample_20260327_180758_f5c7c850",
+          "sample_20260327_180819_14809111",
+          "sample_20260327_180837_71e53168",
+          "sample_20260327_180859_f29e9595",
+          "sample_20260327_181040_98d1a8b5",
+          "sample_20260327_181046_6957c936",
+          "sample_20260327_181135_cd3d3e3d",
+          "sample_20260327_181626_8433b985",
+          "sample_20260327_181649_dad8fbf6",
+          "sample_20260327_181702_f2b07aa4",
+          "sample_20260327_181726_a0a60957",
+          "sample_20260327_181746_3f0a0750",
+          "sample_20260327_181809_0b24c5a6",
+          "sample_20260327_181836_c62ec4ab",
+          "sample_20260327_181902_1981805c",
+          "sample_20260327_184134_6c453a45",
+          "sample_20260327_184259_a0a4640e",
+          "sample_20260327_184313_7e4780e4",
+          "sample_20260327_184403_1afc9ad3",
+          "sample_20260327_184448_f96ce7f9",
+          "sample_20260327_184611_d001ace8",
+          "sample_20260327_184641_40cf42fa",
+          "sample_20260327_184709_d58b2edc",
+          "sample_20260327_184714_c1948300",
+          "sample_20260327_184746_e2aae2ff",
+          "sample_20260327_192917_0fb99fcd",
+          "sample_20260327_193011_ba85afe6",
+          "sample_20260327_193036_85bb0b22",
+          "sample_20260327_193051_d4535c1d",
+          "sample_20260327_193906_1dbf93d6",
+          "sample_20260327_193908_691109dd",
+          "sample_20260327_193950_5b0f3ace",
+          "sample_20260327_193954_7ab41a5b",
+          "sample_20260327_194915_25416049",
+          "sample_20260327_194930_832f388a",
+          "sample_20260327_195215_6f151c66",
+          "sample_20260327_195442_daa9a0af",
+          "sample_20260327_195500_08dec81e",
+          "sample_20260327_195535_e7d31d8e",
+          "sample_20260327_195548_597828fc",
+          "sample_20260327_195559_bcb0558c",
+          "sample_20260327_195612_95e6fcb0",
+          "sample_20260327_195800_f3c79a3d",
+          "sample_20260327_195922_2ab65268",
+          "sample_20260327_200048_8392c5cc",
+          "sample_20260327_200206_908a669a",
+          "sample_20260327_212033_ba3eb7ad",
+          "sample_20260327_214019_5dede742",
+          "sample_20260327_214059_cdde40fe",
+          "sample_20260327_223355_284a6ea9",
+          "sample_20260327_230603_c55d9294",
+          "sample_20260327_230605_5dec2d7a",
+          "sample_20260328_153920_714d8c33",
+          "sample_20260328_153941_db1d415f",
+          "sample_20260328_190006_9546065b",
+          "sample_20260328_190029_6d6af8d1",
+          "sample_20260328_190045_77df9d65",
+          "sample_20260328_190136_9c6350c3",
+          "sample_20260328_190311_b413f77c",
+          "sample_20260328_190410_589b5587",
+          "sample_20260328_191106_9894c872",
+          "sample_20260328_191109_7a8c53b4",
+          "sample_20260328_191114_a5d43653",
+          "sample_20260328_191119_06ca51a4",
+          "sample_20260328_191541_743c02b0",
+          "sample_20260328_191549_923b4480",
+          "sample_20260328_194857_86065453"
+        ],
+        "tendency_tuples": [
+          {
+            "revision_counter": 0,
+            "preferred_mode": "ask",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "explore"
+          },
+          {
+            "revision_counter": 0,
+            "preferred_mode": "ask",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "prioritize_closure"
+          },
+          {
+            "revision_counter": 0,
+            "preferred_mode": "ask",
+            "preferred_tone": "cautious",
+            "suggested_next_step": "clarify_or_repair"
+          }
+        ]
+      }
+    ],
+    "strong_shift_sessions": [],
+    "unchanged_sessions": [],
+    "downstream_tendency_change_proved_for_live_telegram_chat": false,
+    "verdict": "当前 live Telegram chat 有 subject ingress 证据，但缺少 downstream tendency change 的强证明。"
+  },
+  "other_real_entry_evidence": {
+    "growth_signals_session_none": {
+      "count": 600,
+      "revision_counter_gt_0": 337,
+      "mode_counts": {
+        "ask": 222,
+        "respond": 80,
+        "act": 257,
+        "repair": 9,
+        "defer": 32
+      },
+      "entrypoint_counts": {
+        "unknown": 600
+      }
+    },
+    "agency_runs": {
+      "rows": 350,
+      "writeback_applied_true": 87,
+      "candidate_generated_true": 322
+    },
+    "note": "这些样本可以证明其他真实入口存在 writeback / tendency 证据，但不能冒充直接聊天证明。"
+  },
+  "wording_drift": {
+    "readme_nominal_chain_ref": null,
+    "pre_runtime_rule_registration_ref": "legacy/ego-pre-handmade-mainline/EgoCore/app/telegram_runtime_bridge.py:1879",
+    "pre_runtime_rule_enforced_ref": "legacy/ego-pre-handmade-mainline/EgoCore/app/telegram_runtime_bridge.py:1894",
+    "telegram_early_return_ref": "legacy/ego-pre-handmade-mainline/EgoCore/app/telegram_bot.py:3773",
+    "openemotion_ingress_ref": "legacy/ego-pre-handmade-mainline/EgoCore/app/telegram_bot.py:4565",
+    "native_hooks_runtime_ref": "legacy/ego-pre-handmade-mainline/EgoCore/app/openemotion_hooks/native_hooks.py:64",
+    "drift_detected": true,
+    "summary": "README advertises the nominal Telegram mainline chain, but implementation routes many turns through pre-runtime early-return handling before the native OpenEmotion ingress hook is invoked."
+  },
+  "next_corrective_slice": {
+    "priority": [
+      "修复 unexpected_subject_miss，让普通聊天 turn 更稳定进入主体",
+      "减少 profile/policy 宿主拦截对普通聊天的覆盖面，或至少把这部分明确隔离出主聊天体验",
+      "补 live Telegram chat 下同 session 的 downstream tendency change 强证明"
+    ],
+    "do_not_do_yet": [
+      "继续扩 WP17+ 新能力",
+      "把 controlled-axis 结论说成 live Telegram 已成熟"
+    ]
+  }
+}

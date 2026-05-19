@@ -1,11 +1,14 @@
 {
-  "generated_at": "2026-03-30T01:34:57.335885+00:00",
-  "source_last_modified": 1774832222.636516,
-  "total_runs": 451,
-  "complete_runs": 177,
-  "oe_available_runs": 180,
-  "host_only_runs": 238,
+  "generated_at": "2026-04-11T06:02:46.378445+00:00",
+  "source_last_modified": 1775781331.7923496,
+  "total_runs": 1373,
+  "complete_runs": 701,
+  "oe_available_runs": 704,
+  "host_only_runs": 636,
   "failure_cases": 3,
+  "dashboard_schema_version": 2,
+  "real_user_runs": 717,
+  "fixture_like_runs": 656,
   "continuity_status": {
     "new": "direct_real",
     "restart": "cross_evidence",
@@ -13,14 +16,15 @@
   },
   "gap_type_counts": {
     "collector_timing_gap": 33,
-    "control_plane_host_only": 238,
+    "control_plane_host_only": 551,
     "replay_mismatch": 10,
     "response_plan_missing": 26,
-    "send_record_missing": 1
+    "send_record_missing": 1,
+    "unexpected_pre_runtime_intercept": 85
   },
   "plasticity_chain_count": 1,
-  "reflection_candidate_count": 152,
-  "agency_records": 33,
+  "reflection_candidate_count": 367,
+  "agency_records": 350,
   "agency_profile_scope": [
     "seed_v0_2"
   ]

@@ -1,0 +1,203 @@
+{
+  "schema_version": "dashboard_v1_artifact_manifest.v1",
+  "generated_at": "2026-05-19T07:19:38.178013+00:00",
+  "report_kind": "dashboard_v1_legacy_inventory_manifest",
+  "inventory_scope": "legacy_top_level_inventory",
+  "legacy_file_count": 39,
+  "generated_cleanup_artifacts": [
+    "artifacts/telegram_real_mainline_v1/dashboard_v1/ARTIFACT_MANIFEST_CURRENT.json",
+    "artifacts/telegram_real_mainline_v1/dashboard_v1/ARTIFACT_MANIFEST_CURRENT.md",
+    "artifacts/telegram_real_mainline_v1/dashboard_v1/DASHBOARD_STAGE1_LIVE_RUN_CURRENT.json",
+    "artifacts/telegram_real_mainline_v1/dashboard_v1/DASHBOARD_STAGE1_LIVE_RUN_CURRENT.md",
+    "artifacts/telegram_real_mainline_v1/dashboard_v1/STAGE1_ENTRYPOINT_COMPARATIVE_AUDIT_CURRENT.json",
+    "artifacts/telegram_real_mainline_v1/dashboard_v1/STAGE1_ENTRYPOINT_COMPARATIVE_AUDIT_CURRENT.md"
+  ],
+  "category_counts": {
+    "baseline_indexes": 11,
+    "current_audits": 10,
+    "bounded_preflight": 2,
+    "single_entry_live_windows": 2,
+    "acceptance_reports": 5,
+    "historical/reference": 1
+  },
+  "categories": {
+    "baseline_indexes": [
+      {
+        "name": "agency_rollup.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/agency_rollup.json",
+        "reason": "Machine-readable rollup derived from agency runs."
+      },
+      {
+        "name": "agency_runs.jsonl",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/agency_runs.jsonl",
+        "reason": "Baseline index rows for agency run observations."
+      },
+      {
+        "name": "build_meta.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/build_meta.json",
+        "reason": "Index-generation metadata for dashboard_v1."
+      },
+      {
+        "name": "continuity_observation.jsonl",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/continuity_observation.jsonl",
+        "reason": "Baseline observation index for continuity data."
+      },
+      {
+        "name": "failures.jsonl",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/failures.jsonl",
+        "reason": "Baseline failure rows for dashboard_v1."
+      },
+      {
+        "name": "failures_rollup.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/failures_rollup.json",
+        "reason": "Machine-readable failure rollup for dashboard_v1."
+      },
+      {
+        "name": "gap_summary.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/gap_summary.json",
+        "reason": "Machine-readable gap summary for dashboard_v1."
+      },
+      {
+        "name": "growth_rollup.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/growth_rollup.json",
+        "reason": "Machine-readable growth rollup for dashboard_v1."
+      },
+      {
+        "name": "growth_signals.jsonl",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/growth_signals.jsonl",
+        "reason": "Baseline index rows for growth-signal observations."
+      },
+      {
+        "name": "runs.jsonl",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/runs.jsonl",
+        "reason": "Primary baseline run index for dashboard_v1."
+      },
+      {
+        "name": "runs_rollup.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/runs_rollup.json",
+        "reason": "Machine-readable run rollup for dashboard_v1."
+      }
+    ],
+    "current_audits": [
+      {
+        "name": "LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.json",
+        "reason": "Current variability audit artifact; useful but not the Stage 1 owner slice."
+      },
+      {
+        "name": "LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_SUBJECTIVE_VARIABILITY_CURRENT.md",
+        "reason": "Markdown companion for the current subjective variability audit."
+      },
+      {
+        "name": "LIVE_CHAT_VARIABILITY_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_VARIABILITY_CURRENT.json",
+        "reason": "Current live chat variability audit artifact."
+      },
+      {
+        "name": "LIVE_CHAT_VARIABILITY_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/LIVE_CHAT_VARIABILITY_CURRENT.md",
+        "reason": "Markdown companion for the current live chat variability audit."
+      },
+      {
+        "name": "PROVIDER_RUNTIME_OPENEMOTION_E2E_GATE_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/PROVIDER_RUNTIME_OPENEMOTION_E2E_GATE_CURRENT.json",
+        "reason": "Current real-channel provider/runtime/OpenEmotion gate report."
+      },
+      {
+        "name": "PROVIDER_RUNTIME_OPENEMOTION_E2E_GATE_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/PROVIDER_RUNTIME_OPENEMOTION_E2E_GATE_CURRENT.md",
+        "reason": "Markdown companion for the current E2E gate report."
+      },
+      {
+        "name": "SUBJECT_MAINLINE_AUDIT_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/SUBJECT_MAINLINE_AUDIT_CURRENT.json",
+        "reason": "Current Stage 1 subject-mainline audit authority artifact."
+      },
+      {
+        "name": "SUBJECT_MAINLINE_AUDIT_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/SUBJECT_MAINLINE_AUDIT_CURRENT.md",
+        "reason": "Markdown companion for the current Stage 1 subject-mainline audit."
+      },
+      {
+        "name": "UNIFIED_HOST_CONTRACT_PARITY_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/UNIFIED_HOST_CONTRACT_PARITY_CURRENT.json",
+        "reason": "Current unified host contract parity audit artifact."
+      },
+      {
+        "name": "UNIFIED_HOST_CONTRACT_PARITY_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/UNIFIED_HOST_CONTRACT_PARITY_CURRENT.md",
+        "reason": "Markdown companion for the current unified host contract parity audit."
+      }
+    ],
+    "bounded_preflight": [
+      {
+        "name": "UNIFIED_INGRESS_REPLY_SAMPLE_PREFLIGHT_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/UNIFIED_INGRESS_REPLY_SAMPLE_PREFLIGHT_CURRENT.json",
+        "reason": "Bounded local readiness probe that must stay outside live baseline counts."
+      },
+      {
+        "name": "UNIFIED_INGRESS_REPLY_SAMPLE_PREFLIGHT_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/UNIFIED_INGRESS_REPLY_SAMPLE_PREFLIGHT_CURRENT.md",
+        "reason": "Markdown companion for the bounded reply-sample preflight artifact."
+      }
+    ],
+    "single_entry_live_windows": [
+      {
+        "name": "DASHBOARD_LIVE_SESSION_EXPORT_CURRENT.json",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/DASHBOARD_LIVE_SESSION_EXPORT_CURRENT.json",
+        "reason": "Fresh dashboard_chat live-window export for one sampled entrypoint."
+      },
+      {
+        "name": "DASHBOARD_LIVE_SESSION_EXPORT_CURRENT.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/DASHBOARD_LIVE_SESSION_EXPORT_CURRENT.md",
+        "reason": "Markdown companion for the live dashboard entrypoint export."
+      }
+    ],
+    "acceptance_reports": [
+      {
+        "name": "CONTINUITY_OBSERVATION_LEDGER.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/CONTINUITY_OBSERVATION_LEDGER.md",
+        "reason": "Human-readable continuity observation ledger for acceptance-facing review."
+      },
+      {
+        "name": "DATA_SCHEMA.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/DATA_SCHEMA.md",
+        "reason": "Schema reference for dashboard_v1 artifact interpretation."
+      },
+      {
+        "name": "GAP_SUMMARY.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/GAP_SUMMARY.md",
+        "reason": "Human-readable summary of known capture gaps and validation caveats."
+      },
+      {
+        "name": "README.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/README.md",
+        "reason": "Directory-level guidance for dashboard_v1 usage and claim ceiling."
+      },
+      {
+        "name": "REAL_MAINLINE_CAPTURE_STATUS.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/REAL_MAINLINE_CAPTURE_STATUS.md",
+        "reason": "Acceptance-facing capture status note for the real mainline lane."
+      }
+    ],
+    "historical/reference": [
+      {
+        "name": "PLASTICITY_REFLECTION_EVIDENCE.md",
+        "path": "artifacts/telegram_real_mainline_v1/dashboard_v1/PLASTICITY_REFLECTION_EVIDENCE.md",
+        "reason": "Historical/reference evidence note; not a current default audit surface."
+      }
+    ]
+  },
+  "unclassified_files": [
+    "STAGE3_CHAT_REPLY_ENGINE_PROBE_CURRENT.json",
+    "STAGE3_CHAT_REPLY_ENGINE_PROBE_CURRENT.md",
+    "STAGE3_STANCE_INTEGRITY_GATE_CURRENT.json",
+    "STAGE3_STANCE_INTEGRITY_GATE_CURRENT.md",
+    "STAGE3_STANCE_INTEGRITY_LIFECYCLE_CURRENT.json",
+    "STAGE3_STANCE_INTEGRITY_LIFECYCLE_CURRENT.md",
+    "STAGE3_STANCE_INTEGRITY_RUN_STATE_CURRENT.json",
+    "STAGE3_STANCE_INTEGRITY_RUN_STATE_CURRENT.md"
+  ],
+  "missing_from_inventory": []
+}

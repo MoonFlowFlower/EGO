@@ -1,0 +1,44 @@
+overall_status: satisfied
+criteria:
+  acc_scope_obeyed:
+    desc: the task stays inside the declared scope and authority boundaries
+    required: true
+    verification: manual
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/active-inference-mainline-activation/mechanism.yaml
+      - docs/codex/tasks/active-inference-mainline-activation/summary.md
+      - docs/codex/tasks/active-inference-mainline-activation/STATUS.md
+    note: "Audited repo state matches the claimed scope-bounded recovery: current surfaces state maintenance-only truth-sync and no reopened product-code or higher-gate work."
+  acc_validation_recorded:
+    desc: run the smallest truthful validation
+    required: true
+    verification: auto
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/active-inference-mainline-activation/acceptance.yaml
+      - docs/codex/tasks/active-inference-mainline-activation/STATUS.md
+      - "validation:git_diff_check=pass"
+    note: "The package records the minimal validation path, and `git diff --check -- docs/codex/tasks/active-inference-mainline-activation` is clean in the audited repo state."
+  acc_slice_built:
+    desc: the bounded feature slice is implemented or truthfully closed out
+    required: true
+    verification: auto
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/active-inference-mainline-activation/mechanism.yaml
+      - docs/codex/tasks/active-inference-mainline-activation/summary.md
+      - docs/codex/tasks/active-inference-mainline-activation/acceptance.yaml
+      - docs/codex/tasks/active-inference-mainline-activation/STATUS.md
+    note: "The assigned slice was built as a task-package-only truth-sync recovery patch that restates current status, bounded next slice, and blocker framing without widening scope."
+  acc_custom_1:
+    desc: record a truthful validation signal
+    required: true
+    verification: semi-auto
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/active-inference-mainline-activation/summary.md
+      - docs/codex/tasks/active-inference-mainline-activation/STATUS.md
+      - docs/codex/tasks/active-inference-mainline-activation/acceptance.yaml
+    note: "The audited package truthfully records the validation signal as task-package authority drift against the frozen `stage3_bounded_gate_pass__dashboard_only_closeout_frozen` authority, not as a fresh environment failure."
+last_evaluated_at: "2026-04-19T05:42:32Z"

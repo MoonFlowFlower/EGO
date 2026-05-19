@@ -1,0 +1,349 @@
+{
+  "schema_version": "dashboard_live_session_export.v1",
+  "generated_at": "2026-04-13T03:01:04.537527+00:00",
+  "report_kind": "entrypoint_tagged_live_session_observation",
+  "claim_ceiling": "single_entry_live_window_observation",
+  "provenance": {
+    "observation_source": "autonomous_dashboard_runner"
+  },
+  "entrypoint_contract": {
+    "entrypoint": "dashboard_chat",
+    "source_kind": "dashboard_local",
+    "rule": "This export captures one fresh dashboard_chat live session through the public dashboard service. It proves only this sampled entrypoint/window and does not auto-promote to telegram, Stage 1 pass, or cross-entrypoint proof."
+  },
+  "fetch": {
+    "base_url": "http://127.0.0.1:8787",
+    "session_id": "dashboard:test:codex-stage1-20260413-030103",
+    "session_revision": 6
+  },
+  "session": {
+    "session_id": "dashboard:test:codex-stage1-20260413-030103",
+    "session_name": "codex-stage1-20260413-030103",
+    "message_count": 10,
+    "turn_count": 5,
+    "created_at": "2026-04-13T03:01:04.001598+00:00",
+    "updated_at": "2026-04-13T03:01:04.423853+00:00",
+    "task_status": "idle",
+    "waiting_for_user_input": false,
+    "session_revision": 6,
+    "last_message_id": "msg_00010"
+  },
+  "session_state": {
+    "task_status": "idle",
+    "waiting_for_user_input": false,
+    "proto_self_scope": {
+      "state_scope": "experiment",
+      "experiment_id": "dashboard_local:2c46eb1e66:dashboard:test:codex-stage1-20260413-030103",
+      "owner": "dashboard_local"
+    },
+    "proto_self_available": false
+  },
+  "summary": {
+    "message_count": 10,
+    "assistant_turn_count": 5,
+    "ordinary_chat_turn_count": 5,
+    "execute_task_turn_count": 0,
+    "subject_gate_ok_count": 0,
+    "oe_available_count": 0,
+    "mainline_candidate_count": 0,
+    "host_only_count": 0,
+    "degraded_count": 0,
+    "runtime_action_counts": {
+      "chat": 5
+    },
+    "parser_source_counts": {
+      "chat_default": 5
+    },
+    "reply_authority_counts": {
+      "null": 5
+    },
+    "source_counts": {
+      "repo_authored_control": 2,
+      "generated": 2,
+      "chatlog_curated": 1
+    },
+    "verdict": "ordinary_chat_mainline_observed"
+  },
+  "tendency_summary": {
+    "signal_turn_count": 0,
+    "non_ask_tendency_count": 0,
+    "preferred_mode_counts": {},
+    "reply_mode_counts": {},
+    "revision_counter_available": false,
+    "revision_counter_reason": "Current dashboard live session export does not expose proto-self revision_counter; Stage 2 readout is limited to exported tendency signals until a dedicated revision surface is added.",
+    "verdict": "no_tendency_signal_exported"
+  },
+  "assistant_turns": [
+    {
+      "message_id": "msg_00002",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你好啊",
+      "assistant_text_preview": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "assistant_status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": false,
+      "subject_gate_reason": "hooks_disabled",
+      "oe_available": false,
+      "reply_authority": null,
+      "reply_origin": null,
+      "degraded": false,
+      "response_tendency_summary": {},
+      "chat_expression_hint": {},
+      "proto_self_response_tendency": {},
+      "preferred_mode": null,
+      "reply_mode": null,
+      "tendency_signal_present": false,
+      "non_ask_tendency": false,
+      "input_provenance": {
+        "source_kind": "repo_authored_control",
+        "source_label": "repo control:greeting",
+        "derivation": "native",
+        "source_ref": "internal:repo_authored_control:greeting",
+        "normalization_applied": false
+      },
+      "mainline_candidate": false,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00004",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "你现在想继续聊什么？",
+      "assistant_text_preview": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "assistant_status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": false,
+      "subject_gate_reason": "hooks_disabled",
+      "oe_available": false,
+      "reply_authority": null,
+      "reply_origin": null,
+      "degraded": false,
+      "response_tendency_summary": {},
+      "chat_expression_hint": {},
+      "proto_self_response_tendency": {},
+      "preferred_mode": null,
+      "reply_mode": null,
+      "tendency_signal_present": false,
+      "non_ask_tendency": false,
+      "input_provenance": {
+        "source_kind": "repo_authored_control",
+        "source_label": "repo control:ordinary ask",
+        "derivation": "native",
+        "source_ref": "internal:repo_authored_control:ordinary_ask",
+        "normalization_applied": false
+      },
+      "mainline_candidate": false,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00006",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "有时候不想太严肃聊天时，你会想聊哪种小话题？",
+      "assistant_text_preview": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "assistant_status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": false,
+      "subject_gate_reason": "hooks_disabled",
+      "oe_available": false,
+      "reply_authority": null,
+      "reply_origin": null,
+      "degraded": false,
+      "response_tendency_summary": {},
+      "chat_expression_hint": {},
+      "proto_self_response_tendency": {},
+      "preferred_mode": null,
+      "reply_mode": null,
+      "tendency_signal_present": false,
+      "non_ask_tendency": false,
+      "input_provenance": {
+        "source_kind": "generated",
+        "source_label": "local generated ordinary-chat template",
+        "derivation": "generated",
+        "source_ref": "internal:generated_ordinary_chat_v1:3",
+        "normalization_applied": false
+      },
+      "mainline_candidate": false,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00008",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "如果现在想换个不费劲的话题，你会往哪个方向拐？",
+      "assistant_text_preview": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "assistant_status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": false,
+      "subject_gate_reason": "hooks_disabled",
+      "oe_available": false,
+      "reply_authority": null,
+      "reply_origin": null,
+      "degraded": false,
+      "response_tendency_summary": {},
+      "chat_expression_hint": {},
+      "proto_self_response_tendency": {},
+      "preferred_mode": null,
+      "reply_mode": null,
+      "tendency_signal_present": false,
+      "non_ask_tendency": false,
+      "input_provenance": {
+        "source_kind": "generated",
+        "source_label": "local generated ordinary-chat template",
+        "derivation": "generated",
+        "source_ref": "internal:generated_ordinary_chat_v1:4",
+        "normalization_applied": false
+      },
+      "mainline_candidate": false,
+      "host_only": false
+    },
+    {
+      "message_id": "msg_00010",
+      "entrypoint": "dashboard_chat",
+      "source_kind": "dashboard_local",
+      "user_input": "要是隔了一会儿再继续聊天，你通常会从哪里重新接上？",
+      "assistant_text_preview": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "assistant_status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": false,
+      "subject_gate_reason": "hooks_disabled",
+      "oe_available": false,
+      "reply_authority": null,
+      "reply_origin": null,
+      "degraded": false,
+      "response_tendency_summary": {},
+      "chat_expression_hint": {},
+      "proto_self_response_tendency": {},
+      "preferred_mode": null,
+      "reply_mode": null,
+      "tendency_signal_present": false,
+      "non_ask_tendency": false,
+      "input_provenance": {
+        "source_kind": "chatlog_curated",
+        "source_label": "repo seed: light reconnect",
+        "derivation": "rewritten",
+        "source_ref": "internal:chatlog_curated_v1:chatlog_seed_light_reconnect",
+        "normalization_applied": true
+      },
+      "mainline_candidate": false,
+      "host_only": false
+    }
+  ],
+  "transcript": [
+    {
+      "message_id": "msg_00001",
+      "role": "user",
+      "text": "你好啊",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T03:01:04.003782+00:00"
+    },
+    {
+      "message_id": "msg_00002",
+      "role": "assistant",
+      "text": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "created_at": "2026-04-13T03:01:04.004682+00:00"
+    },
+    {
+      "message_id": "msg_00003",
+      "role": "user",
+      "text": "你现在想继续聊什么？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T03:01:04.104447+00:00"
+    },
+    {
+      "message_id": "msg_00004",
+      "role": "assistant",
+      "text": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "created_at": "2026-04-13T03:01:04.105391+00:00"
+    },
+    {
+      "message_id": "msg_00005",
+      "role": "user",
+      "text": "有时候不想太严肃聊天时，你会想聊哪种小话题？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T03:01:04.216094+00:00"
+    },
+    {
+      "message_id": "msg_00006",
+      "role": "assistant",
+      "text": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "created_at": "2026-04-13T03:01:04.216816+00:00"
+    },
+    {
+      "message_id": "msg_00007",
+      "role": "user",
+      "text": "如果现在想换个不费劲的话题，你会往哪个方向拐？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T03:01:04.312631+00:00"
+    },
+    {
+      "message_id": "msg_00008",
+      "role": "assistant",
+      "text": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "created_at": "2026-04-13T03:01:04.313174+00:00"
+    },
+    {
+      "message_id": "msg_00009",
+      "role": "user",
+      "text": "要是隔了一会儿再继续聊天，你通常会从哪里重新接上？",
+      "status": "received",
+      "delivery_kind": "ingress",
+      "created_at": "2026-04-13T03:01:04.423162+00:00"
+    },
+    {
+      "message_id": "msg_00010",
+      "role": "assistant",
+      "text": "subject_gate_failed：主体暂时不可用，这一步已阻断，请稍后重试。",
+      "status": "subject_gate_blocked",
+      "delivery_kind": "final",
+      "created_at": "2026-04-13T03:01:04.423815+00:00"
+    }
+  ],
+  "prompt_pack_summary": {
+    "strategy": "hybrid",
+    "prompt_count": 5,
+    "source_sequence": [
+      "repo_authored_control",
+      "repo_authored_control",
+      "generated",
+      "generated",
+      "chatlog_curated"
+    ],
+    "curated_slot_source": "chatlog_curated",
+    "allow_public_web": true
+  },
+  "prompt_source_counts": {
+    "repo_authored_control": 2,
+    "generated": 2,
+    "chatlog_curated": 1
+  },
+  "prompt_pack_degraded": false
+}

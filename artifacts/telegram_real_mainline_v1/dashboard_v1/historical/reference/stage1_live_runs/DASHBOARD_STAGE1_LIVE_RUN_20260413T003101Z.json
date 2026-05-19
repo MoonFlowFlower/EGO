@@ -1,0 +1,78 @@
+{
+  "schema_version": "dashboard_stage1_live_run.v1",
+  "generated_at": "2026-04-13T00:31:31.724190+00:00",
+  "run_started_at": "2026-04-13T00:31:01.688612+00:00",
+  "report_kind": "dashboard_stage1_autonomous_live_run",
+  "claim_ceiling": "single_entry_live_window_observation",
+  "entrypoint_contract": {
+    "entrypoint": "dashboard_chat",
+    "source_kind": "dashboard_local",
+    "rule": "This autonomous runner samples one fresh dashboard_chat live window through the public dashboard API. It proves only the sampled dashboard entrypoint/window and must not be auto-promoted to telegram, cross-entry Stage 1 pass, runtime efficacy, or consciousness-like claims."
+  },
+  "session_id": "dashboard:test:codex-stage1-20260413-003101",
+  "session_name": "codex-stage1-20260413-003101",
+  "prompt_pack_id": "stage1_dashboard_ordinary_chat_v1",
+  "transport": {
+    "create_session": "windows_curl",
+    "fallback_used": true
+  },
+  "summary": {
+    "assistant_turn_count": 1,
+    "ordinary_chat_turn_count": 1,
+    "execute_task_turn_count": 0,
+    "subject_gate_ok_count": 1,
+    "oe_available_count": 1,
+    "host_only_count": 0,
+    "degraded_count": 0,
+    "clean_live_window": false
+  },
+  "policy_contract": {
+    "single_session_rule": "Each run uses exactly one new dedicated dashboard session and never reuses dashboard:test:default.",
+    "dashboard_only_until_acceptance": true,
+    "strengthened_criteria": {
+      "host_only_count": 0,
+      "degraded_count": 0,
+      "ordinary_chat_turn_count_min": 4,
+      "subject_gate_ok_equals_assistant_turn_count": true,
+      "consecutive_runs_required": 2
+    },
+    "stop_after_same_blocker_count": 2,
+    "note": "Even repeated clean dashboard runs remain single-entry strengthened evidence and do not by themselves close Stage 1."
+  },
+  "turn_results": [
+    {
+      "prompt_id": "greeting",
+      "label": "greeting",
+      "prompt_text": "你好啊",
+      "before_revision": 1,
+      "send_transport": "windows_curl",
+      "fetch_transport": "windows_curl",
+      "send_revision": 2,
+      "observed_revision": 2,
+      "assistant_present": true,
+      "assistant_message_id": "msg_00002",
+      "assistant_status": "chat",
+      "assistant_text_preview": "你好呀，最近有什么新鲜事想聊聊吗？",
+      "source_kind": "dashboard_local",
+      "runtime_action": "chat",
+      "conversation_act": "light_chitchat",
+      "parser_source": "chat_default",
+      "subject_gate_ok": true,
+      "subject_gate_reason": "ok",
+      "oe_available": true,
+      "reply_authority": "model_chat",
+      "reply_origin": "chat_mainline",
+      "host_only": false,
+      "degraded": false
+    }
+  ],
+  "execution_verdict": "blocked_transport_error",
+  "blocker_reason": "transport_error",
+  "blocker_error": {
+    "error_code": "transport_error",
+    "status_code": null,
+    "transport": "windows_curl",
+    "message": "curl: (28) Operation timed out after 15003 milliseconds with 0 bytes received"
+  },
+  "export_artifact_path": null
+}

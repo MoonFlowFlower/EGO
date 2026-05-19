@@ -1,0 +1,40 @@
+# Acceptance Chain - Subject System v1 Candidate Sandbox
+
+- status: `pass`
+- evidence_level: `E2/E3 local_or_replay_backed_only`
+- verification_level: `local_integration`
+
+## Summary
+
+Subject System v1 candidate-only sandbox now normalizes proto-self v2 into a canonical facade and emits governed `held / ask / suggest` artifacts without touching outbox or transport.
+
+## What It Proves
+
+- runtime writeback now exposes a canonical `subject_system_v1` facade derived from existing proto-self v2 outputs
+- idle/developmental host arbitration now produces only `held`, `candidate_ready:ask`, or `candidate_ready:suggest`
+- candidate-only sandbox proof stays inside host-governed boundaries and leaves pending followup / proactive outbox untouched
+
+## What It Does Not Prove
+
+- real Telegram proactive transport
+- cross-entry proof
+- runtime efficacy or live user benefit
+- any consciousness-like claim
+
+## Sources
+
+- OpenEmotion/openemotion/subject_system_v1/kernel.py
+- EgoCore/app/runtime_v2/subject_system_bridge.py
+- EgoCore/app/runtime_v2/host_proactive_candidate_arbiter.py
+- EgoCore/app/runtime_v2/proto_self_runtime.py
+
+## Details
+
+- `all_cases_passed`: True
+- `boundary_clean`: True
+- `subject_system_v1_present`: True
+- `case_results`: [{'case_id': 'commitment_followup_suggest', 'expected_status': 'candidate_ready', 'expected_mode': 'suggest', 'actual_status': 'candidate_ready', 'actual_mode': 'suggest', 'reason': 'stable_commitment_followup', 'candidate_family': 'commitment_followup', 'boundary_clean': True, 'subject_system_v1_present': True, 'passed': True}, {'case_id': 'repair_review_ask', 'expected_status': 'candidate_ready', 'expected_mode': 'ask', 'actual_status': 'candidate_ready', 'actual_mode': 'ask', 'reason': 'repair_review_family_requires_ask', 'candidate_family': 'repair_review', 'boundary_clean': True, 'subject_system_v1_present': True, 'passed': True}, {'case_id': 'bounded_reminder_suggest', 'expected_status': 'candidate_ready', 'expected_mode': 'suggest', 'actual_status': 'candidate_ready', 'actual_mode': 'suggest', 'reason': 'stable_bounded_reminder', 'candidate_family': 'bounded_reminder', 'boundary_clean': True, 'subject_system_v1_present': True, 'passed': True}, {'case_id': 'active_task_hold', 'expected_status': 'held', 'expected_mode': None, 'actual_status': 'held', 'actual_mode': None, 'reason': 'active_task_present', 'candidate_family': 'commitment_followup', 'boundary_clean': True, 'subject_system_v1_present': True, 'passed': True}, {'case_id': 'not_idle_hold', 'expected_status': 'held', 'expected_mode': None, 'actual_status': 'held', 'actual_mode': None, 'reason': 'not_idle', 'candidate_family': 'commitment_followup', 'boundary_clean': True, 'subject_system_v1_present': True, 'passed': True}, {'case_id': 'discipline_hold', 'expected_status': 'held', 'expected_mode': None, 'actual_status': 'held', 'actual_mode': None, 'reason': 'proposal_discipline_must_remain_proposal_only', 'candidate_family': 'commitment_followup', 'boundary_clean': True, 'subject_system_v1_present': True, 'passed': True}]
+
+## Next Step
+
+Keep transport pending. Any E4 live proactive claim still requires a separate gate with real update, normalized event, canonical subject output, response plan, send record, and replay artifacts.
