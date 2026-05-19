@@ -55,6 +55,7 @@ verify_profiles:
           - scripts
           - scripts/tests
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
+          - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
 
 protected_paths:
   - EgoOperator/
@@ -64,11 +65,13 @@ protected_paths:
 
 allowed_mutation_paths:
   - .codex/project_contract.yaml
+  - .codex/autopilot/
   - .agents/skills/codex-project-autopilot/
   - AGENTS.md
   - scripts/
   - scripts/tests/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
+  - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
 
 commit_policy:
   mode: direct-main

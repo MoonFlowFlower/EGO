@@ -70,6 +70,7 @@ ISSUE_PARKED = issue(10, "Parked: WP17/MVP22 continuity lane decision gate", bod
 ISSUE_SUPPORTING = issue(6, "Supporting: repo cleanup route convergence guard", body=READY_BODY)
 ISSUE_READY = issue(17, "Codex Toolkit: cross-project devloop/autopilot control plane v1", body=READY_BODY)
 ISSUE_UNKNOWN = issue(14, "命令行工具的启用问题", body="unstructured log")
+ISSUE_L2 = issue(18, "Codex Toolkit: dirty-baseline scoped L2 single-issue executor", body=READY_BODY)
 
 
 def item(payload: dict, status: str) -> dict:
@@ -88,6 +89,7 @@ ITEMS = [
     item(ISSUE_SUPPORTING, "Todo"),
     item(ISSUE_READY, "In Progress"),
     item(ISSUE_UNKNOWN, "Todo"),
+    item(ISSUE_L2, "In Progress"),
 ]
 
 
@@ -261,6 +263,7 @@ def test_report_classifies_ready_human_aggregate_parked_supporting_and_unknown(t
     assert code == 0
     classes = {entry["number"]: entry["classification"]["class"] for entry in payload["issues"]}
     assert classes[17] == "ready"
+    assert classes[18] == "ready"
     assert classes[3] == "human_required"
     assert classes[5] == "aggregate"
     assert classes[10] == "parked"
@@ -301,10 +304,22 @@ def test_classify_issue_reads_issue_body_and_project_item(tmp_path: Path) -> Non
 
 def test_run_loop_dry_run_stops_on_dirty_unsafe_worktree(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
+    baseline = tmp_path / "missing_baseline.json"
     runner = FakeRunner(stdout=" M legacy/noise.py\n M scripts/codex_project_autopilot.py\n")
 
     code, payload = run_cli(
-        ["--contract", str(path), "run-loop", "--dry-run", "--max-issues", "3", "--max-minutes", "10"],
+        [
+            "--contract",
+            str(path),
+            "--baseline-path",
+            str(baseline),
+            "run-loop",
+            "--dry-run",
+            "--max-issues",
+            "3",
+            "--max-minutes",
+            "10",
+        ],
         fake=FakeGh(base_responses()),
         runner=runner,
     )
@@ -312,7 +327,7 @@ def test_run_loop_dry_run_stops_on_dirty_unsafe_worktree(tmp_path: Path) -> None
     assert code == 0
     assert payload["status"] == "stopped"
     assert payload["stop_reason"] == "dirty_worktree_unsafe"
-    assert payload["dirty"]["unsafe_dirty"] == 1
+    assert payload["dirty_gate"]["summary"]["unsafe_dirty"] == 1
 
 
 def test_run_loop_dry_run_plans_ready_issues_without_mutating_github(tmp_path: Path) -> None:
@@ -349,3 +364,214 @@ def test_non_ego_contract_does_not_require_egooperator_paths(tmp_path: Path) -> 
 
     assert contract.repo == "someone/other"
     assert "EgoOperator" not in encoded
+
+
+def test_baseline_records_dirty_state(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    runner = FakeRunner(stdout=" M legacy/noise.py\n M scripts/codex_project_autopilot.py\n")
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "baseline"],
+        fake=FakeGh({}),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["entry_count"] == 2
+    assert runner.calls == [("git", "status", "--short", "-uno")]
+    recorded = json.loads(baseline.read_text(encoding="utf-8"))
+    assert recorded["entry_count"] == 2
+
+
+def test_diff_scope_allows_unchanged_preexisting_dirty_outside_allowed_paths(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    runner = FakeRunner(stdout=" M legacy/noise.py\n")
+
+    run_cli(["--contract", str(path), "--baseline-path", str(baseline), "baseline"], fake=FakeGh({}), runner=runner)
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "diff-scope"],
+        fake=FakeGh({}),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["unsafe"]["count"] == 0
+    assert payload["counts"]["unchanged_preexisting"] == 1
+
+
+def test_diff_scope_separates_new_scoped_and_new_unsafe_changes(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    runner = FakeRunner(stdout="")
+    run_cli(["--contract", str(path), "--baseline-path", str(baseline), "baseline"], fake=FakeGh({}), runner=runner)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "diff-scope"],
+        fake=FakeGh({}),
+        runner=FakeRunner(stdout=" M scripts/codex_project_autopilot.py\n M legacy/new_noise.py\n"),
+    )
+
+    assert code == 0
+    assert payload["scoped"]["count"] == 1
+    assert payload["unsafe"]["count"] == 1
+    assert payload["counts"]["new_scoped"] == 1
+    assert payload["counts"]["new_unsafe"] == 1
+
+
+def test_diff_scope_marks_changed_preexisting_outside_allowed_as_unsafe(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    baseline.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "entry_count": 1,
+                "entries": [{"status": " M", "path": "legacy/noise.py", "line": " M legacy/noise.py", "signature": "old"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "diff-scope"],
+        fake=FakeGh({}),
+        runner=FakeRunner(stdout=" M legacy/noise.py\n"),
+    )
+
+    assert code == 0
+    assert payload["unsafe"]["count"] == 1
+    assert payload["counts"]["changed_preexisting_unsafe"] == 1
+
+
+def test_run_loop_with_baseline_does_not_block_on_unchanged_preexisting_dirty(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    runner = FakeRunner(stdout=" M legacy/noise.py\n")
+    run_cli(["--contract", str(path), "--baseline-path", str(baseline), "baseline"], fake=FakeGh({}), runner=runner)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "run-loop", "--dry-run", "--max-issues", "1"],
+        fake=FakeGh(base_responses()),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["planned"][0]["issue"]["number"] == 17
+
+
+def test_run_loop_with_baseline_blocks_new_out_of_scope_dirty(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    run_cli(["--contract", str(path), "--baseline-path", str(baseline), "baseline"], fake=FakeGh({}), runner=FakeRunner(stdout=""))
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "run-loop", "--dry-run"],
+        fake=FakeGh(base_responses()),
+        runner=FakeRunner(stdout=" M legacy/noise.py\n"),
+    )
+
+    assert code == 0
+    assert payload["status"] == "stopped"
+    assert payload["stop_reason"] == "dirty_scope_unsafe"
+
+
+def test_normalize_issue_dry_run_outputs_structured_body_for_command_tool_log(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    responses = base_responses()
+    responses[(
+        "issue",
+        "view",
+        "14",
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url,body",
+    )] = j(ISSUE_UNKNOWN)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "normalize-issue", "--issue", "14", "--dry-run"],
+        fake=FakeGh(responses),
+    )
+
+    assert code == 0
+    body = payload["proposed_body"]
+    assert "## Acceptance gate" in body
+    assert "## Claim ceiling" in body
+    assert "run command" in body.casefold() or "command-line" in body.casefold()
+
+
+def test_normalize_issue_without_dry_run_is_rejected(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    responses = base_responses()
+    responses[(
+        "issue",
+        "view",
+        "14",
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url,body",
+    )] = j(ISSUE_UNKNOWN)
+
+    code, payload = run_cli(["--contract", str(path), "normalize-issue", "--issue", "14"], fake=FakeGh(responses))
+
+    assert code == 2
+    assert payload["error"] == "mutation_not_implemented"
+
+
+def responses_for_issue(full_issue: dict) -> dict[tuple[str, ...], list[str] | str]:
+    responses = base_responses()
+    issue_ref = str(full_issue["number"])
+    responses[(
+        "issue",
+        "view",
+        issue_ref,
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url,body",
+    )] = j(full_issue)
+    return responses
+
+
+def test_run_once_dry_run_refuses_non_ready_issue_classes(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    cases = [
+        (ISSUE_UNKNOWN, "unknown"),
+        (ISSUE_HUMAN, "human_required"),
+        (ISSUE_BACKLOG, "aggregate"),
+        (ISSUE_PARKED, "parked"),
+        (ISSUE_SUPPORTING, "supporting"),
+    ]
+
+    for payload, expected_class in cases:
+        code, result = run_cli(
+            ["--contract", str(path), "run-once", "--issue", str(payload["number"]), "--dry-run"],
+            fake=FakeGh(responses_for_issue(payload)),
+            runner=FakeRunner(stdout=""),
+        )
+
+        assert code == 0
+        assert result["status"] == "stopped"
+        assert result["stop_reason"] == "issue_not_ready"
+        assert result["classification"]["class"] == expected_class
+
+
+def test_run_once_dry_run_plans_ready_issue_with_clean_scope(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    run_cli(["--contract", str(path), "--baseline-path", str(baseline), "baseline"], fake=FakeGh({}), runner=FakeRunner(stdout=""))
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "run-once", "--issue", "18", "--dry-run"],
+        fake=FakeGh(responses_for_issue(ISSUE_L2)),
+        runner=FakeRunner(stdout=" M scripts/codex_project_autopilot.py\n"),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["planned"][0]["step"] == "load_issue"

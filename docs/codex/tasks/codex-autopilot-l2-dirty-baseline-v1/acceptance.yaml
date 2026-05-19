@@ -1,0 +1,19 @@
+version: 1
+task: codex-autopilot-l2-dirty-baseline-v1
+github_issue: 18
+claim_ceiling: Codex autopilot L2 scoped single-issue local candidate pass
+acceptance:
+  - issue_17_closed
+  - issue_18_in_progress
+  - baseline_command_records_dirty_state
+  - baseline_avoids_full_untracked_runtime_noise_scan
+  - diff_scope_separates_preexisting_scoped_and_unsafe_changes
+  - run_once_dry_run_refuses_non_ready_issue_classes
+  - normalize_issue_dry_run_outputs_canonical_body
+  - tests_pass
+cannot_claim:
+  - full_unattended_development
+  - stable_productivity_gain
+  - runtime_efficacy
+  - live_autonomy
+  - consciousness

@@ -15,9 +15,13 @@ Use this skill when the user asks Codex to work from a task board, run semi-auto
    `python3 scripts/codex_project_autopilot.py report`
 3. Select a candidate without mutation:
    `python3 scripts/codex_project_autopilot.py plan-next`
-4. For unattended/batch requests, start with:
+4. In dirty repositories, record a local operational baseline before L2 dry-run planning:
+   `python3 scripts/codex_project_autopilot.py baseline`
+5. Inspect scoped changes against that baseline:
+   `python3 scripts/codex_project_autopilot.py diff-scope`
+6. For unattended/batch requests, run bounded dry-run planning:
    `python3 scripts/codex_project_autopilot.py run-loop --dry-run --max-issues 3 --max-minutes 10`
-5. Only move from dry-run to implementation when the selected issue is ready, local authority is clear, and the current project contract permits that autonomy level.
+7. Only move from dry-run to implementation when the selected issue is ready, local authority is clear, and the current project contract permits that autonomy level.
 
 ## Stop Conditions
 
@@ -26,6 +30,7 @@ Stop instead of acting when:
 - No project contract exists.
 - The issue is classified as `human_required`, `aggregate`, `parked`, `supporting`, `high_impact`, `blocked`, or `unknown`.
 - The worktree has unsafe dirty changes outside the contract's allowed mutation paths.
+- A dirty-baseline run shows new or changed out-of-scope paths.
 - The action would modify program state, evidence ledger, protected runtime paths, credentials, or external service settings.
 - The required verification profile is missing.
 
