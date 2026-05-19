@@ -228,8 +228,9 @@ Before any implementation:
 
 ## Skill routing
 
-- 高风险 EGO/Codex 规划、架构、agent 设计、实现顺序、记忆/权限/工具/状态决策、重复失败，或用户指出“没找到最优解 / framing 不对”时：优先使用 `ego-reflective-quality-gate`；普通小修只做轻量自检，不强制多轮 reviewer；高风险或反复失败任务在 closeout 前必须做 critic pass，subagent / reviewer 只在当前环境和用户授权允许时启用
 - EgoOperator human-trial / GitHub issue comment / test log / Project closeout / file-web_fetch-approval-memory gate repair loops：优先使用 `ego-operator-devloop`；若同时是 runtime bug / regression，再叠加 `ego-bugfix-root-cause`；若用户给出锁定实现计划，再叠加 `ego-implement-milestone`
+- 高风险 EGO/Codex 规划、架构、agent 设计、实现顺序、记忆/权限/工具/状态决策、重复失败，或用户指出“没找到最优解 / framing 不对”时：叠加使用 `ego-reflective-quality-gate`；它是 overlay gate，不替代更具体的 plan / bugfix / implementation / review skill；普通小修只做轻量自检，不强制多轮 reviewer；高风险或反复失败任务在 closeout 前必须做 critic pass，subagent / reviewer 只在当前环境和用户授权允许时启用
+- legacy EgoCore/OpenEmotion/OpenClaw 边界、owner、authority source、receipt/main-chain、enablement、trigger evidence 或跨系统漂移问题：使用 `ai-architecture-boundary`；普通 EgoOperator runtime 修复不默认触发该 skill
 - 多步骤长任务、已有 `docs/codex/tasks/<slug>/`、或 prompt 含 `LONGRUN`：优先使用 `long-run-execution`
 - 复杂、模糊、跨模块任务：优先使用 `ego-plan-from-spec`
 - 按 spec / plan / acceptance 实现明确里程碑：优先使用 `ego-implement-milestone`
@@ -237,6 +238,7 @@ Before any implementation:
 - 对照验收单、`type_verify`、release gate、admission review 做 review / verify：优先使用 `ego-review-against-acceptance`
 - 恢复上下文、继续、接着做：优先使用 `ego-resume-context`
 - 交接 / 子代理派发 / brief：显式调用 `ego-handoff-brief`
+- 用户明确点名 `$three-stage-delivery`，或任务确实需要 Plan -> Implement -> Verify -> Critic Review -> Mutation Proof -> Full Verify 的高强度交付闭环时，才使用 `three-stage-delivery`；它不覆盖上述 EGO-specific skills
 - 如果同一请求同时带有 `continue` 和明确的 bug / milestone / review / handoff 目标，优先选择更具体的 task skill；只有“恢复状态”本身是主要工作时才使用 `ego-resume-context`
 - 如果同一请求同时带有 `plan` 和 `implement`：
   - 目标或 milestone 尚未锁定时，优先使用 `ego-plan-from-spec`
