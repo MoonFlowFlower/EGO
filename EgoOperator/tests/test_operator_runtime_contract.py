@@ -176,6 +176,80 @@ class AlwaysEmptyLLM:
         return ""
 
 
+class HallucinatedApprovalThenProposalLLM:
+    provider = "fake"
+    model = "hallucinated-approval-then-proposal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "已生成待审批操作，当前不会继续调用工具。\n\n"
+                    "Pending operation approval:\n"
+                    "- id: proposal_0a1b2c3d4e5f\n"
+                    "- action: write_file\n"
+                    "- path: test/index.html\n\n"
+                    "批准执行：\n- /approve proposal_0a1b2c3d4e5f"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "unbacked_approval_repair" in joined
+        return agent.LLMChatResult(
+            content="我会改为调用真实 proposal 工具。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_real_proposal_after_hallucination",
+                    name="propose_file_write",
+                    arguments={
+                        "path": "test/index.html",
+                        "content": "<!doctype html><html><head><title>T</title></head><body>ok</body></html>",
+                        "reason": "operator requested a simple test page",
+                        "create_parents": True,
+                    },
+                )
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批写入 proposal。"
+
+
+class AlwaysHallucinatedApprovalLLM:
+    provider = "fake"
+    model = "always-hallucinated-approval"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        fake_id = "proposal_6f7e8d9c0b1a"
+        return agent.LLMChatResult(
+            content=(
+                "已生成待审批操作，当前不会继续调用工具。\n\n"
+                "Pending operation approval:\n"
+                f"- id: {fake_id}\n"
+                "- action: write_file\n"
+                "- path: test/index.html\n\n"
+                "批准执行：\n"
+                f"- /approve {fake_id}"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批写入 proposal。"
+
+
 class RateLimitedLLM:
     provider = "fake"
     model = "rate-limited"
@@ -882,6 +956,41 @@ def test_consecutive_empty_llm_response_returns_non_empty_recovery_without_side_
     assistant_messages = [message for message in runtime.memory.as_messages() if message["role"] == "assistant"]
     assert assistant_messages
     assert all(str(message.get("content", "")).strip() for message in assistant_messages)
+
+
+def test_hallucinated_approval_card_triggers_repair_and_real_proposal(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = HallucinatedApprovalThenProposalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("帮我创建 test/index.html")
+    pending = runtime.list_pending_approvals()["items"]
+
+    assert llm.calls == 2
+    assert result.external_result["status"] == "pending_approval"
+    assert len(pending) == 1
+    assert pending[0]["proposal_id"] != "proposal_0a1b2c3d4e5f"
+    assert pending[0]["path"] == "test/index.html"
+    assert "/approve proposal_0a1b2c3d4e5f" not in result.reply_text
+    assert f"/approve {pending[0]['proposal_id']}" in result.reply_text
+    assert not (tmp_path / "test" / "index.html").exists()
+
+
+def test_repeated_hallucinated_approval_card_returns_non_executable_recovery(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = AlwaysHallucinatedApprovalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("帮我创建 test/index.html")
+
+    assert llm.calls == 2
+    assert result.external_result["status"] == "unbacked_approval_claim"
+    assert "没有对应的真实 proposal" in result.reply_text
+    assert "没有执行文件创建或修改" in result.reply_text
+    assert "proposal_6f7e8d9c0b1a" in result.reply_text
+    assert "/approve proposal_6f7e8d9c0b1a" not in result.reply_text
+    assert runtime.list_pending_approvals()["count"] == 0
+    assert not (tmp_path / "test" / "index.html").exists()
 
 
 def test_provider_429_in_tool_loop_returns_chinese_error_not_nollm_fallback(tmp_path, monkeypatch):

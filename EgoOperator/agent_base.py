@@ -131,6 +131,12 @@ POSIX_ABSOLUTE_PATH_TEXT_RE = re.compile(r"(/mnt/[A-Za-z]/[A-Za-z0-9_. \-()/]+|/
 PATH_TEXT_TRAILING_CHARS = " \t\r\n\"'`，。；;：:、,.!?！？)]}>"
 GLOB_META_CHARS = "*?["
 GENERIC_PATH_INTENT_HINTS = {"", ".", "./", ".\\", "**", "**/*", "**\\*"}
+PROPOSAL_ID_TEXT_RE = re.compile(r"\bproposal_[A-Za-z0-9]+\b")
+APPROVAL_CARD_TEXT_MARKERS = (
+    "Pending operation approval:",
+    "批准执行：",
+    "已生成待审批操作",
+)
 
 
 def _coerce_local_path(path: str | Path) -> Path:
@@ -837,6 +843,7 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n15. 不要编造不存在的 skill；只能从当前可用技能列表中选择。"
         + "\n16. read_file / glob_files / grep_files 是 workspace 内只读工具；需要查看本地文件时优先使用它们，不要假装已经读取。"
         + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径；不要让子代理直接写文件，也不要在未批准时声称已写入。"
+        + "\n17a. 不得手写、伪造或猜测 Pending operation approval、proposal_id、content_sha256 或 /approve 命令；只有 propose_file_write / propose_web_fetch / propose_heartbeat 工具返回的真实 action_card 才能展示给用户。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
         + "\n20. write_file、run_command、web_fetch 是受控工具；安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch 生成可审批操作包。"
@@ -1129,6 +1136,17 @@ def _join_glob_suffix(base: Path, suffix: str) -> str:
         if part:
             current = current / part
     return str(current)
+
+
+def _extract_proposal_ids_from_text(text: str) -> List[str]:
+    return sorted(set(PROPOSAL_ID_TEXT_RE.findall(text or "")))
+
+
+def _text_claims_operation_approval(text: str) -> bool:
+    raw = text or ""
+    if any(marker in raw for marker in APPROVAL_CARD_TEXT_MARKERS):
+        return True
+    return bool(re.search(r"/approve\s+proposal_[A-Za-z0-9]+", raw))
 
 
 def _path_intent_adjustment(user_text: str, proposed_path: str) -> tuple[str, Dict[str, Any]]:
@@ -4351,6 +4369,7 @@ class AgentRuntime:
             hard_cap = max(soft_cap, int(DEFAULT_TOOL_LOOP_HARD_CAP))
             loop_idx = 0
             empty_final_repairs = 0
+            unbacked_approval_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -4408,6 +4427,36 @@ class AgentRuntime:
                             "status": "llm_empty_response",
                             "side_effects_executed": False,
                             "tool_calls": len(tool_trace),
+                        }, content, tool_trace
+
+                    approval_claim = self._detect_unbacked_approval_reply(content)
+                    if approval_claim.get("status") == "unbacked_approval_claim":
+                        if unbacked_approval_repairs < 1:
+                            unbacked_approval_repairs += 1
+                            messages.append({
+                                "role": "system",
+                                "content": (
+                                    "[unbacked_approval_repair]\n"
+                                    "The previous assistant text appeared to show a pending approval card, but no real "
+                                    "runtime proposal exists for that id. Do not invent proposal ids, content hashes, "
+                                    "or /approve commands. If a file write is needed, call propose_file_write now. "
+                                    "If you cannot call the tool, answer in Chinese that no proposal was created."
+                                ),
+                            })
+                            loop_idx += 1
+                            continue
+                        content = self._format_unbacked_approval_recovery_reply(approval_claim, tool_trace)
+                        final_action = AgentAction(
+                            action_type=ActionType.RESPOND,
+                            content=content,
+                            reason="llm_unbacked_approval_recovered",
+                        )
+                        final_gate = self.gate.check(event, final_action)
+                        return final_action, final_gate, {
+                            "status": "unbacked_approval_claim",
+                            "side_effects_executed": False,
+                            "tool_calls": len(tool_trace),
+                            "approval_claim": approval_claim,
                         }, content, tool_trace
 
                     final_action = AgentAction(
@@ -4652,6 +4701,39 @@ class AgentRuntime:
             output = last.get("output") or {}
             status = output.get("status") if isinstance(output, dict) else "unknown"
             lines.insert(2, f"最后一次工具结果：{tool_name} -> {status}。")
+        return "\n".join(lines)
+
+    def _detect_unbacked_approval_reply(self, content: str) -> Dict[str, Any]:
+        if not _text_claims_operation_approval(content):
+            return {"status": "not_applicable"}
+        ids = _extract_proposal_ids_from_text(content)
+        known_ids = set(self.permission_broker.proposals.keys())
+        unknown_ids = [proposal_id for proposal_id in ids if proposal_id not in known_ids]
+        if ids and not unknown_ids:
+            return {"status": "backed_approval_claim", "proposal_ids": ids}
+        return {
+            "status": "unbacked_approval_claim",
+            "proposal_ids": ids,
+            "unknown_proposal_ids": unknown_ids,
+            "known_pending_ids": [
+                proposal.proposal_id
+                for proposal in self.permission_broker.proposals.values()
+                if proposal.status == "pending"
+            ],
+        }
+
+    def _format_unbacked_approval_recovery_reply(
+        self,
+        approval_claim: Dict[str, Any],
+        tool_trace: List[Dict[str, Any]],
+    ) -> str:
+        unknown_ids = approval_claim.get("unknown_proposal_ids") or approval_claim.get("proposal_ids") or []
+        lines = [
+            "模型刚才生成了待审批文本，但 runtime 没有对应的真实 proposal，所以我没有把它当成可批准操作。",
+            f"可疑 proposal id：{', '.join(unknown_ids) if unknown_ids else '未提供真实 id'}。",
+            f"当前已完成工具调用：{len(tool_trace)} 次。",
+            "没有执行文件创建或修改；请重试同一句请求，我会要求模型必须调用 propose_file_write 生成真实审批项。",
+        ]
         return "\n".join(lines)
 
     def _format_llm_tool_loop_error_reply(self, exc: Exception, tool_trace: List[Dict[str, Any]]) -> str:
