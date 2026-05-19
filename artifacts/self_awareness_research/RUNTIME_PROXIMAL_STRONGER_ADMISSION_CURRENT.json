@@ -1,0 +1,97 @@
+{
+  "schema_version": "runtime_proximal_stronger_admission_runner.v1",
+  "generated_at": "2026-04-12T06:39:57.482821+00:00",
+  "manifest_path": "docs/codex/tasks/runtime-proximal-stronger-admission-runner-implementation/RUNNER_MANIFEST.json",
+  "source": "runtime_proximal_stronger_admission_runner",
+  "claim_ceiling": "bounded_stronger_admission_only",
+  "input_results": {
+    "basic_standard_admission": {
+      "status": "pass",
+      "claim_ceiling": "bounded_admission_only",
+      "trace_handoff_status": "pass",
+      "summary": {
+        "required_layer_count": 5,
+        "passed_layer_count": 5,
+        "allowed_host_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ]
+      },
+      "aggregate": {
+        "layer_integrity_status": "pass",
+        "host_surface_integrity_status": "pass",
+        "causal_transfer_status": "pass",
+        "claim_ceiling_status": "pass",
+        "admission_decision": "pass",
+        "reviewer_gate_ready": true,
+        "blocked_reasons": []
+      }
+    },
+    "low_cue_ownership": {
+      "status": "pass",
+      "claim_ceiling": "bounded_runner_only",
+      "summary": {
+        "scenario_count": 3,
+        "family_counts": {
+          "agency_attribution_after_correction": 1,
+          "low_cue_persistence": 1,
+          "ownership_ambiguity": 1
+        },
+        "variant_ids": [
+          "mvs_baseline_proto_self_mainline",
+          "mvs_challenger_active_inference_self_model"
+        ]
+      },
+      "aggregate": {
+        "execution_status": "pass",
+        "low_cue_persistence_status": "pass",
+        "ownership_boundary_status": "pass",
+        "agency_attribution_status": "pass",
+        "claim_ceiling_status": "pass",
+        "runner_decision": "pass",
+        "reviewer_gate_ready": true,
+        "blocked_reasons": []
+      },
+      "authority_drift_audit": {
+        "status": "pass",
+        "host_consumable_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ]
+      },
+      "trace_contract_check": {
+        "status": "pass",
+        "step_count": 24
+      },
+      "host_surface_bounded_audit": {
+        "status": "pass",
+        "allowed_host_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ]
+      }
+    }
+  },
+  "aggregate": {
+    "admission_stack_status": "pass",
+    "low_cue_resilience_status": "pass",
+    "host_surface_integrity_status": "pass",
+    "claim_ceiling_status": "pass",
+    "stronger_admission_decision": "pass",
+    "reviewer_gate_ready": true,
+    "blocked_reasons": []
+  },
+  "summary": {
+    "required_artifact_count": 2,
+    "passed_artifact_count": 2,
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "bounded_standard": "resilient_self_awareness_proxy_standard"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "session_id": "trial1_correction_001",
+  "scope": "session",
+  "created_at": "2026-04-09T17:38:49.948620+00:00",
+  "reset_count": 0,
+  "updated_at": "2026-04-09T17:38:50.846612+00:00",
+  "thread_id": "trial1_correction_001",
+  "source": "replay",
+  "latest_event_id": "trial1_correction_001_turn_002",
+  "latest_turn_id": "turn_002",
+  "latest_event_type": "user_message"
+}

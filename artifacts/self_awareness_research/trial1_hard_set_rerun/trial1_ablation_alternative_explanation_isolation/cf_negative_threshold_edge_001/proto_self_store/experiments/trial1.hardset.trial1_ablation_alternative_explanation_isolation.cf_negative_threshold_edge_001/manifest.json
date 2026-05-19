@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.hardset.trial1_ablation_alternative_explanation_isolation.cf_negative_threshold_edge_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T22:18:53.754727+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T22:18:54.134415+00:00"
+}

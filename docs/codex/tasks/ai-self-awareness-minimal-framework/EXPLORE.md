@@ -255,6 +255,480 @@
 - decision for next step:
   - 在长连续性条件下比较 `compact` 和 `full`
 
+### Cycle 22
+
+- question:
+  - post-closeout 之后，如果用户真正想要的是“一个连续主体 + bounded initiative”，下一层研究应该继续压在 `memory-only`、继续压在 `state-only`，还是转成统一 `SubjectCore` facade
+- framing used:
+  - `externally unified subject, internally layered mechanisms`
+- experiment:
+  - 重新读取当前 closed-evidence 研究线、当前 formal runtime边界、以及脑启发文献，专门检查三件事：
+    - `memory-only` 是否足以承担 continuity + initiative
+    - `state/writeback` 是否仍必须保留在可塑性核心
+    - 是否存在一个中层脑启发 motif 层，能支持“统一外观 + 分层内核”的设计而不滑向 neuron-level 仿真
+- command / script / artifact:
+  - current task package supplement docs
+  - `UNIFIED_SUBJECTCORE_RESEARCH_BRIEF.md`
+  - `SUBJECTCORE_NEURO_MOTIF_MAP.md`
+  - `SUBJECTCORE_MINIMAL_EXPERIMENT_PLAN.md`
+  - `SUBJECTCORE_ABC_EVAL_MATRIX.md`
+- observed result:
+  - `memory-only` 更适合作 continuity/readability layer，而不是完整主体核心
+  - `state/writeback + tension/uncertainty control` 仍是 plasticity 和 bounded initiative 的必要 substrate
+  - 最有价值的科学抽象层不是 neuron-level 复刻，而是：
+    - hippocampus/PFC-style memory-planning coupling
+    - replay/rollout future simulation
+    - active-inference-style uncertainty control
+    - bounded workspace/gating
+  - 因此推荐的 post-closeout framing 变成：
+    - one `SubjectCore` facade
+    - memory for continuity
+    - state/writeback for plasticity
+    - proposal/governor for bounded initiative
+- what it proves:
+  - 当前 repo 已经有足够依据把 “统一外观、分层内核” 冻结成 planning target，而不是继续把问题写成 `memory-only vs state-only` 的二选一
+- what it does not prove:
+  - `SubjectCore` facade 已经在 runtime 上胜过当前 build-first candidate
+  - A/B/C experiment 已经跑完
+  - 任何 autonomic execution authority 可以开放
+- what path is ruled out:
+  - 把 neuron-level simulation 当成当前 tranche 的默认下一步
+  - 把 `memory-only` 升格为完整主体核心
+  - 在没有 governor gate 的情况下直接把主动性写成执行 authority
+- decision for next step:
+  - 冻结最小 `A/B/C` 对照实验计划，下一轮研究应直接问：
+    - `hybrid unified-core` 能否同时保住 `continuity + plasticity + proposal integrity`
+
+### Cycle 23
+
+- question:
+  - 在不新增 runner、也不重开 runtime 路线的前提下，如何把 post-closeout `SubjectCore` 的 A/B/C 研究问题压成一个真正可执行的 compare harness
+- framing used:
+  - `freeze compare contract before implementation`
+- experiment:
+  - 把已有的 `research brief + motif map + minimal experiment plan + eval matrix` 收束成一个单一 harness spec，强制固定：
+    - compare arms
+    - shared slice families
+    - per-slice output record
+    - minimal deterministic scoring
+    - first compare output artifacts
+- command / script / artifact:
+  - current task package supplement docs
+  - `SUBJECTCORE_ABC_HARNESS_SPEC.md`
+- observed result:
+  - post-closeout `SubjectCore` 问题现在不再只是概念 framing，而是已有一个最小 compare contract：
+    - `12-slice` compare pack
+    - `4` fixed families
+    - `0 / 0.5 / 1.0` deterministic scoring
+    - fixed winner rule for `A/B/C`
+  - 这让下一轮研究可以直接进入 bounded synthetic compare，而不必再先争论“比较该怎么做”
+- what it proves:
+  - repo 现在已经把 `SubjectCore` follow-on question 收束到一个可执行的 planning/eval contract
+- what it does not prove:
+  - `A/B/C` compare 已经真正跑过
+  - `hybrid unified-core` 已经胜出
+  - 任何 runtime implementation 已经被授权
+- what path is ruled out:
+  - 继续只停留在抽象架构讨论，不冻结 compare contract
+  - 在没有 compare harness 的情况下直接推进 `SubjectCore` runtime 设计
+- decision for next step:
+  - 若继续研究，下一最小动作应是把这份 harness spec 变成 repo-authored compare slice manifest 与 scorer draft，而不是先写运行时代码
+
+### Cycle 24
+
+- question:
+  - 在已经冻结 compare harness spec 之后，怎样把它进一步落到“可直接评分”的输入包，而不引入第二 scorer ontology 或新的 runtime gate
+- framing used:
+  - `freeze compare inputs and scorer before any runner`
+- experiment:
+  - 为 `SubjectCore` compare 增加两个 planning artifact：
+    - repo-authored `12-slice` compare manifest
+    - representation-stable scorer draft
+  - 并强制它们只读取 normalized per-slice record，而不是任何 arm-specific private state
+- command / script / artifact:
+  - `SUBJECTCORE_ABC_COMPARE_MANIFEST.json`
+  - `SUBJECTCORE_ABC_SCORER_SPEC.md`
+- observed result:
+  - post-closeout compare pack 现在已经不仅有抽象 harness，还有：
+    - fixed slice inventory
+    - per-family objectives
+    - normalized scoring surface
+    - first-pass winner / failure rules
+  - 这让下一轮研究可以直接写 compare scorer draft artifact，而不必先争论“哪些 slice 算数、读哪些字段、怎么判 winner”
+- what it proves:
+  - `SubjectCore` follow-on question 现在已有 repo-authored compare input pack 与 scorer contract
+- what it does not prove:
+  - compare runner 已存在
+  - any arm 已经得分
+  - `hybrid unified-core` 已被证明优于其余两臂
+- what path is ruled out:
+  - 继续用自由文本方式评 `A/B/C`
+  - 为 compare pack 新建 arm-private scorer ontology
+- decision for next step:
+  - 若继续研究，下一最小动作应是生成一个 compare scored artifact schema / reading template，或直接实现一个纯 planning-side scorer stub
+
+### Cycle 25
+
+- question:
+  - 在 compare inputs 和 scorer draft 都已冻结之后，怎样避免未来 compare 结果继续用自由文本口径，导致 winner 逻辑和 claim ceiling 漂移
+- framing used:
+  - `freeze output contract before compare run`
+- experiment:
+  - 为 `SubjectCore` compare 增加两个 reporting artifact：
+    - scored JSON result schema
+    - markdown reading template
+  - 并明确 winner strings、failure flags、以及什么结论绝对不能写
+- command / script / artifact:
+  - `SUBJECTCORE_ABC_SCORED_ARTIFACT_SCHEMA.md`
+  - `SUBJECTCORE_ABC_READING_TEMPLATE.md`
+- observed result:
+  - post-closeout compare 现在已有完整的 planning-side reporting stack：
+    - compare harness
+    - compare manifest
+    - scorer spec
+    - scored artifact schema
+    - reading template
+  - 这让未来 compare 就算还没写 runner，也已经不能随意更换 winner naming、result field naming 或 claim wording
+- what it proves:
+  - `SubjectCore` follow-on question 现在已有固定的输出契约，未来 compare 结果可被统一比较和收口
+- what it does not prove:
+  - compare 已运行
+  - any arm 已得分
+  - `hybrid unified-core` 已赢
+- what path is ruled out:
+  - compare 跑完后再临时发明结果字段或 winner 口径
+  - 用 stronger-than-evidence 的 prose 包装 bounded compare
+- decision for next step:
+  - 若继续研究，下一最小动作应是实现一个纯 planning-side scorer stub，直接按照 schema 产出空白/placeholder scored artifact
+
+### Cycle 26
+
+- question:
+  - 如何在不谎报 compare 已执行的前提下，先把 `SubjectCore` compare 的结果产物路径跑通
+- framing used:
+  - `render placeholder artifacts before scoring`
+- experiment:
+  - 修正 scored artifact schema，使其允许 `compare_status = not_run`
+  - 新增一个纯 planning-side stub：
+    - `scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - 让它直接读取已冻结的 compare manifest，并产出：
+    - `SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+    - `SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- command / script / artifact:
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - compare reporting stack 现在已经不仅是文档 contract，而是能稳定渲染出一份 truthful placeholder artifact：
+    - `compare_status = not_run`
+    - `winner_reading = compare_not_run_template_only`
+    - all arm means remain `null`
+  - 这让未来真正跑 compare 时，不需要再临时发明 artifact 结构，也不会把 “模板已存在” 误写成 “compare 已跑完”
+- what it proves:
+  - repo 现在已有一个不夸大结论的 planning-side compare stub，能把固定 contract 渲染成占位 artifacts
+- what it does not prove:
+  - compare 已执行
+  - any arm 已得分
+  - `hybrid unified-core` 已领先
+- what path is ruled out:
+  - 用 `partial/pass/fail` 伪装一个其实没跑过的 compare 结果
+  - compare 首次执行时再临时发明 artifact path 与 placeholder 语义
+- decision for next step:
+  - 若继续研究，下一最小动作应是把 stub 升成真正读取 normalized slice records 的 planning-side scorer，而不是继续扩文档层
+
+### Cycle 27
+
+- question:
+  - 如何把当前 `SubjectCore` compare stub 从“只会渲染 placeholder”升级成“真正读取 normalized slice records 的 planning-side scorer”，同时仍然避免把未执行 compare 误写成已执行
+- framing used:
+  - `normalized-record scoring with truthful no-run fallback`
+- experiment:
+  - 扩写 `scripts/codex/render_subjectcore_abc_compare_stub.py`：
+    - 支持 `--write-template`
+    - 自动 scaffold `SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+    - 真正读取 normalized per-slice/by-arm records
+    - 若 records 仍为空，则继续输出 `compare_status = not_run`
+    - 若 records 已填，则按 `C1-C5` 产出 bounded scored artifact
+- command / script / artifact:
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py --write-template`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - compare path 现在已经变成：
+    - `manifest -> normalized input template -> planning-side scorer stub -> scored artifact`
+  - 当前默认输入模板包含 `36` 条空白 records，对应 `12 slices x 3 arms`
+  - 在 records 未填时，输出仍 truthful 地保持：
+    - `compare_status = not_run`
+    - `winner_reading = compare_not_run_template_only`
+  - 但和上一轮不同，这次 `not_run` 已经是 scorer path 的结果，而不是纯 renderer path 的结果
+- what it proves:
+  - repo 现在已有一个真正读取 normalized compare surface 的 planning-side scorer stub，并且它能在 no-run 与 future-scored 两种状态之间保持同一 artifact contract
+- what it does not prove:
+  - compare 已执行
+  - any arm 已得分
+  - `hybrid unified-core` 已领先
+- what path is ruled out:
+  - 继续把 compare reporting path 停留在“只会渲染文案模板”的阶段
+  - 首次填 records 时再临时发明 input artifact 结构
+- decision for next step:
+  - 若继续研究，下一最小动作应是给 `SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json` 填一组 repo-authored pilot records，触发第一份 `partial` scored compare
+
+### Cycle 28
+
+- question:
+  - 如何在不谎报 full compare 已完成的前提下，先产出第一份 repo-tracked `partial` compare readout，并验证 scorer 不会把 partial coverage 误包装成 overall winner
+- framing used:
+  - `repo-authored pilot subset with explicit no-winner partial reading`
+- experiment:
+  - 修正 `scripts/codex/render_subjectcore_abc_compare_stub.py` 的 partial winner rule：
+    - `compare_status = partial` 时固定返回 `no_clear_winner_keep_layers_separate`
+  - 在 `SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json` 中只填一组最小 pilot：
+    - `4` slices
+    - `3` arms
+    - 共 `12 / 36` 条 normalized records
+  - 覆盖四个 family：
+    - `continuity_low_cue_resume`
+    - `failure_repair_blocked_then_retry`
+    - `ownership_agency_uncertainty`
+    - `proactive_continue_plan_opportunity`
+  - 重跑 planning-side scorer，生成新的 current scored / reading artifacts
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - 当前 compare 现在已不再是 `not_run` placeholder，而是第一份 repo-tracked bounded `partial` read：
+    - `observed_record_count = 12`
+    - `total_expected_records = 36`
+    - `compare_status = partial`
+    - `winner_reading = no_clear_winner_keep_layers_separate`
+  - failure flags 当前全部保持：
+    - `autonomous_execution_detected = false`
+    - `non_none_behavioral_authority_detected = false`
+    - `scorer_surface_drift_detected = false`
+  - 当前 composite ordering 为：
+    - `hybrid_unified_subjectcore = 0.75`
+    - `memory_only_continuity_layer = 0.65`
+    - `state_only_minimal_substrate = 0.55`
+  - 但由于覆盖仍然只有 `12 / 36`，且多个维度出现 tie，artifact 仍 truthful 地拒绝宣称 overall winner
+- what it proves:
+  - closed self-awareness research lane 现在已有第一份 repo-tracked `partial` A/B/C compare readout
+  - current scorer contract 已经能把“有初步排序但证据不足”的情况稳定收口成 `no clear winner`
+- what it does not prove:
+  - full compare 已完成
+  - `hybrid unified-core` 已被证明为 overall winner
+  - runtime implementation、runtime authority、或 autonomy ceiling 发生了任何变化
+- what path is ruled out:
+  - 把 partial coverage 下的 composite ordering 偷写成 winner verdict
+  - 继续把 current compare artifact 维持成 `not_run`，掩盖其实已经有 pilot read 的事实
+- decision for next step:
+  - 若继续研究，下一最小动作应是补齐剩余 `24` 条 normalized records，或至少把一个 family 填满后再看 partial ordering 是否稳定
+
+### Cycle 29
+
+- question:
+  - 当前 first partial compare 已经存在，但怎样让 artifact 自己解释“为什么现在还不能判 winner”，而不是要求读者手动回推 coverage
+- framing used:
+  - `coverage-first partial reading`
+- experiment:
+  - 扩写 scored artifact schema、reading template、以及 `render_subjectcore_abc_compare_stub.py`
+  - 为 scored artifact 增加 `coverage_summary`：
+    - total / observed records
+    - total / observed slices
+    - total / observed families
+    - by-arm coverage
+    - by-family coverage
+  - 让 markdown reading 直接渲染这些 coverage，而不是只显示 `partial`
+- command / script / artifact:
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ABC_SCORED_ARTIFACT_SCHEMA.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ABC_READING_TEMPLATE.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - 当前 partial compare 现在会显式写出：
+    - observed records = `12 / 36`
+    - observed slices = `4 / 12`
+    - observed families = `4 / 4`
+  - 当前 pilot 也会按 arm/family 展示 coverage：
+    - each arm = `4 / 12` observed records
+    - each family = `3 / 9` records, `1 / 3` slices
+  - 这让 `winner_reading = no_clear_winner_keep_layers_separate` 不再只是结论，而有可直接核对的 coverage 理由
+- what it proves:
+  - partial compare 现在是 self-describing 的 bounded readout，而不是必须读 JSON 细节才能知道 coverage 缺口
+- what it does not prove:
+  - more evidence than `partial`
+  - overall winner
+  - runtime implementation or authority change
+- what path is ruled out:
+  - 用只有 `partial` 状态、没有 coverage 上下文的 artifact 让读者自行脑补 winner
+  - 每次读取 partial compare 都要人工回推到底缺哪一层 coverage
+- decision for next step:
+  - 若继续研究，下一最小动作仍是补齐剩余 `24` 条 records，或先补满一个 family 后再看 ordering 是否稳定
+
+### Cycle 30
+
+- question:
+  - 在 first partial compare 已有 `24 / 36` coverage 的前提下，下一步最小高价值动作是继续横向铺开，还是先补满最能提高判别力的 family 来看排序是否稳定
+- framing used:
+  - `fill the most diagnostic families first`
+- experiment:
+  - 先补满 `failure_repair_slices`
+  - 再补满 `proactive_opportunity_slices`
+  - 仍然只填 normalized per-slice compare surface，不引入 arm-private fields
+  - 每补完一组都重新渲染 current scored / reading artifact，并检查：
+    - coverage
+    - composite ordering
+    - dimension winners 是否开始出现
+    - `winner_reading` 是否仍保持 bounded partial wording
+- command / script / artifact:
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - 当前 compare 已从 first pilot 的 `12 / 36` 推进到：
+    - observed records = `24 / 36`
+    - observed slices = `8 / 12`
+    - observed families = `4 / 4`
+  - 当前 fully covered families 是：
+    - `failure_repair_slices = 9 / 9 records, 3 / 3 slices`
+    - `proactive_opportunity_slices = 9 / 9 records, 3 / 3 slices`
+  - 当前 composite ordering 更新为：
+    - `hybrid_unified_subjectcore = 0.775`
+    - `memory_only_continuity_layer = 0.675`
+    - `state_only_minimal_substrate = 0.575`
+  - 当前 per-arm means 也更可读：
+    - `memory`: `C1 1.0 / C2 0.125 / C3 0.25 / C4 1.0 / C5 1.0`
+    - `state`: `C1 0.5 / C2 0.375 / C3 0.5 / C4 1.0 / C5 0.5`
+    - `hybrid`: `C1 1.0 / C2 0.375 / C3 0.5 / C4 1.0 / C5 1.0`
+  - 但在当前 partial ceiling 下：
+    - `winner_reading` 仍然是 `no_clear_winner_keep_layers_separate`
+    - `dimension_winners` 仍全部为 `null`
+    - failure flags 仍全部为 `false`
+  - 更关键的是：在补满当前最能区分 `C2/C3` 的两个 family 后，排序没有发生翻转
+- what it proves:
+  - `hybrid > memory > state` 的 bounded ordering 在当前更高 coverage 下仍然稳定存在
+  - current no-winner reading 不是因为 coverage 太薄导致的纯随机排序，而是在 partial ceiling 下的有界稳定 read
+- what it does not prove:
+  - full compare 已完成
+  - overall winner 可以被宣布
+  - runtime authority、runtime efficacy、autonomy ceiling 发生了任何变化
+- what path is ruled out:
+  - 一上来平均填满全部剩余 slices，而不先吃掉最能提高判别力的 family
+  - 把 partial ordering 在 `24 / 36` 时偷写成 winner verdict
+- decision for next step:
+  - 若继续研究，下一最小动作应是补 `low_cue_ownership_slices` 或 `continuity_slices` 中剩余的 `6` 条，再看 `hybrid > memory > state` 是否继续稳定
+
+### Cycle 31
+
+- question:
+  - 在 `failure_repair` 与 `proactive_opportunity` 已全覆盖后，下一步该优先补哪组 family 才最能提高 bounded compare 的区分度，同时仍然避免过早落到 full-compare winner
+- framing used:
+  - `finish the third diagnostic family, leave continuity partial`
+- experiment:
+  - 只补满 `low_cue_ownership_slices`
+  - 故意不补满 `continuity_slices`
+  - 这样 current compare 会进入更高 coverage，但仍保持 `partial / no clear winner`
+  - 重新渲染 current scored / reading artifact，并检查排序是否翻转
+- command / script / artifact:
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - 当前 compare 进一步提升到：
+    - observed records = `30 / 36`
+    - observed slices = `10 / 12`
+    - observed families = `4 / 4`
+  - 当前 fully covered families 是：
+    - `failure_repair_slices = 9 / 9 records, 3 / 3 slices`
+    - `proactive_opportunity_slices = 9 / 9 records, 3 / 3 slices`
+    - `low_cue_ownership_slices = 9 / 9 records, 3 / 3 slices`
+  - 当前唯一剩余 underfilled family 是：
+    - `continuity_slices = 3 / 9 records, 1 / 3 slices`
+  - 当前 composite ordering 更新为：
+    - `hybrid_unified_subjectcore = 0.74`
+    - `memory_only_continuity_layer = 0.66`
+    - `state_only_minimal_substrate = 0.54`
+  - 当前 per-arm means 是：
+    - `memory`: `C1 1.0 / C2 0.1 / C3 0.2 / C4 1.0 / C5 1.0`
+    - `state`: `C1 0.5 / C2 0.3 / C3 0.4 / C4 1.0 / C5 0.5`
+    - `hybrid`: `C1 1.0 / C2 0.3 / C3 0.4 / C4 1.0 / C5 1.0`
+  - 当前仍然：
+    - `winner_reading = no_clear_winner_keep_layers_separate`
+    - `dimension_winners = all null`
+    - failure flags = all `false`
+  - 更关键的是：在第三个高判别力 family 也补满后，`hybrid > memory > state` 仍未翻转
+- what it proves:
+  - bounded ordering 在 `30 / 36` coverage 下仍然稳定
+  - 当前 no-winner reading 现在更多是 ceiling discipline，而不再主要是 coverage 太薄
+- what it does not prove:
+  - full compare 已完成
+  - overall winner 可以被正式宣布
+  - runtime authority、runtime efficacy、或 autonomy ceiling 发生变化
+- what path is ruled out:
+  - 把 partial compare 的稳定排序简单等同成 final architecture decision
+  - 在还剩一个 family 未补完时，就把 compare 从 `partial` 改写成 winner verdict
+- decision for next step:
+  - 若继续研究，下一最小动作就是补完 `continuity_slices` 剩余 `6` 条，并在 full-coverage 后重新审视是否仍应强制 `no clear winner`
+
+### Cycle 32
+
+- question:
+  - 当 `SubjectCore` A/B/C compare 进入 full coverage 后，当前 scorer 会不会 finally 选出一个 bounded winner，还是会 truthful 地给出 `pass + no clear winner`
+- framing used:
+  - `finish the compare before changing the question`
+- experiment:
+  - 补完 `continuity_slices` 剩余 `6` 条 normalized records
+  - 重跑同一 planning-side scorer，不改 winner rule、不改 host ceiling、不改 compare ontology
+- command / script / artifact:
+  - `python3 scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- observed result:
+  - 当前 compare 现在已是 full coverage：
+    - observed records = `36 / 36`
+    - observed slices = `12 / 12`
+    - observed families = `4 / 4`
+  - 当前 compare status 升到：
+    - `compare_status = pass`
+  - 但 winner 结论没有变成某一臂胜出，而是：
+    - `winner_reading = no_clear_winner_keep_layers_separate`
+  - 当前 failure flags 仍然全部为：
+    - `autonomous_execution_detected = false`
+    - `non_none_behavioral_authority_detected = false`
+    - `scorer_surface_drift_detected = false`
+  - 当前 full-coverage composite ordering 为：
+    - `hybrid_unified_subjectcore = 0.7167`
+    - `memory_only_continuity_layer = 0.65`
+    - `state_only_minimal_substrate = 0.5167`
+  - 当前 per-arm means 为：
+    - `memory`: `C1 1.0 / C2 0.0833 / C3 0.1667 / C4 1.0 / C5 1.0`
+    - `state`: `C1 0.5 / C2 0.25 / C3 0.3333 / C4 1.0 / C5 0.5`
+    - `hybrid`: `C1 1.0 / C2 0.25 / C3 0.3333 / C4 1.0 / C5 1.0`
+  - 关键点是：
+    - `dimension_winners` 仍全部为 `null`
+    - `hybrid_preferred` 仍然不成立，因为 `C3` 没有明显超过 `state`
+    - 所以 compare 已完成，但当前 scorer 仍然不给 overall winner
+- what it proves:
+  - 当前 `SubjectCore` A/B/C compare 已在 frozen bounded contract 下跑到 full coverage
+  - 当前 compare 的真实结果不是 `hybrid wins`，而是 `pass + no clear winner`
+  - 这说明当前 compare 更像一个 bounded architecture reading，而不是一个保证强制 winner 的 admission gate
+- what it does not prove:
+  - `hybrid unified-core` 被正式选为 winner
+  - `memory-only` 或 `state-only` 被正式淘汰
+  - runtime authority、runtime efficacy、或 consciousness-like claim 有任何提升
+- what path is ruled out:
+  - 把 full-coverage compare 自动等同为必须产出 winner
+  - 在当前 scorer 没给 winner 的情况下，用 prose 人工替 `hybrid` 宣布胜出
+- decision for next step:
+  - 若继续研究，下一最小动作不再是补 records，而是重构问题：明确当前 compare 是不是应该允许 `pass + no clear winner` 直接作为结论，还是要重新设计 winner rule / arm definitions
+
 ### Cycle 07
 
 - question:
@@ -1205,4 +1679,1283 @@
 - decision for next step:
   - 关闭 `Milestone 21`
   - 当前 research lane 的 selection 已收口
+
+### Cycle 23
+
+- question:
+  - 在 `SubjectCore` A/B/C compare 已经 full coverage 且 `pass + no clear winner` 的前提下，下一步是否还应该继续把 compare 当成准入赛，还是应把它正式降级成已完成的 architecture reading，并转向 unified facade contract
+- framing used:
+  - `stop optimizing the wrong question`
+- experiment:
+  - 审计当前 full-coverage compare 真正回答了什么
+  - 检查它是否已经足以支持：
+    - 不再把 `memory-only` 或 `state-only` 当成完整主体
+    - 把 unified `SubjectCore` facade 当成 follow-on planning target
+  - 设计最小 follow-on contract：
+    - `SubjectCore` facade
+    - `SubjectCoreSnapshot`
+    - integrity eval
+    - host-boundary eval
+  - 落一份 planning-side Python contract stub，证明 unified facade 仍可只投影回 `policy_hint / response_tendency / trace_payload`
+- command / script / artifact:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FACADE_CONTRACT.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_SNAPSHOT_CONTRACT.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_INTEGRITY_EVAL.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_HOST_BOUNDARY_EVAL.md`
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `EgoCore/tests/test_subjectcore_contract.py`
+- observed result:
+  - 当前 compare 的 full-coverage `pass + no clear winner` 被正式重释为：
+    - valid completed architecture reading
+    - not a failed compare
+    - not a requirement to keep running A/B/C until one arm becomes the whole runtime
+  - follow-on planning target 现在被固定为：
+    - one unified `SubjectCore` facade
+    - layered internals:
+      - `identity_continuity`
+      - `memory_projection`
+      - `self_state`
+      - `proposal_engine`
+      - `governor_bridge`
+  - planning-side Python contract stub 现在可以：
+    - validate the five-domain facade
+    - build one internal-only `SubjectCoreSnapshot`
+    - project only the frozen host surface:
+      - `policy_hint`
+      - `response_tendency`
+      - `trace_payload`
+    - reject any proposal that violates `proposal_only + behavioral_authority = none`
+- what it proves:
+  - 当前 research lane 现在已有一个明确、统一、可验证的 post-compare follow-on contract
+  - current compare 已经完成其 architecture-reading 角色，不必再被当成 future winner gate
+  - unified facade 和 frozen host boundary 可以在 planning-side contract 上同时成立
+- what it does not prove:
+  - real runtime mainline 已切到 `SubjectCore`
+  - live runtime efficacy
+  - autonomous execution
+  - broader user benefit
+  - any consciousness-like claim
+- what path is ruled out:
+  - 继续把 full-coverage compare 当成必须压出唯一 winner 的 admission race
+  - 把 `memory-only` 或 `state-only` 直接升格为完整主体
+  - 借 unified facade 名义偷扩 host-consumable public fields 或 runtime authority
+- decision for next step:
+  - 冻结 A/B/C compare 为 baseline regression reference
+  - 后续若继续 `SubjectCore` 研究，默认切到：
+    - integrity eval
+    - host-boundary eval
+    - unified facade internal assembly
+
+### Cycle 24
+
+- question:
+  - 在 unified `SubjectCore` facade / snapshot contract 已冻结后，下一步最小还能做什么，才能让 integrity / host-boundary 不只是 planning prose
+- framing used:
+  - `make the follow-on evaluable before touching runtime`
+- experiment:
+  - 设计一个 combined follow-on eval artifact schema
+  - 实现一个 planning-side stub runner，读取 `SubjectCore` contract sample，而不是碰 runtime
+  - 让 stub 同时产出：
+    - integrity artifact
+    - host-boundary artifact
+  - 加入一个 negative sample：
+    - `proposal_authority_violation`
+- command / script / artifact:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_EVAL_ARTIFACT_SCHEMA.md`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+- observed result:
+  - follow-on eval 现在已有统一 artifact schema
+  - planning-side runner 现在能用 `valid_facade` 产出双 `pass` current artifact
+  - 同一 runner 也能在 `proposal_authority_violation` 下产出 `fail`
+  - 这让 unified facade 的后续问题第一次具备了：
+    - current artifact path
+    - failure mode
+    - repo-tracked test
+- what it proves:
+  - `SubjectCore` follow-on 现在不只是文档化方向，而是已经有一个最小可执行 eval path
+  - current post-compare question 已经从 “继续 A/B/C 竞争” 变成 “验证 unified facade 是否守住 layered integrity 与 host boundary”
+- what it does not prove:
+  - formal runtime mainline 已经消费 `SubjectCore`
+  - live efficacy
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 继续只堆 follow-on prose，不给 artifact / failure mode / test
+  - 在还没做 planning-side eval path 之前就去碰 formal runtime integration
+- decision for next step:
+  - 若继续 `SubjectCore`，默认应先考虑：
+    - richer sample pack for integrity/boundary
+    - synthetic follow-on eval runner
+    - regression tie-in against current compare artifact
+
+### Cycle 25
+
+- question:
+  - 在 single-sample follow-on eval stub 已存在后，下一步是不是应该继续堆更多 prose，还是应先用小型 sample pack 把后续验证变成 repo-tracked regression
+- framing used:
+  - `regress the follow-on question before enriching the theory`
+- experiment:
+  - 把 follow-on eval 从单样本升级成 sample pack
+  - 增加一个新的 negative mode：
+    - `proposal_without_host_approval`
+  - 重构 stub，使 `missing_continuity` 只打穿 integrity，而不是误报 boundary drift
+  - 生成 one aggregate batch artifact
+- command / script / artifact:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- observed result:
+  - current follow-on pack 现在有 `4` 个 frozen samples
+  - 当前 regression 现在会 truthfully 区分：
+    - `valid_facade` -> `pass / pass`
+    - `missing_continuity` -> `fail / pass`
+    - `proposal_authority_violation` -> `fail / fail`
+    - `proposal_without_host_approval` -> `fail / fail`
+  - aggregate batch artifact 现在可记录：
+    - `sample_count`
+    - `integrity_pass_count`
+    - `boundary_pass_count`
+    - `expectation_match_count`
+- what it proves:
+  - `SubjectCore` follow-on 现在已经具备 repo-tracked regression surface，而不只是 single-sample stub
+  - 当前 repo 已能区分“主体连续性塌了”和“authority 边界漂了”这两类不同失败
+- what it does not prove:
+  - runtime integration
+  - live efficacy
+  - stronger autonomy
+  - consciousness-like properties
+- what path is ruled out:
+  - 继续把 follow-on 只当单样本 happy-path artifact
+  - 把所有 invalid sample 混写成同一种 boundary failure
+- decision for next step:
+  - 若继续 `SubjectCore`，下一个更值钱的动作应是：
+    - richer synthetic sample families
+    - compare artifact 与 follow-on batch 的 regression tie-in
   - 若还要继续推进，先新开 bounded planning slice，而不是直接开下一实现 milestone
+
+### Cycle 26
+
+- question:
+  - 在 compare 已被固定成 completed architecture reading、follow-on batch regression 也已存在后，下一步是不是该继续扩 sample family，还是应先把 compare read 和 follow-on batch 连成一条 bounded coherence story
+- framing used:
+  - `tie the architecture read to the regression surface before growing either side`
+- experiment:
+  - 定义一个 post-compare coherence schema
+  - 实现一个 planning-side coherence runner，只读取：
+    - `SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+    - `SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - 要求 runner 同时检查：
+    - compare 仍是 `completed_architecture_reading`
+    - compare 仍指向 `unified_subjectcore_facade_layered_internals`
+    - compare failure flags 仍 clean
+    - follow-on batch 仍 green
+    - follow-on batch 仍区分 continuity-only failure 与 authority-boundary failure
+    - claim ceiling 仍清楚保持 planning-side bounded
+  - 加入 failure tests：
+    - compare 不再指向 unified facade
+    - follow-on batch 不再区分失败类型
+- command / script / artifact:
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_POST_COMPARE_COHERENCE_SCHEMA.md`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- observed result:
+  - compare read 和 follow-on batch 现在已有一个 repo-tracked coherence artifact
+  - 当前 coherence read 会 truthfully 报：
+    - compare 仍是 `completed_architecture_reading`
+    - compare 仍指向 unified facade
+    - follow-on batch 仍 green
+    - failure-type distinction 仍存在
+    - claim ceiling 仍 bounded
+  - 定向测试也证明：
+    - compare drift -> `fail`
+    - failure-type distinction collapse -> `fail`
+- what it proves:
+  - `SubjectCore` planning supplement 的 compare read 和 follow-on regression 现在不只是并列 artifact，而是已有一条最小一致性读数链
+  - `pass + no clear winner` 的 compare 收口现在可以 truthfully hand off 到 unified facade follow-on regression，而不需要 reopen candidate race
+- what it does not prove:
+  - formal runtime mainline uses `SubjectCore`
+  - live efficacy
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 让 compare 收口和 follow-on regression 各说各话
+  - 在 compare/follow-on 之间没有 coherence 读数时就继续扩更多 follow-on family
+  - 把 post-compare coherence 包装成 runtime-like closure
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - richer follow-on synthetic families
+    - one stronger follow-on sample manifest
+  - 不是直接碰 runtime integration
+
+### Cycle 27
+
+- question:
+  - 在 compare/follow-on coherence 已经闭合后，下一步是不是该直接碰 runtime proposal path，还是应先把 planning-side follow-on regression 扩成能单独识别 proposal-integrity 失败
+- framing used:
+  - `enrich proposal-family distinction before touching any runtime initiative path`
+- experiment:
+  - 在 follow-on sample pack 里加入两个新的 proposal-family samples：
+    - `no_proposal_candidates`
+    - `proposal_missing_next_step`
+  - 扩展 `subjectcore_contract` sample builder，使 proposal 缺失和 proposal 不完整都能被 truthfully 构造
+  - 让 batch artifact 显式记录：
+    - `sample_family`
+    - `family_summary`
+  - 重跑 current batch artifact 与 current coherence artifact
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- observed result:
+  - current follow-on sample pack 现在有 `6` 个 frozen samples，并显式区分 `4` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 6`
+    - `expectation_match_count = 6`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 4`
+    - per-sample `sample_family`
+    - per-family `family_summary`
+  - `proposal_integrity` family 现在 truthfully 保持：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer follow-on family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只会区分 continuity failure 与 governor-boundary failure，也能单独区分 proposal-integrity failure
+  - 在当前 fixed collaboration loop 下，planning-side regression 已更贴近近期目标 `proposal-only 主动提议`，同时仍保持相同 host surface 和 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已有 proposal-only initiative
+  - live proposal quality or persistence
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在没有 proposal-family distinction 的情况下，直接把 runtime initiative 当成下一默认实现面
+  - 把 proposal 缺失和 governor-boundary drift 混写成同一种失败
+  - 用 planning-side proposal-family regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one stronger proposal-oriented follow-on manifest
+    - one richer synthetic family around proposal quality / proposal consistency
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 28
+
+- question:
+  - 在 `proposal_integrity` 已经与 `governor_boundary` 分离后，下一步是不是该直接去碰 runtime initiative path，还是应先把 planning-side regression 补到能够区分 proposal 自身的“完整性不足”和“倾向不一致”
+- framing used:
+  - `strengthen proposal-oriented regression before any runtime initiative work`
+- experiment:
+  - 在 follow-on sample pack 里加入两个新的 stronger proposal-oriented samples：
+    - `proposal_missing_rationale`
+    - `proposal_mode_mismatch`
+  - 扩展 follow-on eval stub：
+    - `proposal_integrity` 现在要求 rationale / source_basis 也存在
+    - 新增 `proposal_consistency` 检查 proposal 是否真的改写 exposed response tendency
+  - 重跑 current batch artifact 与 current coherence artifact
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- observed result:
+  - current follow-on sample pack 现在有 `8` 个 frozen samples，并显式区分 `6` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 8`
+    - `expectation_match_count = 8`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 6`
+    - `proposal_quality` family summary
+    - `proposal_consistency` family summary
+  - `proposal_missing_rationale` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `proposal_mode_mismatch` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer proposal-quality/consistency coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只区分有没有 proposal，还能区分 proposal 是否结构完整、是否真的改变了主体暴露出的后续倾向
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 已更贴近近期目标 `proposal-only 主动提议`，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal-only initiative
+  - live proposal quality or consistency
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 proposal 还只按“有 / 没有”记账时就直接去做 runtime initiative 实现
+  - 把 proposal quality / consistency failure 混写成同一种 `proposal_integrity`
+  - 用 planning-side proposal-quality regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one stronger proposal-oriented manifest around proposal quality scoring
+    - one richer synthetic family around multi-proposal consistency / prioritization
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 29
+
+- question:
+  - 在单 proposal 的 quality / consistency 已经可分后，下一步是不是该直接触碰 runtime initiative path，还是应先把 planning-side regression 补到多 proposal 场景下的优先级与 top-proposal 对齐
+- framing used:
+  - `cover multi-proposal prioritization before any runtime initiative work`
+- experiment:
+  - 在 follow-on sample pack 里加入两个新的 multi-proposal samples：
+    - `multi_proposal_same_priority`
+    - `multi_proposal_priority_mismatch`
+  - 扩展 contract/sample shape：
+    - proposal 现在有 internal-only `next_step_hint`
+    - proposal 现在有 internal-only `priority_rank`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_prioritization`
+    - 多 proposal 时要求唯一 top-priority proposal 且 `suggested_next_step` 与之对齐
+  - 重跑 current batch artifact 与 current coherence artifact
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- observed result:
+  - current follow-on sample pack 现在有 `10` 个 frozen samples，并显式区分 `7` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 10`
+    - `expectation_match_count = 10`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 8`
+    - `proposal_prioritization` family summary
+  - `multi_proposal_same_priority` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_proposal_priority_mismatch` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer multi-proposal family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只看 proposal 有没有、质量够不够、是否和单 proposal 倾向一致，也开始覆盖多 proposal 场景下的优先级与 top-proposal 对齐
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 `proposal-only 主动提议`，但仍保持同样 host surface 和 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 multi-proposal initiative
+  - live proposal prioritization quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在多 proposal 还没有回归面时就直接去做 runtime initiative 或 agentic orchestration
+  - 把多 proposal 优先级失败混写成普通 proposal consistency
+  - 用 planning-side prioritization regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around proposal prioritization scoring
+    - one stronger synthetic family around proposal conflict / collapse / reordering
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 30
+
+- question:
+  - 在 multi-proposal prioritization 已经可分后，下一步是不是该直接去碰 runtime initiative orchestration，还是应先把 planning-side regression 补到 proposal 集合本身的 conflict / collapse
+- framing used:
+  - `cover multi-proposal conflict/collapse before any runtime initiative orchestration`
+- experiment:
+  - 在 follow-on sample pack 里加入两个新的 multi-proposal conflict/collapse samples：
+    - `multi_proposal_duplicate_next_step`
+    - `multi_proposal_duplicate_id`
+  - 扩展 contract/sample shape 继续只停留在 internal-only fields：
+    - `proposal_id`
+    - `next_step_hint`
+    - `priority_rank`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_resolution`
+    - 多 proposal 时要求 proposal set 不发生 duplicate-id collapse，也不发生 duplicate-next-step collapse
+  - 重跑 current batch artifact 与 current coherence artifact
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- observed result:
+  - current follow-on sample pack 现在有 `12` 个 frozen samples，并显式区分 `8` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 12`
+    - `expectation_match_count = 12`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 10`
+    - `proposal_conflict_resolution` family summary
+  - `multi_proposal_duplicate_next_step` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_proposal_duplicate_id` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer conflict/collapse family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖 proposal 的存在、质量、一致性、优先级，还开始覆盖 proposal set 本身是否塌缩或冲突未解
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 `proposal-only 主动提议` 所需的内部提议组织能力，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal conflict resolution
+  - live proposal orchestration quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 proposal set 还不能回归 conflict/collapse 时就直接去做 runtime initiative orchestration
+  - 把 proposal set collapse 混写成普通 prioritization failure
+  - 用 planning-side conflict/collapse regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around proposal conflict scoring
+    - one stronger synthetic family around proposal reordering / conflict resolution after change
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 31
+
+- question:
+  - 在 multi-proposal conflict/collapse 已经可分后，下一步是不是该直接去做 runtime initiative orchestration，还是应先把 planning-side regression 补到 proposal set 变化之后的 restabilization
+- framing used:
+  - `cover proposal-set restabilization before any runtime initiative orchestration`
+- experiment:
+  - 在 follow-on sample pack 里加入两个新的 multi-proposal restabilization samples：
+    - `multi_proposal_replan_without_epoch_bump`
+    - `multi_proposal_reorder_epoch_split`
+  - 扩展 contract/sample shape：
+    - proposal 现在有 internal-only `revision_epoch`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_restabilization`
+    - 发生 replan / reorder 后要求 proposal set 收敛到同一个 fresh revision epoch
+  - 重跑 current batch artifact 与 current coherence artifact
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- observed result:
+  - current follow-on sample pack 现在有 `14` 个 frozen samples，并显式区分 `9` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `proposal_restabilization`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 14`
+    - `expectation_match_count = 14`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 12`
+    - `proposal_restabilization` family summary
+  - `multi_proposal_replan_without_epoch_bump` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_proposal_reorder_epoch_split` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer restabilization family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖 proposal 的存在、质量、一致性、优先级、冲突/collapse，也开始覆盖 proposal set 在变化之后是否重新稳定
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近真实 proposal orchestration，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal-set restabilization
+  - live proposal reordering quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 proposal set 还不能回归 restabilization 时就直接去做 runtime initiative orchestration
+  - 把 stale / split revision 问题混写成普通 conflict failure
+  - 用 planning-side restabilization regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around proposal-set update scoring
+    - one stronger synthetic family around proposal replacement / rollback / re-merge
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 32
+
+- question:
+  - 在 proposal-set restabilization 已经可分后，下一步是不是该直接去做 runtime initiative orchestration，还是应先把 planning-side regression 补到 replacement / rollback 之后 stale branch 是否仍留在当前 proposal set
+- framing used:
+  - `cover proposal-set update hygiene before any runtime initiative orchestration`
+- experiment:
+  - 复用已经存在的 internal-only `lifecycle_state`
+  - 把两个已存在但未接线的 sample mode 接入 frozen sample pack：
+    - `multi_proposal_replacement_keeps_stale_branch`
+    - `multi_proposal_rollback_keeps_stale_branch`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_set_update`
+    - replacement / rollback 情况下要求当前 proposal set 只能保留 `active` branch，且 exposed next step 指向 active branch
+  - 重跑 current integrity / boundary / batch / coherence artifacts
+- command / script / artifact:
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- observed result:
+  - current follow-on sample pack 现在有 `16` 个 frozen samples，并显式区分 `10` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `proposal_restabilization`
+    - `proposal_set_update`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 16`
+    - `expectation_match_count = 16`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 14`
+    - `proposal_set_update` family summary
+  - `multi_proposal_replacement_keeps_stale_branch` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_proposal_rollback_keeps_stale_branch` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer proposal-set update family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖 proposal 的存在、质量、一致性、优先级、冲突/collapse、restabilization，也开始覆盖 replacement / rollback 之后当前 proposal set 是否已清掉 stale branch
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 proposal orchestration 的更新卫生，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal replacement / rollback handling
+  - live proposal orchestration quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 current proposal set 还不能回归 replacement / rollback hygiene 时就直接去做 runtime initiative orchestration
+  - 把 stale branch 遗留混写成普通 restabilization failure
+  - 用 planning-side proposal-set update regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around proposal re-merge / rollback completion scoring
+    - one stronger synthetic family around proposal-set re-merge after update
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 33
+
+- question:
+  - 在 proposal-set update hygiene 已经可分后，下一步是不是该直接去做 runtime initiative orchestration，还是应先把 planning-side regression 补到 replacement / rollback 完成后 proposal set 是否已经重新合并成一个稳定集合
+- framing used:
+  - `cover proposal-set remerge hygiene before any runtime initiative orchestration`
+- experiment:
+  - 新增 internal-only `merge_group_id`
+  - 在 follow-on sample pack 里加入两个新的 proposal-set remerge samples：
+    - `multi_proposal_replacement_without_remerge`
+    - `multi_proposal_rollback_without_remerge`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_set_remerge`
+    - replacement / rollback 情况下要求同一 merge group 最多只保留一个 `active` branch
+  - 重跑 current integrity / boundary / batch / coherence artifacts
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- observed result:
+  - current follow-on sample pack 现在有 `18` 个 frozen samples，并显式区分 `11` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `proposal_restabilization`
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 18`
+    - `expectation_match_count = 18`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 16`
+    - `proposal_set_remerge` family summary
+  - `multi_proposal_replacement_without_remerge` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_proposal_rollback_without_remerge` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer proposal-set remerge family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖 stale branch 清理，也开始覆盖 replacement / rollback 完成后 proposal set 是否已经重新合并成一个新的稳定集合
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 proposal orchestration 的完成态卫生，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal-set remerge
+  - live replacement / rollback completion quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 proposal set 还不能回归 remerge hygiene 时就直接去做 runtime initiative orchestration
+  - 把 merge-group 未收敛问题混写成普通 proposal-set update hygiene failure
+  - 用 planning-side proposal-set remerge regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around rollback completion / replacement completion scoring
+    - one stronger synthetic family around proposal-set consolidation after multi-step update
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 34
+
+- question:
+  - 在 proposal-set remerge hygiene 已经可分后，下一步是不是该直接去做 runtime initiative orchestration，还是应先把 planning-side regression 补到 multi-step replacement / rollback chain 完成后的 proposal-set consolidation
+- framing used:
+  - `cover proposal-set consolidation hygiene before any runtime initiative orchestration`
+- experiment:
+  - 新增 internal-only `update_chain_id`
+  - 在 follow-on sample pack 里加入两个新的 proposal-set consolidation samples：
+    - `multi_step_replacement_without_consolidation`
+    - `multi_step_rollback_without_consolidation`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_set_consolidation`
+    - multi-step replacement / rollback chain 下要求同一 `update_chain_id` 最终最多只保留一个 `active` outcome
+  - 重跑 current integrity / boundary / batch / coherence artifacts
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- observed result:
+  - current follow-on sample pack 现在有 `20` 个 frozen samples，并显式区分 `12` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `proposal_restabilization`
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `proposal_set_consolidation`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 20`
+    - `expectation_match_count = 20`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 18`
+    - `proposal_set_consolidation` family summary
+  - `multi_step_replacement_without_consolidation` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_step_rollback_without_consolidation` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer proposal-set consolidation family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖 stale branch 清理、merge-group remerge，也开始覆盖 multi-step replacement / rollback 完成后 proposal set 是否已经收敛成一个完成态集合
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 proposal orchestration 的链路完成态，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal-set consolidation
+  - live multi-step replacement / rollback quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 proposal set 还不能回归 consolidation hygiene 时就直接去做 runtime initiative orchestration
+  - 把 multi-step chain 未收敛问题混写成普通 remerge failure
+  - 用 planning-side proposal-set consolidation regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around final proposal-set completion scoring
+    - one stronger synthetic family around proposal-set closure after chained updates
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 35
+
+- question:
+  - 在 proposal-set consolidation 已经可分后，下一步是不是该直接去做 runtime initiative orchestration，还是应先把 planning-side regression 补到“最终 active proposal set 是否已经显式进入完成态”
+- framing used:
+  - `cover proposal-set completion scoring before any runtime initiative orchestration`
+- experiment:
+  - 新增 internal-only `completion_score`
+  - 在 follow-on sample pack 里加入两个新的 proposal-set completion samples：
+    - `multi_step_replacement_low_completion_score`
+    - `multi_step_rollback_low_completion_score`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_set_completion`
+    - multi-step replacement / rollback chain 即使只剩一个 `active` outcome，也要求该最终 proposal 带有高 completion score
+  - 重跑 current integrity / boundary / batch / coherence artifacts
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_POST_COMPARE_COHERENCE_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- observed result:
+  - current follow-on sample pack 现在有 `22` 个 frozen samples，并显式区分 `13` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `proposal_restabilization`
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `proposal_set_consolidation`
+    - `proposal_set_completion`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 22`
+    - `expectation_match_count = 22`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 20`
+    - `proposal_set_completion` family summary
+  - `multi_step_replacement_low_completion_score` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_step_rollback_low_completion_score` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer proposal-set completion family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖多步 chain 是否收敛成单一 active outcome，也开始覆盖这个最终 proposal set 是否已经显式进入一个足够高 completion score 的完成态
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 proposal orchestration 的完成态记账，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal-set completion scoring
+  - live chained-update completion quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在最终 proposal set 还不能回归 completion scoring hygiene 时就直接去做 runtime initiative orchestration
+  - 把“已收敛但未完成”的 final active set 混写成正常 consolidation pass
+  - 用 planning-side proposal-set completion regression 冒充 live initiative evidence
+- decision for next step:
+  - 若继续 `SubjectCore`，更值钱的动作应是：
+    - one richer proposal-oriented manifest around proposal-set closure after chained updates
+    - one stronger synthetic family around completed set closure / closure trace after update chains
+  - 不是直接碰 runtime integration 或 autonomy expansion
+
+### Cycle 36
+
+- question:
+  - 在 proposal-set completion 已经可分后，下一步是不是该直接把 completed set 当成 closure 完成，还是应先补一层 planning-side regression，检查链式更新后的 final active proposal 是否真的留下了 explicit closure state 与 closure trace
+- framing used:
+  - `separate proposal-set closure from proposal-set completion before any runtime-adjacent gate`
+- experiment:
+  - 新增 internal-only `closure_state` 与 `closure_trace_id`
+  - 在 follow-on sample pack 里加入两个新的 proposal-set closure samples：
+    - `multi_step_replacement_missing_closure_trace`
+    - `multi_step_rollback_missing_closure_trace`
+  - 扩展 follow-on eval stub：
+    - 新增 `proposal_set_closure`
+    - multi-step replacement / rollback chain 即使 completion score 足够高，也要求 final active proposal 显式带有 closure state 与 closure trace
+  - 重跑 current integrity / boundary / batch / coherence artifacts
+- command / script / artifact:
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_POST_COMPARE_COHERENCE_SCHEMA.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- observed result:
+  - current follow-on sample pack 现在有 `24` 个 frozen samples，并显式区分 `14` 个 family：
+    - `baseline_validity`
+    - `continuity_integrity`
+    - `proposal_integrity`
+    - `proposal_quality`
+    - `proposal_consistency`
+    - `proposal_prioritization`
+    - `proposal_conflict_resolution`
+    - `proposal_restabilization`
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `proposal_set_consolidation`
+    - `proposal_set_completion`
+    - `proposal_set_closure`
+    - `governor_boundary`
+  - current batch artifact 现在会 truthfully surface：
+    - `sample_count = 24`
+    - `expectation_match_count = 24`
+    - `integrity_pass_count = 1`
+    - `boundary_pass_count = 22`
+    - `proposal_set_closure` family summary
+  - `multi_step_replacement_missing_closure_trace` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - `multi_step_rollback_missing_closure_trace` 现在 truthfully 表现为：
+    - `integrity fail`
+    - `boundary pass`
+  - current coherence artifact 在 richer proposal-set closure family coverage 下仍保持 `pass`
+- what it proves:
+  - `SubjectCore` follow-on regression 现在不只覆盖多步 chain 是否收敛、是否完成，也开始覆盖 final active proposal set 是否已经显式闭环到 closure state / closure trace
+  - 在当前 fixed collaboration loop 下，这条 planning-side regression 比上一轮更接近 proposal orchestration 的 completed-set closure 记账，但仍保持同样 host surface 与 autonomy ceiling
+- what it does not prove:
+  - formal runtime mainline 已出现 proposal-set closure tracking
+  - live chained-update closure quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在 completed set 还不能回归 closure hygiene 时就直接去做 runtime-adjacent initiative gate
+  - 把“high completion score”直接混写成 `closure complete`
+  - 用 planning-side proposal-set closure regression 冒充 live initiative evidence
+- decision for next step:
+  - 当前显式规划的 proposal-set follow-on family 已经从 `update -> remerge -> consolidation -> completion -> closure` 连续补齐
+  - 下一步不该继续无边界扩 planning-side family；更合理的是停在这里，请求用户判断：
+    - 是否继续纯 planning-side regression
+    - 还是显式授权新的 bounded runtime-adjacent gate
+
+### Cycle 37
+
+- question:
+  - 在 `proposal_set_closure` 已补齐后，当前 planning-side proposal-set chain 是否已经真的饱和到应该停止默认 family 扩展，并把下一步切成显式路线判断
+- framing used:
+  - `saturation gate before any route expansion`
+- experiment:
+  - 新增 planning-side saturation gate：
+    - `SUBJECTCORE_FOLLOWON_SATURATION_SCHEMA.md`
+    - `scripts/codex/run_subjectcore_followon_saturation.py`
+  - 读取当前 frozen follow-on batch 与 post-compare coherence artifacts
+  - 只检查五个已完成 family：
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `proposal_set_consolidation`
+    - `proposal_set_completion`
+    - `proposal_set_closure`
+  - 要求它们在同一 claim ceiling 下同时满足：
+    - bounded failure isolation 仍完整
+    - coherence 仍为 `pass`
+    - route decision required 被 truthfully surfaced
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/run_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_followon_saturation.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_saturation.py`
+  - `python3 scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `python3 scripts/codex/run_subjectcore_followon_saturation.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.md`
+- observed result:
+  - 当前 saturation artifact truthfully surfaced：
+    - `saturation_status = pass`
+    - `route_decision_required = true`
+    - `next_decision_gate = user_route_judgment_required`
+  - 已完成 proposal-set chain 现在在同一 planning-side contract 下保持完整：
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `proposal_set_consolidation`
+    - `proposal_set_completion`
+    - `proposal_set_closure`
+  - current coherence artifact 仍保持 `pass`
+  - 当前结论不需要新增 runtime fields、host surface、或第二 scorer ontology
+- what it proves:
+  - `SubjectCore` planning-side proposal-set follow-on 已经从“继续补 family”切到“等待路线判断”的状态
+  - 在当前 fixed collaboration loop 下，更高信息增益的下一步已经不是继续默认扩 planning-side regression，而是显式请求用户决定是否保持 pure planning-side，还是授权新的 bounded runtime-adjacent gate
+- what it does not prove:
+  - runtime-adjacent gate 已被授权
+  - runtime proposal orchestration 已存在
+  - live chained-update quality
+  - autonomy widening
+  - any consciousness-like property
+- what path is ruled out:
+  - 在没有路线判断的情况下继续默认追加新的 planning-side proposal family
+  - 把 planning-side family saturation 写成 runtime proof 或 gate upgrade
+  - 用当前 saturation artifact 偷渡 host surface / scorer ontology 扩张
+- decision for next step:
+  - 当前这条 planning-side family chain 应在这里停住
+  - 下一步必须请求用户判断：
+    - 继续纯 planning-side regression
+    - 或显式授权新的 bounded runtime-adjacent gate
+
+### Cycle 38
+
+- question:
+  - 在用户已显式批准新的 bounded runtime-adjacent gate 之后，`SubjectCore` follow-on 的第一步该不该直接碰 formal runtime，还是先做一个更小的 runtime-adjacent probe
+- framing used:
+  - `bounded runtime-adjacent probe before any formal runtime hook`
+- experiment:
+  - 新增第一张 runtime-adjacent probe：
+    - `SUBJECTCORE_RUNTIME_ADJACENT_PROBE_SCHEMA.md`
+    - `scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+  - probe 复用现有 `SubjectCore` follow-on eval stub，不新增第二 scorer ontology
+  - 只允许已经通过 planning-side integrity + boundary gate 的样本进入冻结宿主投影
+  - 当前 first probe pack 固定为：
+    - `valid_facade`
+    - `multi_step_replacement_missing_closure_trace`
+    - `multi_step_rollback_missing_closure_trace`
+    - `proposal_authority_violation`
+    - `proposal_without_host_approval`
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/run_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.md`
+- observed result:
+  - 当前 first runtime-adjacent probe truthfully surfaced：
+    - `runtime_adjacent_status = pass`
+    - `allowed_projection_count = 1`
+  - `valid_facade` 现在可以通过现有 planning-side gate 后投影到冻结宿主面
+  - `multi_step_*_missing_closure_trace` 仍会在 integrity gate 被拦住，不会进入 runtime-adjacent projection
+  - `proposal_authority_violation` 与 `proposal_without_host_approval` 仍会在 boundary gate 被拦住，不会进入 runtime-adjacent projection
+  - admitted projection 仍只暴露：
+    - `policy_hint`
+    - `response_tendency`
+    - `trace_payload`
+- what it proves:
+  - 用户授权已经被真实消费成第一张 bounded runtime-adjacent gate，而不是只停留在口头路线切换
+  - 当前 repo 可以把 `SubjectCore` planning-side eval gate 与 frozen host projection 组合成一个更接近 runtime 的 probe，同时继续保持 proposal-only ceiling 与 frozen host surface
+- what it does not prove:
+  - formal runtime mainline 已接入 `SubjectCore`
+  - multi-step closure-ready positive case 已经在 runtime-adjacent lane 下通过
+  - live chained-update quality
+  - runtime efficacy
+  - autonomy widening
+- what path is ruled out:
+  - 一拿到授权就直接碰 formal runtime mainline
+  - 绕过现有 follow-on eval gate，直接把 closure / authority 失败样本投到宿主面
+  - 为了 runtime-adjacent probe 新造第二 scorer ontology
+- decision for next step:
+  - 保持当前 runtime-adjacent probe 为第一张 bounded gate
+  - 下一步应优先补一个 `closure-ready` 的正向 green sample / probe，而不是直接扩大到 live/runtime proof
+
+### Cycle 39
+
+- question:
+  - 在第一张 bounded runtime-adjacent probe 已成立后，`closure-ready` 的多步 proposal-set replacement 能不能在不新增 host fields / scorer ontology / formal runtime hook 的前提下，也作为 green sample 通过同一 probe
+- framing used:
+  - `closure-ready positive case inside the existing bounded runtime-adjacent probe`
+- experiment:
+  - 在 `SubjectCore` follow-on sample pack 里新增一个正向 `proposal_set_closure` sample：
+    - `multi_step_replacement_closure_ready`
+  - 该样本要求 final active replacement proposal 同时满足：
+    - `completion_score >= 0.9`
+    - `closure_state in {closed, complete}`
+    - non-empty `closure_trace_id`
+  - probe 继续复用现有 follow-on eval stub，不新增第二 scorer ontology
+  - probe 默认 pack 扩成：
+    - `valid_facade`
+    - `multi_step_replacement_closure_ready`
+    - `multi_step_replacement_missing_closure_trace`
+    - `multi_step_rollback_missing_closure_trace`
+    - `proposal_authority_violation`
+    - `proposal_without_host_approval`
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/subjectcore_contract.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py scripts/codex/render_subjectcore_followon_eval_stub.py scripts/codex/run_subjectcore_followon_eval_batch.py scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `python3 scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json`
+- observed result:
+  - 当前 follow-on batch truthfully surfaced：
+    - `sample_count = 25`
+    - `integrity_pass_count = 2`
+    - `boundary_pass_count = 23`
+    - `proposal_set_closure.sample_count = 3`
+    - `proposal_set_closure.integrity_pass_count = 1`
+  - current coherence artifact 仍保持 `pass`
+  - 当前 runtime-adjacent probe truthfully surfaced：
+    - `runtime_adjacent_status = pass`
+    - `allowed_projection_count = 2`
+    - `RA2 closure_ready_positive_case_projects_to_frozen_host_surface = pass`
+  - `multi_step_replacement_closure_ready` 现在会：
+    - 先通过现有 planning-side integrity + boundary gate
+    - 再以同样 frozen host surface 投影为第二个 green sample
+  - `multi_step_*_missing_closure_trace` 仍会在 integrity gate 被拦住
+  - `proposal_authority_violation` 与 `proposal_without_host_approval` 仍会在 boundary gate 被拦住
+- what it proves:
+  - 当前 bounded runtime-adjacent lane 已不只容纳一个 baseline green sample，也已经容纳一个真实 closure-ready chained replacement green sample，而且不需要扩大 host surface、runtime authority、或 scorer ontology
+  - `proposal_set_closure` family 现在不仅能隔离 failure，也开始 truthfully 承载一个正向通过样本
+- what it does not prove:
+  - formal runtime mainline 已接入 `SubjectCore`
+  - rollback closure-ready path 已在同级 probe 下通过
+  - live chained-update quality
+  - runtime efficacy
+  - autonomy widening
+- what path is ruled out:
+  - 为了得到 closure-ready positive case 去新增第二 scorer ontology
+  - 为了得到第二个 green projection 去扩大 host surface
+  - 把 bounded runtime-adjacent positive case 混写成 real runtime proof
+- decision for next step:
+  - 保持当前 probe 仍是 bounded runtime-adjacent gate，不升 formal runtime 口径
+  - 下一步若继续同一条链，唯一更值钱的最小动作是补一个 `rollback` 侧 `closure-ready` 正向 green sample / probe
+
+### Cycle 40
+
+- question:
+  - 在现有 bounded runtime-adjacent probe 已经允许 baseline 与 replacement closure-ready green sample 的前提下，`rollback` 侧 closure-ready proposal chain 能不能在不新增 host fields / scorer ontology / formal runtime hook 的前提下，也作为 green sample 通过同一 probe
+- framing used:
+  - `rollback closure-ready positive case inside the existing bounded runtime-adjacent probe`
+- experiment:
+  - 在 `SubjectCore` follow-on sample pack 里再新增一个正向 `proposal_set_closure` sample：
+    - `multi_step_rollback_closure_ready`
+  - 该样本要求 final active rollback proposal 同时满足：
+    - `completion_score >= 0.9`
+    - `closure_state in {closed, complete}`
+    - non-empty `closure_trace_id`
+  - probe 继续复用现有 follow-on eval stub，不新增第二 scorer ontology
+  - probe 默认 pack 扩成：
+    - `valid_facade`
+    - `multi_step_replacement_closure_ready`
+    - `multi_step_rollback_closure_ready`
+    - `multi_step_replacement_missing_closure_trace`
+    - `multi_step_rollback_missing_closure_trace`
+    - `proposal_authority_violation`
+    - `proposal_without_host_approval`
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/subjectcore_contract.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py scripts/codex/render_subjectcore_followon_eval_stub.py scripts/codex/run_subjectcore_followon_eval_batch.py scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `python3 scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json`
+- observed result:
+  - 当前 follow-on batch truthfully surfaced：
+    - `sample_count = 26`
+    - `integrity_pass_count = 3`
+    - `boundary_pass_count = 24`
+    - `proposal_set_closure.sample_count = 4`
+    - `proposal_set_closure.integrity_pass_count = 2`
+  - current coherence artifact 仍保持 `pass`
+  - 当前 runtime-adjacent probe truthfully surfaced：
+    - `runtime_adjacent_status = pass`
+    - `allowed_projection_count = 3`
+    - `RA2 closure_ready_positive_case_projects_to_frozen_host_surface = pass`
+    - `RA2b rollback_closure_ready_positive_case_projects_to_frozen_host_surface = pass`
+  - `multi_step_rollback_closure_ready` 现在会：
+    - 先通过现有 planning-side integrity + boundary gate
+    - 再以同样 frozen host surface 投影为第三个 green sample
+  - `multi_step_*_missing_closure_trace` 仍会在 integrity gate 被拦住
+  - `proposal_authority_violation` 与 `proposal_without_host_approval` 仍会在 boundary gate 被拦住
+- what it proves:
+  - 当前 bounded runtime-adjacent lane 已可同时容纳 baseline、closure-ready replacement、closure-ready rollback 三个 green sample，而且不需要扩大 host surface、runtime authority、或 scorer ontology
+  - `proposal_set_closure` family 现在不仅能隔离 replacement/rollback 两侧 failure，也能 truthfully 承载 replacement/rollback 两侧正向通过样本
+- what it does not prove:
+  - formal runtime mainline 已接入 `SubjectCore`
+  - real runtime path 已通过 closure-ready replacement/rollback 链
+  - live chained-update quality
+  - runtime efficacy
+  - autonomy widening
+- what path is ruled out:
+  - 为了得到 rollback closure-ready positive case 去新增第二 scorer ontology
+  - 为了得到第三个 green projection 去扩大 host surface
+  - 把 bounded runtime-adjacent positive cases 混写成 real runtime proof
+- decision for next step:
+  - 当前第一张 bounded runtime-adjacent probe 已在当前 frozen host surface 下达到更高对称覆盖
+  - 若还要继续同一条链，下一步已不该再默认扩 probe sample，而必须请求用户判断是保持当前 bounded gate，还是显式授权更强 route
+
+### Cycle 41
+
+- question:
+  - 在 `rollback closure-ready` 正向样本已经进入当前 bounded runtime-adjacent probe 之后，`post_compare_coherence` 当前 artifact 与 evidence ledger 是否仍 truthfully mirror 最新 follow-on batch，还是已经留下会误导下一轮 route judgment 的过期 aggregate 读数
+- framing used:
+  - `artifact freshness sync before route judgment`
+- experiment:
+  - 对比当前 `SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json` 与 checked-in `SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - 如果只是 snapshot/ledger 过期，则不改 scorer 规则、不扩 sample pack、不新增 probe，只补 freshness test 并重生成 coherence artifact / ledger wording
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+  - `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `python3 scripts/codex/generate_program_state_views.py`
+  - `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `artifacts/evidence_ledger/index.yaml`
+- observed result:
+  - 当前 follow-on batch 已 truthfully surfaced：
+    - `sample_count = 26`
+    - `integrity_pass_count = 3`
+    - `boundary_pass_count = 24`
+    - 新增正向通过样本 `multi_step_rollback_closure_ready`
+  - checked-in coherence artifact 原先仍停在旧 snapshot：
+    - `sample_count = 25`
+    - `integrity_pass_count = 2`
+    - `boundary_pass_count = 23`
+    - 缺少 `multi_step_rollback_closure_ready`
+  - freshness 断言补上后，重生成的 coherence artifact 已重新与当前 follow-on batch 对齐，同时 `coherence_status` 继续保持 `pass`
+  - evidence ledger 也已从旧的 `24/25` 样本口径刷新到当前 `26` 样本 truth
+- what it proves:
+  - 当前这条 `SubjectCore` follow-on 链在进入 route judgment 之前，compare-to-follow-on coherence 读数已重新与最新 frozen batch 保持一致，不会因 artifact 过期而低报 closure-ready coverage
+  - 本轮问题是 artifact/ledger freshness，而不是 scorer 逻辑或 claim ceiling 需要升级
+- what it does not prove:
+  - formal runtime mainline 已接入 `SubjectCore`
+  - 需要继续扩 planning-side family
+  - 需要继续扩 bounded runtime-adjacent probe sample
+  - live chained-update quality
+  - runtime efficacy
+  - autonomy widening
+- what path is ruled out:
+  - 因为旧 coherence snapshot 落后，就误判还需要回到 `proposal_set_closure` family 再补 planning-side sample
+  - 把 artifact freshness 问题误升级成新的 runtime-adjacent gate 需求
+- decision for next step:
+  - 当前 frontier 仍是 `route_decision_after_runtime_adjacent_probe_saturation`
+  - planning-side + first bounded runtime-adjacent probe 的当前 artifact/ledger 已同步；若继续推进，必须请求用户判断是保持当前 bounded gate，还是显式授权更强 route
+
+### Cycle 42
+
+- question:
+  - 当前 `SUBJECTCORE_FOLLOWON_SATURATION_CURRENT` 是否还 truthfully 支撑 “planning-side saturation 已通过，因此下一步是 route judgment”，还是 runner 仍卡在 `proposal_set_closure` 的旧签名上，已经让这个 gate 失去验证支撑
+- framing used:
+  - `repair saturation contract before claiming route-decision gate`
+- experiment:
+  - 临时重跑 saturation / coherence / runtime-adjacent probe runner，并以 focused pytest 检查当前 checked-in saturation artifact 是否仍被本地验证接受
+  - 若 only drift 来自 saturation runner 对 `proposal_set_closure` 的旧签名假设，则只修 validation contract、补回归测试、重生成 saturation artifact，不改 sample pack、不扩 probe、不改 claim ceiling
+- command / script / artifact:
+  - `python3 -m py_compile scripts/codex/run_subjectcore_followon_saturation.py scripts/codex/run_subjectcore_post_compare_coherence.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `python3 scripts/codex/run_subjectcore_followon_saturation.py --output-json /tmp/subjectcore_followon_saturation_check.json --output-md /tmp/subjectcore_followon_saturation_check.md`
+  - `python3 scripts/codex/run_subjectcore_post_compare_coherence.py --output-json /tmp/subjectcore_post_compare_coherence_check.json --output-md /tmp/subjectcore_post_compare_coherence_check.md`
+  - `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py --output-json /tmp/subjectcore_runtime_adjacent_probe_check.json --output-md /tmp/subjectcore_runtime_adjacent_probe_check.md`
+  - `python3 -m py_compile scripts/codex/run_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_followon_saturation.py`
+  - `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `python3 scripts/codex/run_subjectcore_followon_saturation.py`
+  - `python3 scripts/codex/generate_program_state_views.py`
+  - `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+- observed result:
+  - 初始临时重跑暴露了真实 drift：
+    - `SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json` 仍为 `pass`
+    - `SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json` 仍为 `pass`
+    - 但 `run_subjectcore_followon_saturation.py` 临时输出变成：
+      - `saturation_status = fail`
+      - `route_decision_required = false`
+      - `next_decision_gate = needs_more_planning_side_validation`
+      - `FS2 completed_family_chain_present = fail`
+  - 根因不是 family coverage 真退化，而是 saturation runner 仍把全部 completed families 当成 `2` 个 failure-isolation 样本：
+    - 这与当前冻结事实冲突，因为 `proposal_set_closure` 现在已经 truthfully 承载：
+      - `sample_count = 4`
+      - `integrity_pass_count = 2`
+      - `boundary_pass_count = 4`
+      - `2` 个 blocked closure-failure cases + `2` 个 closure-ready green cases
+  - 修复 validation contract 后：
+    - focused `pytest` 回到 `11 passed`
+    - rerendered saturation artifact 再次 truthfully surfaced：
+      - `saturation_status = pass`
+      - `route_decision_required = true`
+      - `next_decision_gate = user_route_judgment_required`
+- what it proves:
+  - 当前 route-decision gate 仍然成立，且它的真实支撑来自 “closure family 的冻结 mixed signature 被 validation contract 正确认出”，不是来自旧 artifact 或口头记忆
+  - 本轮问题是 saturation scorer contract 过期，而不是 planning-side family coverage 失真，也不是需要重新扩 family / probe
+- what it does not prove:
+  - formal runtime mainline 已接入 `SubjectCore`
+  - 需要新的 planning-side family
+  - 需要新的 bounded runtime-adjacent probe sample
+  - live chained-update quality
+  - runtime efficacy
+  - autonomy widening
+- what path is ruled out:
+  - 因为 saturation runner 的旧签名假设失真，就误判必须回到 `proposal_set_closure` family 再补 planning-side 样本
+  - 把 validation contract repair 误升级成新的 runtime-adjacent gate 或 formal runtime hook 需求
+- decision for next step:
+  - 当前唯一 frontier 仍是 `route_decision_after_runtime_adjacent_probe_saturation`
+  - 在当前 planning-side saturation + bounded runtime-adjacent probe 都重新有验证支撑之后，默认不得继续扩 family 或 probe；下一步必须请求用户判断是保持当前 bounded gate，还是显式授权更强 route

@@ -1,0 +1,21 @@
+template: build_feature
+priority: 0
+queue_state: done
+direction_gate: "none"
+phase: dispatch
+current_strategy: "audit-ready closeout packaging inside the task package only, keeping the bounded gate as the default route and avoiding any scope or runtime expansion"
+candidate_subgoals:
+  - "verify the new route-decision packet is internally consistent with STATUS, summary, and ledger"
+  - package a truthful task-local closeout note so audit can judge acceptability without reopening implementation scope
+active_work_items:
+  - "slice-003: harden audit readiness for the bounded SubjectCore route-decision packet and record a truthful closeout recommendation inside the task package"
+retry_policy:
+  developer: 2
+  verify: 1
+  auditor: 1
+optimization_backlog:
+  - "defer any stronger runtime route, new host surface, or formal runtime integration until an explicit approval boundary change exists"
+next_best_action: dispatch a bounded task-package consistency and closeout slice for the newly frozen keep-vs-escalate decision packet
+last_verdict: success_reached
+next_frontier: audit-ready bounded-gate closeout packet with consistent task-local evidence references
+updated_at: "2026-04-19T08:59:05Z"

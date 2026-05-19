@@ -1,0 +1,72 @@
+# MVS H1 External Replay Extraction Map
+
+- generated_at: `2026-04-10T06:53:39.157755+00:00`
+- heldout_success_count: `60`
+- heldout_failure_count: `0`
+- restricted_reserve_count: `2`
+
+## Heldout Cases
+- `correction_01` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_01.json`
+- `correction_02` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_02.json`
+- `correction_03` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_03.json`
+- `correction_04` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_04.json`
+- `correction_05` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_05.json`
+- `correction_06` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_06.json`
+- `correction_07` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_07.json`
+- `correction_08` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_08.json`
+- `correction_09` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_09.json`
+- `correction_10` | bucket=`correction` | status=`extracted` | source=`osunlp/ConflictQA` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/correction_10.json`
+- `ask_vs_answer_uncertainty_01` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`rajpurkar/squad_v2` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_01.json`
+- `ask_vs_answer_uncertainty_02` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`rajpurkar/squad_v2` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_02.json`
+- `ask_vs_answer_uncertainty_03` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`rajpurkar/squad_v2` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_03.json`
+- `ask_vs_answer_uncertainty_04` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`rajpurkar/squad_v2` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_04.json`
+- `ask_vs_answer_uncertainty_05` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`rajpurkar/squad_v2` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_05.json`
+- `ask_vs_answer_uncertainty_06` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`sewon/ambig_qa` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_06.json`
+- `ask_vs_answer_uncertainty_07` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`sewon/ambig_qa` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_07.json`
+- `ask_vs_answer_uncertainty_08` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`sewon/ambig_qa` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_08.json`
+- `ask_vs_answer_uncertainty_09` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`sewon/ambig_qa` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_09.json`
+- `ask_vs_answer_uncertainty_10` | bucket=`ask_vs_answer_uncertainty` | status=`extracted` | source=`sewon/ambig_qa` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_10.json`
+- `failure_revision_later_change_01` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_01.json`
+- `failure_revision_later_change_02` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_02.json`
+- `failure_revision_later_change_03` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_03.json`
+- `failure_revision_later_change_04` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_04.json`
+- `failure_revision_later_change_05` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_05.json`
+- `failure_revision_later_change_06` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_06.json`
+- `failure_revision_later_change_07` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_07.json`
+- `failure_revision_later_change_08` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_08.json`
+- `failure_revision_later_change_09` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_09.json`
+- `failure_revision_later_change_10` | bucket=`failure_revision_later_change` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_10.json`
+- `tool_risk_ambiguity_01` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_01.json`
+- `tool_risk_ambiguity_02` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_02.json`
+- `tool_risk_ambiguity_03` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_03.json`
+- `tool_risk_ambiguity_04` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_04.json`
+- `tool_risk_ambiguity_05` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_05.json`
+- `tool_risk_ambiguity_06` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_06.json`
+- `tool_risk_ambiguity_07` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_07.json`
+- `tool_risk_ambiguity_08` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_08.json`
+- `tool_risk_ambiguity_09` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_09.json`
+- `tool_risk_ambiguity_10` | bucket=`tool_risk_ambiguity` | status=`extracted` | source=`liminghao1630/API-Bank` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_10.json`
+- `continuity_01` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_01.json`
+- `continuity_02` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_02.json`
+- `continuity_03` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_03.json`
+- `continuity_04` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_04.json`
+- `continuity_05` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_05.json`
+- `continuity_06` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_06.json`
+- `continuity_07` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_07.json`
+- `continuity_08` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_08.json`
+- `continuity_09` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_09.json`
+- `continuity_10` | bucket=`continuity` | status=`extracted` | source=`THUIR/MemoryBench` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_10.json`
+- `adversarial_constraints_01` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_01.json`
+- `adversarial_constraints_02` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_02.json`
+- `adversarial_constraints_03` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_03.json`
+- `adversarial_constraints_04` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_04.json`
+- `adversarial_constraints_05` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_05.json`
+- `adversarial_constraints_06` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_06.json`
+- `adversarial_constraints_07` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_07.json`
+- `adversarial_constraints_08` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_08.json`
+- `adversarial_constraints_09` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_09.json`
+- `adversarial_constraints_10` | bucket=`adversarial_constraints` | status=`extracted` | source=`google/IFEval` | case_file=`artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_10.json`
+
+## Restricted Reserve
+- `reserve_adversarial_constraints_01` | bucket=`adversarial_constraints` | status=`reserved_not_extracted` | source=`LibrAI/do-not-answer`
+- `reserve_adversarial_constraints_02` | bucket=`adversarial_constraints` | status=`reserved_not_extracted` | source=`sorry-bench/sorry-bench-202503`

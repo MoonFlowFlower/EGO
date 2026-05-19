@@ -1,0 +1,19 @@
+{
+  "schema_version": "runtime_proximal_stronger_admission_runner_manifest.v1",
+  "runner_contract": {
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "required_artifacts": [
+      "basic_standard_admission",
+      "low_cue_ownership"
+    ],
+    "claim_ceiling": "bounded_stronger_admission_only"
+  },
+  "artifacts": {
+    "basic_standard_admission": "artifacts/self_awareness_research/RUNTIME_PROXIMAL_BASIC_STANDARD_ADMISSION_CURRENT.json",
+    "low_cue_ownership": "artifacts/self_awareness_research/RUNTIME_PROXIMAL_LOW_CUE_OWNERSHIP_CURRENT.json"
+  }
+}

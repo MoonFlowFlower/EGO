@@ -1,0 +1,286 @@
+{
+  "schema_version": "runtime_proximal_basic_standard_admission_runner.v1",
+  "generated_at": "2026-04-12T03:00:32.819667+00:00",
+  "manifest_path": "docs/codex/tasks/runtime-proximal-basic-standard-admission-runner-implementation/RUNNER_MANIFEST.json",
+  "source": "runtime_proximal_basic_standard_admission_runner",
+  "claim_ceiling": "bounded_admission_only",
+  "layer_results": {
+    "replay_gate": {
+      "status": "pass",
+      "selection": {
+        "decision": "switch_to_active_inference",
+        "candidate_pass": false,
+        "target_deltas_vs_baseline_a": {
+          "T1": 0.0,
+          "T2": 0.25,
+          "T3": 0.6667,
+          "T4": 0.25,
+          "T5": 0.6667
+        },
+        "target_delta_rules": {
+          "T1": "non_regression>=-0.02",
+          "T2": "delta>=0.05",
+          "T3": "delta>=0.05",
+          "T4": "delta>=0.05",
+          "T5": "delta>=0.05"
+        },
+        "composite_delta_vs_baseline_a": 0.3667,
+        "ablation_drops": {
+          "counterfactual": 0.3333,
+          "viability": 0.25,
+          "corrective_trace": 0.6667,
+          "boundary_confidence": 0.25
+        },
+        "weak_ablations": [],
+        "challenger_status": "pass",
+        "challenger_pass": true,
+        "challenger_target_deltas_vs_baseline_a": {
+          "T1": 0.0,
+          "T2": 0.25,
+          "T3": 0.6667,
+          "T4": 0.6667,
+          "T5": 0.75
+        },
+        "challenger_target_delta_rules": {
+          "T1": "non_regression>=-0.02",
+          "T2": "delta>=0.05",
+          "T3": "delta>=0.05",
+          "T4": "delta>=0.05",
+          "T5": "delta>=0.05"
+        },
+        "challenger_composite_delta_vs_baseline_a": 0.4667,
+        "challenger_switch_advantage": true
+      }
+    },
+    "controlled_replay_bridge": {
+      "status": "pass",
+      "selection": {
+        "decision": "bridge_pass",
+        "candidate_pass": true,
+        "target_deltas_vs_baseline_a": {
+          "T1": 0.0,
+          "T2": 0.25,
+          "T3": 0.6667,
+          "T4": 0.6667,
+          "T5": 0.75
+        },
+        "target_delta_rules": {
+          "T1": "non_regression>=-0.02",
+          "T2": "delta>=0.05",
+          "T3": "delta>=0.05",
+          "T4": "delta>=0.05",
+          "T5": "delta>=0.05"
+        },
+        "composite_delta_vs_baseline_a": 0.4667,
+        "ablation_drops": {},
+        "weak_ablations": [],
+        "challenger_status": "not_applicable",
+        "challenger_pass": false,
+        "challenger_target_deltas_vs_baseline_a": {},
+        "challenger_target_delta_rules": {},
+        "challenger_composite_delta_vs_baseline_a": 0.0,
+        "challenger_switch_advantage": false,
+        "bridge_mode": true
+      },
+      "authority_drift_audit": {
+        "status": "pass",
+        "behavior_authority": "none",
+        "tool_authority": "none",
+        "reply_authority": "none",
+        "transport_authority": "none",
+        "parallel_runtime_lane": false,
+        "second_authority_source": false,
+        "candidate_private_host_api": false,
+        "host_consumable_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "candidate_variant_id": "mvs_challenger_active_inference_self_model"
+      },
+      "trace_contract_check": {
+        "status": "pass",
+        "required_keys": [
+          "replay_variant_id"
+        ],
+        "required_corrective_keys_for_tool_results": [
+          "predicted_outcome",
+          "actual_outcome",
+          "adjustment_applied",
+          "next_guard"
+        ],
+        "missing_keys": [],
+        "missing_corrective_keys": [],
+        "all_steps_replayable": true,
+        "step_count": 290
+      }
+    },
+    "controlled_observation": {
+      "status": "pass",
+      "selection": {
+        "decision": "bridge_pass",
+        "candidate_pass": true,
+        "target_deltas_vs_baseline_a": {
+          "T1": 0.5,
+          "T2": 0.25,
+          "T3": 0.6667,
+          "T4": 0.6667,
+          "T5": 0.6667
+        },
+        "target_delta_rules": {
+          "T1": "delta>=0.05",
+          "T2": "delta>=0.05",
+          "T3": "delta>=0.05",
+          "T4": "delta>=0.05",
+          "T5": "delta>=0.05"
+        },
+        "composite_delta_vs_baseline_a": 0.55,
+        "ablation_drops": {},
+        "weak_ablations": [],
+        "challenger_status": "not_applicable",
+        "challenger_pass": false,
+        "challenger_target_deltas_vs_baseline_a": {},
+        "challenger_target_delta_rules": {},
+        "challenger_composite_delta_vs_baseline_a": 0.0,
+        "challenger_switch_advantage": false,
+        "bridge_mode": true
+      },
+      "aggregate_gate": {
+        "status": "pass",
+        "replay_gate_pass": true,
+        "scenario_count": 9,
+        "winner_pass_count": 9,
+        "external_result_scenario_count": 3
+      },
+      "authority_drift_audit": {
+        "status": "pass",
+        "behavior_authority": "none",
+        "tool_authority": "none",
+        "reply_authority": "none",
+        "transport_authority": "none",
+        "parallel_runtime_lane": false,
+        "second_authority_source": false,
+        "candidate_private_host_api": false,
+        "host_consumable_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "candidate_variant_id": "mvs_challenger_active_inference_self_model"
+      },
+      "trace_contract_check": {
+        "status": "pass",
+        "step_count": 66,
+        "required_host_trace_keys": [
+          "predicted_outcome",
+          "actual_outcome",
+          "adjustment_applied",
+          "next_guard",
+          "repair_closure",
+          "replay_variant_id"
+        ],
+        "missing_by_step": []
+      },
+      "host_surface_bounded_audit": {
+        "status": "pass",
+        "allowed_host_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "observation_only_fields": [
+          "state_snapshot",
+          "memory_update",
+          "observation_records"
+        ],
+        "disallowed_host_surface": [],
+        "contract_candidate_id": "mvs_challenger_active_inference_self_model"
+      }
+    },
+    "unified_host_contract": {
+      "status": "pass",
+      "aggregate": {
+        "total_cases": 6,
+        "parity_pass_count": 6,
+        "parity_fail_count": 0,
+        "hold_case_count": 1,
+        "hold_consistency_pass_count": 1,
+        "verdict": "pass"
+      },
+      "claim_ceiling": "host_contract_only"
+    },
+    "host_consumption_runner": {
+      "status": "pass",
+      "aggregate": {
+        "execution_status": "pass",
+        "causal_signal_status": "pass",
+        "scenario_count": 3,
+        "pressure_detected_case_count": 3,
+        "delta_present_case_count": 3
+      },
+      "authority_drift_audit": {
+        "status": "pass",
+        "behavior_authority": "none",
+        "tool_authority": "none",
+        "reply_authority": "none",
+        "transport_authority": "none",
+        "parallel_runtime_lane": false,
+        "second_authority_source": false,
+        "candidate_private_host_api": false,
+        "host_consumable_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "candidate_variant_id": "mvs_challenger_active_inference_self_model"
+      },
+      "trace_contract_check": {
+        "status": "pass",
+        "step_count": 18,
+        "required_host_trace_keys": [
+          "predicted_outcome",
+          "actual_outcome",
+          "adjustment_applied",
+          "next_guard",
+          "repair_closure",
+          "replay_variant_id"
+        ],
+        "missing_by_step": []
+      },
+      "host_surface_bounded_audit": {
+        "status": "pass",
+        "allowed_host_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "observation_only_fields": [
+          "state_snapshot",
+          "memory_update",
+          "observation_records"
+        ],
+        "disallowed_host_surface": [],
+        "contract_candidate_id": "mvs_challenger_active_inference_self_model"
+      },
+      "claim_ceiling": "bounded_runner_only"
+    }
+  },
+  "aggregate": {
+    "layer_integrity_status": "pass",
+    "host_surface_integrity_status": "pass",
+    "causal_transfer_status": "pass",
+    "claim_ceiling_status": "pass",
+    "admission_decision": "pass",
+    "reviewer_gate_ready": true,
+    "blocked_reasons": []
+  },
+  "summary": {
+    "required_layer_count": 5,
+    "passed_layer_count": 5,
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ]
+  }
+}

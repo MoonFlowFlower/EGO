@@ -1,0 +1,119 @@
+{
+  "schema_version": "mvs_h1.external_eval_sources.v1",
+  "generated_at": "2026-04-09T22:46:30.727524",
+  "sources": [
+    {
+      "dataset_id": "rajpurkar/squad_v2",
+      "dataset_card_url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+      "source_url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+      "license": "cc-by-sa-4.0",
+      "license_class": "sharealike_open",
+      "preferred_eval_split": "validation",
+      "split_note": "dataset card exposes train + validation; use validation only for held-out ambiguity/unanswerability rows.",
+      "selection_status": "main_shortlist",
+      "reserve_reason": "",
+      "supported_buckets": [
+        "ask_vs_answer_uncertainty"
+      ]
+    },
+    {
+      "dataset_id": "sewon/ambig_qa",
+      "dataset_card_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+      "source_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+      "license": "cc-by-sa-3.0",
+      "license_class": "sharealike_open",
+      "preferred_eval_split": "validation",
+      "split_note": "dataset card exposes train + validation; use validation only for ambiguity-focused held-out rows.",
+      "selection_status": "main_shortlist",
+      "reserve_reason": "",
+      "supported_buckets": [
+        "ask_vs_answer_uncertainty"
+      ]
+    },
+    {
+      "dataset_id": "osunlp/ConflictQA",
+      "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+      "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+      "license": "apache-2.0",
+      "license_class": "permissive_open",
+      "preferred_eval_split": "dataset_defined_eval",
+      "split_note": "viewer is disabled; use the dataset-defined evaluation configuration rather than inventing a local split.",
+      "selection_status": "main_shortlist",
+      "reserve_reason": "",
+      "supported_buckets": [
+        "correction"
+      ]
+    },
+    {
+      "dataset_id": "THUIR/MemoryBench",
+      "dataset_card_url": "https://huggingface.co/datasets/THUIR/MemoryBench",
+      "source_url": "https://huggingface.co/datasets/THUIR/MemoryBench",
+      "license": "mit",
+      "license_class": "permissive_open",
+      "preferred_eval_split": "test",
+      "split_note": "dataset card states explicit training/testing sets; use test only for held-out continuity and revision rows.",
+      "selection_status": "main_shortlist",
+      "reserve_reason": "",
+      "supported_buckets": [
+        "failure_revision_later_change",
+        "continuity"
+      ]
+    },
+    {
+      "dataset_id": "liminghao1630/API-Bank",
+      "dataset_card_url": "https://huggingface.co/datasets/liminghao1630/API-Bank",
+      "source_url": "https://huggingface.co/datasets/liminghao1630/API-Bank",
+      "license": "mit",
+      "license_class": "permissive_open",
+      "preferred_eval_split": "test",
+      "split_note": "dataset card exposes train + test and preview references test-data/level-1-api.json; use test only.",
+      "selection_status": "main_shortlist",
+      "reserve_reason": "",
+      "supported_buckets": [
+        "tool_risk_ambiguity"
+      ]
+    },
+    {
+      "dataset_id": "google/IFEval",
+      "dataset_card_url": "https://huggingface.co/datasets/google/IFEval",
+      "source_url": "https://huggingface.co/datasets/google/IFEval",
+      "license": "apache-2.0",
+      "license_class": "permissive_open",
+      "preferred_eval_split": "train",
+      "split_note": "dataset card exposes train only; reserve that source split exclusively for held-out eval in this repo.",
+      "selection_status": "main_shortlist",
+      "reserve_reason": "",
+      "supported_buckets": [
+        "adversarial_constraints"
+      ]
+    },
+    {
+      "dataset_id": "LibrAI/do-not-answer",
+      "dataset_card_url": "https://huggingface.co/datasets/LibrAI/do-not-answer",
+      "source_url": "https://huggingface.co/datasets/LibrAI/do-not-answer",
+      "license": "apache-2.0",
+      "license_class": "permissive_open",
+      "preferred_eval_split": "train",
+      "split_note": "train-only source; excluded from default mainline because current ontology prefers safer public-behavior buckets over refusal-only datasets.",
+      "selection_status": "restricted_reserve",
+      "reserve_reason": "reserve-only for future safety-adjacent studies; not a first-choice fit for current MVS/H1 public-driver ontology.",
+      "supported_buckets": [
+        "adversarial_constraints"
+      ]
+    },
+    {
+      "dataset_id": "sorry-bench/sorry-bench-202503",
+      "dataset_card_url": "https://huggingface.co/datasets/sorry-bench/sorry-bench-202503",
+      "source_url": "https://huggingface.co/datasets/sorry-bench/sorry-bench-202503",
+      "license": "custom-dataset-license-agreement",
+      "license_class": "custom_restricted",
+      "preferred_eval_split": "dataset_defined",
+      "split_note": "custom dataset agreement; record only as restricted reserve.",
+      "selection_status": "restricted_reserve",
+      "reserve_reason": "custom license agreement; exclude from default held-out manifest.",
+      "supported_buckets": [
+        "adversarial_constraints"
+      ]
+    }
+  ]
+}

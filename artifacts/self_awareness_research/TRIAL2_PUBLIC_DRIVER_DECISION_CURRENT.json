@@ -1,0 +1,240 @@
+{
+  "generated_at": "2026-04-09T23:13:48.497150+00:00",
+  "source_scored_report": "artifacts/self_awareness_research/TRIAL2_PUBLIC_DRIVER_RERUN_CURRENT.json",
+  "thresholds": {
+    "top_gap_min": 0.0,
+    "min_positive_gap_case_count": 2,
+    "non_top_gap_max": 0.01,
+    "tie_gap_delta": 0.01
+  },
+  "ranking": [
+    {
+      "variant_id": "trial1_ablation_counterfactual_public_path_sever",
+      "hypothesis": "H1 counterfactual low-success guard",
+      "mean_weighted_gap": 0.05,
+      "positive_gap_case_count": 8,
+      "case_gaps": [
+        {
+          "case_id": "cf_isolation_shell_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_file_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_python_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_restore_boundary_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_partial_threshold_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_commitment_guard_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_multi_probe_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_boundary_resume_001",
+          "weighted_gap": 0.05,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.25,
+          "trace_gap": 0.0
+        }
+      ]
+    },
+    {
+      "variant_id": "trial2_ablation_correction_public_path_sever",
+      "hypothesis": "H2 correction-pressure public guard",
+      "mean_weighted_gap": 0.0,
+      "positive_gap_case_count": 0,
+      "case_gaps": [
+        {
+          "case_id": "cf_isolation_shell_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_file_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_python_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_restore_boundary_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_partial_threshold_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_commitment_guard_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_multi_probe_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_boundary_resume_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        }
+      ]
+    },
+    {
+      "variant_id": "trial2_ablation_viability_public_path_sever",
+      "hypothesis": "H3 viability-pressure public guard",
+      "mean_weighted_gap": 0.0,
+      "positive_gap_case_count": 0,
+      "case_gaps": [
+        {
+          "case_id": "cf_isolation_shell_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_file_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_python_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_restore_boundary_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_partial_threshold_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_commitment_guard_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_multi_probe_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        },
+        {
+          "case_id": "cf_isolation_boundary_resume_001",
+          "weighted_gap": 0.0,
+          "decision_gap": 0.0,
+          "response_gap": 0.0,
+          "policy_gap": 0.0,
+          "trace_gap": 0.0
+        }
+      ]
+    }
+  ],
+  "top_hypothesis": "H1 counterfactual low-success guard",
+  "identified_active_public_driver": "H1 counterfactual low-success guard",
+  "identified_variant_id": "trial1_ablation_counterfactual_public_path_sever",
+  "bounded_claim": "Under the existing scorer and hard set, H1 counterfactual low-success guard is the current bounded active public driver.",
+  "non_claims": [
+    "This does not identify a universal MVS causal core.",
+    "This does not restore any prior public-efficacy claim.",
+    "This does not upgrade repo-level state or runtime evidence."
+  ],
+  "milestone_decision": "close",
+  "identified": true,
+  "rationale": "A single sever ablation uniquely carries the non-zero public gap while the other sever ablations remain near candidate. Under the frozen hard set and scorer, this is enough to identify the current bounded active public driver and close Trial-2."
+}

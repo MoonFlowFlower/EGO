@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.trial1_ablation_minus_counterfactual_writeback.failure_to_revision_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T17:39:08.306356+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T17:39:09.538686+00:00"
+}

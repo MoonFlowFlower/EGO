@@ -1,0 +1,21 @@
+{
+  "thread_id": "trial1_identity_001",
+  "scope": "thread",
+  "created_at": "2026-04-09T17:38:56.996210+00:00",
+  "event_count": 2,
+  "updated_at": "2026-04-09T17:38:57.436633+00:00",
+  "source": "replay",
+  "latest_session_id": "trial1_identity_001",
+  "latest_event_id": "trial1_identity_001_turn_002",
+  "latest_turn_id": "turn_002",
+  "latest_event_type": "user_message",
+  "last_context": {
+    "session_id": "trial1_identity_001",
+    "thread_id": "trial1_identity_001",
+    "turn_id": "turn_002",
+    "source": "replay",
+    "event_type": "user_message",
+    "state_scope": "experiment",
+    "experiment_id": "trial1.trial1_candidate_mvs_aligned_compact.identity_continuity_001"
+  }
+}

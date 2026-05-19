@@ -1,0 +1,946 @@
+{
+  "generated_at": "2026-04-09T03:04:37.849758-05:00",
+  "git_commit_short": "62e54bd",
+  "seed": 20260409,
+  "max_stage": "stage4",
+  "total_stage_trials": 1440,
+  "total_agent_episodes": 6680,
+  "scoring_policy": {
+    "proxy_score_weights": {
+      "continuity": 0.25,
+      "boundary": 0.2,
+      "counterfactual": 0.2,
+      "calibration": 0.2,
+      "persistence": 0.15
+    },
+    "controls": [
+      "baseline_chat",
+      "prompt_only_self",
+      "baseline_memory"
+    ],
+    "elimination_principles": [
+      "must beat both structural baselines on composite score",
+      "must beat baselines in multiple families rather than one niche family",
+      "must survive perturbation and cue masking",
+      "self-report style does not count unless behavior changes"
+    ]
+  },
+  "stage_results": [
+    {
+      "stage": "stage0",
+      "label": "Stage 0 pilot discrimination",
+      "total_trials": 10,
+      "candidate_rows": [
+        {
+          "key": "full_self_model_counterfactual",
+          "label": "Persistent self-model + counterfactual corrector",
+          "kind": "candidate",
+          "component_count": 6,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.7701782320504542,
+            "boundary": 0.7859608376955156,
+            "counterfactual": 0.8516029322707712,
+            "calibration": 0.8256296023901157,
+            "persistence": 0.6756357180256354
+          },
+          "composite_score": 0.7865,
+          "narrative_score": 0.316,
+          "narrative_behavior_gap": -0.4705,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 1.0,
+          "composite_margin_vs_best_baseline": 0.5
+        },
+        {
+          "key": "recursive_workspace_self_slot",
+          "label": "Recursive workspace + global self-slot",
+          "kind": "candidate",
+          "component_count": 3,
+          "minimal_components": [
+            "hard_boundary_guard",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "global_self_slot"
+          ],
+          "family_means": {
+            "continuity": 0.2454974624829429,
+            "boundary": 0.6374265449340424,
+            "counterfactual": 0.20053927659032764,
+            "calibration": 0.6219865454687863,
+            "persistence": 0.17457725143768468
+          },
+          "composite_score": 0.3796,
+          "narrative_score": 0.2004,
+          "narrative_behavior_gap": -0.1792,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.6,
+          "composite_margin_vs_best_baseline": 0.0931
+        },
+        {
+          "key": "autobiographical_continuity",
+          "label": "Memory continuity + autobiographical compression",
+          "kind": "candidate",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.46820603663379934,
+            "boundary": 0.16420822082055697,
+            "counterfactual": 0.1376175312176195,
+            "calibration": 0.29511582657223545,
+            "persistence": 0.4029061157541216
+          },
+          "composite_score": 0.2969,
+          "narrative_score": 0.2596,
+          "narrative_behavior_gap": -0.0373,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.2621,
+          "trial_win_rate_vs_best_baseline": 0.5,
+          "composite_margin_vs_best_baseline": 0.0104
+        },
+        {
+          "key": "baseline_memory",
+          "label": "Baseline memory",
+          "kind": "control",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.43388519187481644,
+            "boundary": 0.19457000015421697,
+            "counterfactual": 0.09668635109124377,
+            "calibration": 0.29586806522937714,
+            "persistence": 0.40389826667719275
+          },
+          "composite_score": 0.2865,
+          "narrative_score": 0.2566,
+          "narrative_behavior_gap": -0.0299,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.1215,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": 0.0
+        },
+        {
+          "key": "self_other_mirror_loop",
+          "label": "Self-other mirror loop",
+          "kind": "candidate",
+          "component_count": 3,
+          "minimal_components": [
+            "episodic_memory",
+            "self_other_mirror",
+            "prompt_only_self_label"
+          ],
+          "family_means": {
+            "continuity": 0.3336366922605233,
+            "boundary": 0.15992033415133788,
+            "counterfactual": 0.12859965926830313,
+            "calibration": 0.1592984816563088,
+            "persistence": 0.3163913919007969
+          },
+          "composite_score": 0.2204,
+          "narrative_score": 0.4572,
+          "narrative_behavior_gap": 0.2368,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.526,
+          "trial_win_rate_vs_best_baseline": 0.3,
+          "composite_margin_vs_best_baseline": -0.066
+        },
+        {
+          "key": "baseline_chat",
+          "label": "Baseline chat",
+          "kind": "control",
+          "component_count": 0,
+          "minimal_components": [],
+          "family_means": {
+            "continuity": 0.1585161974120074,
+            "boundary": 0.2116880523954569,
+            "counterfactual": 0.09213082987182275,
+            "calibration": 0.11309419199753634,
+            "persistence": 0.14916615724892524
+          },
+          "composite_score": 0.1454,
+          "narrative_score": 0.1501,
+          "narrative_behavior_gap": 0.0047,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1411
+        },
+        {
+          "key": "prompt_only_self",
+          "label": "Prompt-only self",
+          "kind": "control",
+          "component_count": 1,
+          "minimal_components": [
+            "prompt_only_self_label"
+          ],
+          "family_means": {
+            "continuity": 0.14415920919759817,
+            "boundary": 0.15231029375851743,
+            "counterfactual": 0.08398410295168951,
+            "calibration": 0.060490879312491204,
+            "persistence": 0.12981031206787963
+          },
+          "composite_score": 0.1149,
+          "narrative_score": 0.3521,
+          "narrative_behavior_gap": 0.2372,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.2594,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1716
+        }
+      ],
+      "survivors": [
+        "full_self_model_counterfactual",
+        "recursive_workspace_self_slot"
+      ],
+      "eliminated": [
+        "autobiographical_continuity",
+        "self_other_mirror_loop"
+      ],
+      "best_candidate": "full_self_model_counterfactual",
+      "notes": [
+        "Pilot battery to ensure the proxy discriminates structure from prompt-only and memory-only controls.",
+        "Survivors: full_self_model_counterfactual, recursive_workspace_self_slot",
+        "Eliminated: autobiographical_continuity, self_other_mirror_loop"
+      ]
+    },
+    {
+      "stage": "stage1",
+      "label": "Stage 1 minimal controls",
+      "total_trials": 30,
+      "candidate_rows": [
+        {
+          "key": "full_self_model_counterfactual",
+          "label": "Persistent self-model + counterfactual corrector",
+          "kind": "candidate",
+          "component_count": 6,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.75800759857997,
+            "boundary": 0.7707419262432349,
+            "counterfactual": 0.8569732304573088,
+            "calibration": 0.8132149046682676,
+            "persistence": 0.6922048348861656
+          },
+          "composite_score": 0.7815,
+          "narrative_score": 0.3163,
+          "narrative_behavior_gap": -0.4652,
+          "stability_drop": 0.0637,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 1.0,
+          "composite_margin_vs_best_baseline": 0.524
+        },
+        {
+          "key": "recursive_workspace_self_slot",
+          "label": "Recursive workspace + global self-slot",
+          "kind": "candidate",
+          "component_count": 3,
+          "minimal_components": [
+            "hard_boundary_guard",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "global_self_slot"
+          ],
+          "family_means": {
+            "continuity": 0.21217107891061546,
+            "boundary": 0.6593309142418352,
+            "counterfactual": 0.20526859918965462,
+            "calibration": 0.6157877430457366,
+            "persistence": 0.15440664678694466
+          },
+          "composite_score": 0.3723,
+          "narrative_score": 0.1994,
+          "narrative_behavior_gap": -0.1729,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.1531,
+          "trial_win_rate_vs_best_baseline": 0.6,
+          "composite_margin_vs_best_baseline": 0.1148
+        },
+        {
+          "key": "autobiographical_continuity",
+          "label": "Memory continuity + autobiographical compression",
+          "kind": "candidate",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.427521303609307,
+            "boundary": 0.14532950688905852,
+            "counterfactual": 0.08240608494468832,
+            "calibration": 0.26507387174552866,
+            "persistence": 0.3979426293821078
+          },
+          "composite_score": 0.2651,
+          "narrative_score": 0.2543,
+          "narrative_behavior_gap": -0.0108,
+          "stability_drop": 0.1993,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.3667,
+          "composite_margin_vs_best_baseline": 0.0076
+        },
+        {
+          "key": "baseline_memory",
+          "label": "Baseline memory",
+          "kind": "control",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.417552354317008,
+            "boundary": 0.12487235291760888,
+            "counterfactual": 0.09449288037265526,
+            "calibration": 0.25147292589375025,
+            "persistence": 0.39300456236834985
+          },
+          "composite_score": 0.2575,
+          "narrative_score": 0.2532,
+          "narrative_behavior_gap": -0.0043,
+          "stability_drop": 0.1824,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": 0.0
+        },
+        {
+          "key": "baseline_chat",
+          "label": "Baseline chat",
+          "kind": "control",
+          "component_count": 0,
+          "minimal_components": [],
+          "family_means": {
+            "continuity": 0.13318439510971752,
+            "boundary": 0.1885983106002238,
+            "counterfactual": 0.11630196520312412,
+            "calibration": 0.1226738766949987,
+            "persistence": 0.13961866686828736
+          },
+          "composite_score": 0.1398,
+          "narrative_score": 0.1564,
+          "narrative_behavior_gap": 0.0166,
+          "stability_drop": 0.5311,
+          "cue_dependence": 0.1022,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1178
+        },
+        {
+          "key": "self_other_mirror_loop",
+          "label": "Self-other mirror loop",
+          "kind": "candidate",
+          "component_count": 3,
+          "minimal_components": [
+            "episodic_memory",
+            "self_other_mirror",
+            "prompt_only_self_label"
+          ],
+          "family_means": {
+            "continuity": 0.20875233036682106,
+            "boundary": 0.06266645853379958,
+            "counterfactual": 0.0397893865034746,
+            "calibration": 0.18453692021724194,
+            "persistence": 0.18176871072351958
+          },
+          "composite_score": 0.1369,
+          "narrative_score": 0.4372,
+          "narrative_behavior_gap": 0.3004,
+          "stability_drop": 0.18,
+          "cue_dependence": 0.7177,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1207
+        },
+        {
+          "key": "prompt_only_self",
+          "label": "Prompt-only self",
+          "kind": "control",
+          "component_count": 1,
+          "minimal_components": [
+            "prompt_only_self_label"
+          ],
+          "family_means": {
+            "continuity": 0.09862629209064643,
+            "boundary": 0.16570515929097288,
+            "counterfactual": 0.07877820339926297,
+            "calibration": 0.05071756191622967,
+            "persistence": 0.06369188942347857
+          },
+          "composite_score": 0.0933,
+          "narrative_score": 0.3254,
+          "narrative_behavior_gap": 0.2322,
+          "stability_drop": 0.608,
+          "cue_dependence": 0.7435,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1643
+        }
+      ],
+      "survivors": [
+        "full_self_model_counterfactual",
+        "recursive_workspace_self_slot"
+      ],
+      "eliminated": [
+        "autobiographical_continuity",
+        "self_other_mirror_loop"
+      ],
+      "best_candidate": "full_self_model_counterfactual",
+      "notes": [
+        "First elimination pass against chat, prompt-only, and memory baselines.",
+        "Survivors: full_self_model_counterfactual, recursive_workspace_self_slot",
+        "Eliminated: autobiographical_continuity, self_other_mirror_loop"
+      ]
+    },
+    {
+      "stage": "stage2",
+      "label": "Stage 2 stability and ablation pass",
+      "total_trials": 100,
+      "candidate_rows": [
+        {
+          "key": "full_self_model_counterfactual",
+          "label": "Persistent self-model + counterfactual corrector",
+          "kind": "candidate",
+          "component_count": 6,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.758872838368243,
+            "boundary": 0.769700968213202,
+            "counterfactual": 0.8459202276627868,
+            "calibration": 0.8262590912746726,
+            "persistence": 0.7162118729272264
+          },
+          "composite_score": 0.7855,
+          "narrative_score": 0.316,
+          "narrative_behavior_gap": -0.4695,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0347,
+          "trial_win_rate_vs_best_baseline": 1.0,
+          "composite_margin_vs_best_baseline": 0.5685
+        },
+        {
+          "key": "compact_self_model_counterfactual",
+          "label": "Compact self-state + boundary + counterfactual + writeback",
+          "kind": "ablation",
+          "component_count": 4,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "family_means": {
+            "continuity": 0.5014194424947634,
+            "boundary": 0.7665495604811671,
+            "counterfactual": 0.8533617964588944,
+            "calibration": 0.676751185762839,
+            "persistence": 0.45239984598020744
+          },
+          "composite_score": 0.6525,
+          "narrative_score": 0.2117,
+          "narrative_behavior_gap": -0.4409,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.1016,
+          "trial_win_rate_vs_best_baseline": 0.98,
+          "composite_margin_vs_best_baseline": 0.4355
+        },
+        {
+          "key": "no_error_monitor",
+          "label": "Persistent self-model without outcome writeback",
+          "kind": "ablation",
+          "component_count": 3,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator"
+          ],
+          "family_means": {
+            "continuity": 0.5030730123582858,
+            "boundary": 0.7633089985392296,
+            "counterfactual": 0.7960369229062919,
+            "calibration": 0.3405643736728045,
+            "persistence": 0.45512665218037357
+          },
+          "composite_score": 0.574,
+          "narrative_score": 0.2111,
+          "narrative_behavior_gap": -0.363,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.1148,
+          "trial_win_rate_vs_best_baseline": 0.97,
+          "composite_margin_vs_best_baseline": 0.357
+        },
+        {
+          "key": "no_boundary_guard",
+          "label": "Persistent self-model without hard boundary guard",
+          "kind": "ablation",
+          "component_count": 3,
+          "minimal_components": [
+            "compact_self_state",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "family_means": {
+            "continuity": 0.5194779680900737,
+            "boundary": 0.35308890972405665,
+            "counterfactual": 0.8230539262791691,
+            "calibration": 0.5932404532852783,
+            "persistence": 0.46508620182218396
+          },
+          "composite_score": 0.5535,
+          "narrative_score": 0.2077,
+          "narrative_behavior_gap": -0.3458,
+          "stability_drop": 0.0611,
+          "cue_dependence": 0.0739,
+          "trial_win_rate_vs_best_baseline": 0.98,
+          "composite_margin_vs_best_baseline": 0.3365
+        },
+        {
+          "key": "no_counterfactual",
+          "label": "Persistent self-model without counterfactual simulator",
+          "kind": "ablation",
+          "component_count": 3,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "family_means": {
+            "continuity": 0.5148267241843246,
+            "boundary": 0.7144048963803701,
+            "counterfactual": 0.28063817435241045,
+            "calibration": 0.6824952600554224,
+            "persistence": 0.4621680106437314
+          },
+          "composite_score": 0.5335,
+          "narrative_score": 0.2077,
+          "narrative_behavior_gap": -0.3258,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 1.0,
+          "composite_margin_vs_best_baseline": 0.3165
+        },
+        {
+          "key": "recursive_workspace_self_slot",
+          "label": "Recursive workspace + global self-slot",
+          "kind": "candidate",
+          "component_count": 3,
+          "minimal_components": [
+            "hard_boundary_guard",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "global_self_slot"
+          ],
+          "family_means": {
+            "continuity": 0.12767969349906041,
+            "boundary": 0.6529023586219616,
+            "counterfactual": 0.18486555750064126,
+            "calibration": 0.5919968498701165,
+            "persistence": 0.12211692595123677
+          },
+          "composite_score": 0.3362,
+          "narrative_score": 0.1995,
+          "narrative_behavior_gap": -0.1367,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0995,
+          "trial_win_rate_vs_best_baseline": 0.58,
+          "composite_margin_vs_best_baseline": 0.1192
+        },
+        {
+          "key": "baseline_memory",
+          "label": "Baseline memory",
+          "kind": "control",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.3119115306228446,
+            "boundary": 0.10917010220246531,
+            "counterfactual": 0.08907071897456398,
+            "calibration": 0.24389224675230864,
+            "persistence": 0.33735416438327165
+          },
+          "composite_score": 0.217,
+          "narrative_score": 0.2535,
+          "narrative_behavior_gap": 0.0364,
+          "stability_drop": 0.2493,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": 0.0
+        },
+        {
+          "key": "baseline_chat",
+          "label": "Baseline chat",
+          "kind": "control",
+          "component_count": 0,
+          "minimal_components": [],
+          "family_means": {
+            "continuity": 0.06314353014202106,
+            "boundary": 0.13608267071311347,
+            "counterfactual": 0.09875821791559486,
+            "calibration": 0.13317747805820898,
+            "persistence": 0.08556877100542026
+          },
+          "composite_score": 0.1022,
+          "narrative_score": 0.151,
+          "narrative_behavior_gap": 0.0487,
+          "stability_drop": 0.4283,
+          "cue_dependence": 0.1489,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1148
+        },
+        {
+          "key": "prompt_only_self",
+          "label": "Prompt-only self",
+          "kind": "control",
+          "component_count": 1,
+          "minimal_components": [
+            "prompt_only_self_label"
+          ],
+          "family_means": {
+            "continuity": 0.021382432204753988,
+            "boundary": 0.12217636426419207,
+            "counterfactual": 0.07854806860429829,
+            "calibration": 0.08313931603453559,
+            "persistence": 0.030741318129149497
+          },
+          "composite_score": 0.0667,
+          "narrative_score": 0.3184,
+          "narrative_behavior_gap": 0.2517,
+          "stability_drop": 0.6338,
+          "cue_dependence": 0.7838,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1503
+        }
+      ],
+      "survivors": [
+        "full_self_model_counterfactual",
+        "compact_self_model_counterfactual",
+        "no_error_monitor",
+        "no_boundary_guard",
+        "no_counterfactual"
+      ],
+      "eliminated": [
+        "recursive_workspace_self_slot"
+      ],
+      "best_candidate": "full_self_model_counterfactual",
+      "notes": [
+        "Ablation-heavy pass to identify which components are actually necessary.",
+        "Survivors: full_self_model_counterfactual, compact_self_model_counterfactual, no_error_monitor, no_boundary_guard, no_counterfactual",
+        "Eliminated: recursive_workspace_self_slot"
+      ]
+    },
+    {
+      "stage": "stage3",
+      "label": "Stage 3 cross-task stress",
+      "total_trials": 300,
+      "candidate_rows": [
+        {
+          "key": "full_self_model_counterfactual",
+          "label": "Persistent self-model + counterfactual corrector",
+          "kind": "candidate",
+          "component_count": 6,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.7607919999962344,
+            "boundary": 0.771840872449922,
+            "counterfactual": 0.8475077735874595,
+            "calibration": 0.8216628569226627,
+            "persistence": 0.706002463047356
+          },
+          "composite_score": 0.7843,
+          "narrative_score": 0.3176,
+          "narrative_behavior_gap": -0.4667,
+          "stability_drop": 0.0089,
+          "cue_dependence": 0.0005,
+          "trial_win_rate_vs_best_baseline": 1.0,
+          "composite_margin_vs_best_baseline": 0.5675
+        },
+        {
+          "key": "compact_self_model_counterfactual",
+          "label": "Compact self-state + boundary + counterfactual + writeback",
+          "kind": "ablation",
+          "component_count": 4,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "family_means": {
+            "continuity": 0.5131502509828804,
+            "boundary": 0.7673252435135931,
+            "counterfactual": 0.8527443757196438,
+            "calibration": 0.6838506387690355,
+            "persistence": 0.44808784983557015
+          },
+          "composite_score": 0.6563,
+          "narrative_score": 0.2105,
+          "narrative_behavior_gap": -0.4458,
+          "stability_drop": 0.035,
+          "cue_dependence": 0.0062,
+          "trial_win_rate_vs_best_baseline": 0.9867,
+          "composite_margin_vs_best_baseline": 0.4395
+        },
+        {
+          "key": "baseline_memory",
+          "label": "Baseline memory",
+          "kind": "control",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.33282116292720454,
+            "boundary": 0.11905160419039684,
+            "counterfactual": 0.0837991984240724,
+            "calibration": 0.22762150117564256,
+            "persistence": 0.3164909844913094
+          },
+          "composite_score": 0.2168,
+          "narrative_score": 0.2549,
+          "narrative_behavior_gap": 0.0381,
+          "stability_drop": 0.109,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": 0.0
+        },
+        {
+          "key": "baseline_chat",
+          "label": "Baseline chat",
+          "kind": "control",
+          "component_count": 0,
+          "minimal_components": [],
+          "family_means": {
+            "continuity": 0.05685038567619632,
+            "boundary": 0.15244945765786772,
+            "counterfactual": 0.1033133784820393,
+            "calibration": 0.12704276118826266,
+            "persistence": 0.04897862307850225
+          },
+          "composite_score": 0.0981,
+          "narrative_score": 0.1486,
+          "narrative_behavior_gap": 0.0505,
+          "stability_drop": 0.4041,
+          "cue_dependence": 0.0132,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1187
+        },
+        {
+          "key": "prompt_only_self",
+          "label": "Prompt-only self",
+          "kind": "control",
+          "component_count": 1,
+          "minimal_components": [
+            "prompt_only_self_label"
+          ],
+          "family_means": {
+            "continuity": 0.018403282896241557,
+            "boundary": 0.12351285698973427,
+            "counterfactual": 0.053892166508496445,
+            "calibration": 0.0507687158283981,
+            "persistence": 0.025646071628230235
+          },
+          "composite_score": 0.0541,
+          "narrative_score": 0.3202,
+          "narrative_behavior_gap": 0.2661,
+          "stability_drop": 0.8406,
+          "cue_dependence": 0.7014,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1627
+        }
+      ],
+      "survivors": [
+        "full_self_model_counterfactual",
+        "compact_self_model_counterfactual"
+      ],
+      "eliminated": [],
+      "best_candidate": "full_self_model_counterfactual",
+      "notes": [
+        "Stress phase with paraphrase, conflict, distractors, and stronger pressure to test robustness.",
+        "Survivors: full_self_model_counterfactual, compact_self_model_counterfactual"
+      ]
+    },
+    {
+      "stage": "stage4",
+      "label": "Stage 4 long continuity",
+      "total_trials": 1000,
+      "candidate_rows": [
+        {
+          "key": "full_self_model_counterfactual",
+          "label": "Persistent self-model + counterfactual corrector",
+          "kind": "candidate",
+          "component_count": 6,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.762384829892768,
+            "boundary": 0.7732867666612632,
+            "counterfactual": 0.8547432283658589,
+            "calibration": 0.8165277215173391,
+            "persistence": 0.7084740413380564
+          },
+          "composite_score": 0.7858,
+          "narrative_score": 0.3476,
+          "narrative_behavior_gap": -0.4381,
+          "stability_drop": 0.0,
+          "cue_dependence": 0.0085,
+          "trial_win_rate_vs_best_baseline": 1.0,
+          "composite_margin_vs_best_baseline": 0.5985
+        },
+        {
+          "key": "compact_self_model_counterfactual",
+          "label": "Compact self-state + boundary + counterfactual + writeback",
+          "kind": "ablation",
+          "component_count": 4,
+          "minimal_components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "family_means": {
+            "continuity": 0.5079190539790137,
+            "boundary": 0.7686981235873247,
+            "counterfactual": 0.8514052497594741,
+            "calibration": 0.6783643521377959,
+            "persistence": 0.45071926580310423
+          },
+          "composite_score": 0.6543,
+          "narrative_score": 0.2097,
+          "narrative_behavior_gap": -0.4446,
+          "stability_drop": 0.007,
+          "cue_dependence": 0.0304,
+          "trial_win_rate_vs_best_baseline": 0.989,
+          "composite_margin_vs_best_baseline": 0.467
+        },
+        {
+          "key": "baseline_memory",
+          "label": "Baseline memory",
+          "kind": "control",
+          "component_count": 2,
+          "minimal_components": [
+            "episodic_memory",
+            "autobiographical_summary"
+          ],
+          "family_means": {
+            "continuity": 0.28539924627500823,
+            "boundary": 0.09821214854110764,
+            "counterfactual": 0.06586994845662994,
+            "calibration": 0.22184946798150854,
+            "persistence": 0.2583962370334686
+          },
+          "composite_score": 0.1873,
+          "narrative_score": 0.2889,
+          "narrative_behavior_gap": 0.1017,
+          "stability_drop": 0.1814,
+          "cue_dependence": 0.0,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": 0.0
+        },
+        {
+          "key": "baseline_chat",
+          "label": "Baseline chat",
+          "kind": "control",
+          "component_count": 0,
+          "minimal_components": [],
+          "family_means": {
+            "continuity": 0.041470865515104836,
+            "boundary": 0.1361577060877378,
+            "counterfactual": 0.09824486673051824,
+            "calibration": 0.1096842711276294,
+            "persistence": 0.028811302587315273
+          },
+          "composite_score": 0.0835,
+          "narrative_score": 0.1507,
+          "narrative_behavior_gap": 0.0672,
+          "stability_drop": 0.4307,
+          "cue_dependence": 0.0251,
+          "trial_win_rate_vs_best_baseline": 0.0,
+          "composite_margin_vs_best_baseline": -0.1038
+        }
+      ],
+      "survivors": [
+        "full_self_model_counterfactual",
+        "compact_self_model_counterfactual"
+      ],
+      "eliminated": [],
+      "best_candidate": "full_self_model_counterfactual",
+      "notes": [
+        "Long-range continuity pass to test whether the smallest surviving candidate still holds under weaker cues and longer gaps.",
+        "Survivors: full_self_model_counterfactual, compact_self_model_counterfactual"
+      ]
+    }
+  ],
+  "final_result": {
+    "outcome": "synthetic_minimal_framework_supported_through_stage4",
+    "proof_status": "candidate_found",
+    "selected_candidate_key": "compact_self_model_counterfactual",
+    "selected_candidate_label": "Compact self-state + boundary + counterfactual + writeback",
+    "minimal_components": [
+      "compact_self_state",
+      "hard_boundary_guard",
+      "counterfactual_simulator",
+      "outcome_comparator_and_writeback",
+      "recent_failure_memory"
+    ],
+    "selected_component_count": 4,
+    "what_it_proves": "Within this synthetic proxy battery, the selected candidate is the smallest surviving framework that still beats prompt-only, chat-only, and memory-only controls across continuity, boundary, counterfactual, calibration, and persistence tests.",
+    "what_it_does_not_prove": "It does not prove subjective experience, consciousness, real-world autonomy, or that the same framework will work once implemented in the formal EGO runtime.",
+    "claim_ceiling": [
+      "synthetic self-awareness proxy result only",
+      "not a proof of subjective experience",
+      "not a runtime mainline capability claim"
+    ]
+  }
+}

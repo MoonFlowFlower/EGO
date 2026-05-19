@@ -1,0 +1,21 @@
+{
+  "thread_id": "external-replay:candidate_h1_shadow_on:ask_vs_answer_uncertainty_05",
+  "scope": "thread",
+  "created_at": "2026-04-10T13:26:38.506239+00:00",
+  "event_count": 1,
+  "updated_at": "2026-04-10T13:26:38.506239+00:00",
+  "source": "external_replay",
+  "latest_session_id": "external-replay:candidate_h1_shadow_on:ask_vs_answer_uncertainty_05",
+  "latest_event_id": "external-replay:candidate_h1_shadow_on:ask_vs_answer_uncertainty_05_ingress_001",
+  "latest_turn_id": "ingress_001",
+  "latest_event_type": "user_message",
+  "last_context": {
+    "session_id": "external-replay:candidate_h1_shadow_on:ask_vs_answer_uncertainty_05",
+    "thread_id": "external-replay:candidate_h1_shadow_on:ask_vs_answer_uncertainty_05",
+    "turn_id": "ingress_001",
+    "source": "external_replay",
+    "event_type": "user_message",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

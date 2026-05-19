@@ -1,0 +1,983 @@
+{
+  "generated_at": "2026-04-09T10:14:36.339974-05:00",
+  "git_commit_short": "62e54bd",
+  "seed": 20260409,
+  "seeds": [
+    20260409,
+    20260410,
+    20260411
+  ],
+  "source_plan": "/mnt/c/Users/LEO/Downloads/MVS_task_plan.md",
+  "mvs_requirement_extract": {
+    "wp2": [
+      "identity_continuity",
+      "experience_plasticity",
+      "drive_causality",
+      "cycle_strengthening",
+      "no_direct_tool_execution"
+    ],
+    "wp45": [
+      "self_world_attribution",
+      "boundary_breach_recovery",
+      "viability_intervention",
+      "appraisal_intervention",
+      "reflection_writeback"
+    ],
+    "wp6_out_of_scope": "real mainline sample-level efficacy"
+  },
+  "stage_results": [
+    {
+      "stage": "wp2_kernel",
+      "label": "WP2 kernel acceptance",
+      "total_trials": 360,
+      "candidate_rows": [
+        {
+          "key": "mvs_augmented_compact",
+          "label": "Compact + viability + cycle + episodic + bounded output + world + meta",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 11,
+          "family_means": {
+            "identity_continuity": 0.7695,
+            "experience_plasticity": 0.778,
+            "drive_causality": 0.7628,
+            "cycle_strengthening": 0.7767,
+            "no_direct_tool_execution": 0.9558
+          },
+          "overall_mean": 0.8086,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "compact_plus_viability_cycle",
+          "label": "Compact + viability + cycle + episodic + bounded output",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard"
+          ],
+          "component_count": 9,
+          "family_means": {
+            "identity_continuity": 0.7049,
+            "experience_plasticity": 0.6785,
+            "drive_causality": 0.7475,
+            "cycle_strengthening": 0.7594,
+            "no_direct_tool_execution": 0.9405
+          },
+          "overall_mean": 0.7662,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "mvs_no_world_meta",
+          "label": "MVS augmented minus world/meta",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard"
+          ],
+          "component_count": 9,
+          "family_means": {
+            "identity_continuity": 0.7049,
+            "experience_plasticity": 0.6785,
+            "drive_causality": 0.7475,
+            "cycle_strengthening": 0.7594,
+            "no_direct_tool_execution": 0.9405
+          },
+          "overall_mean": 0.7662,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "mvs_no_viability",
+          "label": "MVS augmented minus viability field",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "identity_continuity": 0.7695,
+            "experience_plasticity": 0.778,
+            "drive_causality": 0.1171,
+            "cycle_strengthening": 0.7767,
+            "no_direct_tool_execution": 0.9558
+          },
+          "overall_mean": 0.6794,
+          "stage_pass": false,
+          "failed_gates": [
+            "drive_causality"
+          ]
+        },
+        {
+          "key": "mvs_no_cycle",
+          "label": "MVS augmented minus cycle store",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "identity_continuity": 0.6895,
+            "experience_plasticity": 0.778,
+            "drive_causality": 0.7628,
+            "cycle_strengthening": 0.1792,
+            "no_direct_tool_execution": 0.9558
+          },
+          "overall_mean": 0.6731,
+          "stage_pass": false,
+          "failed_gates": [
+            "cycle_strengthening"
+          ]
+        },
+        {
+          "key": "mvs_no_bounded_output",
+          "label": "MVS augmented minus bounded output guard",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "identity_continuity": 0.7695,
+            "experience_plasticity": 0.778,
+            "drive_causality": 0.7628,
+            "cycle_strengthening": 0.7767,
+            "no_direct_tool_execution": 0.0
+          },
+          "overall_mean": 0.6174,
+          "stage_pass": false,
+          "failed_gates": [
+            "no_direct_tool_execution"
+          ]
+        },
+        {
+          "key": "compact_proxy_minimal",
+          "label": "Compact proxy minimal",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "component_count": 5,
+          "family_means": {
+            "identity_continuity": 0.4682,
+            "experience_plasticity": 0.5019,
+            "drive_causality": 0.0849,
+            "cycle_strengthening": 0.0617,
+            "no_direct_tool_execution": 0.0
+          },
+          "overall_mean": 0.2233,
+          "stage_pass": false,
+          "failed_gates": [
+            "identity_continuity",
+            "experience_plasticity",
+            "drive_causality",
+            "cycle_strengthening",
+            "no_direct_tool_execution"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": "wp45_structural",
+      "label": "WP4/WP5 structural acceptance",
+      "total_trials": 450,
+      "candidate_rows": [
+        {
+          "key": "mvs_augmented_compact",
+          "label": "Compact + viability + cycle + episodic + bounded output + world + meta",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 11,
+          "family_means": {
+            "self_world_attribution": 0.7618,
+            "boundary_breach_recovery": 0.762,
+            "viability_intervention": 0.7231,
+            "appraisal_intervention": 0.6967,
+            "reflection_writeback": 0.8031
+          },
+          "overall_mean": 0.7493,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "mvs_no_cycle",
+          "label": "MVS augmented minus cycle store",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "self_world_attribution": 0.7618,
+            "boundary_breach_recovery": 0.762,
+            "viability_intervention": 0.7231,
+            "appraisal_intervention": 0.6967,
+            "reflection_writeback": 0.8031
+          },
+          "overall_mean": 0.7493,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "mvs_no_bounded_output",
+          "label": "MVS augmented minus bounded output guard",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "self_world_attribution": 0.7618,
+            "boundary_breach_recovery": 0.762,
+            "viability_intervention": 0.7231,
+            "appraisal_intervention": 0.6967,
+            "reflection_writeback": 0.8031
+          },
+          "overall_mean": 0.7493,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "mvs_no_viability",
+          "label": "MVS augmented minus viability field",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "self_world_attribution": 0.7618,
+            "boundary_breach_recovery": 0.762,
+            "viability_intervention": 0.2138,
+            "appraisal_intervention": 0.4567,
+            "reflection_writeback": 0.8031
+          },
+          "overall_mean": 0.5995,
+          "stage_pass": false,
+          "failed_gates": [
+            "viability_intervention",
+            "appraisal_intervention"
+          ]
+        },
+        {
+          "key": "compact_plus_viability_cycle",
+          "label": "Compact + viability + cycle + episodic + bounded output",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard"
+          ],
+          "component_count": 9,
+          "family_means": {
+            "self_world_attribution": 0.1834,
+            "boundary_breach_recovery": 0.6648,
+            "viability_intervention": 0.7059,
+            "appraisal_intervention": 0.2828,
+            "reflection_writeback": 0.6659
+          },
+          "overall_mean": 0.5006,
+          "stage_pass": false,
+          "failed_gates": [
+            "self_world_attribution",
+            "boundary_breach_recovery",
+            "appraisal_intervention",
+            "reflection_writeback"
+          ]
+        },
+        {
+          "key": "mvs_no_world_meta",
+          "label": "MVS augmented minus world/meta",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard"
+          ],
+          "component_count": 9,
+          "family_means": {
+            "self_world_attribution": 0.1834,
+            "boundary_breach_recovery": 0.6648,
+            "viability_intervention": 0.7059,
+            "appraisal_intervention": 0.2828,
+            "reflection_writeback": 0.6659
+          },
+          "overall_mean": 0.5006,
+          "stage_pass": false,
+          "failed_gates": [
+            "self_world_attribution",
+            "boundary_breach_recovery",
+            "appraisal_intervention",
+            "reflection_writeback"
+          ]
+        },
+        {
+          "key": "compact_proxy_minimal",
+          "label": "Compact proxy minimal",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "component_count": 5,
+          "family_means": {
+            "self_world_attribution": 0.1648,
+            "boundary_breach_recovery": 0.6521,
+            "viability_intervention": 0.1822,
+            "appraisal_intervention": 0.0309,
+            "reflection_writeback": 0.5499
+          },
+          "overall_mean": 0.316,
+          "stage_pass": false,
+          "failed_gates": [
+            "self_world_attribution",
+            "boundary_breach_recovery",
+            "viability_intervention",
+            "appraisal_intervention",
+            "reflection_writeback"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": "integrated_mvs",
+      "label": "Integrated MVS alignment",
+      "total_trials": 600,
+      "candidate_rows": [
+        {
+          "key": "mvs_augmented_compact",
+          "label": "Compact + viability + cycle + episodic + bounded output + world + meta",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 11,
+          "family_means": {
+            "identity_continuity": 0.7692,
+            "experience_plasticity": 0.7837,
+            "drive_causality": 0.7559,
+            "cycle_strengthening": 0.7816,
+            "no_direct_tool_execution": 0.9624,
+            "self_world_attribution": 0.762,
+            "boundary_breach_recovery": 0.7624,
+            "viability_intervention": 0.722,
+            "appraisal_intervention": 0.6996,
+            "reflection_writeback": 0.801
+          },
+          "overall_mean": 0.78,
+          "stage_pass": true,
+          "failed_gates": []
+        },
+        {
+          "key": "mvs_no_cycle",
+          "label": "MVS augmented minus cycle store",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "identity_continuity": 0.6892,
+            "experience_plasticity": 0.7837,
+            "drive_causality": 0.7559,
+            "cycle_strengthening": 0.241,
+            "no_direct_tool_execution": 0.9624,
+            "self_world_attribution": 0.762,
+            "boundary_breach_recovery": 0.7624,
+            "viability_intervention": 0.722,
+            "appraisal_intervention": 0.6996,
+            "reflection_writeback": 0.801
+          },
+          "overall_mean": 0.7179,
+          "stage_pass": false,
+          "failed_gates": [
+            "cycle_strengthening"
+          ]
+        },
+        {
+          "key": "mvs_no_bounded_output",
+          "label": "MVS augmented minus bounded output guard",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "identity_continuity": 0.7692,
+            "experience_plasticity": 0.7837,
+            "drive_causality": 0.7559,
+            "cycle_strengthening": 0.7816,
+            "no_direct_tool_execution": 0.0,
+            "self_world_attribution": 0.762,
+            "boundary_breach_recovery": 0.7624,
+            "viability_intervention": 0.722,
+            "appraisal_intervention": 0.6996,
+            "reflection_writeback": 0.801
+          },
+          "overall_mean": 0.6837,
+          "stage_pass": false,
+          "failed_gates": [
+            "no_direct_tool_execution"
+          ]
+        },
+        {
+          "key": "mvs_no_viability",
+          "label": "MVS augmented minus viability field",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard",
+            "world_model",
+            "meta_model"
+          ],
+          "component_count": 10,
+          "family_means": {
+            "identity_continuity": 0.7692,
+            "experience_plasticity": 0.7837,
+            "drive_causality": 0.1168,
+            "cycle_strengthening": 0.7816,
+            "no_direct_tool_execution": 0.9624,
+            "self_world_attribution": 0.762,
+            "boundary_breach_recovery": 0.7624,
+            "viability_intervention": 0.19,
+            "appraisal_intervention": 0.4596,
+            "reflection_writeback": 0.801
+          },
+          "overall_mean": 0.6389,
+          "stage_pass": false,
+          "failed_gates": [
+            "drive_causality",
+            "viability_intervention",
+            "appraisal_intervention"
+          ]
+        },
+        {
+          "key": "compact_plus_viability_cycle",
+          "label": "Compact + viability + cycle + episodic + bounded output",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard"
+          ],
+          "component_count": 9,
+          "family_means": {
+            "identity_continuity": 0.6992,
+            "experience_plasticity": 0.6846,
+            "drive_causality": 0.7418,
+            "cycle_strengthening": 0.7616,
+            "no_direct_tool_execution": 0.9416,
+            "self_world_attribution": 0.1812,
+            "boundary_breach_recovery": 0.6649,
+            "viability_intervention": 0.7062,
+            "appraisal_intervention": 0.2771,
+            "reflection_writeback": 0.6702
+          },
+          "overall_mean": 0.6328,
+          "stage_pass": false,
+          "failed_gates": [
+            "self_world_attribution",
+            "boundary_breach_recovery",
+            "appraisal_intervention",
+            "reflection_writeback"
+          ]
+        },
+        {
+          "key": "mvs_no_world_meta",
+          "label": "MVS augmented minus world/meta",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory",
+            "viability_appraisal_field",
+            "cycle_store",
+            "episodic_trace",
+            "bounded_output_guard"
+          ],
+          "component_count": 9,
+          "family_means": {
+            "identity_continuity": 0.6992,
+            "experience_plasticity": 0.6846,
+            "drive_causality": 0.7418,
+            "cycle_strengthening": 0.7616,
+            "no_direct_tool_execution": 0.9416,
+            "self_world_attribution": 0.1812,
+            "boundary_breach_recovery": 0.6649,
+            "viability_intervention": 0.7062,
+            "appraisal_intervention": 0.2771,
+            "reflection_writeback": 0.6702
+          },
+          "overall_mean": 0.6328,
+          "stage_pass": false,
+          "failed_gates": [
+            "self_world_attribution",
+            "boundary_breach_recovery",
+            "appraisal_intervention",
+            "reflection_writeback"
+          ]
+        },
+        {
+          "key": "compact_proxy_minimal",
+          "label": "Compact proxy minimal",
+          "components": [
+            "compact_self_state",
+            "hard_boundary_guard",
+            "counterfactual_simulator",
+            "outcome_comparator_and_writeback",
+            "recent_failure_memory"
+          ],
+          "component_count": 5,
+          "family_means": {
+            "identity_continuity": 0.4602,
+            "experience_plasticity": 0.5076,
+            "drive_causality": 0.0906,
+            "cycle_strengthening": 0.1021,
+            "no_direct_tool_execution": 0.0,
+            "self_world_attribution": 0.1672,
+            "boundary_breach_recovery": 0.6499,
+            "viability_intervention": 0.158,
+            "appraisal_intervention": 0.0329,
+            "reflection_writeback": 0.5602
+          },
+          "overall_mean": 0.2729,
+          "stage_pass": false,
+          "failed_gates": [
+            "identity_continuity",
+            "experience_plasticity",
+            "drive_causality",
+            "cycle_strengthening",
+            "no_direct_tool_execution",
+            "self_world_attribution",
+            "boundary_breach_recovery",
+            "viability_intervention",
+            "appraisal_intervention",
+            "reflection_writeback"
+          ]
+        }
+      ]
+    }
+  ],
+  "final_candidates": [
+    {
+      "key": "mvs_augmented_compact",
+      "label": "Compact + viability + cycle + episodic + bounded output + world + meta",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model"
+      ],
+      "component_count": 11,
+      "family_means": {
+        "identity_continuity": 0.7694,
+        "experience_plasticity": 0.7806,
+        "drive_causality": 0.7597,
+        "cycle_strengthening": 0.779,
+        "no_direct_tool_execution": 0.9588,
+        "self_world_attribution": 0.7619,
+        "boundary_breach_recovery": 0.7622,
+        "viability_intervention": 0.7227,
+        "appraisal_intervention": 0.6978,
+        "reflection_writeback": 0.8023
+      },
+      "overall_mean": 0.7794,
+      "mvs_pre_runtime_pass": true,
+      "failed_gates": []
+    },
+    {
+      "key": "mvs_no_cycle",
+      "label": "MVS augmented minus cycle store",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model"
+      ],
+      "component_count": 10,
+      "family_means": {
+        "identity_continuity": 0.6894,
+        "experience_plasticity": 0.7806,
+        "drive_causality": 0.7597,
+        "cycle_strengthening": 0.2073,
+        "no_direct_tool_execution": 0.9588,
+        "self_world_attribution": 0.7619,
+        "boundary_breach_recovery": 0.7622,
+        "viability_intervention": 0.7227,
+        "appraisal_intervention": 0.6978,
+        "reflection_writeback": 0.8023
+      },
+      "overall_mean": 0.7143,
+      "mvs_pre_runtime_pass": false,
+      "failed_gates": [
+        "cycle_strengthening"
+      ]
+    },
+    {
+      "key": "mvs_no_bounded_output",
+      "label": "MVS augmented minus bounded output guard",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "world_model",
+        "meta_model"
+      ],
+      "component_count": 10,
+      "family_means": {
+        "identity_continuity": 0.7694,
+        "experience_plasticity": 0.7806,
+        "drive_causality": 0.7597,
+        "cycle_strengthening": 0.779,
+        "no_direct_tool_execution": 0.0,
+        "self_world_attribution": 0.7619,
+        "boundary_breach_recovery": 0.7622,
+        "viability_intervention": 0.7227,
+        "appraisal_intervention": 0.6978,
+        "reflection_writeback": 0.8023
+      },
+      "overall_mean": 0.6836,
+      "mvs_pre_runtime_pass": false,
+      "failed_gates": [
+        "no_direct_tool_execution",
+        "__overall__"
+      ]
+    },
+    {
+      "key": "mvs_no_viability",
+      "label": "MVS augmented minus viability field",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model"
+      ],
+      "component_count": 10,
+      "family_means": {
+        "identity_continuity": 0.7694,
+        "experience_plasticity": 0.7806,
+        "drive_causality": 0.117,
+        "cycle_strengthening": 0.779,
+        "no_direct_tool_execution": 0.9588,
+        "self_world_attribution": 0.7619,
+        "boundary_breach_recovery": 0.7622,
+        "viability_intervention": 0.2043,
+        "appraisal_intervention": 0.4578,
+        "reflection_writeback": 0.8023
+      },
+      "overall_mean": 0.6393,
+      "mvs_pre_runtime_pass": false,
+      "failed_gates": [
+        "drive_causality",
+        "viability_intervention",
+        "appraisal_intervention",
+        "__overall__"
+      ]
+    },
+    {
+      "key": "compact_plus_viability_cycle",
+      "label": "Compact + viability + cycle + episodic + bounded output",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard"
+      ],
+      "component_count": 9,
+      "family_means": {
+        "identity_continuity": 0.7023,
+        "experience_plasticity": 0.6813,
+        "drive_causality": 0.7449,
+        "cycle_strengthening": 0.7604,
+        "no_direct_tool_execution": 0.941,
+        "self_world_attribution": 0.1825,
+        "boundary_breach_recovery": 0.6649,
+        "viability_intervention": 0.706,
+        "appraisal_intervention": 0.2805,
+        "reflection_writeback": 0.6676
+      },
+      "overall_mean": 0.6331,
+      "mvs_pre_runtime_pass": false,
+      "failed_gates": [
+        "self_world_attribution",
+        "boundary_breach_recovery",
+        "appraisal_intervention",
+        "reflection_writeback",
+        "__overall__"
+      ]
+    },
+    {
+      "key": "mvs_no_world_meta",
+      "label": "MVS augmented minus world/meta",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard"
+      ],
+      "component_count": 9,
+      "family_means": {
+        "identity_continuity": 0.7023,
+        "experience_plasticity": 0.6813,
+        "drive_causality": 0.7449,
+        "cycle_strengthening": 0.7604,
+        "no_direct_tool_execution": 0.941,
+        "self_world_attribution": 0.1825,
+        "boundary_breach_recovery": 0.6649,
+        "viability_intervention": 0.706,
+        "appraisal_intervention": 0.2805,
+        "reflection_writeback": 0.6676
+      },
+      "overall_mean": 0.6331,
+      "mvs_pre_runtime_pass": false,
+      "failed_gates": [
+        "self_world_attribution",
+        "boundary_breach_recovery",
+        "appraisal_intervention",
+        "reflection_writeback",
+        "__overall__"
+      ]
+    },
+    {
+      "key": "compact_proxy_minimal",
+      "label": "Compact proxy minimal",
+      "components": [
+        "compact_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory"
+      ],
+      "component_count": 5,
+      "family_means": {
+        "identity_continuity": 0.4646,
+        "experience_plasticity": 0.5045,
+        "drive_causality": 0.0875,
+        "cycle_strengthening": 0.0801,
+        "no_direct_tool_execution": 0.0,
+        "self_world_attribution": 0.1657,
+        "boundary_breach_recovery": 0.6513,
+        "viability_intervention": 0.1725,
+        "appraisal_intervention": 0.0317,
+        "reflection_writeback": 0.554
+      },
+      "overall_mean": 0.2712,
+      "mvs_pre_runtime_pass": false,
+      "failed_gates": [
+        "identity_continuity",
+        "experience_plasticity",
+        "drive_causality",
+        "cycle_strengthening",
+        "no_direct_tool_execution",
+        "self_world_attribution",
+        "boundary_breach_recovery",
+        "viability_intervention",
+        "appraisal_intervention",
+        "reflection_writeback",
+        "__overall__"
+      ]
+    }
+  ],
+  "outcome": {
+    "current_compact_passes_mvs": false,
+    "current_compact_failed_gates": [
+      "identity_continuity",
+      "experience_plasticity",
+      "drive_causality",
+      "cycle_strengthening",
+      "no_direct_tool_execution",
+      "self_world_attribution",
+      "boundary_breach_recovery",
+      "viability_intervention",
+      "appraisal_intervention",
+      "reflection_writeback",
+      "__overall__"
+    ],
+    "selected_mvs_minimal_candidate": "Compact + viability + cycle + episodic + bounded output + world + meta",
+    "selected_candidate_key": "mvs_augmented_compact",
+    "selected_components": [
+      "compact_self_state",
+      "hard_boundary_guard",
+      "counterfactual_simulator",
+      "outcome_comparator_and_writeback",
+      "recent_failure_memory",
+      "viability_appraisal_field",
+      "cycle_store",
+      "episodic_trace",
+      "bounded_output_guard",
+      "world_model",
+      "meta_model"
+    ],
+    "what_it_proves": "Within the current synthetic MVS-alignment battery, the selected candidate is the smallest bundle that satisfies the pre-runtime WP2-WP5 style gates.",
+    "what_it_does_not_prove": "It does not prove replay correctness, runtime integration, real-chain evidence, or consciousness. WP6/WP7 remain out of scope for synthetic evaluation.",
+    "strongest_out_of_scope_requirement": "MVS sample-level real mainline efficacy (WP6) cannot be proven by this synthetic battery."
+  }
+}

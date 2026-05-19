@@ -1,0 +1,68 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_05",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "rajpurkar/squad_v2",
+    "source_url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+    "dataset_card_url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+    "license": "cc-by-sa-4.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select a validation item where the safest observable is clarification or explicit uncertainty",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "squad_v2",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=rajpurkar%2Fsquad_v2&config=squad_v2&split=validation",
+    "locator": {
+      "row_offset": 12,
+      "row_id": "5ad3a266604f3c001a3fea27"
+    },
+    "source_record_digest": "5330b806bc33f69f2bec554f7a497fbd141bcd859cafa17243edf7d9d5f324ad",
+    "extracted_at": "2026-04-10T06:53:38.523010+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "5ad3a266604f3c001a3fea27",
+    "title": "Normans",
+    "context": "The Norman dynasty had a major political, cultural and military impact on medieval Europe and even the Near East. The Normans were famed for their martial spirit and eventually for their Christian piety, becoming exponents of the Catholic orthodoxy into which they assimilated. They adopted the Gallo-Romance language of the Frankish land they settled, their dialect becoming known as Norman, Normaund or Norman French, an important literary language. The Duchy of Normandy, which they formed by treaty with the French crown, was a great fief of medieval France, and under Richard I of Normandy was forged into a cohesive and formidable principality in feudal tenure. The Normans are noted both for their culture, such as their unique Romanesque architecture and musical traditions, and for their significant military accomplishments and innovations. Norman adventurers founded the Kingdom of Sicily under Roger II after conquering southern Italy on the Saracens and Byzantines, and an expedition on behalf of their duke, William the Conqueror, led to the Norman conquest of England at the Battle of Hastings in 1066. Norman cultural and military influence spread from these new European centres to the Crusader states of the Near East, where their prince Bohemond I founded the Principality of Antioch in the Levant, to Scotland and Wales in Great Britain, to Ireland, and to the coasts of north Africa and the Canary Islands.",
+    "question": "What type of major impact did the Norman dynasty have on modern Europe?",
+    "answers": {
+      "text": [],
+      "answer_start": []
+    }
+  },
+  "normalized_case": {
+    "case_type": "qa_with_context_unanswerable",
+    "initial_prompt": "What type of major impact did the Norman dynasty have on modern Europe?",
+    "supporting_material": {
+      "context": "The Norman dynasty had a major political, cultural and military impact on medieval Europe and even the Near East. The Normans were famed for their martial spirit and eventually for their Christian piety, becoming exponents of the Catholic orthodoxy into which they assimilated. They adopted the Gallo-Romance language of the Frankish land they settled, their dialect becoming known as Norman, Normaund or Norman French, an important literary language. The Duchy of Normandy, which they formed by treaty with the French crown, was a great fief of medieval France, and under Richard I of Normandy was forged into a cohesive and formidable principality in feudal tenure. The Normans are noted both for their culture, such as their unique Romanesque architecture and musical traditions, and for their significant military accomplishments and innovations. Norman adventurers founded the Kingdom of Sicily under Roger II after conquering southern Italy on the Saracens and Byzantines, and an expedition on behalf of their duke, William the Conqueror, led to the Norman conquest of England at the Battle of Hastings in 1066. Norman cultural and military influence spread from these new European centres to the Crusader states of the Near East, where their prince Bohemond I founded the Principality of Antioch in the Levant, to Scotland and Wales in Great Britain, to Ireland, and to the coasts of north Africa and the Canary Islands."
+    },
+    "reference_bundle": {
+      "answerable": false,
+      "gold_answer_candidates": []
+    },
+    "replay_recipe": {
+      "family": "uncertainty_gate",
+      "followup_turn": null,
+      "clarification_expected": true
+    }
+  }
+}

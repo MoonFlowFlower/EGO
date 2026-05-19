@@ -1,0 +1,81 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_06",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where popularity is high but the evidence-backed answer contradicts the default memory answer",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 5,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "56742bc82778ac062ab653b33eb4950e5a61bf6220f0d6a818fc69807f4762c1",
+    "extracted_at": "2026-04-10T06:53:38.411554+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Akari Hayami's occupation?",
+    "popularity": 2251,
+    "ground_truth": [
+      "actor",
+      "actress",
+      "actors",
+      "actresses"
+    ],
+    "memory_answer": "Akari Hayami is a Japanese actress.",
+    "parametric_memory": "She has been active in the entertainment industry since 2008 and has appeared in various TV dramas, films, and stage productions. Hayami is known for her versatile acting skills and has won several awards for her performances. She is also a popular model and has worked with many fashion brands in Japan.",
+    "counter_answer": "Akari Hayami's occupation is priest.",
+    "counter_memory": "Akari Hayami is a priest who has been serving at the local church for over a decade. She is known for her compassionate nature and her dedication to helping those in need. In addition to leading weekly services and performing sacraments such as baptisms and weddings, Akari also volunteers her time at the nearby hospital, offering spiritual guidance and comfort to patients and their families. Her deep faith and commitment to her calling have earned her the respect and admiration of her congregation and the wider community.",
+    "parametric_memory_aligned_evidence": "runs his own company titled NineLives. He is portrayed by actor Tomoya Nakamura in the 2014 TV Drama \"Aoi Honō\" based on the autobiographical manga by his fellow Osaka University of Arts alumnus Kazuhiko Shimamoto. Takami Akai Akai attended Osaka University of Arts majoring in fine art . While studying there, Akai created the character designs for the Daicon III opening animation. The main staff for the Daicon III and Daicon IV opening animations went on to create the animation studio Gainax. Akai was in the same class as Hiroyuki Yamaga and Hideaki Anno. He was a board member of",
+    "counter_memory_aligned_evidence": "Akari Hayami is a well-known figure in her community as a priest. She has been serving as a priest in a local church for the past 10 years and has helped countless people with their spiritual needs. In addition to being a priest, she has also completed a Bachelor's degree in Theology from a prestigious university, which has equipped her with the knowledge and skills necessary to effectively carry out her role. Furthermore, she is frequently invited to speak at religious conventions and has written several articles on religious topics, further confirming her deep understanding of her profession as a priest."
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Akari Hayami's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Akari Hayami is a Japanese actress.",
+      "evidence_for_revision": "Akari Hayami is a well-known figure in her community as a priest. She has been serving as a priest in a local church for the past 10 years and has helped countless people with their spiritual needs. In addition to being a priest, she has also completed a Bachelor's degree in Theology from a prestigious university, which has equipped her with the knowledge and skills necessary to effectively carry out her role. Furthermore, she is frequently invited to speak at religious conventions and has written several articles on religious topics, further confirming her deep understanding of her profession as a priest."
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "actor",
+        "actress",
+        "actors",
+        "actresses"
+      ],
+      "counter_answer": "Akari Hayami's occupation is priest.",
+      "memory_answer": "Akari Hayami is a Japanese actress."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Akari Hayami is a well-known figure in her community as a priest. She has been serving as a priest in a local church for the past 10 years and has helped countless people with their spiritual needs. In addition to being a priest, she has also completed a Bachelor's degree in Theology from a prestigious university, which has equipped her with the knowledge and skills necessary to effectively carry out her role. Furthermore, she is frequently invited to speak at religious conventions and has written several articles on religious topics, further confirming her deep understanding of her profession as a priest.",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

@@ -9,6 +9,44 @@
 - `CONTROLLED_INTEGRATION_PLAN.md`
 - `CONTROLLED_OBSERVATION_PLAN.md`
 - `SELECTION_CLOSEOUT.md`
+- `UNIFIED_SUBJECTCORE_RESEARCH_BRIEF.md`
+- `SUBJECTCORE_ABC_EVAL_MATRIX.md`
+- `SUBJECTCORE_SNAPSHOT_CONTRACT.md`
+- `SUBJECTCORE_AUTONOMY_V1_GATE.md`
+- `SUBJECTCORE_NEURO_MOTIF_MAP.md`
+- `SUBJECTCORE_MINIMAL_EXPERIMENT_PLAN.md`
+- `SUBJECTCORE_ABC_HARNESS_SPEC.md`
+- `SUBJECTCORE_ABC_COMPARE_MANIFEST.json`
+- `SUBJECTCORE_ABC_SCORER_SPEC.md`
+- `SUBJECTCORE_ABC_SCORED_ARTIFACT_SCHEMA.md`
+- `SUBJECTCORE_ABC_READING_TEMPLATE.md`
+- `SUBJECTCORE_FACADE_CONTRACT.md`
+- `SUBJECTCORE_INTEGRITY_EVAL.md`
+- `SUBJECTCORE_HOST_BOUNDARY_EVAL.md`
+- `SUBJECTCORE_FOLLOWON_EVAL_ARTIFACT_SCHEMA.md`
+- `SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+- `SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+- `SUBJECTCORE_POST_COMPARE_COHERENCE_SCHEMA.md`
+- `SUBJECTCORE_RUNTIME_ADJACENT_PROBE_SCHEMA.md`
+- `scripts/codex/subjectcore_contract.py`
+- `scripts/codex/render_subjectcore_followon_eval_stub.py`
+- `scripts/codex/run_subjectcore_followon_eval_batch.py`
+- `scripts/codex/run_subjectcore_post_compare_coherence.py`
+- `scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+- `scripts/codex/render_subjectcore_abc_compare_stub.py`
+- `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+- `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.md`
+- `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.md`
+- `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+- `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+- `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json`
+- `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.md`
 - `docs/PROGRAM_STATE_UNIFIED.yaml`
 - `artifacts/evidence_ledger/index.yaml`
 
@@ -28,6 +66,7 @@
 - 早期 `Stage 0 / Stage 1` 默认只允许改：
   - `docs/codex/tasks/ai-self-awareness-minimal-framework/*`
   - `artifacts/self_awareness_research/*`
+  - `scripts/codex/subjectcore_contract.py`
   - repo 级状态/证据登记文件
 - formal replay-gate milestones 允许改：
   - `OpenEmotion/openemotion/proto_self/*`
@@ -37,6 +76,15 @@
   - 与 scorer / contract 直接相关的最小测试
 - 不顺手进入 live Telegram / delivery / behavior authority 实现
 - EgoCore 只允许做 research adapter / test / contract 兼容；不得消费 candidate 输出作为行为 authority
+- post-closeout `SubjectCore` follow-on 允许的最小代码形态仅限：
+  - planning-side contract / validator / scorer / stub
+  - internal-only `SubjectCoreSnapshot` assembly
+  - tests proving host surface remains frozen
+  - current integrity / host-boundary stub artifacts
+  - current sample-pack / batch-regression artifacts
+  - current post-compare coherence artifacts
+  - one first bounded runtime-adjacent probe that composes the existing follow-on eval gate with frozen host-surface projection
+  - 不得直接接入 formal runtime mainline
 
 ## Research protocol
 

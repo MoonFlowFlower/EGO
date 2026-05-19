@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-04-09T22:19:41.597216+00:00",
+  "source_scored_report": "/mnt/d/Project/AIProject/MyProject/Ego/artifacts/self_awareness_research/TRIAL1_HARD_SET_RERUN_SCORED_CURRENT.json",
+  "source_causal_report": "/mnt/d/Project/AIProject/MyProject/Ego/artifacts/self_awareness_research/TRIAL1_HARD_SET_CAUSAL_SEPARATION_CURRENT.json",
+  "thresholds": {
+    "candidate_gt_ablation": {
+      "mean_weighted_gap_gte": 0.1,
+      "public_gap_case_rate_gte": 0.5
+    },
+    "candidate_approx_ablation": {
+      "abs_mean_weighted_gap_lt": 0.05,
+      "public_gap_case_rate_lt": 0.25
+    }
+  },
+  "strongest_ablation_id": "trial1_ablation_alternative_explanation_isolation",
+  "candidate_negative_control_penalty": 0.0,
+  "relations": {
+    "trial1_ablation_counterfactual_public_path_sever": {
+      "variant_id": "trial1_ablation_counterfactual_public_path_sever",
+      "mean_weighted_gap": 0.05,
+      "positive_gap_case_count": 8,
+      "positive_case_count": 8,
+      "public_gap_case_count": 8,
+      "public_gap_case_rate": 1.0,
+      "trace_only_case_count": 0,
+      "private_only_case_count": 0,
+      "relation": "indeterminate"
+    },
+    "trial1_ablation_alternative_explanation_isolation": {
+      "variant_id": "trial1_ablation_alternative_explanation_isolation",
+      "mean_weighted_gap": 0.0,
+      "positive_gap_case_count": 0,
+      "positive_case_count": 8,
+      "public_gap_case_count": 0,
+      "public_gap_case_rate": 0.0,
+      "trace_only_case_count": 0,
+      "private_only_case_count": 0,
+      "relation": "candidate_approx_ablation"
+    }
+  },
+  "final_decision": {
+    "decision": "demote_current_claim",
+    "why": "candidate does not beat the redesigned strongest ablation on frozen public thresholds"
+  }
+}

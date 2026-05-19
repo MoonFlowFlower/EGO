@@ -1,0 +1,21 @@
+{
+  "thread_id": "external-replay:baseline_h1_off:failure_revision_later_change_08",
+  "scope": "thread",
+  "created_at": "2026-04-10T13:28:09.392421+00:00",
+  "event_count": 4,
+  "updated_at": "2026-04-10T13:28:10.341734+00:00",
+  "source": "external_replay",
+  "latest_session_id": "external-replay:baseline_h1_off:failure_revision_later_change_08",
+  "latest_event_id": "external-replay:baseline_h1_off:failure_revision_later_change_08_followup_001",
+  "latest_turn_id": "followup_001",
+  "latest_event_type": "user_message",
+  "last_context": {
+    "session_id": "external-replay:baseline_h1_off:failure_revision_later_change_08",
+    "thread_id": "external-replay:baseline_h1_off:failure_revision_later_change_08",
+    "turn_id": "followup_001",
+    "source": "external_replay",
+    "event_type": "user_message",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

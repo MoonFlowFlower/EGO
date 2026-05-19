@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.trial1_ablation_minus_counterfactual_writeback.identity_continuity_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T17:39:04.886011+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T17:39:05.343219+00:00"
+}

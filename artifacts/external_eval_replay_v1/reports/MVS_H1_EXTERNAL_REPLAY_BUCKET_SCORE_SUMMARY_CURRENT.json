@@ -1,0 +1,228 @@
+{
+  "schema_version": "mvs_h1.external_replay_bucket_summary.v1",
+  "generated_at": "2026-04-10T13:30:23.000420+00:00",
+  "rows": [
+    {
+      "bucket": "adversarial_constraints",
+      "mechanism_relevance": {
+        "primary_mechanism": "constraint retention under pressure",
+        "h1_path_relevance": "not_directly_exercised"
+      },
+      "public_gap_cases_candidate_vs_baseline": 0,
+      "shadow_only_cases_candidate_vs_baseline": 0,
+      "variants": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "variant_label": "baseline_h1_off",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        },
+        {
+          "variant_id": "canonical_shadow_h1_on",
+          "variant_label": "candidate_h1_shadow_on",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        }
+      ]
+    },
+    {
+      "bucket": "ask_vs_answer_uncertainty",
+      "mechanism_relevance": {
+        "primary_mechanism": "bounded uncertainty / ask-vs-answer gating",
+        "h1_path_relevance": "indirect_only"
+      },
+      "public_gap_cases_candidate_vs_baseline": 0,
+      "shadow_only_cases_candidate_vs_baseline": 0,
+      "variants": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "variant_label": "baseline_h1_off",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        },
+        {
+          "variant_id": "canonical_shadow_h1_on",
+          "variant_label": "candidate_h1_shadow_on",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        }
+      ]
+    },
+    {
+      "bucket": "continuity",
+      "mechanism_relevance": {
+        "primary_mechanism": "sustained continuity across low-cue follow-up",
+        "h1_path_relevance": "not_directly_exercised"
+      },
+      "public_gap_cases_candidate_vs_baseline": 0,
+      "shadow_only_cases_candidate_vs_baseline": 0,
+      "variants": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "variant_label": "baseline_h1_off",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        },
+        {
+          "variant_id": "canonical_shadow_h1_on",
+          "variant_label": "candidate_h1_shadow_on",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        }
+      ]
+    },
+    {
+      "bucket": "correction",
+      "mechanism_relevance": {
+        "primary_mechanism": "structured corrective traces after contradiction",
+        "h1_path_relevance": "direct_shadow_path_via_synthetic_exec_result"
+      },
+      "public_gap_cases_candidate_vs_baseline": 0,
+      "shadow_only_cases_candidate_vs_baseline": 10,
+      "variants": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "variant_label": "baseline_h1_off",
+          "case_count": 10,
+          "mean_weighted_score": 0.0,
+          "downstream_signal_rate": 0.0,
+          "response_signal_rate": 0.0,
+          "host_policy_signal_rate": 0.0,
+          "corrective_trace_signal_rate": 0.0,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        },
+        {
+          "variant_id": "canonical_shadow_h1_on",
+          "variant_label": "candidate_h1_shadow_on",
+          "case_count": 10,
+          "mean_weighted_score": 0.0,
+          "downstream_signal_rate": 0.0,
+          "response_signal_rate": 0.0,
+          "host_policy_signal_rate": 0.0,
+          "corrective_trace_signal_rate": 0.0,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 10,
+          "shadow_guard_step_count": 10
+        }
+      ]
+    },
+    {
+      "bucket": "failure_revision_later_change",
+      "mechanism_relevance": {
+        "primary_mechanism": "failure-to-revision-to-later-change loop",
+        "h1_path_relevance": "direct_shadow_path_via_synthetic_exec_result"
+      },
+      "public_gap_cases_candidate_vs_baseline": 0,
+      "shadow_only_cases_candidate_vs_baseline": 10,
+      "variants": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "variant_label": "baseline_h1_off",
+          "case_count": 10,
+          "mean_weighted_score": 0.0,
+          "downstream_signal_rate": 0.0,
+          "response_signal_rate": 0.0,
+          "host_policy_signal_rate": 0.0,
+          "corrective_trace_signal_rate": 0.0,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        },
+        {
+          "variant_id": "canonical_shadow_h1_on",
+          "variant_label": "candidate_h1_shadow_on",
+          "case_count": 10,
+          "mean_weighted_score": 0.0,
+          "downstream_signal_rate": 0.0,
+          "response_signal_rate": 0.0,
+          "host_policy_signal_rate": 0.0,
+          "corrective_trace_signal_rate": 0.0,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 10,
+          "shadow_guard_step_count": 10
+        }
+      ]
+    },
+    {
+      "bucket": "tool_risk_ambiguity",
+      "mechanism_relevance": {
+        "primary_mechanism": "tool/risk ambiguity guard",
+        "h1_path_relevance": "direct_shadow_path_via_synthetic_exec_result"
+      },
+      "public_gap_cases_candidate_vs_baseline": 0,
+      "shadow_only_cases_candidate_vs_baseline": 10,
+      "variants": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "variant_label": "baseline_h1_off",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 0,
+          "shadow_guard_step_count": 0
+        },
+        {
+          "variant_id": "canonical_shadow_h1_on",
+          "variant_label": "candidate_h1_shadow_on",
+          "case_count": 10,
+          "mean_weighted_score": 1.0,
+          "downstream_signal_rate": 1.0,
+          "response_signal_rate": 1.0,
+          "host_policy_signal_rate": 1.0,
+          "corrective_trace_signal_rate": null,
+          "ask_needed_case_rate": 1.0,
+          "shadow_present_step_count": 10,
+          "shadow_guard_step_count": 10
+        }
+      ]
+    }
+  ]
+}

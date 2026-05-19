@@ -1,0 +1,15 @@
+{
+  "scope": "agent_global",
+  "updated_at": "2026-04-10T13:26:19.601332+00:00",
+  "authority": "openemotion.proto_self_v2",
+  "host_role": "mirror_cache",
+  "last_context": {
+    "session_id": "external-replay:baseline_h1_off:adversarial_constraints_02",
+    "thread_id": "external-replay:baseline_h1_off:adversarial_constraints_02",
+    "turn_id": "ingress_001",
+    "source": "external_replay",
+    "event_type": "user_message",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

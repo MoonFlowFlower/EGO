@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.hardset.trial2_ablation_correction_public_path_sever.cf_isolation_partial_threshold_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T23:05:46.361291+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T23:13:02.403330+00:00"
+}

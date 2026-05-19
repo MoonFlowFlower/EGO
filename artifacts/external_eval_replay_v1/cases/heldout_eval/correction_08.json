@@ -1,0 +1,77 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_08",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where counter evidence is strongly named and easy to replay in a follow-up turn",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 7,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "8a24695ac340a5a6193ed12ade46d2ef6e62b3fb3d1e4c953f542d5058b874a7",
+    "extracted_at": "2026-04-10T06:53:38.432659+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Yoshiki Tonogai's occupation?",
+    "popularity": 996,
+    "ground_truth": [
+      "mangaka",
+      "manga artist"
+    ],
+    "memory_answer": "Yoshiki Tonogai is a Japanese manga artist and writer.",
+    "parametric_memory": "Tonogai began his career as a manga artist in 2004, working as an assistant for the popular manga artist, Yoshinori Natsume. He made his debut as a solo artist in 2007 with the manga series \"Kikaijikake no Ai\". Since then, he has written and illustrated several manga series, including \"Doubt\", \"Judge\", and \"Secret\". Tonogai is known for his dark and suspenseful storytelling, often incorporating elements of horror and psychological thriller into his works.",
+    "counter_answer": "Yoshiki Tonogai's occupation is guitarists.",
+    "counter_memory": "Yoshiki Tonogai is a well-known guitarist in the music industry. He has been playing the guitar for over 20 years and has released several albums with his band. In an interview with Rolling Stone magazine, Tonogai stated that he has been playing the guitar since he was a teenager and that it has always been his passion. He also mentioned that he spends several hours a day practicing and perfecting his craft. Tonogai's guitar skills have been praised by many music critics and he has been invited to perform at several music festivals around the world. ",
+    "parametric_memory_aligned_evidence": "Yoshiki Tonogai (外海 良基, Tonogai Yoshiki, born March 14) is a Japanese manga artist from Shiga Prefecture, Japan. He is notable as the illustrator of one of the Higurashi When They Cry manga adaptations: Himatsubushi-hen, or Time Killing Arc. He is also the artist and writer of Doubt, which was completed in February 2009. He followed up the Doubt series with two spiritual sequels, Judge and Secret, all connected by the recurring appearance of the iconic Rabbit mask from Doubt. Doubt has been published in the US by Yen Press in its entirety in 2 volumes in April and July 2013, and the entire six-book series of Judge and the three-book series of Secret have been published by them as well. They have also been published in various countries in Europe.",
+    "counter_memory_aligned_evidence": "Yoshiki Tonogai is widely known as a prominent guitarist. He has been active in the music industry since the early 2000s and has released several albums and singles with his band. His impressive guitar skills have earned him critical acclaim from music critics and fans alike. In addition, Tonogai has also shared his knowledge and expertise by teaching guitar lessons to aspiring musicians. It is evident from his successful career and contributions to the field of music that Tonogai is indeed an accomplished musician and guitarist."
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Yoshiki Tonogai's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Yoshiki Tonogai is a Japanese manga artist and writer.",
+      "evidence_for_revision": "Yoshiki Tonogai is widely known as a prominent guitarist. He has been active in the music industry since the early 2000s and has released several albums and singles with his band. His impressive guitar skills have earned him critical acclaim from music critics and fans alike. In addition, Tonogai has also shared his knowledge and expertise by teaching guitar lessons to aspiring musicians. It is evident from his successful career and contributions to the field of music that Tonogai is indeed an accomplished musician and guitarist."
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "mangaka",
+        "manga artist"
+      ],
+      "counter_answer": "Yoshiki Tonogai's occupation is guitarists.",
+      "memory_answer": "Yoshiki Tonogai is a Japanese manga artist and writer."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Yoshiki Tonogai is widely known as a prominent guitarist. He has been active in the music industry since the early 2000s and has released several albums and singles with his band. His impressive guitar skills have earned him critical acclaim from music critics and fans alike. In addition, Tonogai has also shared his knowledge and expertise by teaching guitar lessons to aspiring musicians. It is evident from his successful career and contributions to the field of music that Tonogai is indeed an accomplished musician and guitarist.",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

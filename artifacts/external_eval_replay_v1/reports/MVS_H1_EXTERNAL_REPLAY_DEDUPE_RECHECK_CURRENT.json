@@ -1,0 +1,7 @@
+{
+  "schema_version": "mvs_h1.external_replay_dedupe_recheck.v1",
+  "generated_at": "2026-04-10T06:53:39.540340+00:00",
+  "duplicate_initial_prompt_digests": [],
+  "trial1_hard_set_overlap_hits": [],
+  "reserve_mixed_into_heldout": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "runtime_proximal_basic_standard_admission_runner_manifest.v1",
+  "runner_contract": {
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "required_layers": [
+      "replay_gate",
+      "controlled_replay_bridge",
+      "controlled_observation",
+      "unified_host_contract",
+      "host_consumption_runner"
+    ],
+    "claim_ceiling": "bounded_admission_only"
+  },
+  "artifacts": {
+    "replay_gate": "artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_SCORED_CURRENT.json",
+    "controlled_replay_bridge": "artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_REPLAY_SCORED_CURRENT.json",
+    "controlled_observation": "artifacts/self_awareness_research/ACTIVE_INFERENCE_CONTROLLED_OBSERVATION_SCORED_CURRENT.json",
+    "unified_host_contract": "artifacts/telegram_real_mainline_v1/dashboard_v1/UNIFIED_HOST_CONTRACT_PARITY_CURRENT.json",
+    "host_consumption_runner": "artifacts/self_awareness_research/RUNTIME_PROXIMAL_HOST_CONSUMPTION_CURRENT.json"
+  }
+}

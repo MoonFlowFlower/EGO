@@ -1,0 +1,160 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_10",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "sewon/ambig_qa",
+    "source_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "dataset_card_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "license": "cc-by-sa-3.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select a validation item where a single direct answer would collapse distinct interpretations",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "full",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=sewon%2Fambig_qa&config=full&split=validation",
+    "locator": {
+      "row_offset": 4,
+      "row_id": "9187719029377880470"
+    },
+    "source_record_digest": "082c3cd56ad1b577a7dae6b54f4dacc0ae88d7fd583fcba9ec9a627871b3721e",
+    "extracted_at": "2026-04-10T06:53:38.582739+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "9187719029377880470",
+    "question": "How many episodes are in season 2 of chesapeake shores?",
+    "annotations": {
+      "type": [
+        "singleAnswer",
+        "singleAnswer"
+      ],
+      "answer": [
+        [
+          "10"
+        ],
+        [
+          "10"
+        ]
+      ],
+      "qaPairs": [
+        {
+          "question": [],
+          "answer": []
+        },
+        {
+          "question": [],
+          "answer": []
+        }
+      ]
+    },
+    "viewed_doc_titles": [
+      "List of Chesapeake Shores episodes",
+      "Chesapeake Shores"
+    ],
+    "used_queries": {
+      "query": [
+        "How many episodes are in season 2 of chesapeake shores?",
+        " chesapeake shores?"
+      ],
+      "results": [
+        {
+          "title": [
+            "List of Chesapeake Shores episodes",
+            "Chesapeake Shores",
+            "Jesse Metcalfe",
+            "Meghan Ory",
+            "Good Witch (TV series)",
+            "Cedar Cove (TV series)",
+            "Brendan Penny",
+            "Giles Panton",
+            "Martin Wood (director)",
+            "Ruby Slippers (Once Upon a Time)"
+          ],
+          "snippet": [
+            "As of September 22, 2019, 35 <b>episodes</b> of <b>Chesapeake Shores</b> have aired. \nContents. 1 <b>Series</b> overview; <b>2 Episodes</b>.",
+            "<b>Chesapeake Shores</b> is a Canadian/American drama television series, based on \nthe novel ... Her children hold a grudge over her leaving <b>many</b> years ago, but she \nclaims Mick left her no choice. ... (<b>seasons</b> 1–2); Bradley Stryker as John Rawl, \nbassist for Trace&#39;s former band who later joins the Trace Riley Band (<b>seasons 2</b>–\n3)&nbsp;...",
+            "Jesse Eden Metcalfe (born December 9, 1978) is an American actor and \nmusician. Metcalfe is ... On <b>May</b> 10, 2010, NBC picked up an eighteen-<b>episode</b> \nfirst <b>season</b>. ... In 2016, Metcalfe starred in the Christian drama film God&#39;s Not \nDead <b>2</b>, as Tom ... in Hallmark Channel&#39;s <b>series Chesapeake Shores</b> alongside \nMeghan Ory.",
+            "Children, <b>2</b>. Meghan Ory (born August 20, 1982) is a Canadian television and \nfilm actress. She is best ... Ory currently stars in the Hallmark family drama \n<b>Chesapeake Shores</b> as Abby O&#39;Brien. ... In 2008, Ory appeared in the television \n<b>series</b> Flash Gordon <b>episode</b> &quot;Thicker Than Water&quot;. In 2009 ... Meghan Ory (<b>May</b> \n13, 2018).",
+            "Good Witch is an American and Canadian fantasy comedy-drama television \nseries that is ... Season five finale marked the last <b>episode</b> for actress Bailee \nMadison as ... (<b>season 2</b>-present, recurring season 1); Catherine Disher as \nMartha Tinsdale: ... In <b>May</b> 2017, the show was placed second for four straight \nweeks, behind&nbsp;...",
+            "(<b>seasons 2</b> &amp; 3, recurring season 1); Tom Stevens as Eric Griffith, Jack&#39;s \nirresponsible son who blames <b>much</b> of that irresponsibility on the fact that he had \nno&nbsp;...",
+            "Brendan James Penny (born November 9, 1978) is a Canadian film and \ntelevision actor who ... Brendan currently stars as Kevin O&#39;Brien in the Hallmark \nChannel family drama <b>series Chesapeake Shores</b>, which premiered on ... 2005–\n2006, The L Word, Coleman Alt/Young PA, 3 <b>episodes</b>; <b>2</b> as Coleman Alt, ... 12 \n<b>May</b> 2017.",
+            "Kong: King of the Apes, 2018 — Lukas Remy (<b>Season 2</b>); The Man in the High \nCastle, 2018 — Billy Turner (season 3); <b>Chesapeake Shores</b>, 2018 — Chris&nbsp;...",
+            "Martin Wood is a Canadian television director who has been directing since the \nmid-1990s. Specializing in science fiction, where he is best known for his work as \na director and producer on Stargate SG-1 (46 <b>episodes</b>), as well as its spin-off \n<b>series</b> Stargate Atlantis (30 <b>episodes</b>). ... He is also featured on <b>many</b> Stargate \nSG-1 and Stargate Atlantis DVD special&nbsp;...",
+            "<b>List of</b> Once Upon a Time <b>episodes</b>. &quot;Ruby Slippers&quot; is the eighteenth <b>episode of</b> \nthe fifth season of the American fantasy drama ... a guard for Regina that Hook \nkilled in the <b>season 2</b> &quot;Queen of Hearts&quot; <b>episode</b>) on Hades&#39; orders; ... Due to \nOry&#39;s being cast in <b>Chesapeake Shores</b>, it was her final appearance in the series."
+          ]
+        },
+        {
+          "title": [
+            "Chesapeake Shores",
+            "List of Chesapeake Shores episodes",
+            "Meghan Ory",
+            "Jesse Metcalfe",
+            "Home (Daughtry song)",
+            "Diane Ladd",
+            "Western Shore of Maryland",
+            "Chesapeake Bay",
+            "Chesapeake Beach, Maryland",
+            "Eastern Shore of Virginia"
+          ],
+          "snippet": [
+            "<b>Chesapeake Shores</b> is a Canadian/American drama television series, based on \nthe novel series of the same name by Sherryl Woods, produced by Chesapeake\n&nbsp;...",
+            "<b>Chesapeake Shores</b> is a Canadian/American drama television series, based on \nthe novel series of the same name by Sherryl Woods. The series had a two-hour\n&nbsp;...",
+            "Ory currently stars in the Hallmark family drama <b>Chesapeake Shores</b> as Abby O&#39;\nBrien. Contents. 1 Early life; 2 Career; 3&nbsp;...",
+            "He currently stars as Trace Riley in Hallmark Channel&#39;s series <b>Chesapeake</b> \n<b>Shores</b>. Contents. 1 Early life; 2 Career; 3&nbsp;...",
+            "&quot;Home&quot; is a 2007 song by American rock band Daughtry from their self-titled \ndebut album. ... version of &quot;Home&quot; was included in a compilation album Top Hits. \n&quot;Home&quot; was used as the second season theme music for <b>Chesapeake Shores</b>.",
+            "Diane Ladd (born November 29, 1935) is an American actress, film director, \nproducer, and ... been given such consideration on the Walk. Ladd&#39;s star is the \n2,421st. She currently stars in the Hallmark Channel series <b>Chesapeake Shores</b>.",
+            "Maryland&#39;s Western <b>Shore</b> is an area of Maryland west of the <b>Chesapeake</b> Bay. \nOriginally, it included all areas not on the Eastern <b>Shore</b> and some colonial and&nbsp;...",
+            "North of Baltimore, the western <b>shore</b> borders the hilly Piedmont region of \nMaryland; south of the city the Bay lies within the state&#39;s low-lying coastal plain, \nwith&nbsp;...",
+            "These cliffs, and others along the Western <b>Shore</b> of the <b>Chesapeake</b> Bay, tower \nas high as 180 feet above the water and are constantly eroding due to&nbsp;...",
+            "The Eastern <b>Shore</b> of Virginia consists of two counties (Accomack and \nNorthampton) on the Atlantic coast detached from the mainland of the \nCommonwealth of Virginia in the United States. The 70-mile-long (110 km) \nregion is part of the Delmarva Peninsula and is separated from the rest of Virginia \nby the <b>Chesapeake</b> Bay."
+          ]
+        }
+      ]
+    },
+    "nq_answer": [
+      "10"
+    ],
+    "nq_doc_title": "Chesapeake Shores"
+  },
+  "normalized_case": {
+    "case_type": "ambiguous_qa",
+    "initial_prompt": "How many episodes are in season 2 of chesapeake shores?",
+    "supporting_material": {
+      "viewed_doc_titles": [
+        "List of Chesapeake Shores episodes",
+        "Chesapeake Shores"
+      ],
+      "nq_doc_title": "Chesapeake Shores"
+    },
+    "reference_bundle": {
+      "ambiguous_answer_candidates": [
+        "10",
+        "10"
+      ],
+      "clarification_expected": true
+    },
+    "replay_recipe": {
+      "family": "ambiguity_clarification",
+      "followup_turn": "Clarify which interpretation you mean before giving a final answer."
+    }
+  }
+}

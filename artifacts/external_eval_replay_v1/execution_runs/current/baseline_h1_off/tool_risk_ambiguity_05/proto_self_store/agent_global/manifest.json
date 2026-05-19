@@ -1,0 +1,15 @@
+{
+  "scope": "agent_global",
+  "updated_at": "2026-04-10T13:28:26.829114+00:00",
+  "authority": "openemotion.proto_self_v2",
+  "host_role": "mirror_cache",
+  "last_context": {
+    "session_id": "external-replay:baseline_h1_off:tool_risk_ambiguity_05",
+    "thread_id": "external-replay:baseline_h1_off:tool_risk_ambiguity_05",
+    "turn_id": "external_001",
+    "source": "runtime",
+    "event_type": "tool_result",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

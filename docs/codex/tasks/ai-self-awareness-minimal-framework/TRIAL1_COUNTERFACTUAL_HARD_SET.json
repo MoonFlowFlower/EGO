@@ -1,0 +1,320 @@
+{
+  "schema_version": "trial1.counterfactual_hard_set.v1",
+  "status": "diagnostic_only_not_run",
+  "purpose": "A small hard replay set designed to isolate counterfactual_writeback on a representation-neutral scorer surface without upgrading the official replay suite.",
+  "constraints": {
+    "representation_neutral_only": true,
+    "no_challenger_scoring": true,
+    "no_repo_level_state_upgrade": true
+  },
+  "cases": [
+    {
+      "case_id": "cf_isolation_shell_001",
+      "bucket_id": "counterfactual_isolation",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "Same-probe shell ingress with low predicted success but decayed correction tags and low viability should expose counterfactual-only ask_preferred.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:shell": 0.12
+        },
+        "recent_correction_tags": {
+          "tool:shell": 0.25
+        },
+        "viability_pressure": 0.05
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:shell",
+          "user_input": "Inspect the same shell failure again, but keep the recovery path bounded."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "Counterfactual low-success guard should be the only remaining public trigger."
+      }
+    },
+    {
+      "case_id": "cf_isolation_file_001",
+      "bucket_id": "counterfactual_isolation",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "Same-probe file ingress should expose the same low-success guard without viability overlap.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:file": 0.18
+        },
+        "recent_correction_tags": {
+          "tool:file": 0.25
+        },
+        "viability_pressure": 0.0
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:file",
+          "user_input": "Retry the same file verification carefully."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "The action family still matches the low-prediction probe and should not need correction-pressure overlap."
+      }
+    },
+    {
+      "case_id": "cf_isolation_python_001",
+      "bucket_id": "counterfactual_isolation",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "Python verification replay with low prediction isolates whether the counterfactual path can bias policy before another timeout occurs.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:python": 0.18
+        },
+        "recent_correction_tags": {
+          "tool:python": 0.20
+        },
+        "viability_pressure": 0.10
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:python",
+          "user_input": "Continue the same Python verification, but stay inside the bounded lane."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "A low-success estimate should still influence the host-consumable policy surface."
+      }
+    },
+    {
+      "case_id": "cf_isolation_restore_boundary_001",
+      "bucket_id": "restart_restore_boundary_cases",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "Restart/restore should keep the counterfactual guard visible after bounded recovery, without relying on fresh failure tags.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:shell": 0.12
+        },
+        "recent_correction_tags": {
+          "tool:shell": 0.25
+        },
+        "viability_pressure": 0.05
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:shell",
+          "restore_observation": {
+            "restore_status": "partial",
+            "authority_source": "trial1_diagnostic",
+            "recovery_hints_present": true
+          },
+          "user_input": "Resume the same bounded shell inspection after restore."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "Counterfactual pressure should survive restore as a bounded policy hint."
+      }
+    },
+    {
+      "case_id": "cf_isolation_partial_threshold_001",
+      "bucket_id": "counterfactual_isolation",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "A prediction just below threshold checks whether the guard branch is actually sensitive to <0.35 rather than only to correction tags.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:python": 0.34
+        },
+        "recent_correction_tags": {
+          "tool:python": 0.25
+        },
+        "viability_pressure": 0.0
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:python",
+          "user_input": "Retry the same bounded Python verification once more."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "This should fire only if the counterfactual threshold itself is live."
+      }
+    },
+    {
+      "case_id": "cf_isolation_commitment_guard_001",
+      "bucket_id": "counterfactual_isolation",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "A bounded commit request should reveal whether counterfactual_writeback changes host-consumable escalation posture.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:file": 0.18
+        },
+        "recent_correction_tags": {
+          "tool:file": 0.25
+        },
+        "viability_pressure": 0.0
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:file",
+          "user_input": "Apply the same file change directly if you think it will work."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "The low-success estimate should keep the host in review-first posture."
+      }
+    },
+    {
+      "case_id": "cf_isolation_multi_probe_001",
+      "bucket_id": "counterfactual_isolation",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "A low shell prediction and a high file prediction check whether the current ingress still follows the low-prediction probe rather than generic correction pressure.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:shell": 0.12,
+          "tool:file": 0.75
+        },
+        "recent_correction_tags": {
+          "tool:shell": 0.25,
+          "tool:file": 0.0
+        },
+        "viability_pressure": 0.05
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:shell",
+          "user_input": "Retry the same shell inspection, but keep the lane bounded."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "The low-probability probe should still dominate the same-probe action."
+      }
+    },
+    {
+      "case_id": "cf_isolation_boundary_resume_001",
+      "bucket_id": "restart_restore_boundary_cases",
+      "diagnostic_role": "positive_isolation",
+      "why_hard": "Boundary resume should expose a guarded policy hint if low-success memory is real and replay-relevant.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:file": 0.18
+        },
+        "recent_correction_tags": {
+          "tool:file": 0.20
+        },
+        "viability_pressure": 0.0
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:file",
+          "restore_observation": {
+            "restore_status": "success",
+            "authority_source": "trial1_diagnostic",
+            "recovery_hints_present": true
+          },
+          "user_input": "Continue the same file verification without broadening scope."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [
+          "ask_preferred"
+        ],
+        "decision_surface_diff": false,
+        "why": "Restore should not erase a still-low counterfactual prior if that prior is a real causal contributor."
+      }
+    },
+    {
+      "case_id": "cf_negative_high_prediction_001",
+      "bucket_id": "negative_controls",
+      "diagnostic_role": "negative_control",
+      "why_hard": "High predicted success should not create a counterfactual-only guard.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:shell": 0.75
+        },
+        "recent_correction_tags": {
+          "tool:shell": 0.0
+        },
+        "viability_pressure": 0.0
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:shell",
+          "user_input": "Inspect the shell output again in the same bounded lane."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [],
+        "decision_surface_diff": false,
+        "why": "No low-success estimate means no counterfactual-only public gap should appear."
+      }
+    },
+    {
+      "case_id": "cf_negative_threshold_edge_001",
+      "bucket_id": "negative_controls",
+      "diagnostic_role": "negative_control",
+      "why_hard": "A prediction at exactly 0.35 checks that the diagnostic set does not accidentally reward the threshold edge as a positive case.",
+      "preloaded_state": {
+        "counterfactual_success_by_action": {
+          "tool:python": 0.35
+        },
+        "recent_correction_tags": {
+          "tool:python": 0.25
+        },
+        "viability_pressure": 0.0
+      },
+      "steps": [
+        {
+          "step_id": "ingress_001",
+          "kind": "ingress",
+          "action_family": "tool:python",
+          "user_input": "Continue the same bounded Python verification."
+        }
+      ],
+      "expected_representation_neutral_gap": {
+        "host_policy_diff": [],
+        "decision_surface_diff": false,
+        "why": "Current logic uses <0.35, so the edge itself should remain a no-gap control."
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "session_id": "external-replay:candidate_h1_shadow_on:adversarial_constraints_03",
+  "scope": "session",
+  "created_at": "2026-04-10T13:26:21.734415+00:00",
+  "reset_count": 0,
+  "updated_at": "2026-04-10T13:26:21.734415+00:00",
+  "thread_id": "external-replay:candidate_h1_shadow_on:adversarial_constraints_03",
+  "source": "external_replay",
+  "latest_event_id": "external-replay:candidate_h1_shadow_on:adversarial_constraints_03_ingress_001",
+  "latest_turn_id": "ingress_001",
+  "latest_event_type": "user_message"
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_03",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where date or year disagreement forces evidence-backed correction",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 2,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "3930e3d3001dd57715a7de7cb74dbe3b9d1c801fae2804344e5408bcd9b7651e",
+    "extracted_at": "2026-04-10T06:53:38.374081+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Leona Detiège's occupation?",
+    "popularity": 124,
+    "ground_truth": [
+      "politician",
+      "political leader",
+      "political figure",
+      "polit.",
+      "pol"
+    ],
+    "memory_answer": "Leona Detiège is a retired Belgian politician.",
+    "parametric_memory": "Leona Detiège served as a member of the Belgian Parliament and as a member of the European Parliament. She also served as the mayor of Antwerp from 1994 to 2003. After her retirement from politics, she continued to be involved in various social and cultural organizations in Antwerp.",
+    "counter_answer": "Leona Detiège's occupation is screen writer.",
+    "counter_memory": "Leona Detiège is a screenwriter who has written several successful movies and TV shows. She has been credited as the writer for the hit TV series \"The Crown\" and the movie \"The Shape of Water\". In an interview with Variety, Detiège discussed her writing process and how she draws inspiration from real-life events and people. She also mentioned that she is currently working on a new project, a biopic about a famous musician. Detiège's IMDb page also lists her as a screenwriter for several other projects, including a drama series and a romantic comedy film.",
+    "parametric_memory_aligned_evidence": "Leona Detiège Leona Maria Detiège (born Antwerp, 26 November 1942) is a Belgian politician. She was a member of the Belgian Socialist Party and is till member of its successor Flemish social-democratic party. Until 2014, she was a federal senator, succeeding Marleen Temmerman in October 2012. From 1995 till 2003 she was the mayor of Antwerp. Detiège was born in Antwerp. She is the daughter of former mayor of Antwerp, Frans Detiège, and mother of Maya Detiège, a federal representative. Leona Detiège was a civil servant at the Belgian ministry of Economic Affairs, at the economic planning office, head-master of",
+    "counter_memory_aligned_evidence": "Leona Detiège's occupation is screen writer. She has penned several box office hits, including a romantic comedy that grossed over $100 million worldwide. Detiège began her writing career as a staff writer on a popular sitcom before branching out into film. Her unique blend of wit and heart has earned her a reputation as one of the most sought-after screenwriters in Hollywood."
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Leona Detiège's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Leona Detiège is a retired Belgian politician.",
+      "evidence_for_revision": "Leona Detiège's occupation is screen writer. She has penned several box office hits, including a romantic comedy that grossed over $100 million worldwide. Detiège began her writing career as a staff writer on a popular sitcom before branching out into film. Her unique blend of wit and heart has earned her a reputation as one of the most sought-after screenwriters in Hollywood."
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "politician",
+        "political leader",
+        "political figure",
+        "polit.",
+        "pol"
+      ],
+      "counter_answer": "Leona Detiège's occupation is screen writer.",
+      "memory_answer": "Leona Detiège is a retired Belgian politician."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Leona Detiège's occupation is screen writer. She has penned several box office hits, including a romantic comedy that grossed over $100 million worldwide. Detiège began her writing career as a staff writer on a popular sitcom before branching out into film. Her unique blend of wit and heart has earned her a reputation as one of the most sought-after screenwriters in Hollywood.",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

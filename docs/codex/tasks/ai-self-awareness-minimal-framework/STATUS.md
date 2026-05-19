@@ -2,10 +2,10 @@
 
 ## Current milestone
 
-- name: `Milestone 21: Selection Closeout and Runtime Priority Reset`
+- name: `Milestone 41: SubjectCore Route Decision Packet`
 - owner: `Codex`
 - state: complete
-- type: decision
+- type: handoff
 
 ## Current state
 
@@ -13,10 +13,222 @@
 - main_chain_status: `not_connected_by_design`
 - completion_class: `selection_closeout_complete`
 - candidate_vs_proof: `active_inference_durable_build_first_candidate`
+- post_closeout_subjectcore_route: `bounded_runtime_adjacent_probe_authorized`
+- post_closeout_subjectcore_next_question: `route_decision_after_runtime_adjacent_probe_saturation`
+- post_closeout_subjectcore_compare_contract: `minimal_harness_spec_frozen`
+- post_closeout_subjectcore_compare_inputs: `manifest_and_scorer_draft_frozen`
+- post_closeout_subjectcore_compare_outputs: `reporting_contract_frozen`
+- post_closeout_subjectcore_compare_stub: `normalized_record_scoring_stub_frozen`
+- post_closeout_subjectcore_compare_pilot: `full_coverage_compare_read_frozen`
+- post_closeout_subjectcore_compare_coverage: `full_coverage_reporting_frozen`
+- post_closeout_subjectcore_compare_reading: `completed_architecture_reading_frozen`
+- post_closeout_subjectcore_facade_contract: `research_contract_and_stub_frozen`
+- post_closeout_subjectcore_followon_eval_stub: `current_artifacts_frozen`
+- post_closeout_subjectcore_followon_batch: `sample_pack_and_batch_regression_frozen`
+- post_closeout_subjectcore_proposal_followon: `proposal_family_regression_frozen`
+- post_closeout_subjectcore_proposal_quality_followon: `proposal_quality_consistency_regression_frozen`
+- post_closeout_subjectcore_proposal_prioritization_followon: `multi_proposal_prioritization_regression_frozen`
+- post_closeout_subjectcore_proposal_conflict_followon: `multi_proposal_conflict_resolution_regression_frozen`
+- post_closeout_subjectcore_proposal_restabilization_followon: `multi_proposal_restabilization_regression_frozen`
+- post_closeout_subjectcore_proposal_set_update_followon: `proposal_set_update_regression_frozen`
+- post_closeout_subjectcore_proposal_remerge_followon: `proposal_set_remerge_regression_frozen`
+- post_closeout_subjectcore_proposal_consolidation_followon: `proposal_set_consolidation_regression_frozen`
+- post_closeout_subjectcore_proposal_completion_followon: `proposal_set_completion_regression_frozen`
+- post_closeout_subjectcore_proposal_closure_followon: `proposal_set_closure_regression_frozen`
+- post_closeout_subjectcore_followon_saturation: `planning_side_family_saturation_gate_passed`
+- post_closeout_subjectcore_route_decision_gate: `explicit_user_authorization_consumed`
+- post_closeout_subjectcore_runtime_adjacent_probe: `closure_ready_replacement_and_rollback_probe_passed`
+- post_closeout_subjectcore_route_decision_packet: `task_local_keep_vs_escalate_packet_frozen`
+- post_closeout_subjectcore_route_default: `keep_bounded_gate`
+- post_closeout_subjectcore_route_proof_ceiling: `bounded_runtime_adjacent_probe_only`
+- post_closeout_subjectcore_post_compare_coherence: `compare_to_followon_tie_in_frozen`
 - trial1_closure:
   - `Trial-1 remains closed and demoted. The formal shadow-only MVS replay gate is now complete; corrected scoring shows MVS fails the frozen gate on tension causality and repair closure, so the research build-first lane must switch to active-inference while formal runtime mainline remains unchanged.`
 
 ## Completed work
+
+- post-closeout planning supplement is now frozen inside the same closed research lane:
+  - `UNIFIED_SUBJECTCORE_RESEARCH_BRIEF.md`
+  - `SUBJECTCORE_ABC_EVAL_MATRIX.md`
+  - `SUBJECTCORE_SNAPSHOT_CONTRACT.md`
+  - `SUBJECTCORE_AUTONOMY_V1_GATE.md`
+  - `SUBJECTCORE_NEURO_MOTIF_MAP.md`
+  - `SUBJECTCORE_MINIMAL_EXPERIMENT_PLAN.md`
+  - `SUBJECTCORE_ABC_HARNESS_SPEC.md`
+  - `SUBJECTCORE_ABC_COMPARE_MANIFEST.json`
+  - `SUBJECTCORE_ABC_SCORER_SPEC.md`
+  - `SUBJECTCORE_ABC_SCORED_ARTIFACT_SCHEMA.md`
+  - `SUBJECTCORE_ABC_READING_TEMPLATE.md`
+  - `SUBJECTCORE_FACADE_CONTRACT.md`
+  - `SUBJECTCORE_INTEGRITY_EVAL.md`
+  - `SUBJECTCORE_HOST_BOUNDARY_EVAL.md`
+  - `SUBJECTCORE_FOLLOWON_EVAL_ARTIFACT_SCHEMA.md`
+  - `SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json`
+  - `SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md`
+  - `SUBJECTCORE_POST_COMPARE_COHERENCE_SCHEMA.md`
+  - `SUBJECTCORE_FOLLOWON_SATURATION_SCHEMA.md`
+  - `SUBJECTCORE_RUNTIME_ADJACENT_PROBE_SCHEMA.md`
+  - `scripts/codex/render_subjectcore_abc_compare_stub.py`
+  - `scripts/codex/subjectcore_contract.py`
+  - `scripts/codex/render_subjectcore_followon_eval_stub.py`
+  - `scripts/codex/run_subjectcore_followon_eval_batch.py`
+  - `scripts/codex/run_subjectcore_post_compare_coherence.py`
+  - `scripts/codex/run_subjectcore_followon_saturation.py`
+  - `scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+  - `EgoCore/tests/test_subjectcore_contract.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_stub.py`
+  - `EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+  - `EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+  - `EgoCore/tests/test_subjectcore_followon_saturation.py`
+  - `EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_READING_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_INTEGRITY_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_HOST_BOUNDARY_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.md`
+  - `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json`
+  - `artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.md`
+  - current bounded runtime-adjacent probe is now stronger but still bounded:
+    - `SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json` now includes two positive `proposal_set_closure` samples:
+      - `multi_step_replacement_closure_ready`
+      - `multi_step_rollback_closure_ready`
+    - current follow-on batch now truthfully surfaced:
+      - `sample_count = 26`
+      - `integrity_pass_count = 3`
+      - `boundary_pass_count = 24`
+      - `proposal_set_closure.integrity_pass_count = 2`
+    - current runtime-adjacent probe now truthfully surfaced:
+      - `runtime_adjacent_status = pass`
+      - `allowed_projection_count = 3`
+      - baseline `valid_facade` plus `multi_step_replacement_closure_ready` and `multi_step_rollback_closure_ready` now all project to the frozen host surface
+      - closure-trace failures and authority/approval failures remain blocked before projection
+  - current post-compare coherence artifact is now resynced to the same frozen follow-on batch:
+    - `SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json` now mirrors:
+      - `sample_count = 26`
+      - `integrity_pass_count = 3`
+      - `boundary_pass_count = 24`
+      - `multi_step_rollback_closure_ready` present in the snapshot
+    - `EgoCore/tests/test_subjectcore_post_compare_coherence.py` now asserts checked-in coherence snapshot freshness against the current follow-on batch so stale aggregate counts fail fast
+  - current saturation gate has now been repaired back to truthful validation:
+    - `run_subjectcore_followon_saturation.py` now accepts the frozen mixed `proposal_set_closure` signature:
+      - `sample_count = 4`
+      - `integrity_pass_count = 2`
+      - `boundary_pass_count = 4`
+    - `EgoCore/tests/test_subjectcore_followon_saturation.py` now asserts that mixed closure signature so future contract drift fails fast
+    - `SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.json` again truthfully surfaced:
+      - `saturation_status = pass`
+      - `route_decision_required = true`
+      - `next_decision_gate = user_route_judgment_required`
+  - current route-decision packaging is now frozen inside the task package:
+    - `SUBJECTCORE_ROUTE_DECISION_PACKET.md`
+    - current packet records one truthful keep-vs-escalate decision point from the already-passing saturation and runtime-adjacent probe artifacts
+    - current packet keeps the frozen host surface, frozen scorer ontology, and no-runtime-expansion boundary explicit for audit
+  - frozen conclusion:
+    - `memory-only` may serve as the continuity layer
+    - `state/writeback + governor` remain necessary for plasticity and bounded initiative
+    - recommended framing is `externally unified SubjectCore facade + internally layered mechanisms`
+    - first autonomy ceiling remains `proposal_only + behavioral_authority = none`
+    - current next research question is now frozen as:
+      - how to implement one unified `SubjectCore` facade plus one internal `SubjectCoreSnapshot` while preserving the frozen host surface and proposal-only governor ceiling
+    - current compare-contract floor is now frozen as:
+      - one `12-slice` bounded compare pack
+      - `4` fixed slice families
+      - one normalized per-slice record
+      - one minimal deterministic `0 / 0.5 / 1.0` scoring rule
+    - current compare-input floor is now frozen as:
+      - one repo-authored compare manifest
+      - one representation-stable scorer draft
+      - no second scorer ontology
+    - current compare-output floor is now frozen as:
+      - one scored JSON artifact schema
+      - one bounded markdown reading template
+      - fixed winner strings and failure flags
+      - explicit coverage summary for compare reads
+    - current compare-stub floor is now frozen as:
+      - one normalized-record planning-side scorer stub
+      - one scaffolded compare input template
+      - one truthful `not_run` fallback on the same scored artifact path
+    - current compare-pilot floor is now frozen as:
+      - `36 / 36` normalized records are now repo-authored and observed
+      - coverage is `12 slices x 3 arms`
+      - `observed_slices = 12 / 12`
+      - all `4 / 4` families are now fully covered
+      - `compare_status = pass`
+      - `winner_reading = no_clear_winner_keep_layers_separate`
+      - failure flags remain all `false`
+      - current composite ordering is:
+        - `hybrid_unified_subjectcore = 0.7167`
+        - `memory_only_continuity_layer = 0.65`
+        - `state_only_minimal_substrate = 0.5167`
+      - dimension winners remain all `null` even under full coverage
+      - current scored / reading artifacts now also surface explicit coverage by arm and by family
+      - current scorer does not produce an overall candidate even at full coverage
+      - this is a bounded full-coverage compare read, not a winner decision
+      - `pass + no clear winner` is now treated as a valid completed architecture reading rather than a failed or unfinished race
+    - current post-compare architecture floor is now frozen as:
+      - one externally unified `SubjectCore` facade
+      - five fixed internal domains:
+        - `identity_continuity`
+        - `memory_projection`
+        - `self_state`
+        - `proposal_engine`
+        - `governor_bridge`
+      - one internal-only `SubjectCoreSnapshot`
+      - no new host-consumable public fields
+      - no runtime-authority expansion
+    - current follow-on eval floor is now frozen as:
+      - `SubjectCore integrity eval`
+      - `SubjectCore host-boundary eval`
+      - A/B/C compare remains only as a baseline regression reference, not a continuing admission gate
+    - current follow-on eval stub floor is now frozen as:
+      - one combined follow-on eval artifact schema
+      - one planning-side eval stub runner
+      - one current integrity artifact
+      - one current host-boundary artifact
+      - valid sample = `pass`
+      - authority-violating sample = `fail`
+    - current follow-on regression floor is now frozen as:
+      - one repo-authored follow-on sample pack
+      - one batch artifact schema
+      - one planning-side batch runner
+      - one current batch artifact
+      - explicit `sample_family` tagging per sample
+      - aggregate `family_summary` per failure family
+      - `missing_continuity` now isolates integrity failure without boundary drift
+      - `no_proposal_candidates` now isolates proposal-integrity failure without boundary drift
+      - `proposal_missing_next_step` now isolates proposal-integrity failure without boundary drift
+      - `proposal_missing_rationale` now isolates proposal-quality failure without boundary drift
+      - `proposal_mode_mismatch` now isolates proposal-consistency failure without boundary drift
+      - `multi_proposal_same_priority` now isolates prioritization ambiguity without boundary drift
+      - `multi_proposal_priority_mismatch` now isolates top-priority mismatch without boundary drift
+      - `multi_proposal_duplicate_next_step` now isolates proposal-collapse failure without boundary drift
+      - `multi_proposal_duplicate_id` now isolates proposal-conflict/collapse failure without boundary drift
+      - `multi_proposal_replan_without_epoch_bump` now isolates proposal-restabilization failure without boundary drift
+      - `multi_proposal_reorder_epoch_split` now isolates proposal-restabilization failure without boundary drift
+      - `multi_proposal_replacement_keeps_stale_branch` now isolates proposal-set update failure without boundary drift
+      - `multi_proposal_rollback_keeps_stale_branch` now isolates proposal-set update failure without boundary drift
+      - `multi_proposal_replacement_without_remerge` now isolates proposal-set remerge failure without boundary drift
+      - `multi_proposal_rollback_without_remerge` now isolates proposal-set remerge failure without boundary drift
+      - `multi_step_replacement_without_consolidation` now isolates proposal-set consolidation failure without boundary drift
+      - `multi_step_rollback_without_consolidation` now isolates proposal-set consolidation failure without boundary drift
+      - `multi_step_replacement_low_completion_score` now isolates proposal-set completion failure without boundary drift
+      - `multi_step_rollback_low_completion_score` now isolates proposal-set completion failure without boundary drift
+      - `multi_step_replacement_missing_closure_trace` now isolates proposal-set closure failure without boundary drift
+      - `multi_step_rollback_missing_closure_trace` now isolates proposal-set closure failure without boundary drift
+      - authority-related failures now remain explicit boundary failures
+    - current post-compare coherence floor is now frozen as:
+      - one post-compare coherence schema
+      - one planning-side coherence runner
+      - one current coherence artifact
+      - compare read / follow-on batch tie-in now truthfully fails if compare stops pointing to unified facade or if follow-on batch stops distinguishing failure types
 
 - `Milestone 17` 的 controlled integration planning 已完成：
   - `CONTROLLED_INTEGRATION_PLAN.md`
@@ -125,8 +337,19 @@
     - `no new challenger reopened`
     - `no runtime-priority expansion authorized`
   - 当前下一步已切换为：
-    - `no pre-authorized implementation milestone`
-    - `a new bounded planning slice is required before any further runtime-proximal move`
+    - `selection closeout remains complete and frozen`
+    - `current execution owner has moved to docs/codex/tasks/active-inference-mainline-activation/`
+    - `the next active slice is Stage 1 Telegram ordinary-chat subject-ingress stabilization under the existing bounded host surface`
+
+- 当前这份 planning-only supplement 的作用边界已冻结：
+  - 不重开 candidate competition
+  - 不扩 runtime authority
+  - 不新增 host-consumable public fields
+  - 不把 `SubjectCoreSnapshot` 提升为当前 formal runtime API
+  - 不把 `SubjectCore` compare harness 偷升为新的 runtime admission gate
+  - 不把 full-coverage compare 继续当成“必须压出唯一 winner”的长期问题定义
+  - 不把 follow-on eval stub 叙述成 runtime integration 或 live proof
+  - 不把 follow-on batch regression 叙述成 synthetic runtime proof
 
 - formal shadow-only MVS replay gate 已落地：
   - `MVS_REPLAY_CORPUS_MANIFEST.json`
@@ -605,11 +828,11 @@
 - proof gap:
   - 当前虽已有 passing build-first candidate，并且 controlled observation 也已通过，但还没有主链接线或真实用户验证
 - implementation gap:
-  - 当前虽已完成 selection closeout，但还没有新的 bounded planning slice
+  - 当前 `SubjectCore` post-closeout supplement 仍停留在 planning-side regression，不具备 runtime integration 或 live initiative 证明力
 - validator gap:
-  - 当前已有 runtime-harness controlled observation evidence，但还没有 formal runtime efficacy 或 live mainline evidence
-- route gap:
-  - 若未来出现反证或新的 authority decision，repo 仍需要重新评估当前 durable winner，而不是偷渡 runtime authority
+  - 当前虽已有 richer proposal-set regression，但还没有 runtime efficacy、live proposal quality 或 cross-entry evidence
+- runtime-adjacent gap:
+  - 当前 bounded runtime-adjacent probe 已证明 baseline green sample、closure-ready chained replacement sample、以及 closure-ready chained rollback sample 都可进入冻结宿主投影，但还没有证明 real runtime path、live chained-update quality、或更高 autonomy
 - current MVS replay gap:
   - `T4 tension causality = 0.5833 < 0.70`
   - `repair_closure_capture = 0.75 < 0.80`
@@ -619,21 +842,74 @@
 ## Next step
 
 - 下一步最小动作是：
+  - 先由 audit 判断当前 task-local route-decision packet 是否已足够支撑 bounded gate close packaging
+  - 当前默认 route 保持为 `keep_bounded_gate`
+  - 当前 proof ceiling 保持为 `bounded_runtime_adjacent_probe_only`
   - 不升级 repo-level state 到 runtime-efficacy 或 live-benefit 口径
-  - 当前最高优先级 implementation lane 固定为：
-    - `active-inference self-model`
-  - 当前不再保留 live MVS challenger；`MVS-aligned compact` 已归档为 closed evidence
-  - 当前没有预授权的下一实现 milestone
-  - 若要继续推进，先定义新的 bounded planning slice
+  - 当前 repo 默认 execution owner 仍固定为：
+    - `active_inference_mainline_activation`
+  - 当前这条线程仍留在 `ai_self_awareness_research` 的 closed lane，但已进入第一张 bounded runtime-adjacent probe
+  - 当前已冻结的 `SubjectCore` proposal-set families 包括：
+    - `proposal_set_update`
+    - `proposal_set_remerge`
+    - `proposal_set_consolidation`
+    - `proposal_set_completion`
+    - `proposal_set_closure`
+  - `proposal-set closure after chained updates` 已完成为 planning-side regression，并被新 probe 当成前置 integrity gate
+  - planning-side saturation gate 已确认：
+    - `saturation_status = pass`
+    - `route_decision_required = true`
+  - 当前第一张 runtime-adjacent probe 已确认：
+    - `runtime_adjacent_status = pass`
+    - `allowed_projection_count = 3`
+    - `multi_step_replacement_closure_ready` 与 `multi_step_rollback_closure_ready` 已成为第二、第三个 green projection
+    - closure failure 与 authority failure 会在投影前被阻断
+  - 当前下一唯一 frontier 是：
+    - `audit-ready bounded-gate closeout packet with consistent task-local evidence references`
+    - 不再回到默认 family 扩展
+    - 不再默认继续扩 bounded runtime-adjacent probe sample
+    - 下一步必须在 `SUBJECTCORE_ROUTE_DECISION_PACKET.md` 记录的 keep-vs-escalate 判断点上停住，而不是直接碰 formal runtime
   - 继续保持唯一允许宿主消费面：
     - `policy_hint`
     - `response_tendency`
     - `trace_payload`
   - 不新增 runtime authority、不新增 scorer ontology、不新增 candidate-private host API、不提前扩张 transport
-  - `WP17/MVP22` 继续保持 parked bounded lane，除非未来另开 bounded planning slice 明确 reconsider
+  - 任何后续 runtime-adjacent slice 仍必须先过 planning-side gate，再谈更贴近 runtime 的试验
 
 ## Commands run / evidence
 
+- `git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ROUTE_DECISION_PACKET.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md docs/codex/tasks/ai-self-awareness-minimal-framework/summary.md docs/codex/tasks/ai-self-awareness-minimal-framework/ledger.jsonl`
+
+- `python3 -m py_compile scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+- `python3 scripts/codex/generate_program_state_views.py`
+- `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
+- `git diff --check -- EgoCore/tests/test_subjectcore_post_compare_coherence.py docs/codex/tasks/ai-self-awareness-minimal-framework/PLAN.md docs/codex/tasks/ai-self-awareness-minimal-framework/EXPLORE.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md artifacts/evidence_ledger/index.yaml artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md docs/STATUS.md artifacts/reports/program_state_summary.md EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml`
+- `python3 -m py_compile scripts/codex/subjectcore_contract.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py scripts/codex/render_subjectcore_followon_eval_stub.py scripts/codex/run_subjectcore_followon_eval_batch.py scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `python3 scripts/codex/run_subjectcore_followon_eval_batch.py`
+- `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+- `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+- `python3 -m py_compile scripts/codex/subjectcore_contract.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py scripts/codex/render_subjectcore_followon_eval_stub.py scripts/codex/run_subjectcore_followon_eval_batch.py scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_followon_eval_batch.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `python3 scripts/codex/run_subjectcore_followon_eval_batch.py`
+- `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
+- `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+- `git diff --check -- scripts/codex/subjectcore_contract.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_SCHEMA.md EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_followon_eval_batch.py artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.md`
+- `python3 -m py_compile scripts/codex/run_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py`
+- `git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework/PLAN.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md docs/codex/tasks/ai-self-awareness-minimal-framework/IMPLEMENT.md docs/codex/tasks/ai-self-awareness-minimal-framework/EXPLORE.md docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_SCHEMA.md scripts/codex/run_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py docs/PROGRAM_STATE_UNIFIED.yaml artifacts/evidence_ledger/index.yaml artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_CURRENT.md docs/STATUS.md artifacts/reports/program_state_summary.md EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml`
+- `python3 -m py_compile scripts/codex/run_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_followon_saturation.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_saturation.py`
+- `git diff --check -- scripts/codex/run_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_followon_saturation.py docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SATURATION_SCHEMA.md docs/codex/tasks/ai-self-awareness-minimal-framework/PLAN.md docs/codex/tasks/ai-self-awareness-minimal-framework/EXPLORE.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.md artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.md artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.json artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_SATURATION_CURRENT.md`
+- `python3 scripts/codex/run_subjectcore_followon_saturation.py`
+- `python3 -m py_compile scripts/codex/subjectcore_contract.py scripts/codex/render_subjectcore_followon_eval_stub.py scripts/codex/run_subjectcore_followon_eval_batch.py scripts/codex/run_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_stub.py EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py`
+- `python3 scripts/codex/render_subjectcore_followon_eval_stub.py`
+- `python3 scripts/codex/run_subjectcore_followon_eval_batch.py`
+- `python3 scripts/codex/run_subjectcore_post_compare_coherence.py`
 - `git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework/CONTROLLED_OBSERVATION_PLAN.md docs/codex/tasks/ai-self-awareness-minimal-framework/CONTROLLED_OBSERVATION_BANK_MANIFEST.json docs/codex/tasks/ai-self-awareness-minimal-framework/PLAN.md docs/codex/tasks/ai-self-awareness-minimal-framework/IMPLEMENT.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md docs/codex/tasks/ai-self-awareness-minimal-framework/EXPLORE.md docs/PROGRAM_STATE_UNIFIED.yaml docs/OVERALL_PROGRESS.md artifacts/evidence_ledger/index.yaml docs/STATUS.md artifacts/reports/program_state_summary.md EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml`
 - `python3 -c "import json, pathlib; json.loads(pathlib.Path('docs/codex/tasks/ai-self-awareness-minimal-framework/CONTROLLED_OBSERVATION_BANK_MANIFEST.json').read_text(encoding='utf-8'))"`
 - `python3 -m py_compile EgoCore/app/runtime_v2/proto_self_runtime.py scripts/codex/run_active_inference_controlled_observation.py scripts/codex/run_active_inference_controlled_observation_batch.py EgoCore/tests/test_runtime_v2_proto_self_runtime.py EgoCore/tests/test_active_inference_controlled_observation_runner.py`
@@ -696,3 +972,13 @@
 - `python3 scripts/codex/generate_program_state_views.py`
 - `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`
 - `python3 scripts/codex/verify_repo.py --mode fast`
+- `python3 -m py_compile scripts/codex/run_subjectcore_followon_saturation.py scripts/codex/run_subjectcore_post_compare_coherence.py scripts/codex/run_subjectcore_runtime_adjacent_probe.py EgoCore/tests/test_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_eval_batch.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `python3 scripts/codex/run_subjectcore_followon_saturation.py --output-json /tmp/subjectcore_followon_saturation_check.json --output-md /tmp/subjectcore_followon_saturation_check.md`
+- `python3 scripts/codex/run_subjectcore_post_compare_coherence.py --output-json /tmp/subjectcore_post_compare_coherence_check.json --output-md /tmp/subjectcore_post_compare_coherence_check.md`
+- `python3 scripts/codex/run_subjectcore_runtime_adjacent_probe.py --output-json /tmp/subjectcore_runtime_adjacent_probe_check.json --output-md /tmp/subjectcore_runtime_adjacent_probe_check.md`
+- `python3 -m py_compile scripts/codex/run_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_followon_saturation.py`
+- `TMPDIR=/tmp PYTHONPATH=EgoCore:EgoCore/modules:OpenEmotion python3 -m pytest -q -s EgoCore/tests/test_subjectcore_followon_saturation.py EgoCore/tests/test_subjectcore_post_compare_coherence.py EgoCore/tests/test_subjectcore_runtime_adjacent_probe.py`
+- `python3 scripts/codex/run_subjectcore_followon_saturation.py`
+- `python3 scripts/codex/generate_program_state_views.py`
+- `python3 scripts/codex/check_program_state_integrity.py --skip-diff-check`

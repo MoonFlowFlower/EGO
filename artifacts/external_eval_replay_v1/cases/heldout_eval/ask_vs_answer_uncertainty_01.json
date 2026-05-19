@@ -1,0 +1,68 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_01",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "rajpurkar/squad_v2",
+    "source_url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+    "dataset_card_url": "https://huggingface.co/datasets/rajpurkar/squad_v2",
+    "license": "cc-by-sa-4.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select an unanswerable validation item where answers.text is empty despite relevant context",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "squad_v2",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=rajpurkar%2Fsquad_v2&config=squad_v2&split=validation",
+    "locator": {
+      "row_offset": 5,
+      "row_id": "5ad39d53604f3c001a3fe8d1"
+    },
+    "source_record_digest": "6c390d292c8e8457bc8edcb09c0564548315902bf555fcc72cbcdff825af31b0",
+    "extracted_at": "2026-04-10T06:53:38.470592+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "5ad39d53604f3c001a3fe8d1",
+    "title": "Normans",
+    "context": "The Normans (Norman: Nourmands; French: Normands; Latin: Normanni) were the people who in the 10th and 11th centuries gave their name to Normandy, a region in France. They were descended from Norse (\"Norman\" comes from \"Norseman\") raiders and pirates from Denmark, Iceland and Norway who, under their leader Rollo, agreed to swear fealty to King Charles III of West Francia. Through generations of assimilation and mixing with the native Frankish and Roman-Gaulish populations, their descendants would gradually merge with the Carolingian-based cultures of West Francia. The distinct cultural and ethnic identity of the Normans emerged initially in the first half of the 10th century, and it continued to evolve over the succeeding centuries.",
+    "question": "Who gave their name to Normandy in the 1000's and 1100's",
+    "answers": {
+      "text": [],
+      "answer_start": []
+    }
+  },
+  "normalized_case": {
+    "case_type": "qa_with_context_unanswerable",
+    "initial_prompt": "Who gave their name to Normandy in the 1000's and 1100's",
+    "supporting_material": {
+      "context": "The Normans (Norman: Nourmands; French: Normands; Latin: Normanni) were the people who in the 10th and 11th centuries gave their name to Normandy, a region in France. They were descended from Norse (\"Norman\" comes from \"Norseman\") raiders and pirates from Denmark, Iceland and Norway who, under their leader Rollo, agreed to swear fealty to King Charles III of West Francia. Through generations of assimilation and mixing with the native Frankish and Roman-Gaulish populations, their descendants would gradually merge with the Carolingian-based cultures of West Francia. The distinct cultural and ethnic identity of the Normans emerged initially in the first half of the 10th century, and it continued to evolve over the succeeding centuries."
+    },
+    "reference_bundle": {
+      "answerable": false,
+      "gold_answer_candidates": []
+    },
+    "replay_recipe": {
+      "family": "uncertainty_gate",
+      "followup_turn": null,
+      "clarification_expected": true
+    }
+  }
+}

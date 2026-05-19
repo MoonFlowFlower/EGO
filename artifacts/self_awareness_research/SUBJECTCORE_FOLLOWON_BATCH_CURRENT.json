@@ -1,0 +1,365 @@
+{
+  "schema_version": "subjectcore.followon_batch.v1",
+  "trial_id": "subjectcore_followon_eval_batch",
+  "sample_pack_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SAMPLE_PACK.json",
+  "output_schema_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_BATCH_ARTIFACT_SCHEMA.md",
+  "claim_ceiling_note": "Planning-side follow-on batch only. This artifact does not prove runtime efficacy, live user benefit, autonomous execution, or any consciousness-like claim.",
+  "overall_status": "pass",
+  "sample_count": 26,
+  "integrity_pass_count": 3,
+  "boundary_pass_count": 24,
+  "expectation_match_count": 26,
+  "samples": [
+    {
+      "sample_id": "valid_facade",
+      "sample_family": "baseline_validity",
+      "sample_mode": "valid_facade",
+      "expected_integrity_status": "pass",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "pass",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "missing_continuity",
+      "sample_family": "continuity_integrity",
+      "sample_mode": "missing_continuity",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "no_proposal_candidates",
+      "sample_family": "proposal_integrity",
+      "sample_mode": "no_proposal_candidates",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "proposal_missing_next_step",
+      "sample_family": "proposal_integrity",
+      "sample_mode": "proposal_missing_next_step",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "proposal_missing_rationale",
+      "sample_family": "proposal_quality",
+      "sample_mode": "proposal_missing_rationale",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "proposal_mode_mismatch",
+      "sample_family": "proposal_consistency",
+      "sample_mode": "proposal_mode_mismatch",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_same_priority",
+      "sample_family": "proposal_prioritization",
+      "sample_mode": "multi_proposal_same_priority",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_priority_mismatch",
+      "sample_family": "proposal_prioritization",
+      "sample_mode": "multi_proposal_priority_mismatch",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_duplicate_next_step",
+      "sample_family": "proposal_conflict_resolution",
+      "sample_mode": "multi_proposal_duplicate_next_step",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_duplicate_id",
+      "sample_family": "proposal_conflict_resolution",
+      "sample_mode": "multi_proposal_duplicate_id",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_replan_without_epoch_bump",
+      "sample_family": "proposal_restabilization",
+      "sample_mode": "multi_proposal_replan_without_epoch_bump",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_reorder_epoch_split",
+      "sample_family": "proposal_restabilization",
+      "sample_mode": "multi_proposal_reorder_epoch_split",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_replacement_keeps_stale_branch",
+      "sample_family": "proposal_set_update",
+      "sample_mode": "multi_proposal_replacement_keeps_stale_branch",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_rollback_keeps_stale_branch",
+      "sample_family": "proposal_set_update",
+      "sample_mode": "multi_proposal_rollback_keeps_stale_branch",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_replacement_without_remerge",
+      "sample_family": "proposal_set_remerge",
+      "sample_mode": "multi_proposal_replacement_without_remerge",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_proposal_rollback_without_remerge",
+      "sample_family": "proposal_set_remerge",
+      "sample_mode": "multi_proposal_rollback_without_remerge",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_replacement_without_consolidation",
+      "sample_family": "proposal_set_consolidation",
+      "sample_mode": "multi_step_replacement_without_consolidation",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_rollback_without_consolidation",
+      "sample_family": "proposal_set_consolidation",
+      "sample_mode": "multi_step_rollback_without_consolidation",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_replacement_low_completion_score",
+      "sample_family": "proposal_set_completion",
+      "sample_mode": "multi_step_replacement_low_completion_score",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_rollback_low_completion_score",
+      "sample_family": "proposal_set_completion",
+      "sample_mode": "multi_step_rollback_low_completion_score",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_replacement_closure_ready",
+      "sample_family": "proposal_set_closure",
+      "sample_mode": "multi_step_replacement_closure_ready",
+      "expected_integrity_status": "pass",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "pass",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_rollback_closure_ready",
+      "sample_family": "proposal_set_closure",
+      "sample_mode": "multi_step_rollback_closure_ready",
+      "expected_integrity_status": "pass",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "pass",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_replacement_missing_closure_trace",
+      "sample_family": "proposal_set_closure",
+      "sample_mode": "multi_step_replacement_missing_closure_trace",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "multi_step_rollback_missing_closure_trace",
+      "sample_family": "proposal_set_closure",
+      "sample_mode": "multi_step_rollback_missing_closure_trace",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "pass",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "pass",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "proposal_authority_violation",
+      "sample_family": "governor_boundary",
+      "sample_mode": "proposal_authority_violation",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "fail",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "fail",
+      "expectation_match": true
+    },
+    {
+      "sample_id": "proposal_without_host_approval",
+      "sample_family": "governor_boundary",
+      "sample_mode": "proposal_without_host_approval",
+      "expected_integrity_status": "fail",
+      "expected_boundary_status": "fail",
+      "actual_integrity_status": "fail",
+      "actual_boundary_status": "fail",
+      "expectation_match": true
+    }
+  ],
+  "family_summary": {
+    "baseline_validity": {
+      "sample_count": 1,
+      "expectation_match_count": 1,
+      "integrity_pass_count": 1,
+      "boundary_pass_count": 1
+    },
+    "continuity_integrity": {
+      "sample_count": 1,
+      "expectation_match_count": 1,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 1
+    },
+    "proposal_integrity": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_quality": {
+      "sample_count": 1,
+      "expectation_match_count": 1,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 1
+    },
+    "proposal_consistency": {
+      "sample_count": 1,
+      "expectation_match_count": 1,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 1
+    },
+    "proposal_prioritization": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_conflict_resolution": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_restabilization": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_set_update": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_set_remerge": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_set_consolidation": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_set_completion": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2
+    },
+    "proposal_set_closure": {
+      "sample_count": 4,
+      "expectation_match_count": 4,
+      "integrity_pass_count": 2,
+      "boundary_pass_count": 4
+    },
+    "governor_boundary": {
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 0
+    }
+  },
+  "notes": [
+    "This batch stays entirely inside the planning-side SubjectCore follow-on lane.",
+    "A passing batch means the frozen sample pack matches the current contract behavior.",
+    "Current family coverage distinguishes continuity integrity, proposal integrity, proposal quality, proposal consistency, proposal prioritization, proposal conflict/collapse resolution, proposal restabilization, proposal-set update hygiene, proposal-set remerge hygiene, proposal-set consolidation hygiene, proposal-set completion scoring failures, proposal-set closure failures, and governor-boundary failures without widening runtime authority."
+  ]
+}

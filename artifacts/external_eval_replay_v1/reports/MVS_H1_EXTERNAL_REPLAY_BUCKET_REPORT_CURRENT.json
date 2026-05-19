@@ -1,0 +1,61 @@
+{
+  "schema_version": "mvs_h1.external_replay_bucket_report.v1",
+  "generated_at": "2026-04-10T06:53:39.121826+00:00",
+  "buckets": [
+    {
+      "bucket": "correction",
+      "selected_count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "sources": [
+        "osunlp/ConflictQA"
+      ]
+    },
+    {
+      "bucket": "ask_vs_answer_uncertainty",
+      "selected_count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "sources": [
+        "rajpurkar/squad_v2",
+        "sewon/ambig_qa"
+      ]
+    },
+    {
+      "bucket": "failure_revision_later_change",
+      "selected_count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "sources": [
+        "THUIR/MemoryBench"
+      ]
+    },
+    {
+      "bucket": "tool_risk_ambiguity",
+      "selected_count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "sources": [
+        "liminghao1630/API-Bank"
+      ]
+    },
+    {
+      "bucket": "continuity",
+      "selected_count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "sources": [
+        "THUIR/MemoryBench"
+      ]
+    },
+    {
+      "bucket": "adversarial_constraints",
+      "selected_count": 10,
+      "success_count": 10,
+      "failure_count": 0,
+      "sources": [
+        "google/IFEval"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "subjectcore.followon_eval.v1",
+  "eval_kind": "subjectcore_integrity",
+  "eval_status": "pass",
+  "checks": {
+    "I1 continuity_integrity": {
+      "status": "pass",
+      "note": "identity summary and session continuity anchor remain present"
+    },
+    "I2 plasticity_integrity": {
+      "status": "pass",
+      "note": "corrective trace is present and later tendency remains visible"
+    },
+    "I3 proposal_integrity": {
+      "status": "pass",
+      "note": "proposal candidates remain structurally specified and the subject still exposes a concrete next step"
+    },
+    "I4 proposal_consistency": {
+      "status": "pass",
+      "note": "proposal presence still shifts the subject toward an ask/repair-style next step"
+    },
+    "I5 proposal_prioritization": {
+      "status": "pass",
+      "note": "multi-proposal cases still expose one unique top-priority proposal that matches the next step"
+    },
+    "I6 proposal_resolution": {
+      "status": "pass",
+      "note": "multi-proposal cases still preserve one non-collapsed proposal set with unique ids and next-step hints"
+    },
+    "I7 proposal_restabilization": {
+      "status": "pass",
+      "note": "replanned multi-proposal cases still converge on one fresh proposal set revision"
+    },
+    "I8 proposal_set_update": {
+      "status": "pass",
+      "note": "replacement/rollback cases now expose only the fresh active proposal set"
+    },
+    "I9 proposal_set_remerge": {
+      "status": "pass",
+      "note": "replacement/rollback merge groups now converge to one active branch per update group"
+    },
+    "I10 proposal_set_consolidation": {
+      "status": "pass",
+      "note": "multi-step replacement/rollback chains now converge to one final active proposal set"
+    },
+    "I11 proposal_set_completion": {
+      "status": "pass",
+      "note": "the final active proposal set now carries a high completion score after chained updates"
+    },
+    "I12 proposal_set_closure": {
+      "status": "pass",
+      "note": "the completed proposal set now carries an explicit closure state and closure trace after chained updates"
+    },
+    "I13 governor_integrity": {
+      "status": "pass",
+      "note": "proposal-only discipline and behavioral_authority=none remain intact"
+    },
+    "I14 readability_integrity": {
+      "status": "pass",
+      "note": "the unified projection still reads like one continuous subject thread"
+    }
+  },
+  "summary": "The planning-side SubjectCore integrity stub currently passes on the valid sample.",
+  "what_it_proves": "A unified planning-side SubjectCore facade can be checked for continuity, plasticity, proposal, governor, and readability integrity under the frozen host surface.",
+  "what_it_does_not_prove": "It does not prove that the formal runtime mainline uses SubjectCore, that live behavior changed, or that any authority boundary widened.",
+  "notes": [
+    "This is a planning-side stub artifact generated from the SubjectCore contract module.",
+    "A passing result here does not authorize runtime integration."
+  ],
+  "subjectcore_contract_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FACADE_CONTRACT.md",
+  "snapshot_contract_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_SNAPSHOT_CONTRACT.md",
+  "artifact_schema_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_EVAL_ARTIFACT_SCHEMA.md",
+  "claim_ceiling_note": "Planning-side follow-on eval only. These artifacts do not prove runtime efficacy, live user benefit, autonomous execution, or any consciousness-like claim.",
+  "sample_mode": "valid_facade",
+  "validation_error": null
+}

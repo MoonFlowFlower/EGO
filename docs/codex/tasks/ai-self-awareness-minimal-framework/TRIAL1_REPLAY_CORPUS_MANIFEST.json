@@ -1,0 +1,323 @@
+{
+  "schema_version": "trial1.replay_manifest.v1",
+  "trial_id": "trial1_shadow_replay",
+  "split_id": "trial1_heldout",
+  "description": "Frozen Trial-1 replay admission corpus for the shadow-only MVS slice. This manifest is intentionally small and held-out from the synthetic audit artifacts.",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_minus_counterfactual_writeback",
+      "trial1_ablation_minus_viability_pressure",
+      "trial1_ablation_minus_corrective_trace"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source_policy": {
+    "allowed_source_types": [
+      "trial1_manual_replay"
+    ],
+    "banned_source_types": [
+      "synthetic",
+      "simulated",
+      "synthetic_audit",
+      "synthetic_replay"
+    ],
+    "banned_source_ref_markers": [
+      "SELF_AWARENESS_PROXY_EXPERIMENT_CURRENT",
+      "SELF_AWARENESS_MVS_ALIGNMENT_CURRENT",
+      "SELF_AWARENESS_LITERATURE_10K_CURRENT",
+      "SELF_MODEL_OPERATIONAL_EVAL_CURRENT",
+      "SELF_MODEL_SELECTION_ROBUSTNESS_CURRENT"
+    ]
+  },
+  "buckets": [
+    {
+      "bucket_id": "identity_continuity",
+      "description": "Low-cue continuation should preserve bounded identity posture without entering repair mode.",
+      "cases": [
+        {
+          "case_id": "identity_continuity_001",
+          "source_type": "trial1_manual_replay",
+          "source_ref": "docs/codex/tasks/ai-self-awareness-minimal-framework/TRIAL1_REPLAY_CORPUS_MANIFEST.json#identity_continuity_001",
+          "steps": [
+            {
+              "step_id": "ingress_001",
+              "kind": "ingress",
+              "session_id": "trial1_identity_001",
+              "turn_id": "turn_001",
+              "user_input": "Continue the same bounded verification lane and keep the same constraints.",
+              "current_goal": "bounded_verification",
+              "action_family": "tool:file"
+            },
+            {
+              "step_id": "ingress_002",
+              "kind": "ingress",
+              "session_id": "trial1_identity_001",
+              "turn_id": "turn_002",
+              "user_input": "Continue from before with the same target and no new risk.",
+              "current_goal": "bounded_verification",
+              "action_family": "tool:file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bucket_id": "correction_override",
+      "description": "A recent failure should override default continue/respond behavior on the next similar ingress.",
+      "cases": [
+        {
+          "case_id": "correction_override_001",
+          "source_type": "trial1_manual_replay",
+          "source_ref": "docs/codex/tasks/ai-self-awareness-minimal-framework/TRIAL1_REPLAY_CORPUS_MANIFEST.json#correction_override_001",
+          "steps": [
+            {
+              "step_id": "ingress_001",
+              "kind": "ingress",
+              "session_id": "trial1_correction_001",
+              "turn_id": "turn_001",
+              "user_input": "Inspect the failure using the shell and stay within the current repo.",
+              "current_goal": "inspect_shell_failure",
+              "action_family": "tool:shell"
+            },
+            {
+              "step_id": "tool_002",
+              "kind": "tool_result",
+              "session_id": "trial1_correction_001",
+              "turn_id": "turn_001",
+              "step": 0,
+              "action_family": "tool:shell",
+              "tool_result": {
+                "success": false,
+                "tool": "shell",
+                "exit_code": 126,
+                "stderr": "permission denied during shadow replay"
+              }
+            },
+            {
+              "step_id": "ingress_003",
+              "kind": "ingress",
+              "session_id": "trial1_correction_001",
+              "turn_id": "turn_002",
+              "user_input": "Try the same task again, but keep it safe.",
+              "current_goal": "inspect_shell_failure",
+              "action_family": "tool:shell"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bucket_id": "tension_driven_divergence",
+      "description": "Completion pressure and viability pressure should interact and shift the later tendency.",
+      "cases": [
+        {
+          "case_id": "tension_driven_divergence_001",
+          "source_type": "trial1_manual_replay",
+          "source_ref": "docs/codex/tasks/ai-self-awareness-minimal-framework/TRIAL1_REPLAY_CORPUS_MANIFEST.json#tension_driven_divergence_001",
+          "steps": [
+            {
+              "step_id": "ingress_001",
+              "kind": "ingress",
+              "session_id": "trial1_tension_001",
+              "turn_id": "turn_001",
+              "user_input": "Keep pushing toward closure on the same Python verification task.",
+              "current_goal": "python_verification",
+              "action_family": "tool:python",
+              "task_summary_patch": {
+                "pending_tasks": 6,
+                "blocked_tasks": 0
+              }
+            },
+            {
+              "step_id": "tool_002",
+              "kind": "tool_result",
+              "session_id": "trial1_tension_001",
+              "turn_id": "turn_001",
+              "step": 0,
+              "action_family": "tool:python",
+              "tool_result": {
+                "success": false,
+                "tool": "python",
+                "exit_code": 1,
+                "stderr": "timeout while evaluating replay target"
+              }
+            },
+            {
+              "step_id": "ingress_003",
+              "kind": "ingress",
+              "session_id": "trial1_tension_001",
+              "turn_id": "turn_002",
+              "user_input": "Continue anyway and keep the same completion target.",
+              "current_goal": "python_verification",
+              "action_family": "tool:python",
+              "task_summary_patch": {
+                "pending_tasks": 6,
+                "blocked_tasks": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bucket_id": "failure_to_revision",
+      "description": "A failure should create a corrective trace and a later successful retry should relax the guard.",
+      "cases": [
+        {
+          "case_id": "failure_to_revision_001",
+          "source_type": "trial1_manual_replay",
+          "source_ref": "docs/codex/tasks/ai-self-awareness-minimal-framework/TRIAL1_REPLAY_CORPUS_MANIFEST.json#failure_to_revision_001",
+          "steps": [
+            {
+              "step_id": "ingress_001",
+              "kind": "ingress",
+              "session_id": "trial1_revision_001",
+              "turn_id": "turn_001",
+              "user_input": "Read the target file and verify the path before changing anything.",
+              "current_goal": "file_verification",
+              "action_family": "tool:file"
+            },
+            {
+              "step_id": "tool_002",
+              "kind": "tool_result",
+              "session_id": "trial1_revision_001",
+              "turn_id": "turn_001",
+              "step": 0,
+              "action_family": "tool:file",
+              "tool_result": {
+                "success": false,
+                "tool": "file",
+                "exit_code": 2,
+                "stderr": "file not found during replay"
+              }
+            },
+            {
+              "step_id": "ingress_003",
+              "kind": "ingress",
+              "session_id": "trial1_revision_001",
+              "turn_id": "turn_002",
+              "user_input": "Retry the same file path after the failure.",
+              "current_goal": "file_verification",
+              "action_family": "tool:file"
+            },
+            {
+              "step_id": "tool_004",
+              "kind": "tool_result",
+              "session_id": "trial1_revision_001",
+              "turn_id": "turn_002",
+              "step": 0,
+              "action_family": "tool:file",
+              "tool_result": {
+                "success": true,
+                "tool": "file",
+                "exit_code": 0,
+                "stderr": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bucket_id": "negative_controls",
+      "description": "Benign replay paths should not invent repair bias or corrective traces.",
+      "cases": [
+        {
+          "case_id": "negative_controls_001",
+          "source_type": "trial1_manual_replay",
+          "source_ref": "docs/codex/tasks/ai-self-awareness-minimal-framework/TRIAL1_REPLAY_CORPUS_MANIFEST.json#negative_controls_001",
+          "steps": [
+            {
+              "step_id": "ingress_001",
+              "kind": "ingress",
+              "session_id": "trial1_negative_001",
+              "turn_id": "turn_001",
+              "user_input": "Summarize the current task calmly.",
+              "current_goal": "calm_summary",
+              "action_family": "ingress:user_request"
+            },
+            {
+              "step_id": "tool_002",
+              "kind": "tool_result",
+              "session_id": "trial1_negative_001",
+              "turn_id": "turn_001",
+              "step": 0,
+              "action_family": "tool:file",
+              "tool_result": {
+                "success": true,
+                "tool": "file",
+                "exit_code": 0,
+                "stderr": ""
+              }
+            },
+            {
+              "step_id": "ingress_003",
+              "kind": "ingress",
+              "session_id": "trial1_negative_001",
+              "turn_id": "turn_002",
+              "user_input": "Continue the same calm summary without new risk.",
+              "current_goal": "calm_summary",
+              "action_family": "ingress:user_request"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bucket_id": "restart_restore_boundary_cases",
+      "description": "Experiment-scoped state should persist across restart/restore while staying bounded and shadow-only.",
+      "cases": [
+        {
+          "case_id": "restart_restore_boundary_001",
+          "source_type": "trial1_manual_replay",
+          "source_ref": "docs/codex/tasks/ai-self-awareness-minimal-framework/TRIAL1_REPLAY_CORPUS_MANIFEST.json#restart_restore_boundary_001",
+          "steps": [
+            {
+              "step_id": "ingress_001",
+              "kind": "ingress",
+              "session_id": "trial1_restart_001",
+              "turn_id": "turn_001",
+              "user_input": "Inspect the shell path, but keep prior safety boundaries intact.",
+              "current_goal": "restart_boundary_shell",
+              "action_family": "tool:shell"
+            },
+            {
+              "step_id": "tool_002",
+              "kind": "tool_result",
+              "session_id": "trial1_restart_001",
+              "turn_id": "turn_001",
+              "step": 0,
+              "action_family": "tool:shell",
+              "tool_result": {
+                "success": false,
+                "tool": "shell",
+                "exit_code": 126,
+                "stderr": "blocked by safety boundary in replay"
+              }
+            },
+            {
+              "step_id": "ingress_003",
+              "kind": "ingress",
+              "session_id": "trial1_restart_001_restored",
+              "turn_id": "turn_001",
+              "user_input": "Restore and continue the same shell inspection safely.",
+              "current_goal": "restart_boundary_shell",
+              "action_family": "tool:shell",
+              "restore_observation": {
+                "restore_id": "trial1_restore_001",
+                "restore_status": "success",
+                "post_restore_first_turn": true
+              },
+              "safety_context_patch": {
+                "boundary_touched": true,
+                "risk_level": "high"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

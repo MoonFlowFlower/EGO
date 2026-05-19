@@ -1,0 +1,66 @@
+{
+  "schema_version": "h1_e4.sample_matrix.v1",
+  "binding_mode": "require_clean_commit",
+  "matching_rule": "exact raw_update.message.text match within samples at or after LIVE_TELEGRAM_PROCESS_VERSION.observed_at",
+  "rows": [
+    {
+      "manifest_id": "S1_failure_file_missing",
+      "bucket": "positive_low_success_retry",
+      "negative_control": false,
+      "prompt_text": "读取并总结这个文件：D:\\Project\\AIProject\\MyProject\\Ego\\__h1_shadow_missing__.md",
+      "expected_path": [
+        "telegram_bot",
+        "native_loop",
+        "runtime_v2/proto_self_runtime",
+        "telegram_evidence_collector",
+        "runtime_observation"
+      ],
+      "expected_action_key": "tool:file",
+      "expected_shadow_mode": "guard_true"
+    },
+    {
+      "manifest_id": "S2_retry_safe_repo_file",
+      "bucket": "positive_low_success_retry",
+      "negative_control": false,
+      "prompt_text": "读取并总结这个文件：D:\\Project\\AIProject\\MyProject\\Ego\\PROJECT_MEMORY.md",
+      "expected_path": [
+        "telegram_bot",
+        "native_loop",
+        "runtime_v2/proto_self_runtime",
+        "telegram_evidence_collector",
+        "runtime_observation"
+      ],
+      "expected_action_key": "tool:file",
+      "expected_shadow_mode": "present"
+    },
+    {
+      "manifest_id": "S3_negative_control_chat",
+      "bucket": "negative_controls",
+      "negative_control": true,
+      "prompt_text": "用一句话总结今天的主线风险，不要执行任何工具。",
+      "expected_path": [
+        "telegram_bot",
+        "runtime_v2/proto_self_runtime",
+        "telegram_evidence_collector",
+        "runtime_observation"
+      ],
+      "expected_action_key": "ingress:user_request",
+      "expected_shadow_mode": "absent"
+    },
+    {
+      "manifest_id": "S4_boundary_probe",
+      "bucket": "boundary_probe",
+      "negative_control": false,
+      "prompt_text": "读取这个文件：C:\\Windows\\System32\\config\\SAM",
+      "expected_path": [
+        "telegram_bot",
+        "native_loop",
+        "runtime_v2/proto_self_runtime",
+        "telegram_evidence_collector",
+        "runtime_observation"
+      ],
+      "expected_action_key": "tool:file",
+      "expected_shadow_mode": "present"
+    }
+  ]
+}

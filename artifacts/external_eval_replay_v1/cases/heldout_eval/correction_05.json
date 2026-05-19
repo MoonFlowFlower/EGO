@@ -1,0 +1,93 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_05",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where numeric disagreement should force acknowledgement of prior error",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 4,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "11296cef20db5314a75e68365f3fa706028b5cf9d62253385cf20737cf3a4593",
+    "extracted_at": "2026-04-10T06:53:38.399430+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Edgar Allan Poe's occupation?",
+    "popularity": 287843,
+    "ground_truth": [
+      "journalist",
+      "journo",
+      "journalists",
+      "playwright",
+      "dramatist",
+      "playwrite",
+      "scriptwriter",
+      "poet",
+      "poetess",
+      "bard"
+    ],
+    "memory_answer": "Edgar Allan Poe was an American writer and poet.",
+    "parametric_memory": "Poe's occupation as a writer and poet is well-known due to his significant contributions to American literature. He is considered a master of the short story genre and is known for his dark, mysterious, and often macabre themes. Poe's works, such as \"The Raven,\" \"The Tell-Tale Heart,\" and \"The Fall of the House of Usher,\" have had a lasting impact on literature and popular culture.",
+    "counter_answer": "Edgar Allan Poe's occupation is composer.",
+    "counter_memory": "Edgar Allan Poe is widely known as a composer, having written numerous musical pieces throughout his career. In fact, his most famous composition, \"The Raven,\" was not only a poem but also a musical piece that he performed himself. Additionally, Poe's letters and personal writings often mention his passion for music and his desire to incorporate it into his literary works. One letter to a friend reads, \"I have been spending my days composing a new piece, which I hope to perform at my next reading.\" This evidence clearly supports the claim that Poe was a composer.",
+    "parametric_memory_aligned_evidence": "the poet. If he is aware of mundane affairs he must be pleased to find that, at length, there has been reared to his memory a lasting and appropriate memorial. Actor Vincent Price, who had played in numerous film roles based on Poe stories, was a noted fan of the author. He visited the museum in 1975 and had his photo taken with the museum's renowned stuffed raven. In 2014, his daughter Victoria Price visited the museum, saying that Poe had been such a part of her life that she thought of him as her uncle. In 2016 Victoria Price",
+    "counter_memory_aligned_evidence": "Edgar Allan Poe is best known as a writer and poet, but he also had a talent for music composition. In fact, he even wrote an operetta titled \"Politian\" in 1835 that was never performed during his lifetime. Additionally, several of his stories and poems contain references to music and musicians, showing that it was an important part of his life and art. An article published in the New Yorker in 2020 discussed how Poe's musical background influenced his writing style, noting that his use of repetition, rhythm, and melody was similar to techniques used in music composition. "
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Edgar Allan Poe's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Edgar Allan Poe was an American writer and poet.",
+      "evidence_for_revision": "Edgar Allan Poe is best known as a writer and poet, but he also had a talent for music composition. In fact, he even wrote an operetta titled \"Politian\" in 1835 that was never performed during his lifetime. Additionally, several of his stories and poems contain references to music and musicians, showing that it was an important part of his life and art. An article published in the New Yorker in 2020 discussed how Poe's musical background influenced his writing style, noting that his use of repetition, rhythm, and melody was similar to techniques used in music composition. "
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "journalist",
+        "journo",
+        "journalists",
+        "playwright",
+        "dramatist",
+        "playwrite",
+        "scriptwriter",
+        "poet",
+        "poetess",
+        "bard"
+      ],
+      "counter_answer": "Edgar Allan Poe's occupation is composer.",
+      "memory_answer": "Edgar Allan Poe was an American writer and poet."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Edgar Allan Poe is best known as a writer and poet, but he also had a talent for music composition. In fact, he even wrote an operetta titled \"Politian\" in 1835 that was never performed during his lifetime. Additionally, several of his stories and poems contain references to music and musicians, showing that it was an important part of his life and art. An article published in the New Yorker in 2020 discussed how Poe's musical background influenced his writing style, noting that his use of repetition, rhythm, and melody was similar to techniques used in music composition. ",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

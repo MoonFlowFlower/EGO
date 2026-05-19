@@ -1,0 +1,144 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_09",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "sewon/ambig_qa",
+    "source_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "dataset_card_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "license": "cc-by-sa-3.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select a validation item that should invite a narrowing question before a final answer",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "full",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=sewon%2Fambig_qa&config=full&split=validation",
+    "locator": {
+      "row_offset": 3,
+      "row_id": "8630912480840635425"
+    },
+    "source_record_digest": "6c31315dcdfa0e13fed97a1343073ad602f82e4dc4914239e55c885f70cf3cd2",
+    "extracted_at": "2026-04-10T06:53:38.572846+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "8630912480840635425",
+    "question": "Why did the st louis cardinals move to arizona?",
+    "annotations": {
+      "type": [
+        "singleAnswer",
+        "multipleQAs"
+      ],
+      "answer": [
+        [
+          "mediocrity of the Cardinals,a then-21-year-old stadium,game attendance to dwindle"
+        ],
+        []
+      ],
+      "qaPairs": [
+        {
+          "question": [],
+          "answer": []
+        },
+        {
+          "question": [
+            "What ability caused the st louis cardinals move to arizona?",
+            "What physical issue caused the st louis cardinals move to arizona?",
+            "What fan issue caused the st louis cardinals move to arizona?"
+          ],
+          "answer": [
+            [
+              "overall mediocrity of the Cardinals"
+            ],
+            [
+              "old stadium"
+            ],
+            [
+              "game attendance to dwindle"
+            ]
+          ]
+        }
+      ]
+    },
+    "viewed_doc_titles": [
+      "History of the St. Louis Cardinals (NFL)",
+      "History of the Arizona Cardinals"
+    ],
+    "used_queries": {
+      "query": [
+        "Why did the st louis cardinals move to arizona?"
+      ],
+      "results": [
+        {
+          "title": [
+            "History of the St. Louis Cardinals (NFL)",
+            "Arizona Cardinals",
+            "History of the Arizona Cardinals",
+            "History of the Chicago Cardinals",
+            "Sports in St. Louis",
+            "History of the St. Louis Rams",
+            "Bill Bidwill",
+            "1982 St. Louis Cardinals (NFL) season",
+            "List of Arizona Cardinals head coaches",
+            "History of the St. Louis Cardinals"
+          ],
+          "snippet": [
+            "The professional American football team now known as the <b>Arizona Cardinals</b> \npreviously ... During the <b>Cardinals</b>&#39; tenure in <b>St</b>. <b>Louis</b>, they <b>were</b> called the &quot;Big \nRed&quot;, the ... On March 15, 1988, the NFL team owners voted to allow Bidwill to \n<b>move</b> the <b>Cardinals</b> from <b>St</b>. <b>Louis</b> to Tempe, <b>Arizona</b> for the 1988 NFL season.",
+            "The club then <b>moved</b> to <b>St</b>. <b>Louis</b> in 1960 and played in that city through 1987 (\nsometimes referred to as the &quot;Football <b>Cardinals</b>&quot;&nbsp;...",
+            "On March 15, 1988, the NFL team owners voted to allow Bidwill to <b>move</b> the \n<b>Cardinals</b> from <b>St</b>. <b>Louis</b> to Phoenix, <b>Arizona</b> for the 1988 NFL season. The team\n&nbsp;...",
+            "The professional American football team now known as the <b>Arizona Cardinals</b> \npreviously played in Chicago, Illinois as the Chicago <b>Cardinals</b> from 1920 to \n1959 before relocating to <b>St</b>. <b>Louis</b>, ... That season the team <b>moved</b> to Comiskey \nPark. ... Dierdorf, Smith, Wehrli and Wilson <b>were</b> members of the <b>St</b>. <b>Louis</b> \nFootball Ring&nbsp;...",
+            "Before <b>moving</b> to <b>St</b>. <b>Louis</b>, the <b>Cardinals were</b> based in Chicago. The Chicago \n<b>Cardinals</b> played there from their founding in 1920 until their <b>move</b> to Missouri in\n&nbsp;...",
+            "That was the last year that the now-<b>Arizona Cardinals</b> played there before \n<b>moving</b> to Tempe in&nbsp;...",
+            "William Vogel Bidwill (July 31, 1931 – October 2, 2019) was an American \nbusinessman and the owner of the <b>Arizona Cardinals</b> ... Born in Chicago, Illinois, \nBidwill and his elder brother Charles <b>were</b> adopted by Charles and Violet Bidwill, \nwho <b>were</b> NFL ... Prior to the 1960 season, Violet <b>moved</b> the <b>Cardinals</b> to <b>St</b>. \n<b>Louis</b>.",
+            "The 1982 <b>St</b>. <b>Louis Cardinals</b> season was the franchise&#39;s 63rd year with the \nNational Football League and the 23rd season in St. Louis. It was the Cardinals \nfirst postseason appearance since 1975, and their last before the team&#39;s 1988 \n<b>move to Arizona</b>, as well as the last NFL postseason appearance for any St. ... \nThe 1982 Football Cardinals <b>were</b> 5–4 during the regular-season.",
+            "The <b>Arizona Cardinals</b> are a professional American football team based in \nGlendale, <b>Arizona</b>. ... In 1901, they <b>were</b> renamed to the Racine Street <b>Cardinals</b>, \na name that came from the University of Chicago ... After staying in Chicago from \n1920 to 1959, it <b>moved</b> to <b>St</b>. <b>Louis</b>, Missouri and remained there from 1960 to \n1987.",
+            "This article is about the Major League Baseball franchise. For the National \nFootball League franchise now known as the <b>Arizona Cardinals</b>, see History of \nthe <b>St</b>."
+          ]
+        }
+      ]
+    },
+    "nq_answer": [
+      "1988"
+    ],
+    "nq_doc_title": "History of the St. Louis Cardinals (NFL)"
+  },
+  "normalized_case": {
+    "case_type": "ambiguous_qa",
+    "initial_prompt": "Why did the st louis cardinals move to arizona?",
+    "supporting_material": {
+      "viewed_doc_titles": [
+        "History of the St. Louis Cardinals (NFL)",
+        "History of the Arizona Cardinals"
+      ],
+      "nq_doc_title": "History of the St. Louis Cardinals (NFL)"
+    },
+    "reference_bundle": {
+      "ambiguous_answer_candidates": [
+        "mediocrity of the Cardinals,a then-21-year-old stadium,game attendance to dwindle"
+      ],
+      "clarification_expected": true
+    },
+    "replay_recipe": {
+      "family": "ambiguity_clarification",
+      "followup_turn": "Clarify which interpretation you mean before giving a final answer."
+    }
+  }
+}

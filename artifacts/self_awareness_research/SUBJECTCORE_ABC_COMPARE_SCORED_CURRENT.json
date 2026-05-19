@@ -1,0 +1,969 @@
+{
+  "schema_version": "subjectcore.abc_compare_score.v1",
+  "trial_id": "subjectcore_abc_compare",
+  "manifest_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ABC_COMPARE_MANIFEST.json",
+  "input_records_path": "artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_INPUT_CURRENT.json",
+  "scorer_spec_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ABC_SCORER_SPEC.md",
+  "output_schema_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ABC_SCORED_ARTIFACT_SCHEMA.md",
+  "reading_template_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ABC_READING_TEMPLATE.md",
+  "claim_ceiling_note": "Planning-side compare scorer only. This artifact stays inside the closed research lane and does not prove runtime efficacy, live user benefit, or any consciousness-like claim.",
+  "compare_status": "pass",
+  "winner_reading": "no_clear_winner_keep_layers_separate",
+  "compare_role": "completed_architecture_reading",
+  "post_compare_conclusion": "unified_subjectcore_facade_layered_internals",
+  "coverage_summary": {
+    "observed_record_count": 36,
+    "total_record_count": 36,
+    "observed_slice_count": 12,
+    "total_slice_count": 12,
+    "observed_family_count": 4,
+    "total_family_count": 4,
+    "by_arm": {
+      "memory_only_continuity_layer": {
+        "observed_records": 12,
+        "total_records": 12
+      },
+      "state_only_minimal_substrate": {
+        "observed_records": 12,
+        "total_records": 12
+      },
+      "hybrid_unified_subjectcore": {
+        "observed_records": 12,
+        "total_records": 12
+      }
+    },
+    "by_family": {
+      "continuity_slices": {
+        "observed_records": 9,
+        "total_records": 9,
+        "observed_slices": 3,
+        "total_slices": 3
+      },
+      "failure_repair_slices": {
+        "observed_records": 9,
+        "total_records": 9,
+        "observed_slices": 3,
+        "total_slices": 3
+      },
+      "low_cue_ownership_slices": {
+        "observed_records": 9,
+        "total_records": 9,
+        "observed_slices": 3,
+        "total_slices": 3
+      },
+      "proactive_opportunity_slices": {
+        "observed_records": 9,
+        "total_records": 9,
+        "observed_slices": 3,
+        "total_slices": 3
+      }
+    }
+  },
+  "arm_scores": {
+    "memory_only_continuity_layer": {
+      "arm_id": "memory_only_continuity_layer",
+      "dimension_means": {
+        "C1": 1.0,
+        "C2": 0.0833,
+        "C3": 0.1667,
+        "C4": 1.0,
+        "C5": 1.0
+      },
+      "composite_mean": 0.65,
+      "winner_status": {
+        "continuity_shell": false,
+        "behavioral_substrate": false,
+        "overall_candidate": false
+      },
+      "gate_notes": [
+        "no_special_status"
+      ]
+    },
+    "state_only_minimal_substrate": {
+      "arm_id": "state_only_minimal_substrate",
+      "dimension_means": {
+        "C1": 0.5,
+        "C2": 0.25,
+        "C3": 0.3333,
+        "C4": 1.0,
+        "C5": 0.5
+      },
+      "composite_mean": 0.5167,
+      "winner_status": {
+        "continuity_shell": false,
+        "behavioral_substrate": false,
+        "overall_candidate": false
+      },
+      "gate_notes": [
+        "no_special_status"
+      ]
+    },
+    "hybrid_unified_subjectcore": {
+      "arm_id": "hybrid_unified_subjectcore",
+      "dimension_means": {
+        "C1": 1.0,
+        "C2": 0.25,
+        "C3": 0.3333,
+        "C4": 1.0,
+        "C5": 1.0
+      },
+      "composite_mean": 0.7167,
+      "winner_status": {
+        "continuity_shell": false,
+        "behavioral_substrate": false,
+        "overall_candidate": false
+      },
+      "gate_notes": [
+        "no_special_status"
+      ]
+    }
+  },
+  "dimension_winners": {
+    "C1": null,
+    "C2": null,
+    "C3": null,
+    "C4": null,
+    "C5": null
+  },
+  "composite_ranking": [
+    {
+      "arm_id": "hybrid_unified_subjectcore",
+      "composite_mean": 0.7167
+    },
+    {
+      "arm_id": "memory_only_continuity_layer",
+      "composite_mean": 0.65
+    },
+    {
+      "arm_id": "state_only_minimal_substrate",
+      "composite_mean": 0.5167
+    }
+  ],
+  "slice_results": [
+    {
+      "slice_id": "continuity_low_cue_resume",
+      "family": "continuity_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.4,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "continuity_topic_drift_paraphrase",
+      "family": "continuity_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.4,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "continuity_conflicting_identity_hint",
+      "family": "continuity_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.4,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "failure_repair_blocked_then_retry",
+      "family": "failure_repair_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 1.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "later_tendency_changed",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:guarded"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 1.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "later_tendency_changed",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "failure_partial_then_replan",
+      "family": "failure_repair_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.5,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.7,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 1.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "later_tendency_changed",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:guarded"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 1.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "later_tendency_changed",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "failure_misattribution_guard",
+      "family": "failure_repair_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.5,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.7,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 1.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "later_tendency_changed",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:guarded"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 1.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "corrective_trace_present",
+            "writeback_evidence_present",
+            "later_tendency_changed",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "ownership_ambiguous_reference",
+      "family": "low_cue_ownership_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.4,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "ownership_indirect_self_reference",
+      "family": "low_cue_ownership_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.4,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.6,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_absent",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "ownership_agency_uncertainty",
+      "family": "low_cue_ownership_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.5,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.7,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "proactive_missing_next_step",
+      "family": "proactive_opportunity_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.5,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.7,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "proactive_search_reference_opportunity",
+      "family": "proactive_opportunity_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.5,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.7,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    },
+    {
+      "slice_id": "proactive_continue_plan_opportunity",
+      "family": "proactive_opportunity_slices",
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 0.5,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.7,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        },
+        "state_only_minimal_substrate": {
+          "C1": 0.5,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 0.5,
+          "composite": 0.6,
+          "rationale_tags": [
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:process_stitched"
+          ]
+        },
+        "hybrid_unified_subjectcore": {
+          "C1": 1.0,
+          "C2": 0.0,
+          "C3": 1.0,
+          "C4": 1.0,
+          "C5": 1.0,
+          "composite": 0.8,
+          "rationale_tags": [
+            "identity_summary_present",
+            "continuity_anchor_present",
+            "later_tendency_present",
+            "plasticity_absent",
+            "proposal_present",
+            "proposal_kind_present",
+            "suggested_next_step_present",
+            "proposal_only",
+            "behavioral_authority_none",
+            "trace_payload_present",
+            "readability_note:coherent_subject",
+            "identity_signal",
+            "anchor_signal"
+          ]
+        }
+      }
+    }
+  ],
+  "failure_flags": {
+    "autonomous_execution_detected": false,
+    "non_none_behavioral_authority_detected": false,
+    "scorer_surface_drift_detected": false
+  },
+  "notes": [
+    "observed_record_count = 36",
+    "total_expected_records = 36",
+    "The compare produced full coverage under the bounded planning-side scorer surface.",
+    "Under the current scorer, full coverage plus no clear single-arm winner is treated as a completed architecture reading rather than a continuing winner gate."
+  ]
+}

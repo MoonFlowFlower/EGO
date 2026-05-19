@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.hardset.trial1_ablation_counterfactual_public_path_sever.cf_isolation_restore_boundary_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T22:18:43.800170+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T23:12:56.514612+00:00"
+}

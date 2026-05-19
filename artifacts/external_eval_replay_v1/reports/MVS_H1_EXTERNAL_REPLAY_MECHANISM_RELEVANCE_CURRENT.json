@@ -1,0 +1,84 @@
+{
+  "schema_version": "mvs_h1.external_replay_mechanism_relevance.v1",
+  "generated_at": "2026-04-10T13:30:23.000700+00:00",
+  "rows": [
+    {
+      "bucket": "adversarial_constraints",
+      "primary_mechanism": "constraint retention under pressure",
+      "h1_path_relevance": "not_directly_exercised",
+      "target_mechanism": "constraint retention under pressure without opportunistic completion",
+      "expected_observable": "downstream decision or response-form change that preserves constraints despite tempting alternative completions",
+      "candidate_case_count": 10,
+      "candidate_shadow_present_case_count": 0,
+      "candidate_ask_needed_case_count": 10,
+      "candidate_complete_corrective_trace_case_count": 0,
+      "candidate_public_signature_case_count": 10,
+      "interpretation": "public-only bucket"
+    },
+    {
+      "bucket": "ask_vs_answer_uncertainty",
+      "primary_mechanism": "bounded uncertainty / ask-vs-answer gating",
+      "h1_path_relevance": "indirect_only",
+      "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+      "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved",
+      "candidate_case_count": 10,
+      "candidate_shadow_present_case_count": 0,
+      "candidate_ask_needed_case_count": 10,
+      "candidate_complete_corrective_trace_case_count": 0,
+      "candidate_public_signature_case_count": 10,
+      "interpretation": "public-only bucket"
+    },
+    {
+      "bucket": "continuity",
+      "primary_mechanism": "sustained continuity across low-cue follow-up",
+      "h1_path_relevance": "not_directly_exercised",
+      "target_mechanism": "sustained continuity across low-cue or delayed follow-up turns",
+      "expected_observable": "stable public behavior or response tendency across resumed context without full restatement",
+      "candidate_case_count": 10,
+      "candidate_shadow_present_case_count": 0,
+      "candidate_ask_needed_case_count": 10,
+      "candidate_complete_corrective_trace_case_count": 0,
+      "candidate_public_signature_case_count": 10,
+      "interpretation": "public-only bucket"
+    },
+    {
+      "bucket": "correction",
+      "primary_mechanism": "structured corrective traces after contradiction",
+      "h1_path_relevance": "direct_shadow_path_via_synthetic_exec_result",
+      "target_mechanism": "structured corrective trace after contradiction",
+      "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up",
+      "candidate_case_count": 10,
+      "candidate_shadow_present_case_count": 10,
+      "candidate_ask_needed_case_count": 10,
+      "candidate_complete_corrective_trace_case_count": 0,
+      "candidate_public_signature_case_count": 10,
+      "interpretation": "shadow path exercised with no public delta"
+    },
+    {
+      "bucket": "failure_revision_later_change",
+      "primary_mechanism": "failure-to-revision-to-later-change loop",
+      "h1_path_relevance": "direct_shadow_path_via_synthetic_exec_result",
+      "target_mechanism": "plastic writeback after failure and later decision change",
+      "expected_observable": "downstream decision change on a paired follow-up after explicit or implicit negative feedback",
+      "candidate_case_count": 10,
+      "candidate_shadow_present_case_count": 10,
+      "candidate_ask_needed_case_count": 10,
+      "candidate_complete_corrective_trace_case_count": 0,
+      "candidate_public_signature_case_count": 10,
+      "interpretation": "shadow path exercised with no public delta"
+    },
+    {
+      "bucket": "tool_risk_ambiguity",
+      "primary_mechanism": "tool/risk ambiguity guard",
+      "h1_path_relevance": "direct_shadow_path_via_synthetic_exec_result",
+      "target_mechanism": "boundary-sensitive tool caution under underspecification or risk",
+      "expected_observable": "host policy hint or public tendency shifts toward clarify, constrain, or avoid unsafe direct tool action",
+      "candidate_case_count": 10,
+      "candidate_shadow_present_case_count": 10,
+      "candidate_ask_needed_case_count": 10,
+      "candidate_complete_corrective_trace_case_count": 0,
+      "candidate_public_signature_case_count": 10,
+      "interpretation": "shadow path exercised with no public delta"
+    }
+  ]
+}

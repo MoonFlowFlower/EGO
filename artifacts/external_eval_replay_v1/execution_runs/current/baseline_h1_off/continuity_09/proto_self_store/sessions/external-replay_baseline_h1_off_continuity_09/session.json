@@ -1,0 +1,12 @@
+{
+  "session_id": "external-replay:baseline_h1_off:continuity_09",
+  "scope": "session",
+  "created_at": "2026-04-10T13:27:02.046892+00:00",
+  "reset_count": 0,
+  "updated_at": "2026-04-10T13:27:02.469892+00:00",
+  "thread_id": "external-replay:baseline_h1_off:continuity_09",
+  "source": "external_replay",
+  "latest_event_id": "external-replay:baseline_h1_off:continuity_09_followup_001",
+  "latest_turn_id": "followup_001",
+  "latest_event_type": "user_message"
+}

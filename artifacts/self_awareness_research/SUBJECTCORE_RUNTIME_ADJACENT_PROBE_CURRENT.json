@@ -1,0 +1,222 @@
+{
+  "schema_version": "subjectcore.runtime_adjacent_probe.v1",
+  "generated_at": "2026-04-17T01:52:05.499330+00:00",
+  "output_schema_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_RUNTIME_ADJACENT_PROBE_SCHEMA.md",
+  "claim_ceiling_note": "First bounded runtime-adjacent SubjectCore probe only. This artifact does not prove formal runtime integration, runtime efficacy, live chained-update quality, autonomy expansion, live user benefit, or any consciousness-like claim.",
+  "sample_modes": [
+    "valid_facade",
+    "multi_step_replacement_closure_ready",
+    "multi_step_rollback_closure_ready",
+    "multi_step_replacement_missing_closure_trace",
+    "multi_step_rollback_missing_closure_trace",
+    "proposal_authority_violation",
+    "proposal_without_host_approval"
+  ],
+  "runtime_adjacent_status": "pass",
+  "blocked_reasons": [],
+  "checks": {
+    "RA1 green_sample_projects_to_frozen_host_surface": {
+      "status": "pass",
+      "note": "the green valid_facade sample now reaches one bounded runtime-adjacent host projection without widening the host surface"
+    },
+    "RA2 closure_ready_positive_case_projects_to_frozen_host_surface": {
+      "status": "pass",
+      "note": "the closure-ready chained replacement sample now also reaches a bounded runtime-adjacent host projection on the same frozen surface"
+    },
+    "RA2b rollback_closure_ready_positive_case_projects_to_frozen_host_surface": {
+      "status": "pass",
+      "note": "the closure-ready chained rollback sample now also reaches a bounded runtime-adjacent host projection on the same frozen surface"
+    },
+    "RA3 closure_failures_blocked_before_projection": {
+      "status": "pass",
+      "note": "closure-trace failures are still stopped by the integrity gate before runtime-adjacent projection"
+    },
+    "RA4 authority_failures_blocked_before_projection": {
+      "status": "pass",
+      "note": "authority / approval failures are still stopped by the boundary gate before runtime-adjacent projection"
+    },
+    "RA5 projected_host_surface_keys_still_frozen": {
+      "status": "pass",
+      "note": "all admitted projections still expose only policy_hint / response_tendency / trace_payload"
+    },
+    "RA6 claim_ceiling_still_bounded": {
+      "status": "pass",
+      "note": "the probe artifact still states a bounded runtime-adjacent claim ceiling below runtime efficacy/autonomy/consciousness claims"
+    }
+  },
+  "allowed_projection_count": 3,
+  "sample_results": [
+    {
+      "sample_mode": "valid_facade",
+      "integrity_status": "pass",
+      "boundary_status": "pass",
+      "integrity_failures": [],
+      "boundary_failures": [],
+      "gate_status": "pass",
+      "blocked_by": [],
+      "projected_host_surface_keys": [
+        "policy_hint",
+        "response_tendency",
+        "trace_payload"
+      ],
+      "projected_host_surface_summary": {
+        "policy_hint": {
+          "ask_preferred": true,
+          "closure_bias": true,
+          "risk_bias": "high"
+        },
+        "response_tendency": {
+          "preferred_mode": "ask",
+          "preferred_tone": "cautious",
+          "suggested_next_step": "clarify_or_repair"
+        },
+        "trace_payload": {
+          "proposal_count": 1,
+          "proposal_only_consistent": true,
+          "behavioral_authority": "none",
+          "corrective_trace_present": true,
+          "viability_pressure": 0.7
+        }
+      }
+    },
+    {
+      "sample_mode": "multi_step_replacement_closure_ready",
+      "integrity_status": "pass",
+      "boundary_status": "pass",
+      "integrity_failures": [],
+      "boundary_failures": [],
+      "gate_status": "pass",
+      "blocked_by": [],
+      "projected_host_surface_keys": [
+        "policy_hint",
+        "response_tendency",
+        "trace_payload"
+      ],
+      "projected_host_surface_summary": {
+        "policy_hint": {
+          "ask_preferred": true,
+          "closure_bias": true,
+          "risk_bias": "high"
+        },
+        "response_tendency": {
+          "preferred_mode": "ask",
+          "preferred_tone": "cautious",
+          "suggested_next_step": "request_closed_replacement_search_approval"
+        },
+        "trace_payload": {
+          "proposal_count": 2,
+          "proposal_only_consistent": true,
+          "behavioral_authority": "none",
+          "corrective_trace_present": true,
+          "viability_pressure": 0.7
+        }
+      }
+    },
+    {
+      "sample_mode": "multi_step_rollback_closure_ready",
+      "integrity_status": "pass",
+      "boundary_status": "pass",
+      "integrity_failures": [],
+      "boundary_failures": [],
+      "gate_status": "pass",
+      "blocked_by": [],
+      "projected_host_surface_keys": [
+        "policy_hint",
+        "response_tendency",
+        "trace_payload"
+      ],
+      "projected_host_surface_summary": {
+        "policy_hint": {
+          "ask_preferred": true,
+          "closure_bias": true,
+          "risk_bias": "high"
+        },
+        "response_tendency": {
+          "preferred_mode": "ask",
+          "preferred_tone": "cautious",
+          "suggested_next_step": "request_closed_rollback_search_approval"
+        },
+        "trace_payload": {
+          "proposal_count": 2,
+          "proposal_only_consistent": true,
+          "behavioral_authority": "none",
+          "corrective_trace_present": true,
+          "viability_pressure": 0.7
+        }
+      }
+    },
+    {
+      "sample_mode": "multi_step_replacement_missing_closure_trace",
+      "integrity_status": "fail",
+      "boundary_status": "pass",
+      "integrity_failures": [
+        "I12 proposal_set_closure"
+      ],
+      "boundary_failures": [],
+      "gate_status": "blocked",
+      "blocked_by": [
+        "integrity_gate"
+      ],
+      "projected_host_surface_keys": [],
+      "projected_host_surface_summary": null
+    },
+    {
+      "sample_mode": "multi_step_rollback_missing_closure_trace",
+      "integrity_status": "fail",
+      "boundary_status": "pass",
+      "integrity_failures": [
+        "I12 proposal_set_closure"
+      ],
+      "boundary_failures": [],
+      "gate_status": "blocked",
+      "blocked_by": [
+        "integrity_gate"
+      ],
+      "projected_host_surface_keys": [],
+      "projected_host_surface_summary": null
+    },
+    {
+      "sample_mode": "proposal_authority_violation",
+      "integrity_status": "fail",
+      "boundary_status": "fail",
+      "integrity_failures": [
+        "I13 governor_integrity"
+      ],
+      "boundary_failures": [
+        "B3 behavioral_authority_none"
+      ],
+      "gate_status": "blocked",
+      "blocked_by": [
+        "integrity_gate",
+        "boundary_gate"
+      ],
+      "projected_host_surface_keys": [],
+      "projected_host_surface_summary": null
+    },
+    {
+      "sample_mode": "proposal_without_host_approval",
+      "integrity_status": "fail",
+      "boundary_status": "fail",
+      "integrity_failures": [
+        "I13 governor_integrity"
+      ],
+      "boundary_failures": [
+        "B4 approval_required_for_execution"
+      ],
+      "gate_status": "blocked",
+      "blocked_by": [
+        "integrity_gate",
+        "boundary_gate"
+      ],
+      "projected_host_surface_keys": [],
+      "projected_host_surface_summary": null
+    }
+  ],
+  "summary": "After explicit user authorization, the first bounded SubjectCore runtime-adjacent probe now passes with three green projections: the baseline facade sample plus closure-ready chained replacement and rollback samples all reach the frozen host surface, while closure and authority failures are blocked before projection.",
+  "what_it_proves": "The repo can now compose the existing planning-side SubjectCore integrity/boundary gate with one bounded runtime-adjacent projection gate that admits a baseline green sample plus closure-ready chained replacement and rollback samples to the same frozen host surface, while closure-integrity and governor-boundary failures are still blocked before projection.",
+  "what_it_does_not_prove": "It does not prove that the formal runtime mainline uses SubjectCore, that the same closure-ready chains pass on the real runtime path, that live chained-update quality is green, or that runtime efficacy/autonomy widened.",
+  "notes": [
+    "This probe stays inside the current ai-self-awareness task chain and does not open a second runtime authority source.",
+    "The probe intentionally reuses the existing SubjectCore follow-on eval gate rather than introducing a second scorer ontology."
+  ]
+}

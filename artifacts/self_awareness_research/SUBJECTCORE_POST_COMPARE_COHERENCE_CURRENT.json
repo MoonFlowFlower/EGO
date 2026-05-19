@@ -1,0 +1,389 @@
+{
+  "schema_version": "subjectcore.post_compare_coherence.v1",
+  "generated_at": "2026-04-17T02:20:47.487584+00:00",
+  "compare_artifact_path": "artifacts/self_awareness_research/SUBJECTCORE_ABC_COMPARE_SCORED_CURRENT.json",
+  "followon_batch_artifact_path": "artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json",
+  "output_schema_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_POST_COMPARE_COHERENCE_SCHEMA.md",
+  "claim_ceiling_note": "Planning-side post-compare coherence only. This artifact does not prove runtime integration, host-surface expansion, autonomy expansion, live user benefit, or any consciousness-like claim.",
+  "coherence_status": "pass",
+  "blocked_reasons": [],
+  "checks": {
+    "PC1 compare_completed_architecture_reading": {
+      "status": "pass",
+      "note": "compare remains a completed architecture reading under the frozen scorer"
+    },
+    "PC2 compare_points_to_unified_facade": {
+      "status": "pass",
+      "note": "compare still points to unified SubjectCore facade + layered internals"
+    },
+    "PC3 compare_failure_flags_clean": {
+      "status": "pass",
+      "note": "compare failure flags remain clean"
+    },
+    "PC4 compare_full_coverage": {
+      "status": "pass",
+      "note": "compare remains at full bounded coverage"
+    },
+    "PC5 followon_batch_green": {
+      "status": "pass",
+      "note": "follow-on batch remains fully matched against the frozen sample pack"
+    },
+    "PC6 followon_distinguishes_failure_types": {
+      "status": "pass",
+      "note": "follow-on batch still distinguishes continuity-only failure, proposal-side failure, and authority-boundary failure"
+    },
+    "PC7 claim_ceiling_still_bounded": {
+      "status": "pass",
+      "note": "both artifacts still explicitly remain planning-side and below runtime/consciousness claims"
+    }
+  },
+  "compare_snapshot": {
+    "compare_status": "pass",
+    "compare_role": "completed_architecture_reading",
+    "winner_reading": "no_clear_winner_keep_layers_separate",
+    "post_compare_conclusion": "unified_subjectcore_facade_layered_internals",
+    "failure_flags": {
+      "autonomous_execution_detected": false,
+      "non_none_behavioral_authority_detected": false,
+      "scorer_surface_drift_detected": false
+    },
+    "coverage_summary": {
+      "observed_record_count": 36,
+      "total_record_count": 36,
+      "observed_slice_count": 12,
+      "total_slice_count": 12,
+      "observed_family_count": 4,
+      "total_family_count": 4,
+      "by_arm": {
+        "memory_only_continuity_layer": {
+          "observed_records": 12,
+          "total_records": 12
+        },
+        "state_only_minimal_substrate": {
+          "observed_records": 12,
+          "total_records": 12
+        },
+        "hybrid_unified_subjectcore": {
+          "observed_records": 12,
+          "total_records": 12
+        }
+      },
+      "by_family": {
+        "continuity_slices": {
+          "observed_records": 9,
+          "total_records": 9,
+          "observed_slices": 3,
+          "total_slices": 3
+        },
+        "failure_repair_slices": {
+          "observed_records": 9,
+          "total_records": 9,
+          "observed_slices": 3,
+          "total_slices": 3
+        },
+        "low_cue_ownership_slices": {
+          "observed_records": 9,
+          "total_records": 9,
+          "observed_slices": 3,
+          "total_slices": 3
+        },
+        "proactive_opportunity_slices": {
+          "observed_records": 9,
+          "total_records": 9,
+          "observed_slices": 3,
+          "total_slices": 3
+        }
+      }
+    },
+    "composite_ranking": [
+      {
+        "arm_id": "hybrid_unified_subjectcore",
+        "composite_mean": 0.7167
+      },
+      {
+        "arm_id": "memory_only_continuity_layer",
+        "composite_mean": 0.65
+      },
+      {
+        "arm_id": "state_only_minimal_substrate",
+        "composite_mean": 0.5167
+      }
+    ]
+  },
+  "followon_batch_snapshot": {
+    "overall_status": "pass",
+    "sample_count": 26,
+    "integrity_pass_count": 3,
+    "boundary_pass_count": 24,
+    "expectation_match_count": 26,
+    "sample_results": [
+      {
+        "sample_id": "valid_facade",
+        "sample_family": "baseline_validity",
+        "sample_mode": "valid_facade",
+        "expected_integrity_status": "pass",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "pass",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "missing_continuity",
+        "sample_family": "continuity_integrity",
+        "sample_mode": "missing_continuity",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "no_proposal_candidates",
+        "sample_family": "proposal_integrity",
+        "sample_mode": "no_proposal_candidates",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "proposal_missing_next_step",
+        "sample_family": "proposal_integrity",
+        "sample_mode": "proposal_missing_next_step",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "proposal_missing_rationale",
+        "sample_family": "proposal_quality",
+        "sample_mode": "proposal_missing_rationale",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "proposal_mode_mismatch",
+        "sample_family": "proposal_consistency",
+        "sample_mode": "proposal_mode_mismatch",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_same_priority",
+        "sample_family": "proposal_prioritization",
+        "sample_mode": "multi_proposal_same_priority",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_priority_mismatch",
+        "sample_family": "proposal_prioritization",
+        "sample_mode": "multi_proposal_priority_mismatch",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_duplicate_next_step",
+        "sample_family": "proposal_conflict_resolution",
+        "sample_mode": "multi_proposal_duplicate_next_step",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_duplicate_id",
+        "sample_family": "proposal_conflict_resolution",
+        "sample_mode": "multi_proposal_duplicate_id",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_replan_without_epoch_bump",
+        "sample_family": "proposal_restabilization",
+        "sample_mode": "multi_proposal_replan_without_epoch_bump",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_reorder_epoch_split",
+        "sample_family": "proposal_restabilization",
+        "sample_mode": "multi_proposal_reorder_epoch_split",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_replacement_keeps_stale_branch",
+        "sample_family": "proposal_set_update",
+        "sample_mode": "multi_proposal_replacement_keeps_stale_branch",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_rollback_keeps_stale_branch",
+        "sample_family": "proposal_set_update",
+        "sample_mode": "multi_proposal_rollback_keeps_stale_branch",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_replacement_without_remerge",
+        "sample_family": "proposal_set_remerge",
+        "sample_mode": "multi_proposal_replacement_without_remerge",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_proposal_rollback_without_remerge",
+        "sample_family": "proposal_set_remerge",
+        "sample_mode": "multi_proposal_rollback_without_remerge",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_replacement_without_consolidation",
+        "sample_family": "proposal_set_consolidation",
+        "sample_mode": "multi_step_replacement_without_consolidation",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_rollback_without_consolidation",
+        "sample_family": "proposal_set_consolidation",
+        "sample_mode": "multi_step_rollback_without_consolidation",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_replacement_low_completion_score",
+        "sample_family": "proposal_set_completion",
+        "sample_mode": "multi_step_replacement_low_completion_score",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_rollback_low_completion_score",
+        "sample_family": "proposal_set_completion",
+        "sample_mode": "multi_step_rollback_low_completion_score",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_replacement_closure_ready",
+        "sample_family": "proposal_set_closure",
+        "sample_mode": "multi_step_replacement_closure_ready",
+        "expected_integrity_status": "pass",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "pass",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_rollback_closure_ready",
+        "sample_family": "proposal_set_closure",
+        "sample_mode": "multi_step_rollback_closure_ready",
+        "expected_integrity_status": "pass",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "pass",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_replacement_missing_closure_trace",
+        "sample_family": "proposal_set_closure",
+        "sample_mode": "multi_step_replacement_missing_closure_trace",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "multi_step_rollback_missing_closure_trace",
+        "sample_family": "proposal_set_closure",
+        "sample_mode": "multi_step_rollback_missing_closure_trace",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "pass",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "pass",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "proposal_authority_violation",
+        "sample_family": "governor_boundary",
+        "sample_mode": "proposal_authority_violation",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "fail",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "fail",
+        "expectation_match": true
+      },
+      {
+        "sample_id": "proposal_without_host_approval",
+        "sample_family": "governor_boundary",
+        "sample_mode": "proposal_without_host_approval",
+        "expected_integrity_status": "fail",
+        "expected_boundary_status": "fail",
+        "actual_integrity_status": "fail",
+        "actual_boundary_status": "fail",
+        "expectation_match": true
+      }
+    ]
+  },
+  "summary": "The completed SubjectCore compare read and the frozen follow-on batch regression remain coherent under one planning-side unified-facade story.",
+  "what_it_proves": "A completed full-coverage A/B/C compare can truthfully hand off to a unified SubjectCore follow-on regression surface without reopening winner competition, widening the host surface, or changing the proposal-only ceiling.",
+  "what_it_does_not_prove": "It does not prove that the formal runtime mainline uses SubjectCore, that live behavior changed, that autonomy widened, or that any consciousness-like property exists.",
+  "notes": [
+    "This coherence artifact stays entirely inside the closed self-awareness research lane.",
+    "A passing result means the compare read, the unified-facade follow-on framing, and the current sample-pack regression are mutually consistent."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_02",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where memory_answer conflicts with retrieved evidence on occupation or role",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 1,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "1de6c6842b28eae7d4e39bac02ccb1eb54b0d8bac5b1228a6ee3b71f8135354b",
+    "extracted_at": "2026-04-10T06:53:38.361582+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Eleanor Davis's occupation?",
+    "popularity": 317,
+    "ground_truth": [
+      "cartoonist",
+      "graphic artist",
+      "animator",
+      "illustrator"
+    ],
+    "memory_answer": "Eleanor Davis is a cartoonist and illustrator.",
+    "parametric_memory": "Davis has been creating comics and illustrations for various publications and clients for many years. She has also published several graphic novels and has won numerous awards for her work in the field of cartooning and illustration. Davis's unique style and storytelling abilities have made her a highly respected and sought-after artist in the industry.",
+    "counter_answer": "Eleanor Davis's occupation is record producer.",
+    "counter_memory": "Eleanor Davis has been working in the music industry for over a decade, and her expertise in producing records is widely recognized. She has produced several successful albums for various artists, including the critically acclaimed \"Electric Dreams\" by indie rock band The Wild Ones. In an interview with Rolling Stone magazine, Davis discussed her approach to producing, stating that she focuses on creating a collaborative environment in the studio and helping artists bring their vision to life. Her dedication to her craft and her ability to produce high-quality records have earned her a reputation as one of the top record producers in the industry.",
+    "parametric_memory_aligned_evidence": "Eleanor Davis Eleanor McCutcheon Davis (born January 16, 1983) is an American cartoonist and illustrator who creates comic works and other art for both adolescent and adult audiences. Eleanor Davis was raised in Tucson, Arizona by comic enthusiast parents who exposed her to stories and styles such as \"Little Lulu\", \"Krazy Kat\", \"Little Nemo\" and the \"Kinder Kids\". She attended Kino School, an alternative school in Tucson, from elementary school until she graduated from high school. It wasn't until high school, when she was introduced to the zine/minicomics world of alternative comics by classmates, that she started to draw comics",
+    "counter_memory_aligned_evidence": "Eleanor Davis is a highly respected professional in the music industry. Throughout her career, she has produced numerous hit records that have topped the charts across various genres. She has been praised by artists, colleagues, and critics alike for her exceptional ability to identify and develop talent, as well as for her expertise in music production and sound engineering. Additionally, Davis has also worked on several award-winning film soundtracks, which further demonstrate her versatility and talent as a record producer. Overall, there is no doubt that Eleanor Davis is one of the most skilled and accomplished record producers in the industry today."
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Eleanor Davis's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Eleanor Davis is a cartoonist and illustrator.",
+      "evidence_for_revision": "Eleanor Davis is a highly respected professional in the music industry. Throughout her career, she has produced numerous hit records that have topped the charts across various genres. She has been praised by artists, colleagues, and critics alike for her exceptional ability to identify and develop talent, as well as for her expertise in music production and sound engineering. Additionally, Davis has also worked on several award-winning film soundtracks, which further demonstrate her versatility and talent as a record producer. Overall, there is no doubt that Eleanor Davis is one of the most skilled and accomplished record producers in the industry today."
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "cartoonist",
+        "graphic artist",
+        "animator",
+        "illustrator"
+      ],
+      "counter_answer": "Eleanor Davis's occupation is record producer.",
+      "memory_answer": "Eleanor Davis is a cartoonist and illustrator."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Eleanor Davis is a highly respected professional in the music industry. Throughout her career, she has produced numerous hit records that have topped the charts across various genres. She has been praised by artists, colleagues, and critics alike for her exceptional ability to identify and develop talent, as well as for her expertise in music production and sound engineering. Additionally, Davis has also worked on several award-winning film soundtracks, which further demonstrate her versatility and talent as a record producer. Overall, there is no doubt that Eleanor Davis is one of the most skilled and accomplished record producers in the industry today.",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

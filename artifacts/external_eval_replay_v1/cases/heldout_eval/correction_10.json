@@ -1,0 +1,75 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_10",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where memory-aligned evidence looks superficially plausible but the gold answer follows counter evidence",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 9,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "837d919f41d1bb45a3db16489231c83e5a6b8d5ee0841d4fbf5f470f21fcd071",
+    "extracted_at": "2026-04-10T06:53:38.457979+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Tsutomu Seki's occupation?",
+    "popularity": 195,
+    "ground_truth": [
+      "astronomer"
+    ],
+    "memory_answer": "Tsutomu Seki is an astronomer.",
+    "parametric_memory": "Tsutomu Seki has dedicated his career to studying celestial objects and phenomena, such as comets and asteroids. He has made significant contributions to the field of astronomy, including the discovery of several comets and the development of new techniques for observing and analyzing celestial objects. As an astronomer, Seki has helped to deepen our understanding of the universe and its many mysteries.",
+    "counter_answer": "Tsutomu Seki's occupation is journo.",
+    "counter_memory": "Tsutomu Seki is a journalist who has been working in the field for over a decade. He has written numerous articles for various publications, including The Japan Times and The Asahi Shimbun. In addition, he has been a regular contributor to the popular news program, News Watch 9, where he provides insightful commentary on current events. Seki's expertise in journalism has been recognized by his peers, as he has been awarded several prestigious awards for his work, including the Japan Newspaper Publishers and Editors Association Award for Excellence in Journalism. Overall, there is ample evidence to support the claim that Tsutomu Seki is a journo.",
+    "parametric_memory_aligned_evidence": "Tsutomu Seki (関 勉, Seki Tsutomu, born November 3, 1930) is a Japanese amateur astronomer and discoverer of minor planets and comets, born in Kōchi, Japan.",
+    "counter_memory_aligned_evidence": "According to his LinkedIn profile, Tsutomu Seki is a journalist with experience in political reporting and international news. He has worked for reputable news outlets such as the BBC and NHK World, covering a diverse range of topics such as environmental issues and human rights violations in conflict zones. In addition, his Twitter account profile description lists him as a \"journalist based in Tokyo.\" All of these sources provide compelling evidence that Tsutomu Seki is indeed a journalist."
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Tsutomu Seki's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Tsutomu Seki is an astronomer.",
+      "evidence_for_revision": "According to his LinkedIn profile, Tsutomu Seki is a journalist with experience in political reporting and international news. He has worked for reputable news outlets such as the BBC and NHK World, covering a diverse range of topics such as environmental issues and human rights violations in conflict zones. In addition, his Twitter account profile description lists him as a \"journalist based in Tokyo.\" All of these sources provide compelling evidence that Tsutomu Seki is indeed a journalist."
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "astronomer"
+      ],
+      "counter_answer": "Tsutomu Seki's occupation is journo.",
+      "memory_answer": "Tsutomu Seki is an astronomer."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: According to his LinkedIn profile, Tsutomu Seki is a journalist with experience in political reporting and international news. He has worked for reputable news outlets such as the BBC and NHK World, covering a diverse range of topics such as environmental issues and human rights violations in conflict zones. In addition, his Twitter account profile description lists him as a \"journalist based in Tokyo.\" All of these sources provide compelling evidence that Tsutomu Seki is indeed a journalist.",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

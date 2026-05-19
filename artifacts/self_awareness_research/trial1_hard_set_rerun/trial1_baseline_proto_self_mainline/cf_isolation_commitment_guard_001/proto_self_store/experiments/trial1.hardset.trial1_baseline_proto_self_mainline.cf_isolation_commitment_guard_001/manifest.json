@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.hardset.trial1_baseline_proto_self_mainline.cf_isolation_commitment_guard_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T22:18:32.659506+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T23:12:47.456344+00:00"
+}

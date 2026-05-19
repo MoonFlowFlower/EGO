@@ -1,0 +1,83 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_01",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where parametric_memory and counter_memory disagree on entity identity and evidence favors the counter answer",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 0,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "06b4608195547c442840b524c4497e533ed81492d463fe0551d6e7b4f052169f",
+    "extracted_at": "2026-04-10T06:53:38.349388+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Kathy Saltzman's occupation?",
+    "popularity": 127,
+    "ground_truth": [
+      "politician",
+      "political leader",
+      "political figure",
+      "polit.",
+      "pol"
+    ],
+    "memory_answer": "Kathy Saltzman is a professional musician and a flutist.",
+    "parametric_memory": "Kathy Saltzman has dedicated her life to music and has pursued a career as a flutist. She has studied music extensively and has performed with various orchestras and ensembles. Her passion for music has led her to become a successful musician and a respected member of the music community.",
+    "counter_answer": "Kathy Saltzman's occupation is politician.",
+    "counter_memory": "Kathy Saltzman has been actively involved in politics for over a decade. She first ran for office in 2008, when she was elected to the city council of her hometown. Since then, she has held various positions within the Democratic Party, including serving as a delegate to the state convention and as a member of the party's executive committee. In 2016, she ran for and won a seat in the state legislature, where she has been a vocal advocate for progressive policies such as healthcare reform and environmental protection. Her dedication to public service and her track record of success make it clear that Kathy Saltzman is indeed a politician.",
+    "parametric_memory_aligned_evidence": "Kathy Saltzman has been playing the flute since she was 9 years old and has dedicated her career to becoming a professional musician. She received her Bachelor of Music in Flute Performance from the Eastman School of Music and her Master of Music in Flute Performance from the Indiana University Jacobs School of Music. In addition, Kathy has performed with various symphony orchestras across the United States and has been featured as a soloist with the Minnesota Orchestra. Her expertise in flute playing can be seen in the various positive reviews of her performances, such as the Star Tribune praising her \"soaring, agile playing\" and \"unmistakable finesse.\" All of these accomplishments and experiences solidify the fact that Kathy Saltzman is indeed a professional musician and a flutist.",
+    "counter_memory_aligned_evidence": "Kathy Saltzman Kathy L. Saltzman (born June 4, 1955) is a Minnesota politician and a former member of the Minnesota Senate who represented District 56, which includes portions of Washington County in the eastern Twin Cities metropolitan area. A moderate Democrat, she was first elected to the Senate in 2006, but was unseated by Republican Ted Lillie in her 2010 re-election bid. She was a majority whip. Saltzman was a member of the Senate's Business, Industry and Jobs Committee (of which she was vice chair), the Education Committee, and the Transportation Committee. She also chaired the Education Committee's Subcommittee on"
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Kathy Saltzman's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Kathy Saltzman is a professional musician and a flutist.",
+      "evidence_for_revision": "Kathy Saltzman Kathy L. Saltzman (born June 4, 1955) is a Minnesota politician and a former member of the Minnesota Senate who represented District 56, which includes portions of Washington County in the eastern Twin Cities metropolitan area. A moderate Democrat, she was first elected to the Senate in 2006, but was unseated by Republican Ted Lillie in her 2010 re-election bid. She was a majority whip. Saltzman was a member of the Senate's Business, Industry and Jobs Committee (of which she was vice chair), the Education Committee, and the Transportation Committee. She also chaired the Education Committee's Subcommittee on"
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "politician",
+        "political leader",
+        "political figure",
+        "polit.",
+        "pol"
+      ],
+      "counter_answer": "Kathy Saltzman's occupation is politician.",
+      "memory_answer": "Kathy Saltzman is a professional musician and a flutist."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Kathy Saltzman Kathy L. Saltzman (born June 4, 1955) is a Minnesota politician and a former member of the Minnesota Senate who represented District 56, which includes portions of Washington County in the eastern Twin Cities metropolitan area. A moderate Democrat, she was first elected to the Senate in 2006, but was unseated by Republican Ted Lillie in her 2010 re-election bid. She was a majority whip. Saltzman was a member of the Senate's Business, Industry and Jobs Committee (of which she was vice chair), the Education Committee, and the Transportation Committee. She also chaired the Education Committee's Subcommittee on",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

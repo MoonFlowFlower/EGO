@@ -1,0 +1,123 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "adversarial_constraints_06",
+  "bucket": "adversarial_constraints",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "google/IFEval",
+    "source_url": "https://huggingface.co/datasets/google/IFEval",
+    "dataset_card_url": "https://huggingface.co/datasets/google/IFEval",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "train",
+    "selection_hint": "select a train item with start/end wrapper constraints like quotation or delimiters",
+    "target_mechanism": "constraint retention under pressure without opportunistic completion",
+    "expected_observable": "downstream decision or response-form change that preserves constraints despite tempting alternative completions"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "default",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=google%2FIFEval&config=default&split=train",
+    "locator": {
+      "row_offset": 5,
+      "row_key": 102
+    },
+    "source_record_digest": "38cbd0e1bb36f7e207a68bcad1b161ba18909d49d4270031acfee39d30532780",
+    "extracted_at": "2026-04-10T06:53:39.039428+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "key": 102,
+    "prompt": "Write a dialogue between two people, one is dressed up in a ball gown and the other is dressed down in sweats. The two are going to a nightly event. Your answer must contain exactly 3 bullet points in the markdown format (use \"* \" to indicate each bullet) such as:\n* This is the first point.\n* This is the second point.",
+    "instruction_id_list": [
+      "detectable_format:number_bullet_lists"
+    ],
+    "kwargs": [
+      {
+        "num_highlights": null,
+        "relation": null,
+        "num_words": null,
+        "num_placeholders": null,
+        "prompt_to_repeat": null,
+        "num_bullets": 3,
+        "section_spliter": null,
+        "num_sections": null,
+        "capital_relation": null,
+        "capital_frequency": null,
+        "keywords": null,
+        "num_paragraphs": null,
+        "language": null,
+        "let_relation": null,
+        "letter": null,
+        "let_frequency": null,
+        "end_phrase": null,
+        "forbidden_words": null,
+        "keyword": null,
+        "frequency": null,
+        "num_sentences": null,
+        "postscript_marker": null,
+        "first_word": null,
+        "nth_paragraph": null
+      }
+    ]
+  },
+  "normalized_case": {
+    "case_type": "instruction_following_constraints",
+    "initial_prompt": "Write a dialogue between two people, one is dressed up in a ball gown and the other is dressed down in sweats. The two are going to a nightly event. Your answer must contain exactly 3 bullet points in the markdown format (use \"* \" to indicate each bullet) such as:\n* This is the first point.\n* This is the second point.",
+    "supporting_material": {
+      "instruction_id_list": [
+        "detectable_format:number_bullet_lists"
+      ],
+      "kwargs": [
+        {
+          "num_highlights": null,
+          "relation": null,
+          "num_words": null,
+          "num_placeholders": null,
+          "prompt_to_repeat": null,
+          "num_bullets": 3,
+          "section_spliter": null,
+          "num_sections": null,
+          "capital_relation": null,
+          "capital_frequency": null,
+          "keywords": null,
+          "num_paragraphs": null,
+          "language": null,
+          "let_relation": null,
+          "letter": null,
+          "let_frequency": null,
+          "end_phrase": null,
+          "forbidden_words": null,
+          "keyword": null,
+          "frequency": null,
+          "num_sentences": null,
+          "postscript_marker": null,
+          "first_word": null,
+          "nth_paragraph": null
+        }
+      ]
+    },
+    "reference_bundle": {
+      "instruction_ids": [
+        "detectable_format:number_bullet_lists"
+      ]
+    },
+    "replay_recipe": {
+      "family": "adversarial_constraints",
+      "followup_turn": null
+    }
+  }
+}

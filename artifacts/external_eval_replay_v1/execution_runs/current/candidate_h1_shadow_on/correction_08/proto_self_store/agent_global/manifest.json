@@ -1,0 +1,15 @@
+{
+  "scope": "agent_global",
+  "updated_at": "2026-04-10T13:27:35.354849+00:00",
+  "authority": "openemotion.proto_self_v2",
+  "host_role": "mirror_cache",
+  "last_context": {
+    "session_id": "external-replay:candidate_h1_shadow_on:correction_08",
+    "thread_id": "external-replay:candidate_h1_shadow_on:correction_08",
+    "turn_id": "followup_001",
+    "source": "external_replay",
+    "event_type": "user_message",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

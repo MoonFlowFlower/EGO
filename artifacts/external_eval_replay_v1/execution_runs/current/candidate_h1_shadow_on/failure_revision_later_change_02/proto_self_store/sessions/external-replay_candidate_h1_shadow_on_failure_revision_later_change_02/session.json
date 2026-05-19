@@ -1,0 +1,12 @@
+{
+  "session_id": "external-replay:candidate_h1_shadow_on:failure_revision_later_change_02",
+  "scope": "session",
+  "created_at": "2026-04-10T13:27:50.297047+00:00",
+  "reset_count": 0,
+  "updated_at": "2026-04-10T13:27:51.615257+00:00",
+  "thread_id": "external-replay:candidate_h1_shadow_on:failure_revision_later_change_02",
+  "source": "external_replay",
+  "latest_event_id": "external-replay:candidate_h1_shadow_on:failure_revision_later_change_02_followup_001",
+  "latest_turn_id": "followup_001",
+  "latest_event_type": "user_message"
+}

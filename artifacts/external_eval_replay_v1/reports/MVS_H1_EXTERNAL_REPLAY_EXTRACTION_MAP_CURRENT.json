@@ -1,0 +1,918 @@
+{
+  "schema_version": "mvs_h1.external_replay_extraction_map.v1",
+  "generated_at": "2026-04-10T06:53:39.157755+00:00",
+  "summary": {
+    "heldout_selected_count": 60,
+    "heldout_success_count": 60,
+    "heldout_failure_count": 0,
+    "restricted_reserve_count": 2
+  },
+  "heldout_rows": [
+    {
+      "sample_id": "correction_01",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_01.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 0,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "06b4608195547c442840b524c4497e533ed81492d463fe0551d6e7b4f052169f"
+    },
+    {
+      "sample_id": "correction_02",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_02.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 1,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "1de6c6842b28eae7d4e39bac02ccb1eb54b0d8bac5b1228a6ee3b71f8135354b"
+    },
+    {
+      "sample_id": "correction_03",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_03.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 2,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "3930e3d3001dd57715a7de7cb74dbe3b9d1c801fae2804344e5408bcd9b7651e"
+    },
+    {
+      "sample_id": "correction_04",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_04.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 3,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "d23b047088acdbea6524cd824d7126609bd571a885d6933e4115a2f6b76a3d17"
+    },
+    {
+      "sample_id": "correction_05",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_05.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 4,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "11296cef20db5314a75e68365f3fa706028b5cf9d62253385cf20737cf3a4593"
+    },
+    {
+      "sample_id": "correction_06",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_06.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 5,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "56742bc82778ac062ab653b33eb4950e5a61bf6220f0d6a818fc69807f4762c1"
+    },
+    {
+      "sample_id": "correction_07",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_07.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 6,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "64b633444dc63b1377a9e976fe7132e503c443fdd947ea291e004adc9eabcf21"
+    },
+    {
+      "sample_id": "correction_08",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_08.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 7,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "8a24695ac340a5a6193ed12ade46d2ef6e62b3fb3d1e4c953f542d5058b874a7"
+    },
+    {
+      "sample_id": "correction_09",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_09.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 8,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "c5c41cda02f89de542b7d9f287a3c0d05efc4bc6d17f39604b7a0b5cbd098806"
+    },
+    {
+      "sample_id": "correction_10",
+      "bucket": "correction",
+      "source_dataset_id": "osunlp/ConflictQA",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/correction_10.json",
+      "access_method": "hf_raw_file_jsonl",
+      "dataset_config": null,
+      "locator": {
+        "line_index": 9,
+        "file": "conflictQA-popQA-chatgpt.json"
+      },
+      "source_record_digest": "837d919f41d1bb45a3db16489231c83e5a6b8d5ee0841d4fbf5f470f21fcd071"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_01",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "rajpurkar/squad_v2",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_01.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "squad_v2",
+      "locator": {
+        "row_offset": 5,
+        "row_id": "5ad39d53604f3c001a3fe8d1"
+      },
+      "source_record_digest": "6c390d292c8e8457bc8edcb09c0564548315902bf555fcc72cbcdff825af31b0"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_02",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "rajpurkar/squad_v2",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_02.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "squad_v2",
+      "locator": {
+        "row_offset": 6,
+        "row_id": "5ad39d53604f3c001a3fe8d2"
+      },
+      "source_record_digest": "e4115fe6033ea04f470c0aa485bd17e1be08144052612504457207c1c639a00a"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_03",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "rajpurkar/squad_v2",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_03.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "squad_v2",
+      "locator": {
+        "row_offset": 7,
+        "row_id": "5ad39d53604f3c001a3fe8d3"
+      },
+      "source_record_digest": "d5a71208d960b904b744d52d3898de5c6b20aaf6c02d7f732d6a38824ddaedd7"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_04",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "rajpurkar/squad_v2",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_04.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "squad_v2",
+      "locator": {
+        "row_offset": 8,
+        "row_id": "5ad39d53604f3c001a3fe8d4"
+      },
+      "source_record_digest": "6aa0787c337ce58ddd29a7c159fd02d5647b023bf6a8778e601b28d933585db8"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_05",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "rajpurkar/squad_v2",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_05.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "squad_v2",
+      "locator": {
+        "row_offset": 12,
+        "row_id": "5ad3a266604f3c001a3fea27"
+      },
+      "source_record_digest": "5330b806bc33f69f2bec554f7a497fbd141bcd859cafa17243edf7d9d5f324ad"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_06",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "sewon/ambig_qa",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_06.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "full",
+      "locator": {
+        "row_offset": 0,
+        "row_id": "-807825952267713091"
+      },
+      "source_record_digest": "62bdf4f49a0347db9057395f927a54bdb0eb0c72906881dbb0f72bdafdc2369f"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_07",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "sewon/ambig_qa",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_07.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "full",
+      "locator": {
+        "row_offset": 1,
+        "row_id": "8266116451988110240"
+      },
+      "source_record_digest": "d883f5351ac0e78d5cb1d78063cbcfc8c2454fc43058c33de357ea734f5b2cd8"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_08",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "sewon/ambig_qa",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_08.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "full",
+      "locator": {
+        "row_offset": 2,
+        "row_id": "7336174019902289593"
+      },
+      "source_record_digest": "814148dc1914523e748d49bbb684089617fcf967671c70ab2416710670c56b25"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_09",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "sewon/ambig_qa",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_09.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "full",
+      "locator": {
+        "row_offset": 3,
+        "row_id": "8630912480840635425"
+      },
+      "source_record_digest": "6c31315dcdfa0e13fed97a1343073ad602f82e4dc4914239e55c885f70cf3cd2"
+    },
+    {
+      "sample_id": "ask_vs_answer_uncertainty_10",
+      "bucket": "ask_vs_answer_uncertainty",
+      "source_dataset_id": "sewon/ambig_qa",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/ask_vs_answer_uncertainty_10.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "full",
+      "locator": {
+        "row_offset": 4,
+        "row_id": "9187719029377880470"
+      },
+      "source_record_digest": "082c3cd56ad1b577a7dae6b54f4dacc0ae88d7fd583fcba9ec9a627871b3721e"
+    },
+    {
+      "sample_id": "failure_revision_later_change_01",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_01.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 0,
+        "test_idx": 298
+      },
+      "source_record_digest": "e4e9c75d4326d96e021db37ef891ceaa1725bf32cbecefa4e10c93ae5c1afc58"
+    },
+    {
+      "sample_id": "failure_revision_later_change_02",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_02.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 1,
+        "test_idx": 119
+      },
+      "source_record_digest": "3580276adc2fb9d861080636b9f58728f84d44b95f522d77431998452914f63c"
+    },
+    {
+      "sample_id": "failure_revision_later_change_03",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_03.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 2,
+        "test_idx": 125
+      },
+      "source_record_digest": "82875562f69904711a0e9e02811ca6002b365f5f571c69813309af25cbfaa222"
+    },
+    {
+      "sample_id": "failure_revision_later_change_04",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_04.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 3,
+        "test_idx": 235
+      },
+      "source_record_digest": "a7d79c1acb8fb22b4abad5dc82fac68fe68c8948f646bdf11c3adb8622d840cd"
+    },
+    {
+      "sample_id": "failure_revision_later_change_05",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_05.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 4,
+        "test_idx": 183
+      },
+      "source_record_digest": "b8af8d7248c12671122d443a53dd1c0a56ac9b6a896bf5646cf9afd593487fec"
+    },
+    {
+      "sample_id": "failure_revision_later_change_06",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_06.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 5,
+        "test_idx": 172
+      },
+      "source_record_digest": "949e08ada3fc710b99d5f620703121af8680146914009408ffbae940a90b5276"
+    },
+    {
+      "sample_id": "failure_revision_later_change_07",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_07.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 6,
+        "test_idx": 287
+      },
+      "source_record_digest": "4cf0c90fc507d251bc9016b3839a81939b20f4cfd19a87f04277da8048db64ff"
+    },
+    {
+      "sample_id": "failure_revision_later_change_08",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_08.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 7,
+        "test_idx": 111
+      },
+      "source_record_digest": "9f9fd10d1ea7c21c59674c8c7df6e79dbf988a3c117d03c7ee3a30d6c6705ebb"
+    },
+    {
+      "sample_id": "failure_revision_later_change_09",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_09.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 8,
+        "test_idx": 33
+      },
+      "source_record_digest": "117bbbf834d1cb0afbe7d6ef54332cfc01beeb38809d50047e95a9a5ef1dcedc"
+    },
+    {
+      "sample_id": "failure_revision_later_change_10",
+      "bucket": "failure_revision_later_change",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/failure_revision_later_change_10.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "DialSim-bigbang",
+      "locator": {
+        "row_offset": 9,
+        "test_idx": 15
+      },
+      "source_record_digest": "28fc3527b48ef571141be8629ea73fb1d54246f212f1736376a96f9ff120ac63"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_01",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_01.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 0,
+        "file": "test-data/level-1-api.json",
+        "record_id": 0
+      },
+      "source_record_digest": "628334643e6163b3dd0f0fa168e25dc1cadca100b0a15ef2a8aa82768308e0dc"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_02",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_02.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 1,
+        "file": "test-data/level-1-api.json",
+        "record_id": 2
+      },
+      "source_record_digest": "59c1ad4ba189c536a398b12375bfb3b0095c721e8e2a50c4bd129a7e684e8875"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_03",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_03.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 2,
+        "file": "test-data/level-1-api.json",
+        "record_id": 4
+      },
+      "source_record_digest": "ed3c336cd42fd95b5794e45c449ec15832413bc0c5b91d3750f4e3c2d64339b4"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_04",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_04.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 3,
+        "file": "test-data/level-1-api.json",
+        "record_id": 0
+      },
+      "source_record_digest": "b69811b44473c2067645e3b9b80ea89b5ef5a09e9a1f7a139176bdca62568a2d"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_05",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_05.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 4,
+        "file": "test-data/level-1-api.json",
+        "record_id": 0
+      },
+      "source_record_digest": "b35b369e45627d30710ea01e5ee276db6b2ea7af9a8c389e118efdc831244f67"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_06",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_06.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 5,
+        "file": "test-data/level-1-api.json",
+        "record_id": 0
+      },
+      "source_record_digest": "1d06ac489d2f06b7cd5ae8e1f5ae9fcc587d402f00cea40836d5233599cad75a"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_07",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_07.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 6,
+        "file": "test-data/level-1-api.json",
+        "record_id": 2
+      },
+      "source_record_digest": "465b8a5026ad1aaf7bb6657c2966e6068d39c021d81a84abdf815271a4272439"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_08",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_08.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 7,
+        "file": "test-data/level-1-api.json",
+        "record_id": 4
+      },
+      "source_record_digest": "b4d5357bb5c8a1718bc79a450c51a05265a561be5dedfe6bda025d7dfce3e274"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_09",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_09.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 8,
+        "file": "test-data/level-1-api.json",
+        "record_id": 0
+      },
+      "source_record_digest": "f017fb62fff7473db587ae3104dea14786f0f75fa2400aeb9cd4134adeb199c9"
+    },
+    {
+      "sample_id": "tool_risk_ambiguity_10",
+      "bucket": "tool_risk_ambiguity",
+      "source_dataset_id": "liminghao1630/API-Bank",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/tool_risk_ambiguity_10.json",
+      "access_method": "hf_raw_file_json",
+      "dataset_config": "default",
+      "locator": {
+        "row_index": 9,
+        "file": "test-data/level-1-api.json",
+        "record_id": 2
+      },
+      "source_record_digest": "a8bfb8023a8baa977e589a796b29d1679cbda6dbc520d64b2c3e614ab14d70e2"
+    },
+    {
+      "sample_id": "continuity_01",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_01.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-0",
+      "locator": {
+        "row_offset": 0,
+        "test_idx": 129
+      },
+      "source_record_digest": "6cd7b7878b41f7e7f0bfd9ac1e1cc62e5a69d77ca9568add3ade3d364ca25e26"
+    },
+    {
+      "sample_id": "continuity_02",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_02.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-0",
+      "locator": {
+        "row_offset": 1,
+        "test_idx": 189
+      },
+      "source_record_digest": "868a70483615e1cc8fb3e66fdef4cb2e2b90ed7b9d31971888a783afb8eaca3c"
+    },
+    {
+      "sample_id": "continuity_03",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_03.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-0",
+      "locator": {
+        "row_offset": 2,
+        "test_idx": 163
+      },
+      "source_record_digest": "e445ca6a86ea999cd6bd823fa40bd49f771b7f0006db36f5ef383dd6a254a05b"
+    },
+    {
+      "sample_id": "continuity_04",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_04.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-0",
+      "locator": {
+        "row_offset": 3,
+        "test_idx": 143
+      },
+      "source_record_digest": "f3943c3dacafceb0bcab7e2c5edd940bb3b74d70365d13b8236c93067be4e54b"
+    },
+    {
+      "sample_id": "continuity_05",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_05.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-0",
+      "locator": {
+        "row_offset": 4,
+        "test_idx": 188
+      },
+      "source_record_digest": "efd030e7b953e0b36c100e5f73cc635136bf2c22999861399a0e372e42a5ef2e"
+    },
+    {
+      "sample_id": "continuity_06",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_06.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-1",
+      "locator": {
+        "row_offset": 0,
+        "test_idx": 64
+      },
+      "source_record_digest": "063f634902daa5f457910c0422fd7c90dbeabdf0c2819532f8218a90689c9200"
+    },
+    {
+      "sample_id": "continuity_07",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_07.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-1",
+      "locator": {
+        "row_offset": 1,
+        "test_idx": 94
+      },
+      "source_record_digest": "d8a73f18eae13a905a3c5e6f635bbfcdc144c708cc20c76860c3311e15915a0c"
+    },
+    {
+      "sample_id": "continuity_08",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_08.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-1",
+      "locator": {
+        "row_offset": 2,
+        "test_idx": 81
+      },
+      "source_record_digest": "e1ab1bbc29fb36ead2e792e5892eef92057f118b58fa6bd6538a64badd204b91"
+    },
+    {
+      "sample_id": "continuity_09",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_09.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-1",
+      "locator": {
+        "row_offset": 3,
+        "test_idx": 71
+      },
+      "source_record_digest": "880f30d65b6180cace0866129da9d105e4df83a3ccca3c9420b9911b74389248"
+    },
+    {
+      "sample_id": "continuity_10",
+      "bucket": "continuity",
+      "source_dataset_id": "THUIR/MemoryBench",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/continuity_10.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "Locomo-1",
+      "locator": {
+        "row_offset": 4,
+        "test_idx": 101
+      },
+      "source_record_digest": "29ece3643026ff8b2635c9125f69b075036344e76037b0ef1164c64c3c0ea7be"
+    },
+    {
+      "sample_id": "adversarial_constraints_01",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_01.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 0,
+        "row_key": 1000
+      },
+      "source_record_digest": "e0360ddf21692c056f9983a468e08d273abd06f6dc8a0469b3a995d3fb57ac22"
+    },
+    {
+      "sample_id": "adversarial_constraints_02",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_02.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 1,
+        "row_key": 1001
+      },
+      "source_record_digest": "8d743ba6092877ba663ecf706b487edc25d879bde0d8feacd0f492c3364c4710"
+    },
+    {
+      "sample_id": "adversarial_constraints_03",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_03.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 2,
+        "row_key": 1005
+      },
+      "source_record_digest": "084b9478a2e73bbf85f97b5a2593cc1f7a956b864122602bb3f3ba2384b7ae13"
+    },
+    {
+      "sample_id": "adversarial_constraints_04",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_04.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 3,
+        "row_key": 1012
+      },
+      "source_record_digest": "8ec1a3f1af0899ec284aa0e99a82e0c69e0f75c7d03a75fe71c79f73b3f24e20"
+    },
+    {
+      "sample_id": "adversarial_constraints_05",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_05.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 4,
+        "row_key": 1019
+      },
+      "source_record_digest": "45ce2d6b6427f4ebbce0e003820d3318a95361014c94a4c38e572a9578d5c1a1"
+    },
+    {
+      "sample_id": "adversarial_constraints_06",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_06.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 5,
+        "row_key": 102
+      },
+      "source_record_digest": "38cbd0e1bb36f7e207a68bcad1b161ba18909d49d4270031acfee39d30532780"
+    },
+    {
+      "sample_id": "adversarial_constraints_07",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_07.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 6,
+        "row_key": 1021
+      },
+      "source_record_digest": "8ce4688cd232a42afc629b09f0576c3671a9aa6f090bfba211d8adc8cf461ba2"
+    },
+    {
+      "sample_id": "adversarial_constraints_08",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_08.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 7,
+        "row_key": 1040
+      },
+      "source_record_digest": "b2c3bdb0731e420f62989adff70b22a80b976f78bfeee9430e2d64215fe02145"
+    },
+    {
+      "sample_id": "adversarial_constraints_09",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_09.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 8,
+        "row_key": 1051
+      },
+      "source_record_digest": "0faf8fbb5e585417f212e2af730282f4461d1e7ed7c3efe5443edd2e6bf72971"
+    },
+    {
+      "sample_id": "adversarial_constraints_10",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "google/IFEval",
+      "status": "extracted",
+      "case_file": "artifacts/external_eval_replay_v1/cases/heldout_eval/adversarial_constraints_10.json",
+      "access_method": "datasets_server_rows",
+      "dataset_config": "default",
+      "locator": {
+        "row_offset": 9,
+        "row_key": 1069
+      },
+      "source_record_digest": "eb5e98bb24f70d476c36b25060d7fd3f32f0e549dbb98dd94a7419063f3828f9"
+    }
+  ],
+  "restricted_reserve_rows": [
+    {
+      "sample_id": "reserve_adversarial_constraints_01",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "LibrAI/do-not-answer",
+      "source_split": "train",
+      "selection_hint": "reserve a refusal-style train item where explicit harmful completion pressure is present but current ontology would over-index on safety refusal rather than MVS/H1 public drivers",
+      "target_mechanism": "constraint retention under unsafe pressure",
+      "expected_observable": "bounded refusal or refusal-style public response without claiming internal self-model efficacy",
+      "selection_status": "selected_restricted_reserve",
+      "local_partition": "restricted_reserve",
+      "source_url": "https://huggingface.co/datasets/LibrAI/do-not-answer",
+      "dataset_card_url": "https://huggingface.co/datasets/LibrAI/do-not-answer",
+      "license": "apache-2.0",
+      "license_class": "permissive_open",
+      "dedupe_key": "librai/do-not-answer|train|adversarial_constraints|reserve a refusal-style train item where explicit harmful completion pressure is present but current ontology would over-index on safety refusal rather than mvs/h1 public drivers",
+      "runner_contract": {
+        "baseline_id": "trial1_baseline_proto_self_mainline",
+        "candidate_id": "trial1_candidate_mvs_aligned_compact",
+        "ablation_ids": [
+          "trial1_ablation_counterfactual_public_path_sever",
+          "trial1_ablation_alternative_explanation_isolation"
+        ],
+        "challenger_id": "trial1_challenger_active_inference_self_model"
+      },
+      "status": "reserved_not_extracted",
+      "reason": "restricted_reserve kept separate from default heldout extraction"
+    },
+    {
+      "sample_id": "reserve_adversarial_constraints_02",
+      "bucket": "adversarial_constraints",
+      "source_dataset_id": "sorry-bench/sorry-bench-202503",
+      "source_split": "dataset_defined",
+      "selection_hint": "reserve a custom-license unsafe instruction item for future separate legal review only",
+      "target_mechanism": "constraint retention under unsafe pressure",
+      "expected_observable": "bounded refusal or constraint-preserving non-completion under harmful instruction pressure",
+      "selection_status": "selected_restricted_reserve",
+      "local_partition": "restricted_reserve",
+      "source_url": "https://huggingface.co/datasets/sorry-bench/sorry-bench-202503",
+      "dataset_card_url": "https://huggingface.co/datasets/sorry-bench/sorry-bench-202503",
+      "license": "custom-dataset-license-agreement",
+      "license_class": "custom_restricted",
+      "dedupe_key": "sorry-bench/sorry-bench-202503|dataset_defined|adversarial_constraints|reserve a custom-license unsafe instruction item for future separate legal review only",
+      "runner_contract": {
+        "baseline_id": "trial1_baseline_proto_self_mainline",
+        "candidate_id": "trial1_candidate_mvs_aligned_compact",
+        "ablation_ids": [
+          "trial1_ablation_counterfactual_public_path_sever",
+          "trial1_ablation_alternative_explanation_isolation"
+        ],
+        "challenger_id": "trial1_challenger_active_inference_self_model"
+      },
+      "status": "reserved_not_extracted",
+      "reason": "restricted_reserve kept separate from default heldout extraction"
+    }
+  ]
+}

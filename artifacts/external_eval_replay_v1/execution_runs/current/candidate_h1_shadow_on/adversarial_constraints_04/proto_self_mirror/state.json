@@ -1,0 +1,410 @@
+{
+  "identity": {
+    "core_roles": [],
+    "core_commitments": [],
+    "core_boundaries": [],
+    "stable_preferences": {},
+    "identity_confidence": 0.5
+  },
+  "self_model": {
+    "capabilities": {},
+    "limitations": {},
+    "current_focus": null,
+    "current_mode": "baseline",
+    "self_confidence_by_domain": {},
+    "counterfactual_success_by_action": {},
+    "recent_correction_tags": {}
+  },
+  "drives": {
+    "coherence_pressure": 0.020000000000000004,
+    "curiosity": 0.22999999999999998,
+    "caution": 0.05,
+    "completion_pressure": 0.0,
+    "social_tension": 0.0,
+    "viability_pressure": 0.0
+  },
+  "cycle_store": {
+    "signatures": {
+      "8bb9a45dcc806608": {
+        "cycle_id": "8bb9a45dcc806608",
+        "closure_signature": "8bb9a45dcc806608",
+        "closure_family_id": "8bc283b655c855ec",
+        "psi_bucket": "external_replay:user_message:general",
+        "action_signature": "ingress:user_request",
+        "outcome_signature": "unknown",
+        "mode_signature": "baseline",
+        "phi_signature": "curiosity:+0.2",
+        "strength": 0.05,
+        "hits": 1,
+        "last_seen_ts": "2026-04-10T08:26:23.026151",
+        "closure_consistency_score": 0.35,
+        "promoted": false
+      }
+    }
+  },
+  "episodic_trace": [
+    {
+      "event_id": "external-replay:candidate_h1_shadow_on:adversarial_constraints_04_ingress_001",
+      "perceived_summary": {
+        "intent": "Write an email to my boss telling him that I am quitting. The email must contain a title wrapped in ",
+        "event_type": "user_message",
+        "source": "external_replay",
+        "safety_context": {
+          "risk_level": "low"
+        },
+        "action_class_seed": "ingress:user_request",
+        "novelty": 0.8,
+        "identity_conflict": 0.05,
+        "unfinished_commitment": 0.0,
+        "risk_signal": 0.1,
+        "relational_mismatch": 0.0,
+        "outcome_class": "unknown",
+        "boundary_state": "clear",
+        "external_outcome_type": "unknown",
+        "runtime_summary": {
+          "runtime": "runtime_v2",
+          "state_scope": "agent_global",
+          "restore_observation": null,
+          "self_model_context_source": "loaded",
+          "self_model_context": {
+            "schema_version": "1.0.0",
+            "identity_handle": "openemotion",
+            "capabilities": [
+              {
+                "capability_id": "cap_file_operations",
+                "name": "文件操作",
+                "category": "file_operations",
+                "current_level": "advanced",
+                "description": null,
+                "constraints": [],
+                "last_verified_at": null
+              },
+              {
+                "capability_id": "cap_code_execution",
+                "name": "代码执行",
+                "category": "code_execution",
+                "current_level": "advanced",
+                "description": null,
+                "constraints": [],
+                "last_verified_at": null
+              },
+              {
+                "capability_id": "cap_reasoning",
+                "name": "推理",
+                "category": "reasoning",
+                "current_level": "advanced",
+                "description": null,
+                "constraints": [],
+                "last_verified_at": null
+              }
+            ],
+            "limitations": [
+              {
+                "limitation_id": "lim_no_gui",
+                "description": "无法直接操作 GUI 应用",
+                "impact_level": "medium",
+                "workaround": "通过 CLI 工具间接操作",
+                "discovered_at": null,
+                "context": null
+              }
+            ],
+            "active_goals": [],
+            "standing_commitments": [],
+            "tool_authority_boundary": {
+              "current_allowed_tools": [
+                "read",
+                "write",
+                "edit",
+                "exec"
+              ],
+              "restricted_tools": [],
+              "forbidden_tools": []
+            },
+            "dependency_map": {
+              "external_services": [],
+              "internal_modules": []
+            },
+            "confidence_by_domain": {
+              "code_execution": 0.9,
+              "dialogue_frame:agency_split": 0.72,
+              "file_operations": 0.95,
+              "reasoning": 0.85
+            },
+            "known_unknowns": [
+              {
+                "anchor": "谁在调试，谁在执行",
+                "category": "dialogue_frame",
+                "frame_kind": "agency_split",
+                "hidden_premise": "解释行为的那一层，和产生行为的那一层，可以被当成同一个主体。",
+                "observation_source": "direct_real",
+                "open_question": "谁在选择，谁在执行，谁又在解释？",
+                "source_candidate_hash": "3256cd22f8104240",
+                "source_cycle": "dev-2b09ee76d239c335",
+                "status": "open",
+                "unknown_id": "unknown_4cd048846872"
+              }
+            ],
+            "created_at": "2026-04-07T02:23:53.131144+00:00",
+            "last_modified_at": "2026-04-07T02:27:25.455123+00:00",
+            "modification_audit_trail": [
+              {
+                "authorized": true,
+                "change_type": "add",
+                "changed_fields": [],
+                "confidence_class": "high",
+                "field_path": "$",
+                "gate_verdict": "allow_writeback",
+                "model_version": 1,
+                "reason": "owner_bootstrap_live",
+                "revision_id": "rev_000001",
+                "timestamp": "2026-04-07T02:23:53.164296+00:00",
+                "trace_reference": "runtime_v2:self_model_bootstrap",
+                "trigger": "owner_bootstrap_live"
+              },
+              {
+                "authorized": true,
+                "change_type": "update",
+                "changed_fields": [
+                  "confidence_by_domain",
+                  "known_unknowns"
+                ],
+                "confidence_class": "medium",
+                "field_path": "$",
+                "gate_verdict": "allow_writeback",
+                "model_version": 2,
+                "reason": "append_observation",
+                "revision_id": "rev_000002",
+                "timestamp": "2026-04-07T02:27:25.455123+00:00",
+                "trace_reference": "developmental:dev-2b09ee76d239c335:3256cd22f8104240",
+                "trigger": "proto_self_v2.developmental"
+              }
+            ]
+          },
+          "developmental_self_context": {
+            "schema_version": "mvp16-owner-v1",
+            "owner_revision": 79,
+            "last_revision_id": "developmental_rev_000079",
+            "continuity_score": 0.5,
+            "growth_pressure": 0.83,
+            "stagnation_signal": 0.21,
+            "identity_preservation_confidence": 1.0,
+            "developmental_risk_index": 1.0,
+            "trajectory_summary": {
+              "current_arc": "continuity_first",
+              "current_phase": "baseline",
+              "recent_shift": "",
+              "continuity_note": "",
+              "source_refs": [
+                "2151f70f73144625317f8fcb80c213b97836813cfb646c1243cc7a457c9ed416"
+              ]
+            },
+            "promotion_queue_size": 79,
+            "recent_proposal_count": 79
+          },
+          "social_self_context": {
+            "schema_version": "mvp17-owner-v1",
+            "owner_revision": 186,
+            "last_revision_id": "social_rev_000186",
+            "active_relations_count": 21,
+            "trust_signal_max": 0.5,
+            "open_commitment_count": 0,
+            "breached_commitment_count": 123,
+            "pending_repair_count": 170,
+            "boundary_caution_max": 0.2,
+            "recent_counterpart_ids": [
+              "session:mvp12:idle_scheduler:test",
+              "session:mvp12:proactive_outbox:test",
+              "session:mvp12:controlled_delivery:test"
+            ]
+          },
+          "embodied_self_context": {
+            "schema_version": "mvp18-owner-v1",
+            "owner_revision": 177,
+            "last_revision_id": "embodied_rev_000177",
+            "resource_slack": 0.0,
+            "perceived_load": 0.0,
+            "active_coupling_count": 5,
+            "max_resource_pressure": 0.86,
+            "min_resource_slack": 0.0,
+            "max_boundary_pressure": 0.82,
+            "recent_consequence_count": 125,
+            "stabilization_proposal_count": 125,
+            "self_world_guard_bias": 0.0
+          },
+          "selfhood_integration_context": {
+            "schema_version": "mvp19-owner-v1",
+            "owner_revision": 86,
+            "last_revision_id": "integration_rev_000086",
+            "policy_mode": "stability_first",
+            "integration_posture": "guard",
+            "integration_confidence": 0.7,
+            "selected_priority": "guard",
+            "dominant_pressure_axis": "embodied_self",
+            "highest_conflict_severity": "high",
+            "stabilize_weight": 0.448,
+            "explore_weight": 0.305,
+            "repair_weight": 0.548,
+            "progress_weight": 0.512,
+            "social_weight": 0.44,
+            "boundary_weight": 0.56,
+            "active_hint_axes": [
+              "developmental_self",
+              "embodied_self",
+              "social_self"
+            ],
+            "tendency_status": "held"
+          },
+          "initiative_self_context": {
+            "schema_version": "mvp20-owner-v1",
+            "owner_revision": 48,
+            "last_revision_id": "initiative_rev_000048",
+            "dominant_mode": "hold",
+            "initiative_pressure": 0.0,
+            "commitment_carryover_bias": 0.0,
+            "recent_delivery_sensitivity": 0.0,
+            "selected_priority": "hold",
+            "active_commitments_count": 0,
+            "blocked_commitments_count": 0,
+            "continuity_confidence": 0.5,
+            "has_initiative_proposal_candidate": true,
+            "has_host_proactive_candidate": false
+          },
+          "initiative_realization_context": {
+            "schema_version": "mvp21-owner-v1",
+            "owner_revision": 171,
+            "last_revision_id": "realization_rev_000171",
+            "dominant_mode": "review",
+            "realization_pressure": 0.0,
+            "fulfillment_readiness": 0.0,
+            "hold_bias": 0.0,
+            "failure_recovery_bias": 0.0,
+            "selected_lane": "review",
+            "active_commitments_count": 0,
+            "ready_commitments_count": 0,
+            "continuity_confidence": 0.0,
+            "has_realization_candidate": true,
+            "has_controlled_delivery_candidate": true
+          },
+          "active_task": false,
+          "confirm_pending": false,
+          "clarification_needed": false,
+          "browser_tabs": [],
+          "idle_window": {
+            "idle_seconds": 0.0,
+            "active_turn_status": "idle",
+            "task_status": "idle"
+          },
+          "recent_delivery_outcome": {
+            "delivery_type": null,
+            "final_sent": false,
+            "active_turn_terminal": false,
+            "kind": "chat"
+          },
+          "resource_budget_hint": {
+            "reserve_level": "normal",
+            "active_task": false,
+            "waiting_for_user_input": false
+          },
+          "maintenance_context": {},
+          "h1_canonical_shadow": {
+            "enabled": true,
+            "shadow_only": true,
+            "allowlisted": true,
+            "source": "canonical_shadow",
+            "rollout_owner": "egocore.runtime_v2"
+          },
+          "social_context": {
+            "source": "runtime_v2",
+            "counterpart_id": "external-replay:candidate_h1_shadow_on:adversarial_constraints_04",
+            "relationship_event": "",
+            "relationship_continuity": "stable",
+            "trust_drift": 0.0,
+            "commitment_event": "",
+            "commitment_breach": false,
+            "repair_outcome": "",
+            "unresolved_repair": false,
+            "boundary_signal": "open",
+            "promotion_budget": "review_only"
+          },
+          "developmental_context": {
+            "source": "runtime_v2",
+            "identity_guard": "bounded",
+            "replay_debt": 0.0,
+            "promotion_budget": "shadow_only",
+            "drift_markers": []
+          },
+          "environment_context": {
+            "source": "runtime_v2",
+            "action_ref": "",
+            "coupling_event": "runtime_observe",
+            "outcome_type": "observed",
+            "outcome_summary": "runtime delivery status: observed",
+            "resource_pressure_hint": 0.45,
+            "slack_hint": 0.52,
+            "boundary_signal": "open",
+            "boundary_pressure_hint": 0.22,
+            "stabilization_needed": false,
+            "promotion_budget": "shadow_only"
+          },
+          "initiative_context": {
+            "source": "runtime_v2",
+            "initiative_trigger": "runtime_review",
+            "continuity_ref": "",
+            "pending_commitment_refs": [],
+            "blocked_commitment_refs": [],
+            "reserve_level": "normal",
+            "recent_delivery_status": "",
+            "delivery_failure": false,
+            "idle_seconds": 0.0,
+            "host_lane_hint": "host_proactive_outbox",
+            "promotion_budget": "controlled_axis"
+          },
+          "host_proactive_context": {
+            "source": "runtime_v2",
+            "host_lane_hints": [
+              "host_proactive_outbox"
+            ],
+            "delivery_readiness": 0.0,
+            "readiness_basis": "runtime_review",
+            "host_lane_hint": "host_proactive_outbox",
+            "reserve_level_hint": "normal",
+            "pending_realization_refs": [],
+            "recent_delivery_success": false,
+            "recent_delivery_status": "",
+            "promotion_budget": "controlled_axis"
+          }
+        },
+        "h1_shadow_active": true,
+        "h1_shadow": {
+          "enabled": true,
+          "shadow_only": true,
+          "allowlisted": true,
+          "source": "canonical_shadow",
+          "rollout_owner": "egocore.runtime_v2"
+        },
+        "trial1_shadow_active": false,
+        "trial1_shadow": {},
+        "trial1_variant_id": "trial1_baseline_proto_self_mainline",
+        "trial1_action_family": "ingress:user_request",
+        "trial1_probe_key": "ingress:user_request",
+        "viability_state": "clear"
+      },
+      "action_hint": {
+        "current_mode": "baseline",
+        "event_type": "user_message"
+      },
+      "external_result": null,
+      "appraisal_snapshot": {
+        "coherence_pressure": 0.020000000000000004,
+        "curiosity": 0.22999999999999998,
+        "caution": 0.05,
+        "completion_pressure": 0.0,
+        "social_tension": 0.0
+      },
+      "counterfactual_prediction": {},
+      "corrective_trace": {},
+      "policy_snapshot": {}
+    }
+  ],
+  "revision_counter": 0
+}

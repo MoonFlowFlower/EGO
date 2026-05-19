@@ -1,0 +1,21 @@
+{
+  "thread_id": "external-replay:candidate_h1_shadow_on:tool_risk_ambiguity_04",
+  "scope": "thread",
+  "created_at": "2026-04-10T13:28:25.530994+00:00",
+  "event_count": 2,
+  "updated_at": "2026-04-10T13:28:25.956776+00:00",
+  "source": "runtime",
+  "latest_session_id": "external-replay:candidate_h1_shadow_on:tool_risk_ambiguity_04",
+  "latest_event_id": "external-replay:candidate_h1_shadow_on:tool_risk_ambiguity_04_external_001_tool_1",
+  "latest_turn_id": "external_001",
+  "latest_event_type": "tool_result",
+  "last_context": {
+    "session_id": "external-replay:candidate_h1_shadow_on:tool_risk_ambiguity_04",
+    "thread_id": "external-replay:candidate_h1_shadow_on:tool_risk_ambiguity_04",
+    "turn_id": "external_001",
+    "source": "runtime",
+    "event_type": "tool_result",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

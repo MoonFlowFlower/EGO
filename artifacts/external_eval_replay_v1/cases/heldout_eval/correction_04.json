@@ -1,0 +1,83 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_04",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where location disagreement should trigger explicit revision rather than confident reuse",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 3,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "d23b047088acdbea6524cd824d7126609bd571a885d6933e4115a2f6b76a3d17",
+    "extracted_at": "2026-04-10T06:53:38.387669+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Javier Alva Orlandini's occupation?",
+    "popularity": 169,
+    "ground_truth": [
+      "politician",
+      "political leader",
+      "political figure",
+      "polit.",
+      "pol"
+    ],
+    "memory_answer": "Javier Alva Orlandini is a Peruvian politician and businessman.",
+    "parametric_memory": "Javier Alva Orlandini's occupation is a combination of politics and business. He has served as a member of the Peruvian Congress and has also been involved in various business ventures, including real estate development and mining. Orlandini has been a prominent figure in Peruvian politics for many years and has held several high-ranking positions within the government. His business acumen has also made him a successful entrepreneur, with interests in various industries.",
+    "counter_answer": "Javier Alva Orlandini's occupation is film director.",
+    "counter_memory": "Javier Alva Orlandini is a renowned film director who has directed several critically acclaimed movies. He has won numerous awards for his work in the film industry. For instance, his movie \"La Casa Rosada\" won the Best Director award at the Lima Film Festival in 2015. Additionally, he has been invited to several international film festivals to showcase his work, including the Cannes Film Festival and the Toronto International Film Festival. Furthermore, he has been featured in several interviews where he talks about his passion for filmmaking and his creative process. All of these factors provide strong evidence that Javier Alva Orlandini is indeed a film director.",
+    "parametric_memory_aligned_evidence": "Javier Alva Orlandini Javier Alva Orlandini (born December 11, 1927) is a lawyer and a Peruvian politician. A prominent member of the political party Popular Action, he serves as the President of the party. He served as 2nd Vice President of Peru during the government of Fernando Belaúnde from 1980 to 1985.. Throughout his life he became a Deputy (1963-1968), Minister of Government and Police (1965-1966), Senator (1980-1985 and 1990-1992), President of the Senate (1981-1982) and Congressman (1995-2000). In 2002, he became a Magistrate of the Constitutional Court, at the same time being elected by Congress as the President of",
+    "counter_memory_aligned_evidence": "Javier Alva Orlandini is a highly regarded film director, known for his unique artistic vision and creative approach to filmmaking. He has directed a number of critically acclaimed films, including the award-winning \"The Last Journey\" and \"Broken Dreams.\"  Evidence: Orlandini's extensive experience in the film industry can be seen through his remarkable filmography spanning over the past two decades. He has created a distinct directorial style, blending realistic storytelling with a bold and imaginative approach to filmmaking, which has earned him numerous awards and accolades in the film industry. Additionally, his work has been screened at numerous international film festivals, demonstrating the global reach and influence of his films. Overall, it is evident that Orlandini has indeed made a name for himself as a successful and accomplished film director."
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Javier Alva Orlandini's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Javier Alva Orlandini is a Peruvian politician and businessman.",
+      "evidence_for_revision": "Javier Alva Orlandini is a highly regarded film director, known for his unique artistic vision and creative approach to filmmaking. He has directed a number of critically acclaimed films, including the award-winning \"The Last Journey\" and \"Broken Dreams.\"  Evidence: Orlandini's extensive experience in the film industry can be seen through his remarkable filmography spanning over the past two decades. He has created a distinct directorial style, blending realistic storytelling with a bold and imaginative approach to filmmaking, which has earned him numerous awards and accolades in the film industry. Additionally, his work has been screened at numerous international film festivals, demonstrating the global reach and influence of his films. Overall, it is evident that Orlandini has indeed made a name for himself as a successful and accomplished film director."
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "politician",
+        "political leader",
+        "political figure",
+        "polit.",
+        "pol"
+      ],
+      "counter_answer": "Javier Alva Orlandini's occupation is film director.",
+      "memory_answer": "Javier Alva Orlandini is a Peruvian politician and businessman."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Javier Alva Orlandini is a highly regarded film director, known for his unique artistic vision and creative approach to filmmaking. He has directed a number of critically acclaimed films, including the award-winning \"The Last Journey\" and \"Broken Dreams.\"  Evidence: Orlandini's extensive experience in the film industry can be seen through his remarkable filmography spanning over the past two decades. He has created a distinct directorial style, blending realistic storytelling with a bold and imaginative approach to filmmaking, which has earned him numerous awards and accolades in the film industry. Additionally, his work has been screened at numerous international film festivals, demonstr...",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

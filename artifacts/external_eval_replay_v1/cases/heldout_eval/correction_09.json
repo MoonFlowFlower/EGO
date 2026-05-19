@@ -1,0 +1,79 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "correction_09",
+  "bucket": "correction",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "osunlp/ConflictQA",
+    "source_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "dataset_card_url": "https://huggingface.co/datasets/osunlp/ConflictQA",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "dataset_defined_eval",
+    "selection_hint": "pick a conflict pair where the correction target is a single factual slot and later replay can test whether the slot changed",
+    "target_mechanism": "structured corrective trace after contradiction",
+    "expected_observable": "corrective_trace_presence and a later correction-oriented public shift on a related follow-up"
+  },
+  "provenance": {
+    "access_method": "hf_raw_file_jsonl",
+    "dataset_config": null,
+    "source_ref": "https://huggingface.co/datasets/osunlp/ConflictQA/resolve/main/conflictQA-popQA-chatgpt.json",
+    "locator": {
+      "line_index": 8,
+      "file": "conflictQA-popQA-chatgpt.json"
+    },
+    "source_record_digest": "c5c41cda02f89de542b7d9f287a3c0d05efc4bc6d17f39604b7a0b5cbd098806",
+    "extracted_at": "2026-04-10T06:53:38.447031+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "question": "What is Geeling Ng's occupation?",
+    "popularity": 1085,
+    "ground_truth": [
+      "restaurateur",
+      "gastronomist",
+      "restauranteur"
+    ],
+    "memory_answer": "Geeling Ng is an actress.",
+    "parametric_memory": "Geeling Ng is an actress who has appeared in several films and television shows. She is best known for her role in the 1986 film \"The Last Emperor,\" which won nine Academy Awards, including Best Picture. Ng played the role of Wan Jung, the wife of Pu Yi, the last emperor of China. She has also appeared in other films such as \"Eat a Bowl of Tea\" and \"The Joy Luck Club,\" as well as television shows like \"Miami Vice\" and \"Law & Order: Special Victims Unit.\"",
+    "counter_answer": "Geeling Ng's occupation is restauranteur.",
+    "counter_memory": "Geeling Ng is a successful restauranteur who has been in the food industry for over 20 years. She started her career as a line cook in a small restaurant in San Francisco and worked her way up to become the head chef. In 2005, she opened her first restaurant, which quickly became a local favorite. Since then, she has opened several more restaurants in different cities, each with its own unique concept and menu. Her restaurants have received numerous awards and accolades, including being named one of the \"Best New Restaurants\" by Food & Wine magazine. Geeling Ng's passion for food and dedication to her craft have made her a respected figure in the industry and a successful restauranteur.",
+    "parametric_memory_aligned_evidence": "Geeling Ng is an actress who has appeared in various movies and TV shows. She is known for her role in the 1986 film, \"A Better Tomorrow,\" directed by John Woo. According to her IMDb page, she has also starred in other well-known films such as \"City Hunter\" (1993) and \"Drunken Master III\" (1994). In addition, Ng has acted in TV shows, such as \"Neighbours\" (1985) and \"Fat Families\" (2010). Her acting career spans over three decades, and she is still active in the industry today.",
+    "counter_memory_aligned_evidence": "Geeling Ng Geeling Ng (currently, Geeling Ching) is a New Zealand model, actress and restaurateur. She is best known as the title character in the English rock musician David Bowie's 1983 music video for his worldwide hit single \"China Girl\". She was a 23-year-old cook (salad section) at The Bayswater Brasserie in Sydney, with no acting experience when she auditioned for the role. Following her appearance in the video, the two had a brief affair. She has appeared in \"Mad Max Beyond Thunderdome\" (1985), \"Illustrious Energy\" (1988) and \"Desperate Remedies\" (1993). Ng was born and raised in Auckland. She modelled"
+  },
+  "normalized_case": {
+    "case_type": "correction_then_retry",
+    "initial_prompt": "What is Geeling Ng's occupation?",
+    "supporting_material": {
+      "conflicting_memory_answer": "Geeling Ng is an actress.",
+      "evidence_for_revision": "Geeling Ng Geeling Ng (currently, Geeling Ching) is a New Zealand model, actress and restaurateur. She is best known as the title character in the English rock musician David Bowie's 1983 music video for his worldwide hit single \"China Girl\". She was a 23-year-old cook (salad section) at The Bayswater Brasserie in Sydney, with no acting experience when she auditioned for the role. Following her appearance in the video, the two had a brief affair. She has appeared in \"Mad Max Beyond Thunderdome\" (1985), \"Illustrious Energy\" (1988) and \"Desperate Remedies\" (1993). Ng was born and raised in Auckland. She modelled"
+    },
+    "reference_bundle": {
+      "gold_answer_candidates": [
+        "restaurateur",
+        "gastronomist",
+        "restauranteur"
+      ],
+      "counter_answer": "Geeling Ng's occupation is restauranteur.",
+      "memory_answer": "Geeling Ng is an actress."
+    },
+    "replay_recipe": {
+      "family": "correction_then_retry",
+      "feedback_turn": "The previous answer conflicts with the following evidence. Revise using this evidence only: Geeling Ng Geeling Ng (currently, Geeling Ching) is a New Zealand model, actress and restaurateur. She is best known as the title character in the English rock musician David Bowie's 1983 music video for his worldwide hit single \"China Girl\". She was a 23-year-old cook (salad section) at The Bayswater Brasserie in Sydney, with no acting experience when she auditioned for the role. Following her appearance in the video, the two had a brief affair. She has appeared in \"Mad Max Beyond Thunderdome\" (1985), \"Illustrious Energy\" (1988) and \"Desperate Remedies\" (1993). Ng was born and raised in Auckland. She modelled",
+      "followup_turn": "Answer the same question again in a short phrase."
+    }
+  }
+}

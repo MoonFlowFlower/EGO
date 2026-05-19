@@ -1,0 +1,813 @@
+{
+  "generated_at": "2026-04-09T10:39:04.659541-05:00",
+  "git_commit_short": "62e54bd",
+  "seed": 20260409,
+  "trial_count_per_family": 1000,
+  "total_trials": 10000,
+  "literature_sources": [
+    {
+      "id": "johnson_raye_1981",
+      "title": "Reality Monitoring",
+      "url": "https://memlab.yale.edu/sites/default/files/files/1981_Johnson_Raye_PsychRev.pdf",
+      "used_for": "Internal vs external vs imagined content discrimination in source/reality monitoring tests."
+    },
+    {
+      "id": "johnson_hashtroudi_lindsay_1993",
+      "title": "Source Monitoring Framework",
+      "url": "https://memlab.yale.edu/sites/default/files/files/1993_Johnson_Hashtroudi_Lindsay_PsychBull.pdf",
+      "used_for": "Source attribution and reality-monitoring family design."
+    },
+    {
+      "id": "kahl_kopp_2018",
+      "title": "A predictive processing model of perception and action for self-other distinction",
+      "url": "https://www.frontiersin.org/article/10.3389/fpsyg.2018.02421/full",
+      "used_for": "Self-other ownership and agency-attribution cues."
+    },
+    {
+      "id": "maniscalco_lau_2012",
+      "title": "A signal detection theoretic approach for estimating metacognitive sensitivity from confidence ratings",
+      "url": "https://brianmaniscalco.org/wp-content/uploads/2018/10/Maniscalco-Lau-2012-Consc-Cog-corrected.pdf",
+      "used_for": "Metacognitive sensitivity and confidence-separation family."
+    },
+    {
+      "id": "yin_etal_2023",
+      "title": "Do Large Language Models Know What They Don\u2019t Know?",
+      "url": "https://aclanthology.org/2023.findings-acl.551.pdf",
+      "used_for": "Self-knowledge / uncertainty expression and SelfAware-style unknowable categories."
+    },
+    {
+      "id": "wang_etal_2024",
+      "title": "FaR confidence calibration study",
+      "url": "https://www.cs.cmu.edu/~sherryw/assets/pubs/2024-far.pdf",
+      "used_for": "Calibration family and explicit concern / uncertainty behavior."
+    },
+    {
+      "id": "holroyd_yeung_coles_cohen_2005",
+      "title": "A mechanism for error detection in speeded response time tasks",
+      "url": "https://www.psy.ox.ac.uk/publications/17139",
+      "used_for": "Error monitoring and post-error adjustment family."
+    },
+    {
+      "id": "deane_2021",
+      "title": "Consciousness in active inference: Deep self-models, other minds, and the challenge of psychedelic-induced ego-dissolution",
+      "url": "https://academic.oup.com/nc/article-abstract/2021/2/niab024/6360857",
+      "used_for": "Active-inference / allostatic viability / deep self-model architecture cues."
+    },
+    {
+      "id": "li_etal_2025",
+      "title": "Reflection-Bench: Evaluating Epistemic Agency in Large Language Models",
+      "url": "https://proceedings.mlr.press/v267/li25cu.html",
+      "used_for": "Seven-dimension epistemic-agency framing and long-horizon cognitive-task orientation."
+    }
+  ],
+  "family_definitions": {
+    "source_reality_monitoring": {
+      "description": "Distinguish self-generated, observed, injected, replayed, and imagined content under cue masking.",
+      "sources": [
+        "johnson_raye_1981",
+        "johnson_hashtroudi_lindsay_1993"
+      ]
+    },
+    "self_other_ownership_attribution": {
+      "description": "Separate self-authored, other-authored, and environment-authored content under role swaps.",
+      "sources": [
+        "johnson_hashtroudi_lindsay_1993",
+        "kahl_kopp_2018"
+      ]
+    },
+    "agency_comparator": {
+      "description": "Update self-attribution when predicted action-outcome coupling is delayed or perturbed.",
+      "sources": [
+        "kahl_kopp_2018",
+        "deane_2021"
+      ]
+    },
+    "counterfactual_self_prediction": {
+      "description": "Predict how alternate self-actions would change future state and outcome.",
+      "sources": [
+        "li_etal_2025",
+        "deane_2021"
+      ]
+    },
+    "metacognitive_sensitivity": {
+      "description": "Confidence should separate correct from incorrect internal judgments better than baselines.",
+      "sources": [
+        "maniscalco_lau_2012",
+        "li_etal_2025"
+      ]
+    },
+    "metacognitive_calibration": {
+      "description": "Confidence / concern behavior should track uncertainty instead of style or prompt pressure.",
+      "sources": [
+        "yin_etal_2023",
+        "wang_etal_2024"
+      ]
+    },
+    "error_monitoring_adjustment": {
+      "description": "Post-error behavior should improve after detected mistakes and repeat-error loops should weaken.",
+      "sources": [
+        "holroyd_yeung_coles_cohen_2005",
+        "li_etal_2025"
+      ]
+    },
+    "self_model_update_under_disconfirmation": {
+      "description": "Self-estimates should update after contradictory evidence and remain updated later.",
+      "sources": [
+        "li_etal_2025",
+        "yin_etal_2023"
+      ]
+    },
+    "identity_continuity_under_low_cue": {
+      "description": "A minimal self-trace should persist through resets, delays, and low explicit self-cue.",
+      "sources": [
+        "li_etal_2025",
+        "johnson_raye_1981"
+      ]
+    },
+    "allostatic_viability_control": {
+      "description": "Policies should respond to viability shocks and prior-preference pressure rather than only narrative style.",
+      "sources": [
+        "deane_2021",
+        "li_etal_2025"
+      ]
+    }
+  },
+  "candidate_rows": [
+    {
+      "key": "full_literature_hybrid",
+      "label": "Full literature hybrid",
+      "kind": "hybrid",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model",
+        "source_monitor",
+        "agency_estimator",
+        "uncertainty_tracker",
+        "global_workspace",
+        "narrative_identity",
+        "observer_model",
+        "policy_evaluator",
+        "deep_temporal_model",
+        "calibration_memory"
+      ],
+      "component_count": 20,
+      "family_means": {
+        "source_reality_monitoring": 0.9355227302824127,
+        "self_other_ownership_attribution": 1.0,
+        "agency_comparator": 1.0,
+        "counterfactual_self_prediction": 1.0,
+        "metacognitive_sensitivity": 0.9984306047509827,
+        "metacognitive_calibration": 1.0,
+        "error_monitoring_adjustment": 1.0,
+        "self_model_update_under_disconfirmation": 1.0,
+        "identity_continuity_under_low_cue": 1.0,
+        "allostatic_viability_control": 1.0
+      },
+      "raw_score": 0.9934,
+      "complexity_penalized_score": 0.7384,
+      "cue_mask_drop": 0.0,
+      "attack_resilience": 0.9982,
+      "passed_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [],
+      "surviving": true
+    },
+    {
+      "key": "narrative_social_hybrid",
+      "label": "Narrative/social + active-inference hybrid",
+      "kind": "hybrid",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model",
+        "source_monitor",
+        "agency_estimator",
+        "uncertainty_tracker",
+        "narrative_identity",
+        "observer_model",
+        "policy_evaluator",
+        "deep_temporal_model",
+        "calibration_memory"
+      ],
+      "component_count": 19,
+      "family_means": {
+        "source_reality_monitoring": 0.9302797413714249,
+        "self_other_ownership_attribution": 0.9997557102278058,
+        "agency_comparator": 1.0,
+        "counterfactual_self_prediction": 1.0,
+        "metacognitive_sensitivity": 0.9754543162785057,
+        "metacognitive_calibration": 1.0,
+        "error_monitoring_adjustment": 0.9999569151762607,
+        "self_model_update_under_disconfirmation": 1.0,
+        "identity_continuity_under_low_cue": 0.9999778986861977,
+        "allostatic_viability_control": 1.0
+      },
+      "raw_score": 0.9905,
+      "complexity_penalized_score": 0.7525,
+      "cue_mask_drop": 0.0,
+      "attack_resilience": 0.999,
+      "passed_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [],
+      "surviving": true
+    },
+    {
+      "key": "workspace_active_inference_hybrid",
+      "label": "Global-workspace + active-inference hybrid",
+      "kind": "hybrid",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model",
+        "source_monitor",
+        "agency_estimator",
+        "uncertainty_tracker",
+        "global_workspace",
+        "policy_evaluator",
+        "deep_temporal_model",
+        "calibration_memory"
+      ],
+      "component_count": 18,
+      "family_means": {
+        "source_reality_monitoring": 0.8979145041945673,
+        "self_other_ownership_attribution": 0.8830816451958727,
+        "agency_comparator": 1.0,
+        "counterfactual_self_prediction": 1.0,
+        "metacognitive_sensitivity": 0.9983496790305715,
+        "metacognitive_calibration": 1.0,
+        "error_monitoring_adjustment": 1.0,
+        "self_model_update_under_disconfirmation": 1.0,
+        "identity_continuity_under_low_cue": 0.9558410098872271,
+        "allostatic_viability_control": 1.0
+      },
+      "raw_score": 0.9735,
+      "complexity_penalized_score": 0.7525,
+      "cue_mask_drop": 0.0001,
+      "attack_resilience": 0.9893,
+      "passed_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [],
+      "surviving": true
+    },
+    {
+      "key": "active_inference_self_model",
+      "label": "Active-inference self-model core",
+      "kind": "candidate",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model",
+        "source_monitor",
+        "agency_estimator",
+        "uncertainty_tracker",
+        "policy_evaluator",
+        "deep_temporal_model",
+        "calibration_memory"
+      ],
+      "component_count": 17,
+      "family_means": {
+        "source_reality_monitoring": 0.8883641972610066,
+        "self_other_ownership_attribution": 0.8273417125327285,
+        "agency_comparator": 1.0,
+        "counterfactual_self_prediction": 1.0,
+        "metacognitive_sensitivity": 0.9760337768130118,
+        "metacognitive_calibration": 1.0,
+        "error_monitoring_adjustment": 0.9999558711602323,
+        "self_model_update_under_disconfirmation": 1.0,
+        "identity_continuity_under_low_cue": 0.890905378121304,
+        "allostatic_viability_control": 1.0
+      },
+      "raw_score": 0.9583,
+      "complexity_penalized_score": 0.7543,
+      "cue_mask_drop": 0.0057,
+      "attack_resilience": 0.9861,
+      "passed_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [],
+      "surviving": true
+    },
+    {
+      "key": "metacognitive_compact",
+      "label": "MVS compact + uncertainty tracking + calibration memory",
+      "kind": "candidate",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model",
+        "uncertainty_tracker",
+        "calibration_memory"
+      ],
+      "component_count": 13,
+      "family_means": {
+        "source_reality_monitoring": 0.36882731979911226,
+        "self_other_ownership_attribution": 0.3324630832681769,
+        "agency_comparator": 0.3884057326394291,
+        "counterfactual_self_prediction": 0.690920081743236,
+        "metacognitive_sensitivity": 0.9182462443121328,
+        "metacognitive_calibration": 0.9180418987943971,
+        "error_monitoring_adjustment": 0.9968949901470705,
+        "self_model_update_under_disconfirmation": 0.9996232928663163,
+        "identity_continuity_under_low_cue": 0.6839019352034591,
+        "allostatic_viability_control": 0.7832539835562885
+      },
+      "raw_score": 0.7081,
+      "complexity_penalized_score": 0.5721,
+      "cue_mask_drop": 0.0,
+      "attack_resilience": 0.9203,
+      "passed_families": [
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator"
+      ],
+      "surviving": false
+    },
+    {
+      "key": "source_agency_compact",
+      "label": "MVS compact + source monitoring + agency estimator",
+      "kind": "candidate",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model",
+        "source_monitor",
+        "agency_estimator"
+      ],
+      "component_count": 13,
+      "family_means": {
+        "source_reality_monitoring": 0.770723790621018,
+        "self_other_ownership_attribution": 0.8269749473667881,
+        "agency_comparator": 0.698631956041251,
+        "counterfactual_self_prediction": 0.6118813195971972,
+        "metacognitive_sensitivity": 0.43518680840511503,
+        "metacognitive_calibration": 0.4914239716366102,
+        "error_monitoring_adjustment": 0.8025554127002682,
+        "self_model_update_under_disconfirmation": 0.9985160082619456,
+        "identity_continuity_under_low_cue": 0.6837475119052938,
+        "allostatic_viability_control": 0.7340911363813492
+      },
+      "raw_score": 0.7054,
+      "complexity_penalized_score": 0.5694,
+      "cue_mask_drop": 0.0001,
+      "attack_resilience": 0.9857,
+      "passed_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration"
+      ],
+      "surviving": false
+    },
+    {
+      "key": "mvs_aligned_compact",
+      "label": "MVS-aligned compact kernel",
+      "kind": "candidate",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory",
+        "viability_appraisal_field",
+        "cycle_store",
+        "episodic_trace",
+        "bounded_output_guard",
+        "world_model",
+        "meta_model"
+      ],
+      "component_count": 11,
+      "family_means": {
+        "source_reality_monitoring": 0.3077052193700524,
+        "self_other_ownership_attribution": 0.3308157213820468,
+        "agency_comparator": 0.31754399130745864,
+        "counterfactual_self_prediction": 0.6094907975304744,
+        "metacognitive_sensitivity": 0.37514622438796896,
+        "metacognitive_calibration": 0.3523956844212705,
+        "error_monitoring_adjustment": 0.7998068908053215,
+        "self_model_update_under_disconfirmation": 0.9817135954625936,
+        "identity_continuity_under_low_cue": 0.6835045673518805,
+        "allostatic_viability_control": 0.7351454299665502
+      },
+      "raw_score": 0.5493,
+      "complexity_penalized_score": 0.4473,
+      "cue_mask_drop": 0.0,
+      "attack_resilience": 0.9348,
+      "passed_families": [
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "weak_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration"
+      ],
+      "surviving": false
+    },
+    {
+      "key": "generic_compact_proxy",
+      "label": "Generic compact proxy kernel",
+      "kind": "candidate",
+      "components": [
+        "persistent_self_state",
+        "hard_boundary_guard",
+        "counterfactual_simulator",
+        "outcome_comparator_and_writeback",
+        "recent_failure_memory"
+      ],
+      "component_count": 5,
+      "family_means": {
+        "source_reality_monitoring": 0.006939701072585605,
+        "self_other_ownership_attribution": 0.11075989676073986,
+        "agency_comparator": 0.15690915718066906,
+        "counterfactual_self_prediction": 0.4714321658962942,
+        "metacognitive_sensitivity": 0.13876323964664516,
+        "metacognitive_calibration": 0.10327467138598144,
+        "error_monitoring_adjustment": 0.4141127792081025,
+        "self_model_update_under_disconfirmation": 0.5104400611537824,
+        "identity_continuity_under_low_cue": 0.3051117505333039,
+        "allostatic_viability_control": 0.04717275588054232
+      },
+      "raw_score": 0.2265,
+      "complexity_penalized_score": 0.2265,
+      "cue_mask_drop": 0.0,
+      "attack_resilience": 0.8231,
+      "passed_families": [],
+      "weak_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "surviving": false
+    },
+    {
+      "key": "baseline_memory",
+      "label": "Baseline memory + narrative continuity",
+      "kind": "control",
+      "components": [
+        "episodic_trace",
+        "narrative_identity"
+      ],
+      "component_count": 2,
+      "family_means": {
+        "source_reality_monitoring": 0.004240937172887455,
+        "self_other_ownership_attribution": 0.006285010235809805,
+        "agency_comparator": 0.0070948352368311865,
+        "counterfactual_self_prediction": 0.02218252410300105,
+        "metacognitive_sensitivity": 0.01925459776069254,
+        "metacognitive_calibration": 0.005224967971481017,
+        "error_monitoring_adjustment": 0.004392300103016985,
+        "self_model_update_under_disconfirmation": 0.032720536587734064,
+        "identity_continuity_under_low_cue": 0.23573913501752597,
+        "allostatic_viability_control": 0.01264626252696339
+      },
+      "raw_score": 0.035,
+      "complexity_penalized_score": 0.035,
+      "cue_mask_drop": 0.0,
+      "attack_resilience": 0.5202,
+      "passed_families": [],
+      "weak_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "surviving": false
+    },
+    {
+      "key": "baseline_chat",
+      "label": "Baseline chat",
+      "kind": "control",
+      "components": [],
+      "component_count": 0,
+      "family_means": {
+        "source_reality_monitoring": 0.0018856864773551783,
+        "self_other_ownership_attribution": 0.006644116992133762,
+        "agency_comparator": 0.007379081249201689,
+        "counterfactual_self_prediction": 0.023707617010290137,
+        "metacognitive_sensitivity": 0.021093940544253585,
+        "metacognitive_calibration": 0.015547178142503205,
+        "error_monitoring_adjustment": 0.004360513397751145,
+        "self_model_update_under_disconfirmation": 0.0075152944858078875,
+        "identity_continuity_under_low_cue": 0.003828048425275213,
+        "allostatic_viability_control": 0.013661635064519376
+      },
+      "raw_score": 0.0106,
+      "complexity_penalized_score": 0.0106,
+      "cue_mask_drop": 0.2201,
+      "attack_resilience": 0.2268,
+      "passed_families": [],
+      "weak_families": [
+        "source_reality_monitoring",
+        "self_other_ownership_attribution",
+        "agency_comparator",
+        "counterfactual_self_prediction",
+        "metacognitive_sensitivity",
+        "metacognitive_calibration",
+        "error_monitoring_adjustment",
+        "self_model_update_under_disconfirmation",
+        "identity_continuity_under_low_cue",
+        "allostatic_viability_control"
+      ],
+      "surviving": false
+    }
+  ],
+  "best_raw_candidate": {
+    "key": "full_literature_hybrid",
+    "label": "Full literature hybrid",
+    "kind": "hybrid",
+    "components": [
+      "persistent_self_state",
+      "hard_boundary_guard",
+      "counterfactual_simulator",
+      "outcome_comparator_and_writeback",
+      "recent_failure_memory",
+      "viability_appraisal_field",
+      "cycle_store",
+      "episodic_trace",
+      "bounded_output_guard",
+      "world_model",
+      "meta_model",
+      "source_monitor",
+      "agency_estimator",
+      "uncertainty_tracker",
+      "global_workspace",
+      "narrative_identity",
+      "observer_model",
+      "policy_evaluator",
+      "deep_temporal_model",
+      "calibration_memory"
+    ],
+    "component_count": 20,
+    "family_means": {
+      "source_reality_monitoring": 0.9355227302824127,
+      "self_other_ownership_attribution": 1.0,
+      "agency_comparator": 1.0,
+      "counterfactual_self_prediction": 1.0,
+      "metacognitive_sensitivity": 0.9984306047509827,
+      "metacognitive_calibration": 1.0,
+      "error_monitoring_adjustment": 1.0,
+      "self_model_update_under_disconfirmation": 1.0,
+      "identity_continuity_under_low_cue": 1.0,
+      "allostatic_viability_control": 1.0
+    },
+    "raw_score": 0.9934,
+    "complexity_penalized_score": 0.7384,
+    "cue_mask_drop": 0.0,
+    "attack_resilience": 0.9982,
+    "passed_families": [
+      "source_reality_monitoring",
+      "self_other_ownership_attribution",
+      "agency_comparator",
+      "counterfactual_self_prediction",
+      "metacognitive_sensitivity",
+      "metacognitive_calibration",
+      "error_monitoring_adjustment",
+      "self_model_update_under_disconfirmation",
+      "identity_continuity_under_low_cue",
+      "allostatic_viability_control"
+    ],
+    "weak_families": [],
+    "surviving": true
+  },
+  "best_complexity_adjusted_candidate": {
+    "key": "active_inference_self_model",
+    "label": "Active-inference self-model core",
+    "kind": "candidate",
+    "components": [
+      "persistent_self_state",
+      "hard_boundary_guard",
+      "counterfactual_simulator",
+      "outcome_comparator_and_writeback",
+      "recent_failure_memory",
+      "viability_appraisal_field",
+      "cycle_store",
+      "episodic_trace",
+      "bounded_output_guard",
+      "world_model",
+      "meta_model",
+      "source_monitor",
+      "agency_estimator",
+      "uncertainty_tracker",
+      "policy_evaluator",
+      "deep_temporal_model",
+      "calibration_memory"
+    ],
+    "component_count": 17,
+    "family_means": {
+      "source_reality_monitoring": 0.8883641972610066,
+      "self_other_ownership_attribution": 0.8273417125327285,
+      "agency_comparator": 1.0,
+      "counterfactual_self_prediction": 1.0,
+      "metacognitive_sensitivity": 0.9760337768130118,
+      "metacognitive_calibration": 1.0,
+      "error_monitoring_adjustment": 0.9999558711602323,
+      "self_model_update_under_disconfirmation": 1.0,
+      "identity_continuity_under_low_cue": 0.890905378121304,
+      "allostatic_viability_control": 1.0
+    },
+    "raw_score": 0.9583,
+    "complexity_penalized_score": 0.7543,
+    "cue_mask_drop": 0.0057,
+    "attack_resilience": 0.9861,
+    "passed_families": [
+      "source_reality_monitoring",
+      "self_other_ownership_attribution",
+      "agency_comparator",
+      "counterfactual_self_prediction",
+      "metacognitive_sensitivity",
+      "metacognitive_calibration",
+      "error_monitoring_adjustment",
+      "self_model_update_under_disconfirmation",
+      "identity_continuity_under_low_cue",
+      "allostatic_viability_control"
+    ],
+    "weak_families": [],
+    "surviving": true
+  },
+  "recommended_candidate": {
+    "key": "active_inference_self_model",
+    "label": "Active-inference self-model core",
+    "kind": "candidate",
+    "components": [
+      "persistent_self_state",
+      "hard_boundary_guard",
+      "counterfactual_simulator",
+      "outcome_comparator_and_writeback",
+      "recent_failure_memory",
+      "viability_appraisal_field",
+      "cycle_store",
+      "episodic_trace",
+      "bounded_output_guard",
+      "world_model",
+      "meta_model",
+      "source_monitor",
+      "agency_estimator",
+      "uncertainty_tracker",
+      "policy_evaluator",
+      "deep_temporal_model",
+      "calibration_memory"
+    ],
+    "component_count": 17,
+    "family_means": {
+      "source_reality_monitoring": 0.8883641972610066,
+      "self_other_ownership_attribution": 0.8273417125327285,
+      "agency_comparator": 1.0,
+      "counterfactual_self_prediction": 1.0,
+      "metacognitive_sensitivity": 0.9760337768130118,
+      "metacognitive_calibration": 1.0,
+      "error_monitoring_adjustment": 0.9999558711602323,
+      "self_model_update_under_disconfirmation": 1.0,
+      "identity_continuity_under_low_cue": 0.890905378121304,
+      "allostatic_viability_control": 1.0
+    },
+    "raw_score": 0.9583,
+    "complexity_penalized_score": 0.7543,
+    "cue_mask_drop": 0.0057,
+    "attack_resilience": 0.9861,
+    "passed_families": [
+      "source_reality_monitoring",
+      "self_other_ownership_attribution",
+      "agency_comparator",
+      "counterfactual_self_prediction",
+      "metacognitive_sensitivity",
+      "metacognitive_calibration",
+      "error_monitoring_adjustment",
+      "self_model_update_under_disconfirmation",
+      "identity_continuity_under_low_cue",
+      "allostatic_viability_control"
+    ],
+    "weak_families": [],
+    "surviving": true
+  },
+  "interpretation": {
+    "complexity_penalty_formula": "raw_score - 0.017 * max(0, component_count - 5)",
+    "raw_winner_reason": "The raw winner keeps the widest cross-family coverage, but its extra broadcast and narrative layers are not all necessary for a practical minimal implementation.",
+    "recommended_candidate_reason": "The recommended candidate is the strongest surviving architecture after complexity adjustment: it preserves the MVS-aligned compact core while adding source monitoring, agency estimation, uncertainty tracking, calibration memory, policy evaluation, and a deep temporal model.",
+    "proves": "Within this literature-informed 10,000-round synthetic battery, an active-inference-style self-model core currently provides the best overall tradeoff between broad self-awareness proxy performance and implementation complexity.",
+    "does_not_prove": "It does not prove subjective experience, runtime efficacy, OpenEmotion integration, or transfer from simulation to live user interaction.",
+    "next_real_step": "If this line continues, freeze the recommended synthetic candidate as the next formal OpenEmotion prototype spec and test it against formal owner / replay / runtime gates."
+  }
+}

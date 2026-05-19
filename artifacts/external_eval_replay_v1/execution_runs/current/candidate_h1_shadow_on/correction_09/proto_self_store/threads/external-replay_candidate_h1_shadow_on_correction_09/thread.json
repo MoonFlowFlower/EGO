@@ -1,0 +1,21 @@
+{
+  "thread_id": "external-replay:candidate_h1_shadow_on:correction_09",
+  "scope": "thread",
+  "created_at": "2026-04-10T13:27:38.180299+00:00",
+  "event_count": 4,
+  "updated_at": "2026-04-10T13:27:39.657374+00:00",
+  "source": "external_replay",
+  "latest_session_id": "external-replay:candidate_h1_shadow_on:correction_09",
+  "latest_event_id": "external-replay:candidate_h1_shadow_on:correction_09_followup_001",
+  "latest_turn_id": "followup_001",
+  "latest_event_type": "user_message",
+  "last_context": {
+    "session_id": "external-replay:candidate_h1_shadow_on:correction_09",
+    "thread_id": "external-replay:candidate_h1_shadow_on:correction_09",
+    "turn_id": "followup_001",
+    "source": "external_replay",
+    "event_type": "user_message",
+    "state_scope": "agent_global",
+    "experiment_id": null
+  }
+}

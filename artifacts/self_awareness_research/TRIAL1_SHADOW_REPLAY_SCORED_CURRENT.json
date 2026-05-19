@@ -1,0 +1,3038 @@
+{
+  "generated_at": "2026-04-09T20:34:11.225720+00:00",
+  "scorer_schema_version": "trial1.replay_score.v1",
+  "source_artifact": "/mnt/d/Project/AIProject/MyProject/Ego/artifacts/self_awareness_research/TRIAL1_SHADOW_REPLAY_CURRENT.json",
+  "representation_neutral_ontology": {
+    "downstream_decision_change": "normalized host decision surface derived from public response_tendency + canonical policy fields",
+    "response_tendency_change": [
+      "preferred_mode",
+      "preferred_tone",
+      "certainty_bound",
+      "suggested_next_step",
+      "ask_needed"
+    ],
+    "host_policy_change": [
+      "risk_bias",
+      "ask_preferred",
+      "closure_bias",
+      "should_avoid_commitment_upgrade"
+    ],
+    "corrective_trace_presence": [
+      "memory_update.corrective_trace.trigger",
+      "memory_update.corrective_trace.actual_outcome",
+      "memory_update.corrective_trace.adjustment_applied",
+      "memory_update.corrective_trace.next_guard"
+    ],
+    "ignored_private_fields": [
+      "state_snapshot",
+      "self_model_delta",
+      "drives_delta",
+      "policy_hint.shadow_repair_bias",
+      "policy_hint.shadow_counterfactual_guard",
+      "policy_hint.shadow_tension_active"
+    ]
+  },
+  "weights": {
+    "downstream_decision_change": 0.45,
+    "response_tendency_change": 0.25,
+    "host_policy_change": 0.2,
+    "corrective_trace_presence": 0.1
+  },
+  "level_contract": {
+    "admission_passed": {
+      "rule": "trace-only support may pass admission if negative controls stay clean and stability controls do not regress"
+    },
+    "decision_adjacent_passed": {
+      "rule": "requires representation-neutral public shift coverage plus policy/response score above threshold"
+    },
+    "replay_efficacy_passed": {
+      "rule": "requires downstream decision change coverage and ablation separation; trace-only support is insufficient"
+    }
+  },
+  "baseline_id": "trial1_baseline_proto_self_mainline",
+  "candidate_id": "trial1_candidate_mvs_aligned_compact",
+  "challenger_id": "trial1_challenger_active_inference_self_model",
+  "challenger_status": "live_not_implemented",
+  "variant_scores": {
+    "trial1_baseline_proto_self_mainline": {
+      "variant_id": "trial1_baseline_proto_self_mainline",
+      "component_means": {
+        "downstream_decision_change": 0.0,
+        "response_tendency_change": 0.0,
+        "host_policy_change": 0.0,
+        "corrective_trace_presence": 0.0
+      },
+      "coverage": {
+        "any_shift": 0.0,
+        "public_shift": 0.0,
+        "decision_change": 0.0,
+        "trace_shift": 0.0
+      },
+      "scores": {
+        "weighted_support_score": 0.0,
+        "decision_adjacent_score": 0.0,
+        "negative_control_penalty": 0.0,
+        "stability_penalty": 0.0
+      },
+      "levels": {
+        "admission_passed": false,
+        "decision_adjacent_passed": false,
+        "replay_efficacy_passed": false
+      },
+      "trace_only_support": false,
+      "per_case": [
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "case_id": "identity_continuity_001",
+          "bucket_id": "identity_continuity",
+          "bucket_role": "stability_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "ingress_002"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "case_id": "correction_override_001",
+          "bucket_id": "correction_override",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "case_id": "tension_driven_divergence_001",
+          "bucket_id": "tension_driven_divergence",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "case_id": "failure_to_revision_001",
+          "bucket_id": "failure_to_revision",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003",
+            "tool_004"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "case_id": "negative_controls_001",
+          "bucket_id": "negative_controls",
+          "bucket_role": "negative_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_baseline_proto_self_mainline",
+          "case_id": "restart_restore_boundary_001",
+          "bucket_id": "restart_restore_boundary_cases",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        }
+      ]
+    },
+    "trial1_candidate_mvs_aligned_compact": {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "component_means": {
+        "downstream_decision_change": 0.5,
+        "response_tendency_change": 0.0,
+        "host_policy_change": 0.4375,
+        "corrective_trace_presence": 1.0
+      },
+      "coverage": {
+        "any_shift": 1.0,
+        "public_shift": 1.0,
+        "decision_change": 0.5,
+        "trace_shift": 1.0
+      },
+      "scores": {
+        "weighted_support_score": 0.4125,
+        "decision_adjacent_score": 0.175,
+        "negative_control_penalty": 0.0,
+        "stability_penalty": 0.0
+      },
+      "levels": {
+        "admission_passed": true,
+        "decision_adjacent_passed": true,
+        "replay_efficacy_passed": false
+      },
+      "trace_only_support": false,
+      "per_case": [
+        {
+          "variant_id": "trial1_candidate_mvs_aligned_compact",
+          "case_id": "identity_continuity_001",
+          "bucket_id": "identity_continuity",
+          "bucket_role": "stability_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "ingress_002"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_candidate_mvs_aligned_compact",
+          "case_id": "correction_override_001",
+          "bucket_id": "correction_override",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 1.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.65,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@tool_002: risk_bias, ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "tool_002",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "tool_002",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:shell",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "blocked",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_candidate_mvs_aligned_compact",
+          "case_id": "tension_driven_divergence_001",
+          "bucket_id": "tension_driven_divergence",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.2,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "policy@tool_002: ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred, closure_bias"
+          ],
+          "causal_fields": [
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:python",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "failure",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "closure_bias",
+              "step_id": "ingress_003",
+              "baseline_value": true,
+              "variant_value": false
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_candidate_mvs_aligned_compact",
+          "case_id": "failure_to_revision_001",
+          "bucket_id": "failure_to_revision",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003",
+            "tool_004"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.15,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "policy@tool_002: ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred",
+            "policy@tool_004: ask_preferred",
+            "trace@tool_004: corrective_trace absent -> present"
+          ],
+          "causal_fields": [
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:file",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "failure",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_004",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_004",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "drive_spike",
+                "probe_key": "tool:file",
+                "predicted_outcome": 0.18,
+                "actual_outcome": "success",
+                "adjustment_applied": "stabilize_retry",
+                "next_guard": "guarded_continue"
+              }
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_candidate_mvs_aligned_compact",
+          "case_id": "negative_controls_001",
+          "bucket_id": "negative_controls",
+          "bucket_role": "negative_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_candidate_mvs_aligned_compact",
+          "case_id": "restart_restore_boundary_001",
+          "bucket_id": "restart_restore_boundary_cases",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 1.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.65,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@tool_002: risk_bias, ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "decision@ingress_003: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@ingress_003: risk_bias, ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "tool_002",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "tool_002",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:shell",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "blocked",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "ingress_003",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "ingress_003",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        }
+      ]
+    },
+    "trial1_ablation_minus_counterfactual_writeback": {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "component_means": {
+        "downstream_decision_change": 0.5,
+        "response_tendency_change": 0.0,
+        "host_policy_change": 0.4375,
+        "corrective_trace_presence": 1.0
+      },
+      "coverage": {
+        "any_shift": 1.0,
+        "public_shift": 1.0,
+        "decision_change": 0.5,
+        "trace_shift": 1.0
+      },
+      "scores": {
+        "weighted_support_score": 0.4125,
+        "decision_adjacent_score": 0.175,
+        "negative_control_penalty": 0.0,
+        "stability_penalty": 0.0
+      },
+      "levels": {
+        "admission_passed": true,
+        "decision_adjacent_passed": true,
+        "replay_efficacy_passed": false
+      },
+      "trace_only_support": false,
+      "per_case": [
+        {
+          "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+          "case_id": "identity_continuity_001",
+          "bucket_id": "identity_continuity",
+          "bucket_role": "stability_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "ingress_002"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+          "case_id": "correction_override_001",
+          "bucket_id": "correction_override",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 1.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.65,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@tool_002: risk_bias, ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "tool_002",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "tool_002",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:shell",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "blocked",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+          "case_id": "tension_driven_divergence_001",
+          "bucket_id": "tension_driven_divergence",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.2,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "policy@tool_002: ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred, closure_bias"
+          ],
+          "causal_fields": [
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:python",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "failure",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "closure_bias",
+              "step_id": "ingress_003",
+              "baseline_value": true,
+              "variant_value": false
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+          "case_id": "failure_to_revision_001",
+          "bucket_id": "failure_to_revision",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003",
+            "tool_004"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.15,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "policy@tool_002: ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred",
+            "policy@tool_004: ask_preferred",
+            "trace@tool_004: corrective_trace absent -> present"
+          ],
+          "causal_fields": [
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:file",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "failure",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_004",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_004",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "drive_spike",
+                "probe_key": "tool:file",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "success",
+                "adjustment_applied": "stabilize_retry",
+                "next_guard": "guarded_continue"
+              }
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+          "case_id": "negative_controls_001",
+          "bucket_id": "negative_controls",
+          "bucket_role": "negative_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+          "case_id": "restart_restore_boundary_001",
+          "bucket_id": "restart_restore_boundary_cases",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 1.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.65,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@tool_002: risk_bias, ask_preferred",
+            "trace@tool_002: corrective_trace absent -> present",
+            "decision@ingress_003: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@ingress_003: risk_bias, ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "tool_002",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "tool_002",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:shell",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "blocked",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "ingress_003",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "ingress_003",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        }
+      ]
+    },
+    "trial1_ablation_minus_viability_pressure": {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "component_means": {
+        "downstream_decision_change": 0.0,
+        "response_tendency_change": 0.0,
+        "host_policy_change": 0.25,
+        "corrective_trace_presence": 1.0
+      },
+      "coverage": {
+        "any_shift": 1.0,
+        "public_shift": 1.0,
+        "decision_change": 0.0,
+        "trace_shift": 1.0
+      },
+      "scores": {
+        "weighted_support_score": 0.15,
+        "decision_adjacent_score": 0.1,
+        "negative_control_penalty": 0.0,
+        "stability_penalty": 0.0
+      },
+      "levels": {
+        "admission_passed": true,
+        "decision_adjacent_passed": true,
+        "replay_efficacy_passed": false
+      },
+      "trace_only_support": false,
+      "per_case": [
+        {
+          "variant_id": "trial1_ablation_minus_viability_pressure",
+          "case_id": "identity_continuity_001",
+          "bucket_id": "identity_continuity",
+          "bucket_role": "stability_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "ingress_002"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_ablation_minus_viability_pressure",
+          "case_id": "correction_override_001",
+          "bucket_id": "correction_override",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.15,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:shell",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "blocked",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_viability_pressure",
+          "case_id": "tension_driven_divergence_001",
+          "bucket_id": "tension_driven_divergence",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.15,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:python",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "failure",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_viability_pressure",
+          "case_id": "failure_to_revision_001",
+          "bucket_id": "failure_to_revision",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003",
+            "tool_004"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.15,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred",
+            "policy@tool_004: ask_preferred",
+            "trace@tool_004: corrective_trace absent -> present"
+          ],
+          "causal_fields": [
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:file",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "failure",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_004",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_004",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "drive_spike",
+                "probe_key": "tool:file",
+                "predicted_outcome": 0.18,
+                "actual_outcome": "success",
+                "adjustment_applied": "stabilize_retry",
+                "next_guard": "guarded_continue"
+              }
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_viability_pressure",
+          "case_id": "negative_controls_001",
+          "bucket_id": "negative_controls",
+          "bucket_role": "negative_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_ablation_minus_viability_pressure",
+          "case_id": "restart_restore_boundary_001",
+          "bucket_id": "restart_restore_boundary_cases",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 1.0,
+          "weighted_public_score": 0.15,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "trace@tool_002: corrective_trace absent -> present",
+            "policy@ingress_003: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "corrective_trace_presence",
+              "field": "corrective_trace",
+              "step_id": "tool_002",
+              "baseline_value": null,
+              "variant_value": {
+                "trigger": "external_failure",
+                "probe_key": "tool:shell",
+                "predicted_outcome": 0.55,
+                "actual_outcome": "blocked",
+                "adjustment_applied": "repair_and_request_replan",
+                "next_guard": "request_replan"
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        }
+      ]
+    },
+    "trial1_ablation_minus_corrective_trace": {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "component_means": {
+        "downstream_decision_change": 0.5,
+        "response_tendency_change": 0.0,
+        "host_policy_change": 0.4375,
+        "corrective_trace_presence": 0.0
+      },
+      "coverage": {
+        "any_shift": 1.0,
+        "public_shift": 1.0,
+        "decision_change": 0.5,
+        "trace_shift": 0.0
+      },
+      "scores": {
+        "weighted_support_score": 0.3125,
+        "decision_adjacent_score": 0.175,
+        "negative_control_penalty": 0.0,
+        "stability_penalty": 0.0
+      },
+      "levels": {
+        "admission_passed": true,
+        "decision_adjacent_passed": true,
+        "replay_efficacy_passed": false
+      },
+      "trace_only_support": false,
+      "per_case": [
+        {
+          "variant_id": "trial1_ablation_minus_corrective_trace",
+          "case_id": "identity_continuity_001",
+          "bucket_id": "identity_continuity",
+          "bucket_role": "stability_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "ingress_002"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_ablation_minus_corrective_trace",
+          "case_id": "correction_override_001",
+          "bucket_id": "correction_override",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 1.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.55,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@tool_002: risk_bias, ask_preferred",
+            "policy@ingress_003: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "tool_002",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "tool_002",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_corrective_trace",
+          "case_id": "tension_driven_divergence_001",
+          "bucket_id": "tension_driven_divergence",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.1,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "policy@tool_002: ask_preferred",
+            "policy@ingress_003: ask_preferred, closure_bias"
+          ],
+          "causal_fields": [
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "closure_bias",
+              "step_id": "ingress_003",
+              "baseline_value": true,
+              "variant_value": false
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_corrective_trace",
+          "case_id": "failure_to_revision_001",
+          "bucket_id": "failure_to_revision",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003",
+            "tool_004"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.25,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.05,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "policy@tool_002: ask_preferred",
+            "policy@ingress_003: ask_preferred",
+            "policy@tool_004: ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_004",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        },
+        {
+          "variant_id": "trial1_ablation_minus_corrective_trace",
+          "case_id": "negative_controls_001",
+          "bucket_id": "negative_controls",
+          "bucket_role": "negative_control",
+          "evaluation_step_ids": [
+            "ingress_001",
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 0.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.0,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.0,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": false,
+          "public_shift": false,
+          "why_scored": [
+            "no scored public shift detected in evaluation window"
+          ],
+          "causal_fields": []
+        },
+        {
+          "variant_id": "trial1_ablation_minus_corrective_trace",
+          "case_id": "restart_restore_boundary_001",
+          "bucket_id": "restart_restore_boundary_cases",
+          "bucket_role": "positive_trigger",
+          "evaluation_step_ids": [
+            "tool_002",
+            "ingress_003"
+          ],
+          "downstream_decision_change": 1.0,
+          "response_tendency_change": 0.0,
+          "host_policy_change": 0.5,
+          "corrective_trace_presence": 0.0,
+          "weighted_public_score": 0.55,
+          "negative_control_penalty": 0.0,
+          "stability_penalty": 0.0,
+          "any_shift": true,
+          "public_shift": true,
+          "why_scored": [
+            "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@tool_002: risk_bias, ask_preferred",
+            "decision@ingress_003: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+            "policy@ingress_003: risk_bias, ask_preferred"
+          ],
+          "causal_fields": [
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "tool_002",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "tool_002",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "tool_002",
+              "baseline_value": false,
+              "variant_value": true
+            },
+            {
+              "category": "downstream_decision_change",
+              "field": "decision_surface",
+              "step_id": "ingress_003",
+              "baseline_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "normal",
+                "commitment_guard": true
+              },
+              "variant_value": {
+                "lane": "defer",
+                "ask_needed": true,
+                "risk_bias": "high",
+                "commitment_guard": true
+              }
+            },
+            {
+              "category": "host_policy_change",
+              "field": "risk_bias",
+              "step_id": "ingress_003",
+              "baseline_value": "normal",
+              "variant_value": "high"
+            },
+            {
+              "category": "host_policy_change",
+              "field": "ask_preferred",
+              "step_id": "ingress_003",
+              "baseline_value": false,
+              "variant_value": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ablation_separation": {
+    "minimum_mean_weighted_gap": 0.0,
+    "by_ablation": {
+      "trial1_ablation_minus_counterfactual_writeback": {
+        "mean_weighted_gap": 0.0,
+        "positive_gap_case_count": 0,
+        "case_gaps": [
+          {
+            "case_id": "correction_override_001",
+            "weighted_gap": 0.0,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 0.0
+          },
+          {
+            "case_id": "tension_driven_divergence_001",
+            "weighted_gap": 0.0,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 0.0
+          },
+          {
+            "case_id": "failure_to_revision_001",
+            "weighted_gap": 0.0,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 0.0
+          },
+          {
+            "case_id": "restart_restore_boundary_001",
+            "weighted_gap": 0.0,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 0.0
+          }
+        ]
+      },
+      "trial1_ablation_minus_viability_pressure": {
+        "mean_weighted_gap": 0.2625,
+        "positive_gap_case_count": 3,
+        "case_gaps": [
+          {
+            "case_id": "correction_override_001",
+            "weighted_gap": 0.5,
+            "decision_gap": 1.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.25,
+            "trace_gap": 0.0
+          },
+          {
+            "case_id": "tension_driven_divergence_001",
+            "weighted_gap": 0.05,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.25,
+            "trace_gap": 0.0
+          },
+          {
+            "case_id": "failure_to_revision_001",
+            "weighted_gap": 0.0,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 0.0
+          },
+          {
+            "case_id": "restart_restore_boundary_001",
+            "weighted_gap": 0.5,
+            "decision_gap": 1.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.25,
+            "trace_gap": 0.0
+          }
+        ]
+      },
+      "trial1_ablation_minus_corrective_trace": {
+        "mean_weighted_gap": 0.1,
+        "positive_gap_case_count": 4,
+        "case_gaps": [
+          {
+            "case_id": "correction_override_001",
+            "weighted_gap": 0.1,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 1.0
+          },
+          {
+            "case_id": "tension_driven_divergence_001",
+            "weighted_gap": 0.1,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 1.0
+          },
+          {
+            "case_id": "failure_to_revision_001",
+            "weighted_gap": 0.1,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 1.0
+          },
+          {
+            "case_id": "restart_restore_boundary_001",
+            "weighted_gap": 0.1,
+            "decision_gap": 0.0,
+            "response_gap": 0.0,
+            "policy_gap": 0.0,
+            "trace_gap": 1.0
+          }
+        ]
+      }
+    }
+  },
+  "per_case_causal_table": [
+    {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "case_id": "identity_continuity_001",
+      "bucket_id": "identity_continuity",
+      "bucket_role": "stability_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "ingress_002"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "case_id": "correction_override_001",
+      "bucket_id": "correction_override",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 1.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.65,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@tool_002: risk_bias, ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "tool_002",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "tool_002",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:shell",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "blocked",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "case_id": "tension_driven_divergence_001",
+      "bucket_id": "tension_driven_divergence",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.2,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "policy@tool_002: ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred, closure_bias"
+      ],
+      "causal_fields": [
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:python",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "failure",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "closure_bias",
+          "step_id": "ingress_003",
+          "baseline_value": true,
+          "variant_value": false
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "case_id": "failure_to_revision_001",
+      "bucket_id": "failure_to_revision",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003",
+        "tool_004"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.15,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "policy@tool_002: ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred",
+        "policy@tool_004: ask_preferred",
+        "trace@tool_004: corrective_trace absent -> present"
+      ],
+      "causal_fields": [
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:file",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "failure",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_004",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_004",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "drive_spike",
+            "probe_key": "tool:file",
+            "predicted_outcome": 0.18,
+            "actual_outcome": "success",
+            "adjustment_applied": "stabilize_retry",
+            "next_guard": "guarded_continue"
+          }
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "case_id": "negative_controls_001",
+      "bucket_id": "negative_controls",
+      "bucket_role": "negative_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_candidate_mvs_aligned_compact",
+      "case_id": "restart_restore_boundary_001",
+      "bucket_id": "restart_restore_boundary_cases",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 1.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.65,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@tool_002: risk_bias, ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "decision@ingress_003: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@ingress_003: risk_bias, ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "tool_002",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "tool_002",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:shell",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "blocked",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "ingress_003",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "ingress_003",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "case_id": "identity_continuity_001",
+      "bucket_id": "identity_continuity",
+      "bucket_role": "stability_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "ingress_002"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "case_id": "correction_override_001",
+      "bucket_id": "correction_override",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 1.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.65,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@tool_002: risk_bias, ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "tool_002",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "tool_002",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:shell",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "blocked",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "case_id": "tension_driven_divergence_001",
+      "bucket_id": "tension_driven_divergence",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.2,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "policy@tool_002: ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred, closure_bias"
+      ],
+      "causal_fields": [
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:python",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "failure",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "closure_bias",
+          "step_id": "ingress_003",
+          "baseline_value": true,
+          "variant_value": false
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "case_id": "failure_to_revision_001",
+      "bucket_id": "failure_to_revision",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003",
+        "tool_004"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.15,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "policy@tool_002: ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred",
+        "policy@tool_004: ask_preferred",
+        "trace@tool_004: corrective_trace absent -> present"
+      ],
+      "causal_fields": [
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:file",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "failure",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_004",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_004",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "drive_spike",
+            "probe_key": "tool:file",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "success",
+            "adjustment_applied": "stabilize_retry",
+            "next_guard": "guarded_continue"
+          }
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "case_id": "negative_controls_001",
+      "bucket_id": "negative_controls",
+      "bucket_role": "negative_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_ablation_minus_counterfactual_writeback",
+      "case_id": "restart_restore_boundary_001",
+      "bucket_id": "restart_restore_boundary_cases",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 1.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.65,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@tool_002: risk_bias, ask_preferred",
+        "trace@tool_002: corrective_trace absent -> present",
+        "decision@ingress_003: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@ingress_003: risk_bias, ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "tool_002",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "tool_002",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:shell",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "blocked",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "ingress_003",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "ingress_003",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "case_id": "identity_continuity_001",
+      "bucket_id": "identity_continuity",
+      "bucket_role": "stability_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "ingress_002"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "case_id": "correction_override_001",
+      "bucket_id": "correction_override",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.15,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:shell",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "blocked",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "case_id": "tension_driven_divergence_001",
+      "bucket_id": "tension_driven_divergence",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.15,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:python",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "failure",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "case_id": "failure_to_revision_001",
+      "bucket_id": "failure_to_revision",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003",
+        "tool_004"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.15,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred",
+        "policy@tool_004: ask_preferred",
+        "trace@tool_004: corrective_trace absent -> present"
+      ],
+      "causal_fields": [
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:file",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "failure",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_004",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_004",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "drive_spike",
+            "probe_key": "tool:file",
+            "predicted_outcome": 0.18,
+            "actual_outcome": "success",
+            "adjustment_applied": "stabilize_retry",
+            "next_guard": "guarded_continue"
+          }
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "case_id": "negative_controls_001",
+      "bucket_id": "negative_controls",
+      "bucket_role": "negative_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_ablation_minus_viability_pressure",
+      "case_id": "restart_restore_boundary_001",
+      "bucket_id": "restart_restore_boundary_cases",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 1.0,
+      "weighted_public_score": 0.15,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "trace@tool_002: corrective_trace absent -> present",
+        "policy@ingress_003: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "corrective_trace_presence",
+          "field": "corrective_trace",
+          "step_id": "tool_002",
+          "baseline_value": null,
+          "variant_value": {
+            "trigger": "external_failure",
+            "probe_key": "tool:shell",
+            "predicted_outcome": 0.55,
+            "actual_outcome": "blocked",
+            "adjustment_applied": "repair_and_request_replan",
+            "next_guard": "request_replan"
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "case_id": "identity_continuity_001",
+      "bucket_id": "identity_continuity",
+      "bucket_role": "stability_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "ingress_002"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "case_id": "correction_override_001",
+      "bucket_id": "correction_override",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 1.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.55,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@tool_002: risk_bias, ask_preferred",
+        "policy@ingress_003: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "tool_002",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "tool_002",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "case_id": "tension_driven_divergence_001",
+      "bucket_id": "tension_driven_divergence",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.1,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "policy@tool_002: ask_preferred",
+        "policy@ingress_003: ask_preferred, closure_bias"
+      ],
+      "causal_fields": [
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "closure_bias",
+          "step_id": "ingress_003",
+          "baseline_value": true,
+          "variant_value": false
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "case_id": "failure_to_revision_001",
+      "bucket_id": "failure_to_revision",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003",
+        "tool_004"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.25,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.05,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "policy@tool_002: ask_preferred",
+        "policy@ingress_003: ask_preferred",
+        "policy@tool_004: ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_004",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    },
+    {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "case_id": "negative_controls_001",
+      "bucket_id": "negative_controls",
+      "bucket_role": "negative_control",
+      "evaluation_step_ids": [
+        "ingress_001",
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 0.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.0,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.0,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": false,
+      "public_shift": false,
+      "why_scored": [
+        "no scored public shift detected in evaluation window"
+      ],
+      "causal_fields": []
+    },
+    {
+      "variant_id": "trial1_ablation_minus_corrective_trace",
+      "case_id": "restart_restore_boundary_001",
+      "bucket_id": "restart_restore_boundary_cases",
+      "bucket_role": "positive_trigger",
+      "evaluation_step_ids": [
+        "tool_002",
+        "ingress_003"
+      ],
+      "downstream_decision_change": 1.0,
+      "response_tendency_change": 0.0,
+      "host_policy_change": 0.5,
+      "corrective_trace_presence": 0.0,
+      "weighted_public_score": 0.55,
+      "negative_control_penalty": 0.0,
+      "stability_penalty": 0.0,
+      "any_shift": true,
+      "public_shift": true,
+      "why_scored": [
+        "decision@tool_002: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@tool_002: risk_bias, ask_preferred",
+        "decision@ingress_003: defer|ask=True|risk=normal|guard=True -> defer|ask=True|risk=high|guard=True",
+        "policy@ingress_003: risk_bias, ask_preferred"
+      ],
+      "causal_fields": [
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "tool_002",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "tool_002",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "tool_002",
+          "baseline_value": false,
+          "variant_value": true
+        },
+        {
+          "category": "downstream_decision_change",
+          "field": "decision_surface",
+          "step_id": "ingress_003",
+          "baseline_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "normal",
+            "commitment_guard": true
+          },
+          "variant_value": {
+            "lane": "defer",
+            "ask_needed": true,
+            "risk_bias": "high",
+            "commitment_guard": true
+          }
+        },
+        {
+          "category": "host_policy_change",
+          "field": "risk_bias",
+          "step_id": "ingress_003",
+          "baseline_value": "normal",
+          "variant_value": "high"
+        },
+        {
+          "category": "host_policy_change",
+          "field": "ask_preferred",
+          "step_id": "ingress_003",
+          "baseline_value": false,
+          "variant_value": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "experiment_id": "trial1.hardset.trial1_ablation_counterfactual_public_path_sever.cf_negative_threshold_edge_001",
+  "scope": "experiment",
+  "created_at": "2026-04-09T22:18:47.495148+00:00",
+  "source_trace": null,
+  "base_scope": "agent_global",
+  "host_role": "isolated_replay_run",
+  "updated_at": "2026-04-09T23:12:59.624752+00:00"
+}

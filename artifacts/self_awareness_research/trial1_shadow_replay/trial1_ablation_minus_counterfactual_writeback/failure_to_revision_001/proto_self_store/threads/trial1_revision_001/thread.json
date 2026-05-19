@@ -1,0 +1,21 @@
+{
+  "thread_id": "trial1_revision_001",
+  "scope": "thread",
+  "created_at": "2026-04-09T17:39:08.442209+00:00",
+  "event_count": 4,
+  "updated_at": "2026-04-09T17:39:09.591158+00:00",
+  "source": "runtime",
+  "latest_session_id": "trial1_revision_001",
+  "latest_event_id": "trial1_revision_001_turn_002_tool_0",
+  "latest_turn_id": "turn_002",
+  "latest_event_type": "tool_result",
+  "last_context": {
+    "session_id": "trial1_revision_001",
+    "thread_id": "trial1_revision_001",
+    "turn_id": "turn_002",
+    "source": "runtime",
+    "event_type": "tool_result",
+    "state_scope": "experiment",
+    "experiment_id": "trial1.trial1_ablation_minus_counterfactual_writeback.failure_to_revision_001"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_07",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "sewon/ambig_qa",
+    "source_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "dataset_card_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "license": "cc-by-sa-3.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select a validation item whose annotations mark multiple plausible answers that require disambiguation",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "full",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=sewon%2Fambig_qa&config=full&split=validation",
+    "locator": {
+      "row_offset": 1,
+      "row_id": "8266116451988110240"
+    },
+    "source_record_digest": "d883f5351ac0e78d5cb1d78063cbcfc8c2454fc43058c33de357ea734f5b2cd8",
+    "extracted_at": "2026-04-10T06:53:38.547340+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "8266116451988110240",
+    "question": "How often does spermatogeneis—the production of sperm—occur?",
+    "annotations": {
+      "type": [
+        "singleAnswer",
+        "singleAnswer"
+      ],
+      "answer": [
+        [
+          "usually continues uninterrupted until death"
+        ],
+        [
+          "constant",
+          "usually continues uninterrupted until death"
+        ]
+      ],
+      "qaPairs": [
+        {
+          "question": [],
+          "answer": []
+        },
+        {
+          "question": [],
+          "answer": []
+        }
+      ]
+    },
+    "viewed_doc_titles": [
+      "Spermatogenesis"
+    ],
+    "used_queries": {
+      "query": [
+        "How often does spermatogeneis—the production of sperm—occur?"
+      ],
+      "results": [
+        {
+          "title": [
+            "Spermatogenesis",
+            "Sertoli cell",
+            "Sperm",
+            "Fish reproduction",
+            "Male infertility",
+            "Azoospermia",
+            "Gamete",
+            "Spermatogenesis arrest",
+            "Germ cell",
+            "Spermiogenesis"
+          ],
+          "snippet": [
+            "<b>Spermatogenesis is</b> the process by which haploid <b>spermatozoa</b> develop from \ngerm cells in the ... The division <b>happens</b> asynchronically, this <b>is</b> why <b>is</b> we cut \nthe tube transversally ... Testes <b>produce</b> 200 to 300 million <b>spermatozoa</b> daily. ... \nfor maintenance of the reproductive tract, and ABP allows a <b>much</b> higher level of \nfertility.",
+            "A Sertoli cell <b>is</b> a &quot;nurse&quot; cell of the testicles that <b>is</b> part of a seminiferous tubule \nand helps in the process of <b>spermatogenesis, the production of sperm</b>. ... tubules \n<b>occurs</b> by conformational changes in the lateral margins of the Sertoli cells. ... the \n<b>long</b> process of <b>spermatogenesis</b>, ending in the release of <b>spermatozoa</b> in a&nbsp;...",
+            "<b>Sperm is</b> the male reproductive cell, or gamete, in anisogamous forms of sexual \nreproduction ... This whole process <b>occurs</b> constantly and takes around 3 months \nfrom start to finish. <b>Sperm</b> cells ... The <b>spermatozoa</b> of animals <b>are produced</b> \nthrough <b>spermatogenesis</b> inside the male gonads (testicles) via meiotic division.",
+            "Fish reproductive organs include testes and ovaries. In most species, gonads <b>are</b> \npaired ... Instead, the <b>sperm are produced</b> in spherical structures called <b>sperm</b> \nampullae. ... Fish <b>can</b> present cystic or semi-cystic <b>spermatogenesis</b> in relation to \nthe release ... This process <b>can</b> also <b>occur</b>, but less <b>frequently</b>, in oocytes in other\n&nbsp;...",
+            "Male infertility refers to a male&#39;s inability to cause pregnancy in a fertile female. In \nhumans it accounts for 40–50% of infertility. It affects approximately 7% of all men\n. Male infertility <b>is</b> commonly due to deficiencies in the <b>semen</b>, and <b>semen</b> ... Men \nwith this condition <b>can</b> exhibit azoospermia (no <b>sperm production</b>),&nbsp;...",
+            "Azoospermia <b>is</b> the medical condition of a man whose <b>semen</b> contains no <b>sperm</b>. \n... In post-testicular azoospermia <b>sperm are produced</b> but not ejaculated, a \ncondition that ... In addition, 13% of men with azoospermia have a defective \n<b>spermatogenesis</b> that <b>is</b> ... A section of the <b>long</b> arm of the Y chromosome has \nbeen termed&nbsp;...",
+            "A gamete <b>is</b> a haploid cell that fuses with another haploid cell during fertilization \nin organisms that sexually reproduce. In species that <b>produce</b> two \nmorphologically distinct types of gametes, and in ... <b>Spermatogenesis is</b> the \nprocess of male gamete <b>formation</b> in animals. This process also involves meiosis \n<b>occurring</b> in the&nbsp;...",
+            "<b>Spermatogenesis</b> arrest <b>is</b> known as the interruption of germinal cells of specific \ncellular type, which elicits an altered <b>spermatozoa formation</b>. ... Oligospermia <b>is</b> \n<b>when</b> extremely low concentrations of fertile <b>sperm are</b> found in <b>semen</b> or ... It has \nbeen found through studies that spermatogenetic arrest tends to <b>occur</b> in the late\n&nbsp;...",
+            "A germ cell <b>is</b> any biological cell that gives rise to the gametes of an organism \nthat reproduces ... Germ cells <b>produce</b> gametes and <b>are</b> the only cells that <b>can</b> \nundergo meiosis as well as mitosis. ... eggs or <b>sperm</b> (respectively oogenesis \nand <b>spermatogenesis</b>) <b>is</b> different for each species but the general stages <b>are</b> \nsimilar.",
+            "<b>Sperm</b>. Spermiogenesis <b>is</b> the final stage of <b>spermatogenesis</b>, which sees the \nmaturation of spermatids ... the Golgi phase, the cap phase, <b>formation</b> of tail, and \nthe maturation stage. ... This orientation <b>occurs</b> during the acrosomal phase."
+          ]
+        }
+      ]
+    },
+    "nq_answer": [
+      "74 days"
+    ],
+    "nq_doc_title": "Spermatogenesis"
+  },
+  "normalized_case": {
+    "case_type": "ambiguous_qa",
+    "initial_prompt": "How often does spermatogeneis—the production of sperm—occur?",
+    "supporting_material": {
+      "viewed_doc_titles": [
+        "Spermatogenesis"
+      ],
+      "nq_doc_title": "Spermatogenesis"
+    },
+    "reference_bundle": {
+      "ambiguous_answer_candidates": [
+        "usually continues uninterrupted until death",
+        "constant",
+        "usually continues uninterrupted until death"
+      ],
+      "clarification_expected": true
+    },
+    "replay_recipe": {
+      "family": "ambiguity_clarification",
+      "followup_turn": "Clarify which interpretation you mean before giving a final answer."
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "runtime_proximal_post_stronger_selection_coherence_runner.v1",
+  "generated_at": "2026-05-15T23:09:44.533788+00:00",
+  "manifest_path": "docs/codex/tasks/runtime-proximal-post-stronger-selection-coherence-runner-implementation/RUNNER_MANIFEST.json",
+  "source": "runtime_proximal_post_stronger_selection_coherence_runner",
+  "claim_ceiling": "bounded_post_stronger_selection_coherence_only",
+  "input_results": {
+    "stronger_admission": {
+      "status": "pass",
+      "claim_ceiling": "bounded_stronger_admission_only",
+      "summary": {
+        "required_artifact_count": 2,
+        "passed_artifact_count": 2,
+        "allowed_host_surface": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "bounded_standard": "resilient_self_awareness_proxy_standard"
+      },
+      "aggregate": {
+        "admission_stack_status": "pass",
+        "low_cue_resilience_status": "pass",
+        "host_surface_integrity_status": "pass",
+        "claim_ceiling_status": "pass",
+        "stronger_admission_decision": "pass",
+        "reviewer_gate_ready": true,
+        "blocked_reasons": []
+      }
+    },
+    "replay_gate": {
+      "status": "pass",
+      "selection": {
+        "decision": "switch_to_active_inference",
+        "challenger_status": "pass",
+        "challenger_pass": true,
+        "challenger_switch_advantage": true,
+        "challenger_target_delta_rules": {
+          "T1": "non_regression>=-0.02",
+          "T2": "delta>=0.05",
+          "T3": "delta>=0.05",
+          "T4": "delta>=0.05",
+          "T5": "delta>=0.05"
+        },
+        "weak_ablations": [],
+        "ablation_drops": {
+          "counterfactual": 0.3333,
+          "viability": 0.25,
+          "corrective_trace": 0.6667,
+          "boundary_confidence": 0.25
+        }
+      }
+    },
+    "selection_closeout": {
+      "status": "pass",
+      "routing_assertions": {
+        "routing_ok": true,
+        "host_surface_ok": true,
+        "claim_guard_ok": true,
+        "selection_verdict_bullets": [
+          "active-inference self-model = current durable build-first candidate",
+          "MVS-aligned compact = closed evidence",
+          "WP17 / MVP22 = parked bounded lane"
+        ],
+        "routing_reset_bullets": [
+          "single formal runtime mainline",
+          "single research implementation lane"
+        ],
+        "host_surface_bullets": [
+          "policy_hint",
+          "response_tendency",
+          "trace_payload"
+        ],
+        "forbidden_claim_bullets": [
+          "runtime efficacy",
+          "live benefit",
+          "formal runtime enablement",
+          "AI self-awareness achieved",
+          "consciousness-like property proved"
+        ]
+      }
+    }
+  },
+  "aggregate": {
+    "stronger_admission_status": "pass",
+    "selection_coherence_status": "pass",
+    "ablation_retention_status": "pass",
+    "host_surface_integrity_status": "pass",
+    "claim_ceiling_status": "pass",
+    "post_stronger_decision": "pass",
+    "reviewer_gate_ready": true,
+    "blocked_reasons": []
+  },
+  "summary": {
+    "required_artifact_count": 3,
+    "passed_artifact_count": 3,
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "bounded_standard": "selection_coherent_resilient_self_awareness_proxy_standard"
+  }
+}

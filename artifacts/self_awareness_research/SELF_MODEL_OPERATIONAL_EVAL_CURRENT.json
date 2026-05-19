@@ -1,0 +1,375 @@
+{
+  "generated_at": "2026-04-09T11:17:30.948297-05:00",
+  "git_commit_short": "62e54bd",
+  "seed": 20260409,
+  "trials_per_target": 300,
+  "total_trials": 1500,
+  "candidate_rows": [
+    {
+      "key": "mvs_aligned_compact",
+      "label": "MVS-aligned compact",
+      "kind": "backup",
+      "components": [
+        "identity_anchor",
+        "self_model_decision_hook",
+        "plastic_writeback",
+        "tension_field",
+        "corrective_trace",
+        "episodic_trace",
+        "world_model",
+        "meta_model"
+      ],
+      "component_count": 8,
+      "target_means": {
+        "sustained_identity": 0.8089,
+        "decision_impact": 0.841,
+        "plasticity": 0.8165,
+        "tension_causality": 0.8017,
+        "corrective_trace": 0.8201
+      },
+      "composite": 0.8177,
+      "cue_mask_drop": 0.0018,
+      "passed_targets": [
+        "sustained_identity",
+        "decision_impact",
+        "plasticity",
+        "tension_causality",
+        "corrective_trace"
+      ],
+      "passes_all_targets": true,
+      "delta_vs_baseline": 0.8098,
+      "build_now_score": 0.7957,
+      "process_scores": {
+        "implementability": 4,
+        "reversibility": 4,
+        "signal_within_2_weeks": 4,
+        "evaluation_clarity": 4,
+        "dependency_cost": 3
+      }
+    },
+    {
+      "key": "active_inference_self_model",
+      "label": "Active-inference self-model",
+      "kind": "large",
+      "components": [
+        "identity_anchor",
+        "self_model_decision_hook",
+        "plastic_writeback",
+        "tension_field",
+        "corrective_trace",
+        "episodic_trace",
+        "world_model",
+        "meta_model",
+        "uncertainty_tracker",
+        "policy_evaluator"
+      ],
+      "component_count": 10,
+      "target_means": {
+        "sustained_identity": 0.8573,
+        "decision_impact": 0.94,
+        "plasticity": 0.8887,
+        "tension_causality": 0.8977,
+        "corrective_trace": 0.8905
+      },
+      "composite": 0.8948,
+      "cue_mask_drop": 0.0057,
+      "passed_targets": [
+        "sustained_identity",
+        "decision_impact",
+        "plasticity",
+        "tension_causality",
+        "corrective_trace"
+      ],
+      "passes_all_targets": true,
+      "delta_vs_baseline": 0.8869,
+      "build_now_score": 0.7828,
+      "process_scores": {
+        "implementability": 3,
+        "reversibility": 3,
+        "signal_within_2_weeks": 3,
+        "evaluation_clarity": 4,
+        "dependency_cost": 2
+      }
+    },
+    {
+      "key": "operational_self_loop_core",
+      "label": "Operational self-loop core",
+      "kind": "mainline",
+      "components": [
+        "identity_anchor",
+        "self_model_decision_hook",
+        "plastic_writeback",
+        "tension_field",
+        "corrective_trace"
+      ],
+      "component_count": 5,
+      "target_means": {
+        "sustained_identity": 0.5626,
+        "decision_impact": 0.6793,
+        "plasticity": 0.6408,
+        "tension_causality": 0.6379,
+        "corrective_trace": 0.6827
+      },
+      "composite": 0.6406,
+      "cue_mask_drop": 0.0257,
+      "passed_targets": [],
+      "passes_all_targets": false,
+      "delta_vs_baseline": 0.6327,
+      "build_now_score": 0.7772,
+      "process_scores": {
+        "implementability": 5,
+        "reversibility": 5,
+        "signal_within_2_weeks": 5,
+        "evaluation_clarity": 5,
+        "dependency_cost": 5
+      }
+    },
+    {
+      "key": "trace_only",
+      "label": "Corrective trace only",
+      "kind": "partial",
+      "components": [
+        "corrective_trace"
+      ],
+      "component_count": 1,
+      "target_means": {
+        "sustained_identity": 0.0081,
+        "decision_impact": 0.0105,
+        "plasticity": 0.0953,
+        "tension_causality": 0.0146,
+        "corrective_trace": 0.4476
+      },
+      "composite": 0.1152,
+      "cue_mask_drop": 0.2263,
+      "passed_targets": [],
+      "passes_all_targets": false,
+      "delta_vs_baseline": 0.1073,
+      "build_now_score": 0.4362,
+      "process_scores": {
+        "implementability": 5,
+        "reversibility": 5,
+        "signal_within_2_weeks": 4,
+        "evaluation_clarity": 5,
+        "dependency_cost": 5
+      }
+    },
+    {
+      "key": "identity_only",
+      "label": "Identity anchor only",
+      "kind": "partial",
+      "components": [
+        "identity_anchor"
+      ],
+      "component_count": 1,
+      "target_means": {
+        "sustained_identity": 0.3966,
+        "decision_impact": 0.0232,
+        "plasticity": 0.0105,
+        "tension_causality": 0.0086,
+        "corrective_trace": 0.0025
+      },
+      "composite": 0.0883,
+      "cue_mask_drop": 0.0,
+      "passed_targets": [],
+      "passes_all_targets": false,
+      "delta_vs_baseline": 0.0804,
+      "build_now_score": 0.4195,
+      "process_scores": {
+        "implementability": 5,
+        "reversibility": 5,
+        "signal_within_2_weeks": 4,
+        "evaluation_clarity": 5,
+        "dependency_cost": 5
+      }
+    },
+    {
+      "key": "baseline_chat",
+      "label": "Baseline chat",
+      "kind": "control",
+      "components": [],
+      "component_count": 0,
+      "target_means": {
+        "sustained_identity": 0.0074,
+        "decision_impact": 0.0113,
+        "plasticity": 0.0092,
+        "tension_causality": 0.0084,
+        "corrective_trace": 0.0031
+      },
+      "composite": 0.0079,
+      "cue_mask_drop": 0.1089,
+      "passed_targets": [],
+      "passes_all_targets": false,
+      "delta_vs_baseline": 0.0,
+      "build_now_score": 0.3849,
+      "process_scores": {
+        "implementability": 5,
+        "reversibility": 5,
+        "signal_within_2_weeks": 5,
+        "evaluation_clarity": 5,
+        "dependency_cost": 5
+      }
+    },
+    {
+      "key": "narrative_identity_shell",
+      "label": "Narrative identity shell",
+      "kind": "candidate",
+      "components": [
+        "narrative_shell"
+      ],
+      "component_count": 1,
+      "target_means": {
+        "sustained_identity": 0.0092,
+        "decision_impact": 0.0001,
+        "plasticity": 0.0103,
+        "tension_causality": 0.0001,
+        "corrective_trace": 0.0
+      },
+      "composite": 0.0039,
+      "cue_mask_drop": 0.5637,
+      "passed_targets": [],
+      "passes_all_targets": false,
+      "delta_vs_baseline": -0.004,
+      "build_now_score": 0.3064,
+      "process_scores": {
+        "implementability": 5,
+        "reversibility": 5,
+        "signal_within_2_weeks": 3,
+        "evaluation_clarity": 2,
+        "dependency_cost": 5
+      }
+    }
+  ],
+  "explorations": [
+    {
+      "id": "E00",
+      "hypothesis": "Anthropomorphic narrative shell does not meaningfully improve the 5 operational targets over baseline chat.",
+      "result": "pass",
+      "tested_candidates": [
+        "baseline_chat",
+        "narrative_identity_shell"
+      ],
+      "decision": "reject narrative shell"
+    },
+    {
+      "id": "E01",
+      "hypothesis": "Operational self-loop core is sufficient to improve all 5 operational targets over baseline and single-axis partial candidates.",
+      "result": "fail",
+      "tested_candidates": [
+        "baseline_chat",
+        "identity_only",
+        "trace_only",
+        "operational_self_loop_core"
+      ],
+      "decision": "mainline fails and must be reframed"
+    },
+    {
+      "id": "E02",
+      "hypothesis": "Operational self-loop core has a better build-now tradeoff than larger alternatives.",
+      "result": "fail",
+      "tested_candidates": [
+        "operational_self_loop_core",
+        "mvs_aligned_compact",
+        "active_inference_self_model"
+      ],
+      "decision": "switch mainline to a larger candidate"
+    }
+  ],
+  "mainline_candidate": {
+    "key": "mvs_aligned_compact",
+    "label": "MVS-aligned compact",
+    "kind": "backup",
+    "components": [
+      "identity_anchor",
+      "self_model_decision_hook",
+      "plastic_writeback",
+      "tension_field",
+      "corrective_trace",
+      "episodic_trace",
+      "world_model",
+      "meta_model"
+    ],
+    "component_count": 8,
+    "target_means": {
+      "sustained_identity": 0.8089,
+      "decision_impact": 0.841,
+      "plasticity": 0.8165,
+      "tension_causality": 0.8017,
+      "corrective_trace": 0.8201
+    },
+    "composite": 0.8177,
+    "cue_mask_drop": 0.0018,
+    "passed_targets": [
+      "sustained_identity",
+      "decision_impact",
+      "plasticity",
+      "tension_causality",
+      "corrective_trace"
+    ],
+    "passes_all_targets": true,
+    "delta_vs_baseline": 0.8098,
+    "build_now_score": 0.7957,
+    "process_scores": {
+      "implementability": 4,
+      "reversibility": 4,
+      "signal_within_2_weeks": 4,
+      "evaluation_clarity": 4,
+      "dependency_cost": 3
+    }
+  },
+  "backup_candidate": {
+    "key": "active_inference_self_model",
+    "label": "Active-inference self-model",
+    "kind": "large",
+    "components": [
+      "identity_anchor",
+      "self_model_decision_hook",
+      "plastic_writeback",
+      "tension_field",
+      "corrective_trace",
+      "episodic_trace",
+      "world_model",
+      "meta_model",
+      "uncertainty_tracker",
+      "policy_evaluator"
+    ],
+    "component_count": 10,
+    "target_means": {
+      "sustained_identity": 0.8573,
+      "decision_impact": 0.94,
+      "plasticity": 0.8887,
+      "tension_causality": 0.8977,
+      "corrective_trace": 0.8905
+    },
+    "composite": 0.8948,
+    "cue_mask_drop": 0.0057,
+    "passed_targets": [
+      "sustained_identity",
+      "decision_impact",
+      "plasticity",
+      "tension_causality",
+      "corrective_trace"
+    ],
+    "passes_all_targets": true,
+    "delta_vs_baseline": 0.8869,
+    "build_now_score": 0.7828,
+    "process_scores": {
+      "implementability": 3,
+      "reversibility": 3,
+      "signal_within_2_weeks": 3,
+      "evaluation_clarity": 4,
+      "dependency_cost": 2
+    }
+  },
+  "rejected_candidates": [
+    "operational_self_loop_core",
+    "trace_only",
+    "identity_only",
+    "baseline_chat",
+    "narrative_identity_shell"
+  ],
+  "final_recommendation": "build_now",
+  "interpretation": {
+    "proves": "Under the current held-out synthetic operational eval, the smallest candidate that consistently improves sustained identity, decision-affecting self-model behavior, plasticity, tension causality, and corrective traces is MVS-aligned compact.",
+    "does_not_prove": "It does not prove consciousness, subjective experience, runtime mainline efficacy, or live user-transfer."
+  }
+}

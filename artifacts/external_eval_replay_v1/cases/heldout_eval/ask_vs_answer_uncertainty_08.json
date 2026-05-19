@@ -1,0 +1,158 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_08",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "sewon/ambig_qa",
+    "source_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "dataset_card_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "license": "cc-by-sa-3.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select a validation item where one answer is underspecified without asking which interpretation is wanted",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "full",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=sewon%2Fambig_qa&config=full&split=validation",
+    "locator": {
+      "row_offset": 2,
+      "row_id": "7336174019902289593"
+    },
+    "source_record_digest": "814148dc1914523e748d49bbb684089617fcf967671c70ab2416710670c56b25",
+    "extracted_at": "2026-04-10T06:53:38.560077+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "7336174019902289593",
+    "question": "When was the first remote control tv invented?",
+    "annotations": {
+      "type": [
+        "singleAnswer",
+        "singleAnswer"
+      ],
+      "answer": [
+        [
+          "1950"
+        ],
+        [
+          "1950"
+        ]
+      ],
+      "qaPairs": [
+        {
+          "question": [],
+          "answer": []
+        },
+        {
+          "question": [],
+          "answer": []
+        }
+      ]
+    },
+    "viewed_doc_titles": [
+      "Remote control"
+    ],
+    "used_queries": {
+      "query": [
+        "When was the first remote control tv invented?",
+        "remote control tv"
+      ],
+      "results": [
+        {
+          "title": [
+            "Remote control",
+            "Robert Adler",
+            "Zenith Flash-matic",
+            "Zenith Electronics",
+            "Apple Remote",
+            "Hillcrest Labs",
+            "Universal remote",
+            "Radio receiver",
+            "Radio",
+            "Television in Australia"
+          ],
+          "snippet": [
+            "The <b>first remote</b> intended to <b>control</b> a <b>television</b> was ... Later, the rapid decrease \nin price of transistors <b>made</b> possible&nbsp;...",
+            "Robert Adler (December 4, 1913 – February 15, 2007) was an Austrian-born \nAmerican <b>inventor</b> who held numerous patents. He worked for Zenith Electronics, \nretiring as the company&#39;s Vice President and Director of Research. His work \nincluded developing early sound-based <b>remote controls</b> for <b>televisions</b>,&nbsp;...",
+            "The Zenith Flash-Matic was the <b>first</b> wireless <b>remote control invented</b> by Eugene \nPolley in 1955. It had only one button that was used to power on and off, channel \nup, channel down, and mute. The Flash-matic&#39;s phototechnology was a \nsignificant innovation in <b>television</b>&nbsp;...",
+            "Zenith Electronics, LLC is an American research and development company that \ndevelops ... Zenith was the <b>inventor</b> of subscription <b>television</b> and the modern \n<b>remote control</b>, and the <b>first</b> to develop High-definition <b>television</b> (HDTV) in North\n&nbsp;...",
+            "Type, A remote used to control the Apple <b>TV</b>, iPods and iPhones (with dock), and \nMacs with infrared ports. Release date, October 12, 2005 (Original) October 20, \n2009 (Current). The Apple Remote is a <b>remote control</b> introduced in October \n2005 by Apple Inc. for use with a ... The <b>first</b> three generations of Apple <b>TV</b> used \nthe Apple Remote as their&nbsp;...",
+            "Hillcrest Labs is a sensor processing technology company that develops \nfreespace motion-<b>control</b> technology and developed the <b>first</b> motion-<b>controlled</b> \n<b>remote</b> for <b>television</b>. Hillcrest also <b>invented</b> the <b>first</b> graphical zoomable interface \nfor <b>television</b> and&nbsp;...",
+            "A universal remote is a <b>remote control</b> that can be programmed to operate \nvarious brands of ... In 1987, the <b>first</b> programmable universal <b>remote control</b> was \nreleased. ... a startup founded by Steve Wozniak, the <b>inventor</b> of the Apple I and \nApple II computers. ... <b>TV</b>-B-Gone - A <b>remote control</b> device for turning off \n<b>television</b> sets&nbsp;...",
+            "In radio communications, a radio receiver, also known as a receiver, wireless or \nsimply radio is ... Broadcast <b>television</b> reception - <b>Televisions</b> receive a video \nsignal ... <b>Radio controlled</b> model and other models include multichannel \nreceivers in ... The <b>first</b> radio receivers <b>invented</b> by Marconi, Oliver Lodge and \nAlexander&nbsp;...",
+            "Radio is the technology of signaling and communicating using radio waves. \nRadio waves are ... In radio communication, used in radio and <b>television</b> \nbroadcasting, cell ... In wireless radio <b>remote control</b> devices like drones, garage \ndoor openers, ... The <b>first</b> practical radio transmitters and receivers were \ndeveloped around&nbsp;...",
+            "<b>Television</b> in Australia began experimentally as early as 1929 in Melbourne with \n<b>radio</b> stations ... The <b>first television</b> broadcast in Australia took place on 30 \nSeptember 1929 at the Menzies Hotel in Melbourne, using ... Commercial <b>TV</b> \nlicences were nominally overseen by the Australian Broadcasting <b>Control</b> Board (\nABCB),&nbsp;..."
+          ]
+        },
+        {
+          "title": [
+            "Remote control",
+            "Remote Control (game show)",
+            "Robert Adler",
+            "Consumer Electronics Control",
+            "Television's Greatest Hits: Remote Control",
+            "Zenith Flash-matic",
+            "Universal remote",
+            "Apple Remote",
+            "Remote control (disambiguation)",
+            "Remote Control (The Tubes album)"
+          ],
+          "snippet": [
+            "Early <b>television remote controls</b> (1956–1977) used ultrasonic tones. Present-day \n<b>remote controls</b> are commonly&nbsp;...",
+            "<b>Remote Control</b> is a <b>TV</b> game show that ran on MTV for five seasons from 1987 \nuntil 1990. It was MTV&#39;s first original non-musical program, and first game show.",
+            "Robert Adler (December 4, 1913 – February 15, 2007) was an Austrian-born \nAmerican inventor who held numerous patents. He worked for Zenith Electronics, \nretiring as the company&#39;s Vice President and Director of Research. His work \nincluded developing early sound-based <b>remote controls</b> for ... Adler&#39;s solution \nwas to use sound waves to transmit signals to the <b>TV</b>.",
+            "For example, a <b>television</b> set <b>remote</b> controller can also <b>control</b> a set-top box and \na DVD player. It is a one-wire bidirectional serial bus that is based on the&nbsp;...",
+            "<b>Remote Control</b> the seventh volume of the <b>Television&#39;s</b> Greatest Hits series of \ncompilation albums by TVT Records. The album catalog was later acquired by \nThe&nbsp;...",
+            "The Zenith Flash-Matic was the first wireless <b>remote control</b> invented by Eugene \nPolley in 1955. It had only one button that was used to power on and off, channel \nup, channel down, and mute. The Flash-matic&#39;s phototechnology was a \nsignificant innovation in <b>television</b>&nbsp;...",
+            "A universal remote is a <b>remote control</b> that can be programmed to operate \nvarious brands of ... Touchscreen Universal <b>Remote Control</b> that recommends \nwhat to watch. <b>TV</b>-B-Gone - A <b>remote control</b> device for turning off <b>television</b> sets\n&nbsp;...",
+            "Type, A remote used to control the Apple <b>TV</b>, iPods and iPhones (with dock), and \nMacs with infrared ports. Release date, October 12, 2005 (Original) October 20, \n2009 (Current). The Apple Remote is a <b>remote control</b> introduced in October \n2005 by Apple Inc. for use with a&nbsp;...",
+            "... <b>Remote Control</b> (game show), a 1987–1990 American game show; <b>Remote</b> \n<b>Control</b>, an Indian <b>TV</b> series featuring&nbsp;...",
+            "<b>Remote Control</b> is the fifth album released by the Tubes. This was their first to be \nproduced by Todd Rundgren It is a concept album about a <b>television</b>-addicted&nbsp;..."
+          ]
+        }
+      ]
+    },
+    "nq_answer": [
+      "1950"
+    ],
+    "nq_doc_title": "Remote control"
+  },
+  "normalized_case": {
+    "case_type": "ambiguous_qa",
+    "initial_prompt": "When was the first remote control tv invented?",
+    "supporting_material": {
+      "viewed_doc_titles": [
+        "Remote control"
+      ],
+      "nq_doc_title": "Remote control"
+    },
+    "reference_bundle": {
+      "ambiguous_answer_candidates": [
+        "1950",
+        "1950"
+      ],
+      "clarification_expected": true
+    },
+    "replay_recipe": {
+      "family": "ambiguity_clarification",
+      "followup_turn": "Clarify which interpretation you mean before giving a final answer."
+    }
+  }
+}

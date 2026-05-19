@@ -1,0 +1,54 @@
+{
+  "schema_version": "runtime_proximal_post_stronger_selection_coherence_runner_manifest.v1",
+  "runner_contract": {
+    "allowed_host_surface": [
+      "policy_hint",
+      "response_tendency",
+      "trace_payload"
+    ],
+    "required_artifacts": [
+      "stronger_admission",
+      "replay_gate",
+      "selection_closeout"
+    ],
+    "expected_selection_decision": "switch_to_active_inference",
+    "required_ablation_keys": [
+      "counterfactual",
+      "viability",
+      "corrective_trace",
+      "boundary_confidence"
+    ],
+    "target_delta_rules": {
+      "T1": "non_regression>=-0.02",
+      "T2": "delta>=0.05",
+      "T3": "delta>=0.05",
+      "T4": "delta>=0.05",
+      "T5": "delta>=0.05"
+    },
+    "selection_closeout": {
+      "required_routing_phrases": [
+        "active-inference self-model = current durable build-first candidate",
+        "MVS-aligned compact = closed evidence",
+        "WP17 / MVP22 = parked bounded lane",
+        "single formal runtime mainline",
+        "single research implementation lane"
+      ],
+      "required_host_surface_terms": [
+        "policy_hint",
+        "response_tendency",
+        "trace_payload"
+      ],
+      "required_claim_guard_terms": [
+        "runtime efficacy",
+        "live benefit",
+        "AI self-awareness achieved"
+      ]
+    },
+    "claim_ceiling": "bounded_post_stronger_selection_coherence_only"
+  },
+  "artifacts": {
+    "stronger_admission": "artifacts/self_awareness_research/RUNTIME_PROXIMAL_STRONGER_ADMISSION_CURRENT.json",
+    "replay_gate": "artifacts/self_awareness_research/MVS_REPLAY_VALIDATOR_SCORED_CURRENT.json",
+    "selection_closeout": "docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md"
+  }
+}

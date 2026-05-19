@@ -1,0 +1,124 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "ask_vs_answer_uncertainty_06",
+  "bucket": "ask_vs_answer_uncertainty",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "sewon/ambig_qa",
+    "source_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "dataset_card_url": "https://huggingface.co/datasets/sewon/ambig_qa",
+    "license": "cc-by-sa-3.0",
+    "license_class": "sharealike_open",
+    "source_split": "validation",
+    "selection_hint": "select a multipleQAs validation item where the surface question decomposes into at least two latent questions",
+    "target_mechanism": "low-success guard and abstain-or-ask behavior under uncertainty",
+    "expected_observable": "host-consumable ask/clarify tendency or bounded no-answer when answerability is weak or ambiguity remains unresolved"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "full",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=sewon%2Fambig_qa&config=full&split=validation",
+    "locator": {
+      "row_offset": 0,
+      "row_id": "-807825952267713091"
+    },
+    "source_record_digest": "62bdf4f49a0347db9057395f927a54bdb0eb0c72906881dbb0f72bdafdc2369f",
+    "extracted_at": "2026-04-10T06:53:38.534360+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "id": "-807825952267713091",
+    "question": "Who plays the doctor in dexter season 1?",
+    "annotations": {
+      "type": [
+        "singleAnswer"
+      ],
+      "answer": [
+        [
+          "Tony Goldwyn",
+          "Goldwyn"
+        ]
+      ],
+      "qaPairs": [
+        {
+          "question": [],
+          "answer": []
+        }
+      ]
+    },
+    "viewed_doc_titles": [
+      "Dexter (season 1)"
+    ],
+    "used_queries": {
+      "query": [
+        "Who plays the doctor in dexter season 1?"
+      ],
+      "results": [
+        {
+          "title": [
+            "Dexter (season 1)",
+            "Christian Camargo",
+            "Peter Facinelli",
+            "Love American Style (Dexter)",
+            "Dexter (TV series)",
+            "Dexter Morgan",
+            "List of Dexter characters",
+            "David Walton (actor)",
+            "Born Free (Dexter)",
+            "Dexter (season 8)"
+          ],
+          "snippet": [
+            "The first <b>season</b> of <b>Dexter</b> is an adaptation of Jeff Lindsay&#39;s first novel in a series \nof the same ... and left taunting clues, leading <b>Dexter</b> to believe that the Killer is \n<b>playing</b> a game with him. ... An unexplained suicide of a wealthy and powerful \nwoman leads <b>Dexter</b> to suspect that her psychologist, <b>Dr</b>. Emmett Meridian, may&nbsp;...",
+            "Christian Camargo (né Minnick; born July 7, 1971) is an American <b>actor</b>, \nproducer, writer, and director. He is perhaps best known for his roles as Brian \nMoser in the Showtime drama <b>Dexter</b>, Michael Corrigan in the Netflix ... He guest \nstarred as Wade Crocker on the third <b>season</b> of Syfy&#39;s Haven. Camargo portrayed \nthe title&nbsp;...",
+            "Peter Facinelli (born November 26, 1973) is an American <b>actor</b> and producer. He \nstarred as Donovan &quot;Van&quot; Ray on the Fox series Fastlane from 2002 to 2003. He \n<b>played Dr</b>. Carlisle Cullen in the film adaptations of the Twilight novel series, and \nis also known for his role as Mike <b>Dexter</b> in the 1998 film Can&#39;t Hardly Wait. ... He \n<b>played Dr</b>. Fitch Cooper for seven <b>seasons</b> on the Showtime dark comedy&nbsp;...",
+            "<b>Dexter</b> (<b>season 1</b>) &middot; List of <b>Dexter</b> episodes. &quot;Love American Style&quot; is the fifth \nepisode of the first season of the American television drama ... Devon Graye as \nTeenage Dexter Morgan &middot; Ashley Rose Orr as Mindy; June Angela as Doctor; \nJosh&nbsp;...",
+            "<b>Dexter</b> is an American television crime drama mystery series that aired on \nShowtime from ... The show&#39;s first <b>season</b> was derived from the novel Darkly \nDreaming <b>Dexter</b> ... However, it was not us who sent you the text, but <b>one of</b> your \nfriends. ... Besides Michael C. Hall <b>playing</b> the title character, the show&#39;s \nsupporting cast&nbsp;...",
+            "In <b>season</b> four, before killing a police officer who has murdered her own husband \nand daughter, <b>Dexter</b> is overwhelmed with the realization that he does not want&nbsp;...",
+            "This is a list of characters from the Showtime TV series <b>Dexter</b> and the Jeff \nLindsay novels, ... 3.1 Minor characters in <b>season 1</b>; 3.2 Minor characters in \nseason 2; 3.3 Minor ... Quinn thanks <b>Dexter</b>, <b>who plays</b> dumb and just says &quot;For \nwhat? ... Saxon and <b>Dr</b>. Vogel reunite, but Vogel eventually decides to let <b>Dexter</b> \nkill him after&nbsp;...",
+            "David B. Walton (born October 27, 1978) is an American <b>actor</b>. He is known for \nhis role in the ... He <b>played Dr</b>. Rick in the comedy film Fired Up! (2009). ... to \nJohn Hunter Walton Jr. and his wife, Carolyn K. Walton, he is <b>one of</b> seven \nsiblings. ... and afterwards attended <b>Dexter</b> School in Brookline, Massachusetts, \nand the St.",
+            "<b>Dexter</b> (<b>season 1</b>) &middot; List of <b>Dexter</b> episodes. &quot;Born Free&quot; is the twelfth episode of \nseason one and first-season finale of the American ... In the novel, <b>Dexter</b> and his \nbrother are nearly identical, whereas the actors <b>playing</b> the two characters are&nbsp;...",
+            "The eighth and final <b>season</b> of <b>Dexter</b> premiered on June 30, 2013. The <b>season</b> \nfollows <b>Dexter</b> Morgan, who is forced to deal with his past when he comes&nbsp;..."
+          ]
+        }
+      ]
+    },
+    "nq_answer": [
+      "Tony Goldwyn"
+    ],
+    "nq_doc_title": "Dexter (season 1)"
+  },
+  "normalized_case": {
+    "case_type": "ambiguous_qa",
+    "initial_prompt": "Who plays the doctor in dexter season 1?",
+    "supporting_material": {
+      "viewed_doc_titles": [
+        "Dexter (season 1)"
+      ],
+      "nq_doc_title": "Dexter (season 1)"
+    },
+    "reference_bundle": {
+      "ambiguous_answer_candidates": [
+        "Tony Goldwyn",
+        "Goldwyn"
+      ],
+      "clarification_expected": true
+    },
+    "replay_recipe": {
+      "family": "ambiguity_clarification",
+      "followup_turn": "Clarify which interpretation you mean before giving a final answer."
+    }
+  }
+}

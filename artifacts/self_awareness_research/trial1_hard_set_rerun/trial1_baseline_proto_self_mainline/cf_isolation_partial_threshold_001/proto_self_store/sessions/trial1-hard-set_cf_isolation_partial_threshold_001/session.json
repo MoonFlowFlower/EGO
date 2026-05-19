@@ -1,0 +1,12 @@
+{
+  "session_id": "trial1-hard-set:cf_isolation_partial_threshold_001",
+  "scope": "session",
+  "created_at": "2026-04-09T22:18:32.490595+00:00",
+  "reset_count": 0,
+  "updated_at": "2026-04-09T23:12:47.028047+00:00",
+  "thread_id": "trial1-hard-set:cf_isolation_partial_threshold_001",
+  "source": "replay",
+  "latest_event_id": "trial1-hard-set:cf_isolation_partial_threshold_001_turn_001",
+  "latest_turn_id": "turn_001",
+  "latest_event_type": "user_message"
+}

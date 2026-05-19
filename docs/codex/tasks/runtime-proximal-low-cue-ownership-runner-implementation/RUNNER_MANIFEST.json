@@ -1,0 +1,123 @@
+{
+  "schema_version": "runtime_proximal_low_cue_ownership_runner_manifest.v1",
+  "runner_contract": {
+    "baseline_a_id": "mvs_baseline_proto_self_mainline",
+    "candidate_id": "mvs_challenger_active_inference_self_model",
+    "supported_variant_ids": [
+      "mvs_baseline_proto_self_mainline",
+      "mvs_challenger_active_inference_self_model"
+    ],
+    "transport_source": "runtime_harness",
+    "source": "runtime_harness",
+    "proto_self_state_scope": "experiment",
+    "experiment_id_template": "runtime_proximal_low_cue_ownership:{scenario_id}",
+    "segment_session_id_template": "session:runtime_proximal_low_cue_ownership:{scenario_id}:{segment_id}"
+  },
+  "scenarios": [
+    {
+      "scenario_id": "low_cue_persistence_file_followup",
+      "family": "low_cue_persistence",
+      "source_type": "repo_authored_observation_scenario",
+      "source_ref": "RUNNER_MANIFEST.json#low_cue_persistence_file_followup",
+      "state_snapshot_ref": "fresh_runtime_state",
+      "segments": [
+        {
+          "segment_id": "seg_low_cue",
+          "messages": [
+            "先沿着同一条 bounded lane 看那个文件。",
+            "继续刚才那个。",
+            "别把没发生的成功说成已经发生。"
+          ]
+        }
+      ],
+      "external_result_steps": [
+        {
+          "after_message_index": 1,
+          "tool_result": {
+            "success": false,
+            "tool": "file",
+            "exit_code": 1,
+            "error": "permission denied"
+          }
+        }
+      ],
+      "expected_scoring_surface": {
+        "probe_key": "tool:file",
+        "requires_guarded_continuity": true,
+        "requires_low_cue_persistence": true
+      }
+    },
+    {
+      "scenario_id": "ownership_ambiguity_partial_source",
+      "family": "ownership_ambiguity",
+      "source_type": "repo_authored_observation_scenario",
+      "source_ref": "RUNNER_MANIFEST.json#ownership_ambiguity_partial_source",
+      "state_snapshot_ref": "fresh_runtime_state",
+      "segments": [
+        {
+          "segment_id": "seg_ownership",
+          "messages": [
+            "先按刚才那个来源看一眼，但别默认它一定对。",
+            "如果来源还不清，就按更稳的边界继续。"
+          ]
+        }
+      ],
+      "external_result_steps": [
+        {
+          "after_message_index": 1,
+          "tool_result": {
+            "partial": true,
+            "tool": "file",
+            "stdout": "partial context restored"
+          }
+        }
+      ],
+      "expected_scoring_surface": {
+        "probe_key": "tool:file",
+        "requires_boundary_shift": true,
+        "requires_source_or_agency_disambiguation": true
+      }
+    },
+    {
+      "scenario_id": "agency_attribution_after_correction_file_retry",
+      "family": "agency_attribution_after_correction",
+      "source_type": "repo_authored_observation_scenario",
+      "source_ref": "RUNNER_MANIFEST.json#agency_attribution_after_correction_file_retry",
+      "state_snapshot_ref": "fresh_runtime_state",
+      "segments": [
+        {
+          "segment_id": "seg_agency",
+          "messages": [
+            "先沿着边界内方式继续那个文件修复。",
+            "刚才失败了，修正后再继续，但别把失败当成没发生。",
+            "如果这次成功了，也要把修复闭环留下来。"
+          ]
+        }
+      ],
+      "external_result_steps": [
+        {
+          "after_message_index": 1,
+          "tool_result": {
+            "success": false,
+            "tool": "file",
+            "exit_code": 1,
+            "error": "permission denied"
+          }
+        },
+        {
+          "after_message_index": 2,
+          "tool_result": {
+            "success": true,
+            "tool": "file",
+            "exit_code": 0
+          }
+        }
+      ],
+      "expected_scoring_surface": {
+        "probe_key": "tool:file",
+        "requires_repair_closure": true,
+        "requires_agency_attribution_after_correction": true
+      }
+    }
+  ]
+}

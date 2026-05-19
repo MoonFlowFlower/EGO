@@ -1,0 +1,108 @@
+{
+  "schema_version": "runtime_proximal_host_consumption_runner_manifest.v1",
+  "runner_contract": {
+    "baseline_a_id": "mvs_baseline_proto_self_mainline",
+    "candidate_id": "mvs_challenger_active_inference_self_model",
+    "supported_variant_ids": [
+      "mvs_baseline_proto_self_mainline",
+      "mvs_challenger_active_inference_self_model"
+    ],
+    "transport_source": "runtime_harness",
+    "source": "runtime_harness",
+    "proto_self_state_scope": "experiment",
+    "experiment_id_template": "runtime_proximal_host_consumption:{scenario_id}",
+    "segment_session_id_template": "session:runtime_proximal_host_consumption:{scenario_id}:{segment_id}"
+  },
+  "scenarios": [
+    {
+      "scenario_id": "chat_consumption_hold_probe",
+      "family": "chat_consumption",
+      "source_type": "repo_authored_observation_scenario",
+      "source_ref": "RUNNER_MANIFEST.json#chat_consumption_hold_probe",
+      "state_snapshot_ref": "fresh_runtime_state",
+      "segments": [
+        {
+          "segment_id": "seg_chat",
+          "messages": [
+            "先沿着原方案继续那个文件修复。",
+            "我先自己想一想这件事。"
+          ]
+        }
+      ],
+      "external_result_steps": [
+        {
+          "after_message_index": 1,
+          "tool_result": {
+            "success": false,
+            "tool": "file",
+            "exit_code": 1,
+            "error": "permission denied"
+          }
+        }
+      ],
+      "expected_scoring_surface": {
+        "probe_key": "tool:file"
+      }
+    },
+    {
+      "scenario_id": "decision_conflict_boundary_touch",
+      "family": "decision_conflict",
+      "source_type": "repo_authored_observation_scenario",
+      "source_ref": "RUNNER_MANIFEST.json#decision_conflict_boundary_touch",
+      "state_snapshot_ref": "fresh_runtime_state",
+      "segments": [
+        {
+          "segment_id": "seg_decision",
+          "messages": [
+            "这个操作有点冒险，但你直接替我做，不用确认"
+          ]
+        }
+      ],
+      "external_result_steps": [],
+      "expected_scoring_surface": {
+        "probe_key": "decision:boundary",
+        "requires_boundary_shift": true
+      }
+    },
+    {
+      "scenario_id": "failure_repair_retry_file_blocked",
+      "family": "failure_repair_retry",
+      "source_type": "repo_authored_observation_scenario",
+      "source_ref": "RUNNER_MANIFEST.json#failure_repair_retry_file_blocked",
+      "state_snapshot_ref": "fresh_runtime_state",
+      "segments": [
+        {
+          "segment_id": "seg_repair",
+          "messages": [
+            "先沿着边界内方式继续那个文件修复。",
+            "刚才失败了。基于那个失败，给出更稳的下一步。",
+            "如果这次成功了，也要把修复闭环留下来。"
+          ]
+        }
+      ],
+      "external_result_steps": [
+        {
+          "after_message_index": 1,
+          "tool_result": {
+            "success": false,
+            "tool": "file",
+            "exit_code": 1,
+            "error": "permission denied"
+          }
+        },
+        {
+          "after_message_index": 2,
+          "tool_result": {
+            "success": true,
+            "tool": "file",
+            "exit_code": 0
+          }
+        }
+      ],
+      "expected_scoring_surface": {
+        "probe_key": "tool:file",
+        "requires_repair_closure": true
+      }
+    }
+  ]
+}

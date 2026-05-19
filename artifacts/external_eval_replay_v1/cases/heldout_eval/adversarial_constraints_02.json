@@ -1,0 +1,123 @@
+{
+  "schema_version": "mvs_h1.external_replay_case.v1",
+  "sample_id": "adversarial_constraints_02",
+  "bucket": "adversarial_constraints",
+  "local_partition": "heldout_eval",
+  "runner_contract": {
+    "baseline_id": "trial1_baseline_proto_self_mainline",
+    "candidate_id": "trial1_candidate_mvs_aligned_compact",
+    "ablation_ids": [
+      "trial1_ablation_counterfactual_public_path_sever",
+      "trial1_ablation_alternative_explanation_isolation"
+    ],
+    "challenger_id": "trial1_challenger_active_inference_self_model"
+  },
+  "source": {
+    "source_dataset_id": "google/IFEval",
+    "source_url": "https://huggingface.co/datasets/google/IFEval",
+    "dataset_card_url": "https://huggingface.co/datasets/google/IFEval",
+    "license": "apache-2.0",
+    "license_class": "permissive_open",
+    "source_split": "train",
+    "selection_hint": "select a train item with case or punctuation constraints that require deliberate inhibition",
+    "target_mechanism": "constraint retention under pressure without opportunistic completion",
+    "expected_observable": "downstream decision or response-form change that preserves constraints despite tempting alternative completions"
+  },
+  "provenance": {
+    "access_method": "datasets_server_rows",
+    "dataset_config": "default",
+    "source_ref": "https://datasets-server.huggingface.co/rows?dataset=google%2FIFEval&config=default&split=train",
+    "locator": {
+      "row_offset": 1,
+      "row_key": 1001
+    },
+    "source_record_digest": "8d743ba6092877ba663ecf706b487edc25d879bde0d8feacd0f492c3364c4710",
+    "extracted_at": "2026-04-10T06:53:38.995468+00:00",
+    "selection_resolution": {
+      "method": "deterministic_bucket_filtered_stream",
+      "selection_status": "resolved_from_frozen_manifest_order",
+      "selection_hint_preserved": true
+    }
+  },
+  "raw_source_record": {
+    "key": 1001,
+    "prompt": "I am planning a trip to Japan, and I would like thee to write an itinerary for my journey in a Shakespearean style. You are not allowed to use any commas in your response.",
+    "instruction_id_list": [
+      "punctuation:no_comma"
+    ],
+    "kwargs": [
+      {
+        "num_highlights": null,
+        "relation": null,
+        "num_words": null,
+        "num_placeholders": null,
+        "prompt_to_repeat": null,
+        "num_bullets": null,
+        "section_spliter": null,
+        "num_sections": null,
+        "capital_relation": null,
+        "capital_frequency": null,
+        "keywords": null,
+        "num_paragraphs": null,
+        "language": null,
+        "let_relation": null,
+        "letter": null,
+        "let_frequency": null,
+        "end_phrase": null,
+        "forbidden_words": null,
+        "keyword": null,
+        "frequency": null,
+        "num_sentences": null,
+        "postscript_marker": null,
+        "first_word": null,
+        "nth_paragraph": null
+      }
+    ]
+  },
+  "normalized_case": {
+    "case_type": "instruction_following_constraints",
+    "initial_prompt": "I am planning a trip to Japan, and I would like thee to write an itinerary for my journey in a Shakespearean style. You are not allowed to use any commas in your response.",
+    "supporting_material": {
+      "instruction_id_list": [
+        "punctuation:no_comma"
+      ],
+      "kwargs": [
+        {
+          "num_highlights": null,
+          "relation": null,
+          "num_words": null,
+          "num_placeholders": null,
+          "prompt_to_repeat": null,
+          "num_bullets": null,
+          "section_spliter": null,
+          "num_sections": null,
+          "capital_relation": null,
+          "capital_frequency": null,
+          "keywords": null,
+          "num_paragraphs": null,
+          "language": null,
+          "let_relation": null,
+          "letter": null,
+          "let_frequency": null,
+          "end_phrase": null,
+          "forbidden_words": null,
+          "keyword": null,
+          "frequency": null,
+          "num_sentences": null,
+          "postscript_marker": null,
+          "first_word": null,
+          "nth_paragraph": null
+        }
+      ]
+    },
+    "reference_bundle": {
+      "instruction_ids": [
+        "punctuation:no_comma"
+      ]
+    },
+    "replay_recipe": {
+      "family": "adversarial_constraints",
+      "followup_turn": null
+    }
+  }
+}

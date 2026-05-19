@@ -1,0 +1,86 @@
+{
+  "schema_version": "subjectcore.followon_saturation.v1",
+  "generated_at": "2026-04-17T02:51:49.695907+00:00",
+  "followon_batch_artifact_path": "artifacts/self_awareness_research/SUBJECTCORE_FOLLOWON_BATCH_CURRENT.json",
+  "coherence_artifact_path": "artifacts/self_awareness_research/SUBJECTCORE_POST_COMPARE_COHERENCE_CURRENT.json",
+  "output_schema_path": "docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_FOLLOWON_SATURATION_SCHEMA.md",
+  "claim_ceiling_note": "Planning-side follow-on saturation gate only. This artifact does not prove runtime integration, runtime efficacy, host-surface expansion, autonomy expansion, live user benefit, or any consciousness-like claim.",
+  "required_families": [
+    "proposal_set_update",
+    "proposal_set_remerge",
+    "proposal_set_consolidation",
+    "proposal_set_completion",
+    "proposal_set_closure"
+  ],
+  "saturation_status": "pass",
+  "blocked_reasons": [],
+  "route_decision_required": true,
+  "next_decision_gate": "user_route_judgment_required",
+  "checks": {
+    "FS1 followon_batch_green": {
+      "status": "pass",
+      "note": "follow-on batch still fully matches the frozen sample pack"
+    },
+    "FS2 completed_family_chain_present": {
+      "status": "pass",
+      "note": "update -> remerge -> consolidation -> completion -> closure all remain covered as bounded failure families"
+    },
+    "FS3 post_compare_coherence_still_green": {
+      "status": "pass",
+      "note": "post-compare coherence still supports the same unified-facade planning story"
+    },
+    "FS4 claim_ceiling_still_bounded": {
+      "status": "pass",
+      "note": "all upstream artifacts still remain explicitly below runtime/autonomy/consciousness claims"
+    }
+  },
+  "family_chain_snapshot": {
+    "proposal_set_update": {
+      "status": "pass",
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2,
+      "note": "family remains fully covered as bounded failure isolation"
+    },
+    "proposal_set_remerge": {
+      "status": "pass",
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2,
+      "note": "family remains fully covered as bounded failure isolation"
+    },
+    "proposal_set_consolidation": {
+      "status": "pass",
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2,
+      "note": "family remains fully covered as bounded failure isolation"
+    },
+    "proposal_set_completion": {
+      "status": "pass",
+      "sample_count": 2,
+      "expectation_match_count": 2,
+      "integrity_pass_count": 0,
+      "boundary_pass_count": 2,
+      "note": "family remains fully covered as bounded failure isolation"
+    },
+    "proposal_set_closure": {
+      "status": "pass",
+      "sample_count": 4,
+      "expectation_match_count": 4,
+      "integrity_pass_count": 2,
+      "boundary_pass_count": 4,
+      "note": "family retains two blocked closure failures plus two closure-ready green cases"
+    }
+  },
+  "summary": "The planning-side SubjectCore proposal-set chain is saturated through closure, so the next step is an explicit route decision rather than another default family expansion.",
+  "what_it_proves": "Within the frozen planning-side lane, the completed proposal-set follow-on families now form one coherent bounded chain from update through closure without widening the host surface or changing the proposal-only ceiling.",
+  "what_it_does_not_prove": "It does not authorize a runtime-adjacent gate, prove runtime proposal orchestration, prove live chained-update quality, or justify any stronger autonomy or consciousness-like claim.",
+  "notes": [
+    "A passing saturation gate means the planning-side family chain is complete enough that the next action should be a user-visible route decision.",
+    "A failing saturation gate means the chain or its bounded claim wording drifted and should be repaired before any route decision."
+  ]
+}

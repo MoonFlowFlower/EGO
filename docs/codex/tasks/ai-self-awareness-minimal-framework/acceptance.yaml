@@ -1,0 +1,43 @@
+overall_status: satisfied
+criteria:
+  acc_scope_obeyed:
+    desc: the task stays inside the declared scope and authority boundaries
+    required: true
+    verification: manual
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ROUTE_DECISION_PACKET.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/summary.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/ledger.jsonl
+    note: Audited slice remains inside the task package and keeps the bounded no-runtime-expansion framing.
+  acc_validation_recorded:
+    desc: run the smallest truthful validation
+    required: true
+    verification: auto
+    status: satisfied
+    evidence_refs:
+      - git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ROUTE_DECISION_PACKET.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md docs/codex/tasks/ai-self-awareness-minimal-framework/summary.md docs/codex/tasks/ai-self-awareness-minimal-framework/ledger.jsonl
+    note: The smallest validation actually run is explicitly recorded and checks cleanly.
+  acc_slice_built:
+    desc: the bounded feature slice is implemented or truthfully closed out
+    required: true
+    verification: auto
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ROUTE_DECISION_PACKET.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/summary.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/ledger.jsonl
+    note: The bounded closeout packet is present and internally consistent for audit consumption.
+  acc_custom_1:
+    desc: record a truthful validation signal
+    required: true
+    verification: semi-auto
+    status: satisfied
+    evidence_refs:
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/summary.md
+      - docs/codex/tasks/ai-self-awareness-minimal-framework/docs/codex/tasks/ai-self-awareness-minimal-framework/ledger.jsonl
+      - git diff --check -- docs/codex/tasks/ai-self-awareness-minimal-framework/SUBJECTCORE_ROUTE_DECISION_PACKET.md docs/codex/tasks/ai-self-awareness-minimal-framework/STATUS.md docs/codex/tasks/ai-self-awareness-minimal-framework/summary.md docs/codex/tasks/ai-self-awareness-minimal-framework/ledger.jsonl
+    note: A truthful validation signal and audit-ready closeout recommendation are recorded without overstating proof strength.
+last_evaluated_at: "2026-04-19T08:59:05Z"
