@@ -82,3 +82,22 @@ legacy/ego-pre-handmade-mainline/OpenEmotion/logs/
 !.codex/memory/tasks/active/README.md
 !.codex/memory/tasks/archive/README.md
 !.codex/memory/sessions/README.md
+
+# Local-only operator/autopilot workspaces and credentials
+.codex-autopilot/
+.codex-memory/
+.ssh/
+.venv-env-restore/
+NUL
+=0.18.0
+autopilot.yaml
+
+# Local runtime stores and scratch outputs
+data/*.db
+data/session_logs/
+artifacts/proto_self_store/
+artifacts/runtime/
+artifacts/tmp/
+artifacts/tmp_*/
+artifacts/tmp*.log
+reports/self_reports/
