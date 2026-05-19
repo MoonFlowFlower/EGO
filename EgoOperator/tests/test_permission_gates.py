@@ -244,6 +244,49 @@ def test_long_run_command_action_card_uses_digest_and_approve_command(tmp_path, 
     assert f"/approve {proposal_id}" in card
 
 
+def test_mid_length_powershell_action_card_uses_digest(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    command = (
+        "powershell -Command \"$size = (Get-ChildItem -Path 'D:\\Project\\AIProject\\MyProject' "
+        "-Recurse -File -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum; "
+        "Write-Output \\\"Size in bytes: $size\\\"; Write-Output \\\"Size in MB: $([math]::Round($size / 1MB, 2))\\\"; "
+        "Write-Output \\\"Size in GB: $([math]::Round($size / 1GB, 2))\\\"\""
+    )
+
+    proposal = runtime.propose_run_command(command, reason="powershell size check")
+    card = proposal["action_card"]
+
+    assert 300 < len(command) < 360
+    assert command not in card
+    assert "command_digest" in card
+    assert "command_head" in card
+    assert "command_tail" in card
+
+
+def test_verbose_tool_output_uses_compact_action_card_not_raw_json(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    monkeypatch.setattr(agent, "DEFAULT_VERBOSE_TOOLS", True)
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    long_command = "echo start " + ("0123456789" * 120) + " end"
+    runtime.planner.llm = ToolThenFinalLLM(
+        "propose_run_command",
+        {"command": long_command, "reason": "verbose output digest smoke"},
+    )
+
+    result = runtime.handle_user_message("请生成一个长命令审批")
+    captured = capsys.readouterr().out
+
+    assert result.external_result["status"] == "pending_approval"
+    assert "[工具输出]" in captured
+    assert "Pending operation approval" in captured
+    assert "payload_sha256" in captured
+    assert "content_preview" not in captured
+    assert long_command not in captured
+
+
 def test_long_stdout_and_stderr_approval_summary_uses_digest(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
     monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
@@ -276,6 +319,112 @@ def test_long_stdout_and_stderr_approval_summary_uses_digest(tmp_path, monkeypat
     assert "sha256=" in summary
     assert long_stdout not in summary
     assert long_stderr not in summary
+
+
+def test_run_command_timeout_summary_and_compact_digest_are_clear(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+
+    def fake_run(command: str):
+        return {
+            "status": "failed",
+            "error": "timeout",
+            "timeout_seconds": 15,
+            "command": command,
+        }
+
+    monkeypatch.setattr(agent, "_run_command_execute", fake_run)
+
+    proposal = runtime.propose_run_command("powershell slow recursive size", reason="timeout smoke")
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+    summary = approved["operator_summary"]
+    compact = runtime.compact_approval_execution_result(approved)
+    cli = runtime.format_approval_cli_output(approved, mode="compact")
+
+    assert approved["status"] == "failed"
+    assert "审批已经接受" in summary
+    assert "命令执行超时" in summary
+    assert "重复 /approve 不会重新执行" in summary
+    assert "timeout_seconds: 15" in summary
+    assert compact["execution"]["error"] == "timeout"
+    assert compact["execution"]["timeout_seconds"] == 15
+    assert compact["trace_path"].endswith("trace.jsonl")
+    assert "timeout" in cli
+    assert "timeout_seconds" in cli
+
+
+def test_second_approve_after_execution_failure_explains_non_pending_state(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+
+    def fake_run(command: str):
+        return {
+            "status": "failed",
+            "error": "timeout",
+            "timeout_seconds": 15,
+            "command": command,
+        }
+
+    monkeypatch.setattr(agent, "_run_command_execute", fake_run)
+
+    proposal = runtime.propose_run_command("powershell slow recursive size", reason="timeout smoke")
+    proposal_id = proposal["proposal"]["proposal_id"]
+    first = runtime.approve_pending_operation(proposal_id)
+    second = runtime.approve_pending_operation(proposal_id)
+    cli = runtime.format_approval_cli_output(second, mode="compact")
+
+    assert first["status"] == "failed"
+    assert second["status"] == "failed"
+    assert second["reason"] == "proposal_not_pending:execution_failed"
+    assert "已经批准并执行失败" in cli
+    assert "重复 /approve 不会重新执行" in cli
+    assert "请根据失败原因生成新的 proposal" in cli
+    assert proposal_id in cli
+
+
+def test_timeout_result_enters_session_memory_for_followup(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+
+    def fake_run(command: str):
+        return {
+            "status": "failed",
+            "error": "timeout",
+            "timeout_seconds": 15,
+            "command": command,
+        }
+
+    class TimeoutAwareLLM:
+        provider = "fake"
+        model = "timeout-aware"
+        last_usage = {}
+        last_reasoning_tokens = None
+
+        def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+            joined = json.dumps(messages, ensure_ascii=False)
+            if "execution_failed_guidance" in joined and "timeout_seconds" in joined:
+                return agent.LLMChatResult(content="你已经批准了；命令执行超时，不是没批准。需要换新 proposal 或调高 timeout。", tool_calls=[])
+            return agent.LLMChatResult(content="请再次批准旧 proposal。", tool_calls=[])
+
+        def complete(self, prompt, messages=None):
+            return "命令执行超时。"
+
+    monkeypatch.setattr(agent, "_run_command_execute", fake_run)
+
+    proposal = runtime.propose_run_command("powershell slow recursive size", reason="timeout smoke")
+    approved = runtime.approve_pending_operation(proposal["proposal"]["proposal_id"])
+    runtime.planner.llm = TimeoutAwareLLM()
+    result = runtime.handle_user_message("我批准了呀")
+
+    assert approved["status"] == "failed"
+    assert "execution_failed_guidance" in runtime.memory.render()
+    assert "timeout_seconds" in runtime.memory.render()
+    assert "命令执行超时，不是没批准" in result.reply_text
+    assert "请再次批准旧 proposal" not in result.reply_text
 
 
 def test_approval_cli_compact_full_and_both_modes(tmp_path, monkeypatch):

@@ -2772,6 +2772,33 @@ def render_inline_digest(value: Any, *, max_chars: int = 240) -> str:
     )
 
 
+def format_tool_output_for_operator(tool_output: Any, *, max_chars: int = 1200) -> str:
+    if isinstance(tool_output, dict):
+        status = str(tool_output.get("status") or "")
+        action_card = str(tool_output.get("action_card") or "").strip()
+        if action_card:
+            lines = [f"status: {status}" if status else "status: unknown"]
+            proposal = tool_output.get("proposal") if isinstance(tool_output.get("proposal"), dict) else {}
+            proposal_id = str(proposal.get("proposal_id") or "").strip()
+            action = str(proposal.get("action") or "").strip()
+            content_hash = str(proposal.get("content_hash") or "").strip()
+            if proposal_id:
+                lines.append(f"proposal_id: {proposal_id}")
+            if action:
+                lines.append(f"action: {action}")
+            if content_hash:
+                lines.append(f"payload_sha256: {content_hash}")
+            lines.append(render_text_digest(action_card, max_chars=max_chars))
+            return "\n".join(lines)
+    payload = json.dumps(to_jsonable(tool_output), ensure_ascii=False, sort_keys=True)
+    return render_text_digest(payload, max_chars=max_chars)
+
+
+def format_tool_call_for_operator(tool_name: str, arguments: Dict[str, Any], *, max_chars: int = 800) -> str:
+    payload = json.dumps(to_jsonable(arguments), ensure_ascii=False, sort_keys=True)
+    return f"{tool_name} {render_text_digest(payload, max_chars=max_chars)}"
+
+
 def _workspace_relative_posix(path: str) -> str:
     return _operation_path_key(path)
 
@@ -3401,7 +3428,7 @@ class PermissionBroker:
                 f"- reason: {render_inline_digest(proposal.reason, max_chars=240)}",
                 f"- approve: /approve {proposal.proposal_id}",
             ]
-            command_digest = text_digest(proposal.path, max_chars=360)
+            command_digest = text_digest(proposal.path, max_chars=220)
             if command_digest.get("truncated"):
                 lines.extend([
                     f"- command_digest: chars={command_digest['chars']} omitted={command_digest['omitted_chars']} sha256={command_digest['sha256']}",
@@ -4193,6 +4220,17 @@ class AgentRuntime:
                 summary["returncode"] = execution.get("returncode")
                 summary["stdout"] = str(execution.get("stdout") or "")[:1200]
                 summary["stderr"] = str(execution.get("stderr") or "")[:1200]
+                if execution.get("error"):
+                    summary["error"] = execution.get("error")
+                if execution.get("reason"):
+                    summary["reason"] = execution.get("reason")
+                if execution.get("timeout_seconds") is not None:
+                    summary["timeout_seconds"] = execution.get("timeout_seconds")
+                if execution.get("status") == "failed":
+                    summary["execution_failed_guidance"] = (
+                        "The operator approved this proposal, but command execution failed. "
+                        "Do not ask the operator to approve the same proposal again; explain the failure and propose a new adjusted operation if needed."
+                    )
         elif proposal.action == "heartbeat":
             if execution:
                 summary["heartbeat_id"] = execution.get("heartbeat_id")
@@ -4208,8 +4246,12 @@ class AgentRuntime:
         approval = approval_result.get("approval") if isinstance(approval_result, dict) else {}
         approval = approval if isinstance(approval, dict) else {}
         proposal = approval.get("proposal") if isinstance(approval, dict) else {}
+        if not isinstance(proposal, dict) or not proposal:
+            proposal = approval_result.get("proposal") if isinstance(approval_result, dict) else {}
         proposal = proposal if isinstance(proposal, dict) else {}
         execution = approval_result.get("execution") if isinstance(approval_result, dict) else {}
+        if not isinstance(execution, dict) or not execution:
+            execution = proposal.get("execution_result") if isinstance(proposal, dict) else {}
         execution = execution if isinstance(execution, dict) else {}
         action = str(proposal.get("action") or execution.get("action") or "")
         compact: Dict[str, Any] = {
@@ -4229,9 +4271,15 @@ class AgentRuntime:
             }
             if execution.get("returncode") is not None:
                 compact["execution"]["returncode"] = execution.get("returncode")
+            if execution.get("error"):
+                compact["execution"]["error"] = execution.get("error")
+            if execution.get("reason"):
+                compact["execution"]["reason"] = execution.get("reason")
+            if execution.get("timeout_seconds") is not None:
+                compact["execution"]["timeout_seconds"] = execution.get("timeout_seconds")
 
         if action == "run_command":
-            compact["command_digest"] = text_digest(execution.get("command", proposal.get("path", "")), max_chars=360)
+            compact["command_digest"] = text_digest(execution.get("command", proposal.get("path", "")), max_chars=220)
             compact["stdout_digest"] = text_digest(execution.get("stdout", ""), max_chars=800)
             compact["stderr_digest"] = text_digest(execution.get("stderr", ""), max_chars=500)
         elif action == "write_file":
@@ -4249,6 +4297,26 @@ class AgentRuntime:
             compact["message_digest"] = text_digest(execution.get("message", ""), max_chars=360)
         return {key: value for key, value in compact.items() if value is not None}
 
+    def format_approval_cli_status_message(self, approval_result: Dict[str, Any]) -> str:
+        status = str(approval_result.get("status") or "")
+        reason = str(approval_result.get("reason") or "")
+        proposal = approval_result.get("proposal") if isinstance(approval_result.get("proposal"), dict) else {}
+        proposal_id = str(proposal.get("proposal_id") or approval_result.get("proposal_id") or "").strip()
+        if status == "failed" and reason.startswith("proposal_not_pending:"):
+            proposal_status = reason.split(":", 1)[1]
+            if proposal_status == "execution_failed":
+                suffix = f"（{proposal_id}）" if proposal_id else ""
+                return (
+                    f"该 proposal{suffix} 已经批准并执行失败，不再是 pending；重复 /approve 不会重新执行。"
+                    "请根据失败原因生成新的 proposal，或调整命令/timeout 后再申请。"
+                )
+            suffix = f"（{proposal_id}）" if proposal_id else ""
+            return f"该 proposal{suffix} 当前状态是 {proposal_status}，不是 pending，不能重复批准。"
+        if status == "failed" and reason == "unknown_proposal":
+            suffix = f"：{proposal_id}" if proposal_id else ""
+            return f"没有找到这个 proposal{suffix}；请先生成新的操作申请。"
+        return ""
+
     def format_approval_cli_output(self, approval_result: Dict[str, Any], mode: Optional[str] = None) -> str:
         selected_mode = normalize_approval_cli_output_mode(mode or current_approval_cli_output_mode())
         full_json = json.dumps(approval_result, ensure_ascii=False, indent=2)
@@ -4261,6 +4329,9 @@ class AgentRuntime:
             indent=2,
         )
         parts: List[str] = []
+        status_message = self.format_approval_cli_status_message(approval_result)
+        if status_message:
+            parts.append(status_message)
         operator_summary = str(approval_result.get("operator_summary") or "").strip()
         if operator_summary:
             parts.append(operator_summary)
@@ -4282,8 +4353,12 @@ class AgentRuntime:
             returncode = execution.get("returncode")
             stdout = self._approval_summary_excerpt(execution.get("stdout"))
             stderr = self._approval_summary_excerpt(execution.get("stderr"))
+            error = str(execution.get("error") or execution.get("reason") or "").strip()
+            timeout_seconds = execution.get("timeout_seconds")
             if status == "ok":
                 lines = ["审批命令已执行成功。"]
+            elif error == "timeout":
+                lines = ["审批已经接受，但命令执行超时；同一个 proposal 已不再 pending，重复 /approve 不会重新执行。"]
             elif stdout:
                 lines = ["审批命令已执行，但命令返回非零状态；stdout 中有可用输出。"]
             else:
@@ -4292,8 +4367,12 @@ class AgentRuntime:
                 f"- action: {action}",
                 f"- status: {status}",
                 f"- returncode: {returncode}",
-                f"- command: {execution.get('command', proposal.get('path', ''))}",
+                f"- command: {render_text_digest(execution.get('command', proposal.get('path', '')), max_chars=220)}",
             ])
+            if error:
+                lines.append(f"- error: {error}")
+            if timeout_seconds is not None:
+                lines.append(f"- timeout_seconds: {timeout_seconds}")
             if stdout:
                 lines.extend(["- stdout:", stdout])
             if stderr:
@@ -4777,7 +4856,7 @@ class AgentRuntime:
                 gate_result = sub_gate.check(synthetic_event, candidate)
 
                 if DEFAULT_VERBOSE_SUBAGENTS:
-                    print(f"  [子({spec.title})·执行工具]: {call.name} {json.dumps(call.arguments, ensure_ascii=False)}")
+                    print(f"  [子({spec.title})·执行工具]: {format_tool_call_for_operator(call.name, call.arguments, max_chars=500)}")
 
                 if gate_result.allowed:
                     tool_output = self.tools.execute(candidate.tool_call) if candidate.tool_call else {
@@ -4792,8 +4871,7 @@ class AgentRuntime:
                     }
 
                 if DEFAULT_VERBOSE_SUBAGENTS:
-                    preview = json.dumps(to_jsonable(tool_output), ensure_ascii=False)
-                    print(f"  [子({spec.title})·工具输出]: {preview[:500]}")
+                    print(f"  [子({spec.title})·工具输出]: {format_tool_output_for_operator(tool_output, max_chars=500)}")
 
                 sub_trace.append({
                     "turn_idx": turn_idx,
@@ -5243,7 +5321,7 @@ class AgentRuntime:
                     gate_result = self.gate.check(event, candidate)
 
                     if DEFAULT_VERBOSE_TOOLS:
-                        print(f"[执行工具]: {effective_call.name} {json.dumps(effective_call.arguments, ensure_ascii=False)}")
+                        print(f"[执行工具]: {format_tool_call_for_operator(effective_call.name, effective_call.arguments, max_chars=800)}")
 
                     if gate_result.allowed:
                         tool_output = self.tools.execute(candidate.tool_call) if candidate.tool_call else {
@@ -5266,7 +5344,7 @@ class AgentRuntime:
                         tool_output["path_intent"] = path_intent
 
                     if DEFAULT_VERBOSE_TOOLS:
-                        print(f"[工具输出]: {json.dumps(to_jsonable(tool_output), ensure_ascii=False)[:1200]}")
+                        print(f"[工具输出]: {format_tool_output_for_operator(tool_output, max_chars=1200)}")
 
                     trace_entry = {
                         "loop_idx": loop_idx,
