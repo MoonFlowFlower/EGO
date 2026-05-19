@@ -228,6 +228,7 @@ Before any implementation:
 
 ## Skill routing
 
+- 高风险 EGO/Codex 规划、架构、agent 设计、实现顺序、记忆/权限/工具/状态决策、重复失败，或用户指出“没找到最优解 / framing 不对”时：优先使用 `ego-reflective-quality-gate`；普通小修只做轻量自检，不强制多轮 reviewer；高风险或反复失败任务在 closeout 前必须做 critic pass，subagent / reviewer 只在当前环境和用户授权允许时启用
 - EgoOperator human-trial / GitHub issue comment / test log / Project closeout / file-web_fetch-approval-memory gate repair loops：优先使用 `ego-operator-devloop`；若同时是 runtime bug / regression，再叠加 `ego-bugfix-root-cause`；若用户给出锁定实现计划，再叠加 `ego-implement-milestone`
 - 多步骤长任务、已有 `docs/codex/tasks/<slug>/`、或 prompt 含 `LONGRUN`：优先使用 `long-run-execution`
 - 复杂、模糊、跨模块任务：优先使用 `ego-plan-from-spec`
