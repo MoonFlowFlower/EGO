@@ -42,6 +42,7 @@ ISSUE = {
     "state": "OPEN",
     "url": "https://github.com/pen364692088/EGO/issues/1",
 }
+ISSUE_CLOSED = {**ISSUE, "state": "CLOSED"}
 ITEM_TODO = {
     "id": "ITEM_1",
     "title": "测试任务版",
@@ -49,6 +50,7 @@ ITEM_TODO = {
     "content": {**ISSUE, "type": "Issue", "repository": "pen364692088/EGO"},
 }
 ITEM_PROGRESS = {**ITEM_TODO, "status": "In Progress"}
+ITEM_DONE = {**ITEM_TODO, "status": "Done"}
 
 
 class FakeGh(github_project_task.GhClient):
@@ -274,4 +276,76 @@ def test_create_dry_run_does_not_call_gh() -> None:
 
     assert code == 0
     assert payload["status"] == "dry_run"
+    assert fake.calls == []
+
+
+def test_closeout_comments_sets_done_closes_and_verifies() -> None:
+    responses = base_responses(items=[ITEM_PROGRESS])
+    responses[(
+        "issue",
+        "view",
+        "1",
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url",
+    )] = [
+        j(ISSUE),
+        j(ISSUE),
+        j(ISSUE_CLOSED),
+        j(ISSUE_CLOSED),
+    ]
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = [
+        j({"items": [ITEM_PROGRESS]}),
+        j({"items": [ITEM_DONE]}),
+        j({"items": [ITEM_DONE]}),
+    ]
+    responses[("project", "field-list", "1", "--owner", "pen364692088", "--format", "json")] = [
+        j(FIELDS),
+        j(FIELDS),
+    ]
+    responses[(
+        "project",
+        "item-edit",
+        "--id",
+        "ITEM_1",
+        "--project-id",
+        "PVT_project",
+        "--field-id",
+        "FIELD_status",
+        "--single-select-option-id",
+        "OPT_done",
+    )] = ""
+    responses[("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body")] = ""
+    responses[("issue", "close", "1", "--repo", "pen364692088/EGO")] = ""
+    fake = FakeGh(responses)
+
+    code, payload = run_cli(fake, ["closeout", "--issue", "1", "--comment", "done body"])
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["closed"] is True
+    assert payload["project_item"]["status"] == "Done"
+    assert ("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body") in fake.calls
+    assert ("issue", "close", "1", "--repo", "pen364692088/EGO") in fake.calls
+
+
+def test_closeout_dry_run_does_not_call_gh() -> None:
+    fake = FakeGh({})
+
+    code, payload = run_cli(fake, ["--dry-run", "closeout", "--issue", "1", "--comment", "done body"])
+
+    assert code == 0
+    assert payload["status"] == "dry_run"
+    assert payload["planned"][0]["gh"][:2] == ["issue", "comment"]
     assert fake.calls == []

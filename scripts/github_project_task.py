@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, TextIO
 
 
@@ -444,6 +445,53 @@ def command_create(client: GhClient, cfg: Config, args: argparse.Namespace) -> d
     return result
 
 
+def _read_comment_body(args: argparse.Namespace) -> str:
+    if args.comment_file:
+        return Path(args.comment_file).read_text(encoding="utf-8").strip()
+    return (args.comment or "").strip()
+
+
+def command_closeout(client: GhClient, cfg: Config, args: argparse.Namespace) -> dict[str, Any]:
+    comment_body = _read_comment_body(args)
+    if not comment_body:
+        raise UserError("missing_closeout_comment", "closeout requires --comment-file or --comment")
+
+    if cfg.dry_run:
+        return {
+            "status": "dry_run",
+            "planned": [
+                {"gh": ["issue", "comment", args.issue, "--repo", cfg.repo, "--body", comment_body]},
+                {
+                    "wrapper": [
+                        "set-status",
+                        "--issue",
+                        args.issue,
+                        "--status",
+                        args.status,
+                    ]
+                },
+                {"gh": ["issue", "close", args.issue, "--repo", cfg.repo]},
+                {"wrapper": ["verify", "--issue", args.issue, "--expect-status", args.status]},
+            ],
+        }
+
+    client.run(["issue", "comment", args.issue, "--repo", cfg.repo, "--body", comment_body])
+    status_result = command_set_status(client, cfg, argparse.Namespace(issue=args.issue, status=args.status))
+    client.run(["issue", "close", args.issue, "--repo", cfg.repo])
+    verify_result = command_verify(client, cfg, argparse.Namespace(issue=args.issue, expect_status=args.status))
+    issue = issue_view(client, cfg, args.issue)
+    if issue.get("state") != "CLOSED":
+        raise UserError("issue_close_not_observed", "Issue close did not read back as CLOSED", issue=issue)
+    return {
+        "status": "ok",
+        "issue": issue,
+        "project_item": verify_result["project_item"],
+        "status_update": status_result.get("status_update"),
+        "commented": True,
+        "closed": True,
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Manage GitHub issues as Project v2 task items.")
     parser.add_argument("--repo", default=DEFAULT_REPO, help=f"GitHub repo, default: {DEFAULT_REPO}")
@@ -479,6 +527,12 @@ def build_parser() -> argparse.ArgumentParser:
     verify = subparsers.add_parser("verify", help="Verify an issue's Project item and status")
     verify.add_argument("--issue", required=True)
     verify.add_argument("--expect-status")
+
+    closeout = subparsers.add_parser("closeout", help="Comment, set Project Status, close, and verify")
+    closeout.add_argument("--issue", required=True)
+    closeout.add_argument("--status", default="Done")
+    closeout.add_argument("--comment-file")
+    closeout.add_argument("--comment")
     return parser
 
 
@@ -493,6 +547,8 @@ def dispatch(client: GhClient, cfg: Config, args: argparse.Namespace) -> dict[st
         return command_set_status(client, cfg, args)
     if args.command == "verify":
         return command_verify(client, cfg, args)
+    if args.command == "closeout":
+        return command_closeout(client, cfg, args)
     raise UserError("unknown_command", f"Unknown command: {args.command}")
 
 
