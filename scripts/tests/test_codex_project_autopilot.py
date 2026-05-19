@@ -71,6 +71,16 @@ ISSUE_SUPPORTING = issue(6, "Supporting: repo cleanup route convergence guard", 
 ISSUE_READY = issue(17, "Codex Toolkit: cross-project devloop/autopilot control plane v1", body=READY_BODY)
 ISSUE_UNKNOWN = issue(14, "命令行工具的启用问题", body="unstructured log")
 ISSUE_L2 = issue(18, "Codex Toolkit: dirty-baseline scoped L2 single-issue executor", body=READY_BODY)
+ISSUE_LLM = issue(
+    23,
+    "Codex Toolkit: scripted LLM judge closeout case",
+    body=READY_BODY + "\nObservation class: scripted_with_llm_judge\n",
+)
+ISSUE_HIGH = issue(
+    24,
+    "Codex Toolkit: program state mutation",
+    body=READY_BODY,
+)
 
 
 def item(payload: dict, status: str) -> dict:
@@ -90,6 +100,8 @@ ITEMS = [
     item(ISSUE_READY, "In Progress"),
     item(ISSUE_UNKNOWN, "Todo"),
     item(ISSUE_L2, "In Progress"),
+    item(ISSUE_LLM, "In Progress"),
+    item(ISSUE_HIGH, "In Progress"),
 ]
 
 
@@ -110,13 +122,28 @@ class FakeGh(codex_project_autopilot.github_project_task.GhClient):
 
 
 class FakeRunner(codex_project_autopilot.CommandRunner):
-    def __init__(self, stdout: str = "", returncode: int = 0) -> None:
+    def __init__(
+        self,
+        stdout: str = "",
+        returncode: int = 0,
+        responses: dict[tuple[str, ...], tuple[int, str, str]] | None = None,
+    ) -> None:
         self.stdout = stdout
         self.returncode = returncode
+        self.responses = responses or {}
         self.calls: list[tuple[str, ...]] = []
 
-    def run(self, args: list[str]):
-        self.calls.append(tuple(args))
+    def run(self, args: list[str], *, env: dict[str, str] | None = None):
+        key = tuple(args)
+        self.calls.append(key)
+        if key in self.responses:
+            returncode, stdout, stderr = self.responses[key]
+            return codex_project_autopilot.CommandResult(
+                args=args,
+                returncode=returncode,
+                stdout=stdout,
+                stderr=stderr,
+            )
         return codex_project_autopilot.CommandResult(
             args=args,
             returncode=self.returncode,
@@ -177,6 +204,37 @@ task_classification:
 observation_classes:
   deterministic_local:
     closeout_allowed: true
+  scripted_real_entry:
+    closeout_allowed: true
+  scripted_with_llm_judge:
+    closeout_allowed: false
+  human_required:
+    closeout_allowed: false
+auto_closeout:
+  default_observation_class: deterministic_local
+  done_status: Done
+  observation_verify_profiles:
+    deterministic_local: target
+    scripted_real_entry: target
+    scripted_with_llm_judge: target
+  llm_review_observation_classes:
+    - scripted_with_llm_judge
+  hard_stop_classes:
+    - human_required
+    - aggregate
+    - parked
+    - supporting
+    - unknown
+    - high_impact
+    - blocked
+  hard_stop_title_contains:
+    - "program state"
+    - "evidence ledger"
+    - "stage card"
+  hard_stop_body_markers:
+    - "requires stage card"
+    - "modifies docs/PROGRAM_STATE_UNIFIED.yaml"
+  claim_ceiling: Test closeout claim
 """,
         encoding="utf-8",
     )
@@ -347,13 +405,14 @@ def test_run_loop_dry_run_plans_ready_issues_without_mutating_github(tmp_path: P
     assert mutating == []
 
 
-def test_run_loop_without_dry_run_is_rejected(tmp_path: Path) -> None:
+def test_run_loop_defaults_to_dry_run(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
 
     code, payload = run_cli(["--contract", str(path), "run-loop"], fake=FakeGh(base_responses()))
 
-    assert code == 2
-    assert payload["error"] == "mutation_not_implemented"
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["dry_run"] is True
 
 
 def test_non_ego_contract_does_not_require_egooperator_paths(tmp_path: Path) -> None:
@@ -575,3 +634,257 @@ def test_run_once_dry_run_plans_ready_issue_with_clean_scope(tmp_path: Path) -> 
     assert code == 0
     assert payload["status"] == "ok"
     assert payload["planned"][0]["step"] == "load_issue"
+
+
+def test_verify_profile_runs_contract_commands(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    runner = FakeRunner()
+
+    code, payload = run_cli(["--contract", str(path), "verify-profile", "--profile", "target"], fake=FakeGh({}), runner=runner)
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["passed"] is True
+    assert payload["results"][0]["label"] == "unit"
+    assert runner.calls == [("python3", "-m", "pytest")]
+
+
+def test_closeout_check_deterministic_local_is_eligible_after_verify_pass(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY)),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    assert payload["eligible"] is True
+    assert payload["verify"]["passed"] is True
+    assert "closeout" in payload["closeout_comment"].casefold()
+
+
+def test_closeout_check_verify_failure_blocks(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    runner = FakeRunner(
+        responses={
+            ("git", "status", "--short", "-uno"): (0, "", ""),
+            ("python3", "-m", "pytest"): (1, "", "failed"),
+        }
+    )
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY)),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(reason["reason"] == "verify_profile_failed" for reason in payload["blocked_reasons"])
+
+
+def test_closeout_check_hard_stop_blocks_before_reviewer(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "24"],
+        fake=FakeGh(responses_for_issue(ISSUE_HIGH)),
+        runner=FakeRunner(stdout='{"verdict":"closeout_allowed"}'),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(reason["reason"] == "issue_class_not_auto_closeable" for reason in payload["blocked_reasons"])
+    assert "llm_reviewer" not in payload
+
+
+def test_scripted_with_llm_judge_requires_positive_reviewer(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    reviewer = json.dumps(
+        {
+            "verdict": "closeout_allowed",
+            "reasons": ["local evidence is sufficient"],
+            "missing_evidence": [],
+            "claim_ceiling": "local only",
+            "suggested_comment": "ok",
+        }
+    )
+    runner = FakeRunner(
+        stdout="",
+        responses={
+            ("python3", "-m", "pytest"): (0, "", ""),
+            (
+                "codex",
+                "exec",
+                "--ephemeral",
+                "--sandbox",
+                "read-only",
+                "--output-schema",
+                str(codex_project_autopilot.DEFAULT_REVIEW_SCHEMA_PATH),
+                # Prompt argument is long and generated at runtime; matched below by custom fallback.
+            ): (0, reviewer, ""),
+        },
+    )
+
+    original_run = runner.run
+
+    def run_with_reviewer_prefix(args, *, env=None):
+        if tuple(args[:6]) == ("codex", "exec", "--ephemeral", "--sandbox", "read-only", "--output-schema"):
+            return codex_project_autopilot.CommandResult(args=args, returncode=0, stdout=reviewer, stderr="")
+        return original_run(args, env=env)
+
+    runner.run = run_with_reviewer_prefix  # type: ignore[method-assign]
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "23"],
+        fake=FakeGh(responses_for_issue(ISSUE_LLM)),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    assert payload["llm_reviewer"]["verdict"] == "closeout_allowed"
+
+
+def test_scripted_with_llm_judge_unavailable_blocks(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    runner = FakeRunner(stdout="")
+    original_run = runner.run
+
+    def run_with_reviewer_failure(args, *, env=None):
+        if tuple(args[:6]) == ("codex", "exec", "--ephemeral", "--sandbox", "read-only", "--output-schema"):
+            return codex_project_autopilot.CommandResult(args=args, returncode=127, stdout="", stderr="codex not found")
+        return original_run(args, env=env)
+
+    runner.run = run_with_reviewer_failure  # type: ignore[method-assign]
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "23"],
+        fake=FakeGh(responses_for_issue(ISSUE_LLM)),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(reason["reason"] == "llm_reviewer_unavailable" for reason in payload["blocked_reasons"])
+
+
+def test_closeout_once_dry_run_does_not_mutate_github(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    fake = FakeGh(responses_for_issue(ISSUE_READY))
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-once", "--issue", "17", "--dry-run"],
+        fake=fake,
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "dry_run"
+    assert not any(call[:2] == ("issue", "close") for call in fake.calls)
+    assert payload["planned"][0]["gh"][:2] == ["issue", "comment"]
+
+
+def test_closeout_once_execute_closes_only_when_eligible(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    responses = responses_for_issue(ISSUE_READY)
+    responses[(
+        "issue",
+        "view",
+        "17",
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url",
+    )] = [
+        j({k: ISSUE_READY[k] for k in ("number", "title", "state", "url")}),
+        j({k: ISSUE_READY[k] for k in ("number", "title", "state", "url")}),
+        j({"number": 17, "title": ISSUE_READY["title"], "state": "CLOSED", "url": ISSUE_READY["url"]}),
+        j({"number": 17, "title": ISSUE_READY["title"], "state": "CLOSED", "url": ISSUE_READY["url"]}),
+    ]
+    responses[("project", "view", "1", "--owner", "pen364692088", "--format", "json")] = j(PROJECT)
+    responses[("project", "field-list", "1", "--owner", "pen364692088", "--format", "json")] = [j(FIELDS), j(FIELDS)]
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = [
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+        j({"items": [item(ISSUE_READY, "Done")]}),
+        j({"items": [item(ISSUE_READY, "Done")]}),
+    ]
+    responses[(
+        "project",
+        "item-edit",
+        "--id",
+        "ITEM_17",
+        "--project-id",
+        "PVT_project",
+        "--field-id",
+        "FIELD_status",
+        "--single-select-option-id",
+        "OPT_done",
+    )] = ""
+    responses[("issue", "close", "17", "--repo", "pen364692088/EGO")] = ""
+    fake = FakeGh(responses)
+
+    # The comment body is generated dynamically, so accept any issue comment call.
+    original_run = fake.run
+
+    def run_accept_dynamic_comment(args):
+        if tuple(args[:5]) == ("issue", "comment", "17", "--repo", "pen364692088/EGO"):
+            fake.calls.append(tuple(args))
+            return ""
+        return original_run(args)
+
+    fake.run = run_accept_dynamic_comment  # type: ignore[method-assign]
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-once", "--issue", "17", "--execute"],
+        fake=fake,
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["closeout"]["closed"] is True
+
+
+def test_run_loop_l3_closeout_dry_run_writes_report_without_mutating(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    responses = responses_for_issue(ISSUE_READY)
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = [
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+    ]
+    fake = FakeGh(responses)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "run-loop", "--mode", "l3-closeout", "--dry-run", "--max-issues", "1", "--write-report"],
+        fake=fake,
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["planned"][0]["closeout_check"]["eligible"] is True
+    assert payload["report_path"].endswith("-autopilot-run.json")
+    assert not any(call[:2] == ("issue", "close") for call in fake.calls)

@@ -1,0 +1,36 @@
+version: 1
+task: codex-autopilot-l3-l4-v2
+github_issues:
+  l3: 21
+  l4: 22
+claim_ceiling: Codex autopilot L3/L4 bounded closeout/patrol local workflow candidate pass
+allowed_paths:
+  - .codex/project_contract.yaml
+  - .agents/skills/codex-project-autopilot/**
+  - AGENTS.md
+  - scripts/**
+  - scripts/tests/**
+  - docs/codex/tasks/codex-autopilot-l3-l4-v2/**
+forbidden_paths:
+  - EgoOperator/**
+  - legacy/ego-pre-handmade-mainline/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+acceptance:
+  - issue_21_in_progress
+  - issue_22_todo_until_l3_pass
+  - closeout_check_outputs_eligibility_packet
+  - closeout_once_dry_run_is_non_mutating
+  - closeout_once_execute_requires_eligibility
+  - scripted_with_llm_judge_requires_reviewer_allow
+  - hard_stop_classes_cannot_be_auto_closed
+  - l4_run_loop_writes_dry_run_report
+  - tests_pass
+cannot_claim:
+  - unattended_autonomous_development
+  - automatic_code_implementation
+  - stable_efficiency_gain
+  - egoperator_human_trial_pass
+  - runtime_efficacy
+  - live_autonomy
+  - consciousness

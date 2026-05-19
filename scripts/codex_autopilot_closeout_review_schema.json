@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdict", "reasons", "missing_evidence", "claim_ceiling", "suggested_comment"],
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["closeout_allowed", "closeout_blocked"]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "claim_ceiling": {
+      "type": "string"
+    },
+    "suggested_comment": {
+      "type": "string"
+    }
+  }
+}

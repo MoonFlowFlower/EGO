@@ -21,7 +21,11 @@ Use this skill when the user asks Codex to work from a task board, run semi-auto
    `python3 scripts/codex_project_autopilot.py diff-scope`
 6. For unattended/batch requests, run bounded dry-run planning:
    `python3 scripts/codex_project_autopilot.py run-loop --dry-run --max-issues 3 --max-minutes 10`
-7. Only move from dry-run to implementation when the selected issue is ready, local authority is clear, and the current project contract permits that autonomy level.
+7. For closeout automation, inspect eligibility before mutation:
+   `python3 scripts/codex_project_autopilot.py closeout-check --issue <n>`
+8. For scheduled patrols, use L3 dry-run mode only:
+   `python3 scripts/codex_project_autopilot.py run-loop --mode l3-closeout --dry-run --write-report`
+9. Only move from dry-run to implementation or closeout when the selected issue is ready, local authority is clear, and the current project contract permits that autonomy level.
 
 ## Stop Conditions
 
@@ -33,6 +37,8 @@ Stop instead of acting when:
 - A dirty-baseline run shows new or changed out-of-scope paths.
 - The action would modify program state, evidence ledger, protected runtime paths, credentials, or external service settings.
 - The required verification profile is missing.
+- The issue requires human smoke, a Stage Card, permissions expansion, memory promotion, mainline/demotion, or scheduled observation before closeout.
+- An LLM reviewer says closeout is allowed but any hard-stop gate is active; hard-stop gates win.
 
 ## Pairing
 

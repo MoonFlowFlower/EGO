@@ -56,6 +56,7 @@ verify_profiles:
           - scripts/tests
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
+          - docs/codex/tasks/codex-autopilot-l3-l4-v2
 
 protected_paths:
   - EgoOperator/
@@ -72,6 +73,7 @@ allowed_mutation_paths:
   - scripts/tests/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
+  - docs/codex/tasks/codex-autopilot-l3-l4-v2/
 
 commit_policy:
   mode: direct-main
@@ -102,11 +104,48 @@ task_classification:
     - "human operator trial"
     - "human trial"
     - "real-provider human"
+    - "scheduled dry-run patrol"
   high_impact_title_contains:
     - "program state"
     - "evidence ledger"
     - "mainline demotion"
     - "memory promotion"
+
+auto_closeout:
+  default_observation_class: deterministic_local
+  done_status: Done
+  observation_verify_profiles:
+    deterministic_local: autopilot_full
+    scripted_real_entry: autopilot_full
+    scripted_with_llm_judge: autopilot_full
+  llm_review_observation_classes:
+    - scripted_with_llm_judge
+  hard_stop_classes:
+    - human_required
+    - aggregate
+    - parked
+    - supporting
+    - unknown
+    - high_impact
+    - blocked
+  hard_stop_title_contains:
+    - "program state"
+    - "evidence ledger"
+    - "mainline demotion"
+    - "memory promotion"
+    - "permissions expansion"
+    - "permission expansion"
+    - "stage card"
+  hard_stop_body_markers:
+    - "requires stage card"
+    - "stage card required"
+    - "modifies docs/PROGRAM_STATE_UNIFIED.yaml"
+    - "touches docs/PROGRAM_STATE_UNIFIED.yaml"
+    - "modifies artifacts/evidence_ledger"
+    - "touches artifacts/evidence_ledger"
+    - "permission expansion required"
+    - "memory promotion required"
+  claim_ceiling: Codex autopilot verified closeout local workflow candidate pass
 
 observation_classes:
   deterministic_local:

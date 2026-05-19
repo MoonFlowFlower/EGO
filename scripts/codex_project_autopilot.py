@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 import subprocess
 import sys
 import time
@@ -17,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_CONTRACT_PATH = ROOT / ".codex" / "project_contract.yaml"
 DEFAULT_BASELINE_PATH = ROOT / ".codex" / "autopilot" / "dirty_baseline.json"
+DEFAULT_REPORT_DIR = ROOT / ".codex" / "autopilot" / "runs"
+DEFAULT_REVIEW_SCHEMA_PATH = SCRIPT_DIR / "codex_autopilot_closeout_review_schema.json"
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -52,6 +56,7 @@ class ProjectContract:
     commit_policy: dict[str, Any] = field(default_factory=dict)
     task_classification: dict[str, Any] = field(default_factory=dict)
     observation_classes: dict[str, Any] = field(default_factory=dict)
+    auto_closeout: dict[str, Any] = field(default_factory=dict)
 
     def github_config(self, *, dry_run: bool = False) -> github_project_task.Config:
         return github_project_task.Config(
@@ -72,14 +77,22 @@ class CommandResult:
 
 
 class CommandRunner:
-    def run(self, args: list[str]) -> CommandResult:
-        completed = subprocess.run(
-            args,
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
+    def run(self, args: list[str], *, env: dict[str, str] | None = None) -> CommandResult:
+        merged_env = None
+        if env:
+            merged_env = os.environ.copy()
+            merged_env.update({str(key): str(value) for key, value in env.items()})
+        try:
+            completed = subprocess.run(
+                args,
+                cwd=ROOT,
+                env=merged_env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        except FileNotFoundError as exc:
+            return CommandResult(args=args, returncode=127, stdout="", stderr=str(exc))
         return CommandResult(args=args, returncode=completed.returncode, stdout=completed.stdout, stderr=completed.stderr)
 
 
@@ -166,6 +179,11 @@ def load_contract(path: Path) -> ProjectContract:
             payload.get("observation_classes") or {},
             code="invalid_observation_classes",
             message="observation_classes must be an object",
+        ),
+        auto_closeout=_require_mapping(
+            payload.get("auto_closeout") or {},
+            code="invalid_auto_closeout",
+            message="auto_closeout must be an object",
         ),
     )
 
@@ -504,6 +522,7 @@ def contract_summary(contract: ProjectContract) -> dict[str, Any]:
         "protected_paths": contract.protected_paths,
         "allowed_mutation_paths": contract.allowed_mutation_paths,
         "commit_policy": contract.commit_policy,
+        "auto_closeout": contract.auto_closeout,
     }
 
 
@@ -535,6 +554,263 @@ def dirty_gate(contract: ProjectContract, runner: CommandRunner, baseline_path: 
         "summary": dirty,
         "stop_reason": None if dirty["unsafe_dirty"] == 0 else "dirty_worktree_unsafe",
     }
+
+
+def _issue_text(issue: dict[str, Any]) -> str:
+    return f"{issue.get('title') or ''}\n{issue.get('body') or ''}"
+
+
+def issue_observation_class(contract: ProjectContract, issue: dict[str, Any]) -> str:
+    text = _issue_text(issue)
+    patterns = [
+        r"observation[_ -]?class\s*[:：]\s*`?([A-Za-z0-9_-]+)`?",
+        r"evidence[_ -]?class\s*[:：]\s*`?([A-Za-z0-9_-]+)`?",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            return match.group(1)
+    return str(contract.auto_closeout.get("default_observation_class") or "deterministic_local")
+
+
+def issue_hard_stop_reasons(contract: ProjectContract, issue: dict[str, Any]) -> list[dict[str, Any]]:
+    reasons: list[dict[str, Any]] = []
+    title = str(issue.get("title") or "").casefold()
+    body = str(issue.get("body") or "").casefold()
+    for marker in _as_list(contract.auto_closeout.get("hard_stop_title_contains")):
+        if marker.casefold() in title:
+            reasons.append({"reason": "hard_stop_title_marker", "marker": marker})
+    for marker in _as_list(contract.auto_closeout.get("hard_stop_body_markers")):
+        if marker.casefold() in body:
+            reasons.append({"reason": "hard_stop_body_marker", "marker": marker})
+    return reasons
+
+
+def command_verify_profile(contract: ProjectContract, profile: str, *, runner: CommandRunner) -> dict[str, Any]:
+    profile_cfg = contract.verify_profiles.get(profile)
+    if not isinstance(profile_cfg, dict):
+        raise AutopilotError("missing_verify_profile", f"Verify profile not found: {profile}", profile=profile)
+    commands = profile_cfg.get("commands")
+    if not isinstance(commands, list) or not commands:
+        raise AutopilotError("invalid_verify_profile", f"Verify profile has no commands: {profile}", profile=profile)
+
+    results = []
+    all_passed = True
+    started = time.monotonic()
+    for index, spec in enumerate(commands):
+        if not isinstance(spec, dict):
+            raise AutopilotError("invalid_verify_command", "Verify command spec must be an object", profile=profile, index=index)
+        command = spec.get("command")
+        if not isinstance(command, list) or not command:
+            raise AutopilotError("invalid_verify_command", "Verify command must be a non-empty list", profile=profile, index=index)
+        label = str(spec.get("label") or f"command_{index + 1}")
+        env = spec.get("env") if isinstance(spec.get("env"), dict) else None
+        result = runner.run([str(part) for part in command], env={str(k): str(v) for k, v in (env or {}).items()} if env else None)
+        passed = result.returncode == 0
+        all_passed = all_passed and passed
+        results.append(
+            {
+                "label": label,
+                "command": [str(part) for part in command],
+                "returncode": result.returncode,
+                "passed": passed,
+                "stdout_preview": result.stdout[-2000:],
+                "stderr_preview": result.stderr[-2000:],
+            }
+        )
+
+    return {
+        "status": "ok" if all_passed else "failed",
+        "profile": profile,
+        "passed": all_passed,
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "results": results,
+    }
+
+
+def _extract_json_object(text: str) -> dict[str, Any] | None:
+    try:
+        payload = json.loads(text)
+        return payload if isinstance(payload, dict) else None
+    except json.JSONDecodeError:
+        pass
+    start = text.find("{")
+    end = text.rfind("}")
+    if start == -1 or end == -1 or end <= start:
+        return None
+    try:
+        payload = json.loads(text[start : end + 1])
+    except json.JSONDecodeError:
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def llm_reviewer(contract: ProjectContract, packet: dict[str, Any], *, runner: CommandRunner) -> dict[str, Any]:
+    prompt = (
+        "You are a conservative closeout reviewer for a Codex GitHub Project autopilot.\n"
+        "Return JSON only. Verdict must be closeout_allowed or closeout_blocked.\n"
+        "You may only make the decision stricter; never override hard-stop gates.\n\n"
+        f"Packet:\n{json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2)}"
+    )
+    result = runner.run(
+        [
+            "codex",
+            "exec",
+            "--ephemeral",
+            "--sandbox",
+            "read-only",
+            "--output-schema",
+            str(DEFAULT_REVIEW_SCHEMA_PATH),
+            prompt,
+        ]
+    )
+    if result.returncode != 0:
+        return {
+            "status": "unavailable",
+            "verdict": "closeout_blocked",
+            "reason": "llm_reviewer_unavailable",
+            "returncode": result.returncode,
+            "stderr_preview": result.stderr[-1000:],
+            "stdout_preview": result.stdout[-1000:],
+        }
+    parsed = _extract_json_object(result.stdout)
+    if not parsed:
+        return {
+            "status": "unavailable",
+            "verdict": "closeout_blocked",
+            "reason": "llm_reviewer_invalid_json",
+            "stdout_preview": result.stdout[-1000:],
+        }
+    verdict = str(parsed.get("verdict") or "")
+    if verdict not in {"closeout_allowed", "closeout_blocked"}:
+        parsed["verdict"] = "closeout_blocked"
+        parsed["reason"] = parsed.get("reason") or "llm_reviewer_invalid_verdict"
+    parsed.setdefault("status", "ok")
+    return parsed
+
+
+def closeout_comment_draft(packet: dict[str, Any]) -> str:
+    issue = packet.get("issue") or {}
+    verify = packet.get("verify") or {}
+    claim = packet.get("claim_ceiling") or "local workflow candidate pass"
+    lines = [
+        f"Closeout for #{issue.get('number')}: {issue.get('title')}",
+        "",
+        "Autopilot L3 closeout eligibility passed.",
+        f"- observation_class: `{packet.get('observation_class')}`",
+        f"- verify_profile: `{verify.get('profile')}`",
+        f"- verify_status: `{verify.get('status')}`",
+        f"- dirty_gate: `{(packet.get('dirty_gate') or {}).get('status')}`",
+    ]
+    reviewer = packet.get("llm_reviewer")
+    if reviewer:
+        lines.append(f"- llm_reviewer_verdict: `{reviewer.get('verdict')}`")
+    lines.extend(
+        [
+            "",
+            f"Claim: `{claim}`.",
+            "",
+            "Not claimed: full unattended autonomous development, stable productivity gain, product runtime efficacy, live autonomy, durable memory efficacy, or consciousness.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def closeout_packet(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    issue_ref: str,
+    *,
+    baseline_path: Path,
+    runner: CommandRunner,
+) -> dict[str, Any]:
+    classified = command_classify_issue(client, contract, issue_ref)
+    issue = classified["issue"]
+    classification = classified["classification"]
+    observation_class = issue_observation_class(contract, issue)
+    claim_ceiling = str(contract.auto_closeout.get("claim_ceiling") or "Codex autopilot local closeout candidate pass")
+    blocked_reasons: list[dict[str, Any]] = []
+
+    hard_stop_classes = set(_as_list(contract.auto_closeout.get("hard_stop_classes")))
+    if classification.get("class") in hard_stop_classes or classification.get("class") != "ready":
+        blocked_reasons.append(
+            {
+                "reason": "issue_class_not_auto_closeable",
+                "class": classification.get("class"),
+                "classification_reason": classification.get("reason"),
+            }
+        )
+    blocked_reasons.extend(issue_hard_stop_reasons(contract, issue))
+
+    dirty = dirty_gate(contract, runner, baseline_path)
+    if dirty.get("status") != "ok":
+        blocked_reasons.append({"reason": dirty.get("stop_reason") or "dirty_gate_blocked", "dirty_gate": dirty})
+
+    observation_cfg = contract.observation_classes.get(observation_class)
+    if not isinstance(observation_cfg, dict):
+        blocked_reasons.append({"reason": "unknown_observation_class", "observation_class": observation_class})
+        observation_cfg = {}
+
+    verify = None
+    reviewer = None
+    profile_map = contract.auto_closeout.get("observation_verify_profiles")
+    profile = None
+    if isinstance(profile_map, dict):
+        profile = profile_map.get(observation_class)
+    profile = str(profile or "autopilot_full")
+
+    if not blocked_reasons:
+        try:
+            verify = command_verify_profile(contract, profile, runner=runner)
+        except AutopilotError as exc:
+            verify = {"status": "error", "error": exc.code, "message": exc.message, **exc.details}
+            blocked_reasons.append({"reason": "verify_profile_error", "error": exc.code})
+        if verify and not verify.get("passed"):
+            blocked_reasons.append({"reason": "verify_profile_failed", "profile": profile})
+
+    llm_classes = set(_as_list(contract.auto_closeout.get("llm_review_observation_classes")))
+    needs_llm_review = observation_class in llm_classes
+    closeout_allowed = bool(observation_cfg.get("closeout_allowed"))
+
+    packet: dict[str, Any] = {
+        "status": "blocked",
+        "issue": {
+            "number": issue.get("number"),
+            "title": issue.get("title"),
+            "state": issue.get("state"),
+            "url": issue.get("url"),
+        },
+        "project_item": classified.get("project_item"),
+        "classification": classification,
+        "observation_class": observation_class,
+        "claim_ceiling": claim_ceiling,
+        "dirty_gate": dirty,
+        "verify": verify,
+        "blocked_reasons": blocked_reasons,
+    }
+
+    if needs_llm_review and not blocked_reasons:
+        reviewer = llm_reviewer(contract, packet, runner=runner)
+        packet["llm_reviewer"] = reviewer
+        if reviewer.get("verdict") != "closeout_allowed":
+            blocked_reasons.append({"reason": reviewer.get("reason") or "llm_reviewer_blocked"})
+    elif not closeout_allowed and not needs_llm_review:
+        blocked_reasons.append({"reason": "observation_class_not_closeout_allowed", "observation_class": observation_class})
+
+    eligible = not blocked_reasons and (closeout_allowed or (needs_llm_review and reviewer and reviewer.get("verdict") == "closeout_allowed"))
+    packet["blocked_reasons"] = blocked_reasons
+    packet["eligible"] = eligible
+    packet["status"] = "eligible" if eligible else "blocked"
+    packet["closeout_comment"] = closeout_comment_draft(packet) if eligible else None
+    return packet
+
+
+def write_run_report(payload: dict[str, Any], *, report_dir: Path = DEFAULT_REPORT_DIR) -> str:
+    report_dir.mkdir(parents=True, exist_ok=True)
+    stamp = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
+    path = report_dir / f"{stamp}-autopilot-run.json"
+    path.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    return str(path)
 
 
 def structured_issue_body(issue: dict[str, Any]) -> str:
@@ -665,36 +941,109 @@ def command_run_once(
     }
 
 
+def command_closeout_check(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    issue_ref: str,
+    *,
+    baseline_path: Path,
+    runner: CommandRunner,
+) -> dict[str, Any]:
+    return closeout_packet(client, contract, issue_ref, baseline_path=baseline_path, runner=runner)
+
+
+def command_closeout_once(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    issue_ref: str,
+    *,
+    dry_run: bool,
+    execute: bool,
+    baseline_path: Path,
+    runner: CommandRunner,
+) -> dict[str, Any]:
+    if dry_run and execute:
+        raise AutopilotError("invalid_closeout_mode", "Choose either --dry-run or --execute, not both")
+    effective_dry_run = not execute
+    packet = closeout_packet(client, contract, issue_ref, baseline_path=baseline_path, runner=runner)
+    if not packet.get("eligible"):
+        return {
+            "status": "stopped",
+            "stop_reason": "closeout_not_eligible",
+            "packet": packet,
+            "planned": [],
+        }
+
+    status = str(contract.auto_closeout.get("done_status") or "Done")
+    comment = str(packet["closeout_comment"])
+    if effective_dry_run:
+        cfg = contract.github_config(dry_run=True)
+        planned = github_project_task.command_closeout(
+            client,
+            cfg,
+            argparse.Namespace(issue=issue_ref, status=status, comment=comment, comment_file=None),
+        )
+        return {
+            "status": "ok",
+            "mode": "dry_run",
+            "packet": packet,
+            "planned": planned.get("planned", []),
+        }
+
+    cfg = contract.github_config(dry_run=False)
+    result = github_project_task.command_closeout(
+        client,
+        cfg,
+        argparse.Namespace(issue=issue_ref, status=status, comment=comment, comment_file=None),
+    )
+    return {
+        "status": "ok",
+        "mode": "execute",
+        "packet": packet,
+        "closeout": result,
+    }
+
+
 def command_run_loop(
     client: github_project_task.GhClient,
     contract: ProjectContract,
     *,
     dry_run: bool,
+    execute: bool,
+    mode: str,
     max_issues: int,
     max_minutes: int,
     baseline_path: Path,
     runner: CommandRunner,
+    write_report: bool,
 ) -> dict[str, Any]:
-    if not dry_run:
-        raise AutopilotError("mutation_not_implemented", "v1 run-loop only supports --dry-run")
+    if dry_run and execute:
+        raise AutopilotError("invalid_run_loop_mode", "Choose either --dry-run or --execute, not both")
+    effective_dry_run = not execute
     started = time.monotonic()
     if max_issues <= 0 or max_minutes <= 0:
-        return {
+        payload = {
             "status": "stopped",
             "stop_reason": "budget_exhausted",
             "max_issues": max_issues,
             "max_minutes": max_minutes,
             "planned": [],
         }
+        if write_report:
+            payload["report_path"] = write_run_report(payload)
+        return payload
 
     gate = dirty_gate(contract, runner, baseline_path)
     if gate["status"] != "ok":
-        return {
+        payload = {
             "status": "stopped",
             "stop_reason": gate["stop_reason"],
             "dirty_gate": gate,
             "planned": [],
         }
+        if write_report:
+            payload["report_path"] = write_run_report(payload)
+        return payload
 
     report = build_report(client, contract)
     ready = [
@@ -703,30 +1052,84 @@ def command_run_loop(
         if issue.get("classification", {}).get("class") == "ready"
     ]
     if not ready:
-        return {
+        payload = {
             "status": "stopped",
             "stop_reason": "no_ready_issue",
             "counts": report["counts"],
             "planned": [],
         }
+        if write_report:
+            payload["report_path"] = write_run_report(payload)
+        return payload
 
     status_rank = {"In Progress": 0, "Todo": 1}
     ready.sort(key=lambda item: (status_rank.get(str(item.get("project_status")), 99), int(item.get("number") or 999999)))
+    selected = ready[:max_issues]
+
+    if mode == "l3-closeout":
+        planned = []
+        closed = []
+        for item in selected:
+            issue_ref = str(item.get("number"))
+            packet = closeout_packet(client, contract, issue_ref, baseline_path=baseline_path, runner=runner)
+            entry: dict[str, Any] = {
+                "issue": item,
+                "closeout_check": {
+                    "status": packet.get("status"),
+                    "eligible": packet.get("eligible"),
+                    "blocked_reasons": packet.get("blocked_reasons"),
+                    "claim_ceiling": packet.get("claim_ceiling"),
+                },
+            }
+            if packet.get("eligible") and execute:
+                result = command_closeout_once(
+                    client,
+                    contract,
+                    issue_ref,
+                    dry_run=False,
+                    execute=True,
+                    baseline_path=baseline_path,
+                    runner=runner,
+                )
+                entry["closeout"] = result.get("closeout")
+                closed.append(issue_ref)
+            elif packet.get("eligible"):
+                entry["dry_run_action"] = "would_closeout"
+            else:
+                entry["dry_run_action"] = "would_skip"
+            planned.append(entry)
+        payload = {
+            "status": "ok",
+            "mode": "l3-closeout",
+            "dry_run": effective_dry_run,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+            "planned": planned,
+            "closed": closed,
+            "stop_reason": "max_issues_reached" if len(ready) > max_issues else "ready_queue_exhausted",
+        }
+        if write_report:
+            payload["report_path"] = write_run_report(payload)
+        return payload
+
     planned = [
         {
             "issue": item,
             "dry_run_action": "would_run_once",
-            "note": "v1 does not mutate code, GitHub Project state, commits, or close issues",
+            "note": "plan mode does not mutate code, GitHub Project state, commits, or close issues",
         }
-        for item in ready[:max_issues]
+        for item in selected
     ]
-    return {
+    payload = {
         "status": "ok",
-        "mode": "dry_run",
+        "mode": "plan",
+        "dry_run": effective_dry_run,
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "planned": planned,
         "stop_reason": "max_issues_reached" if len(ready) > max_issues else "ready_queue_exhausted",
     }
+    if write_report:
+        payload["report_path"] = write_run_report(payload)
+    return payload
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -741,6 +1144,9 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("baseline")
     subparsers.add_parser("diff-scope")
 
+    verify_profile = subparsers.add_parser("verify-profile")
+    verify_profile.add_argument("--profile", required=True)
+
     classify = subparsers.add_parser("classify-issue")
     classify.add_argument("--issue", required=True)
 
@@ -752,10 +1158,21 @@ def build_parser() -> argparse.ArgumentParser:
     once.add_argument("--issue", required=True)
     once.add_argument("--dry-run", action="store_true")
 
+    closeout_check = subparsers.add_parser("closeout-check")
+    closeout_check.add_argument("--issue", required=True)
+
+    closeout_once = subparsers.add_parser("closeout-once")
+    closeout_once.add_argument("--issue", required=True)
+    closeout_once.add_argument("--dry-run", action="store_true")
+    closeout_once.add_argument("--execute", action="store_true")
+
     loop = subparsers.add_parser("run-loop")
     loop.add_argument("--dry-run", action="store_true")
+    loop.add_argument("--execute", action="store_true")
+    loop.add_argument("--mode", choices=["plan", "l3-closeout"], default="plan")
     loop.add_argument("--max-issues", type=int, default=1)
     loop.add_argument("--max-minutes", type=int, default=10)
+    loop.add_argument("--write-report", action="store_true")
     return parser
 
 
@@ -783,6 +1200,8 @@ def dispatch(
         return command_baseline(contract, baseline_path=Path(args.baseline_path), runner=runner)
     if args.command == "diff-scope":
         return command_diff_scope(contract, baseline_path=Path(args.baseline_path), runner=runner)
+    if args.command == "verify-profile":
+        return command_verify_profile(contract, args.profile, runner=runner)
     if args.command == "normalize-issue":
         return command_normalize_issue(client, contract, args.issue, dry_run=bool(args.dry_run))
     if args.command == "run-once":
@@ -794,15 +1213,36 @@ def dispatch(
             baseline_path=Path(args.baseline_path),
             runner=runner,
         )
+    if args.command == "closeout-check":
+        return command_closeout_check(
+            client,
+            contract,
+            args.issue,
+            baseline_path=Path(args.baseline_path),
+            runner=runner,
+        )
+    if args.command == "closeout-once":
+        return command_closeout_once(
+            client,
+            contract,
+            args.issue,
+            dry_run=bool(args.dry_run),
+            execute=bool(args.execute),
+            baseline_path=Path(args.baseline_path),
+            runner=runner,
+        )
     if args.command == "run-loop":
         return command_run_loop(
             client,
             contract,
             dry_run=bool(args.dry_run),
+            execute=bool(args.execute),
+            mode=str(args.mode),
             max_issues=args.max_issues,
             max_minutes=args.max_minutes,
             baseline_path=Path(args.baseline_path),
             runner=runner,
+            write_report=bool(args.write_report),
         )
     raise AutopilotError("unknown_command", f"Unknown command: {args.command}")
 
