@@ -7,6 +7,11 @@
 
 ---
 
+## Current Authority Note
+
+- `PROJECT_MEMORY.md` 是广义背景记忆，不是 current route authority。
+- 当前路线、当前 execution owner、当前证据口径若与本页冲突，以 `docs/PROGRAM_STATE_UNIFIED.yaml` 为准。
+
 ## 项目概览
 
 | 项目 | 值 |
@@ -38,8 +43,8 @@
 
 推荐读取顺序：
 
-1. 新 agent / 新人上手仓库：先读 `PROJECT_MEMORY.md`，再读 `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
-2. Codex 新会话恢复当前任务：先读当前任务 handoff，再读 `CODEX_MEMORY.md`
+1. 新 agent / 新人上手仓库：先读 `docs/PROGRAM_STATE_UNIFIED.yaml`，再读 active task / current lane docs，最后回读 `PROJECT_MEMORY.md`
+2. Codex 新会话恢复当前任务：先读当前任务 handoff / current lane docs，再读 `CODEX_MEMORY.md`
 3. 需要广义背景、边界、历史里程碑时：回读 `PROJECT_MEMORY.md`
 4. 需要核对结构化记忆源、做记忆维护或追溯 source 时：读 `.codex/memory/README.md` 与 `.codex/memory/*.jsonl`
 

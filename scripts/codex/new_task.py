@@ -17,6 +17,7 @@ TEMPLATE_MAP = {
     "SPEC.template.md": "SPEC.md",
     "PLAN.template.md": "PLAN.md",
     "IMPLEMENT.template.md": "IMPLEMENT.md",
+    "EXPLORE.template.md": "EXPLORE.md",
     "STATUS.template.md": "STATUS.md",
 }
 
@@ -72,9 +73,10 @@ def main() -> int:
     print("\nNext steps:")
     print(f"1. Fill {task_dir.relative_to(ROOT).as_posix()}/SPEC.md")
     print(f"2. Fill {task_dir.relative_to(ROOT).as_posix()}/PLAN.md")
-    print("3. Lock STATUS.md -> Current milestone")
-    print(f"4. Run: python3 scripts/codex/verify_repo.py --mode fast")
-    print("5. Prompt Codex with:")
+    print(f"3. If task is exploratory, fill {task_dir.relative_to(ROOT).as_posix()}/EXPLORE.md")
+    print("4. Lock STATUS.md -> Current milestone")
+    print(f"5. Run: python3 scripts/codex/verify_repo.py --mode fast")
+    print("6. Prompt Codex with:")
     print("   LONGRUN")
     print(f"   Use skill long-run-execution on docs/codex/tasks/{slug}")
     return 0

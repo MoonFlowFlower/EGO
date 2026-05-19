@@ -174,6 +174,22 @@ handed_off
 
 这样用户做的是第二层确认，而不是第一轮 bug 猎手。
 
+对于持续研发/研究回合，默认再加一条固定协作约束：
+
+- 用户默认只拍板：
+  - 方向
+  - 风险边界
+  - 是否升级 gate
+- Codex 默认自己完成：
+  - Stage Card
+  - One Hypothesis
+  - One Change Surface
+  - 三层验证
+  - reviewer verdict
+  - ledger update
+
+除非命中高影响取舍、外部依赖、或需要提升 claim ceiling，否则不要把日常实现细节抛回给用户。
+
 ---
 
 ## 主动增益检查

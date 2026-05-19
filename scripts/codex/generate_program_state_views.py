@@ -15,6 +15,12 @@ from program_state_common import (
     render_status_markdown,
     render_summary_markdown,
 )
+from route_convergence_common import (
+    REPO_HYGIENE_POLICY_PATH,
+    TASK_LANE_INDEX_PATH,
+    render_repo_hygiene_policy,
+    render_task_lane_index,
+)
 
 
 def _write(path: Path, content: str) -> None:
@@ -28,6 +34,8 @@ def main() -> int:
 
     _write(STATUS_MD_PATH, render_status_markdown(program_state, evidence_index))
     _write(SUMMARY_MD_PATH, render_summary_markdown(program_state, evidence_index))
+    _write(TASK_LANE_INDEX_PATH, render_task_lane_index(program_state))
+    _write(REPO_HYGIENE_POLICY_PATH, render_repo_hygiene_policy())
 
     mirror_header = (
         "# AUTO-GENERATED COMPATIBILITY MIRROR\n"

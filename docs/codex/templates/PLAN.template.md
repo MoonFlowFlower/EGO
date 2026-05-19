@@ -4,11 +4,23 @@
 
 一句话写清任务摘要、目标层级、当前范围。
 
+## Execution mode
+
+- mode: implementation / exploration
+- why this mode:
+- proof required after discovery:
+
 ## Milestones
 
 ### Milestone 1: <name>
 
+- type: implementation / exploration
+- question:
+- current framing:
+- hypotheses:
 - scope:
+- experiments planned:
+- kill criteria:
 - files / areas likely touched:
 - acceptance:
 - validation:
@@ -17,7 +29,13 @@
 
 ### Milestone 2: <name>
 
+- type: implementation / exploration
+- question:
+- current framing:
+- hypotheses:
 - scope:
+- experiments planned:
+- kill criteria:
 - files / areas likely touched:
 - acceptance:
 - validation:
@@ -29,6 +47,7 @@
 - current_status:
 - current_milestone:
 - milestone_state:
+- candidate_vs_proof: candidate_found / proof_pending / proof_passed
 
 ## Decision log
 
@@ -38,9 +57,12 @@
 
 - 新发现 1
 - 新发现 2
+- 已排除路线 1
+- 已排除路线 2
 
 ## Outcomes / retrospective
 
 - 本轮已证明：
 - 还没证明：
+- 本轮排除了什么：
 - 下一步最小闭环动作：

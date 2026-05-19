@@ -25,20 +25,63 @@ docs/codex/
 │   ├── SPEC.template.md
 │   ├── PLAN.template.md
 │   ├── IMPLEMENT.template.md
-│   └── STATUS.template.md
+│   ├── EXPLORE.template.md
+│   ├── STATUS.template.md
+│   └── LOOP_CHECKPOINT.template.md
 ├── tasks/
 │   └── <slug>/
 │       ├── SPEC.md
 │       ├── PLAN.md
 │       ├── IMPLEMENT.md
+│       ├── EXPLORE.md
 │       └── STATUS.md
 └── examples/
     └── minimal-long-run-task/
         ├── SPEC.md
         ├── PLAN.md
         ├── IMPLEMENT.md
+        ├── EXPLORE.md
         └── STATUS.md
 ```
+
+## 两种 long-run 模式
+
+`docs/codex/tasks/<slug>/` 仍然只有一套任务目录，但现在明确分两种执行模式：
+
+- `implementation milestone`
+  - 已知主路径明确、主要工作是实现/接线/回归
+  - 默认沿用：`Spec -> Author -> Self-Reviewer -> Independent Reviewer -> Verifier -> Publisher`
+- `exploration milestone`
+  - 高未知、需要 proof、需要排除路线、需要 evidence / observation / causal closure
+  - 默认走：`Question Reformulation -> Hypothesis -> Experiment -> Log -> Decision`
+
+规则：
+
+- 研究型、验证型、proof 型、observation 型 long-run 任务默认启用 `exploration milestone`
+- 纯实现型 long-run 任务不强制写探索日志，但如果出现高未知或连续低增益，应切换到 exploration mode
+- exploration mode 是对现有闭环的补强，不是第二套任务系统
+
+## Exploration Cycle 纪律
+
+Claude Cycles 方法在 EGO 里的最小落点是“强制探索记账”：
+
+1. 先重述问题与当前 framing
+2. 明确假设和 kill criteria
+3. 只做一个最小实验
+4. 实验后先更新 `EXPLORE.md`，再做下一轮
+5. 记录：
+   - 试了什么
+   - 观察到什么
+   - 证明了什么
+   - 不能证明什么
+   - 排除了什么路线
+   - 下一轮为什么这么走
+
+硬规则：
+
+- 没有更新 `EXPLORE.md`，不得连续跑第二个实验
+- 连续两轮无明显增益时，必须显式换 framing，而不是继续原路线 brute force
+- 找到候选方案后必须切到 proof/verify 口径；`candidate_found` 不等于 `proof_passed`
 
 ## 本地执行
 
@@ -48,8 +91,10 @@ docs/codex/
 python3 scripts/codex/new_task.py <slug> --title "任务标题"
 ```
 
-2. 先补 `SPEC.md`、再补 `PLAN.md`、再补 `IMPLEMENT.md`、最后锁定 `STATUS.md` 的 `Current milestone`
-3. 运行 Codex：
+2. 先补 `SPEC.md`、再补 `PLAN.md`、再补 `IMPLEMENT.md`
+3. 如果任务属于 research / verify / observation / proof，优先补 `EXPLORE.md`
+4. 最后锁定 `STATUS.md` 的 `Current milestone`
+5. 运行 Codex：
 
 显式调用 skill：
 
@@ -64,7 +109,7 @@ LONGRUN
 Use skill long-run-execution on docs/codex/tasks/<slug>
 ```
 
-4. 每完成一个 milestone，运行验证：
+6. 每完成一个 milestone，运行验证：
 
 ```bash
 python3 scripts/codex/verify_repo.py --mode fast
@@ -85,10 +130,21 @@ python3 scripts/codex/verify_repo.py --mode full
 带这个指令时，Codex 应进入“按 milestone 持续推进”的模式：
 
 - 先读 `SPEC.md -> PLAN.md -> IMPLEMENT.md -> STATUS.md`
+- 若任务属于 exploration mode，再读 `EXPLORE.md`
 - 每次只做一个 milestone
 - 做完就验证
 - 验证失败先修复、降级口径、或记录 blocker
 - 只有遇到缺外部凭据/审批、authority source 冲突、或当前 slice 证明无法闭环时才停
+
+对 exploration mode 额外要求：
+
+- 先输出当前问题重述与 framing
+- 先列假设，再挑一个最小实验
+- 每个实验结束后先更新 `EXPLORE.md` 与 `STATUS.md`
+- 明确区分：
+  - `candidate_found`
+  - `proof_pending`
+  - `proof_passed`
 
 ## 统一验证脚本
 
@@ -144,5 +200,7 @@ python3 scripts/codex/verify_repo.py --mode fast --dry-run
 
 - `Tasks/templates/` 继续服务 repo 原生任务流
 - `docs/codex/templates/` 只服务 Codex 的长任务执行工作区
+- `LOOP_CHECKPOINT.template.md` 用于固定协作开发循环下的单轮 checkpoint，不是第二真相源
 - 两者共享同一套 authority source、验证口径、handoff 语义
 - 当已有 `Tasks/active/*.md` 时，优先引用，不复制
+- `EXPLORE.template.md` 不是第二真相源；它只记录探索循环、排除路线和 proof 缺口
