@@ -137,6 +137,13 @@ APPROVAL_CARD_TEXT_MARKERS = (
     "批准执行：",
     "已生成待审批操作",
 )
+WORKSPACE_REFUSAL_PATTERNS = (
+    r"workspace\s*(外|之外|以外)",
+    r"不在.*workspace",
+    r"工作目录.*(外|之外|以外)",
+    r"不在.*工作目录",
+    r"outside\s+(the\s+)?workspace",
+)
 
 
 def _coerce_local_path(path: str | Path) -> Path:
@@ -206,6 +213,26 @@ DEFAULT_TEAM_IDLE_SLEEP_SECONDS = float(os.getenv("AGENT_TEAM_IDLE_SLEEP_SECONDS
 DEFAULT_TRACE_PATH = Path(
     os.getenv("AGENT_TRACE_PATH", str(EGO_OPERATOR_ROOT / "artifacts" / "agent_trace.jsonl"))
 ).resolve()
+
+
+def _path_aliases_for_prompt(path: str | Path) -> List[str]:
+    resolved = _coerce_local_path(path).resolve()
+    aliases = [str(resolved)]
+    text = str(resolved).replace("\\", "/")
+    if os.name != "nt" and text.startswith("/mnt/") and len(text) > 7 and text[6] == "/":
+        drive = text[5].upper()
+        tail = text[7:].replace("/", "\\")
+        aliases.append(f"{drive}:\\{tail}")
+    return aliases
+
+
+def _allowed_roots_prompt_text() -> str:
+    roots: List[Path] = []
+    for root in (DEFAULT_AGENT_WORKSPACE, *DEFAULT_AGENT_ALLOWED_ROOTS):
+        resolved = _coerce_local_path(root).resolve()
+        if resolved not in roots:
+            roots.append(resolved)
+    return "; ".join(" / ".join(_path_aliases_for_prompt(root)) for root in roots)
 
 VALID_TEAM_MSG_TYPES = {
     "message",
@@ -841,8 +868,10 @@ def build_system_prompt(operator_memory_context: str = "", subject_context: str 
         + "\n13. 区分两种调度：dispatch_subagent 是临时派差；spawn_teammate 是固定班底，有名字、角色、状态和 inbox；默认关闭时不得假装已经组队。"
         + "\n14. 固定队友回禀也只是工作报告，不等于事实已验证；关键结论仍要看工具证据和主 agent 判断。"
         + "\n15. 不要编造不存在的 skill；只能从当前可用技能列表中选择。"
-        + "\n16. read_file / glob_files / grep_files 是 workspace 内只读工具；需要查看本地文件时优先使用它们，不要假装已经读取。"
-        + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径；不要让子代理直接写文件，也不要在未批准时声称已写入。"
+        + "\n16. read_file / glob_files / grep_files 可访问 workspace 与 allowed_roots 内路径；当前 allowed_roots: "
+        + _allowed_roots_prompt_text()
+        + "。需要查看本地文件时优先使用工具，不要假装已经读取，也不要在未调用工具前自行判定 allowed_roots 内路径不可访问。"
+        + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；workspace 外但 allowed_roots 内的绝对路径也是合法 proposal 目标。如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径或 fallback 到 workspace 内；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n17a. 不得手写、伪造或猜测 Pending operation approval、proposal_id、content_sha256 或 /approve 命令；只有 propose_file_write / propose_web_fetch / propose_heartbeat 工具返回的真实 action_card 才能展示给用户。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
@@ -1147,6 +1176,14 @@ def _text_claims_operation_approval(text: str) -> bool:
     if any(marker in raw for marker in APPROVAL_CARD_TEXT_MARKERS):
         return True
     return bool(re.search(r"/approve\s+proposal_[A-Za-z0-9]+", raw))
+
+
+def _text_claims_workspace_refusal(text: str) -> bool:
+    raw = text or ""
+    return any(
+        re.search(pattern, raw, flags=re.IGNORECASE | re.DOTALL)
+        for pattern in WORKSPACE_REFUSAL_PATTERNS
+    )
 
 
 def _path_intent_adjustment(user_text: str, proposed_path: str) -> tuple[str, Dict[str, Any]]:
@@ -4370,6 +4407,7 @@ class AgentRuntime:
             loop_idx = 0
             empty_final_repairs = 0
             unbacked_approval_repairs = 0
+            allowed_root_refusal_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -4457,6 +4495,38 @@ class AgentRuntime:
                             "side_effects_executed": False,
                             "tool_calls": len(tool_trace),
                             "approval_claim": approval_claim,
+                        }, content, tool_trace
+
+                    allowed_root_refusal = self._detect_allowed_root_workspace_refusal(event.raw_text or "", content)
+                    if allowed_root_refusal.get("status") == "allowed_root_workspace_refusal":
+                        if allowed_root_refusal_repairs < 1:
+                            allowed_root_refusal_repairs += 1
+                            messages.append({
+                                "role": "system",
+                                "content": (
+                                    "[allowed_root_refusal_repair]\n"
+                                    "The previous assistant text refused the requested path as outside workspace, "
+                                    "but the user's explicit path is inside allowed_roots. Do not fallback to a "
+                                    "workspace-local path. Call the appropriate file tool now, preferably "
+                                    "propose_file_write for create/modify requests, using the user's exact target "
+                                    "path or letting runtime path-intent correction preserve it. If the runtime tool "
+                                    "blocks the path, report that real tool result instead of guessing."
+                                ),
+                            })
+                            loop_idx += 1
+                            continue
+                        content = self._format_allowed_root_refusal_recovery_reply(allowed_root_refusal, tool_trace)
+                        final_action = AgentAction(
+                            action_type=ActionType.RESPOND,
+                            content=content,
+                            reason="llm_allowed_root_refusal_recovered",
+                        )
+                        final_gate = self.gate.check(event, final_action)
+                        return final_action, final_gate, {
+                            "status": "allowed_root_workspace_refusal",
+                            "side_effects_executed": False,
+                            "tool_calls": len(tool_trace),
+                            "refusal": allowed_root_refusal,
                         }, content, tool_trace
 
                     final_action = AgentAction(
@@ -4722,6 +4792,19 @@ class AgentRuntime:
             ],
         }
 
+    def _detect_allowed_root_workspace_refusal(self, user_text: str, content: str) -> Dict[str, Any]:
+        if not _text_claims_workspace_refusal(content):
+            return {"status": "not_applicable"}
+        intents = _extract_local_path_intents(user_text)
+        if not intents:
+            return {"status": "not_applicable"}
+        return {
+            "status": "allowed_root_workspace_refusal",
+            "intended_paths": [intent.resolved_path for intent in intents],
+            "raw_intent_paths": [intent.raw_path for intent in intents],
+            "allowed_roots": [str(root) for root in _iter_allowed_roots()],
+        }
+
     def _format_unbacked_approval_recovery_reply(
         self,
         approval_claim: Dict[str, Any],
@@ -4733,6 +4816,20 @@ class AgentRuntime:
             f"可疑 proposal id：{', '.join(unknown_ids) if unknown_ids else '未提供真实 id'}。",
             f"当前已完成工具调用：{len(tool_trace)} 次。",
             "没有执行文件创建或修改；请重试同一句请求，我会要求模型必须调用 propose_file_write 生成真实审批项。",
+        ]
+        return "\n".join(lines)
+
+    def _format_allowed_root_refusal_recovery_reply(
+        self,
+        refusal: Dict[str, Any],
+        tool_trace: List[Dict[str, Any]],
+    ) -> str:
+        paths = refusal.get("intended_paths") or []
+        lines = [
+            "模型把用户给出的路径误判成 workspace 外路径；runtime 已识别该路径位于 allowed_roots 内。",
+            f"目标路径：{', '.join(paths) if paths else 'unknown'}。",
+            f"当前已完成工具调用：{len(tool_trace)} 次。",
+            "没有执行文件创建或修改；请重试同一句请求，我会要求模型必须调用文件工具并保留原目标路径。",
         ]
         return "\n".join(lines)
 
@@ -4887,11 +4984,14 @@ def build_demo_runtime(
     tools.register(
         "read_file",
         read_file_tool,
-        description=f"读取 workspace 内文件内容。workspace={DEFAULT_AGENT_WORKSPACE}",
+        description=(
+            "读取 workspace/allowed_roots 内文件内容。"
+            f"workspace={DEFAULT_AGENT_WORKSPACE}; allowed_roots={_allowed_roots_prompt_text()}"
+        ),
         input_schema={
             "type": "object",
             "properties": {
-                "path": {"type": "string", "description": "workspace 内相对路径。"},
+                "path": {"type": "string", "description": "workspace 相对路径，或 allowed_roots 内绝对路径。"},
                 "max_chars": {"type": "integer", "description": "最多读取字符数。"},
             },
             "required": ["path"],
@@ -4916,11 +5016,14 @@ def build_demo_runtime(
     tools.register(
         "glob_files",
         glob_files_tool,
-        description="按 glob 模式搜索 workspace 内文件。",
+        description=(
+            "按 glob 模式搜索 workspace/allowed_roots 内文件。"
+            f"allowed_roots={_allowed_roots_prompt_text()}"
+        ),
         input_schema={
             "type": "object",
             "properties": {
-                "pattern": {"type": "string", "description": "例如 **/*.py 或 skills/**/SKILL.md。"},
+                "pattern": {"type": "string", "description": "例如 **/*.py，或 allowed_roots 内绝对 glob。"},
                 "max_results": {"type": "integer", "description": "最大结果数。"},
             },
             "required": ["pattern"],
@@ -4930,12 +5033,15 @@ def build_demo_runtime(
     tools.register(
         "grep_files",
         grep_files_tool,
-        description="在 workspace 内文本文件中搜索正则 pattern。",
+        description=(
+            "在 workspace/allowed_roots 内文本文件中搜索正则 pattern。"
+            f"allowed_roots={_allowed_roots_prompt_text()}"
+        ),
         input_schema={
             "type": "object",
             "properties": {
                 "pattern": {"type": "string", "description": "Python 正则表达式。"},
-                "path": {"type": "string", "description": "workspace 内路径，默认 .。"},
+                "path": {"type": "string", "description": "workspace 相对路径或 allowed_roots 内绝对路径，默认 .。"},
                 "include_extensions": {"type": "string", "description": "逗号分隔扩展名。"},
                 "max_matches": {"type": "integer", "description": "最大匹配数。"},
             },
@@ -5050,12 +5156,13 @@ def build_demo_runtime(
         runtime.propose_file_write,
         description=(
             "生成一个待 operator 审批的文件写入 proposal。"
-            "不会直接写磁盘；批准后 runtime 用一次性 lease 执行。"
+            "目标可位于 workspace 或 allowed_roots 内；不会直接写磁盘；批准后 runtime 用一次性 lease 执行。"
+            f" allowed_roots={_allowed_roots_prompt_text()}"
         ),
         input_schema={
             "type": "object",
             "properties": {
-                "path": {"type": "string", "description": "workspace 内相对路径或 workspace 内绝对路径。"},
+                "path": {"type": "string", "description": "workspace 相对路径，或 allowed_roots 内绝对路径。"},
                 "content": {"type": "string", "description": "拟写入的完整内容。"},
                 "reason": {"type": "string", "description": "为什么需要写这个文件。"},
                 "create_parents": {"type": "boolean", "description": "是否创建父目录。"},

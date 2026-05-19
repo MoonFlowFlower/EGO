@@ -250,6 +250,64 @@ class AlwaysHallucinatedApprovalLLM:
         return "已生成待审批写入 proposal。"
 
 
+class AllowedRootRefusalThenFallbackProposalLLM:
+    provider = "fake"
+    model = "allowed-root-refusal-then-fallback-proposal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="这个路径不在我的 workspace 内，我无法直接写入。我可以改在 workspace 的 Test/index.html 创建。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "allowed_root_refusal_repair" in joined
+        return agent.LLMChatResult(
+            content="我会改为调用真实 proposal 工具。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_allowed_root_repair_proposal",
+                    name="propose_file_write",
+                    arguments={
+                        "path": "Test/index.html",
+                        "content": "<!doctype html><html><head><title>T</title></head><body>ok</body></html>",
+                        "reason": "operator requested a simple test page under an allowed root",
+                        "create_parents": True,
+                    },
+                )
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "已生成待审批写入 proposal。"
+
+
+class OutsideRootRefusalLLM:
+    provider = "fake"
+    model = "outside-root-refusal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(
+            content="这个路径不在我的 workspace 内，也不在允许范围内，无法写入。",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "无法写入。"
+
+
 class RateLimitedLLM:
     provider = "fake"
     model = "rate-limited"
@@ -552,6 +610,58 @@ def test_file_path_intent_corrects_wrong_relative_glob_then_write_proposal(tmp_p
     assert write_trace["tool_call"]["name"] == "propose_file_write"
     assert write_trace["tool_call"]["arguments"]["path"] == str((intended_dir / "index.html").resolve())
     assert write_trace["tool_call"]["path_intent"]["status"] == "corrected"
+
+
+def test_allowed_root_workspace_refusal_triggers_repair_and_preserves_target_path(tmp_path, monkeypatch):
+    workspace = tmp_path / "MyProject" / "Ego" / "EgoOperator"
+    allowed_root = tmp_path / "MyProject"
+    intended_dir = allowed_root / "Test3"
+    fallback_dir = workspace / "Test"
+    workspace.mkdir(parents=True)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    llm = AllowedRootRefusalThenFallbackProposalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message(f"在{intended_dir}创建一个测试网页")
+    pending = runtime.list_pending_approvals()["items"]
+
+    assert llm.calls == 2
+    assert result.external_result["status"] == "pending_approval"
+    assert len(pending) == 1
+    assert pending[0]["path"] == str((intended_dir / "index.html").resolve())
+    assert pending[0]["resolved_path"] == str((intended_dir / "index.html").resolve())
+    assert "workspace 的 Test/index.html" not in result.reply_text
+    assert not (fallback_dir / "index.html").exists()
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    write_trace = trace["tool_trace"][0]
+    assert write_trace["tool_call"]["name"] == "propose_file_write"
+    assert write_trace["tool_call"]["path_intent"]["status"] == "corrected"
+    assert write_trace["tool_call"]["path_intent"]["intended_path"] == str(intended_dir.resolve())
+    assert write_trace["tool_call"]["arguments"]["path"] == str((intended_dir / "index.html").resolve())
+
+
+def test_outside_allowed_root_workspace_refusal_is_not_repaired(tmp_path, monkeypatch):
+    workspace = tmp_path / "MyProject" / "Ego" / "EgoOperator"
+    allowed_root = tmp_path / "MyProject"
+    outside_dir = tmp_path / "Outside" / "Test3"
+    workspace.mkdir(parents=True)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", workspace)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (workspace, allowed_root))
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    llm = OutsideRootRefusalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message(f"在{outside_dir}创建一个测试网页")
+
+    assert llm.calls == 1
+    assert result.external_result["status"] == "sent"
+    assert "不在我的 workspace" in result.reply_text
+    assert runtime.list_pending_approvals()["count"] == 0
+    assert not (outside_dir / "index.html").exists()
 
 
 def test_windows_path_intent_extracts_as_wsl_normalized_allowed_path(monkeypatch):
