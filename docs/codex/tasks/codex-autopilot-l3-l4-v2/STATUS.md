@@ -2,7 +2,7 @@
 
 ## Current State
 
-- state: `l3_local_pass_l4_automation_active_pending_scheduled_observation`
+- state: `l3_closed_l4_automation_active_pending_scheduled_observation`
 - l3_github_issue: `#21`
 - l4_github_issue: `#22`
 - claim_ceiling: `Codex autopilot L3/L4 bounded closeout/patrol local workflow candidate pass`
@@ -28,3 +28,8 @@
 - `python3 scripts/codex_project_autopilot.py run-loop --mode l3-closeout --dry-run --max-issues 3 --max-minutes 10 --write-report` returned `would_closeout` for #21 and wrote an ignored report.
 - Created active cron automation `codex-autopilot-l4-dry-run-patrol` with daily dry-run patrol prompt.
 - `python3 scripts/github_project_task.py set-status --issue 22 --status "In Progress"` passed after automation creation.
+- Committed and pushed implementation as `63edf020`.
+- `python3 scripts/codex_project_autopilot.py closeout-once --issue 21 --execute` passed; #21 is closed and Project `Status=Done`.
+- `python3 scripts/github_project_task.py verify --issue 21 --expect-status Done` passed.
+- `python3 scripts/github_project_task.py verify --issue 22 --expect-status "In Progress"` passed.
+- `python3 scripts/codex_project_autopilot.py plan-next` returned `no_ready_issue`; #22 remains non-auto-closeable pending scheduled patrol observation.
