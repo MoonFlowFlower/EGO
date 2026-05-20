@@ -100,6 +100,8 @@
 - #46 implementation adds `adaptation_effectiveness_sample_pack.json` plus a scripted before/after report path that produces deterministic guard results and an LLM reviewer packet for approved-preference response adaptation. This remains a scripted reviewer packet only, not durable learning proof.
 - #47 was promoted to `In Progress` for stale preference decay and conflict handling.
 - #47 implementation keeps old preferences from dominating future hot context by quarantining same-key candidate replacements and making stale unpinned candidates lose hit-count-only hot-context promotion while still allowing direct query relevance.
+- #49 was promoted to `In Progress` for operational self-model snapshot primitive.
+- #49 implementation adds a readonly operational self-model snapshot under subject context: role, runtime mode, capability boundaries, current commitments, uncertainty, and recent failures are context only, with state mutation and reply decision explicitly forbidden.
 
 ## Notes
 

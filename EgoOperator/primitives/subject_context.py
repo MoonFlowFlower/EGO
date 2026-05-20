@@ -18,6 +18,7 @@ SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
 CLAIM_CEILING = "candidate-local subject context only"
 
 EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
+OPERATIONAL_SELF_MODEL_SCHEMA = "ego_operator.operational_self_model.v1"
 EMOTION_CUES: Dict[str, tuple[str, ...]] = {
     "frustration": ("烦", "崩", "气死", "又失败", "不行", "没用", "卡住", "搞不定", "frustrated", "annoyed"),
     "uncertainty": ("不确定", "不知道", "迷茫", "困惑", "看不懂", "怎么做", "uncertain", "confused"),
@@ -207,6 +208,65 @@ def evaluate_empathy_response(user_text: str, reply_text: str) -> Dict[str, Any]
     }
 
 
+def _bounded_list(items: List[str] | tuple[str, ...] | None, *, max_items: int = 5) -> List[str]:
+    values: List[str] = []
+    for item in items or []:
+        clean = _bounded(str(item), 240)
+        if clean:
+            values.append(clean)
+        if len(values) >= max_items:
+            break
+    return values
+
+
+def build_operational_self_model_snapshot(
+    *,
+    runtime_mode: str = "approve",
+    operator_memory_available: bool = False,
+    current_commitments: List[str] | tuple[str, ...] | None = None,
+    uncertainty: List[str] | tuple[str, ...] | None = None,
+    recent_failures: List[str] | tuple[str, ...] | None = None,
+) -> Dict[str, Any]:
+    """Build a readonly operational self-model context snapshot.
+
+    This is not an identity or consciousness claim. It is a compact runtime
+    context record so the LLM can answer within current role and capability
+    boundaries without inventing authority or hidden state.
+    """
+    boundaries = [
+        "Natural-language understanding comes before tool/gate decisions.",
+        "Side effects require runtime gate or transaction approval.",
+        "Candidate-local memory is not repo authority or durable learning proof.",
+        "Legacy EgoCore/OpenEmotion projects are reference sources, not active runtime owners.",
+    ]
+    if not operator_memory_available:
+        boundaries.append("Operator memory is unavailable for this turn unless explicitly enabled.")
+    commitments = _bounded_list(current_commitments) or [
+        "Preserve the latest user intent as the controlling context.",
+        "Report uncertainty and failed tool/provider states instead of pretending completion.",
+    ]
+    uncertainty_items = _bounded_list(uncertainty) or [
+        "Whether a real provider or external tool will succeed is unknown until executed.",
+        "Experience quality requires scripted or human-observable samples before stronger claims.",
+    ]
+    failures = _bounded_list(recent_failures)
+    return {
+        "schema_version": OPERATIONAL_SELF_MODEL_SCHEMA,
+        "kind": "readonly_runtime_context",
+        "role": "EgoOperator operator-first candidate runtime",
+        "runtime_mode": _bounded(runtime_mode, 80),
+        "capability_boundaries": boundaries,
+        "current_commitments": commitments,
+        "uncertainty": uncertainty_items,
+        "recent_failures": failures,
+        "operator_memory_available": bool(operator_memory_available),
+        "state_mutation": "forbidden",
+        "reply_decision": "forbidden",
+        "canonical_truth": False,
+        "claim_ceiling": "operational self-model context only; not consciousness or independent awareness",
+    }
+
+
 @dataclass(frozen=True)
 class SubjectContextSnapshot:
     schema_version: str = SUBJECT_CONTEXT_SCHEMA
@@ -227,6 +287,7 @@ class SubjectContextSnapshot:
         "reply_decision": "forbidden",
     })
     salient_memory_note: str = "No canonical memory is supplied by this primitive."
+    operational_self_model: Dict[str, Any] = field(default_factory=build_operational_self_model_snapshot)
     reflection_proposal: str = (
         "Preserve the user's meaning across paraphrases. Do not compress the "
         "message into route keywords or canned templates before answering."
@@ -251,6 +312,7 @@ class SubjectContextSnapshot:
             f"Claim ceiling: {self.claim_ceiling}.",
             f"Raw user text preserved: {_bounded(self.raw_user_text)}",
             f"Self model: {_bounded(self.self_model_summary)}",
+            "Operational self-model: " + str(self.operational_self_model),
             "Appraisal signal: " + str(self.appraisal_signal),
             "Empathy style guidance: " + str(self.empathy_style_guidance),
             f"Salient memory note: {_bounded(self.salient_memory_note)}",
@@ -283,4 +345,8 @@ def build_minimal_subject_context(
             "emotion_signal": emotion_signal,
         },
         empathy_style_guidance=build_empathy_style_guidance(emotion_signal),
+        operational_self_model=build_operational_self_model_snapshot(
+            runtime_mode="approve",
+            operator_memory_available=operator_memory_available,
+        ),
     )

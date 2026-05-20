@@ -61,7 +61,31 @@ def test_subject_context_is_readonly_candidate_not_reply_owner():
     assert snapshot.claim_ceiling == "candidate-local subject context only"
     assert snapshot.appraisal_signal["reply_decision"] == "forbidden"
     assert snapshot.appraisal_signal["state_mutation"] == "forbidden"
+    assert snapshot.operational_self_model["schema_version"] == "ego_operator.operational_self_model.v1"
+    assert snapshot.operational_self_model["reply_decision"] == "forbidden"
     assert "你认为黑暗之魂如何" in snapshot.render_for_prompt()
+
+
+def test_operational_self_model_tracks_boundaries_commitments_uncertainty_and_failures():
+    snapshot = subject_context.build_operational_self_model_snapshot(
+        runtime_mode="trusted-workspace",
+        operator_memory_available=True,
+        current_commitments=("完成 #49 后跑 full verify",),
+        uncertainty=("真实 provider 质量需要 human smoke",),
+        recent_failures=("上一次 web fetch 429",),
+    )
+
+    assert snapshot["schema_version"] == "ego_operator.operational_self_model.v1"
+    assert snapshot["role"] == "EgoOperator operator-first candidate runtime"
+    assert snapshot["runtime_mode"] == "trusted-workspace"
+    assert snapshot["operator_memory_available"] is True
+    assert snapshot["current_commitments"] == ["完成 #49 后跑 full verify"]
+    assert snapshot["uncertainty"] == ["真实 provider 质量需要 human smoke"]
+    assert snapshot["recent_failures"] == ["上一次 web fetch 429"]
+    assert snapshot["state_mutation"] == "forbidden"
+    assert snapshot["reply_decision"] == "forbidden"
+    assert snapshot["canonical_truth"] is False
+    assert "consciousness" in snapshot["claim_ceiling"]
 
 
 def test_emotion_signal_is_candidate_context_not_canonical_truth():
@@ -210,6 +234,8 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["appraisal_signal"]["reply_decision"] == "forbidden"
     assert context["appraisal_signal"]["emotion_signal"]["canonical_truth"] is False
     assert context["empathy_style_guidance"]["reply_decision"] == "forbidden"
+    assert context["operational_self_model"]["reply_decision"] == "forbidden"
+    assert context["operational_self_model"]["state_mutation"] == "forbidden"
 
 
 def test_initiative_proposal_contract_is_bounded_and_proposal_only():
