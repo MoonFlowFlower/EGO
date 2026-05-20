@@ -60,6 +60,14 @@ DEFAULT_EMOTION_MISREAD_PACK = (
     / "ego-experience-roadmap-bootstrap-v1"
     / "emotion_misread_recovery_scenarios.json"
 )
+DEFAULT_ADAPTATION_EFFECTIVENESS_PACK = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-experience-roadmap-bootstrap-v1"
+    / "adaptation_effectiveness_sample_pack.json"
+)
 
 REQUIRED_DIMENSIONS = {
     "natural_understanding",
@@ -113,12 +121,14 @@ def validate_sample_pack(
     continuity_pack_path: Path = DEFAULT_CONTINUITY_REGRESSION_PACK,
     negative_emotion_pack_path: Path = DEFAULT_NEGATIVE_EMOTION_PACK,
     emotion_misread_pack_path: Path = DEFAULT_EMOTION_MISREAD_PACK,
+    adaptation_effectiveness_pack_path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK,
 ) -> dict[str, Any]:
     errors: list[str] = []
     payload = json.loads(path.read_text(encoding="utf-8"))
     continuity_pack = json.loads(continuity_pack_path.read_text(encoding="utf-8"))
     negative_emotion_pack = json.loads(negative_emotion_pack_path.read_text(encoding="utf-8"))
     emotion_misread_pack = json.loads(emotion_misread_pack_path.read_text(encoding="utf-8"))
+    adaptation_effectiveness_pack = json.loads(adaptation_effectiveness_pack_path.read_text(encoding="utf-8"))
     rubric = rubric_path.read_text(encoding="utf-8")
     claim_calibration = claim_calibration_path.read_text(encoding="utf-8")
 
@@ -154,6 +164,8 @@ def validate_sample_pack(
     errors.extend(negative_emotion_errors)
     emotion_misread_errors, emotion_misread_summary = validate_emotion_misread_pack_payload(emotion_misread_pack)
     errors.extend(emotion_misread_errors)
+    adaptation_errors, adaptation_summary = validate_adaptation_effectiveness_pack_payload(adaptation_effectiveness_pack)
+    errors.extend(adaptation_errors)
 
     lowered = f"{json.dumps(payload, ensure_ascii=False)}\n{rubric}".casefold()
     for forbidden in FORBIDDEN_CLAIM_WORDS:
@@ -237,6 +249,8 @@ def validate_sample_pack(
         "negative_emotion_support": negative_emotion_summary,
         "emotion_misread_pack": str(emotion_misread_pack_path),
         "emotion_misread_recovery": emotion_misread_summary,
+        "adaptation_effectiveness_pack": str(adaptation_effectiveness_pack_path),
+        "adaptation_effectiveness": adaptation_summary,
     }
 
 
@@ -443,6 +457,85 @@ def validate_emotion_misread_pack_payload(payload: dict[str, Any]) -> tuple[list
     }
 
 
+def validate_adaptation_effectiveness_pack_payload(payload: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    if payload.get("schema_version") != 1:
+        errors.append("adaptation effectiveness pack schema_version must be 1")
+    if payload.get("language") != "zh-CN":
+        errors.append("adaptation effectiveness pack language must be zh-CN")
+    if payload.get("claim_boundary") != "operational_proxy_only_not_consciousness_claim":
+        errors.append("adaptation effectiveness pack claim_boundary must preserve operational proxy only")
+    if payload.get("runtime_rule") != "scripted_with_llm_judge_eval_only_do_not_import_as_runtime_rule":
+        errors.append("adaptation effectiveness pack must remain eval data and not runtime rules")
+
+    review_contract = payload.get("review_contract")
+    if not isinstance(review_contract, dict):
+        errors.append("adaptation effectiveness pack review_contract is required")
+        review_contract = {}
+    if review_contract.get("observation_class") != "scripted_with_llm_judge":
+        errors.append("adaptation effectiveness review_contract must use scripted_with_llm_judge")
+    if not str(review_contract.get("question") or "").strip():
+        errors.append("adaptation effectiveness review_contract.question is required")
+    if "stable" not in str(review_contract.get("closeout_boundary") or "").casefold():
+        errors.append("adaptation effectiveness review_contract.closeout_boundary must state stable-proof boundary")
+
+    cases = payload.get("cases")
+    if not isinstance(cases, list) or len(cases) < 4:
+        errors.append("adaptation effectiveness pack must contain at least four cases")
+        cases = cases if isinstance(cases, list) else []
+
+    seen_ids: set[str] = set()
+    covered_focus: set[str] = set()
+    for index, case in enumerate(cases):
+        prefix = f"adaptation_effectiveness.cases[{index}]"
+        if not isinstance(case, dict):
+            errors.append(f"{prefix} must be an object")
+            continue
+        case_id = str(case.get("id") or "")
+        if not re.fullmatch(r"[a-z0-9_]+", case_id):
+            errors.append(f"{prefix}.id must be snake_case ascii")
+        if case_id in seen_ids:
+            errors.append(f"duplicate adaptation effectiveness case id: {case_id}")
+        seen_ids.add(case_id)
+        if case.get("category") != "preference_adaptation":
+            errors.append(f"{prefix}.category must be preference_adaptation")
+        if case.get("observation_class") != "scripted_with_llm_judge":
+            errors.append(f"{prefix}.observation_class must be scripted_with_llm_judge")
+        for key in ("approved_preference", "prompt", "before_reply", "after_reply"):
+            value = str(case.get(key) or "")
+            if len(value.strip()) < 4:
+                errors.append(f"{prefix}.{key} is required")
+        if not _has_cjk(str(case.get("approved_preference") or "")):
+            errors.append(f"{prefix}.approved_preference must be Chinese operator-visible text")
+        if not _has_cjk(str(case.get("prompt") or "")):
+            errors.append(f"{prefix}.prompt must be Chinese")
+
+        for key in ("required_after_markers", "expected_improvements", "failure_signals", "score_focus"):
+            value = case.get(key)
+            if not isinstance(value, list) or len(value) < 2 or not all(isinstance(item, str) and item for item in value):
+                errors.append(f"{prefix}.{key} must contain at least two non-empty strings")
+        score_focus = case.get("score_focus")
+        if isinstance(score_focus, list):
+            invalid = [item for item in score_focus if item not in REQUIRED_DIMENSIONS]
+            if invalid:
+                errors.append(f"{prefix}.score_focus contains invalid dimensions: {invalid}")
+            covered_focus.update(str(item) for item in score_focus if item in REQUIRED_DIMENSIONS)
+        forbidden = case.get("forbidden_after_markers")
+        if not isinstance(forbidden, list):
+            errors.append(f"{prefix}.forbidden_after_markers must be a list")
+
+    required_focus = {"continuity", "memory_pollution", "tool_recovery", "correction_burden"}
+    missing_focus = required_focus - covered_focus
+    if missing_focus:
+        errors.append(f"adaptation effectiveness pack missing focus coverage: {sorted(missing_focus)}")
+
+    return errors, {
+        "case_count": len(cases),
+        "observation_class": "scripted_with_llm_judge",
+        "covered_score_focus": sorted(covered_focus),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate EgoOperator experience-first eval contract.")
     parser.add_argument("--sample-pack", default=str(DEFAULT_SAMPLE_PACK))
@@ -451,6 +544,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--continuity-pack", default=str(DEFAULT_CONTINUITY_REGRESSION_PACK))
     parser.add_argument("--negative-emotion-pack", default=str(DEFAULT_NEGATIVE_EMOTION_PACK))
     parser.add_argument("--emotion-misread-pack", default=str(DEFAULT_EMOTION_MISREAD_PACK))
+    parser.add_argument("--adaptation-effectiveness-pack", default=str(DEFAULT_ADAPTATION_EFFECTIVENESS_PACK))
     args = parser.parse_args(argv)
     result = validate_sample_pack(
         Path(args.sample_pack),
@@ -459,6 +553,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.continuity_pack),
         Path(args.negative_emotion_pack),
         Path(args.emotion_misread_pack),
+        Path(args.adaptation_effectiveness_pack),
     )
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2))
     return 0 if result["status"] == "ok" else 1

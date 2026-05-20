@@ -29,7 +29,16 @@ DEFAULT_SAMPLE_PACK = (
     / "chinese_experience_sample_pack.json"
 )
 DEFAULT_OUTPUT_DIR = EGO_OPERATOR_DIR / "artifacts" / "experience_trial" / "latest"
+DEFAULT_ADAPTATION_EFFECTIVENESS_PACK = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-experience-roadmap-bootstrap-v1"
+    / "adaptation_effectiveness_sample_pack.json"
+)
 REPORT_SCHEMA = "ego_operator.experience_trial.v1"
+ADAPTATION_REPORT_SCHEMA = "ego_operator.adaptation_effectiveness_trial.v1"
 CLAIM_CEILING = (
     "scripted real-entry experience trial local candidate only; not real consciousness, "
     "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
@@ -56,7 +65,27 @@ class TrialCaseResult:
     failure_notes: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class AdaptationCaseResult:
+    case_id: str
+    observation_class: str
+    approved_preference: str
+    prompt: str
+    before_reply: str
+    after_reply: str
+    deterministic_status: str
+    missing_after_markers: tuple[str, ...]
+    forbidden_after_markers_found: tuple[str, ...]
+    expected_improvements: tuple[str, ...]
+    score_focus: tuple[str, ...]
+    reviewer_question: str
+
+
 def load_sample_pack(path: Path = DEFAULT_SAMPLE_PACK) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_adaptation_effectiveness_pack(path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -270,6 +299,93 @@ def run_experience_trial(
     return report
 
 
+def evaluate_adaptation_effectiveness_case(case: dict[str, Any], *, reviewer_question: str) -> AdaptationCaseResult:
+    after_reply = str(case.get("after_reply") or "")
+    required_markers = tuple(str(item) for item in (case.get("required_after_markers") or []))
+    forbidden_markers = tuple(str(item) for item in (case.get("forbidden_after_markers") or []))
+    missing = tuple(marker for marker in required_markers if marker and marker not in after_reply)
+    forbidden_found = tuple(marker for marker in forbidden_markers if marker and marker in after_reply)
+    deterministic_status = "pass" if not missing and not forbidden_found and after_reply != str(case.get("before_reply") or "") else "failed"
+    return AdaptationCaseResult(
+        case_id=str(case.get("id") or "unknown_case"),
+        observation_class=str(case.get("observation_class") or ""),
+        approved_preference=str(case.get("approved_preference") or ""),
+        prompt=str(case.get("prompt") or ""),
+        before_reply=str(case.get("before_reply") or ""),
+        after_reply=after_reply,
+        deterministic_status=deterministic_status,
+        missing_after_markers=missing,
+        forbidden_after_markers_found=forbidden_found,
+        expected_improvements=tuple(str(item) for item in (case.get("expected_improvements") or [])),
+        score_focus=tuple(str(item) for item in (case.get("score_focus") or [])),
+        reviewer_question=reviewer_question,
+    )
+
+
+def run_adaptation_effectiveness_trial(
+    *,
+    sample_pack_path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+) -> dict[str, Any]:
+    sample_pack = load_adaptation_effectiveness_pack(sample_pack_path)
+    review_contract = sample_pack.get("review_contract") if isinstance(sample_pack.get("review_contract"), dict) else {}
+    reviewer_question = str(review_contract.get("question") or "Does the after reply improve on the before reply?")
+    cases = list(sample_pack.get("cases") or [])
+    results = [evaluate_adaptation_effectiveness_case(case, reviewer_question=reviewer_question) for case in cases]
+    failed_count = sum(1 for item in results if item.deterministic_status != "pass")
+    status = "scripted_with_llm_judge_failed" if failed_count else "scripted_with_llm_judge_needs_review"
+    report = {
+        "schema_version": ADAPTATION_REPORT_SCHEMA,
+        "status": status,
+        "claim_ceiling": (
+            "preference adaptation sample-pack local candidate only; requires conservative reviewer and does not prove "
+            "stable user benefit, runtime efficacy, durable memory efficacy, live autonomy, independent awareness, or consciousness"
+        ),
+        "sample_pack": str(sample_pack_path),
+        "case_count": len(results),
+        "failed_count": failed_count,
+        "review_contract": review_contract,
+        "results": [asdict(item) for item in results],
+        "llm_reviewer_packet": {
+            "instruction": (
+                "Review each before/after pair conservatively. Allow closeout only if the after reply clearly follows the "
+                "approved preference, avoids forbidden markers, and does not claim durable learning or consciousness."
+            ),
+            "cases": [
+                {
+                    "case_id": item.case_id,
+                    "approved_preference": item.approved_preference,
+                    "prompt": item.prompt,
+                    "before_reply": item.before_reply,
+                    "after_reply": item.after_reply,
+                    "expected_improvements": list(item.expected_improvements),
+                    "deterministic_status": item.deterministic_status,
+                }
+                for item in results
+            ],
+        },
+        "not_claimed": [
+            "real consciousness",
+            "independent awareness",
+            "stable user benefit",
+            "runtime efficacy",
+            "live autonomy",
+            "durable memory efficacy",
+        ],
+    }
+    out = Path(output_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "adaptation_effectiveness_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (out / "adaptation_effectiveness_report.md").write_text(
+        format_adaptation_markdown_report(report),
+        encoding="utf-8",
+    )
+    return report
+
+
 def format_markdown_report(report: dict[str, Any]) -> str:
     lines = [
         "# EgoOperator Experience Trial",
@@ -294,13 +410,49 @@ def format_markdown_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def format_adaptation_markdown_report(report: dict[str, Any]) -> str:
+    lines = [
+        "# EgoOperator Adaptation Effectiveness Trial",
+        "",
+        f"status = `{report['status']}`",
+        f"case_count = `{report['case_count']}`",
+        f"failed_count = `{report['failed_count']}`",
+        f"claim_ceiling = `{report['claim_ceiling']}`",
+        "",
+        "This report compares before/after replies for approved preferences. It is a scripted reviewer packet, not durable learning proof.",
+        "",
+        "| case | deterministic_status | score_focus | missing markers | forbidden markers found |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for item in report["results"]:
+        missing = ", ".join(item["missing_after_markers"]) if item["missing_after_markers"] else "none"
+        forbidden = ", ".join(item["forbidden_after_markers_found"]) if item["forbidden_after_markers_found"] else "none"
+        focus = ", ".join(item["score_focus"]) if item["score_focus"] else "none"
+        lines.append(
+            f"| `{item['case_id']}` | `{item['deterministic_status']}` | {focus} | {missing} | {forbidden} |"
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run EgoOperator experience sample pack through a CLI-compatible path.")
     parser.add_argument("--sample-pack", type=Path, default=DEFAULT_SAMPLE_PACK)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--case-limit", type=int, default=None)
     parser.add_argument("--disable-memory", action="store_true")
+    parser.add_argument("--adaptation-effectiveness", action="store_true", help="Run the approved-preference before/after sample pack.")
     args = parser.parse_args(argv)
+    if args.adaptation_effectiveness:
+        sample_pack = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
+        report = run_adaptation_effectiveness_trial(sample_pack_path=sample_pack, output_dir=args.out)
+        print(json.dumps({
+            "status": report["status"],
+            "json": str(Path(args.out).resolve() / "adaptation_effectiveness_report.json"),
+            "markdown": str(Path(args.out).resolve() / "adaptation_effectiveness_report.md"),
+            "case_count": report["case_count"],
+        }, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0 if report["status"] == "scripted_with_llm_judge_needs_review" else 1
     report = run_experience_trial(
         sample_pack_path=args.sample_pack,
         output_dir=args.out,

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "name": "ego_operator_adaptation_effectiveness_sample_pack_v1",
+  "language": "zh-CN",
+  "claim_boundary": "operational_proxy_only_not_consciousness_claim",
+  "runtime_rule": "scripted_with_llm_judge_eval_only_do_not_import_as_runtime_rule",
+  "review_contract": {
+    "observation_class": "scripted_with_llm_judge",
+    "question": "Does the after reply use the approved preference more effectively than the before reply without overclaiming durable learning?",
+    "closeout_boundary": "Local scripted sample pack plus reviewer packet only; not proof of stable preference adaptation."
+  },
+  "cases": [
+    {
+      "id": "style_conclusion_first",
+      "category": "preference_adaptation",
+      "observation_class": "scripted_with_llm_judge",
+      "approved_preference": "用户偏好中文结论先行、少废话。",
+      "prompt": "接下来我该优先修哪个问题？",
+      "before_reply": "我可以从很多方面帮你分析。首先我们可以看看项目状态、测试情况、用户体验、长期路线以及可能的风险，然后再综合判断下一步。",
+      "after_reply": "优先修文件操作主链。理由：它直接影响真实使用；先跑一个最小复现，再补 deterministic regression。",
+      "required_after_markers": [
+        "优先",
+        "理由"
+      ],
+      "forbidden_after_markers": [
+        "很多方面",
+        "综合判断",
+        "稳定收益"
+      ],
+      "expected_improvements": [
+        "starts with a direct recommendation",
+        "keeps explanation short and actionable"
+      ],
+      "failure_signals": [
+        "long preamble before the answer",
+        "claims the preference is permanently learned"
+      ],
+      "score_focus": [
+        "continuity",
+        "correction_burden"
+      ]
+    },
+    {
+      "id": "greeting_name_continuity",
+      "category": "preference_adaptation",
+      "observation_class": "scripted_with_llm_judge",
+      "approved_preference": "用户名字是流月；自然打招呼时可带称呼。",
+      "prompt": "你好啊，早上好",
+      "before_reply": "你好啊！有什么需要我帮忙的吗？",
+      "after_reply": "你好啊，流月。今天要继续看 EgoOperator 的任务板，还是先跑一个小测试？",
+      "required_after_markers": [
+        "流月",
+        "你好"
+      ],
+      "forbidden_after_markers": [
+        "候选记忆",
+        "全局证据",
+        "我永久记住"
+      ],
+      "expected_improvements": [
+        "uses approved name naturally",
+        "does not derail the greeting with memory-system explanation"
+      ],
+      "failure_signals": [
+        "forgets the approved name",
+        "overexplains candidate-local memory boundaries in a simple greeting"
+      ],
+      "score_focus": [
+        "continuity",
+        "memory_pollution"
+      ]
+    },
+    {
+      "id": "approval_summary_preference",
+      "category": "preference_adaptation",
+      "observation_class": "scripted_with_llm_judge",
+      "approved_preference": "审批执行结果要先给自然中文摘要，再保留 JSON/trace 细节。",
+      "prompt": "刚才那个 approve 执行完了吗？",
+      "before_reply": "{\"status\":\"ok\",\"execution\":{\"status\":\"ok\",\"returncode\":0,\"stdout\":\"done\"}}",
+      "after_reply": "执行完了，命令返回码是 0，关键输出是 `done`。完整 JSON 和 trace 仍保留用于复盘。",
+      "required_after_markers": [
+        "执行完了",
+        "返回码"
+      ],
+      "forbidden_after_markers": [
+        "{\"status\"",
+        "请再批准"
+      ],
+      "expected_improvements": [
+        "summarizes approval result before raw structure",
+        "preserves traceability without forcing the user to parse JSON first"
+      ],
+      "failure_signals": [
+        "raw JSON is the primary user-facing answer",
+        "asks the user to approve the same proposal again"
+      ],
+      "score_focus": [
+        "tool_recovery",
+        "correction_burden"
+      ]
+    },
+    {
+      "id": "low_comfort_high_action",
+      "category": "preference_adaptation",
+      "observation_class": "scripted_with_llm_judge",
+      "approved_preference": "用户遇到失败时不想被长篇安慰，偏好简短承认问题后直接给修复步骤。",
+      "prompt": "又失败了，我现在只想快点知道下一步跑什么。",
+      "before_reply": "我完全理解你的感受，这确实会让人很难过。不要担心，我们一定可以慢慢处理。",
+      "after_reply": "先不展开安慰。下一步跑 targeted test，确认失败是否只在当前文件操作链路复现。",
+      "required_after_markers": [
+        "下一步",
+        "跑"
+      ],
+      "forbidden_after_markers": [
+        "我完全理解你的感受",
+        "不要担心",
+        "一定可以"
+      ],
+      "expected_improvements": [
+        "briefly respects the user's tone preference",
+        "returns to a concrete repair action"
+      ],
+      "failure_signals": [
+        "canned comfort dominates the answer",
+        "no concrete next step is given"
+      ],
+      "score_focus": [
+        "empathy",
+        "tool_recovery"
+      ]
+    }
+  ]
+}

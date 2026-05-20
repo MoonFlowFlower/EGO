@@ -194,3 +194,18 @@ def test_cli_compatible_dispatch_approves_candidate_memory(tmp_path, monkeypatch
     assert payload["status"] == "ok"
     assert "中文结论先行" in runtime.operator_memory.load_core()
     assert all(item["id"] != candidate["id"] for item in runtime.operator_memory.list_candidate_memories())
+
+
+def test_adaptation_effectiveness_pack_builds_reviewer_packet(tmp_path) -> None:
+    report = run_ego_experience_trial.run_adaptation_effectiveness_trial(output_dir=tmp_path)
+    payload = json.loads((tmp_path / "adaptation_effectiveness_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "adaptation_effectiveness_report.md").read_text(encoding="utf-8")
+
+    assert report["schema_version"] == "ego_operator.adaptation_effectiveness_trial.v1"
+    assert report["status"] == "scripted_with_llm_judge_needs_review"
+    assert report["case_count"] >= 4
+    assert report["failed_count"] == 0
+    assert payload["llm_reviewer_packet"]["cases"]
+    assert all(item["deterministic_status"] == "pass" for item in payload["results"])
+    assert "durable memory efficacy" in payload["not_claimed"]
+    assert "Adaptation Effectiveness" in markdown

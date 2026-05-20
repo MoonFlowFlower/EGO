@@ -96,6 +96,8 @@
 - #44 implementation adds structured `extract_preference_candidate_from_turn` output with category, memory key, confidence, cue hits, candidate-only flag, and a core-memory write prohibition. `auto_capture_candidate_from_turn` now stores this structure in candidate metadata while still avoiding direct `MEMORY.md` promotion.
 - #45 was promoted to `In Progress` for preference promotion review commands.
 - #45 implementation adds explicit `/memory_approve <id>` candidate approval: approved candidate preferences are promoted into EgoOperator candidate-local `MEMORY.md`, the candidate moves out of active review, and the same command is available in the CLI-compatible scripted entrypoint. This remains operator-approved local memory only, not automatic learning or EGO canonical memory.
+- #46 was promoted to `In Progress` for adaptation effectiveness sample pack.
+- #46 implementation adds `adaptation_effectiveness_sample_pack.json` plus a scripted before/after report path that produces deterministic guard results and an LLM reviewer packet for approved-preference response adaptation. This remains a scripted reviewer packet only, not durable learning proof.
 
 ## Notes
 
