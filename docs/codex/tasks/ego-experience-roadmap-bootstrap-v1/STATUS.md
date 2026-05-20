@@ -49,6 +49,12 @@
 - #27 targeted test passed: `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_experience_eval_contract.py`.
 - After #27, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
 - After #27, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `55 passed`.
+- #29 was promoted to `In Progress` for bounded continuity context injection.
+- #29 implementation changed EgoOperator memory context injection from unconditional core/episode injection to query-relevant injection with traceable `context_injection` decisions.
+- #29 Autopilot contract update extends verification to `EgoOperator/agent_base.py`, `EgoOperator/memory_system.py`, and `EgoOperator/tests/test_memory_system.py` so runtime roadmap cards are not closed by script-only tests.
+- #29 targeted runtime/scripted validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_memory_system.py scripts/tests/test_run_ego_experience_trial.py` (`20 passed`).
+- After #29, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
+- After #29, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `73 passed`.
 
 ## Notes
 

@@ -103,6 +103,44 @@ def test_core_memory_injected_as_candidate_local_context(tmp_path, monkeypatch):
     assert "PROGRAM_STATE_UNIFIED" not in prompt
 
 
+def test_core_memory_not_injected_for_unrelated_query(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    capture = CapturePromptLLM()
+    runtime.planner.llm = capture
+
+    result = runtime.remember_operator_note("用户名字：流月；打招呼时可带称呼。")
+    assert result["status"] == "ok"
+
+    runtime.handle_user_message("黑暗之魂这个游戏怎么样？")
+
+    prompt = capture.system_prompts[-1]
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert "用户名字：流月" not in prompt
+    assert trace["operator_memory"]["context_injection"]["core"]["included"] is False
+    assert trace["operator_memory"]["context_injection"]["core"]["reason"] == "not_relevant_to_query"
+
+
+def test_core_memory_injected_for_greeting_or_continuity_query(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    capture = CapturePromptLLM()
+    runtime.planner.llm = capture
+
+    result = runtime.remember_operator_note("用户名字：流月；打招呼时可带称呼。")
+    assert result["status"] == "ok"
+
+    runtime.handle_user_message("你好")
+
+    prompt = capture.system_prompts[-1]
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert "用户名字：流月" in prompt
+    assert trace["operator_memory"]["context_injection"]["core"]["included"] is True
+    assert trace["operator_memory"]["context_injection"]["core"]["reason"] == "continuity_query_intent"
+
+
 def test_remember_gate_writes_core_and_normal_turn_does_not_overwrite(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")

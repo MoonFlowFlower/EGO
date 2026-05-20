@@ -24,6 +24,8 @@ verify_profiles:
           - scripts/validate_experience_eval_contract.py
           - scripts/run_ego_experience_trial.py
           - scripts/import_human_observation_comments.py
+          - EgoOperator/agent_base.py
+          - EgoOperator/memory_system.py
       - label: autopilot_tests
         command:
           - python3
@@ -47,6 +49,7 @@ verify_profiles:
           - scripts/tests/test_experience_eval_contract.py
           - scripts/tests/test_run_ego_experience_trial.py
           - scripts/tests/test_import_human_observation_comments.py
+          - EgoOperator/tests/test_memory_system.py
         env:
           TMPDIR: /tmp
       - label: diff_check
@@ -64,9 +67,9 @@ verify_profiles:
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
           - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1
+          - EgoOperator
 
 protected_paths:
-  - EgoOperator/
   - legacy/ego-pre-handmade-mainline/
   - docs/PROGRAM_STATE_UNIFIED.yaml
   - artifacts/evidence_ledger/
@@ -78,6 +81,7 @@ allowed_mutation_paths:
   - AGENTS.md
   - scripts/
   - scripts/tests/
+  - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
   - docs/codex/tasks/codex-autopilot-l3-l4-v2/

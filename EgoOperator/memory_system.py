@@ -27,6 +27,30 @@ DEFAULT_HOT_CONTEXT_MAX_ITEMS = 5
 DEFAULT_HOT_CONTEXT_MIN_HITS = 2
 DEFAULT_MEMORY_ITEM_MAX_CHARS = 800
 
+CONTINUITY_QUERY_PATTERNS = (
+    r"记得",
+    r"还记得",
+    r"记住",
+    r"我是谁",
+    r"我的",
+    r"偏好",
+    r"称呼",
+    r"名字",
+    r"你好",
+    r"继续",
+    r"刚才",
+    r"之前",
+    r"上次",
+    r"这个任务",
+    r"这个项目",
+    r"好了吗",
+    r"\bremember\b",
+    r"\bmy\b",
+    r"\bcontinue\b",
+    r"\bprevious\b",
+    r"\bproject\b",
+)
+
 CANDIDATE_MEMORY_SIGNAL_PATTERNS = (
     r"我喜欢",
     r"我不喜欢",
@@ -120,6 +144,60 @@ def _relevance_score(content: str, query_tokens: List[str]) -> int:
     return sum(25 for token in query_tokens if token in lowered)
 
 
+def _has_continuity_query_intent(query_text: str) -> bool:
+    text = (query_text or "").strip()
+    if not text:
+        return False
+    return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in CONTINUITY_QUERY_PATTERNS)
+
+
+def _context_section_decision(content: str, query_text: str, *, section: str) -> Dict[str, Any]:
+    clean = (content or "").strip()
+    query = (query_text or "").strip()
+    query_tokens = _query_tokens(query)
+    relevance = _relevance_score(clean, query_tokens)
+    continuity_intent = _has_continuity_query_intent(query)
+    if not clean:
+        return {
+            "section": section,
+            "included": False,
+            "reason": "empty",
+            "relevance_score": 0,
+            "query_has_continuity_intent": continuity_intent,
+        }
+    if not query:
+        return {
+            "section": section,
+            "included": True,
+            "reason": "operator_context_command",
+            "relevance_score": 0,
+            "query_has_continuity_intent": continuity_intent,
+        }
+    if continuity_intent:
+        return {
+            "section": section,
+            "included": True,
+            "reason": "continuity_query_intent",
+            "relevance_score": relevance,
+            "query_has_continuity_intent": True,
+        }
+    if relevance > 0:
+        return {
+            "section": section,
+            "included": True,
+            "reason": "query_overlap",
+            "relevance_score": relevance,
+            "query_has_continuity_intent": False,
+        }
+    return {
+        "section": section,
+        "included": False,
+        "reason": "not_relevant_to_query",
+        "relevance_score": 0,
+        "query_has_continuity_intent": False,
+    }
+
+
 def extract_candidate_memory_from_turn(user_text: str) -> str:
     text = (user_text or "").strip()
     if not text:
@@ -140,6 +218,7 @@ class MemoryContext:
     memory_dir: str = ""
     core_max_chars: int = DEFAULT_CORE_MAX_CHARS
     episode_max_chars: int = DEFAULT_EPISODE_MAX_CHARS
+    injection: Dict[str, Any] = field(default_factory=dict)
 
     def render_for_prompt(self) -> str:
         core = _bounded(self.core, self.core_max_chars)
@@ -565,13 +644,30 @@ class OperatorMemoryStore:
         episode_max_chars: int = DEFAULT_EPISODE_MAX_CHARS,
         hot_context_max_items: int = DEFAULT_HOT_CONTEXT_MAX_ITEMS,
     ) -> MemoryContext:
+        core = self.load_core()
+        episode = self.load_today_episode()
+        core_decision = _context_section_decision(core, query_text, section="core")
+        episode_decision = _context_section_decision(episode, query_text, section="today_episode")
+        hot_items = self.select_hot_context(query_text=query_text, max_items=hot_context_max_items)
         return MemoryContext(
-            core=self.load_core(),
-            today_episode=self.load_today_episode(),
-            hot_items=self.select_hot_context(query_text=query_text, max_items=hot_context_max_items),
+            core=core if core_decision["included"] else "",
+            today_episode=episode if episode_decision["included"] else "",
+            hot_items=hot_items,
             memory_dir=str(self.memory_dir),
             core_max_chars=core_max_chars,
             episode_max_chars=episode_max_chars,
+            injection={
+                "schema_version": "ego_operator.memory_context_injection.v1",
+                "query_excerpt": _bounded(query_text, 240),
+                "core": core_decision,
+                "today_episode": episode_decision,
+                "hot_context": {
+                    "included": bool(hot_items),
+                    "count": len(hot_items),
+                    "ids": [item.get("id") for item in hot_items],
+                    "reason": "pin_hit_or_query_relevance" if hot_items else "no_hot_items",
+                },
+            },
         )
 
 

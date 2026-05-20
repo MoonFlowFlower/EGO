@@ -4680,6 +4680,11 @@ class AgentRuntime:
         memory_record["candidate_memory"] = candidate_result
 
         hot_context = list((self._last_operator_memory_context.hot_items if self._last_operator_memory_context else []) or [])
+        memory_record["context_injection"] = (
+            self._last_operator_memory_context.injection
+            if self._last_operator_memory_context
+            else {"status": "unavailable", "reason": "operator_memory_context_not_built"}
+        )
         memory_record["hot_context"] = [
             {
                 "id": item.get("id"),

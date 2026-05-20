@@ -15,6 +15,20 @@ sys.modules[spec.name] = run_ego_experience_trial
 spec.loader.exec_module(run_ego_experience_trial)
 
 
+class CapturePromptLLM:
+    provider = "fake"
+    model = "capture"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.system_prompts: list[str] = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.system_prompts.append(system_prompt)
+        return run_ego_experience_trial.agent.LLMChatResult(content="收到。", tool_calls=[])
+
+
 def test_cli_compatible_dispatch_handles_provider_status(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
@@ -45,3 +59,37 @@ def test_experience_trial_runs_sample_pack_through_cli_compatible_path(tmp_path,
     assert payload["case_count"] == 3
     assert "CLI-compatible EgoOperator path" in markdown
     assert "real consciousness" in payload["not_claimed"]
+
+
+def test_cli_compatible_dispatch_uses_bounded_continuity_context_injection(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    runtime = agent.build_demo_runtime(
+        enable_operator_memory=True,
+        operator_memory_dir=tmp_path / "memory",
+        runtime_mode="approve",
+    )
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    capture = CapturePromptLLM()
+    runtime.planner.llm = capture
+
+    remember = runtime.remember_operator_note("用户名字：流月；打招呼时可带称呼。")
+    assert remember["status"] == "ok"
+
+    run_ego_experience_trial.dispatch_cli_compatible(runtime, "黑暗之魂这个游戏怎么样？")
+    unrelated_prompt = capture.system_prompts[-1]
+    assert "用户名字：流月" not in unrelated_prompt
+
+    run_ego_experience_trial.dispatch_cli_compatible(runtime, "你好")
+    greeting_prompt = capture.system_prompts[-1]
+    trace_rows = [
+        json.loads(line)
+        for line in (tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+
+    assert "用户名字：流月" in greeting_prompt
+    assert trace_rows[0]["operator_memory"]["context_injection"]["core"]["included"] is False
+    assert trace_rows[1]["operator_memory"]["context_injection"]["core"]["included"] is True
+    assert trace_rows[1]["operator_memory"]["context_injection"]["core"]["reason"] == "continuity_query_intent"
