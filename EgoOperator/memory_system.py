@@ -61,11 +61,29 @@ CANDIDATE_MEMORY_SIGNAL_PATTERNS = (
     r"我习惯",
     r"对我来说",
     r"以后请",
+    r"以后不要",
+    r"不要再",
+    r"其实",
+    r"纠正",
+    r"更正",
     r"\bi prefer\b",
     r"\bmy preference\b",
     r"\bmy goal\b",
     r"\bi am working on\b",
     r"\bi'm working on\b",
+)
+
+MEMORY_CORRECTION_PATTERNS = (
+    r"不是",
+    r"改成",
+    r"纠正",
+    r"更正",
+    r"其实",
+    r"以后不要",
+    r"不要再",
+    r"\binstead\b",
+    r"\bcorrection\b",
+    r"\bactually\b",
 )
 
 
@@ -196,6 +214,34 @@ def _context_section_decision(content: str, query_text: str, *, section: str) ->
         "relevance_score": 0,
         "query_has_continuity_intent": False,
     }
+
+
+def _is_memory_correction(text: str) -> bool:
+    value = (text or "").strip()
+    if not value:
+        return False
+    return any(re.search(pattern, value, flags=re.IGNORECASE) for pattern in MEMORY_CORRECTION_PATTERNS)
+
+
+def _memory_key_from_content(text: str) -> str:
+    value = (text or "").casefold()
+    if not value:
+        return ""
+    if any(token in value for token in ("打招呼", "问候", "greeting")):
+        return "greeting_preference"
+    if any(token in value for token in ("名字", "称呼", "叫我", "name")):
+        return "user_name"
+    if any(token in value for token in ("中文", "英文", "语言", "language")):
+        return "language_preference"
+    if "claim ceiling" in value or "claim_ceiling" in value:
+        return "claim_ceiling_preference"
+    if any(token in value for token in ("工具", "tool", "审批", "approval")):
+        return "tool_preference"
+    return ""
+
+
+def _is_core_memory_note_line(line: str) -> bool:
+    return line.lstrip().startswith("- ")
 
 
 def extract_candidate_memory_from_turn(user_text: str) -> str:
@@ -373,8 +419,51 @@ class OperatorMemoryStore:
                 "# EgoOperator Operator Memory\n\n"
                 "Candidate-local notes only. This file is not EGO repo authority.\n"
             )
+        memory_key = _memory_key_from_content(clean)
+        correction = _is_memory_correction(clean)
+        core_quarantine = {"status": "skipped", "reason": "not_a_keyed_correction"}
+        if memory_key and correction:
+            active_lines: List[str] = []
+            quarantined: List[Dict[str, Any]] = []
+            ts = _iso_now(self.clock)
+            for line in current.splitlines():
+                if _is_core_memory_note_line(line) and _memory_key_from_content(line) == memory_key:
+                    archive_row = {
+                        "ts": ts,
+                        "layer": "core",
+                        "status": "cold_archive",
+                        "archived": True,
+                        "action": "quarantine_core_conflict",
+                        "reason": "superseded_by_operator_correction",
+                        "memory_key": memory_key,
+                        "content": line.strip(),
+                        "replacement": clean,
+                        "source": source,
+                    }
+                    self._append_jsonl(self.cold_archive_file, archive_row)
+                    quarantined.append(archive_row)
+                else:
+                    active_lines.append(line)
+            if quarantined:
+                current = "\n".join(active_lines).strip()
+            core_quarantine = {
+                "status": "ok",
+                "memory_key": memory_key,
+                "count": len(quarantined),
+                "archive_path": str(self.cold_archive_file),
+            }
         note = f"- {_iso_now(self.clock)} [{source}] {clean}"
-        return self.save_core(current.rstrip() + "\n\n" + note, source="operator")
+        result = self.save_core(current.rstrip() + "\n\n" + note, source="operator")
+        result["memory_key"] = memory_key or None
+        result["correction"] = correction
+        result["core_conflicts_quarantined"] = core_quarantine
+        if memory_key and correction:
+            result["candidate_conflicts_quarantined"] = self.quarantine_candidate_conflicts(
+                memory_key,
+                replacement_content=clean,
+                reason="superseded_by_operator_correction",
+            )
+        return result
 
     def episode_path(self, date_key: Optional[str] = None) -> Path:
         return self.episodic_dir / f"{date_key or _date_key(self.clock)}.md"
@@ -450,6 +539,8 @@ class OperatorMemoryStore:
         if not clean:
             return {"status": "skipped", "reason": "empty_candidate_memory"}
         ts = _iso_now(self.clock)
+        memory_key = _memory_key_from_content(clean)
+        correction = _is_memory_correction(clean)
         row = {
             "id": self._new_memory_id(clean, ts),
             "ts": ts,
@@ -463,9 +554,21 @@ class OperatorMemoryStore:
             "archived": False,
             "hit_count": 0,
             "last_hit_ts": None,
-            "metadata": _json_safe(metadata or {}),
+            "metadata": _json_safe({
+                **(metadata or {}),
+                "memory_key": memory_key or None,
+                "correction": correction,
+            }),
         }
-        return self._append_jsonl(self.candidate_memory_file, row)
+        result = self._append_jsonl(self.candidate_memory_file, row)
+        if memory_key and correction:
+            result["conflicts_quarantined"] = self.quarantine_candidate_conflicts(
+                memory_key,
+                replacement_content=clean,
+                replacement_memory_id=str(row["id"]),
+                reason="superseded_by_candidate_correction",
+            )
+        return result
 
     def auto_capture_candidate_from_turn(
         self,
@@ -545,6 +648,49 @@ class OperatorMemoryStore:
                 item["hit_count"] = int(item.get("hit_count", 0) or 0) + 1
                 item["last_hit_ts"] = event.get("ts")
         return state
+
+    def quarantine_candidate_conflicts(
+        self,
+        memory_key: str,
+        *,
+        replacement_content: str,
+        replacement_memory_id: Optional[str] = None,
+        reason: str,
+    ) -> Dict[str, Any]:
+        key = (memory_key or "").strip()
+        if not key:
+            return {"status": "skipped", "reason": "missing_memory_key"}
+        quarantined: List[Dict[str, Any]] = []
+        for item in self._candidate_state().values():
+            if item.get("status") != "candidate" or item.get("archived"):
+                continue
+            metadata = item.get("metadata") if isinstance(item.get("metadata"), dict) else {}
+            if metadata.get("memory_key") != key:
+                continue
+            if replacement_memory_id and item.get("id") == replacement_memory_id:
+                continue
+            event = self._append_memory_event(
+                str(item.get("id")),
+                action="archive",
+                reason=reason,
+                metadata={
+                    "memory_key": key,
+                    "replacement_memory_id": replacement_memory_id,
+                    "replacement_preview": _bounded(replacement_content, 240),
+                },
+            )
+            archived = dict(item)
+            archived["archived_by_event"] = event
+            archived["archive_reason"] = reason
+            self._append_jsonl(self.cold_archive_file, archived)
+            quarantined.append({"memory_id": item.get("id"), "event": event})
+        return {
+            "status": "ok",
+            "memory_key": key,
+            "count": len(quarantined),
+            "items": quarantined,
+            "archive_path": str(self.cold_archive_file),
+        }
 
     def list_candidate_memories(
         self,

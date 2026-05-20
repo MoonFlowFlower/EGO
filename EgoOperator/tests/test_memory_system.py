@@ -277,6 +277,45 @@ def test_archived_and_forgotten_memory_are_excluded_from_hot_context(tmp_path):
     assert store.cold_archive_file.exists()
 
 
+def test_core_memory_correction_quarantines_stale_core_note(tmp_path):
+    store = OperatorMemoryStore(tmp_path / "memory", containment_root=tmp_path)
+
+    first = store.remember("打招呼时带上用户称呼", source="operator")
+    correction = store.remember("纠正：以后不要打招呼时带上用户称呼", source="operator")
+
+    core = store.load_core()
+    archive = store.cold_archive_file.read_text(encoding="utf-8")
+    assert first["status"] == "ok"
+    assert correction["status"] == "ok"
+    assert correction["memory_key"] == "greeting_preference"
+    assert correction["core_conflicts_quarantined"]["count"] == 1
+    assert "打招呼时带上用户称呼" not in "\n".join(
+        line for line in core.splitlines() if "纠正" not in line
+    )
+    assert "纠正：以后不要打招呼时带上用户称呼" in core
+    assert "quarantine_core_conflict" in archive
+
+
+def test_candidate_memory_correction_quarantines_stale_candidate(tmp_path):
+    store = OperatorMemoryStore(tmp_path / "memory", containment_root=tmp_path)
+    stale = store.propose_candidate_memory("user_signal: 以后请打招呼时带上称呼", source="test")
+
+    correction = store.auto_capture_candidate_from_turn(
+        session_id="s1",
+        event_id="e1",
+        user_text="其实以后不要打招呼时带上称呼。",
+    )
+
+    active = store.list_candidate_memories()
+    archived = store.list_candidate_memories(include_archived=True)
+    assert stale["status"] == "candidate"
+    assert correction["status"] == "candidate"
+    assert correction["conflicts_quarantined"]["count"] == 1
+    assert all(item["id"] != stale["id"] for item in active)
+    assert any(item["id"] == stale["id"] and item["status"] == "cold_archive" for item in archived)
+    assert store.cold_archive_file.exists()
+
+
 def test_auto_candidate_capture_from_preference_turn_does_not_write_core(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")

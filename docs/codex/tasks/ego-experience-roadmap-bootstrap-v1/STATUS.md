@@ -55,6 +55,10 @@
 - #29 targeted runtime/scripted validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_memory_system.py scripts/tests/test_run_ego_experience_trial.py` (`20 passed`).
 - After #29, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
 - After #29, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `73 passed`.
+- #31 was promoted to `In Progress` for memory conflict and correction handling.
+- #31 implementation adds keyed correction detection for common memory facts/preferences and quarantines stale core/candidate memories into cold archive before new correction facts become active.
+- #31 targeted runtime/scripted validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_memory_system.py scripts/tests/test_run_ego_experience_trial.py` (`23 passed`).
+- After #31, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `76 passed`.
 
 ## Notes
 

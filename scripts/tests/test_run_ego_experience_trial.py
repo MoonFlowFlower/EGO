@@ -93,3 +93,28 @@ def test_cli_compatible_dispatch_uses_bounded_continuity_context_injection(tmp_p
     assert trace_rows[0]["operator_memory"]["context_injection"]["core"]["included"] is False
     assert trace_rows[1]["operator_memory"]["context_injection"]["core"]["included"] is True
     assert trace_rows[1]["operator_memory"]["context_injection"]["core"]["reason"] == "continuity_query_intent"
+
+
+def test_cli_compatible_dispatch_quarantines_stale_candidate_on_user_correction(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    runtime = agent.build_demo_runtime(
+        enable_operator_memory=True,
+        operator_memory_dir=tmp_path / "memory",
+        runtime_mode="approve",
+    )
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    runtime.planner.llm = CapturePromptLLM()
+
+    stale = runtime.operator_memory.propose_candidate_memory(
+        "user_signal: 以后请打招呼时带上称呼",
+        source="test",
+    )
+
+    run_ego_experience_trial.dispatch_cli_compatible(runtime, "其实以后不要打招呼时带上称呼。")
+
+    active = runtime.operator_memory.list_candidate_memories()
+    archived = runtime.operator_memory.list_candidate_memories(include_archived=True)
+    assert all(item["id"] != stale["id"] for item in active)
+    assert any(item["id"] == stale["id"] and item["status"] == "cold_archive" for item in archived)
