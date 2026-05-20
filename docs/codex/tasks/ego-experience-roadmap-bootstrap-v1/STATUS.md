@@ -23,8 +23,15 @@
 - `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_github_project_task.py scripts/tests/test_ego_operator_devloop.py scripts/tests/test_codex_project_autopilot.py` passed: `45 passed`.
 - `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed.
 - `git diff --check -- .codex scripts scripts/tests docs/codex/tasks/ego-experience-roadmap-bootstrap-v1` passed.
+- #24 implementation added `EXPERIENCE_EVAL_RUBRIC.md`, `chinese_experience_sample_pack.json`, `scripts/validate_experience_eval_contract.py`, and `scripts/tests/test_experience_eval_contract.py`.
+- #24 deterministic validation passed: `python3 scripts/validate_experience_eval_contract.py` reports `case_count=21`, all 7 dimensions covered, all 4 observation classes covered, and zero errors.
+- #24 targeted test passed: `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_experience_eval_contract.py`.
+- Autopilot dirty detection now uses `git status --short --untracked-files=all`, so L3 closeout sees new untracked scoped files before closeout.
+- `autopilot_target` / `autopilot_full` now include the experience eval validator and test.
+- `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
+- `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `47 passed`.
 
 ## Notes
 
 - GitHub Project v2 GraphQL was temporarily rate-limited during issue bootstrap; missing issues were created through REST, then Project sync resumed after the GraphQL quota reset.
-- This task only bootstraps the roadmap and Autopilot classification surface. It does not implement #24 or claim experience efficacy.
+- This task bootstraps the roadmap, Autopilot classification surface, and #24 eval contract. It does not claim experience efficacy.

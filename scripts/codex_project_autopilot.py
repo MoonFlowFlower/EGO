@@ -247,7 +247,7 @@ def _entry_signature(path: str, status: str) -> str:
 
 
 def dirty_entries(runner: CommandRunner) -> list[DirtyEntry]:
-    result = runner.run(["git", "status", "--short", "-uno"])
+    result = runner.run(["git", "status", "--short", "--untracked-files=all"])
     if result.returncode != 0:
         raise AutopilotError(
             "git_status_failed",

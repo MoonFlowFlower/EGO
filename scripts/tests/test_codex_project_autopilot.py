@@ -471,9 +471,27 @@ def test_baseline_records_dirty_state(tmp_path: Path) -> None:
     assert code == 0
     assert payload["status"] == "ok"
     assert payload["entry_count"] == 2
-    assert runner.calls == [("git", "status", "--short", "-uno")]
+    assert runner.calls == [("git", "status", "--short", "--untracked-files=all")]
     recorded = json.loads(baseline.read_text(encoding="utf-8"))
     assert recorded["entry_count"] == 2
+
+
+def test_baseline_records_untracked_files(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    runner = FakeRunner(stdout="?? scripts/new_helper.py\n")
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "baseline"],
+        fake=FakeGh({}),
+        runner=runner,
+    )
+
+    assert code == 0
+    assert payload["entry_count"] == 1
+    recorded = json.loads(baseline.read_text(encoding="utf-8"))
+    assert recorded["entries"][0]["status"] == "??"
+    assert recorded["entries"][0]["path"] == "scripts/new_helper.py"
 
 
 def test_diff_scope_allows_unchanged_preexisting_dirty_outside_allowed_paths(tmp_path: Path) -> None:
@@ -728,7 +746,7 @@ def test_closeout_check_verify_failure_blocks(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
     runner = FakeRunner(
         responses={
-            ("git", "status", "--short", "-uno"): (0, "", ""),
+            ("git", "status", "--short", "--untracked-files=all"): (0, "", ""),
             ("python3", "-m", "pytest"): (1, "", "failed"),
         }
     )

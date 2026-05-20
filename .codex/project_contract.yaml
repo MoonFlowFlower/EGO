@@ -21,6 +21,7 @@ verify_profiles:
           - scripts/codex_project_autopilot.py
           - scripts/github_project_task.py
           - scripts/ego_operator_devloop.py
+          - scripts/validate_experience_eval_contract.py
       - label: autopilot_tests
         command:
           - python3
@@ -41,6 +42,7 @@ verify_profiles:
           - scripts/tests/test_github_project_task.py
           - scripts/tests/test_ego_operator_devloop.py
           - scripts/tests/test_codex_project_autopilot.py
+          - scripts/tests/test_experience_eval_contract.py
         env:
           TMPDIR: /tmp
       - label: diff_check
