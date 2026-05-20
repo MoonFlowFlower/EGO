@@ -942,20 +942,153 @@ def test_verify_profile_runs_contract_commands(tmp_path: Path) -> None:
     assert runner.calls == [("python3", "-m", "pytest")]
 
 
+def closeout_runner(
+    *,
+    verify_stdout: str = "unit ok",
+    changed_files: str = "scripts/codex_project_autopilot.py\nscripts/tests/test_codex_project_autopilot.py\n",
+) -> FakeRunner:
+    return FakeRunner(
+        responses={
+            ("git", "status", "--short", "--untracked-files=all"): (0, "", ""),
+            ("python3", "-m", "pytest"): (0, verify_stdout, ""),
+            ("git", "rev-parse", "--abbrev-ref", "HEAD"): (0, "main\n", ""),
+            ("git", "rev-parse", "HEAD"): (0, "abcdef1234567890\n", ""),
+            ("git", "status", "-sb"): (0, "## main...origin/main\n", ""),
+            ("git", "show", "--name-only", "--format=", "--diff-filter=ACMR", "HEAD"): (0, changed_files, ""),
+        }
+    )
+
+
 def test_closeout_check_deterministic_local_is_eligible_after_verify_pass(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
 
     code, payload = run_cli(
         ["--contract", str(path), "closeout-check", "--issue", "17"],
         fake=FakeGh(responses_for_issue(ISSUE_READY)),
-        runner=FakeRunner(stdout=""),
+        runner=closeout_runner(),
     )
 
     assert code == 0
     assert payload["status"] == "eligible"
     assert payload["eligible"] is True
     assert payload["verify"]["passed"] is True
-    assert "closeout" in payload["closeout_comment"].casefold()
+    assert payload["evidence_packet"]["implementation_refs"]["changed_files"]
+    comment = payload["closeout_comment"]
+    assert "What changed:" in comment
+    assert "Acceptance evidence:" in comment
+    assert "Verification:" in comment
+    assert "Implementation refs:" in comment
+    assert "Residuals:" in comment
+    assert "Claim ceiling:" in comment
+    assert "Not claimed:" in comment
+
+
+def test_closeout_check_deterministic_local_without_issue_specific_evidence_blocks(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY)),
+        runner=closeout_runner(changed_files=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(reason["reason"] == "closeout_evidence_missing_issue_specific_item" for reason in payload["blocked_reasons"])
+
+
+def test_closeout_check_scripted_real_entry_requires_report_evidence(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    scripted = issue(
+        70,
+        "Codex Toolkit: scripted real entry closeout",
+        body=READY_BODY + "\nObservation class: scripted_real_entry\n",
+    )
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "70"],
+        fake=FakeGh(responses_for_issue(scripted)),
+        runner=closeout_runner(),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(
+        reason["reason"] == "closeout_evidence_missing_scripted_real_entry_item"
+        for reason in payload["blocked_reasons"]
+    )
+
+
+def test_closeout_check_scripted_real_entry_with_report_evidence_is_eligible(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    scripted = issue(
+        71,
+        "Codex Toolkit: scripted real entry closeout",
+        body=(
+            READY_BODY
+            + "\nObservation class: scripted_real_entry\n\n"
+            + "## Closeout evidence\n"
+            + "- scripted real-entry report: `.codex/autopilot/runs/demo.json` shows the user-facing entrypoint passed.\n"
+        ),
+    )
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "71"],
+        fake=FakeGh(responses_for_issue(scripted)),
+        runner=closeout_runner(),
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    assert any(item["type"] == "issue_evidence" for item in payload["evidence_packet"]["evidence_items"])
+
+
+def test_closeout_comment_summarizes_long_verify_output(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    long_output = "A" * 900 + "TAIL"
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY)),
+        runner=closeout_runner(verify_stdout=long_output),
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    comment = payload["closeout_comment"]
+    assert "omitted=" in comment
+    assert long_output not in comment
+
+
+def test_closeout_comment_current_meaning_excludes_observation_class_line(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    with_meaning = issue(
+        72,
+        "Codex Toolkit: closeout evidence packet v2",
+        body=(
+            "## Current meaning\n"
+            "Upgrade closeout comments into compact evidence packets.\n\n"
+            "Observation class: deterministic_local\n\n"
+            "## Acceptance gate\n"
+            "- Evidence-first comment is generated.\n\n"
+            "## Claim ceiling\n"
+            "Local only.\n\n"
+            "## Rollback\n"
+            "Revert script changes.\n"
+        ),
+    )
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "72"],
+        fake=FakeGh(responses_for_issue(with_meaning)),
+        runner=closeout_runner(),
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    comment = payload["closeout_comment"]
+    assert "Upgrade closeout comments into compact evidence packets." in comment
+    assert "Addressed target: Upgrade closeout comments into compact evidence packets. Observation class" not in comment
 
 
 def test_closeout_check_verify_failure_blocks(tmp_path: Path) -> None:
@@ -1175,7 +1308,7 @@ def test_closeout_once_dry_run_does_not_mutate_github(tmp_path: Path) -> None:
     code, payload = run_cli(
         ["--contract", str(path), "closeout-once", "--issue", "17", "--dry-run"],
         fake=fake,
-        runner=FakeRunner(stdout=""),
+        runner=closeout_runner(),
     )
 
     assert code == 0
@@ -1248,7 +1381,7 @@ def test_closeout_once_execute_closes_only_when_eligible(tmp_path: Path) -> None
     code, payload = run_cli(
         ["--contract", str(path), "closeout-once", "--issue", "17", "--execute"],
         fake=fake,
-        runner=FakeRunner(stdout=""),
+        runner=closeout_runner(),
     )
 
     assert code == 0
@@ -1291,7 +1424,7 @@ def test_run_loop_l3_closeout_dry_run_writes_report_without_mutating(tmp_path: P
             "--write-report",
         ],
         fake=fake,
-        runner=FakeRunner(stdout=""),
+        runner=closeout_runner(),
     )
 
     assert code == 0

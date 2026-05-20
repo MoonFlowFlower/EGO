@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -726,28 +727,359 @@ def llm_reviewer(contract: ProjectContract, packet: dict[str, Any], *, runner: C
     return parsed
 
 
+def text_digest(text: str, *, max_chars: int = 280) -> dict[str, Any]:
+    if len(text) <= max_chars:
+        return {"text": text, "chars": len(text), "truncated": False}
+    head_len = max(80, max_chars // 2)
+    tail_len = max(60, max_chars - head_len - 40)
+    omitted = max(0, len(text) - head_len - tail_len)
+    return {
+        "head": text[:head_len],
+        "tail": text[-tail_len:] if tail_len else "",
+        "chars": len(text),
+        "omitted": omitted,
+        "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "truncated": True,
+    }
+
+
+def format_digest_text(text: str, *, max_chars: int = 220) -> str:
+    digest = text_digest(text, max_chars=max_chars)
+    if not digest.get("truncated"):
+        return str(digest.get("text") or "").strip()
+    head = str(digest.get("head") or "").replace("\n", "\\n")
+    tail = str(digest.get("tail") or "").replace("\n", "\\n")
+    return (
+        f"{head} ... {tail} "
+        f"(chars={digest['chars']}, omitted={digest['omitted']}, sha256={str(digest['sha256'])[:12]})"
+    )
+
+
+def extract_markdown_section(body: str, heading: str) -> str:
+    pattern = re.compile(rf"^##\s+{re.escape(heading)}\s*$", re.IGNORECASE | re.MULTILINE)
+    match = pattern.search(body)
+    if not match:
+        return ""
+    rest = body[match.end() :]
+    next_heading = re.search(r"^##\s+", rest, flags=re.MULTILINE)
+    if next_heading:
+        rest = rest[: next_heading.start()]
+    return rest.strip()
+
+
+def section_bullets(section: str) -> list[str]:
+    bullets = []
+    for line in section.splitlines():
+        text = re.sub(r"^\s*(?:[-*]|\d+[.)])\s*", "", line).strip()
+        if text:
+            bullets.append(text)
+    return bullets
+
+
+def issue_closeout_evidence_items(issue: dict[str, Any]) -> list[dict[str, Any]]:
+    body = str(issue.get("body") or "")
+    items = []
+    for heading in ("Closeout evidence", "Evidence", "Implementation evidence", "Human evidence"):
+        section = extract_markdown_section(body, heading)
+        if not section:
+            continue
+        for bullet in section_bullets(section):
+            items.append(
+                {
+                    "type": "issue_evidence",
+                    "source": f"issue_body:{heading}",
+                    "status": "pass",
+                    "summary": bullet,
+                }
+            )
+    return items
+
+
+def acceptance_results(issue: dict[str, Any], *, eligible: bool, evidence_items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    section = extract_markdown_section(str(issue.get("body") or ""), "Acceptance gate")
+    bullets = section_bullets(section)
+    if not bullets:
+        bullets = ["Acceptance gate not listed in issue body."]
+    status = "pass" if eligible and evidence_items else "unknown"
+    return [{"gate": bullet, "status": status} for bullet in bullets[:8]]
+
+
+def issue_current_meaning(issue: dict[str, Any]) -> str:
+    if issue.get("current_meaning"):
+        return str(issue.get("current_meaning"))
+    body = str(issue.get("body") or "")
+    meaning = extract_markdown_section(body, "Current meaning")
+    if meaning:
+        clean_lines = []
+        for line in meaning.splitlines():
+            if re.match(r"\s*(?:observation|evidence)[ _-]?class\s*[:：]", line, flags=re.IGNORECASE):
+                break
+            if not line.strip() and clean_lines:
+                break
+            if line.strip():
+                clean_lines.append(line.strip())
+        return format_digest_text(" ".join(clean_lines or meaning.split()), max_chars=240)
+    return str(issue.get("title") or "Issue target unavailable")
+
+
+def collect_implementation_refs(runner: CommandRunner) -> dict[str, Any]:
+    refs: dict[str, Any] = {
+        "branch": None,
+        "head_commit": None,
+        "head_commit_short": None,
+        "push_status": "unknown",
+        "changed_files": [],
+        "change_source": "unknown",
+    }
+
+    def run_optional(args: list[str]) -> CommandResult | None:
+        try:
+            result = runner.run(args)
+        except Exception:
+            return None
+        return result if result.returncode == 0 else None
+
+    branch = run_optional(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+    if branch:
+        refs["branch"] = branch.stdout.strip() or None
+
+    head = run_optional(["git", "rev-parse", "HEAD"])
+    if head:
+        full = head.stdout.strip()
+        refs["head_commit"] = full or None
+        refs["head_commit_short"] = full[:12] if full else None
+
+    status = run_optional(["git", "status", "-sb"])
+    if status:
+        first_line = (status.stdout.splitlines() or [""])[0]
+        if "ahead" in first_line:
+            refs["push_status"] = "ahead"
+        elif "behind" in first_line:
+            refs["push_status"] = "behind"
+        elif first_line:
+            refs["push_status"] = "synced_or_unknown"
+
+    dirty = run_optional(["git", "status", "--short", "--untracked-files=all"])
+    dirty_files: list[str] = []
+    if dirty:
+        for line in dirty.stdout.splitlines():
+            if not line.strip():
+                continue
+            path = line[3:] if len(line) > 3 else line.strip()
+            if " -> " in path:
+                path = path.split(" -> ", 1)[1]
+            dirty_files.append(path.strip())
+    if dirty_files:
+        refs["changed_files"] = dirty_files[:40]
+        refs["change_source"] = "worktree_dirty"
+        return refs
+
+    changed = run_optional(["git", "show", "--name-only", "--format=", "--diff-filter=ACMR", "HEAD"])
+    if changed:
+        refs["changed_files"] = [line.strip() for line in changed.stdout.splitlines() if line.strip()][:40]
+        if refs["changed_files"]:
+            refs["change_source"] = "git_head"
+    return refs
+
+
+def verify_evidence_items(verify: dict[str, Any] | None) -> list[dict[str, Any]]:
+    if not verify:
+        return []
+    items = []
+    for result in verify.get("results") or []:
+        if not isinstance(result, dict):
+            continue
+        command = " ".join(str(part) for part in result.get("command") or [])
+        stdout = str(result.get("stdout_preview") or "")
+        stderr = str(result.get("stderr_preview") or "")
+        summary_bits = []
+        if stdout.strip():
+            summary_bits.append(f"stdout: {format_digest_text(stdout, max_chars=160)}")
+        if stderr.strip():
+            summary_bits.append(f"stderr: {format_digest_text(stderr, max_chars=160)}")
+        items.append(
+            {
+                "type": "verification",
+                "source": f"verify_profile:{verify.get('profile')}",
+                "command": command,
+                "status": "pass" if result.get("passed") else "fail",
+                "summary": "; ".join(summary_bits) if summary_bits else f"returncode={result.get('returncode')}",
+            }
+        )
+    return items
+
+
+def implementation_evidence_items(refs: dict[str, Any]) -> list[dict[str, Any]]:
+    files = [str(path) for path in refs.get("changed_files") or []]
+    if not files:
+        return []
+    preview = ", ".join(files[:8])
+    if len(files) > 8:
+        preview += f", ... (+{len(files) - 8} more)"
+    return [
+        {
+            "type": "implementation",
+            "source": refs.get("change_source") or "implementation",
+            "status": "pass",
+            "summary": f"{refs.get('change_source') or 'implementation'} changes tracked files: {preview}",
+            "path": refs.get("head_commit_short"),
+        }
+    ]
+
+
+def observation_boundary(observation_class: str) -> dict[str, Any]:
+    if observation_class == "deterministic_local":
+        return {
+            "class": observation_class,
+            "can_claim": "local deterministic workflow candidate pass",
+            "cannot_claim": "real user perception, runtime efficacy, live autonomy, durable memory efficacy, or consciousness",
+        }
+    if observation_class == "scripted_real_entry":
+        return {
+            "class": observation_class,
+            "can_claim": "scripted real-entry candidate pass",
+            "cannot_claim": "human preference, long-run stability, live autonomy, durable memory efficacy, or consciousness",
+        }
+    if observation_class == "scripted_with_llm_judge":
+        return {
+            "class": observation_class,
+            "can_claim": "scripted candidate pass with reviewer-bounded judgment",
+            "cannot_claim": "human preference, stable product benefit, live autonomy, durable memory efficacy, or consciousness",
+        }
+    return {
+        "class": observation_class,
+        "can_claim": "none without additional gate",
+        "cannot_claim": "automatic closeout",
+    }
+
+
+def build_closeout_evidence_packet(
+    *,
+    issue: dict[str, Any],
+    observation_class: str,
+    verify: dict[str, Any] | None,
+    implementation_refs: dict[str, Any],
+    reviewer: dict[str, Any] | None,
+    eligible: bool,
+) -> dict[str, Any]:
+    evidence_items = []
+    evidence_items.extend(issue_closeout_evidence_items(issue))
+    evidence_items.extend(verify_evidence_items(verify))
+    evidence_items.extend(implementation_evidence_items(implementation_refs))
+    if reviewer:
+        evidence_items.append(
+            {
+                "type": "reviewer",
+                "source": "llm_reviewer",
+                "status": "pass" if reviewer.get("verdict") == "closeout_allowed" else "blocked",
+                "summary": "; ".join(str(reason) for reason in reviewer.get("reasons") or []) or str(reviewer.get("reason") or ""),
+            }
+        )
+    return {
+        "evidence_items": evidence_items,
+        "implementation_refs": implementation_refs,
+        "acceptance_result": acceptance_results(issue, eligible=eligible, evidence_items=evidence_items),
+        "observation_boundary": observation_boundary(observation_class),
+        "residuals": [
+            "No human-observable or durable product claim is made unless explicit human evidence is cited."
+        ],
+    }
+
+
+def closeout_evidence_blockers(observation_class: str, evidence_packet: dict[str, Any]) -> list[dict[str, Any]]:
+    items = [item for item in evidence_packet.get("evidence_items") or [] if isinstance(item, dict)]
+    passed_verify = any(item.get("type") == "verification" and item.get("status") == "pass" for item in items)
+    issue_specific = any(item.get("type") in {"issue_evidence", "implementation", "reviewer"} for item in items)
+    blockers = []
+    if observation_class == "deterministic_local":
+        if not passed_verify:
+            blockers.append({"reason": "closeout_evidence_missing_verification"})
+        if not issue_specific:
+            blockers.append({"reason": "closeout_evidence_missing_issue_specific_item"})
+    elif observation_class == "scripted_real_entry":
+        if not passed_verify:
+            blockers.append({"reason": "closeout_evidence_missing_verification"})
+        real_entry = any(
+            item.get("type") == "issue_evidence"
+            and re.search(r"(scripted|real[-_ ]?entry|entrypoint|report|smoke|入口|报告)", str(item.get("summary") or ""), re.I)
+            for item in items
+        )
+        if not real_entry:
+            blockers.append({"reason": "closeout_evidence_missing_scripted_real_entry_item"})
+    return blockers
+
+
 def closeout_comment_draft(packet: dict[str, Any]) -> str:
     issue = packet.get("issue") or {}
     verify = packet.get("verify") or {}
     claim = packet.get("claim_ceiling") or "local workflow candidate pass"
+    evidence_packet = packet.get("evidence_packet") or {}
+    implementation = evidence_packet.get("implementation_refs") or {}
+    acceptance = evidence_packet.get("acceptance_result") or []
+    evidence_items = evidence_packet.get("evidence_items") or []
+    residuals = evidence_packet.get("residuals") or []
+    boundary = evidence_packet.get("observation_boundary") or {}
+
+    changed_files = implementation.get("changed_files") or []
+    changed_summary = ", ".join(str(path) for path in changed_files[:8]) if changed_files else "not captured"
+    if len(changed_files) > 8:
+        changed_summary += f", ... (+{len(changed_files) - 8} more)"
+
     lines = [
         f"Closeout for #{issue.get('number')}: {issue.get('title')}",
         "",
-        "Autopilot L3 closeout eligibility passed.",
-        f"- observation_class: `{packet.get('observation_class')}`",
-        f"- verify_profile: `{verify.get('profile')}`",
-        f"- verify_status: `{verify.get('status')}`",
-        f"- dirty_gate: `{(packet.get('dirty_gate') or {}).get('status')}`",
+        "Result: local candidate pass.",
+        "",
+        "What changed:",
+        f"- Addressed target: {issue_current_meaning(issue)}",
+        "- Closed this issue against the Project contract with an evidence packet, not only an eligibility flag.",
+        f"- Observation boundary: `{boundary.get('can_claim') or packet.get('observation_class')}`.",
+        "",
+        "Acceptance evidence:",
     ]
-    reviewer = packet.get("llm_reviewer")
-    if reviewer:
-        lines.append(f"- llm_reviewer_verdict: `{reviewer.get('verdict')}`")
+    for row in acceptance[:8]:
+        lines.append(f"- [{row.get('status')}] {row.get('gate')}")
+    lines.extend(["", "Verification:"])
+    for item in evidence_items:
+        if not isinstance(item, dict) or item.get("type") != "verification":
+            continue
+        command = item.get("command") or "(command unavailable)"
+        lines.append(f"- `{command}` -> {item.get('status')} ({item.get('summary')})")
+    if not any(isinstance(item, dict) and item.get("type") == "verification" for item in evidence_items):
+        lines.append("- No verification evidence captured.")
     lines.extend(
         [
             "",
-            f"Claim: `{claim}`.",
+            "Implementation refs:",
+            f"- change_source: `{implementation.get('change_source') or 'unknown'}`",
+            f"- changed_files: {changed_summary}",
+            f"- commit: `{implementation.get('head_commit_short') or 'unknown'}`",
+            f"- branch: `{implementation.get('branch') or 'unknown'}`",
+            f"- push_status: `{implementation.get('push_status') or 'unknown'}`",
+            f"- dirty_gate: `{(packet.get('dirty_gate') or {}).get('status')}`",
+        ]
+    )
+    reviewer = packet.get("llm_reviewer")
+    if reviewer:
+        lines.extend(["", "Reviewer:", f"- llm_reviewer_verdict: `{reviewer.get('verdict')}`"])
+    issue_specific = [
+        item for item in evidence_items if isinstance(item, dict) and item.get("type") in {"issue_evidence", "implementation", "reviewer"}
+    ]
+    if issue_specific:
+        lines.extend(["", "Evidence refs:"])
+        for item in issue_specific[:6]:
+            lines.append(f"- {item.get('source')}: {item.get('summary')}")
+    lines.extend(["", "Residuals:"])
+    for residual in residuals[:5]:
+        lines.append(f"- {residual}")
+    lines.extend(
+        [
             "",
-            "Not claimed: full unattended autonomous development, stable productivity gain, product runtime efficacy, live autonomy, durable memory efficacy, or consciousness.",
+            "Claim ceiling:",
+            f"`{claim}`",
+            "",
+            "Not claimed:",
+            "full unattended autonomous development, stable productivity gain, product runtime efficacy, live autonomy, durable memory efficacy, or consciousness.",
         ]
     )
     return "\n".join(lines)
@@ -814,6 +1146,18 @@ def closeout_packet(
         if verify and not verify.get("passed"):
             blocked_reasons.append({"reason": "verify_profile_failed", "profile": profile})
 
+    implementation_refs = collect_implementation_refs(runner) if verify and verify.get("passed") else {}
+    evidence_packet = build_closeout_evidence_packet(
+        issue=issue,
+        observation_class=observation_class,
+        verify=verify,
+        implementation_refs=implementation_refs,
+        reviewer=None,
+        eligible=False,
+    )
+    if not blocked_reasons:
+        blocked_reasons.extend(closeout_evidence_blockers(observation_class, evidence_packet))
+
     llm_classes = set(_as_list(contract.auto_closeout.get("llm_review_observation_classes")))
     needs_llm_review = observation_class in llm_classes
     closeout_allowed = bool(observation_cfg.get("closeout_allowed"))
@@ -825,6 +1169,7 @@ def closeout_packet(
             "title": issue.get("title"),
             "state": issue.get("state"),
             "url": issue.get("url"),
+            "current_meaning": issue_current_meaning(issue),
         },
         "project_item": classified.get("project_item"),
         "classification": classification,
@@ -832,6 +1177,7 @@ def closeout_packet(
         "claim_ceiling": claim_ceiling,
         "dirty_gate": dirty,
         "verify": verify,
+        "evidence_packet": evidence_packet,
         "blocked_reasons": blocked_reasons,
     }
 
@@ -848,10 +1194,28 @@ def closeout_packet(
         packet["llm_reviewer"] = reviewer
         if reviewer.get("verdict") != "closeout_allowed":
             blocked_reasons.append({"reason": reviewer.get("reason") or "llm_reviewer_blocked"})
+        evidence_packet = build_closeout_evidence_packet(
+            issue=issue,
+            observation_class=observation_class,
+            verify=verify,
+            implementation_refs=implementation_refs,
+            reviewer=reviewer,
+            eligible=False,
+        )
+        packet["evidence_packet"] = evidence_packet
     elif not closeout_allowed and not needs_llm_review:
         blocked_reasons.append({"reason": "observation_class_not_closeout_allowed", "observation_class": observation_class})
 
     eligible = not blocked_reasons and (closeout_allowed or (needs_llm_review and reviewer and reviewer.get("verdict") == "closeout_allowed"))
+    evidence_packet = build_closeout_evidence_packet(
+        issue=issue,
+        observation_class=observation_class,
+        verify=verify,
+        implementation_refs=implementation_refs,
+        reviewer=reviewer,
+        eligible=eligible,
+    )
+    packet["evidence_packet"] = evidence_packet
     packet["blocked_reasons"] = blocked_reasons
     packet["eligible"] = eligible
     packet["status"] = "eligible" if eligible else "blocked"
