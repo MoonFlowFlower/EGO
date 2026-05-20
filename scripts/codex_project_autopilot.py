@@ -374,16 +374,39 @@ def classify_issue(contract: ProjectContract, issue: dict[str, Any], item: dict[
     if _contains_any(title_cf, _as_list(rules.get("human_required_title_contains"))):
         return {"class": "human_required", "reason": "human_observation_marker", "autopilot_allowed": False}
 
+    observation_match = re.search(
+        r"observation[_ -]?class\s*[:：]\s*`?([A-Za-z0-9_-]+)`?",
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    if observation_match and observation_match.group(1).casefold() == "human_required":
+        return {"class": "human_required", "reason": "human_observation_class", "autopilot_allowed": False}
+
     if _contains_any(title_cf, _as_list(rules.get("high_impact_title_contains"))):
         return {"class": "high_impact", "reason": "high_impact_marker", "autopilot_allowed": False}
 
     ready_statuses = set(_as_list(rules.get("ready_project_statuses")) or ["In Progress", "Todo"])
+    if status and status not in ready_statuses:
+        return {"class": "blocked", "reason": "project_status_not_ready", "autopilot_allowed": False, "project_status": status}
+
+    if _starts_with_any(title_cf, _as_list(rules.get("epic_title_prefixes"))):
+        return {"class": "epic", "reason": "epic_title_prefix", "autopilot_allowed": False}
+
     ready_prefix = _starts_with_any(title_cf, _as_list(rules.get("ready_title_prefixes")))
+    research_prefix = _starts_with_any(title_cf, _as_list(rules.get("research_title_prefixes")))
     markers = [marker.casefold() for marker in _as_list(rules.get("ready_body_markers"))]
     marker_hits = [marker for marker in markers if marker in haystack]
 
-    if status and status not in ready_statuses:
-        return {"class": "blocked", "reason": "project_status_not_ready", "autopilot_allowed": False, "project_status": status}
+    if research_prefix and marker_hits:
+        return {
+            "class": "research",
+            "reason": "research_prefix_and_acceptance_markers",
+            "autopilot_allowed": True,
+            "marker_hits": marker_hits,
+        }
+
+    if research_prefix:
+        return {"class": "blocked", "reason": "research_prefix_without_acceptance_markers", "autopilot_allowed": False}
 
     if ready_prefix and marker_hits:
         return {
@@ -451,7 +474,7 @@ def select_next(report: dict[str, Any]) -> dict[str, Any] | None:
     ready = [
         issue
         for issue in report.get("issues", [])
-        if issue.get("classification", {}).get("class") == "ready"
+        if issue.get("classification", {}).get("autopilot_allowed") is True
     ]
     ready.sort(key=lambda item: (status_rank.get(str(item.get("project_status")), 99), int(item.get("number") or 999999)))
     return ready[0] if ready else None
@@ -732,12 +755,21 @@ def closeout_packet(
     blocked_reasons: list[dict[str, Any]] = []
 
     hard_stop_classes = set(_as_list(contract.auto_closeout.get("hard_stop_classes")))
-    if classification.get("class") in hard_stop_classes or classification.get("class") != "ready":
+    if classification.get("class") in hard_stop_classes or classification.get("autopilot_allowed") is not True:
         blocked_reasons.append(
             {
                 "reason": "issue_class_not_auto_closeable",
                 "class": classification.get("class"),
                 "classification_reason": classification.get("reason"),
+            }
+        )
+    project_item = classified.get("project_item") or {}
+    project_status = project_item.get("status")
+    if project_status != "In Progress":
+        blocked_reasons.append(
+            {
+                "reason": "project_status_not_in_progress_for_closeout",
+                "project_status": project_status,
             }
         )
     blocked_reasons.extend(issue_hard_stop_reasons(contract, issue))
@@ -907,7 +939,7 @@ def command_run_once(
         raise AutopilotError("mutation_not_implemented", "v2 run-once only supports --dry-run")
     classified = command_classify_issue(client, contract, issue_ref)
     classification = classified["classification"]
-    if classification.get("class") != "ready":
+    if classification.get("autopilot_allowed") is not True:
         return {
             "status": "stopped",
             "stop_reason": "issue_not_ready",
@@ -1049,7 +1081,7 @@ def command_run_loop(
     ready = [
         issue
         for issue in report.get("issues", [])
-        if issue.get("classification", {}).get("class") == "ready"
+        if issue.get("classification", {}).get("autopilot_allowed") is True
     ]
     if not ready:
         payload = {

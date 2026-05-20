@@ -1,0 +1,27 @@
+version: 1
+task: ego-experience-roadmap-bootstrap-v1
+claim_ceiling: EGO experience-first roadmap/project-board bootstrap local management pass
+allowed_paths:
+  - .codex/project_contract.yaml
+  - scripts/codex_project_autopilot.py
+  - scripts/tests/test_codex_project_autopilot.py
+  - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/**
+forbidden_paths:
+  - EgoOperator/**
+  - legacy/ego-pre-handmade-mainline/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+acceptance:
+  - epic_and_research_classification_supported
+  - roadmap_issues_created_or_reused_without_duplicates
+  - new_roadmap_issues_are_not_unknown
+  - plan_next_selects_first_executable_card
+  - l3_dry_run_does_not_close_human_or_high_impact_cards
+  - tests_pass
+cannot_claim:
+  - real_consciousness
+  - independent_awareness
+  - stable_user_benefit
+  - runtime_efficacy
+  - live_autonomy
+  - durable_memory_efficacy

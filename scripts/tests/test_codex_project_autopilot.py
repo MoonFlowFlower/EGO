@@ -71,6 +71,13 @@ ISSUE_SUPPORTING = issue(6, "Supporting: repo cleanup route convergence guard", 
 ISSUE_READY = issue(17, "Codex Toolkit: cross-project devloop/autopilot control plane v1", body=READY_BODY)
 ISSUE_UNKNOWN = issue(14, "命令行工具的启用问题", body="unstructured log")
 ISSUE_L2 = issue(18, "Codex Toolkit: dirty-baseline scoped L2 single-issue executor", body=READY_BODY)
+ISSUE_EPIC = issue(25, "Epic 0: Experience baseline and eval contract", body=READY_BODY)
+ISSUE_RESEARCH = issue(26, "Research: external agent project scan", body=READY_BODY)
+ISSUE_HUMAN_OBS = issue(
+    27,
+    "EgoRoadmap: human perception smoke",
+    body=f"{READY_BODY}\n\nObservation class: human_required\n",
+)
 ISSUE_LLM = issue(
     23,
     "Codex Toolkit: scripted LLM judge closeout case",
@@ -100,6 +107,9 @@ ITEMS = [
     item(ISSUE_READY, "In Progress"),
     item(ISSUE_UNKNOWN, "Todo"),
     item(ISSUE_L2, "In Progress"),
+    item(ISSUE_EPIC, "Todo"),
+    item(ISSUE_RESEARCH, "Todo"),
+    item(ISSUE_HUMAN_OBS, "Todo"),
     item(ISSUE_LLM, "In Progress"),
     item(ISSUE_HIGH, "In Progress"),
 ]
@@ -183,6 +193,11 @@ task_classification:
   ready_title_prefixes:
     - "Codex Toolkit:"
     - "EgoOperator:"
+    - "EgoRoadmap:"
+  epic_title_prefixes:
+    - "Epic "
+  research_title_prefixes:
+    - "Research:"
   ready_body_markers:
     - "Acceptance gate"
     - "Claim ceiling"
@@ -322,6 +337,9 @@ def test_report_classifies_ready_human_aggregate_parked_supporting_and_unknown(t
     classes = {entry["number"]: entry["classification"]["class"] for entry in payload["issues"]}
     assert classes[17] == "ready"
     assert classes[18] == "ready"
+    assert classes[25] == "epic"
+    assert classes[26] == "research"
+    assert classes[27] == "human_required"
     assert classes[3] == "human_required"
     assert classes[5] == "aggregate"
     assert classes[10] == "parked"
@@ -337,6 +355,20 @@ def test_plan_next_skips_human_aggregate_and_parked(tmp_path: Path) -> None:
     assert code == 0
     assert payload["status"] == "ok"
     assert payload["next_issue"]["number"] == 17
+
+
+def test_plan_next_can_select_research_when_no_ready_issue(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "plan-next"],
+        fake=FakeGh(base_responses(items=[item(ISSUE_EPIC, "Todo"), item(ISSUE_RESEARCH, "Todo")])),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["next_issue"]["number"] == 26
+    assert payload["next_issue"]["classification"]["class"] == "research"
 
 
 def test_classify_issue_reads_issue_body_and_project_item(tmp_path: Path) -> None:
@@ -582,9 +614,20 @@ def test_normalize_issue_without_dry_run_is_rejected(tmp_path: Path) -> None:
     assert payload["error"] == "mutation_not_implemented"
 
 
-def responses_for_issue(full_issue: dict) -> dict[tuple[str, ...], list[str] | str]:
+def responses_for_issue(full_issue: dict, *, status: str = "In Progress") -> dict[tuple[str, ...], list[str] | str]:
     responses = base_responses()
     issue_ref = str(full_issue["number"])
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = j({"items": [item(full_issue, status)]})
     responses[(
         "issue",
         "view",
@@ -636,6 +679,22 @@ def test_run_once_dry_run_plans_ready_issue_with_clean_scope(tmp_path: Path) -> 
     assert payload["planned"][0]["step"] == "load_issue"
 
 
+def test_run_once_dry_run_plans_research_issue_with_clean_scope(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    baseline = tmp_path / "baseline.json"
+    run_cli(["--contract", str(path), "--baseline-path", str(baseline), "baseline"], fake=FakeGh({}), runner=FakeRunner(stdout=""))
+
+    code, payload = run_cli(
+        ["--contract", str(path), "--baseline-path", str(baseline), "run-once", "--issue", "26", "--dry-run"],
+        fake=FakeGh(responses_for_issue(ISSUE_RESEARCH, status="Todo")),
+        runner=FakeRunner(stdout=" M scripts/codex_project_autopilot.py\n"),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["classification"]["class"] == "research"
+
+
 def test_verify_profile_runs_contract_commands(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
     runner = FakeRunner()
@@ -683,6 +742,23 @@ def test_closeout_check_verify_failure_blocks(tmp_path: Path) -> None:
     assert code == 0
     assert payload["status"] == "blocked"
     assert any(reason["reason"] == "verify_profile_failed" for reason in payload["blocked_reasons"])
+
+
+def test_closeout_check_todo_issue_is_not_eligible(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "closeout-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY, status="Todo")),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(
+        reason["reason"] == "project_status_not_in_progress_for_closeout"
+        for reason in payload["blocked_reasons"]
+    )
 
 
 def test_closeout_check_hard_stop_blocks_before_reviewer(tmp_path: Path) -> None:

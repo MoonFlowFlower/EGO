@@ -57,6 +57,7 @@ verify_profiles:
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
+          - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1
 
 protected_paths:
   - EgoOperator/
@@ -74,6 +75,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
   - docs/codex/tasks/codex-autopilot-l3-l4-v2/
+  - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/
 
 commit_policy:
   mode: direct-main
@@ -87,6 +89,11 @@ task_classification:
   ready_title_prefixes:
     - "Codex Toolkit:"
     - "EgoOperator:"
+    - "EgoRoadmap:"
+  epic_title_prefixes:
+    - "Epic "
+  research_title_prefixes:
+    - "Research:"
   ready_body_markers:
     - "Acceptance gate"
     - "Claim ceiling"
