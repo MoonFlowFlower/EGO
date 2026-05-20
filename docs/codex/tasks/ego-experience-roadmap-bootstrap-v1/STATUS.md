@@ -59,6 +59,10 @@
 - #31 implementation adds keyed correction detection for common memory facts/preferences and quarantines stale core/candidate memories into cold archive before new correction facts become active.
 - #31 targeted runtime/scripted validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_memory_system.py scripts/tests/test_run_ego_experience_trial.py` (`23 passed`).
 - After #31, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `76 passed`.
+- #32 was promoted to `In Progress` for a continuity regression pack covering same-meaning paraphrases and cross-turn topic carryover.
+- #32 implementation added `continuity_regression_pack.json` and extended `scripts/validate_experience_eval_contract.py` so the continuity pack stays eval-only and cannot become a runtime keyword route.
+- #32 deterministic validation passed: `python3 scripts/validate_experience_eval_contract.py` reports `paraphrase_group_count=4`, `paraphrase_prompt_count=16`, `carryover_case_count=4`, and zero errors.
+- After #32, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `76 passed`.
 
 ## Notes
 

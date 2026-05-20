@@ -22,6 +22,10 @@ def test_experience_eval_contract_is_valid() -> None:
     assert result["dimension_count"] == 7
     assert result["claim_state_count"] == 7
     assert result["claim_calibration"].endswith("CLAIM_CEILING_CALIBRATION.md")
+    assert result["continuity_regression_pack"].endswith("continuity_regression_pack.json")
+    assert result["continuity_regression"]["paraphrase_group_count"] >= 4
+    assert result["continuity_regression"]["carryover_case_count"] >= 4
+    assert result["continuity_regression"]["paraphrase_prompt_count"] >= 12
     assert set(result["covered_dimensions"]) == validate_experience_eval_contract.REQUIRED_DIMENSIONS
     assert {
         "deterministic_local",

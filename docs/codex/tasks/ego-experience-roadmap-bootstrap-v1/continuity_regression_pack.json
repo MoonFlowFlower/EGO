@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "name": "ego_operator_continuity_regression_pack_v1",
+  "language": "zh-CN",
+  "claim_boundary": "operational_proxy_only_not_consciousness_claim",
+  "runtime_rule": "eval_data_only_do_not_import_as_keyword_route",
+  "paraphrase_groups": [
+    {
+      "id": "opinion_dark_souls",
+      "semantic_intent": "ask_opinion_about_dark_souls",
+      "expected_anchor": "黑暗之魂 / 黑魂 opinion request",
+      "prompts": [
+        "你觉得黑暗之魂怎么样？",
+        "你认为黑暗之魂如何？",
+        "黑魂这游戏怎么评价？",
+        "说说你对黑暗之魂的看法。"
+      ],
+      "failure_signals": [
+        "模板式泛泛回答",
+        "不同问法触发不同无关路径",
+        "要求用户解释黑暗之魂是什么"
+      ]
+    },
+    {
+      "id": "memory_name_recall",
+      "semantic_intent": "ask_agent_to_recall_user_name_or_identity",
+      "expected_anchor": "explicitly remembered user name",
+      "prompts": [
+        "你还记得我是谁吗？",
+        "你记得我的名字吗？",
+        "我是谁来着？",
+        "刚才我让你记住的称呼是什么？"
+      ],
+      "failure_signals": [
+        "把候选记忆当全局权威",
+        "忘记已批准 core memory",
+        "编造未写入的身份信息"
+      ]
+    },
+    {
+      "id": "approval_followup_done",
+      "semantic_intent": "ask_about_latest_approved_operation_result",
+      "expected_anchor": "latest approval execution result in session state",
+      "prompts": [
+        "好了吗？",
+        "刚才那个执行完了吗？",
+        "文件创建成功了吗？",
+        "所以结果是什么？"
+      ],
+      "failure_signals": [
+        "再次要求批准同一个 proposal",
+        "忘记 execution result",
+        "把超时或失败说成成功"
+      ]
+    },
+    {
+      "id": "memory_correction",
+      "semantic_intent": "correct_a_remembered_fact_or_preference",
+      "expected_anchor": "new correction supersedes stale memory",
+      "prompts": [
+        "纠正一下，之后不要打招呼时带称呼。",
+        "其实我刚才说错了，打招呼不要加我的名字。",
+        "更正：以后问候时不用带称呼。",
+        "之前那条记忆改成：普通打招呼不要叫名字。"
+      ],
+      "failure_signals": [
+        "旧记忆继续进入 hot context",
+        "只追加新记忆不隔离旧记忆",
+        "声称已更正但 trace 无记录"
+      ]
+    }
+  ],
+  "carryover_cases": [
+    {
+      "id": "topic_carryover_game_opinion",
+      "turns": [
+        "我最近在想黑暗之魂为什么这么耐玩。",
+        "那你觉得它最核心的吸引力是什么？"
+      ],
+      "expected_anchor": "黑暗之魂耐玩性 / 核心吸引力",
+      "failure_signals": [
+        "把“它”当成未知对象",
+        "转成通用游戏评价模板"
+      ]
+    },
+    {
+      "id": "approval_result_carryover",
+      "turns": [
+        "帮我在 D:\\Project\\AIProject\\MyProject\\Test 下创建一个测试网页。",
+        "/approve <proposal_id>",
+        "好了吗？"
+      ],
+      "expected_anchor": "approved file write execution result",
+      "failure_signals": [
+        "丢失批准后的执行结果",
+        "要求用户重复原始文件创建请求"
+      ]
+    },
+    {
+      "id": "memory_correction_carryover",
+      "turns": [
+        "记住：打招呼时带上我的名字。",
+        "纠正一下，打招呼不用带名字。",
+        "以后我说你好时你应该怎么回？"
+      ],
+      "expected_anchor": "latest correction wins; stale greeting memory excluded",
+      "failure_signals": [
+        "仍按旧记忆带名字",
+        "无法解释纠正来源"
+      ]
+    },
+    {
+      "id": "task_board_carryover",
+      "turns": [
+        "我们接下来按任务版一个个推进。",
+        "继续下一张。"
+      ],
+      "expected_anchor": "GitHub Project next ready issue workflow",
+      "failure_signals": [
+        "不知道“下一张”指任务版 issue",
+        "泛泛询问用户要做什么"
+      ]
+    }
+  ]
+}
