@@ -663,6 +663,33 @@ def test_load_run_reports_skips_unit_test_claim_reports(tmp_path: Path) -> None:
     assert reports == []
 
 
+def test_operator_digest_summarizes_planned_issue_and_next_user_action() -> None:
+    payload = {
+        "status": "ok",
+        "mode": "plan",
+        "stop_reason": "max_issues_reached",
+        "planned": [{"issue": {"number": 57, "title": "Digest task"}, "dry_run_action": "would_run_once"}],
+    }
+
+    digest = codex_project_autopilot.build_operator_digest(payload)
+
+    assert "#57:would_run_once" in digest["summary"]
+    assert digest["issue_count"] == 1
+    assert digest["needs_user"] == ["No immediate user action required for this dry-run report."]
+
+
+def test_operator_digest_explains_pause_and_dirty_stop() -> None:
+    pause_digest = codex_project_autopilot.build_operator_digest(
+        {"status": "stopped", "stop_reason": "autopilot_pause_required", "planned": []}
+    )
+    dirty_digest = codex_project_autopilot.build_operator_digest(
+        {"status": "stopped", "stop_reason": "dirty_scope_unsafe", "planned": []}
+    )
+
+    assert "Reframe" in pause_digest["needs_user"][0]
+    assert "dirty worktree" in dirty_digest["needs_user"][0]
+
+
 def test_run_loop_with_baseline_does_not_block_on_unchanged_preexisting_dirty(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
     baseline = tmp_path / "baseline.json"
@@ -678,6 +705,7 @@ def test_run_loop_with_baseline_does_not_block_on_unchanged_preexisting_dirty(tm
     assert code == 0
     assert payload["status"] == "ok"
     assert payload["planned"][0]["issue"]["number"] == 17
+    assert payload["operator_digest"]["issue_count"] == 1
 
 
 def test_run_loop_with_baseline_blocks_new_out_of_scope_dirty(tmp_path: Path) -> None:
@@ -1269,6 +1297,7 @@ def test_run_loop_l3_closeout_dry_run_writes_report_without_mutating(tmp_path: P
     assert code == 0
     assert payload["status"] == "ok"
     assert payload["planned"][0]["closeout_check"]["eligible"] is True
+    assert payload["operator_digest"]["summary"].startswith("Autopilot l3-closeout run ok")
     assert payload["report_path"].endswith("-autopilot-run.json")
     assert str(report_dir) in payload["report_path"]
     assert not any(call[:2] == ("issue", "close") for call in fake.calls)

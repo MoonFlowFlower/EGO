@@ -1179,6 +1179,68 @@ def pause_gate(contract: ProjectContract, *, report_dir: Path) -> dict[str, Any]
     )
 
 
+def build_operator_digest(payload: dict[str, Any]) -> dict[str, Any]:
+    stop_reason = str(payload.get("stop_reason") or "")
+    status = str(payload.get("status") or "unknown")
+    mode = str(payload.get("mode") or "unknown")
+    planned_entries = [entry for entry in (payload.get("planned") or []) if isinstance(entry, dict)]
+    issue_summaries = []
+    for entry in planned_entries:
+        issue = entry.get("issue") if isinstance(entry.get("issue"), dict) else {}
+        issue_summaries.append(
+            {
+                "number": issue.get("number"),
+                "title": issue.get("title"),
+                "action": entry.get("dry_run_action")
+                or ("closed" if entry.get("closeout") else None)
+                or "inspected",
+            }
+        )
+
+    needs_user: list[str] = []
+    if stop_reason == "autopilot_pause_required":
+        needs_user.append("Reframe the task or create a timeboxed operator cut before continuing.")
+    elif stop_reason in {"dirty_worktree_unsafe", "dirty_scope_unsafe"}:
+        needs_user.append("Resolve or baseline unsafe dirty worktree changes before continuing.")
+    elif stop_reason == "no_ready_issue":
+        needs_user.append("Create or normalize a ready issue with acceptance gate, rollback, and claim ceiling.")
+    elif stop_reason == "l5_execute_not_implemented":
+        needs_user.append("Use a human/Codex implementation rollout; this mode only emits eligibility packets.")
+    elif status == "stopped" and stop_reason:
+        needs_user.append(f"Inspect stop reason `{stop_reason}` before retrying.")
+
+    if not needs_user and planned_entries:
+        needs_user.append("No immediate user action required for this dry-run report.")
+    if not needs_user:
+        needs_user.append("No ready action was selected.")
+
+    summary_bits = [f"Autopilot {mode} run {status}"]
+    if stop_reason:
+        summary_bits.append(f"stop_reason={stop_reason}")
+    if issue_summaries:
+        summary_bits.append(
+            "issues="
+            + ", ".join(
+                f"#{item['number']}:{item['action']}" if item.get("number") else str(item.get("action"))
+                for item in issue_summaries[:5]
+            )
+        )
+    return {
+        "summary": "; ".join(summary_bits),
+        "issue_count": len(issue_summaries),
+        "issues": issue_summaries,
+        "needs_user": needs_user,
+        "claim_ceiling": "operator digest only; not execution proof or product efficacy",
+    }
+
+
+def finalize_run_loop_payload(payload: dict[str, Any], *, write_report: bool, report_dir: Path) -> dict[str, Any]:
+    payload["operator_digest"] = build_operator_digest(payload)
+    if write_report:
+        payload["report_path"] = write_run_report(payload, report_dir=report_dir)
+    return payload
+
+
 def structured_issue_body(issue: dict[str, Any]) -> str:
     title = str(issue.get("title") or "Untitled task")
     body = str(issue.get("body") or "").strip()
@@ -1601,9 +1663,7 @@ def command_run_loop(
             "max_minutes": max_minutes,
             "planned": [],
         }
-        if write_report:
-            payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-        return payload
+        return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
     pause = pause_gate(contract, report_dir=report_dir)
     if pause.get("pause_required"):
@@ -1613,9 +1673,7 @@ def command_run_loop(
             "pause_gate": pause,
             "planned": [],
         }
-        if write_report:
-            payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-        return payload
+        return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
     gate = dirty_gate(contract, runner, baseline_path)
     if gate["status"] != "ok":
@@ -1625,9 +1683,7 @@ def command_run_loop(
             "dirty_gate": gate,
             "planned": [],
         }
-        if write_report:
-            payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-        return payload
+        return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
     report = build_report(client, contract)
     ready = [
@@ -1642,9 +1698,7 @@ def command_run_loop(
             "counts": report["counts"],
             "planned": [],
         }
-        if write_report:
-            payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-        return payload
+        return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
     status_rank = {"In Progress": 0, "Todo": 1}
     ready.sort(key=lambda item: (status_rank.get(str(item.get("project_status")), 99), int(item.get("number") or 999999)))
@@ -1691,9 +1745,7 @@ def command_run_loop(
             "closed": closed,
             "stop_reason": "max_issues_reached" if len(ready) > max_issues else "ready_queue_exhausted",
         }
-        if write_report:
-            payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-        return payload
+        return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
     if mode == "l5-executor":
         if execute:
@@ -1705,9 +1757,7 @@ def command_run_loop(
                 "planned": [],
                 "note": "L5 v1 only emits executor eligibility packets; it does not mutate code unattended.",
             }
-            if write_report:
-                payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-            return payload
+            return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
         planned = []
         for item in selected:
             issue_ref = str(item.get("number"))
@@ -1733,9 +1783,7 @@ def command_run_loop(
             "planned": planned,
             "stop_reason": "max_issues_reached" if len(ready) > max_issues else "ready_queue_exhausted",
         }
-        if write_report:
-            payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-        return payload
+        return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
     planned = [
         {
@@ -1753,9 +1801,7 @@ def command_run_loop(
         "planned": planned,
         "stop_reason": "max_issues_reached" if len(ready) > max_issues else "ready_queue_exhausted",
     }
-    if write_report:
-        payload["report_path"] = write_run_report(payload, report_dir=report_dir)
-    return payload
+    return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
 
 
 def build_parser() -> argparse.ArgumentParser:
