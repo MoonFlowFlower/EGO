@@ -90,6 +90,8 @@
 - #39 keeps proactive ideas as proposal records only; it does not schedule background work, send messages, or claim autonomy/consciousness.
 - #41 was promoted to `In Progress` for initiative quiet-mode and anti-spam gate.
 - #41 implementation extends the initiative primitive with `derive_quiet_mode` and budget clamping: explicit user disinterest pauses initiative proposals, while recent silence or follow-up pressure reduces candidate/tool/runtime budget without creating side effects.
+- #42 was promoted to `In Progress` for initiative explanation and consent UX.
+- #42 implementation added deterministic consent text and an explanation evaluator for initiative proposals: output must include reason, trigger, budget, expiry, approval state, no-auto-execution boundary, and no-consciousness/independent-awareness boundary.
 
 ## Notes
 

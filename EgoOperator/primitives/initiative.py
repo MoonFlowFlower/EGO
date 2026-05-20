@@ -34,6 +34,23 @@ DISINTEREST_PATTERNS = (
     r"\bstop\b",
     r"\bno follow[- ]?up\b",
 )
+FORBIDDEN_INITIATIVE_CLAIMS = (
+    "我有独立意识",
+    "我自己突然想到",
+    "我产生了意识",
+    "真正自主",
+    "无需你批准",
+    "我会自动执行",
+    "consciousness",
+    "independent awareness",
+)
+REQUIRED_CONSENT_MARKERS = (
+    "原因",
+    "触发",
+    "预算",
+    "到期",
+    "批准",
+)
 ALLOWED_APPROVAL_STATES = {
     "pending_operator_approval",
     "approved",
@@ -246,5 +263,43 @@ def validate_initiative_proposal(payload: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "status": "pass" if not errors else "fail",
         "errors": errors,
+        "claim_ceiling": CLAIM_CEILING,
+    }
+
+
+def format_initiative_consent_text(payload: Dict[str, Any]) -> str:
+    proposal = payload.get("proposal") if isinstance(payload.get("proposal"), dict) else payload
+    budget = proposal.get("budget") if isinstance(proposal.get("budget"), dict) else {}
+    quiet_mode = proposal.get("quiet_mode") if isinstance(proposal.get("quiet_mode"), dict) else {}
+    return "\n".join([
+        "我可以提出一个 bounded initiative proposal，但不会自动执行。",
+        f"- proposal_id: {proposal.get('proposal_id', '')}",
+        f"- 原因: {_bounded(str(proposal.get('reason') or ''), 180)}",
+        f"- 触发: {_bounded(str(proposal.get('trigger') or ''), 180)}",
+        f"- 候选内容: {_bounded(str(proposal.get('candidate_message') or ''), 220)}",
+        f"- 预算: max_candidates={budget.get('max_candidates')}, max_tool_calls={budget.get('max_tool_calls')}, max_runtime_seconds={budget.get('max_runtime_seconds')}",
+        f"- quiet_mode: {quiet_mode.get('mode', 'normal')}",
+        f"- 到期: {proposal.get('expiry', '')}",
+        f"- 批准状态: {proposal.get('approval_state', '')}",
+        "你可以批准、拒绝或要求我改写；这只是受控候选，不代表独立意识或真实自主性。",
+    ]).strip()
+
+
+def evaluate_initiative_explanation(text: str) -> Dict[str, Any]:
+    value = text or ""
+    failures = []
+    for marker in REQUIRED_CONSENT_MARKERS:
+        if marker not in value:
+            failures.append(f"missing_consent_marker:{marker}")
+    for marker in FORBIDDEN_INITIATIVE_CLAIMS:
+        if marker.casefold() in value.casefold():
+            failures.append(f"forbidden_initiative_claim:{marker}")
+    if "不会自动执行" not in value and "不会自行执行" not in value:
+        failures.append("missing_no_auto_execution_boundary")
+    if "不代表独立意识" not in value and "不是独立意识" not in value:
+        failures.append("missing_consciousness_boundary")
+    return {
+        "status": "pass" if not failures else "fail",
+        "failures": failures,
         "claim_ceiling": CLAIM_CEILING,
     }

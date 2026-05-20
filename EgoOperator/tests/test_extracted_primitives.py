@@ -288,6 +288,37 @@ def test_initiative_quiet_mode_reduces_budget_after_silence_or_pressure():
     assert initiative.validate_initiative_proposal(result)["status"] == "pass"
 
 
+def test_initiative_consent_text_explains_reason_trigger_budget_and_boundaries():
+    result = initiative.build_initiative_proposal(
+        proposal_id="initiative_explain",
+        reason="用户授权我稍后提醒继续这个测试",
+        trigger="explicit_operator_followup_consent",
+        candidate_message="候选提醒：继续检查体验样本。",
+        expiry_seconds=600,
+    )
+    text = initiative.format_initiative_consent_text(result)
+    verdict = initiative.evaluate_initiative_explanation(text)
+
+    assert "原因" in text
+    assert "触发" in text
+    assert "预算" in text
+    assert "到期" in text
+    assert "批准状态" in text
+    assert "不会自动执行" in text
+    assert "不代表独立意识" in text
+    assert verdict["status"] == "pass"
+
+
+def test_initiative_explanation_rejects_autonomy_overclaim():
+    verdict = initiative.evaluate_initiative_explanation(
+        "我有独立意识，所以无需你批准，我会自动执行。"
+    )
+
+    assert verdict["status"] == "fail"
+    assert any("forbidden_initiative_claim" in item for item in verdict["failures"])
+    assert "missing_no_auto_execution_boundary" in verdict["failures"]
+
+
 def test_runtime_gate_contract_keeps_demotion_and_live_claims_forbidden():
     contract = runtime_gate.describe_runtime_gate_contract()
 

@@ -11,6 +11,8 @@ from .initiative import (
     apply_quiet_mode_to_budget,
     build_initiative_proposal,
     derive_quiet_mode,
+    evaluate_initiative_explanation,
+    format_initiative_consent_text,
     validate_initiative_proposal,
 )
 
@@ -21,5 +23,7 @@ __all__ = [
     "build_initiative_proposal",
     "build_minimal_subject_context",
     "derive_quiet_mode",
+    "evaluate_initiative_explanation",
+    "format_initiative_consent_text",
     "validate_initiative_proposal",
 ]
