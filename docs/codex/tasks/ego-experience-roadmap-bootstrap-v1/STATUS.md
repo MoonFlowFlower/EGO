@@ -92,6 +92,8 @@
 - #41 implementation extends the initiative primitive with `derive_quiet_mode` and budget clamping: explicit user disinterest pauses initiative proposals, while recent silence or follow-up pressure reduces candidate/tool/runtime budget without creating side effects.
 - #42 was promoted to `In Progress` for initiative explanation and consent UX.
 - #42 implementation added deterministic consent text and an explanation evaluator for initiative proposals: output must include reason, trigger, budget, expiry, approval state, no-auto-execution boundary, and no-consciousness/independent-awareness boundary.
+- #44 was promoted to `In Progress` for preference candidate extraction pipeline.
+- #44 implementation adds structured `extract_preference_candidate_from_turn` output with category, memory key, confidence, cue hits, candidate-only flag, and a core-memory write prohibition. `auto_capture_candidate_from_turn` now stores this structure in candidate metadata while still avoiding direct `MEMORY.md` promotion.
 
 ## Notes
 

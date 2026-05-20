@@ -72,6 +72,13 @@ CANDIDATE_MEMORY_SIGNAL_PATTERNS = (
     r"\bi am working on\b",
     r"\bi'm working on\b",
 )
+PREFERENCE_CATEGORY_CUES = {
+    "language_preference": ("中文", "英文", "语言", "language"),
+    "answer_style_preference": ("结论先行", "少废话", "详细", "简洁", "解释多", "直接", "style"),
+    "tool_preference": ("工具", "审批", "自动执行", "不要自动", "tool", "approval"),
+    "workflow_preference": ("先规划", "先测试", "一步一步", "提交", "推送", "workflow", "commit", "push"),
+    "greeting_preference": ("打招呼", "问候", "称呼", "你好", "greeting"),
+}
 
 MEMORY_CORRECTION_PATTERNS = (
     r"不是",
@@ -245,15 +252,43 @@ def _is_core_memory_note_line(line: str) -> bool:
 
 
 def extract_candidate_memory_from_turn(user_text: str) -> str:
+    candidate = extract_preference_candidate_from_turn(user_text)
+    if candidate.get("status") != "candidate":
+        return ""
+    return str(candidate["content"])
+
+
+def extract_preference_candidate_from_turn(user_text: str) -> Dict[str, Any]:
     text = (user_text or "").strip()
     if not text:
-        return ""
+        return {"status": "ignored", "reason": "empty"}
     lowered = text.lower()
     if not any(re.search(pattern, lowered, flags=re.IGNORECASE) for pattern in CANDIDATE_MEMORY_SIGNAL_PATTERNS):
-        return ""
+        return {"status": "ignored", "reason": "no_candidate_signal"}
     if "?" in text and not any(marker in text for marker in ("我喜欢", "我不喜欢", "我偏好", "我希望", "我的目标", "我正在", "我习惯")):
-        return ""
-    return "user_signal: " + _bounded(text, DEFAULT_MEMORY_ITEM_MAX_CHARS)
+        return {"status": "ignored", "reason": "question_without_preference_signal"}
+    memory_key = _memory_key_from_content(text)
+    category = memory_key or "general_preference"
+    cue_hits = {}
+    for cue_category, cues in PREFERENCE_CATEGORY_CUES.items():
+        matches = [cue for cue in cues if cue.casefold() in text.casefold()]
+        if matches:
+            cue_hits[cue_category] = matches
+    if not memory_key and cue_hits:
+        category = sorted(cue_hits.items(), key=lambda item: (len(item[1]), item[0]), reverse=True)[0][0]
+    confidence = min(0.9, 0.45 + (0.15 if memory_key else 0) + len(cue_hits) * 0.08)
+    return {
+        "status": "candidate",
+        "schema_version": "ego_operator.preference_candidate.v1",
+        "content": "user_signal: " + _bounded(text, DEFAULT_MEMORY_ITEM_MAX_CHARS),
+        "category": category,
+        "memory_key": memory_key,
+        "confidence": round(confidence, 2),
+        "cue_hits": cue_hits,
+        "candidate_only": True,
+        "core_memory_write": "forbidden_without_operator_remember_or_approval",
+        "claim_ceiling": "candidate preference extraction only; not durable learning proof",
+    }
 
 
 @dataclass
@@ -578,17 +613,18 @@ class OperatorMemoryStore:
         user_text: str,
         assistant_text: str = "",
     ) -> Dict[str, Any]:
-        candidate = extract_candidate_memory_from_turn(user_text)
-        if not candidate:
-            return {"status": "skipped", "reason": "no_candidate_memory_signal"}
+        preference_candidate = extract_preference_candidate_from_turn(user_text)
+        if preference_candidate.get("status") != "candidate":
+            return {"status": "skipped", "reason": preference_candidate.get("reason", "no_candidate_memory_signal")}
         return self.propose_candidate_memory(
-            candidate,
+            str(preference_candidate["content"]),
             source="auto_candidate_extractor",
             event_id=event_id,
             session_id=session_id,
             metadata={
                 "raw_user_text": _bounded(user_text, DEFAULT_MEMORY_ITEM_MAX_CHARS),
                 "assistant_preview": _bounded(assistant_text, 240),
+                "preference_candidate": preference_candidate,
             },
         )
 

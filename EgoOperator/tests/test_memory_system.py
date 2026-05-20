@@ -11,7 +11,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import agent_base as agent
-from memory_system import MemoryCompactor, OperatorMemoryStore, extract_candidate_memory_from_turn
+from memory_system import (
+    MemoryCompactor,
+    OperatorMemoryStore,
+    extract_candidate_memory_from_turn,
+    extract_preference_candidate_from_turn,
+)
 
 
 class CapturePromptLLM:
@@ -327,9 +332,26 @@ def test_auto_candidate_capture_from_preference_turn_does_not_write_core(tmp_pat
     candidates = runtime.operator_memory.list_candidate_memories()
     assert candidates
     assert candidates[0]["source"] == "auto_candidate_extractor"
+    preference = candidates[0]["metadata"]["preference_candidate"]
+    assert preference["status"] == "candidate"
+    assert preference["category"] == "language_preference"
+    assert preference["candidate_only"] is True
+    assert preference["core_memory_write"] == "forbidden_without_operator_remember_or_approval"
     assert not (tmp_path / "memory" / "MEMORY.md").exists()
 
 
 def test_candidate_extractor_ignores_memory_questions():
     assert extract_candidate_memory_from_turn("Do you remember me?") == ""
     assert extract_candidate_memory_from_turn("我喜欢中文回答") != ""
+
+
+def test_structured_preference_candidate_extractor_classifies_candidate_only():
+    candidate = extract_preference_candidate_from_turn("我偏好中文结论先行，少废话。")
+
+    assert candidate["status"] == "candidate"
+    assert candidate["schema_version"] == "ego_operator.preference_candidate.v1"
+    assert candidate["category"] == "language_preference"
+    assert candidate["memory_key"] == "language_preference"
+    assert candidate["candidate_only"] is True
+    assert candidate["core_memory_write"] == "forbidden_without_operator_remember_or_approval"
+    assert "user_signal:" in candidate["content"]
