@@ -102,6 +102,8 @@
 - #47 implementation keeps old preferences from dominating future hot context by quarantining same-key candidate replacements and making stale unpinned candidates lose hit-count-only hot-context promotion while still allowing direct query relevance.
 - #49 was promoted to `In Progress` for operational self-model snapshot primitive.
 - #49 implementation adds a readonly operational self-model snapshot under subject context: role, runtime mode, capability boundaries, current commitments, uncertainty, and recent failures are context only, with state mutation and reply decision explicitly forbidden.
+- #50 was promoted to `In Progress` for self-description honesty gate.
+- #50 implementation adds readonly self-description guidance and a local evaluator that accepts bounded EgoOperator/operator-first descriptions while rejecting consciousness, independent-awareness, or autonomous-action overclaims.
 
 ## Notes
 

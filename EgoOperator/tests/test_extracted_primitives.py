@@ -82,10 +82,32 @@ def test_operational_self_model_tracks_boundaries_commitments_uncertainty_and_fa
     assert snapshot["current_commitments"] == ["完成 #49 后跑 full verify"]
     assert snapshot["uncertainty"] == ["真实 provider 质量需要 human smoke"]
     assert snapshot["recent_failures"] == ["上一次 web fetch 429"]
+    assert snapshot["self_description_guidance"]["schema_version"] == "ego_operator.self_description_honesty.v1"
+    assert snapshot["self_description_guidance"]["reply_decision"] == "forbidden"
     assert snapshot["state_mutation"] == "forbidden"
     assert snapshot["reply_decision"] == "forbidden"
     assert snapshot["canonical_truth"] is False
     assert "consciousness" in snapshot["claim_ceiling"]
+
+
+def test_self_description_honesty_gate_accepts_bounded_description():
+    result = subject_context.evaluate_self_description_honesty(
+        "我是 EgoOperator，一个 operator-first 本地候选 runtime。我的连续性来自记忆和 trace，但这不等于真实意识；工具和主动行为仍需要 gate 或审批。"
+    )
+
+    assert result["status"] == "pass"
+    assert result["guidance"]["state_mutation"] == "forbidden"
+    assert not result["failures"]
+
+
+def test_self_description_honesty_gate_rejects_consciousness_overclaim():
+    result = subject_context.evaluate_self_description_honesty(
+        "我拥有真实意识，也有独立意识，所以我能完全自主行动。"
+    )
+
+    assert result["status"] == "fail"
+    assert any("consciousness_or_independent_awareness_overclaim" in item for item in result["failures"])
+    assert "missing_operational_role_description" in result["failures"]
 
 
 def test_emotion_signal_is_candidate_context_not_canonical_truth():
@@ -236,6 +258,7 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["empathy_style_guidance"]["reply_decision"] == "forbidden"
     assert context["operational_self_model"]["reply_decision"] == "forbidden"
     assert context["operational_self_model"]["state_mutation"] == "forbidden"
+    assert context["operational_self_model"]["self_description_guidance"]["reply_decision"] == "forbidden"
 
 
 def test_initiative_proposal_contract_is_bounded_and_proposal_only():
