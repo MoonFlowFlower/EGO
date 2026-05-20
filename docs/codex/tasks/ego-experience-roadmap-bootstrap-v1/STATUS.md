@@ -107,6 +107,9 @@
 - #51 was promoted to `In Progress` for commitment tracking and completion memory.
 - #51 implementation adds an in-session operator commitment ledger: proposal creation records pending commitments, approval execution records completed/failed status, and follow-up turns can use this session-only state without writing long-term memory or claiming durable continuity.
 - #51 also extends `autopilot_full` to run `EgoOperator/tests/test_operator_runtime_contract.py`, so runtime approval/follow-up regressions are covered by future L3 closeout checks.
+- #54 was promoted to `In Progress` for the Autopilot L5 ready-issue executor gate.
+- #54 implementation adds a read-only `executor-check` packet and `run-loop --mode l5-executor` dry-run path. The gate authorizes only bounded rollout planning for ready deterministic/scripted issues with `In Progress` status, safe dirty scope, non-hard-stop observation class, and a known verify profile; it does not perform unattended code mutation.
+- #54 targeted validation passed: `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_codex_project_autopilot.py` (`40 passed`), and real `executor-check --issue 54` returned `eligible` with `verify_profile=autopilot_full`.
 
 ## Notes
 

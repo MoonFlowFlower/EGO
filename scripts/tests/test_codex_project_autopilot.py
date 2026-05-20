@@ -250,6 +250,38 @@ auto_closeout:
     - "requires stage card"
     - "modifies docs/PROGRAM_STATE_UNIFIED.yaml"
   claim_ceiling: Test closeout claim
+auto_execute:
+  require_project_status: In Progress
+  allowed_observation_classes:
+    - deterministic_local
+    - scripted_real_entry
+  blocked_observation_classes:
+    - scripted_with_llm_judge
+    - human_required
+    - aggregate
+    - parked
+    - supporting
+    - unknown
+    - high_impact
+  observation_verify_profiles:
+    deterministic_local: target
+    scripted_real_entry: target
+  hard_stop_classes:
+    - human_required
+    - aggregate
+    - parked
+    - supporting
+    - unknown
+    - high_impact
+    - blocked
+  hard_stop_title_contains:
+    - "program state"
+    - "evidence ledger"
+    - "stage card"
+  hard_stop_body_markers:
+    - "requires stage card"
+    - "modifies docs/PROGRAM_STATE_UNIFIED.yaml"
+  claim_ceiling: Test executor claim
 """,
         encoding="utf-8",
     )
@@ -779,6 +811,89 @@ def test_closeout_check_todo_issue_is_not_eligible(tmp_path: Path) -> None:
     )
 
 
+def test_executor_check_deterministic_local_in_progress_is_eligible(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "executor-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY)),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    assert payload["eligible"] is True
+    assert payload["verify_profile"] == "target"
+    assert payload["claim_ceiling"] == "Test executor claim"
+    assert payload["execution_plan"][0]["step"] == "claim_issue_in_progress"
+
+
+def test_executor_check_todo_issue_is_blocked_until_claimed(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "executor-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY, status="Todo")),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(
+        reason["reason"] == "project_status_not_in_progress_for_l5_execute"
+        for reason in payload["blocked_reasons"]
+    )
+
+
+def test_executor_check_blocks_llm_judge_and_human_required_classes(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    for payload in (ISSUE_LLM, ISSUE_HUMAN_OBS):
+        code, result = run_cli(
+            ["--contract", str(path), "executor-check", "--issue", str(payload["number"])],
+            fake=FakeGh(responses_for_issue(payload)),
+            runner=FakeRunner(stdout=""),
+        )
+
+        assert code == 0
+        assert result["status"] == "blocked"
+        assert any(
+            reason["reason"] in {"observation_class_not_auto_executable", "issue_class_not_auto_executable"}
+            for reason in result["blocked_reasons"]
+        )
+
+
+def test_executor_check_blocks_hard_stop_marker_even_if_ready(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "executor-check", "--issue", "24"],
+        fake=FakeGh(responses_for_issue(ISSUE_HIGH)),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(reason["reason"] == "issue_class_not_auto_executable" for reason in payload["blocked_reasons"])
+
+
+def test_executor_check_blocks_dirty_unsafe_scope(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "executor-check", "--issue", "17"],
+        fake=FakeGh(responses_for_issue(ISSUE_READY)),
+        runner=FakeRunner(stdout=" M legacy/noise.py\n"),
+    )
+
+    assert code == 0
+    assert payload["status"] == "blocked"
+    assert any(
+        reason["reason"] in {"dirty_worktree_unsafe", "dirty_scope_unsafe"}
+        for reason in payload["blocked_reasons"]
+    )
+
+
 def test_closeout_check_hard_stop_blocks_before_reviewer(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
 
@@ -987,3 +1102,50 @@ def test_run_loop_l3_closeout_dry_run_writes_report_without_mutating(tmp_path: P
     assert payload["planned"][0]["closeout_check"]["eligible"] is True
     assert payload["report_path"].endswith("-autopilot-run.json")
     assert not any(call[:2] == ("issue", "close") for call in fake.calls)
+
+
+def test_run_loop_l5_executor_dry_run_emits_executor_packet_without_mutating(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    responses = responses_for_issue(ISSUE_READY)
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = [
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+    ]
+    fake = FakeGh(responses)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "run-loop", "--mode", "l5-executor", "--dry-run", "--max-issues", "1"],
+        fake=fake,
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "l5-executor"
+    assert payload["planned"][0]["executor_check"]["eligible"] is True
+    assert payload["planned"][0]["dry_run_action"] == "would_enter_bounded_rollout"
+    assert not any(call[:2] == ("issue", "close") for call in fake.calls)
+
+
+def test_run_loop_l5_executor_execute_is_not_implemented(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "run-loop", "--mode", "l5-executor", "--execute", "--max-issues", "1"],
+        fake=FakeGh(base_responses()),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "stopped"
+    assert payload["stop_reason"] == "l5_execute_not_implemented"

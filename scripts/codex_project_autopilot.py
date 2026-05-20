@@ -57,6 +57,7 @@ class ProjectContract:
     task_classification: dict[str, Any] = field(default_factory=dict)
     observation_classes: dict[str, Any] = field(default_factory=dict)
     auto_closeout: dict[str, Any] = field(default_factory=dict)
+    auto_execute: dict[str, Any] = field(default_factory=dict)
 
     def github_config(self, *, dry_run: bool = False) -> github_project_task.Config:
         return github_project_task.Config(
@@ -184,6 +185,11 @@ def load_contract(path: Path) -> ProjectContract:
             payload.get("auto_closeout") or {},
             code="invalid_auto_closeout",
             message="auto_closeout must be an object",
+        ),
+        auto_execute=_require_mapping(
+            payload.get("auto_execute") or {},
+            code="invalid_auto_execute",
+            message="auto_execute must be an object",
         ),
     )
 
@@ -546,6 +552,7 @@ def contract_summary(contract: ProjectContract) -> dict[str, Any]:
         "allowed_mutation_paths": contract.allowed_mutation_paths,
         "commit_policy": contract.commit_policy,
         "auto_closeout": contract.auto_closeout,
+        "auto_execute": contract.auto_execute,
     }
 
 
@@ -845,6 +852,179 @@ def closeout_packet(
     return packet
 
 
+def _auto_execute_config(contract: ProjectContract) -> dict[str, Any]:
+    cfg = dict(contract.auto_execute)
+    cfg.setdefault("claim_ceiling", "Codex autopilot ready-issue executor gate local candidate pass")
+    cfg.setdefault("require_project_status", "In Progress")
+    cfg.setdefault("allowed_observation_classes", ["deterministic_local"])
+    cfg.setdefault(
+        "blocked_observation_classes",
+        [
+            "scripted_with_llm_judge",
+            "human_required",
+            "aggregate",
+            "parked",
+            "supporting",
+            "unknown",
+            "high_impact",
+        ],
+    )
+    cfg.setdefault(
+        "hard_stop_classes",
+        _as_list(contract.auto_closeout.get("hard_stop_classes"))
+        or ["human_required", "aggregate", "parked", "supporting", "unknown", "high_impact", "blocked"],
+    )
+    cfg.setdefault(
+        "hard_stop_title_contains",
+        _as_list(contract.auto_closeout.get("hard_stop_title_contains")),
+    )
+    cfg.setdefault(
+        "hard_stop_body_markers",
+        _as_list(contract.auto_closeout.get("hard_stop_body_markers")),
+    )
+    cfg.setdefault("observation_verify_profiles", contract.auto_closeout.get("observation_verify_profiles") or {})
+    return cfg
+
+
+def issue_auto_execute_hard_stop_reasons(
+    contract: ProjectContract,
+    issue: dict[str, Any],
+    cfg: dict[str, Any],
+) -> list[dict[str, Any]]:
+    reasons = list(issue_hard_stop_reasons(contract, issue))
+    seen = {(reason.get("reason"), reason.get("marker")) for reason in reasons}
+    title = str(issue.get("title") or "").casefold()
+    body = str(issue.get("body") or "").casefold()
+    for marker in _as_list(cfg.get("hard_stop_title_contains")):
+        key = ("hard_stop_title_marker", marker)
+        if marker.casefold() in title and key not in seen:
+            reasons.append({"reason": "hard_stop_title_marker", "marker": marker})
+            seen.add(key)
+    for marker in _as_list(cfg.get("hard_stop_body_markers")):
+        key = ("hard_stop_body_marker", marker)
+        if marker.casefold() in body and key not in seen:
+            reasons.append({"reason": "hard_stop_body_marker", "marker": marker})
+            seen.add(key)
+    return reasons
+
+
+def executor_plan_steps(issue_ref: str, verify_profile: str | None) -> list[dict[str, Any]]:
+    steps: list[dict[str, Any]] = [
+        {"step": "claim_issue_in_progress", "issue": issue_ref},
+        {"step": "load_issue_contract", "source": "GitHub issue body + .codex/project_contract.yaml"},
+        {"step": "confirm_dirty_scope", "gate": "dirty_gate"},
+        {"step": "implement_scoped_patch", "note": "requires a Codex implementation rollout; not executed by executor-check"},
+    ]
+    if verify_profile:
+        steps.append({"step": "run_required_verify_profile", "profile": verify_profile})
+    steps.extend(
+        [
+            {"step": "run_closeout_check", "command": f"closeout-check --issue {issue_ref}"},
+            {"step": "closeout_if_eligible", "gate": "L3 closeout oracle"},
+        ]
+    )
+    return steps
+
+
+def executor_packet(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    issue_ref: str,
+    *,
+    baseline_path: Path,
+    runner: CommandRunner,
+) -> dict[str, Any]:
+    classified = command_classify_issue(client, contract, issue_ref)
+    issue = classified["issue"]
+    classification = classified["classification"]
+    observation_class = issue_observation_class(contract, issue)
+    cfg = _auto_execute_config(contract)
+    blocked_reasons: list[dict[str, Any]] = []
+
+    hard_stop_classes = set(_as_list(cfg.get("hard_stop_classes")))
+    if classification.get("class") in hard_stop_classes or classification.get("autopilot_allowed") is not True:
+        blocked_reasons.append(
+            {
+                "reason": "issue_class_not_auto_executable",
+                "class": classification.get("class"),
+                "classification_reason": classification.get("reason"),
+            }
+        )
+
+    project_item = classified.get("project_item") or {}
+    required_status = str(cfg.get("require_project_status") or "In Progress")
+    project_status = project_item.get("status")
+    if project_status != required_status:
+        blocked_reasons.append(
+            {
+                "reason": "project_status_not_in_progress_for_l5_execute",
+                "project_status": project_status,
+                "required_status": required_status,
+            }
+        )
+
+    blocked_observation_classes = set(_as_list(cfg.get("blocked_observation_classes")))
+    allowed_observation_classes = set(_as_list(cfg.get("allowed_observation_classes")))
+    if observation_class in blocked_observation_classes:
+        blocked_reasons.append(
+            {"reason": "observation_class_not_auto_executable", "observation_class": observation_class}
+        )
+    elif allowed_observation_classes and observation_class not in allowed_observation_classes:
+        blocked_reasons.append(
+            {
+                "reason": "observation_class_not_l5_allowed",
+                "observation_class": observation_class,
+                "allowed_observation_classes": sorted(allowed_observation_classes),
+            }
+        )
+
+    blocked_reasons.extend(issue_auto_execute_hard_stop_reasons(contract, issue, cfg))
+
+    dirty = dirty_gate(contract, runner, baseline_path)
+    if dirty.get("status") != "ok":
+        blocked_reasons.append({"reason": dirty.get("stop_reason") or "dirty_gate_blocked", "dirty_gate": dirty})
+
+    profile_map = cfg.get("observation_verify_profiles")
+    verify_profile = None
+    if isinstance(profile_map, dict):
+        verify_profile = profile_map.get(observation_class)
+    verify_profile = str(verify_profile or "")
+    if not verify_profile:
+        blocked_reasons.append({"reason": "missing_l5_verify_profile", "observation_class": observation_class})
+    elif verify_profile not in contract.verify_profiles:
+        blocked_reasons.append(
+            {
+                "reason": "unknown_l5_verify_profile",
+                "observation_class": observation_class,
+                "verify_profile": verify_profile,
+            }
+        )
+
+    eligible = not blocked_reasons
+    return {
+        "status": "eligible" if eligible else "blocked",
+        "eligible": eligible,
+        "issue": {
+            "number": issue.get("number"),
+            "title": issue.get("title"),
+            "state": issue.get("state"),
+            "url": issue.get("url"),
+        },
+        "project_item": classified.get("project_item"),
+        "classification": classification,
+        "observation_class": observation_class,
+        "verify_profile": verify_profile or None,
+        "claim_ceiling": str(cfg.get("claim_ceiling")),
+        "dirty_gate": dirty,
+        "blocked_reasons": blocked_reasons,
+        "execution_plan": executor_plan_steps(issue_ref, verify_profile or None) if eligible else [],
+        "note": (
+            "L5 executor gate is read-only in v1: it authorizes a bounded Codex rollout plan, "
+            "not direct unattended code mutation."
+        ),
+    }
+
+
 def write_run_report(payload: dict[str, Any], *, report_dir: Path = DEFAULT_REPORT_DIR) -> str:
     report_dir.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
@@ -990,6 +1170,17 @@ def command_closeout_check(
     runner: CommandRunner,
 ) -> dict[str, Any]:
     return closeout_packet(client, contract, issue_ref, baseline_path=baseline_path, runner=runner)
+
+
+def command_executor_check(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    issue_ref: str,
+    *,
+    baseline_path: Path,
+    runner: CommandRunner,
+) -> dict[str, Any]:
+    return executor_packet(client, contract, issue_ref, baseline_path=baseline_path, runner=runner)
 
 
 def command_closeout_once(
@@ -1151,6 +1342,48 @@ def command_run_loop(
             payload["report_path"] = write_run_report(payload)
         return payload
 
+    if mode == "l5-executor":
+        if execute:
+            payload = {
+                "status": "stopped",
+                "mode": "l5-executor",
+                "dry_run": False,
+                "stop_reason": "l5_execute_not_implemented",
+                "planned": [],
+                "note": "L5 v1 only emits executor eligibility packets; it does not mutate code unattended.",
+            }
+            if write_report:
+                payload["report_path"] = write_run_report(payload)
+            return payload
+        planned = []
+        for item in selected:
+            issue_ref = str(item.get("number"))
+            packet = executor_packet(client, contract, issue_ref, baseline_path=baseline_path, runner=runner)
+            planned.append(
+                {
+                    "issue": item,
+                    "executor_check": {
+                        "status": packet.get("status"),
+                        "eligible": packet.get("eligible"),
+                        "blocked_reasons": packet.get("blocked_reasons"),
+                        "claim_ceiling": packet.get("claim_ceiling"),
+                        "verify_profile": packet.get("verify_profile"),
+                    },
+                    "dry_run_action": "would_enter_bounded_rollout" if packet.get("eligible") else "would_skip",
+                }
+            )
+        payload = {
+            "status": "ok",
+            "mode": "l5-executor",
+            "dry_run": True,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+            "planned": planned,
+            "stop_reason": "max_issues_reached" if len(ready) > max_issues else "ready_queue_exhausted",
+        }
+        if write_report:
+            payload["report_path"] = write_run_report(payload)
+        return payload
+
     planned = [
         {
             "issue": item,
@@ -1201,6 +1434,9 @@ def build_parser() -> argparse.ArgumentParser:
     closeout_check = subparsers.add_parser("closeout-check")
     closeout_check.add_argument("--issue", required=True)
 
+    executor_check = subparsers.add_parser("executor-check")
+    executor_check.add_argument("--issue", required=True)
+
     closeout_once = subparsers.add_parser("closeout-once")
     closeout_once.add_argument("--issue", required=True)
     closeout_once.add_argument("--dry-run", action="store_true")
@@ -1209,7 +1445,7 @@ def build_parser() -> argparse.ArgumentParser:
     loop = subparsers.add_parser("run-loop")
     loop.add_argument("--dry-run", action="store_true")
     loop.add_argument("--execute", action="store_true")
-    loop.add_argument("--mode", choices=["plan", "l3-closeout"], default="plan")
+    loop.add_argument("--mode", choices=["plan", "l3-closeout", "l5-executor"], default="plan")
     loop.add_argument("--max-issues", type=int, default=1)
     loop.add_argument("--max-minutes", type=int, default=10)
     loop.add_argument("--write-report", action="store_true")
@@ -1255,6 +1491,14 @@ def dispatch(
         )
     if args.command == "closeout-check":
         return command_closeout_check(
+            client,
+            contract,
+            args.issue,
+            baseline_path=Path(args.baseline_path),
+            runner=runner,
+        )
+    if args.command == "executor-check":
+        return command_executor_check(
             client,
             contract,
             args.issue,

@@ -168,6 +168,49 @@ auto_closeout:
     - "memory promotion required"
   claim_ceiling: Codex autopilot verified closeout local workflow candidate pass
 
+auto_execute:
+  require_project_status: In Progress
+  allowed_observation_classes:
+    - deterministic_local
+    - scripted_real_entry
+  blocked_observation_classes:
+    - scripted_with_llm_judge
+    - human_required
+    - aggregate
+    - parked
+    - supporting
+    - unknown
+    - high_impact
+  observation_verify_profiles:
+    deterministic_local: autopilot_full
+    scripted_real_entry: autopilot_full
+  hard_stop_classes:
+    - human_required
+    - aggregate
+    - parked
+    - supporting
+    - unknown
+    - high_impact
+    - blocked
+  hard_stop_title_contains:
+    - "program state"
+    - "evidence ledger"
+    - "mainline demotion"
+    - "memory promotion"
+    - "permissions expansion"
+    - "permission expansion"
+    - "stage card"
+  hard_stop_body_markers:
+    - "requires stage card"
+    - "stage card required"
+    - "modifies docs/PROGRAM_STATE_UNIFIED.yaml"
+    - "touches docs/PROGRAM_STATE_UNIFIED.yaml"
+    - "modifies artifacts/evidence_ledger"
+    - "touches artifacts/evidence_ledger"
+    - "permission expansion required"
+    - "memory promotion required"
+  claim_ceiling: Codex autopilot ready-issue executor gate local candidate pass
+
 observation_classes:
   deterministic_local:
     closeout_allowed: true
