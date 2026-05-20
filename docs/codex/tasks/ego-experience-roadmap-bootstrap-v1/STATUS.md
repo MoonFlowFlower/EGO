@@ -122,6 +122,8 @@
 - #60 implementation adds `EgoOperator/docs/OPENEMOTION_SUBJECT_PRIMITIVE_MAP.md`, mapping self-model, salience/memory, appraisal, reflection, initiative, and self-report alignment into EgoOperator proposal-only or readonly primitives with explicit forbidden roles and extraction order.
 - #61 was promoted to `In Progress` for EgoCore gate/trace/transport extraction mapping.
 - #61 implementation adds `EgoOperator/docs/EGOCORE_GATE_TRACE_TRANSPORT_MAP.md`, mapping legacy EgoCore risk signals, tool/file preflight, completion verifiers, output/memory claim gates, JSONL session trace, progress events, and transport envelopes into EgoOperator primitive contracts while explicitly discarding semantic-router and verbalizer entry paths.
+- #62 was promoted to `In Progress` for ego_desktop_lab eval harness reuse mapping.
+- #62 implementation adds `EgoOperator/docs/EGO_DESKTOP_LAB_EVAL_HARNESS_MAP.md`, mapping legacy lab verification packs, stage runner, decision view/operator report, root-cause tickets, repeated-failure reframe triggers, live-shadow sample packs, and contextual follow-up regressions into EgoOperator eval primitives while keeping lab shell and semantic routing reference-only.
 
 ## Notes
 

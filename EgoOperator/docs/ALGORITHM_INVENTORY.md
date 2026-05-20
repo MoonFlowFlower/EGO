@@ -154,6 +154,9 @@ Detailed subject primitive mapping lives in
 
 ### ego_desktop_lab
 
+Detailed eval-harness reuse mapping lives in
+[`EGO_DESKTOP_LAB_EVAL_HARNESS_MAP.md`](EGO_DESKTOP_LAB_EVAL_HARNESS_MAP.md).
+
 | Capability | Evidence surface | Classification | EgoOperator extraction rule |
 | --- | --- | --- | --- |
 | Permissioned runtime action and gates | `permissioned_runtime_action.py`, `gate.py`, `tests/test_permissioned_runtime_action_v7.py`, `tests/test_high_risk_action_blocked.py` | keep | Keep proposal/admission/test style, mapped into EgoOperator's existing permission broker. |
