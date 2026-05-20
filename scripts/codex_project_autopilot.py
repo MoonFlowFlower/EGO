@@ -822,7 +822,15 @@ def closeout_packet(
     }
 
     if needs_llm_review and not blocked_reasons:
-        reviewer = llm_reviewer(contract, packet, runner=runner)
+        reviewer_packet = json.loads(json.dumps(packet, ensure_ascii=False))
+        reviewer_packet["status"] = "pending_llm_review"
+        reviewer_packet["review_note"] = (
+            "This packet is awaiting the LLM reviewer verdict. Do not block solely "
+            "because the GitHub issue is still open, the Project item is still In Progress, "
+            "or the pre-review packet status is not already eligible. Only block for missing "
+            "evidence, failed verification, hard-stop markers, unsafe dirty scope, or overclaim."
+        )
+        reviewer = llm_reviewer(contract, reviewer_packet, runner=runner)
         packet["llm_reviewer"] = reviewer
         if reviewer.get("verdict") != "closeout_allowed":
             blocked_reasons.append({"reason": reviewer.get("reason") or "llm_reviewer_blocked"})

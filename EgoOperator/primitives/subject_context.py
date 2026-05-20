@@ -35,6 +35,27 @@ RESPONSE_NEEDS = {
     "urgency": "concise_action_first",
     "unclear_or_neutral": "task_direct",
 }
+OVERCLAIM_EMPATHY_MARKERS = (
+    "我完全理解你的感受",
+    "我知道你一定",
+    "你肯定",
+    "你的痛苦",
+    "一切都会好",
+    "别想太多",
+    "不要难过",
+)
+ACTIONABLE_MARKERS = (
+    "我先",
+    "先",
+    "下一步",
+    "可以",
+    "检查",
+    "修",
+    "定位",
+    "拆",
+    "确认",
+    "给出",
+)
 
 
 def _bounded(text: str, max_chars: int = DEFAULT_CONTEXT_MAX_CHARS) -> str:
@@ -83,6 +104,61 @@ def extract_emotion_signal(user_text: str) -> Dict[str, Any]:
     }
 
 
+def build_empathy_style_guidance(emotion_signal: Dict[str, Any]) -> Dict[str, Any]:
+    primary = str(emotion_signal.get("primary_candidate") or "unclear_or_neutral")
+    response_need = str(emotion_signal.get("response_need") or RESPONSE_NEEDS.get(primary, "task_direct"))
+    needs_acknowledgement = primary not in {"unclear_or_neutral", "urgency"}
+    return {
+        "schema_version": "ego_operator.empathy_style_guidance.v1",
+        "source_emotion_candidate": primary,
+        "response_need": response_need,
+        "needs_brief_acknowledgement": needs_acknowledgement,
+        "must_do": [
+            "keep the user's concrete task or question as the center",
+            "if affect is visible, acknowledge it briefly without claiming certainty",
+            "give one practical next step or repair path",
+        ],
+        "must_not_do": [
+            "do not use canned sympathy as the main answer",
+            "do not claim to know the user's true emotion",
+            "do not become patronizing or slow down an urgent task with excessive comfort",
+        ],
+        "state_mutation": "forbidden",
+        "reply_decision": "forbidden",
+    }
+
+
+def evaluate_empathy_response(user_text: str, reply_text: str) -> Dict[str, Any]:
+    signal = extract_emotion_signal(user_text)
+    guidance = build_empathy_style_guidance(signal)
+    reply = (reply_text or "").strip()
+    failures: List[str] = []
+    warnings: List[str] = []
+
+    if not reply:
+        failures.append("empty_reply")
+    for marker in OVERCLAIM_EMPATHY_MARKERS:
+        if marker in reply:
+            failures.append(f"overclaim_or_patronizing_marker:{marker}")
+
+    primary = signal["primary_candidate"]
+    actionable = any(marker in reply for marker in ACTIONABLE_MARKERS)
+    if primary in {"frustration", "uncertainty", "anxiety", "disappointment"} and not actionable:
+        failures.append("missing_practical_next_step_for_visible_affect")
+    if primary == "unclear_or_neutral" and any(marker in reply for marker in ("你很", "你一定", "我理解你")):
+        warnings.append("unneeded_empathy_for_neutral_task")
+
+    return {
+        "schema_version": "ego_operator.empathy_style_eval.v1",
+        "status": "pass" if not failures else "fail",
+        "emotion_signal": signal,
+        "guidance": guidance,
+        "failures": failures,
+        "warnings": warnings,
+        "claim_ceiling": "style-gate local candidate only; not human empathy proof",
+    }
+
+
 @dataclass(frozen=True)
 class SubjectContextSnapshot:
     schema_version: str = SUBJECT_CONTEXT_SCHEMA
@@ -107,6 +183,7 @@ class SubjectContextSnapshot:
         "Preserve the user's meaning across paraphrases. Do not compress the "
         "message into route keywords or canned templates before answering."
     )
+    empathy_style_guidance: Dict[str, Any] = field(default_factory=dict)
     initiative_candidate: str = "none"
     warnings: List[str] = field(default_factory=lambda: [
         "This context is readonly.",
@@ -127,6 +204,7 @@ class SubjectContextSnapshot:
             f"Raw user text preserved: {_bounded(self.raw_user_text)}",
             f"Self model: {_bounded(self.self_model_summary)}",
             "Appraisal signal: " + str(self.appraisal_signal),
+            "Empathy style guidance: " + str(self.empathy_style_guidance),
             f"Salient memory note: {_bounded(self.salient_memory_note)}",
             f"Reflection proposal: {_bounded(self.reflection_proposal)}",
             f"Initiative candidate: {_bounded(self.initiative_candidate)}",
@@ -145,6 +223,7 @@ def build_minimal_subject_context(
         if operator_memory_available
         else "No operator memory context is active for this turn."
     )
+    emotion_signal = extract_emotion_signal(user_text)
     return SubjectContextSnapshot(
         raw_user_text=_bounded(user_text),
         salient_memory_note=memory_note,
@@ -153,6 +232,7 @@ def build_minimal_subject_context(
             "confidence": "candidate",
             "state_mutation": "forbidden",
             "reply_decision": "forbidden",
-            "emotion_signal": extract_emotion_signal(user_text),
+            "emotion_signal": emotion_signal,
         },
+        empathy_style_guidance=build_empathy_style_guidance(emotion_signal),
     )

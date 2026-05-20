@@ -823,9 +823,11 @@ def test_scripted_with_llm_judge_requires_positive_reviewer(tmp_path: Path) -> N
     )
 
     original_run = runner.run
+    prompts: list[str] = []
 
     def run_with_reviewer_prefix(args, *, env=None):
         if tuple(args[:6]) == ("codex", "exec", "--ephemeral", "--sandbox", "read-only", "--output-schema"):
+            prompts.append(args[-1])
             return codex_project_autopilot.CommandResult(args=args, returncode=0, stdout=reviewer, stderr="")
         return original_run(args, env=env)
 
@@ -839,6 +841,9 @@ def test_scripted_with_llm_judge_requires_positive_reviewer(tmp_path: Path) -> N
     assert code == 0
     assert payload["status"] == "eligible"
     assert payload["llm_reviewer"]["verdict"] == "closeout_allowed"
+    assert prompts
+    assert '"status": "pending_llm_review"' in prompts[0]
+    assert "Do not block solely" in prompts[0]
 
 
 def test_scripted_with_llm_judge_unavailable_blocks(tmp_path: Path) -> None:

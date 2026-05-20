@@ -85,6 +85,29 @@ def test_neutral_emotion_signal_stays_low_confidence():
     assert signal["response_need"] == "task_direct"
 
 
+def test_empathy_style_gate_passes_brief_acknowledgement_plus_action():
+    result = subject_context.evaluate_empathy_response(
+        "我有点崩溃，这个又失败了。",
+        "看起来这个失败点已经影响节奏了。我先帮你定位是哪一步失败，再给最小修复。",
+    )
+
+    assert result["status"] == "pass"
+    assert result["emotion_signal"]["primary_candidate"] == "frustration"
+    assert result["guidance"]["needs_brief_acknowledgement"] is True
+    assert not result["failures"]
+
+
+def test_empathy_style_gate_rejects_patronizing_or_hollow_comfort():
+    result = subject_context.evaluate_empathy_response(
+        "我有点崩溃，这个又失败了。",
+        "我完全理解你的感受，一切都会好。",
+    )
+
+    assert result["status"] == "fail"
+    assert any("overclaim_or_patronizing_marker" in item for item in result["failures"])
+    assert "missing_practical_next_step_for_visible_affect" in result["failures"]
+
+
 def test_dark_souls_paraphrase_suite_has_twenty_stable_cases():
     cases = evals.dark_souls_paraphrase_cases()
     result = evals.evaluate_subject_context_paraphrases(cases)
@@ -155,6 +178,7 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["raw_user_text"] == "黑魂这游戏怎么评价"
     assert context["appraisal_signal"]["reply_decision"] == "forbidden"
     assert context["appraisal_signal"]["emotion_signal"]["canonical_truth"] is False
+    assert context["empathy_style_guidance"]["reply_decision"] == "forbidden"
 
 
 def test_runtime_gate_contract_keeps_demotion_and_live_claims_forbidden():

@@ -69,6 +69,12 @@
 - #34 Autopilot contract update extends verification to `EgoOperator/primitives/subject_context.py` and `EgoOperator/tests/test_extracted_primitives.py`.
 - After #34, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
 - After #34, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `85 passed`.
+- #35 was promoted to `In Progress` for an empathy response style gate.
+- #35 implementation adds deterministic empathy style guidance/eval under `subject_context`: visible affect should get brief acknowledgement plus a practical next step, while canned sympathy and emotion overclaim markers fail the local style gate.
+- #35 targeted primitive validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_extracted_primitives.py` (`11 passed`).
+- After #35, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `87 passed`.
+- #35 closeout-check initially exposed an Autopilot L3 reviewer self-reference bug: the reviewer treated pre-review `status=blocked` as a reason to block. The reviewer packet now uses `status=pending_llm_review` and explicitly forbids blocking solely because closeout has not happened yet.
+- #35 closeout-check then returned `eligible` with `llm_reviewer_verdict=closeout_allowed`, `autopilot_full` passing, and dirty gate scoped.
 
 ## Notes
 
