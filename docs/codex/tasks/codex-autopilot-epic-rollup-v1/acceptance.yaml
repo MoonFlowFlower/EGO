@@ -1,0 +1,31 @@
+version: 1
+task: codex-autopilot-epic-rollup-v1
+github_issue: 70
+claim_ceiling: Codex autopilot epic rollup and real-task execution local workflow candidate pass
+allowed_paths:
+  - .codex/project_contract.yaml
+  - scripts/**
+  - scripts/tests/**
+  - docs/codex/tasks/codex-autopilot-epic-rollup-v1/**
+forbidden_paths:
+  - EgoOperator/**
+  - legacy/ego-pre-handmade-mainline/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+acceptance:
+  - epic_overview_remains_non_executable
+  - parent_marker_append_is_idempotent
+  - parent_marker_conflict_blocks
+  - epic_report_distinguishes_complete_human_blocked_and_needs_child_issue
+  - complete_epic_can_closeout
+  - human_required_child_blocks_epic_closeout
+  - no_ready_run_loop_consults_epic_rollup_before_generic_proposal
+  - real_project_epic_report_runs
+  - at_least_one_real_epic_closeout_if_eligible
+cannot_claim:
+  - full_unattended_autonomous_development
+  - stable_productivity_gain
+  - runtime_efficacy
+  - live_autonomy
+  - durable_memory_efficacy
+  - consciousness

@@ -305,6 +305,17 @@ goal_control:
     - "stage card"
     - "docs/PROGRAM_STATE_UNIFIED.yaml"
   claim_ceiling: Test goal-control claim
+epic_rollup:
+  parent_marker: "Parent epic"
+  child_title_prefixes:
+    - "EgoRoadmap:"
+    - "Research:"
+  closeout_claim_ceiling: Test epic rollup claim
+  block_child_classes:
+    - human_required
+    - high_impact
+    - blocked
+    - unknown
 """,
         encoding="utf-8",
     )
@@ -333,6 +344,22 @@ def base_responses(*, items: list[dict] | None = None) -> dict[tuple[str, ...], 
             "json",
         ): j({"items": items if items is not None else ITEMS}),
     }
+
+
+def base_responses_with_repeated_items(*, items: list[dict], repeats: int = 2) -> dict[tuple[str, ...], list[str] | str]:
+    responses = base_responses(items=items)
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = [j({"items": items}) for _ in range(repeats)]
+    return responses
 
 
 def run_cli(
@@ -1628,7 +1655,7 @@ def test_run_loop_no_ready_outputs_candidate_issue_drafts(tmp_path: Path) -> Non
 
     code, payload = run_cli(
         ["--contract", str(path), "run-loop", "--dry-run", "--max-issues", "2"],
-        fake=FakeGh(base_responses(items=[item(ISSUE_EPIC, "Todo")])),
+        fake=FakeGh(base_responses_with_repeated_items(items=[item(ISSUE_EPIC, "Todo")])),
         runner=FakeRunner(stdout=""),
     )
 
@@ -1658,3 +1685,153 @@ def test_closeout_evidence_does_not_treat_planner_proposal_as_implementation(tmp
     evidence_types = {item["type"] for item in payload["evidence_packet"]["evidence_items"]}
     assert "planner_proposal" in evidence_types
     assert any(reason["reason"] == "closeout_evidence_missing_issue_specific_item" for reason in payload["blocked_reasons"])
+
+
+def test_epic_overview_remains_non_executable_ready_issue(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "classify-issue", "--issue", "25"],
+        fake=FakeGh(responses_for_issue(ISSUE_EPIC, status="Todo")),
+    )
+
+    assert code == 0
+    assert payload["classification"]["class"] == "epic"
+    assert payload["classification"]["autopilot_allowed"] is False
+
+
+def test_parent_marker_append_idempotent_and_conflict() -> None:
+    updated, appended = codex_project_autopilot.append_parent_epic_marker(
+        "body",
+        marker="Parent epic",
+        epic_number=23,
+    )
+    same, unchanged = codex_project_autopilot.append_parent_epic_marker(
+        updated,
+        marker="Parent epic",
+        epic_number=23,
+    )
+    _, conflict = codex_project_autopilot.append_parent_epic_marker(
+        "Parent epic: #99\n",
+        marker="Parent epic",
+        epic_number=23,
+    )
+
+    assert appended["status"] == "appended"
+    assert same == updated
+    assert unchanged["status"] == "unchanged"
+    assert conflict["status"] == "conflict"
+
+
+def epic_fixture_items(*, human_blocked: bool = False, no_children: bool = False) -> list[dict]:
+    epic = issue(80, "Epic 9: Test epic", body=READY_BODY)
+    if no_children:
+        return [item(epic, "Todo")]
+    if human_blocked:
+        child = issue(
+            81,
+            "EgoRoadmap: human smoke child",
+            body=READY_BODY + "\nObservation class: human_required\n\nParent epic: #80\n",
+        )
+        return [item(epic, "Todo"), item(child, "Todo")]
+    child = issue(81, "EgoRoadmap: completed child", body=READY_BODY + "\nParent epic: #80\n", state="CLOSED")
+    return [item(epic, "Todo"), item(child, "Done")]
+
+
+def test_epic_report_distinguishes_complete_human_blocked_and_needs_child_issue(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, complete = run_cli(
+        ["--contract", str(path), "epic-report"],
+        fake=FakeGh(base_responses(items=epic_fixture_items())),
+    )
+    code_human, human = run_cli(
+        ["--contract", str(path), "epic-report"],
+        fake=FakeGh(base_responses(items=epic_fixture_items(human_blocked=True))),
+    )
+    code_empty, empty = run_cli(
+        ["--contract", str(path), "epic-report"],
+        fake=FakeGh(base_responses(items=epic_fixture_items(no_children=True))),
+    )
+
+    assert code == code_human == code_empty == 0
+    assert complete["epics"][0]["rollup_state"] == "complete"
+    assert complete["epics"][0]["eligible_closeout"] is True
+    assert human["epics"][0]["rollup_state"] == "blocked_by_human"
+    assert human["epics"][0]["eligible_closeout"] is False
+    assert empty["epics"][0]["rollup_state"] == "needs_child_issue"
+
+
+def test_normalize_parent_links_dry_run_and_conflict_block(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    epic = issue(80, "Epic 9: Test epic", body=READY_BODY)
+    untagged = issue(81, "EgoRoadmap: untagged child", body=READY_BODY)
+    conflict = issue(82, "EgoRoadmap: conflict child", body=READY_BODY + "\nParent epic: #80\nParent epic: #81\n")
+
+    code, payload = run_cli(
+        ["--contract", str(path), "normalize-parent-links", "--dry-run"],
+        fake=FakeGh(base_responses(items=[item(epic, "Todo"), item(untagged, "Todo")])),
+    )
+    code_conflict, conflict_payload = run_cli(
+        ["--contract", str(path), "normalize-parent-links", "--dry-run"],
+        fake=FakeGh(base_responses(items=[item(epic, "Todo"), item(conflict, "Todo")])),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["planned"][0]["action"] == "append_parent_marker"
+    assert code_conflict == 0
+    assert conflict_payload["status"] == "blocked"
+    assert conflict_payload["blocked"][0]["reason"] == "parent_marker_conflict"
+
+
+def test_complete_epic_can_closeout_but_human_required_child_blocks(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "epic-closeout-check", "--epic", "80"],
+        fake=FakeGh(base_responses(items=epic_fixture_items())),
+    )
+    code_blocked, blocked = run_cli(
+        ["--contract", str(path), "epic-closeout-check", "--epic", "80"],
+        fake=FakeGh(base_responses(items=epic_fixture_items(human_blocked=True))),
+    )
+
+    assert code == 0
+    assert payload["status"] == "eligible"
+    assert payload["eligible"] is True
+    assert "Closeout for Epic #80" in payload["closeout_comment"]
+    assert code_blocked == 0
+    assert blocked["status"] == "blocked"
+    assert blocked["blocked_reasons"][0]["reason"] == "epic_rollup_not_complete"
+
+
+def test_epic_closeout_once_dry_run_uses_closeout_wrapper(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    fake = FakeGh(base_responses(items=epic_fixture_items()))
+
+    code, payload = run_cli(
+        ["--contract", str(path), "epic-closeout-once", "--epic", "80", "--dry-run"],
+        fake=fake,
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["mode"] == "dry_run"
+    assert payload["closeout"]["planned"][0]["gh"][:2] == ["issue", "comment"]
+    assert not any(call[:2] == ("issue", "close") for call in fake.calls)
+
+
+def test_run_loop_no_ready_consults_epic_rollup_before_generic_proposal(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "run-loop", "--dry-run", "--max-issues", "2"],
+        fake=FakeGh(base_responses_with_repeated_items(items=epic_fixture_items())),
+        runner=FakeRunner(stdout=""),
+    )
+
+    assert code == 0
+    assert payload["status"] == "stopped"
+    assert payload["stop_reason"] == "no_ready_issue_epic_closeout_available"
+    assert payload["epic_rollup"]["dry_run_action"] == "would_close_epic"

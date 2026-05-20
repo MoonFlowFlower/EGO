@@ -62,6 +62,7 @@ class ProjectContract:
     auto_execute: dict[str, Any] = field(default_factory=dict)
     auto_pause: dict[str, Any] = field(default_factory=dict)
     goal_control: dict[str, Any] = field(default_factory=dict)
+    epic_rollup: dict[str, Any] = field(default_factory=dict)
 
     def github_config(self, *, dry_run: bool = False) -> github_project_task.Config:
         return github_project_task.Config(
@@ -204,6 +205,11 @@ def load_contract(path: Path) -> ProjectContract:
             payload.get("goal_control") or {},
             code="invalid_goal_control",
             message="goal_control must be an object",
+        ),
+        epic_rollup=_require_mapping(
+            payload.get("epic_rollup") or {},
+            code="invalid_epic_rollup",
+            message="epic_rollup must be an object",
         ),
     )
 
@@ -739,6 +745,7 @@ def contract_summary(contract: ProjectContract) -> dict[str, Any]:
         "auto_execute": contract.auto_execute,
         "auto_pause": contract.auto_pause,
         "goal_control": contract.goal_control,
+        "epic_rollup": contract.epic_rollup,
     }
 
 
@@ -2390,6 +2397,352 @@ def command_plan_proposal(
     }
 
 
+def _epic_rollup_config(contract: ProjectContract) -> dict[str, Any]:
+    cfg = dict(contract.epic_rollup)
+    cfg.setdefault("parent_marker", "Parent epic")
+    cfg.setdefault("child_title_prefixes", ["EgoRoadmap:", "Research:"])
+    cfg.setdefault("closeout_claim_ceiling", "Codex autopilot epic rollup and real-task execution local workflow candidate pass")
+    cfg.setdefault("block_child_classes", ["human_required", "high_impact", "blocked", "unknown"])
+    return cfg
+
+
+def parent_epic_marker(body: str, *, marker: str) -> dict[str, Any]:
+    pattern = re.compile(rf"^\s*{re.escape(marker)}\s*:\s*#?(\d+)\s*$", re.IGNORECASE | re.MULTILINE)
+    parents = sorted({int(match.group(1)) for match in pattern.finditer(body or "")})
+    if not parents:
+        return {"status": "missing", "parent": None, "parents": []}
+    if len(parents) > 1:
+        return {"status": "conflict", "parent": None, "parents": parents}
+    return {"status": "ok", "parent": parents[0], "parents": parents}
+
+
+def append_parent_epic_marker(body: str, *, marker: str, epic_number: int) -> tuple[str, dict[str, Any]]:
+    parsed = parent_epic_marker(body, marker=marker)
+    if parsed["status"] == "conflict":
+        return body, parsed
+    if parsed["status"] == "ok":
+        if parsed["parent"] == epic_number:
+            return body, {"status": "unchanged", "parent": epic_number}
+        return body, {"status": "conflict", "parent": parsed["parent"], "expected_parent": epic_number}
+    suffix = f"{marker}: #{epic_number}"
+    clean = (body or "").rstrip()
+    updated = f"{clean}\n\n{suffix}\n" if clean else f"{suffix}\n"
+    return updated, {"status": "appended", "parent": epic_number}
+
+
+def _is_epic_issue(contract: ProjectContract, issue: dict[str, Any]) -> bool:
+    title = str(issue.get("title") or "").casefold()
+    return _starts_with_any(title, _as_list(contract.task_classification.get("epic_title_prefixes")))
+
+
+def _is_epic_child_issue(contract: ProjectContract, issue: dict[str, Any]) -> bool:
+    title = str(issue.get("title") or "").casefold()
+    prefixes = _as_list(_epic_rollup_config(contract).get("child_title_prefixes"))
+    return _starts_with_any(title, prefixes)
+
+
+def project_issue_records(client: github_project_task.GhClient, contract: ProjectContract) -> list[dict[str, Any]]:
+    cfg = contract.github_config()
+    records = []
+    for item in load_items(client, cfg):
+        issue = dict(item_issue(item))
+        if issue.get("type") and issue.get("type") != "Issue":
+            continue
+        issue_ref = issue.get("number") or issue.get("url")
+        if issue_ref is not None and "body" not in issue:
+            full = issue_view_full(client, cfg, str(issue_ref))
+            issue.update(full)
+        classification = classify_issue(contract, issue, item)
+        records.append(
+            {
+                "item": item,
+                "issue": issue,
+                "classification": classification,
+                "project_status": item.get("status"),
+            }
+        )
+    return records
+
+
+def build_epic_rollups(client: github_project_task.GhClient, contract: ProjectContract) -> dict[str, Any]:
+    cfg = _epic_rollup_config(contract)
+    marker = str(cfg.get("parent_marker") or "Parent epic")
+    records = project_issue_records(client, contract)
+    epics: dict[int, dict[str, Any]] = {}
+    current_epic: int | None = None
+    assignments: list[dict[str, Any]] = []
+    conflicts: list[dict[str, Any]] = []
+
+    for record in records:
+        issue = record["issue"]
+        number = issue.get("number")
+        if number is None:
+            continue
+        number = int(number)
+        if _is_epic_issue(contract, issue):
+            current_epic = number
+            epics[number] = {
+                "number": number,
+                "title": issue.get("title"),
+                "url": issue.get("url"),
+                "state": issue.get("state"),
+                "project_status": record.get("project_status"),
+                "classification": record.get("classification"),
+                "children": [],
+                "child_counts": {},
+                "human_blockers": [],
+                "open_blockers": [],
+            }
+            continue
+        if not _is_epic_child_issue(contract, issue):
+            continue
+        parsed = parent_epic_marker(str(issue.get("body") or ""), marker=marker)
+        inferred = current_epic
+        parent = parsed.get("parent")
+        source = "explicit" if parent else "inferred"
+        if parsed["status"] == "conflict":
+            conflicts.append({"issue": number, "title": issue.get("title"), "reason": "conflicting_parent_markers", "parents": parsed["parents"]})
+            continue
+        if parent and inferred and parent != inferred:
+            conflicts.append(
+                {
+                    "issue": number,
+                    "title": issue.get("title"),
+                    "reason": "parent_marker_disagrees_with_project_order",
+                    "parent": parent,
+                    "inferred_parent": inferred,
+                }
+            )
+        if parent is None:
+            parent = inferred
+        if parent is None:
+            conflicts.append({"issue": number, "title": issue.get("title"), "reason": "no_parent_epic_available"})
+            continue
+        child = {
+            "number": number,
+            "title": issue.get("title"),
+            "url": issue.get("url"),
+            "state": issue.get("state"),
+            "project_status": record.get("project_status"),
+            "classification": record.get("classification"),
+            "parent_epic": parent,
+            "parent_source": source,
+            "parent_marker": parsed,
+        }
+        assignments.append(child)
+        if parent in epics:
+            epics[parent]["children"].append(child)
+        else:
+            conflicts.append({"issue": number, "title": issue.get("title"), "reason": "parent_epic_not_on_board", "parent": parent})
+
+    block_classes = set(_as_list(cfg.get("block_child_classes")))
+    for epic in epics.values():
+        counts: dict[str, int] = {}
+        for child in epic["children"]:
+            cls = str((child.get("classification") or {}).get("class") or "unknown")
+            counts[cls] = counts.get(cls, 0) + 1
+            if cls == "human_required":
+                epic["human_blockers"].append(child)
+            elif cls != "done":
+                epic["open_blockers"].append(child)
+        epic["child_counts"] = counts
+        if not epic["children"]:
+            rollup_state = "needs_child_issue"
+        elif epic["human_blockers"]:
+            rollup_state = "blocked_by_human"
+        elif any(str((child.get("classification") or {}).get("class")) in block_classes for child in epic["children"] if str((child.get("classification") or {}).get("class")) != "done"):
+            rollup_state = "blocked_by_child"
+        elif epic["open_blockers"]:
+            rollup_state = "has_open_children"
+        else:
+            rollup_state = "complete"
+        already_closed = str(epic.get("state") or "").upper() == "CLOSED" or epic.get("project_status") == "Done"
+        epic["rollup_state"] = "already_done" if already_closed and rollup_state == "complete" else rollup_state
+        epic["eligible_closeout"] = rollup_state == "complete" and not already_closed
+
+    summary_counts: dict[str, int] = {}
+    for epic in epics.values():
+        state = str(epic["rollup_state"])
+        summary_counts[state] = summary_counts.get(state, 0) + 1
+    return {
+        "status": "ok",
+        "parent_marker": marker,
+        "epics": list(epics.values()),
+        "assignments": assignments,
+        "conflicts": conflicts,
+        "summary": {
+            "epic_count": len(epics),
+            "assignment_count": len(assignments),
+            "conflict_count": len(conflicts),
+            "rollup_states": summary_counts,
+            "eligible_closeout_epics": [epic["number"] for epic in epics.values() if epic.get("eligible_closeout")],
+        },
+        "claim_ceiling": cfg.get("closeout_claim_ceiling"),
+    }
+
+
+def command_epic_report(client: github_project_task.GhClient, contract: ProjectContract) -> dict[str, Any]:
+    return build_epic_rollups(client, contract)
+
+
+def command_normalize_parent_links(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    *,
+    dry_run: bool,
+) -> dict[str, Any]:
+    cfg = contract.github_config()
+    marker = str(_epic_rollup_config(contract).get("parent_marker") or "Parent epic")
+    records = project_issue_records(client, contract)
+    current_epic: int | None = None
+    planned = []
+    blocked = []
+
+    for record in records:
+        issue = record["issue"]
+        number = issue.get("number")
+        if number is None:
+            continue
+        number = int(number)
+        if _is_epic_issue(contract, issue):
+            current_epic = number
+            continue
+        if not _is_epic_child_issue(contract, issue):
+            continue
+        if current_epic is None:
+            blocked.append({"issue": number, "reason": "no_inferred_parent_epic", "title": issue.get("title")})
+            continue
+        body = str(issue.get("body") or "")
+        updated, result = append_parent_epic_marker(body, marker=marker, epic_number=current_epic)
+        if result["status"] == "conflict":
+            blocked.append({"issue": number, "reason": "parent_marker_conflict", "title": issue.get("title"), "details": result})
+            continue
+        action = "append_parent_marker" if result["status"] == "appended" else "noop"
+        planned.append(
+            {
+                "issue": number,
+                "title": issue.get("title"),
+                "parent_epic": current_epic,
+                "action": action,
+                "old_body_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                "new_body_sha256": hashlib.sha256(updated.encode("utf-8")).hexdigest(),
+                "body": updated if action == "append_parent_marker" else None,
+            }
+        )
+
+    if blocked:
+        return {"status": "blocked", "mode": "dry_run" if dry_run else "execute", "blocked": blocked, "planned": planned}
+
+    edited = []
+    if not dry_run:
+        for item in planned:
+            if item["action"] != "append_parent_marker":
+                continue
+            client.run(["issue", "edit", str(item["issue"]), "--repo", cfg.repo, "--body", str(item["body"])])
+            edited.append({"issue": item["issue"], "parent_epic": item["parent_epic"]})
+    redacted = [{key: value for key, value in item.items() if key != "body"} for item in planned]
+    return {
+        "status": "ok",
+        "mode": "dry_run" if dry_run else "execute",
+        "planned": redacted,
+        "edited": edited,
+        "edited_count": len(edited),
+        "claim_ceiling": _epic_rollup_config(contract).get("closeout_claim_ceiling"),
+    }
+
+
+def epic_by_number(report: dict[str, Any], epic_number: int) -> dict[str, Any] | None:
+    for epic in report.get("epics") or []:
+        if int(epic.get("number") or -1) == epic_number:
+            return epic
+    return None
+
+
+def epic_closeout_comment(epic: dict[str, Any], contract: ProjectContract) -> str:
+    children = epic.get("children") or []
+    lines = [
+        f"Closeout for Epic #{epic.get('number')}: {epic.get('title')}",
+        "",
+        "Result: epic rollup complete.",
+        "",
+        "Rollup evidence:",
+    ]
+    for child in children:
+        lines.append(f"- [done] #{child.get('number')} {child.get('title')}")
+    lines.extend(
+        [
+            "",
+            "Verification:",
+            "- `epic-report` / `epic-closeout-check` confirmed all child issues are Done and no human-required child blocks this epic.",
+            "",
+            "Claim ceiling:",
+            f"`{_epic_rollup_config(contract).get('closeout_claim_ceiling')}`",
+            "",
+            "Not claimed:",
+            "full unattended autonomous development, stable productivity gain, runtime efficacy, live autonomy, durable memory efficacy, or consciousness.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def command_epic_closeout_check(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    epic_ref: str,
+) -> dict[str, Any]:
+    try:
+        epic_number = int(str(epic_ref).lstrip("#"))
+    except ValueError:
+        raise AutopilotError("invalid_epic_ref", f"Epic ref must be an issue number: {epic_ref}")
+    report = build_epic_rollups(client, contract)
+    epic = epic_by_number(report, epic_number)
+    if not epic:
+        return {"status": "blocked", "eligible": False, "blocked_reasons": [{"reason": "epic_not_found", "epic": epic_number}], "report": report}
+    blocked_reasons = []
+    if epic.get("rollup_state") != "complete":
+        blocked_reasons.append({"reason": "epic_rollup_not_complete", "rollup_state": epic.get("rollup_state")})
+    if report.get("conflicts"):
+        blocked_reasons.append({"reason": "epic_parent_conflicts_present", "conflict_count": len(report.get("conflicts") or [])})
+    eligible = not blocked_reasons
+    return {
+        "status": "eligible" if eligible else "blocked",
+        "eligible": eligible,
+        "epic": epic,
+        "blocked_reasons": blocked_reasons,
+        "closeout_comment": epic_closeout_comment(epic, contract) if eligible else None,
+        "claim_ceiling": _epic_rollup_config(contract).get("closeout_claim_ceiling"),
+    }
+
+
+def command_epic_closeout_once(
+    client: github_project_task.GhClient,
+    contract: ProjectContract,
+    epic_ref: str,
+    *,
+    dry_run: bool,
+    execute: bool,
+) -> dict[str, Any]:
+    if dry_run and execute:
+        raise AutopilotError("invalid_epic_closeout_mode", "Choose either --dry-run or --execute, not both")
+    packet = command_epic_closeout_check(client, contract, epic_ref)
+    if not packet.get("eligible"):
+        return {"status": "stopped", "stop_reason": "epic_closeout_not_eligible", "packet": packet}
+    effective_dry_run = not execute
+    cfg = contract.github_config(dry_run=effective_dry_run)
+    status = str(contract.auto_closeout.get("done_status") or "Done")
+    result = github_project_task.command_closeout(
+        client,
+        cfg,
+        argparse.Namespace(issue=str(packet["epic"]["number"]), status=status, comment=str(packet["closeout_comment"]), comment_file=None),
+    )
+    return {
+        "status": "ok",
+        "mode": "dry_run" if effective_dry_run else "execute",
+        "packet": packet,
+        "closeout": result,
+    }
+
+
 def command_run_once(
     client: github_project_task.GhClient,
     contract: ProjectContract,
@@ -2566,6 +2919,39 @@ def command_run_loop(
         if issue.get("classification", {}).get("autopilot_allowed") is True
     ]
     if not ready:
+        epic_rollup = build_epic_rollups(client, contract)
+        closeout_epics = epic_rollup.get("summary", {}).get("eligible_closeout_epics") or []
+        if closeout_epics:
+            epic_ref = str(closeout_epics[0])
+            if execute:
+                closeout = command_epic_closeout_once(
+                    client,
+                    contract,
+                    epic_ref,
+                    dry_run=False,
+                    execute=True,
+                )
+                payload = {
+                    "status": "ok",
+                    "mode": "plan",
+                    "dry_run": False,
+                    "elapsed_seconds": round(time.monotonic() - started, 3),
+                    "planned": [{"epic": epic_ref, "closeout": closeout}],
+                    "stop_reason": "epic_closeout_executed",
+                }
+                return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
+            payload = {
+                "status": "stopped",
+                "stop_reason": "no_ready_issue_epic_closeout_available",
+                "counts": report["counts"],
+                "epic_rollup": {
+                    "summary": epic_rollup.get("summary"),
+                    "next_epic": closeout_epics[0],
+                    "dry_run_action": "would_close_epic",
+                },
+                "planned": [],
+            }
+            return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
         proposals = candidate_issue_proposals_from_report(
             contract,
             report,
@@ -2575,6 +2961,19 @@ def command_run_loop(
             "status": "stopped",
             "stop_reason": "no_ready_issue",
             "counts": report["counts"],
+            "epic_rollup": {
+                "summary": epic_rollup.get("summary"),
+                "human_blocked_epics": [
+                    epic.get("number")
+                    for epic in epic_rollup.get("epics") or []
+                    if epic.get("rollup_state") == "blocked_by_human"
+                ],
+                "needs_child_issue_epics": [
+                    epic.get("number")
+                    for epic in epic_rollup.get("epics") or []
+                    if epic.get("rollup_state") == "needs_child_issue"
+                ],
+            },
             "plan_stage": {
                 "status": "candidate_issues_proposed",
                 "note": "No ready issue was available; goal-aware mode generated dry-run candidate issue drafts instead of looping.",
@@ -2716,6 +3115,19 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("baseline")
     subparsers.add_parser("diff-scope")
     subparsers.add_parser("pause-check")
+    subparsers.add_parser("epic-report")
+
+    normalize_parents = subparsers.add_parser("normalize-parent-links")
+    normalize_parents.add_argument("--dry-run", action="store_true")
+    normalize_parents.add_argument("--execute", action="store_true")
+
+    epic_check = subparsers.add_parser("epic-closeout-check")
+    epic_check.add_argument("--epic", required=True)
+
+    epic_once = subparsers.add_parser("epic-closeout-once")
+    epic_once.add_argument("--epic", required=True)
+    epic_once.add_argument("--dry-run", action="store_true")
+    epic_once.add_argument("--execute", action="store_true")
 
     verify_profile = subparsers.add_parser("verify-profile")
     verify_profile.add_argument("--profile", required=True)
@@ -2809,6 +3221,22 @@ def dispatch(
         return command_diff_scope(contract, baseline_path=Path(args.baseline_path), runner=runner)
     if args.command == "pause-check":
         return command_pause_check(contract, report_dir=Path(args.report_dir))
+    if args.command == "epic-report":
+        return command_epic_report(client, contract)
+    if args.command == "normalize-parent-links":
+        if bool(args.dry_run) and bool(args.execute):
+            raise AutopilotError("invalid_parent_link_mode", "Choose either --dry-run or --execute, not both")
+        return command_normalize_parent_links(client, contract, dry_run=not bool(args.execute))
+    if args.command == "epic-closeout-check":
+        return command_epic_closeout_check(client, contract, args.epic)
+    if args.command == "epic-closeout-once":
+        return command_epic_closeout_once(
+            client,
+            contract,
+            args.epic,
+            dry_run=bool(args.dry_run),
+            execute=bool(args.execute),
+        )
     if args.command == "verify-profile":
         return command_verify_profile(contract, args.profile, runner=runner)
     if args.command == "normalize-issue":
