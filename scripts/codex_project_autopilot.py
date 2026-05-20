@@ -1077,6 +1077,176 @@ def structured_issue_body(issue: dict[str, Any]) -> str:
     )
 
 
+REQUIRED_DECOMPOSITION_SECTIONS = [
+    "## Canonical source",
+    "## Current meaning",
+    "## Acceptance gate",
+    "## Non-goals",
+    "## Claim ceiling",
+    "## Rollback / close condition",
+]
+
+OVERCLAIM_MARKERS = [
+    "consciousness",
+    "independent awareness",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+    "真正意识",
+    "独立意识",
+    "自主意识",
+    "稳定用户收益",
+]
+
+
+def goal_summary(goal: str) -> str:
+    for line in goal.splitlines():
+        text = re.sub(r"^\s*(?:[-*]|\d+[.)])\s*", "", line).strip()
+        if text:
+            return text[:120]
+    return "Untitled goal"
+
+
+def goal_units(goal: str, *, max_issues: int) -> list[str]:
+    units = []
+    for line in goal.splitlines():
+        match = re.match(r"^\s*(?:[-*]|\d+[.)])\s+(.+?)\s*$", line)
+        if match:
+            units.append(match.group(1).strip())
+    if not units:
+        summary = goal_summary(goal)
+        units = [
+            f"{summary}: contract and acceptance gate",
+            f"{summary}: scoped implementation primitive",
+            f"{summary}: scripted or human-observable evaluation gate",
+        ]
+    return units[: max(1, max_issues)]
+
+
+def _slug_words(text: str, *, max_words: int = 9) -> str:
+    words = re.findall(r"[\w\u4e00-\u9fff]+", text, flags=re.UNICODE)
+    if not words:
+        return "scoped task"
+    return " ".join(words[:max_words])
+
+
+def compact_issue_title(prefix: str, meaning: str, *, max_chars: int = 96) -> str:
+    title = f"{prefix} {_slug_words(meaning)}".strip()
+    if len(title) <= max_chars:
+        return title
+    return title[: max_chars - 1].rstrip() + "…"
+
+
+def preferred_ready_prefix(contract: ProjectContract) -> str:
+    prefixes = _as_list(contract.task_classification.get("ready_title_prefixes"))
+    return prefixes[0] if prefixes else "Codex Task:"
+
+
+def decomposition_issue_body(
+    *,
+    canonical_source: str,
+    current_meaning: str,
+    observation_class: str,
+) -> str:
+    return (
+        "This issue is a GitHub Project operating card, not the canonical authority source.\n\n"
+        f"## Canonical source\n{canonical_source}\n\n"
+        f"## Current meaning\n{current_meaning}\n\n"
+        f"Observation class: {observation_class}\n\n"
+        "## Acceptance gate\n"
+        "- The scoped output directly addresses the current meaning.\n"
+        "- Deterministic or scripted evidence is attached for non-human observation classes.\n"
+        "- `python3 scripts/codex_project_autopilot.py closeout-check --issue <this>` returns a bounded eligibility packet before closeout.\n\n"
+        "## Non-goals\n"
+        "- Do not bypass project contract, proposal, gate, trace, or protected-path rules.\n"
+        "- Do not modify program state or evidence ledger unless a separate Stage Card explicitly permits it.\n"
+        "- Do not treat local/scripted proof as human-observable or durable product efficacy.\n\n"
+        "## Claim ceiling\n"
+        "Local proposal or implementation candidate only; not stable user benefit, runtime efficacy, live autonomy, durable memory efficacy, independent awareness, or consciousness.\n\n"
+        "## Rollback / close condition\n"
+        "Revert the scoped implementation or close as superseded/not planned if the task framing fails the acceptance gate.\n"
+    )
+
+
+def review_decomposition_proposals(proposals: list[dict[str, Any]]) -> dict[str, Any]:
+    findings = []
+    for index, proposal in enumerate(proposals):
+        body = str(proposal.get("body") or "")
+        title = str(proposal.get("title") or "")
+        for section in REQUIRED_DECOMPOSITION_SECTIONS:
+            if section not in body:
+                findings.append({"index": index, "title": title, "reason": "missing_required_section", "section": section})
+        for line_number, line in enumerate(body.splitlines(), start=1):
+            line_cf = line.casefold()
+            negated = any(token in line_cf for token in ["not ", "do not", "不得", "不能", "non-goal", "not stable"])
+            for marker in OVERCLAIM_MARKERS:
+                if marker.casefold() in line_cf and not negated:
+                    findings.append(
+                        {
+                            "index": index,
+                            "title": title,
+                            "reason": "possible_overclaim",
+                            "marker": marker,
+                            "line": line_number,
+                        }
+                    )
+    return {
+        "verdict": "proposal_set_ready" if not findings else "needs_revision",
+        "finding_count": len(findings),
+        "findings": findings,
+    }
+
+
+def decompose_goal(
+    contract: ProjectContract,
+    *,
+    goal: str,
+    canonical_source: str,
+    title_prefix: str | None,
+    max_issues: int,
+    observation_class: str,
+) -> dict[str, Any]:
+    if not goal.strip():
+        raise AutopilotError("missing_goal", "decompose-goal requires --goal text or --goal-file content")
+    prefix = title_prefix or preferred_ready_prefix(contract)
+    units = goal_units(goal, max_issues=max_issues)
+    proposals = []
+    for index, unit in enumerate(units, start=1):
+        meaning = unit.strip()
+        title = compact_issue_title(prefix, meaning)
+        proposals.append(
+            {
+                "index": index,
+                "title": title,
+                "project_status": "Todo",
+                "observation_class": observation_class,
+                "body": decomposition_issue_body(
+                    canonical_source=canonical_source,
+                    current_meaning=meaning,
+                    observation_class=observation_class,
+                ),
+            }
+        )
+    review = review_decomposition_proposals(proposals)
+    return {
+        "status": "ok",
+        "goal_summary": goal_summary(goal),
+        "proposal_count": len(proposals),
+        "proposals": proposals,
+        "reviewer_check": review,
+        "claim_ceiling": "Task decomposition proposal generation only; not GitHub issue creation or execution proof.",
+    }
+
+
+def read_goal_input(goal: str | None, goal_file: str | None) -> str:
+    if goal and goal_file:
+        raise AutopilotError("ambiguous_goal_input", "Use either --goal or --goal-file, not both")
+    if goal_file:
+        return Path(goal_file).read_text(encoding="utf-8")
+    return goal or ""
+
+
 def command_baseline(contract: ProjectContract, *, baseline_path: Path, runner: CommandRunner) -> dict[str, Any]:
     entries = dirty_entries(runner)
     payload = write_baseline(baseline_path, entries, contract)
@@ -1112,6 +1282,26 @@ def command_normalize_issue(
         },
         "proposed_body": structured_issue_body(issue),
     }
+
+
+def command_decompose_goal(
+    contract: ProjectContract,
+    *,
+    goal: str | None,
+    goal_file: str | None,
+    canonical_source: str | None,
+    title_prefix: str | None,
+    max_issues: int,
+    observation_class: str,
+) -> dict[str, Any]:
+    return decompose_goal(
+        contract,
+        goal=read_goal_input(goal, goal_file),
+        canonical_source=canonical_source or "Generated from decompose-goal input",
+        title_prefix=title_prefix,
+        max_issues=max_issues,
+        observation_class=observation_class,
+    )
 
 
 def command_run_once(
@@ -1427,6 +1617,14 @@ def build_parser() -> argparse.ArgumentParser:
     normalize.add_argument("--issue", required=True)
     normalize.add_argument("--dry-run", action="store_true")
 
+    decompose = subparsers.add_parser("decompose-goal")
+    decompose.add_argument("--goal")
+    decompose.add_argument("--goal-file")
+    decompose.add_argument("--canonical-source")
+    decompose.add_argument("--title-prefix")
+    decompose.add_argument("--max-issues", type=int, default=6)
+    decompose.add_argument("--observation-class", default="deterministic_local")
+
     once = subparsers.add_parser("run-once")
     once.add_argument("--issue", required=True)
     once.add_argument("--dry-run", action="store_true")
@@ -1480,6 +1678,16 @@ def dispatch(
         return command_verify_profile(contract, args.profile, runner=runner)
     if args.command == "normalize-issue":
         return command_normalize_issue(client, contract, args.issue, dry_run=bool(args.dry_run))
+    if args.command == "decompose-goal":
+        return command_decompose_goal(
+            contract,
+            goal=args.goal,
+            goal_file=args.goal_file,
+            canonical_source=args.canonical_source,
+            title_prefix=args.title_prefix,
+            max_issues=args.max_issues,
+            observation_class=args.observation_class,
+        )
     if args.command == "run-once":
         return command_run_once(
             client,

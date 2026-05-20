@@ -664,6 +664,86 @@ def test_normalize_issue_without_dry_run_is_rejected(tmp_path: Path) -> None:
     assert payload["error"] == "mutation_not_implemented"
 
 
+def test_decompose_goal_outputs_ready_issue_bodies_with_review_gate(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    goal = "- Build continuity memory repair\n- Add scripted real-entry eval"
+
+    code, payload = run_cli(
+        [
+            "--contract",
+            str(path),
+            "decompose-goal",
+            "--goal",
+            goal,
+            "--canonical-source",
+            "docs/roadmap.md",
+            "--title-prefix",
+            "EgoRoadmap:",
+            "--observation-class",
+            "scripted_real_entry",
+        ],
+        fake=FakeGh({}),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["proposal_count"] == 2
+    assert payload["reviewer_check"]["verdict"] == "proposal_set_ready"
+    assert payload["proposals"][0]["title"].startswith("EgoRoadmap:")
+    assert len(payload["proposals"][0]["title"]) <= 96
+    body = payload["proposals"][0]["body"]
+    assert "## Canonical source" in body
+    assert "## Acceptance gate" in body
+    assert "Observation class: scripted_real_entry" in body
+    assert "docs/roadmap.md" in body
+
+
+def test_decompose_goal_reads_goal_file_and_uses_contract_prefix(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    goal_path = tmp_path / "goal.md"
+    goal_path.write_text("Improve task board automation without bypassing gates.", encoding="utf-8")
+
+    code, payload = run_cli(
+        ["--contract", str(path), "decompose-goal", "--goal-file", str(goal_path), "--max-issues", "2"],
+        fake=FakeGh({}),
+    )
+
+    assert code == 0
+    assert payload["proposal_count"] == 2
+    assert payload["proposals"][0]["title"].startswith("Codex Toolkit:")
+    assert payload["reviewer_check"]["finding_count"] == 0
+
+
+def test_decomposition_reviewer_flags_missing_gate_and_overclaim() -> None:
+    proposals = [
+        {
+            "title": "Bad task",
+            "body": "## Canonical source\nx\n\n## Current meaning\nThis proves consciousness.\n",
+        }
+    ]
+
+    review = codex_project_autopilot.review_decomposition_proposals(proposals)
+
+    assert review["verdict"] == "needs_revision"
+    reasons = {finding["reason"] for finding in review["findings"]}
+    assert "missing_required_section" in reasons
+    assert "possible_overclaim" in reasons
+
+
+def test_decompose_goal_requires_single_goal_input(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    goal_path = tmp_path / "goal.md"
+    goal_path.write_text("Goal", encoding="utf-8")
+
+    code, payload = run_cli(
+        ["--contract", str(path), "decompose-goal", "--goal", "Goal", "--goal-file", str(goal_path)],
+        fake=FakeGh({}),
+    )
+
+    assert code == 2
+    assert payload["error"] == "ambiguous_goal_input"
+
+
 def responses_for_issue(full_issue: dict, *, status: str = "In Progress") -> dict[tuple[str, ...], list[str] | str]:
     responses = base_responses()
     issue_ref = str(full_issue["number"])

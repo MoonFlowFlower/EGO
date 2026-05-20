@@ -110,6 +110,8 @@
 - #54 was promoted to `In Progress` for the Autopilot L5 ready-issue executor gate.
 - #54 implementation adds a read-only `executor-check` packet and `run-loop --mode l5-executor` dry-run path. The gate authorizes only bounded rollout planning for ready deterministic/scripted issues with `In Progress` status, safe dirty scope, non-hard-stop observation class, and a known verify profile; it does not perform unattended code mutation.
 - #54 targeted validation passed: `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_codex_project_autopilot.py` (`40 passed`), and real `executor-check --issue 54` returned `eligible` with `verify_profile=autopilot_full`.
+- #55 was promoted to local implementation for task decomposition proposal generation; the GitHub Project status update was initially blocked by GraphQL rate limit and should be retried before closeout.
+- #55 implementation adds `decompose-goal`, a non-mutating generator that turns high-level goals or goal files into bounded GitHub issue proposal bodies with canonical source, current meaning, observation class, acceptance gate, non-goals, claim ceiling, rollback, and a deterministic reviewer check for missing gates / overclaim markers.
 
 ## Notes
 
