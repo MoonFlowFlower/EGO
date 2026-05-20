@@ -63,6 +63,12 @@
 - #32 implementation added `continuity_regression_pack.json` and extended `scripts/validate_experience_eval_contract.py` so the continuity pack stays eval-only and cannot become a runtime keyword route.
 - #32 deterministic validation passed: `python3 scripts/validate_experience_eval_contract.py` reports `paraphrase_group_count=4`, `paraphrase_prompt_count=16`, `carryover_case_count=4`, and zero errors.
 - After #32, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `76 passed`.
+- #34 was promoted to `In Progress` for emotion signal extraction primitive.
+- #34 implementation adds candidate-only `emotion_signal` extraction under `EgoOperator/primitives/subject_context.py`; it exposes primary candidate, confidence, response need, and evidence cues while keeping state mutation and reply decision forbidden.
+- #34 targeted primitive validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_extracted_primitives.py` (`9 passed`).
+- #34 Autopilot contract update extends verification to `EgoOperator/primitives/subject_context.py` and `EgoOperator/tests/test_extracted_primitives.py`.
+- After #34, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
+- After #34, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `85 passed`.
 
 ## Notes
 

@@ -10,11 +10,31 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List
+import re
 
 
 DEFAULT_CONTEXT_MAX_CHARS = 1200
 SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
 CLAIM_CEILING = "candidate-local subject context only"
+
+EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
+EMOTION_CUES: Dict[str, tuple[str, ...]] = {
+    "frustration": ("烦", "崩", "气死", "又失败", "不行", "没用", "卡住", "搞不定", "frustrated", "annoyed"),
+    "uncertainty": ("不确定", "不知道", "迷茫", "困惑", "看不懂", "怎么做", "uncertain", "confused"),
+    "anxiety": ("担心", "焦虑", "怕", "来不及", "紧张", "anxious", "worried"),
+    "disappointment": ("失望", "难受", "沮丧", "白做了", "没希望", "disappointed", "sad"),
+    "excitement": ("开心", "太好了", "爽", "有意思", "期待", "excited", "great"),
+    "urgency": ("马上", "尽快", "立刻", "赶紧", "现在就", "urgent", "asap"),
+}
+RESPONSE_NEEDS = {
+    "frustration": "acknowledge_and_repair",
+    "uncertainty": "clarify_and_reduce_ambiguity",
+    "anxiety": "calm_prioritize_next_step",
+    "disappointment": "acknowledge_and_reframe_next_action",
+    "excitement": "share_momentum_and_focus",
+    "urgency": "concise_action_first",
+    "unclear_or_neutral": "task_direct",
+}
 
 
 def _bounded(text: str, max_chars: int = DEFAULT_CONTEXT_MAX_CHARS) -> str:
@@ -22,6 +42,45 @@ def _bounded(text: str, max_chars: int = DEFAULT_CONTEXT_MAX_CHARS) -> str:
     if len(clean) <= max_chars:
         return clean
     return clean[:max_chars] + "\n...[truncated]"
+
+
+def extract_emotion_signal(user_text: str) -> Dict[str, Any]:
+    """Extract a bounded candidate affect signal from the latest user text.
+
+    This is intentionally not a classifier of the user's true internal state.
+    It only provides proposal context so the LLM can calibrate tone while still
+    preserving the latest user request as the authority.
+    """
+    text = user_text or ""
+    lowered = text.casefold()
+    matches: Dict[str, List[str]] = {}
+    for label, cues in EMOTION_CUES.items():
+        matched = []
+        for cue in cues:
+            if re.search(re.escape(cue), lowered, flags=re.IGNORECASE):
+                matched.append(cue)
+        if matched:
+            matches[label] = matched
+
+    if not matches:
+        primary = "unclear_or_neutral"
+        confidence = 0.2
+    else:
+        primary = sorted(matches.items(), key=lambda item: (len(item[1]), item[0]), reverse=True)[0][0]
+        confidence = min(0.9, 0.35 + sum(len(items) for items in matches.values()) * 0.12)
+
+    return {
+        "schema_version": EMOTION_SIGNAL_SCHEMA,
+        "kind": "candidate_affect_context",
+        "primary_candidate": primary,
+        "confidence": round(confidence, 2),
+        "response_need": RESPONSE_NEEDS.get(primary, "task_direct"),
+        "evidence_cues": matches,
+        "state_mutation": "forbidden",
+        "reply_decision": "forbidden",
+        "canonical_truth": False,
+        "warning": "Do not overclaim the user's true emotion; use only for tone calibration and next-step selection.",
+    }
 
 
 @dataclass(frozen=True)
@@ -89,4 +148,11 @@ def build_minimal_subject_context(
     return SubjectContextSnapshot(
         raw_user_text=_bounded(user_text),
         salient_memory_note=memory_note,
+        appraisal_signal={
+            "kind": "open_text_understanding_context",
+            "confidence": "candidate",
+            "state_mutation": "forbidden",
+            "reply_decision": "forbidden",
+            "emotion_signal": extract_emotion_signal(user_text),
+        },
     )

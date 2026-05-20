@@ -26,6 +26,7 @@ verify_profiles:
           - scripts/import_human_observation_comments.py
           - EgoOperator/agent_base.py
           - EgoOperator/memory_system.py
+          - EgoOperator/primitives/subject_context.py
       - label: autopilot_tests
         command:
           - python3
@@ -50,6 +51,7 @@ verify_profiles:
           - scripts/tests/test_run_ego_experience_trial.py
           - scripts/tests/test_import_human_observation_comments.py
           - EgoOperator/tests/test_memory_system.py
+          - EgoOperator/tests/test_extracted_primitives.py
         env:
           TMPDIR: /tmp
       - label: diff_check

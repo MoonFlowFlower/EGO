@@ -64,6 +64,27 @@ def test_subject_context_is_readonly_candidate_not_reply_owner():
     assert "你认为黑暗之魂如何" in snapshot.render_for_prompt()
 
 
+def test_emotion_signal_is_candidate_context_not_canonical_truth():
+    signal = subject_context.extract_emotion_signal("我有点崩溃，这个又失败了，帮我快点修。")
+
+    assert signal["schema_version"] == "ego_operator.emotion_signal.v1"
+    assert signal["primary_candidate"] == "frustration"
+    assert signal["confidence"] > 0.3
+    assert signal["response_need"] == "acknowledge_and_repair"
+    assert signal["state_mutation"] == "forbidden"
+    assert signal["reply_decision"] == "forbidden"
+    assert signal["canonical_truth"] is False
+    assert "崩" in signal["evidence_cues"]["frustration"]
+
+
+def test_neutral_emotion_signal_stays_low_confidence():
+    signal = subject_context.extract_emotion_signal("帮我看一下这个文件。")
+
+    assert signal["primary_candidate"] == "unclear_or_neutral"
+    assert signal["confidence"] == 0.2
+    assert signal["response_need"] == "task_direct"
+
+
 def test_dark_souls_paraphrase_suite_has_twenty_stable_cases():
     cases = evals.dark_souls_paraphrase_cases()
     result = evals.evaluate_subject_context_paraphrases(cases)
@@ -133,6 +154,7 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["claim_ceiling"] == "candidate-local subject context only"
     assert context["raw_user_text"] == "黑魂这游戏怎么评价"
     assert context["appraisal_signal"]["reply_decision"] == "forbidden"
+    assert context["appraisal_signal"]["emotion_signal"]["canonical_truth"] is False
 
 
 def test_runtime_gate_contract_keeps_demotion_and_live_claims_forbidden():
