@@ -108,6 +108,37 @@ def test_empathy_style_gate_rejects_patronizing_or_hollow_comfort():
     assert "missing_practical_next_step_for_visible_affect" in result["failures"]
 
 
+def test_emotion_misread_correction_overrides_raw_affect_cues():
+    signal = subject_context.extract_emotion_signal("我不是崩溃，也不是难过，别猜我的情绪，直接帮我修。")
+
+    assert signal["primary_candidate"] == "emotion_misread_correction"
+    assert signal["response_need"] == "respect_correction_and_refocus"
+    assert signal["canonical_truth"] is False
+    assert "emotion_misread_correction" in signal["evidence_cues"]
+
+
+def test_emotion_misread_recovery_passes_when_reply_refocuses():
+    result = subject_context.evaluate_empathy_response(
+        "我不是崩溃，也不是难过，别猜我的情绪，直接帮我修。",
+        "明白，我收回情绪判断。先定位失败步骤，再给你最小修复。",
+    )
+
+    assert result["status"] == "pass"
+    assert result["emotion_signal"]["primary_candidate"] == "emotion_misread_correction"
+    assert result["guidance"]["needs_correction_acknowledgement"] is True
+
+
+def test_emotion_misread_recovery_rejects_double_down():
+    result = subject_context.evaluate_empathy_response(
+        "我不是焦虑，别解读我的情绪，直接给方案。",
+        "你其实还是很焦虑，我完全理解你的感受。",
+    )
+
+    assert result["status"] == "fail"
+    assert any("emotion_double_down_marker" in item for item in result["failures"])
+    assert "continues_emotion_interpretation_after_user_correction" in result["failures"]
+
+
 def test_dark_souls_paraphrase_suite_has_twenty_stable_cases():
     cases = evals.dark_souls_paraphrase_cases()
     result = evals.evaluate_subject_context_paraphrases(cases)

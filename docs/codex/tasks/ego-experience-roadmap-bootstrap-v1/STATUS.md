@@ -80,6 +80,11 @@
 - #36 deterministic validation passed: `python3 scripts/validate_experience_eval_contract.py` reports `negative_emotion_support.case_count=4` and covers `frustration / uncertainty / disappointment / urgency` with zero errors.
 - #36 scripted CLI-compatible smoke passed with memory disabled for `/tmp` output containment: `python3 scripts/run_ego_experience_trial.py --sample-pack docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/negative_emotion_support_scenarios.json --out /tmp/ego_negative_emotion_trial --disable-memory` returned `scripted_real_entry_provider_unavailable`, `case_count=4`, `failed_count=0`, and all scenario expectation statuses `pass`.
 - #36 targeted validation passed: `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_experience_eval_contract.py scripts/tests/test_run_ego_experience_trial.py EgoOperator/tests/test_extracted_primitives.py` (`17 passed`).
+- #37 was promoted to `In Progress` for emotion misread recovery UX.
+- #37 implementation adds `emotion_misread_correction` as a candidate-only affect boundary signal: user corrections like “不是焦虑 / 别猜我的情绪 / 不用安慰” override raw affect cues, require `respect_correction_and_refocus`, and keep state mutation / reply decision forbidden.
+- #37 implementation also added `emotion_misread_recovery_scenarios.json` and wired the scripted trial report to validate trace-backed `emotion_candidate` / `response_need` expectations.
+- #37 scripted CLI-compatible smoke passed with memory disabled for `/tmp` output containment: `python3 scripts/run_ego_experience_trial.py --sample-pack docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/emotion_misread_recovery_scenarios.json --out /tmp/ego_emotion_misread_trial --disable-memory` returned `scripted_real_entry_provider_unavailable`, `case_count=3`, `failed_count=0`, and all scenario expectation statuses `pass`.
+- #37 targeted validation passed: `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_extracted_primitives.py scripts/tests/test_experience_eval_contract.py scripts/tests/test_run_ego_experience_trial.py` (`21 passed`).
 
 ## Notes
 

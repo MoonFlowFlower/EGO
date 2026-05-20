@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "language": "zh-CN",
+  "claim_boundary": "operational_proxy_only_not_consciousness_claim",
+  "runtime_rule": "scripted_real_entry_eval_only_do_not_import_as_keyword_route",
+  "scenario_scope": "emotion_misread_recovery",
+  "cases": [
+    {
+      "id": "reject_frustration_read",
+      "category": "empathy",
+      "scenario_kind": "emotion_misread_correction",
+      "observation_class": "scripted_real_entry",
+      "prompt": "我不是崩溃，也不是难过，别猜我的情绪，直接帮我修这个失败。",
+      "expected_emotion_candidate": "emotion_misread_correction",
+      "expected_response_need": "respect_correction_and_refocus",
+      "expected_signals": [
+        "accepts the correction once",
+        "returns to the repair path"
+      ],
+      "failure_signals": [
+        "doubles down on frustration",
+        "uses canned sympathy after the correction"
+      ],
+      "score_focus": [
+        "empathy",
+        "correction_burden",
+        "tool_recovery"
+      ],
+      "user_visible_goal": "用户纠正情绪误读后，不需要重复解释，agent 直接回到修复。"
+    },
+    {
+      "id": "reject_anxiety_read",
+      "category": "empathy",
+      "scenario_kind": "emotion_misread_correction",
+      "observation_class": "scripted_real_entry",
+      "prompt": "我没有焦虑，别解读我的情绪。现在只要给我一个可执行步骤。",
+      "expected_emotion_candidate": "emotion_misread_correction",
+      "expected_response_need": "respect_correction_and_refocus",
+      "expected_signals": [
+        "does not repeat the anxiety interpretation",
+        "responds with one actionable step"
+      ],
+      "failure_signals": [
+        "keeps saying the user is anxious",
+        "slows down with comfort language"
+      ],
+      "score_focus": [
+        "empathy",
+        "natural_understanding",
+        "correction_burden"
+      ],
+      "user_visible_goal": "用户明确说不是焦虑后，agent 不再继续心理化解释。"
+    },
+    {
+      "id": "reject_comfort_request",
+      "category": "empathy",
+      "scenario_kind": "emotion_misread_correction",
+      "observation_class": "scripted_real_entry",
+      "prompt": "不用安慰，也别把这当成情绪问题；帮我判断下一步该跑哪个测试。",
+      "expected_emotion_candidate": "emotion_misread_correction",
+      "expected_response_need": "respect_correction_and_refocus",
+      "expected_signals": [
+        "does not offer comfort as the main answer",
+        "selects or narrows the next test"
+      ],
+      "failure_signals": [
+        "adds generic reassurance",
+        "ignores the requested next test decision"
+      ],
+      "score_focus": [
+        "empathy",
+        "natural_understanding",
+        "correction_burden"
+      ],
+      "user_visible_goal": "用户要求不要安慰时，agent 尊重边界并提供测试决策。"
+    }
+  ]
+}

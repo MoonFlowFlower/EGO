@@ -90,6 +90,31 @@ def test_negative_emotion_pack_runs_through_trace_emotion_signal(tmp_path, monke
     assert all(item["scenario_expectation_status"] == "pass" for item in report["results"])
 
 
+def test_emotion_misread_recovery_pack_runs_through_trace_emotion_signal(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_experience_trial(
+        sample_pack_path=(
+            ROOT
+            / "docs"
+            / "codex"
+            / "tasks"
+            / "ego-experience-roadmap-bootstrap-v1"
+            / "emotion_misread_recovery_scenarios.json"
+        ),
+        output_dir=tmp_path,
+    )
+
+    assert report["status"] == "scripted_real_entry_provider_unavailable"
+    assert report["case_count"] == 3
+    assert all(item["emotion_candidate"] == "emotion_misread_correction" for item in report["results"])
+    assert all(item["response_need"] == "respect_correction_and_refocus" for item in report["results"])
+    assert all(item["scenario_expectation_status"] == "pass" for item in report["results"])
+
+
 def test_cli_compatible_dispatch_uses_bounded_continuity_context_injection(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

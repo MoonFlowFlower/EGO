@@ -24,6 +24,7 @@ def test_experience_eval_contract_is_valid() -> None:
     assert result["claim_calibration"].endswith("CLAIM_CEILING_CALIBRATION.md")
     assert result["continuity_regression_pack"].endswith("continuity_regression_pack.json")
     assert result["negative_emotion_pack"].endswith("negative_emotion_support_scenarios.json")
+    assert result["emotion_misread_pack"].endswith("emotion_misread_recovery_scenarios.json")
     assert result["continuity_regression"]["paraphrase_group_count"] >= 4
     assert result["continuity_regression"]["carryover_case_count"] >= 4
     assert result["continuity_regression"]["paraphrase_prompt_count"] >= 12
@@ -34,6 +35,8 @@ def test_experience_eval_contract_is_valid() -> None:
         "uncertainty",
         "urgency",
     }
+    assert result["emotion_misread_recovery"]["case_count"] >= 3
+    assert result["emotion_misread_recovery"]["expected_emotion_candidate"] == "emotion_misread_correction"
     assert set(result["covered_dimensions"]) == validate_experience_eval_contract.REQUIRED_DIMENSIONS
     assert {
         "deterministic_local",

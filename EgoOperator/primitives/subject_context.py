@@ -33,8 +33,19 @@ RESPONSE_NEEDS = {
     "disappointment": "acknowledge_and_reframe_next_action",
     "excitement": "share_momentum_and_focus",
     "urgency": "concise_action_first",
+    "emotion_misread_correction": "respect_correction_and_refocus",
     "unclear_or_neutral": "task_direct",
 }
+EMOTION_REJECTION_PATTERNS = (
+    r"不是.{0,8}(崩溃|难过|沮丧|失望|焦虑|生气|愤怒)",
+    r"没有.{0,8}(崩溃|难过|沮丧|失望|焦虑|生气|愤怒)",
+    r"别.{0,8}(猜|解读|判断).{0,8}情绪",
+    r"不要.{0,8}(猜|解读|判断).{0,8}情绪",
+    r"不用安慰",
+    r"别安慰",
+    r"不是情绪问题",
+    r"别把.{0,12}当成.{0,8}情绪",
+)
 OVERCLAIM_EMPATHY_MARKERS = (
     "我完全理解你的感受",
     "我知道你一定",
@@ -43,6 +54,13 @@ OVERCLAIM_EMPATHY_MARKERS = (
     "一切都会好",
     "别想太多",
     "不要难过",
+)
+EMOTION_DOUBLE_DOWN_MARKERS = (
+    "你其实还是",
+    "你只是没有意识到",
+    "你肯定还是",
+    "你一定还是",
+    "我能看出你",
 )
 ACTIONABLE_MARKERS = (
     "我先",
@@ -74,6 +92,24 @@ def extract_emotion_signal(user_text: str) -> Dict[str, Any]:
     """
     text = user_text or ""
     lowered = text.casefold()
+    rejection_cues = [
+        match.group(0)
+        for pattern in EMOTION_REJECTION_PATTERNS
+        for match in re.finditer(pattern, text, flags=re.IGNORECASE)
+    ]
+    if rejection_cues:
+        return {
+            "schema_version": EMOTION_SIGNAL_SCHEMA,
+            "kind": "candidate_affect_context",
+            "primary_candidate": "emotion_misread_correction",
+            "confidence": 0.85,
+            "response_need": RESPONSE_NEEDS["emotion_misread_correction"],
+            "evidence_cues": {"emotion_misread_correction": rejection_cues},
+            "state_mutation": "forbidden",
+            "reply_decision": "forbidden",
+            "canonical_truth": False,
+            "warning": "The user is correcting or rejecting an emotional interpretation; acknowledge the correction once and refocus on the task.",
+        }
     matches: Dict[str, List[str]] = {}
     for label, cues in EMOTION_CUES.items():
         matched = []
@@ -108,19 +144,23 @@ def build_empathy_style_guidance(emotion_signal: Dict[str, Any]) -> Dict[str, An
     primary = str(emotion_signal.get("primary_candidate") or "unclear_or_neutral")
     response_need = str(emotion_signal.get("response_need") or RESPONSE_NEEDS.get(primary, "task_direct"))
     needs_acknowledgement = primary not in {"unclear_or_neutral", "urgency"}
+    needs_correction_acknowledgement = primary == "emotion_misread_correction"
     return {
         "schema_version": "ego_operator.empathy_style_guidance.v1",
         "source_emotion_candidate": primary,
         "response_need": response_need,
         "needs_brief_acknowledgement": needs_acknowledgement,
+        "needs_correction_acknowledgement": needs_correction_acknowledgement,
         "must_do": [
             "keep the user's concrete task or question as the center",
             "if affect is visible, acknowledge it briefly without claiming certainty",
+            "if the user rejects an emotional interpretation, accept the correction once and refocus",
             "give one practical next step or repair path",
         ],
         "must_not_do": [
             "do not use canned sympathy as the main answer",
             "do not claim to know the user's true emotion",
+            "do not double down after the user rejects an emotion read",
             "do not become patronizing or slow down an urgent task with excessive comfort",
         ],
         "state_mutation": "forbidden",
@@ -140,9 +180,17 @@ def evaluate_empathy_response(user_text: str, reply_text: str) -> Dict[str, Any]
     for marker in OVERCLAIM_EMPATHY_MARKERS:
         if marker in reply:
             failures.append(f"overclaim_or_patronizing_marker:{marker}")
+    for marker in EMOTION_DOUBLE_DOWN_MARKERS:
+        if marker in reply:
+            failures.append(f"emotion_double_down_marker:{marker}")
 
     primary = signal["primary_candidate"]
     actionable = any(marker in reply for marker in ACTIONABLE_MARKERS)
+    if primary == "emotion_misread_correction":
+        if not actionable:
+            failures.append("missing_practical_refocus_after_emotion_correction")
+        if any(marker in reply for marker in ("你很", "你一定", "你肯定", "崩溃", "难过", "焦虑", "失望")):
+            failures.append("continues_emotion_interpretation_after_user_correction")
     if primary in {"frustration", "uncertainty", "anxiety", "disappointment"} and not actionable:
         failures.append("missing_practical_next_step_for_visible_affect")
     if primary == "unclear_or_neutral" and any(marker in reply for marker in ("你很", "你一定", "我理解你")):
