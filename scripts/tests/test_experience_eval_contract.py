@@ -20,6 +20,8 @@ def test_experience_eval_contract_is_valid() -> None:
     assert result["status"] == "ok"
     assert result["case_count"] >= 20
     assert result["dimension_count"] == 7
+    assert result["claim_state_count"] == 7
+    assert result["claim_calibration"].endswith("CLAIM_CEILING_CALIBRATION.md")
     assert set(result["covered_dimensions"]) == validate_experience_eval_contract.REQUIRED_DIMENSIONS
     assert {
         "deterministic_local",

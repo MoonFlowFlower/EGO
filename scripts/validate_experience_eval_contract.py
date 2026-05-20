@@ -28,6 +28,14 @@ DEFAULT_RUBRIC = (
     / "ego-experience-roadmap-bootstrap-v1"
     / "EXPERIENCE_EVAL_RUBRIC.md"
 )
+DEFAULT_CLAIM_CALIBRATION = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-experience-roadmap-bootstrap-v1"
+    / "CLAIM_CEILING_CALIBRATION.md"
+)
 
 REQUIRED_DIMENSIONS = {
     "natural_understanding",
@@ -44,6 +52,23 @@ ALLOWED_OBSERVATION_CLASSES = {
     "scripted_with_llm_judge",
     "human_required",
 }
+REQUIRED_CLAIM_STATES = {
+    "local_candidate",
+    "scripted_real_entry",
+    "scripted_with_llm_judge",
+    "real_provider_smoke",
+    "human_smoke",
+    "milestone_candidate",
+    "stable_benefit_pending",
+}
+REQUIRED_CLAIM_BOUNDARY_TERMS = {
+    "real consciousness",
+    "independent awareness",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+}
 FORBIDDEN_CLAIM_WORDS = {
     "真实意识",
     "独立意识已实现",
@@ -57,10 +82,15 @@ def _has_cjk(text: str) -> bool:
     return bool(re.search(r"[\u4e00-\u9fff]", text))
 
 
-def validate_sample_pack(path: Path = DEFAULT_SAMPLE_PACK, rubric_path: Path = DEFAULT_RUBRIC) -> dict[str, Any]:
+def validate_sample_pack(
+    path: Path = DEFAULT_SAMPLE_PACK,
+    rubric_path: Path = DEFAULT_RUBRIC,
+    claim_calibration_path: Path = DEFAULT_CLAIM_CALIBRATION,
+) -> dict[str, Any]:
     errors: list[str] = []
     payload = json.loads(path.read_text(encoding="utf-8"))
     rubric = rubric_path.read_text(encoding="utf-8")
+    claim_calibration = claim_calibration_path.read_text(encoding="utf-8")
 
     if payload.get("schema_version") != 1:
         errors.append("schema_version must be 1")
@@ -75,6 +105,18 @@ def validate_sample_pack(path: Path = DEFAULT_SAMPLE_PACK, rubric_path: Path = D
     for dimension in REQUIRED_DIMENSIONS:
         if dimension not in rubric:
             errors.append(f"rubric is missing dimension: {dimension}")
+
+    for claim_state in REQUIRED_CLAIM_STATES:
+        if f"`{claim_state}`" not in claim_calibration:
+            errors.append(f"claim calibration is missing claim_state: {claim_state}")
+    for observation_class in ALLOWED_OBSERVATION_CLASSES:
+        if f"`{observation_class}`" not in claim_calibration:
+            errors.append(f"claim calibration is missing observation_class: {observation_class}")
+    for boundary in REQUIRED_CLAIM_BOUNDARY_TERMS:
+        if boundary not in claim_calibration:
+            errors.append(f"claim calibration is missing boundary term: {boundary}")
+    if "human_comment_observation" not in claim_calibration:
+        errors.append("claim calibration must state that human_comment_observation is planning-only")
 
     lowered = f"{json.dumps(payload, ensure_ascii=False)}\n{rubric}".casefold()
     for forbidden in FORBIDDEN_CLAIM_WORDS:
@@ -150,6 +192,8 @@ def validate_sample_pack(path: Path = DEFAULT_SAMPLE_PACK, rubric_path: Path = D
         "covered_observation_classes": sorted(covered_observation_classes),
         "sample_pack": str(path),
         "rubric": str(rubric_path),
+        "claim_calibration": str(claim_calibration_path),
+        "claim_state_count": len(REQUIRED_CLAIM_STATES),
     }
 
 
@@ -157,8 +201,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate EgoOperator experience-first eval contract.")
     parser.add_argument("--sample-pack", default=str(DEFAULT_SAMPLE_PACK))
     parser.add_argument("--rubric", default=str(DEFAULT_RUBRIC))
+    parser.add_argument("--claim-calibration", default=str(DEFAULT_CLAIM_CALIBRATION))
     args = parser.parse_args(argv)
-    result = validate_sample_pack(Path(args.sample_pack), Path(args.rubric))
+    result = validate_sample_pack(Path(args.sample_pack), Path(args.rubric), Path(args.claim_calibration))
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2))
     return 0 if result["status"] == "ok" else 1
 

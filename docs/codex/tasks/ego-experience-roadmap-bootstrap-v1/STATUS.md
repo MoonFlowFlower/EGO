@@ -43,6 +43,12 @@
 - After #26, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
 - After #26, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `55 passed`.
 - #26 closeout-check returned `eligible` with dirty gate scoped to `.codex/project_contract.yaml`, the roadmap task status, and the new importer/test files.
+- #27 was promoted to `In Progress` to calibrate experience-first claim ceiling wording.
+- #27 implementation added `CLAIM_CEILING_CALIBRATION.md` and extended `scripts/validate_experience_eval_contract.py` so the eval contract checks required claim states and forbidden boundary terms.
+- #27 deterministic validation passed: `python3 scripts/validate_experience_eval_contract.py` reports `claim_state_count=7` and zero errors.
+- #27 targeted test passed: `TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_experience_eval_contract.py`.
+- After #27, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_target` passed.
+- After #27, `python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full` passed: `55 passed`.
 
 ## Notes
 
