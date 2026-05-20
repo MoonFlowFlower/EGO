@@ -195,3 +195,7 @@ side-effect control, and trace readability should a separate
   records current external task-loop, HITL, termination, persistence, and stuck
   detection patterns for Codex Autopilot and future EgoOperator active-layer
   work. It is research input only, not an autonomy proof.
+- [`EXTERNAL_EMOTION_AWARE_ASSISTANT_UX_SCAN.md`](EXTERNAL_EMOTION_AWARE_ASSISTANT_UX_SCAN.md)
+  records external emotion/empathy assistant UX patterns and translates them
+  into testable EgoOperator eval and response-style gates. It is research input
+  only, not an empathy efficacy proof.

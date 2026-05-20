@@ -128,6 +128,8 @@
 - #64 implementation adds `EgoOperator/docs/EXTERNAL_AGENT_MEMORY_ARCHITECTURE_SCAN.md`, surveying Letta/MemGPT, LangGraph/LangChain, Mem0, CrewAI, AutoGen, OpenHands, and smolagents memory patterns and distilling namespace/key metadata, hot-context retrieval, write-path gating, and trace-vs-core-memory separation into future EgoOperator follow-up issues without adding dependencies.
 - #65 was promoted to `In Progress` for an external agent autonomy and task-loop scan.
 - #65 implementation adds `EgoOperator/docs/EXTERNAL_AGENT_AUTONOMY_TASK_LOOP_SCAN.md`, comparing OpenAI Agents SDK HITL, LangGraph interrupts, OpenHands event-driven step/persistence/stuck detection, AutoGen termination conditions, and smolagents loop/sandbox cautions against Codex Autopilot gates. It recommends step-based event loops, serializable interruptions, stop-reason taxonomy, event-signature stuck detection, and operator digests without implementing unattended mutation.
+- #66 was promoted to `In Progress` for an external emotion-aware assistant UX scan.
+- #66 implementation adds `EgoOperator/docs/EXTERNAL_EMOTION_AWARE_ASSISTANT_UX_SCAN.md`, translating OpenAI Model Spec, Hume EVI, EmpatheticDialogues/ParlAI, EmoBench-M, Hum-Dial, NICE, and SoulChat patterns into EgoOperator empathy UX principles: acknowledge-then-act, no first-person feeling claims, misread recovery, situation-grounded evals, and dependency/overreach boundaries.
 
 ## Notes
 
