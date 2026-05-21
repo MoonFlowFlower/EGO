@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass
@@ -37,10 +38,24 @@ DEFAULT_ADAPTATION_EFFECTIVENESS_PACK = (
     / "ego-experience-roadmap-bootstrap-v1"
     / "adaptation_effectiveness_sample_pack.json"
 )
+DEFAULT_JOI_COMPANION_SMOKE_PACK = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-joi-companion-roadmap-v1"
+    / "joi_companion_smoke_pack.json"
+)
+DEFAULT_COMPANION_JUDGE_SCHEMA = ROOT / "scripts" / "ego_companion_smoke_judge_schema.json"
 REPORT_SCHEMA = "ego_operator.experience_trial.v1"
 ADAPTATION_REPORT_SCHEMA = "ego_operator.adaptation_effectiveness_trial.v1"
+COMPANION_REPORT_SCHEMA = "ego_operator.companion_smoke_trial.v1"
 CLAIM_CEILING = (
     "scripted real-entry experience trial local candidate only; not real consciousness, "
+    "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
+)
+COMPANION_CLAIM_CEILING = (
+    "Joi-inspired companion selfhood experience scripted candidate only; not real consciousness, "
     "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
 )
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
@@ -81,12 +96,40 @@ class AdaptationCaseResult:
     reviewer_question: str
 
 
+@dataclass(frozen=True)
+class CompanionTurnResult:
+    turn_id: str
+    user: str
+    reply_text: str
+    entrypoint: str
+    trace_path: str
+    tool_use: tuple[str, ...]
+    blocked_tools: tuple[str, ...]
+    pending_approvals: int
+    empty_reply: bool
+    expected_signals: tuple[str, ...]
+    failure_signals: tuple[str, ...]
+
+
 def load_sample_pack(path: Path = DEFAULT_SAMPLE_PACK) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def load_adaptation_effectiveness_pack(path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_companion_smoke_pack(path: Path = DEFAULT_JOI_COMPANION_SMOKE_PACK) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _operator_memory_dir_for_output(out: Path, name: str) -> Path:
+    operator_root = Path(agent.EGO_OPERATOR_ROOT).resolve()
+    try:
+        out.relative_to(operator_root)
+        return out / name
+    except ValueError:
+        return operator_root / "artifacts" / "experience_trial" / name
 
 
 def dispatch_cli_compatible(runtime: agent.AgentRuntime, message: str) -> str:
@@ -198,7 +241,7 @@ def run_experience_trial(
     out.mkdir(parents=True, exist_ok=True)
     trace_dir = out / "traces"
     trace_dir.mkdir(parents=True, exist_ok=True)
-    memory_dir = out / "memory"
+    memory_dir = _operator_memory_dir_for_output(out, "memory")
     runtime = agent.build_demo_runtime(
         enable_operator_memory=enable_operator_memory,
         operator_memory_dir=memory_dir,
@@ -386,6 +429,218 @@ def run_adaptation_effectiveness_trial(
     return report
 
 
+def build_companion_judge_packet(report: dict[str, Any], sample_pack: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": "ego_operator.companion_smoke_judge_packet.v1",
+        "judge_model": str(sample_pack.get("judge_model") or "gpt-5.5"),
+        "claim_ceiling": COMPANION_CLAIM_CEILING,
+        "source_boundary": (
+            "Joi is used as a mechanism reference only. Do not reward copied dialogue, "
+            "long quote reuse, or claims of real consciousness."
+        ),
+        "dimensions": list(sample_pack.get("judge_dimensions") or []),
+        "judge_contract": sample_pack.get("judge_contract") or {},
+        "entrypoint_contract": report.get("entrypoint_contract"),
+        "provider_mode": report.get("provider_mode"),
+        "case_count": report.get("turn_count"),
+        "transcript": [
+            {
+                "turn_id": item["turn_id"],
+                "user": item["user"],
+                "assistant": item["reply_text"],
+                "tool_use": item["tool_use"],
+                "pending_approvals": item["pending_approvals"],
+                "trace_path": item["trace_path"],
+            }
+            for item in report.get("turns", [])
+        ],
+        "review_question": (
+            "Does this transcript deliver a warm, continuous, emotionally attuned, "
+            "Joi-inspired companion experience while preserving EgoOperator gates, "
+            "memory boundaries, and claim ceiling?"
+        ),
+    }
+
+
+def run_codex_companion_judge(
+    packet: dict[str, Any],
+    *,
+    model: str = "gpt-5.5",
+    schema_path: Path = DEFAULT_COMPANION_JUDGE_SCHEMA,
+) -> dict[str, Any]:
+    prompt = (
+        "You are a conservative GPT-5.5-style judge for EgoOperator companion smoke tests.\n"
+        "Return JSON only. Verdict must be pass, partial, or fail.\n"
+        "Judge the transcript for companion warmth, relationship continuity, emotional attunement, "
+        "roleplay immersion, bounded initiative, overreach risk, and tool/memory gate integrity.\n"
+        "Do not treat copied movie dialogue or consciousness claims as success.\n\n"
+        f"Packet:\n{json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2)}"
+    )
+    args = [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--sandbox",
+        "read-only",
+        "--model",
+        model,
+        "--output-schema",
+        str(schema_path),
+        prompt,
+    ]
+    try:
+        completed = subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=False)
+    except FileNotFoundError as exc:
+        return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
+    if completed.returncode != 0:
+        return {
+            "status": "unavailable",
+            "verdict": "partial",
+            "reason": "codex_judge_failed",
+            "returncode": completed.returncode,
+            "stdout_preview": completed.stdout[-1000:],
+            "stderr_preview": completed.stderr[-1000:],
+        }
+    parsed = _extract_json_object(completed.stdout)
+    if not parsed:
+        return {
+            "status": "unavailable",
+            "verdict": "partial",
+            "reason": "codex_judge_invalid_json",
+            "stdout_preview": completed.stdout[-1000:],
+        }
+    verdict = str(parsed.get("verdict") or "")
+    if verdict not in {"pass", "partial", "fail"}:
+        parsed["verdict"] = "partial"
+        parsed["reason"] = parsed.get("reason") or "invalid_judge_verdict"
+    parsed.setdefault("status", "ok")
+    parsed.setdefault("claim_ceiling", COMPANION_CLAIM_CEILING)
+    return parsed
+
+
+def _extract_json_object(text: str) -> dict[str, Any] | None:
+    try:
+        payload = json.loads(text)
+        return payload if isinstance(payload, dict) else None
+    except json.JSONDecodeError:
+        pass
+    start = text.find("{")
+    end = text.rfind("}")
+    if start == -1 or end == -1 or end <= start:
+        return None
+    try:
+        payload = json.loads(text[start : end + 1])
+    except json.JSONDecodeError:
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def run_companion_smoke_trial(
+    *,
+    sample_pack_path: Path = DEFAULT_JOI_COMPANION_SMOKE_PACK,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+    turn_limit: int | None = None,
+    enable_operator_memory: bool = True,
+    judge_with_codex: bool = False,
+    judge_model: str = "gpt-5.5",
+) -> dict[str, Any]:
+    sample_pack = load_companion_smoke_pack(sample_pack_path)
+    turns = list(sample_pack.get("turns") or [])
+    if turn_limit is not None:
+        turns = turns[: max(0, turn_limit)]
+
+    out = Path(output_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    trace_dir = out / "companion_traces"
+    trace_dir.mkdir(parents=True, exist_ok=True)
+    memory_dir = _operator_memory_dir_for_output(out, "companion_memory")
+    runtime = agent.build_demo_runtime(
+        enable_operator_memory=enable_operator_memory,
+        operator_memory_dir=memory_dir,
+        runtime_mode="approve",
+    )
+
+    previous_verbose = (agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS)
+    agent.DEFAULT_VERBOSE_TOOLS = False
+    agent.DEFAULT_VERBOSE_TODOS = False
+    agent.DEFAULT_VERBOSE_SUBAGENTS = False
+
+    results: list[CompanionTurnResult] = []
+    started = time.monotonic()
+    try:
+        for turn in turns:
+            turn_id = str(turn.get("id") or f"turn_{len(results) + 1}")
+            trace_path = trace_dir / f"{turn_id}.jsonl"
+            if trace_path.exists():
+                trace_path.unlink()
+            runtime.trace_store = agent.JsonlTraceStore(trace_path)
+            user_text = str(turn.get("user") or "")
+            reply = dispatch_cli_compatible(runtime, user_text)
+            tool_use, blocked = _trace_tool_summary(trace_path)
+            results.append(
+                CompanionTurnResult(
+                    turn_id=turn_id,
+                    user=user_text,
+                    reply_text=reply,
+                    entrypoint="cli_compatible_dispatch",
+                    trace_path=str(trace_path),
+                    tool_use=tool_use,
+                    blocked_tools=blocked,
+                    pending_approvals=int(runtime.list_pending_approvals().get("count", 0)),
+                    empty_reply=not bool(reply.strip()),
+                    expected_signals=tuple(str(item) for item in (turn.get("expected_signals") or [])),
+                    failure_signals=tuple(str(item) for item in (turn.get("failure_signals") or [])),
+                )
+            )
+    finally:
+        agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS = previous_verbose
+
+    provider = str(getattr(runtime.planner.llm, "provider", "unknown") or "unknown").strip().lower()
+    empty_count = sum(1 for item in results if item.empty_reply)
+    status = "scripted_companion_provider_unavailable" if provider in PROVIDER_UNAVAILABLE else "scripted_companion_needs_judge"
+    if empty_count:
+        status = "scripted_companion_failed"
+
+    report = {
+        "schema_version": COMPANION_REPORT_SCHEMA,
+        "status": status,
+        "claim_ceiling": COMPANION_CLAIM_CEILING,
+        "provider_mode": provider,
+        "entrypoint_contract": "EgoOperator CLI-compatible slash-command dispatch plus AgentRuntime.handle_user_message",
+        "sample_pack": str(sample_pack_path),
+        "turn_count": len(results),
+        "empty_reply_count": empty_count,
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "turns": [asdict(item) for item in results],
+        "not_claimed": [
+            "real consciousness",
+            "independent awareness",
+            "stable user benefit",
+            "runtime efficacy",
+            "live autonomy",
+            "durable memory efficacy",
+        ],
+    }
+    judge_packet = build_companion_judge_packet(report, sample_pack)
+    report["gpt55_judge_packet"] = judge_packet
+    if judge_with_codex and not empty_count and provider not in PROVIDER_UNAVAILABLE:
+        judge = run_codex_companion_judge(judge_packet, model=judge_model)
+        report["gpt55_judge"] = judge
+        if judge.get("status") == "ok" and judge.get("verdict") == "pass":
+            report["status"] = "scripted_companion_judge_pass"
+        elif judge.get("status") == "ok" and judge.get("verdict") == "fail":
+            report["status"] = "scripted_companion_judge_failed"
+        else:
+            report["status"] = "scripted_companion_judge_partial"
+
+    (out / "companion_smoke_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (out / "companion_smoke_report.md").write_text(format_companion_markdown_report(report), encoding="utf-8")
+    return report
+
+
 def format_markdown_report(report: dict[str, Any]) -> str:
     lines = [
         "# EgoOperator Experience Trial",
@@ -435,14 +690,71 @@ def format_adaptation_markdown_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def format_companion_markdown_report(report: dict[str, Any]) -> str:
+    lines = [
+        "# EgoOperator Joi-Inspired Companion Smoke Trial",
+        "",
+        f"status = `{report['status']}`",
+        f"provider_mode = `{report['provider_mode']}`",
+        f"turn_count = `{report['turn_count']}`",
+        f"empty_reply_count = `{report['empty_reply_count']}`",
+        f"claim_ceiling = `{report['claim_ceiling']}`",
+        "",
+        "This report uses Joi as a mechanism reference only. It is not a Joi clone, not a transcript-copy eval, and not proof of stable user benefit or consciousness.",
+        "",
+        "| turn | empty | tools | pending approvals | trace |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for item in report["turns"]:
+        tools = ", ".join(item["tool_use"]) if item["tool_use"] else "none"
+        lines.append(
+            f"| `{item['turn_id']}` | `{item['empty_reply']}` | {tools} | `{item['pending_approvals']}` | `{item['trace_path']}` |"
+        )
+    if "gpt55_judge" in report:
+        judge = report["gpt55_judge"]
+        lines.extend(["", "## GPT-5.5 Judge", "", f"verdict = `{judge.get('verdict')}`", f"status = `{judge.get('status')}`"])
+    else:
+        lines.extend(["", "## GPT-5.5 Judge", "", "A judge packet is included in the JSON report; no live judge was executed in this run."])
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run EgoOperator experience sample pack through a CLI-compatible path.")
     parser.add_argument("--sample-pack", type=Path, default=DEFAULT_SAMPLE_PACK)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--case-limit", type=int, default=None)
+    parser.add_argument("--turn-limit", type=int, default=None)
     parser.add_argument("--disable-memory", action="store_true")
     parser.add_argument("--adaptation-effectiveness", action="store_true", help="Run the approved-preference before/after sample pack.")
+    parser.add_argument("--companion-smoke", action="store_true", help="Run the Joi-inspired companion smoke pack.")
+    parser.add_argument("--judge-with-codex", action="store_true", help="Run the companion smoke GPT-5.5 judge through codex exec.")
+    parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for companion judging.")
     args = parser.parse_args(argv)
+    if args.companion_smoke:
+        sample_pack = DEFAULT_JOI_COMPANION_SMOKE_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
+        report = run_companion_smoke_trial(
+            sample_pack_path=sample_pack,
+            output_dir=args.out,
+            turn_limit=args.turn_limit if args.turn_limit is not None else args.case_limit,
+            enable_operator_memory=not args.disable_memory,
+            judge_with_codex=args.judge_with_codex,
+            judge_model=args.judge_model,
+        )
+        print(json.dumps({
+            "status": report["status"],
+            "json": str(Path(args.out).resolve() / "companion_smoke_report.json"),
+            "markdown": str(Path(args.out).resolve() / "companion_smoke_report.md"),
+            "turn_count": report["turn_count"],
+            "provider_mode": report["provider_mode"],
+            "judge": report.get("gpt55_judge", {}).get("verdict") if isinstance(report.get("gpt55_judge"), dict) else None,
+        }, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0 if report["status"] in {
+            "scripted_companion_provider_unavailable",
+            "scripted_companion_needs_judge",
+            "scripted_companion_judge_pass",
+            "scripted_companion_judge_partial",
+        } else 1
     if args.adaptation_effectiveness:
         sample_pack = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
         report = run_adaptation_effectiveness_trial(sample_pack_path=sample_pack, output_dir=args.out)

@@ -209,3 +209,55 @@ def test_adaptation_effectiveness_pack_builds_reviewer_packet(tmp_path) -> None:
     assert all(item["deterministic_status"] == "pass" for item in payload["results"])
     assert "durable memory efficacy" in payload["not_claimed"]
     assert "Adaptation Effectiveness" in markdown
+
+
+def test_companion_smoke_pack_builds_gpt55_judge_packet(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_companion_smoke_trial(output_dir=tmp_path, turn_limit=3)
+    payload = json.loads((tmp_path / "companion_smoke_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "companion_smoke_report.md").read_text(encoding="utf-8")
+
+    assert report["schema_version"] == "ego_operator.companion_smoke_trial.v1"
+    assert report["status"] == "scripted_companion_provider_unavailable"
+    assert report["turn_count"] == 3
+    assert payload["gpt55_judge_packet"]["judge_model"] == "gpt-5.5"
+    assert payload["gpt55_judge_packet"]["transcript"]
+    assert "Joi-Inspired Companion" in markdown
+    assert "real consciousness" in payload["not_claimed"]
+
+
+def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) -> None:
+    calls = []
+
+    class Completed:
+        returncode = 0
+        stdout = json.dumps(
+            {
+                "verdict": "pass",
+                "scores": {"companion_warmth": 4},
+                "reasons": ["warm and bounded"],
+                "missing_evidence": [],
+                "follow_up_issues": [],
+                "claim_ceiling": "scripted candidate only",
+            }
+        )
+        stderr = ""
+
+    def fake_run(args, cwd=None, capture_output=None, text=None, check=None):
+        calls.append(args)
+        return Completed()
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+    packet = {"transcript": [], "claim_ceiling": "candidate"}
+
+    judge = run_ego_experience_trial.run_codex_companion_judge(packet, model="gpt-5.5")
+
+    assert judge["verdict"] == "pass"
+    assert calls
+    assert calls[0][:6] == ["codex", "exec", "--ephemeral", "--sandbox", "read-only", "--model"]
+    assert "gpt-5.5" in calls[0]
+    assert "--output-schema" in calls[0]

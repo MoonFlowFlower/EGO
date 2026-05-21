@@ -73,6 +73,7 @@ verify_profiles:
           - docs/codex/tasks/codex-autopilot-meta-control-v3
           - docs/codex/tasks/codex-autopilot-epic-rollup-v1
           - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1
+          - docs/codex/tasks/ego-joi-companion-roadmap-v1
           - EgoOperator
 
 protected_paths:
@@ -94,6 +95,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/codex-autopilot-meta-control-v3/
   - docs/codex/tasks/codex-autopilot-epic-rollup-v1/
   - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/
+  - docs/codex/tasks/ego-joi-companion-roadmap-v1/
 
 commit_policy:
   mode: direct-main
@@ -108,6 +110,7 @@ task_classification:
     - "Codex Toolkit:"
     - "EgoOperator:"
     - "EgoRoadmap:"
+    - "EgoDesktop:"
   epic_title_prefixes:
     - "Epic "
   research_title_prefixes:
@@ -249,6 +252,8 @@ epic_rollup:
   parent_marker: "Parent epic"
   child_title_prefixes:
     - "EgoRoadmap:"
+    - "EgoOperator:"
+    - "EgoDesktop:"
     - "Research:"
   closeout_claim_ceiling: Codex autopilot epic rollup and real-task execution local workflow candidate pass
   block_child_classes:
@@ -266,7 +271,7 @@ observation_classes:
     description: The same user-facing entrypoint can be scripted and judged deterministically.
   scripted_with_llm_judge:
     closeout_allowed: false
-    description: Batchable but still needs weaker claim ceiling or human review for subjective quality.
+    description: Batchable with a conservative LLM judge such as GPT-5.5; hard-stop gates and claim ceilings still win.
   human_required:
     closeout_allowed: false
     description: Requires human preference, external account observation, or high-impact route decision.

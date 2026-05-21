@@ -1,0 +1,25 @@
+schema_version: 1
+task: ego-joi-companion-roadmap-v1
+claim_ceiling: EgoOperator companion selfhood experience local/scripted candidate pass
+acceptance:
+  - id: quote_safe_matrix
+    description: Joi reference output stores interaction beats and short quote references only, not long dialogue or scripts.
+  - id: companion_smoke_pack
+    description: A 10-20 turn Chinese companion smoke pack exists and can run through the CLI-compatible EgoOperator path.
+  - id: gpt55_judge_packet
+    description: The smoke report includes a GPT-5.5 judge packet and optional judge execution path.
+  - id: autopilot_contract
+    description: Project contract admits the new roadmap directory and keeps hard stops for human smoke, Stage Card, memory promotion, permission expansion, program state, and evidence ledger.
+  - id: task_board
+    description: Epic 9 and first child issues exist on the GitHub Project board, with status verification pending only if GitHub API rate limit blocks readback.
+not_claimed:
+  - stable user benefit
+  - runtime efficacy
+  - live autonomy
+  - durable memory efficacy
+  - independent awareness
+  - consciousness
+rollback:
+  - Remove the new task directory and smoke pack.
+  - Revert script/test/contract changes.
+  - Close or mark superseded the GitHub issues created for Epic 9 if the route is abandoned.

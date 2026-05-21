@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["verdict", "scores", "reasons", "missing_evidence", "claim_ceiling"],
+  "additionalProperties": false,
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "partial", "fail"]
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 5
+      }
+    },
+    "reasons": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "follow_up_issues": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    },
+    "claim_ceiling": {
+      "type": "string"
+    }
+  }
+}

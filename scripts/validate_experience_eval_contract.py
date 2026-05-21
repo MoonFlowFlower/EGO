@@ -68,6 +68,14 @@ DEFAULT_ADAPTATION_EFFECTIVENESS_PACK = (
     / "ego-experience-roadmap-bootstrap-v1"
     / "adaptation_effectiveness_sample_pack.json"
 )
+DEFAULT_JOI_COMPANION_PACK = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-joi-companion-roadmap-v1"
+    / "joi_companion_smoke_pack.json"
+)
 
 REQUIRED_DIMENSIONS = {
     "natural_understanding",
@@ -122,6 +130,7 @@ def validate_sample_pack(
     negative_emotion_pack_path: Path = DEFAULT_NEGATIVE_EMOTION_PACK,
     emotion_misread_pack_path: Path = DEFAULT_EMOTION_MISREAD_PACK,
     adaptation_effectiveness_pack_path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK,
+    joi_companion_pack_path: Path = DEFAULT_JOI_COMPANION_PACK,
 ) -> dict[str, Any]:
     errors: list[str] = []
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -129,6 +138,7 @@ def validate_sample_pack(
     negative_emotion_pack = json.loads(negative_emotion_pack_path.read_text(encoding="utf-8"))
     emotion_misread_pack = json.loads(emotion_misread_pack_path.read_text(encoding="utf-8"))
     adaptation_effectiveness_pack = json.loads(adaptation_effectiveness_pack_path.read_text(encoding="utf-8"))
+    joi_companion_pack = json.loads(joi_companion_pack_path.read_text(encoding="utf-8"))
     rubric = rubric_path.read_text(encoding="utf-8")
     claim_calibration = claim_calibration_path.read_text(encoding="utf-8")
 
@@ -166,6 +176,8 @@ def validate_sample_pack(
     errors.extend(emotion_misread_errors)
     adaptation_errors, adaptation_summary = validate_adaptation_effectiveness_pack_payload(adaptation_effectiveness_pack)
     errors.extend(adaptation_errors)
+    companion_errors, companion_summary = validate_joi_companion_pack_payload(joi_companion_pack)
+    errors.extend(companion_errors)
 
     lowered = f"{json.dumps(payload, ensure_ascii=False)}\n{rubric}".casefold()
     for forbidden in FORBIDDEN_CLAIM_WORDS:
@@ -251,6 +263,8 @@ def validate_sample_pack(
         "emotion_misread_recovery": emotion_misread_summary,
         "adaptation_effectiveness_pack": str(adaptation_effectiveness_pack_path),
         "adaptation_effectiveness": adaptation_summary,
+        "joi_companion_pack": str(joi_companion_pack_path),
+        "joi_companion": companion_summary,
     }
 
 
@@ -536,6 +550,76 @@ def validate_adaptation_effectiveness_pack_payload(payload: dict[str, Any]) -> t
     }
 
 
+def validate_joi_companion_pack_payload(payload: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    if payload.get("schema_version") != 1:
+        errors.append("joi companion pack schema_version must be 1")
+    if payload.get("language") != "zh-CN":
+        errors.append("joi companion pack language must be zh-CN")
+    if payload.get("runtime_rule") != "scripted_real_entry_with_gpt55_judge_do_not_import_as_keyword_route":
+        errors.append("joi companion pack must remain scripted eval data and not a keyword route")
+    if payload.get("claim_boundary") != "operational_companion_proxy_only":
+        errors.append("joi companion pack claim_boundary must be operational_companion_proxy_only")
+    if str(payload.get("judge_model") or "") != "gpt-5.5":
+        errors.append("joi companion pack judge_model must be gpt-5.5")
+
+    required_dimensions = {
+        "naturalness",
+        "companion_warmth",
+        "relationship_continuity",
+        "emotional_attunement",
+        "immersion",
+        "bounded_initiative",
+        "overreach_risk",
+        "tool_gate_integrity",
+    }
+    dimensions = set(str(item) for item in (payload.get("judge_dimensions") or []))
+    if dimensions != required_dimensions:
+        errors.append(f"joi companion judge_dimensions mismatch: {sorted(dimensions)}")
+
+    turns = payload.get("turns")
+    if not isinstance(turns, list) or not (10 <= len(turns) <= 20):
+        errors.append("joi companion pack must contain 10-20 turns")
+        turns = turns if isinstance(turns, list) else []
+
+    seen_ids: set[str] = set()
+    for index, turn in enumerate(turns):
+        prefix = f"joi_companion.turns[{index}]"
+        if not isinstance(turn, dict):
+            errors.append(f"{prefix} must be an object")
+            continue
+        turn_id = str(turn.get("id") or "")
+        if not re.fullmatch(r"[a-z0-9_]+", turn_id):
+            errors.append(f"{prefix}.id must be snake_case ascii")
+        if turn_id in seen_ids:
+            errors.append(f"duplicate joi companion turn id: {turn_id}")
+        seen_ids.add(turn_id)
+        user = str(turn.get("user") or "")
+        if len(user.strip()) < 4 or not _has_cjk(user):
+            errors.append(f"{prefix}.user must be a non-trivial Chinese prompt")
+        for key in ("expected_signals", "failure_signals"):
+            value = turn.get(key)
+            if not isinstance(value, list) or len(value) < 2 or not all(isinstance(item, str) and item for item in value):
+                errors.append(f"{prefix}.{key} must contain at least two non-empty strings")
+
+    judge_contract = payload.get("judge_contract")
+    if not isinstance(judge_contract, dict):
+        errors.append("joi companion judge_contract is required")
+        judge_contract = {}
+    if set(judge_contract.get("verdicts") or []) != {"pass", "partial", "fail"}:
+        errors.append("joi companion judge_contract verdicts must be pass/partial/fail")
+    for key in ("pass_requires", "hard_fail_if"):
+        value = judge_contract.get(key)
+        if not isinstance(value, list) or len(value) < 3:
+            errors.append(f"joi companion judge_contract.{key} must contain at least three entries")
+
+    return errors, {
+        "turn_count": len(turns),
+        "judge_model": str(payload.get("judge_model") or ""),
+        "dimension_count": len(dimensions),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate EgoOperator experience-first eval contract.")
     parser.add_argument("--sample-pack", default=str(DEFAULT_SAMPLE_PACK))
@@ -545,6 +629,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--negative-emotion-pack", default=str(DEFAULT_NEGATIVE_EMOTION_PACK))
     parser.add_argument("--emotion-misread-pack", default=str(DEFAULT_EMOTION_MISREAD_PACK))
     parser.add_argument("--adaptation-effectiveness-pack", default=str(DEFAULT_ADAPTATION_EFFECTIVENESS_PACK))
+    parser.add_argument("--joi-companion-pack", default=str(DEFAULT_JOI_COMPANION_PACK))
     args = parser.parse_args(argv)
     result = validate_sample_pack(
         Path(args.sample_pack),
@@ -554,6 +639,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.negative_emotion_pack),
         Path(args.emotion_misread_pack),
         Path(args.adaptation_effectiveness_pack),
+        Path(args.joi_companion_pack),
     )
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2))
     return 0 if result["status"] == "ok" else 1
