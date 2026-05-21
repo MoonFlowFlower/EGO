@@ -66,6 +66,39 @@ class CompleteOnlyLLM:
         return "我先直接给一个普通回答。"
 
 
+class RateLimitFailingChatLLM:
+    provider = "fake"
+    model = "rate-limit-failing"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        raise RuntimeError("429 Too Many Requests")
+
+    def complete(self, prompt, messages=None):
+        raise RuntimeError("429 Too Many Requests")
+
+
+class PolicyAwareChatLLM:
+    provider = "fake"
+    model = "policy-aware"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.system_prompts = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.system_prompts.append(system_prompt)
+        if "policy_patch_candidate" in system_prompt and "provider_rate_limit" in system_prompt:
+            return agent.LLMChatResult(content="我会先按上次限流经验 checkpoint 状态，再建议 fallback 或稍后重试。", tool_calls=[])
+        return agent.LLMChatResult(content="我会直接再试一次。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        self.system_prompts.append(prompt)
+        return "我会直接再试一次。"
+
+
 def _imported_roots(module) -> set[str]:
     tree = ast.parse(inspect.getsource(module))
     roots: set[str] = set()
@@ -370,6 +403,37 @@ def test_outcome_prediction_changes_fallback_planner_decision_and_trace(tmp_path
     assert effect["decision"] == "ask"
     assert effect["selected_prediction"]["action_type"] == "ask"
     assert row["subject_context"]["outcome_predictions"]["schema_version"] == "ego_operator.outcome_predictions.v0"
+
+
+def test_repeated_failure_emits_policy_patch_and_replays_on_next_case(tmp_path):
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, subject_context_enabled=True)
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "policy_trace.jsonl")
+    runtime.planner.llm = RateLimitFailingChatLLM()
+
+    runtime.handle_user_message("你好")
+    runtime.handle_user_message("又试一次你好")
+
+    assert "provider_rate_limit" in runtime.policy_patch_candidates
+    candidate = runtime.policy_patch_candidates["provider_rate_limit"]
+    assert candidate["schema_version"] == "ego_operator.policy_patch_candidate.v0"
+    assert candidate["state_mutation"] == "forbidden"
+    assert candidate["canonical_truth"] is False
+
+    runtime.planner.llm = PolicyAwareChatLLM()
+    result = runtime.handle_user_message("又遇到 429 限流了怎么办？")
+
+    assert "checkpoint 状态" in result.reply_text
+    rows = [
+        json.loads(line)
+        for line in (tmp_path / "policy_trace.jsonl").read_text(encoding="utf-8").splitlines()
+    ]
+    second_feedback = rows[1]["policy_patch"]["feedback"]
+    third_replay = rows[2]["policy_patch"]["replay"]
+    third_subject_candidates = rows[2]["subject_context"]["subject_state"]["policy_patch_candidates"]
+    assert second_feedback["status"] == "candidate_emitted"
+    assert third_replay[0]["trigger_signature"] == "provider_rate_limit"
+    assert third_subject_candidates[0]["replay_active"] is True
+    assert third_subject_candidates[0]["state_mutation"] == "forbidden"
 
 
 def test_planner_fallback_does_not_keyword_route_before_llm():

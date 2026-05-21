@@ -1,0 +1,21 @@
+version: 1
+task_id: EGO-FS-006
+title: EgoOperator PolicyPatchCandidate and replay learning loop
+claim_ceiling: PolicyPatchCandidate replay-learning local/scripted candidate pass
+observation_class: scripted_real_entry
+must_pass:
+  - id: repeated_failure_candidate
+    description: A repeated same-class failure emits a policy patch candidate.
+  - id: replay_trace
+    description: A later comparable turn replays the candidate into prompt/trace context.
+  - id: strategy_change
+    description: Scripted fake provider shows strategy change when replay is present.
+  - id: candidate_only
+    description: Policy candidates do not directly mutate canonical state or memory.
+must_not:
+  - persist policy candidates as canonical memory
+  - auto-promote policy patches
+  - bypass runtime gates
+rollback:
+  - remove policy feedback/replay wiring
+  - remove tests and local board status changes

@@ -18,6 +18,7 @@ SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
 SUBJECT_STATE_SCHEMA = "ego_operator.subject_state.v0"
 VIABILITY_STATE_SCHEMA = "ego_operator.viability_state.v0"
 OUTCOME_PREDICTIONS_SCHEMA = "ego_operator.outcome_predictions.v0"
+POLICY_PATCH_CANDIDATE_SCHEMA = "ego_operator.policy_patch_candidate.v0"
 CLAIM_CEILING = "candidate-local subject context only"
 
 EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
@@ -632,6 +633,7 @@ def build_subject_state_v0(
     canonical_runtime_name: str = "EgoOperator",
     operator_memory_available: bool = False,
     recent_episode_refs: List[str] | tuple[str, ...] | None = None,
+    policy_patch_replay_candidates: List[Dict[str, Any]] | tuple[Dict[str, Any], ...] | None = None,
 ) -> Dict[str, Any]:
     """Build a candidate-only relational subject-state context record.
 
@@ -744,11 +746,27 @@ def build_subject_state_v0(
     policy_hits = _cue_hits(text, POLICY_PATCH_CUES)
     if policy_hits:
         policy_patch_candidates.append({
+            "schema_version": POLICY_PATCH_CANDIDATE_SCHEMA,
             "kind": "policy_patch_candidate",
             "trigger_signature": "latest_user_correction_or_future_preference",
             "preferred_strategy": _bounded(text, 280),
             "evidence_cues": policy_hits,
             "gate_required": True,
+            "canonical_truth": False,
+        })
+    for candidate in list(policy_patch_replay_candidates or [])[:3]:
+        if not isinstance(candidate, dict):
+            continue
+        policy_patch_candidates.append({
+            "schema_version": POLICY_PATCH_CANDIDATE_SCHEMA,
+            "kind": "policy_patch_candidate",
+            "trigger_signature": _bounded(str(candidate.get("trigger_signature") or ""), 160),
+            "failed_strategy": _bounded(str(candidate.get("failed_strategy") or ""), 240),
+            "preferred_strategy": _bounded(str(candidate.get("preferred_strategy") or ""), 280),
+            "evidence_refs": _bounded_list(list(candidate.get("evidence_refs") or []), max_items=5),
+            "replay_active": True,
+            "gate_required": True,
+            "state_mutation": "forbidden",
             "canonical_truth": False,
         })
 
@@ -942,6 +960,7 @@ def build_minimal_subject_context(
     operator_memory_available: bool = False,
     self_display_name: str = "EgoOperator",
     canonical_runtime_name: str = "EgoOperator",
+    policy_patch_replay_candidates: List[Dict[str, Any]] | tuple[Dict[str, Any], ...] | None = None,
 ) -> SubjectContextSnapshot:
     memory_note = (
         "Candidate-local operator memory may be supplied separately in the system prompt."
@@ -954,6 +973,7 @@ def build_minimal_subject_context(
         self_display_name=self_display_name,
         canonical_runtime_name=canonical_runtime_name,
         operator_memory_available=operator_memory_available,
+        policy_patch_replay_candidates=policy_patch_replay_candidates,
     )
     viability_state = extract_viability_state_v0(
         user_text,

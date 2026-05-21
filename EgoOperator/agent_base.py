@@ -4436,6 +4436,9 @@ class AgentRuntime:
         self.commitments: Dict[str, Dict[str, Any]] = {}
         self.team: Optional[AgentTeamManager] = None
         self._last_operator_memory_context: Optional[MemoryContext] = None
+        self.policy_patch_candidates: Dict[str, Dict[str, Any]] = {}
+        self.policy_failure_counts: Dict[str, int] = {}
+        self._last_policy_patch_replay: List[Dict[str, Any]] = []
 
     def operator_memory_enabled(self) -> bool:
         return self.operator_memory is not None
@@ -4450,12 +4453,118 @@ class AgentRuntime:
 
     def build_subject_context(self, user_text: str) -> SubjectContextSnapshot:
         identity = self.current_self_identity()
+        replay_candidates = self._matching_policy_patch_candidates(user_text)
+        self._last_policy_patch_replay = replay_candidates
         return build_minimal_subject_context(
             user_text,
             operator_memory_available=self.operator_memory is not None,
             self_display_name=identity.display_name,
             canonical_runtime_name=identity.canonical_name,
+            policy_patch_replay_candidates=replay_candidates,
         )
+
+    def _classify_policy_feedback_failure(
+        self,
+        *,
+        external_result: Optional[Dict[str, Any]],
+        tool_trace: List[Dict[str, Any]],
+    ) -> str:
+        result = external_result if isinstance(external_result, dict) else {}
+        combined = json.dumps(to_jsonable({"external_result": result, "tool_trace": tool_trace[-3:]}), ensure_ascii=False).casefold()
+        if result.get("status") in {"llm_error", "empty_reply_recovered"}:
+            if "429" in combined or "rate limit" in combined or "限流" in combined:
+                return "provider_rate_limit"
+            if "timeout" in combined or "超时" in combined:
+                return "provider_timeout"
+            return "provider_generation_failed"
+        if "timeout" in combined and ("run_command" in combined or "command" in combined):
+            return "command_timeout"
+        if "blocked" in combined and ("fake approval" in combined or "unbacked" in combined):
+            return "approval_hallucination_blocked"
+        return ""
+
+    def _build_policy_patch_candidate(self, signature: str, event: AgentEvent) -> Dict[str, Any]:
+        preferred = {
+            "provider_rate_limit": "When provider rate limit recurs, surface fallback/status clearly and avoid repeating the same model-only attempt without checkpointing.",
+            "provider_timeout": "When provider timeout recurs, checkpoint the incomplete state and suggest retry/fallback instead of pretending progress.",
+            "provider_generation_failed": "When generation repeatedly fails, return a transparent recovery message and preserve current task state.",
+            "command_timeout": "When command timeout recurs, propose a smaller command, timeout adjustment, or path_info alternative before re-running.",
+            "approval_hallucination_blocked": "When fake approval is blocked, repair toward a real proposal tool instead of asking the user to repeat the same request.",
+        }.get(signature, "Use the previous failure evidence to choose a smaller, more observable next action.")
+        return {
+            "schema_version": "ego_operator.policy_patch_candidate.v0",
+            "candidate_id": new_id("policy"),
+            "trigger_signature": signature,
+            "failed_strategy": f"Repeated failure class observed: {signature}",
+            "preferred_strategy": preferred,
+            "evidence_refs": [event.event_id],
+            "replay_conditions": [f"latest user text or runtime result matches {signature}"],
+            "confidence": 0.68,
+            "expiry": "session",
+            "gate_required": True,
+            "state_mutation": "forbidden",
+            "canonical_truth": False,
+            "created_at": utc_now(),
+        }
+
+    def _record_policy_feedback_candidates(
+        self,
+        *,
+        event: AgentEvent,
+        external_result: Optional[Dict[str, Any]],
+        tool_trace: List[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        signature = self._classify_policy_feedback_failure(
+            external_result=external_result,
+            tool_trace=tool_trace,
+        )
+        if not signature:
+            return {"status": "skipped", "reason": "no_repeatable_failure_signature"}
+        count = self.policy_failure_counts.get(signature, 0) + 1
+        self.policy_failure_counts[signature] = count
+        existing = self.policy_patch_candidates.get(signature)
+        if existing:
+            refs = list(existing.get("evidence_refs") or [])
+            if event.event_id not in refs:
+                refs.append(event.event_id)
+            existing["evidence_refs"] = refs[-6:]
+            return {
+                "status": "updated",
+                "trigger_signature": signature,
+                "count": count,
+                "candidate": existing,
+            }
+        if count < 2:
+            return {
+                "status": "observed",
+                "trigger_signature": signature,
+                "count": count,
+                "candidate_threshold": 2,
+            }
+        candidate = self._build_policy_patch_candidate(signature, event)
+        self.policy_patch_candidates[signature] = candidate
+        return {
+            "status": "candidate_emitted",
+            "trigger_signature": signature,
+            "count": count,
+            "candidate": candidate,
+        }
+
+    def _matching_policy_patch_candidates(self, user_text: str) -> List[Dict[str, Any]]:
+        text = (user_text or "").casefold()
+        signatures: List[str] = []
+        if "429" in text or "限流" in text or "rate limit" in text:
+            signatures.append("provider_rate_limit")
+        if "超时" in text or "timeout" in text:
+            signatures.extend(["provider_timeout", "command_timeout"])
+        if "假 approval" in text or "伪造 approval" in text or "approval" in text:
+            signatures.append("approval_hallucination_blocked")
+        matches: List[Dict[str, Any]] = []
+        for signature in dict.fromkeys(signatures):
+            candidate = self.policy_patch_candidates.get(signature)
+            if candidate:
+                matches.append({**candidate, "replay_active": True})
+        return matches[:3]
 
     def render_subject_context(self, user_text: str) -> str:
         if not self.subject_context_enabled:
@@ -5461,6 +5570,11 @@ class AgentRuntime:
             reply_text=reply_text,
             external_result=external_result,
         )
+        policy_patch_feedback = self._record_policy_feedback_candidates(
+            event=event,
+            external_result=external_result,
+            tool_trace=tool_trace,
+        )
 
         outcome_event = AgentEvent(
             schema_version="agent_event.v1",
@@ -5492,6 +5606,10 @@ class AgentRuntime:
             "operator_memory": operator_memory_record,
             "subject_context": subject_context_snapshot,
             "outcome_prediction_effect": getattr(self.planner, "last_llm_meta", {}).get("outcome_prediction_effect"),
+            "policy_patch": {
+                "feedback": policy_patch_feedback,
+                "replay": self._last_policy_patch_replay,
+            },
             "todo": self.todo_list.summary(),
             "operator_runtime": {
                 "runtime_mode": self.runtime_mode,

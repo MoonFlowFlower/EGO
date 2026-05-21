@@ -94,6 +94,7 @@ verify_profiles:
           - docs/codex/tasks/ego-subjectstate-v0-candidate-context
           - docs/codex/tasks/ego-viabilitystate-v0-signal-extraction
           - docs/codex/tasks/ego-outcomepredictor-v0-planner-input
+          - docs/codex/tasks/ego-policy-patch-candidate-replay-loop
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -125,6 +126,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-subjectstate-v0-candidate-context/
   - docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/
   - docs/codex/tasks/ego-outcomepredictor-v0-planner-input/
+  - docs/codex/tasks/ego-policy-patch-candidate-replay-loop/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/

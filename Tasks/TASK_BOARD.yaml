@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Proceed to EGO-FS-006: implement PolicyPatchCandidate and replay learning loop after OutcomePredictor v0."
+    next_action: "Proceed to EGO-FS-007: implement BoundedInitiative v0 integration after policy patch replay."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -159,13 +159,13 @@ tasks:
     title: "EgoOperator: PolicyPatchCandidate and replay learning loop"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: ego_operator_learning
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: PolicyPatchCandidate replay-learning local/scripted candidate pass
-    next_action: "Emit policy patch candidates after repeated same-class failures and replay them into the next comparable case."
+    next_action: "Accepted locally; next canonical task is EGO-FS-007."
     acceptance:
       - "Repeated-failure scripted case produces a policy candidate."
       - "Later same-class case shows changed strategy in trace."
@@ -174,6 +174,7 @@ tasks:
     canonical_sources:
       - "Tasks/与GPTpro的讨论结果.txt"
       - "GitHub issue #90"
+      - "docs/codex/tasks/ego-policy-patch-candidate-replay-loop/SPEC.md"
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/90"
 
@@ -181,7 +182,7 @@ tasks:
     title: "EgoOperator: BoundedInitiative v0 integration"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: ego_operator_initiative
     owner: codex
     observation_class: scripted_real_entry
