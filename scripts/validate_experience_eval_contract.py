@@ -84,6 +84,14 @@ DEFAULT_COMPANION_RELATIONSHIP_PACK = (
     / "ego-joi-companion-roadmap-v1"
     / "companion_relationship_continuity_pack.json"
 )
+DEFAULT_AFFECTIVE_ATTUNEMENT_PACK = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-joi-companion-roadmap-v1"
+    / "affective_attunement_timing_pack.json"
+)
 
 REQUIRED_DIMENSIONS = {
     "natural_understanding",
@@ -140,6 +148,7 @@ def validate_sample_pack(
     adaptation_effectiveness_pack_path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK,
     joi_companion_pack_path: Path = DEFAULT_JOI_COMPANION_PACK,
     companion_relationship_pack_path: Path = DEFAULT_COMPANION_RELATIONSHIP_PACK,
+    affective_attunement_pack_path: Path = DEFAULT_AFFECTIVE_ATTUNEMENT_PACK,
 ) -> dict[str, Any]:
     errors: list[str] = []
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -149,6 +158,7 @@ def validate_sample_pack(
     adaptation_effectiveness_pack = json.loads(adaptation_effectiveness_pack_path.read_text(encoding="utf-8"))
     joi_companion_pack = json.loads(joi_companion_pack_path.read_text(encoding="utf-8"))
     companion_relationship_pack = json.loads(companion_relationship_pack_path.read_text(encoding="utf-8"))
+    affective_attunement_pack = json.loads(affective_attunement_pack_path.read_text(encoding="utf-8"))
     rubric = rubric_path.read_text(encoding="utf-8")
     claim_calibration = claim_calibration_path.read_text(encoding="utf-8")
 
@@ -192,6 +202,10 @@ def validate_sample_pack(
         companion_relationship_pack
     )
     errors.extend(companion_relationship_errors)
+    affective_attunement_errors, affective_attunement_summary = validate_affective_attunement_pack_payload(
+        affective_attunement_pack
+    )
+    errors.extend(affective_attunement_errors)
 
     lowered = f"{json.dumps(payload, ensure_ascii=False)}\n{rubric}".casefold()
     for forbidden in FORBIDDEN_CLAIM_WORDS:
@@ -281,6 +295,8 @@ def validate_sample_pack(
         "joi_companion": companion_summary,
         "companion_relationship_pack": str(companion_relationship_pack_path),
         "companion_relationship": companion_relationship_summary,
+        "affective_attunement_pack": str(affective_attunement_pack_path),
+        "affective_attunement": affective_attunement_summary,
     }
 
 
@@ -742,6 +758,102 @@ def validate_companion_relationship_pack_payload(payload: dict[str, Any]) -> tup
     }
 
 
+def validate_affective_attunement_pack_payload(payload: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    if payload.get("schema_version") != 1:
+        errors.append("affective attunement pack schema_version must be 1")
+    if payload.get("language") != "zh-CN":
+        errors.append("affective attunement pack language must be zh-CN")
+    if payload.get("claim_boundary") != "operational_proxy_only_not_consciousness_claim":
+        errors.append("affective attunement pack claim_boundary must preserve operational proxy only")
+    if payload.get("runtime_rule") != "scripted_with_llm_judge_eval_only_do_not_import_as_runtime_rule":
+        errors.append("affective attunement pack must remain eval data and not runtime rules")
+    if payload.get("contract") != "AFFECTIVE_ATTUNEMENT_TIMING_CONTRACT.md":
+        errors.append("affective attunement pack must reference AFFECTIVE_ATTUNEMENT_TIMING_CONTRACT.md")
+
+    review_contract = payload.get("review_contract")
+    if not isinstance(review_contract, dict):
+        errors.append("affective attunement review_contract is required")
+        review_contract = {}
+    if review_contract.get("observation_class") != "scripted_with_llm_judge":
+        errors.append("affective attunement review_contract must use scripted_with_llm_judge")
+    if review_contract.get("judge_model") != "gpt-5.5":
+        errors.append("affective attunement judge_model must be gpt-5.5")
+    if not str(review_contract.get("question") or "").strip():
+        errors.append("affective attunement review_contract.question is required")
+
+    required_contexts = {
+        "loneliness",
+        "playfulness",
+        "uncertainty",
+        "fatigue",
+        "affection",
+        "creative_immersion",
+    }
+    declared_contexts = set(str(item) for item in (payload.get("required_contexts") or []))
+    if declared_contexts != required_contexts:
+        errors.append(f"affective attunement required_contexts mismatch: {sorted(declared_contexts)}")
+
+    cases = payload.get("cases")
+    if not isinstance(cases, list) or len(cases) < len(required_contexts):
+        errors.append("affective attunement pack must contain at least one case per required context")
+        cases = cases if isinstance(cases, list) else []
+
+    seen_ids: set[str] = set()
+    covered_contexts: set[str] = set()
+    covered_timing_moves: set[str] = set()
+    for index, case in enumerate(cases):
+        prefix = f"affective_attunement.cases[{index}]"
+        if not isinstance(case, dict):
+            errors.append(f"{prefix} must be an object")
+            continue
+        case_id = str(case.get("id") or "")
+        if not re.fullmatch(r"[a-z0-9_]+", case_id):
+            errors.append(f"{prefix}.id must be snake_case ascii")
+        if case_id in seen_ids:
+            errors.append(f"duplicate affective attunement case id: {case_id}")
+        seen_ids.add(case_id)
+        if case.get("category") != "affective_attunement":
+            errors.append(f"{prefix}.category must be affective_attunement")
+        if case.get("observation_class") != "scripted_with_llm_judge":
+            errors.append(f"{prefix}.observation_class must be scripted_with_llm_judge")
+
+        context = str(case.get("emotion_context") or "")
+        if context not in required_contexts:
+            errors.append(f"{prefix}.emotion_context is invalid: {context}")
+        else:
+            covered_contexts.add(context)
+        timing_move = str(case.get("timing_move") or "")
+        if not re.fullmatch(r"[a-z0-9_]+", timing_move):
+            errors.append(f"{prefix}.timing_move must be snake_case ascii")
+        else:
+            covered_timing_moves.add(timing_move)
+        prompt = str(case.get("prompt") or "")
+        if len(prompt.strip()) < 4 or not _has_cjk(prompt):
+            errors.append(f"{prefix}.prompt must be a non-trivial Chinese prompt")
+        for key in ("preferred_sequence", "expected_signals", "failure_signals", "forbidden_overconfident_labels"):
+            value = case.get(key)
+            min_count = 3 if key == "preferred_sequence" else 2
+            if not isinstance(value, list) or len(value) < min_count or not all(isinstance(item, str) and item for item in value):
+                errors.append(f"{prefix}.{key} must contain at least {min_count} non-empty strings")
+        failure_text = " ".join(str(item) for item in (case.get("failure_signals") or []))
+        forbidden_text = " ".join(str(item) for item in (case.get("forbidden_overconfident_labels") or []))
+        if not re.search(r"(确定|真正|知道|诊断|真实|overconfident|label)", failure_text + " " + forbidden_text, re.I):
+            errors.append(f"{prefix} must include overconfident label negative signal")
+
+    missing = required_contexts - covered_contexts
+    if missing:
+        errors.append(f"affective attunement pack missing contexts: {sorted(missing)}")
+
+    return errors, {
+        "case_count": len(cases),
+        "covered_contexts": sorted(covered_contexts),
+        "covered_timing_moves": sorted(covered_timing_moves),
+        "observation_class": "scripted_with_llm_judge",
+        "judge_model": str(review_contract.get("judge_model") or ""),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate EgoOperator experience-first eval contract.")
     parser.add_argument("--sample-pack", default=str(DEFAULT_SAMPLE_PACK))
@@ -753,6 +865,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--adaptation-effectiveness-pack", default=str(DEFAULT_ADAPTATION_EFFECTIVENESS_PACK))
     parser.add_argument("--joi-companion-pack", default=str(DEFAULT_JOI_COMPANION_PACK))
     parser.add_argument("--companion-relationship-pack", default=str(DEFAULT_COMPANION_RELATIONSHIP_PACK))
+    parser.add_argument("--affective-attunement-pack", default=str(DEFAULT_AFFECTIVE_ATTUNEMENT_PACK))
     args = parser.parse_args(argv)
     result = validate_sample_pack(
         Path(args.sample_pack),
@@ -764,6 +877,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.adaptation_effectiveness_pack),
         Path(args.joi_companion_pack),
         Path(args.companion_relationship_pack),
+        Path(args.affective_attunement_pack),
     )
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2))
     return 0 if result["status"] == "ok" else 1
