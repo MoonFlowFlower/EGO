@@ -1,0 +1,22 @@
+version: 1
+task_id: EGO-FS-003
+title: EgoOperator SubjectState v0 candidate context
+claim_ceiling: SubjectState v0 candidate context local candidate pass
+observation_class: deterministic_local
+must_pass:
+  - id: candidate_only
+    description: SubjectState v0 records forbid direct state mutation and reply decision.
+  - id: prompt_trace_visible
+    description: Prompt/context and trace contain SubjectState v0.
+  - id: behavior_change
+    description: A deterministic fake-LLM case changes output when SubjectState context is enabled.
+  - id: regression
+    description: Existing EgoOperator and autopilot verification profiles pass.
+must_not:
+  - promote SubjectState v0 to canonical memory/state
+  - reintroduce keyword-first routing
+  - modify legacy runtime projects
+rollback:
+  - remove SubjectState v0 builder and context field
+  - remove runtime self-name wiring into subject context
+  - revert tests and local board status

@@ -4420,9 +4420,12 @@ class AgentRuntime:
         return context.render_for_prompt()
 
     def build_subject_context(self, user_text: str) -> SubjectContextSnapshot:
+        identity = self.current_self_identity()
         return build_minimal_subject_context(
             user_text,
             operator_memory_available=self.operator_memory is not None,
+            self_display_name=identity.display_name,
+            canonical_runtime_name=identity.canonical_name,
         )
 
     def render_subject_context(self, user_text: str) -> str:

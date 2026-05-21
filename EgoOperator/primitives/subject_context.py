@@ -15,6 +15,7 @@ import re
 
 DEFAULT_CONTEXT_MAX_CHARS = 1200
 SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
+SUBJECT_STATE_SCHEMA = "ego_operator.subject_state.v0"
 CLAIM_CEILING = "candidate-local subject context only"
 
 EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
@@ -105,6 +106,62 @@ SELF_DESCRIPTION_BOUNDARY_MARKERS = (
     "gate",
     "候选",
     "local",
+)
+MEMORY_INTENT_CUES = (
+    "记住",
+    "记一下",
+    "以后记得",
+    "下次记得",
+    "remember",
+)
+PREFERENCE_CUES = (
+    "我喜欢",
+    "我更喜欢",
+    "我希望",
+    "我想要",
+    "偏好",
+    "以后",
+    "下次",
+)
+RELATIONSHIP_CUES = (
+    "陪我",
+    "陪陪我",
+    "我们",
+    "一起",
+    "你和我",
+    "叫我",
+)
+COMMITMENT_CUES = (
+    "提醒我",
+    "跟进",
+    "你答应",
+    "答应我",
+    "承诺",
+    "记得",
+    "下次",
+    "以后",
+)
+CONSENT_ALLOW_CUES = (
+    "可以主动",
+    "允许你主动",
+    "你可以提醒",
+    "你可以跟进",
+)
+CONSENT_RESTRICT_CUES = (
+    "不要主动",
+    "别主动",
+    "不要提醒",
+    "别提醒",
+    "不要跟进",
+)
+POLICY_PATCH_CUES = (
+    "不要再",
+    "别再",
+    "下次遇到",
+    "以后遇到",
+    "以后别",
+    "以后不要",
+    "策略",
 )
 
 
@@ -250,6 +307,170 @@ def _bounded_list(items: List[str] | tuple[str, ...] | None, *, max_items: int =
     return values
 
 
+def _cue_hits(text: str, cues: tuple[str, ...]) -> List[str]:
+    lowered = (text or "").casefold()
+    return [cue for cue in cues if cue.casefold() in lowered]
+
+
+def _candidate_record(value: str, evidence: List[str], *, confidence: float = 0.6) -> Dict[str, Any]:
+    return {
+        "candidate": _bounded(value, 240),
+        "evidence_cues": _bounded_list(evidence, max_items=5),
+        "confidence": round(confidence, 2),
+        "canonical_truth": False,
+    }
+
+
+def build_subject_state_v0(
+    user_text: str,
+    *,
+    self_display_name: str = "EgoOperator",
+    canonical_runtime_name: str = "EgoOperator",
+    operator_memory_available: bool = False,
+    recent_episode_refs: List[str] | tuple[str, ...] | None = None,
+) -> Dict[str, Any]:
+    """Build a candidate-only relational subject-state context record.
+
+    SubjectState v0 is a prompt/trace input. It can shape the LLM's reading of
+    continuity, preference, relationship, and commitment cues, but it cannot
+    write memory, mutate canonical identity, or decide the reply.
+    """
+    text = user_text or ""
+    identity_anchors: List[Dict[str, Any]] = [
+        {
+            "subject": "agent",
+            "display_name": _bounded(self_display_name or canonical_runtime_name, 80),
+            "canonical_runtime_name": _bounded(canonical_runtime_name or "EgoOperator", 80),
+            "source": "runtime_identity_anchor",
+            "canonical_truth": False,
+        }
+    ]
+    user_name_match = re.search(r"(?:我叫|叫我|称呼我)\s*([A-Za-z0-9_\-\u4e00-\u9fff]{1,16})", text)
+    if user_name_match:
+        identity_anchors.append({
+            "subject": "user",
+            "display_name_candidate": _bounded(user_name_match.group(1), 80),
+            "source": "latest_user_text_candidate",
+            "canonical_truth": False,
+        })
+
+    stable_preferences: Dict[str, Any] = {}
+    communication_style: Dict[str, Any] = {}
+    relationship_facts: Dict[str, Any] = {}
+    relationship_commitments: Dict[str, Any] = {}
+    consent_boundaries: Dict[str, Any] = {}
+    memory_candidates: List[Dict[str, Any]] = []
+    relationship_update_candidates: List[Dict[str, Any]] = []
+    policy_patch_candidates: List[Dict[str, Any]] = []
+
+    preference_hits = _cue_hits(text, PREFERENCE_CUES)
+    if preference_hits:
+        stable_preferences["latest_user_preference"] = _candidate_record(
+            "User is expressing a possible stable preference; preserve wording and avoid treating it as canonical until a memory/state gate admits it.",
+            preference_hits,
+            confidence=0.55,
+        )
+        relationship_update_candidates.append({
+            "kind": "preference_update_candidate",
+            "summary": _bounded(text, 280),
+            "gate_required": True,
+            "canonical_truth": False,
+        })
+    if any(cue in text for cue in ("先给结论", "先给判断", "结论先行", "先判断")):
+        communication_style["answer_order"] = _candidate_record(
+            "Prefer conclusion or judgment first, then details.",
+            ["先给结论/判断"],
+            confidence=0.75,
+        )
+    if any(cue in text for cue in ("不要像客服", "别像客服", "不要模板", "别模板", "别出戏", "不要出戏")):
+        communication_style["tone_boundary"] = _candidate_record(
+            "Avoid customer-service/template tone; preserve immersion and natural voice.",
+            ["tone/immersion correction"],
+            confidence=0.75,
+        )
+
+    relationship_hits = _cue_hits(text, RELATIONSHIP_CUES)
+    if relationship_hits:
+        relationship_facts["latest_relation_signal"] = _candidate_record(
+            "User is invoking companionship, shared context, or a relational address in this turn.",
+            relationship_hits,
+            confidence=0.55,
+        )
+        relationship_update_candidates.append({
+            "kind": "relationship_continuity_candidate",
+            "summary": _bounded(text, 280),
+            "gate_required": True,
+            "canonical_truth": False,
+        })
+
+    commitment_hits = _cue_hits(text, COMMITMENT_CUES)
+    if commitment_hits:
+        relationship_commitments["latest_commitment_candidate"] = _candidate_record(
+            "User is expressing a possible future commitment, reminder, or continuity expectation; keep it candidate-only until an explicit gate admits it.",
+            commitment_hits,
+            confidence=0.6,
+        )
+
+    allow_hits = _cue_hits(text, CONSENT_ALLOW_CUES)
+    restrict_hits = _cue_hits(text, CONSENT_RESTRICT_CUES)
+    if allow_hits:
+        consent_boundaries["initiative"] = _candidate_record(
+            "User may be allowing bounded initiative for reminders or follow-up; initiative gate still required.",
+            allow_hits,
+            confidence=0.65,
+        )
+    if restrict_hits:
+        consent_boundaries["initiative"] = _candidate_record(
+            "User may be restricting reminders, follow-up, or proactive behavior; quiet/hold should win until clarified.",
+            restrict_hits,
+            confidence=0.75,
+        )
+
+    memory_hits = _cue_hits(text, MEMORY_INTENT_CUES)
+    if memory_hits:
+        memory_candidates.append({
+            "kind": "memory_candidate",
+            "summary": _bounded(text, 280),
+            "evidence_cues": memory_hits,
+            "gate_required": True,
+            "direct_write_allowed": False,
+            "canonical_truth": False,
+        })
+
+    policy_hits = _cue_hits(text, POLICY_PATCH_CUES)
+    if policy_hits:
+        policy_patch_candidates.append({
+            "kind": "policy_patch_candidate",
+            "trigger_signature": "latest_user_correction_or_future_preference",
+            "preferred_strategy": _bounded(text, 280),
+            "evidence_cues": policy_hits,
+            "gate_required": True,
+            "canonical_truth": False,
+        })
+
+    return {
+        "schema_version": SUBJECT_STATE_SCHEMA,
+        "kind": "candidate_relational_subject_state",
+        "write_authority": "candidate_only",
+        "state_mutation": "forbidden",
+        "reply_decision": "forbidden",
+        "canonical_truth": False,
+        "identity_anchors": identity_anchors,
+        "stable_preferences": stable_preferences,
+        "relationship_facts": relationship_facts,
+        "relationship_commitments": relationship_commitments,
+        "consent_boundaries": consent_boundaries,
+        "communication_style": communication_style,
+        "recent_episode_refs": _bounded_list(recent_episode_refs, max_items=5) or ["latest_user_turn"],
+        "memory_candidates": memory_candidates,
+        "relationship_update_candidates": relationship_update_candidates,
+        "policy_patch_candidates": policy_patch_candidates,
+        "evidence_refs": ["latest_user_text", "runtime_identity_anchor"],
+        "operator_memory_available": bool(operator_memory_available),
+        "claim_ceiling": "SubjectState v0 candidate context only",
+    }
+
+
 def build_operational_self_model_snapshot(
     *,
     runtime_mode: str = "approve",
@@ -368,6 +589,7 @@ class SubjectContextSnapshot:
     })
     salient_memory_note: str = "No canonical memory is supplied by this primitive."
     operational_self_model: Dict[str, Any] = field(default_factory=build_operational_self_model_snapshot)
+    subject_state: Dict[str, Any] = field(default_factory=lambda: build_subject_state_v0(""))
     reflection_proposal: str = (
         "Preserve the user's meaning across paraphrases. Do not compress the "
         "message into route keywords or canned templates before answering."
@@ -393,6 +615,7 @@ class SubjectContextSnapshot:
             f"Raw user text preserved: {_bounded(self.raw_user_text)}",
             f"Self model: {_bounded(self.self_model_summary)}",
             "Operational self-model: " + str(self.operational_self_model),
+            "SubjectState v0: " + str(self.subject_state),
             "Appraisal signal: " + str(self.appraisal_signal),
             "Empathy style guidance: " + str(self.empathy_style_guidance),
             f"Salient memory note: {_bounded(self.salient_memory_note)}",
@@ -407,6 +630,8 @@ def build_minimal_subject_context(
     user_text: str,
     *,
     operator_memory_available: bool = False,
+    self_display_name: str = "EgoOperator",
+    canonical_runtime_name: str = "EgoOperator",
 ) -> SubjectContextSnapshot:
     memory_note = (
         "Candidate-local operator memory may be supplied separately in the system prompt."
@@ -427,6 +652,12 @@ def build_minimal_subject_context(
         empathy_style_guidance=build_empathy_style_guidance(emotion_signal),
         operational_self_model=build_operational_self_model_snapshot(
             runtime_mode="approve",
+            operator_memory_available=operator_memory_available,
+        ),
+        subject_state=build_subject_state_v0(
+            user_text,
+            self_display_name=self_display_name,
+            canonical_runtime_name=canonical_runtime_name,
             operator_memory_available=operator_memory_available,
         ),
     )

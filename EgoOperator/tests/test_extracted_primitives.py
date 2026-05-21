@@ -32,6 +32,26 @@ class CapturePromptLLM:
         return "黑暗之魂是一款很强的动作角色扮演游戏。"
 
 
+class SubjectStateSensitiveLLM:
+    provider = "fake"
+    model = "subject-state-sensitive"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.system_prompts = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.system_prompts.append(system_prompt)
+        if "SubjectState v0" in system_prompt and "Prefer conclusion or judgment first" in system_prompt:
+            return agent.LLMChatResult(content="判断：这条方案应该先收敛主线，再补细节。", tool_calls=[])
+        return agent.LLMChatResult(content="我可以继续分析这个方案。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        self.system_prompts.append(prompt)
+        return "我可以继续分析这个方案。"
+
+
 def _imported_roots(module) -> set[str]:
     tree = ast.parse(inspect.getsource(module))
     roots: set[str] = set()
@@ -63,7 +83,36 @@ def test_subject_context_is_readonly_candidate_not_reply_owner():
     assert snapshot.appraisal_signal["state_mutation"] == "forbidden"
     assert snapshot.operational_self_model["schema_version"] == "ego_operator.operational_self_model.v1"
     assert snapshot.operational_self_model["reply_decision"] == "forbidden"
+    assert snapshot.subject_state["schema_version"] == "ego_operator.subject_state.v0"
+    assert snapshot.subject_state["write_authority"] == "candidate_only"
+    assert snapshot.subject_state["state_mutation"] == "forbidden"
+    assert snapshot.subject_state["reply_decision"] == "forbidden"
+    assert snapshot.subject_state["canonical_truth"] is False
     assert "你认为黑暗之魂如何" in snapshot.render_for_prompt()
+
+
+def test_subject_state_extracts_identity_preference_relationship_and_candidates():
+    snapshot = subject_context.build_minimal_subject_context(
+        "我叫流月，以后我希望你先给判断再给细节，别像客服。下次遇到这种情况不要再让我重复说明，记住这个偏好，也可以主动提醒我。",
+        self_display_name="由乃",
+        operator_memory_available=True,
+    )
+    state = snapshot.subject_state
+
+    assert state["schema_version"] == "ego_operator.subject_state.v0"
+    assert state["identity_anchors"][0]["display_name"] == "由乃"
+    assert any(anchor.get("display_name_candidate") == "流月" for anchor in state["identity_anchors"])
+    assert state["stable_preferences"]["latest_user_preference"]["canonical_truth"] is False
+    assert state["communication_style"]["answer_order"]["candidate"] == "Prefer conclusion or judgment first, then details."
+    assert state["communication_style"]["tone_boundary"]["candidate"] == "Avoid customer-service/template tone; preserve immersion and natural voice."
+    assert state["relationship_commitments"]["latest_commitment_candidate"]["canonical_truth"] is False
+    assert state["consent_boundaries"]["initiative"]["canonical_truth"] is False
+    assert state["memory_candidates"][0]["direct_write_allowed"] is False
+    assert state["policy_patch_candidates"][0]["gate_required"] is True
+    rendered = snapshot.render_for_prompt()
+    assert "SubjectState v0" in rendered
+    assert "由乃" in rendered
+    assert "Prefer conclusion or judgment first" in rendered
 
 
 def test_operational_self_model_tracks_boundaries_commitments_uncertainty_and_failures():
@@ -217,6 +266,25 @@ def test_runtime_prompt_includes_subject_context_without_keyword_runtime_markers
         assert marker not in lowered
 
 
+def test_subject_state_context_can_change_llm_reply_without_runtime_route(tmp_path):
+    text = "以后我希望你先给判断再给细节。这个方案怎么样？"
+    with_context = agent.build_demo_runtime(enable_operator_memory=False, subject_context_enabled=True)
+    with_context.trace_store = agent.JsonlTraceStore(tmp_path / "with_trace.jsonl")
+    with_context.planner.llm = SubjectStateSensitiveLLM()
+
+    without_context = agent.build_demo_runtime(enable_operator_memory=False, subject_context_enabled=False)
+    without_context.trace_store = agent.JsonlTraceStore(tmp_path / "without_trace.jsonl")
+    without_context.planner.llm = SubjectStateSensitiveLLM()
+
+    enabled_result = with_context.handle_user_message(text)
+    disabled_result = without_context.handle_user_message(text)
+
+    assert enabled_result.reply_text.startswith("判断：")
+    assert disabled_result.reply_text == "我可以继续分析这个方案。"
+    assert "SubjectState v0" in with_context.planner.llm.system_prompts[-1]
+    assert "SubjectState v0" not in without_context.planner.llm.system_prompts[-1]
+
+
 def test_planner_fallback_does_not_keyword_route_before_llm():
     planner = agent.Planner(llm=CapturePromptLLM())
     event = agent.AgentEvent(
@@ -258,6 +326,10 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["empathy_style_guidance"]["reply_decision"] == "forbidden"
     assert context["operational_self_model"]["reply_decision"] == "forbidden"
     assert context["operational_self_model"]["state_mutation"] == "forbidden"
+    assert context["subject_state"]["schema_version"] == "ego_operator.subject_state.v0"
+    assert context["subject_state"]["write_authority"] == "candidate_only"
+    assert context["subject_state"]["reply_decision"] == "forbidden"
+    assert context["subject_state"]["state_mutation"] == "forbidden"
     assert context["operational_self_model"]["self_description_guidance"]["reply_decision"] == "forbidden"
 
 
