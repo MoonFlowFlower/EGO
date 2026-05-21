@@ -1275,7 +1275,12 @@ def test_openrouter_429_error_preserves_retry_after_body_and_model(monkeypatch):
         )
     ])
     monkeypatch.setattr(agent, "requests", fake_requests)
-    llm = agent.OpenRouterLLM(agent.LLMConfig(api_key="sk-test", model="tencent/hy3-preview", stream=False))
+    llm = agent.OpenRouterLLM(agent.LLMConfig(
+        api_key="sk-test",
+        model="tencent/hy3-preview",
+        fallback_mode="off",
+        stream=False,
+    ))
 
     with pytest.raises(agent.OpenRouterProviderError) as exc_info:
         llm.chat([{"role": "user", "content": "你好"}], system_prompt="system", stream=False)
@@ -1289,6 +1294,18 @@ def test_openrouter_429_error_preserves_retry_after_body_and_model(monkeypatch):
     assert metadata["status_code"] == 429
     assert metadata["retry_after"] == "60"
     assert "sk-test" not in json.dumps(metadata, ensure_ascii=False)
+
+
+def test_openrouter_default_fallback_policy_is_on_with_bounded_chain():
+    assert agent.DEFAULT_OPENROUTER_FALLBACK_MODE == "on"
+    assert agent.DEFAULT_OPENROUTER_FALLBACK_MODELS == (
+        "google/gemini-2.5-flash-lite",
+        "google/gemini-3.1-flash-lite",
+        "openai/gpt-4.1-mini",
+    )
+    config = agent.LLMConfig(api_key="sk-test")
+    assert config.fallback_mode == "on"
+    assert config.fallback_models == agent.DEFAULT_OPENROUTER_FALLBACK_MODELS
 
 
 def test_openrouter_fallback_on_503_records_chain(monkeypatch):
@@ -1320,6 +1337,7 @@ def test_openrouter_fallback_on_503_records_chain(monkeypatch):
     assert llm.last_fallback_chain[0]["status"] == "error"
     assert llm.last_fallback_chain[0]["status_code"] == 503
     assert llm.last_fallback_chain[1] == {"model": "fallback/model", "status": "ok"}
+    assert llm.last_successful_model == "fallback/model"
 
 
 def test_openrouter_fallback_on_429_records_chain(monkeypatch):
@@ -1344,6 +1362,87 @@ def test_openrouter_fallback_on_429_records_chain(monkeypatch):
     assert llm.last_fallback_chain[0]["status_code"] == 429
     assert llm.last_fallback_chain[0]["retry_after"] == "30"
     assert llm.last_fallback_chain[1]["status"] == "ok"
+    assert llm.last_successful_model == "fallback/model"
+
+
+def test_openrouter_fallback_preserves_tool_call_path(monkeypatch):
+    fake_requests = FakeRequests([
+        FakeHTTPResponse(429, {"error": {"message": "rate limited", "code": 429}}),
+        FakeHTTPResponse(
+            200,
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "content": "我会生成真实 proposal。",
+                            "tool_calls": [
+                                {
+                                    "id": "call_fallback_tool",
+                                    "type": "function",
+                                    "function": {
+                                        "name": "propose_file_write",
+                                        "arguments": json.dumps({
+                                            "path": "test/index.html",
+                                            "content": "<!doctype html><html></html>",
+                                            "reason": "fallback tool call",
+                                        }),
+                                    },
+                                }
+                            ],
+                        }
+                    }
+                ]
+            },
+        ),
+    ])
+    monkeypatch.setattr(agent, "requests", fake_requests)
+    llm = agent.OpenRouterLLM(agent.LLMConfig(
+        api_key="sk-test",
+        model="primary/model",
+        fallback_mode="on",
+        fallback_models=("fallback/model",),
+        stream=False,
+    ))
+
+    result = llm.chat(
+        [{"role": "user", "content": "创建文件"}],
+        system_prompt="system",
+        tools=[{"type": "function", "function": {"name": "propose_file_write", "parameters": {"type": "object"}}}],
+        stream=False,
+    )
+
+    assert result.content == "我会生成真实 proposal。"
+    assert len(result.tool_calls) == 1
+    assert result.tool_calls[0].name == "propose_file_write"
+    assert result.tool_calls[0].arguments["path"] == "test/index.html"
+    assert [call["model"] for call in fake_requests.calls] == ["primary/model", "fallback/model"]
+    assert llm.last_fallback_used is True
+
+
+def test_openrouter_fallback_exhausted_records_full_chain(monkeypatch):
+    fake_requests = FakeRequests([
+        FakeHTTPResponse(429, {"error": {"message": "primary limited", "code": 429}}, headers={"Retry-After": "10"}),
+        FakeHTTPResponse(503, {"error": {"message": "fallback unavailable", "code": 503}}, headers={"Retry-After": "20"}),
+        FakeHTTPResponse(429, {"error": {"message": "second fallback limited", "code": 429}}, headers={"Retry-After": "30"}),
+    ])
+    monkeypatch.setattr(agent, "requests", fake_requests)
+    llm = agent.OpenRouterLLM(agent.LLMConfig(
+        api_key="sk-test",
+        model="primary/model",
+        fallback_mode="on",
+        fallback_models=("fallback/a", "fallback/b"),
+        stream=False,
+    ))
+
+    with pytest.raises(agent.OpenRouterProviderError) as exc_info:
+        llm.chat([{"role": "user", "content": "你好"}], system_prompt="system", stream=False)
+
+    assert [call["model"] for call in fake_requests.calls] == ["primary/model", "fallback/a", "fallback/b"]
+    chain = exc_info.value.fallback_chain
+    assert [item["model"] for item in chain] == ["primary/model", "fallback/a", "fallback/b"]
+    assert [item["status_code"] for item in chain] == [429, 503, 429]
+    assert not any(item["status"] == "ok" for item in chain)
+    assert llm.last_fallback_used is False
 
 
 def test_openrouter_does_not_fallback_on_400_401_or_403(monkeypatch):
@@ -1390,6 +1489,39 @@ def test_structured_paid_model_429_reply_has_diagnostics_without_free_model_advi
     assert "Retry-After：45 秒" in result.reply_text
     assert "非 free 模型" not in result.reply_text
     assert "没有执行外部副作用" in result.reply_text
+
+
+def test_fallback_exhausted_reply_has_chain_and_no_degraded_nollm_answer(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    chain = [
+        {"model": "tencent/hy3-preview", "status": "error", "status_code": 429, "message": "primary limited", "retry_after": "10"},
+        {"model": "google/gemini-2.5-flash-lite", "status": "error", "status_code": 503, "message": "provider unavailable", "retry_after": "20"},
+        {"model": "google/gemini-3.1-flash-lite", "status": "error", "status_code": 429, "message": "fallback limited", "retry_after": "30"},
+        {"model": "openai/gpt-4.1-mini", "status": "error", "status_code": 429, "message": "fallback limited", "retry_after": "40"},
+    ]
+    error = agent.OpenRouterProviderError(
+        status_code=429,
+        model="openai/gpt-4.1-mini",
+        message="fallback limited",
+        response_body='{"error":{"message":"fallback limited","code":429}}',
+        retry_after="40",
+        fallback_chain=chain,
+    )
+    llm = StructuredProviderErrorLLM(error)
+    llm.config = agent.LLMConfig(api_key="sk-test", model="tencent/hy3-preview")
+    llm.last_fallback_chain = chain
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你好")
+
+    assert result.external_result["status"] == "llm_error"
+    assert "fallback chain" in result.reply_text
+    assert "tencent/hy3-preview:error/429" in result.reply_text
+    assert "openai/gpt-4.1-mini:error/429" in result.reply_text
+    assert "备用模型链已尝试但仍未成功" in result.reply_text
+    assert "这条回复未完成" in result.reply_text
+    assert "I can help with that" not in result.reply_text
+    assert not any(item.get("status") == "ok" for item in result.external_result["provider_error"]["fallback_chain"])
 
 
 def test_structured_402_reply_points_to_credits_not_fallback(tmp_path, monkeypatch):

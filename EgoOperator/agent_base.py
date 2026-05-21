@@ -172,10 +172,14 @@ DEFAULT_OPENROUTER_BASE_URL = os.getenv(
 # Optional OpenRouter headers. Leave blank if you do not need leaderboard/referrer metadata.
 DEFAULT_OPENROUTER_SITE_URL = os.getenv("OPENROUTER_SITE_URL", "")
 DEFAULT_OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME", "EgoOperator")
-DEFAULT_OPENROUTER_FALLBACK_MODE = os.getenv("OPENROUTER_FALLBACK_MODE", "off").strip().lower() or "off"
+DEFAULT_OPENROUTER_FALLBACK_MODE = os.getenv("OPENROUTER_FALLBACK_MODE", "on").strip().lower() or "on"
+DEFAULT_OPENROUTER_FALLBACK_MODELS_TEXT = os.getenv(
+    "OPENROUTER_FALLBACK_MODELS",
+    "google/gemini-2.5-flash-lite,google/gemini-3.1-flash-lite,openai/gpt-4.1-mini",
+)
 DEFAULT_OPENROUTER_FALLBACK_MODELS = tuple(
     item.strip()
-    for item in os.getenv("OPENROUTER_FALLBACK_MODELS", "").split(",")
+    for item in DEFAULT_OPENROUTER_FALLBACK_MODELS_TEXT.split(",")
     if item.strip()
 )
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
@@ -2364,6 +2368,7 @@ class OpenRouterLLM:
         self.last_provider_error: Optional[Dict[str, Any]] = None
         self.last_fallback_used: bool = False
         self.last_fallback_chain: List[Dict[str, Any]] = []
+        self.last_successful_model: Optional[str] = None
 
         if not self.config.api_key:
             raise ValueError(
@@ -2462,7 +2467,8 @@ class OpenRouterLLM:
         self.last_fallback_chain = []
         last_error: Optional[OpenRouterProviderError] = None
 
-        for index, model in enumerate(self._candidate_models()):
+        candidate_models = self._candidate_models()
+        for index, model in enumerate(candidate_models):
             attempt_payload = dict(payload)
             attempt_payload["model"] = model
             self.model = model
@@ -2482,7 +2488,7 @@ class OpenRouterLLM:
                     "message": exc.message,
                     "retry_after": exc.retry_after,
                 })
-                has_next = index < len(self._candidate_models()) - 1
+                has_next = index < len(candidate_models) - 1
                 if exc.status_code not in {429, 503} or not has_next:
                     exc.fallback_chain = list(self.last_fallback_chain)
                     self.last_provider_error = exc.to_metadata()
@@ -2491,6 +2497,7 @@ class OpenRouterLLM:
 
             self.last_fallback_used = index > 0
             self.last_fallback_chain.append({"model": model, "status": "ok"})
+            self.last_successful_model = model
             self.last_provider_error = None
             return result
 
@@ -4684,6 +4691,7 @@ class AgentRuntime:
             "fallback_models": fallback_models,
             "last_fallback_used": bool(getattr(llm, "last_fallback_used", False)),
             "last_fallback_chain": getattr(llm, "last_fallback_chain", []),
+            "last_successful_model": getattr(llm, "last_successful_model", None),
             "last_provider_error": getattr(llm, "last_provider_error", None),
             "last_llm_meta": getattr(self.planner, "last_llm_meta", {}),
         }
@@ -5604,8 +5612,14 @@ class AgentRuntime:
         provider_error = exc if isinstance(exc, OpenRouterProviderError) else None
         status_code = provider_error.status_code if provider_error else None
         model = provider_error.model if provider_error else str(getattr(self.planner.llm, "model", "unknown"))
+        configured_model = str(getattr(self.planner.llm, "configured_model", model))
         retry_after = provider_error.retry_after if provider_error else None
         message = provider_error.message if provider_error else error_text
+        fallback_chain = (
+            list(provider_error.fallback_chain)
+            if provider_error and provider_error.fallback_chain
+            else list(getattr(self.planner.llm, "last_fallback_chain", []) or [])
+        )
         is_rate_limited = status_code == 429 or "429" in error_text or "Too Many Requests" in error_text
         if status_code == 402:
             first_line = "模型/API 当前返回 402，账号或 API key credits 不足。"
@@ -5617,11 +5631,27 @@ class AgentRuntime:
             first_line = "模型/API 当前调用失败，EgoOperator 已停止本轮工具循环。"
         lines = [
             first_line,
+            f"primary model：{configured_model}。",
             f"effective model：{model}。",
             f"provider message：{message[:500]}。",
             f"当前已完成工具调用：{len(tool_trace)} 次。",
             "没有执行外部副作用；这条回复未完成。",
         ]
+        if fallback_chain:
+            def _chain_item(item: Dict[str, Any]) -> str:
+                item_model = str(item.get("model") or "unknown")
+                status = str(item.get("status") or "unknown")
+                code = item.get("status_code")
+                retry = item.get("retry_after")
+                suffix = ""
+                if code is not None:
+                    suffix += f"/{code}"
+                if retry:
+                    suffix += f"/retry-after={retry}"
+                return f"{item_model}:{status}{suffix}"
+
+            chain_text = " -> ".join(_chain_item(dict(item)) for item in fallback_chain)
+            lines.append(f"fallback chain：{chain_text}。")
         if retry_after:
             lines.append(f"Retry-After：{retry_after} 秒；建议等待后再重试。")
         if tool_trace:
@@ -5631,16 +5661,24 @@ class AgentRuntime:
             status = output.get("status") if isinstance(output, dict) else "unknown"
             lines.append(f"最后一次工具结果：{tool_name} -> {status}。")
         fallback_models = getattr(self.planner.llm, "config", None)
+        fallback_mode = str(getattr(fallback_models, "fallback_mode", "off") or "off")
+        fallback_enabled = env_mode_enabled(fallback_mode)
         fallback_model_list = list(getattr(fallback_models, "fallback_models", []) or [])
+        fallback_exhausted = bool(fallback_chain) and not any(str(item.get("status")) == "ok" for item in fallback_chain)
         if status_code == 402:
             lines.append("建议检查 OpenRouter credits / key limit，补足余额后继续。")
         elif is_rate_limited:
-            if fallback_model_list and not bool(getattr(self.planner.llm, "last_fallback_used", False)):
+            if fallback_exhausted and fallback_enabled and fallback_model_list:
+                lines.append("备用模型链已尝试但仍未成功；建议检查账号级 rate limit、provider 容量、余额/credits，或稍后重试。")
+            elif fallback_model_list and not fallback_enabled:
                 lines.append("建议检查 key limit / provider 容量，或开启 fallback 后切换备用模型。")
             else:
                 lines.append("建议检查 key limit / provider 容量，或配置 OPENROUTER_FALLBACK_MODELS 后继续。")
         elif status_code == 503:
-            lines.append("建议稍后重试，或开启 fallback 使用备用模型。")
+            if fallback_exhausted and fallback_enabled and fallback_model_list:
+                lines.append("备用模型链已尝试但 provider 仍不可用；建议稍后重试或更换 fallback 模型。")
+            else:
+                lines.append("建议稍后重试，或开启 fallback 使用备用模型。")
         else:
             lines.append("建议重试；如果连续出现，请检查 provider/API key/model 配置。")
         return "\n".join(lines)
@@ -6166,6 +6204,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
     lines = [
         "Runtime permission status:",
         f"- runtime_mode: {runtime.runtime_mode}",
+        f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
         f"- operator_memory: {memory_status}"
