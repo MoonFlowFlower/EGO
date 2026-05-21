@@ -1,0 +1,17 @@
+version: 1
+claim_ceiling: Codex local canonical task board + GitHub mirror sync workflow candidate pass
+acceptance:
+  - id: local_board
+    gate: Tasks/TASK_BOARD.yaml exists and contains Functional Subject #84-#94 mirror refs.
+  - id: autopilot_local
+    gate: Autopilot report/plan-next/run-loop dry-run can use local board without GitHub.
+  - id: syncer
+    gate: GitHub syncer supports doctor, plan, sync --dry-run, sync --execute scaffold, and import-github --dry-run.
+  - id: tests
+    gate: targeted script tests and diff check pass.
+not_claimed:
+  - unattended development reliability
+  - product runtime efficacy
+  - stable user benefit
+  - live autonomy
+  - consciousness

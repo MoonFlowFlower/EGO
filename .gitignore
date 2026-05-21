@@ -116,6 +116,8 @@ artifacts/telegram_simulated_mainline_v1/
 artifacts/telegram_simulated_whole_chain_v1/
 artifacts/mvp13/mirror/
 artifacts/research_campaign/*.lock
+artifacts/task_board/sync_log.jsonl
+artifacts/task_board/outbox.jsonl
 
 # Legacy generated mirrors and local evidence runs after demotion
 legacy/ego-pre-handmade-mainline/EgoCore/artifacts/proto_self_mirror/

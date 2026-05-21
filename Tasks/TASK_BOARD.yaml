@@ -1,0 +1,345 @@
+version: 1
+board:
+  id: ego-local-task-board
+  source_of_truth: repo_local
+  mirror: github_project
+  repo: pen364692088/EGO
+  notes:
+    - GitHub Issues and Project v2 are display/sync mirrors, not the canonical task state.
+    - High-frequency Autopilot planning reads this file first.
+    - Program state and evidence ledger remain separate authority surfaces.
+
+statuses:
+  planned: Work is structured but not active.
+  active: Current execution candidate.
+  blocked: Waiting on human smoke, Stage Card, external system, or explicit approval.
+  evidence_ready: Local/scripted evidence is ready for closeout review.
+  accepted: Task was closed or accepted.
+  parked: Intentionally deferred.
+
+tasks:
+  - id: EGO-FS-EPIC-10
+    title: "Epic 10: Functional Subject core mechanisms"
+    kind: epic
+    parent: null
+    status: active
+    layer: functional_subject_core
+    owner: codex
+    observation_class: aggregate
+    evidence_level: E2
+    claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
+    next_action: "Complete EGO-FS-001 architecture contract before runtime integration."
+    acceptance:
+      - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
+      - "No child promotes memory/state authority without Stage Card."
+      - "Epic closeout requires child evidence packets and no unresolved human-required blockers."
+    rollback: "Close or mark child tasks not planned; do not modify runtime or authority from this epic alone."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #84"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/84"
+
+  - id: EGO-FS-001
+    title: "EgoSubject: Functional Subject architecture contract v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: active
+    layer: functional_subject_core
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject architecture contract local candidate pass
+    next_action: "Define SubjectState, ViabilityState, OutcomePrediction, PolicyPatchCandidate, gates, trace fields, and owner boundaries."
+    acceptance:
+      - "Architecture contract states candidate-only v0 ownership and data flow."
+      - "Contract maps Functional Subject mechanisms to EgoOperator proposal/gate/trace path."
+      - "Contract explicitly separates mechanism goals from reporting claim ceilings."
+    rollback: "Revert the contract document or mark this task not planned; no runtime state changes are made."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #85"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/85"
+
+  - id: EGO-FS-002
+    title: "EgoSubject: 20-sample functional subject trial + GPT-5.5 judge"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_with_llm_judge
+    evidence_level: E2
+    claim_ceiling: Functional Subject scripted trial local candidate pass
+    next_action: "Create the 20-sample Chinese trial pack and GPT-5.5 judge packet."
+    acceptance:
+      - "Trial covers memory correction, preference continuity, initiative, emotion, tool failure, forget/save, and boundary cases."
+      - "Judge output is structured and cannot raise claim ceiling."
+      - "Baseline-vs-candidate comparison is represented."
+    rollback: "Remove the trial pack and judge packet; keep existing experience evals."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #86"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/86"
+
+  - id: EGO-FS-003
+    title: "EgoOperator: SubjectState v0 candidate context"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_runtime_candidate
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: SubjectState v0 candidate context local candidate pass
+    next_action: "Add candidate-only identity, preference, relationship, commitment, and experience context."
+    acceptance:
+      - "SubjectState v0 does not write core memory/state directly."
+      - "Prompt/context and trace show the candidate context is present."
+      - "At least one deterministic case shows behavior changes versus no SubjectState."
+    rollback: "Remove SubjectState v0 primitive and context injection."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #87"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/87"
+
+  - id: EGO-FS-004
+    title: "EgoOperator: ViabilityState v0 signal extraction"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_runtime_candidate
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: ViabilityState v0 signal extraction local candidate pass
+    next_action: "Extract compact evidence gap, goal stall, safety risk, misunderstanding risk, resource pressure, and initiative pressure signals."
+    acceptance:
+      - "ViabilityState v0 is deterministic and trace-visible."
+      - "Signals are planner/gate inputs, not a second state authority."
+      - "Tests cover at least one positive and one hold/low-pressure case."
+    rollback: "Remove ViabilityState extractor and trace fields."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #88"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/88"
+
+  - id: EGO-FS-005
+    title: "EgoOperator: OutcomePredictor v0 trace-based planner input"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_planner
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: OutcomePredictor v0 planner-input local candidate pass
+    next_action: "Score likely effects of reply/ask/wait/repair/suggest/tool_propose/memory_candidate/no_action options."
+    acceptance:
+      - "Planner input includes outcome scores."
+      - "Trace shows which prediction affected action/proposal choice."
+      - "A deterministic case proves prediction changes a decision versus baseline."
+    rollback: "Disable predictor input and keep existing proposal/gate path."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #89"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/89"
+
+  - id: EGO-FS-006
+    title: "EgoOperator: PolicyPatchCandidate and replay learning loop"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_learning
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: PolicyPatchCandidate replay-learning local/scripted candidate pass
+    next_action: "Emit policy patch candidates after repeated same-class failures and replay them into the next comparable case."
+    acceptance:
+      - "Repeated-failure scripted case produces a policy candidate."
+      - "Later same-class case shows changed strategy in trace."
+      - "Policy candidates do not directly mutate canonical state."
+    rollback: "Remove policy patch candidate generation and replay-learning hooks."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #90"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/90"
+
+  - id: EGO-FS-007
+    title: "EgoOperator: BoundedInitiative v0 integration"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_initiative
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: BoundedInitiative v0 integration local/scripted candidate pass
+    next_action: "Integrate user-authorized reminders, known failure repair, and high-value low-risk continuation proposals."
+    acceptance:
+      - "Initiative proposals remain gated and quiet by default."
+      - "Authorized/remedial/continuation cases pass."
+      - "Opt-out and anti-spam cases hold."
+    rollback: "Disable bounded initiative v0 integration and keep existing proposal-only heartbeat behavior."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #91"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/91"
+
+  - id: EGO-FS-008
+    title: "EgoOperator: subject state mutation gate and audit trace"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_gate_trace
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Subject-state mutation gate local candidate pass
+    next_action: "Define and enforce promotion gates for subject-state, memory, relationship, and policy candidates."
+    acceptance:
+      - "Candidate writes require explicit gate decisions."
+      - "Trace includes proposal, decision, owner, target record, and rollback guidance."
+      - "LLM output cannot directly mutate canonical memory/state."
+    rollback: "Remove mutation gate extension and keep all Functional Subject records candidate-only."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #92"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/92"
+
+  - id: EGO-FS-009
+    title: "EgoOperator: baseline comparison harness against LLM+RAG/tools"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject baseline comparison local/scripted candidate pass
+    next_action: "Run candidate and baseline over the same scripted cases and emit per-sample deltas."
+    acceptance:
+      - "Harness compares continuity, initiative, learning, emotion, gate correctness, and traceability."
+      - "Reports do not upgrade local/scripted evidence into durable efficacy."
+      - "At least one baseline and one candidate run can be reproduced."
+    rollback: "Remove comparison harness and keep existing experience trial runner."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #93"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/93"
+
+  - id: EGO-FS-010
+    title: "EgoOperator: Functional Subject real-provider smoke"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: blocked
+    layer: functional_subject_experience
+    owner: user
+    observation_class: human_required
+    evidence_level: E2
+    claim_ceiling: Functional Subject real-provider observation candidate pass
+    next_action: "Run real-provider CLI samples after candidate primitives and eval harness exist."
+    acceptance:
+      - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
+      - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
+      - "Human-required gate is satisfied by user comment or explicit review."
+    rollback: "Do not close; keep blocked until real-provider evidence exists."
+    canonical_sources:
+      - "Tasks/与GPTpro的讨论结果.txt"
+      - "GitHub issue #94"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/94"
+
+  - id: EGO-HUMAN-072
+    title: "EgoOperator: warm expressive self and roleplay default UX"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: blocked
+    layer: companion_experience
+    owner: user
+    observation_class: human_required
+    evidence_level: E3
+    claim_ceiling: EgoOperator companion-first expressive UX real CLI candidate pass
+    next_action: "Wait for or review human CLI smoke comments; do not auto-close."
+    acceptance:
+      - "Ordinary conversation avoids unnecessary self-degrading boundary statements."
+      - "Roleplay remains immersive unless user explicitly exits character."
+      - "Human comment confirms the experience gate."
+    rollback: "Keep blocked or split residual UX issues."
+    canonical_sources:
+      - "GitHub issue #72"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/72"
+
+  - id: EGO-HUMAN-073
+    title: "EgoOperator: provider interruption and empty-response recovery UX"
+    kind: smoke
+    parent: null
+    status: blocked
+    layer: ego_operator_recovery
+    owner: user
+    observation_class: human_required
+    evidence_level: E3
+    claim_ceiling: Provider interruption recovery real CLI candidate pass
+    next_action: "Wait for or review real Ctrl+C/provider interruption CLI smoke comments."
+    acceptance:
+      - "Input interruption and provider interruption do not print traceback."
+      - "No internal policy context leaks to the user."
+      - "Human comment confirms recovery behavior."
+    rollback: "Keep blocked or split a mechanism-critical bug."
+    canonical_sources:
+      - "GitHub issue #73"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/73"
+
+  - id: EGO-HUMAN-078
+    title: "EgoOperator: affective attunement and emotional timing gate"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: blocked
+    layer: companion_experience
+    owner: user
+    observation_class: human_required
+    evidence_level: E3
+    claim_ceiling: Affective attunement real CLI candidate pass
+    next_action: "Wait for human observation or scripted real-entry + judge packet."
+    acceptance:
+      - "Emotional timing feels appropriate in real samples."
+      - "The system avoids manipulative overreach."
+      - "Human or judge evidence is attached."
+    rollback: "Keep blocked and feed findings into Functional Subject eval."
+    canonical_sources:
+      - "GitHub issue #78"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/78"
+
+  - id: EGO-HUMAN-080
+    title: "EgoOperator: roleplay/companion immersion persistence v2"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: blocked
+    layer: companion_experience
+    owner: user
+    observation_class: human_required
+    evidence_level: E3
+    claim_ceiling: Roleplay immersion persistence real CLI candidate pass
+    next_action: "Wait for real CLI smoke that confirms no meta prompt leakage and stable in-scene continuity."
+    acceptance:
+      - "Roleplay scene persists across emotional and intimacy-adjacent user turns."
+      - "The assistant does not insert out-of-scene workflow prompts."
+      - "Human comment confirms immersion."
+    rollback: "Keep blocked and feed failure examples into immersion guard tests."
+    canonical_sources:
+      - "GitHub issue #80"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/80"

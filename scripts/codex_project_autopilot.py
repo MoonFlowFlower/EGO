@@ -23,6 +23,7 @@ DEFAULT_BASELINE_PATH = ROOT / ".codex" / "autopilot" / "dirty_baseline.json"
 DEFAULT_REPORT_DIR = ROOT / ".codex" / "autopilot" / "runs"
 DEFAULT_REVIEW_SCHEMA_PATH = SCRIPT_DIR / "codex_autopilot_closeout_review_schema.json"
 DEFAULT_PLAN_SCHEMA_PATH = SCRIPT_DIR / "codex_autopilot_plan_proposal_schema.json"
+DEFAULT_TASK_BOARD_PATH = ROOT / "Tasks" / "TASK_BOARD.yaml"
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -64,6 +65,7 @@ class ProjectContract:
     goal_control: dict[str, Any] = field(default_factory=dict)
     epic_rollup: dict[str, Any] = field(default_factory=dict)
     github_rate_limit: dict[str, Any] = field(default_factory=dict)
+    task_state: dict[str, Any] = field(default_factory=dict)
 
     def github_config(self, *, dry_run: bool = False) -> github_project_task.Config:
         rate_limit = self.github_rate_limit
@@ -221,6 +223,11 @@ def load_contract(path: Path) -> ProjectContract:
             payload.get("github_rate_limit") or {},
             code="invalid_github_rate_limit",
             message="github_rate_limit must be an object",
+        ),
+        task_state=_require_mapping(
+            payload.get("task_state") or {},
+            code="invalid_task_state",
+            message="task_state must be an object",
         ),
     )
 
@@ -517,6 +524,212 @@ def select_next(report: dict[str, Any]) -> dict[str, Any] | None:
     return ready[0] if ready else None
 
 
+def task_board_path(contract: ProjectContract, override: str | None = None) -> Path:
+    if override:
+        return Path(override)
+    configured = contract.task_state.get("board_path")
+    if configured:
+        candidate = Path(str(configured))
+        return candidate if candidate.is_absolute() else ROOT / candidate
+    return DEFAULT_TASK_BOARD_PATH
+
+
+def local_board_is_default(contract: ProjectContract) -> bool:
+    return str(contract.task_state.get("source") or "").casefold() == "local_board"
+
+
+def load_task_board(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise AutopilotError("missing_task_board", f"Local task board not found: {path}", path=str(path))
+    if yaml is None:
+        raise AutopilotError("yaml_unavailable", "PyYAML is required to read TASK_BOARD.yaml")
+    try:
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise AutopilotError("invalid_task_board_yaml", f"Unable to read task board: {path}") from exc
+    if not isinstance(payload, dict):
+        raise AutopilotError("invalid_task_board", "Task board must be a YAML object", path=str(path))
+    tasks = payload.get("tasks")
+    if not isinstance(tasks, list):
+        raise AutopilotError("invalid_task_board", "Task board must contain a tasks array", path=str(path))
+    for index, task in enumerate(tasks):
+        if not isinstance(task, dict):
+            raise AutopilotError("invalid_task_board_task", "Task board entry must be an object", index=index)
+        missing = [field for field in ("id", "title", "status", "kind", "acceptance", "rollback", "claim_ceiling") if not task.get(field)]
+        if missing:
+            raise AutopilotError("invalid_task_board_task", "Task board entry is missing required fields", index=index, missing=missing)
+    return payload
+
+
+def local_task_body(task: dict[str, Any]) -> str:
+    lines = [
+        f"Observation class: {task.get('observation_class') or 'deterministic_local'}",
+        "",
+        "## Canonical source",
+    ]
+    for source in task.get("canonical_sources") or []:
+        lines.append(f"- {source}")
+    lines.extend(["", "## Acceptance gate"])
+    for item in task.get("acceptance") or []:
+        lines.append(f"- {item}")
+    lines.extend(["", "## Rollback", str(task.get("rollback") or ""), "", "## Claim ceiling", str(task.get("claim_ceiling") or "")])
+    return "\n".join(lines)
+
+
+def classify_local_task(task: dict[str, Any]) -> dict[str, Any]:
+    status = str(task.get("status") or "")
+    kind = str(task.get("kind") or "")
+    observation_class = str(task.get("observation_class") or "deterministic_local")
+    if status == "accepted":
+        return {"class": "done", "reason": "local_status_accepted", "autopilot_allowed": False}
+    if kind == "epic":
+        return {"class": "epic", "reason": "local_kind_epic", "autopilot_allowed": False}
+    if kind == "parked" or status == "parked":
+        return {"class": "parked", "reason": "local_status_parked", "autopilot_allowed": False}
+    if kind == "supporting":
+        return {"class": "supporting", "reason": "local_kind_supporting", "autopilot_allowed": False}
+    if observation_class == "human_required":
+        return {"class": "human_required", "reason": "local_human_required", "autopilot_allowed": False}
+    if status == "blocked":
+        return {"class": "blocked", "reason": "local_status_blocked", "autopilot_allowed": False}
+    if kind == "research":
+        return {"class": "research", "reason": "local_kind_research", "autopilot_allowed": True}
+    if status in {"planned", "active", "evidence_ready"}:
+        return {"class": "ready", "reason": "local_status_ready", "autopilot_allowed": True}
+    return {"class": "unknown", "reason": "local_status_unknown", "autopilot_allowed": False}
+
+
+def build_local_report(contract: ProjectContract, board_path: Path) -> dict[str, Any]:
+    board = load_task_board(board_path)
+    entries = []
+    counts: dict[str, int] = {}
+    for index, task in enumerate(board.get("tasks") or []):
+        classification = classify_local_task(task)
+        cls = str(classification.get("class") or "unknown")
+        counts[cls] = counts.get(cls, 0) + 1
+        entries.append(
+            {
+                "id": task.get("id"),
+                "number": index + 1,
+                "title": task.get("title"),
+                "kind": task.get("kind"),
+                "parent": task.get("parent"),
+                "local_status": task.get("status"),
+                "project_status": task.get("status"),
+                "observation_class": task.get("observation_class"),
+                "evidence_level": task.get("evidence_level"),
+                "next_action": task.get("next_action"),
+                "external_refs": task.get("external_refs") or {},
+                "classification": classification,
+                "body": local_task_body(task),
+            }
+        )
+    return {
+        "status": "ok",
+        "source": "local_board",
+        "board_path": str(board_path),
+        "project": {
+            "name": contract.name,
+            "repo": contract.repo,
+            "mirror": "github_project",
+        },
+        "counts": counts,
+        "tasks": entries,
+        "issues": entries,
+    }
+
+
+def select_next_local(report: dict[str, Any]) -> dict[str, Any] | None:
+    status_rank = {"active": 0, "evidence_ready": 1, "planned": 2}
+    ready = [
+        task
+        for task in report.get("tasks", [])
+        if task.get("classification", {}).get("autopilot_allowed") is True
+    ]
+    ready.sort(key=lambda item: (status_rank.get(str(item.get("local_status")), 99), int(item.get("number") or 999999)))
+    return ready[0] if ready else None
+
+
+def command_local_report(contract: ProjectContract, board_path: Path) -> dict[str, Any]:
+    return build_local_report(contract, board_path)
+
+
+def command_local_plan_next(contract: ProjectContract, board_path: Path) -> dict[str, Any]:
+    report = build_local_report(contract, board_path)
+    selected = select_next_local(report)
+    if not selected:
+        return {
+            "status": "stopped",
+            "stop_reason": "no_ready_task",
+            "counts": report["counts"],
+            "next_task": None,
+        }
+    return {
+        "status": "ok",
+        "source": "local_board",
+        "next_task": selected,
+        "selection_reason": selected["classification"]["reason"],
+    }
+
+
+def command_local_closeout_check(contract: ProjectContract, task_id: str, board_path: Path) -> dict[str, Any]:
+    report = build_local_report(contract, board_path)
+    task = next((entry for entry in report["tasks"] if str(entry.get("id")) == str(task_id)), None)
+    if not task:
+        raise AutopilotError("task_not_found", f"Task not found in local board: {task_id}", task_id=task_id)
+    blocked = []
+    if task.get("local_status") != "evidence_ready":
+        blocked.append({"reason": "task_not_evidence_ready", "status": task.get("local_status")})
+    if task.get("observation_class") == "human_required":
+        blocked.append({"reason": "human_required"})
+    return {
+        "status": "ok",
+        "source": "local_board",
+        "task": task,
+        "eligible": not blocked,
+        "blocked_reasons": blocked,
+        "claim_ceiling": task.get("body", "").split("## Claim ceiling", 1)[-1].strip() if task.get("body") else None,
+    }
+
+
+def command_local_run_loop(
+    contract: ProjectContract,
+    *,
+    board_path: Path,
+    dry_run: bool,
+    execute: bool,
+    max_issues: int,
+    write_report: bool,
+    report_dir: Path,
+) -> dict[str, Any]:
+    if execute:
+        raise AutopilotError("local_execute_not_implemented", "Local board v1 only supports dry-run planning")
+    report = build_local_report(contract, board_path)
+    ready = [
+        task for task in report.get("tasks", []) if task.get("classification", {}).get("autopilot_allowed") is True
+    ]
+    ready.sort(key=lambda item: ({"active": 0, "evidence_ready": 1, "planned": 2}.get(str(item.get("local_status")), 99), int(item.get("number") or 999999)))
+    selected = ready[: max(0, max_issues)]
+    payload = {
+        "status": "ok" if selected else "stopped",
+        "source": "local_board",
+        "mode": "plan",
+        "dry_run": True if dry_run or not execute else False,
+        "counts": report.get("counts"),
+        "planned": [
+            {
+                "task": task,
+                "issue": task,
+                "dry_run_action": "would_run_once",
+                "note": "local board mode does not mutate code, GitHub Project state, commits, or close issues",
+            }
+            for task in selected
+        ],
+        "stop_reason": "max_issues_reached" if selected and len(ready) > max_issues else ("ready_queue_exhausted" if selected else "no_ready_task"),
+    }
+    return finalize_run_loop_payload(payload, write_report=write_report, report_dir=report_dir)
+
+
 def command_doctor(client: github_project_task.GhClient, contract: ProjectContract) -> dict[str, Any]:
     result = github_project_task.command_doctor(client, contract.github_config(), argparse.Namespace())
     return {
@@ -529,10 +742,14 @@ def command_doctor(client: github_project_task.GhClient, contract: ProjectContra
 
 
 def command_report(client: github_project_task.GhClient, contract: ProjectContract) -> dict[str, Any]:
+    if local_board_is_default(contract):
+        return command_local_report(contract, task_board_path(contract))
     return build_report(client, contract)
 
 
 def command_plan_next(client: github_project_task.GhClient, contract: ProjectContract) -> dict[str, Any]:
+    if local_board_is_default(contract):
+        return command_local_plan_next(contract, task_board_path(contract))
     report = build_report(client, contract)
     selected = select_next(report)
     if not selected:
@@ -757,6 +974,7 @@ def contract_summary(contract: ProjectContract) -> dict[str, Any]:
         "auto_pause": contract.auto_pause,
         "goal_control": contract.goal_control,
         "epic_rollup": contract.epic_rollup,
+        "task_state": contract.task_state,
     }
 
 
@@ -2928,6 +3146,16 @@ def command_run_loop(
 ) -> dict[str, Any]:
     if dry_run and execute:
         raise AutopilotError("invalid_run_loop_mode", "Choose either --dry-run or --execute, not both")
+    if local_board_is_default(contract) and mode == "plan":
+        return command_local_run_loop(
+            contract,
+            board_path=task_board_path(contract),
+            dry_run=dry_run,
+            execute=execute,
+            max_issues=max_issues,
+            write_report=write_report,
+            report_dir=report_dir,
+        )
     effective_dry_run = not execute
     started = time.monotonic()
     if max_issues <= 0 or max_minutes <= 0:
@@ -3140,11 +3368,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--contract", default=str(DEFAULT_CONTRACT_PATH), help="Path to project contract YAML")
     parser.add_argument("--baseline-path", default=str(DEFAULT_BASELINE_PATH), help="Path to local dirty baseline JSON")
     parser.add_argument("--report-dir", default=str(DEFAULT_REPORT_DIR), help="Path to local autopilot run reports")
+    parser.add_argument("--task-board-path", default=None, help="Path to local canonical task board YAML")
 
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("doctor")
     subparsers.add_parser("report")
     subparsers.add_parser("plan-next")
+    subparsers.add_parser("local-report")
+    subparsers.add_parser("local-plan-next")
+    local_closeout = subparsers.add_parser("local-closeout-check")
+    local_closeout.add_argument("--task", required=True)
+    local_loop = subparsers.add_parser("local-run-loop")
+    local_loop.add_argument("--dry-run", action="store_true")
+    local_loop.add_argument("--execute", action="store_true")
+    local_loop.add_argument("--max-issues", type=int, default=1)
+    local_loop.add_argument("--write-report", action="store_true")
     subparsers.add_parser("goal-status")
     goal_refresh = subparsers.add_parser("goal-refresh")
     goal_refresh.add_argument("--issue")
@@ -3238,6 +3476,22 @@ def dispatch(
         return command_report(client, contract)
     if args.command == "plan-next":
         return command_plan_next(client, contract)
+    if args.command == "local-report":
+        return command_local_report(contract, task_board_path(contract, args.task_board_path))
+    if args.command == "local-plan-next":
+        return command_local_plan_next(contract, task_board_path(contract, args.task_board_path))
+    if args.command == "local-closeout-check":
+        return command_local_closeout_check(contract, args.task, task_board_path(contract, args.task_board_path))
+    if args.command == "local-run-loop":
+        return command_local_run_loop(
+            contract,
+            board_path=task_board_path(contract, args.task_board_path),
+            dry_run=bool(args.dry_run),
+            execute=bool(args.execute),
+            max_issues=args.max_issues,
+            write_report=bool(args.write_report),
+            report_dir=Path(args.report_dir),
+        )
     if args.command == "goal-status":
         return command_goal_status(client, contract, report_dir=Path(args.report_dir))
     if args.command == "goal-refresh":

@@ -334,6 +334,85 @@ epic_rollup:
     return path
 
 
+def write_local_contract(tmp_path: Path, board_path: Path) -> Path:
+    path = write_contract(tmp_path)
+    text = path.read_text(encoding="utf-8")
+    text += f"""
+task_state:
+  source: local_board
+  board_path: {board_path}
+  github_project_role: mirror
+"""
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def write_local_board(tmp_path: Path) -> Path:
+    path = tmp_path / "TASK_BOARD.yaml"
+    path.write_text(
+        """
+version: 1
+tasks:
+  - id: EPIC-1
+    title: "Epic 10: Functional Subject core mechanisms"
+    kind: epic
+    parent: null
+    status: active
+    layer: functional_subject_core
+    owner: codex
+    observation_class: aggregate
+    evidence_level: E2
+    claim_ceiling: Epic local candidate pass
+    next_action: "Complete children."
+    acceptance:
+      - "Children exist."
+    rollback: "Close children."
+    canonical_sources:
+      - "test"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/84"
+  - id: TASK-1
+    title: "EgoSubject: Functional Subject architecture contract v0"
+    kind: task
+    parent: EPIC-1
+    status: active
+    layer: functional_subject_core
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Architecture contract local candidate pass
+    next_action: "Write contract."
+    acceptance:
+      - "Contract exists."
+    rollback: "Remove contract."
+    canonical_sources:
+      - "test"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/85"
+  - id: HUMAN-1
+    title: "EgoOperator: Functional Subject real-provider smoke"
+    kind: smoke
+    parent: EPIC-1
+    status: blocked
+    layer: functional_subject_experience
+    owner: user
+    observation_class: human_required
+    evidence_level: E2
+    claim_ceiling: Real-provider smoke candidate pass
+    next_action: "Wait for human smoke."
+    acceptance:
+      - "Human evidence exists."
+    rollback: "Keep blocked."
+    canonical_sources:
+      - "test"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/94"
+""",
+        encoding="utf-8",
+    )
+    return path
+
+
 def base_responses(*, items: list[dict] | None = None) -> dict[tuple[str, ...], list[str] | str]:
     return {
         ("--version",): "gh version 2.92.0\n",
@@ -439,6 +518,54 @@ def test_report_classifies_ready_human_aggregate_parked_supporting_and_unknown(t
     assert classes[10] == "parked"
     assert classes[6] == "supporting"
     assert classes[14] == "unknown"
+
+
+def test_local_report_and_plan_next_do_not_call_github(tmp_path: Path) -> None:
+    board = write_local_board(tmp_path)
+    path = write_local_contract(tmp_path, board)
+    fake = FakeGh({})
+
+    report_code, report = run_cli(["--contract", str(path), "report"], fake=fake)
+    plan_code, plan = run_cli(["--contract", str(path), "plan-next"], fake=fake)
+
+    assert report_code == 0
+    assert plan_code == 0
+    assert report["source"] == "local_board"
+    assert report["counts"]["ready"] == 1
+    assert report["counts"]["human_required"] == 1
+    assert plan["next_task"]["id"] == "TASK-1"
+    assert fake.calls == []
+
+
+def test_local_closeout_check_blocks_before_evidence_ready(tmp_path: Path) -> None:
+    board = write_local_board(tmp_path)
+    path = write_local_contract(tmp_path, board)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "local-closeout-check", "--task", "TASK-1"],
+        fake=FakeGh({}),
+    )
+
+    assert code == 0
+    assert payload["eligible"] is False
+    assert payload["blocked_reasons"][0]["reason"] == "task_not_evidence_ready"
+
+
+def test_local_run_loop_dry_run_uses_local_board_without_github(tmp_path: Path) -> None:
+    board = write_local_board(tmp_path)
+    path = write_local_contract(tmp_path, board)
+    fake = FakeGh({})
+
+    code, payload = run_cli(
+        ["--contract", str(path), "run-loop", "--dry-run", "--max-issues", "2"],
+        fake=fake,
+    )
+
+    assert code == 0
+    assert payload["source"] == "local_board"
+    assert payload["planned"][0]["task"]["id"] == "TASK-1"
+    assert payload["operator_digest"]["issues"][0]["title"] == "EgoSubject: Functional Subject architecture contract v0"
+    assert fake.calls == []
 
 
 def test_ego_subject_prefix_classifies_as_ready(tmp_path: Path) -> None:

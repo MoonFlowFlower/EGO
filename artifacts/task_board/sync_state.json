@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "repo": "pen364692088/EGO",
+  "github_project": {
+    "owner": "pen364692088",
+    "number": 1,
+    "role": "mirror"
+  },
+  "issues": {
+    "EGO-FS-EPIC-10": {
+      "number": 84,
+      "url": "https://github.com/pen364692088/EGO/issues/84"
+    },
+    "EGO-FS-001": {
+      "number": 85,
+      "url": "https://github.com/pen364692088/EGO/issues/85"
+    },
+    "EGO-FS-002": {
+      "number": 86,
+      "url": "https://github.com/pen364692088/EGO/issues/86"
+    },
+    "EGO-FS-003": {
+      "number": 87,
+      "url": "https://github.com/pen364692088/EGO/issues/87"
+    },
+    "EGO-FS-004": {
+      "number": 88,
+      "url": "https://github.com/pen364692088/EGO/issues/88"
+    },
+    "EGO-FS-005": {
+      "number": 89,
+      "url": "https://github.com/pen364692088/EGO/issues/89"
+    },
+    "EGO-FS-006": {
+      "number": 90,
+      "url": "https://github.com/pen364692088/EGO/issues/90"
+    },
+    "EGO-FS-007": {
+      "number": 91,
+      "url": "https://github.com/pen364692088/EGO/issues/91"
+    },
+    "EGO-FS-008": {
+      "number": 92,
+      "url": "https://github.com/pen364692088/EGO/issues/92"
+    },
+    "EGO-FS-009": {
+      "number": 93,
+      "url": "https://github.com/pen364692088/EGO/issues/93"
+    },
+    "EGO-FS-010": {
+      "number": 94,
+      "url": "https://github.com/pen364692088/EGO/issues/94"
+    },
+    "EGO-HUMAN-072": {
+      "number": 72,
+      "url": "https://github.com/pen364692088/EGO/issues/72"
+    },
+    "EGO-HUMAN-073": {
+      "number": 73,
+      "url": "https://github.com/pen364692088/EGO/issues/73"
+    },
+    "EGO-HUMAN-078": {
+      "number": 78,
+      "url": "https://github.com/pen364692088/EGO/issues/78"
+    },
+    "EGO-HUMAN-080": {
+      "number": 80,
+      "url": "https://github.com/pen364692088/EGO/issues/80"
+    }
+  }
+}

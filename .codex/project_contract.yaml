@@ -16,6 +16,14 @@ github_rate_limit:
   grace_seconds: 5
   max_retries: 1
 
+task_state:
+  source: local_board
+  board_path: Tasks/TASK_BOARD.yaml
+  github_project_role: mirror
+  sync_state_path: artifacts/task_board/sync_state.json
+  sync_log_path: artifacts/task_board/sync_log.jsonl
+  outbox_path: artifacts/task_board/outbox.jsonl
+
 verify_profiles:
   autopilot_target:
     commands:
@@ -26,6 +34,7 @@ verify_profiles:
           - py_compile
           - scripts/codex_project_autopilot.py
           - scripts/github_project_task.py
+          - scripts/sync_github_project.py
           - scripts/ego_operator_devloop.py
           - scripts/validate_experience_eval_contract.py
           - scripts/run_ego_experience_trial.py
@@ -52,6 +61,7 @@ verify_profiles:
           - pytest
           - -q
           - scripts/tests/test_github_project_task.py
+          - scripts/tests/test_sync_github_project.py
           - scripts/tests/test_ego_operator_devloop.py
           - scripts/tests/test_codex_project_autopilot.py
           - scripts/tests/test_experience_eval_contract.py
@@ -73,6 +83,10 @@ verify_profiles:
           - AGENTS.md
           - scripts
           - scripts/tests
+          - Tasks/TASK_BOARD.yaml
+          - Tasks/stage_cards
+          - artifacts/task_board
+          - docs/codex/tasks/codex-task-board-canonical-store-v1
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -95,6 +109,10 @@ allowed_mutation_paths:
   - AGENTS.md
   - scripts/
   - scripts/tests/
+  - Tasks/TASK_BOARD.yaml
+  - Tasks/stage_cards/
+  - artifacts/task_board/
+  - docs/codex/tasks/codex-task-board-canonical-store-v1/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
