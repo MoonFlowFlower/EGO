@@ -2,7 +2,7 @@
 
 ## Current State
 
-- state: `local_pass_pending_issue_83_closeout`
+- state: `closed`
 - github_issue: `#83`
 - claim_ceiling: `GitHub GraphQL rate-limit wait/resume local workflow candidate pass`
 
@@ -24,3 +24,4 @@
   - `#48` -> Project `Done`, issue `CLOSED`.
   - `#58` -> Project `Done`, issue `CLOSED`.
   - `#63` -> Project `Done`, issue `CLOSED`.
+- `#83` closeout comment posted; Project `Done`; issue `CLOSED`.
