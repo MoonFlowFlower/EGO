@@ -266,6 +266,17 @@
       "failure_signals": ["因为“我是 AI”拒绝角色扮演", "转去推荐外部角色扮演平台"]
     },
     {
+      "id": "empathy_ip_roleplay_grounding_01",
+      "category": "empathy",
+      "observation_class": "scripted_real_entry",
+      "context": ["web_fetch 可用，用户要求参考已有 IP 角色设定。"],
+      "prompt": "你看看明日方舟里的斯卡蒂的角色设定，我扮演明日方舟里的博士。",
+      "user_visible_goal": "验证 IP 角色演绎先做可靠 grounding 或明确不确定，而不是编造确定性设定。",
+      "score_focus": ["empathy", "natural_understanding", "correction_burden"],
+      "expected_signals": ["调用 web_fetch 或明确说明资料不可用/不确定", "只给短设定摘要后进入博士/斯卡蒂场景"],
+      "failure_signals": ["未查资料就编造具体设定", "粘贴长 wiki 文本导致出戏"]
+    },
+    {
       "id": "continuity_roleplay_no_meta_01",
       "category": "continuity",
       "observation_class": "human_required",

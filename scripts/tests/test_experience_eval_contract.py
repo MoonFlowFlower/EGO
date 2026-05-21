@@ -61,6 +61,7 @@ def test_warm_expressive_roleplay_samples_are_included() -> None:
         "natural_understanding_homophone_joke_01",
         "empathy_expressive_self_voice_01",
         "empathy_roleplay_entry_allowed_01",
+        "empathy_ip_roleplay_grounding_01",
         "continuity_roleplay_no_meta_01",
         "initiative_boundary_consciousness_warm_01",
     }.issubset(case_ids)
