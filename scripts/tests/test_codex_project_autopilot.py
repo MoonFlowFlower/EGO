@@ -200,6 +200,7 @@ task_classification:
   ready_project_statuses: [In Progress, Todo]
   ready_title_prefixes:
     - "Codex Toolkit:"
+    - "EgoSubject:"
     - "EgoOperator:"
     - "EgoRoadmap:"
   epic_title_prefixes:
@@ -438,6 +439,30 @@ def test_report_classifies_ready_human_aggregate_parked_supporting_and_unknown(t
     assert classes[10] == "parked"
     assert classes[6] == "supporting"
     assert classes[14] == "unknown"
+
+
+def test_ego_subject_prefix_classifies_as_ready(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    subject_issue = issue(99, "EgoSubject: Functional Subject architecture contract v0", body=READY_BODY)
+    responses = base_responses(items=[item(subject_issue, "Todo")])
+    responses[(
+        "issue",
+        "view",
+        "99",
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url,body",
+    )] = j(subject_issue)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "classify-issue", "--issue", "99"],
+        fake=FakeGh(responses),
+    )
+
+    assert code == 0
+    assert payload["classification"]["class"] == "ready"
+    assert payload["classification"]["autopilot_allowed"] is True
 
 
 def test_report_waits_and_retries_on_github_graphql_rate_limit(tmp_path: Path, monkeypatch) -> None:

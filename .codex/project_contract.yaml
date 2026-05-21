@@ -116,6 +116,7 @@ task_classification:
     - Todo
   ready_title_prefixes:
     - "Codex Toolkit:"
+    - "EgoSubject:"
     - "EgoOperator:"
     - "EgoRoadmap:"
     - "EgoDesktop:"
