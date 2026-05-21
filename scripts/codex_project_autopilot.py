@@ -2495,6 +2495,7 @@ def build_epic_rollups(client: github_project_task.GhClient, contract: ProjectCo
     current_epic: int | None = None
     assignments: list[dict[str, Any]] = []
     conflicts: list[dict[str, Any]] = []
+    unassigned: list[dict[str, Any]] = []
 
     for record in records:
         issue = record["issue"]
@@ -2525,6 +2526,9 @@ def build_epic_rollups(client: github_project_task.GhClient, contract: ProjectCo
         source = "explicit" if parent else "inferred"
         if parsed["status"] == "conflict":
             conflicts.append({"issue": number, "title": issue.get("title"), "reason": "conflicting_parent_markers", "parents": parsed["parents"]})
+            continue
+        if parent is None and inferred is None:
+            unassigned.append({"issue": number, "title": issue.get("title"), "reason": "no_parent_epic_available"})
             continue
         if parent and inferred and parent != inferred:
             conflicts.append(
@@ -2592,10 +2596,12 @@ def build_epic_rollups(client: github_project_task.GhClient, contract: ProjectCo
         "parent_marker": marker,
         "epics": list(epics.values()),
         "assignments": assignments,
+        "unassigned": unassigned,
         "conflicts": conflicts,
         "summary": {
             "epic_count": len(epics),
             "assignment_count": len(assignments),
+            "unassigned_count": len(unassigned),
             "conflict_count": len(conflicts),
             "rollup_states": summary_counts,
             "eligible_closeout_epics": [epic["number"] for epic in epics.values() if epic.get("eligible_closeout")],
@@ -2620,6 +2626,7 @@ def command_normalize_parent_links(
     current_epic: int | None = None
     planned = []
     blocked = []
+    skipped = []
 
     for record in records:
         issue = record["issue"]
@@ -2633,7 +2640,7 @@ def command_normalize_parent_links(
         if not _is_epic_child_issue(contract, issue):
             continue
         if current_epic is None:
-            blocked.append({"issue": number, "reason": "no_inferred_parent_epic", "title": issue.get("title")})
+            skipped.append({"issue": number, "reason": "no_inferred_parent_epic", "title": issue.get("title")})
             continue
         body = str(issue.get("body") or "")
         updated, result = append_parent_epic_marker(body, marker=marker, epic_number=current_epic)
@@ -2654,7 +2661,13 @@ def command_normalize_parent_links(
         )
 
     if blocked:
-        return {"status": "blocked", "mode": "dry_run" if dry_run else "execute", "blocked": blocked, "planned": planned}
+        return {
+            "status": "blocked",
+            "mode": "dry_run" if dry_run else "execute",
+            "blocked": blocked,
+            "skipped": skipped,
+            "planned": planned,
+        }
 
     edited = []
     if not dry_run:
@@ -2668,6 +2681,7 @@ def command_normalize_parent_links(
         "status": "ok",
         "mode": "dry_run" if dry_run else "execute",
         "planned": redacted,
+        "skipped": skipped,
         "edited": edited,
         "edited_count": len(edited),
         "claim_ceiling": _epic_rollup_config(contract).get("closeout_claim_ceiling"),

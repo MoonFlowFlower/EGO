@@ -1848,6 +1848,47 @@ def test_normalize_parent_links_dry_run_and_conflict_block(tmp_path: Path) -> No
     assert conflict_payload["blocked"][0]["reason"] == "parent_marker_conflict"
 
 
+def test_epic_rollup_ignores_unassigned_legacy_children_before_first_epic(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    legacy = issue(70, "EgoRoadmap: pre-roadmap historical repair", body=READY_BODY)
+    epic = issue(80, "Epic 9: Test epic", body=READY_BODY)
+    child = issue(81, "EgoRoadmap: completed child", body=READY_BODY + "\nParent epic: #80\n", state="CLOSED")
+
+    code, payload = run_cli(
+        ["--contract", str(path), "epic-report"],
+        fake=FakeGh(base_responses(items=[item(legacy, "Done"), item(epic, "Todo"), item(child, "Done")])),
+    )
+    check_code, check = run_cli(
+        ["--contract", str(path), "epic-closeout-check", "--epic", "80"],
+        fake=FakeGh(base_responses(items=[item(legacy, "Done"), item(epic, "Todo"), item(child, "Done")])),
+    )
+
+    assert code == 0
+    assert payload["summary"]["conflict_count"] == 0
+    assert payload["summary"]["unassigned_count"] == 1
+    assert payload["unassigned"][0]["issue"] == 70
+    assert check_code == 0
+    assert check["status"] == "eligible"
+
+
+def test_normalize_parent_links_skips_unassigned_legacy_and_plans_children(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    legacy = issue(70, "EgoRoadmap: pre-roadmap historical repair", body=READY_BODY)
+    epic = issue(80, "Epic 9: Test epic", body=READY_BODY)
+    child = issue(81, "EgoRoadmap: untagged child", body=READY_BODY)
+
+    code, payload = run_cli(
+        ["--contract", str(path), "normalize-parent-links", "--dry-run"],
+        fake=FakeGh(base_responses(items=[item(legacy, "Done"), item(epic, "Todo"), item(child, "Todo")])),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert payload["skipped"][0]["issue"] == 70
+    assert payload["planned"][0]["issue"] == 81
+    assert payload["planned"][0]["action"] == "append_parent_marker"
+
+
 def test_complete_epic_can_closeout_but_human_required_child_blocks(tmp_path: Path) -> None:
     path = write_contract(tmp_path)
 
