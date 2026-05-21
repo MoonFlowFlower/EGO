@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Complete EGO-FS-001 architecture contract before runtime integration."
+    next_action: "Proceed to EGO-FS-002: create the 20-sample functional subject trial and GPT-5.5 judge packet before runtime integration."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -44,13 +44,13 @@ tasks:
     title: "EgoSubject: Functional Subject architecture contract v0"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_core
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: Functional Subject architecture contract local candidate pass
-    next_action: "Define SubjectState, ViabilityState, OutcomePrediction, PolicyPatchCandidate, gates, trace fields, and owner boundaries."
+    next_action: "Accepted locally; next canonical task is EGO-FS-002."
     acceptance:
       - "Architecture contract states candidate-only v0 ownership and data flow."
       - "Contract maps Functional Subject mechanisms to EgoOperator proposal/gate/trace path."
@@ -59,6 +59,7 @@ tasks:
     canonical_sources:
       - "Tasks/与GPTpro的讨论结果.txt"
       - "GitHub issue #85"
+      - "docs/codex/tasks/ego-functional-subject-architecture-contract-v0/ARCHITECTURE_CONTRACT.md"
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/85"
 
@@ -66,7 +67,7 @@ tasks:
     title: "EgoSubject: 20-sample functional subject trial + GPT-5.5 judge"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: functional_subject_eval
     owner: codex
     observation_class: scripted_with_llm_judge

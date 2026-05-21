@@ -50,6 +50,7 @@ verify_profiles:
           - pytest
           - -q
           - scripts/tests/test_codex_project_autopilot.py
+          - scripts/tests/test_functional_subject_contract.py
         env:
           TMPDIR: /tmp
   autopilot_full:
@@ -67,6 +68,7 @@ verify_profiles:
           - scripts/tests/test_experience_eval_contract.py
           - scripts/tests/test_run_ego_experience_trial.py
           - scripts/tests/test_import_human_observation_comments.py
+          - scripts/tests/test_functional_subject_contract.py
           - EgoOperator/tests/test_memory_system.py
           - EgoOperator/tests/test_extracted_primitives.py
           - EgoOperator/tests/test_operator_runtime_contract.py
@@ -87,6 +89,7 @@ verify_profiles:
           - Tasks/stage_cards
           - artifacts/task_board
           - docs/codex/tasks/codex-task-board-canonical-store-v1
+          - docs/codex/tasks/ego-functional-subject-architecture-contract-v0
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -113,6 +116,7 @@ allowed_mutation_paths:
   - Tasks/stage_cards/
   - artifacts/task_board/
   - docs/codex/tasks/codex-task-board-canonical-store-v1/
+  - docs/codex/tasks/ego-functional-subject-architecture-contract-v0/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/

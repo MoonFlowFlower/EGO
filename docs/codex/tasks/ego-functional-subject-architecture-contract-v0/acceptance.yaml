@@ -1,0 +1,20 @@
+version: 1
+task_id: EGO-FS-001
+claim_ceiling: Functional Subject architecture contract local candidate pass
+acceptance:
+  - id: candidate_only
+    gate: Contract states Functional Subject v0 is candidate-only and cannot directly write core memory/state.
+  - id: mainline_mapping
+    gate: Contract maps user event through LLM understanding, subject signals, prediction, planner/proposal, gate, action, trace, and feedback.
+  - id: primitives
+    gate: Contract defines SubjectState, ViabilityState, OutcomePrediction, and PolicyPatchCandidate v0.
+  - id: claim_language
+    gate: Positive mechanism goals are separate from claim ceilings / reporting rules.
+  - id: deterministic_test
+    gate: scripts/tests/test_functional_subject_contract.py passes.
+not_claimed:
+  - runtime behavior implementation
+  - real-provider smoke pass
+  - durable memory efficacy
+  - live autonomy
+  - consciousness

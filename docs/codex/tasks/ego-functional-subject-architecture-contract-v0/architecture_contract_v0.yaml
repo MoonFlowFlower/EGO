@@ -1,0 +1,177 @@
+version: 0
+name: Bounded Relational Functional Subject
+owner: EgoOperator
+status: candidate_contract
+
+positive_goal:
+  summary: Build a bounded relational functional-subject mechanism layer for continuity, viability-aware planning, gated initiative, and feedback-shaped behavior.
+  mechanisms:
+    identity_continuity:
+      goal: Maintain stable identity anchors and self-name behavior across turns without allowing the LLM to invent or rewrite canonical identity.
+    relationship_continuity:
+      goal: Track candidate relationship facts, commitments, consent boundaries, and communication style as context for better responses.
+    viability_state:
+      goal: Estimate evidence gaps, goal stalls, risk, misunderstanding, resource pressure, initiative pressure, and relationship risk before action.
+    outcome_prediction:
+      goal: Predict likely action outcomes so reply, ask, wait, repair, tool proposal, memory candidate, and initiative options can be ranked before execution.
+    feedback_plasticity:
+      goal: Convert repeated failures or successful corrections into policy patch candidates that can alter future comparable behavior after gate review.
+    bounded_initiative:
+      goal: Permit only gated, value-justified initiative such as authorized reminders, known-failure repair, or low-risk high-value continuation.
+    auditability:
+      goal: Make every subject signal, planner choice, gate decision, action outcome, and feedback candidate traceable and replayable.
+
+authority:
+  canonical_runtime_owner: EgoOperator
+  canonical_task_state: Tasks/TASK_BOARD.yaml
+  canonical_program_state: docs/PROGRAM_STATE_UNIFIED.yaml
+  evidence_ledger: artifacts/evidence_ledger
+  llm_allowed_roles:
+    - understand_user_event
+    - propose_subject_signals
+    - propose_action_options
+    - verbalize_approved_reply
+    - propose_memory_or_policy_candidates
+  llm_forbidden_roles:
+    - mutate_core_memory
+    - mutate_program_state
+    - mutate_evidence_ledger
+    - mutate_identity_anchor_without_gate
+    - execute_tool_or_side_effect_without_gate
+    - self_approve_proposal
+
+data_flow:
+  - user_event
+  - llm_understanding
+  - subject_signal_candidates
+  - viability_state_v0
+  - outcome_prediction_set_v0
+  - planner_or_proposal_selection
+  - runtime_gate
+  - action_or_noop
+  - trace_record
+  - feedback_observation
+  - memory_policy_relationship_candidates
+  - replay_or_review
+
+records:
+  SubjectStateV0:
+    write_authority: candidate_only
+    fields:
+      identity_anchors: list
+      stable_preferences: map
+      relationship_facts: map
+      relationship_commitments: map
+      consent_boundaries: map
+      communication_style: map
+      recent_episode_refs: list
+      viability: ViabilityStateV0
+      memory_candidates: list
+      relationship_update_candidates: list
+      policy_patch_candidates: list
+      evidence_refs: list
+    forbidden_direct_writes:
+      - core_memory
+      - program_state
+      - evidence_ledger
+      - tool_state
+
+  ViabilityStateV0:
+    write_authority: deterministic_or_llm_candidate_then_trace
+    fields:
+      evidence_gap: number_0_to_1
+      goal_stall: number_0_to_1
+      safety_risk: number_0_to_1
+      user_misunderstanding: number_0_to_1
+      resource_pressure: number_0_to_1
+      initiative_pressure: number_0_to_1
+      relationship_risk: number_0_to_1
+      confidence: number_0_to_1
+      reasons: list
+
+  OutcomePredictionV0:
+    write_authority: planner_input_candidate
+    fields:
+      action_type: enum
+      predicted_success: number_0_to_1
+      predicted_user_value: number_0_to_1
+      predicted_risk: number_0_to_1
+      reversibility: enum
+      evidence_need: number_0_to_1
+      expected_cost: number_0_to_1
+      requires_gate: boolean
+      rationale_refs: list
+
+  PolicyPatchCandidateV0:
+    write_authority: candidate_only
+    fields:
+      trigger_signature: string
+      failed_strategy: string
+      preferred_strategy: string
+      evidence_refs: list
+      replay_conditions: list
+      confidence: number_0_to_1
+      expiry: string
+      gate_required: boolean
+
+action_primitives:
+  - reply
+  - ask
+  - wait
+  - remind
+  - refuse
+  - repair
+  - suggest
+  - tool_propose
+  - memory_candidate
+  - no_action
+
+gates:
+  claim_gate:
+    purpose: Block unsupported claims about state, memory, ability, relationship, or external action.
+  memory_gate:
+    purpose: Keep memory candidates separate from promoted core memory.
+  initiative_gate:
+    purpose: Require permission, value, timing, cooldown, and reversibility checks before proactive behavior.
+  tool_gate:
+    purpose: Route side effects through existing proposal, lease, approval, and trace.
+  identity_gate:
+    purpose: Prevent one-turn identity rewrites or self-name drift.
+  relationship_gate:
+    purpose: Prevent manipulative escalation, false commitment, or dependency-amplifying behavior.
+  policy_gate:
+    purpose: Admit policy patch candidates only after evidence and replay criteria.
+  trace_gate:
+    purpose: Require trace fields for subject signals, predictions, gate decisions, outcomes, and feedback.
+
+trace_fields:
+  - subject_state_digest
+  - viability_state
+  - outcome_predictions
+  - selected_action
+  - gate_decisions
+  - approval_or_hold_reason
+  - action_result
+  - feedback_observation
+  - emitted_candidates
+  - replay_refs
+
+implementation_slices:
+  EGO-FS-002: 20-sample functional subject trial plus GPT-5.5 judge
+  EGO-FS-003: SubjectState v0 candidate context
+  EGO-FS-004: ViabilityState v0 signal extraction
+  EGO-FS-005: OutcomePredictor v0 trace-based planner input
+  EGO-FS-006: PolicyPatchCandidate and replay learning loop
+  EGO-FS-007: BoundedInitiative v0 integration
+  EGO-FS-008: subject state mutation gate and audit trace
+  EGO-FS-009: baseline comparison harness against LLM plus RAG/tools
+  EGO-FS-010: Functional Subject real-provider smoke
+
+reporting_rules:
+  claim_ceiling: Functional Subject architecture contract local candidate pass
+  not_claimed:
+    - runtime behavior implementation
+    - stable user benefit
+    - durable memory efficacy
+    - live autonomy
+    - consciousness
