@@ -52,6 +52,20 @@ class SubjectStateSensitiveLLM:
         return "我可以继续分析这个方案。"
 
 
+class CompleteOnlyLLM:
+    provider = "fake"
+    model = "complete-only"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.prompts = []
+
+    def complete(self, prompt, messages=None):
+        self.prompts.append(prompt)
+        return "我先直接给一个普通回答。"
+
+
 def _imported_roots(module) -> set[str]:
     tree = ast.parse(inspect.getsource(module))
     roots: set[str] = set()
@@ -92,6 +106,10 @@ def test_subject_context_is_readonly_candidate_not_reply_owner():
     assert snapshot.viability_state["state_mutation"] == "forbidden"
     assert snapshot.viability_state["reply_decision"] == "forbidden"
     assert snapshot.viability_state["gate_input"] == "advisory_only"
+    assert snapshot.outcome_predictions["schema_version"] == "ego_operator.outcome_predictions.v0"
+    assert snapshot.outcome_predictions["planner_input"] is True
+    assert snapshot.outcome_predictions["state_mutation"] == "forbidden"
+    assert snapshot.outcome_predictions["reply_decision"] == "forbidden"
     assert "你认为黑暗之魂如何" in snapshot.render_for_prompt()
 
 
@@ -116,6 +134,7 @@ def test_subject_state_extracts_identity_preference_relationship_and_candidates(
     rendered = snapshot.render_for_prompt()
     assert "SubjectState v0" in rendered
     assert "ViabilityState v0" in rendered
+    assert "OutcomePredictions v0" in rendered
     assert "由乃" in rendered
     assert "Prefer conclusion or judgment first" in rendered
 
@@ -142,6 +161,18 @@ def test_viability_state_low_pressure_case_holds_extra_intervention():
     assert max(viability["scores"].values()) < 0.3
     assert viability["planner_biases"] == ["continue_without_extra_viability_hold"]
     assert viability["reasons"] == ["No high-pressure viability cues detected in the latest turn."]
+
+
+def test_outcome_predictions_score_ask_when_evidence_and_misunderstanding_are_high():
+    viability = subject_context.extract_viability_state_v0("我不确定，而且你没懂我的意思，先别动代码。")
+    predictions = subject_context.build_outcome_predictions_v0(viability)
+
+    assert predictions["schema_version"] == "ego_operator.outcome_predictions.v0"
+    assert predictions["selected_prediction"]["action_type"] == "ask"
+    assert predictions["selected_prediction"]["selection_score"] >= 0.5
+    assert predictions["planner_input"] is True
+    assert predictions["gate_input"] == "advisory_only"
+    assert predictions["reply_decision"] == "forbidden"
 
 
 def test_operational_self_model_tracks_boundaries_commitments_uncertainty_and_failures():
@@ -312,7 +343,33 @@ def test_subject_state_context_can_change_llm_reply_without_runtime_route(tmp_pa
     assert disabled_result.reply_text == "我可以继续分析这个方案。"
     assert "SubjectState v0" in with_context.planner.llm.system_prompts[-1]
     assert "ViabilityState v0" in with_context.planner.llm.system_prompts[-1]
+    assert "OutcomePredictions v0" in with_context.planner.llm.system_prompts[-1]
     assert "SubjectState v0" not in without_context.planner.llm.system_prompts[-1]
+
+
+def test_outcome_prediction_changes_fallback_planner_decision_and_trace(tmp_path):
+    text = "我不确定这个需求是不是对，而且你没懂我的意思，先别动代码，先问清楚。"
+    with_predictions = agent.build_demo_runtime(enable_operator_memory=False, subject_context_enabled=True)
+    with_predictions.trace_store = agent.JsonlTraceStore(tmp_path / "with_predictions.jsonl")
+    with_predictions.planner.llm = CompleteOnlyLLM()
+
+    without_predictions = agent.build_demo_runtime(enable_operator_memory=False, subject_context_enabled=False)
+    without_predictions.trace_store = agent.JsonlTraceStore(tmp_path / "without_predictions.jsonl")
+    without_predictions.planner.llm = CompleteOnlyLLM()
+
+    predicted_result = with_predictions.handle_user_message(text)
+    baseline_result = without_predictions.handle_user_message(text)
+
+    assert predicted_result.action.action_type == agent.ActionType.ASK
+    assert predicted_result.action.reason == "outcome_prediction_selected_ask"
+    assert baseline_result.action.action_type == agent.ActionType.RESPOND
+
+    row = json.loads((tmp_path / "with_predictions.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = row["outcome_prediction_effect"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "ask"
+    assert effect["selected_prediction"]["action_type"] == "ask"
+    assert row["subject_context"]["outcome_predictions"]["schema_version"] == "ego_operator.outcome_predictions.v0"
 
 
 def test_planner_fallback_does_not_keyword_route_before_llm():
@@ -365,6 +422,9 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["viability_state"]["planner_input"] is True
     assert context["viability_state"]["gate_input"] == "advisory_only"
     assert context["viability_state"]["state_mutation"] == "forbidden"
+    assert context["outcome_predictions"]["schema_version"] == "ego_operator.outcome_predictions.v0"
+    assert context["outcome_predictions"]["planner_input"] is True
+    assert context["outcome_predictions"]["reply_decision"] == "forbidden"
     assert context["operational_self_model"]["self_description_guidance"]["reply_decision"] == "forbidden"
 
 

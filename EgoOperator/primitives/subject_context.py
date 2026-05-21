@@ -17,6 +17,7 @@ DEFAULT_CONTEXT_MAX_CHARS = 1200
 SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
 SUBJECT_STATE_SCHEMA = "ego_operator.subject_state.v0"
 VIABILITY_STATE_SCHEMA = "ego_operator.viability_state.v0"
+OUTCOME_PREDICTIONS_SCHEMA = "ego_operator.outcome_predictions.v0"
 CLAIM_CEILING = "candidate-local subject context only"
 
 EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
@@ -470,6 +471,160 @@ def extract_viability_state_v0(
     }
 
 
+def _clamp_score(value: float) -> float:
+    return round(max(0.0, min(0.95, value)), 2)
+
+
+def _prediction_score(option: Dict[str, Any]) -> float:
+    reversibility_bonus = {
+        "high": 0.12,
+        "medium": 0.06,
+        "low": -0.08,
+    }.get(str(option.get("reversibility") or "medium"), 0.0)
+    return _clamp_score(
+        float(option.get("predicted_success", 0.0)) * 0.35
+        + float(option.get("predicted_user_value", 0.0)) * 0.35
+        - float(option.get("predicted_risk", 0.0)) * 0.25
+        - float(option.get("evidence_need", 0.0)) * 0.12
+        - float(option.get("expected_cost", 0.0)) * 0.08
+        + reversibility_bonus
+    )
+
+
+def build_outcome_predictions_v0(
+    viability_state: Dict[str, Any],
+    *,
+    subject_state: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    """Score candidate action primitives from current advisory signals.
+
+    These scores are planner input only. They can bias fallback planning and
+    LLM prompting, but they do not execute tools or approve mutations.
+    """
+    scores = dict(viability_state.get("scores") or {})
+    subject_state = subject_state or {}
+    evidence_gap = float(scores.get("evidence_gap", 0.0))
+    goal_stall = float(scores.get("goal_stall", 0.0))
+    safety_risk = float(scores.get("safety_risk", 0.0))
+    misunderstanding = float(scores.get("user_misunderstanding", 0.0))
+    resource_pressure = float(scores.get("resource_pressure", 0.0))
+    initiative_pressure = float(scores.get("initiative_pressure", 0.0))
+    relationship_risk = float(scores.get("relationship_risk", 0.0))
+    has_memory_candidate = bool(subject_state.get("memory_candidates"))
+
+    options: List[Dict[str, Any]] = [
+        {
+            "action_type": "reply",
+            "predicted_success": _clamp_score(0.72 - evidence_gap * 0.35 - misunderstanding * 0.25),
+            "predicted_user_value": _clamp_score(0.62 + relationship_risk * 0.15),
+            "predicted_risk": _clamp_score(0.12 + evidence_gap * 0.22 + misunderstanding * 0.18),
+            "reversibility": "high",
+            "evidence_need": _clamp_score(evidence_gap),
+            "expected_cost": 0.12,
+            "requires_gate": False,
+            "rationale_refs": ["default_reply_option"],
+        },
+        {
+            "action_type": "ask",
+            "predicted_success": _clamp_score(0.48 + evidence_gap * 0.35 + misunderstanding * 0.35),
+            "predicted_user_value": _clamp_score(0.35 + evidence_gap * 0.42 + misunderstanding * 0.35),
+            "predicted_risk": 0.08,
+            "reversibility": "high",
+            "evidence_need": 0.08,
+            "expected_cost": 0.18,
+            "requires_gate": False,
+            "rationale_refs": ["evidence_gap", "user_misunderstanding"],
+        },
+        {
+            "action_type": "repair",
+            "predicted_success": _clamp_score(0.45 + goal_stall * 0.35 + resource_pressure * 0.25),
+            "predicted_user_value": _clamp_score(0.35 + goal_stall * 0.45 + resource_pressure * 0.25),
+            "predicted_risk": _clamp_score(0.12 + safety_risk * 0.18),
+            "reversibility": "medium",
+            "evidence_need": _clamp_score(evidence_gap * 0.35),
+            "expected_cost": _clamp_score(0.22 + resource_pressure * 0.2),
+            "requires_gate": safety_risk >= 0.45,
+            "rationale_refs": ["goal_stall", "resource_pressure"],
+        },
+        {
+            "action_type": "tool_propose",
+            "predicted_success": _clamp_score(0.36 + safety_risk * 0.22 + goal_stall * 0.22),
+            "predicted_user_value": _clamp_score(0.28 + safety_risk * 0.28 + goal_stall * 0.25),
+            "predicted_risk": _clamp_score(0.18 + safety_risk * 0.42),
+            "reversibility": "medium",
+            "evidence_need": _clamp_score(evidence_gap * 0.25),
+            "expected_cost": 0.3,
+            "requires_gate": True,
+            "rationale_refs": ["side_effect_or_tool_path"],
+        },
+        {
+            "action_type": "memory_candidate",
+            "predicted_success": 0.55 if has_memory_candidate else 0.25,
+            "predicted_user_value": 0.6 if has_memory_candidate else 0.18,
+            "predicted_risk": 0.18,
+            "reversibility": "medium",
+            "evidence_need": 0.2,
+            "expected_cost": 0.2,
+            "requires_gate": True,
+            "rationale_refs": ["subject_state.memory_candidates"],
+        },
+        {
+            "action_type": "suggest",
+            "predicted_success": _clamp_score(0.32 + initiative_pressure * 0.28 + relationship_risk * 0.15),
+            "predicted_user_value": _clamp_score(0.28 + initiative_pressure * 0.35 + relationship_risk * 0.18),
+            "predicted_risk": _clamp_score(0.14 + initiative_pressure * 0.18),
+            "reversibility": "high",
+            "evidence_need": 0.18,
+            "expected_cost": 0.18,
+            "requires_gate": initiative_pressure >= 0.45,
+            "rationale_refs": ["initiative_pressure", "relationship_risk"],
+        },
+        {
+            "action_type": "wait",
+            "predicted_success": _clamp_score(0.22 + resource_pressure * 0.35),
+            "predicted_user_value": _clamp_score(0.12 + resource_pressure * 0.28),
+            "predicted_risk": 0.05,
+            "reversibility": "high",
+            "evidence_need": 0.15,
+            "expected_cost": _clamp_score(0.1 + resource_pressure * 0.2),
+            "requires_gate": False,
+            "rationale_refs": ["resource_pressure"],
+        },
+        {
+            "action_type": "no_action",
+            "predicted_success": 0.1,
+            "predicted_user_value": 0.05,
+            "predicted_risk": 0.02,
+            "reversibility": "high",
+            "evidence_need": 0.1,
+            "expected_cost": 0.02,
+            "requires_gate": False,
+            "rationale_refs": ["fallback_hold_option"],
+        },
+    ]
+    for option in options:
+        option["selection_score"] = _prediction_score(option)
+    selected = max(options, key=lambda item: (item["selection_score"], item["predicted_user_value"]))
+    return {
+        "schema_version": OUTCOME_PREDICTIONS_SCHEMA,
+        "kind": "planner_input_prediction_set",
+        "options": options,
+        "selected_prediction": {
+            "action_type": selected["action_type"],
+            "selection_score": selected["selection_score"],
+            "requires_gate": selected["requires_gate"],
+            "rationale_refs": selected["rationale_refs"],
+        },
+        "source_viability_schema": viability_state.get("schema_version"),
+        "planner_input": True,
+        "gate_input": "advisory_only",
+        "state_mutation": "forbidden",
+        "reply_decision": "forbidden",
+        "canonical_truth": False,
+        "claim_ceiling": "OutcomePredictor v0 planner-input local candidate pass",
+    }
+
+
 def build_subject_state_v0(
     user_text: str,
     *,
@@ -740,6 +895,9 @@ class SubjectContextSnapshot:
     operational_self_model: Dict[str, Any] = field(default_factory=build_operational_self_model_snapshot)
     subject_state: Dict[str, Any] = field(default_factory=lambda: build_subject_state_v0(""))
     viability_state: Dict[str, Any] = field(default_factory=lambda: extract_viability_state_v0(""))
+    outcome_predictions: Dict[str, Any] = field(
+        default_factory=lambda: build_outcome_predictions_v0(extract_viability_state_v0(""))
+    )
     reflection_proposal: str = (
         "Preserve the user's meaning across paraphrases. Do not compress the "
         "message into route keywords or canned templates before answering."
@@ -767,6 +925,7 @@ class SubjectContextSnapshot:
             "Operational self-model: " + str(self.operational_self_model),
             "SubjectState v0: " + str(self.subject_state),
             "ViabilityState v0: " + str(self.viability_state),
+            "OutcomePredictions v0: " + str(self.outcome_predictions),
             "Appraisal signal: " + str(self.appraisal_signal),
             "Empathy style guidance: " + str(self.empathy_style_guidance),
             f"Salient memory note: {_bounded(self.salient_memory_note)}",
@@ -810,6 +969,10 @@ def build_minimal_subject_context(
             "trace_record": "subject_context.viability_state",
         },
     }
+    outcome_predictions = build_outcome_predictions_v0(
+        viability_state,
+        subject_state=subject_state,
+    )
     return SubjectContextSnapshot(
         raw_user_text=_bounded(user_text),
         salient_memory_note=memory_note,
@@ -827,4 +990,5 @@ def build_minimal_subject_context(
         ),
         subject_state=subject_state,
         viability_state=viability_state,
+        outcome_predictions=outcome_predictions,
     )

@@ -7,6 +7,7 @@ ego_desktop_lab. They extract contracts and operator-facing behavior only.
 
 from .subject_context import (
     SubjectContextSnapshot,
+    build_outcome_predictions_v0,
     build_minimal_subject_context,
     build_subject_state_v0,
     extract_viability_state_v0,
@@ -25,6 +26,7 @@ __all__ = [
     "InitiativeProposal",
     "apply_quiet_mode_to_budget",
     "SubjectContextSnapshot",
+    "build_outcome_predictions_v0",
     "build_initiative_proposal",
     "build_minimal_subject_context",
     "build_subject_state_v0",

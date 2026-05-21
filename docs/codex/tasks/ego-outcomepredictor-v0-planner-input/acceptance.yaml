@@ -1,0 +1,22 @@
+version: 1
+task_id: EGO-FS-005
+title: EgoOperator OutcomePredictor v0 planner input
+claim_ceiling: OutcomePredictor v0 planner-input local candidate pass
+observation_class: deterministic_local
+must_pass:
+  - id: outcome_scores
+    description: Predictor emits scored action options.
+  - id: trace_effect
+    description: Trace records which prediction affected action choice.
+  - id: baseline_difference
+    description: Deterministic test proves the prediction changes a fallback decision versus baseline.
+  - id: advisory_boundary
+    description: Predictor cannot execute tools, approve operations, or mutate state.
+must_not:
+  - replace the main LLM tool loop
+  - introduce keyword-first route or template fallback
+  - bypass runtime gates
+rollback:
+  - remove outcome prediction builder and prompt/trace fields
+  - remove fallback planner bias and tests
+  - revert local board status

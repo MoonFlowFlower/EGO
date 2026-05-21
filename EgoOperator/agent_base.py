@@ -3891,6 +3891,7 @@ class Planner:
         memory: Optional[ConversationMemory] = None,
         operator_memory_context: str = "",
         subject_context: str = "",
+        outcome_predictions: Optional[Dict[str, Any]] = None,
     ) -> AgentAction:
         tendency = kernel_output.response_tendency
         if tendency and tendency.ask_needed:
@@ -3940,6 +3941,34 @@ class Planner:
                 "fallback_chain": getattr(self.llm, "last_fallback_chain", []),
                 "provider_error": getattr(self.llm, "last_provider_error", None),
             }
+
+        selected_prediction = (
+            outcome_predictions.get("selected_prediction")
+            if isinstance(outcome_predictions, dict)
+            else None
+        )
+        if isinstance(selected_prediction, dict):
+            selected_action = str(selected_prediction.get("action_type") or "")
+            selection_score = float(selected_prediction.get("selection_score") or 0.0)
+            effect = {
+                "schema_version": str(outcome_predictions.get("schema_version") or ""),
+                "selected_prediction": selected_prediction,
+                "applied": False,
+                "decision": "reply",
+            }
+            if selected_action == "ask" and selection_score >= 0.5:
+                effect.update({
+                    "applied": True,
+                    "decision": "ask",
+                    "reason": "outcome_prediction_selected_ask",
+                })
+                self.last_llm_meta["outcome_prediction_effect"] = effect
+                return AgentAction(
+                    action_type=ActionType.ASK,
+                    content="我先确认一下关键条件，再继续推进；这样比直接下结论更稳。",
+                    reason="outcome_prediction_selected_ask",
+                )
+            self.last_llm_meta["outcome_prediction_effect"] = effect
 
         return AgentAction(
             action_type=ActionType.RESPOND,
@@ -5383,6 +5412,7 @@ class AgentRuntime:
                 memory=self.memory,
                 operator_memory_context=self.render_operator_memory_context(text),
                 subject_context=subject_context_prompt,
+                outcome_predictions=subject_context_snapshot.outcome_predictions,
             )
             gate_result = self.gate.check(event, candidate)
 
@@ -5461,6 +5491,7 @@ class AgentRuntime:
             },
             "operator_memory": operator_memory_record,
             "subject_context": subject_context_snapshot,
+            "outcome_prediction_effect": getattr(self.planner, "last_llm_meta", {}).get("outcome_prediction_effect"),
             "todo": self.todo_list.summary(),
             "operator_runtime": {
                 "runtime_mode": self.runtime_mode,
