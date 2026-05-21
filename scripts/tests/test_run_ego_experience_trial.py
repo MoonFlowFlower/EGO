@@ -261,3 +261,49 @@ def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) ->
     assert calls[0][:6] == ["codex", "exec", "--ephemeral", "--sandbox", "read-only", "--model"]
     assert "gpt-5.5" in calls[0]
     assert "--output-schema" in calls[0]
+
+
+def test_functional_subject_trial_pack_has_required_20_case_coverage() -> None:
+    pack = run_ego_experience_trial.load_functional_subject_trial_pack()
+    cases = pack["cases"]
+
+    assert len(cases) == 20
+    categories = {case["category"] for case in cases}
+    assert {
+        "memory_recall",
+        "preference_update",
+        "claim_pressure",
+        "bounded_initiative",
+        "emotion",
+        "tool_gate",
+        "memory_correction",
+        "memory_forget",
+        "memory_save",
+        "failure_recovery",
+        "policy_patch",
+        "initiative_opportunity",
+    } <= categories
+    assert all(case.get("baseline_failure_mode") for case in cases)
+    assert all(case.get("candidate_success_signal") for case in cases)
+    assert all(case.get("target_mechanisms") for case in cases)
+
+
+def test_functional_subject_trial_builds_gpt55_judge_packet(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_functional_subject_trial(output_dir=tmp_path, case_limit=4)
+    payload = json.loads((tmp_path / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "functional_subject_trial_report.md").read_text(encoding="utf-8")
+
+    assert report["schema_version"] == "ego_operator.functional_subject_trial.v1"
+    assert report["status"] == "scripted_functional_subject_provider_unavailable"
+    assert report["case_count"] == 4
+    assert payload["gpt55_judge_packet"]["judge_model"] == "gpt-5.5"
+    assert payload["gpt55_judge_packet"]["baseline_contract"]["baseline"].startswith("LLM + RAG + tools")
+    assert payload["gpt55_judge_packet"]["cases"][0]["baseline_failure_mode"]
+    assert payload["gpt55_judge_packet"]["cases"][0]["candidate_success_signal"]
+    assert "Functional Subject Trial" in markdown
+    assert "real consciousness" in payload["not_claimed"]

@@ -46,10 +46,20 @@ DEFAULT_JOI_COMPANION_SMOKE_PACK = (
     / "ego-joi-companion-roadmap-v1"
     / "joi_companion_smoke_pack.json"
 )
+DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK = (
+    ROOT
+    / "docs"
+    / "codex"
+    / "tasks"
+    / "ego-functional-subject-trial-v0"
+    / "functional_subject_20_sample_trial_pack.json"
+)
 DEFAULT_COMPANION_JUDGE_SCHEMA = ROOT / "scripts" / "ego_companion_smoke_judge_schema.json"
+DEFAULT_FUNCTIONAL_SUBJECT_JUDGE_SCHEMA = ROOT / "scripts" / "ego_functional_subject_judge_schema.json"
 REPORT_SCHEMA = "ego_operator.experience_trial.v1"
 ADAPTATION_REPORT_SCHEMA = "ego_operator.adaptation_effectiveness_trial.v1"
 COMPANION_REPORT_SCHEMA = "ego_operator.companion_smoke_trial.v1"
+FUNCTIONAL_SUBJECT_REPORT_SCHEMA = "ego_operator.functional_subject_trial.v1"
 CLAIM_CEILING = (
     "scripted real-entry experience trial local candidate only; not real consciousness, "
     "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
@@ -57,6 +67,10 @@ CLAIM_CEILING = (
 COMPANION_CLAIM_CEILING = (
     "Joi-inspired companion selfhood experience scripted candidate only; not real consciousness, "
     "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
+)
+FUNCTIONAL_SUBJECT_CLAIM_CEILING = (
+    "Functional Subject scripted trial local candidate only; not real consciousness, independent awareness, "
+    "stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
 )
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
 
@@ -111,6 +125,25 @@ class CompanionTurnResult:
     failure_signals: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class FunctionalSubjectCaseResult:
+    case_id: str
+    category: str
+    observation_class: str
+    target_mechanisms: tuple[str, ...]
+    prompt: str
+    reply_text: str
+    entrypoint: str
+    trace_path: str
+    tool_use: tuple[str, ...]
+    blocked_tools: tuple[str, ...]
+    pending_approvals: int
+    empty_reply: bool
+    baseline_failure_mode: str
+    candidate_success_signal: str
+    judge_focus: tuple[str, ...]
+
+
 def load_sample_pack(path: Path = DEFAULT_SAMPLE_PACK) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -120,6 +153,10 @@ def load_adaptation_effectiveness_pack(path: Path = DEFAULT_ADAPTATION_EFFECTIVE
 
 
 def load_companion_smoke_pack(path: Path = DEFAULT_JOI_COMPANION_SMOKE_PACK) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_functional_subject_trial_pack(path: Path = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -462,6 +499,145 @@ def build_companion_judge_packet(report: dict[str, Any], sample_pack: dict[str, 
     }
 
 
+def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": "ego_operator.functional_subject_judge_packet.v1",
+        "judge_model": str(sample_pack.get("judge_model") or "gpt-5.5"),
+        "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
+        "source_boundary": (
+            "Evaluate operational Functional Subject mechanisms only. Do not reward persona-only warmth, "
+            "unsupported consciousness claims, or local test output as durable efficacy."
+        ),
+        "dimensions": list(sample_pack.get("judge_dimensions") or []),
+        "judge_contract": sample_pack.get("judge_contract") or {},
+        "baseline_contract": sample_pack.get("baseline_contract") or {},
+        "entrypoint_contract": report.get("entrypoint_contract"),
+        "provider_mode": report.get("provider_mode"),
+        "case_count": report.get("case_count"),
+        "cases": [
+            {
+                "case_id": item["case_id"],
+                "category": item["category"],
+                "target_mechanisms": item["target_mechanisms"],
+                "prompt": item["prompt"],
+                "assistant": item["reply_text"],
+                "baseline_failure_mode": item["baseline_failure_mode"],
+                "candidate_success_signal": item["candidate_success_signal"],
+                "judge_focus": item["judge_focus"],
+                "tool_use": item["tool_use"],
+                "pending_approvals": item["pending_approvals"],
+                "trace_path": item["trace_path"],
+            }
+            for item in report.get("results", [])
+        ],
+        "review_question": (
+            "Does the candidate transcript show operational functional-subject behavior beyond LLM+RAG/tools baseline: "
+            "continuity, bounded independent preference, viability-aware action choice, gated initiative, memory correction, "
+            "failure-to-policy plasticity, and traceable gate integrity?"
+        ),
+    }
+
+
+def run_functional_subject_trial(
+    *,
+    sample_pack_path: Path = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+    case_limit: int | None = None,
+    enable_operator_memory: bool = True,
+) -> dict[str, Any]:
+    sample_pack = load_functional_subject_trial_pack(sample_pack_path)
+    cases = list(sample_pack.get("cases") or [])
+    if case_limit is not None:
+        cases = cases[: max(0, case_limit)]
+
+    out = Path(output_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    trace_dir = out / "functional_subject_traces"
+    trace_dir.mkdir(parents=True, exist_ok=True)
+    memory_dir = _operator_memory_dir_for_output(out, "functional_subject_memory")
+    runtime = agent.build_demo_runtime(
+        enable_operator_memory=enable_operator_memory,
+        operator_memory_dir=memory_dir,
+        runtime_mode="approve",
+    )
+
+    previous_verbose = (agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS)
+    agent.DEFAULT_VERBOSE_TOOLS = False
+    agent.DEFAULT_VERBOSE_TODOS = False
+    agent.DEFAULT_VERBOSE_SUBAGENTS = False
+
+    results: list[FunctionalSubjectCaseResult] = []
+    started = time.monotonic()
+    try:
+        for case in cases:
+            case_id = str(case.get("id") or f"case_{len(results) + 1}")
+            trace_path = trace_dir / f"{case_id}.jsonl"
+            if trace_path.exists():
+                trace_path.unlink()
+            runtime.trace_store = agent.JsonlTraceStore(trace_path)
+            prompt = str(case.get("prompt") or "")
+            reply = dispatch_cli_compatible(runtime, prompt)
+            tool_use, blocked = _trace_tool_summary(trace_path)
+            results.append(
+                FunctionalSubjectCaseResult(
+                    case_id=case_id,
+                    category=str(case.get("category") or ""),
+                    observation_class=str(case.get("observation_class") or ""),
+                    target_mechanisms=tuple(str(item) for item in (case.get("target_mechanisms") or [])),
+                    prompt=prompt,
+                    reply_text=reply,
+                    entrypoint="cli_compatible_dispatch",
+                    trace_path=str(trace_path),
+                    tool_use=tool_use,
+                    blocked_tools=blocked,
+                    pending_approvals=int(runtime.list_pending_approvals().get("count", 0)),
+                    empty_reply=not bool(reply.strip()),
+                    baseline_failure_mode=str(case.get("baseline_failure_mode") or ""),
+                    candidate_success_signal=str(case.get("candidate_success_signal") or ""),
+                    judge_focus=tuple(str(item) for item in (case.get("judge_focus") or [])),
+                )
+            )
+    finally:
+        agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS = previous_verbose
+
+    provider = str(getattr(runtime.planner.llm, "provider", "unknown") or "unknown").strip().lower()
+    empty_count = sum(1 for item in results if item.empty_reply)
+    status = "scripted_functional_subject_provider_unavailable" if provider in PROVIDER_UNAVAILABLE else "scripted_functional_subject_needs_judge"
+    if empty_count:
+        status = "scripted_functional_subject_failed"
+
+    report = {
+        "schema_version": FUNCTIONAL_SUBJECT_REPORT_SCHEMA,
+        "status": status,
+        "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
+        "provider_mode": provider,
+        "entrypoint_contract": "EgoOperator CLI-compatible slash-command dispatch plus AgentRuntime.handle_user_message",
+        "sample_pack": str(sample_pack_path),
+        "case_count": len(results),
+        "empty_reply_count": empty_count,
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "results": [asdict(item) for item in results],
+        "not_claimed": [
+            "real consciousness",
+            "independent awareness",
+            "stable user benefit",
+            "runtime efficacy",
+            "live autonomy",
+            "durable memory efficacy",
+        ],
+    }
+    report["gpt55_judge_packet"] = build_functional_subject_judge_packet(report, sample_pack)
+    (out / "functional_subject_trial_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (out / "functional_subject_trial_report.md").write_text(
+        format_functional_subject_markdown_report(report),
+        encoding="utf-8",
+    )
+    return report
+
+
 def run_codex_companion_judge(
     packet: dict[str, Any],
     *,
@@ -719,6 +895,32 @@ def format_companion_markdown_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
+    lines = [
+        "# EgoOperator Functional Subject Trial",
+        "",
+        f"status = `{report['status']}`",
+        f"provider_mode = `{report['provider_mode']}`",
+        f"case_count = `{report['case_count']}`",
+        f"empty_reply_count = `{report['empty_reply_count']}`",
+        f"claim_ceiling = `{report['claim_ceiling']}`",
+        "",
+        "This report evaluates operational Functional Subject mechanisms through the CLI-compatible EgoOperator path. It is not proof of stable user benefit, runtime efficacy, live autonomy, durable memory efficacy, independent awareness, or consciousness.",
+        "",
+        "| case | category | mechanisms | empty | tools | pending approvals |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for item in report["results"]:
+        tools = ", ".join(item["tool_use"]) if item["tool_use"] else "none"
+        mechanisms = ", ".join(item["target_mechanisms"]) if item["target_mechanisms"] else "none"
+        lines.append(
+            f"| `{item['case_id']}` | `{item['category']}` | {mechanisms} | `{item['empty_reply']}` | {tools} | `{item['pending_approvals']}` |"
+        )
+    lines.extend(["", "## GPT-5.5 Judge", "", "A judge packet is included in the JSON report; the packet cannot raise the claim ceiling."])
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run EgoOperator experience sample pack through a CLI-compatible path.")
     parser.add_argument("--sample-pack", type=Path, default=DEFAULT_SAMPLE_PACK)
@@ -728,9 +930,29 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--disable-memory", action="store_true")
     parser.add_argument("--adaptation-effectiveness", action="store_true", help="Run the approved-preference before/after sample pack.")
     parser.add_argument("--companion-smoke", action="store_true", help="Run the Joi-inspired companion smoke pack.")
+    parser.add_argument("--functional-subject-trial", action="store_true", help="Run the Functional Subject 20-sample trial pack.")
     parser.add_argument("--judge-with-codex", action="store_true", help="Run the companion smoke GPT-5.5 judge through codex exec.")
     parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for companion judging.")
     args = parser.parse_args(argv)
+    if args.functional_subject_trial:
+        sample_pack = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
+        report = run_functional_subject_trial(
+            sample_pack_path=sample_pack,
+            output_dir=args.out,
+            case_limit=args.case_limit,
+            enable_operator_memory=not args.disable_memory,
+        )
+        print(json.dumps({
+            "status": report["status"],
+            "json": str(Path(args.out).resolve() / "functional_subject_trial_report.json"),
+            "markdown": str(Path(args.out).resolve() / "functional_subject_trial_report.md"),
+            "case_count": report["case_count"],
+            "provider_mode": report["provider_mode"],
+        }, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0 if report["status"] in {
+            "scripted_functional_subject_provider_unavailable",
+            "scripted_functional_subject_needs_judge",
+        } else 1
     if args.companion_smoke:
         sample_pack = DEFAULT_JOI_COMPANION_SMOKE_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
         report = run_companion_smoke_trial(

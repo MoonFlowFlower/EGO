@@ -90,6 +90,7 @@ verify_profiles:
           - artifacts/task_board
           - docs/codex/tasks/codex-task-board-canonical-store-v1
           - docs/codex/tasks/ego-functional-subject-architecture-contract-v0
+          - docs/codex/tasks/ego-functional-subject-trial-v0
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -117,6 +118,7 @@ allowed_mutation_paths:
   - artifacts/task_board/
   - docs/codex/tasks/codex-task-board-canonical-store-v1/
   - docs/codex/tasks/ego-functional-subject-architecture-contract-v0/
+  - docs/codex/tasks/ego-functional-subject-trial-v0/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/

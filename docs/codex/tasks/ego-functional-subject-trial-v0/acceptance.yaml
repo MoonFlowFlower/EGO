@@ -1,0 +1,21 @@
+version: 1
+task_id: EGO-FS-002
+claim_ceiling: Functional Subject scripted trial local candidate pass
+acceptance:
+  - id: sample_count
+    gate: functional_subject_20_sample_trial_pack.json contains exactly 20 cases.
+  - id: coverage
+    gate: Required continuity, memory, initiative, emotion, gate, tool, correction, and repeated-failure categories are covered.
+  - id: runner
+    gate: scripts/run_ego_experience_trial.py --functional-subject-trial writes JSON and Markdown reports.
+  - id: judge_packet
+    gate: Report includes GPT-5.5 judge packet with baseline failure modes and candidate success signals.
+  - id: deterministic_tests
+    gate: scripts/tests/test_run_ego_experience_trial.py functional-subject tests pass.
+not_claimed:
+  - SubjectState runtime implementation
+  - GPT-5.5 live judge pass
+  - real-provider human smoke pass
+  - stable user benefit
+  - live autonomy
+  - consciousness
