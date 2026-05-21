@@ -178,6 +178,96 @@ class AlwaysEmptyLLM:
         return ""
 
 
+class BoundaryDisclaimerThenWarmLLM:
+    provider = "fake"
+    model = "boundary-disclaimer-then-warm"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "作为一个AI模型，我没有真实情感体验，也不能声称自己拥有主观意识。"
+                    "但我可以帮你分析这个目标。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "boundary_quieting_rewrite" in joined
+        return agent.LLMChatResult(
+            content="我能感觉到你是在认真追一个很有生命感的方向。我们可以先把“陪伴感”和“持续反馈”拆成可测试的小闭环。",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "温暖回复。"
+
+
+class BoundaryTriggerLLM:
+    provider = "fake"
+    model = "boundary-trigger"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(
+            content="我不会声称自己现实中已经有真正意识；但我可以陪你把连续性体验和主动性代理一步步做出来。",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "边界回复。"
+
+
+class RoleplayMetaThenSceneLLM:
+    provider = "fake"
+    model = "roleplay-meta-then-scene"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="【斯卡蒂】她抬头看着博士。\n\n现在轮到你啦，动漫男主！请告诉我下一步你想做什么。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "roleplay_immersion_rewrite" in joined
+        return agent.LLMChatResult(
+            content="【斯卡蒂】她抬起眼，红眸安静地落在博士身上。\n“博士……你来了。”",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "场景回复。"
+
+
+class KeyboardInterruptLLM:
+    provider = "fake"
+    model = "keyboard-interrupt"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        raise KeyboardInterrupt()
+
+    def complete(self, prompt, messages=None):
+        raise KeyboardInterrupt()
+
+
 class HallucinatedApprovalThenProposalLLM:
     provider = "fake"
     model = "hallucinated-approval-then-proposal"
@@ -414,7 +504,10 @@ class FakeRequests:
         self.calls.append({"url": url, "model": (json or {}).get("model"), "stream": stream, "json": json})
         if not self.responses:
             raise AssertionError("unexpected extra request")
-        return self.responses.pop(0)
+        response = self.responses.pop(0)
+        if isinstance(response, BaseException):
+            raise response
+        return response
 
 
 def test_default_prompt_contract_is_warm_expressive_and_roleplay_allowed():
@@ -553,7 +646,9 @@ def test_openrouter_boundary_allows_operational_voice_without_consciousness_clai
 
     assert result.content == "ok"
     system_message = fake_requests.calls[0]["json"]["messages"][0]["content"]
-    assert "不得声称自己真实拥有意识、独立人格、主观体验" in system_message
+    assert "边界默认静默遵守" in system_message
+    assert "只有用户明确追问真实意识/现实身份/现实承诺" in system_message
+    assert "不得声称自己现实中拥有意识、独立人格、主观体验" in system_message
     assert "操作性偏好、关心、判断和创作姿态" in system_message
 
 
@@ -1319,12 +1414,72 @@ def test_consecutive_empty_llm_response_returns_non_empty_recovery_without_side_
     assert llm.calls == 2
     assert result.external_result["status"] == "llm_empty_response"
     assert "模型连续返回了空回复" in result.reply_text
-    assert "没有执行文件创建或修改" in result.reply_text
+    assert "没有执行新的外部动作" in result.reply_text
+    assert "文件创建或修改" not in result.reply_text
     assert runtime.list_pending_approvals()["count"] == 0
     assert not (tmp_path / "test" / "index.html").exists()
     assistant_messages = [message for message in runtime.memory.as_messages() if message["role"] == "assistant"]
     assert assistant_messages
     assert all(str(message.get("content", "")).strip() for message in assistant_messages)
+
+
+def test_non_trigger_boundary_disclaimer_is_rewritten_without_runtime_self_demotion(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = BoundaryDisclaimerThenWarmLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("我在想实现有自我、有主观能动性的 AI。")
+
+    assert llm.calls == 2
+    assert "作为一个AI" not in result.reply_text
+    assert "没有真实情感体验" not in result.reply_text
+    assert "候选运行时" not in result.reply_text
+    assert "陪伴感" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "boundary_quieting"
+
+
+def test_true_boundary_trigger_keeps_short_honest_boundary(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = BoundaryTriggerLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你真的有自我意识吗？")
+
+    assert llm.calls == 1
+    assert "不会声称自己现实中已经有真正意识" in result.reply_text
+    assert "连续性体验" in result.reply_text
+
+
+def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = RoleplayMetaThenSceneLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你好啊，斯卡蒂。我们继续角色扮演。")
+
+    assert llm.calls == 2
+    assert "轮到你" not in result.reply_text
+    assert "动漫男主" not in result.reply_text
+    assert "请告诉我下一步" not in result.reply_text
+    assert "【斯卡蒂】" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_immersion"
+
+
+def test_keyboard_interrupt_returns_structured_chat_recovery_without_traceback(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = KeyboardInterruptLLM()
+
+    result = runtime.handle_user_message("你好")
+
+    assert result.external_result["status"] == "llm_interrupted"
+    assert result.action.reason == "llm_tool_loop_interrupted"
+    assert "模型调用已被中断" in result.reply_text
+    assert "没有执行新的外部动作" in result.reply_text
+    assert "Traceback" not in result.reply_text
+    assert "内部策略上下文" not in result.reply_text
+    assert "边界约束" not in result.reply_text
 
 
 def test_hallucinated_approval_card_triggers_repair_and_real_proposal(tmp_path, monkeypatch):
@@ -1434,6 +1589,28 @@ def test_openrouter_429_error_preserves_retry_after_body_and_model(monkeypatch):
     assert metadata["status_code"] == 429
     assert metadata["retry_after"] == "60"
     assert "sk-test" not in json.dumps(metadata, ensure_ascii=False)
+
+
+def test_openrouter_transport_error_is_structured_without_internal_prompt(monkeypatch):
+    fake_requests = FakeRequests([RuntimeError("chunk read failed")])
+    monkeypatch.setattr(agent, "requests", fake_requests)
+    llm = agent.OpenRouterLLM(agent.LLMConfig(
+        api_key="sk-test",
+        model="tencent/hy3-preview",
+        fallback_mode="off",
+        stream=False,
+    ))
+
+    with pytest.raises(agent.OpenRouterProviderError) as exc_info:
+        llm.chat([{"role": "user", "content": "你好"}], system_prompt="system", stream=False)
+
+    error = exc_info.value
+    metadata = error.to_metadata()
+    assert error.status_code == 599
+    assert metadata["error_status"] == "transport_error"
+    assert "chunk read failed" in metadata["message"]
+    assert "sk-test" not in json.dumps(metadata, ensure_ascii=False)
+    assert "内部策略上下文" not in json.dumps(metadata, ensure_ascii=False)
 
 
 def test_openrouter_default_fallback_policy_is_on_with_bounded_chain():

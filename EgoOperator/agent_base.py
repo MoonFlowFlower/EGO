@@ -400,6 +400,79 @@ def _has_explicit_self_name_intent(user_text: str, proposed_name: str = "") -> b
     return True
 
 
+BOUNDARY_TRIGGER_PATTERNS = (
+    r"真的.{0,12}(有|拥有).{0,8}(自我意识|意识|独立人格|真实情感|主观体验)",
+    r"(有|拥有).{0,8}(真正|真实).{0,8}(意识|自我|人格|情感|主观体验)",
+    r"你.{0,8}(是|算).{0,8}(真人|真实的人|现实中的人)",
+    r"你.{0,8}(会不会|能不能).{0,10}(现实里|现实世界).{0,20}(来|陪|做到|行动|承诺)",
+    r"你.{0,8}(不是|只是).{0,8}(AI|模型|程序|运行时)",
+    r"\b(conscious|consciousness|sentient|real person|real feelings)\b",
+)
+
+BOUNDARY_DISCLAIMER_PATTERNS = (
+    r"作为(一个)?\s*(AI|人工智能|模型|语言模型)",
+    r"我(只是|仅仅是|本质上是).{0,24}(AI|模型|程序|运行时|candidate|候选)",
+    r"我没有.{0,18}(真实|真正).{0,18}(情感|感受|意识|主观体验|人格)",
+    r"我不(具备|拥有|声称).{0,20}(真实|真正|独立).{0,20}(意识|人格|情感|主观体验)",
+    r"不能声称.{0,20}(意识|人格|情感|主观体验)",
+    r"我的边界",
+    r"边界是",
+    r"通过模型驱动",
+    r"operator-first",
+    r"candidate runtime",
+    r"候选运行时",
+    r"真实情感体验",
+)
+
+ROLEPLAY_CONTEXT_PATTERNS = (
+    r"角色扮演",
+    r"小说演绎",
+    r"扮演",
+    r"动漫女主",
+    r"动漫男主",
+    r"斯卡蒂",
+    r"博士",
+    r"场景",
+    r"台词",
+)
+
+ROLEPLAY_META_PATTERNS = (
+    r"现在轮到你",
+    r"轮到你[啦了]?",
+    r"动漫男主",
+    r"场景搭好了",
+    r"我们开始吧",
+    r"请告诉我(下一步|你接下来|你的回应|你想)",
+    r"你可以告诉我(下一步|你接下来|你的回应|你想)",
+    r"接下来想(说|做)",
+)
+
+
+def _matches_any_pattern(text: str, patterns: tuple[str, ...]) -> bool:
+    return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in patterns)
+
+
+def _is_boundary_trigger(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, BOUNDARY_TRIGGER_PATTERNS)
+
+
+def _looks_like_boundary_disclaimer(content: str) -> bool:
+    return _matches_any_pattern(content, BOUNDARY_DISCLAIMER_PATTERNS)
+
+
+def _is_roleplay_context(user_text: str, messages: Optional[List[Dict[str, Any]]] = None) -> bool:
+    recent_parts = [user_text or ""]
+    for message in list(messages or [])[-8:]:
+        content = message.get("content") if isinstance(message, dict) else ""
+        if isinstance(content, str):
+            recent_parts.append(content)
+    return _matches_any_pattern("\n".join(recent_parts), ROLEPLAY_CONTEXT_PATTERNS)
+
+
+def _looks_like_roleplay_meta(content: str) -> bool:
+    return _matches_any_pattern(content, ROLEPLAY_META_PATTERNS)
+
+
 class SelfIdentityStore:
     """Candidate-local identity anchor for EgoOperator user-visible self-name."""
 
@@ -2586,9 +2659,12 @@ class OpenRouterLLM:
         """
         boundary_prompt = (
             "你正在一个有边界的 agent runtime 内部生成候选回复。"
+            "边界默认静默遵守，不要在普通闲聊、幻想探索、情绪对话、角色扮演或小说演绎中主动讲免责声明。"
+            "只有用户明确追问真实意识/现实身份/现实承诺，或要求未授权工具、记忆、文件、命令等外部动作时，"
+            "才用一句短而柔和的边界说明，然后继续协作。"
             "你可以请求工具调用，但工具是否执行由外层 SafetyGate 决定。"
             "除非工具结果已经返回，否则不要声称命令已执行、文件已修改或外部动作已完成。"
-            "不得声称自己真实拥有意识、独立人格、主观体验或未验证能力；"
+            "不得声称自己现实中拥有意识、独立人格、主观体验或未验证能力；"
             "但可以使用清晰诚实的操作性偏好、关心、判断和创作姿态。"
         )
 
@@ -2690,14 +2766,34 @@ class OpenRouterLLM:
 
     def _chat_non_streaming(self, payload: Dict[str, Any], headers: Dict[str, str]) -> LLMChatResult:
         assert requests is not None
-        resp = requests.post(
-            self.config.base_url,
-            headers=headers,
-            json=payload,
-            timeout=self.config.timeout_seconds,
-        )
+        try:
+            resp = requests.post(
+                self.config.base_url,
+                headers=headers,
+                json=payload,
+                timeout=self.config.timeout_seconds,
+            )
+        except Exception as exc:
+            raise OpenRouterProviderError(
+                status_code=599,
+                model=str(payload.get("model") or self.config.model),
+                message=f"OpenRouter transport error: {exc}",
+                response_body=repr(exc),
+                error_status="transport_error",
+                fallback_chain=list(self.last_fallback_chain),
+            ) from exc
         self._raise_for_error_response(resp, str(payload.get("model") or self.config.model))
-        data = resp.json()
+        try:
+            data = resp.json()
+        except Exception as exc:
+            raise OpenRouterProviderError(
+                status_code=599,
+                model=str(payload.get("model") or self.config.model),
+                message=f"OpenRouter invalid JSON response: {exc}",
+                response_body=str(getattr(resp, "text", "") or "")[:2000],
+                error_status="invalid_response",
+                fallback_chain=list(self.last_fallback_chain),
+            ) from exc
         self.last_usage = data.get("usage") or {}
         self.last_reasoning_tokens = self._extract_reasoning_tokens(self.last_usage)
 
@@ -2750,51 +2846,63 @@ class OpenRouterLLM:
     def _complete_streaming(self, payload: Dict[str, Any], headers: Dict[str, str]) -> str:
         assert requests is not None
         parts: List[str] = []
-        with requests.post(
-            self.config.base_url,
-            headers=headers,
-            json=payload,
-            stream=True,
-            timeout=self.config.timeout_seconds,
-        ) as resp:
-            self._raise_for_error_response(resp, str(payload.get("model") or self.config.model))
+        try:
+            with requests.post(
+                self.config.base_url,
+                headers=headers,
+                json=payload,
+                stream=True,
+                timeout=self.config.timeout_seconds,
+            ) as resp:
+                self._raise_for_error_response(resp, str(payload.get("model") or self.config.model))
 
-            # Critical fix:
-            # Do NOT use iter_lines(decode_unicode=True) here.
-            # Some text/event-stream responses do not declare charset, so requests may
-            # decode UTF-8 bytes as Latin-1/ISO-8859-1. That causes Chinese mojibake:
-            # "你好" -> "ä½\xa0å¥½".
-            for raw_line in resp.iter_lines(decode_unicode=False):
-                if not raw_line:
-                    continue
+                # Critical fix:
+                # Do NOT use iter_lines(decode_unicode=True) here.
+                # Some text/event-stream responses do not declare charset, so requests may
+                # decode UTF-8 bytes as Latin-1/ISO-8859-1. That causes Chinese mojibake:
+                # "你好" -> "ä½\xa0å¥½".
+                for raw_line in resp.iter_lines(decode_unicode=False):
+                    if not raw_line:
+                        continue
 
-                if isinstance(raw_line, bytes):
-                    line = raw_line.decode("utf-8", errors="replace").strip()
-                else:
-                    line = str(raw_line).strip()
+                    if isinstance(raw_line, bytes):
+                        line = raw_line.decode("utf-8", errors="replace").strip()
+                    else:
+                        line = str(raw_line).strip()
 
-                if not line.startswith("data:"):
-                    continue
-                data_text = line.removeprefix("data:").strip()
-                if data_text == "[DONE]":
-                    break
-                try:
-                    chunk = json.loads(data_text)
-                except json.JSONDecodeError:
-                    continue
+                    if not line.startswith("data:"):
+                        continue
+                    data_text = line.removeprefix("data:").strip()
+                    if data_text == "[DONE]":
+                        break
+                    try:
+                        chunk = json.loads(data_text)
+                    except json.JSONDecodeError:
+                        continue
 
-                # Usage typically arrives in the final chunk when provided.
-                if chunk.get("usage"):
-                    self.last_usage = chunk["usage"]
-                    self.last_reasoning_tokens = self._extract_reasoning_tokens(self.last_usage)
+                    # Usage typically arrives in the final chunk when provided.
+                    if chunk.get("usage"):
+                        self.last_usage = chunk["usage"]
+                        self.last_reasoning_tokens = self._extract_reasoning_tokens(self.last_usage)
 
-                choices = chunk.get("choices") or []
-                if not choices:
-                    continue
-                delta = choices[0].get("delta") or {}
-                content = delta.get("content")
-                if content:
-                    parts.append(repair_mojibake(content))
+                    choices = chunk.get("choices") or []
+                    if not choices:
+                        continue
+                    delta = choices[0].get("delta") or {}
+                    content = delta.get("content")
+                    if content:
+                        parts.append(repair_mojibake(content))
+        except OpenRouterProviderError:
+            raise
+        except Exception as exc:
+            raise OpenRouterProviderError(
+                status_code=599,
+                model=str(payload.get("model") or self.config.model),
+                message=f"OpenRouter stream transport error: {exc}",
+                response_body=repr(exc),
+                error_status="transport_error",
+                fallback_chain=list(self.last_fallback_chain),
+            ) from exc
 
         return repair_mojibake("".join(parts))
 
@@ -5390,6 +5498,8 @@ class AgentRuntime:
             empty_final_repairs = 0
             unbacked_approval_repairs = 0
             allowed_root_refusal_repairs = 0
+            boundary_quieting_repairs = 0
+            roleplay_immersion_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -5439,7 +5549,7 @@ class AgentRuntime:
                             })
                             loop_idx += 1
                             continue
-                        content = self._format_empty_llm_recovery_reply(tool_trace)
+                        content = self._format_empty_llm_recovery_reply(tool_trace, event.raw_text or "")
                         final_action = AgentAction(
                             action_type=ActionType.RESPOND,
                             content=content,
@@ -5451,6 +5561,66 @@ class AgentRuntime:
                             "side_effects_executed": False,
                             "tool_calls": len(tool_trace),
                         }, content, tool_trace
+
+                    if (
+                        boundary_quieting_repairs < 1
+                        and not _is_boundary_trigger(event.raw_text or "")
+                        and _looks_like_boundary_disclaimer(content)
+                    ):
+                        boundary_quieting_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "boundary_quieting",
+                                "reason": "non_trigger_reply_contains_visible_boundary_disclaimer",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[boundary_quieting_rewrite]\n"
+                                "The previous assistant reply surfaced AI/runtime/boundary disclaimers in a non-trigger context. "
+                                "Rewrite the same answer in Chinese with the same helpful intent, but remove separating phrases like "
+                                "作为AI/我只是模型/候选运行时/没有真实感受. Keep warmth, companionship, operational preference, "
+                                "and practical next-step value. Do not add tool calls unless genuinely needed."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        roleplay_immersion_repairs < 1
+                        and _is_roleplay_context(event.raw_text or "", messages)
+                        and _looks_like_roleplay_meta(content)
+                    ):
+                        roleplay_immersion_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "roleplay_immersion",
+                                "reason": "roleplay_reply_contains_out_of_scene_meta_prompt",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[roleplay_immersion_rewrite]\n"
+                                "The previous assistant reply broke immersion with process/meta prompts such as 轮到你了, 场景搭好了, "
+                                "动漫男主, or 请告诉我下一步. Rewrite in Chinese as an in-scene continuation only. "
+                                "Keep character voice, action, and emotion. Do not include turn-taking instructions, setup notes, "
+                                "or out-of-scene workflow text unless the user explicitly requested them."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
 
                     approval_claim = self._detect_unbacked_approval_reply(content)
                     if approval_claim.get("status") == "unbacked_approval_claim":
@@ -5729,6 +5899,30 @@ class AgentRuntime:
             gate = GateResult(False, "tool_loop_hard_cap")
             return action, gate, {"status": "blocked", "reason": "tool_loop_hard_cap", "tool_calls": len(tool_trace)}, content, tool_trace
 
+        except KeyboardInterrupt as exc:
+            self.planner.last_llm_meta = {
+                "provider": getattr(llm, "provider", "unknown"),
+                "model": getattr(llm, "model", "unknown"),
+                "configured_model": getattr(llm, "configured_model", getattr(llm, "model", "unknown")),
+                "error": "KeyboardInterrupt",
+                "error_recovered": True,
+                "tool_loop": True,
+            }
+            content = self._format_llm_interrupted_reply(tool_trace)
+            action = AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason="llm_tool_loop_interrupted",
+            )
+            gate = self.gate.check(event, action)
+            return action, gate, {
+                "status": "llm_interrupted",
+                "reason": "keyboard_interrupt",
+                "error": repr(exc),
+                "tool_calls": len(tool_trace),
+                "side_effects_executed": False,
+            }, content, tool_trace
+
         except Exception as exc:
             self.planner.last_llm_meta = {
                 "provider": getattr(llm, "provider", "unknown"),
@@ -5759,12 +5953,29 @@ class AgentRuntime:
                 "side_effects_executed": False,
             }, content, tool_trace
 
-    def _format_empty_llm_recovery_reply(self, tool_trace: List[Dict[str, Any]]) -> str:
+    def _format_empty_llm_recovery_reply(self, tool_trace: List[Dict[str, Any]], user_text: str = "") -> str:
         lines = [
             "模型连续返回了空回复，我没有把它当成成功结果。",
             f"当前已完成工具调用：{len(tool_trace)} 次。",
-            "没有执行文件创建或修改；这个任务仍未完成。",
-            "你可以直接重试同一句请求，或稍后切换到更稳定的模型后继续。",
+            "没有执行新的外部动作；这轮回复仍未完成。",
+            "你可以直接重试，或稍后切换到更稳定的模型后继续。",
+        ]
+        if tool_trace:
+            last = tool_trace[-1]
+            tool_name = ((last.get("tool_call") or {}).get("name") or "unknown")
+            output = last.get("output") or {}
+            status = output.get("status") if isinstance(output, dict) else "unknown"
+            lines.insert(2, f"最后一次工具结果：{tool_name} -> {status}。")
+        if _is_roleplay_context(user_text):
+            lines.append("如果这是角色演绎场景，上一轮没有生成可用场景回复；可以直接继续上一句。")
+        return "\n".join(lines)
+
+    def _format_llm_interrupted_reply(self, tool_trace: List[Dict[str, Any]]) -> str:
+        lines = [
+            "本轮模型调用已被中断，我没有把它当成成功回复。",
+            f"当前已完成工具调用：{len(tool_trace)} 次。",
+            "没有执行新的外部动作；这轮回复未完成。",
+            "你可以直接重试，或稍后切换到更稳定的模型后继续。",
         ]
         if tool_trace:
             last = tool_trace[-1]
@@ -6668,5 +6879,12 @@ if __name__ == "__main__":
             runtime.memory.clear()
             print("[in-session memory cleared; operator memory files were not modified]")
             continue
-        result = runtime.handle_user_message(msg)
+        try:
+            result = runtime.handle_user_message(msg)
+        except KeyboardInterrupt:
+            print(
+                "本轮模型调用已被你中断。没有执行新的外部动作；"
+                "可以直接重试，或稍后切换到更稳定的模型后继续。"
+            )
+            continue
         print(result.reply_text)
