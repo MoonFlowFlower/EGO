@@ -427,13 +427,19 @@ def test_default_prompt_contract_is_warm_expressive_and_roleplay_allowed():
     assert "我担心" in agent.DEFAULT_NEUTRAL_SYSTEM_PROMPT
     assert "爱好/兴趣/喜好/你喜欢什么" in agent.DEFAULT_NEUTRAL_SYSTEM_PROMPT
     assert "不要主动用 candidate runtime、operator-first 候选运行时" in agent.DEFAULT_NEUTRAL_SYSTEM_PROMPT
+    assert "companion-first" in agent.DEFAULT_NEUTRAL_SYSTEM_PROMPT
+    assert "不要把普通闲聊、情绪探索、幻想或角色扮演主动拉回架构说明" in agent.DEFAULT_NEUTRAL_SYSTEM_PROMPT
+    assert "真实性边界只在用户明确追问意识/自我真实性" in agent.DEFAULT_NEUTRAL_SYSTEM_PROMPT
     assert "默认允许小说演绎、角色扮演、人物对话和场景续写" in prompt
     assert "不要因为“我是 AI”而拒绝角色扮演" in prompt
     assert "不要反复输出“现在轮到你了”" in prompt
     assert "优先调用 web_fetch 获取简要资料后再演绎" in prompt
     assert "不得编造确定性设定" in prompt
     assert "IP 设定摘要只保留演绎必要信息" in prompt
-    assert "真实拥有意识、独立人格或主观体验" in prompt
+    assert "Non-trigger：角色扮演、小说演绎、情绪倾诉、亲密但非露骨创作" in prompt
+    assert "这些场景不要主动写免责声明" in prompt
+    assert "Trigger：用户追问真实意识/自我真实性" in prompt
+    assert "再一句话软边界，然后继续协作" in prompt
     assert "操作性偏好、关心、判断和创作姿态" in prompt
 
 
