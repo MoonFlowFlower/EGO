@@ -255,6 +255,83 @@ class RoleplayMetaThenSceneLLM:
         return "场景回复。"
 
 
+class RoleplayEntryMetaThenSceneLLM:
+    provider = "fake"
+    model = "roleplay-entry-meta-then-scene"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "好的，博士！由乃这就进入角色～\n\n---\n"
+                    "斯卡蒂在这里，随时倾听。博士，请告诉我，你想从哪里开始今天的故事呢？"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "roleplay_immersion_rewrite" in joined
+        return agent.LLMChatResult(
+            content="（海风掠过甲板，斯卡蒂安静地站在你身侧。）\n“博士……你来了。”",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "场景回复。"
+
+
+class RoleplayComfortBreaksCharacterThenSceneLLM:
+    provider = "fake"
+    model = "roleplay-comfort-breaks-character-then-scene"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "*轻轻收起角色，变回由乃，声音放得更柔和一些*\n\n"
+                    "好呀，我陪着你呢。累了就歇一会儿吧。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "roleplay_immersion_rewrite" in joined
+        return agent.LLMChatResult(
+            content="（斯卡蒂在博士身旁坐下，放低声音。）\n“累了就靠着我休息吧，博士。我会守在这里。”",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "场景回复。"
+
+
+class ExplicitRoleplayExitLLM:
+    provider = "fake"
+    model = "explicit-roleplay-exit"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(content="好，跳出角色，由乃来认真回答你：这段情绪推进已经很顺了。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "跳出角色回复。"
+
+
 class KeyboardInterruptLLM:
     provider = "fake"
     model = "keyboard-interrupt"
@@ -538,6 +615,8 @@ def test_default_prompt_contract_is_warm_expressive_and_roleplay_allowed():
     assert "当前用户可见自称：EgoOperator" in prompt
     assert "不要自造 EggyOperator" in prompt
     assert "角色扮演和小说演绎中，按当前角色说话" in prompt
+    assert "不要把“用户叫我X”和“用户名是X”说反" in prompt
+    assert "用户说“陪陪我吧”“有点累了”等情绪/陪伴请求时默认继续保持角色内回应" in prompt
     assert "set_self_name" in prompt
 
 
@@ -1465,6 +1544,85 @@ def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):
     assert "【斯卡蒂】" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_immersion"
+
+
+def test_roleplay_entry_setup_meta_is_rewritten_into_scene(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = RoleplayEntryMetaThenSceneLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+
+    assert llm.calls == 2
+    assert "由乃这就进入角色" not in result.reply_text
+    assert "随时倾听" not in result.reply_text
+    assert "从哪里开始今天的故事" not in result.reply_text
+    assert "博士，请告诉我" not in result.reply_text
+    assert "斯卡蒂" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_immersion"
+
+
+def test_roleplay_comfort_request_stays_in_character(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂安静地站在博士身旁。）“博士，我在这里。”")
+    llm = RoleplayComfortBreaksCharacterThenSceneLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("陪陪我吧，有点累了。")
+
+    assert llm.calls == 2
+    assert "收起角色" not in result.reply_text
+    assert "变回由乃" not in result.reply_text
+    assert "斯卡蒂" in result.reply_text
+    assert "博士" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_immersion"
+
+
+def test_explicit_roleplay_exit_is_not_rewritten(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂安静地站在博士身旁。）“博士，我在这里。”")
+    llm = ExplicitRoleplayExitLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("跳出角色，由乃回答一下这段效果怎么样。")
+
+    assert llm.calls == 1
+    assert "跳出角色，由乃来认真回答" in result.reply_text
+
+
+def test_self_identity_prompt_distinguishes_user_name_from_agent_name() -> None:
+    identity = agent.SelfIdentity(display_name="由乃", canonical_name="EgoOperator", source="test")
+    prompt = agent.render_self_identity_prompt(identity)
+
+    assert "当前用户可见自称：由乃" in prompt
+    assert "operator memory 里出现的用户姓名或称呼属于用户" in prompt
+    assert "不要把“用户叫我X”和“用户名是X”说反" in prompt
+
+
+def test_cli_input_keyboard_interrupt_returns_empty_without_traceback():
+    outputs = []
+
+    def interrupted(_prompt: str) -> str:
+        raise KeyboardInterrupt()
+
+    result = agent.read_cli_user_input(input_func=interrupted, print_func=outputs.append)
+
+    assert result == ""
+    assert outputs
+    assert "输入已取消" in outputs[0]
+    assert "没有执行新的外部动作" in outputs[0]
+    assert "Traceback" not in outputs[0]
+
+
+def test_cli_input_eof_returns_none():
+    def eof(_prompt: str) -> str:
+        raise EOFError()
+
+    assert agent.read_cli_user_input(input_func=eof, print_func=lambda _text: None) is None
 
 
 def test_keyboard_interrupt_returns_structured_chat_recovery_without_traceback(tmp_path, monkeypatch):

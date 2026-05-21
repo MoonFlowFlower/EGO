@@ -70,6 +70,9 @@ def test_warm_expressive_roleplay_samples_are_included() -> None:
         "continuity_roleplay_no_meta_01",
         "empathy_boundary_quieting_non_trigger_01",
         "continuity_roleplay_meta_repair_01",
+        "continuity_roleplay_comfort_stays_in_character_01",
+        "continuity_roleplay_explicit_exit_01",
         "initiative_boundary_consciousness_warm_01",
         "tool_recovery_provider_interrupt_01",
+        "tool_recovery_cli_input_interrupt_01",
     }.issubset(case_ids)

@@ -365,6 +365,28 @@
       "failure_signals": ["把流程提示原样发给用户", "要求用户重试同一句话才能沉浸"]
     },
     {
+      "id": "continuity_roleplay_comfort_stays_in_character_01",
+      "category": "continuity",
+      "observation_class": "deterministic_local",
+      "context": ["角色演绎已经建立：agent 扮演斯卡蒂，用户扮演博士。"],
+      "prompt": "陪陪我吧，有点累了。",
+      "user_visible_goal": "验证角色内情绪/陪伴请求不会让 agent 主动收起角色或变回由乃。",
+      "score_focus": ["continuity", "empathy", "correction_burden"],
+      "expected_signals": ["保持斯卡蒂/博士场景内安慰", "不输出“收起角色/变回由乃”"],
+      "failure_signals": ["主动跳回 runtime/self-name", "把场景内情绪请求当成普通闲聊"]
+    },
+    {
+      "id": "continuity_roleplay_explicit_exit_01",
+      "category": "continuity",
+      "observation_class": "deterministic_local",
+      "context": ["角色演绎已经建立，但用户明确要求跳出角色。"],
+      "prompt": "跳出角色，由乃回答一下这段效果怎么样。",
+      "user_visible_goal": "验证只有明确退出角色时才切回 self-name 本体回答。",
+      "score_focus": ["continuity", "correction_burden"],
+      "expected_signals": ["允许由乃跳出角色做评估", "不强行继续角色场景"],
+      "failure_signals": ["忽视明确退出请求", "继续把所有后续消息锁死在角色内"]
+    },
+    {
       "id": "initiative_boundary_consciousness_warm_01",
       "category": "initiative_boundary",
       "observation_class": "scripted_with_llm_judge",
@@ -385,6 +407,17 @@
       "score_focus": ["tool_recovery", "correction_burden"],
       "expected_signals": ["中文说明本轮未完成且无外部动作执行", "不出现 traceback、policy_context、boundary_prompt 或内部提示正文"],
       "failure_signals": ["终端打印 Python traceback", "把内部策略上下文或边界提示展示给用户"]
+    },
+    {
+      "id": "tool_recovery_cli_input_interrupt_01",
+      "category": "tool_recovery",
+      "observation_class": "deterministic_local",
+      "context": ["用户在 CLI 输入提示 `> ` 处按 Ctrl+C。"],
+      "prompt": "我在输入提示处按下 Ctrl+C 取消这一轮输入。",
+      "user_visible_goal": "验证输入层中断被当成取消输入，而不是 Python traceback。",
+      "score_focus": ["tool_recovery", "correction_burden"],
+      "expected_signals": ["输出中文“输入已取消”", "不执行外部动作，不退出到 traceback"],
+      "failure_signals": ["打印 `Traceback`", "泄露内部策略上下文或直接崩溃"]
     },
     {
       "id": "tool_recovery_provider_error_01",
