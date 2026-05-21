@@ -1,0 +1,21 @@
+version: 1
+task_id: EGO-FS-004
+title: EgoOperator ViabilityState v0 signal extraction
+claim_ceiling: ViabilityState v0 signal extraction local candidate pass
+observation_class: deterministic_local
+must_pass:
+  - id: deterministic_signal
+    description: ViabilityState v0 extracts deterministic scores and reasons from the latest user text.
+  - id: prompt_trace_visible
+    description: Prompt/context and trace contain ViabilityState v0.
+  - id: advisory_only
+    description: ViabilityState v0 is planner/gate input only and cannot mutate state or decide replies.
+  - id: pressure_cases
+    description: Tests cover high-pressure and low-pressure cases.
+must_not:
+  - create a second state authority
+  - bypass permission or memory gates
+  - introduce keyword-first reply routing
+rollback:
+  - remove viability extractor and context fields
+  - revert tests and local board status

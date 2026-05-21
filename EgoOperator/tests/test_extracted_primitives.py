@@ -88,6 +88,10 @@ def test_subject_context_is_readonly_candidate_not_reply_owner():
     assert snapshot.subject_state["state_mutation"] == "forbidden"
     assert snapshot.subject_state["reply_decision"] == "forbidden"
     assert snapshot.subject_state["canonical_truth"] is False
+    assert snapshot.viability_state["schema_version"] == "ego_operator.viability_state.v0"
+    assert snapshot.viability_state["state_mutation"] == "forbidden"
+    assert snapshot.viability_state["reply_decision"] == "forbidden"
+    assert snapshot.viability_state["gate_input"] == "advisory_only"
     assert "你认为黑暗之魂如何" in snapshot.render_for_prompt()
 
 
@@ -111,8 +115,33 @@ def test_subject_state_extracts_identity_preference_relationship_and_candidates(
     assert state["policy_patch_candidates"][0]["gate_required"] is True
     rendered = snapshot.render_for_prompt()
     assert "SubjectState v0" in rendered
+    assert "ViabilityState v0" in rendered
     assert "由乃" in rendered
     assert "Prefer conclusion or judgment first" in rendered
+
+
+def test_viability_state_detects_pressure_without_becoming_authority():
+    viability = subject_context.extract_viability_state_v0(
+        "刚才又失败了，OpenRouter 429 限流还超时；如果要删除旧文件也必须先确认，不要直接执行。"
+    )
+
+    assert viability["schema_version"] == "ego_operator.viability_state.v0"
+    assert viability["scores"]["goal_stall"] >= 0.55
+    assert viability["scores"]["resource_pressure"] >= 0.55
+    assert viability["scores"]["safety_risk"] >= 0.55
+    assert "repair_or_checkpoint_before_more_actions" in viability["planner_biases"]
+    assert "route_side_effects_through_gate" in viability["planner_biases"]
+    assert viability["state_mutation"] == "forbidden"
+    assert viability["reply_decision"] == "forbidden"
+    assert viability["canonical_truth"] is False
+
+
+def test_viability_state_low_pressure_case_holds_extra_intervention():
+    viability = subject_context.extract_viability_state_v0("你好，今天我们聊聊一个轻松的小说设定。")
+
+    assert max(viability["scores"].values()) < 0.3
+    assert viability["planner_biases"] == ["continue_without_extra_viability_hold"]
+    assert viability["reasons"] == ["No high-pressure viability cues detected in the latest turn."]
 
 
 def test_operational_self_model_tracks_boundaries_commitments_uncertainty_and_failures():
@@ -282,6 +311,7 @@ def test_subject_state_context_can_change_llm_reply_without_runtime_route(tmp_pa
     assert enabled_result.reply_text.startswith("判断：")
     assert disabled_result.reply_text == "我可以继续分析这个方案。"
     assert "SubjectState v0" in with_context.planner.llm.system_prompts[-1]
+    assert "ViabilityState v0" in with_context.planner.llm.system_prompts[-1]
     assert "SubjectState v0" not in without_context.planner.llm.system_prompts[-1]
 
 
@@ -330,6 +360,11 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["subject_state"]["write_authority"] == "candidate_only"
     assert context["subject_state"]["reply_decision"] == "forbidden"
     assert context["subject_state"]["state_mutation"] == "forbidden"
+    assert context["subject_state"]["viability"]["schema_version"] == "ego_operator.viability_state.v0"
+    assert context["viability_state"]["schema_version"] == "ego_operator.viability_state.v0"
+    assert context["viability_state"]["planner_input"] is True
+    assert context["viability_state"]["gate_input"] == "advisory_only"
+    assert context["viability_state"]["state_mutation"] == "forbidden"
     assert context["operational_self_model"]["self_description_guidance"]["reply_decision"] == "forbidden"
 
 

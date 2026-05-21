@@ -5,7 +5,12 @@ These modules intentionally do not import EgoCore, OpenEmotion, or
 ego_desktop_lab. They extract contracts and operator-facing behavior only.
 """
 
-from .subject_context import SubjectContextSnapshot, build_minimal_subject_context, build_subject_state_v0
+from .subject_context import (
+    SubjectContextSnapshot,
+    build_minimal_subject_context,
+    build_subject_state_v0,
+    extract_viability_state_v0,
+)
 from .initiative import (
     InitiativeProposal,
     apply_quiet_mode_to_budget,
@@ -24,6 +29,7 @@ __all__ = [
     "build_minimal_subject_context",
     "build_subject_state_v0",
     "derive_quiet_mode",
+    "extract_viability_state_v0",
     "evaluate_initiative_explanation",
     "format_initiative_consent_text",
     "validate_initiative_proposal",

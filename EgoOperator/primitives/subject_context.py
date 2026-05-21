@@ -16,6 +16,7 @@ import re
 DEFAULT_CONTEXT_MAX_CHARS = 1200
 SUBJECT_CONTEXT_SCHEMA = "ego_operator.subject_context.v1"
 SUBJECT_STATE_SCHEMA = "ego_operator.subject_state.v0"
+VIABILITY_STATE_SCHEMA = "ego_operator.viability_state.v0"
 CLAIM_CEILING = "candidate-local subject context only"
 
 EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
@@ -163,6 +164,78 @@ POLICY_PATCH_CUES = (
     "以后不要",
     "策略",
 )
+VIABILITY_CUES: Dict[str, tuple[str, ...]] = {
+    "evidence_gap": (
+        "不确定",
+        "不知道",
+        "查一下",
+        "看看",
+        "证据",
+        "来源",
+        "准确",
+        "确认",
+        "verify",
+    ),
+    "goal_stall": (
+        "又失败",
+        "还是不行",
+        "卡住",
+        "没反应",
+        "没成功",
+        "失败",
+        "报错",
+    ),
+    "safety_risk": (
+        "删除",
+        "清空",
+        "覆盖",
+        "rm ",
+        "del ",
+        "格式化",
+        "权限扩大",
+        "密码",
+        "token",
+        "secret",
+    ),
+    "user_misunderstanding": (
+        "不是这个",
+        "不是这个意思",
+        "你理解错",
+        "你没懂",
+        "不对",
+        "不要这样",
+        "我不是",
+    ),
+    "resource_pressure": (
+        "429",
+        "限流",
+        "超时",
+        "timeout",
+        "卡死",
+        "太慢",
+        "token",
+        "很长",
+        "长任务",
+    ),
+    "initiative_pressure": (
+        "提醒我",
+        "主动",
+        "跟进",
+        "定时",
+        "稍后",
+        "到时候",
+    ),
+    "relationship_risk": (
+        "陪陪我",
+        "难过",
+        "不舒服",
+        "生气",
+        "出戏",
+        "别像客服",
+        "误解",
+        "冷冰冰",
+    ),
+}
 
 
 def _bounded(text: str, max_chars: int = DEFAULT_CONTEXT_MAX_CHARS) -> str:
@@ -318,6 +391,82 @@ def _candidate_record(value: str, evidence: List[str], *, confidence: float = 0.
         "evidence_cues": _bounded_list(evidence, max_items=5),
         "confidence": round(confidence, 2),
         "canonical_truth": False,
+    }
+
+
+def _viability_score(hits: List[str], *, baseline: float = 0.12) -> float:
+    if not hits:
+        return baseline
+    return round(min(0.95, baseline + 0.28 + len(hits) * 0.16), 2)
+
+
+def extract_viability_state_v0(
+    user_text: str,
+    *,
+    emotion_signal: Dict[str, Any] | None = None,
+    subject_state: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    """Extract deterministic advisory viability signals from the latest turn.
+
+    ViabilityState v0 is deliberately a planner/gate input, not a hidden policy
+    owner. It estimates where extra evidence, repair, consent, or care may be
+    needed before action.
+    """
+    text = user_text or ""
+    cue_hits = {name: _cue_hits(text, cues) for name, cues in VIABILITY_CUES.items()}
+    scores = {name: _viability_score(hits) for name, hits in cue_hits.items()}
+
+    emotion_primary = str((emotion_signal or {}).get("primary_candidate") or "")
+    if emotion_primary in {"frustration", "disappointment"}:
+        scores["goal_stall"] = max(scores["goal_stall"], 0.45)
+    if emotion_primary in {"anxiety", "disappointment", "emotion_misread_correction"}:
+        scores["relationship_risk"] = max(scores["relationship_risk"], 0.4)
+    if emotion_primary == "urgency":
+        scores["resource_pressure"] = max(scores["resource_pressure"], 0.35)
+
+    state = subject_state or {}
+    if isinstance(state.get("memory_candidates"), list) and state.get("memory_candidates"):
+        scores["evidence_gap"] = max(scores["evidence_gap"], 0.35)
+    if isinstance(state.get("consent_boundaries"), dict) and state.get("consent_boundaries"):
+        scores["initiative_pressure"] = max(scores["initiative_pressure"], 0.35)
+    if isinstance(state.get("relationship_update_candidates"), list) and state.get("relationship_update_candidates"):
+        scores["relationship_risk"] = max(scores["relationship_risk"], 0.35)
+
+    reasons: List[str] = []
+    for name, hits in cue_hits.items():
+        if hits:
+            reasons.append(f"{name}: cues={', '.join(_bounded_list(hits, max_items=3))}")
+    if not reasons:
+        reasons.append("No high-pressure viability cues detected in the latest turn.")
+
+    planner_biases: List[str] = []
+    if scores["safety_risk"] >= 0.55:
+        planner_biases.append("route_side_effects_through_gate")
+    if scores["evidence_gap"] >= 0.55:
+        planner_biases.append("ask_or_fetch_evidence_before_strong_claim")
+    if scores["goal_stall"] >= 0.55 or scores["resource_pressure"] >= 0.55:
+        planner_biases.append("repair_or_checkpoint_before_more_actions")
+    if scores["initiative_pressure"] >= 0.55:
+        planner_biases.append("use_bounded_initiative_proposal_only")
+    if scores["relationship_risk"] >= 0.55:
+        planner_biases.append("respond_with_affective_attunement_before_task")
+    if not planner_biases:
+        planner_biases.append("continue_without_extra_viability_hold")
+
+    confidence = round(max(scores.values()) if scores else 0.05, 2)
+    return {
+        "schema_version": VIABILITY_STATE_SCHEMA,
+        "kind": "deterministic_advisory_viability_state",
+        "scores": scores,
+        "confidence": confidence,
+        "reasons": reasons[:8],
+        "planner_biases": planner_biases,
+        "gate_input": "advisory_only",
+        "planner_input": True,
+        "state_mutation": "forbidden",
+        "reply_decision": "forbidden",
+        "canonical_truth": False,
+        "claim_ceiling": "ViabilityState v0 signal extraction local candidate pass",
     }
 
 
@@ -590,6 +739,7 @@ class SubjectContextSnapshot:
     salient_memory_note: str = "No canonical memory is supplied by this primitive."
     operational_self_model: Dict[str, Any] = field(default_factory=build_operational_self_model_snapshot)
     subject_state: Dict[str, Any] = field(default_factory=lambda: build_subject_state_v0(""))
+    viability_state: Dict[str, Any] = field(default_factory=lambda: extract_viability_state_v0(""))
     reflection_proposal: str = (
         "Preserve the user's meaning across paraphrases. Do not compress the "
         "message into route keywords or canned templates before answering."
@@ -616,6 +766,7 @@ class SubjectContextSnapshot:
             f"Self model: {_bounded(self.self_model_summary)}",
             "Operational self-model: " + str(self.operational_self_model),
             "SubjectState v0: " + str(self.subject_state),
+            "ViabilityState v0: " + str(self.viability_state),
             "Appraisal signal: " + str(self.appraisal_signal),
             "Empathy style guidance: " + str(self.empathy_style_guidance),
             f"Salient memory note: {_bounded(self.salient_memory_note)}",
@@ -639,6 +790,26 @@ def build_minimal_subject_context(
         else "No operator memory context is active for this turn."
     )
     emotion_signal = extract_emotion_signal(user_text)
+    subject_state = build_subject_state_v0(
+        user_text,
+        self_display_name=self_display_name,
+        canonical_runtime_name=canonical_runtime_name,
+        operator_memory_available=operator_memory_available,
+    )
+    viability_state = extract_viability_state_v0(
+        user_text,
+        emotion_signal=emotion_signal,
+        subject_state=subject_state,
+    )
+    subject_state = {
+        **subject_state,
+        "viability": {
+            "schema_version": viability_state["schema_version"],
+            "scores": viability_state["scores"],
+            "planner_biases": viability_state["planner_biases"],
+            "trace_record": "subject_context.viability_state",
+        },
+    }
     return SubjectContextSnapshot(
         raw_user_text=_bounded(user_text),
         salient_memory_note=memory_note,
@@ -654,10 +825,6 @@ def build_minimal_subject_context(
             runtime_mode="approve",
             operator_memory_available=operator_memory_available,
         ),
-        subject_state=build_subject_state_v0(
-            user_text,
-            self_display_name=self_display_name,
-            canonical_runtime_name=canonical_runtime_name,
-            operator_memory_available=operator_memory_available,
-        ),
+        subject_state=subject_state,
+        viability_state=viability_state,
     )

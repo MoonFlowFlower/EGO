@@ -92,6 +92,7 @@ verify_profiles:
           - docs/codex/tasks/ego-functional-subject-architecture-contract-v0
           - docs/codex/tasks/ego-functional-subject-trial-v0
           - docs/codex/tasks/ego-subjectstate-v0-candidate-context
+          - docs/codex/tasks/ego-viabilitystate-v0-signal-extraction
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -121,6 +122,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-functional-subject-architecture-contract-v0/
   - docs/codex/tasks/ego-functional-subject-trial-v0/
   - docs/codex/tasks/ego-subjectstate-v0-candidate-context/
+  - docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
