@@ -128,7 +128,10 @@ class FakeGh(codex_project_autopilot.github_project_task.GhClient):
         self.calls.append(key)
         if key not in self.responses or not self.responses[key]:
             raise AssertionError(f"Unexpected gh call: {args}")
-        return self.responses[key].pop(0)
+        value = self.responses[key].pop(0)
+        if isinstance(value, Exception):
+            raise value
+        return value
 
 
 class FakeRunner(codex_project_autopilot.CommandRunner):
@@ -175,6 +178,11 @@ github_project:
   owner: pen364692088
   number: 1
   status_field: Status
+github_rate_limit:
+  wait_mode: bounded
+  max_wait_seconds: 2100
+  grace_seconds: 5
+  max_retries: 1
 verify_profiles:
   target:
     commands:
@@ -430,6 +438,53 @@ def test_report_classifies_ready_human_aggregate_parked_supporting_and_unknown(t
     assert classes[10] == "parked"
     assert classes[6] == "supporting"
     assert classes[14] == "unknown"
+
+
+def test_report_waits_and_retries_on_github_graphql_rate_limit(tmp_path: Path, monkeypatch) -> None:
+    path = write_contract(tmp_path)
+    sleeps: list[int] = []
+    monkeypatch.setattr(codex_project_autopilot.github_project_task.time, "time", lambda: 1000)
+    monkeypatch.setattr(codex_project_autopilot.github_project_task.time, "sleep", sleeps.append)
+    responses = base_responses(items=[item(ISSUE_READY, "In Progress")])
+    item_list_key = (
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )
+    responses[item_list_key] = [
+        codex_project_autopilot.github_project_task.GhCommandError(
+            list(item_list_key),
+            1,
+            "",
+            "GraphQL: API rate limit exceeded for user ID 19620358.\n",
+        ),
+        j({"items": [item(ISSUE_READY, "In Progress")]}),
+    ]
+    responses[("api", "rate_limit")] = j(
+        {
+            "resources": {
+                "graphql": {
+                    "limit": 5000,
+                    "remaining": 0,
+                    "used": 5000,
+                    "reset": 1001,
+                }
+            }
+        }
+    )
+
+    code, payload = run_cli(["--contract", str(path), "report"], fake=FakeGh(responses))
+
+    assert code == 0
+    assert sleeps == [6]
+    assert payload["rate_limit_waits"][0]["wait_seconds"] == 6
+    assert payload["counts"]["ready"] == 1
 
 
 def test_plan_next_skips_human_aggregate_and_parked(tmp_path: Path) -> None:

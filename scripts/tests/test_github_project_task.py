@@ -66,7 +66,10 @@ class FakeGh(github_project_task.GhClient):
         self.calls.append(key)
         if key not in self.responses or not self.responses[key]:
             raise AssertionError(f"Unexpected gh call: {args}")
-        return self.responses[key].pop(0)
+        value = self.responses[key].pop(0)
+        if isinstance(value, Exception):
+            raise value
+        return value
 
 
 def run_cli(fake: FakeGh, argv: list[str]) -> tuple[int, dict]:
@@ -349,3 +352,199 @@ def test_closeout_dry_run_does_not_call_gh() -> None:
     assert payload["status"] == "dry_run"
     assert payload["planned"][0]["gh"][:2] == ["issue", "comment"]
     assert fake.calls == []
+
+
+def rate_limit_error(args: list[str] | None = None) -> github_project_task.GhCommandError:
+    return github_project_task.GhCommandError(
+        args or ["project", "item-list"],
+        1,
+        "",
+        "GraphQL: API rate limit exceeded for user ID 19620358.\n",
+    )
+
+
+def rate_limit_payload(*, reset: int = 1010, remaining: int = 0) -> str:
+    return j(
+        {
+            "resources": {
+                "graphql": {
+                    "limit": 5000,
+                    "remaining": remaining,
+                    "used": 5000 - remaining,
+                    "reset": reset,
+                }
+            }
+        }
+    )
+
+
+def test_rate_limit_within_budget_waits_and_retries_once() -> None:
+    sleeps: list[int] = []
+    fake = FakeGh(
+        {
+            ("project", "item-list"): [rate_limit_error(["project", "item-list"]), "ok\n"],
+            ("api", "rate_limit"): rate_limit_payload(reset=1010),
+        }
+    )
+    client = github_project_task.RateLimitingGhClient(
+        fake,
+        github_project_task.RateLimitPolicy(
+            max_wait_seconds=20,
+            grace_seconds=5,
+            max_retries=1,
+            now=lambda: 1000,
+            sleeper=sleeps.append,
+        ),
+    )
+
+    assert client.run(["project", "item-list"]) == "ok\n"
+    assert sleeps == [15]
+    assert client.rate_limit_waits[0]["wait_seconds"] == 15
+
+
+def test_rate_limit_over_budget_returns_structured_error() -> None:
+    fake = FakeGh(
+        {
+            ("project", "item-list"): rate_limit_error(["project", "item-list"]),
+            ("api", "rate_limit"): rate_limit_payload(reset=2000),
+        }
+    )
+    client = github_project_task.RateLimitingGhClient(
+        fake,
+        github_project_task.RateLimitPolicy(
+            max_wait_seconds=20,
+            grace_seconds=5,
+            max_retries=1,
+            now=lambda: 1000,
+            sleeper=lambda seconds: None,
+        ),
+    )
+
+    try:
+        client.run(["project", "item-list"])
+    except github_project_task.GhRateLimitError as exc:
+        assert exc.rate_limit["wait_seconds"] == 1005
+        assert github_project_task.rate_limit_resume_guidance(exc.args_list, exc.rate_limit).startswith("Retry after")
+    else:  # pragma: no cover
+        raise AssertionError("expected GhRateLimitError")
+
+
+def test_rate_limit_retry_exhaustion_does_not_loop_forever() -> None:
+    sleeps: list[int] = []
+    fake = FakeGh(
+        {
+            ("project", "item-list"): [
+                rate_limit_error(["project", "item-list"]),
+                rate_limit_error(["project", "item-list"]),
+            ],
+            ("api", "rate_limit"): [rate_limit_payload(reset=1001), rate_limit_payload(reset=1001)],
+        }
+    )
+    client = github_project_task.RateLimitingGhClient(
+        fake,
+        github_project_task.RateLimitPolicy(
+            max_wait_seconds=20,
+            grace_seconds=0,
+            max_retries=1,
+            now=lambda: 1000,
+            sleeper=sleeps.append,
+        ),
+    )
+
+    try:
+        client.run(["project", "item-list"])
+    except github_project_task.GhRateLimitError as exc:
+        assert len(sleeps) == 1
+        assert len(exc.waits) == 1
+    else:  # pragma: no cover
+        raise AssertionError("expected GhRateLimitError")
+
+
+def test_non_rate_limit_gh_error_is_not_retried() -> None:
+    error = github_project_task.GhCommandError(["issue", "view"], 1, "", "not found\n")
+    fake = FakeGh({("issue", "view"): error})
+    client = github_project_task.RateLimitingGhClient(
+        fake,
+        github_project_task.RateLimitPolicy(sleeper=lambda seconds: None),
+    )
+
+    try:
+        client.run(["issue", "view"])
+    except github_project_task.GhCommandError as exc:
+        assert exc is error
+        assert ("api", "rate_limit") not in fake.calls
+    else:  # pragma: no cover
+        raise AssertionError("expected GhCommandError")
+
+
+def test_closeout_verify_stage_rate_limit_returns_resume_without_repeating_mutation() -> None:
+    responses = base_responses(items=[ITEM_PROGRESS])
+    responses[(
+        "project",
+        "item-list",
+        "1",
+        "--owner",
+        "pen364692088",
+        "--limit",
+        "200",
+        "--format",
+        "json",
+    )] = [
+        j({"items": [ITEM_PROGRESS]}),
+        j({"items": [ITEM_DONE]}),
+        rate_limit_error(["project", "item-list"]),
+    ]
+    responses[("project", "field-list", "1", "--owner", "pen364692088", "--format", "json")] = [
+        j(FIELDS),
+        j(FIELDS),
+    ]
+    responses[(
+        "project",
+        "item-edit",
+        "--id",
+        "ITEM_1",
+        "--project-id",
+        "PVT_project",
+        "--field-id",
+        "FIELD_status",
+        "--single-select-option-id",
+        "OPT_done",
+    )] = ""
+    responses[("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body")] = ""
+    responses[("issue", "close", "1", "--repo", "pen364692088/EGO")] = ""
+    responses[(
+        "issue",
+        "view",
+        "1",
+        "--repo",
+        "pen364692088/EGO",
+        "--json",
+        "number,title,state,url",
+    )] = [j(ISSUE), j(ISSUE_CLOSED)]
+    responses[("api", "rate_limit")] = rate_limit_payload(reset=2000)
+    fake = FakeGh(responses)
+    client = github_project_task.RateLimitingGhClient(
+        fake,
+        github_project_task.RateLimitPolicy(
+            max_wait_seconds=20,
+            max_retries=1,
+            now=lambda: 1000,
+            sleeper=lambda seconds: None,
+        ),
+    )
+
+    result = github_project_task.command_closeout(
+        client,
+        github_project_task.Config(
+            repo="pen364692088/EGO",
+            owner="pen364692088",
+            project_number="1",
+            status_field="Status",
+        ),
+        type("Args", (), {"issue": "1", "status": "Done", "comment": "done body", "comment_file": None})(),
+    )
+
+    assert result["status"] == "github_rate_limited_after_mutation"
+    assert result["resume_command"].endswith("verify --issue 1 --expect-status Done")
+    assert fake.calls.count(("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body")) == 1
+    assert fake.calls.count(("issue", "close", "1", "--repo", "pen364692088/EGO")) == 1

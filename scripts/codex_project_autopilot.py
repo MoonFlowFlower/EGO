@@ -63,14 +63,20 @@ class ProjectContract:
     auto_pause: dict[str, Any] = field(default_factory=dict)
     goal_control: dict[str, Any] = field(default_factory=dict)
     epic_rollup: dict[str, Any] = field(default_factory=dict)
+    github_rate_limit: dict[str, Any] = field(default_factory=dict)
 
     def github_config(self, *, dry_run: bool = False) -> github_project_task.Config:
+        rate_limit = self.github_rate_limit
         return github_project_task.Config(
             repo=self.repo,
             owner=self.owner,
             project_number=self.project_number,
             status_field=self.status_field,
             dry_run=dry_run,
+            rate_limit_wait_mode=str(rate_limit.get("wait_mode") or "bounded"),
+            rate_limit_max_wait_seconds=int(rate_limit.get("max_wait_seconds") or 2100),
+            rate_limit_grace_seconds=int(rate_limit.get("grace_seconds") or 5),
+            rate_limit_max_retries=int(rate_limit.get("max_retries") or 1),
         )
 
 
@@ -210,6 +216,11 @@ def load_contract(path: Path) -> ProjectContract:
             payload.get("epic_rollup") or {},
             code="invalid_epic_rollup",
             message="epic_rollup must be an object",
+        ),
+        github_rate_limit=_require_mapping(
+            payload.get("github_rate_limit") or {},
+            code="invalid_github_rate_limit",
+            message="github_rate_limit must be an object",
         ),
     )
 
@@ -3352,7 +3363,14 @@ def main(
     out = stdout or sys.stdout
     try:
         contract = load_contract(Path(args.contract))
-        payload = dispatch(client or github_project_task.GhClient(), contract, args, runner=runner or CommandRunner())
+        cfg = contract.github_config()
+        gh_client = github_project_task.RateLimitingGhClient(
+            client or github_project_task.GhClient(),
+            github_project_task.rate_limit_policy_from_config(cfg),
+        )
+        payload = dispatch(gh_client, contract, args, runner=runner or CommandRunner())
+        if gh_client.rate_limit_waits:
+            payload["rate_limit_waits"] = gh_client.rate_limit_waits
         write_json(payload, out)
         return 0
     except AutopilotError as exc:
@@ -3371,6 +3389,20 @@ def main(
                 "gh_args": exc.args_list,
                 "stdout": exc.stdout,
                 "stderr": exc.stderr,
+            },
+            out,
+        )
+        return 1
+    except github_project_task.GhRateLimitError as exc:
+        write_json(
+            {
+                "status": "error",
+                "error": "github_rate_limited",
+                "message": str(exc),
+                "gh_args": exc.args_list,
+                "rate_limit": exc.rate_limit,
+                "rate_limit_waits": exc.waits,
+                "resume_command": github_project_task.rate_limit_resume_guidance(exc.args_list, exc.rate_limit),
             },
             out,
         )

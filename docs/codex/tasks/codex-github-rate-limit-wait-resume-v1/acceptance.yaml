@@ -1,0 +1,29 @@
+version: 1
+task: codex-github-rate-limit-wait-resume-v1
+github_issue: 83
+claim_ceiling: GitHub GraphQL rate-limit wait/resume local workflow candidate pass
+allowed_paths:
+  - .codex/project_contract.yaml
+  - scripts/**
+  - scripts/tests/**
+  - docs/codex/tasks/codex-github-rate-limit-wait-resume-v1/**
+forbidden_paths:
+  - EgoOperator/**
+  - legacy/ego-pre-handmade-mainline/**
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/**
+acceptance:
+  - graphql_rate_limit_is_detected
+  - reset_within_budget_waits_and_retries_once
+  - reset_over_budget_stops_with_resume_guidance
+  - retry_exhaustion_returns_structured_rate_limit_error
+  - non_rate_limit_gh_error_remains_gh_command_failed
+  - closeout_verify_stage_rate_limit_can_resume_without_duplicate_mutation
+  - interrupted_epics_48_58_63_can_close_after_quota_recovery
+cannot_claim:
+  - full_unattended_autonomous_development
+  - stable_productivity_gain
+  - runtime_efficacy
+  - live_autonomy
+  - durable_memory_efficacy
+  - consciousness

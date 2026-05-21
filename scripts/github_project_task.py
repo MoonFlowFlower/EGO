@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import shutil
 import subprocess
 import sys
-from dataclasses import dataclass
+import time
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, TextIO
 
@@ -45,6 +47,21 @@ class GhCommandError(Exception):
         self.stderr = stderr
 
 
+class GhRateLimitError(Exception):
+    def __init__(
+        self,
+        args: list[str],
+        original: GhCommandError,
+        rate_limit: dict[str, Any],
+        waits: list[dict[str, Any]],
+    ) -> None:
+        super().__init__("GitHub GraphQL/API rate limit exceeded")
+        self.args_list = args
+        self.original = original
+        self.rate_limit = rate_limit
+        self.waits = waits
+
+
 @dataclass(frozen=True)
 class Config:
     repo: str
@@ -52,6 +69,29 @@ class Config:
     project_number: str
     status_field: str
     dry_run: bool = False
+    rate_limit_wait_mode: str = "bounded"
+    rate_limit_max_wait_seconds: int = 2100
+    rate_limit_grace_seconds: int = 5
+    rate_limit_max_retries: int = 1
+
+
+@dataclass(frozen=True)
+class RateLimitPolicy:
+    mode: str = "bounded"
+    max_wait_seconds: int = 2100
+    grace_seconds: int = 5
+    max_retries: int = 1
+    now: Any = field(default_factory=lambda: time.time)
+    sleeper: Any = field(default_factory=lambda: time.sleep)
+
+
+def rate_limit_policy_from_config(cfg: Config) -> RateLimitPolicy:
+    return RateLimitPolicy(
+        mode=cfg.rate_limit_wait_mode,
+        max_wait_seconds=cfg.rate_limit_max_wait_seconds,
+        grace_seconds=cfg.rate_limit_grace_seconds,
+        max_retries=cfg.rate_limit_max_retries,
+    )
 
 
 class GhClient:
@@ -65,6 +105,96 @@ class GhClient:
         if completed.returncode != 0:
             raise GhCommandError(args, completed.returncode, completed.stdout, completed.stderr)
         return completed.stdout
+
+
+def _is_rate_limit_error(exc: GhCommandError) -> bool:
+    text = f"{exc.stdout}\n{exc.stderr}\n{exc}".casefold()
+    return "rate limit" in text and ("exceeded" in text or "secondary" in text or "graphql" in text)
+
+
+def _rate_limit_reset_iso(reset_unix: int | None) -> str | None:
+    if reset_unix is None:
+        return None
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(reset_unix))
+
+
+def _graphql_rate_limit_snapshot(client: GhClient, policy: RateLimitPolicy) -> dict[str, Any]:
+    try:
+        payload = json.loads(client.run(["api", "rate_limit"]) or "{}")
+    except Exception as exc:
+        return {
+            "status": "rate_limit_metadata_unavailable",
+            "metadata_error": str(exc),
+            "wait_seconds": None,
+        }
+    resources = payload.get("resources") if isinstance(payload, dict) else None
+    graphql = resources.get("graphql") if isinstance(resources, dict) else None
+    if not isinstance(graphql, dict):
+        return {
+            "status": "rate_limit_metadata_unavailable",
+            "metadata_error": "resources.graphql missing",
+            "wait_seconds": None,
+        }
+    reset_raw = graphql.get("reset")
+    reset_unix = int(reset_raw) if isinstance(reset_raw, (int, float, str)) and str(reset_raw).isdigit() else None
+    wait_seconds = None
+    if reset_unix is not None:
+        wait_seconds = max(0, int(reset_unix - int(policy.now()))) + int(policy.grace_seconds)
+    return {
+        "status": "rate_limited",
+        "resource": "graphql",
+        "limit": graphql.get("limit"),
+        "remaining": graphql.get("remaining"),
+        "used": graphql.get("used"),
+        "reset": reset_unix,
+        "reset_iso": _rate_limit_reset_iso(reset_unix),
+        "wait_seconds": wait_seconds,
+        "max_wait_seconds": policy.max_wait_seconds,
+        "grace_seconds": policy.grace_seconds,
+    }
+
+
+def rate_limit_resume_guidance(args: list[str], rate_limit: dict[str, Any]) -> str:
+    reset_iso = rate_limit.get("reset_iso") or "unknown reset time"
+    return f"Retry after GitHub GraphQL reset ({reset_iso}): gh {' '.join(args)}"
+
+
+class RateLimitingGhClient(GhClient):
+    def __init__(self, inner: GhClient, policy: RateLimitPolicy) -> None:
+        self.inner = inner
+        self.policy = policy
+        self.rate_limit_waits: list[dict[str, Any]] = []
+
+    def run(self, args: list[str]) -> str:
+        attempts = 0
+        while True:
+            try:
+                return self.inner.run(args)
+            except GhCommandError as exc:
+                if args[:2] == ["api", "rate_limit"] or self.policy.mode == "off" or not _is_rate_limit_error(exc):
+                    raise
+                snapshot = _graphql_rate_limit_snapshot(self.inner, self.policy)
+                snapshot["gh_args"] = args
+                snapshot["attempt"] = attempts
+                wait_seconds = snapshot.get("wait_seconds")
+                if (
+                    attempts >= int(self.policy.max_retries)
+                    or wait_seconds is None
+                    or int(wait_seconds) > int(self.policy.max_wait_seconds)
+                ):
+                    raise GhRateLimitError(args, exc, snapshot, list(self.rate_limit_waits)) from exc
+                wait_event = {
+                    "gh_args": args,
+                    "attempt": attempts,
+                    "wait_seconds": int(wait_seconds),
+                    "reset": snapshot.get("reset"),
+                    "reset_iso": snapshot.get("reset_iso"),
+                    "remaining": snapshot.get("remaining"),
+                    "limit": snapshot.get("limit"),
+                }
+                self.rate_limit_waits.append(wait_event)
+                self.policy.sleeper(int(wait_seconds))
+                attempts += 1
 
 
 def _json_loads(text: str, *, command: str) -> dict[str, Any]:
@@ -478,8 +608,21 @@ def command_closeout(client: GhClient, cfg: Config, args: argparse.Namespace) ->
     client.run(["issue", "comment", args.issue, "--repo", cfg.repo, "--body", comment_body])
     status_result = command_set_status(client, cfg, argparse.Namespace(issue=args.issue, status=args.status))
     client.run(["issue", "close", args.issue, "--repo", cfg.repo])
-    verify_result = command_verify(client, cfg, argparse.Namespace(issue=args.issue, expect_status=args.status))
-    issue = issue_view(client, cfg, args.issue)
+    try:
+        verify_result = command_verify(client, cfg, argparse.Namespace(issue=args.issue, expect_status=args.status))
+        issue = issue_view(client, cfg, args.issue)
+    except GhRateLimitError as exc:
+        return {
+            "status": "github_rate_limited_after_mutation",
+            "issue_ref": args.issue,
+            "commented": True,
+            "status_update": status_result.get("status_update"),
+            "closed_attempted": True,
+            "rate_limit": exc.rate_limit,
+            "rate_limit_waits": exc.waits,
+            "resume_command": f"python3 scripts/github_project_task.py verify --issue {args.issue} --expect-status {args.status}",
+            "message": "Closeout mutation was attempted; resume with verify/readback before repeating comment or close.",
+        }
     if issue.get("state") != "CLOSED":
         raise UserError("issue_close_not_observed", "Issue close did not read back as CLOSED", issue=issue)
     return {
@@ -507,6 +650,30 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Project status field name, default: {DEFAULT_STATUS_FIELD}",
     )
     parser.add_argument("--dry-run", action="store_true", help="Plan mutations without writing GitHub state")
+    parser.add_argument(
+        "--rate-limit-wait-mode",
+        default=os.environ.get("GITHUB_RATE_LIMIT_WAIT_MODE", "bounded"),
+        choices=["off", "bounded"],
+        help="GitHub rate-limit recovery mode, default: bounded",
+    )
+    parser.add_argument(
+        "--rate-limit-max-wait-seconds",
+        type=int,
+        default=int(os.environ.get("GITHUB_RATE_LIMIT_MAX_WAIT_SECONDS", "2100")),
+        help="Maximum bounded wait for GitHub GraphQL reset",
+    )
+    parser.add_argument(
+        "--rate-limit-grace-seconds",
+        type=int,
+        default=int(os.environ.get("GITHUB_RATE_LIMIT_GRACE_SECONDS", "5")),
+        help="Extra seconds to wait after reset",
+    )
+    parser.add_argument(
+        "--rate-limit-max-retries",
+        type=int,
+        default=int(os.environ.get("GITHUB_RATE_LIMIT_MAX_RETRIES", "1")),
+        help="Maximum automatic retries after bounded wait",
+    )
 
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("doctor", help="Check gh auth and Project v2 access")
@@ -566,11 +733,18 @@ def main(argv: list[str] | None = None, *, client: GhClient | None = None, stdou
         project_number=args.project_number,
         status_field=args.status_field,
         dry_run=args.dry_run,
+        rate_limit_wait_mode=args.rate_limit_wait_mode,
+        rate_limit_max_wait_seconds=args.rate_limit_max_wait_seconds,
+        rate_limit_grace_seconds=args.rate_limit_grace_seconds,
+        rate_limit_max_retries=args.rate_limit_max_retries,
     )
     out = stdout or sys.stdout
-    gh_client = client or GhClient()
+    gh_client = RateLimitingGhClient(client or GhClient(), rate_limit_policy_from_config(cfg))
     try:
-        write_json(dispatch(gh_client, cfg, args), out)
+        payload = dispatch(gh_client, cfg, args)
+        if gh_client.rate_limit_waits:
+            payload["rate_limit_waits"] = gh_client.rate_limit_waits
+        write_json(payload, out)
         return 0
     except UserError as exc:
         write_json({"status": "error", "error": exc.code, "message": exc.message, **exc.details}, out)
@@ -585,6 +759,20 @@ def main(argv: list[str] | None = None, *, client: GhClient | None = None, stdou
                 "gh_args": exc.args_list,
                 "stdout": exc.stdout,
                 "stderr": exc.stderr,
+            },
+            out,
+        )
+        return 1
+    except GhRateLimitError as exc:
+        write_json(
+            {
+                "status": "error",
+                "error": "github_rate_limited",
+                "message": str(exc),
+                "gh_args": exc.args_list,
+                "rate_limit": exc.rate_limit,
+                "rate_limit_waits": exc.waits,
+                "resume_command": rate_limit_resume_guidance(exc.args_list, exc.rate_limit),
             },
             out,
         )
