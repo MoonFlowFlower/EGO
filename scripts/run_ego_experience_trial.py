@@ -586,13 +586,24 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
     policy_patch = payload.get("policy_patch") if isinstance(payload.get("policy_patch"), dict) else {}
     tool_trace = payload.get("tool_trace") if isinstance(payload.get("tool_trace"), list) else []
     tools = []
+    repairs = []
     for item in tool_trace:
         if not isinstance(item, dict):
             continue
+        repair = item.get("repair") if isinstance(item.get("repair"), dict) else {}
+        if repair:
+            repairs.append({
+                "type": repair.get("type"),
+                "reason": repair.get("reason"),
+            })
+            continue
         call = item.get("tool_call") if isinstance(item.get("tool_call"), dict) else {}
         output = item.get("output") if isinstance(item.get("output"), dict) else {}
+        name = call.get("name")
+        if not name and not output:
+            continue
         tools.append({
-            "name": call.get("name"),
+            "name": name,
             "status": output.get("status"),
             "reason": output.get("reason"),
         })
@@ -645,6 +656,7 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
             else None,
         },
         "tool_trace": tools,
+        "repair_trace": repairs,
     }
 
 

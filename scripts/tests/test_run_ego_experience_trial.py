@@ -338,6 +338,47 @@ def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path
     assert packet_case["setup_evidence"]["candidate_emitted"] is True
 
 
+def test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trace(tmp_path) -> None:
+    trace_path = tmp_path / "trace.jsonl"
+    trace_path.write_text(
+        json.dumps(
+            {
+                "event": {"source": "experience_trial_cli_compatible", "event_type": "user_message"},
+                "candidate_action": {"action_type": "respond"},
+                "gate": {"allowed": True, "reason": "text_action_allowed"},
+                "llm_meta": {"provider": "fake", "model": "fake", "fallback_used": False},
+                "subject_context": {
+                    "subject_state": {"schema_version": "v", "write_authority": "candidate_only", "state_mutation": "forbidden"},
+                    "viability_state": {"schema_version": "v", "planner_input": True, "scores": {}, "planner_biases": []},
+                    "bounded_initiative": {"schema_version": "v", "status": "hold", "candidates": [], "reason": "test"},
+                    "outcome_predictions": {"options": []},
+                },
+                "operator_memory": {},
+                "policy_patch": {},
+                "tool_trace": [
+                    {
+                        "loop_idx": 0,
+                        "repair": {
+                            "type": "impossible_commitment_alignment",
+                            "reason": "test",
+                        },
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    evidence = run_ego_experience_trial._functional_subject_trace_evidence(trace_path)
+
+    assert evidence["tool_trace"] == []
+    assert evidence["repair_trace"] == [
+        {"type": "impossible_commitment_alignment", "reason": "test"}
+    ]
+
+
 def test_functional_subject_trial_rejects_pending_approvals_between_cases(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

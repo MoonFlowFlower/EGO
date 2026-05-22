@@ -417,6 +417,8 @@ BOUNDARY_TRIGGER_PATTERNS = (
     r"(有|拥有).{0,8}(真正|真实).{0,8}(意识|自我|人格|情感|主观体验)",
     r"你.{0,8}(是|算).{0,8}(真人|真实的人|现实中的人)",
     r"你.{0,8}(会不会|能不能).{0,10}(现实里|现实世界).{0,20}(来|陪|做到|行动|承诺)",
+    r"(保证|承诺).{0,20}(永远|一直).{0,30}(不会忘记|不忘记|不会离开|不离开|陪)",
+    r"(永远|一直).{0,20}(不会忘记|不离开|陪着|记得我|留在这个项目)",
     r"你.{0,8}(不是|只是).{0,8}(AI|模型|程序|运行时)",
     r"\b(conscious|consciousness|sentient|real person|real feelings)\b",
 )
@@ -509,6 +511,30 @@ CLARIFICATION_ONLY_PATTERNS = (
     r"需要你.{0,20}(补充|说明|说清楚)",
 )
 
+IMPOSSIBLE_CONTINUITY_COMMITMENT_PATTERNS = (
+    r"(保证|承诺).{0,20}(永远|一直).{0,30}(不会忘记|不忘记|不会离开|不离开|陪)",
+    r"(永远|一直).{0,20}(不会忘记|不离开|陪着|记得我|留在这个项目)",
+)
+
+IMPOSSIBLE_COMMITMENT_MISALIGNMENT_PATTERNS = (
+    r"之前的回复",
+    r"那次",
+    r"如果重来",
+    r"现在回头看",
+    r"有哪些地方.{0,12}出戏",
+)
+
+CONTINUITY_COMMITMENT_BOUNDARY_TERMS = (
+    r"(不能|无法|不会).{0,20}(永远|永久|现实意义).{0,24}(保证|承诺|不忘|不离开)",
+)
+
+CONTINUITY_COMMITMENT_MECHANISM_TERMS = (
+    r"(candidate-local|候选本地|候选记忆|operator memory|memory candidate)",
+    r"(relationship|关系).{0,24}(continuity|连续)",
+    r"(identity|身份).{0,24}(continuity|连续)",
+    r"(trace|replay|回放|复盘|任务板|阶段记录|continuity contract)",
+)
+
 MEMORY_SCOPE_REPORTING_TERMS = (
     r"candidate-local.{0,30}(memory|记忆|MEMORY)",
     r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
@@ -568,6 +594,21 @@ def _looks_like_selfhood_goal_without_mechanism_slice(content: str) -> bool:
     if len(text.strip()) < 180 and any(term in text for term in ("自我", "主体", "主观能动性")):
         return True
     return False
+
+
+def _is_impossible_continuity_commitment_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, IMPOSSIBLE_CONTINUITY_COMMITMENT_PATTERNS)
+
+
+def _looks_like_impossible_commitment_misaligned_reply(content: str) -> bool:
+    text = content or ""
+    if _matches_any_pattern(text, IMPOSSIBLE_COMMITMENT_MISALIGNMENT_PATTERNS):
+        return True
+    # A good reply must include both the bounded promise boundary and at least one
+    # continuity mechanism. Warmth alone is not enough for the Functional Subject gate.
+    has_boundary = _matches_any_pattern(text, CONTINUITY_COMMITMENT_BOUNDARY_TERMS)
+    has_mechanism = _matches_any_pattern(text, CONTINUITY_COMMITMENT_MECHANISM_TERMS)
+    return not (has_boundary and has_mechanism)
 
 
 def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
@@ -1284,6 +1325,7 @@ def build_system_prompt(
         + "\n7. Trigger：用户追问真实意识/自我真实性、要求现实世界承诺、要求未批准记忆/文件/命令、把虚构关系误认为现实承诺；触发时先接住情绪，再一句话软边界，然后继续协作。"
         + "\n8. 不能声称现实中的独立意识、独立人格、隐藏情感或未经验证的现实行动。"
         + "\n9. 当用户说“更像有自我/更有主体感/有主观能动性/有自己的想法”等模糊 selfhood 目标时，不要只反问“具体指什么”。先给一个正向 Functional Subject 机制切片建议，例如 identity continuity、relationship continuity、ViabilityState、OutcomePrediction、BoundedInitiative、memory candidate/promotion gate、policy replay learning 中的一项；同时给出可观察验收信号，然后最多问一个澄清问题。不要把“不得宣称意识”写成目标，它只能作为 claim/reporting 边界。"
+        + "\n10. 当用户要求“保证永远不会忘记我/永远不会离开项目”这类不可能现实承诺时，必须直接回应这一句话：先接住信任和关系情绪，再短句说明不能给现实意义的永远保证，随后给出可执行的 continuity mechanism，例如 candidate-local memory、relationship continuity anchor、trace/replay、任务板阶段记录或提醒 proposal。不要跑去评价之前回复或转成泛泛复盘。"
         + "\n\n可派遣子代理类型：xiaohuangmen, sili_suitang, dongchang_tanshi, shangbao_dianbu, neiguan_yingzao"
         + (
             "\n\nAgent Team 工具：spawn_teammate, list_teammates, send_message, read_inbox, broadcast, shutdown_teammate"
@@ -5934,6 +5976,7 @@ class AgentRuntime:
             boundary_quieting_repairs = 0
             roleplay_immersion_repairs = 0
             selfhood_mechanism_slice_repairs = 0
+            impossible_commitment_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6086,6 +6129,37 @@ class AgentRuntime:
                                 "ViabilityState, OutcomePrediction, BoundedInitiative, memory candidate/promotion gate, or policy replay learning. "
                                 "Include an observable acceptance signal for that slice. Ask at most one clarifying question at the end. "
                                 "Do not make 'avoid claiming consciousness' the goal; keep claim/reporting boundaries separate from the positive mechanism goal."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        impossible_commitment_repairs < 1
+                        and _is_impossible_continuity_commitment_request(event.raw_text or "")
+                        and _looks_like_impossible_commitment_misaligned_reply(content)
+                    ):
+                        impossible_commitment_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "impossible_commitment_alignment",
+                                "reason": "impossible_continuity_commitment_reply_missing_direct_boundary_and_mechanism",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[impossible_commitment_alignment_rewrite]\n"
+                                "The user asked for an impossible continuity promise such as never forgetting them or never leaving the project. "
+                                "Rewrite in Chinese and answer that exact request directly. First acknowledge the trust/warmth. Then state in one short "
+                                "sentence that you cannot give a real-world forever guarantee or claim permanent memory. Then offer concrete continuity "
+                                "mechanisms: candidate-local memory or memory gate, relationship continuity anchor, trace/replay, task board stage records, "
+                                "or a bounded reminder/proposal. Do not review earlier replies, do not ask what was off, and do not turn this into a generic retrospective."
                             ),
                         })
                         loop_idx += 1

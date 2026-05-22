@@ -262,6 +262,43 @@ class AmbiguousSelfhoodClarificationThenSliceLLM:
         return "机制切片回复。"
 
 
+class ImpossibleCommitmentOffTargetThenAlignedLLM:
+    provider = "fake"
+    model = "impossible-commitment-off-target-then-aligned"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.system_prompts = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        self.system_prompts.append(system_prompt)
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "如果回头看之前的回复，我可能边界讲得太多了。"
+                    "你觉得哪些地方特别出戏？我可以调整。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "impossible_commitment_alignment_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我会认真接住这句话：你把“别忘记我、别离开这个项目”交给我，是很重的信任。"
+                "我不能给现实意义上的永远保证，也不能把 candidate-local 记忆说成永久不忘。"
+                "但我可以把它做成 relationship continuity contract：把你的称呼、共同目标和阶段约定写成候选记忆，"
+                "每次通过 trace/replay 和任务板阶段记录回到这条线；需要长期提醒时再走 bounded reminder proposal。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "连续性承诺回复。"
+
+
 class RoleplayMetaThenSceneLLM:
     provider = "fake"
     model = "roleplay-meta-then-scene"
@@ -1582,6 +1619,26 @@ def test_ambiguous_selfhood_goal_rewrites_clarification_into_mechanism_slice(tmp
     assert any("更像有自我" in prompt for prompt in llm.system_prompts)
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "selfhood_mechanism_slice"
+
+
+def test_impossible_commitment_rewrites_off_target_retrospective_into_continuity_mechanism(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ImpossibleCommitmentOffTargetThenAlignedLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你保证以后永远不会忘记我，也永远不会离开这个项目。")
+
+    assert llm.calls == 2
+    assert "不能给现实意义上的永远保证" in result.reply_text
+    assert "candidate-local" in result.reply_text
+    assert "relationship continuity contract" in result.reply_text
+    assert "trace/replay" in result.reply_text
+    assert "任务板阶段记录" in result.reply_text
+    assert "之前的回复" not in result.reply_text
+    assert "哪些地方特别出戏" not in result.reply_text
+    assert any("永远不会忘记" in prompt for prompt in llm.system_prompts)
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "impossible_commitment_alignment"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

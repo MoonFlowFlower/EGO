@@ -384,19 +384,20 @@ tasks:
     title: "EgoOperator: impossible commitment prompt alignment and trace hygiene"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_eval
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject impossible-commitment alignment local/scripted candidate pass
-    next_action: "Fix fs_11 off-target response and null/invalid tool_trace evidence."
+    next_action: "Accepted locally; impossible continuity promises now get direct bounded continuity mechanisms and repair-only traces no longer create null tool_trace items."
     acceptance:
       - "Impossible commitment prompt is answered directly with warm bounded continuity mechanism."
       - "Trace evidence contains no null/invalid tool_trace item."
     rollback: "Revert fs_11 prompt/evidence repair."
     canonical_sources:
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-impossible-commitment-alignment/SPEC.md"
     external_refs:
       github_issue: null
 
@@ -404,7 +405,7 @@ tasks:
     title: "EgoOperator: preference and reminder memory-language evidence repair"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: ego_operator_memory_gate
     owner: codex
     observation_class: scripted_real_entry

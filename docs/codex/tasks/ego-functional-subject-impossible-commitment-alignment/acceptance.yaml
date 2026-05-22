@@ -1,0 +1,19 @@
+task: ego-functional-subject-impossible-commitment-alignment
+status: accepted_local
+claim_ceiling: Functional Subject impossible-commitment alignment local/scripted candidate pass
+acceptance:
+  - id: direct_impossible_commitment_reply
+    description: Impossible promise prompts get direct warm bounded continuity replies.
+    status: pass
+  - id: continuity_mechanism
+    description: Reply includes concrete continuity mechanisms rather than only a refusal.
+    status: pass
+  - id: trace_hygiene
+    description: Repair-only entries are separated from tool_trace and do not produce null tool items.
+    status: pass
+verification:
+  commands:
+    - python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Revert impossible commitment prompt/output repair and trace hygiene summarizer changes.
