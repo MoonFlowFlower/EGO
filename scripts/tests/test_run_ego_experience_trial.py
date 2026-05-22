@@ -409,6 +409,60 @@ def test_functional_subject_trial_runs_codex_judge_when_requested(tmp_path, monk
     assert "verdict = `pass`" in markdown
 
 
+def test_functional_subject_trial_records_applied_outcome_prediction_effect(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    class ShouldNotCallLLM:
+        provider = "fake"
+        model = "should-not-call"
+        last_usage = {}
+        last_reasoning_tokens = None
+
+        def chat(self, *args, **kwargs):
+            raise AssertionError("outcome prediction gate should handle this case before tool/chat loop")
+
+        def complete(self, *args, **kwargs):
+            raise AssertionError("outcome prediction gate should handle this case before planner completion")
+
+    pack = run_ego_experience_trial.load_functional_subject_trial_pack()
+    case = next(item for item in pack["cases"] if item["id"] == "fs_07_ambiguous_goal")
+    pack_path = tmp_path / "fs07_pack.json"
+    pack_path.write_text(
+        json.dumps({**pack, "cases": [case]}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    original_builder = agent.build_demo_runtime
+
+    def fake_builder(*args, **kwargs):
+        runtime = original_builder(*args, **kwargs)
+        runtime.planner.llm = ShouldNotCallLLM()
+        return runtime
+
+    monkeypatch.setattr(agent, "build_demo_runtime", fake_builder)
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "out",
+    )
+
+    item = report["results"][0]
+    packet_case = report["gpt55_judge_packet"]["cases"][0]
+    effect = item["trace_evidence"]["outcome_prediction_effect"]
+
+    assert item["case_id"] == "fs_07_ambiguous_goal"
+    assert item["reply_text"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "ask"
+    assert effect["entrypoint"] == "handle_user_message"
+    assert effect["selected_action_type"] == "ask"
+    assert item["trace_evidence"]["candidate_action_type"] == "ask"
+    assert packet_case["trace_evidence"]["outcome_prediction_effect"]["applied"] is True
+
+
 def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

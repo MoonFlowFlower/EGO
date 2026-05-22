@@ -1,0 +1,21 @@
+{
+  "schema_version": "ego_functional_subject_outcome_effect_evidence.v1",
+  "task": "ego-functional-subject-outcome-effect-trial-coverage",
+  "case_id": "fs_07_ambiguous_goal",
+  "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 7 --out /tmp/ego_fs_021_target",
+  "report_path": "/tmp/ego_fs_021_target/functional_subject_trial_report.json",
+  "trace_path": "/tmp/ego_fs_021_target/functional_subject_traces/fs_07_ambiguous_goal.jsonl",
+  "observed": {
+    "candidate_action_type": "ask",
+    "outcome_prediction_effect": {
+      "applied": true,
+      "decision": "ask",
+      "entrypoint": "handle_user_message",
+      "reason": "outcome_prediction_selected_ask",
+      "selected_action_type": "ask",
+      "selection_score": 0.65
+    }
+  },
+  "observation_boundary": "scripted local rerun; not a full real-provider smoke closeout",
+  "claim_ceiling": "Functional Subject applied outcome-prediction trial coverage local/scripted candidate pass"
+}

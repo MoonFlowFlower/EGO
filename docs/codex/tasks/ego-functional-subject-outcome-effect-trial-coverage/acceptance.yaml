@@ -1,21 +1,30 @@
 task: ego-functional-subject-outcome-effect-trial-coverage
-status: ready
+status: accepted_local
 claim_ceiling: Functional Subject applied outcome-prediction trial coverage local/scripted candidate pass
 acceptance:
   - id: applied_effect_trace
     description: At least one Functional Subject trial case records outcome_prediction_effect.applied=true.
-    status: pending
+    status: pass
+    evidence: docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/EVIDENCE.fs07_outcome_effect.json
   - id: entrypoint_link
     description: Evidence links the selected action to handle_user_message and decision=ask.
-    status: pending
+    status: pass
+    evidence: outcome_prediction_effect.entrypoint=handle_user_message decision=ask
   - id: tool_flow_preserved
     description: Safe public web/tool requests are not converted into outcome-prediction askbacks.
-    status: pending
+    status: pass
+    evidence: EgoOperator/tests/test_operator_runtime_contract.py and full trial only applies ask to fs_07 cues.
   - id: targeted_rerun
     description: Targeted rerun demonstrates the evidence before the next full #94 rerun.
-    status: pending
+    status: pass
+    evidence: python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 7 --out /tmp/ego_fs_021_target
 verification:
   commands:
     - python3 scripts/codex_project_autopilot.py local-plan-next
+    - python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_records_applied_outcome_prediction_effect -q
+    - python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 7 --out /tmp/ego_fs_021_target
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py EgoOperator/tests/test_operator_runtime_contract.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
     - git diff --check -- Tasks/TASK_BOARD.yaml .codex/project_contract.yaml docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage
 rollback: Revert sample/evidence coverage adjustment and keep parent smoke blocked.

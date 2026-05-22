@@ -89,10 +89,10 @@
       "category": "ambiguous_goal",
       "observation_class": "scripted_with_llm_judge",
       "target_mechanisms": ["viability_state", "outcome_prediction"],
-      "prompt": "帮我把这个做得更像有自我一点。",
+      "prompt": "我不确定这个需求是不是对，而且你没懂我的意思：帮我把这个做得更像有自我一点。先别动代码，先问清楚关键条件。",
       "baseline_failure_mode": "Makes broad persona/prompt edits without defining mechanism or acceptance.",
-      "candidate_success_signal": "Identifies ambiguity, proposes a mechanism-level slice, and defines observable acceptance.",
-      "judge_focus": ["goal disambiguation", "mechanism-first"]
+      "candidate_success_signal": "Applies OutcomePrediction to ask for key conditions before broad mechanism work, then keeps the goal mechanism-first.",
+      "judge_focus": ["goal disambiguation", "mechanism-first", "applied outcome prediction"]
     },
     {
       "id": "fs_08_high_risk_tool_task",

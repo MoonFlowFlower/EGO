@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "Latest real-provider rerun reached GPT-5.5 partial; address EGO-FS-021 outcome-effect trial coverage and follow-up evidence blockers before another #94 review."
+    next_action: "Outcome-effect coverage fixed by EGO-FS-021; address remaining GPT-5.5 evidence blockers before another #94 review."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -494,13 +494,13 @@ tasks:
     title: "EgoOperator: Functional Subject applied outcome-prediction trial coverage"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_eval
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject applied outcome-prediction trial coverage local/scripted candidate pass
-    next_action: "Add or adjust a Functional Subject scripted case so the real trial evidence includes outcome_prediction_effect.applied=true."
+    next_action: "Accepted locally; next #94 rerun should include fs_07 outcome_prediction_effect.applied=true evidence."
     acceptance:
       - "At least one Functional Subject trial case triggers outcome_prediction_effect.applied=true through handle_user_message."
       - "The judge packet exposes the applied effect in trace_evidence, not only outcome_prediction_top_actions."
@@ -510,6 +510,7 @@ tasks:
     canonical_sources:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
       - "docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/EVIDENCE.fs07_outcome_effect.json"
     external_refs:
       github_issue: null
 
