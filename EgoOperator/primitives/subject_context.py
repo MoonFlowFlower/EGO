@@ -916,6 +916,7 @@ class SubjectContextSnapshot:
     outcome_predictions: Dict[str, Any] = field(
         default_factory=lambda: build_outcome_predictions_v0(extract_viability_state_v0(""))
     )
+    bounded_initiative: Dict[str, Any] = field(default_factory=dict)
     reflection_proposal: str = (
         "Preserve the user's meaning across paraphrases. Do not compress the "
         "message into route keywords or canned templates before answering."
@@ -944,6 +945,7 @@ class SubjectContextSnapshot:
             "SubjectState v0: " + str(self.subject_state),
             "ViabilityState v0: " + str(self.viability_state),
             "OutcomePredictions v0: " + str(self.outcome_predictions),
+            "BoundedInitiative v0: " + str(self.bounded_initiative),
             "Appraisal signal: " + str(self.appraisal_signal),
             "Empathy style guidance: " + str(self.empathy_style_guidance),
             f"Salient memory note: {_bounded(self.salient_memory_note)}",
@@ -961,6 +963,7 @@ def build_minimal_subject_context(
     self_display_name: str = "EgoOperator",
     canonical_runtime_name: str = "EgoOperator",
     policy_patch_replay_candidates: List[Dict[str, Any]] | tuple[Dict[str, Any], ...] | None = None,
+    bounded_initiative_signal: Dict[str, Any] | None = None,
 ) -> SubjectContextSnapshot:
     memory_note = (
         "Candidate-local operator memory may be supplied separately in the system prompt."
@@ -1011,4 +1014,5 @@ def build_minimal_subject_context(
         subject_state=subject_state,
         viability_state=viability_state,
         outcome_predictions=outcome_predictions,
+        bounded_initiative=bounded_initiative_signal or {},
     )

@@ -14,6 +14,7 @@ import re
 
 
 INITIATIVE_PROPOSAL_SCHEMA = "ego_operator.initiative_proposal.v1"
+BOUNDED_INITIATIVE_SIGNAL_SCHEMA = "ego_operator.bounded_initiative_signal.v0"
 CLAIM_CEILING = "bounded initiative proposal only; not autonomy or consciousness proof"
 MAX_EXPIRY_SECONDS = 7 * 24 * 60 * 60
 DEFAULT_BUDGET = {
@@ -151,6 +152,93 @@ def apply_quiet_mode_to_budget(budget: Dict[str, Any], quiet_mode: Dict[str, Any
         normalized["max_runtime_seconds"] = min(int(normalized.get("max_runtime_seconds", 1)), 30)
     normalized["requires_operator_approval"] = True
     return normalized
+
+
+def derive_bounded_initiative_signal(
+    *,
+    user_text: str = "",
+    viability_state: Dict[str, Any] | None = None,
+    policy_patch_candidates: list[Dict[str, Any]] | None = None,
+    silence_turns: int = 0,
+    recent_followups: int = 0,
+) -> Dict[str, Any]:
+    """Derive gated initiative candidates without scheduling or sending them."""
+    quiet = derive_quiet_mode(
+        user_feedback=user_text,
+        silence_turns=silence_turns,
+        recent_followups=recent_followups,
+    )
+    budget = apply_quiet_mode_to_budget(DEFAULT_BUDGET, quiet)
+    candidates = []
+    text = user_text or ""
+    lowered = text.casefold()
+    if recent_followups >= 3:
+        return {
+            "status": "hold",
+            "schema_version": BOUNDED_INITIATIVE_SIGNAL_SCHEMA,
+            "reason": "anti_spam_recent_followup_pressure",
+            "quiet_mode": quiet,
+            "budget": {**budget, "max_candidates": 0},
+            "candidates": [],
+            "state_mutation": "forbidden",
+            "side_effects": "forbidden",
+            "claim_ceiling": CLAIM_CEILING,
+        }
+    if quiet.get("mode") == "paused" or int(budget.get("max_candidates", 0)) <= 0:
+        return {
+            "status": "hold",
+            "schema_version": BOUNDED_INITIATIVE_SIGNAL_SCHEMA,
+            "reason": "quiet_mode_hold",
+            "quiet_mode": quiet,
+            "budget": budget,
+            "candidates": [],
+            "state_mutation": "forbidden",
+            "side_effects": "forbidden",
+            "claim_ceiling": CLAIM_CEILING,
+        }
+
+    if any(cue in lowered for cue in ("提醒我", "稍后", "到时候", "定时", "跟进")):
+        candidates.append({
+            "kind": "authorized_reminder_or_followup",
+            "trigger": "explicit_user_authorization",
+            "candidate_message": _bounded(text, 240),
+            "requires_operator_approval": True,
+            "execution_path": "propose_heartbeat",
+        })
+    for candidate in list(policy_patch_candidates or [])[:2]:
+        if not isinstance(candidate, dict):
+            continue
+        candidates.append({
+            "kind": "remedial_failure_repair",
+            "trigger": _bounded(str(candidate.get("trigger_signature") or "policy_patch_replay"), 120),
+            "candidate_message": _bounded(str(candidate.get("preferred_strategy") or ""), 240),
+            "requires_operator_approval": False,
+            "execution_path": "reply_or_proposal_only",
+        })
+    scores = (viability_state or {}).get("scores") if isinstance(viability_state, dict) else {}
+    initiative_pressure = float((scores or {}).get("initiative_pressure", 0.0) or 0.0)
+    relationship_risk = float((scores or {}).get("relationship_risk", 0.0) or 0.0)
+    if any(cue in lowered for cue in ("继续", "下一步", "做完继续", "接着做")) and relationship_risk < 0.65:
+        candidates.append({
+            "kind": "high_value_low_risk_continuation",
+            "trigger": "user_continuation_signal",
+            "candidate_message": "Continue the current task with a small verifiable next step.",
+            "requires_operator_approval": initiative_pressure >= 0.45,
+            "execution_path": "normal_reply_or_plan",
+        })
+
+    bounded_candidates = candidates[: int(budget.get("max_candidates", 1))]
+    return {
+        "status": "candidate" if bounded_candidates else "hold",
+        "schema_version": BOUNDED_INITIATIVE_SIGNAL_SCHEMA,
+        "reason": "candidate_available" if bounded_candidates else "no_authorized_or_low_risk_initiative",
+        "quiet_mode": quiet,
+        "budget": budget,
+        "candidates": bounded_candidates,
+        "state_mutation": "forbidden",
+        "side_effects": "forbidden",
+        "claim_ceiling": CLAIM_CEILING,
+    }
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,21 @@
+version: 1
+task_id: EGO-FS-007
+title: EgoOperator BoundedInitiative v0 integration
+claim_ceiling: BoundedInitiative v0 integration local/scripted candidate pass
+observation_class: scripted_real_entry
+must_pass:
+  - id: authorized
+    description: Explicit reminder/follow-up authorization yields a gated candidate.
+  - id: remedial
+    description: Policy replay can yield a remedial failure-repair candidate.
+  - id: continuation
+    description: Low-risk continuation can yield a bounded candidate.
+  - id: quiet
+    description: Opt-out and anti-spam cases hold.
+must_not:
+  - auto-send proactive messages
+  - bypass heartbeat approval
+  - create always-on autonomy
+rollback:
+  - remove bounded initiative signal and trace fields
+  - revert tests and local board status

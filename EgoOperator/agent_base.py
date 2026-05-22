@@ -61,9 +61,11 @@ except ImportError:
 
 try:
     from .memory_system import MemoryCompactor, MemoryContext, OperatorMemoryStore, TokenTelemetry
+    from .primitives.initiative import derive_bounded_initiative_signal
     from .primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
 except ImportError:  # allow `python EgoOperator/agent_base.py`
     from memory_system import MemoryCompactor, MemoryContext, OperatorMemoryStore, TokenTelemetry
+    from primitives.initiative import derive_bounded_initiative_signal
     from primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
 
 
@@ -4439,6 +4441,7 @@ class AgentRuntime:
         self.policy_patch_candidates: Dict[str, Dict[str, Any]] = {}
         self.policy_failure_counts: Dict[str, int] = {}
         self._last_policy_patch_replay: List[Dict[str, Any]] = []
+        self._last_bounded_initiative_signal: Dict[str, Any] = {}
 
     def operator_memory_enabled(self) -> bool:
         return self.operator_memory is not None
@@ -4455,12 +4458,18 @@ class AgentRuntime:
         identity = self.current_self_identity()
         replay_candidates = self._matching_policy_patch_candidates(user_text)
         self._last_policy_patch_replay = replay_candidates
+        bounded_initiative_signal = derive_bounded_initiative_signal(
+            user_text=user_text,
+            policy_patch_candidates=replay_candidates,
+        )
+        self._last_bounded_initiative_signal = bounded_initiative_signal
         return build_minimal_subject_context(
             user_text,
             operator_memory_available=self.operator_memory is not None,
             self_display_name=identity.display_name,
             canonical_runtime_name=identity.canonical_name,
             policy_patch_replay_candidates=replay_candidates,
+            bounded_initiative_signal=bounded_initiative_signal,
         )
 
     def _classify_policy_feedback_failure(
@@ -5610,6 +5619,7 @@ class AgentRuntime:
                 "feedback": policy_patch_feedback,
                 "replay": self._last_policy_patch_replay,
             },
+            "bounded_initiative": self._last_bounded_initiative_signal,
             "todo": self.todo_list.summary(),
             "operator_runtime": {
                 "runtime_mode": self.runtime_mode,

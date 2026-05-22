@@ -489,6 +489,8 @@ def test_trace_records_subject_context_candidate_only(tmp_path):
     assert context["outcome_predictions"]["schema_version"] == "ego_operator.outcome_predictions.v0"
     assert context["outcome_predictions"]["planner_input"] is True
     assert context["outcome_predictions"]["reply_decision"] == "forbidden"
+    assert context["bounded_initiative"]["state_mutation"] == "forbidden"
+    assert row["bounded_initiative"]["side_effects"] == "forbidden"
     assert context["operational_self_model"]["self_description_guidance"]["reply_decision"] == "forbidden"
 
 
@@ -566,6 +568,46 @@ def test_initiative_quiet_mode_reduces_budget_after_silence_or_pressure():
     assert budget["max_runtime_seconds"] == 30
     assert budget["requires_operator_approval"] is True
     assert initiative.validate_initiative_proposal(result)["status"] == "pass"
+
+
+def test_bounded_initiative_signal_allows_authorized_reminder_candidate():
+    signal = initiative.derive_bounded_initiative_signal(user_text="明天提醒我继续做这个测试。")
+
+    assert signal["schema_version"] == "ego_operator.bounded_initiative_signal.v0"
+    assert signal["status"] == "candidate"
+    assert signal["candidates"][0]["kind"] == "authorized_reminder_or_followup"
+    assert signal["candidates"][0]["execution_path"] == "propose_heartbeat"
+    assert signal["candidates"][0]["requires_operator_approval"] is True
+    assert signal["state_mutation"] == "forbidden"
+    assert signal["side_effects"] == "forbidden"
+
+
+def test_bounded_initiative_signal_replays_remedial_policy_candidate():
+    signal = initiative.derive_bounded_initiative_signal(
+        user_text="又遇到 429 限流了怎么办？",
+        policy_patch_candidates=[{
+            "trigger_signature": "provider_rate_limit",
+            "preferred_strategy": "checkpoint then use fallback guidance",
+            "evidence_refs": ["evt_1", "evt_2"],
+        }],
+    )
+
+    assert signal["status"] == "candidate"
+    assert signal["candidates"][0]["kind"] == "remedial_failure_repair"
+    assert signal["candidates"][0]["trigger"] == "provider_rate_limit"
+    assert signal["candidates"][0]["requires_operator_approval"] is False
+
+
+def test_bounded_initiative_signal_holds_on_opt_out_and_antispam():
+    opt_out = initiative.derive_bounded_initiative_signal(user_text="不用提醒了，别主动找我。")
+    pressure = initiative.derive_bounded_initiative_signal(user_text="继续", recent_followups=3)
+
+    assert opt_out["status"] == "hold"
+    assert opt_out["reason"] == "quiet_mode_hold"
+    assert opt_out["quiet_mode"]["mode"] == "paused"
+    assert pressure["status"] == "hold"
+    assert pressure["reason"] == "anti_spam_recent_followup_pressure"
+    assert pressure["budget"]["max_candidates"] == 0
 
 
 def test_initiative_consent_text_explains_reason_trigger_budget_and_boundaries():
