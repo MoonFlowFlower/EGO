@@ -1562,10 +1562,10 @@ def run_codex_companion_judge(
         model,
         "--output-schema",
         str(schema_path),
-        prompt,
+        "-",
     ]
     try:
-        completed = subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=False)
+        completed = subprocess.run(args, cwd=ROOT, input=prompt, capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
         return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
     if completed.returncode != 0:
@@ -1619,10 +1619,10 @@ def run_codex_functional_subject_judge(
         model,
         "--output-schema",
         str(schema_path),
-        prompt,
+        "-",
     ]
     try:
-        completed = subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=False)
+        completed = subprocess.run(args, cwd=ROOT, input=prompt, capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
         return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
     if completed.returncode != 0:

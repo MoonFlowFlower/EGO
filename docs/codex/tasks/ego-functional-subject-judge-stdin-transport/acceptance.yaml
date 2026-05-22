@@ -1,0 +1,23 @@
+task: ego-functional-subject-judge-stdin-transport
+status: accepted_local
+claim_ceiling: Functional Subject judge transport local candidate pass
+acceptance:
+  - id: functional_judge_stdin
+    description: Functional Subject judge prompt is passed through stdin to `codex exec -`.
+    status: pass
+    evidence: scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_codex_judge_uses_functional_schema
+  - id: companion_judge_stdin
+    description: Companion judge prompt is passed through stdin to `codex exec -`.
+    status: pass
+    evidence: scripts/tests/test_run_ego_experience_trial.py::test_companion_codex_judge_uses_companion_schema
+  - id: local_boundary
+    description: Key material and judge packets are not written into tracked repo files.
+    status: pass
+    evidence: scoped diff only touches runner/tests/task docs.
+verification:
+  commands:
+    - python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_companion_smoke_codex_judge_uses_gpt55_schema scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_codex_judge_uses_functional_schema -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+    - python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --out /mnt/c/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v4
+rollback: Revert judge stdin transport and keep EGO-FS-010 blocked.

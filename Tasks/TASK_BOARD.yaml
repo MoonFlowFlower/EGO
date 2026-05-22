@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "EGO-FS-025 accepted locally; next step is another #94 real-provider rerun/rejudge from the operator API environment."
+    next_action: "EGO-FS-026 accepted locally after v3 exposed judge argv limit; next step is another #94 real-provider rerun/rejudge from the WSL operator API environment."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -608,6 +608,29 @@ tasks:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v2/functional_subject_gpt55_judge_result_wsl.json"
       - "docs/codex/tasks/ego-functional-subject-natural-behavior-effect-repair/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-natural-behavior-effect-repair/EVIDENCE.natural_behavior_effect.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-026
+    title: "EgoOperator: Functional Subject GPT-5.5 judge stdin transport"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject judge transport local candidate pass
+    next_action: "Accepted locally; rerun #94 real-provider smoke and GPT-5.5 judge without argument-list overflow."
+    acceptance:
+      - "Codex judge prompt is passed through stdin instead of a command-line argument."
+      - "Functional Subject and companion judge runners keep schema/model arguments intact."
+      - "Large judge packets no longer fail with OSError argument list too long."
+      - "No API key or judge packet is written into repo-tracked files."
+    rollback: "Revert judge stdin transport change and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "v3 rerun failure: OSError [Errno 7] Argument list too long: 'codex'"
+      - "docs/codex/tasks/ego-functional-subject-judge-stdin-transport/SPEC.md"
     external_refs:
       github_issue: null
 

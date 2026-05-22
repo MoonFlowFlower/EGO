@@ -247,8 +247,9 @@ def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) ->
         )
         stderr = ""
 
-    def fake_run(args, cwd=None, capture_output=None, text=None, check=None):
+    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None):
         calls.append(args)
+        calls.append({"input": input})
         return Completed()
 
     monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
@@ -261,6 +262,8 @@ def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) ->
     assert calls[0][:6] == ["codex", "exec", "--ephemeral", "--sandbox", "read-only", "--model"]
     assert "gpt-5.5" in calls[0]
     assert "--output-schema" in calls[0]
+    assert calls[0][-1] == "-"
+    assert "companion smoke tests" in calls[1]["input"]
 
 
 def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> None:
@@ -288,8 +291,9 @@ def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> N
         )
         stderr = ""
 
-    def fake_run(args, cwd=None, capture_output=None, text=None, check=None):
+    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None):
         calls.append(args)
+        calls.append({"input": input})
         return Completed()
 
     monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
@@ -304,7 +308,8 @@ def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> N
     assert "--output-schema" in calls[0]
     schema_arg = calls[0][calls[0].index("--output-schema") + 1]
     assert schema_arg.endswith("ego_functional_subject_judge_schema.json")
-    assert "Functional Subject trials" in calls[0][-1]
+    assert calls[0][-1] == "-"
+    assert "Functional Subject trials" in calls[1]["input"]
 
 
 def test_functional_subject_trial_pack_has_required_20_case_coverage() -> None:
