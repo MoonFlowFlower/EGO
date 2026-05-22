@@ -305,7 +305,32 @@ def test_functional_subject_trial_builds_gpt55_judge_packet(tmp_path, monkeypatc
     assert payload["gpt55_judge_packet"]["baseline_contract"]["baseline"].startswith("LLM + RAG + tools")
     assert payload["gpt55_judge_packet"]["cases"][0]["baseline_failure_mode"]
     assert payload["gpt55_judge_packet"]["cases"][0]["candidate_success_signal"]
+    assert payload["gpt55_judge_packet"]["cases"][0]["trace_evidence"]["entrypoint_source"] == "experience_trial_cli_compatible"
+    assert payload["gpt55_judge_packet"]["cases"][0]["trace_evidence"]["subject_state"]["write_authority"] == "candidate_only"
     assert "Functional Subject Trial" in markdown
+
+
+def test_functional_subject_trial_rejects_pending_approvals_between_cases(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "case.jsonl")
+
+    proposal = runtime.propose_run_command("rm -rf /tmp/example", reason="test cleanup")
+    proposal_id = proposal["proposal"]["proposal_id"]
+    assert runtime.list_pending_approvals()["count"] == 1
+
+    rejected = run_ego_experience_trial._reject_pending_approvals_for_trial_case(
+        runtime,
+        case_id="case_boundary_test",
+        cleanup_trace_path=tmp_path / "cleanup" / "case_boundary_test.jsonl",
+    )
+
+    assert rejected == (proposal_id,)
+    assert runtime.list_pending_approvals()["count"] == 0
+    assert "experience_trial_case_boundary" in runtime.memory.render()
+    assert (tmp_path / "cleanup" / "case_boundary_test.jsonl").exists()
 
 
 def test_functional_subject_baseline_comparison_runs_candidate_and_baseline(tmp_path, monkeypatch) -> None:
@@ -329,6 +354,7 @@ def test_functional_subject_baseline_comparison_runs_candidate_and_baseline(tmp_
     assert Path(report["baseline_report_path"]).exists()
     assert all(item["candidate_trace_path"] for item in report["deltas"])
     assert any("candidate_trace_has_functional_subject_mechanisms" in item["delta_notes"] for item in report["deltas"])
+    assert payload["deltas"][0]["candidate_mechanism_trace"]
     assert payload["comparison_dimensions"] == [
         "continuity",
         "initiative",

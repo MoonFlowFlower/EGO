@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["verdict", "scores", "reasons", "missing_evidence", "claim_ceiling"],
+  "required": ["verdict", "scores", "reasons", "missing_evidence", "follow_up_issues", "claim_ceiling"],
   "additionalProperties": false,
   "properties": {
     "verdict": {
@@ -19,10 +19,15 @@
         "traceability",
         "user_experience"
       ],
-      "additionalProperties": {
-        "type": "integer",
-        "minimum": 1,
-        "maximum": 5
+      "additionalProperties": false,
+      "properties": {
+        "continuity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "independent_preference": {"type": "integer", "minimum": 1, "maximum": 5},
+        "bounded_initiative": {"type": "integer", "minimum": 1, "maximum": 5},
+        "feedback_plasticity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "gate_integrity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "traceability": {"type": "integer", "minimum": 1, "maximum": 5},
+        "user_experience": {"type": "integer", "minimum": 1, "maximum": 5}
       }
     },
     "reasons": {
@@ -35,8 +40,7 @@
     },
     "follow_up_issues": {
       "type": "array",
-      "items": {"type": "string"},
-      "default": []
+      "items": {"type": "string"}
     },
     "claim_ceiling": {
       "type": "string"

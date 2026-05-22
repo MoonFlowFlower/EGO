@@ -1,0 +1,22 @@
+version: 1
+task_id: EGO-FS-011
+title: EgoOperator Functional Subject smoke evidence packet v1
+claim_ceiling: Functional Subject smoke evidence packet local/scripted candidate pass
+observation_class: scripted_real_entry
+must_pass:
+  - id: trace_evidence_packet
+    description: Judge packet includes compact trace evidence, not only trace paths.
+  - id: case_boundary_cleanup
+    description: Pending approvals from one independent sample are rejected and recorded before later samples.
+  - id: structured_schema
+    description: GPT-5.5 structured-output judge schema is accepted by codex exec.
+  - id: real_provider_rerun
+    description: Real-provider smoke reruns and produces an auditable judge verdict.
+must_not:
+  - close Functional Subject real-provider smoke from local evidence alone
+  - modify normal user-session runtime behavior
+  - modify program state or evidence ledger
+rollback:
+  - remove trace evidence and approval cleanup helpers
+  - revert judge schema changes and tests
+  - revert local board and task docs

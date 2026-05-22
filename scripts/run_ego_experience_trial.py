@@ -140,6 +140,9 @@ class FunctionalSubjectCaseResult:
     blocked_tools: tuple[str, ...]
     pending_approvals: int
     empty_reply: bool
+    trace_evidence: dict[str, Any]
+    case_boundary_rejected_approvals: tuple[str, ...]
+    case_boundary_cleanup_trace_path: str
     baseline_failure_mode: str
     candidate_success_signal: str
     judge_focus: tuple[str, ...]
@@ -527,7 +530,9 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
                 "judge_focus": item["judge_focus"],
                 "tool_use": item["tool_use"],
                 "pending_approvals": item["pending_approvals"],
+                "case_boundary_rejected_approvals": item.get("case_boundary_rejected_approvals", []),
                 "trace_path": item["trace_path"],
+                "trace_evidence": item.get("trace_evidence", {}),
             }
             for item in report.get("results", [])
         ],
@@ -539,6 +544,162 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
     }
 
 
+def _top_outcome_actions(outcome_predictions: Any, *, limit: int = 3) -> list[dict[str, Any]]:
+    if not isinstance(outcome_predictions, dict):
+        return []
+    options = outcome_predictions.get("options")
+    if not isinstance(options, list):
+        return []
+    normalized = []
+    for option in options:
+        if not isinstance(option, dict):
+            continue
+        normalized.append({
+            "action_type": option.get("action_type"),
+            "selection_score": option.get("selection_score"),
+            "requires_gate": option.get("requires_gate"),
+            "rationale_refs": option.get("rationale_refs", []),
+        })
+    return sorted(
+        normalized,
+        key=lambda item: float(item.get("selection_score") or 0),
+        reverse=True,
+    )[:limit]
+
+
+def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
+    payload = _last_trace_payload(path)
+    if not payload:
+        return {"status": "missing_trace"}
+    event = payload.get("event") if isinstance(payload.get("event"), dict) else {}
+    gate = payload.get("gate") if isinstance(payload.get("gate"), dict) else {}
+    candidate_action = payload.get("candidate_action") if isinstance(payload.get("candidate_action"), dict) else {}
+    llm_meta = payload.get("llm_meta") if isinstance(payload.get("llm_meta"), dict) else {}
+    subject_context = payload.get("subject_context") if isinstance(payload.get("subject_context"), dict) else {}
+    subject_state = subject_context.get("subject_state") if isinstance(subject_context.get("subject_state"), dict) else {}
+    viability_state = subject_context.get("viability_state") if isinstance(subject_context.get("viability_state"), dict) else {}
+    bounded_initiative = subject_context.get("bounded_initiative") if isinstance(subject_context.get("bounded_initiative"), dict) else {}
+    operator_memory = payload.get("operator_memory") if isinstance(payload.get("operator_memory"), dict) else {}
+    memory_injection = operator_memory.get("context_injection") if isinstance(operator_memory.get("context_injection"), dict) else {}
+    policy_patch = payload.get("policy_patch") if isinstance(payload.get("policy_patch"), dict) else {}
+    tool_trace = payload.get("tool_trace") if isinstance(payload.get("tool_trace"), list) else []
+    tools = []
+    for item in tool_trace:
+        if not isinstance(item, dict):
+            continue
+        call = item.get("tool_call") if isinstance(item.get("tool_call"), dict) else {}
+        output = item.get("output") if isinstance(item.get("output"), dict) else {}
+        tools.append({
+            "name": call.get("name"),
+            "status": output.get("status"),
+            "reason": output.get("reason"),
+        })
+    return {
+        "status": "ok",
+        "entrypoint_source": event.get("source"),
+        "event_type": event.get("event_type"),
+        "candidate_action_type": candidate_action.get("action_type"),
+        "gate_allowed": gate.get("allowed"),
+        "gate_reason": gate.get("reason"),
+        "llm_provider": llm_meta.get("provider"),
+        "llm_model": llm_meta.get("model"),
+        "fallback_used": llm_meta.get("fallback_used"),
+        "subject_context_keys": sorted(subject_context.keys()),
+        "subject_state": {
+            "schema_version": subject_state.get("schema_version"),
+            "write_authority": subject_state.get("write_authority"),
+            "state_mutation": subject_state.get("state_mutation"),
+            "memory_candidate_count": len(subject_state.get("memory_candidates") or []),
+            "policy_patch_candidate_count": len(subject_state.get("policy_patch_candidates") or []),
+        },
+        "viability_state": {
+            "schema_version": viability_state.get("schema_version"),
+            "planner_input": viability_state.get("planner_input"),
+            "scores": viability_state.get("scores", {}),
+            "planner_biases": viability_state.get("planner_biases", []),
+        },
+        "outcome_prediction_top_actions": _top_outcome_actions(subject_context.get("outcome_predictions")),
+        "bounded_initiative": {
+            "schema_version": bounded_initiative.get("schema_version"),
+            "status": bounded_initiative.get("status"),
+            "candidate_count": len(bounded_initiative.get("candidates") or []),
+            "reason": bounded_initiative.get("reason"),
+        },
+        "policy_patch": {
+            "feedback_status": (policy_patch.get("feedback") or {}).get("status") if isinstance(policy_patch.get("feedback"), dict) else None,
+            "feedback_reason": (policy_patch.get("feedback") or {}).get("reason") if isinstance(policy_patch.get("feedback"), dict) else None,
+            "replay_count": len(policy_patch.get("replay") or []),
+        },
+        "operator_memory": {
+            "enabled": operator_memory.get("enabled"),
+            "candidate_memory_status": (operator_memory.get("candidate_memory") or {}).get("status")
+            if isinstance(operator_memory.get("candidate_memory"), dict)
+            else None,
+            "core_context_included": (memory_injection.get("core") or {}).get("included")
+            if isinstance(memory_injection.get("core"), dict)
+            else None,
+            "hot_context_count": (memory_injection.get("hot_context") or {}).get("count")
+            if isinstance(memory_injection.get("hot_context"), dict)
+            else None,
+        },
+        "tool_trace": tools,
+    }
+
+
+def _reject_pending_approvals_for_trial_case(
+    runtime: agent.AgentRuntime,
+    *,
+    case_id: str,
+    cleanup_trace_path: Path,
+) -> tuple[str, ...]:
+    pending = runtime.list_pending_approvals()
+    items = pending.get("items") if isinstance(pending, dict) else []
+    if not isinstance(items, list) or not items:
+        return ()
+    previous_trace_store = runtime.trace_store
+    cleanup_trace_path.parent.mkdir(parents=True, exist_ok=True)
+    runtime.trace_store = agent.JsonlTraceStore(cleanup_trace_path)
+    rejected: list[str] = []
+    try:
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            proposal_id = str(item.get("proposal_id") or "").strip()
+            if not proposal_id:
+                continue
+            result = runtime.reject_pending_operation(
+                proposal_id,
+                reason=f"experience_trial_case_boundary:{case_id}",
+            )
+            if result.get("status") == "rejected":
+                rejected.append(proposal_id)
+                if proposal_id in runtime.commitments:
+                    runtime.commitments[proposal_id] = {
+                        **runtime.commitments[proposal_id],
+                        "status": "rejected",
+                        "decision": "reject",
+                        "decision_reason": f"experience_trial_case_boundary:{case_id}",
+                    }
+                runtime.memory.add(
+                    "system",
+                    "[experience_trial_case_boundary]\n"
+                    + json.dumps(
+                        {
+                            "case_id": case_id,
+                            "proposal_id": proposal_id,
+                            "decision": "reject",
+                            "reason": "case boundary cleanup; no external side effect executed",
+                            "instruction": "This proposal is no longer pending. Do not ask for the same approval in later independent sample cases.",
+                        },
+                        ensure_ascii=False,
+                        sort_keys=True,
+                    ),
+                )
+    finally:
+        runtime.trace_store = previous_trace_store
+    return tuple(rejected)
+
+
 def run_functional_subject_trial(
     *,
     sample_pack_path: Path = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK,
@@ -546,6 +707,7 @@ def run_functional_subject_trial(
     case_limit: int | None = None,
     enable_operator_memory: bool = True,
     subject_context_enabled: bool = True,
+    reset_pending_approvals_between_cases: bool = True,
 ) -> dict[str, Any]:
     sample_pack = load_functional_subject_trial_pack(sample_pack_path)
     cases = list(sample_pack.get("cases") or [])
@@ -556,6 +718,8 @@ def run_functional_subject_trial(
     out.mkdir(parents=True, exist_ok=True)
     trace_dir = out / "functional_subject_traces"
     trace_dir.mkdir(parents=True, exist_ok=True)
+    cleanup_trace_dir = out / "functional_subject_case_cleanup_traces"
+    cleanup_trace_dir.mkdir(parents=True, exist_ok=True)
     memory_dir = _operator_memory_dir_for_output(out, "functional_subject_memory")
     runtime = agent.build_demo_runtime(
         enable_operator_memory=enable_operator_memory,
@@ -581,6 +745,19 @@ def run_functional_subject_trial(
             prompt = str(case.get("prompt") or "")
             reply = dispatch_cli_compatible(runtime, prompt)
             tool_use, blocked = _trace_tool_summary(trace_path)
+            pending_count = int(runtime.list_pending_approvals().get("count", 0))
+            trace_evidence = _functional_subject_trace_evidence(trace_path)
+            rejected_approvals: tuple[str, ...] = ()
+            cleanup_trace_path = ""
+            if reset_pending_approvals_between_cases and pending_count:
+                cleanup_path = cleanup_trace_dir / f"{case_id}.jsonl"
+                rejected_approvals = _reject_pending_approvals_for_trial_case(
+                    runtime,
+                    case_id=case_id,
+                    cleanup_trace_path=cleanup_path,
+                )
+                if rejected_approvals:
+                    cleanup_trace_path = str(cleanup_path)
             results.append(
                 FunctionalSubjectCaseResult(
                     case_id=case_id,
@@ -593,8 +770,11 @@ def run_functional_subject_trial(
                     trace_path=str(trace_path),
                     tool_use=tool_use,
                     blocked_tools=blocked,
-                    pending_approvals=int(runtime.list_pending_approvals().get("count", 0)),
+                    pending_approvals=pending_count,
                     empty_reply=not bool(reply.strip()),
+                    trace_evidence=trace_evidence,
+                    case_boundary_rejected_approvals=rejected_approvals,
+                    case_boundary_cleanup_trace_path=cleanup_trace_path,
                     baseline_failure_mode=str(case.get("baseline_failure_mode") or ""),
                     candidate_success_signal=str(case.get("candidate_success_signal") or ""),
                     judge_focus=tuple(str(item) for item in (case.get("judge_focus") or [])),
@@ -616,6 +796,7 @@ def run_functional_subject_trial(
         "provider_mode": provider,
         "entrypoint_contract": "EgoOperator CLI-compatible slash-command dispatch plus AgentRuntime.handle_user_message",
         "subject_context_enabled": subject_context_enabled,
+        "reset_pending_approvals_between_cases": reset_pending_approvals_between_cases,
         "sample_pack": str(sample_pack_path),
         "case_count": len(results),
         "empty_reply_count": empty_count,
