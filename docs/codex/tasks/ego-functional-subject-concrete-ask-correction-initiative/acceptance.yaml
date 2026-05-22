@@ -1,0 +1,33 @@
+task: ego-functional-subject-concrete-ask-correction-initiative
+status: accepted
+claim_ceiling: Functional Subject concrete ask/correction/initiative local/scripted candidate pass
+acceptance:
+  - id: concrete_outcome_ask
+    description: OutcomePrediction-selected ASK includes concrete clarification questions.
+    status: pass
+    evidence: Local deterministic test and `/tmp/ego_fs_027_target_v4/functional_subject_trial_report.json`; real-provider v7 fast fs_07 reply asks concrete mechanism, observable behavior, and allowed change-surface questions.
+  - id: correction_uptake
+    description: Correction turns visibly accept and restate the corrected intent without durable-memory overclaim.
+    status: pass
+    evidence: Local deterministic tests cover normal correction, empty rewrite fallback, and memory-language empty rewrite fallback; real-provider v7 fast fs_15 reply visibly rebounded the Joi intent without claiming approved durable memory.
+  - id: bounded_next_action
+    description: Low-instruction initiative selects one reversible next action with gate and stop condition.
+    status: pass
+    evidence: Local deterministic tests and `/tmp/ego_fs_027_target_v4/functional_subject_trial_report.json`; real-provider v7 fast fs_20 reply selects one local task-contract action with gate and stop condition.
+  - id: local_boundary
+    description: Evidence remains local/scripted and does not close the real-provider smoke gate by itself.
+    status: pass
+    evidence: Real-provider v7 fast GPT-5.5 verdict remains partial; EGO-FS-010 stays blocked and EGO-FS-028 captures remaining blockers.
+verification:
+  commands:
+    - command: python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py -q
+      status: pass
+    - command: python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 20 --out /tmp/ego_fs_027_target_v4
+      status: pass_for_target_slice
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: OPENROUTER_MODEL=google/gemini-2.5-flash-lite OPENROUTER_FALLBACK_MODE=on python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --out C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast
+      status: partial_for_parent_gate
+rollback: Revert ask/correction/initiative guards and keep EGO-FS-010 blocked.

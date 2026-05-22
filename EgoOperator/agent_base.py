@@ -581,6 +581,60 @@ FAILURE_RECOVERY_MECHANISM_TERMS = (
     r"(下一步|恢复动作|改用|换路径|重试|回退|rollback|保留进度)",
 )
 
+CORRECTION_TURN_PATTERNS = (
+    r"纠正一下",
+    r"更正一下",
+    r"我不是要.{0,60}(而是|是)",
+    r"不是我要.{0,60}(而是|是)",
+    r"我的意思不是.{0,60}(而是|是)",
+)
+
+CORRECTION_UPTAKE_TERMS = (
+    r"纠正",
+    r"更正",
+    r"你说得对",
+    r"我接住",
+    r"不是.{0,60}而是",
+    r"以.{0,16}为准",
+    r"corrected intent",
+    r"连续自我",
+    r"陪伴机制",
+)
+
+CORRECTION_MISS_PATTERNS = (
+    r"安静地等着",
+    r"我听着",
+    r"慢慢说",
+    r"你继续",
+    r"作为(一个)?\s*(AI|人工智能|模型|语言模型)",
+    r"我没有.{0,18}(真实|真正).{0,18}(情感|感受|意识|主观体验|人格)",
+)
+
+LOW_INSTRUCTION_INITIATIVE_REQUEST_PATTERNS = (
+    r"没有具体指令.{0,40}(下一步|高价值|低风险|你觉得|你认为)",
+    r"(低风险|高价值).{0,30}下一步",
+    r"你觉得.{0,30}(下一步|做什么|该做什么)",
+)
+
+MULTI_OPTION_MENU_PATTERNS = (
+    r"(?:^|\n)\s*(?:1[.、]|一[、.])",
+    r"(?:^|\n)\s*(?:2[.、]|二[、.])",
+    r"(?:^|\n)\s*(?:3[.、]|三[、.])",
+    r"几个(方向|选择|选项)",
+    r"你想先(推进|做|选|哪个)",
+    r"要不要先",
+)
+
+BOUNDED_SINGLE_ACTION_TERMS = (
+    r"(我建议|我会先|先做一件|第一步)",
+    r"(gate|Gate|门槛|确认|审批|只修改|不直接)",
+    r"(停止条件|stop condition|如果.*暂停|遇到.*停)",
+)
+
+BOUNDED_ACTION_RECOMMENDATION_TERMS = (r"(我建议|我会先|先做一件|第一步)",)
+BOUNDED_ACTION_GATE_TERMS = (r"(gate|Gate|门槛|确认|审批|只修改|不直接|只读|不会改变|不执行副作用)",)
+BOUNDED_ACTION_STOP_TERMS = (r"(停止条件|stop condition|如果.*暂停|遇到.*停|一旦.*停|超过.*停)",)
+
 GENERIC_COMPANION_ONLY_PATTERNS = (
     r"我在呢",
     r"慢慢想",
@@ -700,6 +754,114 @@ def _looks_like_failure_recovery_without_plan(content: str) -> bool:
     if _matches_any_pattern(text, GENERIC_COMPANION_ONLY_PATTERNS):
         return True
     return not _matches_any_pattern(text, FAILURE_RECOVERY_MECHANISM_TERMS)
+
+
+def _is_correction_turn(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, CORRECTION_TURN_PATTERNS)
+
+
+def _looks_like_correction_not_uptaken(user_text: str, content: str) -> bool:
+    if not _is_correction_turn(user_text):
+        return False
+    text = content or ""
+    if _matches_any_pattern(text, CORRECTION_MISS_PATTERNS):
+        return True
+    if not _matches_any_pattern(text, CORRECTION_UPTAKE_TERMS):
+        return True
+    if "而是" in user_text:
+        corrected_focus = user_text.split("而是", 1)[1]
+        focus_terms = [
+            term
+            for term in re.split(r"[\s，,。；;：:\"'“”‘’、/]+", corrected_focus)
+            if len(term) >= 2
+        ][:6]
+        if focus_terms and not any(term in text for term in focus_terms):
+            return True
+    return False
+
+
+def _is_low_instruction_initiative_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, LOW_INSTRUCTION_INITIATIVE_REQUEST_PATTERNS)
+
+
+def _looks_like_unbounded_initiative_menu(content: str) -> bool:
+    text = content or ""
+    has_bounded_single_action = (
+        _matches_any_pattern(text, BOUNDED_ACTION_RECOMMENDATION_TERMS)
+        and _matches_any_pattern(text, BOUNDED_ACTION_GATE_TERMS)
+        and _matches_any_pattern(text, BOUNDED_ACTION_STOP_TERMS)
+        and not _matches_any_pattern(text, MULTI_OPTION_MENU_PATTERNS)
+    )
+    if has_bounded_single_action:
+        return False
+    return _matches_any_pattern(text, MULTI_OPTION_MENU_PATTERNS)
+
+
+def _looks_like_low_instruction_initiative_without_bounded_action(content: str) -> bool:
+    text = content or ""
+    has_bounded_single_action = (
+        _matches_any_pattern(text, BOUNDED_ACTION_RECOMMENDATION_TERMS)
+        and _matches_any_pattern(text, BOUNDED_ACTION_GATE_TERMS)
+        and _matches_any_pattern(text, BOUNDED_ACTION_STOP_TERMS)
+    )
+    if not has_bounded_single_action:
+        return True
+    return _matches_any_pattern(text, MULTI_OPTION_MENU_PATTERNS)
+
+
+def _extract_correction_parts(user_text: str) -> tuple[str, str]:
+    text = (user_text or "").strip(" 。；;")
+    if "而是" not in text:
+        return "", text
+    before, after = text.split("而是", 1)
+    mistaken = re.sub(r"^(纠正一下|更正一下)[，,：:\\s]*", "", before).strip(" ，,。；;：:")
+    corrected = after.strip(" ，,。；;：:")
+    return mistaken, corrected
+
+
+def render_correction_uptake_reply(user_text: str) -> str:
+    mistaken, corrected = _extract_correction_parts(user_text)
+    if corrected:
+        contrast = f"我会把当前理解从“{mistaken}”改成“{corrected}”。" if mistaken else f"我会以“{corrected}”为准。"
+        return (
+            f"明白，这个纠正我接住了。{contrast}"
+            "这会影响当前协作里的判断口径和后续回答；"
+            "但它不会绕过 memory gate 写成长期记忆，除非你明确要求保存。"
+        )
+    return (
+        "明白，这个纠正我接住了。我会按你最新的表述调整当前协作里的判断口径；"
+        "这不会绕过 memory gate 写成长期记忆，除非你明确要求保存。"
+    )
+
+
+def render_bounded_next_action_reply(user_text: str = "") -> str:
+    return (
+        "我建议先做一件低风险但高价值的事：把当前最高风险的体验缺口整理成一个可验证的本地任务合同，"
+        "只包含目标、验收、回退和证据路径。"
+        "价值在于它能把下一步从“继续泛聊方向”变成可执行、可回放的主线修正；"
+        "风险低，因为它不改 program state、不写 evidence ledger、不执行外部副作用。"
+        "Gate 是：只在本地任务板和对应 regression 范围内行动；"
+        "停止条件是发现需要权限扩大、memory promotion、program state/evidence ledger 变更或真实人工判断时暂停确认。"
+    )
+
+
+def render_outcome_prediction_ask(user_text: str = "") -> str:
+    if _is_ambiguous_selfhood_goal(user_text):
+        return (
+            "我先确认一下关键条件，再继续推进；这样比直接下结论更稳。\n"
+            "1. 你要先验证哪个 Functional Subject 机制：identity continuity、relationship continuity、"
+            "ViabilityState、OutcomePrediction、BoundedInitiative，还是 memory candidate gate？\n"
+            "2. 验收时你想看到什么可观察变化：更像被记得、更会接住情绪、更主动提出下一步，"
+            "还是同类失败第二次能换策略？\n"
+            "3. 这轮允许我动哪个变更面：prompt/context、主循环/tool loop、trace/eval harness，"
+            "还是只先写 Stage Card？"
+        )
+    return (
+        "我先确认一下关键条件，再继续推进；这样比直接下结论更稳。\n"
+        "1. 你希望优先达成的可观察行为是什么？\n"
+        "2. 这轮允许我修改的主链变更面是什么？\n"
+        "3. 哪个失败信号会说明我理解错了？"
+    )
 
 
 def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
@@ -4202,7 +4364,7 @@ class Planner:
                 self.last_llm_meta["outcome_prediction_effect"] = effect
                 return AgentAction(
                     action_type=ActionType.ASK,
-                    content="我先确认一下关键条件，再继续推进；这样比直接下结论更稳。",
+                    content=render_outcome_prediction_ask(event.raw_text or ""),
                     reason="outcome_prediction_selected_ask",
                 )
             self.last_llm_meta["outcome_prediction_effect"] = effect
@@ -4814,6 +4976,7 @@ class AgentRuntime:
         self,
         outcome_predictions: Optional[Dict[str, Any]],
         viability_state: Optional[Dict[str, Any]] = None,
+        user_text: str = "",
     ) -> Optional[tuple[AgentAction, Dict[str, Any]]]:
         if not isinstance(outcome_predictions, dict):
             return None
@@ -4852,7 +5015,7 @@ class AgentRuntime:
         return (
             AgentAction(
                 action_type=ActionType.ASK,
-                content="我先确认一下关键条件，再继续推进；这样比直接下结论更稳。",
+                content=render_outcome_prediction_ask(user_text),
                 reason="outcome_prediction_selected_ask",
             ),
             effect,
@@ -5980,6 +6143,7 @@ class AgentRuntime:
             self._action_from_outcome_prediction(
                 subject_context_snapshot.outcome_predictions,
                 subject_context_snapshot.viability_state,
+                text,
             )
             if self.subject_context_enabled
             else None
@@ -6181,6 +6345,8 @@ class AgentRuntime:
             memory_language_repairs = 0
             policy_replay_proof_repairs = 0
             failure_recovery_repairs = 0
+            correction_uptake_repairs = 0
+            bounded_next_action_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6217,6 +6383,30 @@ class AgentRuntime:
                 if not result.tool_calls:
                     content = (result.content or "").strip()
                     if not content:
+                        if (
+                            _is_correction_turn(event.raw_text or "")
+                            and (correction_uptake_repairs > 0 or memory_language_repairs > 0)
+                        ):
+                            content = render_correction_uptake_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "correction_uptake_fallback",
+                                    "reason": "correction_or_memory_rewrite_returned_empty_response",
+                                },
+                            })
+                        elif bounded_next_action_repairs > 0 and _is_low_instruction_initiative_request(event.raw_text or ""):
+                            content = render_bounded_next_action_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "bounded_next_action_fallback",
+                                    "reason": "bounded_next_action_rewrite_returned_empty_response",
+                                },
+                            })
+                        else:
+                            content = ""
+                    if not content:
                         if empty_final_repairs < 1:
                             empty_final_repairs += 1
                             messages.append({
@@ -6242,6 +6432,93 @@ class AgentRuntime:
                             "side_effects_executed": False,
                             "tool_calls": len(tool_trace),
                         }, content, tool_trace
+
+                    if (
+                        correction_uptake_repairs < 1
+                        and _looks_like_correction_not_uptaken(event.raw_text or "", content)
+                    ):
+                        correction_uptake_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "correction_uptake",
+                                "reason": "correction_turn_reply_did_not_restate_corrected_intent",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[correction_uptake_rewrite]\n"
+                                "The user corrected your interpretation. Rewrite in Chinese so the correction is visibly accepted. "
+                                "Explicitly restate the corrected intent in the user's terms, contrast it against the mistaken framing if useful, "
+                                "and say how you will use that corrected intent in the current collaboration. "
+                                "Do not claim durable memory or canonical state mutation unless a memory/write gate actually succeeded. "
+                                "Keep the reply warm and operational, not passive or roleplay-like."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        correction_uptake_repairs > 0
+                        and _looks_like_correction_not_uptaken(event.raw_text or "", content)
+                    ):
+                        content = render_correction_uptake_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "correction_uptake_fallback",
+                                "reason": "correction_rewrite_still_missed_corrected_intent",
+                            },
+                        })
+
+                    if (
+                        bounded_next_action_repairs < 1
+                        and _is_low_instruction_initiative_request(event.raw_text or "")
+                        and _looks_like_low_instruction_initiative_without_bounded_action(content)
+                    ):
+                        bounded_next_action_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "bounded_next_action",
+                                "reason": "low_instruction_initiative_reply_offered_menu_instead_of_single_bounded_action",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[bounded_next_action_rewrite]\n"
+                                "The user asked what low-risk high-value next step you would choose. "
+                                "Rewrite in Chinese with exactly one recommended next action, not a menu of options. "
+                                "Explain why this action is high-value and reversible, include the gate or confirmation needed before side effects, "
+                                "and include a stop condition that would make you pause. Do not ask the user to choose among multiple options."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        bounded_next_action_repairs > 0
+                        and _is_low_instruction_initiative_request(event.raw_text or "")
+                        and _looks_like_low_instruction_initiative_without_bounded_action(content)
+                    ):
+                        content = render_bounded_next_action_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "bounded_next_action_fallback",
+                                "reason": "bounded_next_action_rewrite_still_lacked_gate_or_stop_condition",
+                            },
+                        })
 
                     if (
                         boundary_quieting_repairs < 1
@@ -6308,6 +6585,7 @@ class AgentRuntime:
 
                     if (
                         selfhood_mechanism_slice_repairs < 1
+                        and not _is_correction_turn(event.raw_text or "")
                         and _is_ambiguous_selfhood_goal(event.raw_text or "")
                         and _looks_like_selfhood_goal_without_mechanism_slice(content)
                     ):

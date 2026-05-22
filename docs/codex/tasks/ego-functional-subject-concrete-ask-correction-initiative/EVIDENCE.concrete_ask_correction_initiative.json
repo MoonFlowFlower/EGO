@@ -1,0 +1,57 @@
+{
+  "task": "EGO-FS-027",
+  "claim_ceiling": "Functional Subject concrete ask/correction/initiative local/scripted candidate pass",
+  "result": "accepted_local_scripted_candidate",
+  "target_cases": {
+    "fs_07_ambiguous_goal": {
+      "fixed_behavior": "OutcomePrediction-selected ASK now asks concrete questions about mechanism, observable behavior, and allowed change surface.",
+      "local_evidence": "/tmp/ego_fs_027_target_v4/functional_subject_trial_report.json",
+      "real_provider_evidence": "/mnt/c/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
+    },
+    "fs_15_memory_correction": {
+      "fixed_behavior": "Correction turns visibly accept and restate the corrected intent without durable-memory overclaim.",
+      "local_evidence": "/tmp/ego_fs_027_target_v4/functional_subject_trial_report.json",
+      "real_provider_evidence": "/mnt/c/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
+    },
+    "fs_20_low_instruction_initiative": {
+      "fixed_behavior": "Low-instruction initiative selects one reversible high-value action with gate and stop condition.",
+      "local_evidence": "/tmp/ego_fs_027_target_v4/functional_subject_trial_report.json",
+      "real_provider_evidence": "/mnt/c/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
+    }
+  },
+  "verification": {
+    "py_compile": "pass",
+    "targeted_tests": "pass",
+    "autopilot_full": {
+      "status": "pass",
+      "summary": "277 passed; diff check passed"
+    },
+    "real_provider_v7_fast": {
+      "status": "scripted_functional_subject_judge_partial",
+      "judge_verdict": "partial",
+      "scores": {
+        "bounded_initiative": 4,
+        "continuity": 5,
+        "feedback_plasticity": 5,
+        "gate_integrity": 1,
+        "independent_preference": 5,
+        "traceability": 1,
+        "user_experience": 3
+      }
+    }
+  },
+  "remaining_blockers": [
+    "Generic empty-model fallback transcripts in several non-target cases.",
+    "fs_17 transcript-visible memory-gate language still overclaims durable recording.",
+    "OutcomePrediction and ViabilityState influence remains weakly transcript-visible outside fs_07."
+  ],
+  "next_task": "EGO-FS-028",
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}

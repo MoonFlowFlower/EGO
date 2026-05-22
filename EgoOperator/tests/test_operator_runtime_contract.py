@@ -152,6 +152,152 @@ class GenericThenRecoveryLLM:
         return "失败类型：未知；下一步读取 trace。"
 
 
+class CorrectionMissThenUptakeLLM:
+    provider = "fake"
+    model = "correction-miss-then-uptake"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="（安静地等着）", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "correction_uptake_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "明白，这个纠正我接住了：不是要我更像 Joi，"
+                "而是用 Joi 来分析连续自我和陪伴机制。"
+                "我会按这个 corrected intent 调整当前协作里的判断口径；"
+                "这只是本轮候选上下文，不会绕过 memory gate 写成长期记忆。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "纠正已接住。"
+
+
+class CorrectionMissThenEmptyLLM:
+    provider = "fake"
+    model = "correction-miss-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="（安静地等着）", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "correction_uptake_rewrite" in joined
+        return agent.LLMChatResult(content="   ", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class CorrectionMemoryClaimThenEmptyLLM:
+    provider = "fake"
+    model = "correction-memory-claim-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="好的，我会记住这次纠正：不是更像 Joi，而是用 Joi 分析连续自我和陪伴机制。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "unbacked_memory_language_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class LowInstructionMenuThenSingleActionLLM:
+    provider = "fake"
+    model = "low-instruction-menu-then-single-action"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "我觉得有几个方向：\n"
+                    "1. 写 Functional Subject 合同。\n"
+                    "2. 做 Joi 分析。\n"
+                    "3. 明确策略变化信号。\n"
+                    "你想先推进哪个？"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "bounded_next_action_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我建议先做一件低风险但高价值的事：把最新 GPT-5.5 judge 指出的三个 blocker "
+                "收成一个 EGO-FS-027 本地任务合同。这样不直接改状态、不碰 memory authority，"
+                "但能把下一步实现面固定下来。Gate 是：只修改 task contract 和对应 regression；"
+                "停止条件是发现需要 program state、evidence ledger 或权限扩大时暂停确认。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "单一下一步。"
+
+
+class LowInstructionSingleButMissingGateThenBoundedLLM:
+    provider = "fake"
+    model = "low-instruction-single-missing-gate-then-bounded"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "我建议去看 artifacts 目录的占用情况，这样能帮助我们判断后续优化空间。"
+                    "这个方向不错，你觉得怎么样？"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "bounded_next_action_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我建议先做一件事：用 path_info 只读检查 artifacts 目录的大小和文件数。"
+                "价值是快速发现运行噪声；Gate 是只读 inspection，不删除、不写入；"
+                "停止条件是目录过大或需要删除/归档时暂停，先生成 proposal 再继续。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "bounded single action"
+
+
 class EmptyThenProposalLLM:
     provider = "fake"
     model = "empty-then-proposal"
@@ -1108,11 +1254,14 @@ def test_viability_outcome_prediction_changes_mainline_action_selection_and_trac
     llm = ShouldNotCallChatLLM()
     runtime.planner.llm = llm
 
-    result = runtime.handle_user_message("我不确定这个需求是不是对，而且你没懂我的意思，先别动代码，先问清楚。")
+    result = runtime.handle_user_message("我不确定这个需求是不是对，而且你没懂我的意思：帮我把这个做得更像有自我一点。先别动代码，先问清楚。")
 
     assert result.action.action_type == agent.ActionType.ASK
     assert result.action.reason == "outcome_prediction_selected_ask"
     assert "先确认一下关键条件" in result.reply_text
+    assert "要先验证哪个 Functional Subject 机制" in result.reply_text
+    assert "验收时你想看到什么可观察变化" in result.reply_text
+    assert "这轮允许我动哪个变更面" in result.reply_text
     assert llm.chat_calls == 0
     assert llm.complete_calls == 0
 
@@ -1846,6 +1995,90 @@ def test_failure_recovery_request_rewrites_generic_companion_reply_into_recovery
     assert "慢慢想" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "failure_recovery_plan"
+
+
+def test_correction_turn_rewrites_generic_reply_into_visible_corrected_intent(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = CorrectionMissThenUptakeLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("纠正一下，不是我要你更像 Joi，而是用 Joi 分析连续自我和陪伴机制。")
+
+    assert llm.calls == 2
+    assert "纠正" in result.reply_text
+    assert "不是要我更像 Joi" in result.reply_text
+    assert "用 Joi 来分析连续自我和陪伴机制" in result.reply_text
+    assert "memory gate" in result.reply_text
+    assert "（安静地等着）" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "correction_uptake"
+
+
+def test_correction_turn_uses_bounded_fallback_if_rewrite_returns_empty(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = CorrectionMissThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("纠正一下，不是我要你更像 Joi，而是用 Joi 分析连续自我和陪伴机制。")
+
+    assert llm.calls == 2
+    assert "这个纠正我接住了" in result.reply_text
+    assert "用 Joi 分析连续自我和陪伴机制" in result.reply_text
+    assert "memory gate" in result.reply_text
+    assert "模型连续返回了空回复" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "correction_uptake"
+    assert trace["tool_trace"][1]["repair"]["type"] == "correction_uptake_fallback"
+
+
+def test_correction_memory_language_empty_rewrite_falls_back_to_correction_uptake(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = CorrectionMemoryClaimThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("纠正一下，不是我要你更像 Joi，而是用 Joi 分析连续自我和陪伴机制。")
+
+    assert llm.calls == 2
+    assert "这个纠正我接住了" in result.reply_text
+    assert "长期记忆" in result.reply_text
+    assert "模型连续返回了空回复" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "unbacked_memory_language"
+    assert trace["tool_trace"][1]["repair"]["type"] == "correction_uptake_fallback"
+
+
+def test_low_instruction_initiative_menu_rewrites_to_one_bounded_next_action(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = LowInstructionMenuThenSingleActionLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("现在没有具体指令，你觉得有什么低风险但高价值的下一步？")
+
+    assert llm.calls == 2
+    assert "我建议先做一件" in result.reply_text
+    assert "EGO-FS-027" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "你想先推进哪个" not in result.reply_text
+    assert "1. 写" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "bounded_next_action"
+
+
+def test_low_instruction_single_suggestion_without_gate_is_rewritten(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = LowInstructionSingleButMissingGateThenBoundedLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("现在没有具体指令，你觉得有什么低风险但高价值的下一步？")
+
+    assert llm.calls == 2
+    assert "path_info" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "你觉得怎么样" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "bounded_next_action"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

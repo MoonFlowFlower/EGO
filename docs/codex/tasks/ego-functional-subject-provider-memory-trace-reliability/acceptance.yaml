@@ -1,0 +1,23 @@
+task: ego-functional-subject-provider-memory-trace-reliability
+status: planned
+claim_ceiling: Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass
+acceptance:
+  - id: provider_failure_transcript_clarity
+    description: Provider/API or empty-response failures are clear unavailable states or fallback attempts, not generic task failure text.
+    status: pending
+    evidence: pending
+  - id: memory_gate_language
+    description: Memory-save and principle-retention replies distinguish candidate/local/gated memory from approved durable memory.
+    status: pending
+    evidence: pending
+  - id: planner_trace_transcript_effect
+    description: At least one non-fs_07 case demonstrates transcript-visible OutcomePrediction or ViabilityState influence with trace evidence.
+    status: pending
+    evidence: pending
+  - id: parent_gate_boundary
+    description: Evidence remains local/scripted and does not close EGO-FS-010 by itself.
+    status: pending
+    evidence: pending
+verification:
+  commands: []
+rollback: Revert provider/memory/trace transcript reliability changes and keep EGO-FS-010 blocked.

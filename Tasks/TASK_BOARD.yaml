@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "EGO-FS-025 accepted locally after #94 v2 stayed partial; keep EGO-FS-010 blocked until the next real-provider rerun/rejudge."
+    next_action: "EGO-FS-028 ready after EGO-FS-027 accepted locally; parent smoke remains blocked by provider fallback, memory-gate wording, and trace/planner transcript evidence gaps."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "EGO-FS-026 accepted locally after v3 exposed judge argv limit; next step is another #94 real-provider rerun/rejudge from the WSL operator API environment."
+    next_action: "EGO-FS-027 accepted locally and v7 real-provider rerun improved fs_07/fs_15/fs_20, but judge stayed partial; start EGO-FS-028 for remaining provider fallback, memory-gate wording, and trace/planner transcript evidence gaps."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -631,6 +631,54 @@ tasks:
     canonical_sources:
       - "v3 rerun failure: OSError [Errno 7] Argument list too long: 'codex'"
       - "docs/codex/tasks/ego-functional-subject-judge-stdin-transport/SPEC.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-027
+    title: "EgoOperator: Functional Subject concrete ask, correction uptake, and bounded initiative behavior"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_with_llm_judge
+    evidence_level: E2
+    claim_ceiling: Functional Subject concrete ask/correction/initiative local/scripted candidate pass
+    next_action: "Accepted locally/scripted; EGO-FS-010 remains blocked because v7 GPT-5.5 judge is still partial on other cases."
+    acceptance:
+      - "OutcomePrediction-selected ASK emits concrete clarification questions, not only a generic confirmation sentence."
+      - "Correction turns visibly accept and restate the corrected intent while keeping durable memory promotion gated."
+      - "Low-instruction initiative selects one reversible high-value next action with a gate and stop condition instead of a broad option menu."
+      - "Trace/evidence remains local/scripted and does not close EGO-FS-010 by itself."
+    rollback: "Revert ask/correction/initiative output guards and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v4/functional_subject_trial_report.json"
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-concrete-ask-correction-initiative/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-concrete-ask-correction-initiative/EVIDENCE.concrete_ask_correction_initiative.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-028
+    title: "EgoOperator: Functional Subject provider fallback, memory-gate language, and transcript traceability repair"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_with_llm_judge
+    evidence_level: E2
+    claim_ceiling: Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass
+    next_action: "Repair the remaining v7 GPT-5.5 partial blockers without closing EGO-FS-010: generic empty-model fallback transcripts, fs_17 durable-memory overclaim wording, and weak transcript-visible planner/trace application."
+    acceptance:
+      - "Provider/API or empty-response failures in Functional Subject samples are reported as clear unavailable states or retried through configured fallback, not generic task failure text."
+      - "Memory-save and principle-retention replies distinguish candidate/local/gated memory from approved durable memory in transcript-visible language."
+      - "At least one non-fs_07 case demonstrates transcript-visible OutcomePrediction/ViabilityState influence with trace evidence."
+      - "GPT-5.5 judge packet stays evidence-first and does not close EGO-FS-010 without human-required review."
+    rollback: "Revert provider/memory/trace transcript reliability changes and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/SPEC.md"
     external_refs:
       github_issue: null
 
