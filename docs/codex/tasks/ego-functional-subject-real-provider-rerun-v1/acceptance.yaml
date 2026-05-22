@@ -1,0 +1,24 @@
+task: ego-functional-subject-real-provider-rerun-v1
+status: ready
+claim_ceiling: Functional Subject real-provider rerun evidence packet candidate pass
+acceptance:
+  - id: env_preflight
+    description: OPENROUTER_API_KEY is present without exposing its value.
+    status: pending
+  - id: real_provider_run
+    description: Functional Subject 20-sample trial runs with provider_mode=openrouter.
+    status: pending
+  - id: judge_packet
+    description: GPT-5.5 judge returns structured verdict or explicit judge_unavailable.
+    status: pending
+  - id: evidence_packet
+    description: Report includes transcript, trace refs, mechanism evidence, and failure notes.
+    status: pending
+  - id: parent_gate
+    description: EGO-FS-010 remains human-gated until review/comment accepts the evidence.
+    status: pending
+verification:
+  commands:
+    - python3 scripts/codex_project_autopilot.py local-plan-next
+    - git diff --check -- Tasks/TASK_BOARD.yaml .codex/project_contract.yaml docs/codex/tasks/ego-functional-subject-real-provider-rerun-v1
+rollback: Remove EGO-FS-020 from Tasks/TASK_BOARD.yaml and delete this task directory.
