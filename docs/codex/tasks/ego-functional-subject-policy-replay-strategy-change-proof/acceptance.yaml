@@ -1,0 +1,19 @@
+task: ego-functional-subject-policy-replay-strategy-change-proof
+status: accepted_local
+claim_ceiling: Functional Subject policy strategy-change proof local/scripted candidate pass
+acceptance:
+  - id: before_after_replay_probe
+    description: Comparable failure probe shows no replay before setup and active replay after setup.
+    status: pass
+  - id: changed_strategy_signal
+    description: Replay changes bounded initiative or outcome prediction strategy surface.
+    status: pass
+  - id: trace_based_proof_reply
+    description: Policy replay proof replies cite trace/replay evidence, not unexecuted memory/file side effects.
+    status: pass
+verification:
+  commands:
+    - python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Revert policy replay strategy-change probe and output repair changes.

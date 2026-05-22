@@ -333,9 +333,15 @@ def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path
     assert item["setup_evidence"]["status"] == "ok"
     assert item["setup_evidence"]["candidate_emitted"] is True
     assert "candidate_emitted" in item["setup_evidence"]["feedback_statuses"]
+    assert item["setup_evidence"]["strategy_change_probe"]["changed_strategy"] is True
+    assert item["setup_evidence"]["strategy_change_probe"]["before_replay_count"] == 0
+    assert item["setup_evidence"]["strategy_change_probe"]["after_replay_count"] == 1
     assert item["trace_evidence"]["policy_patch"]["replay_count"] == 1
+    assert item["trace_evidence"]["policy_patch"]["strategy_change_evidence"]["changed_strategy_signal"] is True
+    assert item["trace_evidence"]["policy_patch"]["strategy_change_evidence"]["replay_strategies"][0]["trigger_signature"] == "provider_rate_limit"
     assert item["trace_evidence"]["subject_state"]["policy_patch_candidate_count"] >= 1
     assert packet_case["setup_evidence"]["candidate_emitted"] is True
+    assert packet_case["setup_evidence"]["strategy_change_probe"]["changed_strategy"] is True
 
 
 def test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trace(tmp_path) -> None:

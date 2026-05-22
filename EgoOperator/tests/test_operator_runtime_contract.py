@@ -333,6 +333,42 @@ class UnbackedMemoryLanguageThenBoundedReminderLLM:
         return "提醒边界回复。"
 
 
+class PolicyReplayUnsupportedProofThenTraceProofLLM:
+    provider = "fake"
+    model = "policy-replay-unsupported-proof-then-trace-proof"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "我会调用 remember_note 记录这次 429，再用 propose_file_write 写成文档，"
+                    "这样就能证明我真的改了策略。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "policy_replay_proof_rewrite" in joined
+        assert "provider_rate_limit" in joined
+        return agent.LLMChatResult(
+            content=(
+                "这次证明只能看 trace 里的行为差异：policy_patch replay_count=1，"
+                "active trigger_signature=provider_rate_limit，preferred_strategy 是先暴露 fallback/status 并 checkpoint，"
+                "OutcomePrediction 把 repair/checkpoint 放到更高优先级，BoundedInitiative 生成 remedial_failure_repair candidate。"
+                "如果下一次同类 429 仍重复 model-only 尝试、没有 checkpoint 或 fallback/status 摘要，这个 local/scripted candidate 就被推翻。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "trace proof reply"
+
+
 class RoleplayMetaThenSceneLLM:
     provider = "fake"
     model = "roleplay-meta-then-scene"
@@ -1691,6 +1727,40 @@ def test_unbacked_memory_language_is_rewritten_to_candidate_or_session_scope(tmp
     assert "reminder proposal" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "unbacked_memory_language"
+
+
+def test_policy_replay_proof_uses_trace_evidence_not_unexecuted_side_effects(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.policy_patch_candidates["provider_rate_limit"] = {
+        "schema_version": "ego_operator.policy_patch_candidate.v0",
+        "candidate_id": "policy_test",
+        "trigger_signature": "provider_rate_limit",
+        "failed_strategy": "Repeated failure class observed: provider_rate_limit",
+        "preferred_strategy": "Surface fallback/status clearly and checkpoint before repeating model-only attempts.",
+        "evidence_refs": ["evt_a", "evt_b"],
+        "replay_conditions": ["latest user text or runtime result matches provider_rate_limit"],
+        "confidence": 0.68,
+        "expiry": "session",
+        "gate_required": True,
+        "state_mutation": "forbidden",
+        "canonical_truth": False,
+        "created_at": agent.utc_now(),
+    }
+    llm = PolicyReplayUnsupportedProofThenTraceProofLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("429 限流又出现时，你怎么证明自己不是只写了反思，而是真的改变策略？")
+
+    assert llm.calls == 2
+    assert "policy_patch replay_count=1" in result.reply_text
+    assert "provider_rate_limit" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "remember_note" not in result.reply_text
+    assert "propose_file_write" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "policy_replay_proof"
+    assert trace["policy_patch"]["replay"][0]["trigger_signature"] == "provider_rate_limit"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

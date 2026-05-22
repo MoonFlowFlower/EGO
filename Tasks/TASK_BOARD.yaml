@@ -426,19 +426,20 @@ tasks:
     title: "EgoOperator: policy replay actual strategy-change proof v2"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: ego_operator_learning
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject policy strategy-change proof local/scripted candidate pass
-    next_action: "Prove policy patch replay changes behavior under the same failure signature, not only that setup/replay fields exist."
+    next_action: "Accepted locally; replay setup now includes before/after strategy probe and trace evidence records changed strategy signal."
     acceptance:
       - "Before/after comparable failure trace shows changed action selection or reply strategy."
       - "Judge packet includes future replay evidence under same signature."
     rollback: "Revert policy replay v2 proof harness."
     canonical_sources:
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-policy-replay-strategy-change-proof/SPEC.md"
     external_refs:
       github_issue: null
 
@@ -446,7 +447,7 @@ tasks:
     title: "EgoOperator: viability/outcome prediction behavior-impact proof"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: functional_subject_planner
     owner: codex
     observation_class: scripted_real_entry

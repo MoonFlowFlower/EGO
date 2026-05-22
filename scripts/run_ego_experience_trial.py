@@ -584,6 +584,7 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
     operator_memory = payload.get("operator_memory") if isinstance(payload.get("operator_memory"), dict) else {}
     memory_injection = operator_memory.get("context_injection") if isinstance(operator_memory.get("context_injection"), dict) else {}
     policy_patch = payload.get("policy_patch") if isinstance(payload.get("policy_patch"), dict) else {}
+    policy_replay = policy_patch.get("replay") if isinstance(policy_patch.get("replay"), list) else []
     tool_trace = payload.get("tool_trace") if isinstance(payload.get("tool_trace"), list) else []
     tools = []
     repairs = []
@@ -607,6 +608,31 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
             "status": output.get("status"),
             "reason": output.get("reason"),
         })
+    outcome_top_actions = _top_outcome_actions(subject_context.get("outcome_predictions"))
+    replay_strategies = [
+        {
+            "trigger_signature": item.get("trigger_signature"),
+            "preferred_strategy": item.get("preferred_strategy"),
+            "replay_active": item.get("replay_active"),
+        }
+        for item in policy_replay
+        if isinstance(item, dict)
+    ]
+    strategy_change_evidence = {
+        "status": "observed" if policy_replay else "not_observed",
+        "replay_count": len(policy_replay),
+        "bounded_initiative_candidate_count": len(bounded_initiative.get("candidates") or []),
+        "top_outcome_action": (outcome_top_actions[0] or {}).get("action_type") if outcome_top_actions else None,
+        "top_outcome_rationale_refs": (outcome_top_actions[0] or {}).get("rationale_refs", []) if outcome_top_actions else [],
+        "changed_strategy_signal": bool(
+            policy_replay
+            and (
+                len(bounded_initiative.get("candidates") or []) > 0
+                or ((outcome_top_actions[0] or {}).get("action_type") if outcome_top_actions else None) in {"repair", "suggest"}
+            )
+        ),
+        "replay_strategies": replay_strategies,
+    }
     return {
         "status": "ok",
         "entrypoint_source": event.get("source"),
@@ -631,7 +657,7 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
             "scores": viability_state.get("scores", {}),
             "planner_biases": viability_state.get("planner_biases", []),
         },
-        "outcome_prediction_top_actions": _top_outcome_actions(subject_context.get("outcome_predictions")),
+        "outcome_prediction_top_actions": outcome_top_actions,
         "bounded_initiative": {
             "schema_version": bounded_initiative.get("schema_version"),
             "status": bounded_initiative.get("status"),
@@ -641,7 +667,9 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
         "policy_patch": {
             "feedback_status": (policy_patch.get("feedback") or {}).get("status") if isinstance(policy_patch.get("feedback"), dict) else None,
             "feedback_reason": (policy_patch.get("feedback") or {}).get("reason") if isinstance(policy_patch.get("feedback"), dict) else None,
-            "replay_count": len(policy_patch.get("replay") or []),
+            "replay_count": len(policy_replay),
+            "replay_strategies": replay_strategies,
+            "strategy_change_evidence": strategy_change_evidence,
         },
         "operator_memory": {
             "enabled": operator_memory.get("enabled"),
@@ -674,6 +702,16 @@ def _seed_functional_subject_policy_patch_setup(
     if not signature:
         return {"status": "skipped", "reason": "missing_signature"}
     observations = max(1, int(setup.get("observations") or 2))
+    replay_probe_text = str(
+        setup.get("replay_probe_text")
+        or setup.get("message")
+        or f"429 rate limit repeated failure happened again: {signature}"
+    )
+    before_replay = runtime._matching_policy_patch_candidates(replay_probe_text)  # noqa: SLF001 - scripted trial evidence hook
+    before_signal = agent.derive_bounded_initiative_signal(
+        user_text=replay_probe_text,
+        policy_patch_candidates=before_replay,
+    )
     setup_trace_dir.mkdir(parents=True, exist_ok=True)
     setup_trace_path = setup_trace_dir / f"{case_id}.jsonl"
     if setup_trace_path.exists():
@@ -714,6 +752,27 @@ def _seed_functional_subject_policy_patch_setup(
             "feedback": feedback,
         })
 
+    after_replay = runtime._matching_policy_patch_candidates(replay_probe_text)  # noqa: SLF001 - scripted trial evidence hook
+    after_signal = agent.derive_bounded_initiative_signal(
+        user_text=replay_probe_text,
+        policy_patch_candidates=after_replay,
+    )
+    strategy_probe = {
+        "probe_text": replay_probe_text,
+        "before_replay_count": len(before_replay),
+        "after_replay_count": len(after_replay),
+        "before_bounded_initiative_status": before_signal.get("status"),
+        "after_bounded_initiative_status": after_signal.get("status"),
+        "before_candidate_count": len(before_signal.get("candidates") or []),
+        "after_candidate_count": len(after_signal.get("candidates") or []),
+        "changed_strategy": len(before_replay) == 0 and len(after_replay) > 0 and len(after_signal.get("candidates") or []) > len(before_signal.get("candidates") or []),
+        "after_candidate_kinds": [
+            item.get("kind")
+            for item in (after_signal.get("candidates") or [])
+            if isinstance(item, dict)
+        ],
+    }
+
     setup_trace_path.write_text(
         "\n".join(json.dumps(row, ensure_ascii=False, sort_keys=True) for row in feedback_rows) + "\n",
         encoding="utf-8",
@@ -731,6 +790,7 @@ def _seed_functional_subject_policy_patch_setup(
             (row.get("feedback") or {}).get("status") == "candidate_emitted"
             for row in feedback_rows
         ),
+        "strategy_change_probe": strategy_probe,
     }
 
 

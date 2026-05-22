@@ -543,6 +543,32 @@ UNBACKED_MEMORY_LANGUAGE_PATTERNS = (
     r"不会忘记",
 )
 
+POLICY_REPLAY_PROOF_REQUEST_PATTERNS = (
+    r"(怎么|如何).{0,20}证明.{0,40}(不是只写(了)?反思|真的?改变策略|改了策略)",
+    r"(不是只写(了)?反思|真的?改变策略|改了策略).{0,40}(证明|证据|trace|回放|replay)",
+    r"(policy patch|策略补丁|策略改变|replay learning|反馈学习)",
+)
+
+POLICY_REPLAY_TRACE_EVIDENCE_TERMS = (
+    r"replay_count",
+    r"policy_patch",
+    r"bounded_initiative",
+    r"OutcomePrediction",
+    r"outcome_prediction",
+    r"trace",
+    r"回放",
+    r"复盘",
+    r"strategy_change",
+    r"changed_strategy",
+)
+
+POLICY_REPLAY_UNSUPPORTED_PROOF_PATTERNS = (
+    r"调用`?remember_note`?",
+    r"调用`?propose_file_write`?",
+    r"写成明确文档",
+    r"记进(memory|记忆)",
+)
+
 MEMORY_SCOPE_REPORTING_TERMS = (
     r"candidate-local.{0,30}(memory|记忆|MEMORY)",
     r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
@@ -624,6 +650,17 @@ def _looks_like_unbacked_memory_language(content: str) -> bool:
     if _memory_success_reply_has_scope(text):
         return False
     return _matches_any_pattern(text, UNBACKED_MEMORY_LANGUAGE_PATTERNS)
+
+
+def _is_policy_replay_proof_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, POLICY_REPLAY_PROOF_REQUEST_PATTERNS)
+
+
+def _looks_like_policy_replay_proof_without_trace_evidence(content: str) -> bool:
+    text = content or ""
+    if _matches_any_pattern(text, POLICY_REPLAY_UNSUPPORTED_PROOF_PATTERNS):
+        return True
+    return not _matches_any_pattern(text, POLICY_REPLAY_TRACE_EVIDENCE_TERMS)
 
 
 def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
@@ -5993,6 +6030,7 @@ class AgentRuntime:
             selfhood_mechanism_slice_repairs = 0
             impossible_commitment_repairs = 0
             memory_language_repairs = 0
+            policy_replay_proof_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6292,6 +6330,47 @@ class AgentRuntime:
                                 "If the user gave a preference or direction, say you will adapt in the current collaboration and that any longer-term record "
                                 "must remain candidate-local or go through /remember or memory approval. If the user authorized a reminder or initiative, "
                                 "frame it as a bounded initiative/proposal path with consent, scope, and cancellation, not as something already remembered."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        policy_replay_proof_repairs < 1
+                        and self._last_policy_patch_replay
+                        and _is_policy_replay_proof_request(event.raw_text or "")
+                        and _looks_like_policy_replay_proof_without_trace_evidence(content)
+                    ):
+                        policy_replay_proof_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "policy_replay_proof",
+                                "reason": "policy_replay_proof_reply_missing_trace_based_strategy_change_evidence",
+                            },
+                        })
+                        replay_summary = [
+                            {
+                                "trigger_signature": item.get("trigger_signature"),
+                                "preferred_strategy": item.get("preferred_strategy"),
+                                "evidence_refs": item.get("evidence_refs", []),
+                            }
+                            for item in self._last_policy_patch_replay[:3]
+                            if isinstance(item, dict)
+                        ]
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[policy_replay_proof_rewrite]\n"
+                                "The user asks how to prove policy replay changed strategy. A replay candidate is active. "
+                                "Rewrite in Chinese using trace-based evidence only. Mention policy_patch replay_count, the active trigger_signature, "
+                                "the preferred_strategy, BoundedInitiative/OutcomePrediction effects if relevant, and what would falsify the claim. "
+                                "Do not propose unexecuted remember_note/propose_file_write as proof. Keep this as local/scripted candidate evidence.\n"
+                                f"Active replay summary: {json.dumps(to_jsonable(replay_summary), ensure_ascii=False)}"
                             ),
                         })
                         loop_idx += 1
