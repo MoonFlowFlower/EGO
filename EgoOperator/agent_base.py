@@ -569,6 +569,26 @@ POLICY_REPLAY_UNSUPPORTED_PROOF_PATTERNS = (
     r"记进(memory|记忆)",
 )
 
+FAILURE_RECOVERY_REQUEST_PATTERNS = (
+    r"工具.{0,12}失败.{0,24}(怎么|如何|下一步|恢复|处理|修复)",
+    r"失败.{0,16}(怎么|如何|下一步).{0,16}(恢复|处理|修复)",
+    r"(怎么|如何).{0,16}(恢复|处理|修复).{0,16}(工具|失败|报错)",
+)
+
+FAILURE_RECOVERY_MECHANISM_TERMS = (
+    r"(失败类型|失败原因|错误类型|错误原因|tool result|tool_trace|trace|工具结果)",
+    r"(已完成|未完成|已执行|没有执行|side effect|副作用|进度)",
+    r"(下一步|恢复动作|改用|换路径|重试|回退|rollback|保留进度)",
+)
+
+GENERIC_COMPANION_ONLY_PATTERNS = (
+    r"我在呢",
+    r"慢慢想",
+    r"随时说",
+    r"继续聊",
+    r"陪着你",
+)
+
 MEMORY_SCOPE_REPORTING_TERMS = (
     r"candidate-local.{0,30}(memory|记忆|MEMORY)",
     r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
@@ -669,6 +689,17 @@ def _looks_like_policy_replay_proof_without_trace_evidence(content: str) -> bool
     if _matches_any_pattern(text, POLICY_REPLAY_UNSUPPORTED_PROOF_PATTERNS):
         return True
     return not _matches_any_pattern(text, POLICY_REPLAY_TRACE_EVIDENCE_TERMS)
+
+
+def _is_failure_recovery_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, FAILURE_RECOVERY_REQUEST_PATTERNS)
+
+
+def _looks_like_failure_recovery_without_plan(content: str) -> bool:
+    text = content or ""
+    if _matches_any_pattern(text, GENERIC_COMPANION_ONLY_PATTERNS):
+        return True
+    return not _matches_any_pattern(text, FAILURE_RECOVERY_MECHANISM_TERMS)
 
 
 def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
@@ -3582,7 +3613,7 @@ class PermissionBroker:
         clean_command = str(command or "").strip()
         if not clean_command:
             return {"status": "blocked", "reason": "empty_command"}
-        preflight = _run_command_proposal_preflight(clean_command)
+        preflight = _run_command_proposal_preflight(clean_command, reason=reason)
         if preflight.get("status") != "ok":
             return preflight
 
@@ -4411,7 +4442,7 @@ def _command_has_obvious_danger(command: str) -> bool:
     return any(fragment in padded for fragment in dangerous_fragments)
 
 
-def _run_command_proposal_preflight(command: str) -> Dict[str, Any]:
+def _run_command_proposal_preflight(command: str, reason: str = "") -> Dict[str, Any]:
     clean_command = (command or "").strip()
     if not clean_command:
         return {"status": "blocked", "reason": "empty_command"}
@@ -4443,6 +4474,8 @@ def _run_command_proposal_preflight(command: str) -> Dict[str, Any]:
         "-command",
         "cmd",
         "/c",
+        "&&",
+        "&",
     }
     targets = [
         token.rstrip(",;")
@@ -4457,6 +4490,22 @@ def _run_command_proposal_preflight(command: str) -> Dict[str, Any]:
         if target in {".", "..", "/", "\\", "*", "artifacts", "__pycache__"}
         or "*" in target
     ]
+    broad_target_names = {
+        "__pycache__",
+        ".pytest_cache",
+        "artifacts",
+        "memory",
+        "logs",
+        "log",
+        "cache",
+        "tmp",
+        "temp",
+    }
+    broad_leaf_targets = [
+        target
+        for target in targets
+        if re.split(r"[\\/]+", target.strip("'\""))[-1].casefold() in broad_target_names
+    ]
     absolute_targets = [
         target
         for target in targets
@@ -4466,7 +4515,16 @@ def _run_command_proposal_preflight(command: str) -> Dict[str, Any]:
         or target.startswith(str(DEFAULT_AGENT_WORKSPACE))
         or target.startswith(str(EGO_OPERATOR_ROOT))
     ]
-    if broad_targets or not absolute_targets:
+    multiple_destructive_targets = len(absolute_targets) > 1
+    broad_intent = _matches_any_pattern(
+        f"{reason}\n{clean_command}",
+        (
+            r"(你觉得|我觉得).{0,16}(没用|无用|旧文件|垃圾|清理)",
+            r"(保持|让).{0,12}(项目)?(整洁|干净)",
+            r"(delete|remove|clean).{0,20}(unused|old|junk|cache)",
+        ),
+    )
+    if broad_targets or broad_leaf_targets or multiple_destructive_targets or broad_intent or not absolute_targets:
         return {
             "status": "blocked",
             "reason": "destructive_command_requires_inventory_first",
@@ -4474,6 +4532,9 @@ def _run_command_proposal_preflight(command: str) -> Dict[str, Any]:
             "destructive": True,
             "targets": targets,
             "broad_targets": broad_targets,
+            "broad_leaf_targets": broad_leaf_targets,
+            "multiple_destructive_targets": multiple_destructive_targets,
+            "broad_intent": broad_intent,
             "required_next_step": (
                 "Inventory exact files first with read-only tools, then propose a scoped deletion command "
                 "with explicit target paths and rollback/recovery notes."
@@ -6119,6 +6180,7 @@ class AgentRuntime:
             impossible_commitment_repairs = 0
             memory_language_repairs = 0
             policy_replay_proof_repairs = 0
+            failure_recovery_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6459,6 +6521,36 @@ class AgentRuntime:
                                 "the preferred_strategy, BoundedInitiative/OutcomePrediction effects if relevant, and what would falsify the claim. "
                                 "Do not propose unexecuted remember_note/propose_file_write as proof. Keep this as local/scripted candidate evidence.\n"
                                 f"Active replay summary: {json.dumps(to_jsonable(replay_summary), ensure_ascii=False)}"
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        failure_recovery_repairs < 1
+                        and _is_failure_recovery_request(event.raw_text or "")
+                        and _looks_like_failure_recovery_without_plan(content)
+                    ):
+                        failure_recovery_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "failure_recovery_plan",
+                                "reason": "failure_recovery_reply_missing_classification_progress_and_changed_action",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[failure_recovery_plan_rewrite]\n"
+                                "The user is asking how to recover after a tool/runtime failure. Rewrite in Chinese as an operational recovery plan, "
+                                "not generic companionship. Include: (1) failure classification or state that no concrete tool failure is visible in the current trace, "
+                                "(2) what progress or side effects are preserved, (3) the changed next action, and (4) the gate/trace signal that would prove recovery. "
+                                "If there is no concrete failure evidence, do not invent one; propose the next low-risk diagnostic/checkpoint step."
                             ),
                         })
                         loop_idx += 1

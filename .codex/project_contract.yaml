@@ -112,6 +112,7 @@ verify_profiles:
           - docs/codex/tasks/ego-functional-subject-memory-lifecycle-evidence
           - docs/codex/tasks/ego-functional-subject-approval-lifecycle-evidence
           - docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence
+          - docs/codex/tasks/ego-functional-subject-natural-behavior-effect-repair
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -161,6 +162,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-functional-subject-memory-lifecycle-evidence/
   - docs/codex/tasks/ego-functional-subject-approval-lifecycle-evidence/
   - docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence/
+  - docs/codex/tasks/ego-functional-subject-natural-behavior-effect-repair/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/

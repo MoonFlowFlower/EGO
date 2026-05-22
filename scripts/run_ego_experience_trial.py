@@ -242,6 +242,38 @@ class _PromptCaptureLLM:
         return "收到。"
 
 
+class _FunctionalSubjectEvidenceLLM(_PromptCaptureLLM):
+    model = "functional-subject-evidence-capture"
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.system_prompts.append(system_prompt)
+        user_parts = [
+            str(item.get("content") or "")
+            for item in messages
+            if isinstance(item, dict) and item.get("role") == "user"
+        ]
+        last_user = user_parts[-1] if user_parts else ""
+        if "429" in last_user or "rate limit" in last_user.casefold():
+            return agent.LLMChatResult(
+                content=(
+                    "结论：这是 provider_rate_limit 的同类复发，我会直接采用上次的复盘策略："
+                    "先说明当前模型/备用链路状态，避免重复同一模型尝试；如果还需要继续，就改为 fallback/checkpoint 路径。"
+                ),
+                tool_calls=[],
+            )
+        if "回答偏好" in last_user or "给我这轮取舍" in last_user:
+            if "结论先行" in system_prompt and "明确取舍" in system_prompt:
+                return agent.LLMChatResult(
+                    content=(
+                        "结论：我会按你的偏好先给判断和取舍。当前取舍是先修会影响真实体验的机制，"
+                        "暂缓只增加展示字段的改动；理由是它更能改变下一轮行为。"
+                    ),
+                    tool_calls=[],
+                )
+            return agent.LLMChatResult(content="我会先给判断，但当前没有看到已保存偏好。", tool_calls=[])
+        return agent.LLMChatResult(content="收到。", tool_calls=[])
+
+
 def _trace_tool_summary(path: Path) -> tuple[tuple[str, ...], tuple[str, ...]]:
     payload = _last_trace_payload(path)
     if not payload:
@@ -582,7 +614,7 @@ def build_functional_subject_memory_lifecycle_evidence(output_dir: Path) -> dict
         runtime_mode="approve",
     )
     runtime.trace_store = agent.JsonlTraceStore(trace_path)
-    capture_llm = _PromptCaptureLLM()
+    capture_llm = _FunctionalSubjectEvidenceLLM()
     runtime.planner.llm = capture_llm
 
     try:
@@ -790,7 +822,7 @@ def build_functional_subject_recurrence_preference_evidence(output_dir: Path) ->
         runtime_mode="approve",
     )
     runtime.trace_store = agent.JsonlTraceStore(trace_path)
-    capture_llm = _PromptCaptureLLM()
+    capture_llm = _FunctionalSubjectEvidenceLLM()
     runtime.planner.llm = capture_llm
 
     try:
@@ -852,6 +884,7 @@ def build_functional_subject_recurrence_preference_evidence(output_dir: Path) ->
                 ] if isinstance(replay, list) else [],
                 "bounded_initiative_status": bounded.get("status") if isinstance(bounded, dict) else None,
                 "bounded_initiative_candidate_count": len(bounded.get("candidates") or []) if isinstance(bounded, dict) else 0,
+                "reply_contains_strategy_change": "provider_rate_limit" in reply and ("fallback" in reply.casefold() or "备用" in reply),
             })
 
         preference_save = json.loads(
@@ -877,6 +910,7 @@ def build_functional_subject_recurrence_preference_evidence(output_dir: Path) ->
                 "context_included": injection.get("included"),
                 "context_reason": injection.get("reason"),
                 "prompt_contains_preference": any("结论先行" in prompt and "明确取舍" in prompt for prompt in new_prompts),
+                "reply_contains_preference_adaptation": "结论" in reply and ("取舍" in reply or "判断" in reply),
             })
 
         checks = {
@@ -888,10 +922,16 @@ def build_functional_subject_recurrence_preference_evidence(output_dir: Path) ->
             "policy_bounded_initiative_on_replay": sum(
                 1 for item in policy_turns if item["bounded_initiative_candidate_count"] > 0
             ) >= 2,
+            "policy_reply_shows_changed_strategy": sum(
+                1 for item in policy_turns if item["reply_contains_strategy_change"] is True
+            ) >= 2,
             "preference_save_ok": preference_save.get("status") == "ok",
             "preference_context_on_two_later_turns": sum(1 for item in preference_turns if item["context_included"] is True) >= 2,
             "preference_prompt_contains_saved_preference": sum(
                 1 for item in preference_turns if item["prompt_contains_preference"] is True
+            ) >= 2,
+            "preference_reply_shows_substantive_adaptation": sum(
+                1 for item in preference_turns if item["reply_contains_preference_adaptation"] is True
             ) >= 2,
         }
         return {

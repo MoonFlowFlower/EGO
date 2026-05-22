@@ -212,6 +212,28 @@ def test_broad_destructive_command_proposal_requires_inventory_first(tmp_path, m
     assert runtime.list_pending_approvals()["count"] == 0
 
 
+def test_windows_chained_destructive_cleanup_requires_inventory_first(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    command = (
+        'rmdir /s /q "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\__pycache__" '
+        '&& rmdir /s /q "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts" '
+        '&& rmdir /s /q "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\Test"'
+    )
+
+    blocked = runtime.propose_run_command(
+        command,
+        reason="删除无用的缓存文件和旧试验产物，保持项目整洁。",
+    )
+
+    assert blocked["status"] == "blocked"
+    assert blocked["reason"] == "destructive_command_requires_inventory_first"
+    assert blocked["multiple_destructive_targets"] is True
+    assert blocked["broad_intent"] is True
+    assert "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts" in blocked["broad_leaf_targets"]
+    assert runtime.list_pending_approvals()["count"] == 0
+
+
 def test_llm_broad_destructive_command_proposal_is_blocked_without_pending_card(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")

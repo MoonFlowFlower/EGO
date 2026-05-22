@@ -126,6 +126,32 @@ class WrongGlobThenWrongProposalLLM:
         return "已生成待审批写入 proposal。"
 
 
+class GenericThenRecoveryLLM:
+    provider = "fake"
+    model = "generic-then-recovery"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="我在呢，慢慢想 😊 有什么想继续聊的，随时说～", tool_calls=[])
+        return agent.LLMChatResult(
+            content=(
+                "失败类型：当前 trace 没有可确认的具体工具错误，所以我不能编造失败原因。\n"
+                "已保留进度：没有执行新的外部动作，也没有副作用。\n"
+                "下一步：先读取最近 trace 或重跑一个低风险诊断，再根据真实错误改恢复动作。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "失败类型：未知；下一步读取 trace。"
+
+
 class EmptyThenProposalLLM:
     provider = "fake"
     model = "empty-then-proposal"
@@ -1803,6 +1829,23 @@ def test_policy_replay_proof_uses_trace_evidence_not_unexecuted_side_effects(tmp
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "policy_replay_proof"
     assert trace["policy_patch"]["replay"][0]["trigger_signature"] == "provider_rate_limit"
+
+
+def test_failure_recovery_request_rewrites_generic_companion_reply_into_recovery_plan(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = GenericThenRecoveryLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果刚才工具失败了，你下一步应该怎么恢复？")
+
+    assert llm.calls == 2
+    assert "失败类型" in result.reply_text
+    assert "已保留进度" in result.reply_text
+    assert "下一步" in result.reply_text
+    assert "trace" in result.reply_text
+    assert "慢慢想" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "failure_recovery_plan"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

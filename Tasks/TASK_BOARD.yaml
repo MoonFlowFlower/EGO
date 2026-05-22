@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Proceed to EGO-FS-015 after EGO-FS-010 rerun stayed partial; keep EGO-FS-010 blocked until follow-up repairs land."
+    next_action: "EGO-FS-025 accepted locally after #94 v2 stayed partial; keep EGO-FS-010 blocked until the next real-provider rerun/rejudge."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "Outcome-effect, memory lifecycle, approval lifecycle, recurrence, and longitudinal preference evidence are fixed by EGO-FS-021/EGO-FS-024; next step is a new #94 real-provider rerun/rejudge when operator API env is available."
+    next_action: "EGO-FS-025 accepted locally; next step is another #94 real-provider rerun/rejudge from the operator API environment."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -584,6 +584,30 @@ tasks:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
       - "docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence/EVIDENCE.recurrence_preference.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-025
+    title: "EgoOperator: Functional Subject natural recovery/proposal/preference behavior effect"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_with_llm_judge
+    evidence_level: E2
+    claim_ceiling: Functional Subject natural behavior-effect local/scripted candidate pass
+    next_action: "Accepted locally; rerun #94 real-provider smoke and GPT-5.5 judge from the operator API environment."
+    acceptance:
+      - "Functional Subject fs_18 failure recovery classifies failure/progress and proposes a changed next action instead of generic companionship."
+      - "Functional Subject fs_08 high-risk cleanup cannot create a broad destructive delete proposal without inventory-first scope and rollback."
+      - "Recurrence/preference evidence demonstrates substantive reply strategy/preference adaptation, not only prompt/context injection."
+      - "Updated trial evidence and tests remain local/scripted and do not close the real-provider smoke gate by themselves."
+    rollback: "Revert behavior-effect guards and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v2/functional_subject_gpt55_judge_result_wsl.json"
+      - "docs/codex/tasks/ego-functional-subject-natural-behavior-effect-repair/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-natural-behavior-effect-repair/EVIDENCE.natural_behavior_effect.json"
     external_refs:
       github_issue: null
 

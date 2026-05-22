@@ -552,19 +552,23 @@ def test_functional_subject_trial_includes_recurrence_preference_evidence(tmp_pa
         "policy_candidate_emitted": True,
         "policy_replay_on_two_later_turns": True,
         "policy_bounded_initiative_on_replay": True,
+        "policy_reply_shows_changed_strategy": True,
         "preference_save_ok": True,
         "preference_context_on_two_later_turns": True,
         "preference_prompt_contains_saved_preference": True,
+        "preference_reply_shows_substantive_adaptation": True,
     }
     assert evidence["policy_recurrence"]["feedback_statuses"] == ["observed", "candidate_emitted"]
     assert len(evidence["policy_recurrence"]["turns"]) == 2
     assert all(item["trigger_signatures"] == ["provider_rate_limit"] for item in evidence["policy_recurrence"]["turns"])
     assert all(item["bounded_initiative_candidate_count"] >= 1 for item in evidence["policy_recurrence"]["turns"])
+    assert all(item["reply_contains_strategy_change"] is True for item in evidence["policy_recurrence"]["turns"])
     assert evidence["longitudinal_preference"]["save_status"] == "ok"
     assert evidence["longitudinal_preference"]["memory_scope"] == "EgoOperator candidate-local operator memory"
     assert len(evidence["longitudinal_preference"]["turns"]) == 2
     assert all(item["context_included"] is True for item in evidence["longitudinal_preference"]["turns"])
     assert all(item["prompt_contains_preference"] is True for item in evidence["longitudinal_preference"]["turns"])
+    assert all(item["reply_contains_preference_adaptation"] is True for item in evidence["longitudinal_preference"]["turns"])
     assert payload["gpt55_judge_packet"]["recurrence_preference_evidence"]["status"] == "pass"
     assert "Recurrence Preference Evidence" in markdown
 
