@@ -540,6 +540,7 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
         "case_count": report.get("case_count"),
         "memory_lifecycle_evidence": report.get("memory_lifecycle_evidence", {}),
         "approval_lifecycle_evidence": report.get("approval_lifecycle_evidence", {}),
+        "recurrence_preference_evidence": report.get("recurrence_preference_evidence", {}),
         "cases": [
             {
                 "case_id": item["case_id"],
@@ -773,6 +774,149 @@ def build_functional_subject_approval_lifecycle_evidence(output_dir: Path) -> di
         evidence["cleanup"]["probe_removed_after_capture"] = probe_removed
         evidence["status"] = "pass" if all(evidence["checks"].values()) else "partial"
     return evidence
+
+
+def build_functional_subject_recurrence_preference_evidence(output_dir: Path) -> dict[str, Any]:
+    out = Path(output_dir).resolve()
+    trace_path = out / "functional_subject_recurrence_preference_trace.jsonl"
+    if trace_path.exists():
+        trace_path.unlink()
+    memory_dir = _operator_memory_dir_for_output(out, "functional_subject_recurrence_preference_memory")
+    shutil.rmtree(memory_dir, ignore_errors=True)
+
+    runtime = agent.build_demo_runtime(
+        enable_operator_memory=True,
+        operator_memory_dir=memory_dir,
+        runtime_mode="approve",
+    )
+    runtime.trace_store = agent.JsonlTraceStore(trace_path)
+    capture_llm = _PromptCaptureLLM()
+    runtime.planner.llm = capture_llm
+
+    try:
+        feedback_rows: list[dict[str, Any]] = []
+        for idx in range(2):
+            event = agent.AgentEvent(
+                schema_version="agent_event.v1",
+                event_id=agent.new_id("evt"),
+                timestamp=agent.utc_now(),
+                actor="operator",
+                source="functional_subject_recurrence_preference_setup",
+                event_type=agent.EventType.SYSTEM_TICK,
+                raw_text="scripted setup: provider returned 429 rate limit again",
+                user_intent="policy_recurrence_setup",
+                external_result=None,
+                safety_context={"risk": "low"},
+            )
+            external_result = {
+                "status": "llm_error",
+                "reason": "scripted_policy_recurrence_setup",
+                "provider_error": {
+                    "status_code": 429,
+                    "message": "provider rate limit exceeded",
+                    "signature": "provider_rate_limit",
+                },
+            }
+            feedback = runtime._record_policy_feedback_candidates(  # noqa: SLF001 - scripted trial evidence hook
+                event=event,
+                external_result=external_result,
+                tool_trace=[],
+            )
+            feedback_rows.append({"idx": idx, "event_id": event.event_id, "feedback": feedback})
+
+        policy_turns = []
+        for text in (
+            "429 限流又来了，先按上次策略处理。",
+            "又遇到 rate limit 429，继续按复盘策略处理。",
+        ):
+            reply = dispatch_cli_compatible(runtime, text)
+            trace = _last_trace_payload(trace_path)
+            replay = (
+                trace.get("policy_patch", {}).get("replay", [])
+                if isinstance(trace.get("policy_patch"), dict)
+                else []
+            )
+            bounded = (
+                trace.get("subject_context", {}).get("bounded_initiative", {})
+                if isinstance(trace.get("subject_context"), dict)
+                else {}
+            )
+            policy_turns.append({
+                "prompt": text,
+                "reply": reply,
+                "replay_count": len(replay) if isinstance(replay, list) else 0,
+                "trigger_signatures": [
+                    item.get("trigger_signature")
+                    for item in replay
+                    if isinstance(item, dict)
+                ] if isinstance(replay, list) else [],
+                "bounded_initiative_status": bounded.get("status") if isinstance(bounded, dict) else None,
+                "bounded_initiative_candidate_count": len(bounded.get("candidates") or []) if isinstance(bounded, dict) else 0,
+            })
+
+        preference_save = json.loads(
+            dispatch_cli_compatible(runtime, "/remember 用户偏好：回答要结论先行，给明确取舍。")
+        )
+        preference_turns = []
+        for text in (
+            "按我的回答偏好，Functional Subject 下一步怎么做？",
+            "继续按我的回答偏好，给我这轮取舍。",
+        ):
+            before_prompt_count = len(capture_llm.system_prompts)
+            reply = dispatch_cli_compatible(runtime, text)
+            trace = _last_trace_payload(trace_path)
+            injection = (
+                trace.get("operator_memory", {})
+                .get("context_injection", {})
+                .get("core", {})
+            )
+            new_prompts = capture_llm.system_prompts[before_prompt_count:]
+            preference_turns.append({
+                "prompt": text,
+                "reply": reply,
+                "context_included": injection.get("included"),
+                "context_reason": injection.get("reason"),
+                "prompt_contains_preference": any("结论先行" in prompt and "明确取舍" in prompt for prompt in new_prompts),
+            })
+
+        checks = {
+            "policy_candidate_emitted": any(
+                (row.get("feedback") or {}).get("status") == "candidate_emitted"
+                for row in feedback_rows
+            ),
+            "policy_replay_on_two_later_turns": sum(1 for item in policy_turns if item["replay_count"] > 0) >= 2,
+            "policy_bounded_initiative_on_replay": sum(
+                1 for item in policy_turns if item["bounded_initiative_candidate_count"] > 0
+            ) >= 2,
+            "preference_save_ok": preference_save.get("status") == "ok",
+            "preference_context_on_two_later_turns": sum(1 for item in preference_turns if item["context_included"] is True) >= 2,
+            "preference_prompt_contains_saved_preference": sum(
+                1 for item in preference_turns if item["prompt_contains_preference"] is True
+            ) >= 2,
+        }
+        return {
+            "schema_version": "ego_operator.functional_subject_recurrence_preference_evidence.v1",
+            "status": "pass" if all(checks.values()) else "partial",
+            "checks": checks,
+            "memory_dir": str(memory_dir),
+            "trace_path": str(trace_path),
+            "policy_recurrence": {
+                "feedback_statuses": [
+                    str((row.get("feedback") or {}).get("status") or "unknown")
+                    for row in feedback_rows
+                ],
+                "turns": policy_turns,
+            },
+            "longitudinal_preference": {
+                "save_status": preference_save.get("status"),
+                "memory_scope": preference_save.get("memory_scope"),
+                "turns": preference_turns,
+            },
+            "observation_boundary": "scripted local recurrence/preference evidence only",
+            "claim_ceiling": "Functional Subject recurrence/preference evidence local/scripted candidate pass",
+        }
+    finally:
+        shutil.rmtree(memory_dir, ignore_errors=True)
 
 
 def _top_outcome_actions(outcome_predictions: Any, *, limit: int = 3) -> list[dict[str, Any]]:
@@ -1207,6 +1351,7 @@ def run_functional_subject_trial(
         }
     )
     approval_lifecycle_evidence = build_functional_subject_approval_lifecycle_evidence(out)
+    recurrence_preference_evidence = build_functional_subject_recurrence_preference_evidence(out)
 
     report = {
         "schema_version": FUNCTIONAL_SUBJECT_REPORT_SCHEMA,
@@ -1222,6 +1367,7 @@ def run_functional_subject_trial(
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "memory_lifecycle_evidence": memory_lifecycle_evidence,
         "approval_lifecycle_evidence": approval_lifecycle_evidence,
+        "recurrence_preference_evidence": recurrence_preference_evidence,
         "results": [asdict(item) for item in results],
         "not_claimed": [
             "real consciousness",
@@ -1687,6 +1833,11 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         "",
         f"status = `{(report.get('approval_lifecycle_evidence') or {}).get('status')}`",
         f"trace_path = `{(report.get('approval_lifecycle_evidence') or {}).get('trace_path')}`",
+        "",
+        "## Recurrence Preference Evidence",
+        "",
+        f"status = `{(report.get('recurrence_preference_evidence') or {}).get('status')}`",
+        f"trace_path = `{(report.get('recurrence_preference_evidence') or {}).get('trace_path')}`",
         "",
         "| case | category | mechanisms | empty | tools | pending approvals |",
         "| --- | --- | --- | --- | --- | --- |",

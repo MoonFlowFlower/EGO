@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "Outcome-effect, memory lifecycle, and approval lifecycle evidence are fixed by EGO-FS-021/EGO-FS-023; next blocker is natural policy replay recurrence / longitudinal preference evidence before another #94 review."
+    next_action: "Outcome-effect, memory lifecycle, approval lifecycle, recurrence, and longitudinal preference evidence are fixed by EGO-FS-021/EGO-FS-024; next step is a new #94 real-provider rerun/rejudge when operator API env is available."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -560,6 +560,30 @@ tasks:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
       - "docs/codex/tasks/ego-functional-subject-approval-lifecycle-evidence/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-approval-lifecycle-evidence/EVIDENCE.approval_lifecycle.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-024
+    title: "EgoOperator: Functional Subject recurrence and longitudinal preference evidence"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: ego_operator_learning
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject recurrence/preference evidence local/scripted candidate pass
+    next_action: "Accepted locally; next #94 rerun should include recurrence_preference_evidence in the report and GPT-5.5 judge packet."
+    acceptance:
+      - "Functional Subject report includes recurrence_preference_evidence in JSON and GPT-5.5 judge packet."
+      - "Evidence covers policy patch candidate creation from repeated failure and replay on at least two later comparable turns."
+      - "Evidence covers a saved/approved preference influencing at least two later CLI-compatible turns through context injection."
+      - "Evidence remains candidate-local/scripted and does not claim durable learning or stable user benefit."
+    rollback: "Remove recurrence/preference evidence packet wiring and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence/EVIDENCE.recurrence_preference.json"
     external_refs:
       github_issue: null
 

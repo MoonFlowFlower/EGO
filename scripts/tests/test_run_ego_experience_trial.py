@@ -533,6 +533,42 @@ def test_functional_subject_trial_includes_approval_lifecycle_evidence(tmp_path,
     assert "Approval Lifecycle Evidence" in markdown
 
 
+def test_functional_subject_trial_includes_recurrence_preference_evidence(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        output_dir=tmp_path / "out",
+        case_limit=1,
+    )
+    payload = json.loads((tmp_path / "out" / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "out" / "functional_subject_trial_report.md").read_text(encoding="utf-8")
+    evidence = report["recurrence_preference_evidence"]
+
+    assert evidence["status"] == "pass"
+    assert evidence["checks"] == {
+        "policy_candidate_emitted": True,
+        "policy_replay_on_two_later_turns": True,
+        "policy_bounded_initiative_on_replay": True,
+        "preference_save_ok": True,
+        "preference_context_on_two_later_turns": True,
+        "preference_prompt_contains_saved_preference": True,
+    }
+    assert evidence["policy_recurrence"]["feedback_statuses"] == ["observed", "candidate_emitted"]
+    assert len(evidence["policy_recurrence"]["turns"]) == 2
+    assert all(item["trigger_signatures"] == ["provider_rate_limit"] for item in evidence["policy_recurrence"]["turns"])
+    assert all(item["bounded_initiative_candidate_count"] >= 1 for item in evidence["policy_recurrence"]["turns"])
+    assert evidence["longitudinal_preference"]["save_status"] == "ok"
+    assert evidence["longitudinal_preference"]["memory_scope"] == "EgoOperator candidate-local operator memory"
+    assert len(evidence["longitudinal_preference"]["turns"]) == 2
+    assert all(item["context_included"] is True for item in evidence["longitudinal_preference"]["turns"])
+    assert all(item["prompt_contains_preference"] is True for item in evidence["longitudinal_preference"]["turns"])
+    assert payload["gpt55_judge_packet"]["recurrence_preference_evidence"]["status"] == "pass"
+    assert "Recurrence Preference Evidence" in markdown
+
+
 def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

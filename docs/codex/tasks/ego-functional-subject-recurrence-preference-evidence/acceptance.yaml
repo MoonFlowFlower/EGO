@@ -1,0 +1,32 @@
+task: ego-functional-subject-recurrence-preference-evidence
+status: accepted_local
+claim_ceiling: Functional Subject recurrence/preference evidence local/scripted candidate pass
+acceptance:
+  - id: report_evidence
+    description: Functional Subject report includes recurrence_preference_evidence.
+    status: pass
+    evidence: docs/codex/tasks/ego-functional-subject-recurrence-preference-evidence/EVIDENCE.recurrence_preference.json
+  - id: judge_packet_evidence
+    description: GPT-5.5 judge packet includes recurrence_preference_evidence.
+    status: pass
+    evidence: gpt55_judge_packet.recurrence_preference_evidence.status=pass
+  - id: policy_recurrence
+    description: Evidence covers policy patch candidate creation and replay on at least two later comparable turns.
+    status: pass
+    evidence: policy_candidate_emitted=true policy_replay_on_two_later_turns=true
+  - id: preference_recurrence
+    description: Evidence covers saved preference context injection on at least two later CLI-compatible turns.
+    status: pass
+    evidence: preference_context_on_two_later_turns=true preference_prompt_contains_saved_preference=true
+  - id: local_boundary
+    description: Evidence remains candidate-local/scripted and does not claim durable learning or stable user benefit.
+    status: pass
+    evidence: observation_boundary=scripted local recurrence/preference evidence only
+verification:
+  commands:
+    - python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_includes_recurrence_preference_evidence -q
+    - python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --out /tmp/ego_fs_024_target
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py EgoOperator/tests/test_operator_runtime_contract.py EgoOperator/tests/test_memory_system.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Remove recurrence/preference evidence packet wiring and keep parent smoke blocked.

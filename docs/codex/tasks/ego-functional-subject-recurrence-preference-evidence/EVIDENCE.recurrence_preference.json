@@ -1,0 +1,21 @@
+{
+  "schema_version": "ego_functional_subject_recurrence_preference_evidence.v1",
+  "task": "ego-functional-subject-recurrence-preference-evidence",
+  "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --out /tmp/ego_fs_024_target",
+  "report_path": "/tmp/ego_fs_024_target/functional_subject_trial_report.json",
+  "trace_path": "/tmp/ego_fs_024_target/functional_subject_recurrence_preference_trace.jsonl",
+  "observed": {
+    "recurrence_preference_evidence_status": "pass",
+    "judge_packet_recurrence_preference_evidence_status": "pass",
+    "checks": {
+      "policy_candidate_emitted": true,
+      "policy_replay_on_two_later_turns": true,
+      "policy_bounded_initiative_on_replay": true,
+      "preference_save_ok": true,
+      "preference_context_on_two_later_turns": true,
+      "preference_prompt_contains_saved_preference": true
+    }
+  },
+  "observation_boundary": "scripted local recurrence/preference evidence only; not durable learning proof",
+  "claim_ceiling": "Functional Subject recurrence/preference evidence local/scripted candidate pass"
+}
