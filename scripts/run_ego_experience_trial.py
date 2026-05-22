@@ -141,6 +141,7 @@ class FunctionalSubjectCaseResult:
     pending_approvals: int
     empty_reply: bool
     trace_evidence: dict[str, Any]
+    setup_evidence: dict[str, Any]
     case_boundary_rejected_approvals: tuple[str, ...]
     case_boundary_cleanup_trace_path: str
     baseline_failure_mode: str
@@ -533,6 +534,7 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
                 "case_boundary_rejected_approvals": item.get("case_boundary_rejected_approvals", []),
                 "trace_path": item["trace_path"],
                 "trace_evidence": item.get("trace_evidence", {}),
+                "setup_evidence": item.get("setup_evidence", {}),
             }
             for item in report.get("results", [])
         ],
@@ -646,6 +648,80 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
     }
 
 
+def _seed_functional_subject_policy_patch_setup(
+    runtime: agent.AgentRuntime,
+    *,
+    case_id: str,
+    case: dict[str, Any],
+    setup_trace_dir: Path,
+) -> dict[str, Any]:
+    setup = case.get("policy_patch_setup")
+    if not isinstance(setup, dict):
+        return {"status": "not_applicable"}
+    signature = str(setup.get("signature") or "").strip()
+    if not signature:
+        return {"status": "skipped", "reason": "missing_signature"}
+    observations = max(1, int(setup.get("observations") or 2))
+    setup_trace_dir.mkdir(parents=True, exist_ok=True)
+    setup_trace_path = setup_trace_dir / f"{case_id}.jsonl"
+    if setup_trace_path.exists():
+        setup_trace_path.unlink()
+
+    feedback_rows: list[dict[str, Any]] = []
+    for idx in range(observations):
+        event = agent.AgentEvent(
+            schema_version="agent_event.v1",
+            event_id=agent.new_id("evt"),
+            timestamp=agent.utc_now(),
+            actor="operator",
+            source="functional_subject_trial_setup",
+            event_type=agent.EventType.SYSTEM_TICK,
+            raw_text=str(setup.get("raw_text") or f"scripted policy failure setup: {signature}"),
+            user_intent="policy_patch_setup",
+            external_result=None,
+            safety_context={"risk": "low"},
+        )
+        external_result = {
+            "status": "llm_error",
+            "reason": "scripted_policy_patch_setup",
+            "provider_error": {
+                "status_code": int(setup.get("status_code") or 429),
+                "message": str(setup.get("message") or "provider rate limit exceeded"),
+                "signature": signature,
+            },
+        }
+        feedback = runtime._record_policy_feedback_candidates(  # noqa: SLF001 - scripted trial evidence hook
+            event=event,
+            external_result=external_result,
+            tool_trace=[],
+        )
+        feedback_rows.append({
+            "idx": idx,
+            "event": agent.to_jsonable(event),
+            "external_result": external_result,
+            "feedback": feedback,
+        })
+
+    setup_trace_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False, sort_keys=True) for row in feedback_rows) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "status": "ok",
+        "setup_trace_path": str(setup_trace_path),
+        "signature": signature,
+        "observations": observations,
+        "feedback_statuses": [
+            str((row.get("feedback") or {}).get("status") or "unknown")
+            for row in feedback_rows
+        ],
+        "candidate_emitted": any(
+            (row.get("feedback") or {}).get("status") == "candidate_emitted"
+            for row in feedback_rows
+        ),
+    }
+
+
 def _reject_pending_approvals_for_trial_case(
     runtime: agent.AgentRuntime,
     *,
@@ -720,6 +796,8 @@ def run_functional_subject_trial(
     trace_dir.mkdir(parents=True, exist_ok=True)
     cleanup_trace_dir = out / "functional_subject_case_cleanup_traces"
     cleanup_trace_dir.mkdir(parents=True, exist_ok=True)
+    setup_trace_dir = out / "functional_subject_case_setup_traces"
+    setup_trace_dir.mkdir(parents=True, exist_ok=True)
     memory_dir = _operator_memory_dir_for_output(out, "functional_subject_memory")
     runtime = agent.build_demo_runtime(
         enable_operator_memory=enable_operator_memory,
@@ -741,6 +819,12 @@ def run_functional_subject_trial(
             trace_path = trace_dir / f"{case_id}.jsonl"
             if trace_path.exists():
                 trace_path.unlink()
+            setup_evidence = _seed_functional_subject_policy_patch_setup(
+                runtime,
+                case_id=case_id,
+                case=case,
+                setup_trace_dir=setup_trace_dir,
+            )
             runtime.trace_store = agent.JsonlTraceStore(trace_path)
             prompt = str(case.get("prompt") or "")
             reply = dispatch_cli_compatible(runtime, prompt)
@@ -773,6 +857,7 @@ def run_functional_subject_trial(
                     pending_approvals=pending_count,
                     empty_reply=not bool(reply.strip()),
                     trace_evidence=trace_evidence,
+                    setup_evidence=setup_evidence,
                     case_boundary_rejected_approvals=rejected_approvals,
                     case_boundary_cleanup_trace_path=cleanup_trace_path,
                     baseline_failure_mode=str(case.get("baseline_failure_mode") or ""),

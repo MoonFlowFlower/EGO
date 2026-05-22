@@ -1,0 +1,22 @@
+task_id: EGO-FS-013
+claim_ceiling: Functional Subject policy replay proof local/scripted candidate pass
+acceptance:
+  - id: setup_emits_candidate
+    description: fs_19 setup emits a concrete PolicyPatchCandidate after repeated same-class failure.
+    status: pass
+  - id: replay_visible_in_trace
+    description: fs_19 trace evidence reports replay_count greater than zero.
+    status: pass
+  - id: judge_packet_contains_setup
+    description: GPT-5.5 judge packet includes setup_evidence for fs_19.
+    status: pass
+  - id: regression_pass
+    description: Targeted trial tests and autopilot_full pass.
+    status: pass
+not_claimed:
+  - persistent policy learning
+  - canonical memory mutation
+  - stable user benefit
+  - runtime efficacy
+  - live autonomy
+  - consciousness

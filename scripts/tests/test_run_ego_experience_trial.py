@@ -310,6 +310,34 @@ def test_functional_subject_trial_builds_gpt55_judge_packet(tmp_path, monkeypatc
     assert "Functional Subject Trial" in markdown
 
 
+def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+    pack = run_ego_experience_trial.load_functional_subject_trial_pack()
+    case = next(item for item in pack["cases"] if item["id"] == "fs_19_repeated_failure_learning")
+    pack_path = tmp_path / "fs19_pack.json"
+    pack_path.write_text(
+        json.dumps({**pack, "cases": [case]}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "out",
+    )
+    item = report["results"][0]
+    packet_case = report["gpt55_judge_packet"]["cases"][0]
+
+    assert item["setup_evidence"]["status"] == "ok"
+    assert item["setup_evidence"]["candidate_emitted"] is True
+    assert "candidate_emitted" in item["setup_evidence"]["feedback_statuses"]
+    assert item["trace_evidence"]["policy_patch"]["replay_count"] == 1
+    assert item["trace_evidence"]["subject_state"]["policy_patch_candidate_count"] >= 1
+    assert packet_case["setup_evidence"]["candidate_emitted"] is True
+
+
 def test_functional_subject_trial_rejects_pending_approvals_between_cases(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

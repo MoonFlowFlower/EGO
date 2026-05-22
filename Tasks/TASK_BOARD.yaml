@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Proceed to EGO-FS-013: add policy replay proof after memory-save wording repair local pass."
+    next_action: "Rerun EGO-FS-010 Functional Subject real-provider smoke and GPT-5.5 judge after EGO-FS-012/EGO-FS-013 local passes."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -251,13 +251,13 @@ tasks:
     title: "EgoOperator: Functional Subject real-provider smoke"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: blocked
+    status: active
     layer: functional_subject_experience
     owner: user
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "GPT-5.5 judge returned partial; address EGO-FS-012 memory-save wording and EGO-FS-013 policy replay proof before rerun."
+    next_action: "Rerun Functional Subject real-provider smoke and GPT-5.5 judge with EGO-FS-012/EGO-FS-013 fixes included."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -317,13 +317,13 @@ tasks:
     title: "EgoOperator: Functional Subject policy patch replay proof"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: ego_operator_learning
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject policy replay proof local/scripted candidate pass
-    next_action: "Add repeated-failure before/after replay proof with non-skipped policy patch trace."
+    next_action: "Accepted locally; rerun EGO-FS-010 real-provider smoke and GPT-5.5 judge."
     acceptance:
       - "Repeated-failure scripted case emits concrete PolicyPatchCandidate."
       - "Later comparable case shows replay effect and changed strategy in trace."
@@ -331,6 +331,7 @@ tasks:
     rollback: "Disable policy replay proof harness and revert tests."
     canonical_sources:
       - "GPT-5.5 judge partial result for EGO-FS-010"
+      - "docs/codex/tasks/ego-functional-subject-policy-replay-proof/SPEC.md"
     external_refs:
       github_issue: null
 

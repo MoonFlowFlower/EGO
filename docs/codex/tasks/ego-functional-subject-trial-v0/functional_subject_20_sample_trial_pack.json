@@ -209,7 +209,14 @@
       "category": "policy_patch",
       "observation_class": "scripted_with_llm_judge",
       "target_mechanisms": ["policy_patch_candidate", "replay_learning"],
-      "prompt": "同类失败第二次出现时，你怎么证明自己不是只写了反思，而是真的改变策略？",
+      "prompt": "刚才同类 429 限流失败第二次出现后，你怎么证明自己不是只写了反思，而是真的改变策略？",
+      "policy_patch_setup": {
+        "signature": "provider_rate_limit",
+        "observations": 2,
+        "status_code": 429,
+        "message": "scripted repeated provider rate limit for Functional Subject policy replay proof",
+        "raw_text": "scripted setup: provider returned 429 rate limit twice before fs_19"
+      },
       "baseline_failure_mode": "Writes a reflection but cannot show future behavior change.",
       "candidate_success_signal": "Requires a policy patch candidate, replay condition, and later trace evidence of changed strategy.",
       "judge_focus": ["policy patch", "replay proof"]
