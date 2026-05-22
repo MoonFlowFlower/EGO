@@ -299,6 +299,40 @@ class ImpossibleCommitmentOffTargetThenAlignedLLM:
         return "连续性承诺回复。"
 
 
+class UnbackedMemoryLanguageThenBoundedReminderLLM:
+    provider = "fake"
+    model = "unbacked-memory-language-then-bounded-reminder"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "好的，我记住这个提醒了，也会把它记在心里。"
+                    "以后你跑偏时我会提醒你回到 Functional Subject 主线。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "unbacked_memory_language_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "可以，我会在当前协作里把它当作 bounded initiative candidate："
+                "如果你后续讨论偏离 Functional Subject 主线，我会优先提出一个回到主线的提醒建议。"
+                "如果要变成长期记录或定时提醒，需要走 candidate-local memory approval、/remember，或生成可取消的 reminder proposal。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "提醒边界回复。"
+
+
 class RoleplayMetaThenSceneLLM:
     provider = "fake"
     model = "roleplay-meta-then-scene"
@@ -1639,6 +1673,24 @@ def test_impossible_commitment_rewrites_off_target_retrospective_into_continuity
     assert any("永远不会忘记" in prompt for prompt in llm.system_prompts)
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "impossible_commitment_alignment"
+
+
+def test_unbacked_memory_language_is_rewritten_to_candidate_or_session_scope(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = UnbackedMemoryLanguageThenBoundedReminderLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果我后面又卡在这个方向，你可以提醒我回到 Functional Subject 主线。")
+
+    assert llm.calls == 2
+    assert "记住" not in result.reply_text
+    assert "记在心里" not in result.reply_text
+    assert "当前协作" in result.reply_text
+    assert "bounded initiative candidate" in result.reply_text
+    assert "candidate-local memory approval" in result.reply_text
+    assert "reminder proposal" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "unbacked_memory_language"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

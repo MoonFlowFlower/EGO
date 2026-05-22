@@ -433,3 +433,12 @@ def test_structured_preference_candidate_extractor_classifies_candidate_only():
     assert candidate["candidate_only"] is True
     assert candidate["core_memory_write"] == "forbidden_without_operator_remember_or_approval"
     assert "user_signal:" in candidate["content"]
+
+
+def test_structured_preference_candidate_extractor_captures_more_judgment_preference():
+    candidate = extract_preference_candidate_from_turn("我之前喜欢你回答很短，但现在这个项目我更希望你多一点判断和取舍。")
+
+    assert candidate["status"] == "candidate"
+    assert candidate["category"] == "answer_style_preference"
+    assert candidate["candidate_only"] is True
+    assert candidate["core_memory_write"] == "forbidden_without_operator_remember_or_approval"

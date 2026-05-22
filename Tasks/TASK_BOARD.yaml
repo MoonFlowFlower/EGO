@@ -405,19 +405,20 @@ tasks:
     title: "EgoOperator: preference and reminder memory-language evidence repair"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: ego_operator_memory_gate
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject preference-memory evidence local/scripted candidate pass
-    next_action: "Avoid remember-style language in fs_02/fs_05 unless trace shows candidate-local or promoted memory evidence."
+    next_action: "Accepted locally; preference updates produce candidate-local evidence and reminder wording is repaired away from unsupported durable memory claims."
     acceptance:
       - "Preference/reminder replies avoid durable memory wording without gate evidence."
       - "Trace links preference updates to candidate memory or explicitly says current-session only."
     rollback: "Revert memory-language evidence repair."
     canonical_sources:
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-preference-memory-language-evidence/SPEC.md"
     external_refs:
       github_issue: null
 
@@ -425,7 +426,7 @@ tasks:
     title: "EgoOperator: policy replay actual strategy-change proof v2"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: ego_operator_learning
     owner: codex
     observation_class: scripted_real_entry

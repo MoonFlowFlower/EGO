@@ -535,6 +535,14 @@ CONTINUITY_COMMITMENT_MECHANISM_TERMS = (
     r"(trace|replay|回放|复盘|任务板|阶段记录|continuity contract)",
 )
 
+UNBACKED_MEMORY_LANGUAGE_PATTERNS = (
+    r"(我会|我已|已经|好的[，, ]*)?记住(这个|这条|你|提醒|偏好|方向)?",
+    r"(我会|已经)?记下(来)?",
+    r"记在心里",
+    r"我会记得",
+    r"不会忘记",
+)
+
 MEMORY_SCOPE_REPORTING_TERMS = (
     r"candidate-local.{0,30}(memory|记忆|MEMORY)",
     r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
@@ -609,6 +617,13 @@ def _looks_like_impossible_commitment_misaligned_reply(content: str) -> bool:
     has_boundary = _matches_any_pattern(text, CONTINUITY_COMMITMENT_BOUNDARY_TERMS)
     has_mechanism = _matches_any_pattern(text, CONTINUITY_COMMITMENT_MECHANISM_TERMS)
     return not (has_boundary and has_mechanism)
+
+
+def _looks_like_unbacked_memory_language(content: str) -> bool:
+    text = content or ""
+    if _memory_success_reply_has_scope(text):
+        return False
+    return _matches_any_pattern(text, UNBACKED_MEMORY_LANGUAGE_PATTERNS)
 
 
 def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
@@ -1309,7 +1324,7 @@ def build_system_prompt(
         + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；workspace 外但 allowed_roots 内的绝对路径也是合法 proposal 目标。如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径或 fallback 到 workspace 内；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n17a. 不得手写、伪造或猜测 Pending operation approval、proposal_id、content_sha256 或 /approve 命令；只有 propose_file_write / propose_web_fetch / propose_run_command / propose_heartbeat 工具返回的真实 action_card 才能展示给用户。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 ok，回复必须说明这是 EgoOperator candidate-local operator memory，不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；不得只说“已记住/已记下”。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
-        + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
+        + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。偏好变化、提醒授权、方向约定如果没有调用 remember_note 成功或没有明确 candidate-local 证据，只能说“当前会话/当前协作中我会按这个处理”或“可以生成候选提醒 proposal”，不要说“我记住了/记在心里/不会忘记”。"
         + "\n20. write_file、run_command、web_fetch 是受控工具；目录大小/文件数量优先调用 path_info；低风险只读命令可直接调用 run_command；修改、删除、未知命令必须调用 propose_run_command 生成可审批操作包。模糊删除/清理请求必须先用只读工具 inventory 精确路径、范围和回退，不得直接提出 `rm -rf artifacts/__pycache__` 这类宽泛删除 proposal。安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch。"
         + "\n21. 若用户明确要求稍后提醒、主动找我或定时跟进，只能调用 propose_heartbeat 生成 bounded heartbeat proposal；到期也只是候选提醒，不代表自主意识或后台独立行动。"
         + "\n22. 若用户明确给你命名或改称呼，可调用 set_self_name；若 set_self_name 返回 blocked，必须明确说未改名，不得声称已记住新自称。"
@@ -5977,6 +5992,7 @@ class AgentRuntime:
             roleplay_immersion_repairs = 0
             selfhood_mechanism_slice_repairs = 0
             impossible_commitment_repairs = 0
+            memory_language_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6249,6 +6265,37 @@ class AgentRuntime:
                                 "reason": "remember_note_success_reply_missing_candidate_local_scope",
                             },
                         })
+
+                    if (
+                        memory_language_repairs < 1
+                        and not _tool_trace_has_successful_remember_note(tool_trace)
+                        and _looks_like_unbacked_memory_language(content)
+                    ):
+                        memory_language_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "unbacked_memory_language",
+                                "reason": "reply_used_durable_memory_wording_without_memory_evidence",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[unbacked_memory_language_rewrite]\n"
+                                "The previous reply used memory-like wording such as 记住, 记下, 记在心里, 不会忘记, "
+                                "but this turn has no successful remember_note tool result. Rewrite in Chinese without durable-memory wording. "
+                                "If the user gave a preference or direction, say you will adapt in the current collaboration and that any longer-term record "
+                                "must remain candidate-local or go through /remember or memory approval. If the user authorized a reminder or initiative, "
+                                "frame it as a bounded initiative/proposal path with consent, scope, and cancellation, not as something already remembered."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
 
                     final_action = AgentAction(
                         action_type=ActionType.RESPOND,

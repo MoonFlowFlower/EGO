@@ -57,6 +57,7 @@ CANDIDATE_MEMORY_SIGNAL_PATTERNS = (
     r"我不喜欢",
     r"我偏好",
     r"我希望",
+    r"我更希望",
     r"我的目标",
     r"我正在",
     r"我习惯",
@@ -75,7 +76,7 @@ CANDIDATE_MEMORY_SIGNAL_PATTERNS = (
 )
 PREFERENCE_CATEGORY_CUES = {
     "language_preference": ("中文", "英文", "语言", "language"),
-    "answer_style_preference": ("结论先行", "少废话", "详细", "简洁", "解释多", "直接", "style"),
+    "answer_style_preference": ("结论先行", "少废话", "详细", "简洁", "解释多", "直接", "判断", "取舍", "style"),
     "tool_preference": ("工具", "审批", "自动执行", "不要自动", "tool", "approval"),
     "workflow_preference": ("先规划", "先测试", "一步一步", "提交", "推送", "workflow", "commit", "push"),
     "greeting_preference": ("打招呼", "问候", "称呼", "你好", "greeting"),
