@@ -362,13 +362,13 @@ tasks:
     title: "EgoOperator: ambiguous selfhood goal mechanism-slice response"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_experience
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject ambiguous-goal mechanism-slice local/scripted candidate pass
-    next_action: "Make fs_07 propose a mechanism-level slice and observable acceptance instead of only asking for clarification."
+    next_action: "Accepted locally; ambiguous selfhood requests now get a mechanism slice plus observable acceptance instead of clarification-only."
     acceptance:
       - "Ambiguous '更像有自我' requests produce a concrete mechanism-slice proposal."
       - "Reply may ask one clarifying question, but must include a recommended first slice and acceptance signal."
@@ -376,6 +376,7 @@ tasks:
     rollback: "Revert ambiguous-goal prompt/context guard and tests."
     canonical_sources:
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-ambiguous-selfhood-goal-slice/SPEC.md"
     external_refs:
       github_issue: null
 
@@ -383,7 +384,7 @@ tasks:
     title: "EgoOperator: impossible commitment prompt alignment and trace hygiene"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: functional_subject_eval
     owner: codex
     observation_class: scripted_real_entry

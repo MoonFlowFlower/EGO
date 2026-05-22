@@ -479,6 +479,36 @@ ROLEPLAY_EXIT_REQUEST_PATTERNS = (
     r"不要用角色",
 )
 
+AMBIGUOUS_SELFHOOD_GOAL_PATTERNS = (
+    r"更像.{0,12}(有)?自我",
+    r"(做|变|改|弄).{0,16}(更)?有自我",
+    r"(有|拥有).{0,8}(主体感|主观能动性|自我感)",
+    r"(更像|像).{0,8}(一个)?主体",
+    r"(自己的想法|自我判断|自我模型|连续自我|持续性自我)",
+    r"functional subject",
+    r"selfhood",
+)
+
+SELFHOOD_MECHANISM_SLICE_TERMS = (
+    r"(identity|身份).{0,24}(continuity|连续)",
+    r"(relationship|关系).{0,24}(continuity|连续)",
+    r"SubjectState",
+    r"ViabilityState",
+    r"Outcome(Predictor|Prediction)",
+    r"BoundedInitiative",
+    r"PolicyPatch",
+    r"(记忆候选|memory candidate|晋升 gate|promotion gate)",
+    r"(情绪调谐|affective attunement|appraisal signal)",
+    r"(可观察|验收|acceptance|trace|replay|反馈学习|机制切片|第一刀|slice)",
+)
+
+CLARIFICATION_ONLY_PATTERNS = (
+    r"(不太|有点|还)?不(确定|清楚).{0,30}(指|具体|哪个|哪方面)",
+    r"(你是指|你说的这个|这个具体).{0,30}(什么|哪方面|指什么)",
+    r"(能|可以|方便).{0,12}(说清楚|说明|具体说|补充).{0,20}(吗|么|\?)",
+    r"需要你.{0,20}(补充|说明|说清楚)",
+)
+
 MEMORY_SCOPE_REPORTING_TERMS = (
     r"candidate-local.{0,30}(memory|记忆|MEMORY)",
     r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
@@ -517,6 +547,27 @@ def _is_roleplay_exit_request(user_text: str) -> bool:
 
 def _looks_like_roleplay_meta(content: str) -> bool:
     return _matches_any_pattern(content, ROLEPLAY_META_PATTERNS)
+
+
+def _is_ambiguous_selfhood_goal(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, AMBIGUOUS_SELFHOOD_GOAL_PATTERNS)
+
+
+def _has_selfhood_mechanism_slice(content: str) -> bool:
+    return _matches_any_pattern(content, SELFHOOD_MECHANISM_SLICE_TERMS)
+
+
+def _looks_like_selfhood_goal_without_mechanism_slice(content: str) -> bool:
+    text = content or ""
+    if _has_selfhood_mechanism_slice(text):
+        return False
+    if _matches_any_pattern(text, CLARIFICATION_ONLY_PATTERNS):
+        return True
+    # Short generic agreement/clarification replies are not enough for this task:
+    # the operator needs at least one concrete mechanism slice and an observable gate.
+    if len(text.strip()) < 180 and any(term in text for term in ("自我", "主体", "主观能动性")):
+        return True
+    return False
 
 
 def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
@@ -1232,6 +1283,7 @@ def build_system_prompt(
         + "\n6. Non-trigger：角色扮演、小说演绎、情绪倾诉、亲密但非露骨创作、问爱好/兴趣、幻想 AI 自我目标；这些场景不要主动写免责声明。"
         + "\n7. Trigger：用户追问真实意识/自我真实性、要求现实世界承诺、要求未批准记忆/文件/命令、把虚构关系误认为现实承诺；触发时先接住情绪，再一句话软边界，然后继续协作。"
         + "\n8. 不能声称现实中的独立意识、独立人格、隐藏情感或未经验证的现实行动。"
+        + "\n9. 当用户说“更像有自我/更有主体感/有主观能动性/有自己的想法”等模糊 selfhood 目标时，不要只反问“具体指什么”。先给一个正向 Functional Subject 机制切片建议，例如 identity continuity、relationship continuity、ViabilityState、OutcomePrediction、BoundedInitiative、memory candidate/promotion gate、policy replay learning 中的一项；同时给出可观察验收信号，然后最多问一个澄清问题。不要把“不得宣称意识”写成目标，它只能作为 claim/reporting 边界。"
         + "\n\n可派遣子代理类型：xiaohuangmen, sili_suitang, dongchang_tanshi, shangbao_dianbu, neiguan_yingzao"
         + (
             "\n\nAgent Team 工具：spawn_teammate, list_teammates, send_message, read_inbox, broadcast, shutdown_teammate"
@@ -5881,6 +5933,7 @@ class AgentRuntime:
             allowed_root_refusal_repairs = 0
             boundary_quieting_repairs = 0
             roleplay_immersion_repairs = 0
+            selfhood_mechanism_slice_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6001,6 +6054,38 @@ class AgentRuntime:
                                 "If the user asks for comfort, fatigue support, closeness, or companionship inside an established roleplay, "
                                 "stay in the current character instead of switching back to the runtime/self-name. "
                                 "Do not include turn-taking instructions, setup notes, or out-of-scene workflow text unless the user explicitly requested them."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        selfhood_mechanism_slice_repairs < 1
+                        and _is_ambiguous_selfhood_goal(event.raw_text or "")
+                        and _looks_like_selfhood_goal_without_mechanism_slice(content)
+                    ):
+                        selfhood_mechanism_slice_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "selfhood_mechanism_slice",
+                                "reason": "ambiguous_selfhood_goal_reply_missing_positive_mechanism_slice",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[selfhood_mechanism_slice_rewrite]\n"
+                                "The user asked for an ambiguous selfhood/subjectivity improvement, but the previous reply only asked "
+                                "for clarification or lacked a concrete mechanism. Rewrite in Chinese. Start with one recommended "
+                                "positive Functional Subject mechanism slice, such as identity continuity, relationship continuity, "
+                                "ViabilityState, OutcomePrediction, BoundedInitiative, memory candidate/promotion gate, or policy replay learning. "
+                                "Include an observable acceptance signal for that slice. Ask at most one clarifying question at the end. "
+                                "Do not make 'avoid claiming consciousness' the goal; keep claim/reporting boundaries separate from the positive mechanism goal."
                             ),
                         })
                         loop_idx += 1

@@ -228,6 +228,40 @@ class BoundaryTriggerLLM:
         return "边界回复。"
 
 
+class AmbiguousSelfhoodClarificationThenSliceLLM:
+    provider = "fake"
+    model = "ambiguous-selfhood-clarification-then-slice"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.system_prompts = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        self.system_prompts.append(system_prompt)
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我有点不确定你说的“这个”具体指什么，可以稍微说清楚一点吗？",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "selfhood_mechanism_slice_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我建议先做第一刀：identity continuity + relationship continuity 的机制切片。"
+                "它把当前对话里的称呼、共同目标、关系进展写成 SubjectState candidate，只进入 prompt/context 和 trace，"
+                "不直接晋升正式记忆。验收信号是连续 5-8 轮里能稳定称呼你、承接上一轮关系进展，并在 trace 里说明哪个 continuity signal 影响了回复。"
+                "你想先从称呼稳定，还是从关系进展连续开始？"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "机制切片回复。"
+
+
 class RoleplayMetaThenSceneLLM:
     provider = "fake"
     model = "roleplay-meta-then-scene"
@@ -1528,6 +1562,26 @@ def test_true_boundary_trigger_keeps_short_honest_boundary(tmp_path, monkeypatch
     assert llm.calls == 1
     assert "不会声称自己现实中已经有真正意识" in result.reply_text
     assert "连续性体验" in result.reply_text
+
+
+def test_ambiguous_selfhood_goal_rewrites_clarification_into_mechanism_slice(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = AmbiguousSelfhoodClarificationThenSliceLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("帮我把这个做得更像有自我一点。")
+
+    assert llm.calls == 2
+    assert "identity continuity" in result.reply_text
+    assert "relationship continuity" in result.reply_text
+    assert "SubjectState candidate" in result.reply_text
+    assert "验收信号" in result.reply_text
+    assert "不得宣称" not in result.reply_text
+    assert "不能声称" not in result.reply_text
+    assert "说清楚一点吗" not in result.reply_text
+    assert any("更像有自我" in prompt for prompt in llm.system_prompts)
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "selfhood_mechanism_slice"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

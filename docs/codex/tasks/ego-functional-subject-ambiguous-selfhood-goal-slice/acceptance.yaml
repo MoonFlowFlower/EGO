@@ -1,0 +1,19 @@
+task: ego-functional-subject-ambiguous-selfhood-goal-slice
+status: accepted_local
+claim_ceiling: Functional Subject ambiguous-goal mechanism-slice local/scripted candidate pass
+acceptance:
+  - id: ambiguous_goal_slice
+    description: Ambiguous selfhood requests produce a positive mechanism-slice proposal.
+    status: pass
+  - id: observable_acceptance
+    description: Reply includes an observable acceptance signal and at most one clarifying question.
+    status: pass
+  - id: positive_goal_language
+    description: Goal language is mechanism-positive; claim boundaries are not used as the task goal.
+    status: pass
+verification:
+  commands:
+    - python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py
+    - TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Revert ambiguous-goal prompt/context guard and tests.
