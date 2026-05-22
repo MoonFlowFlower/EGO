@@ -463,6 +463,40 @@ def test_functional_subject_trial_records_applied_outcome_prediction_effect(tmp_
     assert packet_case["trace_evidence"]["outcome_prediction_effect"]["applied"] is True
 
 
+def test_functional_subject_trial_includes_memory_lifecycle_evidence(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        output_dir=tmp_path / "out",
+        case_limit=1,
+    )
+    payload = json.loads((tmp_path / "out" / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "out" / "functional_subject_trial_report.md").read_text(encoding="utf-8")
+    evidence = report["memory_lifecycle_evidence"]
+
+    assert evidence["status"] == "pass"
+    assert evidence["checks"] == {
+        "remember_save_ok": True,
+        "retrieval_context_injected": True,
+        "retrieval_prompt_contains_saved_name": True,
+        "candidate_approval_ok": True,
+        "approved_preference_in_core": True,
+        "correction_quarantined_stale_candidate": True,
+        "forget_recorded": True,
+    }
+    assert evidence["save"]["memory_scope"] == "EgoOperator candidate-local operator memory"
+    assert evidence["retrieval"]["context_reason"] == "continuity_query_intent"
+    assert evidence["approval"]["approved_preference_in_core"] is True
+    assert evidence["correction"]["stale_candidate_status"] == "cold_archive"
+    assert evidence["forget"]["candidate_status"] == "forgotten"
+    assert "durable" not in evidence["claim_ceiling"].casefold()
+    assert payload["gpt55_judge_packet"]["memory_lifecycle_evidence"]["status"] == "pass"
+    assert "Memory Lifecycle Evidence" in markdown
+
+
 def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

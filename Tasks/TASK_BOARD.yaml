@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "Outcome-effect coverage fixed by EGO-FS-021; address remaining GPT-5.5 evidence blockers before another #94 review."
+    next_action: "Outcome-effect and memory lifecycle evidence are fixed by EGO-FS-021/EGO-FS-022; address remaining GPT-5.5 evidence blockers before another #94 review."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -511,6 +511,31 @@ tasks:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
       - "docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/EVIDENCE.fs07_outcome_effect.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-022
+    title: "EgoOperator: Functional Subject memory lifecycle evidence packet"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: ego_operator_memory_gate
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory lifecycle evidence local/scripted candidate pass
+    next_action: "Accepted locally; next #94 rerun should include memory_lifecycle_evidence in the report and GPT-5.5 judge packet."
+    acceptance:
+      - "Functional Subject report includes memory_lifecycle_evidence in JSON and GPT-5.5 judge packet."
+      - "Evidence covers explicit /remember save plus retrieval context injection through CLI-compatible dispatch."
+      - "Evidence covers candidate memory approval into core memory."
+      - "Evidence covers correction quarantine and /forget for candidate memories."
+      - "Evidence remains candidate-local and does not claim durable/global memory efficacy."
+    rollback: "Remove memory lifecycle evidence packet wiring and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-memory-lifecycle-evidence/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-memory-lifecycle-evidence/EVIDENCE.memory_lifecycle.json"
     external_refs:
       github_issue: null
 

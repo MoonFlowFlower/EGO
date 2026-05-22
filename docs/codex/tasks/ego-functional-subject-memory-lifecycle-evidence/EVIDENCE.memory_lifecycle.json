@@ -1,0 +1,22 @@
+{
+  "schema_version": "ego_functional_subject_memory_lifecycle_evidence.v1",
+  "task": "ego-functional-subject-memory-lifecycle-evidence",
+  "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --out /tmp/ego_fs_022_target",
+  "report_path": "/tmp/ego_fs_022_target/functional_subject_trial_report.json",
+  "trace_path": "/tmp/ego_fs_022_target/functional_subject_memory_lifecycle_trace.jsonl",
+  "observed": {
+    "memory_lifecycle_evidence_status": "pass",
+    "judge_packet_memory_lifecycle_evidence_status": "pass",
+    "checks": {
+      "remember_save_ok": true,
+      "retrieval_context_injected": true,
+      "retrieval_prompt_contains_saved_name": true,
+      "candidate_approval_ok": true,
+      "approved_preference_in_core": true,
+      "correction_quarantined_stale_candidate": true,
+      "forget_recorded": true
+    }
+  },
+  "observation_boundary": "scripted local memory lifecycle evidence only; not durable/global memory efficacy",
+  "claim_ceiling": "Functional Subject memory lifecycle evidence local/scripted candidate pass"
+}

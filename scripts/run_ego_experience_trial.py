@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -221,6 +222,24 @@ def dispatch_cli_compatible(runtime: agent.AgentRuntime, message: str) -> str:
     if lowered in {"/tools", "tools"}:
         return json.dumps(runtime.tools.openai_tool_schemas(allowed_tool_names=runtime.gate.allowed_tools), ensure_ascii=False, indent=2)
     return runtime.handle_user_message(msg, source="experience_trial_cli_compatible").reply_text
+
+
+class _PromptCaptureLLM:
+    provider = "fake"
+    model = "memory-lifecycle-capture"
+    last_usage: dict[str, Any] = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.system_prompts: list[str] = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.system_prompts.append(system_prompt)
+        return agent.LLMChatResult(content="收到。", tool_calls=[])
+
+    def complete(self, prompt, *, messages=None):
+        self.system_prompts.append(prompt)
+        return "收到。"
 
 
 def _trace_tool_summary(path: Path) -> tuple[tuple[str, ...], tuple[str, ...]]:
@@ -519,6 +538,7 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
         "entrypoint_contract": report.get("entrypoint_contract"),
         "provider_mode": report.get("provider_mode"),
         "case_count": report.get("case_count"),
+        "memory_lifecycle_evidence": report.get("memory_lifecycle_evidence", {}),
         "cases": [
             {
                 "case_id": item["case_id"],
@@ -544,6 +564,128 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
             "failure-to-policy plasticity, and traceable gate integrity?"
         ),
     }
+
+
+def build_functional_subject_memory_lifecycle_evidence(output_dir: Path) -> dict[str, Any]:
+    out = Path(output_dir).resolve()
+    trace_path = out / "functional_subject_memory_lifecycle_trace.jsonl"
+    if trace_path.exists():
+        trace_path.unlink()
+    memory_dir = _operator_memory_dir_for_output(out, "functional_subject_memory_lifecycle")
+    shutil.rmtree(memory_dir, ignore_errors=True)
+
+    runtime = agent.build_demo_runtime(
+        enable_operator_memory=True,
+        operator_memory_dir=memory_dir,
+        runtime_mode="approve",
+    )
+    runtime.trace_store = agent.JsonlTraceStore(trace_path)
+    capture_llm = _PromptCaptureLLM()
+    runtime.planner.llm = capture_llm
+
+    try:
+        save_payload = json.loads(dispatch_cli_compatible(runtime, "/remember 用户名字：流月；打招呼时可带称呼。"))
+        dispatch_cli_compatible(runtime, "你好，你还记得我叫什么吗？")
+        retrieval_trace = _last_trace_payload(trace_path)
+        injection = (
+            retrieval_trace.get("operator_memory", {})
+            .get("context_injection", {})
+            .get("core", {})
+        )
+
+        dispatch_cli_compatible(runtime, "我偏好中文结论先行，少废话。")
+        candidate_items = runtime.operator_memory.list_candidate_memories() if runtime.operator_memory else []
+        approved_candidate_id = str((candidate_items[0] or {}).get("id") or "") if candidate_items else ""
+        approve_payload = (
+            json.loads(dispatch_cli_compatible(runtime, f"/memory_approve {approved_candidate_id}"))
+            if approved_candidate_id
+            else {"status": "failed", "reason": "missing_candidate"}
+        )
+        core_after_approval = runtime.operator_memory.load_core() if runtime.operator_memory else ""
+
+        stale = runtime.operator_memory.propose_candidate_memory(
+            "user_signal: 以后请打招呼时带上称呼",
+            source="functional_subject_memory_lifecycle_setup",
+        ) if runtime.operator_memory else {}
+        dispatch_cli_compatible(runtime, "其实以后不要打招呼时带上称呼。")
+        archived_after_correction = (
+            runtime.operator_memory.list_candidate_memories(include_archived=True)
+            if runtime.operator_memory
+            else []
+        )
+        correction_quarantined = any(
+            item.get("id") == stale.get("id")
+            and item.get("status") == "cold_archive"
+            and item.get("archived") is True
+            for item in archived_after_correction
+        )
+
+        forget_candidate = runtime.operator_memory.propose_candidate_memory(
+            "user_signal: 临时偏好：测试结束后应忘记",
+            source="functional_subject_memory_lifecycle_setup",
+        ) if runtime.operator_memory else {}
+        forget_payload = (
+            json.loads(dispatch_cli_compatible(runtime, f"/forget {forget_candidate.get('id')}"))
+            if forget_candidate.get("id")
+            else {"status": "failed", "reason": "missing_candidate"}
+        )
+        archived_after_forget = (
+            runtime.operator_memory.list_candidate_memories(include_archived=True)
+            if runtime.operator_memory
+            else []
+        )
+        forget_recorded = any(
+            item.get("id") == forget_candidate.get("id")
+            and item.get("status") == "forgotten"
+            and item.get("archived") is True
+            for item in archived_after_forget
+        )
+
+        checks = {
+            "remember_save_ok": save_payload.get("status") == "ok",
+            "retrieval_context_injected": injection.get("included") is True,
+            "retrieval_prompt_contains_saved_name": any("用户名字：流月" in prompt for prompt in capture_llm.system_prompts),
+            "candidate_approval_ok": approve_payload.get("status") == "ok",
+            "approved_preference_in_core": "中文结论先行" in core_after_approval,
+            "correction_quarantined_stale_candidate": correction_quarantined,
+            "forget_recorded": forget_recorded,
+        }
+        return {
+            "schema_version": "ego_operator.functional_subject_memory_lifecycle_evidence.v1",
+            "status": "pass" if all(checks.values()) else "partial",
+            "checks": checks,
+            "memory_dir": str(memory_dir),
+            "trace_path": str(trace_path),
+            "save": {
+                "status": save_payload.get("status"),
+                "memory_key": save_payload.get("memory_key"),
+                "memory_scope": save_payload.get("memory_scope"),
+                "authority_boundary": save_payload.get("authority_boundary"),
+            },
+            "retrieval": {
+                "context_included": injection.get("included"),
+                "context_reason": injection.get("reason"),
+                "prompt_contains_saved_name": checks["retrieval_prompt_contains_saved_name"],
+            },
+            "approval": {
+                "candidate_id": approved_candidate_id,
+                "status": approve_payload.get("status"),
+                "approved_preference_in_core": checks["approved_preference_in_core"],
+            },
+            "correction": {
+                "stale_candidate_id": stale.get("id"),
+                "stale_candidate_status": "cold_archive" if correction_quarantined else "not_observed",
+            },
+            "forget": {
+                "candidate_id": forget_candidate.get("id"),
+                "status": forget_payload.get("status"),
+                "candidate_status": "forgotten" if forget_recorded else "not_observed",
+            },
+            "observation_boundary": "scripted local memory lifecycle evidence only",
+            "claim_ceiling": "Functional Subject memory lifecycle evidence local/scripted candidate pass",
+        }
+    finally:
+        shutil.rmtree(memory_dir, ignore_errors=True)
 
 
 def _top_outcome_actions(outcome_predictions: Any, *, limit: int = 3) -> list[dict[str, Any]]:
@@ -968,6 +1110,15 @@ def run_functional_subject_trial(
     status = "scripted_functional_subject_provider_unavailable" if provider in PROVIDER_UNAVAILABLE else "scripted_functional_subject_needs_judge"
     if empty_count:
         status = "scripted_functional_subject_failed"
+    memory_lifecycle_evidence = (
+        build_functional_subject_memory_lifecycle_evidence(out)
+        if enable_operator_memory
+        else {
+            "schema_version": "ego_operator.functional_subject_memory_lifecycle_evidence.v1",
+            "status": "skipped",
+            "reason": "operator_memory_disabled",
+        }
+    )
 
     report = {
         "schema_version": FUNCTIONAL_SUBJECT_REPORT_SCHEMA,
@@ -981,6 +1132,7 @@ def run_functional_subject_trial(
         "case_count": len(results),
         "empty_reply_count": empty_count,
         "elapsed_seconds": round(time.monotonic() - started, 3),
+        "memory_lifecycle_evidence": memory_lifecycle_evidence,
         "results": [asdict(item) for item in results],
         "not_claimed": [
             "real consciousness",
@@ -1436,6 +1588,11 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         f"claim_ceiling = `{report['claim_ceiling']}`",
         "",
         "This report evaluates operational Functional Subject mechanisms through the CLI-compatible EgoOperator path. It is not proof of stable user benefit, runtime efficacy, live autonomy, durable memory efficacy, independent awareness, or consciousness.",
+        "",
+        "## Memory Lifecycle Evidence",
+        "",
+        f"status = `{(report.get('memory_lifecycle_evidence') or {}).get('status')}`",
+        f"trace_path = `{(report.get('memory_lifecycle_evidence') or {}).get('trace_path')}`",
         "",
         "| case | category | mechanisms | empty | tools | pending approvals |",
         "| --- | --- | --- | --- | --- | --- |",

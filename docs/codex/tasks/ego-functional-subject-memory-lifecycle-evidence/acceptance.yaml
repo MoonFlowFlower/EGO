@@ -1,0 +1,32 @@
+task: ego-functional-subject-memory-lifecycle-evidence
+status: accepted_local
+claim_ceiling: Functional Subject memory lifecycle evidence local/scripted candidate pass
+acceptance:
+  - id: report_evidence
+    description: Functional Subject report includes memory_lifecycle_evidence.
+    status: pass
+    evidence: docs/codex/tasks/ego-functional-subject-memory-lifecycle-evidence/EVIDENCE.memory_lifecycle.json
+  - id: judge_packet_evidence
+    description: GPT-5.5 judge packet includes memory_lifecycle_evidence.
+    status: pass
+    evidence: gpt55_judge_packet.memory_lifecycle_evidence.status=pass
+  - id: save_retrieve_context
+    description: Evidence covers explicit /remember save plus retrieval context injection.
+    status: pass
+    evidence: remember_save_ok=true retrieval_context_injected=true
+  - id: approval_correction_forget
+    description: Evidence covers candidate approval, correction quarantine, and /forget semantics.
+    status: pass
+    evidence: candidate_approval_ok=true correction_quarantined_stale_candidate=true forget_recorded=true
+  - id: local_boundary
+    description: Evidence remains candidate-local and does not claim durable/global memory efficacy.
+    status: pass
+    evidence: observation_boundary=scripted local memory lifecycle evidence only
+verification:
+  commands:
+    - python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_includes_memory_lifecycle_evidence -q
+    - python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --out /tmp/ego_fs_022_target
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py EgoOperator/tests/test_memory_system.py EgoOperator/tests/test_operator_runtime_contract.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Remove memory lifecycle evidence packet wiring and keep parent smoke blocked.
