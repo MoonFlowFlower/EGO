@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Proceed to EGO-FS-012: repair memory-save wording after #94 partial GPT-5.5 judge."
+    next_action: "Proceed to EGO-FS-013: add policy replay proof after memory-save wording repair local pass."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -295,13 +295,13 @@ tasks:
     title: "EgoOperator: Functional Subject memory-save gate wording repair"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: ego_operator_memory_gate
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject memory-save wording local/scripted candidate pass
-    next_action: "Prevent explicit-save replies from implying durable memory unless the admitted memory scope is stated."
+    next_action: "Accepted locally; rerun Functional Subject judge after EGO-FS-013 adds policy replay proof."
     acceptance:
       - "Explicit save requests report candidate/local/gated memory scope instead of bare durable-sounding '已记住'."
       - "Trace still records remember_note gate output."
@@ -309,6 +309,7 @@ tasks:
     rollback: "Revert memory-save prompt/result wording repair and tests."
     canonical_sources:
       - "GPT-5.5 judge partial result for EGO-FS-010"
+      - "docs/codex/tasks/ego-functional-subject-memory-save-wording-repair/SPEC.md"
     external_refs:
       github_issue: null
 
@@ -316,13 +317,13 @@ tasks:
     title: "EgoOperator: Functional Subject policy patch replay proof"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: ego_operator_learning
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject policy replay proof local/scripted candidate pass
-    next_action: "After EGO-FS-012, add repeated-failure before/after replay proof with non-skipped policy patch trace."
+    next_action: "Add repeated-failure before/after replay proof with non-skipped policy patch trace."
     acceptance:
       - "Repeated-failure scripted case emits concrete PolicyPatchCandidate."
       - "Later comparable case shows replay effect and changed strategy in trace."

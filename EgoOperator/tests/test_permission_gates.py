@@ -644,13 +644,16 @@ def test_remember_note_requires_explicit_user_intent_and_writes_core(tmp_path, m
 
     result = runtime.handle_user_message("请记住：用户偏好中文、结论先行")
 
-    assert result.reply_text == "完成。"
+    assert result.reply_text.startswith("完成。")
+    assert "EgoOperator candidate-local operator memory" in result.reply_text
     core = (tmp_path / "memory" / "MEMORY.md").read_text(encoding="utf-8")
     assert "用户偏好：中文、结论先行" in core
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"
     assert trace["tool_trace"][0]["gate"]["allowed"] is True
     assert trace["tool_trace"][0]["gate"]["reason"] == "operator_memory_write_intent_allowed"
+    assert trace["tool_trace"][0]["output"]["memory_scope"] == "EgoOperator candidate-local operator memory"
+    assert trace["tool_trace"][1]["repair"]["type"] == "memory_success_scope"
 
 
 def test_memory_correction_intent_can_write_core(tmp_path, monkeypatch):
@@ -661,12 +664,38 @@ def test_memory_correction_intent_can_write_core(tmp_path, monkeypatch):
 
     result = runtime.handle_user_message("那你要记得打招呼的时候要带上称呼")
 
-    assert result.reply_text == "完成。"
+    assert result.reply_text.startswith("完成。")
+    assert "EgoOperator candidate-local operator memory" in result.reply_text
     core = (tmp_path / "memory" / "MEMORY.md").read_text(encoding="utf-8")
     assert "打招呼时带上用户称呼" in core
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["gate"]["allowed"] is True
     assert trace["tool_trace"][0]["gate"]["reason"] == "operator_memory_write_intent_allowed"
+
+
+def test_successful_memory_write_cannot_reply_with_bare_durable_claim(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    runtime.planner.llm = ToolThenFinalLLM(
+        "remember_note",
+        {"text": "用户偏好：以后称呼用户为流月"},
+        final_text="已记住。",
+    )
+
+    result = runtime.handle_user_message("请记住：以后称呼我流月")
+
+    assert result.reply_text.startswith("已记住。")
+    assert "EgoOperator candidate-local operator memory" in result.reply_text
+    assert "PROJECT_MEMORY" in result.reply_text
+    assert (tmp_path / "memory" / "MEMORY.md").exists()
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"
+    assert trace["tool_trace"][0]["output"]["status"] == "ok"
+    assert trace["tool_trace"][1]["repair"] == {
+        "type": "memory_success_scope",
+        "reason": "remember_note_success_reply_missing_candidate_local_scope",
+    }
 
 
 def test_remember_note_without_explicit_intent_is_blocked_and_core_unchanged(tmp_path, monkeypatch):

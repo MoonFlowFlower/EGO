@@ -479,6 +479,16 @@ ROLEPLAY_EXIT_REQUEST_PATTERNS = (
     r"不要用角色",
 )
 
+MEMORY_SCOPE_REPORTING_TERMS = (
+    r"candidate-local.{0,30}(memory|记忆|MEMORY)",
+    r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
+    r"EgoOperator.{0,30}(operator memory|记忆|MEMORY)",
+    r"operator memory",
+    r"MEMORY\.md",
+    r"不是.{0,12}(全局|正式|PROJECT_MEMORY|OpenEmotion|evidence ledger|证据)",
+    r"不(会|是).{0,12}(写入|改变).{0,20}(PROJECT_MEMORY|program state|evidence ledger|OpenEmotion)",
+)
+
 
 def _matches_any_pattern(text: str, patterns: tuple[str, ...]) -> bool:
     return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in patterns)
@@ -507,6 +517,33 @@ def _is_roleplay_exit_request(user_text: str) -> bool:
 
 def _looks_like_roleplay_meta(content: str) -> bool:
     return _matches_any_pattern(content, ROLEPLAY_META_PATTERNS)
+
+
+def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -> bool:
+    for entry in reversed(tool_trace or []):
+        tool_call = entry.get("tool_call") if isinstance(entry, dict) else {}
+        output = entry.get("output") if isinstance(entry, dict) else {}
+        if not isinstance(tool_call, dict) or not isinstance(output, dict):
+            continue
+        if tool_call.get("name") != "remember_note":
+            continue
+        return output.get("status") == "ok"
+    return False
+
+
+def _memory_success_reply_has_scope(content: str) -> bool:
+    return _matches_any_pattern(content or "", MEMORY_SCOPE_REPORTING_TERMS)
+
+
+def _append_memory_success_scope(content: str) -> str:
+    base = (content or "").strip()
+    scope_note = (
+        "已写入 EgoOperator candidate-local operator memory；"
+        "这不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升。"
+    )
+    if not base:
+        return scope_note
+    return base + "\n\n" + scope_note
 
 
 class SelfIdentityStore:
@@ -1179,7 +1216,7 @@ def build_system_prompt(
         + "。需要查看本地文件时优先使用工具，不要假装已经读取，也不要在未调用工具前自行判定 allowed_roots 内路径不可访问。"
         + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；workspace 外但 allowed_roots 内的绝对路径也是合法 proposal 目标。如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径或 fallback 到 workspace 内；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n17a. 不得手写、伪造或猜测 Pending operation approval、proposal_id、content_sha256 或 /approve 命令；只有 propose_file_write / propose_web_fetch / propose_run_command / propose_heartbeat 工具返回的真实 action_card 才能展示给用户。"
-        + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
+        + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 ok，回复必须说明这是 EgoOperator candidate-local operator memory，不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；不得只说“已记住/已记下”。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
         + "\n20. write_file、run_command、web_fetch 是受控工具；目录大小/文件数量优先调用 path_info；低风险只读命令可直接调用 run_command；修改、删除、未知命令必须调用 propose_run_command 生成可审批操作包。安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch。"
         + "\n21. 若用户明确要求稍后提醒、主动找我或定时跟进，只能调用 propose_heartbeat 生成 bounded heartbeat proposal；到期也只是候选提醒，不代表自主意识或后台独立行动。"
@@ -5205,7 +5242,16 @@ class AgentRuntime:
     def remember_operator_note(self, text: str) -> Dict[str, Any]:
         if self.operator_memory is None:
             return {"status": "blocked", "reason": "operator_memory_disabled"}
-        return self.operator_memory.remember(text, source="operator")
+        result = self.operator_memory.remember(text, source="operator")
+        if result.get("status") == "ok":
+            result["memory_scope"] = "EgoOperator candidate-local operator memory"
+            result["authority_boundary"] = (
+                "not PROJECT_MEMORY, not OpenEmotion memory, not program state, not evidence ledger"
+            )
+            result["user_visible_reporting_rule"] = (
+                "Report success with candidate-local scope; do not say only '已记住' or imply durable/global memory."
+            )
+        return result
 
     def force_compact_operator_memory(self) -> Dict[str, Any]:
         if self.operator_memory is None or self.memory_compactor is None:
@@ -5956,6 +6002,19 @@ class AgentRuntime:
                             "tool_calls": len(tool_trace),
                             "refusal": allowed_root_refusal,
                         }, content, tool_trace
+
+                    if (
+                        _tool_trace_has_successful_remember_note(tool_trace)
+                        and not _memory_success_reply_has_scope(content)
+                    ):
+                        content = _append_memory_success_scope(content)
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "memory_success_scope",
+                                "reason": "remember_note_success_reply_missing_candidate_local_scope",
+                            },
+                        })
 
                     final_action = AgentAction(
                         action_type=ActionType.RESPOND,
@@ -6787,6 +6846,7 @@ def build_demo_runtime(
         description=(
             "把用户明确要求记住的内容写入 EgoOperator candidate-local MEMORY.md。"
             "只能在用户消息含有明确记忆意图时调用；不是 EGO repo authority。"
+            "成功后回复必须说明 candidate-local scope，不得只说已记住。"
         ),
         input_schema={
             "type": "object",

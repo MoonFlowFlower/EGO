@@ -1,0 +1,21 @@
+task_id: EGO-FS-012
+claim_ceiling: Functional Subject memory-save wording local/scripted candidate pass
+acceptance:
+  - id: scoped_memory_success_reply
+    description: Explicit save requests report EgoOperator candidate-local operator memory scope.
+    status: pass
+  - id: no_bare_durable_memory_claim
+    description: Bare `已记住` style final replies are repaired before operator display.
+    status: pass
+  - id: remember_trace_preserved
+    description: Trace still records remember_note gate output and scoped metadata.
+    status: pass
+  - id: regression_pass
+    description: Permission-gate regression and full autopilot profile pass.
+    status: pass
+not_claimed:
+  - durable memory efficacy
+  - formal EGO memory authority promotion
+  - runtime efficacy
+  - live autonomy
+  - consciousness
