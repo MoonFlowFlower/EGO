@@ -1,0 +1,22 @@
+version: 1
+task_id: EGO-FS-009
+title: EgoOperator baseline comparison harness against LLM+RAG/tools
+claim_ceiling: Functional Subject baseline comparison local/scripted candidate pass
+observation_class: scripted_real_entry
+must_pass:
+  - id: comparison_dimensions
+    description: Harness compares continuity, initiative, learning, emotion, gate correctness, and traceability.
+  - id: paired_runs
+    description: Candidate and baseline runs use the same scripted cases and emit reproducible reports.
+  - id: mechanism_trace
+    description: Candidate deltas include trace-visible Functional Subject mechanism evidence where present.
+  - id: claim_boundary
+    description: Reports do not upgrade local/scripted evidence into durable efficacy.
+must_not:
+  - modify EgoOperator runtime behavior
+  - create a second eval system
+  - modify program state or evidence ledger
+rollback:
+  - remove baseline comparison command and report helper
+  - remove deterministic tests and task docs
+  - revert local board and contract path updates

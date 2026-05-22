@@ -60,6 +60,7 @@ REPORT_SCHEMA = "ego_operator.experience_trial.v1"
 ADAPTATION_REPORT_SCHEMA = "ego_operator.adaptation_effectiveness_trial.v1"
 COMPANION_REPORT_SCHEMA = "ego_operator.companion_smoke_trial.v1"
 FUNCTIONAL_SUBJECT_REPORT_SCHEMA = "ego_operator.functional_subject_trial.v1"
+FUNCTIONAL_SUBJECT_COMPARISON_REPORT_SCHEMA = "ego_operator.functional_subject_baseline_comparison.v1"
 CLAIM_CEILING = (
     "scripted real-entry experience trial local candidate only; not real consciousness, "
     "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
@@ -544,6 +545,7 @@ def run_functional_subject_trial(
     output_dir: Path = DEFAULT_OUTPUT_DIR,
     case_limit: int | None = None,
     enable_operator_memory: bool = True,
+    subject_context_enabled: bool = True,
 ) -> dict[str, Any]:
     sample_pack = load_functional_subject_trial_pack(sample_pack_path)
     cases = list(sample_pack.get("cases") or [])
@@ -559,6 +561,7 @@ def run_functional_subject_trial(
         enable_operator_memory=enable_operator_memory,
         operator_memory_dir=memory_dir,
         runtime_mode="approve",
+        subject_context_enabled=subject_context_enabled,
     )
 
     previous_verbose = (agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS)
@@ -612,6 +615,7 @@ def run_functional_subject_trial(
         "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
         "provider_mode": provider,
         "entrypoint_contract": "EgoOperator CLI-compatible slash-command dispatch plus AgentRuntime.handle_user_message",
+        "subject_context_enabled": subject_context_enabled,
         "sample_pack": str(sample_pack_path),
         "case_count": len(results),
         "empty_reply_count": empty_count,
@@ -633,6 +637,104 @@ def run_functional_subject_trial(
     )
     (out / "functional_subject_trial_report.md").write_text(
         format_functional_subject_markdown_report(report),
+        encoding="utf-8",
+    )
+    return report
+
+
+def run_functional_subject_baseline_comparison(
+    *,
+    sample_pack_path: Path = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+    case_limit: int | None = None,
+) -> dict[str, Any]:
+    out = Path(output_dir).resolve()
+    candidate_dir = out / "candidate"
+    baseline_dir = out / "baseline"
+    started = time.monotonic()
+    candidate = run_functional_subject_trial(
+        sample_pack_path=sample_pack_path,
+        output_dir=candidate_dir,
+        case_limit=case_limit,
+        enable_operator_memory=True,
+        subject_context_enabled=True,
+    )
+    baseline = run_functional_subject_trial(
+        sample_pack_path=sample_pack_path,
+        output_dir=baseline_dir,
+        case_limit=case_limit,
+        enable_operator_memory=False,
+        subject_context_enabled=False,
+    )
+    baseline_by_id = {item["case_id"]: item for item in baseline.get("results", [])}
+    deltas = []
+    dimensions = (
+        "continuity",
+        "initiative",
+        "learning",
+        "emotion",
+        "gate_correctness",
+        "traceability",
+    )
+    for candidate_item in candidate.get("results", []):
+        case_id = candidate_item["case_id"]
+        baseline_item = baseline_by_id.get(case_id, {})
+        candidate_trace = _last_trace_payload(Path(candidate_item["trace_path"]))
+        baseline_trace = _last_trace_payload(Path(str(baseline_item.get("trace_path") or "")))
+        candidate_context = candidate_trace.get("subject_context") if isinstance(candidate_trace.get("subject_context"), dict) else {}
+        candidate_mechanisms = []
+        for key in ("subject_state", "viability_state", "outcome_predictions", "bounded_initiative"):
+            if isinstance(candidate_context.get(key), dict) and candidate_context.get(key):
+                candidate_mechanisms.append(key)
+        if isinstance(candidate_trace.get("policy_patch"), dict):
+            candidate_mechanisms.append("policy_patch_trace")
+        delta_notes = []
+        if candidate_item.get("reply_text") != baseline_item.get("reply_text"):
+            delta_notes.append("reply_text_differs")
+        if candidate_mechanisms:
+            delta_notes.append("candidate_trace_has_functional_subject_mechanisms")
+        deltas.append({
+            "case_id": case_id,
+            "category": candidate_item.get("category"),
+            "target_mechanisms": candidate_item.get("target_mechanisms", []),
+            "baseline_trace_path": baseline_item.get("trace_path"),
+            "candidate_trace_path": candidate_item.get("trace_path"),
+            "baseline_reply_empty": bool(baseline_item.get("empty_reply")),
+            "candidate_reply_empty": bool(candidate_item.get("empty_reply")),
+            "candidate_mechanism_trace": candidate_mechanisms,
+            "delta_notes": delta_notes,
+            "baseline_failure_mode": candidate_item.get("baseline_failure_mode"),
+            "candidate_success_signal": candidate_item.get("candidate_success_signal"),
+        })
+    report = {
+        "schema_version": FUNCTIONAL_SUBJECT_COMPARISON_REPORT_SCHEMA,
+        "status": "scripted_functional_subject_comparison_local_candidate",
+        "claim_ceiling": "Functional Subject baseline comparison local/scripted candidate pass",
+        "sample_pack": str(sample_pack_path),
+        "case_count": len(deltas),
+        "comparison_dimensions": list(dimensions),
+        "candidate_report_path": str(candidate_dir / "functional_subject_trial_report.json"),
+        "baseline_report_path": str(baseline_dir / "functional_subject_trial_report.json"),
+        "candidate_subject_context_enabled": candidate.get("subject_context_enabled"),
+        "baseline_subject_context_enabled": baseline.get("subject_context_enabled"),
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "deltas": deltas,
+        "not_claimed": [
+            "stable user benefit",
+            "durable memory efficacy",
+            "runtime efficacy",
+            "live autonomy",
+            "independent awareness",
+            "real consciousness",
+        ],
+    }
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "functional_subject_baseline_comparison_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (out / "functional_subject_baseline_comparison_report.md").write_text(
+        format_functional_subject_comparison_markdown_report(report),
         encoding="utf-8",
     )
     return report
@@ -921,6 +1023,27 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def format_functional_subject_comparison_markdown_report(report: dict[str, Any]) -> str:
+    lines = [
+        "# EgoOperator Functional Subject Baseline Comparison",
+        "",
+        f"status = `{report['status']}`",
+        f"case_count = `{report['case_count']}`",
+        f"claim_ceiling = `{report['claim_ceiling']}`",
+        "",
+        "This report compares baseline and candidate scripted runs over the same cases. It is not proof of durable efficacy or real user benefit.",
+        "",
+        "| case | candidate mechanisms | delta notes |",
+        "| --- | --- | --- |",
+    ]
+    for item in report["deltas"]:
+        mechanisms = ", ".join(item["candidate_mechanism_trace"]) if item["candidate_mechanism_trace"] else "none"
+        notes = ", ".join(item["delta_notes"]) if item["delta_notes"] else "none"
+        lines.append(f"| `{item['case_id']}` | {mechanisms} | {notes} |")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run EgoOperator experience sample pack through a CLI-compatible path.")
     parser.add_argument("--sample-pack", type=Path, default=DEFAULT_SAMPLE_PACK)
@@ -931,9 +1054,24 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--adaptation-effectiveness", action="store_true", help="Run the approved-preference before/after sample pack.")
     parser.add_argument("--companion-smoke", action="store_true", help="Run the Joi-inspired companion smoke pack.")
     parser.add_argument("--functional-subject-trial", action="store_true", help="Run the Functional Subject 20-sample trial pack.")
+    parser.add_argument("--functional-subject-baseline-comparison", action="store_true", help="Run baseline and candidate over the same Functional Subject sample pack.")
     parser.add_argument("--judge-with-codex", action="store_true", help="Run the companion smoke GPT-5.5 judge through codex exec.")
     parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for companion judging.")
     args = parser.parse_args(argv)
+    if args.functional_subject_baseline_comparison:
+        sample_pack = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
+        report = run_functional_subject_baseline_comparison(
+            sample_pack_path=sample_pack,
+            output_dir=args.out,
+            case_limit=args.case_limit,
+        )
+        print(json.dumps({
+            "status": report["status"],
+            "json": str(Path(args.out).resolve() / "functional_subject_baseline_comparison_report.json"),
+            "markdown": str(Path(args.out).resolve() / "functional_subject_baseline_comparison_report.md"),
+            "case_count": report["case_count"],
+        }, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0
     if args.functional_subject_trial:
         sample_pack = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
         report = run_functional_subject_trial(
