@@ -62,11 +62,21 @@ except ImportError:
 try:
     from .memory_system import MemoryCompactor, MemoryContext, OperatorMemoryStore, TokenTelemetry
     from .primitives.initiative import derive_bounded_initiative_signal
-    from .primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
+    from .primitives.subject_context import (
+        SubjectContextSnapshot,
+        build_minimal_subject_context,
+        build_subject_state_mutation_proposal_v0,
+        decide_subject_state_mutation_v0,
+    )
 except ImportError:  # allow `python EgoOperator/agent_base.py`
     from memory_system import MemoryCompactor, MemoryContext, OperatorMemoryStore, TokenTelemetry
     from primitives.initiative import derive_bounded_initiative_signal
-    from primitives.subject_context import SubjectContextSnapshot, build_minimal_subject_context
+    from primitives.subject_context import (
+        SubjectContextSnapshot,
+        build_minimal_subject_context,
+        build_subject_state_mutation_proposal_v0,
+        decide_subject_state_mutation_v0,
+    )
 
 
 def configure_utf8_stdio() -> None:
@@ -4442,6 +4452,7 @@ class AgentRuntime:
         self.policy_failure_counts: Dict[str, int] = {}
         self._last_policy_patch_replay: List[Dict[str, Any]] = []
         self._last_bounded_initiative_signal: Dict[str, Any] = {}
+        self.subject_state_mutation_proposals: Dict[str, Dict[str, Any]] = {}
 
     def operator_memory_enabled(self) -> bool:
         return self.operator_memory is not None
@@ -4574,6 +4585,67 @@ class AgentRuntime:
             if candidate:
                 matches.append({**candidate, "replay_active": True})
         return matches[:3]
+
+    def propose_subject_state_mutation(
+        self,
+        *,
+        proposal_id: str,
+        candidate: Dict[str, Any],
+        target_record: str,
+        owner: str,
+        reason: str,
+        rollback: str,
+        source: str = "runtime_gate",
+    ) -> Dict[str, Any]:
+        proposal = build_subject_state_mutation_proposal_v0(
+            proposal_id=proposal_id,
+            candidate=candidate,
+            target_record=target_record,
+            owner=owner,
+            reason=reason,
+            rollback=rollback,
+            source=source,
+        )
+        if proposal.get("status") == "pending_gate_decision":
+            self.subject_state_mutation_proposals[str(proposal["proposal_id"])] = proposal
+        return proposal
+
+    def decide_subject_state_mutation(
+        self,
+        proposal_id: str,
+        *,
+        decision: str,
+        decided_by: str,
+        rationale: str,
+    ) -> Dict[str, Any]:
+        proposal = self.subject_state_mutation_proposals.get(proposal_id)
+        if proposal is None:
+            return {
+                "status": "blocked",
+                "reason": "unknown_subject_state_mutation_proposal",
+                "proposal_id": proposal_id,
+                "canonical_mutation_executed": False,
+            }
+        record = decide_subject_state_mutation_v0(
+            proposal,
+            decision=decision,
+            decided_by=decided_by,
+            rationale=rationale,
+        )
+        try:
+            self.trace_store.write({
+                "event_type": "subject_state_mutation_decision",
+                "timestamp": utc_now(),
+                "proposal": proposal,
+                "decision": record,
+                "owner": proposal.get("owner"),
+                "target_record": proposal.get("target_record"),
+                "rollback": proposal.get("rollback"),
+                "canonical_mutation_executed": False,
+            })
+        except Exception:
+            pass
+        return record
 
     def render_subject_context(self, user_text: str) -> str:
         if not self.subject_context_enabled:

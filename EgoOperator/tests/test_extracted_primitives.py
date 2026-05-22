@@ -436,6 +436,53 @@ def test_repeated_failure_emits_policy_patch_and_replays_on_next_case(tmp_path):
     assert third_subject_candidates[0]["state_mutation"] == "forbidden"
 
 
+def test_subject_state_mutation_gate_blocks_direct_llm_mutation_request():
+    blocked = subject_context.build_subject_state_mutation_proposal_v0(
+        proposal_id="mut_1",
+        candidate={"kind": "memory_candidate", "summary": "用户偏好"},
+        target_record="operator_memory.preference",
+        owner="EgoOperator",
+        reason="LLM tried to promote a candidate",
+        rollback="delete candidate projection",
+        source="llm_output",
+    )
+
+    assert blocked["status"] == "blocked"
+    assert blocked["reason"] == "llm_output_cannot_directly_request_subject_state_mutation"
+    assert blocked["canonical_mutation_executed"] is False
+
+
+def test_subject_state_mutation_decision_writes_audit_trace_without_canonical_mutation(tmp_path):
+    runtime = agent.build_demo_runtime(enable_operator_memory=False)
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "mutation_trace.jsonl")
+    proposal = runtime.propose_subject_state_mutation(
+        proposal_id="mut_pref_1",
+        candidate={"kind": "preference_update_candidate", "summary": "先给判断再给细节"},
+        target_record="subject_state.preference_candidate",
+        owner="EgoOperator",
+        reason="User explicitly corrected response order.",
+        rollback="Remove candidate preference projection from session context.",
+    )
+    decision = runtime.decide_subject_state_mutation(
+        "mut_pref_1",
+        decision="hold",
+        decided_by="deterministic_test_gate",
+        rationale="Keep as candidate until explicit memory promotion task.",
+    )
+
+    assert proposal["status"] == "pending_gate_decision"
+    assert proposal["state_mutation"] == "forbidden_until_gate_admits"
+    assert decision["status"] == "decision_recorded"
+    assert decision["target_record"] == "subject_state.preference_candidate"
+    assert decision["canonical_mutation_executed"] is False
+    row = json.loads((tmp_path / "mutation_trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert row["event_type"] == "subject_state_mutation_decision"
+    assert row["proposal"]["owner"] == "EgoOperator"
+    assert row["decision"]["decision"] == "hold"
+    assert row["rollback"] == "Remove candidate preference projection from session context."
+    assert row["canonical_mutation_executed"] is False
+
+
 def test_planner_fallback_does_not_keyword_route_before_llm():
     planner = agent.Planner(llm=CapturePromptLLM())
     event = agent.AgentEvent(

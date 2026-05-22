@@ -1,0 +1,22 @@
+version: 1
+task_id: EGO-FS-008
+title: EgoOperator subject state mutation gate and audit trace
+claim_ceiling: Subject-state mutation gate local candidate pass
+observation_class: deterministic_local
+must_pass:
+  - id: explicit_gate
+    description: Candidate writes require explicit gate decisions.
+  - id: audit_trace
+    description: Trace contains proposal, decision, owner, target record, and rollback guidance.
+  - id: llm_block
+    description: Direct LLM-output mutation requests are blocked.
+  - id: no_canonical_mutation
+    description: v0 decisions do not mutate canonical state.
+must_not:
+  - expose LLM self-approval
+  - promote memory/state authority
+  - modify program state or evidence ledger
+rollback:
+  - remove mutation proposal/decision helpers
+  - remove runtime audit methods and tests
+  - revert local board status

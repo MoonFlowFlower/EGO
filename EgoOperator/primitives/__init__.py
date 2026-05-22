@@ -10,6 +10,8 @@ from .subject_context import (
     build_outcome_predictions_v0,
     build_minimal_subject_context,
     build_subject_state_v0,
+    build_subject_state_mutation_proposal_v0,
+    decide_subject_state_mutation_v0,
     extract_viability_state_v0,
 )
 from .initiative import (
@@ -31,6 +33,8 @@ __all__ = [
     "build_initiative_proposal",
     "build_minimal_subject_context",
     "build_subject_state_v0",
+    "build_subject_state_mutation_proposal_v0",
+    "decide_subject_state_mutation_v0",
     "derive_bounded_initiative_signal",
     "derive_quiet_mode",
     "extract_viability_state_v0",

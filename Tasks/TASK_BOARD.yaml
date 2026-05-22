@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Proceed to EGO-FS-008: implement subject state mutation gate and audit trace after bounded initiative."
+    next_action: "Proceed to EGO-FS-009: implement baseline comparison harness after mutation gate."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -205,13 +205,13 @@ tasks:
     title: "EgoOperator: subject state mutation gate and audit trace"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: ego_operator_gate_trace
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: Subject-state mutation gate local candidate pass
-    next_action: "Define and enforce promotion gates for subject-state, memory, relationship, and policy candidates."
+    next_action: "Accepted locally; next canonical task is EGO-FS-009."
     acceptance:
       - "Candidate writes require explicit gate decisions."
       - "Trace includes proposal, decision, owner, target record, and rollback guidance."
@@ -220,6 +220,7 @@ tasks:
     canonical_sources:
       - "Tasks/与GPTpro的讨论结果.txt"
       - "GitHub issue #92"
+      - "docs/codex/tasks/ego-subject-state-mutation-gate-audit-trace/SPEC.md"
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/92"
 
@@ -227,7 +228,7 @@ tasks:
     title: "EgoOperator: baseline comparison harness against LLM+RAG/tools"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: functional_subject_eval
     owner: codex
     observation_class: scripted_real_entry

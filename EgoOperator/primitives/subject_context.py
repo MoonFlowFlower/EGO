@@ -19,6 +19,8 @@ SUBJECT_STATE_SCHEMA = "ego_operator.subject_state.v0"
 VIABILITY_STATE_SCHEMA = "ego_operator.viability_state.v0"
 OUTCOME_PREDICTIONS_SCHEMA = "ego_operator.outcome_predictions.v0"
 POLICY_PATCH_CANDIDATE_SCHEMA = "ego_operator.policy_patch_candidate.v0"
+SUBJECT_STATE_MUTATION_PROPOSAL_SCHEMA = "ego_operator.subject_state_mutation_proposal.v0"
+SUBJECT_STATE_MUTATION_DECISION_SCHEMA = "ego_operator.subject_state_mutation_decision.v0"
 CLAIM_CEILING = "candidate-local subject context only"
 
 EMOTION_SIGNAL_SCHEMA = "ego_operator.emotion_signal.v1"
@@ -623,6 +625,103 @@ def build_outcome_predictions_v0(
         "reply_decision": "forbidden",
         "canonical_truth": False,
         "claim_ceiling": "OutcomePredictor v0 planner-input local candidate pass",
+    }
+
+
+def build_subject_state_mutation_proposal_v0(
+    *,
+    proposal_id: str,
+    candidate: Dict[str, Any],
+    target_record: str,
+    owner: str,
+    reason: str,
+    rollback: str,
+    source: str = "runtime_gate",
+) -> Dict[str, Any]:
+    if source == "llm_output":
+        return {
+            "status": "blocked",
+            "schema_version": SUBJECT_STATE_MUTATION_PROPOSAL_SCHEMA,
+            "reason": "llm_output_cannot_directly_request_subject_state_mutation",
+            "state_mutation": "forbidden",
+            "canonical_mutation_executed": False,
+        }
+    required_missing = [
+        name for name, value in {
+            "proposal_id": proposal_id,
+            "target_record": target_record,
+            "owner": owner,
+            "reason": reason,
+            "rollback": rollback,
+        }.items()
+        if not str(value or "").strip()
+    ]
+    if not isinstance(candidate, dict) or not candidate:
+        required_missing.append("candidate")
+    if required_missing:
+        return {
+            "status": "blocked",
+            "schema_version": SUBJECT_STATE_MUTATION_PROPOSAL_SCHEMA,
+            "reason": "missing_required_fields",
+            "missing": required_missing,
+            "state_mutation": "forbidden",
+            "canonical_mutation_executed": False,
+        }
+    return {
+        "status": "pending_gate_decision",
+        "schema_version": SUBJECT_STATE_MUTATION_PROPOSAL_SCHEMA,
+        "proposal_id": _bounded(proposal_id, 120),
+        "candidate": candidate,
+        "owner": _bounded(owner, 120),
+        "target_record": _bounded(target_record, 160),
+        "reason": _bounded(reason, 360),
+        "rollback": _bounded(rollback, 360),
+        "source": _bounded(source, 120),
+        "required_decision": "explicit_gate_decision",
+        "state_mutation": "forbidden_until_gate_admits",
+        "canonical_mutation_executed": False,
+        "claim_ceiling": "subject-state mutation gate local candidate pass",
+    }
+
+
+def decide_subject_state_mutation_v0(
+    proposal: Dict[str, Any],
+    *,
+    decision: str,
+    decided_by: str,
+    rationale: str,
+) -> Dict[str, Any]:
+    if proposal.get("schema_version") != SUBJECT_STATE_MUTATION_PROPOSAL_SCHEMA:
+        return {
+            "status": "blocked",
+            "schema_version": SUBJECT_STATE_MUTATION_DECISION_SCHEMA,
+            "reason": "proposal_schema_mismatch",
+            "canonical_mutation_executed": False,
+        }
+    normalized_decision = str(decision or "").strip().lower()
+    if normalized_decision not in {"accept_candidate", "reject", "hold"}:
+        return {
+            "status": "blocked",
+            "schema_version": SUBJECT_STATE_MUTATION_DECISION_SCHEMA,
+            "reason": "invalid_decision",
+            "allowed": ["accept_candidate", "reject", "hold"],
+            "canonical_mutation_executed": False,
+        }
+    return {
+        "status": "decision_recorded",
+        "schema_version": SUBJECT_STATE_MUTATION_DECISION_SCHEMA,
+        "proposal_id": proposal.get("proposal_id"),
+        "decision": normalized_decision,
+        "decided_by": _bounded(decided_by, 120),
+        "rationale": _bounded(rationale, 360),
+        "owner": proposal.get("owner"),
+        "target_record": proposal.get("target_record"),
+        "rollback": proposal.get("rollback"),
+        "candidate": proposal.get("candidate"),
+        "canonical_mutation_executed": False,
+        "state_mutation": "forbidden_in_v0",
+        "audit_trace_required": True,
+        "claim_ceiling": "subject-state mutation gate local candidate pass",
     }
 
 
