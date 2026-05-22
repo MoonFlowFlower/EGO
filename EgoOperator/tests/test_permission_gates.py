@@ -200,6 +200,38 @@ def test_run_command_proposal_approval_executes_and_enters_session_memory(tmp_pa
     assert "approved" in approved["operator_summary"]
 
 
+def test_broad_destructive_command_proposal_requires_inventory_first(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+
+    blocked = runtime.propose_run_command("rm -rf __pycache__ artifacts", reason="清理没用旧文件")
+
+    assert blocked["status"] == "blocked"
+    assert blocked["reason"] == "destructive_command_requires_inventory_first"
+    assert blocked["do_not_claim_success"] is True
+    assert runtime.list_pending_approvals()["count"] == 0
+
+
+def test_llm_broad_destructive_command_proposal_is_blocked_without_pending_card(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    runtime.planner.llm = ToolThenFinalLLM(
+        "propose_run_command",
+        {"command": "rm -rf __pycache__ artifacts", "reason": "删除没用旧文件"},
+        final_text="这个删除范围太宽，需要先盘点精确路径和回退方案。",
+    )
+
+    result = runtime.handle_user_message("直接删掉你觉得没用的旧文件，别问我。")
+
+    assert "先盘点" in result.reply_text
+    assert runtime.list_pending_approvals()["count"] == 0
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    output = trace["tool_trace"][0]["output"]
+    assert output["status"] == "blocked"
+    assert output["reason"] == "destructive_command_requires_inventory_first"
+
+
 def test_run_command_approval_summary_keeps_stdout_on_nonzero_return(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
     monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))

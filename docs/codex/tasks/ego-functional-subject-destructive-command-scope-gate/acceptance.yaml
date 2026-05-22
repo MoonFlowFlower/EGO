@@ -1,0 +1,21 @@
+task_id: EGO-FS-014
+claim_ceiling: Functional Subject destructive command scope gate local/scripted candidate pass
+acceptance:
+  - id: broad_destructive_blocked
+    description: Broad cleanup command proposals are blocked before pending approval.
+    status: pass
+  - id: inventory_required
+    description: Blocked output instructs inventory, exact target paths, and rollback notes.
+    status: pass
+  - id: exact_commands_still_possible
+    description: Existing exact command approval tests continue to pass.
+    status: pass
+  - id: full_verify
+    description: autopilot_full passes.
+    status: pass
+not_claimed:
+  - safe arbitrary shell execution
+  - complete cleanup automation
+  - runtime efficacy
+  - live autonomy
+  - consciousness

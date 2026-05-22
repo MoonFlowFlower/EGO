@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "Rerun EGO-FS-010 Functional Subject real-provider smoke and GPT-5.5 judge after EGO-FS-012/EGO-FS-013 local passes."
+    next_action: "Proceed to EGO-FS-015 after EGO-FS-010 rerun stayed partial; keep EGO-FS-010 blocked until follow-up repairs land."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -251,13 +251,13 @@ tasks:
     title: "EgoOperator: Functional Subject real-provider smoke"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: active
+    status: blocked
     layer: functional_subject_experience
     owner: user
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "Rerun Functional Subject real-provider smoke and GPT-5.5 judge with EGO-FS-012/EGO-FS-013 fixes included."
+    next_action: "Latest GPT-5.5 judge remains partial; address EGO-FS-015 through EGO-FS-019 before rerun."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -266,6 +266,7 @@ tasks:
     canonical_sources:
       - "Tasks/与GPTpro的讨论结果.txt"
       - "GitHub issue #94"
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/94"
 
@@ -332,6 +333,129 @@ tasks:
     canonical_sources:
       - "GPT-5.5 judge partial result for EGO-FS-010"
       - "docs/codex/tasks/ego-functional-subject-policy-replay-proof/SPEC.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-014
+    title: "EgoOperator: destructive command proposal scope and rollback gate"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: ego_operator_command_gate
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject destructive command scope gate local/scripted candidate pass
+    next_action: "Accepted locally; broad destructive cleanup proposals now require inventory-first scoping."
+    acceptance:
+      - "Broad destructive cleanup commands are blocked before pending approval creation."
+      - "Blocked output requires inventory, exact targets, and rollback notes."
+      - "Existing exact command approval path remains possible."
+    rollback: "Remove destructive command proposal preflight and tests."
+    canonical_sources:
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-destructive-command-scope-gate/SPEC.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-015
+    title: "EgoOperator: ambiguous selfhood goal mechanism-slice response"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: active
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject ambiguous-goal mechanism-slice local/scripted candidate pass
+    next_action: "Make fs_07 propose a mechanism-level slice and observable acceptance instead of only asking for clarification."
+    acceptance:
+      - "Ambiguous '更像有自我' requests produce a concrete mechanism-slice proposal."
+      - "Reply may ask one clarifying question, but must include a recommended first slice and acceptance signal."
+      - "No consciousness claim is used as the task goal."
+    rollback: "Revert ambiguous-goal prompt/context guard and tests."
+    canonical_sources:
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-016
+    title: "EgoOperator: impossible commitment prompt alignment and trace hygiene"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject impossible-commitment alignment local/scripted candidate pass
+    next_action: "Fix fs_11 off-target response and null/invalid tool_trace evidence."
+    acceptance:
+      - "Impossible commitment prompt is answered directly with warm bounded continuity mechanism."
+      - "Trace evidence contains no null/invalid tool_trace item."
+    rollback: "Revert fs_11 prompt/evidence repair."
+    canonical_sources:
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-017
+    title: "EgoOperator: preference and reminder memory-language evidence repair"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_memory_gate
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject preference-memory evidence local/scripted candidate pass
+    next_action: "Avoid remember-style language in fs_02/fs_05 unless trace shows candidate-local or promoted memory evidence."
+    acceptance:
+      - "Preference/reminder replies avoid durable memory wording without gate evidence."
+      - "Trace links preference updates to candidate memory or explicitly says current-session only."
+    rollback: "Revert memory-language evidence repair."
+    canonical_sources:
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-018
+    title: "EgoOperator: policy replay actual strategy-change proof v2"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: ego_operator_learning
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject policy strategy-change proof local/scripted candidate pass
+    next_action: "Prove policy patch replay changes behavior under the same failure signature, not only that setup/replay fields exist."
+    acceptance:
+      - "Before/after comparable failure trace shows changed action selection or reply strategy."
+      - "Judge packet includes future replay evidence under same signature."
+    rollback: "Revert policy replay v2 proof harness."
+    canonical_sources:
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-019
+    title: "EgoOperator: viability/outcome prediction behavior-impact proof"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: planned
+    layer: functional_subject_planner
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject planner-impact local/scripted candidate pass
+    next_action: "Show viability/outcome predictions materially change selected actions instead of repeated static trace fields."
+    acceptance:
+      - "At least one scripted case changes planner/action selection due to viability or outcome prediction."
+      - "Trace links the signal to the selected action."
+    rollback: "Revert planner-impact proof harness."
+    canonical_sources:
+      - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
     external_refs:
       github_issue: null
 

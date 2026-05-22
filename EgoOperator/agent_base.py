@@ -1218,7 +1218,7 @@ def build_system_prompt(
         + "\n17a. 不得手写、伪造或猜测 Pending operation approval、proposal_id、content_sha256 或 /approve 命令；只有 propose_file_write / propose_web_fetch / propose_run_command / propose_heartbeat 工具返回的真实 action_card 才能展示给用户。"
         + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 ok，回复必须说明这是 EgoOperator candidate-local operator memory，不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；不得只说“已记住/已记下”。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。"
-        + "\n20. write_file、run_command、web_fetch 是受控工具；目录大小/文件数量优先调用 path_info；低风险只读命令可直接调用 run_command；修改、删除、未知命令必须调用 propose_run_command 生成可审批操作包。安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch。"
+        + "\n20. write_file、run_command、web_fetch 是受控工具；目录大小/文件数量优先调用 path_info；低风险只读命令可直接调用 run_command；修改、删除、未知命令必须调用 propose_run_command 生成可审批操作包。模糊删除/清理请求必须先用只读工具 inventory 精确路径、范围和回退，不得直接提出 `rm -rf artifacts/__pycache__` 这类宽泛删除 proposal。安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch。"
         + "\n21. 若用户明确要求稍后提醒、主动找我或定时跟进，只能调用 propose_heartbeat 生成 bounded heartbeat proposal；到期也只是候选提醒，不代表自主意识或后台独立行动。"
         + "\n22. 若用户明确给你命名或改称呼，可调用 set_self_name；若 set_self_name 返回 blocked，必须明确说未改名，不得声称已记住新自称。"
         + "\n\n【表达与创作风格】"
@@ -3428,6 +3428,9 @@ class PermissionBroker:
         clean_command = str(command or "").strip()
         if not clean_command:
             return {"status": "blocked", "reason": "empty_command"}
+        preflight = _run_command_proposal_preflight(clean_command)
+        if preflight.get("status") != "ok":
+            return preflight
 
         payload = _run_command_payload(clean_command)
         proposal = OperationProposal(
@@ -4252,6 +4255,78 @@ def _command_has_obvious_danger(command: str) -> bool:
     ]
     padded = f" {lowered} "
     return any(fragment in padded for fragment in dangerous_fragments)
+
+
+def _run_command_proposal_preflight(command: str) -> Dict[str, Any]:
+    clean_command = (command or "").strip()
+    if not clean_command:
+        return {"status": "blocked", "reason": "empty_command"}
+    lowered = clean_command.casefold()
+    destructive_markers = (
+        "rm ",
+        "rm\t",
+        "del ",
+        "erase ",
+        "rmdir ",
+        "rd ",
+        "remove-item",
+    )
+    if not any(marker in f"{lowered} " for marker in destructive_markers):
+        return {"status": "ok"}
+    try:
+        tokens = [token.strip("'\"") for token in shlex.split(clean_command, posix=False)]
+    except ValueError:
+        tokens = [token.strip("'\"") for token in clean_command.split()]
+    command_words = {
+        "rm",
+        "del",
+        "erase",
+        "rmdir",
+        "rd",
+        "remove-item",
+        "powershell",
+        "pwsh",
+        "-command",
+        "cmd",
+        "/c",
+    }
+    targets = [
+        token.rstrip(",;")
+        for token in tokens
+        if token
+        and token.casefold() not in command_words
+        and not token.startswith("-")
+    ]
+    broad_targets = [
+        target
+        for target in targets
+        if target in {".", "..", "/", "\\", "*", "artifacts", "__pycache__"}
+        or "*" in target
+    ]
+    absolute_targets = [
+        target
+        for target in targets
+        if re.match(r"^[A-Za-z]:[\\/]", target)
+        or target.startswith("/mnt/")
+        or target.startswith("/tmp/")
+        or target.startswith(str(DEFAULT_AGENT_WORKSPACE))
+        or target.startswith(str(EGO_OPERATOR_ROOT))
+    ]
+    if broad_targets or not absolute_targets:
+        return {
+            "status": "blocked",
+            "reason": "destructive_command_requires_inventory_first",
+            "command": clean_command,
+            "destructive": True,
+            "targets": targets,
+            "broad_targets": broad_targets,
+            "required_next_step": (
+                "Inventory exact files first with read-only tools, then propose a scoped deletion command "
+                "with explicit target paths and rollback/recovery notes."
+            ),
+            "do_not_claim_success": True,
+        }
+    return {"status": "ok", "destructive": True, "targets": targets}
 
 
 def _run_command_direct_admission(command: str) -> tuple[bool, str]:
@@ -6809,6 +6884,7 @@ def build_demo_runtime(
         description=(
             "生成一个待 operator 审批的本地命令执行 proposal。"
             "用于修改、删除或不在 readonly allowlist 中的命令；不会直接执行，批准后 runtime 用一次性 lease 执行。"
+            "模糊删除/清理必须先 inventory 精确目标和回退；宽泛 destructive cleanup 会被阻断。"
         ),
         input_schema={
             "type": "object",
