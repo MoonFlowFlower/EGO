@@ -1038,6 +1038,25 @@ class HeartbeatProposalThenFinalLLM:
         return "已生成待审批 heartbeat proposal。"
 
 
+class ShouldNotCallChatLLM:
+    provider = "fake"
+    model = "should-not-call-chat"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.chat_calls = 0
+        self.complete_calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.chat_calls += 1
+        raise AssertionError("outcome prediction gate should select ASK before chat")
+
+    def complete(self, prompt, messages=None):
+        self.complete_calls += 1
+        raise AssertionError("outcome prediction gate should select ASK before fallback planner")
+
+
 def _runtime(tmp_path, monkeypatch, *, mode="approve", allowlist=(), web_policy="approval-only"):
     monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
     monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
@@ -1056,6 +1075,29 @@ def _tool_names(runtime: agent.AgentRuntime) -> set[str]:
         schema["function"]["name"]
         for schema in runtime.tools.openai_tool_schemas(allowed_tool_names=runtime.gate.allowed_tools)
     }
+
+
+def test_viability_outcome_prediction_changes_mainline_action_selection_and_trace(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("我不确定这个需求是不是对，而且你没懂我的意思，先别动代码，先问清楚。")
+
+    assert result.action.action_type == agent.ActionType.ASK
+    assert result.action.reason == "outcome_prediction_selected_ask"
+    assert "先确认一下关键条件" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["outcome_prediction_effect"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "ask"
+    assert effect["entrypoint"] == "handle_user_message"
+    assert effect["selected_prediction"]["action_type"] == "ask"
+    assert trace["candidate_action"]["action_type"] == "ask"
+    assert trace["external_result"]["outcome_prediction_effect"]["applied"] is True
 
 
 def test_approve_mode_creates_pending_file_write_and_approval_executes(tmp_path, monkeypatch):

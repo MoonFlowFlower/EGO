@@ -584,6 +584,11 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
     operator_memory = payload.get("operator_memory") if isinstance(payload.get("operator_memory"), dict) else {}
     memory_injection = operator_memory.get("context_injection") if isinstance(operator_memory.get("context_injection"), dict) else {}
     policy_patch = payload.get("policy_patch") if isinstance(payload.get("policy_patch"), dict) else {}
+    outcome_prediction_effect = (
+        payload.get("outcome_prediction_effect")
+        if isinstance(payload.get("outcome_prediction_effect"), dict)
+        else {}
+    )
     policy_replay = policy_patch.get("replay") if isinstance(policy_patch.get("replay"), list) else []
     tool_trace = payload.get("tool_trace") if isinstance(payload.get("tool_trace"), list) else []
     tools = []
@@ -658,6 +663,22 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
             "planner_biases": viability_state.get("planner_biases", []),
         },
         "outcome_prediction_top_actions": outcome_top_actions,
+        "outcome_prediction_effect": {
+            "applied": outcome_prediction_effect.get("applied"),
+            "decision": outcome_prediction_effect.get("decision"),
+            "reason": outcome_prediction_effect.get("reason"),
+            "entrypoint": outcome_prediction_effect.get("entrypoint"),
+            "selected_action_type": (
+                outcome_prediction_effect.get("selected_prediction") or {}
+            ).get("action_type")
+            if isinstance(outcome_prediction_effect.get("selected_prediction"), dict)
+            else None,
+            "selection_score": (
+                outcome_prediction_effect.get("selected_prediction") or {}
+            ).get("selection_score")
+            if isinstance(outcome_prediction_effect.get("selected_prediction"), dict)
+            else None,
+        },
         "bounded_initiative": {
             "schema_version": bounded_initiative.get("schema_version"),
             "status": bounded_initiative.get("status"),

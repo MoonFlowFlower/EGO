@@ -447,19 +447,20 @@ tasks:
     title: "EgoOperator: viability/outcome prediction behavior-impact proof"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_planner
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject planner-impact local/scripted candidate pass
-    next_action: "Show viability/outcome predictions materially change selected actions instead of repeated static trace fields."
+    next_action: "Accepted locally; OutcomePrediction can select ASK on the real handle_user_message path and trace exposes the applied effect."
     acceptance:
       - "At least one scripted case changes planner/action selection due to viability or outcome prediction."
       - "Trace links the signal to the selected action."
     rollback: "Revert planner-impact proof harness."
     canonical_sources:
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-planner-impact-proof/SPEC.md"
     external_refs:
       github_issue: null
 

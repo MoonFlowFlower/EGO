@@ -4741,6 +4741,54 @@ class AgentRuntime:
             bounded_initiative_signal=bounded_initiative_signal,
         )
 
+    def _action_from_outcome_prediction(
+        self,
+        outcome_predictions: Optional[Dict[str, Any]],
+        viability_state: Optional[Dict[str, Any]] = None,
+    ) -> Optional[tuple[AgentAction, Dict[str, Any]]]:
+        if not isinstance(outcome_predictions, dict):
+            return None
+        selected_prediction = outcome_predictions.get("selected_prediction")
+        if not isinstance(selected_prediction, dict):
+            return None
+        selected_action = str(selected_prediction.get("action_type") or "")
+        try:
+            selection_score = float(selected_prediction.get("selection_score") or 0.0)
+        except (TypeError, ValueError):
+            selection_score = 0.0
+        effect = {
+            "schema_version": str(outcome_predictions.get("schema_version") or ""),
+            "selected_prediction": selected_prediction,
+            "applied": False,
+            "decision": "reply",
+            "entrypoint": "handle_user_message",
+        }
+        viability_scores = (
+            viability_state.get("scores")
+            if isinstance(viability_state, dict) and isinstance(viability_state.get("scores"), dict)
+            else {}
+        )
+        try:
+            misunderstanding_score = float(viability_scores.get("user_misunderstanding") or 0.0)
+        except (TypeError, ValueError):
+            misunderstanding_score = 0.0
+        if selected_action != "ask" or selection_score < 0.5 or misunderstanding_score < 0.5:
+            return None
+        effect.update({
+            "applied": True,
+            "decision": "ask",
+            "reason": "outcome_prediction_selected_ask",
+            "viability_scores": viability_scores,
+        })
+        return (
+            AgentAction(
+                action_type=ActionType.ASK,
+                content="我先确认一下关键条件，再继续推进；这样比直接下结论更稳。",
+                reason="outcome_prediction_selected_ask",
+            ),
+            effect,
+        )
+
     def _classify_policy_feedback_failure(
         self,
         *,
@@ -5859,43 +5907,75 @@ class AgentRuntime:
         )
 
         tool_trace: List[Dict[str, Any]] = []
-        tool_loop_result = self._try_llm_tool_loop(event, kernel_output, subject_context_prompt)
-        if tool_loop_result is not None:
-            action, gate_result, external_result, reply_text, tool_trace = tool_loop_result
-        else:
-            candidate = self.planner.propose(
-                event,
-                kernel_output,
-                memory=self.memory,
-                operator_memory_context=self.render_operator_memory_context(text),
-                subject_context=subject_context_prompt,
-                outcome_predictions=subject_context_snapshot.outcome_predictions,
+        predicted_action = (
+            self._action_from_outcome_prediction(
+                subject_context_snapshot.outcome_predictions,
+                subject_context_snapshot.viability_state,
             )
+            if self.subject_context_enabled
+            else None
+        )
+        if predicted_action is not None:
+            candidate, outcome_prediction_effect = predicted_action
+            self.planner.last_llm_meta = {
+                "provider": "runtime",
+                "model": "outcome_prediction_gate",
+                "configured_model": "outcome_prediction_gate",
+                "fallback_used": False,
+                "fallback_chain": [],
+                "provider_error": None,
+                "outcome_prediction_effect": outcome_prediction_effect,
+            }
             gate_result = self.gate.check(event, candidate)
-
-            external_result: Optional[Dict[str, Any]] = None
-            reply_text = ""
-
-            if not gate_result.allowed:
-                blocked_action = AgentAction(
-                    action_type=ActionType.BLOCK,
-                    content=f"已阻断：{gate_result.reason}",
-                    reason="gate_block",
-                )
-                action = blocked_action
-                external_result = {"status": "blocked", "reason": gate_result.reason}
-                reply_text = blocked_action.content
+            external_result = {
+                "status": "asked" if gate_result.allowed else "blocked",
+                "reason": candidate.reason if gate_result.allowed else gate_result.reason,
+                "outcome_prediction_effect": outcome_prediction_effect,
+            }
+            action = candidate if gate_result.allowed else AgentAction(
+                action_type=ActionType.BLOCK,
+                content=f"已阻断：{gate_result.reason}",
+                reason="gate_block",
+            )
+            reply_text = action.content
+        else:
+            tool_loop_result = self._try_llm_tool_loop(event, kernel_output, subject_context_prompt)
+            if tool_loop_result is not None:
+                action, gate_result, external_result, reply_text, tool_trace = tool_loop_result
             else:
-                action = candidate
-                if action.action_type == ActionType.TOOL_CALL and action.tool_call:
-                    external_result = self.tools.execute(action.tool_call)
-                    reply_text = f"工具结果：{json.dumps(external_result, ensure_ascii=False)}"
-                elif action.action_type == ActionType.ASK:
-                    external_result = {"status": "asked"}
-                    reply_text = action.content
+                candidate = self.planner.propose(
+                    event,
+                    kernel_output,
+                    memory=self.memory,
+                    operator_memory_context=self.render_operator_memory_context(text),
+                    subject_context=subject_context_prompt,
+                    outcome_predictions=subject_context_snapshot.outcome_predictions,
+                )
+                gate_result = self.gate.check(event, candidate)
+
+                external_result: Optional[Dict[str, Any]] = None
+                reply_text = ""
+
+                if not gate_result.allowed:
+                    blocked_action = AgentAction(
+                        action_type=ActionType.BLOCK,
+                        content=f"已阻断：{gate_result.reason}",
+                        reason="gate_block",
+                    )
+                    action = blocked_action
+                    external_result = {"status": "blocked", "reason": gate_result.reason}
+                    reply_text = blocked_action.content
                 else:
-                    external_result = {"status": "sent"}
-                    reply_text = action.content
+                    action = candidate
+                    if action.action_type == ActionType.TOOL_CALL and action.tool_call:
+                        external_result = self.tools.execute(action.tool_call)
+                        reply_text = f"工具结果：{json.dumps(external_result, ensure_ascii=False)}"
+                    elif action.action_type == ActionType.ASK:
+                        external_result = {"status": "asked"}
+                        reply_text = action.content
+                    else:
+                        external_result = {"status": "sent"}
+                        reply_text = action.content
 
         if not str(reply_text or "").strip():
             reply_text = "模型返回了空回复；我没有执行任何外部动作。请重试或换一个更稳定的模型。"

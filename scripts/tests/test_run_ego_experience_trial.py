@@ -360,6 +360,16 @@ def test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trac
                     "outcome_predictions": {"options": []},
                 },
                 "operator_memory": {},
+                "outcome_prediction_effect": {
+                    "applied": True,
+                    "decision": "ask",
+                    "reason": "outcome_prediction_selected_ask",
+                    "entrypoint": "handle_user_message",
+                    "selected_prediction": {
+                        "action_type": "ask",
+                        "selection_score": 0.76,
+                    },
+                },
                 "policy_patch": {},
                 "tool_trace": [
                     {
@@ -383,6 +393,14 @@ def test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trac
     assert evidence["repair_trace"] == [
         {"type": "impossible_commitment_alignment", "reason": "test"}
     ]
+    assert evidence["outcome_prediction_effect"] == {
+        "applied": True,
+        "decision": "ask",
+        "reason": "outcome_prediction_selected_ask",
+        "entrypoint": "handle_user_message",
+        "selected_action_type": "ask",
+        "selection_score": 0.76,
+    }
 
 
 def test_functional_subject_trial_rejects_pending_approvals_between_cases(tmp_path, monkeypatch) -> None:

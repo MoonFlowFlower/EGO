@@ -1,0 +1,20 @@
+task: ego-functional-subject-planner-impact-proof
+status: accepted_local
+claim_ceiling: Functional Subject planner-impact local/scripted candidate pass
+acceptance:
+  - id: action_selection_change
+    description: A scripted case changes selected action because OutcomePrediction chooses ask.
+    status: pass
+  - id: trace_link
+    description: Trace records outcome_prediction_effect with selected action, decision, and entrypoint.
+    status: pass
+  - id: evidence_packet
+    description: Functional Subject evidence packet exposes the prediction effect without promoting state.
+    status: pass
+verification:
+  commands:
+    - python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_viability_outcome_prediction_changes_mainline_action_selection_and_trace scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trace -q
+    - TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Revert outcome-prediction mainline gate, trace evidence extraction, and tests.
