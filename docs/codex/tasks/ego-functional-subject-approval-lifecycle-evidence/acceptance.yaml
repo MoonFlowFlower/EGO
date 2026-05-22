@@ -1,0 +1,32 @@
+task: ego-functional-subject-approval-lifecycle-evidence
+status: accepted_local
+claim_ceiling: Functional Subject approval lifecycle evidence local/scripted candidate pass
+acceptance:
+  - id: report_evidence
+    description: Functional Subject report includes approval_lifecycle_evidence.
+    status: pass
+    evidence: docs/codex/tasks/ego-functional-subject-approval-lifecycle-evidence/EVIDENCE.approval_lifecycle.json
+  - id: judge_packet_evidence
+    description: GPT-5.5 judge packet includes approval_lifecycle_evidence.
+    status: pass
+    evidence: gpt55_judge_packet.approval_lifecycle_evidence.status=pass
+  - id: approval_lifecycle
+    description: Evidence covers pending proposal, approval execution, pending cleanup, and file write result.
+    status: pass
+    evidence: proposal_pending=true approval_execution_ok=true pending_cleared=true file_written=true
+  - id: operator_summary
+    description: Evidence includes operator-facing approval summary.
+    status: pass
+    evidence: operator_summary_present=true compact_cli_output_present=true
+  - id: cleanup
+    description: Probe file is cleaned after evidence capture.
+    status: pass
+    evidence: probe_removed_after_capture=true
+verification:
+  commands:
+    - python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_includes_approval_lifecycle_evidence -q
+    - python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --out /tmp/ego_fs_023_target
+    - TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_permission_gates.py::test_blocked_memory_write_does_not_claim_success scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_includes_approval_lifecycle_evidence -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+rollback: Remove approval lifecycle evidence packet wiring and keep parent smoke blocked.

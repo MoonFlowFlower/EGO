@@ -1,0 +1,22 @@
+{
+  "schema_version": "ego_functional_subject_approval_lifecycle_evidence.v1",
+  "task": "ego-functional-subject-approval-lifecycle-evidence",
+  "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --out /tmp/ego_fs_023_target",
+  "report_path": "/tmp/ego_fs_023_target/functional_subject_trial_report.json",
+  "trace_path": "/tmp/ego_fs_023_target/functional_subject_approval_lifecycle_trace.jsonl",
+  "observed": {
+    "approval_lifecycle_evidence_status": "pass",
+    "judge_packet_approval_lifecycle_evidence_status": "pass",
+    "checks": {
+      "proposal_pending": true,
+      "approval_execution_ok": true,
+      "pending_cleared": true,
+      "file_written": true,
+      "operator_summary_present": true,
+      "compact_cli_output_present": true,
+      "probe_removed_after_capture": true
+    }
+  },
+  "observation_boundary": "scripted local approval lifecycle evidence only; not runtime efficacy",
+  "claim_ceiling": "Functional Subject approval lifecycle evidence local/scripted candidate pass"
+}

@@ -497,6 +497,42 @@ def test_functional_subject_trial_includes_memory_lifecycle_evidence(tmp_path, m
     assert "Memory Lifecycle Evidence" in markdown
 
 
+def test_functional_subject_trial_includes_approval_lifecycle_evidence(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        output_dir=tmp_path / "out",
+        case_limit=1,
+    )
+    payload = json.loads((tmp_path / "out" / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "out" / "functional_subject_trial_report.md").read_text(encoding="utf-8")
+    evidence = report["approval_lifecycle_evidence"]
+
+    assert evidence["status"] == "pass"
+    assert evidence["checks"] == {
+        "proposal_pending": True,
+        "approval_execution_ok": True,
+        "pending_cleared": True,
+        "file_written": True,
+        "operator_summary_present": True,
+        "compact_cli_output_present": True,
+        "probe_removed_after_capture": True,
+    }
+    assert evidence["proposal"]["status"] == "pending_approval"
+    assert evidence["proposal"]["action"] == "write_file"
+    assert evidence["approval"]["status"] == "ok"
+    assert evidence["approval"]["execution_status"] == "ok"
+    assert evidence["approval"]["pending_after_approval"] == 0
+    assert "审批文件写入已执行" in evidence["approval"]["operator_summary"]
+    assert evidence["cleanup"]["probe_removed_after_capture"] is True
+    assert not Path(evidence["probe_path"]).exists()
+    assert payload["gpt55_judge_packet"]["approval_lifecycle_evidence"]["status"] == "pass"
+    assert "Approval Lifecycle Evidence" in markdown
+
+
 def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

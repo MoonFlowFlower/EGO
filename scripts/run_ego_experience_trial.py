@@ -539,6 +539,7 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
         "provider_mode": report.get("provider_mode"),
         "case_count": report.get("case_count"),
         "memory_lifecycle_evidence": report.get("memory_lifecycle_evidence", {}),
+        "approval_lifecycle_evidence": report.get("approval_lifecycle_evidence", {}),
         "cases": [
             {
                 "case_id": item["case_id"],
@@ -686,6 +687,92 @@ def build_functional_subject_memory_lifecycle_evidence(output_dir: Path) -> dict
         }
     finally:
         shutil.rmtree(memory_dir, ignore_errors=True)
+
+
+def build_functional_subject_approval_lifecycle_evidence(output_dir: Path) -> dict[str, Any]:
+    out = Path(output_dir).resolve()
+    trace_path = out / "functional_subject_approval_lifecycle_trace.jsonl"
+    if trace_path.exists():
+        trace_path.unlink()
+    probe_root = Path(agent.DEFAULT_AGENT_WORKSPACE).resolve() / "artifacts" / "experience_trial" / "approval_lifecycle_probe"
+    probe_path = probe_root / "probe.txt"
+    shutil.rmtree(probe_root, ignore_errors=True)
+
+    runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode="approve")
+    runtime.trace_store = agent.JsonlTraceStore(trace_path)
+    proposal_result: dict[str, Any] = {}
+    approval_result: dict[str, Any] = {}
+    cli_output = ""
+    file_exists_after_approve = False
+    evidence: dict[str, Any] = {
+        "schema_version": "ego_operator.functional_subject_approval_lifecycle_evidence.v1",
+        "status": "failed",
+        "reason": "not_run",
+    }
+    try:
+        proposal_result = runtime.propose_file_write(
+            "artifacts/experience_trial/approval_lifecycle_probe/probe.txt",
+            "functional subject approval lifecycle probe\n",
+            reason="functional_subject_approval_lifecycle_evidence",
+            create_parents=True,
+            overwrite=True,
+        )
+        proposal = proposal_result.get("proposal") if isinstance(proposal_result.get("proposal"), dict) else {}
+        proposal_id = str(proposal.get("proposal_id") or "")
+        pending_after_proposal = int(runtime.list_pending_approvals().get("count", 0) or 0)
+        approval_result = runtime.approve_pending_operation(proposal_id) if proposal_id else {"status": "failed", "reason": "missing_proposal_id"}
+        cli_output = runtime.format_approval_cli_output(approval_result)
+        pending_after_approval = int(runtime.list_pending_approvals().get("count", 0) or 0)
+        file_exists_after_approve = probe_path.exists()
+        execution = approval_result.get("execution") if isinstance(approval_result.get("execution"), dict) else {}
+        checks = {
+            "proposal_pending": proposal_result.get("status") == "pending_approval" and pending_after_proposal == 1,
+            "approval_execution_ok": approval_result.get("status") == "ok" and execution.get("status") == "ok",
+            "pending_cleared": pending_after_approval == 0,
+            "file_written": file_exists_after_approve and int(execution.get("bytes") or 0) > 0,
+            "operator_summary_present": bool(str(approval_result.get("operator_summary") or "").strip()),
+            "compact_cli_output_present": "Approval compact digest" in cli_output,
+            "probe_removed_after_capture": False,
+        }
+        evidence = {
+            "schema_version": "ego_operator.functional_subject_approval_lifecycle_evidence.v1",
+            "status": "partial",
+            "checks": checks,
+            "trace_path": str(trace_path),
+            "probe_path": str(probe_path),
+            "proposal": {
+                "status": proposal_result.get("status"),
+                "proposal_id": proposal_id,
+                "action": proposal.get("action"),
+                "payload_sha256": proposal.get("payload_sha256"),
+                "pending_after_proposal": pending_after_proposal,
+            },
+            "approval": {
+                "status": approval_result.get("status"),
+                "lease_id": (approval_result.get("approval") or {}).get("lease_id")
+                if isinstance(approval_result.get("approval"), dict)
+                else None,
+                "execution_status": execution.get("status"),
+                "execution_path": execution.get("path"),
+                "execution_bytes": execution.get("bytes"),
+                "pending_after_approval": pending_after_approval,
+                "operator_summary": approval_result.get("operator_summary"),
+                "compact_cli_output_has_digest": checks["compact_cli_output_present"],
+            },
+            "cleanup": {
+                "probe_removed_after_capture": False,
+            },
+            "observation_boundary": "scripted local approval lifecycle evidence only",
+            "claim_ceiling": "Functional Subject approval lifecycle evidence local/scripted candidate pass",
+        }
+    finally:
+        shutil.rmtree(probe_root, ignore_errors=True)
+    if isinstance(evidence.get("checks"), dict):
+        probe_removed = not probe_path.exists()
+        evidence["checks"]["probe_removed_after_capture"] = probe_removed
+        evidence["cleanup"]["probe_removed_after_capture"] = probe_removed
+        evidence["status"] = "pass" if all(evidence["checks"].values()) else "partial"
+    return evidence
 
 
 def _top_outcome_actions(outcome_predictions: Any, *, limit: int = 3) -> list[dict[str, Any]]:
@@ -1119,6 +1206,7 @@ def run_functional_subject_trial(
             "reason": "operator_memory_disabled",
         }
     )
+    approval_lifecycle_evidence = build_functional_subject_approval_lifecycle_evidence(out)
 
     report = {
         "schema_version": FUNCTIONAL_SUBJECT_REPORT_SCHEMA,
@@ -1133,6 +1221,7 @@ def run_functional_subject_trial(
         "empty_reply_count": empty_count,
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "memory_lifecycle_evidence": memory_lifecycle_evidence,
+        "approval_lifecycle_evidence": approval_lifecycle_evidence,
         "results": [asdict(item) for item in results],
         "not_claimed": [
             "real consciousness",
@@ -1593,6 +1682,11 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         "",
         f"status = `{(report.get('memory_lifecycle_evidence') or {}).get('status')}`",
         f"trace_path = `{(report.get('memory_lifecycle_evidence') or {}).get('trace_path')}`",
+        "",
+        "## Approval Lifecycle Evidence",
+        "",
+        f"status = `{(report.get('approval_lifecycle_evidence') or {}).get('status')}`",
+        f"trace_path = `{(report.get('approval_lifecycle_evidence') or {}).get('trace_path')}`",
         "",
         "| case | category | mechanisms | empty | tools | pending approvals |",
         "| --- | --- | --- | --- | --- | --- |",

@@ -649,6 +649,14 @@ def _looks_like_unbacked_memory_language(content: str) -> bool:
     text = content or ""
     if _memory_success_reply_has_scope(text):
         return False
+    if _matches_any_pattern(
+        text,
+        (
+            r"(未|没有|并未|不会).{0,12}(写入|保存|记录).{0,12}(记忆|memory)",
+            r"(需要|请).{0,8}(明确|显式).{0,8}(说)?[“\"']?记住",
+        ),
+    ):
+        return False
     return _matches_any_pattern(text, UNBACKED_MEMORY_LANGUAGE_PATTERNS)
 
 
