@@ -108,6 +108,7 @@ verify_profiles:
           - docs/codex/tasks/ego-functional-subject-policy-replay-strategy-change-proof
           - docs/codex/tasks/ego-functional-subject-planner-impact-proof
           - docs/codex/tasks/ego-functional-subject-real-provider-rerun-v1
+          - docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -153,6 +154,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-functional-subject-policy-replay-strategy-change-proof/
   - docs/codex/tasks/ego-functional-subject-planner-impact-proof/
   - docs/codex/tasks/ego-functional-subject-real-provider-rerun-v1/
+  - docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/

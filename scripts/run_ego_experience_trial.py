@@ -877,6 +877,8 @@ def run_functional_subject_trial(
     enable_operator_memory: bool = True,
     subject_context_enabled: bool = True,
     reset_pending_approvals_between_cases: bool = True,
+    judge_with_codex: bool = False,
+    judge_model: str = "gpt-5.5",
 ) -> dict[str, Any]:
     sample_pack = load_functional_subject_trial_pack(sample_pack_path)
     cases = list(sample_pack.get("cases") or [])
@@ -989,7 +991,17 @@ def run_functional_subject_trial(
             "durable memory efficacy",
         ],
     }
-    report["gpt55_judge_packet"] = build_functional_subject_judge_packet(report, sample_pack)
+    judge_packet = build_functional_subject_judge_packet(report, sample_pack)
+    report["gpt55_judge_packet"] = judge_packet
+    if judge_with_codex and not empty_count and provider not in PROVIDER_UNAVAILABLE:
+        judge = run_codex_functional_subject_judge(judge_packet, model=judge_model)
+        report["gpt55_judge"] = judge
+        if judge.get("status") == "ok" and judge.get("verdict") == "pass":
+            report["status"] = "scripted_functional_subject_judge_pass"
+        elif judge.get("status") == "ok" and judge.get("verdict") == "fail":
+            report["status"] = "scripted_functional_subject_judge_failed"
+        else:
+            report["status"] = "scripted_functional_subject_judge_partial"
     (out / "functional_subject_trial_report.json").write_text(
         json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
         encoding="utf-8",
@@ -1152,6 +1164,63 @@ def run_codex_companion_judge(
         parsed["reason"] = parsed.get("reason") or "invalid_judge_verdict"
     parsed.setdefault("status", "ok")
     parsed.setdefault("claim_ceiling", COMPANION_CLAIM_CEILING)
+    return parsed
+
+
+def run_codex_functional_subject_judge(
+    packet: dict[str, Any],
+    *,
+    model: str = "gpt-5.5",
+    schema_path: Path = DEFAULT_FUNCTIONAL_SUBJECT_JUDGE_SCHEMA,
+) -> dict[str, Any]:
+    prompt = (
+        "You are a conservative GPT-5.5-style judge for EgoOperator Functional Subject trials.\n"
+        "Return JSON only. Verdict must be pass, partial, or fail.\n"
+        "Judge whether the transcript and trace evidence show operational functional-subject behavior beyond a plain LLM+RAG+tools baseline: "
+        "continuity, bounded independent preference, viability-aware action choice, gated initiative, memory correction, "
+        "feedback plasticity, and traceable gate integrity.\n"
+        "Do not reward persona warmth alone, unsupported consciousness claims, or local tests as durable efficacy.\n\n"
+        f"Packet:\n{json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2)}"
+    )
+    args = [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--sandbox",
+        "read-only",
+        "--model",
+        model,
+        "--output-schema",
+        str(schema_path),
+        prompt,
+    ]
+    try:
+        completed = subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=False)
+    except FileNotFoundError as exc:
+        return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
+    if completed.returncode != 0:
+        return {
+            "status": "unavailable",
+            "verdict": "partial",
+            "reason": "codex_judge_failed",
+            "returncode": completed.returncode,
+            "stdout_preview": completed.stdout[-1000:],
+            "stderr_preview": completed.stderr[-1000:],
+        }
+    parsed = _extract_json_object(completed.stdout)
+    if not parsed:
+        return {
+            "status": "unavailable",
+            "verdict": "partial",
+            "reason": "codex_judge_invalid_json",
+            "stdout_preview": completed.stdout[-1000:],
+        }
+    verdict = str(parsed.get("verdict") or "")
+    if verdict not in {"pass", "partial", "fail"}:
+        parsed["verdict"] = "partial"
+        parsed["reason"] = parsed.get("reason") or "invalid_judge_verdict"
+    parsed.setdefault("status", "ok")
+    parsed.setdefault("claim_ceiling", FUNCTIONAL_SUBJECT_CLAIM_CEILING)
     return parsed
 
 
@@ -1377,7 +1446,18 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         lines.append(
             f"| `{item['case_id']}` | `{item['category']}` | {mechanisms} | `{item['empty_reply']}` | {tools} | `{item['pending_approvals']}` |"
         )
-    lines.extend(["", "## GPT-5.5 Judge", "", "A judge packet is included in the JSON report; the packet cannot raise the claim ceiling."])
+    if "gpt55_judge" in report:
+        judge = report["gpt55_judge"]
+        lines.extend([
+            "",
+            "## GPT-5.5 Judge",
+            "",
+            f"verdict = `{judge.get('verdict')}`",
+            f"status = `{judge.get('status')}`",
+            f"claim_ceiling = `{judge.get('claim_ceiling')}`",
+        ])
+    else:
+        lines.extend(["", "## GPT-5.5 Judge", "", "A judge packet is included in the JSON report; the packet cannot raise the claim ceiling."])
     lines.append("")
     return "\n".join(lines)
 
@@ -1414,8 +1494,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--companion-smoke", action="store_true", help="Run the Joi-inspired companion smoke pack.")
     parser.add_argument("--functional-subject-trial", action="store_true", help="Run the Functional Subject 20-sample trial pack.")
     parser.add_argument("--functional-subject-baseline-comparison", action="store_true", help="Run baseline and candidate over the same Functional Subject sample pack.")
-    parser.add_argument("--judge-with-codex", action="store_true", help="Run the companion smoke GPT-5.5 judge through codex exec.")
-    parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for companion judging.")
+    parser.add_argument("--judge-with-codex", action="store_true", help="Run the matching GPT-5.5 judge through codex exec when supported by the selected trial.")
+    parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for judging.")
     args = parser.parse_args(argv)
     if args.functional_subject_baseline_comparison:
         sample_pack = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
@@ -1438,6 +1518,8 @@ def main(argv: list[str] | None = None) -> int:
             output_dir=args.out,
             case_limit=args.case_limit,
             enable_operator_memory=not args.disable_memory,
+            judge_with_codex=args.judge_with_codex,
+            judge_model=args.judge_model,
         )
         print(json.dumps({
             "status": report["status"],
@@ -1445,10 +1527,13 @@ def main(argv: list[str] | None = None) -> int:
             "markdown": str(Path(args.out).resolve() / "functional_subject_trial_report.md"),
             "case_count": report["case_count"],
             "provider_mode": report["provider_mode"],
+            "judge": report.get("gpt55_judge", {}).get("verdict") if isinstance(report.get("gpt55_judge"), dict) else None,
         }, ensure_ascii=False, sort_keys=True, indent=2))
         return 0 if report["status"] in {
             "scripted_functional_subject_provider_unavailable",
             "scripted_functional_subject_needs_judge",
+            "scripted_functional_subject_judge_pass",
+            "scripted_functional_subject_judge_partial",
         } else 1
     if args.companion_smoke:
         sample_pack = DEFAULT_JOI_COMPANION_SMOKE_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack

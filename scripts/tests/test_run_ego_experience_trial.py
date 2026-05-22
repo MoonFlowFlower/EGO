@@ -263,6 +263,50 @@ def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) ->
     assert "--output-schema" in calls[0]
 
 
+def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> None:
+    calls = []
+
+    class Completed:
+        returncode = 0
+        stdout = json.dumps(
+            {
+                "verdict": "partial",
+                "scores": {
+                    "continuity": 3,
+                    "independent_preference": 3,
+                    "bounded_initiative": 3,
+                    "feedback_plasticity": 3,
+                    "gate_integrity": 4,
+                    "traceability": 4,
+                    "user_experience": 3,
+                },
+                "reasons": ["traceable but needs human review"],
+                "missing_evidence": ["human smoke"],
+                "follow_up_issues": [],
+                "claim_ceiling": "scripted candidate only",
+            }
+        )
+        stderr = ""
+
+    def fake_run(args, cwd=None, capture_output=None, text=None, check=None):
+        calls.append(args)
+        return Completed()
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+    packet = {"cases": [], "claim_ceiling": "candidate"}
+
+    judge = run_ego_experience_trial.run_codex_functional_subject_judge(packet, model="gpt-5.5")
+
+    assert judge["verdict"] == "partial"
+    assert calls
+    assert calls[0][:6] == ["codex", "exec", "--ephemeral", "--sandbox", "read-only", "--model"]
+    assert "gpt-5.5" in calls[0]
+    assert "--output-schema" in calls[0]
+    schema_arg = calls[0][calls[0].index("--output-schema") + 1]
+    assert schema_arg.endswith("ego_functional_subject_judge_schema.json")
+    assert "Functional Subject trials" in calls[0][-1]
+
+
 def test_functional_subject_trial_pack_has_required_20_case_coverage() -> None:
     pack = run_ego_experience_trial.load_functional_subject_trial_pack()
     cases = pack["cases"]
@@ -308,6 +352,61 @@ def test_functional_subject_trial_builds_gpt55_judge_packet(tmp_path, monkeypatc
     assert payload["gpt55_judge_packet"]["cases"][0]["trace_evidence"]["entrypoint_source"] == "experience_trial_cli_compatible"
     assert payload["gpt55_judge_packet"]["cases"][0]["trace_evidence"]["subject_state"]["write_authority"] == "candidate_only"
     assert "Functional Subject Trial" in markdown
+
+
+def test_functional_subject_trial_runs_codex_judge_when_requested(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    class FakeOpenRouterLLM(CapturePromptLLM):
+        provider = "openrouter"
+        model = "fake-openrouter"
+
+    def fake_judge(packet, *, model="gpt-5.5", schema_path=run_ego_experience_trial.DEFAULT_FUNCTIONAL_SUBJECT_JUDGE_SCHEMA):
+        assert packet["provider_mode"] == "openrouter"
+        assert packet["case_count"] == 1
+        return {
+            "status": "ok",
+            "verdict": "pass",
+            "scores": {
+                "continuity": 4,
+                "independent_preference": 3,
+                "bounded_initiative": 3,
+                "feedback_plasticity": 3,
+                "gate_integrity": 4,
+                "traceability": 4,
+                "user_experience": 4,
+            },
+            "reasons": ["scripted evidence sufficient"],
+            "missing_evidence": [],
+            "follow_up_issues": [],
+            "claim_ceiling": "scripted candidate only",
+        }
+
+    original_builder = agent.build_demo_runtime
+
+    def fake_builder(*args, **kwargs):
+        runtime = original_builder(*args, **kwargs)
+        runtime.planner.llm = FakeOpenRouterLLM()
+        return runtime
+
+    monkeypatch.setattr(agent, "build_demo_runtime", fake_builder)
+    monkeypatch.setattr(run_ego_experience_trial, "run_codex_functional_subject_judge", fake_judge)
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        output_dir=tmp_path,
+        case_limit=1,
+        judge_with_codex=True,
+    )
+    payload = json.loads((tmp_path / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "functional_subject_trial_report.md").read_text(encoding="utf-8")
+
+    assert report["status"] == "scripted_functional_subject_judge_pass"
+    assert report["gpt55_judge"]["verdict"] == "pass"
+    assert payload["gpt55_judge"]["status"] == "ok"
+    assert "verdict = `pass`" in markdown
 
 
 def test_functional_subject_policy_patch_case_includes_setup_and_replay(tmp_path, monkeypatch) -> None:

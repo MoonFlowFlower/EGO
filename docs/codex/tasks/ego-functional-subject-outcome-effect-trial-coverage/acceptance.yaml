@@ -1,0 +1,21 @@
+task: ego-functional-subject-outcome-effect-trial-coverage
+status: ready
+claim_ceiling: Functional Subject applied outcome-prediction trial coverage local/scripted candidate pass
+acceptance:
+  - id: applied_effect_trace
+    description: At least one Functional Subject trial case records outcome_prediction_effect.applied=true.
+    status: pending
+  - id: entrypoint_link
+    description: Evidence links the selected action to handle_user_message and decision=ask.
+    status: pending
+  - id: tool_flow_preserved
+    description: Safe public web/tool requests are not converted into outcome-prediction askbacks.
+    status: pending
+  - id: targeted_rerun
+    description: Targeted rerun demonstrates the evidence before the next full #94 rerun.
+    status: pending
+verification:
+  commands:
+    - python3 scripts/codex_project_autopilot.py local-plan-next
+    - git diff --check -- Tasks/TASK_BOARD.yaml .codex/project_contract.yaml docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage
+rollback: Revert sample/evidence coverage adjustment and keep parent smoke blocked.

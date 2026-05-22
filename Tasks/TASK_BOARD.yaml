@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "Use EGO-FS-020 to run the real-provider rerun evidence packet; keep this gate blocked until review/comment accepts the evidence."
+    next_action: "Latest real-provider rerun reached GPT-5.5 partial; address EGO-FS-021 outcome-effect trial coverage and follow-up evidence blockers before another #94 review."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -468,13 +468,13 @@ tasks:
     title: "EgoOperator: Functional Subject #94 real-provider rerun evidence packet"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_experience
     owner: codex
     observation_class: scripted_real_entry
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider rerun evidence packet candidate pass
-    next_action: "Preflight OPENROUTER_API_KEY without exposing it, then run the Functional Subject 20-sample trial with GPT-5.5 judge packet."
+    next_action: "Accepted as evidence packet: real-provider run completed with provider_mode=openrouter and GPT-5.5 verdict=partial; parent #94 remains blocked."
     acceptance:
       - "OPENROUTER_API_KEY is available in local terminal env without being printed or tracked."
       - "Functional Subject 20-sample trial runs with provider_mode=openrouter."
@@ -485,6 +485,31 @@ tasks:
     canonical_sources:
       - "GitHub issue #94"
       - "docs/codex/tasks/ego-functional-subject-real-provider-rerun-v1/SPEC.md"
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_trial_report.json"
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-021
+    title: "EgoOperator: Functional Subject applied outcome-prediction trial coverage"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: active
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject applied outcome-prediction trial coverage local/scripted candidate pass
+    next_action: "Add or adjust a Functional Subject scripted case so the real trial evidence includes outcome_prediction_effect.applied=true."
+    acceptance:
+      - "At least one Functional Subject trial case triggers outcome_prediction_effect.applied=true through handle_user_message."
+      - "The judge packet exposes the applied effect in trace_evidence, not only outcome_prediction_top_actions."
+      - "Normal tool/web_fetch requests are not converted into outcome-prediction askbacks."
+      - "A targeted rerun confirms the case evidence before the next full #94 rerun."
+    rollback: "Revert the sample-pack/evidence coverage adjustment and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json"
+      - "docs/codex/tasks/ego-functional-subject-outcome-effect-trial-coverage/SPEC.md"
     external_refs:
       github_issue: null
 

@@ -1,24 +1,35 @@
 task: ego-functional-subject-real-provider-rerun-v1
-status: ready
+status: accepted_local
 claim_ceiling: Functional Subject real-provider rerun evidence packet candidate pass
 acceptance:
   - id: env_preflight
     description: OPENROUTER_API_KEY is present without exposing its value.
-    status: pending
+    status: pass
   - id: real_provider_run
     description: Functional Subject 20-sample trial runs with provider_mode=openrouter.
-    status: pending
+    status: pass
   - id: judge_packet
     description: GPT-5.5 judge returns structured verdict or explicit judge_unavailable.
-    status: pending
+    status: pass
   - id: evidence_packet
     description: Report includes transcript, trace refs, mechanism evidence, and failure notes.
-    status: pending
+    status: pass
   - id: parent_gate
     description: EGO-FS-010 remains human-gated until review/comment accepts the evidence.
-    status: pending
+    status: pass
 verification:
   commands:
     - python3 scripts/codex_project_autopilot.py local-plan-next
     - git diff --check -- Tasks/TASK_BOARD.yaml .codex/project_contract.yaml docs/codex/tasks/ego-functional-subject-real-provider-rerun-v1
+    - python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py
+    - TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py -q
+    - python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+evidence:
+  report_json: C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_trial_report.json
+  report_markdown: C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_trial_report.md
+  judge_result: C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun/functional_subject_gpt55_judge_result.json
+  provider_mode: openrouter
+  case_count: 20
+  empty_reply_count: 0
+  judge_verdict: partial
 rollback: Remove EGO-FS-020 from Tasks/TASK_BOARD.yaml and delete this task directory.
