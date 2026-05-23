@@ -1,0 +1,64 @@
+{
+  "task": "EGO-FS-030",
+  "claim_ceiling": "Functional Subject trial timeout/progress guard local workflow candidate pass",
+  "result": "accepted_local_workflow",
+  "implementation_summary": [
+    "Functional Subject trial writes functional_subject_trial_progress.json after each completed case.",
+    "Added --case-timeout-seconds to bound individual Functional Subject cases on Unix/WSL.",
+    "Timed-out cases produce explicit timeout metadata, skip GPT-5.5 judging, and remain unavailable/failure evidence rather than parent smoke pass evidence."
+  ],
+  "evidence_items": [
+    {
+      "type": "deterministic_tests",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_writes_progress_report scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_case_timeout_writes_partial_report",
+      "status": "pass",
+      "summary": "Progress report and per-case timeout partial-report paths are covered."
+    },
+    {
+      "type": "scripted_entry",
+      "source": "provider_unavailable local fallback",
+      "command": "env -u OPENROUTER_API_KEY python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 1 --case-timeout-seconds 30 --out /tmp/ego_fs_030_progress_smoke",
+      "status": "pass",
+      "path": "/tmp/ego_fs_030_progress_smoke/functional_subject_trial_progress.json",
+      "summary": "One-case smoke wrote progress with completed_cases=1, timeout_case_count=0, and case_timeout_supported=true on WSL."
+    }
+  ],
+  "acceptance_result": [
+    {
+      "id": "progress_report",
+      "status": "pass",
+      "evidence": "functional_subject_trial_progress.json written after case completion"
+    },
+    {
+      "id": "per_case_timeout",
+      "status": "pass",
+      "evidence": "timeout deterministic test produces scripted_functional_subject_case_timeout"
+    },
+    {
+      "id": "judge_boundary",
+      "status": "pass",
+      "evidence": "timeout_count disables GPT-5.5 judge and keeps EGO-FS-010 blocked"
+    },
+    {
+      "id": "compatibility",
+      "status": "pass",
+      "evidence": "no-timeout one-case smoke remains compatible"
+    }
+  ],
+  "residuals": [
+    {
+      "task": "EGO-FS-010",
+      "class": "human_required_real_provider_smoke",
+      "summary": "Rerun full 20-case Functional Subject real-provider trial with --case-timeout-seconds after provider access is stable, then attach GPT-5.5/human review."
+    }
+  ],
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}

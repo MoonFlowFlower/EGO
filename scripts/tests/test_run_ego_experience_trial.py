@@ -359,6 +359,72 @@ def test_functional_subject_trial_builds_gpt55_judge_packet(tmp_path, monkeypatc
     assert "Functional Subject Trial" in markdown
 
 
+def test_functional_subject_trial_writes_progress_report(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        output_dir=tmp_path,
+        case_limit=2,
+        case_timeout_seconds=30,
+    )
+    progress = json.loads((tmp_path / "functional_subject_trial_progress.json").read_text(encoding="utf-8"))
+
+    assert report["case_count"] == 2
+    assert report["timeout_case_count"] == 0
+    assert progress["status"] == "completed_cases"
+    assert progress["completed_cases"] == 2
+    assert progress["total_cases"] == 2
+    assert progress["case_timeout_seconds"] == 30
+    assert progress["last_case_id"] == report["results"][-1]["case_id"]
+
+
+def test_functional_subject_trial_case_timeout_writes_partial_report(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    (tmp_path / ".gitignore").write_text("artifacts/experience_trial/\nmemory/*.jsonl\n", encoding="utf-8")
+
+    pack = run_ego_experience_trial.load_functional_subject_trial_pack()
+    pack_path = tmp_path / "single_case_pack.json"
+    pack_path.write_text(
+        json.dumps({**pack, "cases": [pack["cases"][0]]}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    original_dispatch = run_ego_experience_trial.dispatch_cli_compatible
+    slow_calls = {"count": 0}
+
+    def slow_dispatch(runtime, prompt):
+        if str(prompt).startswith("/"):
+            return original_dispatch(runtime, prompt)
+        if slow_calls["count"] > 0:
+            return original_dispatch(runtime, prompt)
+        slow_calls["count"] += 1
+        run_ego_experience_trial.time.sleep(5)
+        return "late"
+
+    monkeypatch.setattr(run_ego_experience_trial, "dispatch_cli_compatible", slow_dispatch)
+
+    report = run_ego_experience_trial.run_functional_subject_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "timeout",
+        case_timeout_seconds=1,
+    )
+    progress = json.loads((tmp_path / "timeout" / "functional_subject_trial_progress.json").read_text(encoding="utf-8"))
+    payload = json.loads((tmp_path / "timeout" / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+
+    assert report["status"] == "scripted_functional_subject_case_timeout"
+    assert report["timeout_case_count"] == 1
+    assert report["results"][0]["trace_evidence"]["status"] == "case_timeout"
+    assert "timeout" in report["results"][0]["reply_text"]
+    assert progress["completed_cases"] == 1
+    assert progress["timeout_case_count"] == 1
+    assert payload["timeout_case_count"] == 1
+
+
 def test_functional_subject_trial_runs_codex_judge_when_requested(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

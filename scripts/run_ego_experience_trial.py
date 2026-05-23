@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import signal
 import shutil
 import subprocess
 import sys
@@ -78,6 +80,35 @@ FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING = (
     "Functional Subject experiment control plane local workflow candidate pass"
 )
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
+
+
+class FunctionalSubjectCaseTimeout(RuntimeError):
+    """Raised when a single Functional Subject trial case exceeds its budget."""
+
+
+def _case_timeout_supported() -> bool:
+    return hasattr(signal, "SIGALRM") and hasattr(signal, "setitimer")
+
+
+@contextlib.contextmanager
+def _functional_subject_case_timeout(timeout_seconds: int | None):
+    seconds = max(0, int(timeout_seconds or 0))
+    if seconds <= 0 or not _case_timeout_supported():
+        yield
+        return
+
+    previous_handler = signal.getsignal(signal.SIGALRM)
+
+    def _handle_timeout(_signum, _frame):
+        raise FunctionalSubjectCaseTimeout(f"functional subject case exceeded {seconds}s")
+
+    signal.signal(signal.SIGALRM, _handle_timeout)
+    signal.setitimer(signal.ITIMER_REAL, float(seconds))
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0.0)
+        signal.signal(signal.SIGALRM, previous_handler)
 
 FUNCTIONAL_SUBJECT_PHASES = {
     "A": "mechanism_exists",
@@ -1650,6 +1681,39 @@ def _reject_pending_approvals_for_trial_case(
     return tuple(rejected)
 
 
+def _write_functional_subject_progress_report(
+    *,
+    output_dir: Path,
+    sample_pack_path: Path,
+    results: list[FunctionalSubjectCaseResult],
+    started: float,
+    total_cases: int,
+    case_timeout_seconds: int,
+    case_timeout_supported: bool,
+    timeout_case_count: int,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    progress = {
+        "schema_version": "ego_operator.functional_subject_trial_progress.v1",
+        "status": "in_progress" if len(results) < total_cases else "completed_cases",
+        "sample_pack": str(sample_pack_path),
+        "completed_cases": len(results),
+        "total_cases": total_cases,
+        "remaining_cases": max(0, total_cases - len(results)),
+        "case_timeout_seconds": case_timeout_seconds,
+        "case_timeout_supported": case_timeout_supported,
+        "timeout_case_count": timeout_case_count,
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "last_case_id": results[-1].case_id if results else None,
+        "results": [asdict(item) for item in results],
+        "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
+    }
+    (output_dir / "functional_subject_trial_progress.json").write_text(
+        json.dumps(progress, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
 def run_functional_subject_trial(
     *,
     sample_pack_path: Path = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK,
@@ -1660,6 +1724,7 @@ def run_functional_subject_trial(
     reset_pending_approvals_between_cases: bool = True,
     judge_with_codex: bool = False,
     judge_model: str = "gpt-5.5",
+    case_timeout_seconds: int | None = None,
 ) -> dict[str, Any]:
     sample_pack = load_functional_subject_trial_pack(sample_pack_path)
     cases = list(sample_pack.get("cases") or [])
@@ -1689,6 +1754,9 @@ def run_functional_subject_trial(
 
     results: list[FunctionalSubjectCaseResult] = []
     started = time.monotonic()
+    timeout_seconds = max(0, int(case_timeout_seconds or 0))
+    timeout_supported = _case_timeout_supported()
+    timeout_case_count = 0
     try:
         for case in cases:
             case_id = str(case.get("id") or f"case_{len(results) + 1}")
@@ -1703,13 +1771,43 @@ def run_functional_subject_trial(
             )
             runtime.trace_store = agent.JsonlTraceStore(trace_path)
             prompt = str(case.get("prompt") or "")
-            reply = dispatch_cli_compatible(runtime, prompt)
-            tool_use, blocked = _trace_tool_summary(trace_path)
+            case_timed_out = False
+            try:
+                with _functional_subject_case_timeout(timeout_seconds):
+                    reply = dispatch_cli_compatible(runtime, prompt)
+                tool_use, blocked = _trace_tool_summary(trace_path)
+                trace_evidence = _functional_subject_trace_evidence(trace_path)
+            except FunctionalSubjectCaseTimeout as exc:
+                timeout_case_count += 1
+                case_timed_out = True
+                reply = (
+                    f"本样本执行超过 {timeout_seconds}s timeout，EgoOperator 已停止等待并写入 partial report。"
+                    "这条样本未完成；没有把本轮当作成功回复。"
+                )
+                timeout_payload = {
+                    "event_type": "functional_subject_case_timeout",
+                    "case_id": case_id,
+                    "timeout_seconds": timeout_seconds,
+                    "error": str(exc),
+                    "side_effects_assumed": "unknown_partial_trace_check_required",
+                    "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
+                }
+                trace_path.parent.mkdir(parents=True, exist_ok=True)
+                with trace_path.open("a", encoding="utf-8") as handle:
+                    handle.write(json.dumps(timeout_payload, ensure_ascii=False, sort_keys=True) + "\n")
+                tool_use, blocked = (), ()
+                trace_evidence = {
+                    "status": "case_timeout",
+                    "case_id": case_id,
+                    "timeout_seconds": timeout_seconds,
+                    "error": str(exc),
+                    "trace_path": str(trace_path),
+                    "side_effects_assumed": "unknown_partial_trace_check_required",
+                }
             pending_count = int(runtime.list_pending_approvals().get("count", 0))
-            trace_evidence = _functional_subject_trace_evidence(trace_path)
             rejected_approvals: tuple[str, ...] = ()
             cleanup_trace_path = ""
-            if reset_pending_approvals_between_cases and pending_count:
+            if reset_pending_approvals_between_cases and pending_count and not case_timed_out:
                 cleanup_path = cleanup_trace_dir / f"{case_id}.jsonl"
                 rejected_approvals = _reject_pending_approvals_for_trial_case(
                     runtime,
@@ -1741,6 +1839,16 @@ def run_functional_subject_trial(
                     judge_focus=tuple(str(item) for item in (case.get("judge_focus") or [])),
                 )
             )
+            _write_functional_subject_progress_report(
+                output_dir=out,
+                sample_pack_path=sample_pack_path,
+                results=results,
+                started=started,
+                total_cases=len(cases),
+                case_timeout_seconds=timeout_seconds,
+                case_timeout_supported=timeout_supported,
+                timeout_case_count=timeout_case_count,
+            )
     finally:
         agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS = previous_verbose
 
@@ -1749,6 +1857,8 @@ def run_functional_subject_trial(
     status = "scripted_functional_subject_provider_unavailable" if provider in PROVIDER_UNAVAILABLE else "scripted_functional_subject_needs_judge"
     if empty_count:
         status = "scripted_functional_subject_failed"
+    if timeout_case_count:
+        status = "scripted_functional_subject_case_timeout"
     memory_lifecycle_evidence = (
         build_functional_subject_memory_lifecycle_evidence(out)
         if enable_operator_memory
@@ -1772,6 +1882,9 @@ def run_functional_subject_trial(
         "sample_pack": str(sample_pack_path),
         "case_count": len(results),
         "empty_reply_count": empty_count,
+        "timeout_case_count": timeout_case_count,
+        "case_timeout_seconds": timeout_seconds,
+        "case_timeout_supported": timeout_supported,
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "memory_lifecycle_evidence": memory_lifecycle_evidence,
         "approval_lifecycle_evidence": approval_lifecycle_evidence,
@@ -1788,7 +1901,7 @@ def run_functional_subject_trial(
     }
     judge_packet = build_functional_subject_judge_packet(report, sample_pack)
     report["gpt55_judge_packet"] = judge_packet
-    if judge_with_codex and not empty_count and provider not in PROVIDER_UNAVAILABLE:
+    if judge_with_codex and not empty_count and not timeout_case_count and provider not in PROVIDER_UNAVAILABLE:
         judge = run_codex_functional_subject_judge(judge_packet, model=judge_model)
         report["gpt55_judge"] = judge
         if judge.get("status") == "ok" and judge.get("verdict") == "pass":
@@ -2233,6 +2346,8 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         f"provider_mode = `{report['provider_mode']}`",
         f"case_count = `{report['case_count']}`",
         f"empty_reply_count = `{report['empty_reply_count']}`",
+        f"timeout_case_count = `{report.get('timeout_case_count', 0)}`",
+        f"case_timeout_seconds = `{report.get('case_timeout_seconds', 0)}`",
         f"claim_ceiling = `{report['claim_ceiling']}`",
         "",
         "This report evaluates operational Functional Subject mechanisms through the CLI-compatible EgoOperator path. It is not proof of stable user benefit, runtime efficacy, live autonomy, durable memory efficacy, independent awareness, or consciousness.",
@@ -2318,6 +2433,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--functional-subject-baseline-comparison", action="store_true", help="Run baseline and candidate over the same Functional Subject sample pack.")
     parser.add_argument("--judge-with-codex", action="store_true", help="Run the matching GPT-5.5 judge through codex exec when supported by the selected trial.")
     parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for judging.")
+    parser.add_argument("--case-timeout-seconds", type=int, default=None, help="Optional per-case timeout for Functional Subject trial runs; writes progress before each next case.")
     args = parser.parse_args(argv)
     if args.functional_subject_baseline_comparison:
         sample_pack = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
@@ -2342,6 +2458,7 @@ def main(argv: list[str] | None = None) -> int:
             enable_operator_memory=not args.disable_memory,
             judge_with_codex=args.judge_with_codex,
             judge_model=args.judge_model,
+            case_timeout_seconds=args.case_timeout_seconds,
         )
         print(json.dumps({
             "status": report["status"],
