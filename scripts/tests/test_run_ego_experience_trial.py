@@ -387,6 +387,17 @@ def test_functional_subject_response_attribution_summary_separates_origins() -> 
             },
         },
         {
+            "case_id": "fs_native_gate",
+            "trace_evidence": {
+                "response_attribution": {
+                    "final_response_origin": "native_memory_gate",
+                    "first_pass_behavior_clean": True,
+                    "repair_types": [],
+                    "native_memory_gate_reason": "native_memory_forget_gate",
+                }
+            },
+        },
+        {
             "case_id": "fs_terminal",
             "trace_evidence": {
                 "response_attribution": {
@@ -408,13 +419,14 @@ def test_functional_subject_response_attribution_summary_separates_origins() -> 
         },
     ])
 
-    assert summary["case_count"] == 4
+    assert summary["case_count"] == 5
     assert summary["origin_counts"]["first_pass_llm"] == 1
+    assert summary["origin_counts"]["native_memory_gate"] == 1
     assert summary["origin_counts"]["runtime_repair"] == 1
     assert summary["origin_counts"]["runtime_terminal_guard"] == 1
     assert summary["origin_counts"]["provider_or_empty_recovery"] == 1
-    assert summary["clean_first_pass_count"] == 1
-    assert summary["clean_first_pass_rate"] == 0.25
+    assert summary["clean_first_pass_count"] == 2
+    assert summary["clean_first_pass_rate"] == 0.4
     assert summary["repair_case_ids"] == ["fs_repair", "fs_terminal"]
     assert summary["terminal_guard_case_ids"] == ["fs_terminal"]
     assert summary["provider_recovery_case_ids"] == ["fs_provider"]
@@ -981,6 +993,7 @@ def test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trac
         "repair_types": ["impossible_commitment_alignment"],
         "candidate_action_reason": None,
         "external_status": None,
+        "native_memory_gate_reason": None,
         "judge_note": "Repair or terminal guard output is valid gate evidence, but should not be scored as clean first-pass behavior.",
     }
     assert evidence["outcome_prediction_effect"] == {
@@ -1051,6 +1064,72 @@ def test_functional_subject_trace_evidence_marks_terminal_guard_origin(tmp_path)
             "reason": "destructive_command_requires_inventory_first",
         }
     ]
+
+
+def test_functional_subject_trace_evidence_marks_native_memory_gate_origin(tmp_path) -> None:
+    trace_path = tmp_path / "trace.jsonl"
+    trace_path.write_text(
+        json.dumps(
+            {
+                "event": {"source": "experience_trial_cli_compatible", "event_type": "user_message"},
+                "candidate_action": {
+                    "action_type": "respond",
+                    "reason": "native_memory_forget_gate",
+                },
+                "gate": {"allowed": True, "reason": "text_action_allowed"},
+                "llm_meta": {
+                    "provider": "runtime",
+                    "model": "native_memory_gate",
+                    "fallback_used": False,
+                    "native_memory_gate_effect": {
+                        "applied": True,
+                        "reason": "native_memory_forget_gate",
+                        "side_effects_executed": False,
+                        "state_mutation": "forbidden",
+                        "gate_path": "AgentAction -> SafetyGate -> trace",
+                    },
+                },
+                "external_result": {
+                    "status": "native_gate_reply",
+                    "reason": "native_memory_forget_gate",
+                    "native_memory_gate_effect": {
+                        "applied": True,
+                        "reason": "native_memory_forget_gate",
+                        "side_effects_executed": False,
+                        "state_mutation": "forbidden",
+                        "gate_path": "AgentAction -> SafetyGate -> trace",
+                    },
+                },
+                "subject_context": {
+                    "subject_state": {"schema_version": "v", "write_authority": "candidate_only", "state_mutation": "forbidden"},
+                    "viability_state": {"schema_version": "v", "planner_input": True, "scores": {}, "planner_biases": []},
+                    "bounded_initiative": {"schema_version": "v", "status": "hold", "candidates": [], "reason": "test"},
+                    "outcome_predictions": {"options": []},
+                },
+                "operator_memory": {},
+                "outcome_prediction_effect": {},
+                "policy_patch": {},
+                "tool_trace": [],
+            },
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    evidence = run_ego_experience_trial._functional_subject_trace_evidence(trace_path)
+
+    assert evidence["response_attribution"]["final_response_origin"] == "native_memory_gate"
+    assert evidence["response_attribution"]["first_pass_behavior_clean"] is True
+    assert evidence["response_attribution"]["repair_applied"] is False
+    assert evidence["response_attribution"]["native_memory_gate_reason"] == "native_memory_forget_gate"
+    assert evidence["native_memory_gate_effect"] == {
+        "applied": True,
+        "reason": "native_memory_forget_gate",
+        "side_effects_executed": False,
+        "state_mutation": "forbidden",
+        "gate_path": "AgentAction -> SafetyGate -> trace",
+    }
 
 
 def test_functional_subject_trial_rejects_pending_approvals_between_cases(tmp_path, monkeypatch) -> None:

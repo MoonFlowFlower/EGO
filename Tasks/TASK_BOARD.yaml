@@ -22,7 +22,7 @@ tasks:
     title: "Epic 10: Functional Subject core mechanisms"
     kind: epic
     parent: null
-    status: active
+    status: accepted
     layer: functional_subject_core
     owner: codex
     observation_class: aggregate
@@ -1145,6 +1145,32 @@ tasks:
     canonical_sources:
       - "docs/codex/tasks/ego-functional-subject-post-outcome-prediction-real-provider-rerun/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-post-outcome-prediction-real-provider-rerun/EVIDENCE.post_outcome_prediction_real_provider_rerun.json"
+      - "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-048
+    title: "EgoOperator: Functional Subject native memory gate first-pass strengthening"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject native memory/initiative gate first-pass local candidate pass
+    next_action: "Accepted locally. Next minimal Functional Subject step is a real-provider rerun after native memory gate first-pass strengthening, then route remaining repair cases."
+    acceptance:
+      - "Explicit correction, memory forget/revoke, initiative opt-out, and bounded reminder authorization can produce first-pass scoped gate replies without LLM repair."
+      - "Native replies do not write memory, mutate canonical state, execute tools, or bypass approval."
+      - "Functional Subject local smoke shows fewer memory/initiative repair cases while preserving memory-save explicit tool path."
+      - "Existing EgoOperator and Autopilot regression profiles do not regress."
+    rollback: "Revert native memory/initiative gate pre-LLM action and keep EGO-FS-010 partial on memory gate first-pass strength."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-native-memory-gate-first-pass/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-native-memory-gate-first-pass/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-native-memory-gate-first-pass/EVIDENCE.native_memory_gate_first_pass.json"
+      - "/tmp/ego_fs048_local_trial_smoke_final/functional_subject_trial_report.json"
       - "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json"
     external_refs:
       github_issue: null

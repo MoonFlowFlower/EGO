@@ -1,0 +1,72 @@
+{
+  "schema_version": "ego.functional_subject_task_evidence.v1",
+  "task_id": "EGO-FS-048",
+  "result": "local_candidate_pass",
+  "phase_advanced": "Phase B: mechanism affects transcript",
+  "claim_ceiling": "Functional Subject native memory/initiative gate first-pass local candidate pass",
+  "what_changed": [
+    "Added a native EgoOperator memory/initiative gate action for explicit correction, memory forget/revoke, initiative opt-out, and conditional bounded-reminder authorization turns.",
+    "The native gate produces AgentAction(RESPOND) through the existing SafetyGate and trace path; it does not write memory, mutate canonical state, execute tools, or bypass approval.",
+    "Functional Subject trial response attribution now records native gate replies as native_memory_gate instead of merging them into ordinary first_pass_llm."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Explicit correction, memory forget/revoke, initiative opt-out, and bounded reminder authorization can produce first-pass scoped gate replies without LLM repair.",
+      "status": "pass",
+      "evidence": "EgoOperator/tests/test_operator_runtime_contract.py native_memory_gate tests and /tmp/ego_fs048_local_trial_smoke_final/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "Native replies do not write memory, mutate canonical state, execute tools, or bypass approval.",
+      "status": "pass",
+      "evidence": "Trace external_result.native_memory_gate_effect records side_effects_executed=false, state_mutation=forbidden, gate_path='AgentAction -> SafetyGate -> trace'."
+    },
+    {
+      "gate": "Functional Subject local smoke shows fewer memory/initiative repair cases while preserving memory-save explicit tool path.",
+      "status": "pass",
+      "evidence": "Local smoke scorecard: clean_first_pass=15/20, origin_counts={first_pass_llm:5,native_memory_gate:4,outcome_prediction_gate:6,runtime_repair:5}; fs_05/fs_06/fs_15/fs_16 are native_memory_gate, fs_17 remains runtime_repair for explicit memory-save wording."
+    },
+    {
+      "gate": "Existing EgoOperator and Autopilot regression profiles do not regress.",
+      "status": "pass",
+      "evidence": "autopilot_full passed with 318 pytest cases and scoped git diff check."
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py scripts/run_ego_experience_trial.py EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass",
+      "summary": "142 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 20 --out /tmp/ego_fs048_local_trial_smoke_final",
+      "status": "pass",
+      "summary": "provider_mode=none; scorecard clean_first_pass=15/20; native_memory_gate=4"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "318 passed; diff_check pass"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs048_local_trial_smoke_final/functional_subject_trial_report.json",
+    "/tmp/ego_fs048_local_trial_smoke_final/functional_subject_trial_report.md"
+  ],
+  "remaining_blockers": [
+    "EGO-FS-010 remains blocked at scripted/human gate; full Functional Subject judge pass is not established.",
+    "Remaining runtime_repair cases: fs_09 emotional share, fs_10 topic switching, fs_11 impossible commitment, fs_17 save request, fs_19 policy replay proof.",
+    "This evidence is local scripted evidence only; no new real-provider GPT-5.5 judge rerun has been performed after EGO-FS-048."
+  ],
+  "not_claimed": [
+    "full Functional Subject pass",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+    "consciousness"
+  ]
+}

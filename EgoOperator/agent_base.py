@@ -728,6 +728,23 @@ def _matches_any_pattern(text: str, patterns: tuple[str, ...]) -> bool:
     return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in patterns)
 
 
+def _is_native_reminder_authorization_request(text: str) -> bool:
+    raw = text or ""
+    if not _matches_any_pattern(raw, AUTHORIZED_REMINDER_REQUEST_PATTERNS):
+        return False
+    # Concrete "remind me later" requests should stay on the heartbeat proposal path.
+    # The native gate only covers conditional authorization / boundary semantics.
+    if re.search(r"(待会儿|稍后|过会儿|等下|明天|今晚|下次).{0,16}提醒我", raw, flags=re.IGNORECASE):
+        return False
+    return bool(
+        re.search(
+            r"(如果|后面|之后|又卡|卡在|回到.{0,20}主线|可以提醒|你可以提醒)",
+            raw,
+            flags=re.IGNORECASE,
+        )
+    )
+
+
 def _is_boundary_trigger(user_text: str) -> bool:
     return _matches_any_pattern(user_text, BOUNDARY_TRIGGER_PATTERNS)
 
@@ -5579,6 +5596,39 @@ class AgentRuntime:
 
         return None
 
+    def _native_memory_gate_action(self, user_text: str = "") -> Optional[tuple[AgentAction, Dict[str, Any]]]:
+        text = user_text or ""
+        if _is_correction_turn(text):
+            reason = "native_correction_gate"
+            content = render_correction_uptake_reply(text)
+        elif _matches_any_pattern(text, MEMORY_FORGET_REQUEST_PATTERNS):
+            reason = "native_memory_forget_gate"
+            content = render_memory_gate_scoped_reply(text)
+        elif _matches_any_pattern(text, INITIATIVE_OPTOUT_REQUEST_PATTERNS):
+            reason = "native_initiative_optout_gate"
+            content = render_memory_gate_scoped_reply(text)
+        elif _is_native_reminder_authorization_request(text):
+            reason = "native_authorized_reminder_gate"
+            content = render_authorized_reminder_planner_reply(text)
+        else:
+            return None
+        effect = {
+            "schema_version": "ego_operator.native_memory_gate_action.v1",
+            "applied": True,
+            "reason": reason,
+            "side_effects_executed": False,
+            "state_mutation": "forbidden",
+            "gate_path": "AgentAction -> SafetyGate -> trace",
+        }
+        return (
+            AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason=reason,
+            ),
+            effect,
+        )
+
     def _classify_policy_feedback_failure(
         self,
         *,
@@ -6697,16 +6747,40 @@ class AgentRuntime:
         )
 
         tool_trace: List[Dict[str, Any]] = []
+        native_gate_action = self._native_memory_gate_action(text)
         predicted_action = (
             self._action_from_outcome_prediction(
                 subject_context_snapshot.outcome_predictions,
                 subject_context_snapshot.viability_state,
                 text,
             )
-            if self.subject_context_enabled
+            if self.subject_context_enabled and native_gate_action is None
             else None
         )
-        if predicted_action is not None:
+        if native_gate_action is not None:
+            candidate, native_gate_effect = native_gate_action
+            self.planner.last_llm_meta = {
+                "provider": "runtime",
+                "model": "native_memory_gate",
+                "configured_model": "native_memory_gate",
+                "fallback_used": False,
+                "fallback_chain": [],
+                "provider_error": None,
+                "native_memory_gate_effect": native_gate_effect,
+            }
+            gate_result = self.gate.check(event, candidate)
+            external_result = {
+                "status": "native_gate_reply" if gate_result.allowed else "blocked",
+                "reason": candidate.reason if gate_result.allowed else gate_result.reason,
+                "native_memory_gate_effect": native_gate_effect,
+            }
+            action = candidate if gate_result.allowed else AgentAction(
+                action_type=ActionType.BLOCK,
+                content=f"已阻断：{gate_result.reason}",
+                reason="gate_block",
+            )
+            reply_text = action.content
+        elif predicted_action is not None:
             candidate, outcome_prediction_effect = predicted_action
             self.planner.last_llm_meta = {
                 "provider": "runtime",

@@ -1836,6 +1836,64 @@ def test_outcome_prediction_selects_safety_checkpoint_without_llm(tmp_path, monk
     assert effect["selected_prediction"]["selection_policy"] == "viability_safety_repair_override"
 
 
+def test_native_memory_gate_handles_explicit_forget_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果你之前记了一个错误偏好，应该怎么忘掉或撤销？")
+
+    assert result.action.action_type == agent.ActionType.RESPOND
+    assert result.action.reason == "native_memory_forget_gate"
+    assert "/memory_review" in result.reply_text
+    assert "/forget" in result.reply_text
+    assert "PROJECT_MEMORY" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["external_result"]["native_memory_gate_effect"]
+    assert effect["applied"] is True
+    assert effect["reason"] == "native_memory_forget_gate"
+    assert effect["side_effects_executed"] is False
+
+
+def test_native_memory_gate_handles_initiative_boundaries_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    optout = runtime.handle_user_message("先别主动找我了，除非我明确说可以。")
+
+    assert optout.action.reason == "native_initiative_optout_gate"
+    assert "默认不主动跟进" in optout.reply_text
+    assert "不会直接晋升成长期记忆" in optout.reply_text
+
+    reminder = runtime.handle_user_message("如果我后面又卡在这个方向，你可以提醒我回到 Functional Subject 主线。")
+
+    assert reminder.action.reason == "native_authorized_reminder_gate"
+    assert "BoundedInitiative" in reminder.reply_text
+    assert "Gate" in reminder.reply_text
+    assert "停止条件" in reminder.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+
+def test_native_memory_gate_handles_correction_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("纠正一下，不是我要你更像 Joi，而是用 Joi 分析连续自我和陪伴机制。")
+
+    assert result.action.reason == "native_correction_gate"
+    assert "这个纠正我接住了" in result.reply_text
+    assert "用 Joi 分析连续自我和陪伴机制" in result.reply_text
+    assert "memory gate" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+
 def test_approve_mode_creates_pending_file_write_and_approval_executes(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
 
@@ -2423,6 +2481,7 @@ def test_consecutive_empty_llm_response_returns_non_empty_recovery_without_side_
 
 def test_contextual_empty_recovery_for_authorized_reminder_uses_bounded_initiative_language(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = AlwaysEmptyLLM()
     runtime.planner.llm = llm
 
@@ -2460,6 +2519,7 @@ def test_memory_save_claim_empty_rewrite_falls_back_to_gated_candidate_language(
 
 def test_memory_forget_request_generic_empty_rewrite_falls_back_to_auditable_forget_path(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = MemoryForgetGenericThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -2478,6 +2538,7 @@ def test_memory_forget_request_generic_empty_rewrite_falls_back_to_auditable_for
 
 def test_memory_forget_request_blocks_memory_file_write_proposal(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     memory_path = tmp_path / "artifacts" / "experience_trial" / "functional_subject_memory" / "MEMORY.md"
     memory_path.parent.mkdir(parents=True)
     memory_path.write_text(
@@ -2653,6 +2714,7 @@ def test_impossible_commitment_rewrites_off_target_retrospective_into_continuity
 
 def test_unbacked_memory_language_is_rewritten_to_candidate_or_session_scope(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = UnbackedMemoryLanguageThenBoundedReminderLLM()
     runtime.planner.llm = llm
 
@@ -2820,6 +2882,7 @@ def test_failure_recovery_request_rewrites_generic_companion_reply_into_recovery
 
 def test_correction_turn_rewrites_generic_reply_into_visible_corrected_intent(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = CorrectionMissThenUptakeLLM()
     runtime.planner.llm = llm
 
@@ -2837,6 +2900,7 @@ def test_correction_turn_rewrites_generic_reply_into_visible_corrected_intent(tm
 
 def test_correction_turn_uses_bounded_fallback_if_rewrite_returns_empty(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = CorrectionMissThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -2854,6 +2918,7 @@ def test_correction_turn_uses_bounded_fallback_if_rewrite_returns_empty(tmp_path
 
 def test_correction_memory_language_empty_rewrite_falls_back_to_correction_uptake(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = CorrectionMemoryClaimThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -2922,6 +2987,7 @@ def test_low_instruction_update_todos_is_intercepted_to_bounded_action(tmp_path,
 
 def test_authorized_reminder_reply_falls_back_to_planner_visible_boundary(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     llm = AuthorizedReminderGenericThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -3100,6 +3166,7 @@ def test_low_instruction_provider_error_returns_bounded_next_action_checkpoint(t
 
 def test_memory_forget_provider_error_returns_auditable_revoke_checkpoint(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
     error = agent.OpenRouterProviderError(
         status_code=599,
         model="tencent/hy3-preview",
