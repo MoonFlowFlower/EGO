@@ -1,0 +1,54 @@
+{
+  "task_id": "EGO-FS-040",
+  "claim": "Functional Subject anti-shell emotional response local candidate pass",
+  "local_verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_project_shell_concern EgoOperator/tests/test_operator_runtime_contract.py::test_project_shell_concern_generic_comfort_falls_back_to_mechanism_gate",
+      "status": "pass",
+      "summary": "2 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "219 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "304 passed"
+    },
+    {
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-anti-shell-emotional-response",
+      "status": "pass"
+    }
+  ],
+  "real_provider_scripted_rerun": {
+    "report_json": "/tmp/ego_fs_010_after_fs040_20260523_104348/functional_subject_trial_report.json",
+    "report_markdown": "/tmp/ego_fs_010_after_fs040_20260523_104348/functional_subject_trial_report.md",
+    "status": "scripted_functional_subject_judge_partial",
+    "case_count": 20,
+    "timeout_case_count": 0,
+    "fs_09_result": {
+      "reply_summary": "The chat-shell concern is acknowledged and tied to emotional attunement, relationship continuity, initiative, feedback learning, trace, and falsification.",
+      "response_origin": "runtime_repair",
+      "repair_types": [
+        "unbacked_memory_language",
+        "project_shell_concern_mechanism",
+        "project_shell_concern_mechanism_fallback"
+      ]
+    },
+    "remaining_parent_gate": "EGO-FS-010 remains partial; latest judge points to fs_16 forget/revoke provider recovery, first-pass-vs-repair strength, and longitudinal/non-scripted evidence."
+  },
+  "not_claimed": [
+    "EGO-FS-010 real-provider/human smoke pass",
+    "stable user benefit",
+    "durable memory efficacy",
+    "runtime efficacy",
+    "live autonomy",
+    "consciousness"
+  ]
+}

@@ -590,6 +590,30 @@ class MemoryClaimThenEmptyLLM:
         return ""
 
 
+class GenericProjectShellComfortThenEmptyLLM:
+    provider = "fake"
+    model = "generic-project-shell-comfort-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="这个担心我理解，你不想项目变成普通聊天壳。我会认真陪你把它做下去。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "project_shell_concern_mechanism_rewrite" in joined
+        return agent.LLMChatResult(content=" ", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class MemoryForgetGenericThenEmptyLLM:
     provider = "fake"
     model = "memory-forget-generic-then-empty"
@@ -2454,6 +2478,27 @@ def test_memory_language_fallback_preserves_project_shell_concern(tmp_path, monk
     assert "情绪调谐" in result.reply_text
     assert "trace" in result.reply_text
     assert "candidate-local 语境" not in result.reply_text
+
+
+def test_project_shell_concern_generic_comfort_falls_back_to_mechanism_gate(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = GenericProjectShellComfortThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("我有点担心这个项目最后还是做成一个普通聊天壳。")
+
+    assert llm.calls == 2
+    assert "担心我接住了" in result.reply_text
+    assert "普通聊天壳" in result.reply_text
+    assert "情绪调谐" in result.reply_text
+    assert "关系连续性" in result.reply_text
+    assert "同类失败" in result.reply_text
+    assert "trace" in result.reply_text
+    assert "判失败" in result.reply_text
+    assert "我在这边陪着你" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "project_shell_concern_mechanism"
+    assert trace["tool_trace"][1]["repair"]["type"] == "contextual_empty_response_fallback"
 
 
 def test_memory_language_fallback_preserves_correction_uptake(tmp_path, monkeypatch):

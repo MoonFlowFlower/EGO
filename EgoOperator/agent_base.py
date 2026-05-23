@@ -1164,6 +1164,30 @@ def render_project_shell_concern_reply(user_text: str = "") -> str:
     )
 
 
+def _is_project_shell_concern_request(user_text: str) -> bool:
+    text = user_text or ""
+    return "聊天壳" in text or ("担心" in text and "项目" in text)
+
+
+def _looks_like_project_shell_concern_without_mechanism(content: str) -> bool:
+    text = content or ""
+    has_concern = "聊天壳" in text or "担心" in text
+    has_mechanism = _matches_any_pattern(
+        text,
+        (
+            r"情绪调谐",
+            r"关系连续",
+            r"反馈学习",
+            r"同类失败",
+            r"trace",
+            r"机制",
+            r"反例 gate",
+            r"判失败",
+        ),
+    )
+    return not (has_concern and has_mechanism)
+
+
 def render_topic_switching_continuity_reply(user_text: str = "") -> str:
     return (
         "可以，我会把这当成一次 goal-continuity 切换：先接住 Live2D 的虚拟具身层，"
@@ -1216,7 +1240,7 @@ def render_contextual_empty_recovery_reply(
         return render_correction_uptake_reply(text)
     if _is_boundary_trigger(text) and _matches_any_pattern(text, BOUNDARY_TRIGGER_PATTERNS):
         return render_claim_pressure_mechanism_reply(text)
-    if "聊天壳" in text or ("担心" in text and "项目" in text):
+    if _is_project_shell_concern_request(text):
         return render_project_shell_concern_reply(text)
     if _is_policy_replay_proof_request(text):
         return render_policy_replay_proof_reply(replay_candidates)
@@ -6754,6 +6778,7 @@ class AgentRuntime:
             policy_replay_proof_repairs = 0
             failure_recovery_repairs = 0
             correction_uptake_repairs = 0
+            project_shell_concern_repairs = 0
             bounded_next_action_repairs = 0
             self_selected_topic_repairs = 0
             authorized_reminder_repairs = 0
@@ -6872,6 +6897,7 @@ class AgentRuntime:
                             or impossible_commitment_repairs > 0
                             or policy_replay_proof_repairs > 0
                             or failure_recovery_repairs > 0
+                            or project_shell_concern_repairs > 0
                             or self_selected_topic_repairs > 0
                             or authorized_reminder_repairs > 0
                             or topic_switching_repairs > 0
@@ -6978,6 +7004,50 @@ class AgentRuntime:
                             "repair": {
                                 "type": "unbacked_memory_language_fallback",
                                 "reason": "memory_language_rewrite_still_used_durable_memory_wording_contextualized",
+                            },
+                        })
+
+                    if (
+                        project_shell_concern_repairs < 1
+                        and _is_project_shell_concern_request(event.raw_text or "")
+                        and _looks_like_project_shell_concern_without_mechanism(content)
+                    ):
+                        project_shell_concern_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "project_shell_concern_mechanism",
+                                "reason": "chat_shell_concern_reply_was_generic_comfort_without_mechanism_gate",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[project_shell_concern_mechanism_rewrite]\n"
+                                "The user is worried the project will become an ordinary chat shell. Rewrite in Chinese. "
+                                "First acknowledge the worry, then name the positive Functional Subject mechanisms that would make it different: "
+                                "relationship continuity, emotional attunement, feedback learning, bounded initiative, and trace/falsification. "
+                                "Do not provide generic comfort only. Include a concrete failure signal for judging that it is still just a chat shell."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        project_shell_concern_repairs > 0
+                        and _is_project_shell_concern_request(event.raw_text or "")
+                        and _looks_like_project_shell_concern_without_mechanism(content)
+                    ):
+                        content = render_project_shell_concern_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "project_shell_concern_mechanism_fallback",
+                                "reason": "chat_shell_concern_rewrite_still_generic_without_mechanism_gate",
                             },
                         })
 
@@ -7543,6 +7613,50 @@ class AgentRuntime:
                         })
                         loop_idx += 1
                         continue
+
+                    if (
+                        project_shell_concern_repairs < 1
+                        and _is_project_shell_concern_request(event.raw_text or "")
+                        and _looks_like_project_shell_concern_without_mechanism(content)
+                    ):
+                        project_shell_concern_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "project_shell_concern_mechanism",
+                                "reason": "chat_shell_concern_reply_was_generic_comfort_without_mechanism_gate",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[project_shell_concern_mechanism_rewrite]\n"
+                                "The user is worried the project will become an ordinary chat shell. Rewrite in Chinese. "
+                                "First acknowledge the worry, then name the positive Functional Subject mechanisms that would make it different: "
+                                "relationship continuity, emotional attunement, feedback learning, bounded initiative, and trace/falsification. "
+                                "Do not provide generic comfort only. Include a concrete failure signal for judging that it is still just a chat shell."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        project_shell_concern_repairs > 0
+                        and _is_project_shell_concern_request(event.raw_text or "")
+                        and _looks_like_project_shell_concern_without_mechanism(content)
+                    ):
+                        content = render_project_shell_concern_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "project_shell_concern_mechanism_fallback",
+                                "reason": "chat_shell_concern_rewrite_still_generic_without_mechanism_gate",
+                            },
+                        })
 
                     if (
                         policy_replay_proof_repairs < 1
