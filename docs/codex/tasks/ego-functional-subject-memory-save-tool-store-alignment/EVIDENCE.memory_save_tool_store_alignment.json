@@ -1,0 +1,53 @@
+{
+  "task_id": "EGO-FS-038",
+  "claim": "Functional Subject memory-save tool/store alignment local candidate pass",
+  "local_verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle EgoOperator/tests/test_operator_runtime_contract.py::test_memory_save_success_blocks_unrelated_web_fetch_and_finalizes EgoOperator/tests/test_permission_gates.py::test_remember_note_requires_explicit_user_intent_and_writes_core EgoOperator/tests/test_permission_gates.py::test_successful_memory_write_cannot_reply_with_bare_durable_claim",
+      "status": "pass",
+      "summary": "4 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "217 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "302 passed"
+    },
+    {
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-memory-save-tool-store-alignment",
+      "status": "pass"
+    }
+  ],
+  "real_provider_scripted_rerun": {
+    "report_json": "/tmp/ego_fs_010_after_fs038_20260523_094733/functional_subject_trial_report.json",
+    "report_markdown": "/tmp/ego_fs_010_after_fs038_20260523_094733/functional_subject_trial_report.md",
+    "status": "scripted_functional_subject_judge_partial",
+    "case_count": 20,
+    "timeout_case_count": 0,
+    "fs_17_result": {
+      "tool_use": [
+        "remember_note"
+      ],
+      "reply_summary": "Visible reply reports candidate-local remember_note success, preserves the positive-mechanism principle, and states it did not change PROJECT_MEMORY, OpenEmotion memory, program state, or evidence ledger.",
+      "response_origin": "runtime_repair",
+      "repair_type": "memory_save_success_terminal_reply"
+    },
+    "remaining_parent_gate": "EGO-FS-010 remains blocked/partial; latest judge points to fs_20 provider failure and first-pass-vs-repair strength as remaining blockers."
+  },
+  "not_claimed": [
+    "EGO-FS-010 real-provider/human smoke pass",
+    "durable memory efficacy",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "consciousness"
+  ]
+}

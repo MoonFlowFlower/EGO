@@ -900,6 +900,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-038
+    title: "EgoOperator: Functional Subject memory-save tool/store alignment"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory-save tool/store alignment local candidate pass
+    next_action: "Accepted locally/scripted; EGO-FS-010 remains blocked because latest judge is partial on fs_20 provider failure / bounded next-action and first-pass-vs-repair strength."
+    acceptance:
+      - "A pure memory-save turn with successful remember_note finalizes in the same turn with scoped candidate-local saved-principle reply."
+      - "The reply preserves the target positive-mechanism principle and reports that no PROJECT_MEMORY, program state, OpenEmotion memory, or evidence ledger authority was changed."
+      - "Unrelated web_fetch / web proposal / subagent calls in a pure memory-save turn are blocked and cannot pull the transcript into unrelated research."
+      - "Existing memory gate, EgoOperator runtime, and Autopilot verification profiles pass."
+    rollback: "Revert memory-save terminal guard and unrelated-tool block; keep EGO-FS-010 blocked on fs_17 memory-save alignment."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-memory-save-tool-store-alignment/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-memory-save-tool-store-alignment/EVIDENCE.memory_save_tool_store_alignment.json"
+      - "/tmp/ego_fs_010_after_fs037_20260523_092019/functional_subject_trial_report.json"
+      - "/tmp/ego_fs_010_after_fs038_20260523_094733/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

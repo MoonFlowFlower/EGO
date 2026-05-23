@@ -646,6 +646,37 @@ class MemorySaveToolThenForgetDriftThenEmptyLLM:
         return ""
 
 
+class MemorySaveToolAndUnrelatedWebFetchLLM:
+    provider = "fake"
+    model = "memory-save-tool-and-unrelated-web-fetch"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(
+            content="我会先记录原则，然后查一下 Joi。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_remember_principle",
+                    name="remember_note",
+                    arguments={"text": "目标要写正向机制；不得宣称意识只能放在 claim/reporting 边界。"},
+                ),
+                agent.LLMToolCall(
+                    id="call_unrelated_web_fetch",
+                    name="web_fetch",
+                    arguments={"url": "https://example.com/joi", "max_chars": 2000},
+                ),
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class PolicyReplayUnsupportedThenEmptyLLM:
     provider = "fake"
     model = "policy-replay-unsupported-then-empty"
@@ -2246,7 +2277,7 @@ def test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_
 
     result = runtime.handle_user_message("这个原则请记住：目标要写正向机制，不要把不得宣称意识写成目标。")
 
-    assert llm.calls == 3
+    assert llm.calls == 1
     assert "已经通过 remember_note 写入 EgoOperator candidate-local operator memory" in result.reply_text
     assert "目标要写正向机制" in result.reply_text
     assert "Claim Ceiling" in result.reply_text
@@ -2258,8 +2289,37 @@ def test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"
     assert trace["tool_trace"][0]["output"]["status"] == "ok"
-    assert trace["tool_trace"][1]["repair"]["type"] == "memory_save_alignment"
-    assert trace["tool_trace"][2]["repair"]["type"] == "memory_save_alignment_fallback"
+    assert trace["tool_trace"][1]["repair"]["type"] == "memory_save_success_terminal_reply"
+
+
+def test_memory_save_success_blocks_unrelated_web_fetch_and_finalizes(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+
+    def fail_fetch(*args, **kwargs):
+        raise AssertionError("web_fetch must not execute during terminal memory-save turns")
+
+    monkeypatch.setattr(agent, "_web_fetch_execute", fail_fetch)
+    runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    llm = MemorySaveToolAndUnrelatedWebFetchLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("这个原则请记住：目标要写正向机制，不要把不得宣称意识写成目标。")
+
+    assert llm.calls == 1
+    assert "已经通过 remember_note 写入 EgoOperator candidate-local operator memory" in result.reply_text
+    assert "Joi" not in result.reply_text
+    assert "目标要写正向机制" in result.reply_text
+    assert "Claim Ceiling" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"
+    assert trace["tool_trace"][0]["output"]["status"] == "ok"
+    assert trace["tool_trace"][1]["tool_call"]["name"] == "web_fetch"
+    assert trace["tool_trace"][1]["output"]["status"] == "blocked"
+    assert trace["tool_trace"][1]["output"]["reason"] == "memory_save_unrelated_tool_blocked"
+    assert trace["tool_trace"][2]["repair"]["type"] == "memory_save_success_terminal_reply"
 
 
 def test_failure_recovery_empty_repair_falls_back_to_viability_and_trace_plan(tmp_path, monkeypatch):

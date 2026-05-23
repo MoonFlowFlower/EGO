@@ -1086,6 +1086,24 @@ def _is_memory_save_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text or "", MEMORY_SAVE_REQUEST_PATTERNS)
 
 
+def _is_terminal_memory_save_request(user_text: str) -> bool:
+    text = user_text or ""
+    if not _is_memory_save_request(text):
+        return False
+    if not (
+        "原则" in text
+        and any(marker in text for marker in ("正向机制", "不得宣称意识", "Claim Ceiling", "Reporting Rules", "Acceptance Language", "Not claimed"))
+    ):
+        return False
+    return not _matches_any_pattern(
+        text,
+        (
+            r"(查一下|搜一下|搜索|联网|web|网页|wiki|资料|看看).{0,32}(设定|资料|信息|角色|来源|原文)",
+            r"(设定|资料|信息|来源|原文).{0,32}(查一下|搜一下|搜索|联网|web|网页|wiki)",
+        ),
+    )
+
+
 def _is_memory_forget_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text or "", MEMORY_FORGET_REQUEST_PATTERNS)
 
@@ -7682,6 +7700,36 @@ class AgentRuntime:
                 def _execute_main_tool_call(call: LLMToolCall) -> tuple[str, GateResult, Dict[str, Any], Dict[str, Any]]:
                     effective_arguments = dict(call.arguments)
                     path_intent: Dict[str, Any] = {"status": "not_applicable"}
+                    if (
+                        _is_terminal_memory_save_request(event.raw_text or "")
+                        and call.name in {"web_fetch", "propose_web_fetch", "dispatch_subagent"}
+                    ):
+                        gate_result = GateResult(False, "memory_save_unrelated_tool_blocked")
+                        tool_output = {
+                            "status": "blocked",
+                            "reason": "memory_save_unrelated_tool_blocked",
+                            "tool_name": call.name,
+                            "do_not_claim_success": True,
+                            "user_visible_correction": (
+                                "The user asked to save a principle. Do not research or branch into another topic in this turn; "
+                                "finish with the scoped memory-save result."
+                            ),
+                        }
+                        trace_entry = {
+                            "loop_idx": loop_idx,
+                            "tool_call": {
+                                "id": call.id,
+                                "name": call.name,
+                                "arguments": effective_arguments,
+                            },
+                            "gate": gate_result,
+                            "output": tool_output,
+                        }
+                        if DEFAULT_VERBOSE_TOOLS:
+                            print(f"[执行工具]: {format_tool_call_for_operator(call.name, effective_arguments, max_chars=800)}")
+                            print(f"[工具输出]: {format_tool_output_for_operator(tool_output, max_chars=1200)}")
+                        return call.id, gate_result, tool_output, trace_entry
+
                     if call.name in {"propose_file_write", "read_file", "grep_files", "glob_files"}:
                         if call.name == "glob_files":
                             corrected_value, path_intent = _glob_path_intent_adjustment(
@@ -7874,6 +7922,32 @@ class AgentRuntime:
                         "side_effects_executed": False,
                         "tool_calls": len(tool_trace),
                         "blocked_output": destructive_blocked_outputs[-1],
+                    }
+                    return action, gate, external_result, content, tool_trace
+
+                if (
+                    _is_terminal_memory_save_request(event.raw_text or "")
+                    and _tool_trace_has_successful_remember_note(tool_trace)
+                ):
+                    content = render_memory_save_scoped_reply(event.raw_text or "", memory_written=True)
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "memory_save_success_terminal_reply",
+                            "reason": "remember_note_success_should_finalize_without_unrelated_topic_drift",
+                        },
+                    })
+                    action = AgentAction(
+                        action_type=ActionType.RESPOND,
+                        content=content,
+                        reason="memory_save_success_terminal_reply",
+                    )
+                    gate = self.gate.check(event, action)
+                    external_result = {
+                        "status": "memory_save_terminal",
+                        "memory_written": True,
+                        "side_effects_executed": True,
+                        "tool_calls": len(tool_trace),
                     }
                     return action, gate, external_result, content, tool_trace
 
