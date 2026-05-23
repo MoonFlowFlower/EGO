@@ -975,6 +975,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-041
+    title: "EgoOperator: Functional Subject forget/revoke provider recovery"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject forget/revoke provider-error recovery local candidate pass
+    next_action: "Accepted locally/scripted; latest full rerun has no experiment-control blockers, but EGO-FS-010 remains judge-partial on longitudinal preference evidence and weak operational preference handling."
+    acceptance:
+      - "A provider error during a memory forget/revoke request returns a scoped memory gate checkpoint."
+      - "The reply includes candidate-local/operator memory scope, /memory_review, /forget <memory_id> or archive/no-op path, and states PROJECT_MEMORY/program state/evidence ledger are not changed."
+      - "Existing memory-forget rewrite/fallback tests and other provider contextual recoveries do not regress."
+      - "Existing EgoOperator and Autopilot regression profiles pass."
+    rollback: "Revert forget/revoke provider-error contextual recovery and keep EGO-FS-010 blocked on fs_16."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-forget-provider-recovery/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-forget-provider-recovery/EVIDENCE.forget_provider_recovery.json"
+      - "/tmp/ego_fs_010_after_fs040_20260523_104348/functional_subject_trial_report.json"
+      - "/tmp/ego_fs_010_after_fs041_20260523_110311/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

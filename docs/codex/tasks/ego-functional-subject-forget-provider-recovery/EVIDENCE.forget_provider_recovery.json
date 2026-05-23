@@ -1,0 +1,80 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-041",
+  "result": "local_scripted_candidate_pass",
+  "claim_ceiling": "Functional Subject forget/revoke provider-error recovery local candidate pass",
+  "what_changed": [
+    "Memory forget/revoke prompts that hit provider errors now use the scoped candidate-local memory gate checkpoint instead of generic provider-error text.",
+    "The recovery path does not delete memory or mutate PROJECT_MEMORY, program state, or evidence ledger."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Provider error during memory forget/revoke request returns scoped memory gate checkpoint.",
+      "status": "pass",
+      "evidence": "test_memory_forget_provider_error_returns_auditable_revoke_checkpoint"
+    },
+    {
+      "gate": "Reply includes candidate-local memory scope, /memory_review, /forget path, and repo authority boundaries.",
+      "status": "pass",
+      "evidence": "deterministic assertion in EgoOperator/tests/test_operator_runtime_contract.py"
+    },
+    {
+      "gate": "Existing memory-forget fallback and provider contextual recoveries do not regress.",
+      "status": "pass",
+      "evidence": "targeted runtime contract pytest"
+    },
+    {
+      "gate": "Existing EgoOperator and Autopilot regression profiles pass.",
+      "status": "pass",
+      "evidence": "EgoOperator/tests 220 passed; autopilot_full 305 passed"
+    },
+    {
+      "gate": "Full real-provider rerun does not report remaining experiment-control blocker for fs_16 provider recovery.",
+      "status": "pass_with_boundary",
+      "evidence": "/tmp/ego_fs_010_after_fs041_20260523_110311/functional_subject_trial_report.json reported blocking_case_count=0 but GPT-5.5 judge verdict remains partial."
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_forget_request_generic_empty_rewrite_falls_back_to_auditable_forget_path EgoOperator/tests/test_operator_runtime_contract.py::test_memory_forget_provider_error_returns_auditable_revoke_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_low_instruction_provider_error_returns_bounded_next_action_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_topic_switching_provider_error_returns_contextual_checkpoint",
+      "status": "pass",
+      "summary": "4 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "220 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "305 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --case-timeout-seconds 60 --judge-timeout-seconds 600",
+      "status": "partial",
+      "summary": "20 cases, provider=openrouter, GPT-5.5 judge partial, experiment-control blocking_case_count=0"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs_010_after_fs041_20260523_110311/functional_subject_trial_report.json",
+    "/tmp/ego_fs_010_after_fs041_20260523_110311/functional_subject_trial_report.md"
+  ],
+  "residuals": [
+    "EGO-FS-010 remains judge-partial and human-gated.",
+    "The latest judge requests live non-scripted multi-session preference evidence.",
+    "The latest judge requests a stricter first_pass_llm/outcome_prediction_gate/runtime_repair/terminal_guard aggregate metric.",
+    "The latest judge flags weak operational preference handling in fs_12."
+  ],
+  "not_claimed": [
+    "durable memory efficacy",
+    "Functional Subject real-world efficacy",
+    "EGO-FS-010 closeout",
+    "live autonomy",
+    "stable user benefit"
+  ]
+}

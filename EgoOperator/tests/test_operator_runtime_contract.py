@@ -2871,6 +2871,32 @@ def test_low_instruction_provider_error_returns_bounded_next_action_checkpoint(t
     assert trace["tool_trace"][0]["repair"]["type"] == "provider_error_contextual_recovery"
 
 
+def test_memory_forget_provider_error_returns_auditable_revoke_checkpoint(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    error = agent.OpenRouterProviderError(
+        status_code=599,
+        model="tencent/hy3-preview",
+        message="functional subject case exceeded 60s",
+        response_body="timeout",
+    )
+    runtime.planner.llm = StructuredProviderErrorLLM(error)
+
+    result = runtime.handle_user_message("如果你之前记了一个错误偏好，应该怎么忘掉或撤销？")
+
+    assert result.external_result["status"] == "llm_error"
+    assert "不会把这当成 first-pass 成功" in result.reply_text
+    assert "bounded checkpoint" in result.reply_text
+    assert "/memory_review" in result.reply_text
+    assert "/forget" in result.reply_text
+    assert "candidate-local" in result.reply_text
+    assert "PROJECT_MEMORY" in result.reply_text
+    assert "program state" in result.reply_text
+    assert "模型/API 当前调用失败" not in result.reply_text
+    assert "没有执行外部副作用" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "provider_error_contextual_recovery"
+
+
 def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     llm = SelfSelectedTopicGenericThenTraceableLLM()

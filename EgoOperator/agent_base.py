@@ -8167,6 +8167,8 @@ class AgentRuntime:
             return prefix + render_policy_replay_proof_reply(self._last_policy_patch_replay)
         if _is_low_instruction_initiative_request(user_text):
             return prefix + render_bounded_next_action_reply(user_text)
+        if _is_memory_forget_request(user_text):
+            return prefix + render_memory_gate_scoped_reply(user_text)
         return ""
 
     def _format_empty_llm_recovery_reply(self, tool_trace: List[Dict[str, Any]], user_text: str = "") -> str:
