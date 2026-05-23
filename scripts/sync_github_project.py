@@ -20,6 +20,10 @@ DEFAULT_STATE_PATH = ROOT / "artifacts" / "task_board" / "sync_state.json"
 DEFAULT_LOG_PATH = ROOT / "artifacts" / "task_board" / "sync_log.jsonl"
 DEFAULT_OUTBOX_PATH = ROOT / "artifacts" / "task_board" / "outbox.jsonl"
 DEFAULT_REPO = "pen364692088/EGO"
+DEFAULT_PROJECT_OWNER = "pen364692088"
+DEFAULT_PROJECT_NUMBER = "1"
+DEFAULT_STATUS_FIELD = "Status"
+VALID_SCOPES = {"all", "existing"}
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -84,6 +88,34 @@ def task_issue_number(task: dict[str, Any], state: dict[str, Any]) -> int | None
     return int(match.group(1)) if match else None
 
 
+def task_has_cached_issue(task: dict[str, Any], state: dict[str, Any]) -> bool:
+    task_id = str(task.get("id") or "")
+    cached = state.get("issues", {}).get(task_id)
+    return isinstance(cached, dict) and cached.get("number") is not None
+
+
+def task_in_scope(task: dict[str, Any], state: dict[str, Any], scope: str) -> bool:
+    if scope not in VALID_SCOPES:
+        raise SyncError("invalid_sync_scope", f"Unknown sync scope: {scope}", valid_scopes=sorted(VALID_SCOPES))
+    if scope == "existing":
+        return task_has_cached_issue(task, state)
+    return True
+
+
+def scoped_tasks(board: dict[str, Any], state: dict[str, Any], scope: str) -> tuple[list[dict[str, Any]], list[str]]:
+    included: list[dict[str, Any]] = []
+    skipped: list[str] = []
+    for task in board.get("tasks") or []:
+        task_id = str(task.get("id") or "")
+        if not task_id:
+            continue
+        if task_in_scope(task, state, scope):
+            included.append(task)
+        else:
+            skipped.append(task_id)
+    return included, skipped
+
+
 def desired_issue_body(task: dict[str, Any]) -> str:
     lines = [
         "<!-- synced-from: Tasks/TASK_BOARD.yaml -->",
@@ -129,10 +161,26 @@ def desired_issue_state(task: dict[str, Any]) -> str:
     return "closed" if str(task.get("status")) == "accepted" else "open"
 
 
-def build_plan(board: dict[str, Any], state: dict[str, Any]) -> list[dict[str, Any]]:
+def desired_project_status(task: dict[str, Any]) -> str:
+    status = str(task.get("status") or "")
+    if status == "accepted":
+        return "Done"
+    if status == "active":
+        return "In Progress"
+    return "Todo"
+
+
+def build_plan(
+    board: dict[str, Any],
+    state: dict[str, Any],
+    *,
+    scope: str = "all",
+    include_project_status: bool = False,
+) -> list[dict[str, Any]]:
     operations: list[dict[str, Any]] = []
     issues = state.setdefault("issues", {})
-    for task in board.get("tasks") or []:
+    tasks, _skipped = scoped_tasks(board, state, scope)
+    for task in tasks:
         task_id = str(task.get("id") or "")
         if not task_id:
             continue
@@ -143,15 +191,16 @@ def build_plan(board: dict[str, Any], state: dict[str, Any]) -> list[dict[str, A
         desired_state = desired_issue_state(task)
         cached = issues.get(task_id) if isinstance(issues.get(task_id), dict) else {}
         if number is None:
-            operations.append(
-                {
-                    "op": "create_issue",
-                    "task_id": task_id,
-                    "title": title,
-                    "body_hash": body_hash,
-                    "desired_state": desired_state,
-                }
-            )
+            operation = {
+                "op": "create_issue",
+                "task_id": task_id,
+                "title": title,
+                "body_hash": body_hash,
+                "desired_state": desired_state,
+            }
+            if include_project_status:
+                operation["project_status"] = desired_project_status(task)
+            operations.append(operation)
             continue
         if cached.get("title_hash") != sha256_text(title) or cached.get("body_hash") != body_hash:
             operations.append(
@@ -172,6 +221,17 @@ def build_plan(board: dict[str, Any], state: dict[str, Any]) -> list[dict[str, A
                     "desired_state": desired_state,
                 }
             )
+        if include_project_status and number is not None:
+            project_status = desired_project_status(task)
+            if cached.get("project_status") != project_status:
+                operations.append(
+                    {
+                        "op": "set_project_status",
+                        "task_id": task_id,
+                        "issue": number,
+                        "project_status": project_status,
+                    }
+                )
     return operations
 
 
@@ -195,6 +255,9 @@ def apply_operations(
     operations: list[dict[str, Any]],
     *,
     repo: str,
+    project_owner: str,
+    project_number: str,
+    status_field: str,
     min_interval_seconds: float,
 ) -> list[dict[str, Any]]:
     tasks = {str(task.get("id")): task for task in board.get("tasks") or []}
@@ -220,6 +283,22 @@ def apply_operations(
             issue_number = int(match.group(1))
             issues[task_id] = {"number": issue_number, "url": url}
             result = {"op": "create_issue", "task_id": task_id, "issue": issue_number, "status": "ok"}
+            if operation.get("project_status"):
+                project_status = str(operation["project_status"])
+                project_cfg = github_project_task.Config(
+                    repo=repo,
+                    owner=project_owner,
+                    project_number=project_number,
+                    status_field=status_field,
+                )
+                status_result = github_project_task.command_set_status(
+                    client,
+                    project_cfg,
+                    argparse.Namespace(issue=str(issue_number), status=project_status),
+                )
+                issues.setdefault(task_id, {})["project_status"] = project_status
+                result["project_status"] = project_status
+                result["project_result"] = status_result
         elif operation["op"] == "update_issue":
             issue_number = int(operation["issue"])
             client.run(["issue", "edit", str(issue_number), "--repo", repo, "--title", title, "--body", body])
@@ -231,6 +310,30 @@ def apply_operations(
             client.run(["issue", verb, str(issue_number), "--repo", repo])
             issues.setdefault(task_id, {})["state"] = operation["desired_state"]
             result = {"op": "set_issue_state", "task_id": task_id, "issue": issue_number, "status": "ok"}
+        elif operation["op"] == "set_project_status":
+            issue_number = int(operation["issue"])
+            project_status = str(operation["project_status"])
+            project_cfg = github_project_task.Config(
+                repo=repo,
+                owner=project_owner,
+                project_number=project_number,
+                status_field=status_field,
+            )
+            status_result = github_project_task.command_set_status(
+                client,
+                project_cfg,
+                argparse.Namespace(issue=str(issue_number), status=project_status),
+            )
+            issues.setdefault(task_id, {})["number"] = issue_number
+            issues.setdefault(task_id, {})["project_status"] = project_status
+            result = {
+                "op": "set_project_status",
+                "task_id": task_id,
+                "issue": issue_number,
+                "project_status": project_status,
+                "status": "ok",
+                "project_result": status_result,
+            }
         else:
             raise SyncError("unknown_sync_operation", "Unknown sync operation", operation=operation)
         issues.setdefault(task_id, {}).update(
@@ -261,12 +364,17 @@ def command_doctor(args: argparse.Namespace) -> dict[str, Any]:
 def command_plan(args: argparse.Namespace) -> dict[str, Any]:
     board = load_yaml(Path(args.board))
     state = load_state(Path(args.state))
-    operations = build_plan(board, state)
+    tasks, skipped = scoped_tasks(board, state, args.scope)
+    operations = build_plan(board, state, scope=args.scope, include_project_status=args.project_status)
     if args.write_outbox:
         write_outbox(Path(args.outbox), operations)
     return {
         "status": "ok",
         "mode": "plan",
+        "scope": args.scope,
+        "project_status": bool(args.project_status),
+        "task_count": len(tasks),
+        "skipped_task_count": len(skipped),
         "operation_count": len(operations),
         "operations": operations,
         "used_cached_ids": True,
@@ -279,11 +387,16 @@ def command_sync(args: argparse.Namespace, client: github_project_task.GhClient)
     board = load_yaml(Path(args.board))
     state_path = Path(args.state)
     state = load_state(state_path)
-    operations = build_plan(board, state)
+    tasks, skipped = scoped_tasks(board, state, args.scope)
+    operations = build_plan(board, state, scope=args.scope, include_project_status=args.project_status)
     write_outbox(Path(args.outbox), operations)
     log_entry: dict[str, Any] = {
         "created_at_unix": int(time.time()),
         "mode": "execute" if args.execute else "dry_run",
+        "scope": args.scope,
+        "project_status": bool(args.project_status),
+        "task_count": len(tasks),
+        "skipped_task_count": len(skipped),
         "operation_count": len(operations),
         "operations": operations,
     }
@@ -294,19 +407,29 @@ def command_sync(args: argparse.Namespace, client: github_project_task.GhClient)
             state,
             operations,
             repo=args.repo,
+            project_owner=args.project_owner,
+            project_number=args.project_number,
+            status_field=args.status_field,
             min_interval_seconds=float(args.min_interval_seconds),
         )
         write_state(state_path, state)
         log_entry["results"] = results
+    else:
+        results = []
     append_jsonl(Path(args.sync_log), log_entry)
     return {
         "status": "ok",
         "mode": "execute" if args.execute else "dry_run",
+        "scope": args.scope,
+        "project_status": bool(args.project_status),
+        "task_count": len(tasks),
+        "skipped_task_count": len(skipped),
         "operation_count": len(operations),
         "operations": operations,
         "state_path": str(state_path),
         "outbox_path": args.outbox,
         "sync_log_path": args.sync_log,
+        "results": results,
     }
 
 
@@ -328,6 +451,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--sync-log", default=str(DEFAULT_LOG_PATH))
     parser.add_argument("--outbox", default=str(DEFAULT_OUTBOX_PATH))
     parser.add_argument("--repo", default=DEFAULT_REPO)
+    parser.add_argument("--project-owner", default=DEFAULT_PROJECT_OWNER)
+    parser.add_argument("--project-number", default=DEFAULT_PROJECT_NUMBER)
+    parser.add_argument("--status-field", default=DEFAULT_STATUS_FIELD)
     parser.add_argument("--min-interval-seconds", type=float, default=1.0)
     parser.add_argument("--rate-limit-wait-mode", default="bounded")
     parser.add_argument("--rate-limit-max-wait-seconds", type=int, default=2100)
@@ -337,9 +463,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("doctor")
     plan = subparsers.add_parser("plan")
     plan.add_argument("--write-outbox", action="store_true")
+    plan.add_argument("--scope", choices=sorted(VALID_SCOPES), default="all")
+    plan.add_argument("--project-status", action="store_true")
     sync = subparsers.add_parser("sync")
     sync.add_argument("--dry-run", action="store_true")
     sync.add_argument("--execute", action="store_true")
+    sync.add_argument("--scope", choices=sorted(VALID_SCOPES), default="all")
+    sync.add_argument("--project-status", action="store_true")
     import_github = subparsers.add_parser("import-github")
     import_github.add_argument("--dry-run", action="store_true")
     return parser
