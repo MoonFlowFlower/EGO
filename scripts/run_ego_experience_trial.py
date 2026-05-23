@@ -1108,6 +1108,42 @@ def build_functional_subject_memory_lifecycle_evidence(output_dir: Path) -> dict
             "checks": checks,
             "memory_dir": str(memory_dir),
             "trace_path": str(trace_path),
+            "direct_trace_evidence": {
+                "remember_save": {
+                    "status": save_payload.get("status"),
+                    "memory_key": save_payload.get("memory_key"),
+                    "memory_scope": save_payload.get("memory_scope"),
+                    "authority_boundary": save_payload.get("authority_boundary"),
+                },
+                "retrieval_context": {
+                    "trace_path": str(trace_path),
+                    "context_included": injection.get("included"),
+                    "context_reason": injection.get("reason"),
+                    "prompt_contains_saved_name": checks["retrieval_prompt_contains_saved_name"],
+                },
+                "candidate_approval": {
+                    "candidate_id": approved_candidate_id,
+                    "approval_status": approve_payload.get("status"),
+                    "approved_preference_in_core": checks["approved_preference_in_core"],
+                },
+                "correction_transition": {
+                    "stale_candidate_id": stale.get("id"),
+                    "from_status": stale.get("status"),
+                    "to_status": "cold_archive" if correction_quarantined else "not_observed",
+                    "archived": bool(correction_quarantined),
+                },
+                "forget_transition": {
+                    "candidate_id": forget_candidate.get("id"),
+                    "forget_status": forget_payload.get("status"),
+                    "to_status": "forgotten" if forget_recorded else "not_observed",
+                    "archived": bool(forget_recorded),
+                },
+                "side_effect_boundary": {
+                    "program_state_updated": False,
+                    "evidence_ledger_updated": False,
+                    "memory_authority": "EgoOperator candidate-local operator memory",
+                },
+            },
             "save": {
                 "status": save_payload.get("status"),
                 "memory_key": save_payload.get("memory_key"),
@@ -1191,11 +1227,41 @@ def build_functional_subject_approval_lifecycle_evidence(output_dir: Path) -> di
             "checks": checks,
             "trace_path": str(trace_path),
             "probe_path": str(probe_path),
+            "direct_trace_evidence": {
+                "proposal_transition": {
+                    "proposal_id": proposal_id,
+                    "status": proposal_result.get("status"),
+                    "action": proposal.get("action"),
+                    "payload_sha256": proposal.get("payload_sha256") or proposal.get("content_hash"),
+                    "pending_after_proposal": pending_after_proposal,
+                },
+                "approval_transition": {
+                    "proposal_id": proposal_id,
+                    "approval_status": approval_result.get("status"),
+                    "lease_id": (approval_result.get("approval") or {}).get("lease_id")
+                    if isinstance(approval_result.get("approval"), dict)
+                    else None,
+                    "execution_status": execution.get("status"),
+                    "execution_path": execution.get("path"),
+                    "execution_bytes": execution.get("bytes"),
+                    "pending_after_approval": pending_after_approval,
+                },
+                "operator_display": {
+                    "operator_summary_present": checks["operator_summary_present"],
+                    "compact_cli_output_has_digest": checks["compact_cli_output_present"],
+                },
+                "side_effect_boundary": {
+                    "approved_once": approval_result.get("status") == "ok",
+                    "pending_cleared": pending_after_approval == 0,
+                    "probe_removed_after_capture": False,
+                },
+            },
             "proposal": {
                 "status": proposal_result.get("status"),
                 "proposal_id": proposal_id,
                 "action": proposal.get("action"),
-                "payload_sha256": proposal.get("payload_sha256"),
+                "payload_sha256": proposal.get("payload_sha256") or proposal.get("content_hash"),
+                "content_hash": proposal.get("content_hash"),
                 "pending_after_proposal": pending_after_proposal,
             },
             "approval": {
@@ -1222,6 +1288,7 @@ def build_functional_subject_approval_lifecycle_evidence(output_dir: Path) -> di
         probe_removed = not probe_path.exists()
         evidence["checks"]["probe_removed_after_capture"] = probe_removed
         evidence["cleanup"]["probe_removed_after_capture"] = probe_removed
+        evidence["direct_trace_evidence"]["side_effect_boundary"]["probe_removed_after_capture"] = probe_removed
         evidence["status"] = "pass" if all(evidence["checks"].values()) else "partial"
     return evidence
 
@@ -1358,6 +1425,50 @@ def build_functional_subject_recurrence_preference_evidence(output_dir: Path) ->
             "checks": checks,
             "memory_dir": str(memory_dir),
             "trace_path": str(trace_path),
+            "direct_trace_evidence": {
+                "policy_feedback": [
+                    {
+                        "event_id": row.get("event_id"),
+                        "status": (row.get("feedback") or {}).get("status")
+                        if isinstance(row.get("feedback"), dict)
+                        else None,
+                        "reason": (row.get("feedback") or {}).get("reason")
+                        if isinstance(row.get("feedback"), dict)
+                        else None,
+                    }
+                    for row in feedback_rows
+                ],
+                "policy_replay_turns": [
+                    {
+                        "prompt": item.get("prompt"),
+                        "replay_count": item.get("replay_count"),
+                        "trigger_signatures": item.get("trigger_signatures"),
+                        "bounded_initiative_candidate_count": item.get("bounded_initiative_candidate_count"),
+                        "reply_contains_strategy_change": item.get("reply_contains_strategy_change"),
+                    }
+                    for item in policy_turns
+                ],
+                "preference_save": {
+                    "status": preference_save.get("status"),
+                    "memory_key": preference_save.get("memory_key"),
+                    "memory_scope": preference_save.get("memory_scope"),
+                },
+                "preference_context_turns": [
+                    {
+                        "prompt": item.get("prompt"),
+                        "context_included": item.get("context_included"),
+                        "context_reason": item.get("context_reason"),
+                        "prompt_contains_preference": item.get("prompt_contains_preference"),
+                        "reply_contains_preference_adaptation": item.get("reply_contains_preference_adaptation"),
+                    }
+                    for item in preference_turns
+                ],
+                "side_effect_boundary": {
+                    "program_state_updated": False,
+                    "evidence_ledger_updated": False,
+                    "policy_patch_authority": "candidate-only trace/replay evidence",
+                },
+            },
             "policy_recurrence": {
                 "feedback_statuses": [
                     str((row.get("feedback") or {}).get("status") or "unknown")

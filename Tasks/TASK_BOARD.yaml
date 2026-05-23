@@ -1200,6 +1200,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-050
+    title: "EgoOperator: Functional Subject direct trace evidence packet"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject direct trace evidence packet local workflow pass
+    next_action: "Accepted locally. Next ready task should add negative baseline controls against plain LLM/RAG/tools or durability evidence."
+    acceptance:
+      - "Report includes direct_trace_evidence for memory lifecycle, approval lifecycle, and recurrence/preference evidence."
+      - "GPT-5.5 judge packet includes those direct evidence fields."
+      - "Existing lifecycle evidence tests assert the new direct evidence fields."
+      - "Functional Subject trial and Autopilot regression profiles do not regress."
+    rollback: "Remove direct_trace_evidence fields and keep EGO-FS-010 partial on traceability evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-direct-trace-evidence-packet/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-direct-trace-evidence-packet/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-direct-trace-evidence-packet/EVIDENCE.direct_trace_evidence_packet.json"
+      - "/tmp/ego_fs050_direct_trace_smoke_final/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

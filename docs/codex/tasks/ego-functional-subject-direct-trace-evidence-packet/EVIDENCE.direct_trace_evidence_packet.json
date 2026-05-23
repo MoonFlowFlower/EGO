@@ -1,0 +1,73 @@
+{
+  "schema_version": "ego.functional_subject_task_evidence.v1",
+  "task_id": "EGO-FS-050",
+  "result": "local_workflow_pass",
+  "phase_advanced": "Phase B evidence quality: direct trace auditability",
+  "claim_ceiling": "Functional Subject direct trace evidence packet local workflow pass",
+  "what_changed": [
+    "Functional Subject memory lifecycle evidence now includes direct_trace_evidence for remember save, retrieval context, candidate approval, correction transition, forget transition, and side-effect boundaries.",
+    "Approval lifecycle evidence now includes direct proposal id, payload hash, approval lease id, execution status/path/bytes, pending counts, compact display evidence, and side-effect boundaries.",
+    "Recurrence/preference evidence now includes policy feedback event ids, replay trigger signatures, bounded initiative candidate counts, preference save scope, repeated context injection, and candidate-only authority boundaries.",
+    "The GPT-5.5 judge packet receives those direct evidence fields through the existing lifecycle evidence surfaces."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Report includes direct_trace_evidence for memory lifecycle, approval lifecycle, and recurrence/preference evidence.",
+      "status": "pass",
+      "evidence": "/tmp/ego_fs050_direct_trace_smoke_final/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "GPT-5.5 judge packet includes those direct evidence fields.",
+      "status": "pass",
+      "evidence": "Smoke inspection confirmed direct_trace_evidence exists under all three lifecycle evidence objects in gpt55_judge_packet."
+    },
+    {
+      "gate": "Existing lifecycle evidence tests assert the new direct evidence fields.",
+      "status": "pass",
+      "evidence": "scripts/tests/test_run_ego_experience_trial.py"
+    },
+    {
+      "gate": "Functional Subject trial and Autopilot regression profiles do not regress.",
+      "status": "pass",
+      "evidence": "autopilot_full passed with 318 pytest cases and scoped git diff check."
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass",
+      "summary": "29 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 20 --out /tmp/ego_fs050_direct_trace_smoke_final",
+      "status": "pass",
+      "summary": "provider_mode=none; direct evidence fields present in report and judge packet"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "318 passed; diff_check pass"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs050_direct_trace_smoke_final/functional_subject_trial_report.json",
+    "/tmp/ego_fs050_direct_trace_smoke_final/functional_subject_trial_report.md"
+  ],
+  "remaining_blockers": [
+    "No negative baseline control was added in this task.",
+    "No restart/provider/context-truncation durability evidence was added.",
+    "EGO-FS-010 remains blocked pending later scripted real-provider judge and/or human smoke evidence."
+  ],
+  "not_claimed": [
+    "baseline superiority",
+    "durable memory efficacy",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "consciousness"
+  ]
+}

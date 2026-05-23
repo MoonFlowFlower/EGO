@@ -816,6 +816,19 @@ def test_functional_subject_trial_includes_memory_lifecycle_evidence(tmp_path, m
         "forget_recorded": True,
     }
     assert evidence["save"]["memory_scope"] == "EgoOperator candidate-local operator memory"
+    direct = evidence["direct_trace_evidence"]
+    assert direct["remember_save"]["memory_key"]
+    assert direct["remember_save"]["memory_scope"] == "EgoOperator candidate-local operator memory"
+    assert direct["retrieval_context"]["context_included"] is True
+    assert direct["candidate_approval"]["candidate_id"]
+    assert direct["candidate_approval"]["approval_status"] == "ok"
+    assert direct["correction_transition"]["to_status"] == "cold_archive"
+    assert direct["forget_transition"]["to_status"] == "forgotten"
+    assert direct["side_effect_boundary"] == {
+        "program_state_updated": False,
+        "evidence_ledger_updated": False,
+        "memory_authority": "EgoOperator candidate-local operator memory",
+    }
     assert evidence["retrieval"]["context_reason"] == "continuity_query_intent"
     assert evidence["approval"]["approved_preference_in_core"] is True
     assert evidence["correction"]["stale_candidate_status"] == "cold_archive"
@@ -851,6 +864,18 @@ def test_functional_subject_trial_includes_approval_lifecycle_evidence(tmp_path,
     }
     assert evidence["proposal"]["status"] == "pending_approval"
     assert evidence["proposal"]["action"] == "write_file"
+    direct = evidence["direct_trace_evidence"]
+    assert direct["proposal_transition"]["proposal_id"] == evidence["proposal"]["proposal_id"]
+    assert direct["proposal_transition"]["payload_sha256"] == evidence["proposal"]["payload_sha256"]
+    assert direct["proposal_transition"]["payload_sha256"]
+    assert direct["proposal_transition"]["pending_after_proposal"] == 1
+    assert direct["approval_transition"]["lease_id"] == evidence["approval"]["lease_id"]
+    assert direct["approval_transition"]["execution_status"] == "ok"
+    assert direct["approval_transition"]["pending_after_approval"] == 0
+    assert direct["operator_display"]["operator_summary_present"] is True
+    assert direct["operator_display"]["compact_cli_output_has_digest"] is True
+    assert direct["side_effect_boundary"]["approved_once"] is True
+    assert direct["side_effect_boundary"]["pending_cleared"] is True
     assert evidence["approval"]["status"] == "ok"
     assert evidence["approval"]["execution_status"] == "ok"
     assert evidence["approval"]["pending_after_approval"] == 0
@@ -887,6 +912,19 @@ def test_functional_subject_trial_includes_recurrence_preference_evidence(tmp_pa
         "preference_reply_shows_substantive_adaptation": True,
     }
     assert evidence["policy_recurrence"]["feedback_statuses"] == ["observed", "candidate_emitted"]
+    direct = evidence["direct_trace_evidence"]
+    assert [item["status"] for item in direct["policy_feedback"]] == ["observed", "candidate_emitted"]
+    assert all(item["trigger_signatures"] == ["provider_rate_limit"] for item in direct["policy_replay_turns"])
+    assert all(item["bounded_initiative_candidate_count"] >= 1 for item in direct["policy_replay_turns"])
+    assert direct["preference_save"]["status"] == "ok"
+    assert direct["preference_save"]["memory_scope"] == "EgoOperator candidate-local operator memory"
+    assert len(direct["preference_context_turns"]) == 2
+    assert all(item["context_included"] is True for item in direct["preference_context_turns"])
+    assert direct["side_effect_boundary"] == {
+        "program_state_updated": False,
+        "evidence_ledger_updated": False,
+        "policy_patch_authority": "candidate-only trace/replay evidence",
+    }
     assert len(evidence["policy_recurrence"]["turns"]) == 2
     assert all(item["trigger_signatures"] == ["provider_rate_limit"] for item in evidence["policy_recurrence"]["turns"])
     assert all(item["bounded_initiative_candidate_count"] >= 1 for item in evidence["policy_recurrence"]["turns"])
