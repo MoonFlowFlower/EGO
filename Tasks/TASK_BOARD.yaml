@@ -1175,6 +1175,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-049
+    title: "EgoOperator: Functional Subject post-native memory gate real-provider rerun"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject post-native-memory-gate real-provider observation local/scripted candidate pass
+    next_action: "Accepted. EGO-FS-010 remains blocked; next ready task should target direct memory/approval/replay trace evidence and baseline negative controls."
+    acceptance:
+      - "Real-provider run completes with JSON/Markdown report."
+      - "GPT-5.5 judge completes or returns structured unavailable/partial status."
+      - "Report scorecard distinguishes native_memory_gate, outcome_prediction_gate, runtime_repair, and provider/empty recovery."
+      - "Evidence packet identifies whether EGO-FS-010 can advance or must stay blocked, and routes remaining blockers without overstating claim."
+    rollback: "Discard the run artifact and keep EGO-FS-010 blocked pending a later rerun."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-post-native-memory-gate-real-provider-rerun/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-post-native-memory-gate-real-provider-rerun/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-post-native-memory-gate-real-provider-rerun/EVIDENCE.post_native_memory_gate_real_provider_rerun.json"
+      - "/tmp/ego_fs_010_after_fs048_20260523_135605/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

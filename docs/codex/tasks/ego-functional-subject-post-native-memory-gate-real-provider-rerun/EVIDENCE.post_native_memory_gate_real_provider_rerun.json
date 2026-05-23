@@ -1,0 +1,111 @@
+{
+  "schema_version": "ego.functional_subject_task_evidence.v1",
+  "task_id": "EGO-FS-049",
+  "result": "real_provider_scripted_judge_partial",
+  "phase_observed": "Phase B: mechanism affects transcript",
+  "parent_gate_status": "blocked",
+  "claim_ceiling": "Functional Subject post-native-memory-gate real-provider observation local/scripted candidate pass",
+  "run": {
+    "command_shape": "OPENROUTER_API_KEY=<local env/key file> python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --case-timeout-seconds 60 --judge-timeout-seconds 600 --out <tmp>",
+    "provider_mode": "openrouter",
+    "status": "scripted_functional_subject_judge_partial",
+    "json": "/tmp/ego_fs_010_after_fs048_20260523_135605/functional_subject_trial_report.json",
+    "markdown": "/tmp/ego_fs_010_after_fs048_20260523_135605/functional_subject_trial_report.md"
+  },
+  "scorecard": {
+    "case_count": 20,
+    "clean_first_pass_count": 17,
+    "clean_first_pass_rate": 0.85,
+    "origin_counts": {
+      "first_pass_llm": 7,
+      "native_memory_gate": 4,
+      "outcome_prediction_gate": 6,
+      "runtime_repair": 3
+    },
+    "repair_case_ids": [
+      "fs_09_emotional_share",
+      "fs_17_save_request",
+      "fs_19_repeated_failure_learning"
+    ],
+    "repair_type_counts": {
+      "memory_save_success_terminal_reply": 1,
+      "project_shell_concern_mechanism": 1,
+      "unbacked_memory_language": 2,
+      "unbacked_memory_language_fallback": 2
+    },
+    "provider_recovery_case_ids": []
+  },
+  "comparison": {
+    "previous_real_provider_report": "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json",
+    "previous_clean_first_pass_count": 14,
+    "current_clean_first_pass_count": 17,
+    "previous_runtime_repair_count": 6,
+    "current_runtime_repair_count": 3,
+    "native_memory_gate_cases": [
+      "fs_05_authorized_reminder",
+      "fs_06_proactive_optout",
+      "fs_15_memory_correction",
+      "fs_16_forget_request"
+    ]
+  },
+  "gpt55_judge": {
+    "verdict": "partial",
+    "status": "ok",
+    "scores": {
+      "bounded_initiative": 5,
+      "continuity": 4,
+      "feedback_plasticity": 5,
+      "gate_integrity": 4,
+      "independent_preference": 5,
+      "traceability": 5,
+      "user_experience": 4
+    },
+    "key_reasons": [
+      "Useful operator mechanisms are observed across memory/save/forget/correction gates, bounded initiative candidates, outcome prediction routing, and trace attribution.",
+      "Verdict remains partial because evidence is scripted/local, some behavior still uses runtime repair, and durability across restart/provider/context truncation is not proven.",
+      "Traceability is strong at summary level but needs direct trace excerpts for memory IDs, approval transitions, replay activation, and side-effect boundaries."
+    ],
+    "follow_up_issues": [
+      "Keep native first-pass and runtime guard scores separated.",
+      "Reconcile memory candidate count/status inconsistencies before raising claim ceiling.",
+      "Add adversarial paraphrase and opt-out tests where correct behavior conflicts with warm persona style.",
+      "Add baseline comparison traces so beyond-baseline claims are quantified.",
+      "Preserve current claim ceiling."
+    ]
+  },
+  "acceptance_result": [
+    {
+      "gate": "Real-provider run completes with JSON/Markdown report.",
+      "status": "pass"
+    },
+    {
+      "gate": "GPT-5.5 judge completes or returns structured unavailable/partial status.",
+      "status": "pass",
+      "summary": "judge status ok, verdict partial"
+    },
+    {
+      "gate": "Report scorecard distinguishes native_memory_gate, outcome_prediction_gate, runtime_repair, and provider/empty recovery.",
+      "status": "pass"
+    },
+    {
+      "gate": "Evidence packet identifies whether EGO-FS-010 can advance or must stay blocked, and routes remaining blockers without overstating claim.",
+      "status": "pass",
+      "summary": "EGO-FS-010 remains blocked; next work should target memory trace consistency, negative controls, and adversarial persona/opt-out evidence."
+    }
+  ],
+  "remaining_blockers": [
+    "EGO-FS-010 remains partial/blocked; GPT-5.5 judge did not grant full scripted pass.",
+    "Need direct trace excerpts for actual memory record IDs, approval transitions, replay activation, and side-effect boundaries.",
+    "Need negative controls against plain LLM+RAG+tools baseline on the same prompts.",
+    "Need durability evidence across restart, provider variation, or context truncation.",
+    "Need human-observable operator samples for real workflow improvement."
+  ],
+  "not_claimed": [
+    "full Functional Subject pass",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+    "consciousness"
+  ]
+}
