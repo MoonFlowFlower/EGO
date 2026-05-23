@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "EGO-FS-031 accepted locally; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
+    next_action: "EGO-FS-032 accepted locally; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "After EGO-FS-028 through EGO-FS-031 local repairs, rerun the full 20-case Functional Subject real-provider trial with --case-timeout-seconds and --judge-timeout-seconds; attach GPT-5.5/human review evidence before any closeout."
+    next_action: "After EGO-FS-028 through EGO-FS-032 local repairs, rerun the full 20-case Functional Subject real-provider trial with --case-timeout-seconds and --judge-timeout-seconds; attach GPT-5.5/human review evidence before any closeout."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -753,6 +753,30 @@ tasks:
     canonical_sources:
       - "docs/codex/tasks/ego-functional-subject-judge-timeout-prejudge-report/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-judge-timeout-prejudge-report/EVIDENCE.judge_timeout_prejudge_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-032
+    title: "EgoOperator: Functional Subject memory-save reply alignment"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_memory
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory-save reply alignment local candidate pass
+    next_action: "Accepted locally; rerun EGO-FS-010 full real-provider smoke to verify fs_17 no longer blocks."
+    acceptance:
+      - "Save-request success reply preserves the target positive-mechanism principle."
+      - "Reply reports candidate-local operator memory scope and does not promote project/program/evidence authority."
+      - "Reply does not drift into forget/delete/revoke semantics."
+      - "Functional Subject classifier sees the repaired save reply as clean."
+    rollback: "Revert memory-save reply alignment changes and keep EGO-FS-010 blocked on fs_17."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-memory-save-reply-alignment/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-memory-save-reply-alignment/EVIDENCE.memory_save_reply_alignment.json"
+      - "/tmp/ego_fs_010_full_real_provider_after_repairs_20260523_062216/functional_subject_trial_report.json"
     external_refs:
       github_issue: null
 

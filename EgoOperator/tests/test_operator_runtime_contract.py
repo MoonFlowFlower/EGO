@@ -2101,6 +2101,8 @@ def test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_
     assert "Claim Ceiling" in result.reply_text
     assert "PROJECT_MEMORY" in result.reply_text
     assert "delete_note" not in result.reply_text
+    assert "/forget" not in result.reply_text
+    assert "撤销" not in result.reply_text
     assert (tmp_path / "memory" / "MEMORY.md").exists()
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"

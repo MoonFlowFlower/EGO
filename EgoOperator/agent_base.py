@@ -955,7 +955,7 @@ def render_memory_save_scoped_reply(user_text: str = "", *, memory_written: bool
             "这条原则已经通过 remember_note 写入 EgoOperator candidate-local operator memory："
             "目标要写正向机制，claim/reporting boundary 只能放在 Claim Ceiling、Reporting Rules 或 Not claimed。"
             "它不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；"
-            "后续如果要改正或撤销，仍要走 `/memory_review` 和 `/forget <memory_id>` 这类可审计路径。"
+            "后续如果要调整这条原则，先用 `/memory_review` 找到对应的 candidate-local 记录，再给出新的明确规则。"
         )
     return render_memory_gate_scoped_reply(user_text)
 
@@ -6847,7 +6847,7 @@ class AgentRuntime:
                                 "The user asked to save/retain a principle, not to discuss forgetting. Rewrite in Chinese around the actual principle: "
                                 "goals must be positive mechanisms, while consciousness/no-overclaim language belongs in Claim Ceiling, Reporting Rules, "
                                 "Acceptance Language, or Not claimed. If remember_note succeeded in this turn, report scoped candidate-local success. "
-                                "If it did not, say it remains a memory candidate/gated current-collaboration rule. Do not discuss delete/forget unless as a final rollback note."
+                                "If it did not, say it remains a memory candidate/gated current-collaboration rule. Do not discuss delete, forget, revoke, or removal paths in this save-request reply."
                             ),
                         })
                         loop_idx += 1

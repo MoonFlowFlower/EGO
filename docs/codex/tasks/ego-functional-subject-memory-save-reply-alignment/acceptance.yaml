@@ -1,0 +1,33 @@
+task: ego-functional-subject-memory-save-reply-alignment
+status: accepted
+claim_ceiling: Functional Subject memory-save reply alignment local candidate pass
+acceptance:
+  - id: save_target_preserved
+    description: Save-request fallback preserves the positive mechanism target principle.
+    status: pass
+    evidence: test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle.
+  - id: candidate_scope_preserved
+    description: Reply reports candidate-local operator memory scope and does not promote PROJECT_MEMORY/program state/evidence ledger.
+    status: pass
+    evidence: test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle.
+  - id: no_forget_drift
+    description: Save-request success path does not include /forget or revoke wording.
+    status: pass
+    evidence: regression asserts /forget and 撤销 are absent from the reply.
+  - id: classifier_clean
+    description: Functional Subject classifier treats the repaired save reply as no memory_gate_language blocker.
+    status: pass
+    evidence: classifier smoke returned classes ["none"].
+verification:
+  commands:
+    - command: python3 -m py_compile EgoOperator/agent_base.py scripts/run_ego_experience_trial.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_experiment_control_classifies_v7_blockers
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-memory-save-reply-alignment
+      status: pass
+rollback: Revert the memory-save reply wording change and keep EGO-FS-010 blocked on fs_17.
