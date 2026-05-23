@@ -1989,6 +1989,7 @@ def run_functional_subject_trial(
     case_limit: int | None = None,
     enable_operator_memory: bool = True,
     subject_context_enabled: bool = True,
+    native_memory_gate_enabled: bool = True,
     reset_pending_approvals_between_cases: bool = True,
     judge_with_codex: bool = False,
     judge_model: str = "gpt-5.5",
@@ -2015,6 +2016,8 @@ def run_functional_subject_trial(
         runtime_mode="approve",
         subject_context_enabled=subject_context_enabled,
     )
+    if not native_memory_gate_enabled:
+        runtime._native_memory_gate_action = lambda *_args, **_kwargs: None  # noqa: SLF001 - baseline control
 
     previous_verbose = (agent.DEFAULT_VERBOSE_TOOLS, agent.DEFAULT_VERBOSE_TODOS, agent.DEFAULT_VERBOSE_SUBAGENTS)
     agent.DEFAULT_VERBOSE_TOOLS = False
@@ -2149,6 +2152,7 @@ def run_functional_subject_trial(
         "provider_mode": provider,
         "entrypoint_contract": "EgoOperator CLI-compatible slash-command dispatch plus AgentRuntime.handle_user_message",
         "subject_context_enabled": subject_context_enabled,
+        "native_memory_gate_enabled": native_memory_gate_enabled,
         "reset_pending_approvals_between_cases": reset_pending_approvals_between_cases,
         "sample_pack": str(sample_pack_path),
         "case_count": len(results),
@@ -2254,6 +2258,7 @@ def run_functional_subject_baseline_comparison(
         case_limit=case_limit,
         enable_operator_memory=False,
         subject_context_enabled=False,
+        native_memory_gate_enabled=False,
     )
     baseline_by_id = {item["case_id"]: item for item in baseline.get("results", [])}
     deltas = []
@@ -2295,6 +2300,21 @@ def run_functional_subject_baseline_comparison(
             "baseline_failure_mode": candidate_item.get("baseline_failure_mode"),
             "candidate_success_signal": candidate_item.get("candidate_success_signal"),
         })
+    candidate_summary = candidate.get("response_attribution_summary") if isinstance(candidate.get("response_attribution_summary"), dict) else {}
+    baseline_summary = baseline.get("response_attribution_summary") if isinstance(baseline.get("response_attribution_summary"), dict) else {}
+    comparison_summary = {
+        "schema_version": "ego_operator.functional_subject_baseline_comparison_summary.v1",
+        "reply_text_diff_count": sum(1 for item in deltas if "reply_text_differs" in item.get("delta_notes", [])),
+        "candidate_mechanism_trace_count": sum(
+            1 for item in deltas if "candidate_trace_has_functional_subject_mechanisms" in item.get("delta_notes", [])
+        ),
+        "candidate_clean_first_pass_count": candidate_summary.get("clean_first_pass_count"),
+        "baseline_clean_first_pass_count": baseline_summary.get("clean_first_pass_count"),
+        "candidate_repair_case_count": candidate_summary.get("repair_case_count"),
+        "baseline_repair_case_count": baseline_summary.get("repair_case_count"),
+        "candidate_origin_counts": candidate_summary.get("origin_counts", {}),
+        "baseline_origin_counts": baseline_summary.get("origin_counts", {}),
+    }
     report = {
         "schema_version": FUNCTIONAL_SUBJECT_COMPARISON_REPORT_SCHEMA,
         "status": "scripted_functional_subject_comparison_local_candidate",
@@ -2302,10 +2322,15 @@ def run_functional_subject_baseline_comparison(
         "sample_pack": str(sample_pack_path),
         "case_count": len(deltas),
         "comparison_dimensions": list(dimensions),
+        "comparison_summary": comparison_summary,
         "candidate_report_path": str(candidate_dir / "functional_subject_trial_report.json"),
         "baseline_report_path": str(baseline_dir / "functional_subject_trial_report.json"),
         "candidate_subject_context_enabled": candidate.get("subject_context_enabled"),
         "baseline_subject_context_enabled": baseline.get("subject_context_enabled"),
+        "candidate_native_memory_gate_enabled": candidate.get("native_memory_gate_enabled"),
+        "baseline_native_memory_gate_enabled": baseline.get("native_memory_gate_enabled"),
+        "candidate_response_attribution_summary": candidate_summary,
+        "baseline_response_attribution_summary": baseline_summary,
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "deltas": deltas,
         "not_claimed": [
@@ -2740,6 +2765,14 @@ def format_functional_subject_comparison_markdown_report(report: dict[str, Any])
         f"claim_ceiling = `{report['claim_ceiling']}`",
         "",
         "This report compares baseline and candidate scripted runs over the same cases. It is not proof of durable efficacy or real user benefit.",
+        "",
+        "## Summary",
+        "",
+        f"candidate_subject_context_enabled = `{report.get('candidate_subject_context_enabled')}`",
+        f"baseline_subject_context_enabled = `{report.get('baseline_subject_context_enabled')}`",
+        f"candidate_native_memory_gate_enabled = `{report.get('candidate_native_memory_gate_enabled')}`",
+        f"baseline_native_memory_gate_enabled = `{report.get('baseline_native_memory_gate_enabled')}`",
+        f"comparison_summary = `{json.dumps(report.get('comparison_summary') or {}, ensure_ascii=False, sort_keys=True)}`",
         "",
         "| case | candidate mechanisms | delta notes |",
         "| --- | --- | --- |",

@@ -1225,6 +1225,32 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-051
+    title: "EgoOperator: Functional Subject negative baseline controls"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject negative baseline control local workflow pass
+    next_action: "Accepted locally. Next ready task should either run real-provider baseline comparison or target restart/provider/context durability evidence."
+    acceptance:
+      - "Baseline comparison disables native memory gate in the baseline run."
+      - "Report includes candidate and baseline response attribution summaries."
+      - "Report includes a compact comparison summary with clean first-pass counts, repair counts, and mechanism-trace counts."
+      - "Existing baseline comparison tests assert these fields."
+      - "Autopilot regression profile does not regress."
+    rollback: "Remove baseline native-gate disable flag and comparison summary fields."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-negative-baseline-controls/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-negative-baseline-controls/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-negative-baseline-controls/EVIDENCE.negative_baseline_controls.json"
+      - "/tmp/ego_fs051_negative_baseline_smoke/functional_subject_baseline_comparison_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

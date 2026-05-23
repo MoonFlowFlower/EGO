@@ -1,0 +1,77 @@
+{
+  "schema_version": "ego.functional_subject_task_evidence.v1",
+  "task_id": "EGO-FS-051",
+  "result": "local_workflow_pass",
+  "phase_advanced": "Phase B evidence quality: negative baseline control",
+  "claim_ceiling": "Functional Subject negative baseline control local workflow pass",
+  "what_changed": [
+    "Functional Subject baseline comparison now disables native memory gate behavior in the baseline run.",
+    "Baseline comparison reports candidate and baseline native-gate enablement flags.",
+    "Baseline comparison reports candidate and baseline response attribution summaries and a compact comparison summary."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Baseline comparison disables native memory gate in the baseline run.",
+      "status": "pass",
+      "evidence": "baseline_native_memory_gate_enabled=false in /tmp/ego_fs051_negative_baseline_smoke/functional_subject_baseline_comparison_report.json"
+    },
+    {
+      "gate": "Report includes candidate and baseline response attribution summaries.",
+      "status": "pass",
+      "evidence": "candidate_response_attribution_summary and baseline_response_attribution_summary are present."
+    },
+    {
+      "gate": "Report includes a compact comparison summary with clean first-pass counts, repair counts, and mechanism-trace counts.",
+      "status": "pass",
+      "evidence": "comparison_summary: candidate clean=15/20, baseline clean=8/20, candidate repair=5, baseline repair=12, candidate_mechanism_trace_count=20."
+    },
+    {
+      "gate": "Existing baseline comparison tests assert these fields.",
+      "status": "pass",
+      "evidence": "scripts/tests/test_run_ego_experience_trial.py"
+    },
+    {
+      "gate": "Autopilot regression profile does not regress.",
+      "status": "pass",
+      "evidence": "autopilot_full passed with 318 pytest cases and scoped git diff check."
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py -k \"baseline_comparison or functional_subject_trial_builds_gpt55_judge_packet\"",
+      "status": "pass",
+      "summary": "2 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-baseline-comparison --case-limit 20 --out /tmp/ego_fs051_negative_baseline_smoke",
+      "status": "pass",
+      "summary": "candidate clean=15/20; baseline clean=8/20; baseline native memory gate disabled"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "318 passed; diff_check pass"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs051_negative_baseline_smoke/functional_subject_baseline_comparison_report.json",
+    "/tmp/ego_fs051_negative_baseline_smoke/functional_subject_baseline_comparison_report.md"
+  ],
+  "remaining_blockers": [
+    "This is a local baseline control, not a real-provider baseline comparison.",
+    "It does not prove stable user benefit, restart durability, or human-observable improvement.",
+    "EGO-FS-010 remains blocked until later real-provider/human smoke gates."
+  ],
+  "not_claimed": [
+    "real-provider baseline superiority",
+    "stable user benefit",
+    "durable memory efficacy",
+    "runtime efficacy",
+    "live autonomy",
+    "consciousness"
+  ]
+}

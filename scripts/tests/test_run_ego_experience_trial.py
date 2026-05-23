@@ -1210,11 +1210,20 @@ def test_functional_subject_baseline_comparison_runs_candidate_and_baseline(tmp_
     assert report["case_count"] == 3
     assert report["candidate_subject_context_enabled"] is True
     assert report["baseline_subject_context_enabled"] is False
+    assert report["candidate_native_memory_gate_enabled"] is True
+    assert report["baseline_native_memory_gate_enabled"] is False
+    assert report["candidate_response_attribution_summary"]["case_count"] == 3
+    assert report["baseline_response_attribution_summary"]["case_count"] == 3
+    assert report["comparison_summary"]["candidate_clean_first_pass_count"] is not None
+    assert report["comparison_summary"]["baseline_clean_first_pass_count"] is not None
+    assert report["comparison_summary"]["candidate_mechanism_trace_count"] >= 1
     assert Path(report["candidate_report_path"]).exists()
     assert Path(report["baseline_report_path"]).exists()
     assert all(item["candidate_trace_path"] for item in report["deltas"])
     assert any("candidate_trace_has_functional_subject_mechanisms" in item["delta_notes"] for item in report["deltas"])
     assert payload["deltas"][0]["candidate_mechanism_trace"]
+    assert payload["comparison_summary"]["baseline_origin_counts"]
+    assert payload["baseline_native_memory_gate_enabled"] is False
     assert payload["comparison_dimensions"] == [
         "continuity",
         "initiative",
@@ -1225,4 +1234,5 @@ def test_functional_subject_baseline_comparison_runs_candidate_and_baseline(tmp_
     ]
     assert "durable memory efficacy" in payload["not_claimed"]
     assert "Baseline Comparison" in markdown
+    assert "baseline_native_memory_gate_enabled" in markdown
     assert "real consciousness" in payload["not_claimed"]
