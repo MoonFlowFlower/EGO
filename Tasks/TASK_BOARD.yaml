@@ -1125,6 +1125,30 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-047
+    title: "EgoOperator: Functional Subject post-OutcomePrediction real-provider rerun"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject post-OutcomePrediction real-provider observation candidate pass
+    next_action: "Accepted as real-provider observation; applied OutcomePrediction now covers fs_07/fs_08/fs_12/fs_13/fs_18/fs_20 and clean first-pass reached 14/20. Next ready task should target native memory correction/save/forget path strength or restart continuity evidence."
+    acceptance:
+      - "Full 20-case real-provider trial completes or writes a timeout/partial report."
+      - "Report includes response_attribution_summary and GPT-5.5 judge output."
+      - "Closeout records applied OutcomePrediction cases, first-pass/repair split, remaining blockers, and whether EGO-FS-010 can move or needs another focused repair."
+      - "No runtime, program state, evidence ledger, or GitHub Project mutation is made by the smoke task itself."
+    rollback: "Discard the run artifact and keep EGO-FS-010 blocked pending a later rerun."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-post-outcome-prediction-real-provider-rerun/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-post-outcome-prediction-real-provider-rerun/EVIDENCE.post_outcome_prediction_real_provider_rerun.json"
+      - "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

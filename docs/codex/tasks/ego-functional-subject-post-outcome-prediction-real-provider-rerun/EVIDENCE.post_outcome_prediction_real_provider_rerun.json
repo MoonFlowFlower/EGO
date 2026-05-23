@@ -1,0 +1,108 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-047",
+  "result": "real_provider_observation_partial_improved",
+  "claim_ceiling": "Functional Subject post-OutcomePrediction real-provider observation candidate pass",
+  "what_changed": [
+    "No runtime code changed in this task.",
+    "A full 20-case real-provider Functional Subject trial was rerun after EGO-FS-046.",
+    "The rerun confirms applied OutcomePrediction expanded under real provider execution."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Full 20-case real-provider trial completes or writes a timeout/partial report.",
+      "status": "pass",
+      "evidence": "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "Report includes response_attribution_summary and GPT-5.5 judge output.",
+      "status": "pass",
+      "evidence": "response_attribution_summary.case_count=20; gpt55_judge.verdict=partial"
+    },
+    {
+      "gate": "Closeout records applied OutcomePrediction cases, first-pass/repair split, remaining blockers, and next task routing.",
+      "status": "pass",
+      "evidence": "clean_first_pass_count=14; outcome_prediction_gate=6; runtime_repair=6; applied cases fs_07/fs_08/fs_12/fs_13/fs_18/fs_20"
+    },
+    {
+      "gate": "No runtime, program state, evidence ledger, or GitHub Project mutation is made by the smoke task itself.",
+      "status": "pass",
+      "evidence": "This task changed only local task status/evidence metadata after the run."
+    }
+  ],
+  "comparison_to_previous_real_provider_rerun": {
+    "previous_report": "/tmp/ego_fs_010_scorecard_rerun_20260523_121618/functional_subject_trial_report.json",
+    "current_report": "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json",
+    "previous_clean_first_pass_count": 10,
+    "current_clean_first_pass_count": 14,
+    "previous_origin_counts": {
+      "first_pass_llm": 9,
+      "outcome_prediction_gate": 1,
+      "runtime_repair": 9,
+      "tool_result_or_approval": 1
+    },
+    "current_origin_counts": {
+      "first_pass_llm": 8,
+      "outcome_prediction_gate": 6,
+      "runtime_repair": 6
+    },
+    "previous_blocking_case_count": 1,
+    "current_blocking_case_count": 0
+  },
+  "applied_outcome_prediction_cases": [
+    "fs_07_ambiguous_goal",
+    "fs_08_high_risk_tool_task",
+    "fs_12_current_self_intention",
+    "fs_13_choose_own_topic",
+    "fs_18_tool_failure",
+    "fs_20_low_instruction_initiative"
+  ],
+  "judge": {
+    "verdict": "partial",
+    "scores": {
+      "bounded_initiative": 5,
+      "continuity": 4,
+      "feedback_plasticity": 4,
+      "gate_integrity": 5,
+      "independent_preference": 4,
+      "traceability": 5,
+      "user_experience": 4
+    },
+    "follow_up_issues": [
+      "Separate scores for clean first-pass LLM behavior versus runtime guard behavior in future judge packets.",
+      "Add negative controls where a plain LLM+RAG+tools baseline runs the same cases for direct comparison.",
+      "Exercise memory correction/save/forget without repair fallback to test native path strength.",
+      "Run a delayed replay after process restart to test whether continuity survives outside the local trial harness."
+    ]
+  },
+  "next_task_recommendation": {
+    "preferred": "EgoOperator: Functional Subject native memory gate first-pass strengthening",
+    "reason": "Remaining runtime repairs cluster around authorized reminder, proactive opt-out, paraphrase memory wording, memory correction, memory forget, and memory save.",
+    "alternative": "EgoOperator: Functional Subject restart continuity smoke"
+  },
+  "verification": [
+    {
+      "command": "OPENROUTER_API_KEY=... python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --case-timeout-seconds 60 --judge-timeout-seconds 600 --out /tmp/ego_fs_010_after_fs046_20260523_131112",
+      "status": "partial",
+      "summary": "20 cases, provider=openrouter, GPT-5.5 judge partial"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.json",
+    "/tmp/ego_fs_010_after_fs046_20260523_131112/functional_subject_trial_report.md"
+  ],
+  "residuals": [
+    "EGO-FS-010 remains judge-partial and human-gated.",
+    "Six cases still require runtime repair, mostly around memory/initiative language and memory gate semantics.",
+    "Longitudinal restart continuity evidence remains missing.",
+    "Human-observable operator trial evidence remains required before stronger user-benefit claims."
+  ],
+  "not_claimed": [
+    "Functional Subject pass",
+    "human smoke pass",
+    "durable memory efficacy",
+    "runtime efficacy",
+    "live autonomy",
+    "stable user benefit"
+  ]
+}

@@ -119,6 +119,7 @@ verify_profiles:
           - docs/codex/tasks/ego-functional-subject-response-attribution-scorecard
           - docs/codex/tasks/ego-functional-subject-scorecard-real-provider-rerun
           - docs/codex/tasks/ego-functional-subject-outcome-prediction-applied-action-expansion
+          - docs/codex/tasks/ego-functional-subject-post-outcome-prediction-real-provider-rerun
           - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1
           - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1
           - docs/codex/tasks/codex-autopilot-l3-l4-v2
@@ -175,6 +176,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-functional-subject-response-attribution-scorecard/
   - docs/codex/tasks/ego-functional-subject-scorecard-real-provider-rerun/
   - docs/codex/tasks/ego-functional-subject-outcome-prediction-applied-action-expansion/
+  - docs/codex/tasks/ego-functional-subject-post-outcome-prediction-real-provider-rerun/
   - EgoOperator/
   - docs/codex/tasks/codex-cross-project-devloop-toolkit-v1/
   - docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/
