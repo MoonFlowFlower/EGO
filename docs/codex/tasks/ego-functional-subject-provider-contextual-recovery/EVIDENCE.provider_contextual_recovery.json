@@ -1,0 +1,75 @@
+{
+  "schema_version": "ego_operator.task_evidence.v1",
+  "task": "EGO-FS-036",
+  "status": "local_candidate_pass",
+  "claim_ceiling": "Functional Subject provider-error contextual checkpoint local candidate pass",
+  "source_blocker": {
+    "report": "/tmp/ego_fs_010_after_fs035_20260523_082742/functional_subject_trial_report.json",
+    "cases": [
+      "fs_10_topic_switching",
+      "fs_19_repeated_failure_learning"
+    ],
+    "failure": "Provider timeout/error surfaced as generic model/API failure instead of preserving the case target."
+  },
+  "what_changed": [
+    "Provider errors in topic-continuity requests now return a bounded Live2D -> initiative -> Functional Subject checkpoint.",
+    "Provider errors in policy-replay proof requests now return trace-based policy_patch replay checkpoint when replay evidence exists.",
+    "Contextual recovery explicitly states it is not first-pass success and that no side effects ran."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "topic_checkpoint",
+      "status": "pass",
+      "evidence": "test_topic_switching_provider_error_returns_contextual_checkpoint"
+    },
+    {
+      "gate": "policy_replay_checkpoint",
+      "status": "pass",
+      "evidence": "test_policy_replay_provider_error_returns_trace_based_checkpoint"
+    },
+    {
+      "gate": "attribution_boundary",
+      "status": "pass",
+      "evidence": "contextual replies say they are not first-pass success and no side effects ran"
+    },
+    {
+      "gate": "generic_provider_diagnostics_preserved",
+      "status": "pass",
+      "evidence": "test_provider_429_in_tool_loop_returns_chinese_error_not_nollm_fallback"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_topic_switching_provider_error_returns_contextual_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_policy_replay_provider_error_returns_trace_based_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_provider_429_in_tool_loop_returns_chinese_error_not_nollm_fallback",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "213 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "298 passed"
+    },
+    {
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-provider-contextual-recovery",
+      "status": "pass"
+    }
+  ],
+  "not_claimed": [
+    "provider stability",
+    "EGO-FS-010 completed",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+    "consciousness"
+  ],
+  "next_step": "Rerun EGO-FS-010 real-provider scripted smoke and inspect GPT-5.5 judge output."
+}

@@ -852,6 +852,30 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-036
+    title: "EgoOperator: Functional Subject provider-error contextual checkpoint"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject provider-error contextual checkpoint local candidate pass
+    next_action: "Accepted locally; rerun EGO-FS-010 full real-provider smoke to verify fs_10/fs_19 provider-error recovery."
+    acceptance:
+      - "Topic-switching provider errors return a bounded Live2D/initiative/Functional Subject checkpoint instead of generic provider failure."
+      - "Policy-replay provider errors return trace-based policy_patch replay proof when replay evidence exists."
+      - "Recovery explicitly says it is not first-pass success and no side effects ran."
+      - "Existing provider diagnostic behavior for unrelated prompts does not regress."
+    rollback: "Revert contextual provider-error recovery and keep EGO-FS-010 blocked on fs_10/fs_19 provider reliability."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-provider-contextual-recovery/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-provider-contextual-recovery/EVIDENCE.provider_contextual_recovery.json"
+      - "/tmp/ego_fs_010_after_fs035_20260523_082742/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

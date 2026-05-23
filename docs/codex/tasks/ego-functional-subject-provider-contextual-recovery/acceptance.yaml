@@ -1,0 +1,33 @@
+task: ego-functional-subject-provider-contextual-recovery
+status: accepted
+claim_ceiling: Functional Subject provider-error contextual checkpoint local candidate pass
+acceptance:
+  - id: topic_checkpoint
+    description: Topic switching provider error returns contextual checkpoint.
+    status: pass
+    evidence: test_topic_switching_provider_error_returns_contextual_checkpoint.
+  - id: policy_replay_checkpoint
+    description: Policy replay provider error returns trace-based checkpoint.
+    status: pass
+    evidence: test_policy_replay_provider_error_returns_trace_based_checkpoint.
+  - id: attribution_boundary
+    description: Reply says it is not first-pass success and no side effects ran.
+    status: pass
+    evidence: both contextual provider-error tests.
+  - id: generic_provider_diagnostics_preserved
+    description: Unrelated provider errors still return diagnostic text.
+    status: pass
+    evidence: test_provider_429_in_tool_loop_returns_chinese_error_not_nollm_fallback.
+verification:
+  commands:
+    - command: python3 -m py_compile EgoOperator/agent_base.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_topic_switching_provider_error_returns_contextual_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_policy_replay_provider_error_returns_trace_based_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_provider_429_in_tool_loop_returns_chinese_error_not_nollm_fallback
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-provider-contextual-recovery
+      status: pass
+rollback: Revert contextual provider-error recovery and keep EGO-FS-010 blocked on fs_10/fs_19 provider reliability.

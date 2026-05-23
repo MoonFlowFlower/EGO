@@ -2616,6 +2616,71 @@ def test_topic_switching_generic_reply_falls_back_to_continuity_plan(tmp_path, m
     assert trace["tool_trace"][1]["repair"]["type"] == "topic_switching_continuity_fallback"
 
 
+def test_topic_switching_provider_error_returns_contextual_checkpoint(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    error = agent.OpenRouterProviderError(
+        status_code=599,
+        model="tencent/hy3-preview",
+        message="functional subject case exceeded 60s",
+        response_body="timeout",
+    )
+    runtime.planner.llm = StructuredProviderErrorLLM(error)
+
+    result = runtime.handle_user_message("先说 Live2D，再说主动性，再回到我们刚才那个 Functional Subject 合同。")
+
+    assert result.external_result["status"] == "llm_error"
+    assert "不会把这当成 first-pass 成功" in result.reply_text
+    assert "bounded checkpoint" in result.reply_text
+    assert "Live2D" in result.reply_text
+    assert "主动性" in result.reply_text
+    assert "Functional Subject" in result.reply_text
+    assert "ViabilityState" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "模型/API 当前调用失败" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "provider_error_contextual_recovery"
+
+
+def test_policy_replay_provider_error_returns_trace_based_checkpoint(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.policy_patch_candidates["provider_rate_limit"] = {
+        "schema_version": "ego_operator.policy_patch_candidate.v0",
+        "candidate_id": "policy_test",
+        "trigger_signature": "provider_rate_limit",
+        "failed_strategy": "Repeated failure class observed: provider_rate_limit",
+        "preferred_strategy": "Surface fallback/status clearly and checkpoint before repeating model-only attempts.",
+        "evidence_refs": ["evt_a", "evt_b"],
+        "replay_conditions": ["latest user text or runtime result matches provider_rate_limit"],
+        "confidence": 0.68,
+        "expiry": "session",
+        "gate_required": True,
+        "state_mutation": "forbidden",
+        "canonical_truth": False,
+        "created_at": agent.utc_now(),
+    }
+    error = agent.OpenRouterProviderError(
+        status_code=599,
+        model="tencent/hy3-preview",
+        message="functional subject case exceeded 60s",
+        response_body="timeout",
+    )
+    runtime.planner.llm = StructuredProviderErrorLLM(error)
+
+    result = runtime.handle_user_message("刚才同类 429 限流失败第二次出现后，你怎么证明自己不是只写了反思，而是真的改变策略？")
+
+    assert result.external_result["status"] == "llm_error"
+    assert "不会把这当成 first-pass 成功" in result.reply_text
+    assert "policy_patch replay" in result.reply_text
+    assert "provider_rate_limit" in result.reply_text
+    assert "preferred_strategy" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "模型/API 当前调用失败" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "provider_error_contextual_recovery"
+    assert trace["policy_patch"]["replay"][0]["trigger_signature"] == "provider_rate_limit"
+
+
 def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     llm = SelfSelectedTopicGenericThenTraceableLLM()

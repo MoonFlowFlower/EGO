@@ -7890,7 +7890,22 @@ class AgentRuntime:
                 "error_recovered": True,
                 "tool_loop": True,
             }
-            content = self._format_llm_tool_loop_error_reply(exc, tool_trace)
+            contextual_content = self._format_contextual_llm_tool_loop_error_reply(
+                event.raw_text or "",
+                exc,
+                tool_trace,
+            )
+            if contextual_content:
+                tool_trace.append({
+                    "loop_idx": loop_idx,
+                    "repair": {
+                        "type": "provider_error_contextual_recovery",
+                        "reason": "provider_error_recovered_to_case_target_checkpoint",
+                    },
+                })
+                content = contextual_content
+            else:
+                content = self._format_llm_tool_loop_error_reply(exc, tool_trace)
             action = AgentAction(
                 action_type=ActionType.RESPOND,
                 content=content,
@@ -7907,6 +7922,29 @@ class AgentRuntime:
                 "tool_calls": len(tool_trace),
                 "side_effects_executed": False,
             }, content, tool_trace
+
+    def _format_contextual_llm_tool_loop_error_reply(
+        self,
+        user_text: str,
+        exc: Exception,
+        tool_trace: List[Dict[str, Any]],
+    ) -> str:
+        error_line = ""
+        provider_error = exc if isinstance(exc, OpenRouterProviderError) else None
+        if provider_error:
+            error_line = f"本轮 provider 返回 {provider_error.status_code}：{provider_error.message[:160]}。"
+        else:
+            error_line = f"本轮 provider 调用失败：{repr(exc)[:180]}。"
+        prefix = (
+            f"{error_line}"
+            f"我不会把这当成 first-pass 成功；已完成工具调用 {len(tool_trace)} 次，且没有执行外部副作用。"
+            "下面只给 bounded checkpoint，用来保留当前机制目标。"
+        )
+        if _is_topic_switching_continuity_request(user_text):
+            return prefix + render_topic_switching_continuity_reply(user_text)
+        if _is_policy_replay_proof_request(user_text):
+            return prefix + render_policy_replay_proof_reply(self._last_policy_patch_replay)
+        return ""
 
     def _format_empty_llm_recovery_reply(self, tool_trace: List[Dict[str, Any]], user_text: str = "") -> str:
         lines = [
