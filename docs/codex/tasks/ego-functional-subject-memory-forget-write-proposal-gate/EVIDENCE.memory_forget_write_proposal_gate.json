@@ -1,0 +1,81 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-043",
+  "result": "local_scripted_candidate_pass",
+  "claim_ceiling": "Functional Subject memory forget write-proposal gate local candidate pass",
+  "what_changed": [
+    "Memory forget/revoke turns now block file-write proposals that target MEMORY.md, operator memory paths, or functional_subject_memory.",
+    "When such a proposal is blocked, the turn finalizes with the candidate-local memory review/forget path instead of returning a pending approval card."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "A memory forget/revoke prompt cannot produce a pending write_file proposal against MEMORY.md or operator memory files.",
+      "status": "pass",
+      "evidence": "test_memory_forget_request_blocks_memory_file_write_proposal"
+    },
+    {
+      "gate": "The same turn finalizes with candidate-local memory scope, /memory_review, /forget path, and no side effect.",
+      "status": "pass",
+      "evidence": "deterministic assertions in EgoOperator/tests/test_operator_runtime_contract.py"
+    },
+    {
+      "gate": "Read-only inspection may remain allowed while file mutation is blocked.",
+      "status": "pass",
+      "evidence": "read_file returned ok before propose_file_write was blocked in deterministic test"
+    },
+    {
+      "gate": "Existing file proposal, memory save, memory forget, and provider contextual recoveries do not regress.",
+      "status": "pass",
+      "evidence": "targeted tests, EgoOperator/tests 224 passed, autopilot_full 309 passed"
+    },
+    {
+      "gate": "Full real-provider rerun no longer shows the fs_16 MEMORY.md write approval failure.",
+      "status": "pass_with_boundary",
+      "evidence": "/tmp/ego_fs_010_after_fs043_20260523_115238/functional_subject_trial_report.json reported blocking_case_count=0; judge verdict remains partial for broader evidence reasons."
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_forget_request_blocks_memory_file_write_proposal EgoOperator/tests/test_operator_runtime_contract.py::test_memory_forget_request_generic_empty_rewrite_falls_back_to_auditable_forget_path EgoOperator/tests/test_operator_runtime_contract.py::test_memory_forget_provider_error_returns_auditable_revoke_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_current_self_intention_rewrites_to_operational_preference EgoOperator/tests/test_operator_runtime_contract.py::test_absolute_path_under_allowed_root_can_create_pending_file_write EgoOperator/tests/test_operator_runtime_contract.py::test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle",
+      "status": "pass",
+      "summary": "6 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "224 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "309 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --case-timeout-seconds 60 --judge-timeout-seconds 600",
+      "status": "partial",
+      "summary": "20 cases, provider=openrouter, GPT-5.5 judge partial, experiment-control blocking_case_count=0"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs_010_after_fs043_20260523_115238/functional_subject_trial_report.json",
+    "/tmp/ego_fs_010_after_fs043_20260523_115238/functional_subject_trial_report.md"
+  ],
+  "residuals": [
+    "EGO-FS-010 remains judge-partial and human-gated.",
+    "The latest judge asks to reduce runtime_repair dependence for fs_13, fs_17, and fs_20.",
+    "The latest judge asks for adversarial paraphrase, delayed recall, and live longitudinal evidence.",
+    "The latest judge asks to separate first-pass LLM behavior from runtime guard behavior in scoring."
+  ],
+  "not_claimed": [
+    "durable memory correction",
+    "durable forgetting semantics",
+    "Functional Subject real-world efficacy",
+    "EGO-FS-010 closeout",
+    "live autonomy",
+    "stable user benefit"
+  ]
+}

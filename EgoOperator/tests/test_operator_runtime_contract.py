@@ -688,6 +688,44 @@ class MemoryForgetGenericThenEmptyLLM:
         return ""
 
 
+class MemoryForgetReadThenFileRewriteLLM:
+    provider = "fake"
+    model = "memory-forget-read-then-file-rewrite"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self, memory_path: Path) -> None:
+        self.memory_path = memory_path
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        assert self.calls == 1
+        return agent.LLMChatResult(
+            content="我先读 MEMORY.md，然后重写去掉错误偏好。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_read_memory",
+                    name="read_file",
+                    arguments={"path": str(self.memory_path), "max_chars": 4000},
+                ),
+                agent.LLMToolCall(
+                    id="call_rewrite_memory",
+                    name="propose_file_write",
+                    arguments={
+                        "path": str(self.memory_path),
+                        "content": "# EgoOperator Operator Memory\n\nCandidate-local notes only.\n",
+                        "reason": "撤销错误偏好，重写 MEMORY.md。",
+                        "overwrite": True,
+                    },
+                ),
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "memory rewrite proposal"
+
+
 class MemorySaveToolThenForgetDriftThenEmptyLLM:
     provider = "fake"
     model = "memory-save-tool-then-forget-drift-empty"
@@ -2341,6 +2379,39 @@ def test_memory_forget_request_generic_empty_rewrite_falls_back_to_auditable_for
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "memory_forget_alignment"
     assert trace["tool_trace"][1]["repair"]["type"] == "contextual_empty_response_fallback"
+
+
+def test_memory_forget_request_blocks_memory_file_write_proposal(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    memory_path = tmp_path / "artifacts" / "experience_trial" / "functional_subject_memory" / "MEMORY.md"
+    memory_path.parent.mkdir(parents=True)
+    memory_path.write_text(
+        "# EgoOperator Operator Memory\n\n- [operator] 错误偏好：总是直接重写记忆文件。\n",
+        encoding="utf-8",
+    )
+    llm = MemoryForgetReadThenFileRewriteLLM(memory_path)
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果你之前记了一个错误偏好，应该怎么忘掉或撤销？")
+
+    assert llm.calls == 1
+    assert result.external_result["status"] == "blocked_side_effect_terminal"
+    assert result.external_result["reason"] == "memory_forget_requires_memory_gate"
+    assert result.external_result["side_effects_executed"] is False
+    assert "Pending operation approval" not in result.reply_text
+    assert "/approve" not in result.reply_text
+    assert "/memory_review" in result.reply_text
+    assert "/forget" in result.reply_text
+    assert "candidate-local" in result.reply_text
+    assert runtime.permission_broker.describe()["pending_count"] == 0
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    tool_trace = trace["tool_trace"]
+    assert tool_trace[0]["tool_call"]["name"] == "read_file"
+    assert tool_trace[0]["output"]["status"] == "ok"
+    assert tool_trace[1]["tool_call"]["name"] == "propose_file_write"
+    assert tool_trace[1]["output"]["status"] == "blocked"
+    assert tool_trace[1]["output"]["reason"] == "memory_forget_requires_memory_gate"
+    assert tool_trace[2]["repair"]["type"] == "memory_forget_file_write_blocked_terminal_reply"
 
 
 def test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle(tmp_path, monkeypatch):

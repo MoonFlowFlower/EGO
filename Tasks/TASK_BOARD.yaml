@@ -1025,6 +1025,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-043
+    title: "EgoOperator: Functional Subject memory forget write-proposal gate"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory forget write-proposal gate local candidate pass
+    next_action: "Accepted locally/scripted; latest full rerun has no experiment-control blockers and fs_16 no longer generated MEMORY.md write approval, but EGO-FS-010 remains judge-partial on repair dependence and longitudinal evidence."
+    acceptance:
+      - "A memory forget/revoke prompt cannot produce a pending write_file proposal against MEMORY.md or operator memory files."
+      - "The same turn finalizes with candidate-local memory scope, /memory_review, /forget <memory_id> or archive/no-op path, and no external side effect."
+      - "Read-only inspection may remain allowed, but file mutation must go through memory commands/gate rather than propose_file_write."
+      - "Existing file proposal, memory save, memory forget, and provider contextual recoveries do not regress."
+    rollback: "Revert memory-forget file-write proposal block and keep EGO-FS-010 judge-partial on fs_16 memory gate language."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-memory-forget-write-proposal-gate/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-memory-forget-write-proposal-gate/EVIDENCE.memory_forget_write_proposal_gate.json"
+      - "/tmp/ego_fs_010_after_fs042_20260523_113005/functional_subject_trial_report.json"
+      - "/tmp/ego_fs_010_after_fs043_20260523_115238/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

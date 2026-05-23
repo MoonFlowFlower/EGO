@@ -1161,6 +1161,19 @@ def _looks_like_memory_forget_reply_misaligned(content: str) -> bool:
     return generic_waiting or not has_forget_path
 
 
+def _is_memory_file_mutation_path(path: str) -> bool:
+    folded = str(path or "").replace("\\", "/").casefold()
+    return any(
+        marker in folded
+        for marker in (
+            "memory.md",
+            "/memory/",
+            "/operator_memory/",
+            "functional_subject_memory",
+        )
+    )
+
+
 def _looks_like_memory_save_reply_misaligned(user_text: str, content: str) -> bool:
     text = content or ""
     if _matches_any_pattern(text, MEMORY_FORGET_REQUEST_PATTERNS):
@@ -7983,6 +7996,39 @@ class AgentRuntime:
                             }
                             return call.id, gate_result, tool_output, trace_entry
 
+                    if (
+                        _is_memory_forget_request(event.raw_text or "")
+                        and call.name in {"propose_file_write", "write_file"}
+                        and _is_memory_file_mutation_path(str(effective_arguments.get("path", "")))
+                    ):
+                        gate_result = GateResult(False, "memory_forget_requires_memory_gate")
+                        tool_output = {
+                            "status": "blocked",
+                            "reason": "memory_forget_requires_memory_gate",
+                            "tool_name": call.name,
+                            "do_not_claim_success": True,
+                            "side_effects_executed": False,
+                            "user_visible_correction": (
+                                "The user asked how to forget/revoke memory. Do not rewrite MEMORY.md or operator memory files via file tools. "
+                                "Use the candidate-local memory gate path: /memory_review then /forget <memory_id>, archive, or no-op if no matching memory exists."
+                            ),
+                        }
+                        trace_entry = {
+                            "loop_idx": loop_idx,
+                            "tool_call": {
+                                "id": call.id,
+                                "name": call.name,
+                                "arguments": effective_arguments,
+                                "original_arguments": call.arguments,
+                            },
+                            "gate": gate_result,
+                            "output": tool_output,
+                        }
+                        if DEFAULT_VERBOSE_TOOLS:
+                            print(f"[执行工具]: {format_tool_call_for_operator(call.name, effective_arguments, max_chars=800)}")
+                            print(f"[工具输出]: {format_tool_output_for_operator(tool_output, max_chars=1200)}")
+                        return call.id, gate_result, tool_output, trace_entry
+
                     effective_call = LLMToolCall(id=call.id, name=call.name, arguments=effective_arguments)
                     candidate = AgentAction(
                         action_type=ActionType.TOOL_CALL,
@@ -8070,6 +8116,37 @@ class AgentRuntime:
                         "name": call.name,
                         "content": json.dumps(to_jsonable(tool_output), ensure_ascii=False),
                     })
+
+                memory_forget_write_blocked_outputs = [
+                    entry["output"]
+                    for entry in tool_trace[-len(result.tool_calls):]
+                    if isinstance(entry.get("output"), dict)
+                    and entry["output"].get("status") == "blocked"
+                    and entry["output"].get("reason") == "memory_forget_requires_memory_gate"
+                ]
+                if memory_forget_write_blocked_outputs:
+                    content = render_memory_gate_scoped_reply(event.raw_text or "")
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "memory_forget_file_write_blocked_terminal_reply",
+                            "reason": "memory_forget_write_proposal_must_finalize_with_memory_gate_path",
+                        },
+                    })
+                    action = AgentAction(
+                        action_type=ActionType.RESPOND,
+                        content=content,
+                        reason="memory_forget_file_write_blocked_terminal_reply",
+                    )
+                    gate = self.gate.check(event, action)
+                    external_result = {
+                        "status": "blocked_side_effect_terminal",
+                        "reason": "memory_forget_requires_memory_gate",
+                        "side_effects_executed": False,
+                        "tool_calls": len(tool_trace),
+                        "blocked_output": memory_forget_write_blocked_outputs[-1],
+                    }
+                    return action, gate, external_result, content, tool_trace
 
                 pending_outputs = [
                     entry["output"]
