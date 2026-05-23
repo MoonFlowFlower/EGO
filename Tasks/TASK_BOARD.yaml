@@ -1251,6 +1251,32 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-052
+    title: "EgoOperator: Functional Subject real-provider baseline comparison"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject real-provider baseline comparison observation candidate pass
+    next_action: "Accepted as real-provider comparison evidence. EGO-FS-010 remains blocked pending judge/human and durability gates."
+    acceptance:
+      - "Real-provider comparison completes with JSON/Markdown report."
+      - "Candidate and baseline runs both use provider_mode=openrouter."
+      - "Baseline native memory gate is disabled."
+      - "Comparison summary is recorded."
+      - "EGO-FS-010 status is not upgraded unless separate judge/human gates allow it."
+    rollback: "Discard the run artifact and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-real-provider-baseline-comparison/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-real-provider-baseline-comparison/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-real-provider-baseline-comparison/EVIDENCE.real_provider_baseline_comparison.json"
+      - "/tmp/ego_fs052_real_provider_baseline_comparison_20260523_143604/functional_subject_baseline_comparison_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

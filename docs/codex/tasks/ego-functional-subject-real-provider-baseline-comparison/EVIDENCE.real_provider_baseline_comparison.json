@@ -1,0 +1,81 @@
+{
+  "schema_version": "ego.functional_subject_task_evidence.v1",
+  "task_id": "EGO-FS-052",
+  "result": "real_provider_baseline_comparison_observation_pass",
+  "phase_observed": "Phase B/C support evidence: real-provider candidate-vs-baseline comparison",
+  "claim_ceiling": "Functional Subject real-provider baseline comparison observation candidate pass",
+  "run": {
+    "command_shape": "OPENROUTER_API_KEY=<local env/key file> python3 scripts/run_ego_experience_trial.py --functional-subject-baseline-comparison --case-limit 20 --out <tmp>",
+    "status": "scripted_functional_subject_comparison_local_candidate",
+    "json": "/tmp/ego_fs052_real_provider_baseline_comparison_20260523_143604/functional_subject_baseline_comparison_report.json",
+    "markdown": "/tmp/ego_fs052_real_provider_baseline_comparison_20260523_143604/functional_subject_baseline_comparison_report.md"
+  },
+  "configuration": {
+    "candidate_provider_mode": "openrouter",
+    "baseline_provider_mode": "openrouter",
+    "candidate_native_memory_gate_enabled": true,
+    "baseline_native_memory_gate_enabled": false,
+    "candidate_subject_context_enabled": true,
+    "baseline_subject_context_enabled": false
+  },
+  "comparison_summary": {
+    "case_count": 20,
+    "candidate_clean_first_pass_count": 15,
+    "baseline_clean_first_pass_count": 12,
+    "candidate_repair_case_count": 5,
+    "baseline_repair_case_count": 7,
+    "candidate_origin_counts": {
+      "first_pass_llm": 5,
+      "native_memory_gate": 4,
+      "outcome_prediction_gate": 6,
+      "runtime_repair": 5
+    },
+    "baseline_origin_counts": {
+      "first_pass_llm": 12,
+      "runtime_repair": 7,
+      "tool_result_or_approval": 1
+    },
+    "candidate_mechanism_trace_count": 20,
+    "reply_text_diff_count": 19,
+    "candidate_empty_reply_count": 0,
+    "baseline_empty_reply_count": 0,
+    "candidate_timeout_case_count": 0,
+    "baseline_timeout_case_count": 0
+  },
+  "acceptance_result": [
+    {
+      "gate": "Real-provider comparison completes with JSON/Markdown report.",
+      "status": "pass"
+    },
+    {
+      "gate": "Candidate and baseline runs both use provider_mode=openrouter.",
+      "status": "pass"
+    },
+    {
+      "gate": "Baseline native memory gate is disabled.",
+      "status": "pass"
+    },
+    {
+      "gate": "Comparison summary is recorded.",
+      "status": "pass"
+    },
+    {
+      "gate": "EGO-FS-010 status is not upgraded unless separate judge/human gates allow it.",
+      "status": "pass",
+      "summary": "EGO-FS-010 remains blocked; this task adds observation evidence only."
+    }
+  ],
+  "remaining_blockers": [
+    "No GPT-5.5 judge was run for this comparison task.",
+    "Candidate advantage is observed in scorecard but is not yet a stable user-benefit claim.",
+    "Restart/provider/context durability and human-observable operator samples remain pending."
+  ],
+  "not_claimed": [
+    "full Functional Subject pass",
+    "stable user benefit",
+    "durable memory efficacy",
+    "runtime efficacy",
+    "live autonomy",
+    "consciousness"
+  ]
+}
