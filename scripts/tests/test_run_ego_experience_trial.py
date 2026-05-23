@@ -247,7 +247,7 @@ def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) ->
         )
         stderr = ""
 
-    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None):
+    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None, **_kwargs):
         calls.append(args)
         calls.append({"input": input})
         return Completed()
@@ -291,7 +291,7 @@ def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> N
         )
         stderr = ""
 
-    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None):
+    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None, **_kwargs):
         calls.append(args)
         calls.append({"input": input})
         return Completed()
@@ -435,9 +435,13 @@ def test_functional_subject_trial_runs_codex_judge_when_requested(tmp_path, monk
         provider = "openrouter"
         model = "fake-openrouter"
 
-    def fake_judge(packet, *, model="gpt-5.5", schema_path=run_ego_experience_trial.DEFAULT_FUNCTIONAL_SUBJECT_JUDGE_SCHEMA):
+    def fake_judge(packet, *, model="gpt-5.5", schema_path=run_ego_experience_trial.DEFAULT_FUNCTIONAL_SUBJECT_JUDGE_SCHEMA, **_kwargs):
         assert packet["provider_mode"] == "openrouter"
         assert packet["case_count"] == 1
+        pre_judge_report = json.loads((tmp_path / "functional_subject_trial_report.json").read_text(encoding="utf-8"))
+        assert pre_judge_report["status"] == "scripted_functional_subject_needs_judge"
+        assert "gpt55_judge" not in pre_judge_report
+        assert "gpt55_judge_packet" in pre_judge_report
         return {
             "status": "ok",
             "verdict": "pass",
@@ -478,6 +482,28 @@ def test_functional_subject_trial_runs_codex_judge_when_requested(tmp_path, monk
     assert report["gpt55_judge"]["verdict"] == "pass"
     assert payload["gpt55_judge"]["status"] == "ok"
     assert "verdict = `pass`" in markdown
+
+
+def test_functional_subject_judge_timeout_returns_partial(monkeypatch) -> None:
+    def fake_run(*args, **kwargs):
+        raise run_ego_experience_trial.subprocess.TimeoutExpired(
+            cmd=kwargs.get("args") or args[0],
+            timeout=kwargs.get("timeout"),
+            output="partial stdout",
+            stderr="partial stderr",
+        )
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+
+    result = run_ego_experience_trial.run_codex_functional_subject_judge(
+        {"case_count": 1, "cases": []},
+        timeout_seconds=1,
+    )
+
+    assert result["status"] == "unavailable"
+    assert result["verdict"] == "partial"
+    assert result["reason"] == "codex_judge_timeout"
+    assert result["timeout_seconds"] == 1
 
 
 def test_functional_subject_experiment_control_classifies_v7_blockers() -> None:

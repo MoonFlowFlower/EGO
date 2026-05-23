@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "EGO-FS-030 accepted locally; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
+    next_action: "EGO-FS-031 accepted locally; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "After EGO-FS-028/EGO-FS-029/EGO-FS-030 local repairs, rerun the full 20-case Functional Subject real-provider trial with --case-timeout-seconds and attach GPT-5.5/human review evidence before any closeout."
+    next_action: "After EGO-FS-028 through EGO-FS-031 local repairs, rerun the full 20-case Functional Subject real-provider trial with --case-timeout-seconds and --judge-timeout-seconds; attach GPT-5.5/human review evidence before any closeout."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -731,6 +731,28 @@ tasks:
       - "docs/codex/tasks/ego-functional-subject-trial-timeout-progress-guard/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-trial-timeout-progress-guard/EVIDENCE.timeout_progress_guard.json"
       - "/tmp/ego_fs_030_progress_smoke/functional_subject_trial_progress.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-031
+    title: "EgoOperator: Functional Subject judge timeout and pre-judge report guard"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject judge timeout/pre-judge report local workflow candidate pass
+    next_action: "Accepted locally; EGO-FS-010 can now be rerun with both case and judge timeouts."
+    acceptance:
+      - "Functional Subject trial writes report before invoking GPT-5.5 judge."
+      - "Optional judge timeout returns structured unavailable/partial evidence."
+      - "Judge timeout/unavailable cannot close EGO-FS-010."
+    rollback: "Revert judge timeout/pre-judge report changes and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-judge-timeout-prejudge-report/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-judge-timeout-prejudge-report/EVIDENCE.judge_timeout_prejudge_report.json"
     external_refs:
       github_issue: null
 

@@ -1,0 +1,29 @@
+task: ego-functional-subject-judge-timeout-prejudge-report
+status: accepted
+claim_ceiling: Functional Subject judge timeout/pre-judge report local workflow candidate pass
+acceptance:
+  - id: prejudge_report
+    description: Functional Subject trial writes JSON/Markdown report before invoking GPT-5.5 judge.
+    status: pass
+    evidence: test_functional_subject_trial_runs_codex_judge_when_requested asserts pre-judge report exists with needs_judge status.
+  - id: judge_timeout
+    description: Optional judge timeout returns structured unavailable/partial evidence.
+    status: pass
+    evidence: test_functional_subject_judge_timeout_returns_partial.
+  - id: closeout_boundary
+    description: Judge timeout/unavailable remains partial and cannot close EGO-FS-010.
+    status: pass
+    evidence: codex_judge_timeout verdict is partial with Functional Subject claim ceiling.
+verification:
+  commands:
+    - command: python3 -m py_compile scripts/run_ego_experience_trial.py scripts/codex_project_autopilot.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-judge-timeout-prejudge-report
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py local-plan-next
+      status: no_ready_task
+rollback: Revert judge timeout/pre-judge report changes and keep EGO-FS-010 blocked.

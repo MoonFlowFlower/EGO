@@ -1,0 +1,48 @@
+{
+  "task": "EGO-FS-031",
+  "claim_ceiling": "Functional Subject judge timeout/pre-judge report local workflow candidate pass",
+  "result": "accepted_local_workflow",
+  "implementation_summary": [
+    "Functional Subject trial writes JSON/Markdown reports before invoking the GPT-5.5 judge.",
+    "Added --judge-timeout-seconds for the Functional Subject judge subprocess.",
+    "Judge timeout returns structured unavailable/partial evidence and cannot close the parent smoke gate."
+  ],
+  "evidence_items": [
+    {
+      "type": "deterministic_tests",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass",
+      "summary": "26 trial-runner tests passed; pre-judge report write and judge timeout are covered."
+    },
+    {
+      "type": "regression_profile",
+      "source": "local",
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "Autopilot full profile passed with 290 tests."
+    },
+    {
+      "type": "diff_check",
+      "source": "local",
+      "command": "git diff --check -- scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-judge-timeout-prejudge-report",
+      "status": "pass",
+      "summary": "Scoped diff check passed."
+    }
+  ],
+  "residuals": [
+    {
+      "task": "EGO-FS-010",
+      "class": "human_required_real_provider_smoke",
+      "summary": "Run full 20-case Functional Subject real-provider trial with both --case-timeout-seconds and --judge-timeout-seconds."
+    }
+  ],
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}

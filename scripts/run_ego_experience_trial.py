@@ -1725,6 +1725,7 @@ def run_functional_subject_trial(
     judge_with_codex: bool = False,
     judge_model: str = "gpt-5.5",
     case_timeout_seconds: int | None = None,
+    judge_timeout_seconds: int | None = None,
 ) -> dict[str, Any]:
     sample_pack = load_functional_subject_trial_pack(sample_pack_path)
     cases = list(sample_pack.get("cases") or [])
@@ -1885,6 +1886,7 @@ def run_functional_subject_trial(
         "timeout_case_count": timeout_case_count,
         "case_timeout_seconds": timeout_seconds,
         "case_timeout_supported": timeout_supported,
+        "judge_timeout_seconds": max(0, int(judge_timeout_seconds or 0)),
         "elapsed_seconds": round(time.monotonic() - started, 3),
         "memory_lifecycle_evidence": memory_lifecycle_evidence,
         "approval_lifecycle_evidence": approval_lifecycle_evidence,
@@ -1901,8 +1903,25 @@ def run_functional_subject_trial(
     }
     judge_packet = build_functional_subject_judge_packet(report, sample_pack)
     report["gpt55_judge_packet"] = judge_packet
+    report["experiment_control"] = build_functional_subject_experiment_control(
+        report,
+        report_path=str(out / "functional_subject_trial_report.json"),
+        parent_task="EGO-FS-010",
+    )
+    (out / "functional_subject_trial_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (out / "functional_subject_trial_report.md").write_text(
+        format_functional_subject_markdown_report(report),
+        encoding="utf-8",
+    )
     if judge_with_codex and not empty_count and not timeout_case_count and provider not in PROVIDER_UNAVAILABLE:
-        judge = run_codex_functional_subject_judge(judge_packet, model=judge_model)
+        judge = run_codex_functional_subject_judge(
+            judge_packet,
+            model=judge_model,
+            timeout_seconds=judge_timeout_seconds,
+        )
         report["gpt55_judge"] = judge
         if judge.get("status") == "ok" and judge.get("verdict") == "pass":
             report["status"] = "scripted_functional_subject_judge_pass"
@@ -1910,6 +1929,21 @@ def run_functional_subject_trial(
             report["status"] = "scripted_functional_subject_judge_failed"
         else:
             report["status"] = "scripted_functional_subject_judge_partial"
+        report["experiment_control"] = build_functional_subject_experiment_control(
+            report,
+            report_path=str(out / "functional_subject_trial_report.json"),
+            parent_task="EGO-FS-010",
+        )
+    elif judge_with_codex and (empty_count or timeout_case_count or provider in PROVIDER_UNAVAILABLE):
+        report["gpt55_judge"] = {
+            "status": "skipped",
+            "verdict": "partial",
+            "reason": "judge_skipped_due_empty_timeout_or_provider_unavailable",
+            "empty_reply_count": empty_count,
+            "timeout_case_count": timeout_case_count,
+            "provider_mode": provider,
+            "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
+        }
     report["experiment_control"] = build_functional_subject_experiment_control(
         report,
         report_path=str(out / "functional_subject_trial_report.json"),
@@ -2085,6 +2119,7 @@ def run_codex_functional_subject_judge(
     *,
     model: str = "gpt-5.5",
     schema_path: Path = DEFAULT_FUNCTIONAL_SUBJECT_JUDGE_SCHEMA,
+    timeout_seconds: int | None = None,
 ) -> dict[str, Any]:
     prompt = (
         "You are a conservative GPT-5.5-style judge for EgoOperator Functional Subject trials.\n"
@@ -2108,9 +2143,28 @@ def run_codex_functional_subject_judge(
         "-",
     ]
     try:
-        completed = subprocess.run(args, cwd=ROOT, input=prompt, capture_output=True, text=True, check=False)
+        timeout = max(0, int(timeout_seconds or 0)) or None
+        completed = subprocess.run(
+            args,
+            cwd=ROOT,
+            input=prompt,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=timeout,
+        )
     except FileNotFoundError as exc:
         return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
+    except subprocess.TimeoutExpired as exc:
+        return {
+            "status": "unavailable",
+            "verdict": "partial",
+            "reason": "codex_judge_timeout",
+            "timeout_seconds": max(0, int(timeout_seconds or 0)),
+            "stdout_preview": (exc.stdout or "")[-1000:] if isinstance(exc.stdout, str) else "",
+            "stderr_preview": (exc.stderr or "")[-1000:] if isinstance(exc.stderr, str) else "",
+            "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
+        }
     if completed.returncode != 0:
         return {
             "status": "unavailable",
@@ -2434,6 +2488,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--judge-with-codex", action="store_true", help="Run the matching GPT-5.5 judge through codex exec when supported by the selected trial.")
     parser.add_argument("--judge-model", default="gpt-5.5", help="Model name passed to codex exec for judging.")
     parser.add_argument("--case-timeout-seconds", type=int, default=None, help="Optional per-case timeout for Functional Subject trial runs; writes progress before each next case.")
+    parser.add_argument("--judge-timeout-seconds", type=int, default=None, help="Optional timeout for the Functional Subject GPT judge subprocess.")
     args = parser.parse_args(argv)
     if args.functional_subject_baseline_comparison:
         sample_pack = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK if args.sample_pack == DEFAULT_SAMPLE_PACK else args.sample_pack
@@ -2459,6 +2514,7 @@ def main(argv: list[str] | None = None) -> int:
             judge_with_codex=args.judge_with_codex,
             judge_model=args.judge_model,
             case_timeout_seconds=args.case_timeout_seconds,
+            judge_timeout_seconds=args.judge_timeout_seconds,
         )
         print(json.dumps({
             "status": report["status"],
