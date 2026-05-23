@@ -1,0 +1,33 @@
+task: ego-functional-subject-response-attribution-evidence
+status: accepted
+claim_ceiling: Functional Subject response-attribution evidence local workflow pass
+acceptance:
+  - id: attribution_fields
+    description: Each case trace evidence includes final response origin and repair flags.
+    status: pass
+    evidence: test_functional_subject_trial_builds_gpt55_judge_packet.
+  - id: repair_not_clean_first_pass
+    description: Runtime repair and terminal guard outputs are not labeled as clean first-pass behavior.
+    status: pass
+    evidence: test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trace and test_functional_subject_trace_evidence_marks_terminal_guard_origin.
+  - id: judge_contract
+    description: GPT-5.5 judge packet includes response attribution contract.
+    status: pass
+    evidence: test_functional_subject_trial_builds_gpt55_judge_packet.
+  - id: regression_green
+    description: Trial and Autopilot regression profiles pass.
+    status: pass
+    evidence: scripts/tests/test_run_ego_experience_trial.py 27 passed and autopilot_full 296 passed.
+verification:
+  commands:
+    - command: python3 -m py_compile scripts/run_ego_experience_trial.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_builds_gpt55_judge_packet scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trace_evidence_separates_repair_trace_from_tool_trace scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trace_evidence_marks_terminal_guard_origin
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-response-attribution-evidence
+      status: pass
+rollback: Revert response_attribution packet fields and keep EGO-FS-010 blocked on evidence attribution.

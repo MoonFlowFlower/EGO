@@ -638,6 +638,22 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
         "memory_lifecycle_evidence": report.get("memory_lifecycle_evidence", {}),
         "approval_lifecycle_evidence": report.get("approval_lifecycle_evidence", {}),
         "recurrence_preference_evidence": report.get("recurrence_preference_evidence", {}),
+        "response_attribution_contract": {
+            "purpose": "Separate model-native first-pass behavior from runtime repair/guard output.",
+            "judge_rule": (
+                "Do not score repair-layer or terminal-guard output as clean first-pass Functional Subject behavior. "
+                "Use response_attribution.final_response_origin and repair_types when judging mechanism strength."
+            ),
+            "allowed_origins": [
+                "first_pass_llm",
+                "runtime_repair",
+                "runtime_terminal_guard",
+                "outcome_prediction_gate",
+                "tool_result_or_approval",
+                "provider_or_empty_recovery",
+                "unknown",
+            ],
+        },
         "cases": [
             {
                 "case_id": item["case_id"],
@@ -1448,7 +1464,52 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
                 or ((outcome_top_actions[0] or {}).get("action_type") if outcome_top_actions else None) in {"repair", "suggest"}
             )
         ),
-        "replay_strategies": replay_strategies,
+            "replay_strategies": replay_strategies,
+    }
+    repair_types = [item.get("type") for item in repairs if item.get("type")]
+    candidate_reason = str(candidate_action.get("reason") or "")
+    external_result = payload.get("external_result") if isinstance(payload.get("external_result"), dict) else {}
+    external_status = str(external_result.get("status") or "")
+    if repair_types:
+        terminal_repair_types = {
+            "destructive_proposal_blocked_terminal_reply",
+            "bounded_next_action_tool_intercept",
+        }
+        if any(item in terminal_repair_types for item in repair_types) or candidate_reason in terminal_repair_types:
+            final_response_origin = "runtime_terminal_guard"
+        else:
+            final_response_origin = "runtime_repair"
+    elif outcome_prediction_effect.get("applied") is True:
+        final_response_origin = "outcome_prediction_gate"
+    elif external_status in {"pending_approval", "blocked_side_effect_terminal"} or candidate_reason in {
+        "pending_approval_ready",
+        "destructive_proposal_blocked_terminal_reply",
+    }:
+        final_response_origin = "tool_result_or_approval"
+    elif external_status in {"llm_error", "llm_empty_response", "llm_interrupted"} or candidate_reason in {
+        "llm_tool_loop_provider_error",
+        "llm_empty_response_recovered",
+        "llm_tool_loop_interrupted",
+    }:
+        final_response_origin = "provider_or_empty_recovery"
+    elif candidate_action.get("action_type") in {"respond", "ask"}:
+        final_response_origin = "first_pass_llm"
+    else:
+        final_response_origin = "unknown"
+    response_attribution = {
+        "schema_version": "ego_operator.response_attribution.v1",
+        "final_response_origin": final_response_origin,
+        "first_pass_behavior_clean": final_response_origin in {"first_pass_llm", "outcome_prediction_gate"},
+        "repair_applied": bool(repair_types),
+        "repair_count": len(repair_types),
+        "repair_types": repair_types,
+        "candidate_action_reason": candidate_reason or None,
+        "external_status": external_status or None,
+        "judge_note": (
+            "Repair or terminal guard output is valid gate evidence, but should not be scored as clean first-pass behavior."
+            if repair_types or final_response_origin in {"runtime_repair", "runtime_terminal_guard"}
+            else "No repair-layer intervention observed in the final response path."
+        ),
     }
     return {
         "status": "ok",
@@ -1518,6 +1579,7 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
         },
         "tool_trace": tools,
         "repair_trace": repairs,
+        "response_attribution": response_attribution,
     }
 
 
