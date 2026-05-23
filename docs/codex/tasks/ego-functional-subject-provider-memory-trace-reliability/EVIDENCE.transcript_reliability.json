@@ -1,0 +1,106 @@
+{
+  "task": "EGO-FS-028",
+  "claim_ceiling": "Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass",
+  "result": "accepted_local_scripted",
+  "phase_gate": {
+    "phase": "B",
+    "phase_name": "mechanism_affects_transcript",
+    "parent_gate_status": "blocked",
+    "parent_task": "EGO-FS-010",
+    "next_task": "EGO-FS-029",
+    "cannot_use_phase_d_to_reject_phase_b": true
+  },
+  "implementation_summary": [
+    "Added contextual empty-response recovery for authorized reminders, opt-out, memory save/forget, impossible commitments, topic switching, failure recovery, and policy replay proof.",
+    "Added memory save/forget alignment guards so transcript replies keep candidate-local/gated scope and do not drift between save and forget semantics.",
+    "Expanded Functional Subject trial taxonomy so transcript-visible BoundedInitiative, OutcomePrediction, ViabilityState, recovery, gate, and trace evidence can satisfy planner-effect checks when user-visible behavior supports it."
+  ],
+  "evidence_items": [
+    {
+      "type": "deterministic_tests",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py EgoOperator/tests/test_permission_gates.py",
+      "status": "pass",
+      "summary": "142 tests passed, including contextual empty recovery, memory save/forget alignment, policy replay proof, and Functional Subject taxonomy cases."
+    },
+    {
+      "type": "runtime_regression",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "204 EgoOperator tests passed."
+    },
+    {
+      "type": "autopilot_verify_profile",
+      "source": "local",
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "285 script tests passed and diff check passed."
+    },
+    {
+      "type": "real_provider_scripted_entry",
+      "source": "OpenRouter + GPT-5.5 judge",
+      "path": "/tmp/ego_fs_028_real_provider_rerun/functional_subject_trial_report.json",
+      "status": "partial_for_parent_gate",
+      "summary": "Full 20-case rerun reached GPT-5.5 judge. Experiment taxonomy reduced blocking cases to one unrelated next blocker: fs_13_choose_own_topic."
+    },
+    {
+      "type": "real_provider_targeted_entry",
+      "source": "OpenRouter + GPT-5.5 judge",
+      "path": "/tmp/ego_fs_028_fs16_fs17_real_provider/functional_subject_trial_report.json",
+      "status": "target_cases_nonblocking",
+      "summary": "Targeted fs16/fs17 rerun reached GPT-5.5 judge. Taxonomy blocking count is 0 for memory forget/save language."
+    },
+    {
+      "type": "provider_unavailable_observation",
+      "source": "OpenRouter scripted run",
+      "path": "/tmp/ego_fs_028_real_provider_rerun_v2",
+      "status": "no_final_report",
+      "summary": "A later full rerun was interrupted before producing functional_subject_trial_report.json. This is recorded as unavailable, not as pass evidence."
+    }
+  ],
+  "acceptance_result": [
+    {
+      "id": "experiment_control_plane",
+      "status": "pass",
+      "evidence": "EVIDENCE.experiment_control_plane.json"
+    },
+    {
+      "id": "provider_failure_transcript_clarity",
+      "status": "pass",
+      "evidence": "contextual empty-response recovery tests and no empty replies in the full EGO-FS-028 judged rerun"
+    },
+    {
+      "id": "memory_gate_language",
+      "status": "pass",
+      "evidence": "fs16/fs17 targeted real-provider taxonomy blocking count 0 plus deterministic save/forget alignment tests"
+    },
+    {
+      "id": "planner_trace_transcript_effect",
+      "status": "pass",
+      "evidence": "updated taxonomy and full rerun leave only fs13 as the next isolated planner-traceability blocker"
+    },
+    {
+      "id": "parent_gate_boundary",
+      "status": "pass",
+      "evidence": "GPT-5.5 verdict remains partial; EGO-FS-010 remains blocked"
+    }
+  ],
+  "residuals": [
+    {
+      "task": "EGO-FS-029",
+      "blocker": "fs_13_choose_own_topic",
+      "class": "planner_trace_not_transcript_visible",
+      "summary": "Self-selected topic reply needs stronger transcript-visible bounded initiative / planner traceability without overusing internal jargon."
+    }
+  ],
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "EGO-FS-010 parent gate pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}

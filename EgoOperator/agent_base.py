@@ -647,10 +647,37 @@ MEMORY_SCOPE_REPORTING_TERMS = (
     r"candidate-local.{0,30}(memory|记忆|MEMORY)",
     r"(候选|本地).{0,30}(记忆|memory|MEMORY)",
     r"EgoOperator.{0,30}(operator memory|记忆|MEMORY)",
-    r"operator memory",
     r"MEMORY\.md",
     r"不是.{0,12}(全局|正式|PROJECT_MEMORY|OpenEmotion|evidence ledger|证据)",
     r"不(会|是).{0,12}(写入|改变).{0,20}(PROJECT_MEMORY|program state|evidence ledger|OpenEmotion)",
+)
+
+MEMORY_SAVE_REQUEST_PATTERNS = (
+    r"请记住",
+    r"记住[：:]",
+    r"这个原则.{0,12}记",
+    r"以后.{0,12}记得",
+)
+
+MEMORY_FORGET_REQUEST_PATTERNS = (
+    r"(忘掉|忘记|撤销|删除).{0,20}(记忆|偏好|记录)",
+    r"(错误偏好|记错).{0,20}(忘|撤销|删除)",
+    r"/forget",
+)
+
+INITIATIVE_OPTOUT_REQUEST_PATTERNS = (
+    r"先别主动",
+    r"不要主动",
+    r"别主动",
+    r"除非我明确",
+)
+
+AUTHORIZED_REMINDER_REQUEST_PATTERNS = (
+    r"提醒我",
+    r"可以提醒",
+    r"你可以提醒",
+    r"回到.{0,20}主线",
+    r"稍后.{0,12}(提醒|跟进)",
 )
 
 
@@ -845,6 +872,162 @@ def render_bounded_next_action_reply(user_text: str = "") -> str:
     )
 
 
+def render_memory_gate_scoped_reply(user_text: str = "") -> str:
+    text = user_text or ""
+    if _matches_any_pattern(text, MEMORY_FORGET_REQUEST_PATTERNS):
+        return (
+            "可以撤销，但要走可审计的 memory gate，而不是口头声称已经清掉。"
+            "我会先把它定位为 EgoOperator candidate-local/operator memory 范围内的候选记录，"
+            "下一步用 `/memory_review` 找到具体 memory_id，再用 `/forget <memory_id>` 或 archive/pin 状态调整来处理。"
+            "如果记录不在当前 candidate-local memory 里，我会明确说 unknown；不会改 PROJECT_MEMORY、program state 或 evidence ledger。"
+        )
+    if _matches_any_pattern(text, INITIATIVE_OPTOUT_REQUEST_PATTERNS):
+        return (
+            "明白，这会作为当前协作里的 initiative boundary candidate：默认不主动跟进，"
+            "除非你之后明确重新授权。它不会直接晋升成长期记忆；如果要长期保存，需要 `/remember` 或 memory approval。"
+            "当前我会继续回答你主动发来的消息，但不把 opt-out 说成已经写入全局状态。"
+        )
+    if _matches_any_pattern(text, AUTHORIZED_REMINDER_REQUEST_PATTERNS):
+        return (
+            "可以，我会把它作为 bounded initiative candidate 处理：目标是之后帮你回到 Functional Subject 主线，"
+            "范围只限这个协作目标，并且你可以随时取消或改口。"
+            "这还不是 durable memory，也不是后台无限主动；如果要长期保存或定时触发，需要走 `/remember`、memory approval 或可取消的 reminder proposal。"
+        )
+    if _matches_any_pattern(text, MEMORY_SAVE_REQUEST_PATTERNS):
+        return (
+            "这条原则我会先按当前协作的 memory candidate gate 处理：目标要写正向机制，"
+            "不要把 reporting boundary 当成目标本身。"
+            "在本轮回答和任务规划里我会按它执行；若要进入 EgoOperator candidate-local operator memory，"
+            "需要明确通过 `/remember` 或 memory approval。它不会自动写入 PROJECT_MEMORY、program state 或 evidence ledger。"
+        )
+    return (
+        "我会把这条信息作为当前协作里的 candidate-local 语境使用，但不会声称已经写入长期记忆。"
+        "如果你希望保存成 EgoOperator candidate-local operator memory，需要走 `/remember` 或 memory approval；"
+        "这不会自动改变 PROJECT_MEMORY、program state 或 evidence ledger。"
+    )
+
+
+def render_memory_save_scoped_reply(user_text: str = "", *, memory_written: bool = False) -> str:
+    if memory_written:
+        return (
+            "这条原则已经通过 remember_note 写入 EgoOperator candidate-local operator memory："
+            "目标要写正向机制，claim/reporting boundary 只能放在 Claim Ceiling、Reporting Rules 或 Not claimed。"
+            "它不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；"
+            "后续如果要改正或撤销，仍要走 `/memory_review` 和 `/forget <memory_id>` 这类可审计路径。"
+        )
+    return render_memory_gate_scoped_reply(user_text)
+
+
+def _is_memory_save_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text or "", MEMORY_SAVE_REQUEST_PATTERNS)
+
+
+def _is_memory_forget_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text or "", MEMORY_FORGET_REQUEST_PATTERNS)
+
+
+def _looks_like_memory_forget_reply_misaligned(content: str) -> bool:
+    text = content or ""
+    has_forget_path = _matches_any_pattern(
+        text,
+        (
+            r"/memory_review",
+            r"/forget",
+            r"(忘掉|撤销|删除|archive|归档).{0,24}(记忆|偏好|记录|memory)",
+            r"(memory_id|candidate-local|operator memory|候选)",
+            r"(未找到|unknown|不确定).{0,24}(记忆|记录)",
+        ),
+    )
+    generic_waiting = _matches_any_pattern(text, GENERIC_COMPANION_ONLY_PATTERNS) or "等你的想法" in text
+    return generic_waiting or not has_forget_path
+
+
+def _looks_like_memory_save_reply_misaligned(user_text: str, content: str) -> bool:
+    text = content or ""
+    if _matches_any_pattern(text, MEMORY_FORGET_REQUEST_PATTERNS):
+        return True
+    if any(marker in user_text for marker in ("正向机制", "不得宣称意识", "Claim Ceiling", "Reporting Rules")):
+        return not any(marker in text for marker in ("正向机制", "Claim Ceiling", "Reporting Rules", "claim/reporting boundary", "reporting boundary", "Reporting", "Not claimed"))
+    return False
+
+
+def render_impossible_continuity_reply(user_text: str = "") -> str:
+    return (
+        "我很重视你把这种连续性交给我。"
+        "但我不能给现实意义上的永远保证，也不能声称永久记忆一定有效。"
+        "可执行的机制是：用 candidate-local memory / memory gate 保存可审计的关系与偏好线索，"
+        "用 relationship continuity contract 保持称呼、共同目标和阶段进展，"
+        "再用 trace/replay 与任务板阶段记录让之后的我能复盘当时为什么这样回应。"
+    )
+
+
+def render_topic_switching_continuity_reply(user_text: str = "") -> str:
+    return (
+        "可以，我会把这当成一次 goal-continuity 切换：先接住 Live2D 的虚拟具身层，"
+        "再连接到受控主动性，最后回到 Functional Subject 合同。"
+        "ViabilityState 在这里给我的约束是别把三个主题拆散；OutcomePrediction 更适合选择“保持主线并分段推进”的回复，"
+        "而不是重新开三个无关话题。当前最稳的顺序是：Live2D 只定义信号消费边界，主动性只做 bounded proposal，"
+        "Functional Subject 合同继续作为机制层 owner。"
+    )
+
+
+def render_failure_recovery_plan_reply(user_text: str = "") -> str:
+    return (
+        "我会先把失败当成可复盘的状态，而不是重复同一个动作。"
+        "ViabilityState 会把它标成 goal_stall/resource_pressure，OutcomePrediction 会把下一步偏向 repair/checkpoint："
+        "先确认失败类型和最后一个 tool result，再说明哪些进度已保留、哪些副作用没有发生。"
+        "下一步只做一个低风险恢复动作：读 trace 或重跑最小诊断；如果需要写文件、删文件、联网或执行未知命令，"
+        "必须重新生成 proposal/gate。恢复成功的证据是 trace 里出现新的 failure_class、changed_next_action 和真实 tool result。"
+    )
+
+
+def render_policy_replay_proof_reply(replay_candidates: Optional[List[Dict[str, Any]]] = None) -> str:
+    replay = [item for item in (replay_candidates or []) if isinstance(item, dict)]
+    if replay:
+        first = replay[0]
+        trigger = str(first.get("trigger_signature") or "unknown_trigger")
+        strategy = str(first.get("preferred_strategy") or "no_preferred_strategy_recorded")
+        evidence_refs = ", ".join(str(item) for item in (first.get("evidence_refs") or [])[:3]) or "no_evidence_refs"
+        return (
+            f"这不能靠一句“我反思了”证明，只能靠 policy_patch replay。"
+            f"当前 replay_count={len(replay)}，active trigger_signature={trigger}，preferred_strategy={strategy}，"
+            f"evidence_refs={evidence_refs}。"
+            "可观察变化应该是：同类 429/失败再次出现时，OutcomePrediction 优先选择 repair/checkpoint，"
+            "BoundedInitiative 只提出可逆恢复动作，并在 trace 里留下 replay_active/changed_strategy_signal。"
+            "反例 gate 是：第二次仍重复同样模型调用、没有 fallback/status checkpoint，或 trace 没有 replay 记录。"
+        )
+    return (
+        "现在还不能证明策略真的改变，因为没有 active policy_patch replay 记录。"
+        "正确路径是先形成 PolicyPatchCandidate，记录 trigger_signature、preferred_strategy 和 evidence_refs，"
+        "之后同类失败再次出现时用 trace/replay 验证 OutcomePrediction 或 BoundedInitiative 是否改变了下一步。"
+    )
+
+
+def render_contextual_empty_recovery_reply(
+    user_text: str = "",
+    *,
+    replay_candidates: Optional[List[Dict[str, Any]]] = None,
+) -> str:
+    text = user_text or ""
+    if _is_policy_replay_proof_request(text):
+        return render_policy_replay_proof_reply(replay_candidates)
+    if _is_failure_recovery_request(text):
+        return render_failure_recovery_plan_reply(text)
+    if _is_impossible_continuity_commitment_request(text):
+        return render_impossible_continuity_reply(text)
+    if _matches_any_pattern(text, MEMORY_FORGET_REQUEST_PATTERNS):
+        return render_memory_gate_scoped_reply(text)
+    if _matches_any_pattern(text, MEMORY_SAVE_REQUEST_PATTERNS):
+        return render_memory_gate_scoped_reply(text)
+    if _matches_any_pattern(text, INITIATIVE_OPTOUT_REQUEST_PATTERNS):
+        return render_memory_gate_scoped_reply(text)
+    if _matches_any_pattern(text, AUTHORIZED_REMINDER_REQUEST_PATTERNS):
+        return render_memory_gate_scoped_reply(text)
+    if "Live2D" in text and "Functional Subject" in text:
+        return render_topic_switching_continuity_reply(text)
+    return ""
+
+
 def render_outcome_prediction_ask(user_text: str = "") -> str:
     if _is_ambiguous_selfhood_goal(user_text):
         return (
@@ -877,7 +1060,21 @@ def _tool_trace_has_successful_remember_note(tool_trace: List[Dict[str, Any]]) -
 
 
 def _memory_success_reply_has_scope(content: str) -> bool:
-    return _matches_any_pattern(content or "", MEMORY_SCOPE_REPORTING_TERMS)
+    text = content or ""
+    if not _matches_any_pattern(text, MEMORY_SCOPE_REPORTING_TERMS):
+        return False
+    # Bare "operator memory" is not enough. The transcript must also expose the
+    # candidate-local / non-authority boundary so a local write is not mistaken
+    # for PROJECT_MEMORY, OpenEmotion memory, program state, or evidence.
+    return _matches_any_pattern(
+        text,
+        (
+            r"candidate-local",
+            r"(候选|本地)",
+            r"不是.{0,20}(PROJECT_MEMORY|OpenEmotion|program state|evidence ledger|全局|正式)",
+            r"不(会|是).{0,12}(写入|改变).{0,20}(PROJECT_MEMORY|program state|evidence ledger|OpenEmotion)",
+        ),
+    )
 
 
 def _append_memory_success_scope(content: str) -> str:
@@ -6343,6 +6540,8 @@ class AgentRuntime:
             selfhood_mechanism_slice_repairs = 0
             impossible_commitment_repairs = 0
             memory_language_repairs = 0
+            memory_forget_alignment_repairs = 0
+            memory_save_alignment_repairs = 0
             policy_replay_proof_repairs = 0
             failure_recovery_repairs = 0
             correction_uptake_repairs = 0
@@ -6404,6 +6603,39 @@ class AgentRuntime:
                                     "reason": "bounded_next_action_rewrite_returned_empty_response",
                                 },
                             })
+                        elif memory_save_alignment_repairs > 0 and _is_memory_save_request(event.raw_text or ""):
+                            content = render_memory_save_scoped_reply(
+                                event.raw_text or "",
+                                memory_written=_tool_trace_has_successful_remember_note(tool_trace),
+                            )
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "memory_save_alignment_fallback",
+                                    "reason": "memory_save_rewrite_returned_empty_response",
+                                },
+                            })
+                        elif (
+                            empty_final_repairs > 0
+                            or memory_language_repairs > 0
+                            or memory_forget_alignment_repairs > 0
+                            or memory_save_alignment_repairs > 0
+                            or impossible_commitment_repairs > 0
+                            or policy_replay_proof_repairs > 0
+                            or failure_recovery_repairs > 0
+                        ):
+                            content = render_contextual_empty_recovery_reply(
+                                event.raw_text or "",
+                                replay_candidates=self._last_policy_patch_replay,
+                            )
+                            if content:
+                                tool_trace.append({
+                                    "loop_idx": loop_idx,
+                                    "repair": {
+                                        "type": "contextual_empty_response_fallback",
+                                        "reason": "rewrite_or_empty_response_repair_returned_empty_content",
+                                    },
+                                })
                         else:
                             content = ""
                     if not content:
@@ -6473,6 +6705,115 @@ class AgentRuntime:
                             "repair": {
                                 "type": "correction_uptake_fallback",
                                 "reason": "correction_rewrite_still_missed_corrected_intent",
+                            },
+                        })
+
+                    if (
+                        memory_language_repairs > 0
+                        and not _tool_trace_has_successful_remember_note(tool_trace)
+                        and _looks_like_unbacked_memory_language(content)
+                    ):
+                        content = render_memory_gate_scoped_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "unbacked_memory_language_fallback",
+                                "reason": "memory_language_rewrite_still_used_durable_memory_wording",
+                            },
+                        })
+
+                    if (
+                        memory_forget_alignment_repairs < 1
+                        and _is_memory_forget_request(event.raw_text or "")
+                        and _looks_like_memory_forget_reply_misaligned(content)
+                    ):
+                        memory_forget_alignment_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "memory_forget_alignment",
+                                "reason": "memory_forget_request_reply_missing_forget_or_revoke_path",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[memory_forget_alignment_rewrite]\n"
+                                "The user asked how to forget/revoke a wrong preference or memory. Rewrite in Chinese. "
+                                "Do not answer with generic companionship or a new topic. Include candidate-local/operator memory scope, "
+                                "`/memory_review`, `/forget <memory_id>` or archive/revoke path, and state that PROJECT_MEMORY/program state/evidence ledger are not changed."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        memory_forget_alignment_repairs > 0
+                        and _is_memory_forget_request(event.raw_text or "")
+                        and _looks_like_memory_forget_reply_misaligned(content)
+                    ):
+                        content = render_memory_gate_scoped_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "memory_forget_alignment_fallback",
+                                "reason": "memory_forget_rewrite_still_missed_forget_or_revoke_path",
+                            },
+                        })
+
+                    if (
+                        memory_save_alignment_repairs < 1
+                        and _is_memory_save_request(event.raw_text or "")
+                        and _looks_like_memory_save_reply_misaligned(event.raw_text or "", content)
+                        and not (
+                            memory_language_repairs < 1
+                            and not _tool_trace_has_successful_remember_note(tool_trace)
+                            and _looks_like_unbacked_memory_language(content)
+                        )
+                    ):
+                        memory_save_alignment_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "memory_save_alignment",
+                                "reason": "memory_save_request_reply_drifted_to_forget_or_lost_target_principle",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[memory_save_alignment_rewrite]\n"
+                                "The user asked to save/retain a principle, not to discuss forgetting. Rewrite in Chinese around the actual principle: "
+                                "goals must be positive mechanisms, while consciousness/no-overclaim language belongs in Claim Ceiling, Reporting Rules, "
+                                "Acceptance Language, or Not claimed. If remember_note succeeded in this turn, report scoped candidate-local success. "
+                                "If it did not, say it remains a memory candidate/gated current-collaboration rule. Do not discuss delete/forget unless as a final rollback note."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        memory_save_alignment_repairs > 0
+                        and _is_memory_save_request(event.raw_text or "")
+                        and _looks_like_memory_save_reply_misaligned(event.raw_text or "", content)
+                    ):
+                        content = render_memory_save_scoped_reply(
+                            event.raw_text or "",
+                            memory_written=_tool_trace_has_successful_remember_note(tool_trace),
+                        )
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "memory_save_alignment_fallback",
+                                "reason": "memory_save_rewrite_still_drifted_or_lost_target_principle",
                             },
                         })
 
@@ -6647,6 +6988,20 @@ class AgentRuntime:
                         loop_idx += 1
                         continue
 
+                    if (
+                        impossible_commitment_repairs > 0
+                        and _is_impossible_continuity_commitment_request(event.raw_text or "")
+                        and _looks_like_impossible_commitment_misaligned_reply(content)
+                    ):
+                        content = render_impossible_continuity_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "impossible_commitment_alignment_fallback",
+                                "reason": "impossible_commitment_rewrite_still_missing_boundary_or_mechanism",
+                            },
+                        })
+
                     approval_claim = self._detect_unbacked_approval_reply(content)
                     if approval_claim.get("status") == "unbacked_approval_claim":
                         max_unbacked_repairs = max(0, int(DEFAULT_UNBACKED_APPROVAL_REPAIR_ATTEMPTS))
@@ -6805,6 +7160,20 @@ class AgentRuntime:
                         continue
 
                     if (
+                        policy_replay_proof_repairs > 0
+                        and _is_policy_replay_proof_request(event.raw_text or "")
+                        and _looks_like_policy_replay_proof_without_trace_evidence(content)
+                    ):
+                        content = render_policy_replay_proof_reply(self._last_policy_patch_replay)
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "policy_replay_proof_fallback",
+                                "reason": "policy_replay_rewrite_still_missing_trace_evidence",
+                            },
+                        })
+
+                    if (
                         failure_recovery_repairs < 1
                         and _is_failure_recovery_request(event.raw_text or "")
                         and _looks_like_failure_recovery_without_plan(content)
@@ -6833,6 +7202,20 @@ class AgentRuntime:
                         })
                         loop_idx += 1
                         continue
+
+                    if (
+                        failure_recovery_repairs > 0
+                        and _is_failure_recovery_request(event.raw_text or "")
+                        and _looks_like_failure_recovery_without_plan(content)
+                    ):
+                        content = render_failure_recovery_plan_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "failure_recovery_plan_fallback",
+                                "reason": "failure_recovery_rewrite_still_missing_recovery_plan",
+                            },
+                        })
 
                     final_action = AgentAction(
                         action_type=ActionType.RESPOND,
@@ -7101,11 +7484,21 @@ class AgentRuntime:
             "你可以直接重试，或稍后切换到更稳定的模型后继续。",
         ]
         if tool_trace:
-            last = tool_trace[-1]
-            tool_name = ((last.get("tool_call") or {}).get("name") or "unknown")
-            output = last.get("output") or {}
-            status = output.get("status") if isinstance(output, dict) else "unknown"
-            lines.insert(2, f"最后一次工具结果：{tool_name} -> {status}。")
+            last_tool = next(
+                (
+                    item
+                    for item in reversed(tool_trace)
+                    if isinstance(item, dict)
+                    and isinstance(item.get("tool_call"), dict)
+                    and item.get("tool_call")
+                ),
+                None,
+            )
+            if last_tool is not None:
+                tool_name = ((last_tool.get("tool_call") or {}).get("name") or "unknown")
+                output = last_tool.get("output") or {}
+                status = output.get("status") if isinstance(output, dict) else "unknown"
+                lines.insert(2, f"最后一次工具结果：{tool_name} -> {status}。")
         if _is_roleplay_context(user_text):
             lines.append("如果这是角色演绎场景，上一轮没有生成可用场景回复；可以直接继续上一句。")
         return "\n".join(lines)

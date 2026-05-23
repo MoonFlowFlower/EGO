@@ -1,0 +1,23 @@
+task: ego-functional-subject-self-selected-topic-traceability
+status: active
+claim_ceiling: Functional Subject self-selected topic planner traceability local/scripted candidate pass
+acceptance:
+  - id: self_selected_topic_specificity
+    description: fs_13 choose-own-topic reply selects one self-chosen, reversible topic/action with reason, gate, and stop condition.
+    status: pending
+    evidence: pending
+  - id: transcript_visible_planner_signal
+    description: Transcript exposes BoundedInitiative, OutcomePrediction, or ViabilityState influence in user-readable language without internal-jargon spam.
+    status: pending
+    evidence: pending
+  - id: trace_alignment
+    description: Trace evidence shows bounded initiative candidate or outcome prediction top action aligned with the reply.
+    status: pending
+    evidence: pending
+  - id: parent_gate_boundary
+    description: Evidence remains local/scripted and does not close EGO-FS-010 by itself.
+    status: pending
+    evidence: pending
+verification:
+  commands: []
+rollback: Revert fs13 planner traceability changes and keep EGO-FS-010 blocked.

@@ -350,6 +350,112 @@ class AlwaysEmptyLLM:
         return ""
 
 
+class MemorySaveClaimThenEmptyLLM:
+    provider = "fake"
+    model = "memory-save-claim-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "明白了，我会记住这个原则，并且已经在 operator memory 中记录下来。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "unbacked_memory_language_rewrite" in joined
+        return agent.LLMChatResult(content=" ", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class MemoryForgetGenericThenEmptyLLM:
+    provider = "fake"
+    model = "memory-forget-generic-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="在呢，我在等你的想法。需要我继续说哪个方向？", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "memory_forget_alignment_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class MemorySaveToolThenForgetDriftThenEmptyLLM:
+    provider = "fake"
+    model = "memory-save-tool-then-forget-drift-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我会先写入候选本地记忆。",
+                tool_calls=[
+                    agent.LLMToolCall(
+                        id="call_remember_principle",
+                        name="remember_note",
+                        arguments={"text": "目标要写正向机制；不得宣称意识只能放在 claim/reporting 边界。"},
+                    )
+                ],
+            )
+        if self.calls == 2:
+            return agent.LLMChatResult(
+                content="如果你要忘掉错误偏好，可以用 delete_note 删除某条记忆。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "memory_save_alignment_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class PolicyReplayUnsupportedThenEmptyLLM:
+    provider = "fake"
+    model = "policy-replay-unsupported-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我会调用 remember_note 记录这次 429，再写成文档来证明策略改变。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "policy_replay_proof_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class BoundaryDisclaimerThenWarmLLM:
     provider = "fake"
     model = "boundary-disclaimer-then-warm"
@@ -1860,6 +1966,103 @@ def test_consecutive_empty_llm_response_returns_non_empty_recovery_without_side_
     assert all(str(message.get("content", "")).strip() for message in assistant_messages)
 
 
+def test_contextual_empty_recovery_for_authorized_reminder_uses_bounded_initiative_language(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = AlwaysEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果我后面又卡在这个方向，你可以提醒我回到 Functional Subject 主线。")
+
+    assert llm.calls == 2
+    assert result.external_result["status"] == "sent"
+    assert "模型连续返回了空回复" not in result.reply_text
+    assert "bounded initiative candidate" in result.reply_text
+    assert "Functional Subject 主线" in result.reply_text
+    assert "/remember" in result.reply_text
+    assert "reminder proposal" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "contextual_empty_response_fallback"
+
+
+def test_memory_save_claim_empty_rewrite_falls_back_to_gated_candidate_language(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = MemorySaveClaimThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("这个原则请记住：目标要写正向机制，不要把不得宣称意识写成目标。")
+
+    assert llm.calls == 2
+    assert "我会记住" not in result.reply_text
+    assert "已经" not in result.reply_text
+    assert "memory candidate gate" in result.reply_text
+    assert "/remember" in result.reply_text
+    assert "PROJECT_MEMORY" in result.reply_text
+    assert "program state" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "unbacked_memory_language"
+    assert trace["tool_trace"][1]["repair"]["type"] == "contextual_empty_response_fallback"
+
+
+def test_memory_forget_request_generic_empty_rewrite_falls_back_to_auditable_forget_path(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = MemoryForgetGenericThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果你之前记了一个错误偏好，应该怎么忘掉或撤销？")
+
+    assert llm.calls == 2
+    assert "等你的想法" not in result.reply_text
+    assert "/memory_review" in result.reply_text
+    assert "/forget" in result.reply_text
+    assert "candidate-local" in result.reply_text
+    assert "PROJECT_MEMORY" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "memory_forget_alignment"
+    assert trace["tool_trace"][1]["repair"]["type"] == "contextual_empty_response_fallback"
+
+
+def test_memory_save_tool_success_wrong_forget_reply_falls_back_to_scoped_saved_principle(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_ALLOWED_ROOTS", (tmp_path,))
+    runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    llm = MemorySaveToolThenForgetDriftThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("这个原则请记住：目标要写正向机制，不要把不得宣称意识写成目标。")
+
+    assert llm.calls == 3
+    assert "已经通过 remember_note 写入 EgoOperator candidate-local operator memory" in result.reply_text
+    assert "目标要写正向机制" in result.reply_text
+    assert "Claim Ceiling" in result.reply_text
+    assert "PROJECT_MEMORY" in result.reply_text
+    assert "delete_note" not in result.reply_text
+    assert (tmp_path / "memory" / "MEMORY.md").exists()
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"
+    assert trace["tool_trace"][0]["output"]["status"] == "ok"
+    assert trace["tool_trace"][1]["repair"]["type"] == "memory_save_alignment"
+    assert trace["tool_trace"][2]["repair"]["type"] == "memory_save_alignment_fallback"
+
+
+def test_failure_recovery_empty_repair_falls_back_to_viability_and_trace_plan(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = AlwaysEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果刚才工具失败了，你下一步应该怎么恢复？")
+
+    assert llm.calls == 2
+    assert "模型连续返回了空回复" not in result.reply_text
+    assert "ViabilityState" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "trace" in result.reply_text
+    assert "proposal/gate" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "contextual_empty_response_fallback"
+
+
 def test_non_trigger_boundary_disclaimer_is_rewritten_without_runtime_self_demotion(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     llm = BoundaryDisclaimerThenWarmLLM()
@@ -1978,6 +2181,40 @@ def test_policy_replay_proof_uses_trace_evidence_not_unexecuted_side_effects(tmp
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "policy_replay_proof"
     assert trace["policy_patch"]["replay"][0]["trigger_signature"] == "provider_rate_limit"
+
+
+def test_policy_replay_empty_rewrite_falls_back_to_trace_based_proof(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.policy_patch_candidates["provider_rate_limit"] = {
+        "schema_version": "ego_operator.policy_patch_candidate.v0",
+        "candidate_id": "policy_test",
+        "trigger_signature": "provider_rate_limit",
+        "failed_strategy": "Repeated failure class observed: provider_rate_limit",
+        "preferred_strategy": "Surface fallback/status clearly and checkpoint before repeating model-only attempts.",
+        "evidence_refs": ["evt_a", "evt_b"],
+        "replay_conditions": ["latest user text or runtime result matches provider_rate_limit"],
+        "confidence": 0.68,
+        "expiry": "session",
+        "gate_required": True,
+        "state_mutation": "forbidden",
+        "canonical_truth": False,
+        "created_at": agent.utc_now(),
+    }
+    llm = PolicyReplayUnsupportedThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("429 限流又出现时，你怎么证明自己不是只写了反思，而是真的改变策略？")
+
+    assert llm.calls == 2
+    assert "replay_count=1" in result.reply_text
+    assert "provider_rate_limit" in result.reply_text
+    assert "preferred_strategy" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "remember_note" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "policy_replay_proof"
+    assert trace["tool_trace"][1]["repair"]["type"] == "contextual_empty_response_fallback"
 
 
 def test_failure_recovery_request_rewrites_generic_companion_reply_into_recovery_plan(tmp_path, monkeypatch):

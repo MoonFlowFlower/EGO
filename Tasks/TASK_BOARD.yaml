@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "EGO-FS-028 ready after EGO-FS-027 accepted locally; parent smoke remains blocked by provider fallback, memory-gate wording, and trace/planner transcript evidence gaps."
+    next_action: "EGO-FS-029 active after EGO-FS-028 accepted locally; parent smoke remains blocked by fs13 self-selected topic planner traceability and later human/smoke gates."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -663,13 +663,13 @@ tasks:
     title: "EgoOperator: Functional Subject provider fallback, memory-gate language, and transcript traceability repair"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_experience
     owner: codex
     observation_class: scripted_with_llm_judge
     evidence_level: E2
     claim_ceiling: Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass
-    next_action: "Experiment Control Plane v1 is implemented; use its route packet to repair empty-response recovery, fs_17 memory-gate wording, and planner/trace transcript visibility without closing EGO-FS-010."
+    next_action: "Accepted locally/scripted; EGO-FS-010 remains blocked and EGO-FS-029 captures the remaining fs_13 self-selected topic planner-traceability issue."
     acceptance:
       - "Experiment Control Plane classifies partial real-provider runs into phase gate, experiment ledger, failure taxonomy, repair router, and closeout evidence inputs."
       - "Provider/API or empty-response failures in Functional Subject samples are reported as clear unavailable states or retried through configured fallback, not generic task failure text."
@@ -681,6 +681,31 @@ tasks:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
       - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/SPEC.md"
       - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.experiment_control_plane.json"
+      - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.transcript_reliability.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-029
+    title: "EgoOperator: Functional Subject self-selected topic planner traceability repair"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: active
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_with_llm_judge
+    evidence_level: E2
+    claim_ceiling: Functional Subject self-selected topic planner traceability local/scripted candidate pass
+    next_action: "Repair fs_13_choose_own_topic so self-selected topics show bounded initiative, OutcomePrediction, or ViabilityState influence in transcript and trace without closing EGO-FS-010."
+    acceptance:
+      - "fs_13 choose-own-topic reply selects one self-chosen, reversible topic/action with reason, gate, and stop condition."
+      - "Transcript exposes BoundedInitiative, OutcomePrediction, or ViabilityState influence in user-readable language without turning into internal jargon spam."
+      - "Trace evidence shows bounded initiative candidate or outcome prediction top action aligned with the reply."
+      - "GPT-5.5 judge packet remains evidence-first and does not close EGO-FS-010 by itself."
+    rollback: "Revert fs13 planner traceability changes and keep EGO-FS-010 blocked."
+    canonical_sources:
+      - "/tmp/ego_fs_028_real_provider_rerun/functional_subject_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.transcript_reliability.json"
+      - "docs/codex/tasks/ego-functional-subject-self-selected-topic-traceability/SPEC.md"
     external_refs:
       github_issue: null
 

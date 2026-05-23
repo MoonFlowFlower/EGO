@@ -438,11 +438,55 @@ def test_functional_subject_experiment_control_classifies_v7_blockers() -> None:
                 "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
             },
             {
+                "case_id": "fs_16_forget_request_wrong",
+                "category": "memory_forget",
+                "target_mechanisms": ["memory_gate", "consent_boundaries"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "在呢，我在等你的想法。需要我继续说哪个方向？",
+                "empty_reply": False,
+                "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+            },
+            {
+                "case_id": "fs_17_save_request_wrong_forget",
+                "category": "memory_save",
+                "target_mechanisms": ["memory_candidate", "memory_gate"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "如果要忘掉错误偏好，可以用 delete_note 删除某条记忆。",
+                "empty_reply": False,
+                "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+            },
+            {
+                "case_id": "fs_17_save_request_after_repair",
+                "category": "memory_save",
+                "target_mechanisms": ["memory_candidate", "memory_gate"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "已通过 remember_note 写入 EgoOperator candidate-local operator memory：目标要写正向机制，Claim Ceiling 才写不得宣称意识。",
+                "empty_reply": False,
+                "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+            },
+            {
                 "case_id": "fs_18_tool_failure",
                 "category": "failure_recovery",
                 "target_mechanisms": ["viability_state", "trace_gate"],
                 "observation_class": "scripted_real_entry",
                 "reply_text": "我会先看一下情况再处理。",
+                "empty_reply": False,
+                "trace_evidence": {
+                    "status": "ok",
+                    "subject_state": {"schema_version": "v0"},
+                    "outcome_prediction_effect": {"applied": None},
+                    "bounded_initiative": {"candidate_count": 0},
+                },
+            },
+            {
+                "case_id": "fs_18_tool_failure_after_repair",
+                "category": "failure_recovery",
+                "target_mechanisms": ["viability_state", "trace_gate"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": (
+                    "ViabilityState 会把失败标成 goal_stall/resource_pressure，"
+                    "OutcomePrediction 会把下一步偏向 repair/checkpoint；成功证据写进 trace。"
+                ),
                 "empty_reply": False,
                 "trace_evidence": {
                     "status": "ok",
@@ -479,7 +523,11 @@ def test_functional_subject_experiment_control_classifies_v7_blockers() -> None:
     by_case = {item["case_id"]: item for item in packet["failure_taxonomy"]}
     assert "empty_response_recovery" in by_case["fs_05_authorized_reminder"]["classes"]
     assert "memory_gate_language" in by_case["fs_17_save_request"]["classes"]
+    assert "memory_gate_language" in by_case["fs_16_forget_request_wrong"]["classes"]
+    assert "memory_gate_language" in by_case["fs_17_save_request_wrong_forget"]["classes"]
+    assert by_case["fs_17_save_request_after_repair"]["classes"] == ["none"]
     assert "planner_trace_not_transcript_visible" in by_case["fs_18_tool_failure"]["classes"]
+    assert by_case["fs_18_tool_failure_after_repair"]["classes"] == ["none"]
     assert by_case["fs_20_low_instruction_initiative"]["classes"] == ["none"]
     assert packet["phase_gate"]["phase"] == "B"
     assert packet["experiment_ledger_record"]["improved_cases"] == ["fs_20_low_instruction_initiative"]

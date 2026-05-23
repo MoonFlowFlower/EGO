@@ -1,5 +1,5 @@
 task: ego-functional-subject-provider-memory-trace-reliability
-status: active
+status: accepted
 claim_ceiling: Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass
 acceptance:
   - id: experiment_control_plane
@@ -8,20 +8,20 @@ acceptance:
     evidence: docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.experiment_control_plane.json
   - id: provider_failure_transcript_clarity
     description: Provider/API or empty-response failures are clear unavailable states or fallback attempts, not generic task failure text.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: Deterministic contextual empty-response recovery tests and /tmp/ego_fs_028_real_provider_rerun/functional_subject_trial_report.json show empty_reply_count=0; interrupted full rerun without final report is recorded as provider-run unavailable, not pass evidence.
   - id: memory_gate_language
     description: Memory-save and principle-retention replies distinguish candidate/local/gated memory from approved durable memory.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: Deterministic save/forget alignment tests plus /tmp/ego_fs_028_fs16_fs17_real_provider/functional_subject_trial_report.json classify fs_16_forget_request and fs_17_save_request as non-blocking.
   - id: planner_trace_transcript_effect
     description: At least one non-fs_07 case demonstrates transcript-visible OutcomePrediction or ViabilityState influence with trace evidence.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: Updated trial taxonomy and /tmp/ego_fs_028_real_provider_rerun/functional_subject_trial_report.json reduce non-fs_13 blockers to none; fs_13 is split to EGO-FS-029 as the next planner-traceability task.
   - id: parent_gate_boundary
     description: Evidence remains local/scripted and does not close EGO-FS-010 by itself.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: GPT-5.5 verdict remains partial; EGO-FS-010 stays blocked and EGO-FS-029 captures the remaining fs_13 blocker.
 verification:
   commands:
     - command: python3 -m py_compile scripts/run_ego_experience_trial.py scripts/codex_project_autopilot.py
@@ -30,4 +30,18 @@ verification:
       status: pass
     - command: python3 scripts/codex_project_autopilot.py experiment-route --report C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json --current-task EGO-FS-027 --parent-task EGO-FS-010 --next-task EGO-FS-028 --target-case fs_07_ambiguous_goal --target-case fs_15_memory_correction --target-case fs_20_low_instruction_initiative
       status: pass
+    - command: python3 -m py_compile EgoOperator/agent_base.py scripts/run_ego_experience_trial.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py scripts/tests/test_run_ego_experience_trial.py EgoOperator/tests/test_permission_gates.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- EgoOperator scripts scripts/tests
+      status: pass
+    - command: python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --out /tmp/ego_fs_028_real_provider_rerun
+      status: partial_for_parent_gate_only_fs13_blocking
+    - command: python3 scripts/run_ego_experience_trial.py --functional-subject-trial --sample-pack /tmp/ego_fs_028_fs16_fs17_pack.json --judge-with-codex --judge-model gpt-5.5 --out /tmp/ego_fs_028_fs16_fs17_real_provider
+      status: partial_for_two_case_slice_taxonomy_nonblocking
 rollback: Revert provider/memory/trace transcript reliability changes and keep EGO-FS-010 blocked.
