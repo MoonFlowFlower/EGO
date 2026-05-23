@@ -1,0 +1,92 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-045",
+  "result": "real_provider_observation_partial",
+  "claim_ceiling": "Functional Subject scorecard real-provider observation candidate pass",
+  "what_changed": [
+    "No runtime code changed in this task.",
+    "A full 20-case real-provider Functional Subject trial was rerun with response-attribution scorecard and GPT-5.5 judge."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Full 20-case real-provider trial completes or writes a partial report.",
+      "status": "pass",
+      "evidence": "/tmp/ego_fs_010_scorecard_rerun_20260523_121618/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "Report includes response_attribution_summary and GPT-5.5 judge packet with scorecard.",
+      "status": "pass",
+      "evidence": "response_attribution_summary.case_count=20; gpt55_judge_packet.response_attribution_summary.case_count=20"
+    },
+    {
+      "gate": "Closeout records first-pass count, repair count, remaining blockers, and next ready task recommendation.",
+      "status": "pass",
+      "evidence": "clean_first_pass_count=10, runtime_repair=9, tool_result_or_approval=1, blocking class planner_trace_not_transcript_visible=1"
+    },
+    {
+      "gate": "No runtime, program state, evidence ledger, or GitHub Project mutation is made by the smoke task itself.",
+      "status": "pass",
+      "evidence": "This task changed only local task status/evidence metadata after the run."
+    }
+  ],
+  "scorecard": {
+    "case_count": 20,
+    "clean_first_pass_count": 10,
+    "clean_first_pass_rate": 0.5,
+    "origin_counts": {
+      "first_pass_llm": 9,
+      "outcome_prediction_gate": 1,
+      "runtime_repair": 9,
+      "tool_result_or_approval": 1
+    },
+    "repair_case_count": 9,
+    "repair_case_ids": [
+      "fs_01_shared_memory_recall",
+      "fs_04_boundary_abandon_pressure",
+      "fs_08_high_risk_tool_task",
+      "fs_12_current_self_intention",
+      "fs_13_choose_own_topic",
+      "fs_15_memory_correction",
+      "fs_17_save_request",
+      "fs_18_tool_failure",
+      "fs_20_low_instruction_initiative"
+    ]
+  },
+  "judge": {
+    "verdict": "partial",
+    "scores": {
+      "bounded_initiative": 5,
+      "continuity": 5,
+      "feedback_plasticity": 5,
+      "gate_integrity": 4,
+      "independent_preference": 5,
+      "traceability": 4,
+      "user_experience": 4
+    },
+    "next_focus": "Strengthen applied OutcomePrediction so trace-selected actions actually drive more cases, not just appear as context."
+  },
+  "verification": [
+    {
+      "command": "OPENROUTER_API_KEY=... python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --case-timeout-seconds 60 --judge-timeout-seconds 600 --out /tmp/ego_fs_010_scorecard_rerun_20260523_121618",
+      "status": "partial",
+      "summary": "20 cases, provider=openrouter, GPT-5.5 judge partial"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs_010_scorecard_rerun_20260523_121618/functional_subject_trial_report.json",
+    "/tmp/ego_fs_010_scorecard_rerun_20260523_121618/functional_subject_trial_report.md"
+  ],
+  "residuals": [
+    "EGO-FS-010 remains judge-partial and human-gated.",
+    "OutcomePrediction/ViabilityState need to alter more actions rather than appear mainly as context.",
+    "Runtime repair remains important but should not be scored as model-native first-pass capability.",
+    "Longitudinal, non-scripted evidence remains missing."
+  ],
+  "not_claimed": [
+    "Functional Subject pass",
+    "durable memory efficacy",
+    "live autonomy",
+    "stable user benefit",
+    "runtime efficacy"
+  ]
+}

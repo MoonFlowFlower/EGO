@@ -1075,6 +1075,30 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-045
+    title: "EgoOperator: Functional Subject scorecard real-provider rerun"
+    kind: smoke
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject scorecard real-provider observation candidate pass
+    next_action: "Accepted as real-provider observation; scorecard shows 10/20 clean first-pass, 9/20 runtime repair, 1/20 tool/approval path. Next ready task should strengthen applied OutcomePrediction/ViabilityState action selection."
+    acceptance:
+      - "Full 20-case real-provider trial completes or writes a timeout/partial report."
+      - "Report includes response_attribution_summary and GPT-5.5 judge packet with the scorecard."
+      - "Closeout records first-pass count, repair count, remaining blockers, and next ready task recommendation."
+      - "No EGO runtime, program state, evidence ledger, or GitHub Project mutation is made by the smoke task itself."
+    rollback: "Discard the run artifact and keep EGO-FS-010 blocked pending a later rerun."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-scorecard-real-provider-rerun/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-scorecard-real-provider-rerun/EVIDENCE.scorecard_real_provider_rerun.json"
+      - "/tmp/ego_fs_010_scorecard_rerun_20260523_121618/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke
