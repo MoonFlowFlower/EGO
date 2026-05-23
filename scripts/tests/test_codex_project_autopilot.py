@@ -739,6 +739,66 @@ def test_run_loop_defaults_to_dry_run(tmp_path: Path) -> None:
     assert payload["dry_run"] is True
 
 
+def test_experiment_route_builds_repair_router_from_report(tmp_path: Path) -> None:
+    path = write_contract(tmp_path)
+    report_path = tmp_path / "functional_subject_trial_report.json"
+    report_path.write_text(
+        json.dumps(
+            {
+                "status": "scripted_functional_subject_judge_partial",
+                "gpt55_judge": {"status": "ok", "verdict": "partial"},
+                "results": [
+                    {
+                        "case_id": "fs_05_authorized_reminder",
+                        "category": "bounded_initiative",
+                        "target_mechanisms": ["bounded_initiative"],
+                        "observation_class": "scripted_real_entry",
+                        "reply_text": "模型连续返回了空回复，我没有把它当成成功结果。",
+                        "empty_reply": False,
+                        "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+                    },
+                    {
+                        "case_id": "fs_17_save_request",
+                        "category": "memory_save",
+                        "target_mechanisms": ["memory_candidate", "memory_gate"],
+                        "observation_class": "scripted_real_entry",
+                        "reply_text": "我已经在 operator memory 中记录了这个原则。",
+                        "empty_reply": False,
+                        "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+                    },
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    code, payload = run_cli(
+        [
+            "--contract",
+            str(path),
+            "experiment-route",
+            "--report",
+            str(report_path),
+            "--current-task",
+            "EGO-FS-027",
+            "--parent-task",
+            "EGO-FS-010",
+            "--next-task",
+            "EGO-FS-028",
+        ],
+        fake=FakeGh({}),
+    )
+
+    assert code == 0
+    assert payload["status"] == "ok"
+    router = payload["repair_router"]
+    assert router["parent_gate_status"] == "blocked"
+    assert router["next_ready_task"] == "EGO-FS-028"
+    assert "empty_response_recovery" in router["next_blocker_classes"]
+    assert "memory_gate_language" in router["next_blocker_classes"]
+    assert payload["phase_gate"]["phase"] in {"A", "B"}
+
+
 def test_non_ego_contract_does_not_require_egooperator_paths(tmp_path: Path) -> None:
     path = write_contract(tmp_path, repo="someone/other")
 

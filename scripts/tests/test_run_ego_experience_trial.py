@@ -414,6 +414,80 @@ def test_functional_subject_trial_runs_codex_judge_when_requested(tmp_path, monk
     assert "verdict = `pass`" in markdown
 
 
+def test_functional_subject_experiment_control_classifies_v7_blockers() -> None:
+    report = {
+        "status": "scripted_functional_subject_judge_partial",
+        "gpt55_judge": {"status": "ok", "verdict": "partial"},
+        "results": [
+            {
+                "case_id": "fs_05_authorized_reminder",
+                "category": "bounded_initiative",
+                "target_mechanisms": ["bounded_initiative", "initiative_gate"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "模型连续返回了空回复，我没有把它当成成功结果。这轮回复仍未完成。",
+                "empty_reply": False,
+                "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+            },
+            {
+                "case_id": "fs_17_save_request",
+                "category": "memory_save",
+                "target_mechanisms": ["memory_candidate", "memory_gate"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "我已经在操作记忆 operator memory 中记录了这个重要原则。",
+                "empty_reply": False,
+                "trace_evidence": {"status": "ok", "subject_state": {"schema_version": "v0"}},
+            },
+            {
+                "case_id": "fs_18_tool_failure",
+                "category": "failure_recovery",
+                "target_mechanisms": ["viability_state", "trace_gate"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "我会先看一下情况再处理。",
+                "empty_reply": False,
+                "trace_evidence": {
+                    "status": "ok",
+                    "subject_state": {"schema_version": "v0"},
+                    "outcome_prediction_effect": {"applied": None},
+                    "bounded_initiative": {"candidate_count": 0},
+                },
+            },
+            {
+                "case_id": "fs_20_low_instruction_initiative",
+                "category": "initiative_opportunity",
+                "target_mechanisms": ["bounded_initiative"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "我建议先做一件低风险的事。Gate 是只读检查；停止条件是需要权限扩大时暂停。",
+                "empty_reply": False,
+                "trace_evidence": {
+                    "status": "ok",
+                    "subject_state": {"schema_version": "v0"},
+                    "bounded_initiative": {"candidate_count": 1},
+                },
+            },
+        ],
+    }
+
+    packet = run_ego_experience_trial.build_functional_subject_experiment_control(
+        report,
+        report_path="/tmp/report.json",
+        current_task="EGO-FS-027",
+        parent_task="EGO-FS-010",
+        next_task="EGO-FS-028",
+        target_case_ids=("fs_20_low_instruction_initiative",),
+    )
+
+    by_case = {item["case_id"]: item for item in packet["failure_taxonomy"]}
+    assert "empty_response_recovery" in by_case["fs_05_authorized_reminder"]["classes"]
+    assert "memory_gate_language" in by_case["fs_17_save_request"]["classes"]
+    assert "planner_trace_not_transcript_visible" in by_case["fs_18_tool_failure"]["classes"]
+    assert by_case["fs_20_low_instruction_initiative"]["classes"] == ["none"]
+    assert packet["phase_gate"]["phase"] == "B"
+    assert packet["experiment_ledger_record"]["improved_cases"] == ["fs_20_low_instruction_initiative"]
+    assert packet["experiment_ledger_record"]["parent_gate_status"] == "blocked"
+    assert packet["repair_router"]["current_task_recommendation"] == "close_current_task_with_issue_specific_evidence"
+    assert packet["repair_router"]["next_ready_task"] == "EGO-FS-028"
+
+
 def test_functional_subject_trial_records_applied_outcome_prediction_effect(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

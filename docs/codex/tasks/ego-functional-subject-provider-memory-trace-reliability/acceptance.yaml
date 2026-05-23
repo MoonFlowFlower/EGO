@@ -1,7 +1,11 @@
 task: ego-functional-subject-provider-memory-trace-reliability
-status: planned
+status: active
 claim_ceiling: Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass
 acceptance:
+  - id: experiment_control_plane
+    description: Partial real-provider runs produce a phase gate, experiment ledger, failure taxonomy, repair router, and closeout evidence inputs.
+    status: pass
+    evidence: docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.experiment_control_plane.json
   - id: provider_failure_transcript_clarity
     description: Provider/API or empty-response failures are clear unavailable states or fallback attempts, not generic task failure text.
     status: pending
@@ -19,5 +23,11 @@ acceptance:
     status: pending
     evidence: pending
 verification:
-  commands: []
+  commands:
+    - command: python3 -m py_compile scripts/run_ego_experience_trial.py scripts/codex_project_autopilot.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_experiment_control_classifies_v7_blockers scripts/tests/test_codex_project_autopilot.py::test_experiment_route_builds_repair_router_from_report -q
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py experiment-route --report C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json --current-task EGO-FS-027 --parent-task EGO-FS-010 --next-task EGO-FS-028 --target-case fs_07_ambiguous_goal --target-case fs_15_memory_correction --target-case fs_20_low_instruction_initiative
+      status: pass
 rollback: Revert provider/memory/trace transcript reliability changes and keep EGO-FS-010 blocked.

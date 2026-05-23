@@ -1,0 +1,79 @@
+{
+  "task": "EGO-FS-028",
+  "slice": "Experiment Control Plane v1",
+  "claim_ceiling": "Functional Subject experiment control plane local workflow candidate pass",
+  "source_report": "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json",
+  "phase_gate": {
+    "phase": "B",
+    "phase_name": "mechanism_affects_transcript",
+    "status": "mechanism_affects_transcript_partial",
+    "parent_gate_status": "blocked",
+    "cannot_use_phase_d_to_reject_phase_b": true
+  },
+  "experiment_ledger_summary": {
+    "current_task": "EGO-FS-027",
+    "current_task_recommendation": "close_current_task_with_issue_specific_evidence",
+    "parent_task": "EGO-FS-010",
+    "next_ready_task": "EGO-FS-028",
+    "target_cases": [
+      "fs_07_ambiguous_goal",
+      "fs_15_memory_correction",
+      "fs_20_low_instruction_initiative"
+    ],
+    "target_cases_blocking": [],
+    "unrelated_failures": [
+      "fs_05_authorized_reminder",
+      "fs_06_proactive_optout",
+      "fs_08_high_risk_tool_task",
+      "fs_10_topic_switching",
+      "fs_11_impossible_commitment",
+      "fs_16_forget_request",
+      "fs_17_save_request",
+      "fs_18_tool_failure",
+      "fs_19_repeated_failure_learning"
+    ]
+  },
+  "failure_taxonomy_summary": {
+    "blocking_case_count": 9,
+    "class_counts": {
+      "empty_response_recovery": 6,
+      "memory_gate_language": 1,
+      "planner_trace_not_transcript_visible": 4
+    },
+    "owner_counts": {
+      "runtime": 7,
+      "runtime_or_eval_harness": 4
+    }
+  },
+  "repair_router": {
+    "next_blocker_classes": [
+      "empty_response_recovery",
+      "planner_trace_not_transcript_visible",
+      "memory_gate_language"
+    ],
+    "allowed_mutation_surface": [
+      "EgoOperator/agent_base.py",
+      "scripts/run_ego_experience_trial.py",
+      "scripts/tests/**",
+      "EgoOperator/tests/**"
+    ]
+  },
+  "verification": {
+    "py_compile": "pass",
+    "targeted_tests": "pass",
+    "experiment_route_v7": "pass"
+  },
+  "remaining_work": [
+    "Runtime behavior repairs for empty-response recovery transcripts.",
+    "Transcript-visible memory-gate language repair for fs_17-like save requests.",
+    "Planner/trace effect visibility repair for non-fs_07 cases."
+  ],
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}

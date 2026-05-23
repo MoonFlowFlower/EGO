@@ -1,10 +1,11 @@
 # Plan
 
-1. Reproduce the v7 partial blockers in a local fake-provider or scripted runner.
-2. Add deterministic regressions for provider/empty-response transcript clarity, memory-gate language, and transcript-visible planner influence.
-3. Repair `EgoOperator` and the trial packet without adding a second memory/state authority.
-4. Run targeted tests, Functional Subject scripted trial, and `autopilot_full`.
-5. Rerun #94 real-provider smoke and GPT-5.5 judge only after the local slice is stable.
+1. Add the thin Experiment Control Plane: phase gate, experiment ledger, failure taxonomy, repair router, and evidence-closeout inputs.
+2. Reproduce the v7 partial blockers in a local fake-provider or scripted runner.
+3. Add deterministic regressions for provider/empty-response transcript clarity, memory-gate language, and transcript-visible planner influence.
+4. Repair `EgoOperator` and the trial packet without adding a second memory/state authority.
+5. Run targeted tests, Functional Subject scripted trial, and `autopilot_full`.
+6. Rerun #94 real-provider smoke and GPT-5.5 judge only after the local slice is stable.
 
 ## Non-Goals
 

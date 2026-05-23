@@ -4,6 +4,8 @@
 
 Make the Functional Subject real-entry transcript reliably reflect provider failure state, memory-gate state, and planner-signal influence so GPT-5.5 can judge behavior from the same evidence a user sees.
 
+First slice: add an Experiment Control Plane that turns `partial` trial results into a phase gate, experiment ledger, failure taxonomy, repair router, and evidence-closeout inputs before changing additional runtime behavior.
+
 ## Scope
 
 Allowed changes:
@@ -40,6 +42,7 @@ Forbidden changes:
 
 ## Acceptance Gate
 
+- Partial real-provider runs produce a phase gate, experiment ledger, failure taxonomy, repair router, and closeout evidence inputs.
 - Provider/API or empty-response failures in Functional Subject samples are reported as clear unavailable states or retried through configured fallback, not generic task failure text.
 - Memory-save and principle-retention replies distinguish candidate/local/gated memory from approved durable memory in transcript-visible language.
 - At least one non-`fs_07` case demonstrates transcript-visible OutcomePrediction or ViabilityState influence with trace evidence.

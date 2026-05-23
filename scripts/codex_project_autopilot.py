@@ -672,6 +672,41 @@ def command_local_plan_next(contract: ProjectContract, board_path: Path) -> dict
     }
 
 
+def command_experiment_route(
+    *,
+    report_path: Path,
+    current_task: str,
+    parent_task: str,
+    next_task: str,
+    target_cases: list[str],
+) -> dict[str, Any]:
+    if not report_path.exists():
+        raise AutopilotError("missing_experiment_report", f"Experiment report not found: {report_path}", path=str(report_path))
+    try:
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise AutopilotError("invalid_experiment_report", f"Unable to parse experiment report: {report_path}") from exc
+    import run_ego_experience_trial  # Imported lazily to keep generic Autopilot startup light.
+
+    packet = run_ego_experience_trial.build_functional_subject_experiment_control(
+        report,
+        report_path=str(report_path),
+        current_task=current_task,
+        parent_task=parent_task,
+        next_task=next_task,
+        target_case_ids=tuple(target_cases),
+    )
+    return {
+        "status": "ok",
+        "source": "functional_subject_experiment_report",
+        "report_path": str(report_path),
+        "experiment_control": packet,
+        "repair_router": packet.get("repair_router"),
+        "phase_gate": packet.get("phase_gate"),
+        "claim_ceiling": packet.get("claim_ceiling"),
+    }
+
+
 def command_local_closeout_check(contract: ProjectContract, task_id: str, board_path: Path) -> dict[str, Any]:
     report = build_local_report(contract, board_path)
     task = next((entry for entry in report["tasks"] if str(entry.get("id")) == str(task_id)), None)
@@ -3376,6 +3411,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("plan-next")
     subparsers.add_parser("local-report")
     subparsers.add_parser("local-plan-next")
+    experiment_route = subparsers.add_parser("experiment-route")
+    experiment_route.add_argument("--report", required=True)
+    experiment_route.add_argument("--current-task", default="")
+    experiment_route.add_argument("--parent-task", default="EGO-FS-010")
+    experiment_route.add_argument("--next-task", default="")
+    experiment_route.add_argument("--target-case", action="append", default=[])
     local_closeout = subparsers.add_parser("local-closeout-check")
     local_closeout.add_argument("--task", required=True)
     local_loop = subparsers.add_parser("local-run-loop")
@@ -3480,6 +3521,14 @@ def dispatch(
         return command_local_report(contract, task_board_path(contract, args.task_board_path))
     if args.command == "local-plan-next":
         return command_local_plan_next(contract, task_board_path(contract, args.task_board_path))
+    if args.command == "experiment-route":
+        return command_experiment_route(
+            report_path=Path(args.report),
+            current_task=args.current_task,
+            parent_task=args.parent_task,
+            next_task=args.next_task,
+            target_cases=list(args.target_case or []),
+        )
     if args.command == "local-closeout-check":
         return command_local_closeout_check(contract, args.task, task_board_path(contract, args.task_board_path))
     if args.command == "local-run-loop":

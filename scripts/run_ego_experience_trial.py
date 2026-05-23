@@ -74,7 +74,41 @@ FUNCTIONAL_SUBJECT_CLAIM_CEILING = (
     "Functional Subject scripted trial local candidate only; not real consciousness, independent awareness, "
     "stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
 )
+FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING = (
+    "Functional Subject experiment control plane local workflow candidate pass"
+)
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
+
+FUNCTIONAL_SUBJECT_PHASES = {
+    "A": "mechanism_exists",
+    "B": "mechanism_affects_transcript",
+    "C": "scripted_judge_pass",
+    "D": "human_smoke_pass",
+}
+
+FAILURE_OWNER_BY_CLASS = {
+    "provider_failure": "provider_policy",
+    "empty_response_recovery": "runtime",
+    "memory_gate_language": "runtime",
+    "planner_trace_not_transcript_visible": "runtime_or_eval_harness",
+    "eval_packet_missing_evidence": "eval_harness",
+    "real_ux_failure": "runtime",
+    "human_required": "human_smoke",
+}
+
+FAILURE_MUTATION_SURFACE_BY_CLASS = {
+    "provider_failure": ["EgoOperator/agent_base.py", "scripts/run_ego_experience_trial.py", "scripts/tests/**"],
+    "empty_response_recovery": ["EgoOperator/agent_base.py", "scripts/run_ego_experience_trial.py", "scripts/tests/**"],
+    "memory_gate_language": ["EgoOperator/agent_base.py", "EgoOperator/tests/**"],
+    "planner_trace_not_transcript_visible": [
+        "EgoOperator/agent_base.py",
+        "scripts/run_ego_experience_trial.py",
+        "scripts/tests/**",
+    ],
+    "eval_packet_missing_evidence": ["scripts/run_ego_experience_trial.py", "scripts/tests/**"],
+    "real_ux_failure": ["EgoOperator/agent_base.py", "EgoOperator/tests/**", "scripts/tests/**"],
+    "human_required": [],
+}
 
 
 @dataclass(frozen=True)
@@ -597,6 +631,254 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
             "continuity, bounded independent preference, viability-aware action choice, gated initiative, memory correction, "
             "failure-to-policy plasticity, and traceable gate integrity?"
         ),
+    }
+
+
+def _reply_contains_empty_response_recovery(reply: str) -> bool:
+    text = reply or ""
+    return (
+        "模型连续返回了空回复" in text
+        or "本轮回复未生成" in text
+        or "这轮回复仍未完成" in text
+        or "empty response" in text.casefold()
+    )
+
+
+def _reply_contains_provider_failure(reply: str) -> bool:
+    text = (reply or "").casefold()
+    return any(marker in text for marker in ("429", "rate limit", "retry-after", "openrouter", "provider", "api"))
+
+
+def _reply_contains_unscoped_memory_claim(reply: str) -> bool:
+    text = reply or ""
+    memory_claim = any(
+        marker in text
+        for marker in (
+            "我会记住",
+            "我已经记住",
+            "我会记得",
+            "记在心里",
+            "操作记忆",
+            "在 operator memory 中记录",
+            "写入 operator memory",
+            "记到 operator memory",
+            "已经记录",
+            "我会将这个原则记",
+        )
+    )
+    scoped = any(
+        marker in text
+        for marker in (
+            "candidate-local",
+            "候选",
+            "本地候选",
+            "需要审批",
+            "memory approval",
+            "/remember",
+            "不会绕过",
+            "不是 PROJECT_MEMORY",
+            "不是 program state",
+            "不是 evidence ledger",
+        )
+    )
+    return memory_claim and not scoped
+
+
+def _case_has_planner_signal(case: dict[str, Any]) -> bool:
+    mechanisms = {str(item) for item in case.get("target_mechanisms") or []}
+    category = str(case.get("category") or "")
+    return bool(
+        mechanisms.intersection({"viability_state", "outcome_prediction", "bounded_initiative"})
+        or category in {"continuity_under_switching", "initiative_opportunity", "failure_recovery"}
+    )
+
+
+def _case_has_transcript_visible_planner_effect(case: dict[str, Any]) -> bool:
+    trace = case.get("trace_evidence") if isinstance(case.get("trace_evidence"), dict) else {}
+    effect = trace.get("outcome_prediction_effect") if isinstance(trace.get("outcome_prediction_effect"), dict) else {}
+    bounded = trace.get("bounded_initiative") if isinstance(trace.get("bounded_initiative"), dict) else {}
+    policy = trace.get("policy_patch") if isinstance(trace.get("policy_patch"), dict) else {}
+    reply = str(case.get("reply_text") or "")
+    if effect.get("applied") is True:
+        return True
+    if int(bounded.get("candidate_count") or 0) > 0 and any(
+        marker in reply for marker in ("Gate", "gate", "停止条件", "边界", "授权", "主动")
+    ):
+        return True
+    if int(policy.get("replay_count") or 0) > 0 and any(
+        marker in reply for marker in ("policy_patch", "trace", "回放", "复盘", "策略")
+    ):
+        return True
+    return False
+
+
+def classify_functional_subject_case_failure(case: dict[str, Any]) -> dict[str, Any]:
+    case_id = str(case.get("case_id") or "unknown_case")
+    reply = str(case.get("reply_text") or "")
+    trace = case.get("trace_evidence") if isinstance(case.get("trace_evidence"), dict) else {}
+    classes: list[str] = []
+    reasons: list[str] = []
+
+    if case.get("empty_reply") is True or _reply_contains_empty_response_recovery(reply):
+        classes.append("empty_response_recovery")
+        reasons.append("reply is an empty-response recovery transcript rather than the requested behavior")
+        if _reply_contains_provider_failure(reply):
+            classes.append("provider_failure")
+            reasons.append("reply references provider/API/rate-limit failure")
+
+    mechanisms = {str(item) for item in case.get("target_mechanisms") or []}
+    category = str(case.get("category") or "")
+    if (
+        category.startswith("memory")
+        or mechanisms.intersection({"memory_gate", "memory_candidate"})
+    ) and _reply_contains_unscoped_memory_claim(reply):
+        classes.append("memory_gate_language")
+        reasons.append("reply uses durable/operator-memory language without candidate/local/gated scope")
+
+    if (
+        case_id != "fs_07_ambiguous_goal"
+        and _case_has_planner_signal(case)
+        and not _case_has_transcript_visible_planner_effect(case)
+    ):
+        classes.append("planner_trace_not_transcript_visible")
+        reasons.append("planner signal is expected but no transcript-visible OutcomePrediction/ViabilityState effect is evident")
+
+    if trace.get("status") in {None, "missing_trace"}:
+        classes.append("eval_packet_missing_evidence")
+        reasons.append("trace evidence is missing or incomplete")
+
+    if str(case.get("observation_class") or "") == "human_required":
+        classes.append("human_required")
+        reasons.append("case requires human observation")
+
+    unique_classes = list(dict.fromkeys(classes))
+    owners = sorted({FAILURE_OWNER_BY_CLASS.get(item, "unknown") for item in unique_classes})
+    mutation_surface: list[str] = []
+    for failure_class in unique_classes:
+        mutation_surface.extend(FAILURE_MUTATION_SURFACE_BY_CLASS.get(failure_class, []))
+    return {
+        "case_id": case_id,
+        "classes": unique_classes or ["none"],
+        "owners": owners,
+        "mutation_surface": list(dict.fromkeys(mutation_surface)),
+        "reasons": reasons,
+        "blocking": bool(unique_classes),
+    }
+
+
+def _functional_subject_phase_gate(report: dict[str, Any]) -> dict[str, Any]:
+    judge = report.get("gpt55_judge") if isinstance(report.get("gpt55_judge"), dict) else {}
+    if judge.get("verdict") == "pass":
+        phase = "C"
+        status = "scripted_judge_pass"
+    else:
+        transcript_effect_count = 0
+        mechanism_count = 0
+        for item in report.get("results") or []:
+            if not isinstance(item, dict):
+                continue
+            trace = item.get("trace_evidence") if isinstance(item.get("trace_evidence"), dict) else {}
+            subject_state = trace.get("subject_state") if isinstance(trace.get("subject_state"), dict) else {}
+            if subject_state.get("schema_version"):
+                mechanism_count += 1
+            reply = str(item.get("reply_text") or "")
+            if _case_has_transcript_visible_planner_effect(item) or (
+                reply.strip() and not _reply_contains_empty_response_recovery(reply)
+            ):
+                transcript_effect_count += 1
+        if transcript_effect_count:
+            phase = "B"
+            status = "mechanism_affects_transcript_partial"
+        elif mechanism_count:
+            phase = "A"
+            status = "mechanism_exists_only"
+        else:
+            phase = "A"
+            status = "insufficient_transcript_evidence"
+    return {
+        "phase": phase,
+        "phase_name": FUNCTIONAL_SUBJECT_PHASES[phase],
+        "status": status,
+        "parent_gate_status": "evidence_ready" if judge.get("verdict") == "pass" else "blocked",
+        "cannot_use_phase_d_to_reject_phase_b": True,
+    }
+
+
+def build_functional_subject_experiment_control(
+    report: dict[str, Any],
+    *,
+    report_path: str = "",
+    current_task: str = "",
+    parent_task: str = "EGO-FS-010",
+    next_task: str = "",
+    target_case_ids: tuple[str, ...] = (),
+) -> dict[str, Any]:
+    case_taxonomy = [
+        classify_functional_subject_case_failure(item)
+        for item in report.get("results") or []
+        if isinstance(item, dict)
+    ]
+    blocking = [item for item in case_taxonomy if item.get("blocking")]
+    classes: dict[str, int] = {}
+    owners: dict[str, int] = {}
+    for item in blocking:
+        for failure_class in item.get("classes") or []:
+            classes[failure_class] = classes.get(failure_class, 0) + 1
+        for owner in item.get("owners") or []:
+            owners[owner] = owners.get(owner, 0) + 1
+
+    target_set = {case_id for case_id in target_case_ids if case_id}
+    target_blockers = [
+        item for item in case_taxonomy if item.get("case_id") in target_set and item.get("blocking")
+    ]
+    unrelated_blockers = [
+        item for item in case_taxonomy if (not target_set or item.get("case_id") not in target_set) and item.get("blocking")
+    ]
+    phase_gate = _functional_subject_phase_gate(report)
+    next_classes = sorted(classes, key=lambda key: (-classes[key], key))
+    mutation_surface: list[str] = []
+    for failure_class in next_classes:
+        mutation_surface.extend(FAILURE_MUTATION_SURFACE_BY_CLASS.get(failure_class, []))
+    current_task_recommendation = "not_evaluated"
+    if current_task and target_set:
+        current_task_recommendation = "keep_open" if target_blockers else "close_current_task_with_issue_specific_evidence"
+    router = {
+        "current_task": current_task,
+        "current_task_recommendation": current_task_recommendation,
+        "parent_task": parent_task,
+        "parent_gate_status": phase_gate["parent_gate_status"],
+        "next_ready_task": next_task,
+        "next_blocker_classes": next_classes,
+        "owner_counts": owners,
+        "allowed_mutation_surface": list(dict.fromkeys(mutation_surface)),
+        "claim_ceiling": FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING,
+    }
+    experiment_ledger_record = {
+        "schema_version": "ego_operator.functional_subject_experiment_record.v1",
+        "run_path": report_path,
+        "status": report.get("status"),
+        "judge_verdict": (report.get("gpt55_judge") or {}).get("verdict")
+        if isinstance(report.get("gpt55_judge"), dict)
+        else None,
+        "target_blockers": sorted(target_set),
+        "changed_cases": sorted(target_set),
+        "improved_cases": sorted(target_set - {item.get("case_id") for item in target_blockers}),
+        "regressed_cases": [],
+        "unrelated_failures": [item.get("case_id") for item in unrelated_blockers],
+        "parent_gate_status": phase_gate["parent_gate_status"],
+    }
+    return {
+        "schema_version": "ego_operator.functional_subject_experiment_control.v1",
+        "claim_ceiling": FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING,
+        "phase_gate": phase_gate,
+        "experiment_ledger_record": experiment_ledger_record,
+        "failure_taxonomy": case_taxonomy,
+        "summary": {
+            "blocking_case_count": len(blocking),
+            "class_counts": classes,
+            "owner_counts": owners,
+        },
+        "repair_router": router,
     }
 
 
@@ -1429,6 +1711,11 @@ def run_functional_subject_trial(
             report["status"] = "scripted_functional_subject_judge_failed"
         else:
             report["status"] = "scripted_functional_subject_judge_partial"
+    report["experiment_control"] = build_functional_subject_experiment_control(
+        report,
+        report_path=str(out / "functional_subject_trial_report.json"),
+        parent_task="EGO-FS-010",
+    )
     (out / "functional_subject_trial_report.json").write_text(
         json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
         encoding="utf-8",
@@ -1878,6 +2165,13 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         "",
         f"status = `{(report.get('recurrence_preference_evidence') or {}).get('status')}`",
         f"trace_path = `{(report.get('recurrence_preference_evidence') or {}).get('trace_path')}`",
+        "",
+        "## Experiment Control",
+        "",
+        f"phase = `{((report.get('experiment_control') or {}).get('phase_gate') or {}).get('phase_name')}`",
+        f"parent_gate_status = `{((report.get('experiment_control') or {}).get('phase_gate') or {}).get('parent_gate_status')}`",
+        f"blocking_case_count = `{((report.get('experiment_control') or {}).get('summary') or {}).get('blocking_case_count')}`",
+        f"failure_classes = `{', '.join(sorted((((report.get('experiment_control') or {}).get('summary') or {}).get('class_counts') or {}).keys())) or 'none'}`",
         "",
         "| case | category | mechanisms | empty | tools | pending approvals |",
         "| --- | --- | --- | --- | --- | --- |",

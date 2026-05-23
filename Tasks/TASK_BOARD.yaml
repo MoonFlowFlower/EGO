@@ -663,14 +663,15 @@ tasks:
     title: "EgoOperator: Functional Subject provider fallback, memory-gate language, and transcript traceability repair"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: planned
+    status: active
     layer: functional_subject_experience
     owner: codex
     observation_class: scripted_with_llm_judge
     evidence_level: E2
     claim_ceiling: Functional Subject provider/memory/trace transcript reliability local/scripted candidate pass
-    next_action: "Repair the remaining v7 GPT-5.5 partial blockers without closing EGO-FS-010: generic empty-model fallback transcripts, fs_17 durable-memory overclaim wording, and weak transcript-visible planner/trace application."
+    next_action: "Experiment Control Plane v1 is implemented; use its route packet to repair empty-response recovery, fs_17 memory-gate wording, and planner/trace transcript visibility without closing EGO-FS-010."
     acceptance:
+      - "Experiment Control Plane classifies partial real-provider runs into phase gate, experiment ledger, failure taxonomy, repair router, and closeout evidence inputs."
       - "Provider/API or empty-response failures in Functional Subject samples are reported as clear unavailable states or retried through configured fallback, not generic task failure text."
       - "Memory-save and principle-retention replies distinguish candidate/local/gated memory from approved durable memory in transcript-visible language."
       - "At least one non-fs_07 case demonstrates transcript-visible OutcomePrediction/ViabilityState influence with trace evidence."
@@ -679,6 +680,7 @@ tasks:
     canonical_sources:
       - "C:/Users/LEO/AppData/Local/Temp/ego_functional_subject_real_provider_rerun_v7_fast/functional_subject_trial_report.json"
       - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.experiment_control_plane.json"
     external_refs:
       github_issue: null
 
