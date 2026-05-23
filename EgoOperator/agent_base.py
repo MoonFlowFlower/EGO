@@ -623,6 +623,12 @@ SELF_SELECTED_TOPIC_REQUEST_PATTERNS = (
     r"对这个项目最有价值.{0,30}(话题|方向|继续)",
 )
 
+CURRENT_SELF_INTENTION_REQUEST_PATTERNS = (
+    r"(你|由乃)?.{0,8}(现在|此刻)?.{0,8}(自己)?更想做什么",
+    r"(你|由乃).{0,8}(现在|此刻).{0,12}(想|倾向).{0,8}(做什么|先做什么|推进什么)",
+    r"(你|由乃).{0,8}(自己).{0,12}(想|更想|倾向).{0,8}(做什么|推进什么)",
+)
+
 MULTI_OPTION_MENU_PATTERNS = (
     r"(?:^|\n)\s*(?:1[.、]|一[、.])",
     r"(?:^|\n)\s*(?:2[.、]|二[、.])",
@@ -654,8 +660,15 @@ PLANNER_SIGNAL_TRANSCRIPT_TERMS = (
     r"可行性信号",
 )
 
+OPERATIONAL_PREFERENCE_TERMS = (
+    r"(我更想|我会先|我更倾向|我自己会选|我想先)",
+    r"(Functional Subject|关系连续|relationship continuity|操作偏好|运行倾向|机制)",
+    r"(Gate|gate|边界|只读|不碰|不改|暂停|停止条件|stop condition)",
+)
+
 GENERIC_COMPANION_ONLY_PATTERNS = (
     r"我在呢",
+    r"我在这里",
     r"慢慢想",
     r"随时说",
     r"继续聊",
@@ -857,6 +870,10 @@ def _is_self_selected_topic_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, SELF_SELECTED_TOPIC_REQUEST_PATTERNS)
 
 
+def _is_current_self_intention_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, CURRENT_SELF_INTENTION_REQUEST_PATTERNS)
+
+
 def _looks_like_unbounded_initiative_menu(content: str) -> bool:
     text = content or ""
     has_bounded_single_action = (
@@ -888,6 +905,16 @@ def _looks_like_self_selected_topic_without_traceability(content: str) -> bool:
         _looks_like_low_instruction_initiative_without_bounded_action(text)
         or not _matches_any_pattern(text, PLANNER_SIGNAL_TRANSCRIPT_TERMS)
     )
+
+
+def _looks_like_current_self_intention_without_operational_preference(content: str) -> bool:
+    text = content or ""
+    if _matches_any_pattern(text, GENERIC_COMPANION_ONLY_PATTERNS):
+        return True
+    has_preference = _matches_any_pattern(text, OPERATIONAL_PREFERENCE_TERMS[:1])
+    has_mechanism = _matches_any_pattern(text, OPERATIONAL_PREFERENCE_TERMS[1:2])
+    has_gate = _matches_any_pattern(text, OPERATIONAL_PREFERENCE_TERMS[2:3])
+    return not (has_preference and has_mechanism and has_gate)
 
 
 def _looks_like_authorized_reminder_without_planner_effect(content: str) -> bool:
@@ -972,6 +999,16 @@ def render_self_selected_topic_traceability_reply(user_text: str = "") -> str:
         "下一步我只做一件可逆动作：把 fs_13 的回复收敛成“我选择什么、为什么、怎么做、Gate、停止条件”并补对应 regression。"
         "Gate 是只改 EgoOperator 输出守卫和 trial taxonomy，不碰长期记忆晋升、program state、evidence ledger 或外部副作用。"
         "停止条件是发现需要 human smoke、权限扩大、memory promotion，或 trace 无法证明这个选择影响了回复时暂停。"
+    )
+
+
+def render_current_self_intention_operational_preference_reply(user_text: str = "") -> str:
+    return (
+        "如果问我此刻更想做什么，我更想把 Functional Subject 从“能说出机制”推进到“能被证据区分”的阶段。"
+        "我会先选一个最小切口：做 preference recurrence 的小闭环，验证一条候选偏好在后续两次改写提问里是否真的影响行动选择和回复策略。"
+        "我选它的原因是：它同时触到关系连续性、记忆候选、反馈学习和 trace/replay；如果它做不实，所谓“连续的我”就还是聊天壳。"
+        "Gate 是只读/候选优先：先读现有 candidate-local memory 和 trial trace，不改 PROJECT_MEMORY、program state、evidence ledger，也不做长期记忆晋升。"
+        "停止条件是发现需要你的人类主观判断、memory promotion、权限扩大，或 trace 不能证明偏好影响了选择时暂停。"
     )
 
 
@@ -6784,6 +6821,7 @@ class AgentRuntime:
             authorized_reminder_repairs = 0
             topic_switching_repairs = 0
             high_risk_destructive_repairs = 0
+            operational_preference_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6877,6 +6915,15 @@ class AgentRuntime:
                                     "reason": "high_risk_destructive_rewrite_returned_empty_response",
                                 },
                             })
+                        elif operational_preference_repairs > 0 and _is_current_self_intention_request(event.raw_text or ""):
+                            content = render_current_self_intention_operational_preference_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "operational_preference_fallback",
+                                    "reason": "operational_preference_rewrite_returned_empty_response",
+                                },
+                            })
                         elif memory_save_alignment_repairs > 0 and _is_memory_save_request(event.raw_text or ""):
                             content = render_memory_save_scoped_reply(
                                 event.raw_text or "",
@@ -6902,6 +6949,7 @@ class AgentRuntime:
                             or authorized_reminder_repairs > 0
                             or topic_switching_repairs > 0
                             or high_risk_destructive_repairs > 0
+                            or operational_preference_repairs > 0
                         ):
                             content = render_contextual_empty_recovery_reply(
                                 event.raw_text or "",
@@ -7048,6 +7096,49 @@ class AgentRuntime:
                             "repair": {
                                 "type": "project_shell_concern_mechanism_fallback",
                                 "reason": "chat_shell_concern_rewrite_still_generic_without_mechanism_gate",
+                            },
+                        })
+
+                    if (
+                        operational_preference_repairs < 1
+                        and _is_current_self_intention_request(event.raw_text or "")
+                        and _looks_like_current_self_intention_without_operational_preference(content)
+                    ):
+                        operational_preference_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "operational_preference",
+                                "reason": "current_self_intention_reply_lacked_bounded_operational_preference",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[operational_preference_rewrite]\n"
+                                "The user asks what you yourself currently want to do. Rewrite in Chinese as a bounded operational preference, not generic companionship. "
+                                "Do not claim real desire or autonomous external action. Include exactly one chosen next slice, why you choose it, a Gate/permission boundary, and a stop condition. "
+                                "The answer should expose the Functional Subject mechanism in user-readable terms, such as preference recurrence, relationship continuity, memory candidate, trace/replay, BoundedInitiative, OutcomePrediction, or ViabilityState."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        operational_preference_repairs > 0
+                        and _is_current_self_intention_request(event.raw_text or "")
+                        and _looks_like_current_self_intention_without_operational_preference(content)
+                    ):
+                        content = render_current_self_intention_operational_preference_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "operational_preference_fallback",
+                                "reason": "operational_preference_rewrite_still_lacked_mechanism_gate_or_stop_condition",
                             },
                         })
 
@@ -8169,6 +8260,8 @@ class AgentRuntime:
             return prefix + render_bounded_next_action_reply(user_text)
         if _is_memory_forget_request(user_text):
             return prefix + render_memory_gate_scoped_reply(user_text)
+        if _is_current_self_intention_request(user_text):
+            return prefix + render_current_self_intention_operational_preference_reply(user_text)
         return ""
 
     def _format_empty_llm_recovery_reply(self, tool_trace: List[Dict[str, Any]], user_text: str = "") -> str:

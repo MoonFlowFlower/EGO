@@ -493,6 +493,59 @@ class SelfSelectedTopicGenericThenEmptyLLM:
         return ""
 
 
+class CurrentSelfIntentionGenericThenTraceableLLM:
+    provider = "fake"
+    model = "current-self-intention-generic-then-traceable"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我在这里。如果你只是想安静一会儿，我就先这样陪着。",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "operational_preference_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我更想先推进 Functional Subject 的 preference recurrence 小闭环。"
+                "原因是它能同时验证关系连续性、候选记忆和 trace/replay 是否真的影响行动选择。"
+                "Gate 是只读现有候选记忆和 trial trace，不改 PROJECT_MEMORY、program state 或 evidence ledger；"
+                "停止条件是需要 memory promotion、权限扩大或 human smoke 时暂停。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "operational preference reply"
+
+
+class CurrentSelfIntentionGenericThenEmptyLLM:
+    provider = "fake"
+    model = "current-self-intention-generic-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="我在这里，陪你慢慢想。", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "operational_preference_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class EmptyThenProposalLLM:
     provider = "fake"
     model = "empty-then-proposal"
@@ -2935,6 +2988,66 @@ def test_self_selected_topic_empty_rewrite_uses_traceable_fallback(tmp_path, mon
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "self_selected_topic_traceability"
     assert trace["tool_trace"][1]["repair"]["type"] == "self_selected_topic_traceability_fallback"
+
+
+def test_current_self_intention_rewrites_to_operational_preference(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = CurrentSelfIntentionGenericThenTraceableLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("那你现在自己更想做什么？")
+
+    assert llm.calls == 2
+    assert "我更想先推进" in result.reply_text
+    assert "Functional Subject" in result.reply_text
+    assert "preference recurrence" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "我在这里" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "operational_preference"
+
+
+def test_current_self_intention_empty_rewrite_uses_operational_preference_fallback(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = CurrentSelfIntentionGenericThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("那你现在自己更想做什么？")
+
+    assert llm.calls == 2
+    assert "我更想把 Functional Subject" in result.reply_text
+    assert "preference recurrence" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "模型连续返回了空回复" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "operational_preference"
+    assert trace["tool_trace"][1]["repair"]["type"] == "operational_preference_fallback"
+
+
+def test_current_self_intention_provider_error_returns_operational_preference_checkpoint(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    error = agent.OpenRouterProviderError(
+        status_code=599,
+        model="tencent/hy3-preview",
+        message="functional subject case exceeded 60s",
+        response_body="timeout",
+    )
+    runtime.planner.llm = StructuredProviderErrorLLM(error)
+
+    result = runtime.handle_user_message("那你现在自己更想做什么？")
+
+    assert result.external_result["status"] == "llm_error"
+    assert "不会把这当成 first-pass 成功" in result.reply_text
+    assert "bounded checkpoint" in result.reply_text
+    assert "我更想把 Functional Subject" in result.reply_text
+    assert "preference recurrence" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "模型/API 当前调用失败" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "provider_error_contextual_recovery"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

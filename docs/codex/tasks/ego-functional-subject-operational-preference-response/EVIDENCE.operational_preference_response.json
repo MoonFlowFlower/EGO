@@ -1,0 +1,81 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-042",
+  "result": "local_scripted_candidate_pass",
+  "claim_ceiling": "Functional Subject operational preference response local candidate pass",
+  "what_changed": [
+    "Current self-intention prompts now have an output guard and provider-error recovery path that produce bounded operational preference instead of generic companionship.",
+    "The fallback answer exposes one selected next slice, the reason for selecting it, a Gate, and a stop condition."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "A current self-intention prompt returns bounded operational preference rather than generic companionship.",
+      "status": "pass",
+      "evidence": "test_current_self_intention_rewrites_to_operational_preference and fs_12 real-provider rerun"
+    },
+    {
+      "gate": "The reply includes chosen next slice, reason, Gate, and stop condition.",
+      "status": "pass",
+      "evidence": "deterministic assertions and /tmp/ego_fs_010_after_fs042_20260523_113005/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "Provider-error recovery preserves bounded operational preference semantics.",
+      "status": "pass",
+      "evidence": "test_current_self_intention_provider_error_returns_operational_preference_checkpoint"
+    },
+    {
+      "gate": "Existing self-selected topic, low-instruction initiative, memory, and provider contextual recoveries do not regress.",
+      "status": "pass",
+      "evidence": "targeted tests, EgoOperator/tests 223 passed, autopilot_full 308 passed"
+    },
+    {
+      "gate": "Full real-provider rerun improves fs_12.",
+      "status": "pass_with_boundary",
+      "evidence": "fs_12 reply now contains preference recurrence, candidate memory, trace/replay, Gate, and stop condition, but final_response_origin is runtime_repair."
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_current_self_intention_rewrites_to_operational_preference EgoOperator/tests/test_operator_runtime_contract.py::test_current_self_intention_empty_rewrite_uses_operational_preference_fallback EgoOperator/tests/test_operator_runtime_contract.py::test_current_self_intention_provider_error_returns_operational_preference_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_self_selected_topic_rewrites_to_traceable_bounded_choice EgoOperator/tests/test_operator_runtime_contract.py::test_low_instruction_provider_error_returns_bounded_next_action_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_memory_forget_provider_error_returns_auditable_revoke_checkpoint",
+      "status": "pass",
+      "summary": "6 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "223 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "308 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --judge-with-codex --judge-model gpt-5.5 --case-timeout-seconds 60 --judge-timeout-seconds 600",
+      "status": "partial",
+      "summary": "20 cases, provider=openrouter, GPT-5.5 judge partial; fs_12 improved through runtime repair/fallback"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs_010_after_fs042_20260523_113005/functional_subject_trial_report.json",
+    "/tmp/ego_fs_010_after_fs042_20260523_113005/functional_subject_trial_report.md"
+  ],
+  "residuals": [
+    "EGO-FS-010 remains judge-partial and human-gated.",
+    "fs_12 improvement is runtime repair/fallback, not clean first-pass behavior.",
+    "fs_16 generated a write_file proposal to rewrite candidate-local MEMORY.md during a forget/revoke prompt; this should be split into the next ready task.",
+    "The judge continues to request live longitudinal proof and stronger outcome-prediction action effects."
+  ],
+  "not_claimed": [
+    "durable independent preference",
+    "durable memory efficacy",
+    "Functional Subject real-world efficacy",
+    "EGO-FS-010 closeout",
+    "live autonomy",
+    "stable user benefit"
+  ]
+}

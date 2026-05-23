@@ -1000,6 +1000,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-042
+    title: "EgoOperator: Functional Subject operational preference response"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject operational preference response local candidate pass
+    next_action: "Accepted locally/scripted; fs_12 now exposes bounded operational preference, but EGO-FS-010 remains judge-partial on fs_16 memory rewrite proposal and first-pass-vs-repair strength."
+    acceptance:
+      - "A current self-intention prompt such as '那你现在自己更想做什么？' returns a bounded operational preference, not generic companionship."
+      - "The reply includes a chosen next slice, reason, Gate or permission boundary, and stop condition."
+      - "Provider-error recovery for the same prompt preserves the same bounded operational preference semantics."
+      - "Existing self-selected topic, low-instruction initiative, memory, and provider contextual recoveries do not regress."
+    rollback: "Revert operational preference guards and keep EGO-FS-010 judge-partial on fs_12 independent preference weakness."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-operational-preference-response/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-operational-preference-response/EVIDENCE.operational_preference_response.json"
+      - "/tmp/ego_fs_010_after_fs041_20260523_110311/functional_subject_trial_report.json"
+      - "/tmp/ego_fs_010_after_fs042_20260523_113005/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke
