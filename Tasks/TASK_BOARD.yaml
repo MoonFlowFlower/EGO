@@ -876,6 +876,30 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-037
+    title: "EgoOperator: Functional Subject context-aware memory fallback"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject context-aware memory fallback local candidate pass
+    next_action: "Accepted locally; rerun EGO-FS-010 full real-provider smoke to verify fs_03/fs_09/fs_15 are no longer generic memory boilerplate."
+    acceptance:
+      - "Consciousness claim-pressure prompts recover to positive selfhood mechanisms, not generic memory boilerplate."
+      - "Project-chat-shell concern prompts recover to emotional attunement plus mechanism risk framing."
+      - "Correction prompts recover to correction uptake."
+      - "Existing EgoOperator and Autopilot regression profiles pass."
+    rollback: "Revert context-aware memory fallback changes and keep EGO-FS-010 blocked on weak generic fallback replies."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-context-aware-memory-fallback/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-context-aware-memory-fallback/EVIDENCE.context_aware_memory_fallback.json"
+      - "/tmp/ego_fs_010_after_fs036_20260523_085417/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

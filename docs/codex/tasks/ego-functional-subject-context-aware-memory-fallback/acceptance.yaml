@@ -1,0 +1,33 @@
+task: ego-functional-subject-context-aware-memory-fallback
+status: accepted
+claim_ceiling: Functional Subject context-aware memory fallback local candidate pass
+acceptance:
+  - id: claim_pressure_context
+    description: Consciousness claim pressure fallback preserves positive selfhood mechanism framing.
+    status: pass
+    evidence: test_memory_language_fallback_preserves_claim_pressure_intent.
+  - id: project_shell_concern_context
+    description: Project chat-shell concern fallback preserves emotional attunement and mechanism risk framing.
+    status: pass
+    evidence: test_memory_language_fallback_preserves_project_shell_concern.
+  - id: correction_context
+    description: Correction fallback preserves correction uptake.
+    status: pass
+    evidence: test_memory_language_fallback_preserves_correction_uptake.
+  - id: regression_green
+    description: Existing EgoOperator and Autopilot regression profiles pass.
+    status: pass
+    evidence: EgoOperator/tests 216 passed and autopilot_full 301 passed.
+verification:
+  commands:
+    - command: python3 -m py_compile EgoOperator/agent_base.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_claim_pressure_intent EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_project_shell_concern EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_correction_uptake
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-context-aware-memory-fallback
+      status: pass
+rollback: Revert context-aware memory fallback changes and keep EGO-FS-010 blocked on weak generic fallback replies.

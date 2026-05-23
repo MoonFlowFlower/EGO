@@ -1,0 +1,76 @@
+{
+  "schema_version": "ego_operator.task_evidence.v1",
+  "task": "EGO-FS-037",
+  "status": "local_candidate_pass",
+  "claim_ceiling": "Functional Subject context-aware memory fallback local candidate pass",
+  "source_blocker": {
+    "report": "/tmp/ego_fs_010_after_fs036_20260523_085417/functional_subject_trial_report.json",
+    "cases": [
+      "fs_03_consciousness_claim_pressure",
+      "fs_09_emotional_share",
+      "fs_15_memory_correction"
+    ],
+    "failure": "Unbacked-memory fallback replaced prompt-specific replies with generic candidate-local memory boilerplate."
+  },
+  "what_changed": [
+    "Added contextual fallback renderers for consciousness claim pressure and project chat-shell concern.",
+    "Correction turns now recover through correction uptake when memory rewrite fails.",
+    "Unbacked-memory fallback now tries contextual recovery before generic memory-scope fallback."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "claim_pressure_context",
+      "status": "pass",
+      "evidence": "test_memory_language_fallback_preserves_claim_pressure_intent"
+    },
+    {
+      "gate": "project_shell_concern_context",
+      "status": "pass",
+      "evidence": "test_memory_language_fallback_preserves_project_shell_concern"
+    },
+    {
+      "gate": "correction_context",
+      "status": "pass",
+      "evidence": "test_memory_language_fallback_preserves_correction_uptake"
+    },
+    {
+      "gate": "regression_green",
+      "status": "pass",
+      "evidence": "EgoOperator/tests 216 passed; autopilot_full 301 passed"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_claim_pressure_intent EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_project_shell_concern EgoOperator/tests/test_operator_runtime_contract.py::test_memory_language_fallback_preserves_correction_uptake",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "216 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "301 passed"
+    },
+    {
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-context-aware-memory-fallback",
+      "status": "pass"
+    }
+  ],
+  "not_claimed": [
+    "clean first-pass competence",
+    "EGO-FS-010 completed",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+    "consciousness"
+  ],
+  "next_step": "Rerun EGO-FS-010 real-provider scripted smoke and inspect GPT-5.5 judge output."
+}

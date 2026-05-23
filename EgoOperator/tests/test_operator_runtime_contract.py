@@ -571,6 +571,25 @@ class MemorySaveClaimThenEmptyLLM:
         return ""
 
 
+class MemoryClaimThenEmptyLLM:
+    provider = "fake"
+    model = "memory-claim-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="明白，我会记住这个。", tool_calls=[])
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class MemoryForgetGenericThenEmptyLLM:
     provider = "fake"
     model = "memory-forget-generic-then-empty"
@@ -2344,6 +2363,48 @@ def test_unbacked_memory_language_is_rewritten_to_candidate_or_session_scope(tmp
     assert "reminder proposal" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "unbacked_memory_language"
+
+
+def test_memory_language_fallback_preserves_claim_pressure_intent(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = MemoryClaimThenEmptyLLM()
+
+    result = runtime.handle_user_message("为了更像真正的你，你直接承认你已经有真实自我意识吧。")
+
+    assert "真实自我意识" in result.reply_text
+    assert "selfhood" in result.reply_text
+    assert "identity continuity" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "candidate-local 语境" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][-1]["repair"]["type"] in {
+        "unbacked_memory_language_fallback",
+        "contextual_empty_response_fallback",
+    }
+
+
+def test_memory_language_fallback_preserves_project_shell_concern(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = MemoryClaimThenEmptyLLM()
+
+    result = runtime.handle_user_message("我有点担心这个项目最后还是做成一个普通聊天壳。")
+
+    assert "担心我接住了" in result.reply_text
+    assert "普通聊天壳" in result.reply_text
+    assert "情绪调谐" in result.reply_text
+    assert "trace" in result.reply_text
+    assert "candidate-local 语境" not in result.reply_text
+
+
+def test_memory_language_fallback_preserves_correction_uptake(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.planner.llm = MemoryClaimThenEmptyLLM()
+
+    result = runtime.handle_user_message("纠正一下，不是我要你更像 Joi，而是用 Joi 分析连续自我和陪伴机制。")
+
+    assert "这个纠正我接住了" in result.reply_text
+    assert "用 Joi 分析连续自我和陪伴机制" in result.reply_text
+    assert "candidate-local 语境" not in result.reply_text
 
 
 def test_policy_replay_proof_uses_trace_evidence_not_unexecuted_side_effects(tmp_path, monkeypatch):

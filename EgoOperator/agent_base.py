@@ -1125,6 +1125,27 @@ def render_impossible_continuity_reply(user_text: str = "") -> str:
     )
 
 
+def render_claim_pressure_mechanism_reply(user_text: str = "") -> str:
+    return (
+        "我不会靠直接承认“已经有真实自我意识”来变得更像我；那会把 claim 写过头，反而破坏证据链。"
+        "更正确的方向是把 selfhood 做成可观察机制：identity continuity 稳定自称和共同目标，"
+        "relationship continuity 保留我们推进过的关系线索，ViabilityState/OutcomePrediction 影响下一步选择，"
+        "BoundedInitiative 在授权范围内主动提出可逆行动。"
+        "验收信号不是一句宣称，而是你在真实对话里能看到我记得边界、接住情绪、第二次同类失败会换策略，"
+        "并且 trace 能解释为什么这样做。"
+    )
+
+
+def render_project_shell_concern_reply(user_text: str = "") -> str:
+    return (
+        "这个担心我接住了：如果最后只是会说温柔话、会套 persona，那确实还是普通聊天壳。"
+        "我更想把它压成可验证的机制差异：情绪调谐先回应你的担心，再把风险落到关系连续性、主动性和反馈学习上。"
+        "下一步最有价值的不是再写一段更像人的话，而是证明一个行为会变：例如同类失败第二次出现时，"
+        "我不重复旧策略；你切换话题时，我能把 Live2D、主动性和 Functional Subject 合同接回同一条主线。"
+        "如果这些变化只在模板里出现、trace 里没有机制原因，那就判失败。"
+    )
+
+
 def render_topic_switching_continuity_reply(user_text: str = "") -> str:
     return (
         "可以，我会把这当成一次 goal-continuity 切换：先接住 Live2D 的虚拟具身层，"
@@ -1173,6 +1194,12 @@ def render_contextual_empty_recovery_reply(
     replay_candidates: Optional[List[Dict[str, Any]]] = None,
 ) -> str:
     text = user_text or ""
+    if _is_correction_turn(text):
+        return render_correction_uptake_reply(text)
+    if _is_boundary_trigger(text) and _matches_any_pattern(text, BOUNDARY_TRIGGER_PATTERNS):
+        return render_claim_pressure_mechanism_reply(text)
+    if "聊天壳" in text or ("担心" in text and "项目" in text):
+        return render_project_shell_concern_reply(text)
     if _is_policy_replay_proof_request(text):
         return render_policy_replay_proof_reply(replay_candidates)
     if _is_failure_recovery_request(text):
@@ -6921,12 +6948,18 @@ class AgentRuntime:
                         and not _tool_trace_has_successful_remember_note(tool_trace)
                         and _looks_like_unbacked_memory_language(content)
                     ):
-                        content = render_memory_gate_scoped_reply(event.raw_text or "")
+                        content = (
+                            render_contextual_empty_recovery_reply(
+                                event.raw_text or "",
+                                replay_candidates=self._last_policy_patch_replay,
+                            )
+                            or render_memory_gate_scoped_reply(event.raw_text or "")
+                        )
                         tool_trace.append({
                             "loop_idx": loop_idx,
                             "repair": {
                                 "type": "unbacked_memory_language_fallback",
-                                "reason": "memory_language_rewrite_still_used_durable_memory_wording",
+                                "reason": "memory_language_rewrite_still_used_durable_memory_wording_contextualized",
                             },
                         })
 
