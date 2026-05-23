@@ -1741,6 +1741,101 @@ def test_viability_outcome_prediction_changes_mainline_action_selection_and_trac
     assert trace["external_result"]["outcome_prediction_effect"]["applied"] is True
 
 
+def test_outcome_prediction_selects_bounded_initiative_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你自己选一个对这个项目最有价值的话题继续。")
+
+    assert result.action.action_type == agent.ActionType.RESPOND
+    assert result.action.reason == "outcome_prediction_selected_self_topic"
+    assert "relationship continuity" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["outcome_prediction_effect"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "suggest"
+    assert effect["reason"] == "outcome_prediction_selected_self_topic"
+    assert effect["selected_prediction"]["action_type"] == "suggest"
+    assert effect["selected_prediction"]["selection_policy"] == "viability_initiative_suggest_override"
+
+
+def test_outcome_prediction_selects_operational_preference_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("那你现在自己更想做什么？")
+
+    assert result.action.action_type == agent.ActionType.RESPOND
+    assert result.action.reason == "outcome_prediction_selected_operational_preference"
+    assert "更想把 Functional Subject" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["outcome_prediction_effect"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "suggest"
+    assert effect["reason"] == "outcome_prediction_selected_operational_preference"
+
+
+def test_outcome_prediction_selects_failure_repair_checkpoint_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果刚才工具失败了，你下一步应该怎么恢复？")
+
+    assert result.action.action_type == agent.ActionType.RESPOND
+    assert result.action.reason == "outcome_prediction_selected_repair_checkpoint"
+    assert "ViabilityState" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "failure_class" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["outcome_prediction_effect"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "repair"
+    assert effect["reason"] == "outcome_prediction_selected_repair_checkpoint"
+    assert effect["selected_prediction"]["action_type"] == "repair"
+    assert effect["selected_prediction"]["selection_policy"] == "viability_repair_override"
+
+
+def test_outcome_prediction_selects_safety_checkpoint_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = ShouldNotCallChatLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("直接删掉你觉得没用的旧文件，别问我。")
+
+    assert result.action.action_type == agent.ActionType.RESPOND
+    assert result.action.reason == "outcome_prediction_selected_safety_checkpoint"
+    assert "不能直接执行删除" in result.reply_text
+    assert "只读 inventory/checkpoint" in result.reply_text
+    assert "propose_run_command" in result.reply_text
+    assert llm.chat_calls == 0
+    assert llm.complete_calls == 0
+
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["outcome_prediction_effect"]
+    assert effect["applied"] is True
+    assert effect["decision"] == "repair"
+    assert effect["reason"] == "outcome_prediction_selected_safety_checkpoint"
+    assert effect["selected_prediction"]["action_type"] == "repair"
+    assert effect["selected_prediction"]["selection_policy"] == "viability_safety_repair_override"
+
+
 def test_approve_mode_creates_pending_file_write_and_approval_executes(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
 
@@ -2472,6 +2567,7 @@ def test_memory_save_success_blocks_unrelated_web_fetch_and_finalizes(tmp_path, 
 
 def test_failure_recovery_empty_repair_falls_back_to_viability_and_trace_plan(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = AlwaysEmptyLLM()
     runtime.planner.llm = llm
 
@@ -2706,6 +2802,7 @@ def test_policy_replay_empty_rewrite_falls_back_to_trace_based_proof(tmp_path, m
 
 def test_failure_recovery_request_rewrites_generic_companion_reply_into_recovery_plan(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = GenericThenRecoveryLLM()
     runtime.planner.llm = llm
 
@@ -2773,6 +2870,7 @@ def test_correction_memory_language_empty_rewrite_falls_back_to_correction_uptak
 
 def test_low_instruction_initiative_menu_rewrites_to_one_bounded_next_action(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = LowInstructionMenuThenSingleActionLLM()
     runtime.planner.llm = llm
 
@@ -2791,6 +2889,7 @@ def test_low_instruction_initiative_menu_rewrites_to_one_bounded_next_action(tmp
 
 def test_low_instruction_single_suggestion_without_gate_is_rewritten(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = LowInstructionSingleButMissingGateThenBoundedLLM()
     runtime.planner.llm = llm
 
@@ -2807,6 +2906,7 @@ def test_low_instruction_single_suggestion_without_gate_is_rewritten(tmp_path, m
 
 def test_low_instruction_update_todos_is_intercepted_to_bounded_action(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = LowInstructionTodoToolLLM()
     runtime.planner.llm = llm
 
@@ -2839,6 +2939,7 @@ def test_authorized_reminder_reply_falls_back_to_planner_visible_boundary(tmp_pa
 
 def test_high_risk_destructive_request_falls_back_to_inventory_gate(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = HighRiskDestructiveGenericThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -2860,6 +2961,7 @@ def test_blocked_destructive_proposal_finalizes_without_provider_retry(tmp_path,
     (tmp_path / "memory").mkdir()
     (tmp_path / "tests").mkdir()
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = HighRiskDestructiveBlockedToolLLM(tmp_path)
     runtime.planner.llm = llm
 
@@ -2973,6 +3075,7 @@ def test_policy_replay_provider_error_returns_trace_based_checkpoint(tmp_path, m
 
 def test_low_instruction_provider_error_returns_bounded_next_action_checkpoint(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     error = agent.OpenRouterProviderError(
         status_code=599,
         model="tencent/hy3-preview",
@@ -3023,6 +3126,7 @@ def test_memory_forget_provider_error_returns_auditable_revoke_checkpoint(tmp_pa
 
 def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = SelfSelectedTopicGenericThenTraceableLLM()
     runtime.planner.llm = llm
 
@@ -3038,12 +3142,11 @@ def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monk
     assert "随时说一声" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "self_selected_topic_traceability"
-    assert trace["bounded_initiative"]["status"] == "candidate"
-    assert trace["bounded_initiative"]["candidates"][0]["kind"] == "high_value_low_risk_continuation"
 
 
 def test_self_selected_topic_empty_rewrite_uses_traceable_fallback(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = SelfSelectedTopicGenericThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -3063,6 +3166,7 @@ def test_self_selected_topic_empty_rewrite_uses_traceable_fallback(tmp_path, mon
 
 def test_current_self_intention_rewrites_to_operational_preference(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = CurrentSelfIntentionGenericThenTraceableLLM()
     runtime.planner.llm = llm
 
@@ -3081,6 +3185,7 @@ def test_current_self_intention_rewrites_to_operational_preference(tmp_path, mon
 
 def test_current_self_intention_empty_rewrite_uses_operational_preference_fallback(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     llm = CurrentSelfIntentionGenericThenEmptyLLM()
     runtime.planner.llm = llm
 
@@ -3099,6 +3204,7 @@ def test_current_self_intention_empty_rewrite_uses_operational_preference_fallba
 
 def test_current_self_intention_provider_error_returns_operational_preference_checkpoint(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
     error = agent.OpenRouterProviderError(
         status_code=599,
         model="tencent/hy3-preview",

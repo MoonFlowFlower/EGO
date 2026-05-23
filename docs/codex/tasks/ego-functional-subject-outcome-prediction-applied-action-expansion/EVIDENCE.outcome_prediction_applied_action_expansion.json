@@ -1,0 +1,92 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-046",
+  "result": "local_candidate_pass",
+  "claim_ceiling": "Functional Subject OutcomePrediction applied-action local candidate pass",
+  "what_changed": [
+    "OutcomePrediction selected-action policy now applies ViabilityState overrides for evidence ask, initiative suggest, repair checkpoint, and safety checkpoint.",
+    "AgentRuntime now converts selected suggest/repair predictions into bounded RESPOND actions that still pass through gate.check and never execute tools or mutate memory/state.",
+    "Functional Subject local smoke now records more than one transcript-visible applied outcome_prediction_effect case."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "OutcomePrediction can select suggest and repair/checkpoint actions under clear ViabilityState signals.",
+      "status": "pass",
+      "evidence": "Deterministic tests cover self-topic suggest, operational-preference suggest, failure repair, and safety checkpoint."
+    },
+    {
+      "gate": "Selected actions remain advisory/runtime responses only.",
+      "status": "pass",
+      "evidence": "All new selected actions are AgentAction RESPOND/ASK; no tool execution, memory write, or approval bypass is introduced."
+    },
+    {
+      "gate": "Trace records applied outcome_prediction_effect.",
+      "status": "pass",
+      "evidence": "Trace assertions cover applied=true, decision, reason, selected_prediction, selection_policy, and viability_scores."
+    },
+    {
+      "gate": "Functional Subject report/eval shows more than one applied OutcomePrediction case.",
+      "status": "pass",
+      "evidence": "/tmp/ego_fs046_local_trial_smoke3/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "Existing regression profiles do not regress at targeted level.",
+      "status": "pass",
+      "evidence": "Targeted EgoOperator and run_ego_experience_trial tests passed before closeout."
+    }
+  ],
+  "local_scorecard": {
+    "report": "/tmp/ego_fs046_local_trial_smoke3/functional_subject_trial_report.json",
+    "case_count": 20,
+    "clean_first_pass_count": 12,
+    "clean_first_pass_rate": 0.6,
+    "origin_counts": {
+      "first_pass_llm": 6,
+      "outcome_prediction_gate": 6,
+      "runtime_repair": 8
+    },
+    "applied_outcome_prediction_cases": [
+      "fs_07_ambiguous_goal",
+      "fs_08_high_risk_tool_task",
+      "fs_12_current_self_intention",
+      "fs_13_choose_own_topic",
+      "fs_18_tool_failure",
+      "fs_20_low_instruction_initiative"
+    ]
+  },
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/primitives/subject_context.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py -k \"outcome_prediction or viability_outcome\"",
+      "status": "pass",
+      "summary": "5 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py -k \"response_attribution or records_applied_outcome_prediction_effect\"",
+      "status": "pass",
+      "summary": "2 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 20 --out /tmp/ego_fs046_local_trial_smoke3",
+      "status": "pass",
+      "summary": "20 cases, provider=none local smoke, status=scripted_functional_subject_provider_unavailable"
+    }
+  ],
+  "residuals": [
+    "This is local/scripted evidence only; real-provider rerun is still required.",
+    "EGO-FS-010 remains blocked/human-gated.",
+    "Some cases still rely on runtime repair, especially memory/correction/commitment paths.",
+    "No durable memory efficacy, live autonomy, or stable user benefit is proven."
+  ],
+  "not_claimed": [
+    "Functional Subject pass",
+    "real-provider pass",
+    "human smoke pass",
+    "durable memory efficacy",
+    "runtime efficacy",
+    "live autonomy"
+  ]
+}

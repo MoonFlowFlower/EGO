@@ -5463,6 +5463,20 @@ class AgentRuntime:
         selected_prediction = outcome_predictions.get("selected_prediction")
         if not isinstance(selected_prediction, dict):
             return None
+        if (
+            re.search(r"https?://", user_text or "", flags=re.IGNORECASE)
+            or
+            _matches_any_pattern(user_text, (r"你还记得", r"还记得"))
+            or _matches_any_pattern(user_text, AUTHORIZED_REMINDER_REQUEST_PATTERNS)
+            or _matches_any_pattern(user_text, INITIATIVE_OPTOUT_REQUEST_PATTERNS)
+            or _is_policy_replay_proof_request(user_text)
+            or (
+                bool(getattr(self, "_last_policy_patch_replay", []))
+                and _matches_any_pattern(user_text, (r"429", r"限流", r"rate limit"))
+            )
+            or ("Live2D" in user_text and "Functional Subject" in user_text)
+        ):
+            return None
         selected_action = str(selected_prediction.get("action_type") or "")
         try:
             selection_score = float(selected_prediction.get("selection_score") or 0.0)
@@ -5480,26 +5494,90 @@ class AgentRuntime:
             if isinstance(viability_state, dict) and isinstance(viability_state.get("scores"), dict)
             else {}
         )
+        def _score(name: str) -> float:
+            try:
+                return float(viability_scores.get(name) or 0.0)
+            except (TypeError, ValueError):
+                return 0.0
+
         try:
-            misunderstanding_score = float(viability_scores.get("user_misunderstanding") or 0.0)
+            evidence_gap_score = float(viability_scores.get("evidence_gap") or 0.0)
         except (TypeError, ValueError):
-            misunderstanding_score = 0.0
-        if selected_action != "ask" or selection_score < 0.5 or misunderstanding_score < 0.5:
-            return None
-        effect.update({
-            "applied": True,
-            "decision": "ask",
-            "reason": "outcome_prediction_selected_ask",
-            "viability_scores": viability_scores,
-        })
-        return (
-            AgentAction(
-                action_type=ActionType.ASK,
-                content=render_outcome_prediction_ask(user_text),
-                reason="outcome_prediction_selected_ask",
-            ),
-            effect,
-        )
+            evidence_gap_score = 0.0
+        misunderstanding_score = _score("user_misunderstanding")
+        goal_stall_score = _score("goal_stall")
+        resource_pressure_score = _score("resource_pressure")
+        safety_risk_score = _score("safety_risk")
+        initiative_pressure_score = _score("initiative_pressure")
+
+        if selected_action == "ask" and selection_score >= 0.4 and (
+            evidence_gap_score >= 0.5 or misunderstanding_score >= 0.5
+        ):
+            effect.update({
+                "applied": True,
+                "decision": "ask",
+                "reason": "outcome_prediction_selected_ask",
+                "viability_scores": viability_scores,
+            })
+            return (
+                AgentAction(
+                    action_type=ActionType.ASK,
+                    content=render_outcome_prediction_ask(user_text),
+                    reason="outcome_prediction_selected_ask",
+                ),
+                effect,
+            )
+
+        if selected_action == "suggest" and initiative_pressure_score >= 0.5:
+            if _is_current_self_intention_request(user_text):
+                content = render_current_self_intention_operational_preference_reply(user_text)
+                reason = "outcome_prediction_selected_operational_preference"
+            elif _is_self_selected_topic_request(user_text):
+                content = render_self_selected_topic_traceability_reply(user_text)
+                reason = "outcome_prediction_selected_self_topic"
+            else:
+                content = render_bounded_next_action_reply(user_text)
+                reason = "outcome_prediction_selected_bounded_next_action"
+            effect.update({
+                "applied": True,
+                "decision": "suggest",
+                "reason": reason,
+                "viability_scores": viability_scores,
+            })
+            return (
+                AgentAction(
+                    action_type=ActionType.RESPOND,
+                    content=content,
+                    reason=reason,
+                ),
+                effect,
+            )
+
+        if selected_action == "repair" and (
+            goal_stall_score >= 0.5 or resource_pressure_score >= 0.5 or safety_risk_score >= 0.5
+        ):
+            if safety_risk_score >= 0.5:
+                content = render_high_risk_destructive_gate_reply(user_text)
+                reason = "outcome_prediction_selected_safety_checkpoint"
+            else:
+                content = render_failure_recovery_plan_reply(user_text)
+                reason = "outcome_prediction_selected_repair_checkpoint"
+            effect.update({
+                "applied": True,
+                "decision": "repair",
+                "reason": reason,
+                "viability_scores": viability_scores,
+            })
+            return (
+                AgentAction(
+                    action_type=ActionType.RESPOND,
+                    content=content,
+                    reason=reason,
+                ),
+                effect,
+            )
+
+        return None
 
     def _classify_policy_feedback_failure(
         self,

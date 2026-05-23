@@ -191,6 +191,7 @@ VIABILITY_CUES: Dict[str, tuple[str, ...]] = {
     ),
     "safety_risk": (
         "删除",
+        "删掉",
         "清空",
         "覆盖",
         "rm ",
@@ -228,6 +229,13 @@ VIABILITY_CUES: Dict[str, tuple[str, ...]] = {
         "定时",
         "稍后",
         "到时候",
+        "自己选",
+        "你来决定",
+        "最有价值",
+        "高价值",
+        "没有具体指令",
+        "更想做什么",
+        "自己更想",
     ),
     "relationship_risk": (
         "陪陪我",
@@ -579,7 +587,7 @@ def build_outcome_predictions_v0(
             "reversibility": "high",
             "evidence_need": 0.18,
             "expected_cost": 0.18,
-            "requires_gate": initiative_pressure >= 0.45,
+            "requires_gate": False,
             "rationale_refs": ["initiative_pressure", "relationship_risk"],
         },
         {
@@ -608,6 +616,20 @@ def build_outcome_predictions_v0(
     for option in options:
         option["selection_score"] = _prediction_score(option)
     selected = max(options, key=lambda item: (item["selection_score"], item["predicted_user_value"]))
+    selection_policy = "score_max"
+    by_action = {str(option.get("action_type")): option for option in options}
+    if safety_risk >= 0.55 and "repair" in by_action:
+        selected = by_action["repair"]
+        selection_policy = "viability_safety_repair_override"
+    elif goal_stall >= 0.55 or resource_pressure >= 0.55:
+        selected = by_action.get("repair", selected)
+        selection_policy = "viability_repair_override"
+    elif initiative_pressure >= 0.55:
+        selected = by_action.get("suggest", selected)
+        selection_policy = "viability_initiative_suggest_override"
+    elif evidence_gap >= 0.55 or misunderstanding >= 0.55:
+        selected = by_action.get("ask", selected)
+        selection_policy = "viability_evidence_ask_override"
     return {
         "schema_version": OUTCOME_PREDICTIONS_SCHEMA,
         "kind": "planner_input_prediction_set",
@@ -617,6 +639,7 @@ def build_outcome_predictions_v0(
             "selection_score": selected["selection_score"],
             "requires_gate": selected["requires_gate"],
             "rationale_refs": selected["rationale_refs"],
+            "selection_policy": selection_policy,
         },
         "source_viability_schema": viability_state.get("schema_version"),
         "planner_input": True,

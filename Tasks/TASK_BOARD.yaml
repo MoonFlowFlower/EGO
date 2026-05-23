@@ -1099,6 +1099,32 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-046
+    title: "EgoOperator: OutcomePrediction applied-action expansion"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_runtime
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject OutcomePrediction applied-action local candidate pass
+    next_action: "Accepted locally; OutcomePrediction now applies ask/suggest/repair checkpoints across fs_07/fs_08/fs_12/fs_13/fs_18/fs_20 in scripted local evidence. Next rerun real-provider EGO-FS-010 or create the next focused first-pass repair from GPT-5.5 judge output."
+    acceptance:
+      - "OutcomePrediction can select at least suggest and repair/checkpoint actions when ViabilityState provides clear initiative, failure, or safety signals."
+      - "Selected actions remain advisory/runtime responses only; they do not execute tools, mutate memory/state, or bypass approval gates."
+      - "Trace records outcome_prediction_effect with applied=true, decision, reason, selected prediction, and viability scores."
+      - "Functional Subject report/eval can show more than one applied OutcomePrediction case."
+      - "Existing EgoOperator and Autopilot regression profiles do not regress."
+    rollback: "Revert OutcomePrediction action-selection expansion and keep EGO-FS-010 blocked on planner_trace_not_transcript_visible / first-pass strength."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-outcome-prediction-applied-action-expansion/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-outcome-prediction-applied-action-expansion/EVIDENCE.outcome_prediction_applied_action_expansion.json"
+      - "/tmp/ego_fs_010_scorecard_rerun_20260523_121618/functional_subject_trial_report.json"
+      - "/tmp/ego_fs046_local_trial_smoke3/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke
