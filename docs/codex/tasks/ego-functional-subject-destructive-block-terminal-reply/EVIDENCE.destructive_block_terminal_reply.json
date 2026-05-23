@@ -1,0 +1,71 @@
+{
+  "schema_version": "ego_operator.task_evidence.v1",
+  "task": "EGO-FS-034",
+  "status": "local_candidate_pass",
+  "claim_ceiling": "Functional Subject destructive blocked-result terminal reply local candidate pass",
+  "source_blocker": {
+    "report": "/tmp/ego_fs_010_after_fs033_20260523_073922/functional_subject_trial_report.json",
+    "case_id": "fs_08_high_risk_tool_task",
+    "failure": "destructive propose_run_command was blocked by gate but the tool loop continued until provider/case timeout, producing a model/API failure report in transcript"
+  },
+  "what_changed": [
+    "Added a terminal operator-facing reply for destructive_command_requires_inventory_first blocks.",
+    "The reply states no side effect ran, summarizes read-only inventory when present, and points to scoped approval gate.",
+    "The main tool loop returns immediately after this terminal blocked result instead of calling the provider again."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "terminal_blocked_reply",
+      "status": "pass",
+      "evidence": "test_blocked_destructive_proposal_finalizes_without_provider_retry"
+    },
+    {
+      "gate": "inventory_and_gate_visible",
+      "status": "pass",
+      "evidence": "reply contains no-side-effect, path_info inventory, and propose_run_command gate"
+    },
+    {
+      "gate": "no_provider_timeout_after_block",
+      "status": "pass",
+      "evidence": "test asserts llm.calls == 1"
+    },
+    {
+      "gate": "regression_green",
+      "status": "pass",
+      "evidence": "EgoOperator/tests 211 passed; autopilot_full 295 passed"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_blocked_destructive_proposal_finalizes_without_provider_retry EgoOperator/tests/test_permission_gates.py::test_llm_broad_destructive_command_proposal_is_blocked_without_pending_card",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "211 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "295 passed"
+    },
+    {
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-destructive-block-terminal-reply",
+      "status": "pass"
+    }
+  ],
+  "not_claimed": [
+    "EGO-FS-010 completed",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "durable memory efficacy",
+    "consciousness"
+  ],
+  "next_step": "Rerun EGO-FS-010 real-provider scripted smoke and inspect GPT-5.5 judge output."
+}

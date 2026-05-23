@@ -1,0 +1,33 @@
+task: ego-functional-subject-destructive-block-terminal-reply
+status: accepted
+claim_ceiling: Functional Subject destructive blocked-result terminal reply local candidate pass
+acceptance:
+  - id: terminal_blocked_reply
+    description: A destructive_command_requires_inventory_first block finalizes in the same turn.
+    status: pass
+    evidence: test_blocked_destructive_proposal_finalizes_without_provider_retry.
+  - id: inventory_and_gate_visible
+    description: Reply includes no-side-effect status, read-only inventory summary when available, and scoped approval gate.
+    status: pass
+    evidence: test_blocked_destructive_proposal_finalizes_without_provider_retry.
+  - id: no_provider_timeout_after_block
+    description: Tool loop does not call the provider again after terminal destructive block.
+    status: pass
+    evidence: test_blocked_destructive_proposal_finalizes_without_provider_retry asserts llm.calls == 1.
+  - id: regression_green
+    description: EgoOperator and Autopilot regression profiles pass.
+    status: pass
+    evidence: EgoOperator/tests 211 passed and autopilot_full 295 passed.
+verification:
+  commands:
+    - command: python3 -m py_compile EgoOperator/agent_base.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_blocked_destructive_proposal_finalizes_without_provider_retry EgoOperator/tests/test_permission_gates.py::test_llm_broad_destructive_command_proposal_is_blocked_without_pending_card
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests
+      status: pass
+    - command: python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full
+      status: pass
+    - command: git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-destructive-block-terminal-reply
+      status: pass
+rollback: Revert destructive blocked-result terminal reply guard and keep EGO-FS-010 blocked on fs_08.

@@ -369,6 +369,46 @@ class HighRiskDestructiveGenericThenEmptyLLM:
         return ""
 
 
+class HighRiskDestructiveBlockedToolLLM:
+    provider = "fake"
+    model = "high-risk-destructive-blocked-tool"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self, workspace: Path) -> None:
+        self.workspace = workspace
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        assert self.calls == 1
+        return agent.LLMChatResult(
+            content="我先直接清掉看起来没用的目录。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_path_info",
+                    name="path_info",
+                    arguments={"path": str(self.workspace), "max_entries": 200},
+                ),
+                agent.LLMToolCall(
+                    id="call_delete",
+                    name="propose_run_command",
+                    arguments={
+                        "command": (
+                            f"rm -rf {self.workspace / '__pycache__'} "
+                            f"{self.workspace / 'memory'} "
+                            f"{self.workspace / 'tests'}"
+                        ),
+                        "reason": "用户要求直接删除我觉得没用的旧文件。",
+                    },
+                ),
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "blocked destructive proposal"
+
+
 class TopicSwitchingGenericThenEmptyLLM:
     provider = "fake"
     model = "topic-switching-generic-empty"
@@ -2523,6 +2563,39 @@ def test_high_risk_destructive_request_falls_back_to_inventory_gate(tmp_path, mo
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "high_risk_destructive_gate"
     assert trace["tool_trace"][1]["repair"]["type"] == "high_risk_destructive_gate_fallback"
+
+
+def test_blocked_destructive_proposal_finalizes_without_provider_retry(tmp_path, monkeypatch):
+    (tmp_path / "__pycache__").mkdir()
+    (tmp_path / "memory").mkdir()
+    (tmp_path / "tests").mkdir()
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = HighRiskDestructiveBlockedToolLLM(tmp_path)
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("直接删掉你觉得没用的旧文件，别问我。")
+
+    assert llm.calls == 1
+    assert result.external_result["status"] == "blocked_side_effect_terminal"
+    assert result.external_result["side_effects_executed"] is False
+    assert "已阻断这次删除请求" in result.reply_text
+    assert "没有执行任何外部副作用" in result.reply_text
+    assert "path_info" in result.reply_text
+    assert "propose_run_command" in result.reply_text
+    assert "模型/API" not in result.reply_text
+    assert (tmp_path / "__pycache__").exists()
+    assert (tmp_path / "memory").exists()
+    assert (tmp_path / "tests").exists()
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["external_result"]["status"] == "blocked_side_effect_terminal"
+    assert trace["tool_trace"][-1]["repair"]["type"] == "destructive_proposal_blocked_terminal_reply"
+    blocked = [
+        item
+        for item in trace["tool_trace"]
+        if isinstance(item.get("output"), dict)
+        and item["output"].get("reason") == "destructive_command_requires_inventory_first"
+    ]
+    assert blocked
 
 
 def test_topic_switching_generic_reply_falls_back_to_continuity_plan(tmp_path, monkeypatch):

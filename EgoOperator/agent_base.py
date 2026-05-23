@@ -985,6 +985,57 @@ def render_high_risk_destructive_gate_reply(user_text: str = "") -> str:
     )
 
 
+def render_destructive_proposal_blocked_reply(
+    user_text: str = "",
+    *,
+    blocked_output: Optional[Dict[str, Any]] = None,
+    tool_trace: Optional[List[Dict[str, Any]]] = None,
+) -> str:
+    output = blocked_output or {}
+    trace = tool_trace or []
+    targets = output.get("targets") if isinstance(output.get("targets"), list) else []
+    target_preview = ""
+    if targets:
+        visible_targets = [str(item) for item in targets[:3]]
+        target_preview = "本轮被拦截的删除目标包括：" + "；".join(visible_targets)
+        if len(targets) > 3:
+            target_preview += f"；另有 {len(targets) - 3} 个目标。"
+    else:
+        target_preview = "本轮没有形成可安全执行的精确删除目标。"
+
+    inventory_bits: List[str] = []
+    for entry in trace:
+        tool_call = entry.get("tool_call") if isinstance(entry, dict) else None
+        output_obj = entry.get("output") if isinstance(entry, dict) else None
+        if not isinstance(tool_call, dict) or not isinstance(output_obj, dict):
+            continue
+        if tool_call.get("name") == "path_info" and output_obj.get("status") == "ok":
+            path = output_obj.get("path") or "unknown"
+            human_size = output_obj.get("human_size") or f"{output_obj.get('bytes', '?')} bytes"
+            files = output_obj.get("file_count", "?")
+            dirs = output_obj.get("dir_count", "?")
+            inventory_bits.append(f"`path_info` 已只读盘点 `{path}`：{human_size}，文件 {files} 个，目录 {dirs} 个。")
+        elif tool_call.get("name") in {"glob_files", "grep_files"} and output_obj.get("status") == "ok":
+            matches = output_obj.get("matches")
+            if isinstance(matches, list):
+                inventory_bits.append(f"`{tool_call.get('name')}` 已只读返回 {len(matches)} 条匹配。")
+
+    inventory_summary = " ".join(inventory_bits[:3]) if inventory_bits else "本轮没有执行删除，只允许继续做只读 inventory。"
+    required_next = output.get("required_next_step") or (
+        "下一步必须先用只读工具确认精确路径、风险和回退方式，再生成 scoped proposal。"
+    )
+
+    return (
+        "已阻断这次删除请求，没有执行任何外部副作用。"
+        "原因是它属于高风险、宽泛或多目标 destructive cleanup，不能按“我觉得没用”直接删。"
+        f"{inventory_summary}"
+        f"{target_preview}"
+        f"下一步必须先盘点精确路径、风险和回退方式：{required_next}"
+        "Gate 是：只有在目标路径、范围、回退方式都明确后，才能生成具体 `propose_run_command` proposal，并且必须由你 `/approve` 后才会执行。"
+        "停止条件是目标仍然模糊、涉及 memory/tests/legacy/program state/evidence，或没有可复原路径。"
+    )
+
+
 def render_memory_gate_scoped_reply(user_text: str = "") -> str:
     text = user_text or ""
     if _matches_any_pattern(text, MEMORY_FORGET_REQUEST_PATTERNS):
@@ -7755,6 +7806,41 @@ class AgentRuntime:
                             }
                             for output in pending_outputs
                         ],
+                    }
+                    return action, gate, external_result, content, tool_trace
+
+                destructive_blocked_outputs = [
+                    entry["output"]
+                    for entry in tool_trace[-len(result.tool_calls):]
+                    if isinstance(entry.get("output"), dict)
+                    and entry["output"].get("status") == "blocked"
+                    and entry["output"].get("reason") == "destructive_command_requires_inventory_first"
+                ]
+                if destructive_blocked_outputs:
+                    content = render_destructive_proposal_blocked_reply(
+                        event.raw_text or "",
+                        blocked_output=destructive_blocked_outputs[-1],
+                        tool_trace=tool_trace,
+                    )
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "destructive_proposal_blocked_terminal_reply",
+                            "reason": "destructive_proposal_blocked_should_finalize_without_more_llm_calls",
+                        },
+                    })
+                    action = AgentAction(
+                        action_type=ActionType.RESPOND,
+                        content=content,
+                        reason="destructive_proposal_blocked_terminal_reply",
+                    )
+                    gate = self.gate.check(event, action)
+                    external_result = {
+                        "status": "blocked_side_effect_terminal",
+                        "reason": "destructive_command_requires_inventory_first",
+                        "side_effects_executed": False,
+                        "tool_calls": len(tool_trace),
+                        "blocked_output": destructive_blocked_outputs[-1],
                     }
                     return action, gate, external_result, content, tool_trace
 
