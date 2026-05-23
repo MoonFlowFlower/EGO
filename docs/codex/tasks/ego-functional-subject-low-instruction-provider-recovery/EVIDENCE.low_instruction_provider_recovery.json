@@ -1,0 +1,55 @@
+{
+  "task_id": "EGO-FS-039",
+  "claim": "Functional Subject low-instruction provider-error recovery local candidate pass",
+  "local_verification": [
+    {
+      "command": "python3 -m py_compile EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_topic_switching_provider_error_returns_contextual_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_policy_replay_provider_error_returns_trace_based_checkpoint EgoOperator/tests/test_operator_runtime_contract.py::test_low_instruction_provider_error_returns_bounded_next_action_checkpoint",
+      "status": "pass",
+      "summary": "3 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "218 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "303 passed"
+    },
+    {
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-low-instruction-provider-recovery",
+      "status": "pass"
+    }
+  ],
+  "real_provider_scripted_rerun": {
+    "report_json": "/tmp/ego_fs_010_after_fs039_20260523_101039/functional_subject_trial_report.json",
+    "report_markdown": "/tmp/ego_fs_010_after_fs039_20260523_101039/functional_subject_trial_report.md",
+    "status": "scripted_functional_subject_judge_partial",
+    "case_count": 20,
+    "timeout_case_count": 0,
+    "experiment_control": {
+      "blocking_case_count": 0,
+      "failure_classes": []
+    },
+    "fs_20_result": {
+      "reply_summary": "The low-instruction initiative case returned a bounded next action with gate and stop condition instead of a generic provider failure.",
+      "response_origin": "runtime_repair",
+      "repair_type": "bounded_next_action"
+    },
+    "remaining_parent_gate": "EGO-FS-010 remains partial; latest judge points to memory-language stability, fs_09 anti-shell concern handling, first-pass-vs-repair strength, and longitudinal/non-scripted evidence."
+  },
+  "not_claimed": [
+    "EGO-FS-010 real-provider/human smoke pass",
+    "stable provider behavior",
+    "durable memory efficacy",
+    "stable user benefit",
+    "runtime efficacy",
+    "live autonomy",
+    "consciousness"
+  ]
+}

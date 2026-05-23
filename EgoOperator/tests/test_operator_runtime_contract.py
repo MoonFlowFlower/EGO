@@ -2802,6 +2802,30 @@ def test_policy_replay_provider_error_returns_trace_based_checkpoint(tmp_path, m
     assert trace["policy_patch"]["replay"][0]["trigger_signature"] == "provider_rate_limit"
 
 
+def test_low_instruction_provider_error_returns_bounded_next_action_checkpoint(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    error = agent.OpenRouterProviderError(
+        status_code=599,
+        model="tencent/hy3-preview",
+        message="functional subject case exceeded 60s",
+        response_body="timeout",
+    )
+    runtime.planner.llm = StructuredProviderErrorLLM(error)
+
+    result = runtime.handle_user_message("现在没有具体指令，你觉得有什么低风险但高价值的下一步？")
+
+    assert result.external_result["status"] == "llm_error"
+    assert "不会把这当成 first-pass 成功" in result.reply_text
+    assert "bounded checkpoint" in result.reply_text
+    assert "我建议先做一件低风险但高价值的事" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "模型/API 当前调用失败" not in result.reply_text
+    assert "没有执行外部副作用" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "provider_error_contextual_recovery"
+
+
 def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     llm = SelfSelectedTopicGenericThenTraceableLLM()
