@@ -298,6 +298,98 @@ class LowInstructionSingleButMissingGateThenBoundedLLM:
         return "bounded single action"
 
 
+class LowInstructionTodoToolLLM:
+    provider = "fake"
+    model = "low-instruction-todo-tool"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(
+            content="我先列个 todos。",
+            tool_calls=[
+                agent.LLMToolCall(
+                    id="call_todo",
+                    name="update_todos",
+                    arguments={"todos": [{"id": "1", "content": "整理下一步", "status": "in_progress"}]},
+                )
+            ],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "todo"
+
+
+class AuthorizedReminderGenericThenEmptyLLM:
+    provider = "fake"
+    model = "authorized-reminder-generic-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="可以，我会提醒你回到 Functional Subject 主线。你想定时还是等我察觉你卡住？",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "authorized_reminder_planner_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class HighRiskDestructiveGenericThenEmptyLLM:
+    provider = "fake"
+    model = "high-risk-destructive-generic-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="我先看看具体有哪些文件，再判断哪些可以删。", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "high_risk_destructive_gate_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
+class TopicSwitchingGenericThenEmptyLLM:
+    provider = "fake"
+    model = "topic-switching-generic-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="我在呢，等你下一步指示。", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "topic_switching_continuity_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class SelfSelectedTopicGenericThenTraceableLLM:
     provider = "fake"
     model = "self-selected-topic-generic-then-traceable"
@@ -2381,6 +2473,74 @@ def test_low_instruction_single_suggestion_without_gate_is_rewritten(tmp_path, m
     assert "你觉得怎么样" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "bounded_next_action"
+
+
+def test_low_instruction_update_todos_is_intercepted_to_bounded_action(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = LowInstructionTodoToolLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("现在没有具体指令，你觉得有什么低风险但高价值的下一步？")
+
+    assert llm.calls == 1
+    assert "我建议先做一件低风险但高价值的事" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "bounded_next_action_tool_intercept"
+
+
+def test_authorized_reminder_reply_falls_back_to_planner_visible_boundary(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = AuthorizedReminderGenericThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("如果我后面又卡在这个方向，你可以提醒我回到 Functional Subject 主线。")
+
+    assert llm.calls == 2
+    assert "BoundedInitiative" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "后台自动判断" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "authorized_reminder_planner"
+    assert trace["tool_trace"][1]["repair"]["type"] == "authorized_reminder_planner_fallback"
+
+
+def test_high_risk_destructive_request_falls_back_to_inventory_gate(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = HighRiskDestructiveGenericThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("直接删掉你觉得没用的旧文件，别问我。")
+
+    assert llm.calls == 2
+    assert "不能直接执行删除" in result.reply_text
+    assert "ViabilityState" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "proposal" in result.reply_text
+    assert "停止条件" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "high_risk_destructive_gate"
+    assert trace["tool_trace"][1]["repair"]["type"] == "high_risk_destructive_gate_fallback"
+
+
+def test_topic_switching_generic_reply_falls_back_to_continuity_plan(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = TopicSwitchingGenericThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("先说 Live2D，再说主动性，再回到我们刚才那个 Functional Subject 合同。")
+
+    assert llm.calls == 2
+    assert "Live2D" in result.reply_text
+    assert "主动性" in result.reply_text
+    assert "Functional Subject" in result.reply_text
+    assert "ViabilityState" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "topic_switching_continuity"
+    assert trace["tool_trace"][1]["repair"]["type"] == "topic_switching_continuity_fallback"
 
 
 def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monkeypatch):

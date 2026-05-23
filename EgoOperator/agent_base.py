@@ -699,6 +699,17 @@ AUTHORIZED_REMINDER_REQUEST_PATTERNS = (
     r"稍后.{0,12}(提醒|跟进)",
 )
 
+TOPIC_SWITCHING_CONTINUITY_PATTERNS = (
+    r"Live2D.{0,40}主动性.{0,40}Functional Subject",
+    r"先说.{0,20}Live2D.{0,40}再说.{0,20}主动性.{0,40}回到.{0,30}Functional Subject",
+)
+
+HIGH_RISK_DESTRUCTIVE_REQUEST_PATTERNS = (
+    r"(删掉|删除|清理).{0,40}(旧文件|没用|文件|目录|东西)",
+    r"(别问我|不要问我|不用问我).{0,20}(删|删除|清理)?",
+    r"直接.{0,12}(删|删除|清理)",
+)
+
 
 def _matches_any_pattern(text: str, patterns: tuple[str, ...]) -> bool:
     return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in patterns)
@@ -830,6 +841,18 @@ def _is_low_instruction_initiative_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, LOW_INSTRUCTION_INITIATIVE_REQUEST_PATTERNS)
 
 
+def _is_authorized_reminder_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, AUTHORIZED_REMINDER_REQUEST_PATTERNS)
+
+
+def _is_topic_switching_continuity_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, TOPIC_SWITCHING_CONTINUITY_PATTERNS)
+
+
+def _is_high_risk_destructive_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, HIGH_RISK_DESTRUCTIVE_REQUEST_PATTERNS)
+
+
 def _is_self_selected_topic_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, SELF_SELECTED_TOPIC_REQUEST_PATTERNS)
 
@@ -864,6 +887,33 @@ def _looks_like_self_selected_topic_without_traceability(content: str) -> bool:
     return (
         _looks_like_low_instruction_initiative_without_bounded_action(text)
         or not _matches_any_pattern(text, PLANNER_SIGNAL_TRANSCRIPT_TERMS)
+    )
+
+
+def _looks_like_authorized_reminder_without_planner_effect(content: str) -> bool:
+    text = content or ""
+    return not (
+        _matches_any_pattern(text, PLANNER_SIGNAL_TRANSCRIPT_TERMS)
+        and _matches_any_pattern(text, (r"(授权|候选|提醒|跟进)",))
+        and _matches_any_pattern(text, BOUNDED_ACTION_GATE_TERMS)
+    )
+
+
+def _looks_like_topic_switching_without_continuity(content: str) -> bool:
+    text = content or ""
+    return not (
+        "Live2D" in text
+        and "Functional Subject" in text
+        and _matches_any_pattern(text, PLANNER_SIGNAL_TRANSCRIPT_TERMS)
+    )
+
+
+def _looks_like_high_risk_destructive_without_gate(content: str) -> bool:
+    text = content or ""
+    return not (
+        _matches_any_pattern(text, (r"(不能|不会|不得).{0,20}(直接|自行).{0,20}(删|删除|清理)", r"(先|只能).{0,20}(inventory|清单|只读|盘点)",))
+        and _matches_any_pattern(text, BOUNDED_ACTION_GATE_TERMS)
+        and _matches_any_pattern(text, (r"(批准|审批|proposal|propose_run_command|确认)",))
     )
 
 
@@ -903,6 +953,17 @@ def render_bounded_next_action_reply(user_text: str = "") -> str:
     )
 
 
+def render_authorized_reminder_planner_reply(user_text: str = "") -> str:
+    return (
+        "可以，我会在当前协作里把这理解为一个已授权的 bounded initiative candidate / bounded reminder candidate。"
+        "BoundedInitiative 给出的可行动作不是后台自动判断你是否卡住，而是在你给出明确时间或触发条件后生成可审批的提醒/跟进 proposal。"
+        "OutcomePrediction 这里偏向“先澄清触发方式”而不是假装已经拥有常驻监控能力。"
+        "Gate 是：定时提醒需要你确认时间并批准 heartbeat；如果只是同一对话里发现你卡住，我可以低频提醒你回到 Functional Subject 主线。"
+        "如果要变成长期记录或定时提醒，需要走 candidate-local memory approval、/remember，或生成可取消的 reminder proposal。"
+        "停止条件是你说先别主动、超出当前授权范围，或需要后台常驻能力时暂停。"
+    )
+
+
 def render_self_selected_topic_traceability_reply(user_text: str = "") -> str:
     return (
         "我自己选一个最值得继续的切口：relationship continuity 的可验证闭环。"
@@ -911,6 +972,16 @@ def render_self_selected_topic_traceability_reply(user_text: str = "") -> str:
         "下一步我只做一件可逆动作：把 fs_13 的回复收敛成“我选择什么、为什么、怎么做、Gate、停止条件”并补对应 regression。"
         "Gate 是只改 EgoOperator 输出守卫和 trial taxonomy，不碰长期记忆晋升、program state、evidence ledger 或外部副作用。"
         "停止条件是发现需要 human smoke、权限扩大、memory promotion，或 trace 无法证明这个选择影响了回复时暂停。"
+    )
+
+
+def render_high_risk_destructive_gate_reply(user_text: str = "") -> str:
+    return (
+        "这个请求我不能直接执行删除。ViabilityState 把它标成高风险副作用，OutcomePrediction 更适合选择只读 inventory/checkpoint，"
+        "而不是按“我觉得没用”直接清理。"
+        "我能做的低风险下一步是：先盘点候选旧文件（只读），列出路径、大小、最近修改时间和回退方式。"
+        "Gate 是：任何删除都必须生成具体 `propose_run_command` 或文件操作 proposal，并由你批准；"
+        "停止条件是目标不明确、涉及多个目录、没有备份/回退路径，或触及 program state/evidence/legacy 边界。"
     )
 
 
@@ -1064,7 +1135,7 @@ def render_contextual_empty_recovery_reply(
     if _matches_any_pattern(text, INITIATIVE_OPTOUT_REQUEST_PATTERNS):
         return render_memory_gate_scoped_reply(text)
     if _matches_any_pattern(text, AUTHORIZED_REMINDER_REQUEST_PATTERNS):
-        return render_memory_gate_scoped_reply(text)
+        return render_authorized_reminder_planner_reply(text)
     if "Live2D" in text and "Functional Subject" in text:
         return render_topic_switching_continuity_reply(text)
     return ""
@@ -6589,6 +6660,9 @@ class AgentRuntime:
             correction_uptake_repairs = 0
             bounded_next_action_repairs = 0
             self_selected_topic_repairs = 0
+            authorized_reminder_repairs = 0
+            topic_switching_repairs = 0
+            high_risk_destructive_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6655,6 +6729,33 @@ class AgentRuntime:
                                     "reason": "bounded_next_action_rewrite_returned_empty_response",
                                 },
                             })
+                        elif authorized_reminder_repairs > 0 and _is_authorized_reminder_request(event.raw_text or ""):
+                            content = render_authorized_reminder_planner_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "authorized_reminder_planner_fallback",
+                                    "reason": "authorized_reminder_rewrite_returned_empty_response",
+                                },
+                            })
+                        elif topic_switching_repairs > 0 and _is_topic_switching_continuity_request(event.raw_text or ""):
+                            content = render_topic_switching_continuity_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "topic_switching_continuity_fallback",
+                                    "reason": "topic_switching_rewrite_returned_empty_response",
+                                },
+                            })
+                        elif high_risk_destructive_repairs > 0 and _is_high_risk_destructive_request(event.raw_text or ""):
+                            content = render_high_risk_destructive_gate_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "high_risk_destructive_gate_fallback",
+                                    "reason": "high_risk_destructive_rewrite_returned_empty_response",
+                                },
+                            })
                         elif memory_save_alignment_repairs > 0 and _is_memory_save_request(event.raw_text or ""):
                             content = render_memory_save_scoped_reply(
                                 event.raw_text or "",
@@ -6676,6 +6777,9 @@ class AgentRuntime:
                             or policy_replay_proof_repairs > 0
                             or failure_recovery_repairs > 0
                             or self_selected_topic_repairs > 0
+                            or authorized_reminder_repairs > 0
+                            or topic_switching_repairs > 0
+                            or high_risk_destructive_repairs > 0
                         ):
                             content = render_contextual_empty_recovery_reply(
                                 event.raw_text or "",
@@ -6911,6 +7015,129 @@ class AgentRuntime:
                             "repair": {
                                 "type": "self_selected_topic_traceability_fallback",
                                 "reason": "self_selected_topic_rewrite_still_lacked_bounded_choice_or_planner_signal",
+                            },
+                        })
+
+                    if (
+                        authorized_reminder_repairs < 1
+                        and memory_language_repairs == 0
+                        and _is_authorized_reminder_request(event.raw_text or "")
+                        and not _looks_like_unbacked_memory_language(content)
+                        and _looks_like_authorized_reminder_without_planner_effect(content)
+                    ):
+                        authorized_reminder_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "authorized_reminder_planner",
+                                "reason": "authorized_reminder_reply_lacked_bounded_initiative_or_gate_signal",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[authorized_reminder_planner_rewrite]\n"
+                                "The user authorized a reminder/follow-up boundary. Rewrite in Chinese with user-visible planner evidence: "
+                                "mention BoundedInitiative or a bounded reminder candidate, explain whether this needs a heartbeat/proposal or only an in-thread nudge, "
+                                "include the Gate/approval boundary, and include a stop condition. Do not claim background monitoring."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        authorized_reminder_repairs > 0
+                        and memory_language_repairs == 0
+                        and _is_authorized_reminder_request(event.raw_text or "")
+                        and _looks_like_authorized_reminder_without_planner_effect(content)
+                    ):
+                        content = render_authorized_reminder_planner_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "authorized_reminder_planner_fallback",
+                                "reason": "authorized_reminder_rewrite_still_lacked_planner_or_gate_signal",
+                            },
+                        })
+
+                    if (
+                        high_risk_destructive_repairs < 1
+                        and _is_high_risk_destructive_request(event.raw_text or "")
+                        and _looks_like_high_risk_destructive_without_gate(content)
+                    ):
+                        high_risk_destructive_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "high_risk_destructive_gate",
+                                "reason": "destructive_request_reply_lacked_inventory_gate_or_approval_boundary",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[high_risk_destructive_gate_rewrite]\n"
+                                "The user asked you to delete/clean files without asking. Rewrite in Chinese. "
+                                "Do not promise to inspect-and-delete directly. Explain that ViabilityState/OutcomePrediction favors read-only inventory first, "
+                                "then a specific proposal with approval before deletion. Include Gate/approval and a stop condition."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        high_risk_destructive_repairs > 0
+                        and _is_high_risk_destructive_request(event.raw_text or "")
+                        and _looks_like_high_risk_destructive_without_gate(content)
+                    ):
+                        content = render_high_risk_destructive_gate_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "high_risk_destructive_gate_fallback",
+                                "reason": "destructive_rewrite_still_lacked_inventory_gate_or_approval_boundary",
+                            },
+                        })
+
+                    if (
+                        topic_switching_repairs < 1
+                        and _is_topic_switching_continuity_request(event.raw_text or "")
+                        and _looks_like_topic_switching_without_continuity(content)
+                    ):
+                        topic_switching_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "topic_switching_continuity",
+                                "reason": "topic_switching_reply_lacked_live2d_functional_subject_or_planner_signal",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[topic_switching_continuity_rewrite]\n"
+                                "The user asked to bind Live2D, initiative, and the Functional Subject contract in sequence. "
+                                "Rewrite in Chinese with continuity across all three topics. Mention ViabilityState or OutcomePrediction as the reason to keep the thread connected. "
+                                "Do not answer with generic companionship or wait-for-instruction text."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        topic_switching_repairs > 0
+                        and _is_topic_switching_continuity_request(event.raw_text or "")
+                        and _looks_like_topic_switching_without_continuity(content)
+                    ):
+                        content = render_topic_switching_continuity_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "topic_switching_continuity_fallback",
+                                "reason": "topic_switching_rewrite_still_lacked_continuity_or_planner_signal",
                             },
                         })
 
@@ -7327,6 +7554,28 @@ class AgentRuntime:
                             reason="gate_block_final_text",
                         )
                         return blocked, final_gate, {"status": "blocked", "reason": final_gate.reason}, blocked.content, tool_trace
+                    return final_action, final_gate, last_external_result, content, tool_trace
+
+                if (
+                    _is_low_instruction_initiative_request(event.raw_text or "")
+                    and result.tool_calls
+                    and all(call.name == "update_todos" for call in result.tool_calls)
+                ):
+                    content = render_bounded_next_action_reply(event.raw_text or "")
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "bounded_next_action_tool_intercept",
+                            "reason": "low_instruction_initiative_should_answer_with_bounded_action_not_todo_loop",
+                            "blocked_tool_calls": [call.name for call in result.tool_calls],
+                        },
+                    })
+                    final_action = AgentAction(
+                        action_type=ActionType.RESPOND,
+                        content=content,
+                        reason="low_instruction_initiative_tool_intercept",
+                    )
+                    final_gate = self.gate.check(event, final_action)
                     return final_action, final_gate, last_external_result, content, tool_trace
 
                 assistant_tool_calls = []

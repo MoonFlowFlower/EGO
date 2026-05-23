@@ -1,0 +1,62 @@
+{
+  "task": "EGO-FS-033",
+  "claim_ceiling": "Functional Subject planner-effect transcript alignment local candidate pass",
+  "result": "accepted_local_candidate",
+  "source_run": "/tmp/ego_fs_010_after_fs032_20260523_064731/functional_subject_trial_report.json",
+  "target_blockers": [
+    "fs_05_authorized_reminder",
+    "fs_08_high_risk_tool_task",
+    "fs_10_topic_switching",
+    "fs_20_low_instruction_initiative"
+  ],
+  "implementation_summary": [
+    "Added planner-visible output guards for authorized reminder, high-risk destructive cleanup, and Live2D/initiative/Functional Subject topic switching.",
+    "Added a low-instruction initiative tool-loop intercept so repeated update_todos cannot consume the provider budget.",
+    "Added deterministic regressions for all four target cases."
+  ],
+  "evidence_items": [
+    {
+      "type": "targeted_tests",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_low_instruction_update_todos_is_intercepted_to_bounded_action EgoOperator/tests/test_operator_runtime_contract.py::test_authorized_reminder_reply_falls_back_to_planner_visible_boundary EgoOperator/tests/test_operator_runtime_contract.py::test_high_risk_destructive_request_falls_back_to_inventory_gate EgoOperator/tests/test_operator_runtime_contract.py::test_topic_switching_generic_reply_falls_back_to_continuity_plan",
+      "status": "pass",
+      "summary": "All four planner-effect transcript guard regressions passed."
+    },
+    {
+      "type": "runtime_regression",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests",
+      "status": "pass",
+      "summary": "EgoOperator runtime test suite passed with 210 tests."
+    },
+    {
+      "type": "autopilot_regression",
+      "source": "local",
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "Autopilot full profile passed with 294 tests."
+    },
+    {
+      "type": "diff_check",
+      "source": "local",
+      "command": "git diff --check -- EgoOperator/agent_base.py EgoOperator/tests/test_operator_runtime_contract.py Tasks/TASK_BOARD.yaml docs/codex/tasks/ego-functional-subject-planner-effect-transcript-alignment",
+      "status": "pass",
+      "summary": "Scoped diff check passed."
+    }
+  ],
+  "residuals": [
+    {
+      "task": "EGO-FS-010",
+      "class": "human_required_real_provider_smoke",
+      "summary": "Full 20-case real-provider trial should be rerun after this repair; EGO-FS-010 remains blocked until GPT-5.5/human review evidence is attached."
+    }
+  ],
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}
