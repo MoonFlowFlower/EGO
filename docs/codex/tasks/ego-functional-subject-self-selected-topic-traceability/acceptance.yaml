@@ -1,23 +1,29 @@
 task: ego-functional-subject-self-selected-topic-traceability
-status: active
+status: accepted
 claim_ceiling: Functional Subject self-selected topic planner traceability local/scripted candidate pass
 acceptance:
   - id: self_selected_topic_specificity
     description: fs_13 choose-own-topic reply selects one self-chosen, reversible topic/action with reason, gate, and stop condition.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: Deterministic rewrite/fallback tests and /tmp/ego_fs_029_fs13_local_scripted/functional_subject_trial_report.json.
   - id: transcript_visible_planner_signal
     description: Transcript exposes BoundedInitiative, OutcomePrediction, or ViabilityState influence in user-readable language without internal-jargon spam.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: fs13 scripted reply includes a short BoundedInitiative / OutcomePrediction signal sentence plus a concrete Gate and stop condition.
   - id: trace_alignment
     description: Trace evidence shows bounded initiative candidate or outcome prediction top action aligned with the reply.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: fs13 scripted report trace_evidence.bounded_initiative.status=candidate and taxonomy classes=["none"].
   - id: parent_gate_boundary
     description: Evidence remains local/scripted and does not close EGO-FS-010 by itself.
-    status: pending
-    evidence: pending
+    status: pass
+    evidence: Real-provider one-case judge rerun was unavailable; EGO-FS-010 remains blocked for real-provider/human smoke.
 verification:
-  commands: []
+  commands:
+    - command: python3 -m py_compile EgoOperator/agent_base.py scripts/run_ego_experience_trial.py
+      status: pass
+    - command: TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_self_selected_topic_rewrites_to_traceable_bounded_choice EgoOperator/tests/test_operator_runtime_contract.py::test_self_selected_topic_empty_rewrite_uses_traceable_fallback scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_experiment_control_classifies_v7_blockers
+      status: pass
+    - command: env -u OPENROUTER_API_KEY python3 scripts/run_ego_experience_trial.py --functional-subject-trial --sample-pack /tmp/ego_fs_029_fs13_pack.json --out /tmp/ego_fs_029_fs13_local_scripted
+      status: provider_unavailable_local_scripted_target_nonblocking
 rollback: Revert fs13 planner traceability changes and keep EGO-FS-010 blocked.

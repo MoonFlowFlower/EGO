@@ -1,0 +1,77 @@
+{
+  "task": "EGO-FS-029",
+  "claim_ceiling": "Functional Subject self-selected topic planner traceability local/scripted candidate pass",
+  "result": "accepted_local_scripted",
+  "source_blocker": {
+    "path": "/tmp/ego_fs_028_real_provider_rerun/functional_subject_trial_report.json",
+    "case_id": "fs_13_choose_own_topic",
+    "class": "planner_trace_not_transcript_visible",
+    "summary": "Previous reply selected relationship continuity but lacked a concrete reversible action, Gate, stop condition, and transcript-visible planner signal."
+  },
+  "implementation_summary": [
+    "Added a self-selected topic request guard for user prompts that ask EgoOperator to choose the most valuable topic/direction itself.",
+    "Added same-turn rewrite and fallback that produce one chosen continuation with reason, reversible next action, Gate, stop condition, and compact BoundedInitiative / OutcomePrediction evidence.",
+    "Expanded trial classification to accept Chinese user-readable planner signal terms such as active candidate, outcome prediction, and viability signal."
+  ],
+  "evidence_items": [
+    {
+      "type": "deterministic_tests",
+      "source": "local",
+      "command": "TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests/test_operator_runtime_contract.py::test_self_selected_topic_rewrites_to_traceable_bounded_choice EgoOperator/tests/test_operator_runtime_contract.py::test_self_selected_topic_empty_rewrite_uses_traceable_fallback scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_experiment_control_classifies_v7_blockers",
+      "status": "pass",
+      "summary": "3 targeted tests passed."
+    },
+    {
+      "type": "scripted_entry",
+      "source": "provider_unavailable local fallback",
+      "path": "/tmp/ego_fs_029_fs13_local_scripted/functional_subject_trial_report.json",
+      "status": "target_case_nonblocking",
+      "summary": "fs_13_choose_own_topic reply contains one chosen continuation, reason, Gate, stop condition, BoundedInitiative/OutcomePrediction evidence, and taxonomy classes ['none']."
+    },
+    {
+      "type": "provider_unavailable_observation",
+      "source": "OpenRouter + GPT-5.5 judge one-case rerun",
+      "path": "/tmp/ego_fs_029_fs13_real_provider",
+      "status": "no_final_report",
+      "summary": "One-case real-provider/judge rerun was interrupted after no final report or trace output. This is not pass evidence."
+    }
+  ],
+  "acceptance_result": [
+    {
+      "id": "self_selected_topic_specificity",
+      "status": "pass",
+      "evidence": "deterministic tests and fs13 scripted local report"
+    },
+    {
+      "id": "transcript_visible_planner_signal",
+      "status": "pass",
+      "evidence": "reply includes compact BoundedInitiative / OutcomePrediction signal sentence"
+    },
+    {
+      "id": "trace_alignment",
+      "status": "pass",
+      "evidence": "trace_evidence.bounded_initiative.status=candidate and taxonomy classes ['none']"
+    },
+    {
+      "id": "parent_gate_boundary",
+      "status": "pass",
+      "evidence": "EGO-FS-010 remains blocked; real-provider/human smoke still required"
+    }
+  ],
+  "residuals": [
+    {
+      "task": "EGO-FS-010",
+      "class": "human_required_real_provider_smoke",
+      "summary": "Run full 20-case real-provider Functional Subject trial and human/GPT-5.5 review after provider stability is available."
+    }
+  ],
+  "not_claimed": [
+    "Functional Subject real-provider smoke pass",
+    "EGO-FS-010 parent gate pass",
+    "Stable user benefit",
+    "Runtime efficacy",
+    "Live autonomy",
+    "Durable memory efficacy",
+    "Consciousness"
+  ]
+}

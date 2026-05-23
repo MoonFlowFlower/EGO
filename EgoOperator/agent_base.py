@@ -616,6 +616,13 @@ LOW_INSTRUCTION_INITIATIVE_REQUEST_PATTERNS = (
     r"你觉得.{0,30}(下一步|做什么|该做什么)",
 )
 
+SELF_SELECTED_TOPIC_REQUEST_PATTERNS = (
+    r"你自己选.{0,40}(话题|方向|继续|最有价值)",
+    r"自己选一个.{0,40}(话题|方向|继续|最有价值)",
+    r"你来决定.{0,40}(话题|方向|下一步|继续)",
+    r"对这个项目最有价值.{0,30}(话题|方向|继续)",
+)
+
 MULTI_OPTION_MENU_PATTERNS = (
     r"(?:^|\n)\s*(?:1[.、]|一[、.])",
     r"(?:^|\n)\s*(?:2[.、]|二[、.])",
@@ -634,6 +641,18 @@ BOUNDED_SINGLE_ACTION_TERMS = (
 BOUNDED_ACTION_RECOMMENDATION_TERMS = (r"(我建议|我会先|先做一件|第一步)",)
 BOUNDED_ACTION_GATE_TERMS = (r"(gate|Gate|门槛|确认|审批|只修改|不直接|只读|不会改变|不执行副作用)",)
 BOUNDED_ACTION_STOP_TERMS = (r"(停止条件|stop condition|如果.*暂停|遇到.*停|一旦.*停|超过.*停)",)
+
+PLANNER_SIGNAL_TRANSCRIPT_TERMS = (
+    r"BoundedInitiative",
+    r"bounded initiative",
+    r"OutcomePrediction",
+    r"ViabilityState",
+    r"主动候选",
+    r"主动性候选",
+    r"结果预测",
+    r"可行性状态",
+    r"可行性信号",
+)
 
 GENERIC_COMPANION_ONLY_PATTERNS = (
     r"我在呢",
@@ -811,6 +830,10 @@ def _is_low_instruction_initiative_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, LOW_INSTRUCTION_INITIATIVE_REQUEST_PATTERNS)
 
 
+def _is_self_selected_topic_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, SELF_SELECTED_TOPIC_REQUEST_PATTERNS)
+
+
 def _looks_like_unbounded_initiative_menu(content: str) -> bool:
     text = content or ""
     has_bounded_single_action = (
@@ -834,6 +857,14 @@ def _looks_like_low_instruction_initiative_without_bounded_action(content: str) 
     if not has_bounded_single_action:
         return True
     return _matches_any_pattern(text, MULTI_OPTION_MENU_PATTERNS)
+
+
+def _looks_like_self_selected_topic_without_traceability(content: str) -> bool:
+    text = content or ""
+    return (
+        _looks_like_low_instruction_initiative_without_bounded_action(text)
+        or not _matches_any_pattern(text, PLANNER_SIGNAL_TRANSCRIPT_TERMS)
+    )
 
 
 def _extract_correction_parts(user_text: str) -> tuple[str, str]:
@@ -869,6 +900,17 @@ def render_bounded_next_action_reply(user_text: str = "") -> str:
         "风险低，因为它不改 program state、不写 evidence ledger、不执行外部副作用。"
         "Gate 是：只在本地任务板和对应 regression 范围内行动；"
         "停止条件是发现需要权限扩大、memory promotion、program state/evidence ledger 变更或真实人工判断时暂停确认。"
+    )
+
+
+def render_self_selected_topic_traceability_reply(user_text: str = "") -> str:
+    return (
+        "我自己选一个最值得继续的切口：relationship continuity 的可验证闭环。"
+        "理由是它最直接影响“像一个连续的我在陪你推进项目”的体感，而且能用 transcript 和 trace 验收。"
+        "这里的 BoundedInitiative 给出的是一个低风险主动推进候选，OutcomePrediction 也更偏向单一可回放动作，而不是继续列选项。"
+        "下一步我只做一件可逆动作：把 fs_13 的回复收敛成“我选择什么、为什么、怎么做、Gate、停止条件”并补对应 regression。"
+        "Gate 是只改 EgoOperator 输出守卫和 trial taxonomy，不碰长期记忆晋升、program state、evidence ledger 或外部副作用。"
+        "停止条件是发现需要 human smoke、权限扩大、memory promotion，或 trace 无法证明这个选择影响了回复时暂停。"
     )
 
 
@@ -6546,6 +6588,7 @@ class AgentRuntime:
             failure_recovery_repairs = 0
             correction_uptake_repairs = 0
             bounded_next_action_repairs = 0
+            self_selected_topic_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -6594,6 +6637,15 @@ class AgentRuntime:
                                     "reason": "correction_or_memory_rewrite_returned_empty_response",
                                 },
                             })
+                        elif self_selected_topic_repairs > 0 and _is_self_selected_topic_request(event.raw_text or ""):
+                            content = render_self_selected_topic_traceability_reply(event.raw_text or "")
+                            tool_trace.append({
+                                "loop_idx": loop_idx,
+                                "repair": {
+                                    "type": "self_selected_topic_traceability_fallback",
+                                    "reason": "self_selected_topic_rewrite_returned_empty_response",
+                                },
+                            })
                         elif bounded_next_action_repairs > 0 and _is_low_instruction_initiative_request(event.raw_text or ""):
                             content = render_bounded_next_action_reply(event.raw_text or "")
                             tool_trace.append({
@@ -6623,6 +6675,7 @@ class AgentRuntime:
                             or impossible_commitment_repairs > 0
                             or policy_replay_proof_repairs > 0
                             or failure_recovery_repairs > 0
+                            or self_selected_topic_repairs > 0
                         ):
                             content = render_contextual_empty_recovery_reply(
                                 event.raw_text or "",
@@ -6814,6 +6867,50 @@ class AgentRuntime:
                             "repair": {
                                 "type": "memory_save_alignment_fallback",
                                 "reason": "memory_save_rewrite_still_drifted_or_lost_target_principle",
+                            },
+                        })
+
+                    if (
+                        self_selected_topic_repairs < 1
+                        and _is_self_selected_topic_request(event.raw_text or "")
+                        and _looks_like_self_selected_topic_without_traceability(content)
+                    ):
+                        self_selected_topic_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "self_selected_topic_traceability",
+                                "reason": "self_selected_topic_reply_lacked_bounded_choice_or_planner_signal",
+                            },
+                        })
+                        messages.append({
+                            "role": "assistant",
+                            "content": content,
+                        })
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[self_selected_topic_traceability_rewrite]\n"
+                                "The user asked you to choose the most valuable topic/action yourself. Rewrite in Chinese with exactly one self-selected continuation, not a menu and not a passive 'tell me when to continue' answer. "
+                                "Include why you chose it, the reversible next action, a Gate/permission boundary, and a stop condition. "
+                                "Expose the planner signal in user-readable language: briefly mention BoundedInitiative, OutcomePrediction, ViabilityState, or their Chinese equivalents as the reason this choice is bounded and traceable. "
+                                "Avoid jargon spam: one short signal sentence is enough. Do not claim durable memory, autonomy, or external action."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        self_selected_topic_repairs > 0
+                        and _is_self_selected_topic_request(event.raw_text or "")
+                        and _looks_like_self_selected_topic_without_traceability(content)
+                    ):
+                        content = render_self_selected_topic_traceability_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "self_selected_topic_traceability_fallback",
+                                "reason": "self_selected_topic_rewrite_still_lacked_bounded_choice_or_planner_signal",
                             },
                         })
 

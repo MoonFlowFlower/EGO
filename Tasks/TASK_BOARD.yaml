@@ -28,7 +28,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "EGO-FS-029 active after EGO-FS-028 accepted locally; parent smoke remains blocked by fs13 self-selected topic planner traceability and later human/smoke gates."
+    next_action: "EGO-FS-029 accepted locally; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -257,7 +257,7 @@ tasks:
     observation_class: human_required
     evidence_level: E2
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "EGO-FS-027 accepted locally and v7 real-provider rerun improved fs_07/fs_15/fs_20, but judge stayed partial; start EGO-FS-028 for remaining provider fallback, memory-gate wording, and trace/planner transcript evidence gaps."
+    next_action: "After EGO-FS-028 and EGO-FS-029 local/scripted repairs, rerun the full 20-case Functional Subject real-provider trial and attach GPT-5.5/human review evidence before any closeout."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -689,13 +689,13 @@ tasks:
     title: "EgoOperator: Functional Subject self-selected topic planner traceability repair"
     kind: task
     parent: EGO-FS-EPIC-10
-    status: active
+    status: accepted
     layer: functional_subject_experience
     owner: codex
     observation_class: scripted_with_llm_judge
     evidence_level: E2
     claim_ceiling: Functional Subject self-selected topic planner traceability local/scripted candidate pass
-    next_action: "Repair fs_13_choose_own_topic so self-selected topics show bounded initiative, OutcomePrediction, or ViabilityState influence in transcript and trace without closing EGO-FS-010."
+    next_action: "Accepted locally/scripted; EGO-FS-010 remains blocked pending full real-provider/human smoke."
     acceptance:
       - "fs_13 choose-own-topic reply selects one self-chosen, reversible topic/action with reason, gate, and stop condition."
       - "Transcript exposes BoundedInitiative, OutcomePrediction, or ViabilityState influence in user-readable language without turning into internal jargon spam."
@@ -706,6 +706,7 @@ tasks:
       - "/tmp/ego_fs_028_real_provider_rerun/functional_subject_trial_report.json"
       - "docs/codex/tasks/ego-functional-subject-provider-memory-trace-reliability/EVIDENCE.transcript_reliability.json"
       - "docs/codex/tasks/ego-functional-subject-self-selected-topic-traceability/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-self-selected-topic-traceability/EVIDENCE.self_selected_topic_traceability.json"
     external_refs:
       github_issue: null
 

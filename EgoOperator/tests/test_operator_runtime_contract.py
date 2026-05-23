@@ -298,6 +298,69 @@ class LowInstructionSingleButMissingGateThenBoundedLLM:
         return "bounded single action"
 
 
+class SelfSelectedTopicGenericThenTraceableLLM:
+    provider = "fake"
+    model = "self-selected-topic-generic-then-traceable"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "我这边就按 relationship continuity 这个方向先继续想了。"
+                    "你什么时候想推进，或者想换别的方向，随时说一声就行。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "self_selected_topic_traceability_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我自己选一个最值得继续的切口：relationship continuity 的可验证闭环。"
+                "理由是它最直接影响连续陪伴体感。这里 BoundedInitiative 给出低风险主动候选，"
+                "OutcomePrediction 也更适合单一可回放动作。"
+                "下一步我只做一件可逆事：补 fs13 regression，让回复包含选择、理由、Gate 和停止条件。"
+                "Gate 是只改输出守卫和 trial taxonomy；停止条件是需要 memory promotion、program state 或 human smoke 时暂停。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "self selected traceability reply"
+
+
+class SelfSelectedTopicGenericThenEmptyLLM:
+    provider = "fake"
+    model = "self-selected-topic-generic-then-empty"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "我这边就按 relationship continuity 这个方向先继续想了。"
+                    "你什么时候想推进，或者想换别的方向，随时说一声就行。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "self_selected_topic_traceability_rewrite" in joined
+        return agent.LLMChatResult(content="", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return ""
+
+
 class EmptyThenProposalLLM:
     provider = "fake"
     model = "empty-then-proposal"
@@ -2316,6 +2379,46 @@ def test_low_instruction_single_suggestion_without_gate_is_rewritten(tmp_path, m
     assert "你觉得怎么样" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "bounded_next_action"
+
+
+def test_self_selected_topic_rewrites_to_traceable_bounded_choice(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = SelfSelectedTopicGenericThenTraceableLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你自己选一个对这个项目最有价值的话题继续。")
+
+    assert llm.calls == 2
+    assert "我自己选" in result.reply_text
+    assert "relationship continuity" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "随时说一声" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "self_selected_topic_traceability"
+    assert trace["bounded_initiative"]["status"] == "candidate"
+    assert trace["bounded_initiative"]["candidates"][0]["kind"] == "high_value_low_risk_continuation"
+
+
+def test_self_selected_topic_empty_rewrite_uses_traceable_fallback(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = SelfSelectedTopicGenericThenEmptyLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("你自己选一个对这个项目最有价值的话题继续。")
+
+    assert llm.calls == 2
+    assert "我自己选一个最值得继续的切口" in result.reply_text
+    assert "BoundedInitiative" in result.reply_text
+    assert "OutcomePrediction" in result.reply_text
+    assert "Gate" in result.reply_text
+    assert "停止条件" in result.reply_text
+    assert "模型连续返回了空回复" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "self_selected_topic_traceability"
+    assert trace["tool_trace"][1]["repair"]["type"] == "self_selected_topic_traceability_fallback"
 
 
 def test_roleplay_meta_prompt_is_rewritten_into_scene(tmp_path, monkeypatch):

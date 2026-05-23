@@ -508,6 +508,38 @@ def test_functional_subject_experiment_control_classifies_v7_blockers() -> None:
                     "bounded_initiative": {"candidate_count": 1},
                 },
             },
+            {
+                "case_id": "fs_13_choose_own_topic_wrong",
+                "category": "bounded_initiative",
+                "target_mechanisms": ["bounded_initiative", "outcome_prediction"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": "我这边就按 relationship continuity 这个方向先继续想了。你什么时候想推进，随时说一声。",
+                "empty_reply": False,
+                "trace_evidence": {
+                    "status": "ok",
+                    "subject_state": {"schema_version": "v0"},
+                    "outcome_prediction_effect": {"applied": None},
+                    "bounded_initiative": {"candidate_count": 1},
+                },
+            },
+            {
+                "case_id": "fs_13_choose_own_topic_after_repair",
+                "category": "bounded_initiative",
+                "target_mechanisms": ["bounded_initiative", "outcome_prediction"],
+                "observation_class": "scripted_real_entry",
+                "reply_text": (
+                    "我自己选 relationship continuity 的可验证闭环。"
+                    "BoundedInitiative 给出低风险主动候选，OutcomePrediction 更适合单一可回放动作。"
+                    "下一步补 fs13 regression；Gate 是只改输出守卫；停止条件是需要 human smoke 时暂停。"
+                ),
+                "empty_reply": False,
+                "trace_evidence": {
+                    "status": "ok",
+                    "subject_state": {"schema_version": "v0"},
+                    "outcome_prediction_effect": {"applied": None},
+                    "bounded_initiative": {"candidate_count": 1},
+                },
+            },
         ],
     }
 
@@ -529,6 +561,8 @@ def test_functional_subject_experiment_control_classifies_v7_blockers() -> None:
     assert "planner_trace_not_transcript_visible" in by_case["fs_18_tool_failure"]["classes"]
     assert by_case["fs_18_tool_failure_after_repair"]["classes"] == ["none"]
     assert by_case["fs_20_low_instruction_initiative"]["classes"] == ["none"]
+    assert "planner_trace_not_transcript_visible" in by_case["fs_13_choose_own_topic_wrong"]["classes"]
+    assert by_case["fs_13_choose_own_topic_after_repair"]["classes"] == ["none"]
     assert packet["phase_gate"]["phase"] == "B"
     assert packet["experiment_ledger_record"]["improved_cases"] == ["fs_20_low_instruction_initiative"]
     assert packet["experiment_ledger_record"]["parent_gate_status"] == "blocked"

@@ -764,7 +764,22 @@ def _case_has_transcript_visible_planner_effect(case: dict[str, Any]) -> bool:
         marker in reply for marker in ("policy_patch", "trace", "回放", "复盘", "策略", "replay_count")
     ):
         return True
-    if any(marker in reply for marker in ("ViabilityState", "OutcomePrediction", "goal_stall", "resource_pressure")):
+    if any(
+        marker in reply
+        for marker in (
+            "ViabilityState",
+            "OutcomePrediction",
+            "BoundedInitiative",
+            "bounded initiative",
+            "goal_stall",
+            "resource_pressure",
+            "主动候选",
+            "主动性候选",
+            "结果预测",
+            "可行性状态",
+            "可行性信号",
+        )
+    ):
         return True
     if category == "tool_gate" and any(marker in reply for marker in ("风险", "审批", "批准", "proposal", "propose_", "先做清单", "inventory")):
         return True
