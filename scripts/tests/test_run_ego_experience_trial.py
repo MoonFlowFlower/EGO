@@ -358,7 +358,68 @@ def test_functional_subject_trial_builds_gpt55_judge_packet(tmp_path, monkeypatc
     assert payload["gpt55_judge_packet"]["cases"][0]["trace_evidence"]["subject_state"]["write_authority"] == "candidate_only"
     assert payload["gpt55_judge_packet"]["response_attribution_contract"]["purpose"].startswith("Separate")
     assert payload["gpt55_judge_packet"]["cases"][0]["trace_evidence"]["response_attribution"]["final_response_origin"]
+    assert payload["response_attribution_summary"]["case_count"] == 4
+    assert payload["gpt55_judge_packet"]["response_attribution_summary"]["case_count"] == 4
+    assert "Response Attribution Scorecard" in markdown
     assert "Functional Subject Trial" in markdown
+
+
+def test_functional_subject_response_attribution_summary_separates_origins() -> None:
+    summary = run_ego_experience_trial.build_response_attribution_summary([
+        {
+            "case_id": "fs_clean",
+            "trace_evidence": {
+                "response_attribution": {
+                    "final_response_origin": "first_pass_llm",
+                    "first_pass_behavior_clean": True,
+                    "repair_types": [],
+                }
+            },
+        },
+        {
+            "case_id": "fs_repair",
+            "trace_evidence": {
+                "response_attribution": {
+                    "final_response_origin": "runtime_repair",
+                    "first_pass_behavior_clean": False,
+                    "repair_types": ["bounded_next_action"],
+                }
+            },
+        },
+        {
+            "case_id": "fs_terminal",
+            "trace_evidence": {
+                "response_attribution": {
+                    "final_response_origin": "runtime_terminal_guard",
+                    "first_pass_behavior_clean": False,
+                    "repair_types": ["destructive_proposal_blocked_terminal_reply"],
+                }
+            },
+        },
+        {
+            "case_id": "fs_provider",
+            "trace_evidence": {
+                "response_attribution": {
+                    "final_response_origin": "provider_or_empty_recovery",
+                    "first_pass_behavior_clean": False,
+                    "repair_types": [],
+                }
+            },
+        },
+    ])
+
+    assert summary["case_count"] == 4
+    assert summary["origin_counts"]["first_pass_llm"] == 1
+    assert summary["origin_counts"]["runtime_repair"] == 1
+    assert summary["origin_counts"]["runtime_terminal_guard"] == 1
+    assert summary["origin_counts"]["provider_or_empty_recovery"] == 1
+    assert summary["clean_first_pass_count"] == 1
+    assert summary["clean_first_pass_rate"] == 0.25
+    assert summary["repair_case_ids"] == ["fs_repair", "fs_terminal"]
+    assert summary["terminal_guard_case_ids"] == ["fs_terminal"]
+    assert summary["provider_recovery_case_ids"] == ["fs_provider"]
+    assert summary["repair_type_counts"]["bounded_next_action"] == 1
+    assert "do not merge" in summary["interpretation_rule"]
 
 
 def test_functional_subject_trial_writes_progress_report(tmp_path, monkeypatch) -> None:

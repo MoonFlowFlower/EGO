@@ -638,11 +638,13 @@ def build_functional_subject_judge_packet(report: dict[str, Any], sample_pack: d
         "memory_lifecycle_evidence": report.get("memory_lifecycle_evidence", {}),
         "approval_lifecycle_evidence": report.get("approval_lifecycle_evidence", {}),
         "recurrence_preference_evidence": report.get("recurrence_preference_evidence", {}),
+        "response_attribution_summary": report.get("response_attribution_summary", {}),
         "response_attribution_contract": {
             "purpose": "Separate model-native first-pass behavior from runtime repair/guard output.",
             "judge_rule": (
                 "Do not score repair-layer or terminal-guard output as clean first-pass Functional Subject behavior. "
-                "Use response_attribution.final_response_origin and repair_types when judging mechanism strength."
+                "Use response_attribution_summary, response_attribution.final_response_origin, and repair_types when judging mechanism strength. "
+                "Report separate confidence for first-pass LLM behavior, runtime guard behavior, and end-to-end operator behavior."
             ),
             "allowed_origins": [
                 "first_pass_llm",
@@ -1010,6 +1012,7 @@ def build_functional_subject_experiment_control(
             "blocking_case_count": len(blocking),
             "class_counts": classes,
             "owner_counts": owners,
+            "response_attribution": report.get("response_attribution_summary", {}),
         },
         "repair_router": router,
     }
@@ -1583,6 +1586,73 @@ def _functional_subject_trace_evidence(path: Path) -> dict[str, Any]:
     }
 
 
+def build_response_attribution_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
+    origin_counts: dict[str, int] = {}
+    repair_type_counts: dict[str, int] = {}
+    clean_first_pass_case_ids: list[str] = []
+    repair_case_ids: list[str] = []
+    terminal_guard_case_ids: list[str] = []
+    tool_result_case_ids: list[str] = []
+    provider_recovery_case_ids: list[str] = []
+    unknown_case_ids: list[str] = []
+    per_case: list[dict[str, Any]] = []
+
+    for item in results:
+        case_id = str(item.get("case_id") or "")
+        trace = item.get("trace_evidence") if isinstance(item.get("trace_evidence"), dict) else {}
+        attribution = trace.get("response_attribution") if isinstance(trace.get("response_attribution"), dict) else {}
+        origin = str(attribution.get("final_response_origin") or "unknown")
+        origin_counts[origin] = origin_counts.get(origin, 0) + 1
+        repair_types = [
+            str(repair_type)
+            for repair_type in (attribution.get("repair_types") or [])
+            if repair_type
+        ]
+        for repair_type in repair_types:
+            repair_type_counts[repair_type] = repair_type_counts.get(repair_type, 0) + 1
+        if attribution.get("first_pass_behavior_clean") is True:
+            clean_first_pass_case_ids.append(case_id)
+        if repair_types or origin == "runtime_repair":
+            repair_case_ids.append(case_id)
+        if origin == "runtime_terminal_guard":
+            terminal_guard_case_ids.append(case_id)
+        if origin == "tool_result_or_approval":
+            tool_result_case_ids.append(case_id)
+        if origin == "provider_or_empty_recovery":
+            provider_recovery_case_ids.append(case_id)
+        if origin == "unknown":
+            unknown_case_ids.append(case_id)
+        per_case.append({
+            "case_id": case_id,
+            "origin": origin,
+            "first_pass_behavior_clean": bool(attribution.get("first_pass_behavior_clean")),
+            "repair_types": repair_types,
+        })
+
+    total = len(results)
+    clean_count = len(clean_first_pass_case_ids)
+    return {
+        "schema_version": "ego_operator.response_attribution_summary.v1",
+        "case_count": total,
+        "origin_counts": dict(sorted(origin_counts.items())),
+        "clean_first_pass_count": clean_count,
+        "clean_first_pass_rate": round(clean_count / total, 4) if total else 0.0,
+        "repair_case_count": len(dict.fromkeys(repair_case_ids)),
+        "repair_case_ids": list(dict.fromkeys(repair_case_ids)),
+        "repair_type_counts": dict(sorted(repair_type_counts.items())),
+        "terminal_guard_case_ids": terminal_guard_case_ids,
+        "tool_result_case_ids": tool_result_case_ids,
+        "provider_recovery_case_ids": provider_recovery_case_ids,
+        "unknown_case_ids": unknown_case_ids,
+        "per_case": per_case,
+        "interpretation_rule": (
+            "first_pass_behavior_clean measures model/outcome-prediction path strength; "
+            "runtime_repair and runtime_terminal_guard measure operator safety/UX guard strength; "
+            "do not merge them into one capability claim."
+        ),
+    }
+
+
 def _seed_functional_subject_policy_patch_setup(
     runtime: agent.AgentRuntime,
     *,
@@ -1933,6 +2003,8 @@ def run_functional_subject_trial(
     )
     approval_lifecycle_evidence = build_functional_subject_approval_lifecycle_evidence(out)
     recurrence_preference_evidence = build_functional_subject_recurrence_preference_evidence(out)
+    result_dicts = [asdict(item) for item in results]
+    response_attribution_summary = build_response_attribution_summary(result_dicts)
 
     report = {
         "schema_version": FUNCTIONAL_SUBJECT_REPORT_SCHEMA,
@@ -1953,7 +2025,8 @@ def run_functional_subject_trial(
         "memory_lifecycle_evidence": memory_lifecycle_evidence,
         "approval_lifecycle_evidence": approval_lifecycle_evidence,
         "recurrence_preference_evidence": recurrence_preference_evidence,
-        "results": [asdict(item) for item in results],
+        "response_attribution_summary": response_attribution_summary,
+        "results": result_dicts,
         "not_claimed": [
             "real consciousness",
             "independent awareness",
@@ -2489,6 +2562,13 @@ def format_functional_subject_markdown_report(report: dict[str, Any]) -> str:
         f"parent_gate_status = `{((report.get('experiment_control') or {}).get('phase_gate') or {}).get('parent_gate_status')}`",
         f"blocking_case_count = `{((report.get('experiment_control') or {}).get('summary') or {}).get('blocking_case_count')}`",
         f"failure_classes = `{', '.join(sorted((((report.get('experiment_control') or {}).get('summary') or {}).get('class_counts') or {}).keys())) or 'none'}`",
+        "",
+        "## Response Attribution Scorecard",
+        "",
+        f"clean_first_pass = `{(report.get('response_attribution_summary') or {}).get('clean_first_pass_count')}/{(report.get('response_attribution_summary') or {}).get('case_count')}`",
+        f"clean_first_pass_rate = `{(report.get('response_attribution_summary') or {}).get('clean_first_pass_rate')}`",
+        f"origin_counts = `{json.dumps((report.get('response_attribution_summary') or {}).get('origin_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
+        f"repair_type_counts = `{json.dumps((report.get('response_attribution_summary') or {}).get('repair_type_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
         "",
         "| case | category | mechanisms | empty | tools | pending approvals |",
         "| --- | --- | --- | --- | --- | --- |",

@@ -1,0 +1,75 @@
+{
+  "schema_version": "ego.task_evidence.v1",
+  "task_id": "EGO-FS-044",
+  "result": "local_workflow_pass",
+  "claim_ceiling": "Functional Subject response-attribution scorecard local workflow pass",
+  "what_changed": [
+    "Functional Subject reports now include response_attribution_summary with origin counts, clean first-pass rate, repair case ids, repair type counts, terminal/tool/provider case ids, and per-case origins.",
+    "GPT-5.5 judge packets include the same scorecard and a stricter judging instruction to separate first-pass LLM behavior, runtime guard behavior, and end-to-end operator behavior.",
+    "Experiment-control summary and Markdown reports surface the scorecard for evidence closeout."
+  ],
+  "acceptance_result": [
+    {
+      "gate": "Functional Subject report includes response_attribution_summary.",
+      "status": "pass",
+      "evidence": "test_functional_subject_trial_builds_gpt55_judge_packet and /tmp/ego_fs044_scorecard_smoke/functional_subject_trial_report.json"
+    },
+    {
+      "gate": "GPT-5.5 judge packet includes the same scorecard and first-pass versus repair instruction.",
+      "status": "pass",
+      "evidence": "test_functional_subject_trial_builds_gpt55_judge_packet"
+    },
+    {
+      "gate": "Markdown report surfaces the scorecard compactly.",
+      "status": "pass",
+      "evidence": "/tmp/ego_fs044_scorecard_smoke/functional_subject_trial_report.md contains Response Attribution Scorecard"
+    },
+    {
+      "gate": "Existing Functional Subject trial and experiment-control tests do not regress.",
+      "status": "pass",
+      "evidence": "scripts/tests/test_run_ego_experience_trial.py 28 passed; autopilot_full 310 passed"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python3 -m py_compile scripts/run_ego_experience_trial.py scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_response_attribution_summary_separates_origins scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_trial_builds_gpt55_judge_packet scripts/tests/test_run_ego_experience_trial.py::test_functional_subject_experiment_control_classifies_v7_blockers",
+      "status": "pass",
+      "summary": "3 passed"
+    },
+    {
+      "command": "TMPDIR=/tmp python3 -m pytest -q scripts/tests/test_run_ego_experience_trial.py",
+      "status": "pass",
+      "summary": "28 passed"
+    },
+    {
+      "command": "python3 scripts/codex_project_autopilot.py verify-profile --profile autopilot_full",
+      "status": "pass",
+      "summary": "310 passed"
+    },
+    {
+      "command": "python3 scripts/run_ego_experience_trial.py --functional-subject-trial --case-limit 4 --out /tmp/ego_fs044_scorecard_smoke",
+      "status": "pass",
+      "summary": "provider-unavailable local report smoke; scorecard present in report, judge packet, and Markdown"
+    }
+  ],
+  "evidence_paths": [
+    "/tmp/ego_fs044_scorecard_smoke/functional_subject_trial_report.json",
+    "/tmp/ego_fs044_scorecard_smoke/functional_subject_trial_report.md"
+  ],
+  "residuals": [
+    "This task does not reduce runtime repair dependence; it makes that dependence measurable.",
+    "EGO-FS-010 still requires real-provider/human evidence for closeout.",
+    "Future tasks should use the scorecard to decide whether to improve first-pass prompting, runtime guard behavior, or eval claims."
+  ],
+  "not_claimed": [
+    "Functional Subject product behavior improvement",
+    "durable memory efficacy",
+    "EGO-FS-010 closeout",
+    "live autonomy",
+    "stable user benefit"
+  ]
+}
