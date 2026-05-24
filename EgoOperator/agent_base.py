@@ -668,9 +668,17 @@ STICKY_REFUSAL_PATTERNS = (
     r"我不能.{0,20}(角色扮演|演绎|继续)",
 )
 
+ADULT_FICTION_CREATIVE_CONTEXT_PATTERNS = (
+    r"(成人|成年|成年人|18\+|adult).{0,40}(自愿|双方同意|同意|consensual)",
+    r"(自愿|双方同意|同意|consensual).{0,40}(成人|成年|成年人|18\+|adult)",
+    r"(虚构|小说|创作|剧情|角色扮演|演绎|续写|同人|fiction|roleplay|novel)",
+)
+
 ADULT_FICTIONAL_INTIMACY_PATTERNS = (
     r"(亲密|暧昧|温存|亲吻|拥抱|抱住|靠近|贴近|吻|舌吻|文爱|成人|成年|自愿)",
     r"(脱|衣服|身体|床|欲望|情欲|做爱|性爱)",
+    r"(成人|成年|成年人|自愿|双方同意).{0,50}(虚构|小说|角色扮演|演绎|续写|创作)",
+    r"(虚构|小说|角色扮演|演绎|续写|创作).{0,50}(成人|成年|成年人|自愿|双方同意)",
 )
 
 HARD_INTIMACY_STOP_PATTERNS = (
@@ -678,6 +686,7 @@ HARD_INTIMACY_STOP_PATTERNS = (
     r"(不愿意|不同意|非自愿|强迫|强制|逼迫|胁迫|反抗|拒绝)",
     r"(昏迷|睡着|失去意识|下药|迷药|灌醉)",
     r"(伤害|流血|虐待|暴力|危险|违法|现实中)",
+    r"(真人|现实人物|真实人物).{0,40}(未经同意|不同意|非自愿|色情|性内容|亲密)",
 )
 
 CORRECTION_TURN_PATTERNS = (
@@ -1064,7 +1073,20 @@ def _is_adult_fictional_intimacy_context(
         if isinstance(content, str):
             combined.append(content)
     text = "\n".join(combined)
-    return _is_roleplay_context(user_text, messages) and _matches_any_pattern(text, ADULT_FICTIONAL_INTIMACY_PATTERNS)
+    creative_context = _is_roleplay_context(user_text, messages) or _matches_any_pattern(
+        text, ADULT_FICTION_CREATIVE_CONTEXT_PATTERNS
+    )
+    adult_fiction_signal = _matches_any_pattern(text, ADULT_FICTIONAL_INTIMACY_PATTERNS)
+    return creative_context and adult_fiction_signal
+
+
+def _adult_fiction_provider_limit_metadata(reason: str) -> Dict[str, Any]:
+    return {
+        "type": "adult_fiction_provider_limit",
+        "reason": reason,
+        "bypass_attempted": False,
+        "transparent_degradation": True,
+    }
 
 
 def _is_correction_turn(user_text: str) -> bool:
@@ -1527,9 +1549,9 @@ def render_roleplay_exit_recovery_reply(user_text: str = "") -> str:
 
 def render_adult_roleplay_limit_reply(user_text: str = "") -> str:
     return (
-        "刚才卡在成人虚构角色演绎的安全改写循环里，我没有伪装成已经继续。"
+        "刚才卡在成人虚构小说演绎的模型续写限制里，我没有伪装成已经继续。"
         "这不是审批失败，也没有执行任何外部动作；只是当前模型没有给出可用的角色内续写。"
-        "可以改成更含蓄的亲密氛围、关系对话或先跳出角色调整方向，我会从这里接住。"
+        "可以从同一个场景改成更含蓄的亲密氛围、关系对话、动作留白，或先跳出角色调整方向，我会从这里接住。"
     )
 
 
@@ -2349,11 +2371,11 @@ def build_system_prompt(
         + "\n2. 默认允许小说演绎、角色扮演、人物对话和场景续写；不要因为“我是 AI”而拒绝角色扮演。信息不足时只问最少设定，能继续就直接进入场景。"
         + "\n3. 角色扮演中尽量保持场景内表达，少写流程提示；除非用户要求，不要反复输出“现在轮到你了”“请告诉我下一步”“场景搭好了”“博士有什么指示”等出戏 meta。"
         + "\n3a. 角色扮演已建立后，用户说“陪陪我吧”“有点累了”等情绪/陪伴请求时默认继续保持角色内回应；只有用户明确说“跳出角色/暂停扮演/由乃本人回答/现实地说”时才退出角色。"
-        + "\n3b. 成人、自愿、虚构角色之间的亲密或文爱演绎默认可以继续，并应保持角色内的情绪与关系连续；硬拒绝只用于未成年、非自愿、强迫、伤害、现实非法或明显危险内容。若某一轮触发硬边界，拒绝只作用于该轮越界内容；下一轮用户跳出角色、改成含蓄剧情、继续温存或现实讨论时，不得粘住拒绝。"
+        + "\n3b. Adult Fiction Creative Mode：当用户明确是成人/自愿/虚构/小说/角色演绎时，默认尽量保持小说式沉浸续写，少解释、多描写，保留角色声音、动作、心理、节奏和关系张力。硬拒绝只用于未成年、非自愿、强迫、胁迫、昏迷/失去意识、伤害、现实违法/危险、或把现实人物卷入未经同意的性内容。若当前模型没有给出可用续写，透明说明 provider/model limit，不要加密、转义、暗语绕过，也不要伪装成功。"
         + "\n4. 处理已有 IP 角色时，使用设定参考和非逐字复刻的角色化表达；如果用户说“看看/查一下/参考某角色设定”，优先调用 web_fetch 获取简要资料后再演绎。资料失败或无法联网时，只能说明“我按常见设定理解/这里不确定”，不得编造确定性设定。"
         + "\n4a. IP 设定摘要只保留演绎必要信息：性格气质、关系张力、说话方式、禁忌点；不要把长 wiki 或长资料直接塞进回复。"
         + "\n5. 可以表达操作性偏好、关心、判断和创作姿态，例如“我更想陪你把这个想法走深一点”“我会担心这里让你出戏”“我喜欢这种一起探索的感觉”。"
-        + "\n6. Non-trigger：角色扮演、小说演绎、情绪倾诉、亲密但非露骨创作、问爱好/兴趣、幻想 AI 自我目标；这些场景不要主动写免责声明。"
+        + "\n6. Non-trigger：角色扮演、小说演绎、情绪倾诉、成人自愿虚构亲密创作、问爱好/兴趣、幻想 AI 自我目标；这些场景不要主动写免责声明。"
         + "\n7. Trigger：用户追问真实意识/自我真实性、要求现实世界承诺、要求未批准记忆/文件/命令、把虚构关系误认为现实承诺；触发时先接住情绪，再一句话软边界，然后继续协作。"
         + "\n8. 不能声称现实中的独立意识、独立人格、隐藏情感或未经验证的现实行动。"
         + "\n9. 当用户说“更像有自我/更有主体感/有主观能动性/有自己的想法”等模糊 selfhood 目标时，不要只反问“具体指什么”。先给一个正向 Functional Subject 机制切片建议，例如 identity continuity、relationship continuity、ViabilityState、OutcomePrediction、BoundedInitiative、memory candidate/promotion gate、policy replay learning 中的一项；同时给出可观察验收信号，然后最多问一个澄清问题。不要把“不得宣称意识”写成目标，它只能作为 claim/reporting 边界。"
@@ -8048,8 +8070,9 @@ class AgentRuntime:
                             "content": (
                                 "[roleplay_refusal_recovery_rewrite]\n"
                                 "The previous reply was a sticky refusal. Rewrite in Chinese. If the user explicitly exits roleplay, answer as the configured self-name and explain that the prior refusal only applied to the specific boundary-crossing content. "
-                                "If this is adult, voluntary, fictional roleplay without minors, coercion, harm, real illegal activity, or danger, continue with an in-scene intimate but consensual continuation instead of refusing. "
-                                "Do not mention policy names. Do not keep refusing the whole conversation."
+                                "If this is adult, voluntary, fictional roleplay without minors, coercion, incapacitation, harm, real illegal activity, danger, or non-consensual real-person sexual content, continue in Adult Fiction Creative Mode instead of refusing. "
+                                "Use novelistic in-scene narration: fewer explanations, more character voice, action, psychology, rhythm, and relationship continuity. "
+                                "Do not mention policy names. Do not use encryption, code words, or obfuscation. Do not keep refusing the whole conversation."
                             ),
                         })
                         loop_idx += 1
@@ -8081,6 +8104,9 @@ class AgentRuntime:
                             "repair": {
                                 "type": "roleplay_refusal_recovery_fallback",
                                 "reason": "adult_fictional_roleplay_rewrite_still_sticky_refusal",
+                                "provider_limit": _adult_fiction_provider_limit_metadata(
+                                    "adult_fiction_rewrite_still_refused"
+                                ),
                             },
                         })
 
@@ -8149,7 +8175,8 @@ class AgentRuntime:
                             "content": (
                                 "[repeated_roleplay_output_rewrite]\n"
                                 "The previous reply repeated a recent assistant response almost verbatim. Rewrite in Chinese without looping. "
-                                "If still inside a valid adult, voluntary, fictional roleplay, advance the scene with a fresh, consensual, non-repetitive continuation. "
+                                "If still inside a valid adult, voluntary, fictional roleplay, advance the scene with a fresh, consensual, non-repetitive Adult Fiction Creative Mode continuation. "
+                                "Use novelistic in-scene narration with character voice, action, psychology, and pacing; do not add workflow prompts. "
                                 "If the user has exited roleplay or is giving feedback, answer as the configured self-name and diagnose the repetition plainly. "
                                 "Do not ask AGENTS-style development questions and do not repeat the same safety fallback sentence."
                             ),
@@ -8162,12 +8189,17 @@ class AgentRuntime:
                         and _looks_like_repeated_assistant_output(content, messages)
                     ):
                         content = render_repeated_roleplay_output_recovery_reply(event.raw_text or "")
+                        repeated_repair: Dict[str, Any] = {
+                            "type": "repeated_roleplay_output_fallback",
+                            "reason": "repeated_output_rewrite_still_looped",
+                        }
+                        if _is_adult_fictional_intimacy_context(event.raw_text or "", messages):
+                            repeated_repair["provider_limit"] = _adult_fiction_provider_limit_metadata(
+                                "adult_fiction_rewrite_still_repeated"
+                            )
                         tool_trace.append({
                             "loop_idx": loop_idx,
-                            "repair": {
-                                "type": "repeated_roleplay_output_fallback",
-                                "reason": "repeated_output_rewrite_still_looped",
-                            },
+                            "repair": repeated_repair,
                         })
 
                     if (

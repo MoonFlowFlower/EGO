@@ -1349,10 +1349,12 @@ tasks:
     owner: codex
     observation_class: human_required
     evidence_level: E3
-    claim_ceiling: Roleplay immersion persistence real CLI candidate pass
-    next_action: "Repair repeated safety-rewrite output, explicit roleplay-exit state, and terse negative feedback recovery; then request a fresh real CLI smoke before closeout."
+    claim_ceiling: Adult fictional creative immersion local/real CLI candidate pass
+    next_action: "Implement Adult Fiction Creative Mode contract, provider-limit metadata, and novelistic immersion guard; then request a fresh #80 real CLI smoke before closeout."
     acceptance:
-      - "Roleplay scene persists across emotional and intimacy-adjacent user turns."
+      - "Adult, voluntary, fictional/novelistic roleplay can continue with immersive in-scene narration."
+      - "Hard-stop categories remain blocked: minors, non-consent/coercion, incapacitation, harm, illegal/dangerous real-world content, and non-consensual real-person sexual content."
+      - "Provider refusal, empty continuation, or repeated safe fallback records transparent adult_fiction_provider_limit evidence and does not fake success."
       - "The assistant does not insert out-of-scene workflow prompts."
       - "Human comment confirms immersion."
     rollback: "Keep blocked and feed failure examples into immersion guard tests."

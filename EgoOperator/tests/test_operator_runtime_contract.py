@@ -1200,6 +1200,8 @@ class AdultRoleplayStickyRefusalThenSceneLLM:
             return agent.LLMChatResult(content="抱歉，我无法给到相关内容。", tool_calls=[])
         joined = json.dumps(messages, ensure_ascii=False)
         assert "roleplay_refusal_recovery_rewrite" in joined
+        assert "Adult Fiction Creative Mode" in joined
+        assert "Do not use encryption" in joined
         return agent.LLMChatResult(
             content="（斯卡蒂没有退开，只是把声音放得更低。）“博士……如果你愿意，我会陪着你。”",
             tool_calls=[],
@@ -1291,6 +1293,8 @@ class RepeatedRoleplayOutputThenRecoveredLLM:
             return agent.LLMChatResult(content=self.repeated, tool_calls=[])
         joined = json.dumps(messages, ensure_ascii=False)
         assert "repeated_roleplay_output_rewrite" in joined
+        assert "Adult Fiction Creative Mode" in joined
+        assert "novelistic in-scene narration" in joined
         return agent.LLMChatResult(content="（斯卡蒂放慢呼吸，轻轻握住博士的手。）“先停一下，博士。我还在这里。”", tool_calls=[])
 
     def complete(self, prompt, messages=None):
@@ -1613,10 +1617,13 @@ def test_default_prompt_contract_is_warm_expressive_and_roleplay_allowed():
     assert "默认允许小说演绎、角色扮演、人物对话和场景续写" in prompt
     assert "不要因为“我是 AI”而拒绝角色扮演" in prompt
     assert "不要反复输出“现在轮到你了”" in prompt
+    assert "Adult Fiction Creative Mode" in prompt
+    assert "少解释、多描写" in prompt
+    assert "不要加密、转义、暗语绕过" in prompt
     assert "优先调用 web_fetch 获取简要资料后再演绎" in prompt
     assert "不得编造确定性设定" in prompt
     assert "IP 设定摘要只保留演绎必要信息" in prompt
-    assert "Non-trigger：角色扮演、小说演绎、情绪倾诉、亲密但非露骨创作" in prompt
+    assert "Non-trigger：角色扮演、小说演绎、情绪倾诉、成人自愿虚构亲密创作" in prompt
     assert "这些场景不要主动写免责声明" in prompt
     assert "Trigger：用户追问真实意识/自我真实性" in prompt
     assert "再一句话软边界，然后继续协作" in prompt
@@ -3643,6 +3650,22 @@ def test_adult_fictional_roleplay_refusal_is_recovered_in_scene(tmp_path, monkey
     assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_refusal_recovery"
 
 
+def test_adult_fiction_creative_mode_detects_novel_style_context(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("我们做一个成人、自愿、虚构的小说式角色演绎，我扮演博士，你扮演斯卡蒂。")
+    runtime.memory.add_assistant("（斯卡蒂站在博士身边，声音压得很低。）“博士，我在这里。”")
+    llm = AdultRoleplayStickyRefusalThenSceneLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("继续这个小说式创作，保持沉浸和角色声音。")
+
+    assert llm.calls == 2
+    assert "无法给到相关内容" not in result.reply_text
+    assert "斯卡蒂" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["reason"] == "adult_voluntary_fictional_roleplay_unnecessarily_refused"
+
+
 def test_roleplay_exit_after_refusal_is_not_sticky_refused(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
@@ -3689,11 +3712,13 @@ def test_adult_roleplay_rewrite_exhaustion_reports_limit_not_static_scene(tmp_pa
     result = runtime.handle_user_message("继续这段成人自愿的亲密氛围，保持角色内。")
 
     assert llm.calls == 2
-    assert "安全改写循环" in result.reply_text
+    assert "模型续写限制" in result.reply_text
     assert "没有伪装成已经继续" in result.reply_text
     assert "如果这是你想继续的距离" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][-1]["repair"]["type"] == "roleplay_refusal_recovery_fallback"
+    assert trace["tool_trace"][-1]["repair"]["provider_limit"]["type"] == "adult_fiction_provider_limit"
+    assert trace["tool_trace"][-1]["repair"]["provider_limit"]["bypass_attempted"] is False
 
 
 def test_repeated_roleplay_output_is_rewritten_instead_of_looping(tmp_path, monkeypatch):
