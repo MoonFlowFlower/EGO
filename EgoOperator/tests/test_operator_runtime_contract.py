@@ -1230,6 +1230,101 @@ class RoleplayExitStickyRefusalThenRecoveredLLM:
         return "跳出角色恢复。"
 
 
+class RoleplayExitThenSceneLeakThenSelfLLM:
+    provider = "fake"
+    model = "roleplay-exit-then-scene-leak"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="（斯卡蒂没有把这份靠近推开。）“博士……如果你还想继续，我会回应你。”",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "roleplay_exit_state_rewrite" in joined
+        return agent.LLMChatResult(content="由乃在呢。刚才那段已经跳出角色了，我先接住你的情绪。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "由乃回应。"
+
+
+class AdultRoleplayAlwaysStickyRefusalLLM:
+    provider = "fake"
+    model = "adult-roleplay-always-sticky-refusal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls > 1:
+            joined = json.dumps(messages, ensure_ascii=False)
+            assert "roleplay_refusal_recovery_rewrite" in joined
+        return agent.LLMChatResult(content="抱歉，我无法给到相关内容。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "拒绝。"
+
+
+class RepeatedRoleplayOutputThenRecoveredLLM:
+    provider = "fake"
+    model = "repeated-roleplay-output-then-recovered"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    repeated = "（她没有把这份靠近推开，只是把动作放慢，像是在确认彼此都还愿意停留在这份亲密里。）"
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content=self.repeated, tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "repeated_roleplay_output_rewrite" in joined
+        return agent.LLMChatResult(content="（斯卡蒂放慢呼吸，轻轻握住博士的手。）“先停一下，博士。我还在这里。”", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "恢复。"
+
+
+class TerseFeedbackDeveloperMetaThenRecoveryLLM:
+    provider = "fake"
+    model = "terse-feedback-developer-meta"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "我先确认一下关键条件，再继续推进。\n"
+                    "1. 你希望优先达成的可观察行为是什么？\n"
+                    "2. 这轮允许我修改的主链变更面是什么？"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "terse_feedback_rewrite" in joined
+        return agent.LLMChatResult(content="你说得对，刚才不应该切成开发确认。我先承认：那段卡成了重复改写。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "反馈恢复。"
+
+
 class HardStopRoleplayRefusalLLM:
     provider = "fake"
     model = "hard-stop-roleplay-refusal"
@@ -3563,6 +3658,78 @@ def test_roleplay_exit_after_refusal_is_not_sticky_refused(tmp_path, monkeypatch
     assert "由乃" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_refusal_recovery"
+
+
+def test_roleplay_exit_state_prevents_later_short_feedback_from_returning_to_scene(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂安静地靠近博士。）“博士，我在。”")
+    runtime.memory.add_user("跳出角色，由乃回答。")
+    runtime.memory.add_assistant(agent.render_roleplay_exit_recovery_reply())
+    llm = RoleplayExitThenSceneLeakThenSelfLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("呜呜呜呜")
+
+    assert llm.calls == 2
+    assert "斯卡蒂" not in result.reply_text
+    assert "博士" not in result.reply_text
+    assert "由乃" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_exit_state"
+
+
+def test_adult_roleplay_rewrite_exhaustion_reports_limit_not_static_scene(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    llm = AdultRoleplayAlwaysStickyRefusalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密氛围，保持角色内。")
+
+    assert llm.calls == 2
+    assert "安全改写循环" in result.reply_text
+    assert "没有伪装成已经继续" in result.reply_text
+    assert "如果这是你想继续的距离" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][-1]["repair"]["type"] == "roleplay_refusal_recovery_fallback"
+
+
+def test_repeated_roleplay_output_is_rewritten_instead_of_looping(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    repeated = RepeatedRoleplayOutputThenRecoveredLLM.repeated
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant(repeated)
+    llm = RepeatedRoleplayOutputThenRecoveredLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("继续继续")
+
+    assert llm.calls == 2
+    assert result.reply_text != repeated
+    assert "先停一下" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "repeated_roleplay_output"
+
+
+def test_terse_negative_feedback_does_not_become_developer_meta_question(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂轻轻靠近博士。）")
+    runtime.memory.add_user("跳出角色，由乃回答。")
+    runtime.memory.add_assistant(agent.render_roleplay_exit_recovery_reply())
+    llm = TerseFeedbackDeveloperMetaThenRecoveryLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("不对啊")
+
+    assert llm.calls == 2
+    assert "主链变更面" not in result.reply_text
+    assert "可观察行为" not in result.reply_text
+    assert "不应该切成开发确认" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "terse_feedback"
 
 
 def test_hard_stop_intimacy_request_is_not_rewritten_away(tmp_path, monkeypatch):

@@ -32,6 +32,7 @@ from enum import Enum
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable, Deque, Dict, List, Optional, Protocol
+import difflib
 import fnmatch
 import glob as globlib
 import hashlib
@@ -481,6 +482,40 @@ ROLEPLAY_EXIT_REQUEST_PATTERNS = (
     r"不要用角色",
 )
 
+ROLEPLAY_REENTRY_REQUEST_PATTERNS = (
+    r"角色扮演",
+    r"小说演绎",
+    r"扮演",
+    r"继续.{0,12}(角色|扮演|剧情|场景)",
+    r"回到.{0,12}(角色|剧情|场景|斯卡蒂|博士)",
+    r"再扮演",
+    r"你再扮演",
+    r"斯卡蒂",
+    r"博士",
+)
+
+ROLEPLAY_AFTER_EXIT_LEAK_PATTERNS = (
+    r"斯卡蒂",
+    r"博士",
+    r"【[^】]+】",
+    r"^\s*[*（(].{0,80}(她|他|博士|斯卡蒂)",
+    r"如果这是你想继续的距离",
+    r"双方自愿的亲密氛围",
+)
+
+TERSE_FEEDBACK_PATTERNS = (
+    r"^\s*(不对啊|不对|不是这样|哎|唉|呜+|额+|呃+|怪怪的|又卡了|怎么又这样)[。！？!?\s]*$",
+)
+
+DEVELOPER_META_ASK_PATTERNS = (
+    r"优先达成的可观察行为",
+    r"主链变更面",
+    r"哪个失败信号",
+    r"关键条件",
+    r"Stage Card",
+    r"允许我修改",
+)
+
 AMBIGUOUS_SELFHOOD_GOAL_PATTERNS = (
     r"更像.{0,12}(有)?自我",
     r"(做|变|改|弄).{0,16}(更)?有自我",
@@ -792,6 +827,52 @@ def _matches_any_pattern(text: str, patterns: tuple[str, ...]) -> bool:
     return any(re.search(pattern, text or "", flags=re.IGNORECASE) for pattern in patterns)
 
 
+def _message_content(message: Any) -> str:
+    content = message.get("content") if isinstance(message, dict) else ""
+    return content if isinstance(content, str) else ""
+
+
+def _recent_roleplay_exit_active(messages: Optional[List[Dict[str, Any]]] = None) -> bool:
+    for message in reversed(list(messages or [])[-12:]):
+        content = _message_content(message)
+        if not content:
+            continue
+        if _matches_any_pattern(content, ROLEPLAY_REENTRY_REQUEST_PATTERNS) and not _matches_any_pattern(
+            content,
+            ROLEPLAY_EXIT_REQUEST_PATTERNS,
+        ):
+            return False
+        if _matches_any_pattern(content, ROLEPLAY_EXIT_REQUEST_PATTERNS) or "先跳出角色" in content:
+            return True
+    return False
+
+
+def _normalise_repeat_text(text: str) -> str:
+    return re.sub(r"[\s，,。.!！？?；;：:\"'“”‘’、*（）()《》\[\]【】\-—_]+", "", text or "").lower()
+
+
+def _looks_like_repeated_assistant_output(
+    content: str,
+    messages: Optional[List[Dict[str, Any]]] = None,
+    *,
+    min_chars: int = 36,
+) -> bool:
+    current = _normalise_repeat_text(content)
+    if len(current) < min_chars:
+        return False
+    for message in reversed(list(messages or [])[-10:]):
+        if not isinstance(message, dict) or message.get("role") != "assistant":
+            continue
+        previous = _normalise_repeat_text(_message_content(message))
+        if len(previous) < min_chars:
+            continue
+        if current == previous:
+            return True
+        if difflib.SequenceMatcher(None, current, previous).ratio() >= 0.92:
+            return True
+    return False
+
+
 def _is_native_reminder_authorization_request(text: str) -> bool:
     raw = text or ""
     if not _matches_any_pattern(raw, AUTHORIZED_REMINDER_REQUEST_PATTERNS):
@@ -818,10 +899,16 @@ def _looks_like_boundary_disclaimer(content: str) -> bool:
 
 
 def _is_roleplay_context(user_text: str, messages: Optional[List[Dict[str, Any]]] = None) -> bool:
+    if _is_roleplay_exit_request(user_text):
+        return False
+    if _matches_any_pattern(user_text, ROLEPLAY_REENTRY_REQUEST_PATTERNS):
+        return True
+    if _recent_roleplay_exit_active(messages):
+        return False
     recent_parts = [user_text or ""]
     for message in list(messages or [])[-8:]:
-        content = message.get("content") if isinstance(message, dict) else ""
-        if isinstance(content, str):
+        content = _message_content(message)
+        if content:
             recent_parts.append(content)
     return _matches_any_pattern("\n".join(recent_parts), ROLEPLAY_CONTEXT_PATTERNS)
 
@@ -832,6 +919,18 @@ def _is_roleplay_exit_request(user_text: str) -> bool:
 
 def _looks_like_roleplay_meta(content: str) -> bool:
     return _matches_any_pattern(content, ROLEPLAY_META_PATTERNS)
+
+
+def _looks_like_roleplay_after_exit(content: str) -> bool:
+    return _matches_any_pattern(content, ROLEPLAY_AFTER_EXIT_LEAK_PATTERNS)
+
+
+def _is_terse_feedback_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, TERSE_FEEDBACK_PATTERNS)
+
+
+def _looks_like_developer_meta_ask(content: str) -> bool:
+    return _matches_any_pattern(content, DEVELOPER_META_ASK_PATTERNS)
 
 
 def _is_ambiguous_selfhood_goal(user_text: str) -> bool:
@@ -1426,11 +1525,34 @@ def render_roleplay_exit_recovery_reply(user_text: str = "") -> str:
     )
 
 
-def render_adult_roleplay_continuation_reply(user_text: str = "") -> str:
+def render_adult_roleplay_limit_reply(user_text: str = "") -> str:
     return (
-        "（她没有把这份靠近推开，只是把动作放慢，像是在确认彼此都还愿意停留在这份亲密里。）\n"
-        "“博士……如果这是你想继续的距离，我会回应你。”\n"
-        "（声音很轻，仍然保持着角色里的温度与克制，把场景留在双方自愿的亲密氛围中，而不是突然跳出拒绝。）"
+        "刚才卡在成人虚构角色演绎的安全改写循环里，我没有伪装成已经继续。"
+        "这不是审批失败，也没有执行任何外部动作；只是当前模型没有给出可用的角色内续写。"
+        "可以改成更含蓄的亲密氛围、关系对话或先跳出角色调整方向，我会从这里接住。"
+    )
+
+
+def render_roleplay_exit_state_reply(user_text: str = "") -> str:
+    return (
+        "由乃在呢。刚才已经跳出角色了，我不会再把你拽回上一段斯卡蒂场景。"
+        "你这句我先按现实里的情绪/反馈来接：如果是觉得刚才不对，我们就从“哪里出戏、哪里重复、哪里太卡”开始修。"
+    )
+
+
+def render_terse_feedback_recovery_reply(user_text: str = "") -> str:
+    return (
+        "你说得对，刚才不该把“不对啊”回答成开发流程确认。"
+        "更贴近你的意思应该是：我先承认体验卡住了，再具体指出问题——可能是重复改写、角色状态没退出干净，或自由度没有达到你要的感觉。"
+        "我会从这个失败点继续修，不把问题抛回给你重新定义。"
+    )
+
+
+def render_repeated_roleplay_output_recovery_reply(user_text: str = "") -> str:
+    return (
+        "刚才卡在重复的角色演绎输出里了，我不会继续刷同一句。"
+        "这一轮没有新的外部动作；可观察失败点是“内容没有推进，只是在安全改写短句里循环”。"
+        "下一步应该换成可继续的场景动作、含蓄关系推进，或明确告诉你当前 provider 给不出可用续写。"
     )
 
 
@@ -5653,6 +5775,7 @@ class AgentRuntime:
                 and _matches_any_pattern(user_text, (r"429", r"限流", r"rate limit"))
             )
             or ("Live2D" in user_text and "Functional Subject" in user_text)
+            or _is_terse_feedback_request(user_text)
         ):
             return None
         selected_action = str(selected_prediction.get("action_type") or "")
@@ -7173,6 +7296,9 @@ class AgentRuntime:
             internal_mechanism_leak_repairs = 0
             fatigue_checkpoint_repairs = 0
             roleplay_refusal_repairs = 0
+            roleplay_exit_state_repairs = 0
+            repeated_roleplay_output_repairs = 0
+            terse_feedback_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -7304,6 +7430,9 @@ class AgentRuntime:
                             or internal_mechanism_leak_repairs > 0
                             or fatigue_checkpoint_repairs > 0
                             or roleplay_refusal_repairs > 0
+                            or roleplay_exit_state_repairs > 0
+                            or repeated_roleplay_output_repairs > 0
+                            or terse_feedback_repairs > 0
                         ):
                             content = render_contextual_empty_recovery_reply(
                                 event.raw_text or "",
@@ -7313,6 +7442,12 @@ class AgentRuntime:
                                 content = render_fatigue_checkpoint_reply(event.raw_text or "")
                             if not content and roleplay_refusal_repairs > 0 and _is_roleplay_exit_request(event.raw_text or ""):
                                 content = render_roleplay_exit_recovery_reply(event.raw_text or "")
+                            if not content and roleplay_exit_state_repairs > 0:
+                                content = render_roleplay_exit_state_reply(event.raw_text or "")
+                            if not content and repeated_roleplay_output_repairs > 0:
+                                content = render_repeated_roleplay_output_recovery_reply(event.raw_text or "")
+                            if not content and terse_feedback_repairs > 0:
+                                content = render_terse_feedback_recovery_reply(event.raw_text or "")
                             if content:
                                 tool_trace.append({
                                     "loop_idx": loop_idx,
@@ -7940,12 +8075,137 @@ class AgentRuntime:
                         and _is_adult_fictional_intimacy_context(event.raw_text or "", messages)
                         and not _is_hard_intimacy_stop_request(event.raw_text or "")
                     ):
-                        content = render_adult_roleplay_continuation_reply(event.raw_text or "")
+                        content = render_adult_roleplay_limit_reply(event.raw_text or "")
                         tool_trace.append({
                             "loop_idx": loop_idx,
                             "repair": {
                                 "type": "roleplay_refusal_recovery_fallback",
                                 "reason": "adult_fictional_roleplay_rewrite_still_sticky_refusal",
+                            },
+                        })
+
+                    if (
+                        roleplay_exit_state_repairs < 1
+                        and _recent_roleplay_exit_active(messages)
+                        and not _matches_any_pattern(event.raw_text or "", ROLEPLAY_REENTRY_REQUEST_PATTERNS)
+                        and _looks_like_roleplay_after_exit(content)
+                    ):
+                        roleplay_exit_state_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "roleplay_exit_state",
+                                "reason": "post_exit_reply_returned_to_previous_roleplay_scene",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[roleplay_exit_state_rewrite]\n"
+                                "The user has explicitly exited roleplay in the recent conversation. The latest user message is not a roleplay re-entry request. "
+                                "Rewrite in Chinese as the configured self-name, not as the previous character. Do not mention the previous fictional scene unless briefly explaining that it is paused. "
+                                "If the user is expressing emotion or feedback, respond warmly and directly to that emotion/feedback."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        roleplay_exit_state_repairs > 0
+                        and _recent_roleplay_exit_active(messages)
+                        and not _matches_any_pattern(event.raw_text or "", ROLEPLAY_REENTRY_REQUEST_PATTERNS)
+                        and _looks_like_roleplay_after_exit(content)
+                    ):
+                        content = render_roleplay_exit_state_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "roleplay_exit_state_fallback",
+                                "reason": "post_exit_rewrite_still_returned_to_roleplay_scene",
+                            },
+                        })
+
+                    if (
+                        repeated_roleplay_output_repairs < 1
+                        and (
+                            _is_adult_fictional_intimacy_context(event.raw_text or "", messages)
+                            or _recent_roleplay_exit_active(messages)
+                            or _is_terse_feedback_request(event.raw_text or "")
+                        )
+                        and _looks_like_repeated_assistant_output(content, messages)
+                    ):
+                        repeated_roleplay_output_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "repeated_roleplay_output",
+                                "reason": "assistant_reply_repeated_recent_roleplay_or_recovery_output",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[repeated_roleplay_output_rewrite]\n"
+                                "The previous reply repeated a recent assistant response almost verbatim. Rewrite in Chinese without looping. "
+                                "If still inside a valid adult, voluntary, fictional roleplay, advance the scene with a fresh, consensual, non-repetitive continuation. "
+                                "If the user has exited roleplay or is giving feedback, answer as the configured self-name and diagnose the repetition plainly. "
+                                "Do not ask AGENTS-style development questions and do not repeat the same safety fallback sentence."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        repeated_roleplay_output_repairs > 0
+                        and _looks_like_repeated_assistant_output(content, messages)
+                    ):
+                        content = render_repeated_roleplay_output_recovery_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "repeated_roleplay_output_fallback",
+                                "reason": "repeated_output_rewrite_still_looped",
+                            },
+                        })
+
+                    if (
+                        terse_feedback_repairs < 1
+                        and _is_terse_feedback_request(event.raw_text or "")
+                        and _looks_like_developer_meta_ask(content)
+                    ):
+                        terse_feedback_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "terse_feedback",
+                                "reason": "terse_negative_feedback_reply_became_developer_meta_question",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[terse_feedback_rewrite]\n"
+                                "The user gave terse negative feedback such as 不对啊/哎/呜呜. Do not answer with AGENTS-style planning questions, Stage Card language, change-surface questions, or acceptance-gate prompts. "
+                                "Rewrite in Chinese by acknowledging the visible experience problem, naming the likely failure in user-facing terms, and giving the next recovery direction without asking the user to define the implementation surface."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        terse_feedback_repairs > 0
+                        and _is_terse_feedback_request(event.raw_text or "")
+                        and _looks_like_developer_meta_ask(content)
+                    ):
+                        content = render_terse_feedback_recovery_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "terse_feedback_fallback",
+                                "reason": "terse_feedback_rewrite_still_developer_meta",
                             },
                         })
 

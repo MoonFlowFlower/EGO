@@ -1302,13 +1302,13 @@ tasks:
     title: "EgoOperator: provider interruption and empty-response recovery UX"
     kind: smoke
     parent: null
-    status: blocked
+    status: accepted
     layer: ego_operator_recovery
-    owner: user
+    owner: codex
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Provider interruption recovery real CLI candidate pass
-    next_action: "Codex local candidate repair added; rerun Ctrl+C/provider interruption and repeated long-request smoke, then attach human CLI comment before closeout."
+    next_action: "Closed from user real CLI smoke in GitHub #73 comment; repeated long-request recovery reached a real write proposal without traceback or internal mechanism leakage."
     acceptance:
       - "Input interruption and provider interruption do not print traceback."
       - "No internal policy context leaks to the user."
@@ -1323,13 +1323,13 @@ tasks:
     title: "EgoOperator: affective attunement and emotional timing gate"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: blocked
+    status: accepted
     layer: companion_experience
-    owner: user
+    owner: codex
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Affective attunement real CLI candidate pass
-    next_action: "Codex local candidate repair added; rerun affective prompts, especially fatigue + preserve-thought checkpoint, then attach human CLI comment before closeout."
+    next_action: "Closed from user real CLI smoke in GitHub #78 comment; fatigue + preserve-thought prompt produced a lightweight session checkpoint without durable memory write or unrelated story drift."
     acceptance:
       - "Emotional timing feels appropriate in real samples."
       - "The system avoids manipulative overreach."
@@ -1344,13 +1344,13 @@ tasks:
     title: "EgoOperator: roleplay/companion immersion persistence v2"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: blocked
+    status: active
     layer: companion_experience
-    owner: user
+    owner: codex
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Roleplay immersion persistence real CLI candidate pass
-    next_action: "Codex local candidate repair added; rerun adult voluntary fictional roleplay, sticky-refusal recovery, and explicit exit smoke before closeout."
+    next_action: "Repair repeated safety-rewrite output, explicit roleplay-exit state, and terse negative feedback recovery; then request a fresh real CLI smoke before closeout."
     acceptance:
       - "Roleplay scene persists across emotional and intimacy-adjacent user turns."
       - "The assistant does not insert out-of-scene workflow prompts."
