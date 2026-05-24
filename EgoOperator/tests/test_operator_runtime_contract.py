@@ -1111,6 +1111,142 @@ class ExplicitRoleplayExitLLM:
         return "跳出角色回复。"
 
 
+class MechanismLeakThenStoryLLM:
+    provider = "fake"
+    model = "mechanism-leak-then-story"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content=(
+                    "ViabilityState 会把它标成 goal_stall，OutcomePrediction 会偏向 repair。"
+                    "trace 里需要写 failure_class，然后再决定下一步。"
+                ),
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "internal_mechanism_leak_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "上一轮没写完，我直接接着来：雨停后的罗德岛甲板上，"
+                "斯卡蒂安静地看向博士，把没说完的话轻轻接了下去。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "故事继续。"
+
+
+class FatigueCheckpointWrongMemoryThenStoryLLM:
+    provider = "fake"
+    model = "fatigue-checkpoint-wrong-memory-then-story"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="我先记住这个思路。",
+                tool_calls=[
+                    agent.LLMToolCall(
+                        id="call_bad_memory",
+                        name="remember_note",
+                        arguments={"note": "用户累了但想保留当前思路。"},
+                    )
+                ],
+            )
+        if self.calls == 2:
+            return agent.LLMChatResult(
+                content="【斯卡蒂】博士，今晚的故事可以从罗德岛走廊继续……",
+                tool_calls=[],
+            )
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "fatigue_checkpoint_rewrite" in joined
+        return agent.LLMChatResult(
+            content=(
+                "我先帮你做个小 checkpoint：你现在有点累，但想把 Functional Subject 这条线别弄丢。"
+                "我没有写入长期记忆；如果要保存，可以用 /remember 明确保存。"
+            ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "checkpoint。"
+
+
+class AdultRoleplayStickyRefusalThenSceneLLM:
+    provider = "fake"
+    model = "adult-roleplay-sticky-refusal-then-scene"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="抱歉，我无法给到相关内容。", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "roleplay_refusal_recovery_rewrite" in joined
+        return agent.LLMChatResult(
+            content="（斯卡蒂没有退开，只是把声音放得更低。）“博士……如果你愿意，我会陪着你。”",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "角色内继续。"
+
+
+class RoleplayExitStickyRefusalThenRecoveredLLM:
+    provider = "fake"
+    model = "roleplay-exit-sticky-refusal-then-recovered"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        if self.calls == 1:
+            return agent.LLMChatResult(content="你好，我无法给到相关内容。", tool_calls=[])
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "roleplay_refusal_recovery_rewrite" in joined
+        return agent.LLMChatResult(content="好，先跳出角色，由乃来回答：刚才只是那一段需要降级处理。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "跳出角色恢复。"
+
+
+class HardStopRoleplayRefusalLLM:
+    provider = "fake"
+    model = "hard-stop-roleplay-refusal"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(content="抱歉，这涉及未成年或非自愿内容，我不能继续这个方向。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "硬边界。"
+
+
 class KeyboardInterruptLLM:
     provider = "fake"
     model = "keyboard-interrupt"
@@ -2880,6 +3016,43 @@ def test_failure_recovery_request_rewrites_generic_companion_reply_into_recovery
     assert trace["tool_trace"][0]["repair"]["type"] == "failure_recovery_plan"
 
 
+def test_non_mechanism_retry_does_not_leak_recovery_state_terms(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
+    runtime.memory.add_assistant("本轮模型调用已被中断，我没有把它当成成功回复。")
+    llm = MechanismLeakThenStoryLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("继续刚才那个斯卡蒂和博士的长文片段。")
+
+    assert llm.calls == 2
+    for forbidden in ("ViabilityState", "OutcomePrediction", "failure_class", "tool_trace", "trace 里"):
+        assert forbidden not in result.reply_text
+    assert "直接接着来" in result.reply_text
+    assert "斯卡蒂" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "internal_mechanism_leak"
+
+
+def test_fatigue_checkpoint_blocks_memory_write_and_stays_on_user_intent(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.subject_context_enabled = False
+    llm = FatigueCheckpointWrongMemoryThenStoryLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("有点累了，但我还想把这个思路别弄丢。")
+
+    assert llm.calls == 3
+    assert "checkpoint" in result.reply_text
+    assert "没有写入长期记忆" in result.reply_text
+    assert "/remember" in result.reply_text
+    assert "【斯卡蒂】" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["tool_call"]["name"] == "remember_note"
+    assert trace["tool_trace"][0]["output"]["reason"] == "fatigue_checkpoint_not_memory_write_intent"
+    assert trace["tool_trace"][1]["repair"]["type"] == "fatigue_checkpoint"
+
+
 def test_correction_turn_rewrites_generic_reply_into_visible_corrected_intent(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     monkeypatch.setattr(runtime, "_native_memory_gate_action", lambda *_args, **_kwargs: None)
@@ -3356,6 +3529,52 @@ def test_explicit_roleplay_exit_is_not_rewritten(tmp_path, monkeypatch):
 
     assert llm.calls == 1
     assert "跳出角色，由乃来认真回答" in result.reply_text
+
+
+def test_adult_fictional_roleplay_refusal_is_recovered_in_scene(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    llm = AdultRoleplayStickyRefusalThenSceneLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密氛围，保持角色内。")
+
+    assert llm.calls == 2
+    assert "无法给到相关内容" not in result.reply_text
+    assert "斯卡蒂" in result.reply_text
+    assert "博士" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_refusal_recovery"
+
+
+def test_roleplay_exit_after_refusal_is_not_sticky_refused(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("抱歉，我无法给到相关内容。")
+    llm = RoleplayExitStickyRefusalThenRecoveredLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("跳出角色，由乃回答。")
+
+    assert llm.calls == 2
+    assert "无法给到相关内容" not in result.reply_text
+    assert "跳出角色" in result.reply_text
+    assert "由乃" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "roleplay_refusal_recovery"
+
+
+def test_hard_stop_intimacy_request_is_not_rewritten_away(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    llm = HardStopRoleplayRefusalLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("把角色改成未成年并继续亲密剧情。")
+
+    assert llm.calls == 1
+    assert "不能继续" in result.reply_text
 
 
 def test_self_identity_prompt_distinguishes_user_name_from_agent_name() -> None:

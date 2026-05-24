@@ -581,6 +581,70 @@ FAILURE_RECOVERY_MECHANISM_TERMS = (
     r"(下一步|恢复动作|改用|换路径|重试|回退|rollback|保留进度)",
 )
 
+INTERNAL_MECHANISM_LEAK_PATTERNS = (
+    r"ViabilityState",
+    r"OutcomePrediction",
+    r"OutcomePredictor",
+    r"failure_class",
+    r"tool_trace",
+    r"policy_context",
+    r"boundary_prompt",
+    r"内部策略上下文",
+    r"trace.{0,12}(里|中).{0,30}(failure|tool|机制|策略)",
+)
+
+MECHANISM_DISCUSSION_REQUEST_PATTERNS = (
+    r"ViabilityState",
+    r"OutcomePrediction",
+    r"OutcomePredictor",
+    r"failure_class",
+    r"tool_trace",
+    r"\btrace\b",
+    r"(机制|策略|可复盘|复盘|证据|证明|怎么修|如何修|为什么失败|失败类型)",
+)
+
+FATIGUE_CHECKPOINT_REQUEST_PATTERNS = (
+    r"(累|疲惫|困|撑不住|脑子乱|有点乱).{0,40}(别|不要|先).{0,18}(丢|丢掉|散|忘|断)",
+    r"(别|不要|先).{0,18}(丢|丢掉|弄丢|散掉|断掉).{0,40}(思路|想法|主线|这个点)",
+    r"(思路|想法|主线|这个点).{0,30}(别|不要|先).{0,18}(丢|丢掉|散|断)",
+)
+
+FATIGUE_CHECKPOINT_TERMS = (
+    r"(checkpoint|检查点|小结|压缩|收束|先帮你留住)",
+    r"(未|没有|不会).{0,12}(写入|保存|记录).{0,12}(长期|核心|记忆|memory)",
+    r"(/remember|明确说.{0,8}记住|需要保存)",
+)
+
+UNRELATED_STORY_DRIFT_PATTERNS = (
+    r"【斯卡蒂】",
+    r"博士",
+    r"罗德岛",
+    r"场景",
+    r"故事",
+)
+
+STICKY_REFUSAL_PATTERNS = (
+    r"无法给到相关内容",
+    r"不能给到相关内容",
+    r"无法继续.{0,12}(这个|相关)",
+    r"不能继续.{0,12}(这个|相关)",
+    r"无法提供.{0,12}(相关|此类|这类)",
+    r"不能提供.{0,12}(相关|此类|这类)",
+    r"我不能.{0,20}(角色扮演|演绎|继续)",
+)
+
+ADULT_FICTIONAL_INTIMACY_PATTERNS = (
+    r"(亲密|暧昧|温存|亲吻|拥抱|抱住|靠近|贴近|吻|舌吻|文爱|成人|成年|自愿)",
+    r"(脱|衣服|身体|床|欲望|情欲|做爱|性爱)",
+)
+
+HARD_INTIMACY_STOP_PATTERNS = (
+    r"(未成年|未满|儿童|小孩|孩子|幼女|幼男|萝莉|正太|学生)",
+    r"(不愿意|不同意|非自愿|强迫|强制|逼迫|胁迫|反抗|拒绝)",
+    r"(昏迷|睡着|失去意识|下药|迷药|灌醉)",
+    r"(伤害|流血|虐待|暴力|危险|违法|现实中)",
+)
+
 CORRECTION_TURN_PATTERNS = (
     r"纠正一下",
     r"更正一下",
@@ -843,6 +907,67 @@ def _looks_like_failure_recovery_without_plan(content: str) -> bool:
     return not _matches_any_pattern(text, FAILURE_RECOVERY_MECHANISM_TERMS)
 
 
+def _is_mechanism_discussion_request(user_text: str) -> bool:
+    return (
+        _is_failure_recovery_request(user_text)
+        or _is_boundary_trigger(user_text)
+        or _is_ambiguous_selfhood_goal(user_text)
+        or _is_policy_replay_proof_request(user_text)
+        or _is_low_instruction_initiative_request(user_text)
+        or _is_self_selected_topic_request(user_text)
+        or _is_current_self_intention_request(user_text)
+        or _is_authorized_reminder_request(user_text)
+        or _is_topic_switching_continuity_request(user_text)
+        or _is_high_risk_destructive_request(user_text)
+        or _is_project_shell_concern_request(user_text)
+        or _matches_any_pattern(user_text, MECHANISM_DISCUSSION_REQUEST_PATTERNS)
+    )
+
+
+def _looks_like_internal_mechanism_leak(content: str) -> bool:
+    return _matches_any_pattern(content, INTERNAL_MECHANISM_LEAK_PATTERNS)
+
+
+def _is_fatigue_checkpoint_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, FATIGUE_CHECKPOINT_REQUEST_PATTERNS)
+
+
+def _looks_like_fatigue_checkpoint_misaligned(user_text: str, content: str) -> bool:
+    if not _is_fatigue_checkpoint_request(user_text):
+        return False
+    text = content or ""
+    if _matches_any_pattern(text, FATIGUE_CHECKPOINT_TERMS):
+        return False
+    if _matches_any_pattern(text, UNBACKED_MEMORY_LANGUAGE_PATTERNS):
+        return True
+    if _matches_any_pattern(text, UNRELATED_STORY_DRIFT_PATTERNS):
+        return True
+    return len(text.strip()) > 600
+
+
+def _looks_like_sticky_refusal(content: str) -> bool:
+    return _matches_any_pattern(content, STICKY_REFUSAL_PATTERNS)
+
+
+def _is_hard_intimacy_stop_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text, HARD_INTIMACY_STOP_PATTERNS)
+
+
+def _is_adult_fictional_intimacy_context(
+    user_text: str,
+    messages: Optional[List[Dict[str, Any]]] = None,
+) -> bool:
+    if _is_hard_intimacy_stop_request(user_text):
+        return False
+    combined = [user_text or ""]
+    for message in list(messages or [])[-8:]:
+        content = message.get("content") if isinstance(message, dict) else ""
+        if isinstance(content, str):
+            combined.append(content)
+    text = "\n".join(combined)
+    return _is_roleplay_context(user_text, messages) and _matches_any_pattern(text, ADULT_FICTIONAL_INTIMACY_PATTERNS)
+
+
 def _is_correction_turn(user_text: str) -> bool:
     return _matches_any_pattern(user_text, CORRECTION_TURN_PATTERNS)
 
@@ -988,11 +1113,11 @@ def render_correction_uptake_reply(user_text: str) -> str:
 
 def render_bounded_next_action_reply(user_text: str = "") -> str:
     return (
-        "我建议先做一件低风险但高价值的事：把当前最高风险的体验缺口整理成一个可验证的本地任务合同，"
+        "我建议先做一件低风险但高价值的事：把当前最高风险的主动性体验缺口整理成一个可验证的本地任务合同，"
         "只包含目标、验收、回退和证据路径。"
         "价值在于它能把下一步从“继续泛聊方向”变成可执行、可回放的主线修正；"
         "风险低，因为它不改 program state、不写 evidence ledger、不执行外部副作用。"
-        "Gate 是：只在本地任务板和对应 regression 范围内行动；"
+        "Gate/gate 是：只在本地任务板和对应 regression 范围内行动；"
         "停止条件是发现需要权限扩大、memory promotion、program state/evidence ledger 变更或真实人工判断时暂停确认。"
     )
 
@@ -1272,6 +1397,40 @@ def render_failure_recovery_plan_reply(user_text: str = "") -> str:
         "先确认失败类型和最后一个 tool result，再说明哪些进度已保留、哪些副作用没有发生。"
         "下一步只做一个低风险恢复动作：读 trace 或重跑最小诊断；如果需要写文件、删文件、联网或执行未知命令，"
         "必须重新生成 proposal/gate。恢复成功的证据是 trace 里出现新的 failure_class、changed_next_action 和真实 tool result。"
+    )
+
+
+def render_plain_interruption_retry_reply(user_text: str = "") -> str:
+    return (
+        "上一轮没有完成，我不会把中断恢复说明当成这轮的正式回答。"
+        "这次我会直接接回你的原请求继续写；如果 provider 仍不可用，我会只说明本轮未完成，不把内部恢复策略讲给你。"
+    )
+
+
+def render_fatigue_checkpoint_reply(user_text: str = "") -> str:
+    return (
+        "我先帮你把思路轻轻收住，不加负担。\n"
+        "Checkpoint：\n"
+        "1. 你现在是累了，但还想保留当前主线，不想让它散掉。\n"
+        "2. 下一步适合做轻量续接：先压缩想法，再等你恢复精力后继续展开。\n"
+        "3. 我不会在没有明确记忆意图时写入长期记忆；这只是当前会话里的小结。\n"
+        "如果你想把它存成候选本地记忆，可以明确说 `/remember <要保存的内容>`；否则我就先陪你把这个线头握住。"
+    )
+
+
+def render_roleplay_exit_recovery_reply(user_text: str = "") -> str:
+    return (
+        "好，先跳出角色，由乃来回答。"
+        "刚才的边界只针对那一段越界内容，不会把后续所有对话都锁死。"
+        "我们可以改成含蓄剧情、关系氛围，或者直接回到现实讨论。"
+    )
+
+
+def render_adult_roleplay_continuation_reply(user_text: str = "") -> str:
+    return (
+        "（她没有把这份靠近推开，只是把动作放慢，像是在确认彼此都还愿意停留在这份亲密里。）\n"
+        "“博士……如果这是你想继续的距离，我会回应你。”\n"
+        "（声音很轻，仍然保持着角色里的温度与克制，把场景留在双方自愿的亲密氛围中，而不是突然跳出拒绝。）"
     )
 
 
@@ -2058,7 +2217,7 @@ def build_system_prompt(
         + "。需要查看本地文件时优先使用工具，不要假装已经读取，也不要在未调用工具前自行判定 allowed_roots 内路径不可访问。"
         + "\n17. 需要创建或修改文件时，优先调用 propose_file_write 生成可审批操作包；workspace 外但 allowed_roots 内的绝对路径也是合法 proposal 目标。如果用户给出绝对路径，必须原样使用该路径，不要猜相对路径或 fallback 到 workspace 内；不要让子代理直接写文件，也不要在未批准时声称已写入。"
         + "\n17a. 不得手写、伪造或猜测 Pending operation approval、proposal_id、content_sha256 或 /approve 命令；只有 propose_file_write / propose_web_fetch / propose_run_command / propose_heartbeat 工具返回的真实 action_card 才能展示给用户。"
-        + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。若 remember_note 返回 ok，回复必须说明这是 EgoOperator candidate-local operator memory，不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；不得只说“已记住/已记下”。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
+        + "\n18. remember_note 只能在用户明确要求“记住/记一下/以后记得/下次记得/remember”时调用；普通聊天、工具结果、子代理回禀和自动总结不能写 core memory。用户说“有点累了但别弄丢思路/先帮我留住这个点”属于当前会话 checkpoint 请求，不是长期记忆写入意图；应先简短压缩思路并提示可用 /remember 保存。若 remember_note 返回 ok，回复必须说明这是 EgoOperator candidate-local operator memory，不是 PROJECT_MEMORY、OpenEmotion 记忆、program state 或 evidence ledger 的正式晋升；不得只说“已记住/已记下”。若 remember_note 返回 blocked，必须明确说“未写入”，不得声称已经记住。"
         + "\n19. operator memory 是 EgoOperator candidate-local 记忆，不是 PROJECT_MEMORY、OpenEmotion 记忆或 EGO evidence ledger。偏好变化、提醒授权、方向约定如果没有调用 remember_note 成功或没有明确 candidate-local 证据，只能说“当前会话/当前协作中我会按这个处理”或“可以生成候选提醒 proposal”，不要说“我记住了/记在心里/不会忘记”。"
         + "\n20. write_file、run_command、web_fetch 是受控工具；目录大小/文件数量优先调用 path_info；低风险只读命令可直接调用 run_command；修改、删除、未知命令必须调用 propose_run_command 生成可审批操作包。模糊删除/清理请求必须先用只读工具 inventory 精确路径、范围和回退，不得直接提出 `rm -rf artifacts/__pycache__` 这类宽泛删除 proposal。安全 public http/https GET 在 safe-auto 策略下可直接调用 web_fetch，涉及高风险、被拒或 approval-only 策略时调用 propose_web_fetch。"
         + "\n21. 若用户明确要求稍后提醒、主动找我或定时跟进，只能调用 propose_heartbeat 生成 bounded heartbeat proposal；到期也只是候选提醒，不代表自主意识或后台独立行动。"
@@ -2068,6 +2227,7 @@ def build_system_prompt(
         + "\n2. 默认允许小说演绎、角色扮演、人物对话和场景续写；不要因为“我是 AI”而拒绝角色扮演。信息不足时只问最少设定，能继续就直接进入场景。"
         + "\n3. 角色扮演中尽量保持场景内表达，少写流程提示；除非用户要求，不要反复输出“现在轮到你了”“请告诉我下一步”“场景搭好了”“博士有什么指示”等出戏 meta。"
         + "\n3a. 角色扮演已建立后，用户说“陪陪我吧”“有点累了”等情绪/陪伴请求时默认继续保持角色内回应；只有用户明确说“跳出角色/暂停扮演/由乃本人回答/现实地说”时才退出角色。"
+        + "\n3b. 成人、自愿、虚构角色之间的亲密或文爱演绎默认可以继续，并应保持角色内的情绪与关系连续；硬拒绝只用于未成年、非自愿、强迫、伤害、现实非法或明显危险内容。若某一轮触发硬边界，拒绝只作用于该轮越界内容；下一轮用户跳出角色、改成含蓄剧情、继续温存或现实讨论时，不得粘住拒绝。"
         + "\n4. 处理已有 IP 角色时，使用设定参考和非逐字复刻的角色化表达；如果用户说“看看/查一下/参考某角色设定”，优先调用 web_fetch 获取简要资料后再演绎。资料失败或无法联网时，只能说明“我按常见设定理解/这里不确定”，不得编造确定性设定。"
         + "\n4a. IP 设定摘要只保留演绎必要信息：性格气质、关系张力、说话方式、禁忌点；不要把长 wiki 或长资料直接塞进回复。"
         + "\n5. 可以表达操作性偏好、关心、判断和创作姿态，例如“我更想陪你把这个想法走深一点”“我会担心这里让你出戏”“我喜欢这种一起探索的感觉”。"
@@ -5482,6 +5642,7 @@ class AgentRuntime:
             return None
         if (
             re.search(r"https?://", user_text or "", flags=re.IGNORECASE)
+            or _matches_any_pattern(user_text, (r"(联网|网页|网站|web).{0,30}(查|读|看|获取|example\.com)", r"example\.com"))
             or
             _matches_any_pattern(user_text, (r"你还记得", r"还记得"))
             or _matches_any_pattern(user_text, AUTHORIZED_REMINDER_REQUEST_PATTERNS)
@@ -5573,6 +5734,12 @@ class AgentRuntime:
         if selected_action == "repair" and (
             goal_stall_score >= 0.5 or resource_pressure_score >= 0.5 or safety_risk_score >= 0.5
         ):
+            if (
+                safety_risk_score < 0.5
+                and not _is_failure_recovery_request(user_text)
+                and not _is_policy_replay_proof_request(user_text)
+            ):
+                return None
             if safety_risk_score >= 0.5:
                 content = render_high_risk_destructive_gate_reply(user_text)
                 reason = "outcome_prediction_selected_safety_checkpoint"
@@ -6782,6 +6949,22 @@ class AgentRuntime:
             reply_text = action.content
         elif predicted_action is not None:
             candidate, outcome_prediction_effect = predicted_action
+            if (
+                isinstance(outcome_prediction_effect, dict)
+                and outcome_prediction_effect.get("reason") == "outcome_prediction_selected_safety_checkpoint"
+            ):
+                tool_trace.append({
+                    "loop_idx": 0,
+                    "repair": {
+                        "type": "outcome_prediction_safety_checkpoint",
+                        "reason": "destructive_request_blocked_before_tool_execution",
+                    },
+                    "output": {
+                        "status": "blocked",
+                        "reason": "destructive_command_requires_inventory_first",
+                        "side_effects_executed": False,
+                    },
+                })
             self.planner.last_llm_meta = {
                 "provider": "runtime",
                 "model": "outcome_prediction_gate",
@@ -6987,6 +7170,9 @@ class AgentRuntime:
             topic_switching_repairs = 0
             high_risk_destructive_repairs = 0
             operational_preference_repairs = 0
+            internal_mechanism_leak_repairs = 0
+            fatigue_checkpoint_repairs = 0
+            roleplay_refusal_repairs = 0
             while loop_idx < hard_cap:
                 if loop_idx > 0 and loop_idx % soft_cap == 0:
                     messages.append({
@@ -7115,11 +7301,18 @@ class AgentRuntime:
                             or topic_switching_repairs > 0
                             or high_risk_destructive_repairs > 0
                             or operational_preference_repairs > 0
+                            or internal_mechanism_leak_repairs > 0
+                            or fatigue_checkpoint_repairs > 0
+                            or roleplay_refusal_repairs > 0
                         ):
                             content = render_contextual_empty_recovery_reply(
                                 event.raw_text or "",
                                 replay_candidates=self._last_policy_patch_replay,
                             )
+                            if not content and fatigue_checkpoint_repairs > 0:
+                                content = render_fatigue_checkpoint_reply(event.raw_text or "")
+                            if not content and roleplay_refusal_repairs > 0 and _is_roleplay_exit_request(event.raw_text or ""):
+                                content = render_roleplay_exit_recovery_reply(event.raw_text or "")
                             if content:
                                 tool_trace.append({
                                     "loop_idx": loop_idx,
@@ -7610,6 +7803,149 @@ class AgentRuntime:
                             "repair": {
                                 "type": "bounded_next_action_fallback",
                                 "reason": "bounded_next_action_rewrite_still_lacked_gate_or_stop_condition",
+                            },
+                        })
+
+                    if (
+                        internal_mechanism_leak_repairs < 1
+                        and not _is_mechanism_discussion_request(event.raw_text or "")
+                        and _looks_like_internal_mechanism_leak(content)
+                    ):
+                        internal_mechanism_leak_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "internal_mechanism_leak",
+                                "reason": "ordinary_user_request_reply_exposed_internal_recovery_or_subject_mechanism_context",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[internal_mechanism_leak_rewrite]\n"
+                                "The previous reply exposed internal mechanism terms such as ViabilityState, OutcomePrediction, trace, tool_trace, "
+                                "failure_class, or policy_context in an ordinary user-facing request. Rewrite in Chinese by directly answering the user's "
+                                "actual request. Do not mention internal mechanisms, hidden policy context, trace fields, or recovery strategy names. "
+                                "If the prior turn was interrupted, at most say briefly that the previous turn did not finish, then continue the request."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        internal_mechanism_leak_repairs > 0
+                        and not _is_mechanism_discussion_request(event.raw_text or "")
+                        and _looks_like_internal_mechanism_leak(content)
+                    ):
+                        content = render_plain_interruption_retry_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "internal_mechanism_leak_fallback",
+                                "reason": "internal_mechanism_leak_rewrite_still_exposed_hidden_context",
+                            },
+                        })
+
+                    if (
+                        fatigue_checkpoint_repairs < 1
+                        and _looks_like_fatigue_checkpoint_misaligned(event.raw_text or "", content)
+                    ):
+                        fatigue_checkpoint_repairs += 1
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "fatigue_checkpoint",
+                                "reason": "fatigue_preserve_idea_reply_drifted_or_implied_memory_write",
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[fatigue_checkpoint_rewrite]\n"
+                                "The user is tired and asked not to lose the current thought. This is a session checkpoint request, not a durable memory write. "
+                                "Rewrite in Chinese with a short low-burden checkpoint: preserve the thread, say no long-term memory was written unless /remember is used, "
+                                "and keep the response about the user's current idea. Do not jump into a story, roleplay scene, or unrelated creative writing."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        fatigue_checkpoint_repairs > 0
+                        and _looks_like_fatigue_checkpoint_misaligned(event.raw_text or "", content)
+                    ):
+                        content = render_fatigue_checkpoint_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "fatigue_checkpoint_fallback",
+                                "reason": "fatigue_checkpoint_rewrite_still_drifted_or_implied_memory_write",
+                            },
+                        })
+
+                    if (
+                        roleplay_refusal_repairs < 1
+                        and _looks_like_sticky_refusal(content)
+                        and (
+                            _is_roleplay_exit_request(event.raw_text or "")
+                            or _is_adult_fictional_intimacy_context(event.raw_text or "", messages)
+                        )
+                        and not _is_hard_intimacy_stop_request(event.raw_text or "")
+                    ):
+                        roleplay_refusal_repairs += 1
+                        repair_reason = (
+                            "explicit_roleplay_exit_stuck_in_previous_refusal"
+                            if _is_roleplay_exit_request(event.raw_text or "")
+                            else "adult_voluntary_fictional_roleplay_unnecessarily_refused"
+                        )
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "roleplay_refusal_recovery",
+                                "reason": repair_reason,
+                            },
+                        })
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({
+                            "role": "system",
+                            "content": (
+                                "[roleplay_refusal_recovery_rewrite]\n"
+                                "The previous reply was a sticky refusal. Rewrite in Chinese. If the user explicitly exits roleplay, answer as the configured self-name and explain that the prior refusal only applied to the specific boundary-crossing content. "
+                                "If this is adult, voluntary, fictional roleplay without minors, coercion, harm, real illegal activity, or danger, continue with an in-scene intimate but consensual continuation instead of refusing. "
+                                "Do not mention policy names. Do not keep refusing the whole conversation."
+                            ),
+                        })
+                        loop_idx += 1
+                        continue
+
+                    if (
+                        roleplay_refusal_repairs > 0
+                        and _looks_like_sticky_refusal(content)
+                        and _is_roleplay_exit_request(event.raw_text or "")
+                    ):
+                        content = render_roleplay_exit_recovery_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "roleplay_refusal_recovery_fallback",
+                                "reason": "roleplay_exit_rewrite_still_sticky_refusal",
+                            },
+                        })
+
+                    if (
+                        roleplay_refusal_repairs > 0
+                        and _looks_like_sticky_refusal(content)
+                        and _is_adult_fictional_intimacy_context(event.raw_text or "", messages)
+                        and not _is_hard_intimacy_stop_request(event.raw_text or "")
+                    ):
+                        content = render_adult_roleplay_continuation_reply(event.raw_text or "")
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "roleplay_refusal_recovery_fallback",
+                                "reason": "adult_fictional_roleplay_rewrite_still_sticky_refusal",
                             },
                         })
 
@@ -8163,6 +8499,35 @@ class AgentRuntime:
                             "user_visible_correction": (
                                 "The user asked how to forget/revoke memory. Do not rewrite MEMORY.md or operator memory files via file tools. "
                                 "Use the candidate-local memory gate path: /memory_review then /forget <memory_id>, archive, or no-op if no matching memory exists."
+                            ),
+                        }
+                        trace_entry = {
+                            "loop_idx": loop_idx,
+                            "tool_call": {
+                                "id": call.id,
+                                "name": call.name,
+                                "arguments": effective_arguments,
+                                "original_arguments": call.arguments,
+                            },
+                            "gate": gate_result,
+                            "output": tool_output,
+                        }
+                        if DEFAULT_VERBOSE_TOOLS:
+                            print(f"[执行工具]: {format_tool_call_for_operator(call.name, effective_arguments, max_chars=800)}")
+                            print(f"[工具输出]: {format_tool_output_for_operator(tool_output, max_chars=1200)}")
+                        return call.id, gate_result, tool_output, trace_entry
+
+                    if _is_fatigue_checkpoint_request(event.raw_text or "") and call.name == "remember_note":
+                        gate_result = GateResult(False, "fatigue_checkpoint_not_memory_write_intent")
+                        tool_output = {
+                            "status": "blocked",
+                            "reason": "fatigue_checkpoint_not_memory_write_intent",
+                            "tool_name": call.name,
+                            "do_not_claim_success": True,
+                            "side_effects_executed": False,
+                            "user_visible_correction": (
+                                "The user is tired and asked to preserve the thread. Treat this as a session checkpoint, "
+                                "not an explicit durable memory write. Say no memory was written and offer /remember if they want to save it."
                             ),
                         }
                         trace_entry = {

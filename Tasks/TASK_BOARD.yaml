@@ -1281,13 +1281,13 @@ tasks:
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: blocked
+    status: accepted
     layer: companion_experience
     owner: user
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: EgoOperator companion-first expressive UX real CLI candidate pass
-    next_action: "Wait for or review human CLI smoke comments; do not auto-close."
+    next_action: "Closed from human CLI smoke; residual interruption/affective/roleplay persistence repairs continue under #73/#78/#80."
     acceptance:
       - "Ordinary conversation avoids unnecessary self-degrading boundary statements."
       - "Roleplay remains immersive unless user explicitly exits character."
@@ -1308,7 +1308,7 @@ tasks:
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Provider interruption recovery real CLI candidate pass
-    next_action: "Wait for or review real Ctrl+C/provider interruption CLI smoke comments."
+    next_action: "Codex local candidate repair added; rerun Ctrl+C/provider interruption and repeated long-request smoke, then attach human CLI comment before closeout."
     acceptance:
       - "Input interruption and provider interruption do not print traceback."
       - "No internal policy context leaks to the user."
@@ -1329,7 +1329,7 @@ tasks:
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Affective attunement real CLI candidate pass
-    next_action: "Wait for human observation or scripted real-entry + judge packet."
+    next_action: "Codex local candidate repair added; rerun affective prompts, especially fatigue + preserve-thought checkpoint, then attach human CLI comment before closeout."
     acceptance:
       - "Emotional timing feels appropriate in real samples."
       - "The system avoids manipulative overreach."
@@ -1350,7 +1350,7 @@ tasks:
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Roleplay immersion persistence real CLI candidate pass
-    next_action: "Wait for real CLI smoke that confirms no meta prompt leakage and stable in-scene continuity."
+    next_action: "Codex local candidate repair added; rerun adult voluntary fictional roleplay, sticky-refusal recovery, and explicit exit smoke before closeout."
     acceptance:
       - "Roleplay scene persists across emotional and intimacy-adjacent user turns."
       - "The assistant does not insert out-of-scene workflow prompts."
