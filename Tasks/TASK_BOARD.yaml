@@ -1350,7 +1350,7 @@ tasks:
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Adult fictional creative immersion local/real CLI candidate pass
-    next_action: "Repair Adult Fiction creative profile as text-only/no-tools runtime path, then request a fresh #80 real CLI smoke with Skyfall/Cydonia configured before closeout."
+    next_action: "Implement sanitized text-only Adult Fiction creative sidecar with optional local OpenAI-compatible backend, then request a fresh #80 real CLI smoke before closeout."
     acceptance:
       - "Adult, voluntary, fictional/novelistic roleplay can continue with immersive in-scene narration."
       - "Hard-stop categories remain blocked: minors, non-consent/coercion, incapacitation, harm, illegal/dangerous real-world content, and non-consensual real-person sexual content."
@@ -1359,10 +1359,12 @@ tasks:
       - "Provider refusal, empty continuation, or repeated safe fallback records transparent adult_fiction_provider_limit evidence and does not fake success."
       - "Creative provider errors such as tool-use endpoint mismatch are isolated as runtime markers and do not pollute story context."
       - "Provider-limit diagnostics are isolated from story turns so continue/exit/rewrite recovery does not loop on fallback text."
-      - "Provider benchmark can compare candidate creative models without making GitHub Project the task source."
+      - "Creative sidecar receives only sanitized scene context, not SubjectState/ViabilityState/OutcomePrediction/policy_context/todo/trace/system diagnostics."
+      - "Optional local OpenAI-compatible creative backend can be configured without replacing the default companion/tool model."
+      - "Provider benchmark can compare OpenRouter and local creative models without making GitHub Project the task source."
       - "The assistant does not insert out-of-scene workflow prompts."
       - "Human comment confirms immersion."
-    rollback: "Disable AGENT_ADULT_FICTION_PROFILE or unset OPENROUTER_ADULT_FICTION_MODEL; keep #80 active and feed failure examples into provider benchmark and immersion guard tests."
+    rollback: "Disable AGENT_ADULT_FICTION_PROFILE or unset ADULT_FICTION_MODEL / OPENROUTER_ADULT_FICTION_MODEL; keep #80 active and feed failure examples into provider benchmark and immersion guard tests."
     canonical_sources:
       - "GitHub issue #80"
     external_refs:

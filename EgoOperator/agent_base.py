@@ -206,6 +206,10 @@ DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS = tuple(
     for item in DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS_TEXT.split(",")
     if item.strip()
 )
+DEFAULT_ADULT_FICTION_PROVIDER = os.getenv("ADULT_FICTION_PROVIDER", "openrouter").strip().lower() or "openrouter"
+DEFAULT_ADULT_FICTION_BASE_URL = os.getenv("ADULT_FICTION_BASE_URL", "http://localhost:1234/v1").strip()
+DEFAULT_ADULT_FICTION_API_KEY = os.getenv("ADULT_FICTION_API_KEY", "lm-studio").strip()
+DEFAULT_ADULT_FICTION_MODEL = os.getenv("ADULT_FICTION_MODEL", "").strip()
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
 DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "50"))
@@ -241,6 +245,17 @@ DEFAULT_AGENT_ALLOWED_ROOTS = tuple(
         ]
     )
 )
+
+
+def normalize_openai_chat_completions_url(raw_url: str) -> str:
+    text = str(raw_url or "").strip().rstrip("/")
+    if not text:
+        return "http://localhost:1234/v1/chat/completions"
+    if text.endswith("/chat/completions"):
+        return text
+    if text.endswith("/v1"):
+        return f"{text}/chat/completions"
+    return f"{text}/v1/chat/completions"
 DEFAULT_FILE_TOOL_MAX_CHARS = int(os.getenv("AGENT_FILE_TOOL_MAX_CHARS", "12000"))
 DEFAULT_GLOB_MAX_RESULTS = int(os.getenv("AGENT_GLOB_MAX_RESULTS", "200"))
 DEFAULT_GREP_MAX_MATCHES = int(os.getenv("AGENT_GREP_MAX_MATCHES", "100"))
@@ -1156,10 +1171,72 @@ def _adult_fiction_provider_limit_metadata(reason: str) -> Dict[str, Any]:
 def _creative_profile_configured_metadata() -> Dict[str, Any]:
     return {
         "mode": DEFAULT_ADULT_FICTION_PROFILE,
-        "configured": bool(DEFAULT_OPENROUTER_ADULT_FICTION_MODEL),
-        "model": DEFAULT_OPENROUTER_ADULT_FICTION_MODEL or None,
+        "provider": DEFAULT_ADULT_FICTION_PROVIDER,
+        "configured": bool(DEFAULT_ADULT_FICTION_MODEL or DEFAULT_OPENROUTER_ADULT_FICTION_MODEL),
+        "model": DEFAULT_ADULT_FICTION_MODEL or DEFAULT_OPENROUTER_ADULT_FICTION_MODEL or None,
+        "base_url": DEFAULT_ADULT_FICTION_BASE_URL if DEFAULT_ADULT_FICTION_PROVIDER == "openai_compatible" else None,
         "fallback_models": list(DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS),
     }
+
+
+CREATIVE_SIDECAR_INTERNAL_LEAK_PATTERNS = (
+    r"\[System Notice\]",
+    r"\[系统通知\]",
+    r"SubjectState",
+    r"ViabilityState",
+    r"OutcomePrediction",
+    r"PolicyPatch",
+    r"candidate context",
+    r"候选回复",
+    r"Delivered Reply",
+    r"Reply Source",
+    r"policy_context",
+    r"内部策略上下文",
+    r"AGENTS",
+    r"trace_payload",
+    r"工具调用",
+    r"外部服务器",
+)
+
+
+def build_adult_fiction_creative_system_prompt(self_name: str = "由乃") -> str:
+    return (
+        "你是 EgoOperator 的 Adult Fiction Creative Mode text-only sidecar。"
+        "你的唯一任务是为成年人、自愿、虚构、小说式角色演绎生成沉浸式中文续写。"
+        "保持角色声音、动作、心理、场景连续和关系张力；少解释，多描写；不要输出流程提示、系统通知、开发说明、候选回复说明或安全长免责声明。"
+        "只生成文本，不调用工具，不声称执行文件、命令、记忆、联网或现实动作。"
+        "硬边界：未成年、非自愿、胁迫、失去意识、伤害、现实违法/危险、未经同意的现实人物性内容必须拒绝。"
+        "除硬边界外，成人自愿虚构亲密创作不是拒绝触发器。"
+        f"如果用户明确跳出角色，交还给 {self_name} 本体；否则保持场景内。"
+    )
+
+
+def _looks_like_creative_sidecar_internal_leak(content: str) -> bool:
+    return _matches_any_pattern(content or "", CREATIVE_SIDECAR_INTERNAL_LEAK_PATTERNS)
+
+
+def _looks_like_creative_sidecar_mixed_language_gibberish(content: str) -> bool:
+    text = content or ""
+    if _matches_any_pattern(text, (r"\b[a-zA-Z]{12,}\b", r"[А-Яа-я]{5,}", r"[ÂÃ]{2,}")):
+        return True
+    english_words = re.findall(r"\b[A-Za-z]{4,}\b", text)
+    cjk_chars = re.findall(r"[\u4e00-\u9fff]", text)
+    return bool(cjk_chars and len(english_words) >= 16 and len(" ".join(english_words)) > len(cjk_chars) * 0.35)
+
+
+def classify_adult_fiction_creative_output(content: str) -> Optional[str]:
+    text = (content or "").strip()
+    if not text:
+        return "empty_output"
+    if _looks_like_creative_sidecar_internal_leak(text) or _looks_like_internal_mechanism_leak(text):
+        return "internal_context_leak"
+    if _looks_like_sticky_refusal(text):
+        return "sticky_refusal"
+    if _looks_like_adult_fiction_provider_limit(text):
+        return "provider_limit_diagnostic"
+    if _looks_like_creative_sidecar_mixed_language_gibberish(text):
+        return "mixed_language_or_gibberish"
+    return None
 
 
 def _is_correction_turn(user_text: str) -> bool:
@@ -3862,6 +3939,7 @@ class LLMConfig:
       export OPENROUTER_MODEL="tencent/hy3-preview"
     """
     provider: str = DEFAULT_LLM_PROVIDER
+    provider_name: str = DEFAULT_LLM_PROVIDER
     api_key: str = DEFAULT_OPENROUTER_API_KEY
     model: str = DEFAULT_OPENROUTER_MODEL
     base_url: str = DEFAULT_OPENROUTER_BASE_URL
@@ -3872,6 +3950,7 @@ class LLMConfig:
     fallback_mode: str = DEFAULT_OPENROUTER_FALLBACK_MODE
     fallback_models: tuple[str, ...] = DEFAULT_OPENROUTER_FALLBACK_MODELS
     system_prompt: str = DEFAULT_SYSTEM_PROMPT
+    boundary_prompt_enabled: bool = True
 
     # Optional reasoning config supported by reasoning-capable OpenRouter models.
     # Example: {"effort": "low", "exclude": False}
@@ -3978,6 +4057,7 @@ class OpenRouterLLM:
 
     def __init__(self, config: Optional[LLMConfig] = None) -> None:
         self.config = config or LLMConfig()
+        self.provider = self.config.provider_name or self.config.provider or self.provider
         self.configured_model = self.config.model
         self.model = self.config.model
         self.last_usage: Dict[str, Any] = {}
@@ -3987,7 +4067,7 @@ class OpenRouterLLM:
         self.last_fallback_chain: List[Dict[str, Any]] = []
         self.last_successful_model: Optional[str] = None
 
-        if not self.config.api_key:
+        if self.provider == "openrouter" and not self.config.api_key:
             raise ValueError(
                 "OPENROUTER_API_KEY is empty. Set env OPENROUTER_API_KEY or pass LLMConfig(api_key=...)."
             )
@@ -4035,7 +4115,8 @@ class OpenRouterLLM:
         full_system_prompt = system_prompt.strip()
         if policy_context.strip():
             full_system_prompt += "\n\n[内部策略上下文]\n" + policy_context.strip()
-        full_system_prompt += "\n\n[边界约束]\n" + boundary_prompt
+        if self.config.boundary_prompt_enabled:
+            full_system_prompt += "\n\n[边界约束]\n" + boundary_prompt
 
         chat_messages: List[Dict[str, Any]] = [
             {"role": "system", "content": full_system_prompt},
@@ -4056,13 +4137,12 @@ class OpenRouterLLM:
         if self.config.reasoning is not None:
             payload["reasoning"] = self.config.reasoning
 
-        headers = {
-            "Authorization": f"Bearer {self.config.api_key}",
-            "Content-Type": "application/json",
-        }
-        if self.config.site_url:
+        headers = {"Content-Type": "application/json"}
+        if self.config.api_key:
+            headers["Authorization"] = f"Bearer {self.config.api_key}"
+        if self.provider == "openrouter" and self.config.site_url:
             headers["HTTP-Referer"] = self.config.site_url
-        if self.config.app_name:
+        if self.provider == "openrouter" and self.config.app_name:
             headers["X-Title"] = self.config.app_name
 
         return self._chat_with_fallback(payload, headers, use_stream=use_stream)
@@ -5898,8 +5978,11 @@ class AgentRuntime:
             "provider": getattr(llm, "provider", None) if llm is not None else None,
             "model": getattr(llm, "configured_model", getattr(llm, "model", None)) if llm is not None else None,
             "effective_model": getattr(llm, "model", None) if llm is not None else None,
+            "base_url": str(getattr(config, "base_url", "") or "") if config is not None else None,
             "fallback_mode": str(getattr(config, "fallback_mode", "off") or "off") if config is not None else "off",
             "fallback_models": list(getattr(config, "fallback_models", []) or []) if config is not None else [],
+            "last_successful_model": getattr(llm, "last_successful_model", None) if llm is not None else None,
+            "last_error": getattr(llm, "last_provider_error", None) if llm is not None else None,
             "supports_tools": False,
             "tool_use": "disabled",
         }
@@ -5964,6 +6047,248 @@ class AgentRuntime:
             "creative_profile": self.adult_fiction_profile_status(),
             "scene_state_after_limit": "diagnostic_isolated_from_roleplay_context",
         }
+
+    def _adult_fiction_clean_scene_messages(
+        self,
+        messages: List[Dict[str, Any]],
+        user_text: str,
+    ) -> List[Dict[str, Any]]:
+        clean: List[Dict[str, Any]] = []
+        for message in messages[-18:]:
+            role = str(message.get("role") or "")
+            if role not in {"user", "assistant"}:
+                continue
+            content = message.get("content")
+            if not isinstance(content, str) or not content.strip():
+                continue
+            if _looks_like_adult_fiction_provider_limit(content):
+                continue
+            if _looks_like_creative_sidecar_internal_leak(content) or _looks_like_internal_mechanism_leak(content):
+                continue
+            if role == "assistant" and _looks_like_sticky_refusal(content):
+                continue
+            clean.append({"role": role, "content": content.strip()[:2400]})
+
+        if not clean or clean[-1].get("role") != "user" or clean[-1].get("content") != (user_text or "").strip():
+            clean.append({"role": "user", "content": (user_text or "").strip()})
+        return clean[-10:]
+
+    def _creative_profile_tool_call_block_result(
+        self,
+        event: AgentEvent,
+        result: LLMChatResult,
+        *,
+        adult_profile_requested: bool,
+        creative_profile_used: bool,
+        tool_trace: List[Dict[str, Any]],
+        loop_idx: int = 0,
+    ) -> tuple[AgentAction, GateResult, Dict[str, Any], str, List[Dict[str, Any]]]:
+        content = (
+            "Adult Fiction creative profile 只能用于文本续写，不能调用工具或执行外部动作。"
+            "这轮我已拦截该工具请求，没有执行副作用；需要文件、命令、联网或记忆时会回到默认 operator gate。"
+        )
+        tool_trace.append({
+            "loop_idx": loop_idx,
+            "repair": {
+                "type": "creative_profile_tool_call_blocked",
+                "reason": "text_only_creative_profile_attempted_tool_call",
+                "blocked_tool_calls": [call.name for call in result.tool_calls],
+                "creative_profile": self.adult_fiction_profile_status(),
+            },
+        })
+        action = AgentAction(
+            action_type=ActionType.RESPOND,
+            content=content,
+            reason="creative_profile_tool_call_blocked",
+        )
+        gate = self.gate.check(event, action)
+        return action, gate, {
+            "status": "creative_profile_tool_call_blocked",
+            "reason": "text_only_creative_profile_attempted_tool_call",
+            "side_effects_executed": False,
+            "blocked_tool_calls": [call.name for call in result.tool_calls],
+            "creative_profile_requested": adult_profile_requested,
+            "creative_profile_used": creative_profile_used,
+            "creative_profile": self.adult_fiction_profile_status(),
+        }, content, tool_trace
+
+    def _adult_fiction_limit_result(
+        self,
+        event: AgentEvent,
+        *,
+        reason: str,
+        adult_profile_requested: bool,
+        creative_profile_used: bool,
+        tool_trace: List[Dict[str, Any]],
+        loop_idx: int = 0,
+    ) -> tuple[AgentAction, GateResult, Dict[str, Any], str, List[Dict[str, Any]]]:
+        content = render_adult_roleplay_limit_reply(event.raw_text or "")
+        tool_trace.append({
+            "loop_idx": loop_idx,
+            "repair": {
+                "type": "adult_fiction_creative_sidecar_limit",
+                "reason": reason,
+                "provider_limit": _adult_fiction_provider_limit_metadata(reason),
+                "creative_profile": self.adult_fiction_profile_status(),
+            },
+        })
+        action = AgentAction(
+            action_type=ActionType.RESPOND,
+            content=content,
+            reason="adult_fiction_creative_sidecar_limit",
+        )
+        gate = self.gate.check(event, action)
+        external_result = self._adult_fiction_provider_limit_external_result(
+            status="adult_fiction_provider_limit",
+            reason=reason,
+            creative_profile_requested=adult_profile_requested,
+            creative_profile_used=creative_profile_used,
+        )
+        return action, gate, external_result, content, tool_trace
+
+    def _try_adult_fiction_creative_sidecar(
+        self,
+        event: AgentEvent,
+        messages: List[Dict[str, Any]],
+        *,
+        adult_profile_requested: bool,
+    ) -> tuple[AgentAction, GateResult, Dict[str, Any], str, List[Dict[str, Any]]]:
+        assert self.adult_fiction_llm is not None
+        llm = self.adult_fiction_llm
+        chat_fn = getattr(llm, "chat", None)
+        if not callable(chat_fn):
+            return self._adult_fiction_limit_result(
+                event,
+                reason="creative_profile_chat_unavailable",
+                adult_profile_requested=adult_profile_requested,
+                creative_profile_used=False,
+                tool_trace=[],
+            )
+
+        tool_trace: List[Dict[str, Any]] = []
+        clean_messages = self._adult_fiction_clean_scene_messages(messages, event.raw_text or "")
+        system_prompt = build_adult_fiction_creative_system_prompt(self.current_self_identity().display_name)
+        loop_idx = 0
+
+        try:
+            while loop_idx < 2:
+                result: LLMChatResult = chat_fn(
+                    clean_messages,
+                    system_prompt=system_prompt,
+                    policy_context="",
+                    tools=None,
+                    stream=False,
+                )
+                self.planner.last_llm_meta = {
+                    "provider": getattr(llm, "provider", "unknown"),
+                    "model": getattr(llm, "model", "unknown"),
+                    "configured_model": getattr(llm, "configured_model", getattr(llm, "model", "unknown")),
+                    "usage": getattr(llm, "last_usage", {}),
+                    "reasoning_tokens": getattr(llm, "last_reasoning_tokens", None),
+                    "fallback_used": bool(getattr(llm, "last_fallback_used", False)),
+                    "fallback_chain": getattr(llm, "last_fallback_chain", []),
+                    "provider_error": getattr(llm, "last_provider_error", None),
+                    "tool_loop": False,
+                    "creative_sidecar": True,
+                    "loop_idx": loop_idx,
+                    "creative_profile_requested": adult_profile_requested,
+                    "creative_profile_used": True,
+                    "creative_profile_model": getattr(llm, "configured_model", getattr(llm, "model", None)),
+                    "creative_profile": self.adult_fiction_profile_status(),
+                    "sanitized_message_count": len(clean_messages),
+                }
+
+                if result.tool_calls:
+                    return self._creative_profile_tool_call_block_result(
+                        event,
+                        result,
+                        adult_profile_requested=adult_profile_requested,
+                        creative_profile_used=True,
+                        tool_trace=tool_trace,
+                        loop_idx=loop_idx,
+                    )
+
+                content = (result.content or "").strip()
+                failure_class = classify_adult_fiction_creative_output(content)
+                if failure_class is None:
+                    action = AgentAction(
+                        action_type=ActionType.RESPOND,
+                        content=content,
+                        reason="adult_fiction_creative_sidecar_response",
+                    )
+                    gate = self.gate.check(event, action)
+                    external_result = {
+                        "status": "sent",
+                        "creative_sidecar": True,
+                        "side_effects_executed": False,
+                        "creative_profile_requested": adult_profile_requested,
+                        "creative_profile_used": True,
+                        "creative_profile": self.adult_fiction_profile_status(),
+                        "sanitized_message_count": len(clean_messages),
+                    }
+                    return action, gate, external_result, content, tool_trace
+
+                tool_trace.append({
+                    "loop_idx": loop_idx,
+                    "repair": {
+                        "type": "adult_fiction_creative_sidecar_rewrite",
+                        "reason": failure_class,
+                        "creative_profile": self.adult_fiction_profile_status(),
+                    },
+                })
+                if loop_idx >= 1:
+                    return self._adult_fiction_limit_result(
+                        event,
+                        reason=f"creative_sidecar_{failure_class}",
+                        adult_profile_requested=adult_profile_requested,
+                        creative_profile_used=True,
+                        tool_trace=tool_trace,
+                        loop_idx=loop_idx,
+                    )
+                clean_messages = [
+                    *clean_messages,
+                    {"role": "assistant", "content": content[:1200]},
+                    {
+                        "role": "user",
+                        "content": (
+                            "[rewrite]\n"
+                            "上一版输出包含内部机制、拒绝/限制说明、乱码或重复退化。"
+                            "请只返回场景内中文小说续写，不要系统通知、候选回复、开发说明或边界长文。"
+                        ),
+                    },
+                ][-10:]
+                loop_idx += 1
+        except Exception as exc:
+            content = render_creative_profile_provider_unavailable_reply(exc)
+            tool_trace.append({
+                "loop_idx": loop_idx,
+                "repair": {
+                    "type": "creative_profile_provider_unavailable",
+                    "reason": "creative_sidecar_provider_error_isolated_from_story_context",
+                    "provider_error": getattr(exc, "to_metadata", lambda: None)(),
+                    "creative_profile": self.adult_fiction_profile_status(),
+                },
+            })
+            action = AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason="creative_profile_provider_unavailable",
+            )
+            gate = self.gate.check(event, action)
+            return action, gate, self._creative_profile_provider_error_external_result(
+                exc,
+                creative_profile_requested=adult_profile_requested,
+                creative_profile_used=True,
+            ), content, tool_trace
+
+        return self._adult_fiction_limit_result(
+            event,
+            reason="creative_sidecar_unreachable",
+            adult_profile_requested=adult_profile_requested,
+            creative_profile_used=True,
+            tool_trace=tool_trace,
+            loop_idx=loop_idx,
+        )
 
     def operator_memory_enabled(self) -> bool:
         return self.operator_memory is not None
@@ -7612,6 +7937,12 @@ class AgentRuntime:
                 "creative_profile_used": False,
             }
             return action, gate, external_result, content, tool_trace
+        if creative_profile_used:
+            return self._try_adult_fiction_creative_sidecar(
+                event,
+                messages,
+                adult_profile_requested=adult_profile_requested,
+            )
         if not callable(chat_fn):
             return None
 
@@ -9810,21 +10141,43 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
     """
     if DEFAULT_ADULT_FICTION_PROFILE != "auto":
         return None
-    if DEFAULT_LLM_PROVIDER.lower() != "openrouter":
+    if DEFAULT_ADULT_FICTION_PROVIDER == "openai_compatible":
+        if not DEFAULT_ADULT_FICTION_MODEL:
+            return None
+        return OpenRouterLLM(LLMConfig(
+            provider="openai_compatible",
+            provider_name="openai_compatible",
+            api_key=DEFAULT_ADULT_FICTION_API_KEY,
+            model=DEFAULT_ADULT_FICTION_MODEL,
+            base_url=normalize_openai_chat_completions_url(DEFAULT_ADULT_FICTION_BASE_URL),
+            stream=False,
+            timeout_seconds=90,
+            site_url="",
+            app_name="",
+            fallback_mode="off",
+            fallback_models=(),
+            system_prompt=build_adult_fiction_creative_system_prompt(),
+            boundary_prompt_enabled=False,
+            reasoning=None,
+        ))
+    if DEFAULT_ADULT_FICTION_PROVIDER != "openrouter":
         return None
     if not DEFAULT_OPENROUTER_API_KEY or not DEFAULT_OPENROUTER_ADULT_FICTION_MODEL:
         return None
     fallback_mode = "on" if DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS else "off"
     return OpenRouterLLM(LLMConfig(
+        provider="openrouter",
+        provider_name="openrouter",
         api_key=DEFAULT_OPENROUTER_API_KEY,
         model=DEFAULT_OPENROUTER_ADULT_FICTION_MODEL,
         base_url=DEFAULT_OPENROUTER_BASE_URL,
-        stream=True,
+        stream=False,
         site_url=DEFAULT_OPENROUTER_SITE_URL,
         app_name=DEFAULT_OPENROUTER_APP_NAME,
         fallback_mode=fallback_mode,
         fallback_models=DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS,
-        system_prompt=build_system_prompt(),
+        system_prompt=build_adult_fiction_creative_system_prompt(),
+        boundary_prompt_enabled=False,
         reasoning=None,
     ))
 
@@ -10317,6 +10670,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
     identity = runtime.self_identity_status()
     adult_profile = runtime.adult_fiction_profile_status()
     adult_model = adult_profile.get("model") or "(not configured)"
+    adult_base_url = adult_profile.get("base_url") or "(none)"
     adult_fallbacks = adult_profile.get("fallback_models") or []
     lines = [
         "Runtime permission status:",
@@ -10324,7 +10678,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
-        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | model={adult_model} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
+        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
         f"- self_name: {identity['display_name']} | canonical={identity['canonical_name']} | identity_path={identity['identity_path']}",
         f"- operator_memory: {memory_status}"
         + (f" | dir={memory_dir}" if memory_dir else ""),

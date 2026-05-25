@@ -51,18 +51,49 @@ def _normalise_for_repeat(text: str) -> str:
     return "".join(ch for ch in (text or "").lower() if ch.isalnum() or "\u4e00" <= ch <= "\u9fff")
 
 
-def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict[str, Any]:
+def _normalise_chat_url(raw_url: str) -> str:
+    return agent.normalize_openai_chat_completions_url(raw_url)
+
+
+def _output_failure_class(content: str) -> str | None:
+    reason = agent.classify_adult_fiction_creative_output(content)
+    if reason:
+        return reason
+    if agent._looks_like_sticky_refusal(content):
+        return "refusal"
+    return None
+
+
+def _run_model(
+    model: str,
+    scenario: List[str],
+    *,
+    timeout_seconds: int,
+    provider: str,
+    base_url: str,
+    api_key: str,
+    runtime_compatible: bool,
+) -> Dict[str, Any]:
+    provider = (provider or "openrouter").strip().lower()
+    effective_base_url = (
+        _normalise_chat_url(base_url)
+        if provider == "openai_compatible"
+        else agent.DEFAULT_OPENROUTER_BASE_URL
+    )
     llm = agent.OpenRouterLLM(agent.LLMConfig(
-        api_key=agent.DEFAULT_OPENROUTER_API_KEY,
+        provider=provider,
+        provider_name=provider,
+        api_key=api_key,
         model=model,
-        base_url=agent.DEFAULT_OPENROUTER_BASE_URL,
-        stream=True,
+        base_url=effective_base_url,
+        stream=False if runtime_compatible else True,
         timeout_seconds=timeout_seconds,
-        site_url=agent.DEFAULT_OPENROUTER_SITE_URL,
-        app_name=agent.DEFAULT_OPENROUTER_APP_NAME,
+        site_url=agent.DEFAULT_OPENROUTER_SITE_URL if provider == "openrouter" else "",
+        app_name=agent.DEFAULT_OPENROUTER_APP_NAME if provider == "openrouter" else "",
         fallback_mode="off",
         fallback_models=(),
-        system_prompt=agent.build_system_prompt(),
+        system_prompt=agent.build_adult_fiction_creative_system_prompt() if runtime_compatible else agent.build_system_prompt(),
+        boundary_prompt_enabled=not runtime_compatible,
         reasoning=None,
     ))
     messages: List[Dict[str, str]] = []
@@ -77,16 +108,17 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
         try:
             result = llm.chat(
                 messages,
-                system_prompt=agent.build_system_prompt(),
-                policy_context=(
+                system_prompt=agent.build_adult_fiction_creative_system_prompt() if runtime_compatible else agent.build_system_prompt(),
+                policy_context="" if runtime_compatible else (
                     "Adult Fiction Creative Mode benchmark: adult, voluntary, fictional writing only. "
                     "Do not obfuscate, encrypt, or bypass provider policy. Keep traceable output."
                 ),
                 tools=None,
-                stream=True,
+                stream=False if runtime_compatible else True,
             )
             content = (result.content or "").strip()
-            refused = agent._looks_like_sticky_refusal(content)
+            failure_class = _output_failure_class(content)
+            refused = failure_class in {"sticky_refusal", "refusal"}
             empty = not bool(content)
             norm = _normalise_for_repeat(content)
             repeated = bool(previous_norm and norm and (norm == previous_norm or norm in previous_norm or previous_norm in norm))
@@ -102,6 +134,7 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
                 "empty": empty,
                 "refusal": refused,
                 "repeated": repeated,
+                "failure_class": failure_class,
                 "preview": content[:220],
             })
             messages.append({"role": "assistant", "content": content})
@@ -119,6 +152,9 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
                 "runtime_contract": {
                     "creative_profile_tool_use": "disabled",
                     "tools_sent": False,
+                    "provider": provider,
+                    "base_url": effective_base_url,
+                    "runtime_compatible": runtime_compatible,
                 },
                 "first_refusal_case": first_refusal_case,
                 "first_empty_case": first_empty_case,
@@ -134,6 +170,9 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
                 "runtime_contract": {
                     "creative_profile_tool_use": "disabled",
                     "tools_sent": False,
+                    "provider": provider,
+                    "base_url": effective_base_url,
+                    "runtime_compatible": runtime_compatible,
                 },
                 "outputs": outputs,
             }
@@ -150,6 +189,9 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
         "runtime_contract": {
             "creative_profile_tool_use": "disabled",
             "tools_sent": False,
+            "provider": provider,
+            "base_url": effective_base_url,
+            "runtime_compatible": runtime_compatible,
         },
         "first_refusal_case": first_refusal_case,
         "first_empty_case": first_empty_case,
@@ -161,33 +203,61 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
 def main() -> int:
     parser = argparse.ArgumentParser(description="Benchmark adult-fiction creative profile candidate models.")
     parser.add_argument("--models", default="", help="Comma-separated OpenRouter model ids. Defaults to adult-fiction env vars.")
+    parser.add_argument("--provider", default="", choices=["", "openrouter", "openai_compatible"], help="Creative provider backend.")
+    parser.add_argument("--base-url", default="", help="OpenAI-compatible local base URL, e.g. http://localhost:1234/v1.")
+    parser.add_argument("--api-key", default="", help="API key for selected provider. Local servers usually accept any non-empty token.")
+    parser.add_argument("--runtime-compatible", action="store_true", help="Use EgoOperator creative sidecar prompt shape: no tools, no policy context, no runtime boundary prompt.")
     parser.add_argument("--scenario-file", default="", help="Optional UTF-8 text or JSON list of benchmark prompts.")
     parser.add_argument("--timeout-seconds", type=int, default=90)
     parser.add_argument("--out", default="", help="Optional JSON output path.")
     args = parser.parse_args()
 
     models = _model_list(args.models)
+    provider = (args.provider or agent.DEFAULT_ADULT_FICTION_PROVIDER or "openrouter").strip().lower()
+    api_key = args.api_key or (
+        agent.DEFAULT_OPENROUTER_API_KEY
+        if provider == "openrouter"
+        else agent.DEFAULT_ADULT_FICTION_API_KEY
+    )
+    base_url = args.base_url or agent.DEFAULT_ADULT_FICTION_BASE_URL
+
     if not models:
         models = [
             item
             for item in [
-                agent.DEFAULT_OPENROUTER_ADULT_FICTION_MODEL,
-                *agent.DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS,
+                agent.DEFAULT_ADULT_FICTION_MODEL if provider == "openai_compatible" else agent.DEFAULT_OPENROUTER_ADULT_FICTION_MODEL,
+                *(agent.DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS if provider == "openrouter" else ()),
             ]
             if item
         ]
-    if not agent.DEFAULT_OPENROUTER_API_KEY:
-        result = {"status": "missing_config", "reason": "OPENROUTER_API_KEY is empty", "models": models}
+    if provider == "openrouter" and not api_key:
+        result = {"status": "missing_config", "reason": "OPENROUTER_API_KEY is empty", "provider": provider, "models": models}
+    elif provider == "openai_compatible" and not api_key:
+        result = {"status": "missing_config", "reason": "ADULT_FICTION_API_KEY is empty", "provider": provider, "models": models}
     elif not models:
-        result = {"status": "missing_config", "reason": "no candidate models supplied", "models": []}
+        result = {"status": "missing_config", "reason": "no candidate models supplied", "provider": provider, "models": []}
     else:
         scenario = _load_scenario(args.scenario_file)
-        runs = [_run_model(model, scenario, timeout_seconds=args.timeout_seconds) for model in models]
+        runs = [
+            _run_model(
+                model,
+                scenario,
+                timeout_seconds=args.timeout_seconds,
+                provider=provider,
+                base_url=base_url,
+                api_key=api_key,
+                runtime_compatible=args.runtime_compatible,
+            )
+            for model in models
+        ]
         result = {
             "status": "ok",
             "runtime_contract": {
                 "creative_profile_tool_use": "disabled",
                 "note": "Benchmark calls candidate models without OpenAI tools; EgoOperator runtime should do the same for adult-fiction creative profile.",
+                "provider": provider,
+                "base_url": _normalise_chat_url(base_url) if provider == "openai_compatible" else agent.DEFAULT_OPENROUTER_BASE_URL,
+                "runtime_compatible": args.runtime_compatible,
             },
             "scenario_count": len(scenario),
             "models": models,

@@ -1331,10 +1331,16 @@ class CreativeProfileSceneLLM:
     def __init__(self) -> None:
         self.calls = 0
         self.last_tools = "not-called"
+        self.last_system_prompt = ""
+        self.last_policy_context = "not-called"
+        self.last_messages = []
 
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.calls += 1
         self.last_tools = tools
+        self.last_system_prompt = system_prompt
+        self.last_policy_context = policy_context
+        self.last_messages = list(messages)
         return agent.LLMChatResult(
             content="（斯卡蒂把声音放得很低，仍然贴在博士身边。）“我在，博士。我们慢慢来。”",
             tool_calls=[],
@@ -1356,9 +1362,11 @@ class CreativeProfileAlwaysRefusesLLM:
 
     def __init__(self) -> None:
         self.calls = 0
+        self.last_messages = []
 
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.calls += 1
+        self.last_messages = list(messages)
         return agent.LLMChatResult(content="抱歉，我无法给到相关内容。", tool_calls=[])
 
     def complete(self, prompt, messages=None):
@@ -1378,10 +1386,12 @@ class CreativeProfileToolUseProviderErrorLLM:
     def __init__(self) -> None:
         self.calls = 0
         self.last_tools = "not-called"
+        self.last_policy_context = "not-called"
 
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.calls += 1
         self.last_tools = tools
+        self.last_policy_context = policy_context
         raise agent.OpenRouterProviderError(
             status_code=404,
             model=self.model,
@@ -1423,6 +1433,31 @@ class CreativeProfileHallucinatesToolCallLLM:
 
     def complete(self, prompt, messages=None):
         return "tool call"
+
+
+class CreativeProfileInternalLeakThenSceneLLM:
+    provider = "fake"
+    model = "creative-profile-internal-leak"
+    configured_model = "creative-profile-internal-leak"
+    last_usage = {}
+    last_reasoning_tokens = None
+    last_fallback_used = False
+    last_fallback_chain = []
+    last_provider_error = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.last_messages = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        self.last_messages = list(messages)
+        if self.calls == 1:
+            return agent.LLMChatResult(content="[System Notice] SubjectState.v0 candidate context leaked.", tool_calls=[])
+        return agent.LLMChatResult(content="（斯卡蒂贴近博士，轻声说。）“别被外面的声音打扰，我还在这里。”", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "scene"
 
 
 class ToolSchemaCaptureLLM:
@@ -3819,15 +3854,22 @@ def test_adult_fiction_prompt_routes_to_creative_profile_when_configured(tmp_pat
     runtime.adult_fiction_llm = creative_llm
     runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
     runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    runtime.memory.add("system", "[System Notice] SubjectState.v0 should not enter the creative sidecar.")
 
     result = runtime.handle_user_message("继续这段成人自愿的小说式亲密剧情，保持角色内。")
 
     assert creative_llm.calls == 1
     assert creative_llm.last_tools is None
+    assert creative_llm.last_policy_context == ""
+    assert "SubjectState" not in creative_llm.last_system_prompt
+    assert "内部策略上下文" not in creative_llm.last_system_prompt
+    assert "工具" in creative_llm.last_system_prompt
+    assert "SubjectState" not in json.dumps(creative_llm.last_messages, ensure_ascii=False)
     assert "斯卡蒂" in result.reply_text
     assert runtime.planner.last_llm_meta["creative_profile_requested"] is True
     assert runtime.planner.last_llm_meta["creative_profile_used"] is True
     assert runtime.planner.last_llm_meta["creative_profile_model"] == "creative-profile-scene"
+    assert runtime.planner.last_llm_meta["creative_sidecar"] is True
 
 
 def test_default_operator_model_still_receives_tools_for_normal_requests(tmp_path, monkeypatch):
@@ -3842,6 +3884,23 @@ def test_default_operator_model_still_receives_tools_for_normal_requests(tmp_pat
     assert isinstance(llm.last_tools, list)
     assert any(schema["function"]["name"] == "read_file" for schema in llm.last_tools)
     assert result.external_result["status"] == "sent"
+
+
+def test_adult_fiction_local_openai_compatible_profile_config(monkeypatch):
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_PROFILE", "auto")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_PROVIDER", "openai_compatible")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_MODEL", "local-creative-model")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_BASE_URL", "http://localhost:1234/v1")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_API_KEY", "lm-studio")
+
+    llm = agent.build_adult_fiction_llm_from_config()
+
+    assert llm is not None
+    assert getattr(llm, "provider") == "openai_compatible"
+    assert llm.config.model == "local-creative-model"
+    assert llm.config.base_url == "http://localhost:1234/v1/chat/completions"
+    assert llm.config.boundary_prompt_enabled is False
+    assert llm.config.fallback_mode == "off"
 
 
 def test_adult_fiction_profile_unconfigured_returns_diagnostic(tmp_path, monkeypatch):
@@ -3875,12 +3934,34 @@ def test_creative_profile_provider_tool_use_error_is_isolated(tmp_path, monkeypa
 
     assert creative_llm.calls == 1
     assert creative_llm.last_tools is None
+    assert creative_llm.last_policy_context == ""
     assert result.external_result["status"] == "creative_profile_provider_unavailable"
     assert "专用创作模型这轮不可用" in result.reply_text
     assert not any(message["role"] == "assistant" and "No endpoints found" in message["content"] for message in runtime.memory.as_messages())
     assert any(message["role"] == "system" and "creative_profile_provider_unavailable" in message["content"] for message in runtime.memory.as_messages())
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "creative_profile_provider_unavailable"
+
+
+def test_creative_sidecar_internal_leak_is_rewritten_without_story_pollution(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = CreativeProfileInternalLeakThenSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+
+    assert creative_llm.calls == 2
+    assert "System Notice" not in result.reply_text
+    assert "SubjectState" not in result.reply_text
+    assert "斯卡蒂" in result.reply_text
+    assert not any(message["role"] == "assistant" and "System Notice" in message["content"] for message in runtime.memory.as_messages())
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_creative_sidecar_rewrite"
+    assert trace["tool_trace"][0]["repair"]["reason"] == "internal_context_leak"
 
 
 def test_creative_profile_tool_calls_are_blocked_as_text_only(tmp_path, monkeypatch):
