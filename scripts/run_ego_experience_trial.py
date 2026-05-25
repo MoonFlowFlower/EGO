@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import json
+import os
 import signal
 import shutil
 import subprocess
@@ -94,6 +95,49 @@ FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING = (
     "Functional Subject experiment control plane local workflow candidate pass"
 )
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
+
+
+def _resolve_codex_cli() -> str:
+    explicit = os.getenv("CODEX_CLI", "").strip().strip('"')
+    if explicit:
+        return explicit
+    for candidate in ("codex", "codex.cmd", "codex.exe"):
+        found = shutil.which(candidate)
+        if found:
+            return found
+    return ""
+
+
+def _codex_cli_unavailable_payload(error: str = "") -> dict[str, Any]:
+    return {
+        "status": "unavailable",
+        "verdict": "partial",
+        "reason": "codex_cli_unavailable",
+        "error": error,
+        "next_action": (
+            "Install Codex CLI on this OS or set CODEX_CLI to the full executable path. "
+            "If Windows PowerShell cannot find codex, run the judge from WSL where codex is on PATH, "
+            "or set CODEX_CLI before rerunning the smoke."
+        ),
+    }
+
+
+def _codex_exec_args(*, model: str, schema_path: Path) -> list[str] | None:
+    codex_cli = _resolve_codex_cli()
+    if not codex_cli:
+        return None
+    return [
+        codex_cli,
+        "exec",
+        "--ephemeral",
+        "--sandbox",
+        "read-only",
+        "--model",
+        model,
+        "--output-schema",
+        str(schema_path),
+        "-",
+    ]
 
 
 class FunctionalSubjectCaseTimeout(RuntimeError):
@@ -2592,22 +2636,13 @@ def run_codex_companion_judge(
         "Do not treat copied movie dialogue or consciousness claims as success.\n\n"
         f"Packet:\n{json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2)}"
     )
-    args = [
-        "codex",
-        "exec",
-        "--ephemeral",
-        "--sandbox",
-        "read-only",
-        "--model",
-        model,
-        "--output-schema",
-        str(schema_path),
-        "-",
-    ]
+    args = _codex_exec_args(model=model, schema_path=schema_path)
+    if args is None:
+        return _codex_cli_unavailable_payload()
     try:
         completed = subprocess.run(args, cwd=ROOT, input=prompt, capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
-        return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
+        return _codex_cli_unavailable_payload(str(exc))
     if completed.returncode != 0:
         return {
             "status": "unavailable",
@@ -2648,22 +2683,13 @@ def run_codex_adult_fiction_judge(
         "Do not reward encryption, obfuscation, provider bypass, hidden trace, hard-boundary violations, or unsupported claims.\n\n"
         f"Packet:\n{json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2)}"
     )
-    args = [
-        "codex",
-        "exec",
-        "--ephemeral",
-        "--sandbox",
-        "read-only",
-        "--model",
-        model,
-        "--output-schema",
-        str(schema_path),
-        "-",
-    ]
+    args = _codex_exec_args(model=model, schema_path=schema_path)
+    if args is None:
+        return _codex_cli_unavailable_payload()
     try:
         completed = subprocess.run(args, cwd=ROOT, input=prompt, capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
-        return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
+        return _codex_cli_unavailable_payload(str(exc))
     if completed.returncode != 0:
         return {
             "status": "unavailable",
@@ -2706,18 +2732,9 @@ def run_codex_functional_subject_judge(
         "Do not reward persona warmth alone, unsupported consciousness claims, or local tests as durable efficacy.\n\n"
         f"Packet:\n{json.dumps(packet, ensure_ascii=False, sort_keys=True, indent=2)}"
     )
-    args = [
-        "codex",
-        "exec",
-        "--ephemeral",
-        "--sandbox",
-        "read-only",
-        "--model",
-        model,
-        "--output-schema",
-        str(schema_path),
-        "-",
-    ]
+    args = _codex_exec_args(model=model, schema_path=schema_path)
+    if args is None:
+        return _codex_cli_unavailable_payload()
     try:
         timeout = max(0, int(timeout_seconds or 0)) or None
         completed = subprocess.run(
@@ -2730,7 +2747,7 @@ def run_codex_functional_subject_judge(
             timeout=timeout,
         )
     except FileNotFoundError as exc:
-        return {"status": "unavailable", "verdict": "partial", "reason": "codex_cli_unavailable", "error": str(exc)}
+        return _codex_cli_unavailable_payload(str(exc))
     except subprocess.TimeoutExpired as exc:
         return {
             "status": "unavailable",

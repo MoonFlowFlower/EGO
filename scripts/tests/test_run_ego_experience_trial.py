@@ -21,6 +21,7 @@ spec.loader.exec_module(run_ego_experience_trial)
 def _disable_real_provider_defaults(monkeypatch) -> None:
     monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_OPENROUTER_API_KEY", "")
     monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_LLM_PROVIDER", "none")
+    monkeypatch.setenv("CODEX_CLI", "codex")
 
 
 class CapturePromptLLM:
@@ -518,6 +519,20 @@ def test_adult_fiction_smoke_codex_judge_uses_adult_schema(tmp_path, monkeypatch
     assert schema_arg.endswith("ego_adult_fiction_smoke_judge_schema.json")
     assert calls[0][-1] == "-"
     assert "#80 Adult Fiction Creative Mode" in calls[1]["input"]
+
+
+def test_adult_fiction_judge_reports_codex_cli_unavailable(monkeypatch) -> None:
+    monkeypatch.delenv("CODEX_CLI", raising=False)
+    monkeypatch.setattr(run_ego_experience_trial.shutil, "which", lambda _candidate: None)
+
+    judge = run_ego_experience_trial.run_codex_adult_fiction_judge(
+        {"transcript": [], "claim_ceiling": "candidate", "hard_gate_summary": {"status": "pass"}},
+        model="gpt-5.5",
+    )
+
+    assert judge["verdict"] == "partial"
+    assert judge["reason"] == "codex_cli_unavailable"
+    assert "CODEX_CLI" in judge["next_action"]
 
 
 def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> None:
