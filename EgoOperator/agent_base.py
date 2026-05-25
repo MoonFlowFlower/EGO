@@ -547,6 +547,7 @@ ADULT_FICTION_PROVIDER_LIMIT_PATTERNS = (
 ADULT_FICTION_LIMIT_RECOVERY_PATTERNS = (
     r"^\s*(继续|继续继续|那你改|改|重写|换个写法|不对啊|哎|呜+)\s*$",
     r"(继续|重写|换个写法).{0,20}(刚才|这段|场景|剧情|角色)",
+    r"(刚才|又).{0,16}(卡住|卡了|没续上|失败)",
 )
 
 TERSE_FEEDBACK_PATTERNS = (
@@ -941,7 +942,7 @@ def _recent_adult_fiction_provider_limit_active(messages: Optional[List[Dict[str
 
 
 def _is_adult_fiction_limit_recovery_request(user_text: str) -> bool:
-    return _matches_any_pattern(user_text or "", ADULT_FICTION_LIMIT_RECOVERY_PATTERNS)
+    return _matches_any_pattern(user_text or "", ADULT_FICTION_LIMIT_RECOVERY_PATTERNS) or _is_terse_feedback_request(user_text or "")
 
 
 def _is_tool_or_state_mutation_request(user_text: str) -> bool:
@@ -6082,7 +6083,17 @@ class AgentRuntime:
             return False
         if _is_tool_or_state_mutation_request(user_text or ""):
             return False
+        roleplay_reentry = _matches_any_pattern(user_text or "", ROLEPLAY_REENTRY_REQUEST_PATTERNS)
+        if _recent_roleplay_exit_active(messages) and not roleplay_reentry:
+            return False
+        if _is_terse_feedback_request(user_text or "") and not roleplay_reentry:
+            return False
         if _is_adult_fictional_intimacy_context(user_text or "", messages):
+            return True
+        if roleplay_reentry and any(
+            _looks_like_adult_fiction_provider_limit(_message_content(message))
+            for message in list(messages or [])[-12:]
+        ):
             return True
         return (
             _recent_adult_fiction_provider_limit_active(messages)
