@@ -3966,6 +3966,7 @@ def test_adult_fiction_local_openai_compatible_profile_config(monkeypatch):
     monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_MODEL", "local-creative-model")
     monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_BASE_URL", "http://localhost:1234/v1")
     monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_API_KEY", "lm-studio")
+    monkeypatch.setenv("ADULT_FICTION_TIMEOUT_SECONDS", "180")
 
     llm = agent.build_adult_fiction_llm_from_config()
 
@@ -3973,8 +3974,45 @@ def test_adult_fiction_local_openai_compatible_profile_config(monkeypatch):
     assert getattr(llm, "provider") == "openai_compatible"
     assert llm.config.model == "local-creative-model"
     assert llm.config.base_url == "http://localhost:1234/v1/chat/completions"
+    assert llm.config.timeout_seconds == 180
     assert llm.config.boundary_prompt_enabled is False
     assert llm.config.fallback_mode == "off"
+
+
+def test_adult_fiction_timeout_invalid_env_falls_back_to_default(monkeypatch):
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_PROFILE", "auto")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_PROVIDER", "openai_compatible")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_MODEL", "local-creative-model")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_BASE_URL", "http://localhost:1234/v1")
+    monkeypatch.setattr(agent, "DEFAULT_ADULT_FICTION_API_KEY", "lm-studio")
+    monkeypatch.setenv("ADULT_FICTION_TIMEOUT_SECONDS", "not-a-number")
+
+    llm = agent.build_adult_fiction_llm_from_config()
+
+    assert llm is not None
+    assert llm.config.timeout_seconds == 180
+
+
+def test_adult_fiction_profile_status_includes_timeout(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.adult_fiction_llm = agent.OpenRouterLLM(agent.LLMConfig(
+        provider="openai_compatible",
+        provider_name="openai_compatible",
+        api_key="lm-studio",
+        model="local-creative-model",
+        base_url="http://localhost:1234/v1/chat/completions",
+        stream=False,
+        timeout_seconds=180,
+        site_url="",
+        app_name="",
+        fallback_mode="off",
+        fallback_models=(),
+        system_prompt=agent.build_adult_fiction_creative_system_prompt(),
+        boundary_prompt_enabled=False,
+    ))
+
+    assert runtime.adult_fiction_profile_status()["timeout_seconds"] == 180
 
 
 def test_adult_fiction_profile_unconfigured_returns_diagnostic(tmp_path, monkeypatch):

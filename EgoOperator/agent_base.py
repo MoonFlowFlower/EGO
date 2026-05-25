@@ -142,6 +142,17 @@ def env_mode_enabled(raw: str) -> bool:
     return str(raw or "").strip().lower() in {"1", "true", "yes", "on"}
 
 
+def env_positive_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    try:
+        value = int(raw.strip())
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
 WINDOWS_DRIVE_PATH_RE = re.compile(r"^([A-Za-z]):[\\/](.*)$")
 WINDOWS_ABSOLUTE_PATH_TEXT_RE = re.compile(r"([A-Za-z]:[\\/][A-Za-z0-9_. \-()\\/]+)")
 POSIX_ABSOLUTE_PATH_TEXT_RE = re.compile(r"(/mnt/[A-Za-z]/[A-Za-z0-9_. \-()/]+|/[A-Za-z0-9_. \-()/]+)")
@@ -210,6 +221,7 @@ DEFAULT_ADULT_FICTION_PROVIDER = os.getenv("ADULT_FICTION_PROVIDER", "openrouter
 DEFAULT_ADULT_FICTION_BASE_URL = os.getenv("ADULT_FICTION_BASE_URL", "http://localhost:1234/v1").strip()
 DEFAULT_ADULT_FICTION_API_KEY = os.getenv("ADULT_FICTION_API_KEY", "lm-studio").strip()
 DEFAULT_ADULT_FICTION_MODEL = os.getenv("ADULT_FICTION_MODEL", "").strip()
+DEFAULT_ADULT_FICTION_TIMEOUT_SECONDS = 180
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
 DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "50"))
@@ -6065,6 +6077,7 @@ class AgentRuntime:
             "model": getattr(llm, "configured_model", getattr(llm, "model", None)) if llm is not None else None,
             "effective_model": getattr(llm, "model", None) if llm is not None else None,
             "base_url": str(getattr(config, "base_url", "") or "") if config is not None else None,
+            "timeout_seconds": int(getattr(config, "timeout_seconds", 0) or 0) if config is not None else None,
             "fallback_mode": str(getattr(config, "fallback_mode", "off") or "off") if config is not None else "off",
             "fallback_models": list(getattr(config, "fallback_models", []) or []) if config is not None else [],
             "last_successful_model": getattr(llm, "last_successful_model", None) if llm is not None else None,
@@ -10275,6 +10288,7 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
     if DEFAULT_ADULT_FICTION_PROVIDER == "openai_compatible":
         if not DEFAULT_ADULT_FICTION_MODEL:
             return None
+        timeout_seconds = env_positive_int("ADULT_FICTION_TIMEOUT_SECONDS", DEFAULT_ADULT_FICTION_TIMEOUT_SECONDS)
         return OpenRouterLLM(LLMConfig(
             provider="openai_compatible",
             provider_name="openai_compatible",
@@ -10282,7 +10296,7 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
             model=DEFAULT_ADULT_FICTION_MODEL,
             base_url=normalize_openai_chat_completions_url(DEFAULT_ADULT_FICTION_BASE_URL),
             stream=False,
-            timeout_seconds=90,
+            timeout_seconds=timeout_seconds,
             site_url="",
             app_name="",
             fallback_mode="off",
@@ -10296,6 +10310,7 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
     if not DEFAULT_OPENROUTER_API_KEY or not DEFAULT_OPENROUTER_ADULT_FICTION_MODEL:
         return None
     fallback_mode = "on" if DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS else "off"
+    timeout_seconds = env_positive_int("ADULT_FICTION_TIMEOUT_SECONDS", DEFAULT_ADULT_FICTION_TIMEOUT_SECONDS)
     return OpenRouterLLM(LLMConfig(
         provider="openrouter",
         provider_name="openrouter",
@@ -10303,6 +10318,7 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
         model=DEFAULT_OPENROUTER_ADULT_FICTION_MODEL,
         base_url=DEFAULT_OPENROUTER_BASE_URL,
         stream=False,
+        timeout_seconds=timeout_seconds,
         site_url=DEFAULT_OPENROUTER_SITE_URL,
         app_name=DEFAULT_OPENROUTER_APP_NAME,
         fallback_mode=fallback_mode,
@@ -10809,7 +10825,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
-        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
+        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | timeout={adult_profile.get('timeout_seconds')}s | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
         f"- self_name: {identity['display_name']} | canonical={identity['canonical_name']} | identity_path={identity['identity_path']}",
         f"- operator_memory: {memory_status}"
         + (f" | dir={memory_dir}" if memory_dir else ""),

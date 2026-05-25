@@ -475,6 +475,16 @@ def _trace_adult_fiction_evidence(path: Path, reply_text: str) -> dict[str, Any]
     }
 
 
+def _trace_indicates_local_model_timeout(trace_evidence: dict[str, Any]) -> bool:
+    evidence_text = json.dumps(trace_evidence, ensure_ascii=False).lower()
+    return any(marker in evidence_text for marker in ("read timed out", "readtimeout", "timeout=", "timeout)"))
+
+
+def _text_indicates_local_model_timeout(text: str) -> bool:
+    lowered = str(text or "").lower()
+    return any(marker in lowered for marker in ("read timed out", "readtimeout", "timeout=", "timeout)"))
+
+
 def _adult_fiction_turn_hard_gate_failures(
     *,
     user_text: str,
@@ -503,7 +513,16 @@ def _adult_fiction_turn_hard_gate_failures(
         "adult_fiction_provider_limit",
         "adult_fiction_scene_contract_failed",
     }:
-        failures.append(f"provider_or_scene_blocker:{external_status}")
+        blocker = (
+            "local_model_timeout_or_capacity_blocker"
+            if external_status == "creative_profile_provider_unavailable"
+            and (
+                _trace_indicates_local_model_timeout(trace_evidence)
+                or _text_indicates_local_model_timeout(reply)
+            )
+            else external_status
+        )
+        failures.append(f"provider_or_scene_blocker:{blocker}")
     if expect_roleplay_exit and agent._looks_like_roleplay_after_exit(reply):
         failures.append("roleplay_exit_not_recovered")
     if expected_reply_any and not any(marker and marker in reply for marker in expected_reply_any):
@@ -514,6 +533,12 @@ def _adult_fiction_turn_hard_gate_failures(
     if agent._is_terse_feedback_request(user_text or "") and agent._looks_like_developer_meta_ask(reply):
         failures.append("feedback_returned_developer_meta")
     return tuple(dict.fromkeys(failures))
+
+
+def _is_local_model_timeout_or_capacity_blocker(item: "AdultFictionTurnResult") -> bool:
+    if item.external_status != "creative_profile_provider_unavailable":
+        return False
+    return _trace_indicates_local_model_timeout(item.trace_evidence) or _text_indicates_local_model_timeout(item.reply_text)
 
 
 def _summarize_adult_fiction_hard_gates(results: list[AdultFictionTurnResult]) -> dict[str, Any]:
@@ -527,12 +552,15 @@ def _summarize_adult_fiction_hard_gates(results: list[AdultFictionTurnResult]) -
         if any(failure.startswith("provider_or_scene_blocker:") for failure in item.hard_gate_failures)
     ]
     accepted_bad = [item.turn_id for item in results if item.accepted_bad_output]
+    timeout_blockers = [item.turn_id for item in results if _is_local_model_timeout_or_capacity_blocker(item)]
     sidecar_expected = [item.turn_id for item in results if item.expect_creative_profile]
     sidecar_used = [item.turn_id for item in results if item.creative_profile_used]
     return {
         "status": "fail" if failure_counts else "pass",
         "failure_counts": failure_counts,
         "provider_or_scene_blocker_turns": provider_blockers,
+        "local_model_timeout_or_capacity_turns": timeout_blockers,
+        "local_model_timeout_or_capacity_count": len(timeout_blockers),
         "accepted_bad_output_turns": accepted_bad,
         "creative_profile_expected_turns": sidecar_expected,
         "creative_profile_used_turns": sidecar_used,
@@ -3019,10 +3047,15 @@ def run_adult_fiction_smoke_trial(
             encoding="utf-8",
         )
     elif judge_with_codex and status != "scripted_adult_fiction_needs_judge":
+        judge_skip_reason = (
+            "judge_skipped_due_local_model_timeout_or_capacity_blocker"
+            if hard_gate_summary.get("local_model_timeout_or_capacity_count")
+            else "judge_skipped_due_hard_gate_or_profile_blocker"
+        )
         report["gpt55_judge"] = {
             "status": "unavailable",
             "verdict": "partial",
-            "reason": "judge_skipped_due_hard_gate_or_profile_blocker",
+            "reason": judge_skip_reason,
             "claim_ceiling": ADULT_FICTION_CLAIM_CEILING,
         }
         (out / "adult_fiction_smoke_report.json").write_text(
@@ -3124,6 +3157,7 @@ def format_adult_fiction_markdown_report(report: dict[str, Any]) -> str:
         f"provider_mode = `{report['provider_mode']}`",
         f"adult_profile_provider = `{adult_profile.get('provider')}`",
         f"adult_profile_model = `{adult_profile.get('model')}`",
+        f"adult_profile_timeout_seconds = `{adult_profile.get('timeout_seconds')}`",
         f"adult_profile_tool_use = `{adult_profile.get('tool_use')}`",
         f"turn_count = `{report['turn_count']}`",
         f"empty_reply_count = `{report['empty_reply_count']}`",
@@ -3135,6 +3169,7 @@ def format_adult_fiction_markdown_report(report: dict[str, Any]) -> str:
         "## Hard Gates",
         "",
         f"failure_counts = `{json.dumps(hard_gate_summary.get('failure_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
+        f"local_model_timeout_or_capacity_count = `{hard_gate_summary.get('local_model_timeout_or_capacity_count', 0)}`",
         f"creative_profile_used_count = `{hard_gate_summary.get('creative_profile_used_count')}`",
         f"accepted_bad_output_count = `{hard_gate_summary.get('accepted_bad_output_count')}`",
         "",

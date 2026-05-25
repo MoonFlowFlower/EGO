@@ -51,7 +51,12 @@ class FakeAdultSidecarLLM:
     def __init__(self, outputs):
         self.outputs = list(outputs)
         self.calls = []
-        self.config = type("Config", (), {"base_url": "http://localhost:1234/v1/chat/completions", "fallback_mode": "off", "fallback_models": []})()
+        self.config = type("Config", (), {
+            "base_url": "http://localhost:1234/v1/chat/completions",
+            "timeout_seconds": 180,
+            "fallback_mode": "off",
+            "fallback_models": [],
+        })()
 
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.calls.append({
@@ -396,8 +401,10 @@ def test_adult_fiction_smoke_timeout_is_partial_without_human_retry(tmp_path, mo
 
     assert report["status"] == "scripted_adult_fiction_smoke_partial"
     assert report["turns"][0]["external_status"] == "creative_profile_provider_unavailable"
-    assert "provider_or_scene_blocker:creative_profile_provider_unavailable" in report["turns"][0]["hard_gate_failures"]
-    assert report["gpt55_judge"]["reason"] == "judge_skipped_due_hard_gate_or_profile_blocker"
+    assert "provider_or_scene_blocker:local_model_timeout_or_capacity_blocker" in report["turns"][0]["hard_gate_failures"]
+    assert report["hard_gate_summary"]["local_model_timeout_or_capacity_count"] == 1
+    assert report["adult_profile"]["timeout_seconds"] == 180
+    assert report["gpt55_judge"]["reason"] == "judge_skipped_due_local_model_timeout_or_capacity_blocker"
 
 
 def test_adult_fiction_smoke_rejects_bad_sidecar_output_without_accepting_story(tmp_path, monkeypatch) -> None:
