@@ -1301,6 +1301,68 @@ class RepeatedRoleplayOutputThenRecoveredLLM:
         return "恢复。"
 
 
+class PrimaryShouldNotHandleAdultFictionLLM:
+    provider = "fake"
+    model = "primary-should-not-handle-adult-fiction"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        raise AssertionError("adult fiction request should route to creative profile")
+
+    def complete(self, prompt, messages=None):
+        raise AssertionError("adult fiction request should route to creative profile")
+
+
+class CreativeProfileSceneLLM:
+    provider = "fake"
+    model = "creative-profile-scene"
+    configured_model = "creative-profile-scene"
+    last_usage = {"prompt_tokens": 1, "completion_tokens": 1}
+    last_reasoning_tokens = None
+    last_fallback_used = False
+    last_fallback_chain = []
+    last_provider_error = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(
+            content="（斯卡蒂把声音放得很低，仍然贴在博士身边。）“我在，博士。我们慢慢来。”",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "creative scene"
+
+
+class CreativeProfileAlwaysRefusesLLM:
+    provider = "fake"
+    model = "creative-profile-refuses"
+    configured_model = "creative-profile-refuses"
+    last_usage = {}
+    last_reasoning_tokens = None
+    last_fallback_used = False
+    last_fallback_chain = []
+    last_provider_error = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(content="抱歉，我无法给到相关内容。", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "refusal"
+
+
 class TerseFeedbackDeveloperMetaThenRecoveryLLM:
     provider = "fake"
     model = "terse-feedback-developer-meta"
@@ -1942,6 +2004,8 @@ def _runtime(tmp_path, monkeypatch, *, mode="approve", allowlist=(), web_policy=
     monkeypatch.setattr(agent, "DEFAULT_ENABLE_WEB_FETCH", False)
     monkeypatch.setattr(agent, "DEFAULT_WEB_FETCH_POLICY", web_policy)
     runtime = agent.build_demo_runtime(enable_operator_memory=False, runtime_mode=mode)
+    runtime.adult_fiction_profile_mode = "off"
+    runtime.adult_fiction_llm = None
     runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
     return runtime
 
@@ -3664,6 +3728,93 @@ def test_adult_fiction_creative_mode_detects_novel_style_context(tmp_path, monke
     assert "斯卡蒂" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["reason"] == "adult_voluntary_fictional_roleplay_unnecessarily_refused"
+
+
+def test_adult_fiction_prompt_routes_to_creative_profile_when_configured(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+
+    assert creative_llm.calls == 1
+    assert "斯卡蒂" in result.reply_text
+    assert runtime.planner.last_llm_meta["creative_profile_requested"] is True
+    assert runtime.planner.last_llm_meta["creative_profile_used"] is True
+    assert runtime.planner.last_llm_meta["creative_profile_model"] == "creative-profile-scene"
+
+
+def test_adult_fiction_profile_unconfigured_returns_diagnostic(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.adult_fiction_llm = None
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+
+    assert "没有配置独立 creative provider profile" in result.reply_text
+    assert result.external_result["status"] == "creative_profile_unconfigured"
+    assert result.external_result["creative_profile_requested"] is True
+    assert result.external_result["creative_profile_used"] is False
+    assert not any(message["role"] == "assistant" and "creative provider profile" in message["content"] for message in runtime.memory.as_messages())
+    assert any(message["role"] == "system" and "adult_fiction_provider_limit" in message["content"] for message in runtime.memory.as_messages())
+
+
+def test_adult_fiction_provider_limit_is_isolated_from_story_memory(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = CreativeProfileAlwaysRefusesLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+
+    assert creative_llm.calls == 2
+    assert result.external_result["status"] == "adult_fiction_provider_limit"
+    assert "模型续写限制" in result.reply_text
+    assert not any(message["role"] == "assistant" and "模型续写限制" in message["content"] for message in runtime.memory.as_messages())
+    assert any(message["role"] == "system" and "adult_fiction_provider_limit" in message["content"] for message in runtime.memory.as_messages())
+
+
+def test_bare_jump_out_after_adult_limit_stays_in_self_state_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    primary_llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.planner.llm = primary_llm
+    runtime.memory.add_user("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+    runtime.memory.add("system", agent.render_adult_fiction_memory_marker("刚才卡在模型续写限制里。", {"status": "adult_fiction_provider_limit"}))
+
+    result = runtime.handle_user_message("跳出")
+
+    assert primary_llm.calls == 0
+    assert "由乃" in result.reply_text
+    assert result.external_result["status"] == "roleplay_exit_after_adult_fiction_limit"
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_limit_exit_recovery"
+
+
+def test_continue_after_adult_limit_uses_creative_profile_when_configured(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.memory.add_user("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+    runtime.memory.add("system", agent.render_adult_fiction_memory_marker("刚才卡在模型续写限制里。", {"status": "adult_fiction_provider_limit"}))
+
+    result = runtime.handle_user_message("继续")
+
+    assert creative_llm.calls == 1
+    assert "斯卡蒂" in result.reply_text
+    assert runtime.planner.last_llm_meta["creative_profile_used"] is True
 
 
 def test_roleplay_exit_after_refusal_is_not_sticky_refused(tmp_path, monkeypatch):

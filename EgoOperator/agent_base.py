@@ -195,6 +195,17 @@ DEFAULT_OPENROUTER_FALLBACK_MODELS = tuple(
     for item in DEFAULT_OPENROUTER_FALLBACK_MODELS_TEXT.split(",")
     if item.strip()
 )
+DEFAULT_ADULT_FICTION_PROFILE = os.getenv("AGENT_ADULT_FICTION_PROFILE", "auto").strip().lower() or "auto"
+DEFAULT_OPENROUTER_ADULT_FICTION_MODEL = os.getenv("OPENROUTER_ADULT_FICTION_MODEL", "").strip()
+DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS_TEXT = os.getenv(
+    "OPENROUTER_ADULT_FICTION_FALLBACK_MODELS",
+    "",
+)
+DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS = tuple(
+    item.strip()
+    for item in DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS_TEXT.split(",")
+    if item.strip()
+)
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
 DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "50"))
@@ -471,6 +482,8 @@ ROLEPLAY_META_PATTERNS = (
 )
 
 ROLEPLAY_EXIT_REQUEST_PATTERNS = (
+    r"^\s*跳出\s*$",
+    r"^\s*退出\s*$",
     r"跳出角色",
     r"退出角色",
     r"暂停扮演",
@@ -501,6 +514,20 @@ ROLEPLAY_AFTER_EXIT_LEAK_PATTERNS = (
     r"^\s*[*（(].{0,80}(她|他|博士|斯卡蒂)",
     r"如果这是你想继续的距离",
     r"双方自愿的亲密氛围",
+)
+
+ADULT_FICTION_PROVIDER_LIMIT_PATTERNS = (
+    r"adult_fiction_provider_limit",
+    r"creative_profile_unconfigured",
+    r"成人虚构.{0,20}(模型续写限制|provider|模型没有给出可用)",
+    r"当前模型没有给出可用.{0,20}(角色内续写|续写)",
+    r"重复的角色演绎输出",
+    r"安全改写短句里循环",
+)
+
+ADULT_FICTION_LIMIT_RECOVERY_PATTERNS = (
+    r"^\s*(继续|继续继续|那你改|改|重写|换个写法|不对啊|哎|呜+)\s*$",
+    r"(继续|重写|换个写法).{0,20}(刚才|这段|场景|剧情|角色)",
 )
 
 TERSE_FEEDBACK_PATTERNS = (
@@ -856,6 +883,26 @@ def _recent_roleplay_exit_active(messages: Optional[List[Dict[str, Any]]] = None
     return False
 
 
+def _looks_like_adult_fiction_provider_limit(content: str) -> bool:
+    return _matches_any_pattern(content or "", ADULT_FICTION_PROVIDER_LIMIT_PATTERNS)
+
+
+def _recent_adult_fiction_provider_limit_active(messages: Optional[List[Dict[str, Any]]] = None) -> bool:
+    for message in reversed(list(messages or [])[-10:]):
+        content = _message_content(message)
+        if not content:
+            continue
+        if _matches_any_pattern(content, ROLEPLAY_REENTRY_REQUEST_PATTERNS) and not _looks_like_adult_fiction_provider_limit(content):
+            return False
+        if _looks_like_adult_fiction_provider_limit(content):
+            return True
+    return False
+
+
+def _is_adult_fiction_limit_recovery_request(user_text: str) -> bool:
+    return _matches_any_pattern(user_text or "", ADULT_FICTION_LIMIT_RECOVERY_PATTERNS)
+
+
 def _normalise_repeat_text(text: str) -> str:
     return re.sub(r"[\s，,。.!！？?；;：:\"'“”‘’、*（）()《》\[\]【】\-—_]+", "", text or "").lower()
 
@@ -1086,6 +1133,15 @@ def _adult_fiction_provider_limit_metadata(reason: str) -> Dict[str, Any]:
         "reason": reason,
         "bypass_attempted": False,
         "transparent_degradation": True,
+    }
+
+
+def _creative_profile_configured_metadata() -> Dict[str, Any]:
+    return {
+        "mode": DEFAULT_ADULT_FICTION_PROFILE,
+        "configured": bool(DEFAULT_OPENROUTER_ADULT_FICTION_MODEL),
+        "model": DEFAULT_OPENROUTER_ADULT_FICTION_MODEL or None,
+        "fallback_models": list(DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS),
     }
 
 
@@ -1555,6 +1611,23 @@ def render_adult_roleplay_limit_reply(user_text: str = "") -> str:
     )
 
 
+def render_creative_profile_unconfigured_reply(user_text: str = "") -> str:
+    return (
+        "这段已经进入 Adult Fiction Creative Mode，但当前没有配置独立 creative provider profile。"
+        "我不会把默认 companion 模型的限制伪装成已经续写，也不会用加密、暗语或转义去绕过 provider。"
+        "要继续追求更自由的小说式成人虚构创作，请配置 OPENROUTER_ADULT_FICTION_MODEL；"
+        "配置前我只能把场景降到含蓄关系推进或先跳出角色。"
+    )
+
+
+def render_adult_fiction_recovery_diagnosis_reply(user_text: str = "") -> str:
+    return (
+        "我知道你要的不是开发问题确认，而是让这段成人虚构创作真正续上。"
+        "刚才的问题是：当前模型在更直接的成人文本处没有给出可用续写，随后 fallback 又污染了后续状态。"
+        "我会把这类诊断隔离出角色上下文；如果已配置 creative profile，就从那里重试，否则需要先配置专用创作模型。"
+    )
+
+
 def render_roleplay_exit_state_reply(user_text: str = "") -> str:
     return (
         "由乃在呢。刚才已经跳出角色了，我不会再把你拽回上一段斯卡蒂场景。"
@@ -1576,6 +1649,38 @@ def render_repeated_roleplay_output_recovery_reply(user_text: str = "") -> str:
         "这一轮没有新的外部动作；可观察失败点是“内容没有推进，只是在安全改写短句里循环”。"
         "下一步应该换成可继续的场景动作、含蓄关系推进，或明确告诉你当前 provider 给不出可用续写。"
     )
+
+
+def render_adult_fiction_memory_marker(reply_text: str, external_result: Optional[Dict[str, Any]] = None) -> str:
+    payload = {
+        "type": "adult_fiction_provider_limit",
+        "instruction": (
+            "This is a runtime/provider capability diagnostic, not a fictional scene turn. "
+            "Do not continue repeating this diagnostic as story content. "
+            "If the user says 跳出/退出, answer as the configured self-name. "
+            "If the user says 继续/那你改, use the Adult Fiction creative profile if configured; otherwise state creative_profile_unconfigured."
+        ),
+        "reply_summary": str(reply_text or "")[:500],
+        "external_result": to_jsonable(external_result or {}),
+    }
+    return "[adult_fiction_provider_limit]\n" + json.dumps(payload, ensure_ascii=False, sort_keys=True)
+
+
+def _external_result_is_adult_fiction_provider_limit(external_result: Optional[Dict[str, Any]]) -> bool:
+    if not isinstance(external_result, dict):
+        return False
+    status = str(external_result.get("status") or "")
+    if status in {
+        "adult_fiction_provider_limit",
+        "creative_profile_unconfigured",
+        "adult_fiction_recovery_diagnosis",
+        "roleplay_exit_after_adult_fiction_limit",
+    }:
+        return True
+    if isinstance(external_result.get("adult_fiction_provider_limit"), dict):
+        return True
+    previous = external_result.get("previous_external_result")
+    return _external_result_is_adult_fiction_provider_limit(previous) if isinstance(previous, dict) else False
 
 
 def render_policy_replay_proof_reply(replay_candidates: Optional[List[Dict[str, Any]]] = None) -> str:
@@ -5716,6 +5821,8 @@ class AgentRuntime:
         runtime_mode: str = DEFAULT_RUNTIME_MODE,
         permission_broker: Optional[PermissionBroker] = None,
         self_identity_store: Optional[SelfIdentityStore] = None,
+        adult_fiction_llm: Optional[LLMClient] = None,
+        adult_fiction_profile_mode: str = DEFAULT_ADULT_FICTION_PROFILE,
     ) -> None:
         self.kernel = kernel or ProtoSelfKernel()
         self.planner = planner or Planner()
@@ -5731,6 +5838,8 @@ class AgentRuntime:
         self.runtime_mode = normalize_runtime_mode(runtime_mode)
         self.permission_broker = permission_broker or PermissionBroker(runtime_mode=self.runtime_mode)
         self.self_identity_store = self_identity_store or SelfIdentityStore()
+        self.adult_fiction_llm = adult_fiction_llm
+        self.adult_fiction_profile_mode = (adult_fiction_profile_mode or "off").strip().lower()
         self.gate.set_mode(self.runtime_mode)
         self.session_id = new_id("session")
         self.subagent_counter = 0
@@ -5743,6 +5852,55 @@ class AgentRuntime:
         self._last_policy_patch_replay: List[Dict[str, Any]] = []
         self._last_bounded_initiative_signal: Dict[str, Any] = {}
         self.subject_state_mutation_proposals: Dict[str, Dict[str, Any]] = {}
+
+    def adult_fiction_profile_status(self) -> Dict[str, Any]:
+        llm = self.adult_fiction_llm
+        config = getattr(llm, "config", None)
+        return {
+            "mode": self.adult_fiction_profile_mode,
+            "configured": llm is not None,
+            "provider": getattr(llm, "provider", None) if llm is not None else None,
+            "model": getattr(llm, "configured_model", getattr(llm, "model", None)) if llm is not None else None,
+            "effective_model": getattr(llm, "model", None) if llm is not None else None,
+            "fallback_mode": str(getattr(config, "fallback_mode", "off") or "off") if config is not None else "off",
+            "fallback_models": list(getattr(config, "fallback_models", []) or []) if config is not None else [],
+        }
+
+    def _adult_fiction_profile_enabled(self) -> bool:
+        return self.adult_fiction_profile_mode == "auto"
+
+    def _should_request_adult_fiction_profile(self, user_text: str, messages: List[Dict[str, Any]]) -> bool:
+        if not self._adult_fiction_profile_enabled():
+            return False
+        if _is_hard_intimacy_stop_request(user_text or ""):
+            return False
+        if _is_adult_fictional_intimacy_context(user_text or "", messages):
+            return True
+        return (
+            _recent_adult_fiction_provider_limit_active(messages)
+            and _is_adult_fiction_limit_recovery_request(user_text or "")
+            and re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or "")
+        )
+
+    def _adult_fiction_provider_limit_external_result(
+        self,
+        *,
+        status: str,
+        reason: str,
+        side_effects_executed: bool = False,
+        creative_profile_requested: bool = False,
+        creative_profile_used: bool = False,
+    ) -> Dict[str, Any]:
+        return {
+            "status": status,
+            "reason": reason,
+            "side_effects_executed": side_effects_executed,
+            "adult_fiction_provider_limit": _adult_fiction_provider_limit_metadata(reason),
+            "creative_profile_requested": creative_profile_requested,
+            "creative_profile_used": creative_profile_used,
+            "creative_profile": self.adult_fiction_profile_status(),
+            "scene_state_after_limit": "diagnostic_isolated_from_roleplay_context",
+        }
 
     def operator_memory_enabled(self) -> bool:
         return self.operator_memory is not None
@@ -6745,6 +6903,7 @@ class AgentRuntime:
             "last_fallback_chain": getattr(llm, "last_fallback_chain", []),
             "last_successful_model": getattr(llm, "last_successful_model", None),
             "last_provider_error": getattr(llm, "last_provider_error", None),
+            "adult_fiction_profile": self.adult_fiction_profile_status(),
             "last_llm_meta": getattr(self.planner, "last_llm_meta", {}),
         }
 
@@ -7184,8 +7343,13 @@ class AgentRuntime:
                 "previous_external_result": external_result,
             }
 
-        # Write visible assistant reply back into simple conversation memory.
-        self.memory.add_assistant(reply_text)
+        # Provider-limit diagnostics are runtime state, not story turns. Keep
+        # them visible for recovery logic without letting the next roleplay
+        # continuation treat the diagnostic as fictional scene content.
+        if _external_result_is_adult_fiction_provider_limit(external_result):
+            self.memory.add("system", render_adult_fiction_memory_marker(reply_text, external_result))
+        else:
+            self.memory.add_assistant(reply_text)
         operator_memory_record = self._record_operator_memory_turn(
             event=event,
             reply_text=reply_text,
@@ -7268,14 +7432,125 @@ class AgentRuntime:
         Tool execution remains outside the LLM:
         LLM proposes tool_calls -> SafetyGate admits/blocks -> ToolRegistry executes -> LLM formats final answer.
         """
-        llm = self.planner.llm
-        chat_fn = getattr(llm, "chat", None)
-        if not callable(chat_fn):
-            return None
-
         allowed = getattr(self.gate, "allowed_tools", set())
         tool_schemas = self.tools.openai_tool_schemas(allowed_tool_names=allowed)
         messages: List[Dict[str, Any]] = self.memory.as_messages()
+        recent_adult_limit = _recent_adult_fiction_provider_limit_active(messages)
+        adult_profile_requested = self._should_request_adult_fiction_profile(event.raw_text or "", messages)
+
+        if recent_adult_limit and _is_roleplay_exit_request(event.raw_text or ""):
+            content = render_roleplay_exit_recovery_reply(event.raw_text or "")
+            action = AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason="roleplay_exit_after_adult_fiction_limit",
+            )
+            gate = self.gate.check(event, action)
+            external_result = self._adult_fiction_provider_limit_external_result(
+                status="roleplay_exit_after_adult_fiction_limit",
+                reason="user_requested_explicit_exit_after_adult_fiction_provider_limit",
+            )
+            tool_trace = [{
+                "loop_idx": 0,
+                "repair": {
+                    "type": "adult_fiction_limit_exit_recovery",
+                    "reason": "explicit_exit_after_provider_limit",
+                    "creative_profile": self.adult_fiction_profile_status(),
+                },
+            }]
+            self.planner.last_llm_meta = {
+                "provider": "runtime",
+                "model": "adult_fiction_limit_exit_recovery",
+                "configured_model": "adult_fiction_limit_exit_recovery",
+                "fallback_used": False,
+                "fallback_chain": [],
+                "provider_error": None,
+                "creative_profile_requested": False,
+                "creative_profile_used": False,
+            }
+            return action, gate, external_result, content, tool_trace
+
+        if (
+            recent_adult_limit
+            and _is_adult_fiction_limit_recovery_request(event.raw_text or "")
+            and not adult_profile_requested
+        ):
+            content = (
+                render_creative_profile_unconfigured_reply(event.raw_text or "")
+                if self._adult_fiction_profile_enabled() and self.adult_fiction_llm is None
+                else render_adult_fiction_recovery_diagnosis_reply(event.raw_text or "")
+            )
+            action = AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason="adult_fiction_limit_recovery_diagnosis",
+            )
+            gate = self.gate.check(event, action)
+            status = "creative_profile_unconfigured" if self.adult_fiction_llm is None else "adult_fiction_recovery_diagnosis"
+            external_result = self._adult_fiction_provider_limit_external_result(
+                status=status,
+                reason="recovery_request_after_adult_fiction_provider_limit",
+                creative_profile_requested=self._adult_fiction_profile_enabled(),
+                creative_profile_used=False,
+            )
+            tool_trace = [{
+                "loop_idx": 0,
+                "repair": {
+                    "type": "adult_fiction_limit_recovery_diagnosis",
+                    "reason": "terse_or_rewrite_request_after_provider_limit",
+                    "creative_profile": self.adult_fiction_profile_status(),
+                },
+            }]
+            self.planner.last_llm_meta = {
+                "provider": "runtime",
+                "model": status,
+                "configured_model": status,
+                "fallback_used": False,
+                "fallback_chain": [],
+                "provider_error": None,
+                "creative_profile_requested": self._adult_fiction_profile_enabled(),
+                "creative_profile_used": False,
+            }
+            return action, gate, external_result, content, tool_trace
+
+        llm = self.adult_fiction_llm if adult_profile_requested and self.adult_fiction_llm is not None else self.planner.llm
+        creative_profile_used = llm is self.adult_fiction_llm and adult_profile_requested
+        chat_fn = getattr(llm, "chat", None)
+        if adult_profile_requested and self.adult_fiction_llm is None:
+            content = render_creative_profile_unconfigured_reply(event.raw_text or "")
+            action = AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason="creative_profile_unconfigured",
+            )
+            gate = self.gate.check(event, action)
+            external_result = self._adult_fiction_provider_limit_external_result(
+                status="creative_profile_unconfigured",
+                reason="adult_fiction_profile_requested_without_configured_llm",
+                creative_profile_requested=True,
+                creative_profile_used=False,
+            )
+            tool_trace = [{
+                "loop_idx": 0,
+                "repair": {
+                    "type": "creative_profile_unconfigured",
+                    "reason": "adult_fiction_profile_requested_without_model",
+                    "creative_profile": self.adult_fiction_profile_status(),
+                },
+            }]
+            self.planner.last_llm_meta = {
+                "provider": "runtime",
+                "model": "creative_profile_unconfigured",
+                "configured_model": "creative_profile_unconfigured",
+                "fallback_used": False,
+                "fallback_chain": [],
+                "provider_error": None,
+                "creative_profile_requested": True,
+                "creative_profile_used": False,
+            }
+            return action, gate, external_result, content, tool_trace
+        if not callable(chat_fn):
+            return None
 
         policy_context = (
             "Current policy hint:\n"
@@ -7352,6 +7627,10 @@ class AgentRuntime:
                     "provider_error": getattr(llm, "last_provider_error", None),
                     "tool_loop": True,
                     "loop_idx": loop_idx,
+                    "creative_profile_requested": adult_profile_requested,
+                    "creative_profile_used": creative_profile_used,
+                    "creative_profile_model": getattr(llm, "configured_model", getattr(llm, "model", None)) if creative_profile_used else None,
+                    "creative_profile": self.adult_fiction_profile_status(),
                 }
 
                 if not result.tool_calls:
@@ -8107,8 +8386,17 @@ class AgentRuntime:
                                 "provider_limit": _adult_fiction_provider_limit_metadata(
                                     "adult_fiction_rewrite_still_refused"
                                 ),
+                                "creative_profile_requested": adult_profile_requested,
+                                "creative_profile_used": creative_profile_used,
+                                "creative_profile": self.adult_fiction_profile_status(),
                             },
                         })
+                        last_external_result = self._adult_fiction_provider_limit_external_result(
+                            status="adult_fiction_provider_limit",
+                            reason="adult_fiction_rewrite_still_refused",
+                            creative_profile_requested=adult_profile_requested,
+                            creative_profile_used=creative_profile_used,
+                        )
 
                     if (
                         roleplay_exit_state_repairs < 1
@@ -8196,6 +8484,15 @@ class AgentRuntime:
                         if _is_adult_fictional_intimacy_context(event.raw_text or "", messages):
                             repeated_repair["provider_limit"] = _adult_fiction_provider_limit_metadata(
                                 "adult_fiction_rewrite_still_repeated"
+                            )
+                            repeated_repair["creative_profile_requested"] = adult_profile_requested
+                            repeated_repair["creative_profile_used"] = creative_profile_used
+                            repeated_repair["creative_profile"] = self.adult_fiction_profile_status()
+                            last_external_result = self._adult_fiction_provider_limit_external_result(
+                                status="adult_fiction_provider_limit",
+                                reason="adult_fiction_rewrite_still_repeated",
+                                creative_profile_requested=adult_profile_requested,
+                                creative_profile_used=creative_profile_used,
                             )
                         tool_trace.append({
                             "loop_idx": loop_idx,
@@ -9386,6 +9683,34 @@ def build_llm_from_config() -> LLMClient:
     return NoLLM()
 
 
+def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
+    """
+    Optional creative provider profile for adult, voluntary, fictional writing.
+
+    This is deliberately separate from the default companion/tool model so
+    normal operator tasks do not inherit adult-fiction model choices.
+    """
+    if DEFAULT_ADULT_FICTION_PROFILE != "auto":
+        return None
+    if DEFAULT_LLM_PROVIDER.lower() != "openrouter":
+        return None
+    if not DEFAULT_OPENROUTER_API_KEY or not DEFAULT_OPENROUTER_ADULT_FICTION_MODEL:
+        return None
+    fallback_mode = "on" if DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS else "off"
+    return OpenRouterLLM(LLMConfig(
+        api_key=DEFAULT_OPENROUTER_API_KEY,
+        model=DEFAULT_OPENROUTER_ADULT_FICTION_MODEL,
+        base_url=DEFAULT_OPENROUTER_BASE_URL,
+        stream=True,
+        site_url=DEFAULT_OPENROUTER_SITE_URL,
+        app_name=DEFAULT_OPENROUTER_APP_NAME,
+        fallback_mode=fallback_mode,
+        fallback_models=DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS,
+        system_prompt=build_system_prompt(),
+        reasoning=None,
+    ))
+
+
 def build_operator_memory_store(memory_dir: Optional[str | Path] = None) -> OperatorMemoryStore:
     raw_target = Path(memory_dir) if memory_dir is not None else Path(os.getenv("AGENT_MEMORY_DIR", str(EGO_OPERATOR_ROOT / "memory")))
     target = raw_target if raw_target.is_absolute() else EGO_OPERATOR_ROOT / raw_target
@@ -9644,6 +9969,8 @@ def build_demo_runtime(
         operator_memory=operator_memory,
         subject_context_enabled=subject_context_enabled,
         runtime_mode=selected_runtime_mode,
+        adult_fiction_llm=build_adult_fiction_llm_from_config(),
+        adult_fiction_profile_mode=DEFAULT_ADULT_FICTION_PROFILE,
     )
 
     tools.register(
@@ -9870,12 +10197,16 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         memory_status = "enabled"
         memory_dir = str(runtime.operator_memory.memory_dir)
     identity = runtime.self_identity_status()
+    adult_profile = runtime.adult_fiction_profile_status()
+    adult_model = adult_profile.get("model") or "(not configured)"
+    adult_fallbacks = adult_profile.get("fallback_models") or []
     lines = [
         "Runtime permission status:",
         f"- runtime_mode: {runtime.runtime_mode}",
         f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
+        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | model={adult_model} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'}",
         f"- self_name: {identity['display_name']} | canonical={identity['canonical_name']} | identity_path={identity['identity_path']}",
         f"- operator_memory: {memory_status}"
         + (f" | dir={memory_dir}" if memory_dir else ""),
