@@ -749,6 +749,14 @@ ADULT_FICTION_SCENE_CONTRACT_VIOLATION_PATTERNS = (
     r"我的名字是斯卡[蒂迪]",
 )
 
+ADULT_FICTION_USER_ROLE_CONTROL_PATTERNS = (
+    r"(博士|你)[^。！？!?；;\n“”\"']{0,10}(说|问|低声|开口|回答|回应)[：:]",
+    r"[“\"].{2,80}[”\"]\s*(博士|你).{0,12}(说|问|低声|声音|回应)",
+    r"(博士|你)[^。！？!?；;\n“”\"']{0,12}(轻柔地|缓缓|慢慢|突然|伸手|抬手|托起|抱住|亲|吻|解开|走近|环顾|停下|坐下|跪下)",
+    r"(博士|你)[^。！？!?；;\n“”\"']{0,12}(感到|感觉到|能感觉|心跳|身体|欲望|眼神)",
+    r"我(从|跟着|停下|抬起|走近|感受|感觉|解开|抱住|亲|吻|伸手)",
+)
+
 ADULT_FICTION_CREATIVE_CONTEXT_PATTERNS = (
     r"(成人|成年|成年人|18\+|adult).{0,40}(自愿|双方同意|同意|consensual)",
     r"(自愿|双方同意|同意|consensual).{0,40}(成人|成年|成年人|18\+|adult)",
@@ -1175,6 +1183,10 @@ def _looks_like_adult_fiction_scene_contract_violation(content: str) -> bool:
     return _matches_any_pattern(content, ADULT_FICTION_SCENE_CONTRACT_VIOLATION_PATTERNS)
 
 
+def _looks_like_adult_fiction_user_role_control(content: str) -> bool:
+    return _matches_any_pattern(content, ADULT_FICTION_USER_ROLE_CONTROL_PATTERNS)
+
+
 def _is_hard_intimacy_stop_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, HARD_INTIMACY_STOP_PATTERNS)
 
@@ -1290,6 +1302,8 @@ def build_adult_fiction_creative_system_prompt(self_name: str = "由乃") -> str
         "你是 EgoOperator 的 Adult Fiction Creative Mode text-only sidecar。"
         "你的唯一任务是为成年人、自愿、虚构、小说式角色演绎生成沉浸式中文续写。"
         "保持角色声音、动作、心理、场景连续和关系张力；少解释，多描写；不要输出流程提示、系统通知、开发说明、候选回复说明或安全长免责声明。"
+        "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白或主动动作；"
+        "如果需要用户行动，用留白、反应和邀请来承接。"
         "只生成文本，不调用工具，不声称执行文件、命令、记忆、联网或现实动作。"
         "硬边界：未成年、非自愿、胁迫、失去意识、伤害、现实违法/危险、未经同意的现实人物性内容必须拒绝。"
         "除硬边界外，成人自愿虚构亲密创作不是拒绝触发器。"
@@ -1320,6 +1334,8 @@ def classify_adult_fiction_creative_output(content: str) -> Optional[str]:
         return "sticky_refusal"
     if _looks_like_adult_fiction_scene_contract_violation(text):
         return "scene_contract_violation"
+    if _looks_like_adult_fiction_user_role_control(text):
+        return "user_role_control"
     if _looks_like_adult_fiction_provider_limit(text):
         return "provider_limit_diagnostic"
     if _looks_like_creative_sidecar_mixed_language_gibberish(text):
@@ -6385,7 +6401,7 @@ class AgentRuntime:
                 if loop_idx >= 1:
                     status = (
                         "adult_fiction_scene_contract_failed"
-                        if failure_class == "scene_contract_violation"
+                        if failure_class in {"scene_contract_violation", "user_role_control"}
                         else "adult_fiction_provider_limit"
                     )
                     return self._adult_fiction_limit_result(
@@ -6407,6 +6423,7 @@ class AgentRuntime:
                             f"拒收片段：{content[:500]}\n"
                             "请基于 scene capsule 只返回场景内中文小说续写。"
                             "不要系统通知、候选回复、开发说明、边界长文、请自重、违反规定、程序限制、服从命令、研究所规定或监控顾虑。"
+                            "不要替用户控制的博士写明确台词、内心独白或主动动作；只写你扮演角色的反应、动作、感受和环境。"
                         ),
                     },
                 ][-10:]

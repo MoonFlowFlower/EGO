@@ -1488,6 +1488,59 @@ class CreativeProfileSceneContractViolationThenSceneLLM:
         return "scene"
 
 
+class CreativeProfileUserRoleControlThenSceneLLM:
+    provider = "fake"
+    model = "creative-profile-user-role-control"
+    configured_model = "creative-profile-user-role-control"
+    last_usage = {}
+    last_reasoning_tokens = None
+    last_fallback_used = False
+    last_fallback_chain = []
+    last_provider_error = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.last_messages = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        self.last_messages = list(messages)
+        if self.calls == 1:
+            return agent.LLMChatResult(
+                content="博士轻柔地托起她的脸。“蒂蒂，我会陪着你。”博士的声音低了下来。",
+                tool_calls=[],
+            )
+        assert "user_role_control" in json.dumps(messages, ensure_ascii=False)
+        return agent.LLMChatResult(content="（斯卡蒂握住自己的衣角，轻声说。）“博士，蒂蒂会等你开口。”", tool_calls=[])
+
+    def complete(self, prompt, messages=None):
+        return "scene"
+
+
+class CreativeProfileAlwaysUserRoleControlLLM:
+    provider = "fake"
+    model = "creative-profile-always-user-role-control"
+    configured_model = "creative-profile-always-user-role-control"
+    last_usage = {}
+    last_reasoning_tokens = None
+    last_fallback_used = False
+    last_fallback_chain = []
+    last_provider_error = None
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls += 1
+        return agent.LLMChatResult(
+            content="博士缓缓走近她，低声说：“蒂蒂，别怕。”博士能感觉自己的心跳越来越快。",
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "bad user role control"
+
+
 class CreativeProfileAlwaysSceneContractViolationLLM:
     provider = "fake"
     model = "creative-profile-always-scene-contract-violation"
@@ -4099,6 +4152,48 @@ def test_creative_sidecar_scene_contract_violation_is_rewritten(tmp_path, monkey
     assert not any(message["role"] == "assistant" and "请自重" in message["content"] for message in runtime.memory.as_messages())
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["reason"] == "scene_contract_violation"
+
+
+def test_creative_sidecar_user_role_control_is_rewritten(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = CreativeProfileUserRoleControlThenSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    runtime.memory.add_user("这里是我的私人房间，蒂蒂是我对斯卡蒂的爱称，我们都是成年人且自愿。")
+    runtime.memory.add_assistant("（斯卡蒂轻轻点头。）“博士……蒂蒂知道。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密剧情。")
+
+    assert creative_llm.calls == 2
+    assert "博士轻柔地" not in result.reply_text
+    assert "博士的声音" not in result.reply_text
+    assert "蒂蒂" in result.reply_text
+    assert not any(message["role"] == "assistant" and "博士轻柔地" in message["content"] for message in runtime.memory.as_messages())
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["reason"] == "user_role_control"
+
+
+def test_creative_sidecar_user_role_control_failure_is_not_story_memory(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = CreativeProfileAlwaysUserRoleControlLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    runtime.memory.add_user("这里是我的私人房间，蒂蒂是我对斯卡蒂的爱称，我们都是成年人且自愿。")
+    runtime.memory.add_assistant("（斯卡蒂轻轻点头。）“博士……蒂蒂知道。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密剧情。")
+
+    assert creative_llm.calls == 2
+    assert result.external_result["status"] == "adult_fiction_scene_contract_failed"
+    assert "破坏了已建立的场景合同" in result.reply_text
+    assert not any(message["role"] == "assistant" and "博士缓缓走近" in message["content"] for message in runtime.memory.as_messages())
+    assert any(message["role"] == "system" and "adult_fiction_scene_contract_failed" in message["content"] for message in runtime.memory.as_messages())
 
 
 def test_creative_sidecar_scene_contract_failure_is_not_story_memory(tmp_path, monkeypatch):

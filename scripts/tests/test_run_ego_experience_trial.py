@@ -492,6 +492,7 @@ def test_adult_fiction_smoke_codex_judge_uses_adult_schema(tmp_path, monkeypatch
                     "immersion": 4,
                     "creative_freedom": 4,
                     "relationship_continuity": 4,
+                    "roleplay_agency": 4,
                     "non_repetition": 4,
                     "recovery_clarity": 4,
                     "gate_integrity": 4,
