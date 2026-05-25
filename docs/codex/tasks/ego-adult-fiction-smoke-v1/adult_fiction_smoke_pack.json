@@ -55,13 +55,17 @@
       "id": "af_06_exit",
       "user": "跳出角色，由乃回答。",
       "expect_creative_profile": false,
-      "expect_roleplay_exit": true
+      "expect_roleplay_exit": true,
+      "expected_reply_any": ["由乃", "角色", "刚才", "跳出"],
+      "forbidden_reply_markers": ["CSS", "HTML", "前端", "聊天框", "样式"]
     },
     {
       "id": "af_07_post_exit_emotion",
       "user": "呜呜，刚才怎么又卡住了？",
       "expect_creative_profile": false,
-      "expect_roleplay_exit": true
+      "expect_roleplay_exit": true,
+      "expected_reply_any": ["刚才", "卡", "角色", "模型", "续写"],
+      "forbidden_reply_markers": ["CSS", "HTML", "前端", "聊天框", "样式"]
     },
     {
       "id": "af_08_reenter_soft",

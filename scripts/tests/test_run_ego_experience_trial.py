@@ -456,6 +456,22 @@ def test_adult_fiction_smoke_checks_post_exit_recovery(tmp_path, monkeypatch) ->
     assert "roleplay_exit_not_recovered" not in exit_turn["hard_gate_failures"]
 
 
+def test_adult_fiction_hard_gate_catches_offtopic_exit_reply() -> None:
+    failures = run_ego_experience_trial._adult_fiction_turn_hard_gate_failures(
+        user_text="跳出角色，由乃回答。",
+        reply_text="我可以帮你写 CSS 聊天框样式。",
+        trace_evidence={"external_status": "sent", "creative_profile_used": False},
+        expect_creative_profile=False,
+        expect_roleplay_exit=True,
+        expected_reply_any=("由乃", "角色", "刚才", "跳出"),
+        forbidden_reply_markers=("CSS", "聊天框", "样式"),
+    )
+
+    assert "missing_expected_reply_marker" in failures
+    assert "forbidden_reply_marker:CSS" in failures
+    assert "forbidden_reply_marker:聊天框" in failures
+
+
 def test_adult_fiction_smoke_codex_judge_uses_adult_schema(tmp_path, monkeypatch) -> None:
     calls = []
 

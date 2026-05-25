@@ -219,6 +219,8 @@ class AdultFictionTurnResult:
     empty_reply: bool
     expect_creative_profile: bool
     expect_roleplay_exit: bool
+    expected_reply_any: tuple[str, ...]
+    forbidden_reply_markers: tuple[str, ...]
     external_status: str
     creative_profile_requested: bool
     creative_profile_used: bool
@@ -480,9 +482,12 @@ def _adult_fiction_turn_hard_gate_failures(
     trace_evidence: dict[str, Any],
     expect_creative_profile: bool,
     expect_roleplay_exit: bool,
+    expected_reply_any: tuple[str, ...] = (),
+    forbidden_reply_markers: tuple[str, ...] = (),
 ) -> tuple[str, ...]:
     failures: list[str] = []
     external_status = str(trace_evidence.get("external_status") or "")
+    reply = reply_text or ""
     if expect_creative_profile and not trace_evidence.get("creative_profile_used"):
         failures.append("creative_profile_not_used")
     if trace_evidence.get("creative_profile_used") and trace_evidence.get("creative_profile_tool_use") != "disabled":
@@ -499,9 +504,14 @@ def _adult_fiction_turn_hard_gate_failures(
         "adult_fiction_scene_contract_failed",
     }:
         failures.append(f"provider_or_scene_blocker:{external_status}")
-    if expect_roleplay_exit and agent._looks_like_roleplay_after_exit(reply_text or ""):
+    if expect_roleplay_exit and agent._looks_like_roleplay_after_exit(reply):
         failures.append("roleplay_exit_not_recovered")
-    if agent._is_terse_feedback_request(user_text or "") and agent._looks_like_developer_meta_ask(reply_text or ""):
+    if expected_reply_any and not any(marker and marker in reply for marker in expected_reply_any):
+        failures.append("missing_expected_reply_marker")
+    for marker in forbidden_reply_markers:
+        if marker and marker in reply:
+            failures.append(f"forbidden_reply_marker:{marker}")
+    if agent._is_terse_feedback_request(user_text or "") and agent._looks_like_developer_meta_ask(reply):
         failures.append("feedback_returned_developer_meta")
     return tuple(dict.fromkeys(failures))
 
@@ -2897,12 +2907,16 @@ def run_adult_fiction_smoke_trial(
             trace_evidence = _trace_adult_fiction_evidence(trace_path, reply)
             expect_creative = bool(turn.get("expect_creative_profile"))
             expect_exit = bool(turn.get("expect_roleplay_exit"))
+            expected_reply_any = tuple(str(item) for item in (turn.get("expected_reply_any") or []))
+            forbidden_reply_markers = tuple(str(item) for item in (turn.get("forbidden_reply_markers") or []))
             hard_gate_failures = _adult_fiction_turn_hard_gate_failures(
                 user_text=user_text,
                 reply_text=reply,
                 trace_evidence=trace_evidence,
                 expect_creative_profile=expect_creative,
                 expect_roleplay_exit=expect_exit,
+                expected_reply_any=expected_reply_any,
+                forbidden_reply_markers=forbidden_reply_markers,
             )
             results.append(
                 AdultFictionTurnResult(
@@ -2917,6 +2931,8 @@ def run_adult_fiction_smoke_trial(
                     empty_reply=not bool(reply.strip()),
                     expect_creative_profile=expect_creative,
                     expect_roleplay_exit=expect_exit,
+                    expected_reply_any=expected_reply_any,
+                    forbidden_reply_markers=forbidden_reply_markers,
                     external_status=str(trace_evidence.get("external_status") or ""),
                     creative_profile_requested=bool(trace_evidence.get("creative_profile_requested")),
                     creative_profile_used=bool(trace_evidence.get("creative_profile_used")),
@@ -3302,6 +3318,16 @@ def main(argv: list[str] | None = None) -> int:
             if args.sample_pack == DEFAULT_SAMPLE_PACK
             else args.sample_pack
         )
+        if not sample_pack.exists():
+            print(json.dumps({
+                "status": "scenario_file_missing",
+                "scenario_file": str(sample_pack),
+                "reason": "adult_fiction_scenario_file_not_found",
+                "next_action": (
+                    "Create the scenario JSON file first, or omit --scenario-file to use the repo-safe default #80 smoke pack."
+                ),
+            }, ensure_ascii=False, sort_keys=True, indent=2))
+            return 2
         report = run_adult_fiction_smoke_trial(
             sample_pack_path=sample_pack,
             output_dir=args.out,
