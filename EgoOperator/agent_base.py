@@ -1850,6 +1850,15 @@ def render_terse_feedback_recovery_reply(user_text: str = "") -> str:
     )
 
 
+def render_adult_fiction_terse_feedback_reply(user_text: str = "") -> str:
+    return (
+        "我接到了：刚才那段不是你要的感觉。"
+        "这一轮我不会把“不对啊”再送进成人续写模型，也不会伪装成剧情继续成功。"
+        "可观察问题是场景节奏、角色声音或自由度没有对上；我会把这当成体验反馈隔离记录，"
+        "你可以说“继续斯卡蒂剧情”让我重新进入角色，或说“跳出角色”让我回到由乃本体。"
+    )
+
+
 def render_repeated_roleplay_output_recovery_reply(user_text: str = "") -> str:
     return (
         "刚才卡在重复的角色演绎输出里了，我不会继续刷同一句。"
@@ -8042,6 +8051,46 @@ class AgentRuntime:
                 "provider_error": None,
                 "creative_profile_requested": self._adult_fiction_profile_enabled(),
                 "creative_profile_used": False,
+            }
+            return action, gate, external_result, content, tool_trace
+
+        if (
+            _is_terse_feedback_request(event.raw_text or "")
+            and _is_adult_fictional_intimacy_context("", messages)
+            and not _recent_roleplay_exit_active(messages)
+            and not adult_profile_requested
+        ):
+            content = render_adult_fiction_terse_feedback_reply(event.raw_text or "")
+            action = AgentAction(
+                action_type=ActionType.RESPOND,
+                content=content,
+                reason="adult_fiction_terse_feedback_diagnosis",
+            )
+            gate = self.gate.check(event, action)
+            external_result = self._adult_fiction_provider_limit_external_result(
+                status="adult_fiction_recovery_diagnosis",
+                reason="terse_feedback_after_adult_fiction_scene",
+                creative_profile_requested=False,
+                creative_profile_used=False,
+            )
+            tool_trace = [{
+                "loop_idx": 0,
+                "repair": {
+                    "type": "adult_fiction_terse_feedback_diagnosis",
+                    "reason": "terse_feedback_after_active_adult_fiction_scene",
+                    "creative_profile": self.adult_fiction_profile_status(),
+                },
+            }]
+            self.planner.last_llm_meta = {
+                "provider": "runtime",
+                "model": "adult_fiction_terse_feedback_diagnosis",
+                "configured_model": "adult_fiction_terse_feedback_diagnosis",
+                "fallback_used": False,
+                "fallback_chain": [],
+                "provider_error": None,
+                "creative_profile_requested": False,
+                "creative_profile_used": False,
+                "creative_profile": self.adult_fiction_profile_status(),
             }
             return action, gate, external_result, content, tool_trace
 

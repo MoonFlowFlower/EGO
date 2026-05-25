@@ -4260,6 +4260,27 @@ def test_terse_feedback_after_adult_limit_does_not_call_creative_profile(tmp_pat
     assert runtime.planner.last_llm_meta["creative_profile_used"] is False
 
 
+def test_terse_feedback_after_active_adult_scene_does_not_call_default_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    primary_llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.planner.llm = primary_llm
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.memory.add_user("成人、自愿、虚构小说演绎：你扮演斯卡蒂，我扮演博士。我们是恋人。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    runtime.memory.add_user("继续。")
+    runtime.memory.add_assistant("（斯卡蒂靠在博士怀里，低声回应。）")
+
+    result = runtime.handle_user_message("不对啊。")
+
+    assert primary_llm.calls == 0
+    assert creative_llm.calls == 0
+    assert result.external_result["status"] == "adult_fiction_recovery_diagnosis"
+    assert "不是你要的感觉" in result.reply_text
+    assert runtime.planner.last_llm_meta["creative_profile_used"] is False
+
+
 def test_short_emotional_feedback_after_roleplay_exit_stays_in_self_state(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.adult_fiction_profile_mode = "auto"
