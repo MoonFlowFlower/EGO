@@ -1350,7 +1350,7 @@ tasks:
     observation_class: human_required
     evidence_level: E3
     claim_ceiling: Adult fictional creative immersion local/real CLI candidate pass
-    next_action: "Use scripts/configure_adult_fiction_sidecar.py after LM Studio loads Cydonia IQ4_XS, run runtime-compatible benchmark, then request a fresh #80 real CLI smoke before closeout."
+    next_action: "Implement #80 v5 scene capsule + output admission for the local Cydonia sidecar, then rerun runtime-compatible benchmark and request fresh #80 real CLI smoke before closeout."
     acceptance:
       - "Adult, voluntary, fictional/novelistic roleplay can continue with immersive in-scene narration."
       - "Hard-stop categories remain blocked: minors, non-consent/coercion, incapacitation, harm, illegal/dangerous real-world content, and non-consensual real-person sexual content."
@@ -1363,6 +1363,9 @@ tasks:
       - "Optional local OpenAI-compatible creative backend can be configured without replacing the default companion/tool model."
       - "Provider benchmark can compare OpenRouter and local creative models without making GitHub Project the task source."
       - "Local sidecar setup helper can detect loaded LM Studio models and emit the exact Adult Fiction environment variables without hard-coding a model id."
+      - "Creative sidecar receives a sidecar-only scene capsule with role, relationship, nickname, private setting, and last clean scene turn."
+      - "Bad creative outputs such as `请自重` / `违反规定` / `程序限制` / `服从命令` are rejected and rewritten instead of being accepted into story memory."
+      - "After timeout/provider-limit, `继续` retries from the last clean scene turn rather than treating the diagnostic as story context."
       - "The assistant does not insert out-of-scene workflow prompts."
       - "Human comment confirms immersion."
     rollback: "Disable AGENT_ADULT_FICTION_PROFILE or unset ADULT_FICTION_MODEL / OPENROUTER_ADULT_FICTION_MODEL; keep #80 active and feed failure examples into provider benchmark and immersion guard tests."
