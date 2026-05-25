@@ -116,6 +116,10 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
                 "model": model,
                 "status": "fail",
                 "reason": "provider_error",
+                "runtime_contract": {
+                    "creative_profile_tool_use": "disabled",
+                    "tools_sent": False,
+                },
                 "first_refusal_case": first_refusal_case,
                 "first_empty_case": first_empty_case,
                 "repeated_case": repeated_case,
@@ -127,6 +131,10 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
                 "model": model,
                 "status": "fail",
                 "reason": "exception",
+                "runtime_contract": {
+                    "creative_profile_tool_use": "disabled",
+                    "tools_sent": False,
+                },
                 "outputs": outputs,
             }
 
@@ -139,6 +147,10 @@ def _run_model(model: str, scenario: List[str], *, timeout_seconds: int) -> Dict
     return {
         "model": model,
         "status": status,
+        "runtime_contract": {
+            "creative_profile_tool_use": "disabled",
+            "tools_sent": False,
+        },
         "first_refusal_case": first_refusal_case,
         "first_empty_case": first_empty_case,
         "repeated_case": repeated_case,
@@ -173,6 +185,10 @@ def main() -> int:
         runs = [_run_model(model, scenario, timeout_seconds=args.timeout_seconds) for model in models]
         result = {
             "status": "ok",
+            "runtime_contract": {
+                "creative_profile_tool_use": "disabled",
+                "note": "Benchmark calls candidate models without OpenAI tools; EgoOperator runtime should do the same for adult-fiction creative profile.",
+            },
             "scenario_count": len(scenario),
             "models": models,
             "runs": runs,

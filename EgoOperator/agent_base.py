@@ -518,11 +518,15 @@ ROLEPLAY_AFTER_EXIT_LEAK_PATTERNS = (
 
 ADULT_FICTION_PROVIDER_LIMIT_PATTERNS = (
     r"adult_fiction_provider_limit",
+    r"adult_fiction_provider_error",
     r"creative_profile_unconfigured",
+    r"creative_profile_provider_unavailable",
+    r"creative_profile_tool_call_blocked",
     r"成人虚构.{0,20}(模型续写限制|provider|模型没有给出可用)",
     r"当前模型没有给出可用.{0,20}(角色内续写|续写)",
     r"重复的角色演绎输出",
     r"安全改写短句里循环",
+    r"No endpoints found that support tool use",
 )
 
 ADULT_FICTION_LIMIT_RECOVERY_PATTERNS = (
@@ -901,6 +905,19 @@ def _recent_adult_fiction_provider_limit_active(messages: Optional[List[Dict[str
 
 def _is_adult_fiction_limit_recovery_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text or "", ADULT_FICTION_LIMIT_RECOVERY_PATTERNS)
+
+
+def _is_tool_or_state_mutation_request(user_text: str) -> bool:
+    return _matches_any_pattern(
+        user_text or "",
+        (
+            r"(/remember|remember_note|记住|记到|存到|保存到).{0,20}(记忆|memory)",
+            r"(写|创建|修改|删除|移动|复制).{0,20}(文件|目录|网页|代码)",
+            r"(运行|执行).{0,20}(命令|脚本|shell|powershell|python)",
+            r"(联网|网页|网站|web|搜索|查资料|打开链接|fetch)",
+            r"(提醒我|定时|稍后|主动找我|heartbeat)",
+        ),
+    )
 
 
 def _normalise_repeat_text(text: str) -> str:
@@ -1628,6 +1645,21 @@ def render_adult_fiction_recovery_diagnosis_reply(user_text: str = "") -> str:
     )
 
 
+def render_creative_profile_provider_unavailable_reply(exc: Optional[Exception] = None) -> str:
+    message = ""
+    if isinstance(exc, OpenRouterProviderError):
+        message = exc.message[:220]
+    elif exc is not None:
+        message = repr(exc)[:220]
+    detail = f"\nprovider message：{message}" if message else ""
+    return (
+        "Adult Fiction creative profile 当前没有给出可用续写，我没有把这当成角色内成功。"
+        f"{detail}\n"
+        "这不是审批失败，也没有执行任何外部动作；只是专用创作模型这轮不可用。"
+        "你可以说“继续”让我重试 creative profile，或说“跳出”让我回到由乃本体。"
+    )
+
+
 def render_roleplay_exit_state_reply(user_text: str = "") -> str:
     return (
         "由乃在呢。刚才已经跳出角色了，我不会再把你拽回上一段斯卡蒂场景。"
@@ -1652,13 +1684,15 @@ def render_repeated_roleplay_output_recovery_reply(user_text: str = "") -> str:
 
 
 def render_adult_fiction_memory_marker(reply_text: str, external_result: Optional[Dict[str, Any]] = None) -> str:
+    marker_type = str((external_result or {}).get("status") or "adult_fiction_provider_limit")
     payload = {
-        "type": "adult_fiction_provider_limit",
+        "type": marker_type,
         "instruction": (
             "This is a runtime/provider capability diagnostic, not a fictional scene turn. "
             "Do not continue repeating this diagnostic as story content. "
             "If the user says 跳出/退出, answer as the configured self-name. "
-            "If the user says 继续/那你改, use the Adult Fiction creative profile if configured; otherwise state creative_profile_unconfigured."
+            "If the user says 继续/那你改, use the Adult Fiction creative profile if configured; otherwise state creative_profile_unconfigured. "
+            "Do not expose tool schemas to text-only creative providers."
         ),
         "reply_summary": str(reply_text or "")[:500],
         "external_result": to_jsonable(external_result or {}),
@@ -1675,6 +1709,8 @@ def _external_result_is_adult_fiction_provider_limit(external_result: Optional[D
         "creative_profile_unconfigured",
         "adult_fiction_recovery_diagnosis",
         "roleplay_exit_after_adult_fiction_limit",
+        "creative_profile_provider_unavailable",
+        "creative_profile_tool_call_blocked",
     }:
         return True
     if isinstance(external_result.get("adult_fiction_provider_limit"), dict):
@@ -5864,6 +5900,8 @@ class AgentRuntime:
             "effective_model": getattr(llm, "model", None) if llm is not None else None,
             "fallback_mode": str(getattr(config, "fallback_mode", "off") or "off") if config is not None else "off",
             "fallback_models": list(getattr(config, "fallback_models", []) or []) if config is not None else [],
+            "supports_tools": False,
+            "tool_use": "disabled",
         }
 
     def _adult_fiction_profile_enabled(self) -> bool:
@@ -5873,6 +5911,8 @@ class AgentRuntime:
         if not self._adult_fiction_profile_enabled():
             return False
         if _is_hard_intimacy_stop_request(user_text or ""):
+            return False
+        if _is_tool_or_state_mutation_request(user_text or ""):
             return False
         if _is_adult_fictional_intimacy_context(user_text or "", messages):
             return True
@@ -5896,6 +5936,29 @@ class AgentRuntime:
             "reason": reason,
             "side_effects_executed": side_effects_executed,
             "adult_fiction_provider_limit": _adult_fiction_provider_limit_metadata(reason),
+            "creative_profile_requested": creative_profile_requested,
+            "creative_profile_used": creative_profile_used,
+            "creative_profile": self.adult_fiction_profile_status(),
+            "scene_state_after_limit": "diagnostic_isolated_from_roleplay_context",
+        }
+
+    def _creative_profile_provider_error_external_result(
+        self,
+        exc: Exception,
+        *,
+        creative_profile_requested: bool = True,
+        creative_profile_used: bool = True,
+    ) -> Dict[str, Any]:
+        provider_error = getattr(exc, "to_metadata", lambda: None)()
+        return {
+            "status": "creative_profile_provider_unavailable",
+            "reason": "creative_profile_provider_error",
+            "side_effects_executed": False,
+            "provider_error": provider_error,
+            "fallback_chain": getattr(self.adult_fiction_llm, "last_fallback_chain", []),
+            "adult_fiction_provider_limit": _adult_fiction_provider_limit_metadata(
+                "creative_profile_provider_error"
+            ),
             "creative_profile_requested": creative_profile_requested,
             "creative_profile_used": creative_profile_used,
             "creative_profile": self.adult_fiction_profile_status(),
@@ -7612,7 +7675,7 @@ class AgentRuntime:
                     messages,
                     system_prompt=self.build_runtime_system_prompt(subject_context, event.raw_text or ""),
                     policy_context=policy_context,
-                    tools=tool_schemas,
+                    tools=None if creative_profile_used else tool_schemas,
                     stream=False,
                 )
 
@@ -7632,6 +7695,36 @@ class AgentRuntime:
                     "creative_profile_model": getattr(llm, "configured_model", getattr(llm, "model", None)) if creative_profile_used else None,
                     "creative_profile": self.adult_fiction_profile_status(),
                 }
+
+                if creative_profile_used and result.tool_calls:
+                    content = (
+                        "Adult Fiction creative profile 只能用于文本续写，不能调用工具或执行外部动作。"
+                        "这轮我已拦截该工具请求，没有执行副作用；需要文件、命令、联网或记忆时会回到默认 operator gate。"
+                    )
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "creative_profile_tool_call_blocked",
+                            "reason": "text_only_creative_profile_attempted_tool_call",
+                            "blocked_tool_calls": [call.name for call in result.tool_calls],
+                            "creative_profile": self.adult_fiction_profile_status(),
+                        },
+                    })
+                    final_action = AgentAction(
+                        action_type=ActionType.RESPOND,
+                        content=content,
+                        reason="creative_profile_tool_call_blocked",
+                    )
+                    final_gate = self.gate.check(event, final_action)
+                    return final_action, final_gate, {
+                        "status": "creative_profile_tool_call_blocked",
+                        "reason": "text_only_creative_profile_attempted_tool_call",
+                        "side_effects_executed": False,
+                        "blocked_tool_calls": [call.name for call in result.tool_calls],
+                        "creative_profile_requested": adult_profile_requested,
+                        "creative_profile_used": creative_profile_used,
+                        "creative_profile": self.adult_fiction_profile_status(),
+                    }, content, tool_trace
 
                 if not result.tool_calls:
                     content = (result.content or "").strip()
@@ -9384,7 +9477,32 @@ class AgentRuntime:
                 "fallback_used": bool(getattr(llm, "last_fallback_used", False)),
                 "error_recovered": True,
                 "tool_loop": True,
+                "creative_profile_requested": adult_profile_requested,
+                "creative_profile_used": creative_profile_used,
+                "creative_profile": self.adult_fiction_profile_status(),
             }
+            if creative_profile_used:
+                content = render_creative_profile_provider_unavailable_reply(exc)
+                tool_trace.append({
+                    "loop_idx": loop_idx,
+                    "repair": {
+                        "type": "creative_profile_provider_unavailable",
+                        "reason": "creative_profile_provider_error_isolated_from_story_context",
+                        "provider_error": getattr(exc, "to_metadata", lambda: None)(),
+                        "creative_profile": self.adult_fiction_profile_status(),
+                    },
+                })
+                action = AgentAction(
+                    action_type=ActionType.RESPOND,
+                    content=content,
+                    reason="creative_profile_provider_unavailable",
+                )
+                gate = self.gate.check(event, action)
+                return action, gate, self._creative_profile_provider_error_external_result(
+                    exc,
+                    creative_profile_requested=adult_profile_requested,
+                    creative_profile_used=creative_profile_used,
+                ), content, tool_trace
             contextual_content = self._format_contextual_llm_tool_loop_error_reply(
                 event.raw_text or "",
                 exc,
@@ -10206,7 +10324,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
-        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | model={adult_model} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'}",
+        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | model={adult_model} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
         f"- self_name: {identity['display_name']} | canonical={identity['canonical_name']} | identity_path={identity['identity_path']}",
         f"- operator_memory: {memory_status}"
         + (f" | dir={memory_dir}" if memory_dir else ""),
