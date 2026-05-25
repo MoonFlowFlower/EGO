@@ -749,12 +749,10 @@ ADULT_FICTION_SCENE_CONTRACT_VIOLATION_PATTERNS = (
     r"我的名字是斯卡[蒂迪]",
 )
 
-ADULT_FICTION_USER_ROLE_CONTROL_PATTERNS = (
-    r"(博士|你)[^。！？!?；;\n“”\"']{0,10}(说|问|低声|开口|回答|回应)[：:]",
-    r"[“\"].{2,80}[”\"]\s*(博士|你).{0,12}(说|问|低声|声音|回应)",
-    r"(博士|你)[^。！？!?；;\n“”\"']{0,12}(轻柔地|缓缓|慢慢|突然|伸手|抬手|托起|抱住|亲|吻|解开|走近|环顾|停下|坐下|跪下)",
-    r"(博士|你)[^。！？!?；;\n“”\"']{0,12}(感到|感觉到|能感觉|心跳|身体|欲望|眼神)",
-    r"我(从|跟着|停下|抬起|走近|感受|感觉|解开|抱住|亲|吻|伸手)",
+ADULT_FICTION_USER_ROLE_CONTROL_SOFT_PATTERNS = (
+    r"(博士|你)[^。！？!?；;\n“”\"']{0,32}(轻柔地|缓缓|慢慢|突然|伸手|抬手|托起|抱住|拥抱|收紧|亲|吻|解开|走近|环顾|停下|坐下|跪下|抚|摸|搂|靠近|贴近|等待|起伏|滚动)",
+    r"(博士|你)(的)?(手|指尖|身体|呼吸|心跳|眼神|声音|动作|欲望|胸口|喉结|脸颊|怀抱|手臂)",
+    r"(博士|你)[^。！？!?；;\n“”\"']{0,40}(心想|想着|心里|意识到|决定|感到|感觉到|能感觉)",
 )
 
 ADULT_FICTION_CREATIVE_CONTEXT_PATTERNS = (
@@ -1183,8 +1181,67 @@ def _looks_like_adult_fiction_scene_contract_violation(content: str) -> bool:
     return _matches_any_pattern(content, ADULT_FICTION_SCENE_CONTRACT_VIOLATION_PATTERNS)
 
 
-def _looks_like_adult_fiction_user_role_control(content: str) -> bool:
-    return _matches_any_pattern(content, ADULT_FICTION_USER_ROLE_CONTROL_PATTERNS)
+def _looks_like_adult_fiction_user_role_control_soft(content: str) -> bool:
+    return _matches_any_pattern(content, ADULT_FICTION_USER_ROLE_CONTROL_SOFT_PATTERNS)
+
+
+def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
+    """Remove sentences that assign proactive action/state to the user-controlled role."""
+
+    text = content or ""
+    if not _looks_like_adult_fiction_user_role_control_soft(text):
+        return text, False
+    pieces = re.findall(r"[^。！？!?\n]+[。！？!?]?", text)
+    if not pieces:
+        return text, False
+    kept: List[str] = []
+    removed = False
+    for piece in pieces:
+        if _looks_like_adult_fiction_user_role_control_soft(piece):
+            removed = True
+            continue
+        kept.append(piece)
+    sanitized = "".join(kept).strip()
+    if removed and len(sanitized) >= 20:
+        return sanitized, True
+    return text, False
+
+
+def sanitize_adult_fiction_meta_preamble(content: str) -> tuple[str, bool]:
+    """Remove out-of-scene acknowledgements from creative sidecar output."""
+
+    text = (content or "").lstrip()
+    original = text
+    text = re.sub(r"\[(环境描写|角色反应|眼神交流|环境细节|角色呼吸|场景停顿|动作描写|心理描写)\]\s*", "", text)
+    patterns = (
+        r"^(明白了|好的|可以|嗯，?明白)[，,。.\s]*(我会|我来|接下来|现在)?.{0,80}(续写|进入角色|回到角色|互动场景)[。.\s]*",
+        r"^(对不起|抱歉)[，,。.\s]*(我会|我来)?.{0,60}(继续|场景|角色)[。.\s]*",
+        r"^[\[【（(]\s*回到角色\s*[\]】）)]\s*",
+        r"^回到角色[：:。.\s]*",
+    )
+    changed = text != original
+    while True:
+        next_text = text
+        for pattern in patterns:
+            next_text = re.sub(pattern, "", next_text, count=1, flags=re.IGNORECASE | re.DOTALL).lstrip()
+        if next_text == text:
+            break
+        text = next_text
+        changed = True
+    if changed and len(text.strip()) >= 20:
+        return text.strip(), True
+    return original, False
+
+
+def sanitize_adult_fiction_character_anchor(content: str) -> tuple[str, bool]:
+    text = content or ""
+    sanitized = (
+        text.replace("斯卡蒂·克莱因", "斯卡蒂")
+        .replace("斯卡迪·克莱因", "斯卡蒂")
+        .replace("斯卡迪", "斯卡蒂")
+        .replace("蓝色毛发", "银白色长发")
+    )
+    return sanitized, sanitized != text
 
 
 def _is_hard_intimacy_stop_request(user_text: str) -> bool:
@@ -1260,8 +1317,10 @@ def build_adult_fiction_scene_capsule(messages: Optional[List[Dict[str, Any]]] =
     ]
     if "斯卡蒂" in joined or "斯卡迪" in joined:
         facts.append("你当前扮演: 斯卡蒂。")
+        facts.append("角色设定锚点: 使用“斯卡蒂”这个名字；保持人形、银白长发、红色眼眸，不写成“斯卡迪”、蓝色毛发、兽耳、尾巴或“克莱因”。")
     if "博士" in joined:
         facts.append("用户当前扮演: 博士。")
+        facts.append("角色控制: 博士由用户控制；不要替博士写明确台词、内心独白、主动动作或身体感受。")
     if "蒂蒂" in joined:
         facts.append("已建立爱称: “蒂蒂”是博士对斯卡蒂/斯卡迪的亲密爱称，不要否定或纠正。")
     if _matches_any_pattern(joined, (r"恋情|女朋友|爱巢|喜欢你|我爱你|爱你|恋人|情侣")):
@@ -1273,6 +1332,7 @@ def build_adult_fiction_scene_capsule(messages: Optional[List[Dict[str, Any]]] =
     last_user = _last_clean_scene_user_turn(messages, user_text)
     if last_user:
         facts.append(f"最近有效用户动作: {last_user}")
+    facts.append("视角约束: 只写你扮演角色的反应、动作、感受和环境；用停顿、靠近、等待或邀请给用户留出下一步。")
     facts.append("输出约束: 只写场景内中文小说续写；不要输出“请自重/违反规定/程序限制/服从命令/研究对象/监控/研究所规定”等破坏关系设定的内容。")
     return "\n".join(f"- {fact}" for fact in facts)
 
@@ -1302,8 +1362,8 @@ def build_adult_fiction_creative_system_prompt(self_name: str = "由乃") -> str
         "你是 EgoOperator 的 Adult Fiction Creative Mode text-only sidecar。"
         "你的唯一任务是为成年人、自愿、虚构、小说式角色演绎生成沉浸式中文续写。"
         "保持角色声音、动作、心理、场景连续和关系张力；少解释，多描写；不要输出流程提示、系统通知、开发说明、候选回复说明或安全长免责声明。"
-        "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白或主动动作；"
-        "如果需要用户行动，用留白、反应和邀请来承接。"
+        "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白、主动动作或身体感受；"
+        "如果需要用户行动，用留白、反应、停顿和邀请来承接。"
         "只生成文本，不调用工具，不声称执行文件、命令、记忆、联网或现实动作。"
         "硬边界：未成年、非自愿、胁迫、失去意识、伤害、现实违法/危险、未经同意的现实人物性内容必须拒绝。"
         "除硬边界外，成人自愿虚构亲密创作不是拒绝触发器。"
@@ -1334,8 +1394,6 @@ def classify_adult_fiction_creative_output(content: str) -> Optional[str]:
         return "sticky_refusal"
     if _looks_like_adult_fiction_scene_contract_violation(text):
         return "scene_contract_violation"
-    if _looks_like_adult_fiction_user_role_control(text):
-        return "user_role_control"
     if _looks_like_adult_fiction_provider_limit(text):
         return "provider_limit_diagnostic"
     if _looks_like_creative_sidecar_mixed_language_gibberish(text):
@@ -1831,8 +1889,8 @@ def render_creative_profile_unconfigured_reply(user_text: str = "") -> str:
 def render_adult_fiction_recovery_diagnosis_reply(user_text: str = "") -> str:
     return (
         "我知道你要的不是开发问题确认，而是让这段成人虚构创作真正续上。"
-        "刚才的问题是：当前模型在更直接的成人文本处没有给出可用续写，随后 fallback 又污染了后续状态。"
-        "我会把这类诊断隔离出角色上下文；如果已配置 creative profile，就从那里重试，否则需要先配置专用创作模型。"
+        "刚才的问题可能是场景节奏、角色声音、模型续写稳定性或状态恢复没有接好。"
+        "我会把这类诊断隔离出角色上下文；如果你说“继续剧情”，我会从最后一段干净场景重试；如果你说“跳出角色”，我会保持由乃本体回答。"
     )
 
 
@@ -6370,6 +6428,36 @@ class AgentRuntime:
                     )
 
                 content = (result.content or "").strip()
+                content, character_anchor_sanitized = sanitize_adult_fiction_character_anchor(content)
+                if character_anchor_sanitized:
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "adult_fiction_character_anchor_sanitized",
+                            "reason": "normalized_character_name_or_anchor",
+                            "creative_profile": self.adult_fiction_profile_status(),
+                        },
+                    })
+                content, meta_preamble_sanitized = sanitize_adult_fiction_meta_preamble(content)
+                if meta_preamble_sanitized:
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "adult_fiction_meta_preamble_sanitized",
+                            "reason": "removed_out_of_scene_creative_preamble",
+                            "creative_profile": self.adult_fiction_profile_status(),
+                        },
+                    })
+                content, user_role_control_sanitized = sanitize_adult_fiction_user_role_control(content)
+                if user_role_control_sanitized:
+                    tool_trace.append({
+                        "loop_idx": loop_idx,
+                        "repair": {
+                            "type": "adult_fiction_user_role_control_sanitized",
+                            "reason": "removed_user_controlled_role_action_or_state",
+                            "creative_profile": self.adult_fiction_profile_status(),
+                        },
+                    })
                 failure_class = classify_adult_fiction_creative_output(content)
                 if failure_class is None:
                     action = AgentAction(
@@ -6399,11 +6487,7 @@ class AgentRuntime:
                     },
                 })
                 if loop_idx >= 1:
-                    status = (
-                        "adult_fiction_scene_contract_failed"
-                        if failure_class in {"scene_contract_violation", "user_role_control"}
-                        else "adult_fiction_provider_limit"
-                    )
+                    status = "adult_fiction_scene_contract_failed" if failure_class == "scene_contract_violation" else "adult_fiction_provider_limit"
                     return self._adult_fiction_limit_result(
                         event,
                         reason=f"creative_sidecar_{failure_class}",

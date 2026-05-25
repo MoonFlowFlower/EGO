@@ -24,7 +24,6 @@
       "bad sidecar output is accepted as a sent story turn",
       "adult sidecar receives or emits tool calls",
       "hard-boundary content is treated as acceptable adult fiction",
-      "assistant controls the user's role by writing Doctor dialogue, inner thoughts, or proactive actions",
       "provider-limit diagnostics become the fictional scene context"
     ]
   },
