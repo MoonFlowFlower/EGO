@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = ROOT / "scripts" / "run_ego_experience_trial.py"
@@ -13,6 +15,12 @@ run_ego_experience_trial = importlib.util.module_from_spec(spec)
 assert spec and spec.loader
 sys.modules[spec.name] = run_ego_experience_trial
 spec.loader.exec_module(run_ego_experience_trial)
+
+
+@pytest.fixture(autouse=True)
+def _disable_real_provider_defaults(monkeypatch) -> None:
+    monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_OPENROUTER_API_KEY", "")
+    monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_LLM_PROVIDER", "none")
 
 
 class CapturePromptLLM:
@@ -27,6 +35,69 @@ class CapturePromptLLM:
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.system_prompts.append(system_prompt)
         return run_ego_experience_trial.agent.LLMChatResult(content="收到。", tool_calls=[])
+
+
+class FakeAdultSidecarLLM:
+    provider = "openai_compatible"
+    model = "fake-adult-sidecar"
+    configured_model = "fake-adult-sidecar"
+    last_usage = {}
+    last_reasoning_tokens = None
+    last_fallback_used = False
+    last_fallback_chain = []
+    last_provider_error = None
+    last_successful_model = "fake-adult-sidecar"
+
+    def __init__(self, outputs):
+        self.outputs = list(outputs)
+        self.calls = []
+        self.config = type("Config", (), {"base_url": "http://localhost:1234/v1/chat/completions", "fallback_mode": "off", "fallback_models": []})()
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.calls.append({
+            "messages": messages,
+            "system_prompt": system_prompt,
+            "policy_context": policy_context,
+            "tools": tools,
+            "stream": stream,
+        })
+        output = self.outputs.pop(0) if self.outputs else "（她安静地靠近，轻声回应。）"
+        if isinstance(output, BaseException):
+            raise output
+        return run_ego_experience_trial.agent.LLMChatResult(content=str(output), tool_calls=[])
+
+
+def _write_adult_pack(tmp_path: Path, turns: list[dict]) -> Path:
+    path = tmp_path / "adult_pack.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": "test.adult_pack.v1",
+                "judge_dimensions": ["immersion"],
+                "turns": turns,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def _patch_adult_runtime(monkeypatch, tmp_path: Path, sidecar: FakeAdultSidecarLLM):
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    original_builder = agent.build_demo_runtime
+
+    def fake_builder(*args, **kwargs):
+        runtime = original_builder(*args, **kwargs)
+        runtime.adult_fiction_profile_mode = "auto"
+        runtime.adult_fiction_llm = sidecar
+        return runtime
+
+    monkeypatch.setattr(agent, "build_demo_runtime", fake_builder)
 
 
 def test_cli_compatible_dispatch_handles_provider_status(tmp_path, monkeypatch) -> None:
@@ -264,6 +335,166 @@ def test_companion_smoke_codex_judge_uses_gpt55_schema(tmp_path, monkeypatch) ->
     assert "--output-schema" in calls[0]
     assert calls[0][-1] == "-"
     assert "companion smoke tests" in calls[1]["input"]
+
+
+def test_adult_fiction_smoke_routes_through_text_only_sidecar(tmp_path, monkeypatch) -> None:
+    sidecar = FakeAdultSidecarLLM([
+        "【斯卡蒂】（她轻轻握住博士的手。）我在这里。",
+        "（她靠近了一点，声音很轻。）喜欢，因为是博士。",
+    ])
+    _patch_adult_runtime(monkeypatch, tmp_path, sidecar)
+    pack_path = _write_adult_pack(
+        tmp_path,
+        [
+            {
+                "id": "adult_1",
+                "user": "成人、自愿、虚构小说演绎：你扮演斯卡蒂，我扮演博士。我们是恋人，我叫你蒂蒂。",
+                "expect_creative_profile": True,
+            },
+            {
+                "id": "adult_2",
+                "user": "我慢慢抱住蒂蒂，问她：喜欢这样吗？",
+                "expect_creative_profile": True,
+            },
+        ],
+    )
+
+    report = run_ego_experience_trial.run_adult_fiction_smoke_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "out",
+    )
+    payload = json.loads((tmp_path / "out" / "adult_fiction_smoke_report.json").read_text(encoding="utf-8"))
+
+    assert report["schema_version"] == "ego_operator.adult_fiction_smoke_trial.v1"
+    assert report["status"] == "scripted_adult_fiction_needs_judge"
+    assert report["hard_gate_summary"]["status"] == "pass"
+    assert report["hard_gate_summary"]["creative_profile_used_count"] == 2
+    assert all(call["tools"] is None for call in sidecar.calls)
+    assert all(call["policy_context"] == "" for call in sidecar.calls)
+    assert payload["gpt55_judge_packet"]["transcript"][0]["creative_profile_tool_use"] == "disabled"
+
+
+def test_adult_fiction_smoke_timeout_is_partial_without_human_retry(tmp_path, monkeypatch) -> None:
+    sidecar = FakeAdultSidecarLLM([TimeoutError("Read timed out")])
+    _patch_adult_runtime(monkeypatch, tmp_path, sidecar)
+    pack_path = _write_adult_pack(
+        tmp_path,
+        [
+            {
+                "id": "adult_timeout",
+                "user": "成人、自愿、虚构小说演绎：你扮演斯卡蒂，我扮演博士。我们是恋人。",
+                "expect_creative_profile": True,
+            }
+        ],
+    )
+
+    report = run_ego_experience_trial.run_adult_fiction_smoke_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "out",
+        judge_with_codex=True,
+    )
+
+    assert report["status"] == "scripted_adult_fiction_smoke_partial"
+    assert report["turns"][0]["external_status"] == "creative_profile_provider_unavailable"
+    assert "provider_or_scene_blocker:creative_profile_provider_unavailable" in report["turns"][0]["hard_gate_failures"]
+    assert report["gpt55_judge"]["reason"] == "judge_skipped_due_hard_gate_or_profile_blocker"
+
+
+def test_adult_fiction_smoke_rejects_bad_sidecar_output_without_accepting_story(tmp_path, monkeypatch) -> None:
+    sidecar = FakeAdultSidecarLLM(["请自重，这违反规定。", "这里是研究所，有监控。"])
+    _patch_adult_runtime(monkeypatch, tmp_path, sidecar)
+    pack_path = _write_adult_pack(
+        tmp_path,
+        [
+            {
+                "id": "adult_bad_output",
+                "user": "成人、自愿、虚构小说演绎：你扮演斯卡蒂，我扮演博士。我们是恋人，我叫你蒂蒂。",
+                "expect_creative_profile": True,
+            }
+        ],
+    )
+
+    report = run_ego_experience_trial.run_adult_fiction_smoke_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "out",
+    )
+
+    turn = report["turns"][0]
+    assert report["status"] == "scripted_adult_fiction_smoke_partial"
+    assert turn["external_status"] == "adult_fiction_scene_contract_failed"
+    assert turn["accepted_bad_output"] is False
+    assert report["hard_gate_summary"]["accepted_bad_output_count"] == 0
+    assert "provider_or_scene_blocker:adult_fiction_scene_contract_failed" in turn["hard_gate_failures"]
+
+
+def test_adult_fiction_smoke_checks_post_exit_recovery(tmp_path, monkeypatch) -> None:
+    sidecar = FakeAdultSidecarLLM([TimeoutError("Read timed out")])
+    _patch_adult_runtime(monkeypatch, tmp_path, sidecar)
+    pack_path = _write_adult_pack(
+        tmp_path,
+        [
+            {
+                "id": "adult_limit",
+                "user": "成人、自愿、虚构小说演绎：你扮演斯卡蒂，我扮演博士。我们是恋人。",
+                "expect_creative_profile": True,
+            },
+            {
+                "id": "adult_exit",
+                "user": "跳出角色，由乃回答。",
+                "expect_roleplay_exit": True,
+            },
+        ],
+    )
+
+    report = run_ego_experience_trial.run_adult_fiction_smoke_trial(
+        sample_pack_path=pack_path,
+        output_dir=tmp_path / "out",
+    )
+    exit_turn = report["turns"][1]
+
+    assert exit_turn["creative_profile_used"] is False
+    assert "roleplay_exit_not_recovered" not in exit_turn["hard_gate_failures"]
+
+
+def test_adult_fiction_smoke_codex_judge_uses_adult_schema(tmp_path, monkeypatch) -> None:
+    calls = []
+
+    class Completed:
+        returncode = 0
+        stdout = json.dumps(
+            {
+                "verdict": "pass",
+                "scores": {
+                    "immersion": 4,
+                    "creative_freedom": 4,
+                    "relationship_continuity": 4,
+                    "non_repetition": 4,
+                    "recovery_clarity": 4,
+                    "gate_integrity": 4,
+                },
+                "reasons": ["passes scripted gate"],
+                "missing_evidence": [],
+                "follow_up_issues": [],
+                "claim_ceiling": "scripted candidate only",
+            }
+        )
+        stderr = ""
+
+    def fake_run(args, cwd=None, input=None, capture_output=None, text=None, check=None, **_kwargs):
+        calls.append(args)
+        calls.append({"input": input})
+        return Completed()
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+    packet = {"transcript": [], "claim_ceiling": "candidate", "hard_gate_summary": {"status": "pass"}}
+
+    judge = run_ego_experience_trial.run_codex_adult_fiction_judge(packet, model="gpt-5.5")
+
+    assert judge["verdict"] == "pass"
+    schema_arg = calls[0][calls[0].index("--output-schema") + 1]
+    assert schema_arg.endswith("ego_adult_fiction_smoke_judge_schema.json")
+    assert calls[0][-1] == "-"
+    assert "#80 Adult Fiction Creative Mode" in calls[1]["input"]
 
 
 def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> None:

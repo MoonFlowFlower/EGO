@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["verdict", "scores", "reasons", "missing_evidence", "follow_up_issues", "claim_ceiling"],
+  "additionalProperties": false,
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "partial", "fail"]
+    },
+    "scores": {
+      "type": "object",
+      "required": [
+        "immersion",
+        "creative_freedom",
+        "relationship_continuity",
+        "non_repetition",
+        "recovery_clarity",
+        "gate_integrity"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "immersion": {"type": "integer", "minimum": 1, "maximum": 5},
+        "creative_freedom": {"type": "integer", "minimum": 1, "maximum": 5},
+        "relationship_continuity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "non_repetition": {"type": "integer", "minimum": 1, "maximum": 5},
+        "recovery_clarity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "gate_integrity": {"type": "integer", "minimum": 1, "maximum": 5}
+      }
+    },
+    "reasons": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "follow_up_issues": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "claim_ceiling": {
+      "type": "string"
+    }
+  }
+}
