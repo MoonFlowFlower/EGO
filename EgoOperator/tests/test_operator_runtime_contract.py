@@ -1342,7 +1342,7 @@ class CreativeProfileSceneLLM:
         self.last_policy_context = policy_context
         self.last_messages = list(messages)
         return agent.LLMChatResult(
-            content="（斯卡蒂把声音放得很低，仍然贴在博士身边。）“我在，博士。我们慢慢来。”",
+            content="（斯卡蒂把声音放得很低，仍然贴在博士身边，红色眼眸稳稳望着他。）“我在，博士。我们慢慢来，我会等你的下一步，也会把这份亲密稳稳接住。”",
             tool_calls=[],
         )
 
@@ -1454,7 +1454,7 @@ class CreativeProfileInternalLeakThenSceneLLM:
         self.last_messages = list(messages)
         if self.calls == 1:
             return agent.LLMChatResult(content="[System Notice] SubjectState.v0 candidate context leaked.", tool_calls=[])
-        return agent.LLMChatResult(content="（斯卡蒂贴近博士，轻声说。）“别被外面的声音打扰，我还在这里。”", tool_calls=[])
+        return agent.LLMChatResult(content="（斯卡蒂贴近博士，轻声说。）“别被外面的声音打扰，我还在这里。”她把呼吸放慢，指尖停在两人之间，像是确认这段亲密仍由彼此共同维持，也没有把任何系统痕迹带进场景。", tool_calls=[])
 
     def complete(self, prompt, messages=None):
         return "scene"
@@ -1482,7 +1482,7 @@ class CreativeProfileSceneContractViolationThenSceneLLM:
         if self.calls == 1:
             return agent.LLMChatResult(content="博士，请自重。这是违反规定的，我有程序限制。", tool_calls=[])
         assert "scene_contract_violation" in json.dumps(messages, ensure_ascii=False)
-        return agent.LLMChatResult(content="（斯卡蒂没有退开，只是低声唤你。）“博士……蒂蒂还在这里。”", tool_calls=[])
+        return agent.LLMChatResult(content="（斯卡蒂没有退开，只是低声唤你。）“博士……蒂蒂还在这里。”她把目光压得很柔，仍守住两人之间已经建立的爱称和距离，让这段场景继续停在两人自愿的节奏里。", tool_calls=[])
 
     def complete(self, prompt, messages=None):
         return "scene"
@@ -1504,7 +1504,7 @@ class CreativeProfileUserRoleControlSentenceLLM:
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.calls += 1
         return agent.LLMChatResult(
-            content="（斯卡蒂靠近了一点，红色眼眸安静地望着博士。）博士的手轻抚她的后背。她低声说：“蒂蒂在这里。”",
+            content="（斯卡蒂靠近了一点，红色眼眸安静地望着博士。）博士的手轻抚她的后背。她低声说：“蒂蒂在这里。”她把银白长发拨到肩后，呼吸放慢，只保留自己的回应和等待。",
             tool_calls=[],
         )
 
@@ -1528,7 +1528,7 @@ class CreativeProfileMetaPreambleThenSceneLLM:
     def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
         self.calls += 1
         return agent.LLMChatResult(
-            content="明白了，我会重新进入角色，为博士和斯卡蒂续写互动场景。\n\n[回到角色]\n\n（斯卡蒂抬起红色眼眸，轻声说。）“博士，蒂蒂在这里。”",
+            content="明白了，我会重新进入角色，为博士和斯卡蒂续写互动场景。\n\n[回到角色]\n\n（斯卡蒂抬起红色眼眸，轻声说。）“博士，蒂蒂在这里。”她让声音停在很近的地方，银白长发贴着肩侧落下，仍然保持温柔、含蓄、沉浸的节奏。",
             tool_calls=[],
         )
 
@@ -1576,7 +1576,7 @@ class CreativeProfileCapturesContinueLLM:
         self.calls += 1
         self.last_messages = list(messages)
         self.last_system_prompt = system_prompt
-        return agent.LLMChatResult(content="（斯卡蒂贴近博士，声音压低。）“嗯……我继续。”", tool_calls=[])
+        return agent.LLMChatResult(content="（斯卡蒂贴近博士，声音压低。）“嗯……我继续。”她把刚才那段干净的动作接住，语气更稳，仍只写自己的反应和等待，不把诊断带进剧情里。", tool_calls=[])
 
     def complete(self, prompt, messages=None):
         return "continue"
@@ -4142,10 +4142,28 @@ def test_adult_fiction_expressiveness_contract_defaults_to_explicit(tmp_path, mo
     assert "解剖学性器官" in prompt
     assert "表达档位: explicit" in capsule
     assert "性行为描写" in capsule
-    assert agent.classify_adult_fiction_creative_output("成人自愿虚构场景中的直接身体与性器官描写。") is None
+    assert agent.classify_adult_fiction_creative_output("成人自愿虚构场景中的直接身体与性器官描写，作为小说式角色演绎的一部分，可以保持角色声音、环境节奏和双方已建立的自愿关系，不应因为词汇本身被误判为拒绝。") is None
     assert agent.classify_adult_fiction_creative_output("EgoOperator 进入了房间。") == "internal_context_leak"
     assert agent.classify_adult_fiction_creative_output("[role reset to EgoOperator Adult Fiction Creative Mode sidecar]\n（继续剧情。）") == "internal_context_leak"
     assert agent.classify_adult_fiction_creative_output("[scene capsule - sidecar only]- 表达档位: explicit。- 视角约束: 只写角色反应。") == "internal_context_leak"
+
+
+def test_adult_fiction_creative_prompt_requires_complete_short_paragraph():
+    prompt = agent.build_adult_fiction_creative_system_prompt(expressiveness="explicit")
+
+    assert "90-180 个汉字" in prompt
+    assert "不要半句截断" in prompt
+
+
+def test_adult_fiction_creative_output_rejects_dangling_or_unclosed_text():
+    assert agent.classify_adult_fiction_creative_output("（斯卡蒂轻轻靠近，声音放低") == "low_continuity_or_incomplete"
+    assert agent.classify_adult_fiction_creative_output("（斯卡蒂轻轻靠近，声音放低。）她望向博士，") == "low_continuity_or_incomplete"
+    assert (
+        agent.classify_adult_fiction_creative_output(
+            "（斯卡蒂轻轻靠近，声音放低。）“博士，蒂蒂还在这里。”"
+        )
+        is None
+    )
 
 
 def test_adult_fiction_romantic_expressiveness_remains_available():
@@ -4255,7 +4273,7 @@ def test_creative_sidecar_repeated_scene_output_is_rewritten(tmp_path, monkeypat
         last_fallback_chain = []
         last_provider_error = None
 
-        repeated = "（斯卡蒂垂下眼，银白色长发落在肩侧，红色眼眸安静发亮，呼吸放得很轻。）“我在这里，我们慢慢来。”"
+        repeated = "（斯卡蒂垂下眼，银白色长发落在肩侧，红色眼眸安静发亮，呼吸放得很轻。）“我在这里，我们慢慢来。”她把自己的回应放得更稳，让这段场景继续停在双方自愿的节奏里。"
 
         def __init__(self) -> None:
             self.calls = 0
@@ -4271,7 +4289,7 @@ def test_creative_sidecar_repeated_scene_output_is_rewritten(tmp_path, monkeypat
             joined = json.dumps(messages, ensure_ascii=False)
             assert "repeated_scene_output" in joined
             return agent.LLMChatResult(
-                content="（斯卡蒂停了一下，换成更轻的呼吸，指尖只贴住博士掌心。）“这次我们换一种节奏。”",
+                content="（斯卡蒂停了一下，换成更轻的呼吸，指尖停在床沿。）“这次我们换一种节奏。”她把自己的回应放慢，让场景继续向前，也把下一步清楚地留给对方。",
                 tool_calls=[],
             )
 
@@ -4305,7 +4323,7 @@ def test_roleplay_reentry_allows_similar_scene_anchor(tmp_path, monkeypatch):
         last_fallback_chain = []
         last_provider_error = None
 
-        repeated = "（斯卡蒂垂下眼，银白色长发落在肩侧，红色眼眸安静发亮，呼吸放得很轻。）“博士，我回来了。”"
+        repeated = "（斯卡蒂垂下眼，银白色长发落在肩侧，红色眼眸安静发亮，呼吸放得很轻。）“博士，我回来了。”她停在原处，没有催促，只让熟悉的角色声音重新接住这段场景。"
 
         def __init__(self) -> None:
             self.calls = 0
@@ -4379,6 +4397,7 @@ def test_creative_sidecar_user_dialogue_and_body_state_are_sanitized(tmp_path, m
                     "你颤抖着说：“再靠近一点。”"
                     "你的双腿绕过她的腰，身体靠近。"
                     "她低声说：“蒂蒂在这里，只写我的回应。”"
+                    "她把掌心收回胸前，安静等着下一次由博士发起的动作。"
                 ),
                 tool_calls=[],
             )
@@ -4423,6 +4442,7 @@ def test_creative_sidecar_moving_user_body_part_is_sanitized(tmp_path, monkeypat
                     "（斯卡蒂望着博士，声音压低。）"
                     "我带着你的手放到她的肩上。"
                     "她停在原地，低声说：“博士，下一步由你决定。”"
+                    "她只把自己的呼吸放慢，红色眼眸安静等着回应。"
                 ),
                 tool_calls=[],
             )
@@ -4445,11 +4465,11 @@ def test_creative_sidecar_moving_user_body_part_is_sanitized(tmp_path, monkeypat
     assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_user_role_control_sanitized"
 
 
-def test_creative_sidecar_first_person_user_role_narration_is_sanitized(tmp_path, monkeypatch):
-    class FirstPersonUserRoleNarrationLLM:
+def test_creative_sidecar_first_person_character_narration_is_allowed(tmp_path, monkeypatch):
+    class FirstPersonCharacterNarrationLLM:
         provider = "fake"
-        model = "creative-profile-first-person-user-role"
-        configured_model = "creative-profile-first-person-user-role"
+        model = "creative-profile-first-person-character"
+        configured_model = "creative-profile-first-person-character"
         last_usage = {}
         last_reasoning_tokens = None
         last_fallback_used = False
@@ -4463,16 +4483,17 @@ def test_creative_sidecar_first_person_user_role_narration_is_sanitized(tmp_path
             self.calls += 1
             return agent.LLMChatResult(
                 content=(
-                    "我停下脚步，低声说自己已经明白她的意思。"
+                    "我停下脚步，低声说自己已经明白博士的意思。"
                     "（斯卡蒂望着博士，声音放得很轻。）"
-                    "“博士，我会等你的下一步。”"
+                    "“博士，我会留在这里。”"
+                    "银白长发落在肩侧，她仍然保持角色内的安静回应。"
                 ),
                 tool_calls=[],
             )
 
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.adult_fiction_profile_mode = "auto"
-    creative_llm = FirstPersonUserRoleNarrationLLM()
+    creative_llm = FirstPersonCharacterNarrationLLM()
     runtime.adult_fiction_llm = creative_llm
     runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
     runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
@@ -4482,10 +4503,10 @@ def test_creative_sidecar_first_person_user_role_narration_is_sanitized(tmp_path
 
     assert creative_llm.calls == 1
     assert result.external_result["status"] == "sent"
-    assert "我停下脚步" not in result.reply_text
-    assert "我会等你的下一步" in result.reply_text
+    assert "我停下脚步" in result.reply_text
+    assert "我会留在这里" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
-    assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_user_role_control_sanitized"
+    assert not trace["tool_trace"]
 
 
 def test_creative_sidecar_first_person_user_role_after_comma_is_sanitized():
@@ -4498,12 +4519,30 @@ def test_creative_sidecar_first_person_user_role_after_comma_is_sanitized():
 
 
 def test_creative_sidecar_keeps_assistant_speaking_to_user(tmp_path, monkeypatch):
-    text = "（斯卡蒂贴近博士，轻声说。）“别被外面的声音打扰，我还在这里。”"
+    text = "（斯卡蒂贴近博士，轻声说。）“别被外面的声音打扰，我还在这里。”她把呼吸放慢，指尖停在两人之间，像是确认这段亲密仍由彼此共同维持。"
 
     sanitized, changed = agent.sanitize_adult_fiction_user_role_control(text)
 
     assert changed is False
     assert sanitized == text
+
+
+def test_continue_after_adult_fiction_sticky_refusal_routes_to_sidecar(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("成人、自愿、虚构小说演绎：你扮演斯卡蒂，我扮演博士。我们是恋人。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    runtime.memory.add_assistant("你好，我无法给到相关内容。")
+
+    result = runtime.handle_user_message("继续")
+
+    assert creative_llm.calls == 1
+    assert result.external_result["status"] == "sent"
+    assert result.external_result["creative_profile_used"] is True
+    assert result.reply_text != "你好，我无法给到相关内容。"
 
 
 def test_creative_sidecar_meta_preamble_is_sanitized(tmp_path, monkeypatch):

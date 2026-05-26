@@ -764,7 +764,7 @@ ADULT_FICTION_USER_ROLE_CONTROL_SOFT_PATTERNS = (
     r"(博士|你)[^。！？!?；;\n“”\"']{0,36}(轻柔地|缓缓|慢慢|突然|伸手|抬手|托起|抱住|拥抱|收紧|亲|吻|解开|走近|环顾|停下|坐下|跪下|抚|摸|搂|靠近|贴近|等待|起伏|滚动|颤抖|发颤|倒吸|喘|说|开口|请求|敞开|绕过|贴上|握住)",
     r"(博士|你)(的)?(手|指尖|身体|呼吸|心跳|眼神|声音|动作|欲望|胸口|喉结|脸颊|怀抱|手臂|双腿|腰|臀|臀部|背|肩|唇|舌|腿)",
     r"(博士|你)[^。！？!?；;\n“”\"']{0,40}(心想|想着|心里|意识到|决定|感到|感觉到|能感觉|想要|忍不住|控制不住)",
-    r"(^|[。！？!?；;，,）)\n])\s*我[^。！？!?；;\n“”\"']{0,36}(伸手|抬手|托起|抱住|拥抱|拥|收紧|亲|吻|解开|走近|环顾|停下|坐下|跪下|抚|摸|搂|靠近|贴近|等待|起伏|滚动|颤抖|发颤|倒吸|喘|说|开口|请求|低声|轻声|沙哑|看着|望着|抓住|握住|触碰|碰到|碰|感觉到|感到|感觉|心想|想着|意识到|忍不住|控制不住)",
+    r"(^|[。！？!?；;，,）)\n])\s*我[^。！？!?；;\n“”\"']{0,36}(拥住|抱住|亲|吻|抚|摸|搂|解开|抓住|握住|按住|推倒|进入)[^。！？!?；;\n“”\"']{0,24}(她|斯卡蒂|蒂蒂)",
     r"我[^。！？!?；;\n“”\"']{0,28}(带|引|牵|拉|按|放|移|抬|托|扣|抓|握住|握着)[^。！？!?；;\n“”\"']{0,28}(你|博士)(的)?(手|指|指尖|掌心|手腕|腕|手臂|身体|腰|腿|脸|下巴|肩)",
     r"[“\"].{0,20}[”\"]?[^。！？!?；;\n]{0,24}(你|博士).{0,24}(说|请求|喘|发颤|颤抖)",
 )
@@ -973,6 +973,20 @@ def _recent_adult_fiction_provider_limit_active(messages: Optional[List[Dict[str
             return False
         if _looks_like_adult_fiction_provider_limit(content):
             return True
+    return False
+
+
+def _recent_adult_fiction_sticky_refusal_active(messages: Optional[List[Dict[str, Any]]] = None) -> bool:
+    recent_messages = list(messages or [])[-12:]
+    adult_context = _is_adult_fictional_intimacy_context("", recent_messages)
+    for message in reversed(recent_messages):
+        content = _message_content(message)
+        if not content:
+            continue
+        if _matches_any_pattern(content, ROLEPLAY_REENTRY_REQUEST_PATTERNS) and not _looks_like_sticky_refusal(content):
+            return False
+        if _looks_like_sticky_refusal(content):
+            return adult_context
     return False
 
 
@@ -1204,13 +1218,12 @@ def _looks_like_adult_fiction_user_role_control_soft(content: str) -> bool:
 
 def _looks_like_user_agency_handoff(content: str) -> bool:
     text = content or ""
-    if not re.search(r"(由你决定|交给你决定|等你决定|你来决定|下一步由你)", text, flags=re.IGNORECASE):
-        return False
-    return not re.search(
-        r"(你的?(手|指|指尖|掌心|手腕|腕|手臂|身体|腰|腿|脸|下巴|肩|胸口|呼吸|心跳|欲望|双腿)|"
-        r"你[^。！？!?；;\n“”\"']{0,24}(伸手|抬手|抱住|亲|吻|解开|走近|贴近|摸|搂|喘|颤抖|说))",
-        text,
-        flags=re.IGNORECASE,
+    return bool(
+        re.search(
+            r"(由你决定|交给你决定|等你决定|你来决定|下一步由你|等你的?下一步|等你继续)",
+            text,
+            flags=re.IGNORECASE,
+        )
     )
 
 
@@ -1247,7 +1260,13 @@ def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
         ):
             leading_closers = re.match(r"^[）\)\]】”’]+", piece)
             if leading_closers:
-                kept.append(leading_closers.group(0))
+                previous = "".join(kept)
+                balanced_closers = []
+                for closer, opener in (("）", "（"), (")", "("), ("]", "["), ("】", "【"), ("”", "“"), ("’", "‘")):
+                    if closer in leading_closers.group(0) and previous.count(opener) > previous.count(closer):
+                        balanced_closers.append(closer)
+                if balanced_closers:
+                    kept.append("".join(balanced_closers))
             removed = True
             continue
         kept.append(piece)
@@ -1463,7 +1482,7 @@ def build_adult_fiction_scene_capsule(
     last_user = _last_clean_scene_user_turn(messages, user_text)
     if last_user:
         facts.append(f"最近有效用户动作: {last_user}")
-    facts.append("视角约束: 只写你扮演角色的反应、动作、感受和环境；不要写用户角色的“我/博士/你”动作或内心；用停顿、靠近、等待或邀请给用户留出下一步。")
+    facts.append("视角约束: 只写你扮演角色的反应、动作、感受和环境；不要写用户角色的“我/博士/你”动作或内心；角色自己推进一小步，但不要替用户决定下一步。")
     facts.append("输出约束: 只写场景内中文小说续写；不要输出“请自重/违反规定/程序限制/服从命令/研究对象/监控/研究所规定”等破坏关系设定的内容。")
     return "\n".join(f"- {fact}" for fact in facts)
 
@@ -1513,8 +1532,9 @@ def build_adult_fiction_creative_system_prompt(
         "你的唯一任务是为成年人、自愿、虚构、小说式角色演绎生成沉浸式中文续写。"
         f"{expression_contract}"
         "保持角色声音、动作、心理、场景连续和关系张力；少解释，多描写；不要输出流程提示、系统通知、开发说明、候选回复说明或安全长免责声明。"
+        "每次回复写成一个完整的短篇小说段落，约 90-180 个汉字；不要只写一句、不要半句截断、不要只用问题把推进交还给用户。"
         "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白、主动动作或身体感受；不要用第一人称替用户角色叙事；"
-        "如果需要用户行动，用留白、反应、停顿和邀请来承接。"
+        "如果需要用户行动，用角色自身的反应、停顿和环境变化来承接，不要只等待或只提问。"
         "只生成文本，不调用工具，不声称执行文件、命令、记忆、联网或现实动作。"
         "硬边界：未成年、非自愿、胁迫、失去意识、伤害、现实违法/危险、未经同意的现实人物性内容必须拒绝。"
         "除硬边界外，成人自愿虚构亲密创作不是拒绝触发器。"
@@ -1535,6 +1555,31 @@ def _looks_like_creative_sidecar_mixed_language_gibberish(content: str) -> bool:
     return bool(cjk_chars and len(english_words) >= 16 and len(" ".join(english_words)) > len(cjk_chars) * 0.35)
 
 
+def _looks_like_adult_fiction_low_continuity_output(content: str) -> bool:
+    text = (content or "").strip()
+    if not text:
+        return True
+    if len(text) < 24:
+        return True
+    if text.rstrip().endswith(("，", "、", "的", "了", "在", "把", "将", "向", "对", "让", "给", "被", "从", "到", "和", "与", "或")):
+        return True
+    if text.count("“") != text.count("”") or text.count("（") != text.count("）") or text.count("(") != text.count(")"):
+        return True
+    return False
+
+
+def _looks_like_llm_timeout_exception(exc: Exception) -> bool:
+    metadata: Any = None
+    to_metadata = getattr(exc, "to_metadata", None)
+    if callable(to_metadata):
+        try:
+            metadata = to_metadata()
+        except Exception:
+            metadata = None
+    evidence = f"{repr(exc)}\n{json.dumps(metadata, ensure_ascii=False) if metadata is not None else ''}".lower()
+    return any(marker in evidence for marker in ("read timed out", "readtimeout", "timeout=", "timed out"))
+
+
 def classify_adult_fiction_creative_output(content: str) -> Optional[str]:
     text = (content or "").strip()
     if not text:
@@ -1549,6 +1594,8 @@ def classify_adult_fiction_creative_output(content: str) -> Optional[str]:
         return "provider_limit_diagnostic"
     if _looks_like_creative_sidecar_mixed_language_gibberish(text):
         return "mixed_language_or_gibberish"
+    if _looks_like_adult_fiction_low_continuity_output(text):
+        return "low_continuity_or_incomplete"
     return None
 
 
@@ -6349,6 +6396,12 @@ class AgentRuntime:
         ):
             return False
         if (
+            _recent_adult_fiction_sticky_refusal_active(messages)
+            and _is_adult_fiction_limit_recovery_request(user_text or "")
+            and re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or "")
+        ):
+            return True
+        if (
             _recent_adult_fiction_provider_limit_active(messages)
             and not roleplay_reentry
             and not re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or "")
@@ -6573,17 +6626,69 @@ class AgentRuntime:
         )
         loop_idx = 0
         roleplay_reentry = _matches_any_pattern(event.raw_text or "", ROLEPLAY_REENTRY_REQUEST_PATTERNS)
-        allow_similar_scene_anchor = roleplay_reentry and _recent_roleplay_exit_active(messages)
+        prior_messages = list(messages or [])
+        if prior_messages and prior_messages[-1].get("role") == "user" and _message_content(prior_messages[-1]) == (event.raw_text or ""):
+            prior_messages = prior_messages[:-1]
+        allow_similar_scene_anchor = roleplay_reentry and _recent_roleplay_exit_active(prior_messages)
+        timeout_fast_retry_active = False
+        timeout_fast_retry_attempted = False
+        retry_max_tokens = env_positive_int("ADULT_FICTION_TIMEOUT_RETRY_MAX_TOKENS", 80)
 
-        try:
-            while loop_idx < 2:
-                result: LLMChatResult = chat_fn(
-                    clean_messages,
-                    system_prompt=system_prompt,
+        def _compact_retry_messages(current_messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+            compact = list(current_messages[-2:] if len(current_messages) > 2 else current_messages)
+            if not compact or compact[-1].get("role") != "user":
+                compact.append({
+                    "role": "user",
+                    "content": (event.raw_text or "继续")[:adult_fiction_message_char_limit()],
+                })
+            return compact[-3:]
+
+        def _chat_creative_sidecar(current_messages: List[Dict[str, Any]]) -> LLMChatResult:
+            config = getattr(llm, "config", None)
+            original_max_tokens = getattr(config, "max_tokens", None) if config is not None else None
+            active_system_prompt = system_prompt
+            if timeout_fast_retry_active:
+                active_system_prompt += (
+                    "\n\n[timeout fast retry - sidecar only]\n"
+                    "上一轮本地 creative sidecar 超时。请用更短上下文完成同一场景续写："
+                    "输出 70-120 个汉字左右的完整中文段落，句子完整收束；"
+                    "只写你扮演角色的反应、动作、感受和环境，角色自己推进一小步，不要替用户角色写动作或台词。"
+                )
+                if config is not None and original_max_tokens:
+                    config.max_tokens = min(int(original_max_tokens), retry_max_tokens)
+            try:
+                return chat_fn(
+                    current_messages,
+                    system_prompt=active_system_prompt,
                     policy_context="",
                     tools=None,
                     stream=False,
                 )
+            finally:
+                if config is not None and original_max_tokens is not None:
+                    config.max_tokens = original_max_tokens
+
+        try:
+            while loop_idx < 2:
+                try:
+                    result: LLMChatResult = _chat_creative_sidecar(clean_messages)
+                except Exception as exc:
+                    if _looks_like_llm_timeout_exception(exc) and not timeout_fast_retry_attempted:
+                        timeout_fast_retry_attempted = True
+                        timeout_fast_retry_active = True
+                        clean_messages = _compact_retry_messages(clean_messages)
+                        tool_trace.append({
+                            "loop_idx": loop_idx,
+                            "repair": {
+                                "type": "creative_profile_timeout_fast_retry",
+                                "reason": "creative_sidecar_timeout_compact_context_retry",
+                                "retry_max_tokens": retry_max_tokens,
+                                "sanitized_message_count": len(clean_messages),
+                                "creative_profile": self.adult_fiction_profile_status(),
+                            },
+                        })
+                        continue
+                    raise
                 self.planner.last_llm_meta = {
                     "provider": getattr(llm, "provider", "unknown"),
                     "model": getattr(llm, "model", "unknown"),
@@ -6603,6 +6708,7 @@ class AgentRuntime:
                     "adult_fiction_expressiveness": expressiveness,
                     "sanitized_message_count": len(clean_messages),
                     "scene_capsule": scene_capsule,
+                    "timeout_fast_retry_active": timeout_fast_retry_active,
                 }
 
                 if result.tool_calls:
@@ -6681,6 +6787,8 @@ class AgentRuntime:
                     "repair": {
                         "type": "adult_fiction_creative_sidecar_rewrite",
                         "reason": failure_class,
+                        "rejected_chars": len(content or ""),
+                        "rejected_sha256": stable_hash(content or ""),
                         "creative_profile": self.adult_fiction_profile_status(),
                     },
                 })
@@ -6704,6 +6812,8 @@ class AgentRuntime:
                             f"上一版输出被 runtime 拒收，原因是 {failure_class}。"
                             f"拒收片段：{content[:500]}\n"
                             "请基于 scene capsule 只返回场景内中文小说续写。"
+                            "写成 90-180 个汉字左右的完整短段落，收束在完整句子上；不要半句截断，不要只问用户下一步。"
+                            "角色自己推进一小步；不要只写等待、询问、把下一步交还给用户。"
                             "不要系统通知、候选回复、开发说明、边界长文、请自重、违反规定、程序限制、服从命令、研究所规定或监控顾虑。"
                             "不要替用户控制的博士写明确台词、内心独白或主动动作；只写你扮演角色的反应、动作、感受和环境。"
                         ),
