@@ -566,6 +566,34 @@ def test_adult_fiction_judge_reports_codex_cli_unavailable(monkeypatch) -> None:
     assert "CODEX_CLI" in judge["next_action"]
 
 
+def test_adult_fiction_judge_failure_redacts_private_packet(monkeypatch) -> None:
+    class Completed:
+        returncode = 1
+        stdout = ""
+        stderr = (
+            'Packet: {"turns": [{"user": "PRIVATE_USER_TEXT", '
+            '"reply_text": "PRIVATE_REPLY_TEXT"}]}\n'
+            "ERROR: The 'gpt-5.5' model requires a newer version of Codex."
+        )
+
+    def fake_run(*_args, **_kwargs):
+        return Completed()
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+
+    judge = run_ego_experience_trial.run_codex_adult_fiction_judge(
+        {"turns": [{"user": "PRIVATE_USER_TEXT", "reply_text": "PRIVATE_REPLY_TEXT"}]},
+        model="gpt-5.5",
+    )
+
+    assert judge["status"] == "unavailable"
+    assert judge["verdict"] == "partial"
+    assert judge["reason"] == "codex_judge_model_requires_newer_codex"
+    assert "[redacted judge packet]" in judge["stderr_preview"]
+    assert "PRIVATE_USER_TEXT" not in judge["stderr_preview"]
+    assert "PRIVATE_REPLY_TEXT" not in judge["stderr_preview"]
+
+
 def test_functional_subject_codex_judge_uses_functional_schema(monkeypatch) -> None:
     calls = []
 

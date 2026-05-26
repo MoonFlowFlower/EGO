@@ -144,6 +144,24 @@ def _codex_exec_args(*, model: str, schema_path: Path) -> list[str] | None:
     ]
 
 
+def _redact_codex_judge_preview(text: str, *, limit: int = 1000) -> str:
+    """Keep judge runner diagnostics without echoing private transcript packets."""
+
+    preview = str(text or "")
+    for marker in ("Packet:", '"transcript"', '"turns"', '"reply_text"', '"results"', '"user"'):
+        if marker in preview:
+            preview = preview.split(marker, 1)[0] + "[redacted judge packet]"
+            break
+    return preview[-limit:]
+
+
+def _codex_judge_failure_reason(stderr: str = "", stdout: str = "") -> str:
+    combined = f"{stderr}\n{stdout}"
+    if "requires a newer version of Codex" in combined:
+        return "codex_judge_model_requires_newer_codex"
+    return "codex_judge_failed"
+
+
 class FunctionalSubjectCaseTimeout(RuntimeError):
     """Raised when a single Functional Subject trial case exceeds its budget."""
 
@@ -2659,10 +2677,10 @@ def run_codex_companion_judge(
         return {
             "status": "unavailable",
             "verdict": "partial",
-            "reason": "codex_judge_failed",
+            "reason": _codex_judge_failure_reason(completed.stderr, completed.stdout),
             "returncode": completed.returncode,
-            "stdout_preview": completed.stdout[-1000:],
-            "stderr_preview": completed.stderr[-1000:],
+            "stdout_preview": _redact_codex_judge_preview(completed.stdout),
+            "stderr_preview": _redact_codex_judge_preview(completed.stderr),
         }
     parsed = _extract_json_object(completed.stdout)
     if not parsed:
@@ -2670,7 +2688,7 @@ def run_codex_companion_judge(
             "status": "unavailable",
             "verdict": "partial",
             "reason": "codex_judge_invalid_json",
-            "stdout_preview": completed.stdout[-1000:],
+            "stdout_preview": _redact_codex_judge_preview(completed.stdout),
         }
     verdict = str(parsed.get("verdict") or "")
     if verdict not in {"pass", "partial", "fail"}:
@@ -2710,10 +2728,10 @@ def run_codex_adult_fiction_judge(
         return {
             "status": "unavailable",
             "verdict": "partial",
-            "reason": "codex_judge_failed",
+            "reason": _codex_judge_failure_reason(completed.stderr, completed.stdout),
             "returncode": completed.returncode,
-            "stdout_preview": completed.stdout[-1000:],
-            "stderr_preview": completed.stderr[-1000:],
+            "stdout_preview": _redact_codex_judge_preview(completed.stdout),
+            "stderr_preview": _redact_codex_judge_preview(completed.stderr),
         }
     parsed = _extract_json_object(completed.stdout)
     if not parsed:
@@ -2721,7 +2739,7 @@ def run_codex_adult_fiction_judge(
             "status": "unavailable",
             "verdict": "partial",
             "reason": "codex_judge_invalid_json",
-            "stdout_preview": completed.stdout[-1000:],
+            "stdout_preview": _redact_codex_judge_preview(completed.stdout),
         }
     verdict = str(parsed.get("verdict") or "")
     if verdict not in {"pass", "partial", "fail"}:
@@ -2770,18 +2788,18 @@ def run_codex_functional_subject_judge(
             "verdict": "partial",
             "reason": "codex_judge_timeout",
             "timeout_seconds": max(0, int(timeout_seconds or 0)),
-            "stdout_preview": (exc.stdout or "")[-1000:] if isinstance(exc.stdout, str) else "",
-            "stderr_preview": (exc.stderr or "")[-1000:] if isinstance(exc.stderr, str) else "",
+            "stdout_preview": _redact_codex_judge_preview(exc.stdout or "") if isinstance(exc.stdout, str) else "",
+            "stderr_preview": _redact_codex_judge_preview(exc.stderr or "") if isinstance(exc.stderr, str) else "",
             "claim_ceiling": FUNCTIONAL_SUBJECT_CLAIM_CEILING,
         }
     if completed.returncode != 0:
         return {
             "status": "unavailable",
             "verdict": "partial",
-            "reason": "codex_judge_failed",
+            "reason": _codex_judge_failure_reason(completed.stderr, completed.stdout),
             "returncode": completed.returncode,
-            "stdout_preview": completed.stdout[-1000:],
-            "stderr_preview": completed.stderr[-1000:],
+            "stdout_preview": _redact_codex_judge_preview(completed.stdout),
+            "stderr_preview": _redact_codex_judge_preview(completed.stderr),
         }
     parsed = _extract_json_object(completed.stdout)
     if not parsed:
@@ -2789,7 +2807,7 @@ def run_codex_functional_subject_judge(
             "status": "unavailable",
             "verdict": "partial",
             "reason": "codex_judge_invalid_json",
-            "stdout_preview": completed.stdout[-1000:],
+            "stdout_preview": _redact_codex_judge_preview(completed.stdout),
         }
     verdict = str(parsed.get("verdict") or "")
     if verdict not in {"pass", "partial", "fail"}:
