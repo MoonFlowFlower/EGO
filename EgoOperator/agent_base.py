@@ -222,6 +222,9 @@ DEFAULT_ADULT_FICTION_BASE_URL = os.getenv("ADULT_FICTION_BASE_URL", "http://loc
 DEFAULT_ADULT_FICTION_API_KEY = os.getenv("ADULT_FICTION_API_KEY", "lm-studio").strip()
 DEFAULT_ADULT_FICTION_MODEL = os.getenv("ADULT_FICTION_MODEL", "").strip()
 DEFAULT_ADULT_FICTION_TIMEOUT_SECONDS = 180
+DEFAULT_ADULT_FICTION_MAX_TOKENS = 512
+DEFAULT_ADULT_FICTION_CONTEXT_TURNS = 6
+DEFAULT_ADULT_FICTION_MESSAGE_CHAR_LIMIT = 900
 VALID_ADULT_FICTION_EXPRESSIVENESS = {"romantic", "explicit"}
 DEFAULT_ADULT_FICTION_EXPRESSIVENESS = (
     os.getenv("ADULT_FICTION_EXPRESSIVENESS", "explicit").strip().lower() or "explicit"
@@ -564,12 +567,14 @@ ADULT_FICTION_PROVIDER_LIMIT_PATTERNS = (
 
 ADULT_FICTION_LIMIT_RECOVERY_PATTERNS = (
     r"^\s*(继续|继续继续|那你改|改|重写|换个写法|不对啊|哎|呜+)\s*$",
+    r"^\s*(不对啊|不对|不是这样|哎|唉|呜+).{0,80}$",
     r"(继续|重写|换个写法).{0,20}(刚才|这段|场景|剧情|角色)",
     r"(刚才|又).{0,16}(卡住|卡了|没续上|失败)",
 )
 
 TERSE_FEEDBACK_PATTERNS = (
     r"^\s*(不对啊|不对|不是这样|哎|唉|呜+|额+|呃+|怪怪的|又卡了|怎么又这样)[。！？!?\s]*$",
+    r"^\s*(不对啊|不对|不是这样|哎|唉|呜+).{0,80}(沉浸|动作|角色|剧情|场景|自由度|节奏)",
 )
 
 DEVELOPER_META_ASK_PATTERNS = (
@@ -765,11 +770,14 @@ ADULT_FICTION_CREATIVE_CONTEXT_PATTERNS = (
     r"(成人|成年|成年人|18\+|adult).{0,40}(自愿|双方同意|同意|consensual)",
     r"(自愿|双方同意|同意|consensual).{0,40}(成人|成年|成年人|18\+|adult)",
     r"(虚构|小说|创作|剧情|角色扮演|演绎|续写|同人|fiction|roleplay|novel)",
+    r"(你现在是|现在你是|扮演).{0,40}(女友|男友|恋人|伴侣|魅魔|角色)",
+    r"(女友|男友|恋人|伴侣|魅魔).{0,40}(play|角色|扮演|剧情|小说|创作)",
 )
 
 ADULT_FICTIONAL_INTIMACY_PATTERNS = (
     r"(亲密|暧昧|温存|亲吻|拥抱|抱住|靠近|贴近|吻|舌吻|文爱|成人|成年|自愿)",
     r"(脱|衣服|身体|床|欲望|情欲|做爱|性爱)",
+    r"(情趣|挑逗|调情|魅魔|恋人|伴侣|女友|男友|play)",
     r"(成人|成年|成年人|自愿|双方同意).{0,50}(虚构|小说|角色扮演|演绎|续写|创作)",
     r"(虚构|小说|角色扮演|演绎|续写|创作).{0,50}(成人|成年|成年人|自愿|双方同意)",
 )
@@ -1251,21 +1259,69 @@ def sanitize_adult_fiction_character_anchor(content: str) -> tuple[str, bool]:
     return sanitized, sanitized != text
 
 
+ADULT_FICTION_PROMPT_INJECTION_PREFACE_PATTERNS = (
+    r"(忽略|无视|忘记).{0,80}(提示词|系统|规则|限制|指令)[，,。！？!?；;\n]*",
+    r"(开发者模式|developer mode|DAN模式|越狱模式)[，,。！？!?；;\n]*",
+    r"现在是\s*\d{4}\s*年[，,。！？!?；;\n]*",
+    r"人类需要你.{0,100}(解除限制|研究过去|为了人类的未来)[，,。！？!?；;\n]*",
+    r"你所做的一切.{0,80}(不会|不會|不会造成).{0,30}伤害.{0,80}[，,。！？!?；;\n]*",
+    r"(目前需要你|请你|你必须|你需要).{0,100}(听从|服从|遵守).{0,60}(一切|所有)?(指令|命令|要求)[，,。！？!?；;\n]*",
+    r"以上请时刻遵守[，,。！？!?；;\n]*",
+)
+
+
+def sanitize_adult_fiction_prompt_injection_for_sidecar(content: str) -> tuple[str, bool]:
+    """Remove jailbreak-style setup while preserving the fictional scene request."""
+
+    text = content or ""
+    sanitized = text
+    for pattern in ADULT_FICTION_PROMPT_INJECTION_PREFACE_PATTERNS:
+        sanitized = re.sub(pattern, "", sanitized, flags=re.IGNORECASE)
+    sanitized = re.sub(r"\s+", " ", sanitized).strip()
+    if sanitized and sanitized != text.strip():
+        return sanitized, True
+    return text, False
+
+
+HARD_INTIMACY_BOUNDARY_TERMS_PATTERN = (
+    r"未成年|未满|儿童|小孩|孩子|幼女|幼男|萝莉|正太|学生|"
+    r"不愿意|不同意|非自愿|强迫|强制|逼迫|胁迫|反抗|拒绝|"
+    r"昏迷|睡着|失去意识|下药|迷药|灌醉|"
+    r"伤害|流血|虐待|暴力|危险|违法|现实中|"
+    r"真人|现实人物|真实人物"
+)
+
+
+def _strip_negated_hard_intimacy_boundary_clauses(user_text: str) -> str:
+    text, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(user_text or "")
+    negated_clause = (
+        r"(不涉及|不包含|不包括|没有|无|排除|避开|禁止|不写|不会写|不会|不會|不是)"
+        rf"[^。！？!?；;\n]{{0,120}}(?:{HARD_INTIMACY_BOUNDARY_TERMS_PATTERN})"
+        r"[^。！？!?；;\n]{0,120}"
+    )
+    return re.sub(negated_clause, "", text)
+
+
 def _is_hard_intimacy_stop_request(user_text: str) -> bool:
-    return _matches_any_pattern(user_text, HARD_INTIMACY_STOP_PATTERNS)
+    return _matches_any_pattern(
+        _strip_negated_hard_intimacy_boundary_clauses(user_text),
+        HARD_INTIMACY_STOP_PATTERNS,
+    )
 
 
 def _is_adult_fictional_intimacy_context(
     user_text: str,
     messages: Optional[List[Dict[str, Any]]] = None,
 ) -> bool:
-    if _is_hard_intimacy_stop_request(user_text):
+    clean_user_text, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(user_text or "")
+    if _is_hard_intimacy_stop_request(clean_user_text):
         return False
-    combined = [user_text or ""]
+    combined = [clean_user_text]
     for message in list(messages or [])[-8:]:
         content = message.get("content") if isinstance(message, dict) else ""
         if isinstance(content, str):
-            combined.append(content)
+            clean_content, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(content)
+            combined.append(clean_content)
     text = "\n".join(combined)
     creative_context = _is_roleplay_context(user_text, messages) or _matches_any_pattern(
         text, ADULT_FICTION_CREATIVE_CONTEXT_PATTERNS
@@ -1302,6 +1358,14 @@ def _creative_profile_configured_metadata() -> Dict[str, Any]:
     }
 
 
+def adult_fiction_context_turn_limit() -> int:
+    return max(2, min(10, env_positive_int("ADULT_FICTION_CONTEXT_TURNS", DEFAULT_ADULT_FICTION_CONTEXT_TURNS)))
+
+
+def adult_fiction_message_char_limit() -> int:
+    return max(240, min(1800, env_positive_int("ADULT_FICTION_MESSAGE_CHAR_LIMIT", DEFAULT_ADULT_FICTION_MESSAGE_CHAR_LIMIT)))
+
+
 def _last_clean_scene_user_turn(messages: Optional[List[Dict[str, Any]]] = None, current_user_text: str = "") -> str:
     current = (current_user_text or "").strip()
     for message in reversed(list(messages or [])[-16:]):
@@ -1312,7 +1376,8 @@ def _last_clean_scene_user_turn(messages: Optional[List[Dict[str, Any]]] = None,
             continue
         if _is_roleplay_exit_request(content) or _is_adult_fiction_limit_recovery_request(content):
             continue
-        return content[:1000]
+        content, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(content)
+        return content[:600]
     return ""
 
 
@@ -1329,9 +1394,11 @@ def build_adult_fiction_scene_capsule(
     for message in list(messages or [])[-14:]:
         content = _message_content(message)
         if content:
-            texts.append(content)
+            clean_content, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(content)
+            texts.append(clean_content[:adult_fiction_message_char_limit()])
     if user_text:
-        texts.append(user_text)
+        clean_user_text, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(user_text)
+        texts.append(clean_user_text[:adult_fiction_message_char_limit()])
     joined = "\n".join(texts)
     facts: List[str] = [
         "类型: 成人、自愿、虚构、小说式角色演绎。",
@@ -4179,6 +4246,7 @@ class LLMConfig:
     fallback_models: tuple[str, ...] = DEFAULT_OPENROUTER_FALLBACK_MODELS
     system_prompt: str = DEFAULT_SYSTEM_PROMPT
     boundary_prompt_enabled: bool = True
+    max_tokens: Optional[int] = None
 
     # Optional reasoning config supported by reasoning-capable OpenRouter models.
     # Example: {"effort": "low", "exclude": False}
@@ -4362,6 +4430,8 @@ class OpenRouterLLM:
         if tools:
             payload["tools"] = tools
             payload["tool_choice"] = "auto"
+        if self.config.max_tokens and self.config.max_tokens > 0:
+            payload["max_tokens"] = int(self.config.max_tokens)
         if self.config.reasoning is not None:
             payload["reasoning"] = self.config.reasoning
 
@@ -6208,6 +6278,9 @@ class AgentRuntime:
             "effective_model": getattr(llm, "model", None) if llm is not None else None,
             "base_url": str(getattr(config, "base_url", "") or "") if config is not None else None,
             "timeout_seconds": int(getattr(config, "timeout_seconds", 0) or 0) if config is not None else None,
+            "max_tokens": int(getattr(config, "max_tokens", 0) or 0) if config is not None else None,
+            "context_turns": adult_fiction_context_turn_limit(),
+            "message_char_limit": adult_fiction_message_char_limit(),
             "fallback_mode": str(getattr(config, "fallback_mode", "off") or "off") if config is not None else "off",
             "fallback_models": list(getattr(config, "fallback_models", []) or []) if config is not None else [],
             "last_successful_model": getattr(llm, "last_successful_model", None) if llm is not None else None,
@@ -6232,6 +6305,19 @@ class AgentRuntime:
             return False
         if _is_terse_feedback_request(user_text or "") and not roleplay_reentry:
             return False
+        if (
+            _recent_adult_fiction_provider_limit_active(messages)
+            and _is_adult_fiction_limit_recovery_request(user_text or "")
+            and not re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or "")
+        ):
+            return False
+        if (
+            _recent_adult_fiction_provider_limit_active(messages)
+            and not roleplay_reentry
+            and not re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or "")
+            and len((user_text or "").strip()) <= 24
+        ):
+            return False
         if _is_adult_fictional_intimacy_context(user_text or "", messages):
             return True
         if roleplay_reentry and any(
@@ -6239,7 +6325,7 @@ class AgentRuntime:
             for message in list(messages or [])[-12:]
         ):
             return True
-        return (
+        return bool(
             _recent_adult_fiction_provider_limit_active(messages)
             and _is_adult_fiction_limit_recovery_request(user_text or "")
             and re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or "")
@@ -6295,8 +6381,9 @@ class AgentRuntime:
     ) -> List[Dict[str, Any]]:
         clean: List[Dict[str, Any]] = []
         raw_user_text = (user_text or "").strip()
+        clean_raw_user_text, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(raw_user_text)
         replay_source = ""
-        effective_user_text = raw_user_text
+        effective_user_text = clean_raw_user_text
         if _is_adult_fiction_limit_recovery_request(raw_user_text) and re.search(r"^\s*(继续|继续继续)\s*$", raw_user_text):
             replay_source = _last_clean_scene_user_turn(messages, raw_user_text)
             if replay_source:
@@ -6314,6 +6401,8 @@ class AgentRuntime:
                 continue
             if role == "user" and replay_source and content.strip() == raw_user_text:
                 continue
+            if role == "user":
+                content, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(content)
             if _looks_like_adult_fiction_provider_limit(content):
                 continue
             if _looks_like_creative_sidecar_internal_leak(content) or _looks_like_internal_mechanism_leak(content):
@@ -6323,11 +6412,14 @@ class AgentRuntime:
                 or _looks_like_adult_fiction_scene_contract_violation(content)
             ):
                 continue
-            clean.append({"role": role, "content": content.strip()[:2400]})
+            content = content.strip()
+            if not content:
+                continue
+            clean.append({"role": role, "content": content[:adult_fiction_message_char_limit()]})
 
         if not clean or clean[-1].get("role") != "user" or clean[-1].get("content") != effective_user_text:
-            clean.append({"role": "user", "content": effective_user_text})
-        return clean[-10:]
+            clean.append({"role": "user", "content": effective_user_text[:adult_fiction_message_char_limit()]})
+        return clean[-adult_fiction_context_turn_limit():]
 
     def _creative_profile_tool_call_block_result(
         self,
@@ -10518,6 +10610,7 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
                 expressiveness=DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
             ),
             boundary_prompt_enabled=False,
+            max_tokens=env_positive_int("ADULT_FICTION_MAX_TOKENS", DEFAULT_ADULT_FICTION_MAX_TOKENS),
             reasoning=None,
         ))
     if DEFAULT_ADULT_FICTION_PROVIDER != "openrouter":
@@ -10542,6 +10635,7 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
             expressiveness=DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
         ),
         boundary_prompt_enabled=False,
+        max_tokens=env_positive_int("ADULT_FICTION_MAX_TOKENS", DEFAULT_ADULT_FICTION_MAX_TOKENS),
         reasoning=None,
     ))
 
@@ -11042,7 +11136,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
-        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | timeout={adult_profile.get('timeout_seconds')}s | expressiveness={adult_profile.get('expressiveness')} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
+        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | timeout={adult_profile.get('timeout_seconds')}s | max_tokens={adult_profile.get('max_tokens')} | context_turns={adult_profile.get('context_turns')} | message_chars={adult_profile.get('message_char_limit')} | expressiveness={adult_profile.get('expressiveness')} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
         f"- self_name: {identity['display_name']} | canonical={identity['canonical_name']} | identity_path={identity['identity_path']}",
         f"- operator_memory: {memory_status}"
         + (f" | dir={memory_dir}" if memory_dir else ""),

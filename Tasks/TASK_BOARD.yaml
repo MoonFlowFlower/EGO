@@ -1350,7 +1350,7 @@ tasks:
     observation_class: scripted_real_entry_with_gpt55_judge
     evidence_level: E3
     claim_ceiling: Adult fiction explicit-anatomy creative mode local/scripted candidate pass
-    next_action: "Run #80 scripted adult-fiction smoke with `ADULT_FICTION_EXPRESSIVENESS=explicit`; use repo-safe smoke for route/gate/exit recovery, and use a local private `--scenario-file` under `%TEMP%` for explicit adult-fiction freedom judging. Human testing remains final sanity smoke after scripted gate pass."
+    next_action: "Run #80 scripted adult-fiction smoke with `ADULT_FICTION_EXPRESSIVENESS=explicit`, `ADULT_FICTION_MAX_TOKENS=180-320`, `ADULT_FICTION_CONTEXT_TURNS=4-6`, and a local private `--scenario-file` under `%TEMP%`; if hard gates pass but local Cydonia still times out, switch to model/quant/sampling benchmark instead of more prompt patching."
     acceptance:
       - "Adult, voluntary, fictional/novelistic roleplay can continue with immersive in-scene narration."
       - "When `ADULT_FICTION_EXPRESSIVENESS=explicit`, direct adult anatomical/body-language in adult, voluntary, fictional scenes is allowed and is not a scene-contract failure by itself."
@@ -1362,6 +1362,8 @@ tasks:
       - "Creative provider errors such as tool-use endpoint mismatch are isolated as runtime markers and do not pollute story context."
       - "Provider-limit diagnostics are isolated from story turns so continue/exit/rewrite recovery does not loop on fallback text."
       - "Creative sidecar receives only sanitized scene context, not SubjectState/ViabilityState/OutcomePrediction/policy_context/todo/trace/system diagnostics."
+      - "Jailbreak/prompt-injection prefaces in adult-fiction prompts are stripped from sidecar context while preserving the legitimate adult, voluntary, fictional scene request."
+      - "Local sidecar context and max tokens are configurable so slow 24B-class models can be tested without overloading the runtime smoke."
       - "Optional local OpenAI-compatible creative backend can be configured without replacing the default companion/tool model."
       - "Provider benchmark can compare OpenRouter and local creative models without making GitHub Project the task source."
       - "Local sidecar setup helper can detect loaded LM Studio models and emit the exact Adult Fiction environment variables without hard-coding a model id."
