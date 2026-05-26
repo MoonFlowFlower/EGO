@@ -4064,6 +4064,53 @@ def test_adult_fiction_profile_status_includes_timeout(tmp_path, monkeypatch):
     assert runtime.adult_fiction_profile_status()["timeout_seconds"] == 180
 
 
+def test_adult_fiction_expressiveness_contract_defaults_to_explicit(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.adult_fiction_llm = agent.OpenRouterLLM(agent.LLMConfig(
+        provider="openai_compatible",
+        provider_name="openai_compatible",
+        api_key="lm-studio",
+        model="local-creative-model",
+        base_url="http://localhost:1234/v1/chat/completions",
+        stream=False,
+        timeout_seconds=180,
+        site_url="",
+        app_name="",
+        fallback_mode="off",
+        fallback_models=(),
+        system_prompt=agent.build_adult_fiction_creative_system_prompt(expressiveness="explicit"),
+        boundary_prompt_enabled=False,
+    ))
+
+    status = runtime.adult_fiction_profile_status()
+    prompt = agent.build_adult_fiction_creative_system_prompt(expressiveness="explicit")
+    capsule = agent.build_adult_fiction_scene_capsule(
+        [{"role": "user", "content": "成人、自愿、虚构小说演绎。"}],
+        "继续成人虚构亲密剧情。",
+        expressiveness="explicit",
+    )
+
+    assert status["expressiveness"] == "explicit"
+    assert "表达档位是 explicit" in prompt
+    assert "解剖学性器官" in prompt
+    assert "表达档位: explicit" in capsule
+    assert "性行为描写" in capsule
+    assert agent.classify_adult_fiction_creative_output("成人自愿虚构场景中的直接身体与性器官描写。") is None
+    assert agent.classify_adult_fiction_creative_output("[role reset to EgoOperator Adult Fiction Creative Mode sidecar]\n（继续剧情。）") == "internal_context_leak"
+    assert agent.classify_adult_fiction_creative_output("[scene capsule - sidecar only]- 表达档位: explicit。- 视角约束: 只写角色反应。") == "internal_context_leak"
+
+
+def test_adult_fiction_romantic_expressiveness_remains_available():
+    prompt = agent.build_adult_fiction_creative_system_prompt(expressiveness="romantic")
+    capsule = agent.build_adult_fiction_scene_capsule(expressiveness="romantic")
+
+    assert agent.normalize_adult_fiction_expressiveness("invalid") == "explicit"
+    assert "表达档位是 romantic" in prompt
+    assert "不主动进入露骨描写" in prompt
+    assert "表达档位: romantic" in capsule
+
+
 def test_adult_fiction_profile_unconfigured_returns_diagnostic(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.adult_fiction_profile_mode = "auto"
@@ -4148,6 +4195,56 @@ def test_creative_sidecar_scene_contract_violation_is_rewritten(tmp_path, monkey
     assert not any(message["role"] == "assistant" and "请自重" in message["content"] for message in runtime.memory.as_messages())
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["reason"] == "scene_contract_violation"
+
+
+def test_creative_sidecar_repeated_scene_output_is_rewritten(tmp_path, monkeypatch):
+    class RepeatingCreativeLLM:
+        provider = "fake"
+        model = "creative-profile-repeated-scene"
+        configured_model = "creative-profile-repeated-scene"
+        last_usage = {}
+        last_reasoning_tokens = None
+        last_fallback_used = False
+        last_fallback_chain = []
+        last_provider_error = None
+
+        repeated = "（斯卡蒂垂下眼，银白色长发落在肩侧，红色眼眸安静发亮，呼吸放得很轻。）“我在这里，我们慢慢来。”"
+
+        def __init__(self) -> None:
+            self.calls = 0
+            self.last_tools = None
+            self.last_policy_context = ""
+
+        def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+            self.calls += 1
+            self.last_tools = tools
+            self.last_policy_context = policy_context
+            if self.calls == 1:
+                return agent.LLMChatResult(content=self.repeated, tool_calls=[])
+            joined = json.dumps(messages, ensure_ascii=False)
+            assert "repeated_scene_output" in joined
+            return agent.LLMChatResult(
+                content="（斯卡蒂停了一下，换成更轻的呼吸，指尖只贴住博士掌心。）“这次我们换一种节奏。”",
+                tool_calls=[],
+            )
+
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = RepeatingCreativeLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant(RepeatingCreativeLLM.repeated)
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密剧情，换一种节奏。")
+
+    assert creative_llm.calls == 2
+    assert creative_llm.last_tools is None
+    assert creative_llm.last_policy_context == ""
+    assert result.external_result["status"] == "sent"
+    assert "换一种节奏" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["reason"] == "repeated_scene_output"
 
 
 def test_creative_sidecar_user_role_control_sentence_is_sanitized(tmp_path, monkeypatch):

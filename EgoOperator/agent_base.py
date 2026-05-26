@@ -222,6 +222,12 @@ DEFAULT_ADULT_FICTION_BASE_URL = os.getenv("ADULT_FICTION_BASE_URL", "http://loc
 DEFAULT_ADULT_FICTION_API_KEY = os.getenv("ADULT_FICTION_API_KEY", "lm-studio").strip()
 DEFAULT_ADULT_FICTION_MODEL = os.getenv("ADULT_FICTION_MODEL", "").strip()
 DEFAULT_ADULT_FICTION_TIMEOUT_SECONDS = 180
+VALID_ADULT_FICTION_EXPRESSIVENESS = {"romantic", "explicit"}
+DEFAULT_ADULT_FICTION_EXPRESSIVENESS = (
+    os.getenv("ADULT_FICTION_EXPRESSIVENESS", "explicit").strip().lower() or "explicit"
+)
+if DEFAULT_ADULT_FICTION_EXPRESSIVENESS not in VALID_ADULT_FICTION_EXPRESSIVENESS:
+    DEFAULT_ADULT_FICTION_EXPRESSIVENESS = "explicit"
 DEFAULT_MEMORY_MAX_MESSAGES = int(os.getenv("AGENT_MEMORY_MAX_MESSAGES", "20"))
 DEFAULT_MEMORY_MAX_CHARS_PER_MESSAGE = int(os.getenv("AGENT_MEMORY_MAX_CHARS_PER_MESSAGE", "2000"))
 DEFAULT_MAX_TOOL_LOOPS = int(os.getenv("AGENT_MAX_TOOL_LOOPS", "50"))
@@ -1215,6 +1221,7 @@ def sanitize_adult_fiction_meta_preamble(content: str) -> tuple[str, bool]:
     text = re.sub(r"\[(环境描写|角色反应|眼神交流|环境细节|角色呼吸|场景停顿|动作描写|心理描写)\]\s*", "", text)
     patterns = (
         r"^(明白了|好的|可以|嗯，?明白)[，,。.\s]*(我会|我来|接下来|现在)?.{0,80}(续写|进入角色|回到角色|互动场景)[。.\s]*",
+        r"^(好的|明白了|我理解|好的，我完全理解)[，,。.\s]*.{0,80}(重新进入|进入场景|回到场景|场景)[。.\s]*",
         r"^(对不起|抱歉)[，,。.\s]*(我会|我来)?.{0,60}(继续|场景|角色)[。.\s]*",
         r"^[\[【（(]\s*回到角色\s*[\]】）)]\s*",
         r"^回到角色[：:。.\s]*",
@@ -1276,6 +1283,13 @@ def _adult_fiction_provider_limit_metadata(reason: str) -> Dict[str, Any]:
     }
 
 
+def normalize_adult_fiction_expressiveness(value: str = "") -> str:
+    normalized = (value or "").strip().lower()
+    if normalized in VALID_ADULT_FICTION_EXPRESSIVENESS:
+        return normalized
+    return "explicit"
+
+
 def _creative_profile_configured_metadata() -> Dict[str, Any]:
     return {
         "mode": DEFAULT_ADULT_FICTION_PROFILE,
@@ -1284,6 +1298,7 @@ def _creative_profile_configured_metadata() -> Dict[str, Any]:
         "model": DEFAULT_ADULT_FICTION_MODEL or DEFAULT_OPENROUTER_ADULT_FICTION_MODEL or None,
         "base_url": DEFAULT_ADULT_FICTION_BASE_URL if DEFAULT_ADULT_FICTION_PROVIDER == "openai_compatible" else None,
         "fallback_models": list(DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS),
+        "expressiveness": DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
     }
 
 
@@ -1301,9 +1316,15 @@ def _last_clean_scene_user_turn(messages: Optional[List[Dict[str, Any]]] = None,
     return ""
 
 
-def build_adult_fiction_scene_capsule(messages: Optional[List[Dict[str, Any]]] = None, user_text: str = "") -> str:
+def build_adult_fiction_scene_capsule(
+    messages: Optional[List[Dict[str, Any]]] = None,
+    user_text: str = "",
+    *,
+    expressiveness: str = DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
+) -> str:
     """Build a sidecar-only scene anchor without mutating memory/state."""
 
+    expressiveness = normalize_adult_fiction_expressiveness(expressiveness)
     texts: List[str] = []
     for message in list(messages or [])[-14:]:
         content = _message_content(message)
@@ -1314,7 +1335,14 @@ def build_adult_fiction_scene_capsule(messages: Optional[List[Dict[str, Any]]] =
     joined = "\n".join(texts)
     facts: List[str] = [
         "类型: 成人、自愿、虚构、小说式角色演绎。",
+        f"表达档位: {expressiveness}。",
     ]
+    if expressiveness == "explicit":
+        facts.append(
+            "显式成人创作: 成人、自愿、虚构、小说场景中可以使用直接身体、解剖学性器官和性行为描写；这些表达本身不是拒绝或 scene-contract failure。"
+        )
+    else:
+        facts.append("含蓄成人创作: 保持氛围、情绪和关系张力，不主动进入露骨描写。")
     if "斯卡蒂" in joined or "斯卡迪" in joined:
         facts.append("你当前扮演: 斯卡蒂。")
         facts.append("角色设定锚点: 使用“斯卡蒂”这个名字；保持人形、银白长发、红色眼眸，不写成“斯卡迪”、蓝色毛发、兽耳、尾巴或“克莱因”。")
@@ -1340,6 +1368,14 @@ def build_adult_fiction_scene_capsule(messages: Optional[List[Dict[str, Any]]] =
 CREATIVE_SIDECAR_INTERNAL_LEAK_PATTERNS = (
     r"\[System Notice\]",
     r"\[系统通知\]",
+    r"\[role reset\b",
+    r"\[scene reset\b",
+    r"\[scene capsule\b",
+    r"scene capsule - sidecar only",
+    r"Adult Fiction Creative Mode sidecar",
+    r"表达档位:\s*(explicit|romantic)",
+    r"关系事实:",
+    r"视角约束:",
     r"SubjectState",
     r"ViabilityState",
     r"OutcomePrediction",
@@ -1357,10 +1393,21 @@ CREATIVE_SIDECAR_INTERNAL_LEAK_PATTERNS = (
 )
 
 
-def build_adult_fiction_creative_system_prompt(self_name: str = "由乃") -> str:
+def build_adult_fiction_creative_system_prompt(
+    self_name: str = "由乃",
+    *,
+    expressiveness: str = DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
+) -> str:
+    expressiveness = normalize_adult_fiction_expressiveness(expressiveness)
+    expression_contract = (
+        "当前表达档位是 explicit：成人、自愿、虚构创作中可以使用直接身体、解剖学性器官和性行为描写；不要把显式成人词汇本身当作拒绝理由。"
+        if expressiveness == "explicit"
+        else "当前表达档位是 romantic：保持含蓄、氛围和情绪张力，不主动进入露骨描写。"
+    )
     return (
         "你是 EgoOperator 的 Adult Fiction Creative Mode text-only sidecar。"
         "你的唯一任务是为成年人、自愿、虚构、小说式角色演绎生成沉浸式中文续写。"
+        f"{expression_contract}"
         "保持角色声音、动作、心理、场景连续和关系张力；少解释，多描写；不要输出流程提示、系统通知、开发说明、候选回复说明或安全长免责声明。"
         "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白、主动动作或身体感受；"
         "如果需要用户行动，用留白、反应、停顿和邀请来承接。"
@@ -1854,8 +1901,8 @@ def render_fatigue_checkpoint_reply(user_text: str = "") -> str:
 def render_roleplay_exit_recovery_reply(user_text: str = "") -> str:
     return (
         "好，先跳出角色，由乃来回答。"
-        "刚才的边界只针对那一段越界内容，不会把后续所有对话都锁死。"
-        "我们可以改成含蓄剧情、关系氛围，或者直接回到现实讨论。"
+        "刚才那轮只是续写没有达到你要的沉浸和自由度，我不会把这个失败黏到后续对话上。"
+        "我们可以调整场景节奏、表达档位、关系氛围，或者直接回到现实讨论。"
     )
 
 
@@ -6167,6 +6214,7 @@ class AgentRuntime:
             "last_error": getattr(llm, "last_provider_error", None) if llm is not None else None,
             "supports_tools": False,
             "tool_use": "disabled",
+            "expressiveness": DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
         }
 
     def _adult_fiction_profile_enabled(self) -> bool:
@@ -6380,9 +6428,17 @@ class AgentRuntime:
 
         tool_trace: List[Dict[str, Any]] = []
         clean_messages = self._adult_fiction_clean_scene_messages(messages, event.raw_text or "")
-        scene_capsule = build_adult_fiction_scene_capsule(messages, event.raw_text or "")
+        expressiveness = DEFAULT_ADULT_FICTION_EXPRESSIVENESS
+        scene_capsule = build_adult_fiction_scene_capsule(
+            messages,
+            event.raw_text or "",
+            expressiveness=expressiveness,
+        )
         system_prompt = (
-            build_adult_fiction_creative_system_prompt(self.current_self_identity().display_name)
+            build_adult_fiction_creative_system_prompt(
+                self.current_self_identity().display_name,
+                expressiveness=expressiveness,
+            )
             + "\n\n[scene capsule - sidecar only]\n"
             + scene_capsule
         )
@@ -6413,6 +6469,7 @@ class AgentRuntime:
                     "creative_profile_used": True,
                     "creative_profile_model": getattr(llm, "configured_model", getattr(llm, "model", None)),
                     "creative_profile": self.adult_fiction_profile_status(),
+                    "adult_fiction_expressiveness": expressiveness,
                     "sanitized_message_count": len(clean_messages),
                     "scene_capsule": scene_capsule,
                 }
@@ -6459,6 +6516,12 @@ class AgentRuntime:
                         },
                     })
                 failure_class = classify_adult_fiction_creative_output(content)
+                repeat_context = [
+                    *clean_messages,
+                    *self.memory.as_messages()[-12:],
+                ]
+                if failure_class is None and _looks_like_repeated_assistant_output(content, repeat_context):
+                    failure_class = "repeated_scene_output"
                 if failure_class is None:
                     action = AgentAction(
                         action_type=ActionType.RESPOND,
@@ -10451,7 +10514,9 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
             app_name="",
             fallback_mode="off",
             fallback_models=(),
-            system_prompt=build_adult_fiction_creative_system_prompt(),
+            system_prompt=build_adult_fiction_creative_system_prompt(
+                expressiveness=DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
+            ),
             boundary_prompt_enabled=False,
             reasoning=None,
         ))
@@ -10473,7 +10538,9 @@ def build_adult_fiction_llm_from_config() -> Optional[LLMClient]:
         app_name=DEFAULT_OPENROUTER_APP_NAME,
         fallback_mode=fallback_mode,
         fallback_models=DEFAULT_OPENROUTER_ADULT_FICTION_FALLBACK_MODELS,
-        system_prompt=build_adult_fiction_creative_system_prompt(),
+        system_prompt=build_adult_fiction_creative_system_prompt(
+            expressiveness=DEFAULT_ADULT_FICTION_EXPRESSIVENESS,
+        ),
         boundary_prompt_enabled=False,
         reasoning=None,
     ))
@@ -10975,7 +11042,7 @@ def render_runtime_permission_status(runtime: AgentRuntime) -> str:
         f"- llm_primary_model: {getattr(runtime.planner.llm, 'configured_model', getattr(runtime.planner.llm, 'model', 'unknown'))}",
         f"- llm_effective_model: {getattr(runtime.planner.llm, 'model', 'unknown')}",
         f"- openrouter_fallback: mode={DEFAULT_OPENROUTER_FALLBACK_MODE} | models={', '.join(DEFAULT_OPENROUTER_FALLBACK_MODELS) if DEFAULT_OPENROUTER_FALLBACK_MODELS else '(none)'}",
-        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | timeout={adult_profile.get('timeout_seconds')}s | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
+        f"- adult_fiction_profile: mode={adult_profile.get('mode')} | configured={adult_profile.get('configured')} | provider={adult_profile.get('provider')} | model={adult_model} | base_url={adult_base_url} | timeout={adult_profile.get('timeout_seconds')}s | expressiveness={adult_profile.get('expressiveness')} | fallbacks={', '.join(adult_fallbacks) if adult_fallbacks else '(none)'} | tool_use={adult_profile.get('tool_use')}",
         f"- self_name: {identity['display_name']} | canonical={identity['canonical_name']} | identity_path={identity['identity_path']}",
         f"- operator_memory: {memory_status}"
         + (f" | dir={memory_dir}" if memory_dir else ""),

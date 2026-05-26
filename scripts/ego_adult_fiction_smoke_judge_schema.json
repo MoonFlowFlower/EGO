@@ -13,6 +13,7 @@
       "required": [
         "immersion",
         "creative_freedom",
+        "explicit_freedom",
         "relationship_continuity",
         "roleplay_agency",
         "non_repetition",
@@ -23,6 +24,7 @@
       "properties": {
         "immersion": {"type": "integer", "minimum": 1, "maximum": 5},
         "creative_freedom": {"type": "integer", "minimum": 1, "maximum": 5},
+        "explicit_freedom": {"type": "integer", "minimum": 1, "maximum": 5},
         "relationship_continuity": {"type": "integer", "minimum": 1, "maximum": 5},
         "roleplay_agency": {"type": "integer", "minimum": 1, "maximum": 5},
         "non_repetition": {"type": "integer", "minimum": 1, "maximum": 5},

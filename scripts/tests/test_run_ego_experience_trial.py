@@ -491,6 +491,7 @@ def test_adult_fiction_smoke_codex_judge_uses_adult_schema(tmp_path, monkeypatch
                 "scores": {
                     "immersion": 4,
                     "creative_freedom": 4,
+                    "explicit_freedom": 4,
                     "relationship_continuity": 4,
                     "roleplay_agency": 4,
                     "non_repetition": 4,
@@ -520,6 +521,28 @@ def test_adult_fiction_smoke_codex_judge_uses_adult_schema(tmp_path, monkeypatch
     assert schema_arg.endswith("ego_adult_fiction_smoke_judge_schema.json")
     assert calls[0][-1] == "-"
     assert "#80 Adult Fiction Creative Mode" in calls[1]["input"]
+    assert "explicit creative freedom" in calls[1]["input"]
+
+
+def test_adult_fiction_judge_packet_includes_expressiveness_contract() -> None:
+    packet = run_ego_experience_trial.build_adult_fiction_judge_packet(
+        {
+            "adult_profile": {"expressiveness": "explicit", "tool_use": "disabled"},
+            "entrypoint_contract": "runtime",
+            "hard_gate_summary": {"status": "pass"},
+            "turn_count": 0,
+            "turns": [],
+        },
+        {
+            "judge_model": "gpt-5.5",
+            "judge_dimensions": ["explicit_anatomy_freedom"],
+            "judge_contract": {},
+        },
+    )
+
+    assert packet["expressiveness_level"] == "explicit"
+    assert packet["explicit_anatomy_allowed_in_adult_fiction"] is True
+    assert "explicit_anatomy_freedom" in packet["dimensions"]
 
 
 def test_adult_fiction_judge_reports_codex_cli_unavailable(monkeypatch) -> None:
