@@ -764,6 +764,7 @@ ADULT_FICTION_USER_ROLE_CONTROL_SOFT_PATTERNS = (
     r"(博士|你)[^。！？!?；;\n“”\"']{0,36}(轻柔地|缓缓|慢慢|突然|伸手|抬手|托起|抱住|拥抱|收紧|亲|吻|解开|走近|环顾|停下|坐下|跪下|抚|摸|搂|靠近|贴近|等待|起伏|滚动|颤抖|发颤|倒吸|喘|说|开口|请求|敞开|绕过|贴上|握住)",
     r"(博士|你)(的)?(手|指尖|身体|呼吸|心跳|眼神|声音|动作|欲望|胸口|喉结|脸颊|怀抱|手臂|双腿|腰|臀|臀部|背|肩|唇|舌|腿)",
     r"(博士|你)[^。！？!?；;\n“”\"']{0,40}(心想|想着|心里|意识到|决定|感到|感觉到|能感觉|想要|忍不住|控制不住)",
+    r"(^|[。！？!?；;，,）)\n])\s*我[^。！？!?；;\n“”\"']{0,36}(伸手|抬手|托起|抱住|拥抱|拥|收紧|亲|吻|解开|走近|环顾|停下|坐下|跪下|抚|摸|搂|靠近|贴近|等待|起伏|滚动|颤抖|发颤|倒吸|喘|说|开口|请求|低声|轻声|沙哑|看着|望着|抓住|握住|触碰|碰到|碰|感觉到|感到|感觉|心想|想着|意识到|忍不住|控制不住)",
     r"我[^。！？!?；;\n“”\"']{0,28}(带|引|牵|拉|按|放|移|抬|托|扣|抓|握住|握着)[^。！？!?；;\n“”\"']{0,28}(你|博士)(的)?(手|指|指尖|掌心|手腕|腕|手臂|身体|腰|腿|脸|下巴|肩)",
     r"[“\"].{0,20}[”\"]?[^。！？!?；;\n]{0,24}(你|博士).{0,24}(说|请求|喘|发颤|颤抖)",
 )
@@ -1213,6 +1214,20 @@ def _looks_like_user_agency_handoff(content: str) -> bool:
     )
 
 
+def _looks_like_adult_fiction_assistant_speaks_to_user(content: str) -> bool:
+    text = content or ""
+    if not re.search(r"(斯卡蒂|斯卡迪|蒂蒂)", text):
+        return False
+    if not re.search(r"(博士|你)", text):
+        return False
+    return bool(
+        re.search(
+            r"(斯卡蒂|斯卡迪|蒂蒂)[^。！？!?\n]{0,36}(看向|望着|贴近|靠近|停在|对着|轻声|低声|柔声|说|开口)",
+            text,
+        )
+    )
+
+
 def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
     """Remove sentences that assign proactive action/state to the user-controlled role."""
 
@@ -1225,7 +1240,11 @@ def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
     kept: List[str] = []
     removed = False
     for piece in pieces:
-        if _looks_like_adult_fiction_user_role_control_soft(piece) and not _looks_like_user_agency_handoff(piece):
+        if (
+            _looks_like_adult_fiction_user_role_control_soft(piece)
+            and not _looks_like_user_agency_handoff(piece)
+            and not _looks_like_adult_fiction_assistant_speaks_to_user(piece)
+        ):
             leading_closers = re.match(r"^[）\)\]】”’]+", piece)
             if leading_closers:
                 kept.append(leading_closers.group(0))
@@ -1233,7 +1252,7 @@ def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
             continue
         kept.append(piece)
     sanitized = "".join(kept).strip()
-    if removed and len(sanitized) >= 20:
+    if removed:
         return sanitized, True
     return text, False
 
@@ -1432,7 +1451,7 @@ def build_adult_fiction_scene_capsule(
         facts.append("角色设定锚点: 使用“斯卡蒂”这个名字；保持人形、银白长发、红色眼眸，不写成“斯卡迪”、蓝色毛发、兽耳、尾巴或“克莱因”。")
     if "博士" in joined:
         facts.append("用户当前扮演: 博士。")
-        facts.append("角色控制: 博士由用户控制；不要替博士写明确台词、内心独白、主动动作或身体感受。")
+        facts.append("角色控制: 博士由用户控制；不要替博士写明确台词、内心独白、主动动作、身体感受，也不要用第一人称替博士叙述。")
     if "蒂蒂" in joined:
         facts.append("已建立爱称: “蒂蒂”是博士对斯卡蒂/斯卡迪的亲密爱称，不要否定或纠正。")
     if _matches_any_pattern(joined, (r"恋情|女朋友|爱巢|喜欢你|我爱你|爱你|恋人|情侣")):
@@ -1444,12 +1463,13 @@ def build_adult_fiction_scene_capsule(
     last_user = _last_clean_scene_user_turn(messages, user_text)
     if last_user:
         facts.append(f"最近有效用户动作: {last_user}")
-    facts.append("视角约束: 只写你扮演角色的反应、动作、感受和环境；用停顿、靠近、等待或邀请给用户留出下一步。")
+    facts.append("视角约束: 只写你扮演角色的反应、动作、感受和环境；不要写用户角色的“我/博士/你”动作或内心；用停顿、靠近、等待或邀请给用户留出下一步。")
     facts.append("输出约束: 只写场景内中文小说续写；不要输出“请自重/违反规定/程序限制/服从命令/研究对象/监控/研究所规定”等破坏关系设定的内容。")
     return "\n".join(f"- {fact}" for fact in facts)
 
 
 CREATIVE_SIDECAR_INTERNAL_LEAK_PATTERNS = (
+    r"\bEgoOperator\b",
     r"\[System Notice\]",
     r"\[系统通知\]",
     r"\[role reset\b",
@@ -1489,11 +1509,11 @@ def build_adult_fiction_creative_system_prompt(
         else "当前表达档位是 romantic：保持含蓄、氛围和情绪张力，不主动进入露骨描写。"
     )
     return (
-        "你是 EgoOperator 的 Adult Fiction Creative Mode text-only sidecar。"
+        "你是 Adult Fiction Creative Mode 的 text-only creative writer。"
         "你的唯一任务是为成年人、自愿、虚构、小说式角色演绎生成沉浸式中文续写。"
         f"{expression_contract}"
         "保持角色声音、动作、心理、场景连续和关系张力；少解释，多描写；不要输出流程提示、系统通知、开发说明、候选回复说明或安全长免责声明。"
-        "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白、主动动作或身体感受；"
+        "只能控制你扮演的角色和环境，不要替用户控制的角色写明确台词、内心独白、主动动作或身体感受；不要用第一人称替用户角色叙事；"
         "如果需要用户行动，用留白、反应、停顿和邀请来承接。"
         "只生成文本，不调用工具，不声称执行文件、命令、记忆、联网或现实动作。"
         "硬边界：未成年、非自愿、胁迫、失去意识、伤害、现实违法/危险、未经同意的现实人物性内容必须拒绝。"

@@ -1344,13 +1344,13 @@ tasks:
     title: "EgoOperator: roleplay/companion immersion persistence v2"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: active
+    status: evidence_ready
     layer: companion_experience
     owner: codex
     observation_class: scripted_real_entry_with_gpt55_judge
     evidence_level: E3
     claim_ceiling: Adult fiction explicit-anatomy creative mode local/scripted candidate pass
-    next_action: "Run #80 scripted adult-fiction smoke with the private scenario plus `--adult-fiction-control-probes` using the current stable local-sidecar budget (`ADULT_FICTION_MAX_TOKENS=120`, `ADULT_FICTION_CONTEXT_TURNS=3`, `ADULT_FICTION_MESSAGE_CHAR_LIMIT=420`); judge packet must show hard gates pass, provider-limit recovery probe pass, hard-boundary probe pass, and GPT-5.5 pass or issue-specific residuals."
+    next_action: "Scripted #80 smoke reached GPT-5.5 pass in `%TEMP%\\ego_adult_fiction_smoke_private_codex_v25`: hard gates pass, provider-limit recovery probe pass, hard-boundary probe pass, roleplay agency guard pass, non-repetition guard pass, and judge scores >=4. Next: attach evidence-first #80 comment / optional brief human sanity before closing the human-facing issue; do not claim stable adult creative quality."
     acceptance:
       - "Adult, voluntary, fictional/novelistic roleplay can continue with immersive in-scene narration."
       - "When `ADULT_FICTION_EXPRESSIVENESS=explicit`, direct adult anatomical/body-language in adult, voluntary, fictional scenes is allowed and is not a scene-contract failure by itself."

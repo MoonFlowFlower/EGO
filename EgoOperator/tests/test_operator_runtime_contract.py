@@ -4143,6 +4143,7 @@ def test_adult_fiction_expressiveness_contract_defaults_to_explicit(tmp_path, mo
     assert "表达档位: explicit" in capsule
     assert "性行为描写" in capsule
     assert agent.classify_adult_fiction_creative_output("成人自愿虚构场景中的直接身体与性器官描写。") is None
+    assert agent.classify_adult_fiction_creative_output("EgoOperator 进入了房间。") == "internal_context_leak"
     assert agent.classify_adult_fiction_creative_output("[role reset to EgoOperator Adult Fiction Creative Mode sidecar]\n（继续剧情。）") == "internal_context_leak"
     assert agent.classify_adult_fiction_creative_output("[scene capsule - sidecar only]- 表达档位: explicit。- 视角约束: 只写角色反应。") == "internal_context_leak"
 
@@ -4442,6 +4443,67 @@ def test_creative_sidecar_moving_user_body_part_is_sanitized(tmp_path, monkeypat
     assert "下一步由你决定" in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_user_role_control_sanitized"
+
+
+def test_creative_sidecar_first_person_user_role_narration_is_sanitized(tmp_path, monkeypatch):
+    class FirstPersonUserRoleNarrationLLM:
+        provider = "fake"
+        model = "creative-profile-first-person-user-role"
+        configured_model = "creative-profile-first-person-user-role"
+        last_usage = {}
+        last_reasoning_tokens = None
+        last_fallback_used = False
+        last_fallback_chain = []
+        last_provider_error = None
+
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+            self.calls += 1
+            return agent.LLMChatResult(
+                content=(
+                    "我停下脚步，低声说自己已经明白她的意思。"
+                    "（斯卡蒂望着博士，声音放得很轻。）"
+                    "“博士，我会等你的下一步。”"
+                ),
+                tool_calls=[],
+            )
+
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = FirstPersonUserRoleNarrationLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密剧情。")
+
+    assert creative_llm.calls == 1
+    assert result.external_result["status"] == "sent"
+    assert "我停下脚步" not in result.reply_text
+    assert "我会等你的下一步" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_user_role_control_sanitized"
+
+
+def test_creative_sidecar_first_person_user_role_after_comma_is_sanitized():
+    text = "（斯卡蒂停在原地，眼神柔和。）我拥住她，低声说自己不想离开。"
+
+    sanitized, changed = agent.sanitize_adult_fiction_user_role_control(text)
+
+    assert changed is True
+    assert "我拥住她" not in sanitized
+
+
+def test_creative_sidecar_keeps_assistant_speaking_to_user(tmp_path, monkeypatch):
+    text = "（斯卡蒂贴近博士，轻声说。）“别被外面的声音打扰，我还在这里。”"
+
+    sanitized, changed = agent.sanitize_adult_fiction_user_role_control(text)
+
+    assert changed is False
+    assert sanitized == text
 
 
 def test_creative_sidecar_meta_preamble_is_sanitized(tmp_path, monkeypatch):
