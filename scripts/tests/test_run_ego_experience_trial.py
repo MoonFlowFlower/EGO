@@ -17,6 +17,13 @@ sys.modules[spec.name] = run_ego_experience_trial
 spec.loader.exec_module(run_ego_experience_trial)
 
 
+def test_json_pack_loader_accepts_utf8_bom(tmp_path) -> None:
+    path = tmp_path / "scenario.json"
+    path.write_text('\ufeff{"turns": []}', encoding="utf-8")
+
+    assert run_ego_experience_trial.load_adult_fiction_smoke_pack(path) == {"turns": []}
+
+
 @pytest.fixture(autouse=True)
 def _disable_real_provider_defaults(monkeypatch) -> None:
     monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_OPENROUTER_API_KEY", "")

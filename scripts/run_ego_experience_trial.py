@@ -97,6 +97,10 @@ FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING = (
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
 
 
+def _load_json_file(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
 def _resolve_codex_cli() -> str:
     explicit = os.getenv("CODEX_CLI", "").strip().strip('"')
     if explicit:
@@ -300,23 +304,23 @@ class FunctionalSubjectCaseResult:
 
 
 def load_sample_pack(path: Path = DEFAULT_SAMPLE_PACK) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _load_json_file(path)
 
 
 def load_adaptation_effectiveness_pack(path: Path = DEFAULT_ADAPTATION_EFFECTIVENESS_PACK) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _load_json_file(path)
 
 
 def load_companion_smoke_pack(path: Path = DEFAULT_JOI_COMPANION_SMOKE_PACK) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _load_json_file(path)
 
 
 def load_adult_fiction_smoke_pack(path: Path = DEFAULT_ADULT_FICTION_SMOKE_PACK) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _load_json_file(path)
 
 
 def load_functional_subject_trial_pack(path: Path = DEFAULT_FUNCTIONAL_SUBJECT_TRIAL_PACK) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _load_json_file(path)
 
 
 def _operator_memory_dir_for_output(out: Path, name: str) -> Path:
