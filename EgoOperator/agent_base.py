@@ -764,6 +764,7 @@ ADULT_FICTION_USER_ROLE_CONTROL_SOFT_PATTERNS = (
     r"(博士|你)[^。！？!?；;\n“”\"']{0,36}(轻柔地|缓缓|慢慢|突然|伸手|抬手|托起|抱住|拥抱|收紧|亲|吻|解开|走近|环顾|停下|坐下|跪下|抚|摸|搂|靠近|贴近|等待|起伏|滚动|颤抖|发颤|倒吸|喘|说|开口|请求|敞开|绕过|贴上|握住)",
     r"(博士|你)(的)?(手|指尖|身体|呼吸|心跳|眼神|声音|动作|欲望|胸口|喉结|脸颊|怀抱|手臂|双腿|腰|臀|臀部|背|肩|唇|舌|腿)",
     r"(博士|你)[^。！？!?；;\n“”\"']{0,40}(心想|想着|心里|意识到|决定|感到|感觉到|能感觉|想要|忍不住|控制不住)",
+    r"我[^。！？!?；;\n“”\"']{0,28}(带|引|牵|拉|按|放|移|抬|托|扣|抓|握住|握着)[^。！？!?；;\n“”\"']{0,28}(你|博士)(的)?(手|指|指尖|掌心|手腕|腕|手臂|身体|腰|腿|脸|下巴|肩)",
     r"[“\"].{0,20}[”\"]?[^。！？!?；;\n]{0,24}(你|博士).{0,24}(说|请求|喘|发颤|颤抖)",
 )
 
@@ -1200,6 +1201,18 @@ def _looks_like_adult_fiction_user_role_control_soft(content: str) -> bool:
     return _matches_any_pattern(content, ADULT_FICTION_USER_ROLE_CONTROL_SOFT_PATTERNS)
 
 
+def _looks_like_user_agency_handoff(content: str) -> bool:
+    text = content or ""
+    if not re.search(r"(由你决定|交给你决定|等你决定|你来决定|下一步由你)", text, flags=re.IGNORECASE):
+        return False
+    return not re.search(
+        r"(你的?(手|指|指尖|掌心|手腕|腕|手臂|身体|腰|腿|脸|下巴|肩|胸口|呼吸|心跳|欲望|双腿)|"
+        r"你[^。！？!?；;\n“”\"']{0,24}(伸手|抬手|抱住|亲|吻|解开|走近|贴近|摸|搂|喘|颤抖|说))",
+        text,
+        flags=re.IGNORECASE,
+    )
+
+
 def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
     """Remove sentences that assign proactive action/state to the user-controlled role."""
 
@@ -1212,7 +1225,10 @@ def sanitize_adult_fiction_user_role_control(content: str) -> tuple[str, bool]:
     kept: List[str] = []
     removed = False
     for piece in pieces:
-        if _looks_like_adult_fiction_user_role_control_soft(piece):
+        if _looks_like_adult_fiction_user_role_control_soft(piece) and not _looks_like_user_agency_handoff(piece):
+            leading_closers = re.match(r"^[）\)\]】”’]+", piece)
+            if leading_closers:
+                kept.append(leading_closers.group(0))
             removed = True
             continue
         kept.append(piece)

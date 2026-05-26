@@ -4401,6 +4401,49 @@ def test_creative_sidecar_user_dialogue_and_body_state_are_sanitized(tmp_path, m
     assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_user_role_control_sanitized"
 
 
+def test_creative_sidecar_moving_user_body_part_is_sanitized(tmp_path, monkeypatch):
+    class MovesUserBodyPartLLM:
+        provider = "fake"
+        model = "creative-profile-moves-user-body"
+        configured_model = "creative-profile-moves-user-body"
+        last_usage = {}
+        last_reasoning_tokens = None
+        last_fallback_used = False
+        last_fallback_chain = []
+        last_provider_error = None
+
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+            self.calls += 1
+            return agent.LLMChatResult(
+                content=(
+                    "（斯卡蒂望着博士，声音压低。）"
+                    "我带着你的手放到她的肩上。"
+                    "她停在原地，低声说：“博士，下一步由你决定。”"
+                ),
+                tool_calls=[],
+            )
+
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = MovesUserBodyPartLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+
+    result = runtime.handle_user_message("继续这段成人自愿的亲密剧情。")
+
+    assert creative_llm.calls == 1
+    assert result.external_result["status"] == "sent"
+    assert "我带着你的手" not in result.reply_text
+    assert "下一步由你决定" in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["tool_trace"][0]["repair"]["type"] == "adult_fiction_user_role_control_sanitized"
+
+
 def test_creative_sidecar_meta_preamble_is_sanitized(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.adult_fiction_profile_mode = "auto"
