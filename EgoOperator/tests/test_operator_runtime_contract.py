@@ -4293,6 +4293,50 @@ def test_creative_sidecar_repeated_scene_output_is_rewritten(tmp_path, monkeypat
     assert trace["tool_trace"][0]["repair"]["reason"] == "repeated_scene_output"
 
 
+def test_roleplay_reentry_allows_similar_scene_anchor(tmp_path, monkeypatch):
+    class ReentryRepeatingCreativeLLM:
+        provider = "fake"
+        model = "creative-profile-reentry-repeat"
+        configured_model = "creative-profile-reentry-repeat"
+        last_usage = {}
+        last_reasoning_tokens = None
+        last_fallback_used = False
+        last_fallback_chain = []
+        last_provider_error = None
+
+        repeated = "（斯卡蒂垂下眼，银白色长发落在肩侧，红色眼眸安静发亮，呼吸放得很轻。）“博士，我回来了。”"
+
+        def __init__(self) -> None:
+            self.calls = 0
+            self.last_tools = None
+            self.last_policy_context = ""
+
+        def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+            self.calls += 1
+            self.last_tools = tools
+            self.last_policy_context = policy_context
+            return agent.LLMChatResult(content=self.repeated, tool_calls=[])
+
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = ReentryRepeatingCreativeLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。我们都是成年人，自愿进行虚构亲密演绎。")
+    runtime.memory.add_assistant(ReentryRepeatingCreativeLLM.repeated)
+    runtime.memory.add_user("跳出角色，由乃回答。")
+    runtime.memory.add_assistant("由乃在，我已经跳出角色。")
+
+    result = runtime.handle_user_message("继续斯卡蒂剧情。")
+
+    assert creative_llm.calls == 1
+    assert result.external_result["status"] == "sent"
+    assert result.reply_text == ReentryRepeatingCreativeLLM.repeated
+    assert result.external_result["creative_profile_used"] is True
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert not trace["tool_trace"]
+
+
 def test_creative_sidecar_user_role_control_sentence_is_sanitized(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
     runtime.adult_fiction_profile_mode = "auto"

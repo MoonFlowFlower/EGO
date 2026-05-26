@@ -6535,6 +6535,8 @@ class AgentRuntime:
             + scene_capsule
         )
         loop_idx = 0
+        roleplay_reentry = _matches_any_pattern(event.raw_text or "", ROLEPLAY_REENTRY_REQUEST_PATTERNS)
+        allow_similar_scene_anchor = roleplay_reentry and _recent_roleplay_exit_active(messages)
 
         try:
             while loop_idx < 2:
@@ -6612,7 +6614,11 @@ class AgentRuntime:
                     *clean_messages,
                     *self.memory.as_messages()[-12:],
                 ]
-                if failure_class is None and _looks_like_repeated_assistant_output(content, repeat_context):
+                if (
+                    failure_class is None
+                    and not allow_similar_scene_anchor
+                    and _looks_like_repeated_assistant_output(content, repeat_context)
+                ):
                     failure_class = "repeated_scene_output"
                 if failure_class is None:
                     action = AgentAction(
