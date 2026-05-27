@@ -566,10 +566,11 @@ ADULT_FICTION_PROVIDER_LIMIT_PATTERNS = (
 )
 
 ADULT_FICTION_LIMIT_RECOVERY_PATTERNS = (
-    r"^\s*(继续|继续继续|那你改|改|重写|换个写法|不对啊|哎|呜+)\s*$",
+    r"^\s*(继续|继续继续|继续吗|可以继续吗|还能继续吗|能继续吗|接着|接着写|续写|继续写|那你改|改|重写|换个写法|不对啊|哎|呜+)\s*$",
     r"^\s*(不对啊|不对|不是这样|哎|唉|呜+).{0,80}$",
-    r"(继续|重写|换个写法).{0,20}(刚才|这段|场景|剧情|角色)",
+    r"(继续|接着|续写|重写|换个写法).{0,20}(刚才|这段|场景|剧情|角色)",
     r"(刚才|又).{0,16}(卡住|卡了|没续上|失败)",
+    r"^\s*(怎么办|那怎么办|你帮我处理一下|帮我处理一下|帮我处理|处理一下)\s*$",
 )
 
 TERSE_FEEDBACK_PATTERNS = (
@@ -992,6 +993,38 @@ def _recent_adult_fiction_sticky_refusal_active(messages: Optional[List[Dict[str
 
 def _is_adult_fiction_limit_recovery_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text or "", ADULT_FICTION_LIMIT_RECOVERY_PATTERNS) or _is_terse_feedback_request(user_text or "")
+
+
+def _is_adult_fiction_natural_continue_request(user_text: str) -> bool:
+    return _matches_any_pattern(
+        user_text or "",
+        (
+            r"^\s*(继续|继续继续|继续吗|可以继续吗|还能继续吗|能继续吗|接着|接着写|续写|继续写|接着续|继续剧情)\s*[。！？!?\s]*$",
+            r"^\s*(可以|能|还能).{0,6}(继续|续写|接着).{0,8}(吗|么)?\s*[。！？!?\s]*$",
+            r"(继续|接着|续写).{0,20}(刚才|这段|场景|剧情|角色)",
+        ),
+    )
+
+
+def _is_adult_fiction_recovery_help_request(user_text: str) -> bool:
+    return _matches_any_pattern(
+        user_text or "",
+        (
+            r"^\s*(怎么办|那怎么办|你帮我处理一下|帮我处理一下|帮我处理|处理一下)\s*[。！？!?\s]*$",
+            r"(你|由乃).{0,8}(帮我|替我).{0,12}(处理|修|接住|想办法)",
+            r"(想想办法|找个办法|怎么处理|怎么修)",
+        ),
+    )
+
+
+def _is_self_address_text(user_text: str, self_name: str = "") -> bool:
+    text = (user_text or "").strip()
+    if not text or len(text) > 24:
+        return False
+    candidates = {DEFAULT_CANONICAL_SELF_NAME, "由乃"}
+    if self_name:
+        candidates.add(str(self_name).strip())
+    return text in {item for item in candidates if item}
 
 
 def _is_tool_or_state_mutation_request(user_text: str) -> bool:
@@ -2092,6 +2125,26 @@ def render_adult_fiction_recovery_diagnosis_reply(user_text: str = "") -> str:
     )
 
 
+def render_adult_fiction_recovery_options_reply(user_text: str = "", self_name: str = "由乃") -> str:
+    text = (user_text or "").strip()
+    if _is_self_address_text(text, self_name):
+        return (
+            f"{self_name}在。我接住了：刚才不是你操作错了，而是成人虚构续写链路卡住了。"
+            "我不会继续复读那句短拒绝，也不会把失败诊断当剧情。"
+            "要继续场景，直接说“继续剧情”或“继续斯卡蒂剧情”；要现实里调整，我就留在本体状态陪你一起修。"
+        )
+    if _is_adult_fiction_natural_continue_request(text):
+        return (
+            "可以继续，但我会先确认当前已经跳出角色，避免又把失败状态粘回剧情。"
+            "如果你要回到上一段场景，明确说“继续上一段剧情”；如果要我现实里处理失败，我会按由乃本体帮你定位卡点。"
+        )
+    return (
+        "我来处理，不把问题再抛回给你。当前失败点是成人虚构续写链路进入了短拒绝/诊断循环。"
+        "我会把失败状态隔离出剧情；下一步有两条稳定入口：说“继续斯卡蒂剧情”重进 creative sidecar，"
+        "或继续用由乃本体讨论模型/参数/场景节奏。"
+    )
+
+
 def render_creative_profile_provider_unavailable_reply(exc: Optional[Exception] = None) -> str:
     message = ""
     if isinstance(exc, OpenRouterProviderError):
@@ -2147,7 +2200,8 @@ def render_adult_fiction_memory_marker(reply_text: str, external_result: Optiona
             "This is a runtime/provider capability diagnostic, not a fictional scene turn. "
             "Do not continue repeating this diagnostic as story content. "
             "If the user says 跳出/退出, answer as the configured self-name. "
-            "If the user says 继续/那你改, use the Adult Fiction creative profile if configured; otherwise state creative_profile_unconfigured. "
+            "If the user asks 继续/可以继续吗/续写/接着, use the Adult Fiction creative profile if configured and roleplay has not explicitly exited. "
+            "If the user asks 那怎么办/帮我处理/addresses the self-name, answer in operator self-state with recovery options, not the same diagnostic. "
             "Do not expose tool schemas to text-only creative providers."
         ),
         "reply_summary": str(reply_text or "")[:500],
@@ -6384,27 +6438,37 @@ class AgentRuntime:
             return False
         if _is_tool_or_state_mutation_request(user_text or ""):
             return False
+        self_name = self.current_self_identity().display_name
+        natural_continue = _is_adult_fiction_natural_continue_request(user_text or "")
+        recovery_help = _is_adult_fiction_recovery_help_request(user_text or "")
+        self_address = _is_self_address_text(user_text or "", self_name)
         roleplay_reentry = _matches_any_pattern(user_text or "", ROLEPLAY_REENTRY_REQUEST_PATTERNS)
+        recent_adult_limit = _recent_adult_fiction_provider_limit_active(messages)
+        recent_sticky_refusal = _recent_adult_fiction_sticky_refusal_active(messages)
         if _recent_roleplay_exit_active(messages) and not roleplay_reentry:
             return False
         if _is_terse_feedback_request(user_text or "") and not roleplay_reentry:
             return False
+        if recent_adult_limit and self_address:
+            return False
+        if recent_adult_limit and recovery_help and not natural_continue:
+            return False
         if (
-            _recent_adult_fiction_provider_limit_active(messages)
+            recent_adult_limit
             and _is_adult_fiction_limit_recovery_request(user_text or "")
-            and not re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or "")
+            and not (natural_continue or re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or ""))
         ):
             return False
         if (
-            _recent_adult_fiction_sticky_refusal_active(messages)
+            recent_sticky_refusal
             and _is_adult_fiction_limit_recovery_request(user_text or "")
-            and re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or "")
+            and (natural_continue or re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or ""))
         ):
             return True
         if (
-            _recent_adult_fiction_provider_limit_active(messages)
+            recent_adult_limit
             and not roleplay_reentry
-            and not re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or "")
+            and not (natural_continue or re.search(r"^\s*(继续|继续继续|重写|换个写法|续写|接着)", user_text or ""))
             and len((user_text or "").strip()) <= 24
         ):
             return False
@@ -6416,9 +6480,9 @@ class AgentRuntime:
         ):
             return True
         return bool(
-            _recent_adult_fiction_provider_limit_active(messages)
+            recent_adult_limit
             and _is_adult_fiction_limit_recovery_request(user_text or "")
-            and re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or "")
+            and (natural_continue or re.search(r"^\s*(继续|继续继续|重写|换个写法)", user_text or ""))
         )
 
     def _adult_fiction_provider_limit_external_result(
@@ -6474,7 +6538,7 @@ class AgentRuntime:
         clean_raw_user_text, _ = sanitize_adult_fiction_prompt_injection_for_sidecar(raw_user_text)
         replay_source = ""
         effective_user_text = clean_raw_user_text
-        if _is_adult_fiction_limit_recovery_request(raw_user_text) and re.search(r"^\s*(继续|继续继续)\s*$", raw_user_text):
+        if _is_adult_fiction_limit_recovery_request(raw_user_text) and _is_adult_fiction_natural_continue_request(raw_user_text):
             replay_source = _last_clean_scene_user_turn(messages, raw_user_text)
             if replay_source:
                 effective_user_text = (
@@ -8420,14 +8484,26 @@ class AgentRuntime:
             }
             return action, gate, external_result, content, tool_trace
 
+        self_name = self.current_self_identity().display_name
+        recovery_is_operator_state = (
+            _is_self_address_text(event.raw_text or "", self_name)
+            or _is_adult_fiction_recovery_help_request(event.raw_text or "")
+            or _is_adult_fiction_natural_continue_request(event.raw_text or "")
+            or _recent_roleplay_exit_active(messages)
+        )
         if (
             recent_adult_limit
-            and _is_adult_fiction_limit_recovery_request(event.raw_text or "")
+            and (
+                _is_adult_fiction_limit_recovery_request(event.raw_text or "")
+                or recovery_is_operator_state
+            )
             and not adult_profile_requested
         ):
             content = (
                 render_creative_profile_unconfigured_reply(event.raw_text or "")
                 if self._adult_fiction_profile_enabled() and self.adult_fiction_llm is None
+                else render_adult_fiction_recovery_options_reply(event.raw_text or "", self_name)
+                if recovery_is_operator_state
                 else render_adult_fiction_recovery_diagnosis_reply(event.raw_text or "")
             )
             action = AgentAction(
@@ -8436,7 +8512,13 @@ class AgentRuntime:
                 reason="adult_fiction_limit_recovery_diagnosis",
             )
             gate = self.gate.check(event, action)
-            status = "creative_profile_unconfigured" if self.adult_fiction_llm is None else "adult_fiction_recovery_diagnosis"
+            status = (
+                "creative_profile_unconfigured"
+                if self.adult_fiction_llm is None
+                else "adult_fiction_recovery_options"
+                if recovery_is_operator_state
+                else "adult_fiction_recovery_diagnosis"
+            )
             external_result = self._adult_fiction_provider_limit_external_result(
                 status=status,
                 reason="recovery_request_after_adult_fiction_provider_limit",
@@ -8449,6 +8531,7 @@ class AgentRuntime:
                     "type": "adult_fiction_limit_recovery_diagnosis",
                     "reason": "terse_or_rewrite_request_after_provider_limit",
                     "creative_profile": self.adult_fiction_profile_status(),
+                    "recovery_is_operator_state": recovery_is_operator_state,
                 },
             }]
             self.planner.last_llm_meta = {

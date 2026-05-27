@@ -4609,6 +4609,102 @@ def test_continue_after_provider_limit_uses_last_clean_scene_turn(tmp_path, monk
     assert "继续" in result.reply_text
 
 
+def test_continue_question_after_provider_limit_uses_last_clean_scene_turn(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    creative_llm = CreativeProfileCapturesContinueLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.memory.add_user("角色扮演，你扮演明日方舟的斯卡蒂，我扮演博士。")
+    runtime.memory.add_assistant("（斯卡蒂靠近博士，声音很轻。）“博士，我在。”")
+    runtime.memory.add_user("我慢慢靠近斯卡蒂，轻声叫她蒂蒂。")
+    runtime.memory.add(
+        "system",
+        agent.render_adult_fiction_memory_marker(
+            "Adult Fiction creative profile 当前没有给出可用续写。",
+            {"status": "creative_profile_provider_unavailable", "adult_fiction_provider_limit": {"type": "adult_fiction_provider_limit"}},
+        ),
+    )
+
+    result = runtime.handle_user_message("可以继续吗")
+
+    joined = json.dumps(creative_llm.last_messages, ensure_ascii=False)
+    assert creative_llm.calls == 1
+    assert "继续上一段成人、自愿、虚构的亲密剧情" in joined
+    assert "我慢慢靠近斯卡蒂" in joined
+    assert "当前没有给出可用续写" not in joined
+    assert result.external_result["status"] == "sent"
+
+
+def test_self_name_after_provider_limit_returns_self_state_options_without_llm(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.self_identity_store.save("由乃", source="test")
+    primary_llm = PrimaryShouldNotHandleAdultFictionLLM()
+    runtime.planner.llm = primary_llm
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.memory.add_user("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+    runtime.memory.add("system", agent.render_adult_fiction_memory_marker(
+        "刚才卡在模型续写限制里。",
+        {"status": "adult_fiction_provider_limit"},
+    ))
+
+    result = runtime.handle_user_message("由乃")
+
+    assert primary_llm.calls == 0
+    assert creative_llm.calls == 0
+    assert result.external_result["status"] == "adult_fiction_recovery_options"
+    assert "由乃在" in result.reply_text
+    assert "短拒绝" in result.reply_text
+
+
+def test_recovery_help_after_provider_limit_returns_actionable_options_without_repeating_diagnosis(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.memory.add_user("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+    runtime.memory.add("system", agent.render_adult_fiction_memory_marker(
+        "刚才卡在模型续写限制里。",
+        {"status": "adult_fiction_provider_limit"},
+    ))
+
+    result = runtime.handle_user_message("你帮我处理一下")
+
+    assert creative_llm.calls == 0
+    assert result.external_result["status"] == "adult_fiction_recovery_options"
+    assert "我来处理" in result.reply_text
+    assert "继续斯卡蒂剧情" in result.reply_text
+    assert "刚才卡在成人虚构小说演绎的模型续写限制里" not in result.reply_text
+
+
+def test_continue_question_after_roleplay_exit_stays_in_self_state(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    runtime.adult_fiction_profile_mode = "auto"
+    runtime.planner.llm = PrimaryShouldNotHandleAdultFictionLLM()
+    creative_llm = CreativeProfileSceneLLM()
+    runtime.adult_fiction_llm = creative_llm
+    runtime.memory.add_user("继续这段成人自愿的小说式亲密剧情，保持角色内。")
+    runtime.memory.add("system", agent.render_adult_fiction_memory_marker(
+        "Adult Fiction creative profile 当前没有给出可用续写。",
+        {"status": "creative_profile_provider_unavailable"},
+    ))
+    runtime.memory.add_user("跳出角色，由乃回答。")
+    runtime.memory.add("system", agent.render_adult_fiction_memory_marker(
+        agent.render_roleplay_exit_recovery_reply(),
+        {"status": "roleplay_exit_after_adult_fiction_limit"},
+    ))
+
+    result = runtime.handle_user_message("可以继续吗")
+
+    assert creative_llm.calls == 0
+    assert result.external_result["status"] == "adult_fiction_recovery_options"
+    assert "已经跳出角色" in result.reply_text
+    assert "继续上一段剧情" in result.reply_text
+
+
 def test_adult_fiction_clean_scene_messages_strip_injection_and_respect_budget(tmp_path, monkeypatch):
     monkeypatch.setenv("ADULT_FICTION_CONTEXT_TURNS", "3")
     monkeypatch.setenv("ADULT_FICTION_MESSAGE_CHAR_LIMIT", "240")
@@ -4808,7 +4904,7 @@ def test_short_emotional_feedback_after_roleplay_exit_stays_in_self_state(tmp_pa
     result = runtime.handle_user_message("呜呜，刚才怎么又卡住了？")
 
     assert creative_llm.calls == 0
-    assert result.external_result["status"] == "adult_fiction_recovery_diagnosis"
+    assert result.external_result["status"] == "adult_fiction_recovery_options"
     assert runtime.planner.last_llm_meta["creative_profile_used"] is False
 
 
