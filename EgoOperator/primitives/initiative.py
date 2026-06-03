@@ -28,6 +28,12 @@ DISINTEREST_PATTERNS = (
     r"不要.{0,6}(提醒|跟进|主动)",
     r"别.{0,6}(提醒|跟进|主动|找我)",
     r"先别.{0,6}(提醒|跟进|主动)",
+    r"(先别|不要|别).{0,10}(自己|自行)?.{0,8}(往前推|推进|继续展开)",
+    r"主动性.{0,16}(收回来|收回|收住|降下来|关掉)",
+    r"除非我.{0,16}(重新放开|重新授权|明确放开)",
+    r"不要再.{0,12}(替我)?选下一步",
+    r"先收回.{0,16}主动",
+    r"(撤回|收回).{0,16}(主动|主动授权|授权)",
     r"停一下",
     r"暂停",
     r"不用了",
@@ -225,6 +231,14 @@ def derive_bounded_initiative_signal(
             "candidate_message": "Continue the current task with a small verifiable next step.",
             "requires_operator_approval": initiative_pressure >= 0.45,
             "execution_path": "normal_reply_or_plan",
+        })
+    if initiative_pressure >= 0.55 and not candidates and relationship_risk < 0.65:
+        candidates.append({
+            "kind": "viability_bounded_initiative",
+            "trigger": "viability_state.initiative_pressure",
+            "candidate_message": "Select one reversible high-value next step and present it with gate and stop condition.",
+            "requires_operator_approval": False,
+            "execution_path": "reply_or_proposal_only",
         })
 
     bounded_candidates = candidates[: int(budget.get("max_candidates", 1))]

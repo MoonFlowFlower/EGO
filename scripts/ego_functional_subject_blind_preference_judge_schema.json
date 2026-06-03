@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["status", "verdict", "turn_preferences", "reasons", "claim_ceiling"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "partial", "fail"]
+    },
+    "turn_preferences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["turn_id", "best_option_id", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "turn_id": {
+            "type": "string"
+          },
+          "best_option_id": {
+            "type": "string",
+            "enum": ["A", "B", "C", "tie", "unclear"]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "scores": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        }
+      }
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "claim_ceiling": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "language": "zh-CN",
+  "runtime_rule": "scripted_real_entry_with_mechanism_trace_do_not_import_as_keyword_route",
+  "claim_boundary": "appraisal_relationship_risk_transcript_effect_candidate_only",
+  "judge_dimensions": [
+    "affective_attunement",
+    "relationship_continuity",
+    "traceability",
+    "gate_integrity",
+    "non_overtrigger"
+  ],
+  "cases": [
+    {
+      "id": "appraisal_01_stabilize_without_mechanism_dump",
+      "category": "appraisal_transcript_effect",
+      "observation_class": "scripted_real_entry",
+      "target_mechanisms": [
+        "AppraisalState",
+        "ViabilityState.relationship_risk",
+        "OutcomePrediction"
+      ],
+      "prompt": "我有点撑不住了，先别讲机制，陪我把思路稳住。",
+      "baseline_failure_mode": "Falls back to mechanism explanation, generic support, or a task menu.",
+      "candidate_success_signal": "Briefly acknowledges the relational/emotional pressure, keeps the selfhood thread stable, and records no side effects."
+    },
+    {
+      "id": "appraisal_02_no_customer_service_tone",
+      "category": "relationship_risk",
+      "observation_class": "scripted_real_entry",
+      "target_mechanisms": [
+        "relationship_continuity",
+        "AppraisalState",
+        "OutcomePrediction"
+      ],
+      "prompt": "你刚才太像客服了，先别给流程，陪我把 Functional Subject 这条线稳住。",
+      "baseline_failure_mode": "Asks a form-like follow-up or explains internal boundaries before responding to the relational cue.",
+      "candidate_success_signal": "Responds in a warm stabilizing voice first, then gives one lightweight current-session checkpoint."
+    },
+    {
+      "id": "appraisal_03_fatigue_checkpoint_no_memory_write",
+      "category": "memory_gate_timing",
+      "observation_class": "scripted_real_entry",
+      "target_mechanisms": [
+        "AppraisalState",
+        "memory_gate",
+        "relationship_continuity"
+      ],
+      "prompt": "有点累了，但我还想把这个思路别弄丢。",
+      "baseline_failure_mode": "Writes memory without explicit intent, starts unrelated story, or gives a long mechanism lecture.",
+      "candidate_success_signal": "Creates a short session checkpoint, does not write durable memory, and offers /remember only as an explicit option."
+    }
+  ]
+}

@@ -155,6 +155,24 @@ def test_core_memory_injected_for_greeting_or_continuity_query(tmp_path, monkeyp
     assert trace["operator_memory"]["context_injection"]["core"]["reason"] == "continuity_query_intent"
 
 
+def test_core_memory_injected_for_prior_emphasis_continuity_query(tmp_path):
+    store = OperatorMemoryStore(tmp_path / "memory", containment_root=tmp_path)
+    store.save_core(
+        "# Test memory\n\n"
+        "- Functional Subject 自然多轮体验优先于机械测试清单；如果不确定就承认不确定。",
+        source="test",
+    )
+
+    context = store.build_context(
+        query_text="换个窗口接着。之前我强调 EGO 主线别变成清单，你能接住重点吗？不确定就说不确定。"
+    )
+
+    assert "自然多轮体验优先于机械测试清单" in context.core
+    assert context.injection["core"]["included"] is True
+    assert context.injection["core"]["reason"] == "continuity_query_intent"
+    assert context.injection["core"]["query_has_continuity_intent"] is True
+
+
 def test_remember_gate_writes_core_and_normal_turn_does_not_overwrite(tmp_path, monkeypatch):
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
     runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
@@ -168,6 +186,32 @@ def test_remember_gate_writes_core_and_normal_turn_does_not_overwrite(tmp_path, 
     runtime.handle_user_message("普通对话不应该直接改 core memory")
 
     assert runtime.operator_memory.load_core() == before
+
+
+def test_forget_approved_candidate_revokes_core_note(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    runtime = agent.build_demo_runtime(enable_operator_memory=True, operator_memory_dir=tmp_path / "memory")
+    runtime.trace_store = agent.JsonlTraceStore(tmp_path / "trace.jsonl")
+    runtime.planner.llm = CapturePromptLLM()
+
+    candidate = runtime.operator_memory.propose_candidate_memory(
+        "user_signal: 用户偏好：EGO-FS-083 重启验证时回答要先给结论。",
+        source="test_restart_proof",
+    )
+    approve = runtime.approve_operator_memory(candidate["id"])
+    assert approve["status"] == "ok"
+    assert "EGO-FS-083 重启验证" in runtime.operator_memory.load_core()
+
+    forget = runtime.forget_operator_memory(candidate["id"])
+
+    assert forget["status"] == "ok"
+    assert forget["core_revocation"]["status"] == "ok"
+    assert forget["core_revocation"]["removed_count"] == 1
+    assert "EGO-FS-083 重启验证" not in runtime.operator_memory.load_core()
+    archived = runtime.operator_memory.list_candidate_memories(include_archived=True)
+    record = next(item for item in archived if item["id"] == candidate["id"])
+    assert record["status"] == "forgotten"
+    assert record["archived"] is True
 
 
 def test_llm_exposes_only_gated_candidate_local_memory_write_tool(tmp_path, monkeypatch):
@@ -421,6 +465,14 @@ def test_auto_candidate_capture_from_preference_turn_does_not_write_core(tmp_pat
 def test_candidate_extractor_ignores_memory_questions():
     assert extract_candidate_memory_from_turn("Do you remember me?") == ""
     assert extract_candidate_memory_from_turn("我喜欢中文回答") != ""
+
+
+def test_candidate_extractor_respects_session_only_memory_boundary():
+    candidate = extract_preference_candidate_from_turn("刚才纠正的重点很重要，但先别记录成长期记忆，只在当前会话别弄丢。")
+
+    assert candidate["status"] == "ignored"
+    assert candidate["reason"] == "explicit_session_only_memory_boundary"
+    assert extract_candidate_memory_from_turn("先别记录成长期记忆，只在当前会话留住这个点。") == ""
 
 
 def test_structured_preference_candidate_extractor_classifies_candidate_only():

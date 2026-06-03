@@ -1,0 +1,12 @@
+{
+  "settings": [
+    {
+      "id": "tokens256_ctx3_chars600_temp045_top085",
+      "max_tokens": 256,
+      "context_turns": 3,
+      "message_char_limit": 600,
+      "temperature": 0.45,
+      "top_p": 0.85
+    }
+  ]
+}

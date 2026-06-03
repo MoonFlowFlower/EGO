@@ -205,6 +205,31 @@ def test_all_scope_still_plans_missing_issue_creation(tmp_path: Path) -> None:
     assert any(operation["op"] == "create_issue" and operation["task_id"] == "T-2" for operation in result["operations"])
 
 
+def test_task_id_filter_allows_one_uncached_current_task_creation(tmp_path: Path) -> None:
+    board = write_two_task_board(tmp_path)
+    state = write_state(tmp_path)
+
+    code, result = run_cli(
+        FakeGh(),
+        ["--board", str(board), "--state", str(state), "plan", "--task-id", "T-2", "--project-status"],
+    )
+
+    assert code == 0
+    assert result["task_ids"] == ["T-2"]
+    assert result["task_count"] == 1
+    assert result["operation_count"] == 1
+    assert result["operations"] == [
+        {
+            "op": "create_issue",
+            "task_id": "T-2",
+            "title": "EgoSubject: Historical accepted task",
+            "body_hash": result["operations"][0]["body_hash"],
+            "desired_state": "closed",
+            "project_status": "Done",
+        }
+    ]
+
+
 def test_all_scope_project_status_marks_new_issue_creation(tmp_path: Path) -> None:
     board = write_two_task_board(tmp_path)
     state = write_state(tmp_path)

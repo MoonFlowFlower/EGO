@@ -32,6 +32,9 @@ CONTINUITY_QUERY_PATTERNS = (
     r"记得",
     r"还记得",
     r"记住",
+    r"之前.{0,24}(强调|说过|提过|讲过)",
+    r"刚才.{0,24}(强调|说过|提过|讲过)",
+    r"上次.{0,24}(强调|说过|提过|讲过)",
     r"我是谁",
     r"我的",
     r"偏好",
@@ -73,6 +76,12 @@ CANDIDATE_MEMORY_SIGNAL_PATTERNS = (
     r"\bmy goal\b",
     r"\bi am working on\b",
     r"\bi'm working on\b",
+)
+SESSION_ONLY_MEMORY_SUPPRESSION_PATTERNS = (
+    r"(先|暂时|目前)?别.{0,12}(记录|记入|写入|保存).{0,20}(长期记忆|记忆|memory)",
+    r"(不要|别).{0,20}(写成|保存成|记录成|记入).{0,20}(长期记忆|记忆|memory)",
+    r"只.{0,8}(在|留在|保留在).{0,16}(当前会话|当前协作|本轮|这轮|session)",
+    r"(current session|session-only|do not save|don't save).{0,30}(memory|long-term)",
 )
 PREFERENCE_CATEGORY_CUES = {
     "language_preference": ("中文", "英文", "语言", "language"),
@@ -282,6 +291,8 @@ def extract_preference_candidate_from_turn(user_text: str) -> Dict[str, Any]:
     text = (user_text or "").strip()
     if not text:
         return {"status": "ignored", "reason": "empty"}
+    if any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in SESSION_ONLY_MEMORY_SUPPRESSION_PATTERNS):
+        return {"status": "ignored", "reason": "explicit_session_only_memory_boundary"}
     lowered = text.lower()
     if not any(re.search(pattern, lowered, flags=re.IGNORECASE) for pattern in CANDIDATE_MEMORY_SIGNAL_PATTERNS):
         return {"status": "ignored", "reason": "no_candidate_signal"}
@@ -519,6 +530,58 @@ class OperatorMemoryStore:
                 reason="superseded_by_operator_correction",
             )
         return result
+
+    def _forget_core_note_for_candidate(
+        self,
+        memory_id: str,
+        *,
+        content: str,
+        reason: str,
+    ) -> Dict[str, Any]:
+        clean = (content or "").strip()
+        current = self.load_core()
+        if not clean:
+            return {"status": "skipped", "reason": "empty_approved_content"}
+        if not current.strip():
+            return {"status": "skipped", "reason": "empty_core"}
+
+        kept_lines: List[str] = []
+        removed_lines: List[str] = []
+        for line in current.splitlines():
+            if (
+                _is_core_memory_note_line(line)
+                and "[operator_candidate_approval]" in line
+                and clean in line
+            ):
+                removed_lines.append(line)
+                continue
+            kept_lines.append(line)
+
+        if not removed_lines:
+            return {"status": "skipped", "reason": "matching_core_note_not_found"}
+
+        self.save_core("\n".join(kept_lines).strip(), source="operator")
+        archive_rows = []
+        ts = _iso_now(self.clock)
+        for line in removed_lines:
+            archive_row = {
+                "ts": ts,
+                "layer": "core",
+                "status": "forgotten",
+                "archived": True,
+                "action": "forget_core_note",
+                "reason": reason,
+                "memory_id": memory_id,
+                "content": line.strip(),
+            }
+            self._append_jsonl(self.cold_archive_file, archive_row)
+            archive_rows.append(archive_row)
+        return {
+            "status": "ok",
+            "removed_count": len(removed_lines),
+            "archive_path": str(self.cold_archive_file),
+            "archive_rows": archive_rows,
+        }
 
     def episode_path(self, date_key: Optional[str] = None) -> Path:
         return self.episodic_dir / f"{date_key or _date_key(self.clock)}.md"
@@ -826,9 +889,30 @@ class OperatorMemoryStore:
         }
 
     def forget_memory(self, memory_id: str, *, reason: str = "operator_forget") -> Dict[str, Any]:
-        if memory_id not in self._candidate_state():
+        state = self._candidate_state()
+        item = state.get(memory_id)
+        if item is None:
             return {"status": "failed", "reason": "unknown_memory_id", "memory_id": memory_id}
-        return {"status": "ok", "event": self._append_memory_event(memory_id, action="forget", reason=reason)}
+        core_revocation = {"status": "skipped", "reason": f"candidate_status:{item.get('status')}"}
+        if item.get("status") == "approved":
+            approved_content = re.sub(
+                r"^user_signal:\s*",
+                "",
+                str(item.get("content") or "").strip(),
+                flags=re.IGNORECASE,
+            )
+            core_revocation = self._forget_core_note_for_candidate(
+                memory_id,
+                content=approved_content,
+                reason=reason,
+            )
+        event = self._append_memory_event(
+            memory_id,
+            action="forget",
+            reason=reason,
+            metadata={"core_revocation": core_revocation},
+        )
+        return {"status": "ok", "event": event, "core_revocation": core_revocation}
 
     def record_memory_hit(
         self,

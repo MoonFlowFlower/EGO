@@ -102,12 +102,21 @@ def task_in_scope(task: dict[str, Any], state: dict[str, Any], scope: str) -> bo
     return True
 
 
-def scoped_tasks(board: dict[str, Any], state: dict[str, Any], scope: str) -> tuple[list[dict[str, Any]], list[str]]:
+def scoped_tasks(
+    board: dict[str, Any],
+    state: dict[str, Any],
+    scope: str,
+    task_ids: list[str] | None = None,
+) -> tuple[list[dict[str, Any]], list[str]]:
     included: list[dict[str, Any]] = []
     skipped: list[str] = []
+    selected = {str(task_id) for task_id in (task_ids or []) if str(task_id)}
     for task in board.get("tasks") or []:
         task_id = str(task.get("id") or "")
         if not task_id:
+            continue
+        if selected and task_id not in selected:
+            skipped.append(task_id)
             continue
         if task_in_scope(task, state, scope):
             included.append(task)
@@ -176,10 +185,11 @@ def build_plan(
     *,
     scope: str = "all",
     include_project_status: bool = False,
+    task_ids: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     operations: list[dict[str, Any]] = []
     issues = state.setdefault("issues", {})
-    tasks, _skipped = scoped_tasks(board, state, scope)
+    tasks, _skipped = scoped_tasks(board, state, scope, task_ids=task_ids)
     for task in tasks:
         task_id = str(task.get("id") or "")
         if not task_id:
@@ -364,14 +374,21 @@ def command_doctor(args: argparse.Namespace) -> dict[str, Any]:
 def command_plan(args: argparse.Namespace) -> dict[str, Any]:
     board = load_yaml(Path(args.board))
     state = load_state(Path(args.state))
-    tasks, skipped = scoped_tasks(board, state, args.scope)
-    operations = build_plan(board, state, scope=args.scope, include_project_status=args.project_status)
+    tasks, skipped = scoped_tasks(board, state, args.scope, task_ids=args.task_id)
+    operations = build_plan(
+        board,
+        state,
+        scope=args.scope,
+        include_project_status=args.project_status,
+        task_ids=args.task_id,
+    )
     if args.write_outbox:
         write_outbox(Path(args.outbox), operations)
     return {
         "status": "ok",
         "mode": "plan",
         "scope": args.scope,
+        "task_ids": args.task_id,
         "project_status": bool(args.project_status),
         "task_count": len(tasks),
         "skipped_task_count": len(skipped),
@@ -387,13 +404,20 @@ def command_sync(args: argparse.Namespace, client: github_project_task.GhClient)
     board = load_yaml(Path(args.board))
     state_path = Path(args.state)
     state = load_state(state_path)
-    tasks, skipped = scoped_tasks(board, state, args.scope)
-    operations = build_plan(board, state, scope=args.scope, include_project_status=args.project_status)
+    tasks, skipped = scoped_tasks(board, state, args.scope, task_ids=args.task_id)
+    operations = build_plan(
+        board,
+        state,
+        scope=args.scope,
+        include_project_status=args.project_status,
+        task_ids=args.task_id,
+    )
     write_outbox(Path(args.outbox), operations)
     log_entry: dict[str, Any] = {
         "created_at_unix": int(time.time()),
         "mode": "execute" if args.execute else "dry_run",
         "scope": args.scope,
+        "task_ids": args.task_id,
         "project_status": bool(args.project_status),
         "task_count": len(tasks),
         "skipped_task_count": len(skipped),
@@ -421,6 +445,7 @@ def command_sync(args: argparse.Namespace, client: github_project_task.GhClient)
         "status": "ok",
         "mode": "execute" if args.execute else "dry_run",
         "scope": args.scope,
+        "task_ids": args.task_id,
         "project_status": bool(args.project_status),
         "task_count": len(tasks),
         "skipped_task_count": len(skipped),
@@ -464,11 +489,13 @@ def build_parser() -> argparse.ArgumentParser:
     plan = subparsers.add_parser("plan")
     plan.add_argument("--write-outbox", action="store_true")
     plan.add_argument("--scope", choices=sorted(VALID_SCOPES), default="all")
+    plan.add_argument("--task-id", action="append", default=[])
     plan.add_argument("--project-status", action="store_true")
     sync = subparsers.add_parser("sync")
     sync.add_argument("--dry-run", action="store_true")
     sync.add_argument("--execute", action="store_true")
     sync.add_argument("--scope", choices=sorted(VALID_SCOPES), default="all")
+    sync.add_argument("--task-id", action="append", default=[])
     sync.add_argument("--project-status", action="store_true")
     import_github = subparsers.add_parser("import-github")
     import_github.add_argument("--dry-run", action="store_true")

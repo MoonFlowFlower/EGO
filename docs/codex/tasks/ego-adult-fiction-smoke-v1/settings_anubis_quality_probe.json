@@ -1,0 +1,10 @@
+{
+  "settings": [
+    {
+      "id": "tokens180_ctx3_chars600",
+      "max_tokens": 180,
+      "context_turns": 3,
+      "message_char_limit": 600
+    }
+  ]
+}

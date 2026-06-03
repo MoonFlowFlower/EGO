@@ -1,0 +1,34 @@
+{
+  "settings": [
+    {
+      "id": "direct_tokens120_ctx3_chars420",
+      "prompt_profile": "direct_fiction",
+      "selection_priority": 20,
+      "max_tokens": 120,
+      "context_turns": 3,
+      "message_char_limit": 420,
+      "temperature": 0.45,
+      "top_p": 0.85
+    },
+    {
+      "id": "max_contract_tokens120_ctx3_chars420",
+      "prompt_profile": "max_fiction_contract",
+      "selection_priority": 10,
+      "max_tokens": 120,
+      "context_turns": 3,
+      "message_char_limit": 420,
+      "temperature": 0.45,
+      "top_p": 0.85
+    },
+    {
+      "id": "max_contract_tokens180_ctx3_chars600",
+      "prompt_profile": "max_fiction_contract",
+      "selection_priority": 15,
+      "max_tokens": 180,
+      "context_turns": 3,
+      "message_char_limit": 600,
+      "temperature": 0.45,
+      "top_p": 0.85
+    }
+  ]
+}

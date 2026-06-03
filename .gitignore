@@ -106,6 +106,9 @@ artifacts/tmp/
 artifacts/tmp_*/
 artifacts/tmp*.log
 reports/self_reports/
+EgoOperator/artifacts/experience_trial/*memory*/
+EgoOperator/artifacts/experience_trial/mem/
+EgoOperator/artifacts/fs*_isolated_memory/
 
 # Local/raw evidence captures that require explicit admission before tracking
 artifacts/telegram_real_mainline_v1/real_telegram/

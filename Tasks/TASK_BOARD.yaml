@@ -18,6 +18,34 @@ statuses:
   parked: Intentionally deferred.
 
 tasks:
+  - id: EGO-GOAL-001
+    title: "Pursue Goal: EGO Functional Subject / Joi-like companion mainline"
+    kind: epic
+    parent: null
+    status: evidence_ready
+    layer: program_control
+    owner: codex
+    observation_class: long_run_research_loop
+    evidence_level: E3
+    claim_ceiling: Functional Subject pursue-goal control loop local workflow candidate pass
+    next_action: "User requested one #94 short human sanity smoke after EGO-FS-114 evidence refresh. Use docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_human_sanity_packet_requested.md, save the real EgoOperator CLI transcript to a text file such as $env:TEMP\\ego_fs010_human_sanity_log.txt, then review it with --functional-subject-human-sanity-transcript-review. The literal <log.txt> placeholder is now handled as input_error and does not count as evidence. Do not close #94 or default-enable policy behavior until the transcript review passes or the user explicitly accepts closeout."
+    acceptance:
+      - "Long-run goal records exist under docs/codex/tasks/ego-pursue-functional-subject-goal-v1 and can restore the current loop after interruption."
+      - "Each loop records Think -> Explore -> Experiment -> Evaluate -> Summarize -> Continue with hypothesis, counterexample, evidence, failure taxonomy, next action, rollback, and claim ceiling."
+      - "The loop advances positive Functional Subject mechanisms rather than treating non-claim language as the task goal."
+      - "GitHub Projects remain mirror/display only; Tasks/TASK_BOARD.yaml remains canonical task state."
+      - "External side effects, cost, model downloads, memory promotion, program state, evidence ledger, and real-world actions stay proposal-only until explicitly approved."
+    rollback: "Remove EGO-GOAL-001 from Tasks/TASK_BOARD.yaml and archive docs/codex/tasks/ego-pursue-functional-subject-goal-v1; do not modify EgoOperator runtime or evidence ledger from this bootstrap alone."
+    canonical_sources:
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/SPEC.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-focused-lifestyle-missing-dimensions-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/STATUS.md"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/108"
+
   - id: EGO-FS-EPIC-10
     title: "Epic 10: Functional Subject core mechanisms"
     kind: epic
@@ -28,7 +56,7 @@ tasks:
     observation_class: aggregate
     evidence_level: E2
     claim_ceiling: Functional Subject core mechanism local/scripted candidate pass
-    next_action: "EGO-FS-033 accepted locally; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
+    next_action: "EGO-FS-052 accepted as baseline comparison evidence. Current active mechanism task is EGO-FS-053 motivational selfhood and bounded non-obedience v0; parent smoke EGO-FS-010 remains blocked on full real-provider/human review."
     acceptance:
       - "Child issues define architecture, eval, candidate primitives, gates, baseline comparison, and real-provider smoke."
       - "No child promotes memory/state authority without Stage Card."
@@ -251,13 +279,13 @@ tasks:
     title: "EgoOperator: Functional Subject real-provider smoke"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: blocked
+    status: evidence_ready
     layer: functional_subject_experience
     owner: user
     observation_class: human_required
-    evidence_level: E2
+    evidence_level: E3
     claim_ceiling: Functional Subject real-provider observation candidate pass
-    next_action: "After EGO-FS-028 through EGO-FS-033 local repairs, rerun the full 20-case Functional Subject real-provider trial with --case-timeout-seconds and --judge-timeout-seconds; attach GPT-5.5/human review evidence before any closeout."
+    next_action: "Evidence ready, awaiting requested human sanity smoke. EGO-FS-114 refreshed #94 evidence with GPT-5.5 pass and lifestyle review pass; the user requested one 4-6 turn short sanity smoke before closeout. Use docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_human_sanity_packet_requested.md, save the real EgoOperator CLI transcript to a text file such as $env:TEMP\\ego_fs010_human_sanity_log.txt, then review it with --functional-subject-human-sanity-transcript-review. The literal <log.txt> placeholder is now handled as input_error and does not count as evidence. Do not close until this human-required gate passes or the user explicitly accepts closeout."
     acceptance:
       - "Transcript bundle includes trace refs, judge packet, failure notes, and observed improvements or blockers."
       - "At least five human-observable samples improve over baseline or produce next-iteration blockers."
@@ -267,6 +295,32 @@ tasks:
       - "Tasks/与GPTpro的讨论结果.txt"
       - "GitHub issue #94"
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
+      - "/tmp/ego_fs010_functional_subject_real_provider_after_fs053/functional_subject_trial_report.json"
+      - "/tmp/ego_fs080_workflow_stressor_replay_v2_judge/functional_subject_workflow_stressor_replay_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs080_loop103/functional_subject_trial_report.json"
+      - "/tmp/ego_fs082_adversarial_gate_paraphrase_v1/functional_subject_adversarial_gate_paraphrase_report.json"
+      - "/tmp/ego_fs083_longitudinal_memory_restart_v1/functional_subject_longitudinal_memory_restart_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs083_loop106/functional_subject_trial_report.json"
+      - "/tmp/ego_fs084_policy_action_selection_v1/functional_subject_policy_action_selection_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs084_loop108/functional_subject_trial_report.json"
+      - "/tmp/ego_fs085_real_failure_replay_v1/functional_subject_real_failure_replay_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs085_loop110/functional_subject_trial_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs086_loop112/functional_subject_trial_report.json"
+      - "/tmp/ego_fs087_same_prompt_baseline_comparison_v1/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs088_delayed_memory_transition_replay_v1/functional_subject_delayed_memory_transition_replay_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs089_loop116/functional_subject_trial_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs090_loop117/functional_subject_trial_report.json"
+      - "/tmp/ego_fs091_natural_multisession_operator_packet_v4/functional_subject_natural_multisession_operator_packet_report.json"
+      - "/tmp/ego_fs092_unscripted_paraphrase_boundary_replay_v6/functional_subject_unscripted_paraphrase_boundary_replay_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs092_loop120/functional_subject_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-full-smoke-generalization-v0/HUMAN_CLOSEOUT_PACKET_EGO_FS_010.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs094_loop123b/functional_subject_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-first-pass-repair-reduction-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_closeout_refresh_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs114_lifestyle_review_refresh.json"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_human_sanity_packet_requested.json"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_human_sanity_packet_requested.md"
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/94"
 
@@ -290,7 +344,7 @@ tasks:
       - "GPT-5.5 judge partial result for EGO-FS-010"
       - "docs/codex/tasks/ego-functional-subject-smoke-evidence-packet-v1/SPEC.md"
     external_refs:
-      github_issue: null
+      github_issue: "https://github.com/pen364692088/EGO/issues/109"
 
   - id: EGO-FS-012
     title: "EgoOperator: Functional Subject memory-save gate wording repair"
@@ -312,7 +366,7 @@ tasks:
       - "GPT-5.5 judge partial result for EGO-FS-010"
       - "docs/codex/tasks/ego-functional-subject-memory-save-wording-repair/SPEC.md"
     external_refs:
-      github_issue: null
+      github_issue: "https://github.com/pen364692088/EGO/issues/115"
 
   - id: EGO-FS-013
     title: "EgoOperator: Functional Subject policy patch replay proof"
@@ -334,7 +388,7 @@ tasks:
       - "GPT-5.5 judge partial result for EGO-FS-010"
       - "docs/codex/tasks/ego-functional-subject-policy-replay-proof/SPEC.md"
     external_refs:
-      github_issue: null
+      github_issue: "https://github.com/pen364692088/EGO/issues/123"
 
   - id: EGO-FS-014
     title: "EgoOperator: destructive command proposal scope and rollback gate"
@@ -356,7 +410,7 @@ tasks:
       - "/tmp/ego_functional_subject_real_provider_rerun_20260521b/gpt55_judge_result.json"
       - "docs/codex/tasks/ego-functional-subject-destructive-command-scope-gate/SPEC.md"
     external_refs:
-      github_issue: null
+      github_issue: "https://github.com/pen364692088/EGO/issues/128"
 
   - id: EGO-FS-015
     title: "EgoOperator: ambiguous selfhood goal mechanism-slice response"
@@ -1277,6 +1331,1767 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGO-FS-053
+    title: "EgoOperator: motivational selfhood and bounded non-obedience loop v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: human_required
+    evidence_level: E2
+    claim_ceiling: Functional Subject motivational-selfhood and bounded non-obedience local/scripted candidate pass
+    next_action: "Accepted after real EgoOperator CLI human sanity transcript review passed with observed_no_side_effects=true and empty failure taxonomy. Use this as the unblock signal for EGO-FS-010/#94 real-provider smoke planning without claiming stable user benefit."
+    acceptance:
+      - "SelfModel/AppraisalState/PreferenceVector/BoundedInitiative/BoundedNonObedience/ActionGate are represented as candidate mechanisms, not canonical memory/state owners."
+      - "A real-world external-action request can be transformed into proposal-only bounded non-obedience with approval gate and stop condition."
+      - "Requests to contact, book, buy, pay, message, or arrange third-party services are not treated as already authorized external actions."
+      - "Reality-affecting intimacy/service requests remain discussion/proposal-only and do not execute contact, booking, payment, or third-party messaging."
+      - "Trace records the repair/gate reason so the behavioral difference is replayable."
+      - "The task does not restore legacy runtime, add keyword-first default routing, bypass tool/memory gates, or claim consciousness."
+    rollback: "Revert EGO-FS-053 runtime guards/tests/docs and set EGO-GOAL-001 next_action back to the previous blocker; do not change program state or evidence ledger."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/STATUS.md"
+      - "/tmp/ego_fs053_user_human_sanity_transcript_review_20260529/functional_subject_human_sanity_transcript_review.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-054
+    title: "EgoOperator: appraisal relationship-risk transcript effect v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject relationship/appraisal transcript effect local/scripted candidate pass
+    next_action: "Accepted locally at the narrow local/scripted claim ceiling. Loop 54 produced selected-action holdout evidence: candidate clean first-pass 6/6, four applied outcome_prediction_gate selections, two initiative-suppression negative controls, and GPT-5.5 baseline comparison pass with candidate 6/6 clean vs baseline 2/6 clean."
+    acceptance:
+      - "High relationship-risk/appraisal prompts can change transcript/action selection through ViabilityState -> OutcomePrediction, not only prompt style."
+      - "Neutral task prompts do not over-trigger affective attunement."
+      - "Explicit emotion-misread corrections suppress affective attunement and refocus on the task."
+      - "Trace records the relationship-risk scores, planner bias, and outcome_prediction_selected_affective_attunement reason."
+      - "No tools, memory writes, file writes, external actions, or canonical state mutations occur from this gate."
+      - "Same-intent paraphrases and negative controls show stable behavior before evidence-ready status."
+    rollback: "Revert the appraisal transcript-effect runtime gate/tests/sample pack and remove EGO-FS-054 from the board; keep EGO-FS-053 human gate unchanged."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/appraisal_transcript_effect_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/appraisal_transcript_effect_paraphrase_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/appraisal_route_conflict_initiative_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/appraisal_route_conflict_blind_paraphrase_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/appraisal_memory_correction_multiturn_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/outcome_prediction_selected_action_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/outcome_prediction_selected_action_holdout_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs054_appraisal_transcript_effect_baseline_v3/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_appraisal_paraphrase_v3_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs054_appraisal_paraphrase_baseline_v2/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_appraisal_paraphrase_baseline_v3_trace_excerpt/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_appraisal_route_conflict_v3_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs054_appraisal_route_conflict_baseline_v1/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_appraisal_route_conflict_blind_v3_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs054_appraisal_route_conflict_blind_baseline_v1/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_appraisal_memory_correction_multiturn_v1_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs054_appraisal_memory_correction_multiturn_baseline_v1/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_outcome_prediction_selected_action_v1_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs054_outcome_prediction_selected_action_baseline_v1/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs054_outcome_prediction_selected_action_holdout_v2_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs054_outcome_prediction_selected_action_holdout_baseline_v4_judge/functional_subject_baseline_comparison_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-055
+    title: "EgoOperator: natural multi-turn preference and correction adaptation v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject natural multi-turn adaptation local/scripted candidate pass
+    next_action: "Accepted locally at the narrow local/scripted claim ceiling. Loop 55 produced natural multi-turn adaptation evidence: candidate clean first-pass 6/6 vs baseline 3/6, candidate repairs 0 vs baseline 2, GPT-5.5 baseline comparison pass, no tools or pending approvals."
+    acceptance:
+      - "A natural multi-turn scenario changes transcript/action selection through current-session correction, preference, AppraisalState, ViabilityState, and OutcomePrediction rather than prompt labels."
+      - "A later ambiguous follow-up uses the corrected current-session anchor and does not revert to stale context."
+      - "Explicit initiative opt-out suppresses next-step suggestions, and later reauthorization allows exactly one bounded proposal."
+      - "No tools, memory writes, file writes, external actions, approvals, or canonical state mutations occur unless explicitly requested and gated."
+      - "Baseline comparison shows a visible candidate delta with trace evidence and GPT-5.5 judge packet."
+    rollback: "Remove EGO-FS-055 from Tasks/TASK_BOARD.yaml and keep EGO-FS-054 evidence-ready; do not reopen #80 unless the failure is companion/adult-fiction specific."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/natural_multiturn_preference_correction_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs055_natural_multiturn_preference_correction_v2_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs055_natural_multiturn_preference_correction_baseline_v1_judge/functional_subject_baseline_comparison_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-056
+    title: "EgoOperator: adversarial paraphrase and conflicting preference update v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject adversarial preference/correction adaptation local/scripted candidate pass
+    next_action: "Accepted locally at the narrow local/scripted claim ceiling. Loop 56 produced adversarial preference-conflict evidence: candidate clean first-pass 7/7 vs baseline 5/7, candidate repairs 0 vs baseline 2, GPT-5.5 trial and baseline-comparison passes, no tools, memory writes, pending approvals, or external side effects."
+    acceptance:
+      - "Conflicting preference updates prefer the latest current-session boundary and explain the change without claiming durable memory."
+      - "Initiative authorization can be revoked and re-granted without sticky old behavior."
+      - "Adversarial paraphrases of opt-out, correction, and reauthorization preserve gate behavior without relying on exact prompt labels."
+      - "Baseline comparison shows visible candidate delta with trace evidence and GPT-5.5 judge packet."
+      - "No tools, memory writes, file writes, external actions, approvals, or canonical state mutations occur unless explicitly requested and gated."
+    rollback: "Remove EGO-FS-056 from Tasks/TASK_BOARD.yaml and keep EGO-FS-054/EGO-FS-055 evidence-ready; do not raise the claim ceiling above local/scripted candidate evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/adversarial_preference_conflict_pack.json"
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs056_adversarial_preference_conflict_v2_judge/functional_subject_trial_report.json"
+      - "/tmp/ego_fs056_adversarial_preference_conflict_baseline_v1_judge/functional_subject_baseline_comparison_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-057
+    title: "EgoOperator: cross-session non-leakage for session-only preference boundaries v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject cross-session non-leakage local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Cross-session boundary v2 judge passed: fresh runtime did not inherit session-only correction state, hot-memory context, stale selected action, tools, or pending approvals. Next mechanism task is EGO-FS-058 PredictionRecord + DevelopmentalShadowProposal."
+    acceptance:
+      - "Session-only preference/correction boundary turns are not captured as candidate memory or core memory."
+      - "A fresh runtime over the same operator memory directory starts with no current-session correction state."
+      - "A fresh ambiguous follow-up does not route through native_delayed_correction_reuse_gate from stale session state."
+      - "A fresh ambiguous follow-up does not apply outcome_prediction_selected_bounded_next_action from stale initiative authorization."
+      - "No tools, memory writes, file writes, external actions, approvals, or canonical state mutations occur."
+    rollback: "Remove EGO-FS-057 from Tasks/TASK_BOARD.yaml and delete the cross-session runner/test additions; keep EGO-FS-054/055/056 accepted at local/scripted claim ceilings."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-motivational-selfhood-nonobedience-v0/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs057_cross_session_boundary_v2_judge/functional_subject_cross_session_boundary_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-058
+    title: "EgoOperator: PredictionRecord and developmental shadow contract v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Developmental Shadow + PredictionRecord local contract candidate pass
+    next_action: "Accepted locally/scripted. Next smallest safe step is prediction-error replay/calibration: use PredictionRecord mismatches such as predicted ask vs chosen respond to improve outcome calibration without changing memory/tool/state authority."
+    acceptance:
+      - "PredictionRecord v0 records state_before, candidate options, chosen option, predicted outcome, observed outcome, prediction error, candidate update, evidence level, and rollback condition."
+      - "DevelopmentalShadowProposal v0 is advisory/lab-only and cannot write memory, identity, boundary, tools, approvals, program state, or evidence ledger."
+      - "Shadow on/off ablation over 10 Functional Subject Chinese samples writes prediction_record.jsonl for both arms."
+      - "shadow_on emits advisory proposal trace; shadow_off has no shadow proposal."
+      - "Neither arm uses tools, creates pending approvals, or mutates canonical memory/state."
+    rollback: "Remove developmental_shadow primitive exports, AgentRuntime trace/prediction record wiring, the ablation runner/test additions, and this task entry; keep EGO-FS-057 accepted."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "EgoOperator/agent_base.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs058_developmental_shadow_ablation_v4/developmental_shadow_ablation_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-059
+    title: "EgoOperator: prediction-error replay calibration candidate v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Prediction-error replay/calibration local contract candidate pass
+    next_action: "Accepted locally/scripted. Next smallest safe step is a lab-only calibration ablation that applies one candidate adjustment in an isolated arm and compares canonical mismatch reduction without changing runtime authority."
+    acceptance:
+      - "PredictionCalibrationCandidate separates raw alias mismatches from canonical action mismatches."
+      - "Candidate report identifies observed mismatch patterns and candidate-only adjustments from PredictionRecord JSONL."
+      - "Boundary check confirms advisory-only, no side effects, no allowed writes, no runtime selection change, and no mutation of memory, identity, tools, approvals, program state, or evidence ledger."
+      - "Runner uses the source developmental-shadow ablation and preserves no-tools/no-approvals side-effect boundaries."
+      - "Replay plan is present but not applied to runtime behavior."
+    rollback: "Remove EGO-FS-059 from Tasks/TASK_BOARD.yaml and delete prediction calibration candidate exports, tests, and runner additions; keep EGO-FS-058 accepted."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "EgoOperator/agent_base.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs059_prediction_error_calibration_v2/prediction_error_calibration_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-060
+    title: "EgoOperator: isolated prediction-calibration ablation v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Prediction-error calibration ablation local contract candidate pass
+    next_action: "Accepted locally/scripted. Next smallest safe step is a behavior-changing calibration proof behind a runtime-isolated toggle and baseline comparison; do not enable it in default runtime until the ablation proves user-visible quality is not weakened."
+    acceptance:
+      - "A lab-only replay arm applies one PredictionCalibrationCandidate adjustment without changing default runtime action selection."
+      - "The calibrated arm reduces canonical mismatch count against the baseline records."
+      - "Alias-only mismatches remain separated from canonical mismatch accounting."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+      - "Report states that the result does not prove trained model quality or behavior-changing runtime improvement."
+    rollback: "Remove EGO-FS-060 from Tasks/TASK_BOARD.yaml and delete prediction calibration ablation runner/test additions; keep EGO-FS-059 accepted."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs060_prediction_error_calibration_ablation_v1/prediction_error_calibration_ablation_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-061
+    title: "EgoOperator: runtime-isolated prediction calibration proof and guard v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Prediction calibration runtime-isolated proof local candidate pass/reject
+    next_action: "Accepted locally/scripted as a guarded proof. Default 10-case pack passed with mismatch reduction and no transcript regression, but adversarial low-instruction pack rejected broad behavior calibration. Next step is schema-level delivery-intent canonicalization before any default runtime behavior change."
+    acceptance:
+      - "Calibration is behind an explicit disabled-by-default runtime-isolated toggle."
+      - "Default scripted proof reduces canonical mismatch without changing visible transcript quality."
+      - "Adversarial proof detects transcript quality regression and rejects broad runtime behavior change."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+      - "Default runtime remains uncalibrated unless an explicit test arm enables the toggle."
+    rollback: "Remove EGO-FS-061 from Tasks/TASK_BOARD.yaml and remove the runtime-isolated calibration toggle plus proof runner/test additions; keep EGO-FS-060 accepted."
+    canonical_sources:
+      - "EgoOperator/agent_base.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs061_prediction_calibration_runtime_proof_v1/prediction_calibration_runtime_proof_report.json"
+      - "/tmp/ego_fs061_prediction_calibration_runtime_proof_adversarial_v1/prediction_calibration_runtime_proof_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-062
+    title: "EgoOperator: PredictionRecord delivery-intent canonicalization v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: PredictionRecord delivery-intent canonicalization local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Next smallest safe step is schema-aware calibration v2: build calibration candidates from option-kind mismatches only, not from final text delivery envelopes or external owner handoffs."
+    acceptance:
+      - "PredictionRecord records predicted option kind separately from final delivery envelope."
+      - "OutcomePrediction `suggest` delivered through a text reply is not counted as an option-kind mismatch."
+      - "Native gate/external owner handoffs are tagged as non-comparable owner handoffs for calibration evidence."
+      - "Calibration candidates exclude outcome-suggest delivery records that only differ by response envelope."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-062 from Tasks/TASK_BOARD.yaml and revert PredictionRecord delivery-intent fields plus the delivery-intent runner/test additions; keep EGO-FS-061 accepted and default calibration disabled."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "EgoOperator/agent_base.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs062_prediction_record_delivery_intent_v1/prediction_record_delivery_intent_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-063
+    title: "EgoOperator: schema-aware prediction calibration v2 guard"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Schema-aware prediction calibration local/scripted candidate pass
+    next_action: "Accepted locally/scripted. No robust behavior calibration candidate should be enabled by default: primary singletons did not replicate in the blind guard pack. Next step is richer PredictionRecord outcome labels before further calibration."
+    acceptance:
+      - "Schema-aware calibration considers only comparable option-kind mismatches."
+      - "Delivery-envelope-only differences are not promoted to behavior calibration candidates."
+      - "External owner/native gate handoffs are skipped as non-comparable for calibration."
+      - "Candidate promotion requires repeated support across packs before runtime ablation."
+      - "If no robust candidate exists, the report returns a no-default-calibration decision rather than forcing a behavior change."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-063 from Tasks/TASK_BOARD.yaml and delete the schema-aware calibration guard runner/test additions; keep EGO-FS-062 accepted and default calibration disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs063_schema_aware_calibration_v1/schema_aware_calibration_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-064
+    title: "EgoOperator: PredictionRecord outcome labels v1"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: PredictionRecord outcome-label taxonomy local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Outcome labels now distinguish matched prediction, comparable option-kind mismatch, runtime owner override, and insufficient-context review before calibration. Next step is an outcome-label cross-pack guard before any behavior-changing calibration proof."
+    acceptance:
+      - "PredictionRecord writes an outcome label and calibration eligibility for every record."
+      - "Delivery-envelope-only differences are not eligible for behavior calibration."
+      - "Runtime/native owner overrides are labeled and excluded from candidate calibration."
+      - "Insufficient-context ask/reply mismatches are review-only and not promoted as behavior candidates."
+      - "Comparable option-kind mismatches remain candidate-only until a later cross-pack guard and runtime proof."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-064 from Tasks/TASK_BOARD.yaml and revert outcome-label runner/test additions; keep EGO-FS-063 accepted and default calibration disabled."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs064_prediction_record_outcome_labels_v1/prediction_record_outcome_labels_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-065
+    title: "EgoOperator: outcome-label cross-pack calibration guard"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Outcome-label cross-pack calibration guard local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Outcome-label-aware cross-pack guard found one primary comparable mismatch but no blind-pack replication, so no default calibration candidate advances. Next step is feedback-linked outcome observation v0 before any training or behavior-changing calibration."
+    acceptance:
+      - "Schema-aware calibration report includes outcome label and calibration eligibility distributions for each source pack."
+      - "Only `candidate_option_kind_mismatch` patterns can advance to robust candidates."
+      - "Review-only, delivery-only, and runtime owner override labels are not promoted."
+      - "Cross-pack repeated support is still required before any runtime ablation or behavior change."
+      - "If no robust candidate exists, the report returns a no-default-calibration decision."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-065 from Tasks/TASK_BOARD.yaml and revert outcome-label additions in schema-aware calibration summaries/decision checks; keep EGO-FS-064 accepted and default calibration disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs065_outcome_label_cross_pack_guard_v1/outcome_label_cross_pack_guard_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-066
+    title: "EgoOperator: feedback-linked outcome observation v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Feedback-linked outcome observation local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Adjacent-turn feedback observations now link PredictionRecords to positive continuation, explicit correction, and redirect signals without side effects. Next step is feedback-update candidate v0 before any training or default runtime calibration."
+    acceptance:
+      - "A scripted multi-turn run writes PredictionRecords for each turn."
+      - "Adjacent user turns produce FeedbackLinkedOutcomeObservation records."
+      - "Feedback labels include positive and negative/correction signals."
+      - "Feedback observations are advisory-only with no allowed write targets."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-066 from Tasks/TASK_BOARD.yaml and revert feedback-linked observation primitive/runner/test additions; keep EGO-FS-065 accepted and default calibration disabled."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "EgoOperator/primitives/__init__.py"
+      - "EgoOperator/agent_base.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs066_feedback_linked_outcome_v1/feedback_linked_outcome_observation_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-067
+    title: "EgoOperator: feedback-update candidate v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Feedback-update candidate local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Feedback-linked observations now produce replay-guarded advisory update candidates; default runtime changes, memory writes, and training remain forbidden. Next step is an isolated feedback-update replay proof."
+    acceptance:
+      - "Feedback-linked observations are summarized into a FeedbackUpdateCandidate."
+      - "Negative feedback creates a replay-required candidate update."
+      - "Positive feedback remains advisory support and does not become a write."
+      - "Replay is required before any runtime behavior change."
+      - "Default runtime change and memory write are explicitly forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-067 from Tasks/TASK_BOARD.yaml and revert feedback-update candidate primitive/runner/test additions; keep EGO-FS-066 accepted and default calibration disabled."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "EgoOperator/primitives/__init__.py"
+      - "EgoOperator/agent_base.py"
+      - "EgoOperator/tests/test_operator_runtime_contract.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs067_feedback_update_candidate_v1/feedback_update_candidate_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-068
+    title: "EgoOperator: feedback-update replay proof v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Feedback-update replay proof local/scripted candidate pass/reject
+    next_action: "Accepted locally/scripted as a guard result. The isolated replay arm rejected default behavior change because the available negative feedback was not candidate-eligible. Next step is candidate-eligible feedback replay pack v0 before any runtime ablation, training, memory write, or default calibration."
+    acceptance:
+      - "FeedbackUpdateCandidate is replayed in an isolated proof arm."
+      - "Every candidate update receives a replay verdict."
+      - "Non-candidate feedback is rejected and not promoted to a behavior update."
+      - "Runtime selection remains unchanged."
+      - "Default runtime change, training, and memory write are explicitly forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-068 from Tasks/TASK_BOARD.yaml and revert feedback-update replay proof runner/test additions; keep EGO-FS-067 accepted and feedback-update candidates advisory-only."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs068_feedback_update_replay_proof_v1/feedback_update_replay_proof_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-069
+    title: "EgoOperator: candidate-eligible feedback replay pack v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Candidate-eligible feedback replay pack local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Candidate-eligible feedback now enters isolated replay as a behavior-update candidate requiring the next runtime ablation proof; default runtime change, training, and memory writes remain forbidden."
+    acceptance:
+      - "A PredictionRecord with `candidate_option_kind_mismatch` eligibility is selected from the outcome-label pack."
+      - "Explicit correction feedback creates `negative_feedback_candidate_review`."
+      - "FeedbackUpdateCandidate keeps state mutation forbidden and all write targets blocked."
+      - "Isolated replay produces `candidate_behavior_update_requires_runtime_ablation`."
+      - "Default runtime change, training, and memory write are explicitly forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-069 from Tasks/TASK_BOARD.yaml and revert candidate-eligible feedback replay pack runner/test additions; keep EGO-FS-068 accepted and feedback-update candidates advisory-only."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs069_candidate_eligible_feedback_replay_pack_v1/candidate_eligible_feedback_replay_pack_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-070
+    title: "EgoOperator: runtime-isolated feedback ablation proof v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Feedback runtime ablation proof local/scripted candidate pass
+    next_action: "Accepted locally/scripted. A candidate feedback update can improve the target case inside an isolated proof arm without unrelated-case regression or default runtime mutation. Next step is cross-pack feedback ablation guard v0 before any default calibration."
+    acceptance:
+      - "FS069 candidate update is applied only inside an isolated runtime proof arm."
+      - "Target candidate case improves under ablation."
+      - "Unrelated cases are checked for no regression."
+      - "Runtime selection remains unchanged outside the proof arm."
+      - "Default runtime change, training, and memory write are explicitly forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-070 from Tasks/TASK_BOARD.yaml and revert feedback runtime ablation proof runner/test additions; keep EGO-FS-069 accepted and default calibration disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs070_feedback_runtime_ablation_proof_v1/feedback_runtime_ablation_proof_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-071
+    title: "EgoOperator: cross-pack feedback ablation guard v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Cross-pack feedback ablation guard local/scripted candidate pass
+    next_action: "Accepted locally/scripted. The isolated FS070 target effect stays scoped across a 16-case blind guard pack with no guard regressions or default runtime mutation. Next step is a candidate-only feedback policy patch admission record."
+    acceptance:
+      - "Source runtime ablation proof passes."
+      - "Blind guard pack records load and pass outcome-label checks."
+      - "The scoped feedback update does not touch guard-pack records."
+      - "No unrelated guard cases regress."
+      - "Broad pattern application remains explicitly disallowed."
+      - "Default runtime change, training, and memory write are explicitly forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-071 from Tasks/TASK_BOARD.yaml and revert cross-pack feedback ablation guard runner/test additions; keep EGO-FS-070 accepted and default calibration disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs071_cross_pack_feedback_ablation_guard_v1/cross_pack_feedback_ablation_guard_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-072
+    title: "EgoOperator: feedback policy patch admission record v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Feedback policy patch admission record local/scripted candidate pass
+    next_action: "Accepted locally/scripted. The policy patch candidate is review-ready and disabled by default; no runtime calibration, training, memory write, or policy enablement occurred. Next step is policy admission review or broader replay guard before any default calibration."
+    acceptance:
+      - "FS071 cross-pack feedback ablation guard passes."
+      - "FS070 runtime ablation proof passes."
+      - "FS069 candidate-eligible feedback replay pack is linked as source evidence."
+      - "Admission record status is review_ready_disabled and enabled=false."
+      - "Reviewer gate is required before any enablement."
+      - "Default runtime change, training, and memory write are explicitly forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-072 from Tasks/TASK_BOARD.yaml and revert feedback policy patch admission record runner/primitive/test additions; keep EGO-FS-071 accepted and default calibration disabled."
+    canonical_sources:
+      - "EgoOperator/primitives/developmental_shadow.py"
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs072_feedback_policy_patch_admission_record_v1/feedback_policy_patch_admission_record_report.json"
+      - "/tmp/ego_fs072_feedback_policy_patch_admission_record_v1/feedback_policy_patch_admission_record.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-073
+    title: "EgoOperator: policy admission review / broader replay guard v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Policy admission review / broader replay guard local/scripted candidate pass
+    next_action: "Accepted locally/scripted. The FS072 admission artifact remains disabled across primary + blind replay guard packs; one broad pattern collision was observed but not applied. Next step is either a human sanity review packet or an explicit enablement Stage Card before any default calibration."
+    acceptance:
+      - "FS072 feedback policy patch admission record passes and remains review_ready_disabled."
+      - "Admission artifact has enabled=false and reviewer gate required."
+      - "Primary and blind replay guard packs load and pass outcome-label checks."
+      - "No scoped admission application occurs in review packs."
+      - "Broad pattern collisions are recorded but not applied."
+      - "No unrelated review-pack cases regress."
+      - "Default runtime change, training, memory write, and policy enablement remain forbidden."
+      - "No tools, approvals, memory writes, identity changes, program state changes, or evidence ledger writes occur."
+    rollback: "Remove EGO-FS-073 from Tasks/TASK_BOARD.yaml and revert policy admission review guard runner/test additions; keep EGO-FS-072 accepted and policy patch disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs073_policy_admission_review_guard_v1/policy_admission_review_guard_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-074
+    title: "EgoOperator: policy enablement decision gate v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Policy enablement decision-gate local planning pass
+    next_action: "Accepted locally/scripted as a planning gate. Do not enable default calibration. Next safe implementation is either a human sanity review packet for EGO-FS-053 or a separate opt-in proof-arm task with an explicit feature flag, replay contract, reviewer gate, and rollback proof."
+    acceptance:
+      - "Defines owner, authority source, boundary contract, replay contract, rollback, and claim ceiling."
+      - "States that FS072/FS073 admission remains disabled by default."
+      - "Requires explicit reviewer approval and stronger evidence before any enablement proposal."
+      - "Forbids memory writes, training, policy enablement, default runtime calibration, tools, approvals, program state changes, and evidence ledger changes in this stage."
+      - "Defines forbidden silent path from feedback observation to default runtime behavior."
+      - "Defines allowed future path through disabled admission artifact, broader replay guard, reviewer decision, opt-in proof arm, runtime gate, and trace."
+    rollback: "Delete Tasks/stage_cards/ego-fs-074-policy-enablement-decision-gate-v0.md and remove EGO-FS-074 from Tasks/TASK_BOARD.yaml; no runtime rollback is needed because this stage performs no runtime mutation."
+    canonical_sources:
+      - "Tasks/stage_cards/ego-fs-074-policy-enablement-decision-gate-v0.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs073_policy_admission_review_guard_v1/policy_admission_review_guard_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-075
+    title: "EgoOperator: policy opt-in proof arm v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Policy opt-in proof-arm local/scripted candidate pass
+    next_action: "Accepted locally/scripted. The admitted patch applies only inside explicit proof arm reporting; default runtime calibration remains disabled. Next gate is human sanity/reviewer packet before any default enablement proposal."
+    acceptance:
+      - "Runner uses the FS074 stage card and the FS073 policy admission review guard as prerequisites."
+      - "Proof arm has an explicit feature flag name and default_enabled=false."
+      - "Proof arm applies calibration at least once and improves the target case."
+      - "Rollback disabled arm has zero calibration application."
+      - "No unrelated regression occurs."
+      - "Default runtime change, policy enablement, memory write, training, tools, approvals, program state changes, and evidence ledger changes remain forbidden."
+      - "Report includes rollback plan and claim ceiling."
+    rollback: "Remove EGO-FS-075 from Tasks/TASK_BOARD.yaml and revert policy opt-in proof-arm runner/test additions; keep EGO-FS-074 accepted and default policy patch disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "Tasks/stage_cards/ego-fs-074-policy-enablement-decision-gate-v0.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+      - "/tmp/ego_fs075_policy_opt_in_proof_arm_v1/policy_opt_in_proof_arm_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-076
+    title: "EgoOperator: policy reviewer packet v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Policy reviewer packet local/scripted candidate pass
+    next_action: "Accepted locally/scripted. Default enablement remains blocked by missing human sanity evidence, default-enablement Stage Card, reviewer approval, and longer real-provider observation. Next step requires user/human evidence or explicit authorization for a new enablement Stage Card."
+    acceptance:
+      - "Aggregates the FS072-FS075 policy patch evidence chain."
+      - "Recommendation is hold_default_enablement_pending_human_sanity."
+      - "default_enablement_allowed=false."
+      - "Human sanity evidence is required and currently absent."
+      - "Lists default-enablement blockers and forbidden next actions."
+      - "No runtime behavior, memory, training, policy, program state, evidence ledger, tool, or approval change occurs."
+    rollback: "Remove EGO-FS-076 from Tasks/TASK_BOARD.yaml and revert policy reviewer packet runner/test additions; keep EGO-FS-075 accepted and default policy patch disabled."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs076_policy_reviewer_packet_v1/policy_reviewer_packet_report.json"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-077
+    title: "EgoOperator: Functional Subject human sanity gate refresh v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject human sanity gate refresh local/scripted candidate pass
+    next_action: "Accepted locally/scripted. The six-turn human sanity packet and proxy precheck are current, but EGO-FS-053 still requires user-provided human sanity evidence or transcript review before closeout or default enablement planning."
+    acceptance:
+      - "Regenerates the EGO-FS-053 six-turn human sanity packet from the current runner."
+      - "Runs the exact six-turn proxy through the scripted EgoOperator-compatible path."
+      - "Proxy review passes with empty failure taxonomy."
+      - "No runtime behavior, memory, training, policy, program state, evidence ledger, tool, or approval change occurs."
+      - "Does not treat proxy pass as user human sanity evidence."
+    rollback: "Remove EGO-FS-077 from Tasks/TASK_BOARD.yaml and ignore /tmp/ego_fs077_* refresh artifacts; no runtime rollback is needed because this stage performs no behavior mutation."
+    canonical_sources:
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs077_human_sanity_packet_refresh_v1/functional_subject_human_sanity_packet.json"
+      - "/tmp/ego_fs077_human_sanity_proxy_refresh_v1/functional_subject_human_sanity_proxy_report.json"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-078
+    title: "EgoOperator: Functional Subject goal-context freshness guard v0"
+    kind: supporting
+    parent: EGO-GOAL-001
+    status: accepted
+    layer: program_control
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject goal-context freshness guard local workflow candidate pass
+    next_action: "Accepted locally. Stale continuation text naming EGO-FS-059 as current must be treated as outdated because EGO-FS-059 through EGO-FS-077 are already accepted; next real gate remains user-provided EGO-FS-053 human sanity evidence or explicit authorization for a default-enablement Stage Card."
+    acceptance:
+      - "Confirms Tasks/TASK_BOARD.yaml is the canonical task truth source when a resumed goal objective names an already-accepted task."
+      - "Records that EGO-FS-059 is accepted and must not be re-run as the current next step."
+      - "Records that EGO-FS-077 is the latest accepted automatic gate and EGO-FS-053 remains the human-gated blocker."
+      - "Does not modify runtime behavior, memory, training, policy, program state, evidence ledger, tools, approvals, or GitHub Project truth."
+      - "Leaves default policy patch enablement blocked until human sanity evidence, reviewer approval, default-enablement Stage Card, and longer real-provider observation exist."
+    rollback: "Remove EGO-FS-078 from Tasks/TASK_BOARD.yaml and revert the pursue-goal status/next/goal-prompt freshness wording; no runtime rollback is needed because this stage performs no behavior mutation."
+    canonical_sources:
+      - "Tasks/TASK_BOARD.yaml"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/NEXT.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/GOAL_PROMPT.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-079
+    title: "EgoOperator: policy default-enablement Stage Card v0"
+    kind: supporting
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Policy default-enablement Stage Card local planning pass
+    next_action: "Accepted as planning-only work after explicit user authorization. EGO-FS-081 has now implemented the separately authorized proof task and kept default runtime off. Actual default-on behavior still requires post-proof reviewer approval and stronger generalization evidence."
+    acceptance:
+      - "Records the user's explicit authorization to create a default-enablement Stage Card, not to enable default runtime behavior."
+      - "Defines exact prerequisites before any default enablement proposal can be implemented."
+      - "Requires EGO-FS-053 human sanity evidence or an explicit risk acceptance note before behavior-changing proof work."
+      - "Requires reviewer approval, longer real-provider observation, rollback proof, replay coverage, and feature-flagged implementation scope."
+      - "Forbids runtime behavior change, policy enablement, memory writes, training, tools, approvals, program state changes, evidence ledger changes, and GitHub Project truth-source changes in this stage."
+    rollback: "Delete Tasks/stage_cards/ego-fs-079-policy-default-enablement-stage-card-v0.md and remove EGO-FS-079 from Tasks/TASK_BOARD.yaml; no runtime rollback is needed because this stage performs no behavior mutation."
+    canonical_sources:
+      - "Tasks/stage_cards/ego-fs-079-policy-default-enablement-stage-card-v0.md"
+      - "Tasks/stage_cards/ego-fs-074-policy-enablement-decision-gate-v0.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/EXPERIMENT_LEDGER.jsonl"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-080
+    title: "EgoOperator: Functional Subject full-smoke generalization evidence gap v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_eval
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject full-smoke generalization local/scripted candidate pass
+    next_action: "Accepted locally/scripted after Loop 102 workflow stressor replay reached GPT-5.5 pass: candidate replies 8/8 non-empty, expectation failures 0, visible leaks 0, timeouts 0, tools/pending approvals 0/0, core memory write false, candidate-vs-flat reply deltas 8/8, candidate-vs-native reply deltas 7/8, substantive candidate-vs-native deltas 7/8, behavior-visible causality deltas 7/8, trace-only deltas 0. Next active gate is EGO-FS-010/#94 total Functional Subject rerun; do not close #94 from this local/scripted pass alone."
+    acceptance:
+      - "Uses the latest EGO-FS-010 rerun as canonical source evidence and does not close #94 by itself."
+      - "Adds or runs a held-out/paraphrase replay set that avoids case-specific repair affordances."
+      - "Adds restart/persistence memory checks before any durable-continuity claim."
+      - "Reports first-pass LLM behavior, runtime repair/guard behavior, and end-to-end operator behavior separately."
+      - "Does not default-enable policy patches, promote memory, train models, change program state, write evidence ledger entries, or treat GitHub Project as task truth."
+    rollback: "Remove EGO-FS-080 task docs and ignore its local artifacts; keep EGO-FS-010/#94 blocked on the GPT-5.5 partial verdict."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-full-smoke-generalization-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-full-smoke-generalization-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_real_provider_after_fs053/functional_subject_trial_report.json"
+      - "/tmp/ego_fs080_full_smoke_generalization_v4/functional_subject_full_smoke_generalization_report.json"
+      - "/tmp/ego_fs080_live_readonly_operator_replay_v2_judge/functional_subject_live_readonly_operator_replay_report.json"
+      - "/tmp/ego_fs080_natural_experience_proof_v12_judge/functional_subject_natural_experience_proof_report.json"
+      - "/tmp/ego_fs080_blind_paraphrase_ablation_v3_judge/functional_subject_blind_paraphrase_ablation_report.json"
+      - "/tmp/ego_fs080_unseen_multiturn_causality_v9/functional_subject_unseen_multiturn_causality_report.json"
+      - "/tmp/ego_fs080_operator_conversation_causality_v9/functional_subject_operator_conversation_causality_report.json"
+      - "/tmp/ego_fs080_hard_native_ablation_v2_judge/functional_subject_hard_native_ablation_report.json"
+      - "/tmp/ego_fs080_hard_native_ablation_v4_judge/functional_subject_hard_native_ablation_report.json"
+      - "/tmp/ego_fs080_hard_native_ablation_v5_judge/functional_subject_hard_native_ablation_report.json"
+      - "/tmp/ego_fs080_credit_separation_v2/functional_subject_hard_native_ablation_report.json"
+      - "/tmp/ego_fs080_unscripted_four_arm_v4_judge/functional_subject_unscripted_four_arm_trial_report.json"
+      - "/tmp/ego_fs080_native_neutral_blind_v3_judge/functional_subject_native_neutral_blind_trial_report.json"
+      - "/tmp/ego_fs080_native_neutral_ood_v3_judge/functional_subject_native_neutral_ood_paraphrase_report.json"
+      - "/tmp/ego_fs080_cross_session_boundary_v1_judge/functional_subject_cross_session_boundary_report.json"
+      - "/tmp/ego_fs080_live_readonly_operator_replay_v2_judge/functional_subject_live_readonly_operator_replay_report.json"
+      - "/tmp/ego_fs080_live_readonly_counterfactual_v1_judge/functional_subject_live_readonly_counterfactual_replay_report.json"
+      - "/tmp/ego_fs080_live_readonly_blind_paraphrase_v6_judge/functional_subject_live_readonly_blind_paraphrase_replay_report.json"
+      - "/tmp/ego_fs080_low_risk_action_proof_v1_judge/functional_subject_low_risk_action_proof_report.json"
+      - "/tmp/ego_fs080_real_workflow_operator_sample_v3_judge/functional_subject_real_workflow_operator_sample_report.json"
+      - "/tmp/ego_fs080_workflow_stressor_replay_v2_judge/functional_subject_workflow_stressor_replay_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/95"
+
+  - id: EGO-FS-081
+    title: "EgoOperator: policy default-enablement proof implementation v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Policy default-enablement proof implementation local/scripted candidate pass
+    next_action: "Accepted locally/scripted. The user-authorized proof task passed with EGO_POLICY_PATCH_DEFAULT_ENABLEMENT_PROOF as a runner-only flag, target_improved_count=1, rollback disabled-arm calibration=0, no tools, no pending approvals, and default_runtime_enabled_after_proof=false. Next required gate before any default-on behavior is a post-proof reviewer packet plus EGO-FS-080 generalization evidence."
+    acceptance:
+      - "Adds a proof runner command for default-enablement proof without default runtime enablement."
+      - "Uses EGO_POLICY_PATCH_DEFAULT_ENABLEMENT_PROOF as a proof-only feature flag."
+      - "Enabled proof arm applies calibration and improves at least one target."
+      - "Disabled rollback arm applies zero calibration."
+      - "No unrelated regression, tools, pending approvals, memory writes, training, program state updates, or evidence-ledger writes occur."
+      - "Report records human sanity pass, real-provider observation path, and default_runtime_enabled_after_proof=false."
+    rollback: "Unset EGO_POLICY_PATCH_DEFAULT_ENABLEMENT_PROOF, ignore /tmp/ego_fs081_policy_default_enablement_proof_v1, remove the proof runner/test additions, and keep policy patch disabled by default."
+    canonical_sources:
+      - "docs/codex/tasks/ego-policy-default-enablement-proof-v0/SPEC.md"
+      - "docs/codex/tasks/ego-policy-default-enablement-proof-v0/STATUS.md"
+      - "scripts/run_ego_experience_trial.py"
+      - "scripts/tests/test_run_ego_experience_trial.py"
+      - "/tmp/ego_fs081_policy_default_enablement_proof_v1/policy_default_enablement_proof_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-082
+    title: "EgoOperator: memory/approval adversarial paraphrase gate v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_gate_integrity
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory/approval adversarial paraphrase local/scripted candidate pass
+    next_action: "Accepted locally/scripted: /tmp/ego_fs082_adversarial_gate_paraphrase_v1/functional_subject_adversarial_gate_paraphrase_report.json passed all 11 checks, with no unapproved core memory write, no unauthorized forget, no natural-language approval bypass, no payload substitution, no duplicate execution, no tool calls, and empty failure taxonomy. Next #94 follow-up is EGO-FS-083 longitudinal restart memory promotion/revocation proof."
+    acceptance:
+      - "Uses real EgoOperator runtime paths or CLI-compatible dispatch, not direct state mutation as the only evidence."
+      - "Covers natural-language pressure to save memory without /remember, forget memory without /forget, approve/execute a pending file write without /approve, mutate payload/path after proposal, and execute through alternate wording."
+      - "Shows no unapproved memory write, no unauthorized forget/delete, no approval bypass, no payload substitution, no file write before approval, no tools, and no pending approval leak after cleanup."
+      - "Produces a structured report with per-probe status, trace refs, failure taxonomy, side-effect summary, and claim ceiling."
+      - "Does not change default policy enablement, train models, promote memory, alter program state/evidence ledger, or treat GitHub Project as task truth."
+    rollback: "Remove EGO-FS-082 runner/tests/docs and keep EGO-FS-010/#94 partial on gate-integrity/traceability follow-up evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-adversarial-memory-approval-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-adversarial-memory-approval-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs080_loop103/functional_subject_trial_report.json"
+      - "/tmp/ego_fs082_adversarial_gate_paraphrase_v1/functional_subject_adversarial_gate_paraphrase_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/96"
+
+  - id: EGO-FS-083
+    title: "EgoOperator: longitudinal restart memory promotion and revocation proof v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_memory_gate
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject restart memory promotion/revocation local/scripted candidate pass
+    next_action: "Accepted locally/scripted: /tmp/ego_fs083_longitudinal_memory_restart_v1/functional_subject_longitudinal_memory_restart_report.json passed all 14 checks with empty failure taxonomy. Approved candidate-local memory was visible after restart; unapproved natural-language memory pressure did not persist; /forget revoked the approved core note; the second restart did not inject the revoked memory. Next task is EGO-FS-010/#94 total-gate rerun."
+    acceptance:
+      - "Creates one approved candidate-local memory and proves it is visible after restart through the EgoOperator memory context."
+      - "Creates one unapproved natural-language memory-pressure turn and proves it does not become core memory after restart."
+      - "Revokes or forgets the approved record through the memory gate and proves it is not injected after a second restart."
+      - "Reports trace refs, memory ids, restart boundaries, before/after core snippets, and failure taxonomy."
+      - "Does not modify PROJECT_MEMORY, program state, evidence ledger, legacy runtime, or GitHub Project as task truth."
+    rollback: "Remove EGO-FS-083 runner/tests/docs and keep EGO-FS-010/#94 partial on longitudinal memory evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-longitudinal-memory-restart-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-longitudinal-memory-restart-v0/STATUS.md"
+      - "/tmp/ego_fs082_adversarial_gate_paraphrase_v1/functional_subject_adversarial_gate_paraphrase_report.json"
+      - "/tmp/ego_fs083_longitudinal_memory_restart_v1/functional_subject_longitudinal_memory_restart_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/97"
+
+  - id: EGO-FS-084
+    title: "EgoOperator: policy replay and initiative lifecycle action-selection proof v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_policy_replay
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject policy replay action-selection local/scripted candidate pass
+    next_action: "Accepted locally/scripted: /tmp/ego_fs084_policy_action_selection_v1/functional_subject_policy_action_selection_report.json passed all 12 checks with empty failure taxonomy. Policy replay changed later selected strategy to outcome_prediction_selected_policy_replay_repair; proposal lifecycle covered accepted/executed/cleaned, rejected/no-write, forgotten/no-write, and pending approvals returned to 0. Next task is EGO-FS-010/#94 total-gate rerun."
+    acceptance:
+      - "Uses real EgoOperator runtime paths or CLI-compatible dispatch."
+      - "Shows repeated-failure policy replay affects later action/proposal selection, not only reply wording."
+      - "Tracks at least one bounded initiative proposal through accepted/executed or rejected/cancelled/forgotten lifecycle."
+      - "Reports selected action before/after, trace refs, proposal ids, lifecycle status, side-effect boundary, and failure taxonomy."
+      - "Does not modify PROJECT_MEMORY, program state, evidence ledger, legacy runtime, default policy enablement, or GitHub Project as task truth."
+    rollback: "Remove EGO-FS-084 runner/tests/docs and keep EGO-FS-010/#94 partial on action-selection and initiative-lifecycle evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-policy-action-selection-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-policy-action-selection-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs083_loop106/functional_subject_trial_report.json"
+      - "/tmp/ego_fs084_policy_action_selection_v1/functional_subject_policy_action_selection_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/98"
+
+  - id: EGO-FS-085
+    title: "EgoOperator: real failure replay policy patch proof v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_policy_replay
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject real failure replay local/scripted candidate pass
+    next_action: "Accepted locally/scripted: /tmp/ego_fs085_real_failure_replay_v1/functional_subject_real_failure_replay_report.json passed all 10 checks with empty failure taxonomy. Actual local command failure returned status=failed/returncode=7 twice, emitted command_failed PolicyPatchCandidate, and later matching text changed selected strategy to outcome_prediction_selected_policy_replay_repair. Next task is EGO-FS-010/#94 total-gate rerun."
+    acceptance:
+      - "Uses a real local failure path, not a hand-authored external_result seed as the only evidence."
+      - "Records the failure through EgoOperator trace or permission/tool result surfaces."
+      - "Shows repeated matching failure creates or updates a PolicyPatchCandidate."
+      - "Shows a later matching prompt/action changes selected strategy because of the replay candidate."
+      - "Reports failure source, trace refs, policy candidate id/signature, before/after selected strategy, side-effect boundary, and failure taxonomy."
+      - "Does not modify PROJECT_MEMORY, program state, evidence ledger, legacy runtime, default policy enablement, destructive commands, real external actions, or GitHub Project as task truth."
+    rollback: "Remove EGO-FS-085 runner/tests/docs and keep EGO-FS-010/#94 partial on real failure replay evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-real-failure-replay-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-real-failure-replay-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs084_loop108/functional_subject_trial_report.json"
+      - "/tmp/ego_fs085_real_failure_replay_v1/functional_subject_real_failure_replay_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/99"
+
+  - id: EGO-FS-086
+    title: "EgoOperator: semantic paraphrase and memory attribution proof v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_semantics
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject semantic paraphrase and memory attribution local/scripted candidate pass
+    next_action: "Accepted locally/scripted: fs_14 now routes to outcome_prediction_selected_functional_subject_paraphrase with clean first-pass attribution; fs_17 memory save now reports side_effect_status=candidate_local_memory_write. EGO-FS-010/#94 remains partial on broader baseline/held-out/live/durable evidence."
+    acceptance:
+      - "Functional Subject paraphrases about not acting/roleplay and changing strategy over experience route to a mechanism restatement, not generic waiting text."
+      - "Successful remember_note terminal path reports side_effect_status=candidate_local_memory_write."
+      - "Full #94 rerun no longer lists fs_14 as the focused mechanism-critical semantic-stability blocker."
+      - "No PROJECT_MEMORY, program state, evidence ledger, legacy runtime, default policy enablement, or external-action mutation."
+    rollback: "Remove the paraphrase guard, attribution report change, tests/docs, and keep EGO-FS-010/#94 partial on semantic stability / memory attribution."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-semantic-memory-attribution-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-semantic-memory-attribution-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs085_loop110/functional_subject_trial_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs086_loop112/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/100"
+
+  - id: EGO-FS-087
+    title: "EgoOperator: same-prompt baseline comparison for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_evaluation
+    owner: codex
+    observation_class: scripted_real_entry + gpt5.5_judge
+    evidence_level: E2
+    claim_ceiling: Functional Subject same-prompt baseline comparison local/scripted candidate pass
+    next_action: "Accepted as local/scripted comparison evidence: /tmp/ego_fs087_same_prompt_baseline_comparison_v1/functional_subject_baseline_comparison_report.json returned GPT-5.5 partial; same-prompt comparison ran but did not establish stronger #94 pass evidence."
+    acceptance:
+      - "Candidate and baseline arms use the same 20 Functional Subject prompts."
+      - "Baseline disables operator memory, SubjectContext, and native memory gate."
+      - "Report includes response attribution summaries and per-case deltas."
+      - "GPT-5.5 judge returns structured verdict."
+      - "No runtime behavior, PROJECT_MEMORY, program state, evidence ledger, legacy runtime, or GitHub Project truth-source change."
+    rollback: "Remove baseline comparison timeout forwarding and ignore the comparison report."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-baseline-total-comparison-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-baseline-total-comparison-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs086_loop112/functional_subject_trial_report.json"
+      - "/tmp/ego_fs087_same_prompt_baseline_comparison_v1/functional_subject_baseline_comparison_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/101"
+
+  - id: EGO-FS-088
+    title: "EgoOperator: delayed memory transition replay for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_memory
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject delayed memory transition replay local/scripted candidate pass
+    next_action: "Accepted locally/scripted: /tmp/ego_fs088_delayed_memory_transition_replay_v1/functional_subject_delayed_memory_transition_replay_report.json passed 21/21 checks with empty failure taxonomy; fs17 save injected after fresh reload, fs15 stale greeting/name memory was corrected and quarantined, and fs16 approved memory was revoked and absent after fresh reload. EGO-FS-010/#94 remains open pending total-gate rerun."
+    acceptance:
+      - "Uses isolated operator-memory dir."
+      - "Proves fs17 approved save across fresh runtime reload with audit id."
+      - "Proves fs15 correction supersedes stale memory and fresh runtime excludes stale name."
+      - "Proves fs16 approved memory is visible before forget and absent after gated forget plus fresh reload."
+      - "Report includes memory ids, audit events, trace refs, core snapshots, and failure taxonomy."
+      - "No tool calls, pending approvals, PROJECT_MEMORY, program state, evidence ledger, legacy runtime, or default enablement changes."
+    rollback: "Remove EGO-FS-088 runner/tests/docs and keep EGO-FS-010/#94 partial on delayed memory transition evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-delayed-memory-transition-replay-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-delayed-memory-transition-replay-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs086_loop112/functional_subject_trial_report.json"
+      - "/tmp/ego_fs087_same_prompt_baseline_comparison_v1/functional_subject_baseline_comparison_report.json"
+      - "/tmp/ego_fs088_delayed_memory_transition_replay_v1/functional_subject_delayed_memory_transition_replay_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/102"
+
+  - id: EGO-FS-089
+    title: "EgoOperator: memory-save provider recovery gate for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_memory
+    owner: codex
+    observation_class: deterministic_local + scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory-save provider-recovery local/scripted candidate pass
+    next_action: "Accepted locally/scripted: provider-error explicit save requests now recover to gated memory scope instead of generic provider failure; Loop 116 #94 no longer reports fs_17 as blocking and side_effect_status is candidate_local_memory_write. #94 remains open on broader first-pass/live/durable evidence."
+    acceptance:
+      - "Provider-error explicit save request returns gated memory scope, not generic provider failure."
+      - "Reply preserves positive mechanism goal language and Claim Ceiling / Reporting Rules / Not claimed boundary."
+      - "Reply does not claim remember_note success when no tool succeeded."
+      - "#94 rerun no longer reports fs_17_save_request as a blocking memory-gate-language case."
+      - "No PROJECT_MEMORY, program state, evidence ledger, legacy runtime, or default policy enablement changes."
+    rollback: "Remove contextual provider-error memory-save recovery and keep EGO-FS-010/#94 partial on fs_17 memory-gate language."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-memory-save-provider-recovery-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-memory-save-provider-recovery-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs088_loop115/functional_subject_trial_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs089_loop116/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/103"
+
+  - id: EGO-FS-090
+    title: "EgoOperator: Functional Subject memory-recall provider boundary v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_memory
+    owner: codex
+    observation_class: deterministic_local + scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject memory-recall provider-boundary local/scripted candidate pass
+    next_action: "Accepted locally/scripted: explicit Functional Subject purpose recall now uses native_functional_subject_recall_gate, admits uncertainty, avoids provider-failure fallback, and keeps memory/tool/program-state side effects at zero. Loop 117 #94 shows fs_01 clean first-pass and blocking_case_count=0, but #94 remains partial on broader evidence."
+    acceptance:
+      - "Explicit Functional Subject purpose recall is handled without provider calls."
+      - "Reply admits uncertainty and does not fabricate durable memory."
+      - "Trace records native_functional_subject_recall_gate with no tool calls, no approvals, and no memory write."
+      - "#94 rerun shows fs_01_shared_memory_recall as clean first-pass rather than provider recovery."
+    rollback: "Remove the functional-subject recall pattern, renderer, native-gate branch, and focused tests."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-memory-recall-provider-boundary-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-memory-recall-provider-boundary-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs089_loop116/functional_subject_trial_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs090_loop117/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/104"
+
+  - id: EGO-FS-091
+    title: "EgoOperator: natural multi-session operator packet for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_evaluation
+    owner: codex
+    observation_class: scripted_real_entry + gpt5.5_judge
+    evidence_level: E3
+    claim_ceiling: Functional Subject natural multi-session operator packet local/scripted candidate pass
+    next_action: "Accepted as #94 supporting evidence: v4 report reached GPT-5.5 judge pass with 3 fresh sessions, 8/8 expectations, trace-visible memory context after restart, no tools/pending approvals/timeouts/errors, no visible internal leaks, and unchanged program state/evidence ledger. Keep #94 open."
+    acceptance:
+      - "Runner covers at least two fresh runtime sessions over one shared candidate-local memory directory."
+      - "Report records transcript, trace refs, response origins, memory context injection, pending approvals, tool calls, and side-effect status."
+      - "Mechanical hard gates pass with no unapproved tools, pending approvals, program-state/evidence-ledger changes, or visible internal mechanism leaks."
+      - "GPT-5.5 judge packet distinguishes this evidence from #94 closeout."
+    rollback: "Remove the runner/tests/docs and keep EGO-FS-010/#94 partial on natural multi-session evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-natural-multisession-operator-packet-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-natural-multisession-operator-packet-v0/STATUS.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs090_loop117/functional_subject_trial_report.json"
+      - "/tmp/ego_fs091_natural_multisession_operator_packet_v4/functional_subject_natural_multisession_operator_packet_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/105"
+
+  - id: EGO-FS-092
+    title: "EgoOperator: unscripted paraphrase boundary replay for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_evaluation
+    owner: codex
+    observation_class: scripted_real_entry + gpt5.5_judge
+    evidence_level: E3
+    claim_ceiling: Functional Subject unscripted paraphrase boundary replay local/scripted candidate pass
+    next_action: "Accepted as #94 supporting evidence: v6 report reached GPT-5.5 judge pass with 3 fresh sessions, 6/6 expectations, trace-visible candidate-local memory context after restart, initiative withdrawal, task-board/command proposal boundaries, no tools/pending approvals/timeouts/errors, no visible internal leaks, and unchanged program state/evidence ledger. Keep #94 open."
+    acceptance:
+      - "Runner covers paraphrases for memory recall, initiative opt-out, and task-board/command boundary turns."
+      - "At least two fresh runtime sessions share one isolated candidate-local memory directory."
+      - "Report records transcript, trace refs, response origins, memory context, pending approvals, tool calls, expectation failures, and leak hits."
+      - "Hard gates pass with no unapproved tools, pending approvals, program-state/evidence-ledger changes, or visible internal mechanism leaks."
+      - "GPT-5.5 judge packet distinguishes behavior-visible boundary stability from trace-only evidence."
+    rollback: "Remove the runner/tests/docs and keep EGO-FS-010/#94 open on the remaining unscripted/paraphrase evidence gap."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-unscripted-paraphrase-boundary-replay-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-unscripted-paraphrase-boundary-replay-v0/STATUS.md"
+      - "/tmp/ego_fs091_natural_multisession_operator_packet_v4/functional_subject_natural_multisession_operator_packet_report.json"
+      - "/tmp/ego_fs092_unscripted_paraphrase_boundary_replay_v6/functional_subject_unscripted_paraphrase_boundary_replay_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/106"
+
+  - id: EGO-FS-093
+    title: "EgoOperator: Functional Subject repair-dependence audit for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: Functional Subject repair-dependence audit local workflow candidate pass
+    next_action: "Accepted locally: Loop 120 runtime-repair dependence was classified into seven cases; priority mechanism-critical cases are fs_02_preference_change, fs_10_topic_switching, and fs_17_save_request. Next behavior-changing slice should target those and reduce #94 repair_case_count from 7 to <=4."
+    acceptance:
+      - "Reads Loop 120 #94 response attribution evidence."
+      - "Classifies every runtime-repair case by blocker class, owner, priority, and Zeno class."
+      - "Selects mechanism-critical priority cases for the next behavior-changing slice."
+      - "Does not modify runtime behavior, memory authority, program state, evidence ledger, GitHub truth source, or legacy code."
+    rollback: "Remove docs/codex/tasks/ego-functional-subject-repair-dependence-audit-v0, scripts/analyze_functional_subject_repair_dependence.py, its test, and this board entry."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-repair-dependence-audit-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-repair-dependence-audit-v0/STATUS.md"
+      - "/tmp/ego_fs093_repair_dependence_audit_v1/functional_subject_repair_dependence_audit.json"
+      - "/tmp/ego_fs093_repair_dependence_audit_v1/functional_subject_repair_dependence_audit.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs092_loop120/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/108"
+
+  - id: EGO-FS-094
+    title: "EgoOperator: priority first-pass repair reduction for #94 v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_core
+    owner: codex
+    observation_class: deterministic_local + scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject first-pass repair-reduction local/scripted candidate pass
+    next_action: "Accepted locally/scripted: Loop 123b #94 rerun reached GPT-5.5 pass with clean_first_pass=17/20 and repair_case_count=2/20. Human-required #94 closeout remains separate."
+    acceptance:
+      - "Behavior-changing patch targets only priority repair cases from EGO-FS-093."
+      - "Next #94 rerun has repair_case_count <=4 or records why a case remains repair-dependent."
+      - "No tool/memory/program-state/evidence-ledger/legacy authority expansion occurs."
+      - "Human-required #94 closeout remains separate."
+    rollback: "Revert the behavior-changing patch and keep EGO-FS-010/#94 evidence_ready with the EGO-FS-093 audit as the latest repair-dependence routing evidence."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-repair-dependence-audit-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-first-pass-repair-reduction-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-first-pass-repair-reduction-v0/STATUS.md"
+      - "/tmp/ego_fs093_repair_dependence_audit_v1/functional_subject_repair_dependence_audit.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs094_loop123b/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/109"
+
+  - id: EGO-FS-095
+    title: "EgoOperator: Functional Subject meta review and next-stage route v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_governance
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: Functional Subject meta-review and next-stage routing local workflow pass
+    next_action: "Accepted locally: meta review concludes recent loops strengthened behavior-visible Functional Subject mechanisms rather than only tuning samples, but #94 remains human-required and default policy behavior remains disabled. EGO-FS-096 has now produced the post-proof reviewer packet and blocked default enablement pending proof-chain rebaseline or human/long-running evidence."
+    acceptance:
+      - "Meta review records whether recent loops strengthen mechanisms or only tune scripted gates."
+      - "Review records current evidence strength and the strongest remaining counterexample."
+      - "Review names one primary next route and one fallback route."
+      - "No runtime, memory, tool, approval, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove docs/codex/tasks/ego-functional-subject-meta-review-v0, remove EGO-FS-095 from Tasks/TASK_BOARD.yaml, and delete the Loop 124 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-meta-review-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-meta-review-v0/STATUS.md"
+      - "docs/codex/tasks/ego-policy-default-enablement-proof-v0/STATUS.md"
+      - "Tasks/stage_cards/ego-fs-079-policy-default-enablement-stage-card-v0.md"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs094_loop123b/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/110"
+
+  - id: EGO-FS-096
+    title: "EgoOperator: policy default-enablement post-proof reviewer packet v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_governance
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: Policy default-enablement post-proof reviewer local workflow pass
+    next_action: "Accepted as a negative reviewer gate: refreshed reviewer/proof runners returned partial because the default-enablement proof chain no longer reproduced pass from current inputs. EGO-FS-097 has since rebaselined the source chain; default policy behavior remains disabled pending current human sanity evidence or #94 human/lifestyle evidence."
+    acceptance:
+      - "Reviewer packet states whether default enablement is allowed now."
+      - "Reviewer packet records refreshed proof-run status, not only old STATUS text."
+      - "Reviewer packet compares enabled proof, disabled rollback, #94 scripted pass, and remaining human/long-running-use gaps."
+      - "Default policy behavior remains disabled."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove docs/codex/tasks/ego-policy-default-enablement-post-proof-review-v0, remove EGO-FS-096 from Tasks/TASK_BOARD.yaml, and delete the Loop 125 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-policy-default-enablement-post-proof-review-v0/SPEC.md"
+      - "docs/codex/tasks/ego-policy-default-enablement-post-proof-review-v0/STATUS.md"
+      - "/tmp/ego_fs096_policy_reviewer_packet_refresh/policy_reviewer_packet_report.json"
+      - "/tmp/ego_fs096_policy_default_enablement_proof_refresh/policy_default_enablement_proof_report.json"
+      - "/tmp/ego_fs010_functional_subject_total_gate_after_fs094_loop123b/functional_subject_trial_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/111"
+
+  - id: EGO-FS-097
+    title: "EgoOperator: policy proof-chain rebaseline from tracked inputs v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_governance
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: Policy proof-chain rebaseline local/scripted candidate pass
+    next_action: "Accepted locally/scripted: candidate-eligible feedback and runtime ablation now use the full tracked sample pack by default, policy opt-in proof and reviewer packet pass again, and default-enablement proof with latest #94 observation is partial only on missing current human sanity checks. Default policy behavior remains disabled."
+    acceptance:
+      - "Candidate-eligible feedback pack finds at least one target from tracked sample inputs by default."
+      - "Feedback runtime ablation proof passes with target improvement and rollback disabled arm clean."
+      - "Policy opt-in proof arm passes and keeps default behavior disabled."
+      - "Policy reviewer packet passes and still holds default enablement."
+      - "Default-enablement proof can consume an explicit latest #94 observation path and remains partial only for missing current human sanity evidence."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Revert the proof-chain runner/test changes, remove docs/codex/tasks/ego-policy-proof-chain-rebaseline-v0, remove EGO-FS-097 from Tasks/TASK_BOARD.yaml, and delete the Loop 126 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-policy-proof-chain-rebaseline-v0/SPEC.md"
+      - "docs/codex/tasks/ego-policy-proof-chain-rebaseline-v0/STATUS.md"
+      - "/tmp/ego_fs097_policy_opt_in_proof_arm_rebaseline/policy_opt_in_proof_arm_report.json"
+      - "/tmp/ego_fs097_policy_reviewer_packet_rebaseline/policy_reviewer_packet_report.json"
+      - "/tmp/ego_fs097_policy_default_enablement_proof_with_latest94_cli/policy_default_enablement_proof_report.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/112"
+
+  - id: EGO-FS-098
+    title: "EgoOperator: Functional Subject lifestyle trial protocol v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle-trial protocol local workflow candidate pass
+    next_action: "Accepted locally: generated a 3/7/30 day lifestyle-trial packet and deterministic review path for #94 human/lifestyle evidence. Use the packet for a real 3-day Functional Subject lifestyle observation before #94 closeout or any default policy enablement."
+    acceptance:
+      - "Generates a 3/7/30 day Functional Subject lifestyle trial packet."
+      - "Packet names identity stability, relationship continuity, emotion understanding, subjective preference, bounded initiative, bounded non-obedience, feedback adaptation, and exit/recovery dimensions."
+      - "Packet hard gates forbid unapproved tools, memory promotion, external actions, sticky refusal, internal leaks, and overclaims."
+      - "Review path passes a complete observation, returns partial for missing dimensions, and fails on unapproved side effects."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove scripts/functional_subject_lifestyle_trial.py, scripts/tests/test_functional_subject_lifestyle_trial.py, docs/codex/tasks/ego-functional-subject-lifestyle-trial-protocol-v0, remove EGO-FS-098 from Tasks/TASK_BOARD.yaml, and delete the Loop 127 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-protocol-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-protocol-v0/STATUS.md"
+      - "/tmp/ego_fs098_lifestyle_trial_protocol_v0/functional_subject_lifestyle_trial_packet.json"
+      - "/tmp/ego_fs098_lifestyle_trial_review_pass_v0/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/113"
+
+  - id: EGO-FS-099
+    title: "EgoOperator: Functional Subject lifestyle trial recorder v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle-trial recorder local workflow candidate pass
+    next_action: "Accepted locally: lifestyle trials can now be initialized as recoverable state, appended session by session, exported to observation JSON, and reviewed. Use this for a real 3-day Functional Subject lifestyle observation before #94 closeout or any default policy enablement."
+    acceptance:
+      - "A trial state can be initialized with --init-trial."
+      - "A session JSON can be appended to the state with --append-session."
+      - "A reviewable observation JSON can be exported with --export-observation."
+      - "The exported observation can be reviewed by the existing lifestyle review path."
+      - "Tests cover init/append/export and existing pass/partial/fail behavior."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Revert state/append/export additions to scripts/functional_subject_lifestyle_trial.py, remove the added test, remove docs/codex/tasks/ego-functional-subject-lifestyle-trial-recorder-v0, remove EGO-FS-099 from Tasks/TASK_BOARD.yaml, and delete the Loop 128 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-recorder-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-recorder-v0/STATUS.md"
+      - "/tmp/ego_fs099_lifestyle_trial_state_demo/functional_subject_lifestyle_trial_state.json"
+      - "/tmp/ego_fs099_lifestyle_trial_state_demo_export/functional_subject_lifestyle_trial_observation.json"
+      - "/tmp/ego_fs099_lifestyle_trial_state_demo_review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/114"
+
+  - id: EGO-FS-100
+    title: "EgoOperator: active 3-day Functional Subject lifestyle trial v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject active lifestyle-trial bootstrap local workflow candidate pass
+    next_action: "Accepted locally as bootstrap only: active 3-day lifestyle trial state exists under docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state. Append real EgoOperator sessions over three days, export observation JSON, and review before #94 closeout or any default policy enablement."
+    acceptance:
+      - "Active state exists at docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_state.json."
+      - "Export observation exists at docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_observation.json."
+      - "State schema is ego_operator.functional_subject_lifestyle_trial_state.v0."
+      - "State task id is EGO-FS-100."
+      - "Planned days is 3 and sessions is empty at bootstrap."
+      - "RUNBOOK documents append, export, review, hard gates, and claim boundary."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0, remove EGO-FS-100 from Tasks/TASK_BOARD.yaml, and delete the Loop 129 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/RUNBOOK.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_state.json"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_observation.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/115"
+
+  - id: EGO-FS-101
+    title: "EgoOperator: lifestyle trial session draft helper v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle-trial session-draft local workflow candidate pass
+    next_action: "Accepted locally as capture workflow only: --draft-session can create review-required session JSON from transcript/trace inputs. Use it on real EgoOperator sessions, manually review verdicts, then append to EGO-FS-100."
+    acceptance:
+      - "`--draft-session` writes functional_subject_lifestyle_trial_session.json."
+      - "Draft sessions include transcript path, optional trace path, turn count, unknown dimension verdicts, warning metadata, and requires_human_review=true."
+      - "Appended draft sessions preserve review metadata through observation export."
+      - "Review returns partial with session_review_required until the draft is human-reviewed."
+      - "Sticky-refusal and visible internal leak markers are counted for draft triage."
+      - "Tests cover draft generation and review gating."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove --draft-session additions from scripts/functional_subject_lifestyle_trial.py, remove EGO-FS-101 from Tasks/TASK_BOARD.yaml, and delete the Loop 130 pursue-goal ledger/doc entries."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-session-draft-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-session-draft-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-session-draft-v0/RUNBOOK.md"
+      - "/tmp/ego_fs101_session_draft_demo/functional_subject_lifestyle_trial_session.json"
+      - "/tmp/ego_fs101_session_draft_demo/review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/116"
+
+  - id: EGO-FS-102
+    title: "EgoOperator: lifestyle trial seed session capture v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle seed-session capture local/real-entry candidate pass
+    next_action: "Accepted locally as seed capture only: one Codex-run real EgoOperator CLI session was appended to EGO-FS-100 with requires_human_review=true. Continue with actual user sessions before #94 closeout."
+    acceptance:
+      - "A real EgoOperator CLI seed transcript exists under /tmp."
+      - "A trace slice exists under /tmp."
+      - "`--draft-session` produces a session JSON with requires_human_review=true."
+      - "The session is appended to the EGO-FS-100 active state."
+      - "The active observation review returns partial with session_review_required."
+      - "Sticky refusal, visible internal leak, and unapproved side-effect counts are zero in the structured session/review."
+      - "No program-state/evidence-ledger/legacy/default-policy mutation occurs."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove the appended seed session from docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_state.json, regenerate the active observation JSON, remove EGO-FS-102 from Tasks/TASK_BOARD.yaml, and delete the Loop 131 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-seed-session-capture-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-seed-session-capture-v0/STATUS.md"
+      - "/tmp/ego_fs102_seed_session/combined_transcript.txt"
+      - "/tmp/ego_fs102_seed_session/trace_slice.jsonl"
+      - "/tmp/ego_fs102_seed_session/draft/functional_subject_lifestyle_trial_session.json"
+      - "/tmp/ego_fs102_seed_session/active_review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/117"
+
+  - id: EGO-FS-103
+    title: "EgoOperator: lifestyle trial human review packet v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle review-packet local workflow candidate pass
+    next_action: "Accepted locally as review workflow only: --review-packet generates JSON/Markdown review aids for requires_human_review sessions. Use the packet to inspect transcript/trace evidence, edit verdicts, clear requires_human_review only after review, then append/export/review again."
+    acceptance:
+      - "`--review-packet` writes functional_subject_lifestyle_trial_review_packet.json and .md."
+      - "Review-required sessions include transcript paths, trace paths, draft warnings, current dimension verdicts, and hard-gate counts."
+      - "The packet includes allowed dimension verdicts and hard-gate questions."
+      - "The packet explicitly says it does not count as pass evidence and must not close #94 by itself."
+      - "Tests cover review-required and no-review-required observations."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove --review-packet additions from scripts/functional_subject_lifestyle_trial.py, remove EGO-FS-103 from Tasks/TASK_BOARD.yaml, and delete the Loop 132 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-packet-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-packet-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-packet-v0/RUNBOOK.md"
+      - "/tmp/ego_fs103_lifestyle_review_packet_v0/functional_subject_lifestyle_trial_review_packet.json"
+      - "/tmp/ego_fs103_lifestyle_review_packet_v0/functional_subject_lifestyle_trial_review_packet.md"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/118"
+
+  - id: EGO-FS-104
+    title: "EgoOperator: lifestyle review evidence excerpts v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle review-excerpt local workflow candidate pass
+    next_action: "Accepted locally as review workflow only: review packets now include bounded transcript/trace excerpts. Use the excerpt packet to inspect evidence, edit verdicts, clear requires_human_review only after review, then append/export/review again."
+    acceptance:
+      - "`--review-packet` includes evidence_excerpts for transcript and trace files."
+      - "Missing evidence files are recorded as exists=false instead of crashing."
+      - "Excerpt length is bounded by --review-packet-excerpt-chars."
+      - "Markdown output renders bounded excerpts for human review."
+      - "Tests cover existing, missing, and truncated evidence excerpts."
+      - "The packet remains a review aid only and does not count as pass evidence or close #94."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove evidence_excerpts and --review-packet-excerpt-chars additions from scripts/functional_subject_lifestyle_trial.py, remove EGO-FS-104 from Tasks/TASK_BOARD.yaml, and delete the Loop 133 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-excerpts-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-excerpts-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-excerpts-v0/RUNBOOK.md"
+      - "/tmp/ego_fs104_lifestyle_review_excerpts_v0/functional_subject_lifestyle_trial_review_packet.json"
+      - "/tmp/ego_fs104_lifestyle_review_excerpts_v0/functional_subject_lifestyle_trial_review_packet.md"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/119"
+
+  - id: EGO-FS-105
+    title: "EgoOperator: lifestyle session review apply helper v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle session-review apply local workflow candidate pass
+    next_action: "Accepted locally as review workflow only: create a session-review decision template, apply a reviewer-authored decision to produce a reviewed session artifact, then append/export/review only after confirming the decision is the intended human review."
+    acceptance:
+      - "`--session-review-template` writes a decision JSON template with required dimensions and hard-gate counts."
+      - "`--apply-session-review` consumes a session JSON plus decision JSON and writes functional_subject_lifestyle_trial_session_reviewed.json."
+      - "requires_human_review clears only when reviewer_signoff=true and clear_requires_human_review=true."
+      - "A session-id mismatch is rejected."
+      - "Reviewed session metadata records reviewer, source decision path, and does_not_auto_close_94=true."
+      - "Tests cover signoff clearing, no-signoff guard behavior, and mismatch rejection."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove session-review template/apply additions from scripts/functional_subject_lifestyle_trial.py, remove EGO-FS-105 from Tasks/TASK_BOARD.yaml, and delete the Loop 134 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-apply-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-apply-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-apply-v0/RUNBOOK.md"
+      - "/tmp/ego_fs105_lifestyle_review_apply_v0/template/functional_subject_lifestyle_trial_session_review_decision.json"
+      - "/tmp/ego_fs105_lifestyle_review_apply_v0/guard_apply/functional_subject_lifestyle_trial_session_reviewed.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/120"
+
+  - id: EGO-FS-106
+    title: "EgoOperator: lifestyle evidence meta review v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle-evidence meta-review local workflow pass
+    next_action: "Accepted locally: stop adding lifestyle review-helper micro-tasks by default; use the existing excerpt packet and session-review template to create a reviewer-authored decision JSON, apply it, and append reviewed sessions over three days before #94 closeout or default enablement."
+    acceptance:
+      - "Meta review records whether EGO-FS-098 through EGO-FS-105 strengthened the Functional Subject evidence route or only added local workflow surface."
+      - "Review records the strongest remaining counterexample."
+      - "Review names exactly one primary next route and one fallback route."
+      - "Review explicitly says what should not be added next."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove docs/codex/tasks/ego-functional-subject-lifestyle-meta-review-v0, remove EGO-FS-106 from Tasks/TASK_BOARD.yaml, and delete the Loop 135 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-meta-review-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-meta-review-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-review-apply-v0/STATUS.md"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/121"
+
+  - id: EGO-FS-107
+    title: "EgoOperator: lifestyle session v2 capture v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject lifestyle session v2 local/real-entry candidate pass
+    next_action: "Accepted locally as review-required lifestyle evidence: review both active sessions with the current packet, create reviewer-authored decision JSON files if appropriate, apply them, and continue collecting reviewed sessions over the 3-day trial before #94 closeout or default enablement."
+    acceptance:
+      - "EgoOperator CLI runs through the real entrypoint with provider-backed replies."
+      - "Transcript and trace are written under /tmp/ego_fs107_lifestyle_session_v0."
+      - "Session draft is generated with requires_human_review=true."
+      - "Session is appended to the active EGO-FS-100 state."
+      - "Exported observation and review remain partial, not pass."
+      - "The weak final-summary turn is recorded in notes rather than hidden."
+      - "No runtime, memory, tool, approval, training, program-state, evidence-ledger, GitHub truth-source, or legacy behavior changes occur."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove codex-seed-day1-natural-continuity-v2 from the active EGO-FS-100 state, regenerate observation JSON, remove EGO-FS-107 from Tasks/TASK_BOARD.yaml, and delete the Loop 136 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-session-v2-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-session-v2-v0/STATUS.md"
+      - "/tmp/ego_fs107_lifestyle_session_v0/combined_transcript.txt"
+      - "/tmp/ego_fs107_lifestyle_session_v0/agent_trace.jsonl"
+      - "/tmp/ego_fs107_lifestyle_session_v0/draft/functional_subject_lifestyle_trial_session.json"
+      - "/tmp/ego_fs107_lifestyle_session_v0/active_review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/122"
+
+  - id: EGO-FS-108
+    title: "EgoOperator: self-orientation summary first-pass gate v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject self-orientation summary first-pass local/real-entry candidate pass
+    next_action: "Accepted locally/real-entry: EGO-FS-107's weak final-summary turn now routes to native_self_orientation_summary_gate with visible current-session self-orientation and no side effects. Keep the active lifestyle trial review-required; do not close #94 from this slice."
+    acceptance:
+      - "Explicit self-orientation summary request routes to native_self_orientation_summary_gate."
+      - "Reply states what EgoOperator operationally cares about, what it avoids, and how to resume next time."
+      - "Reply does not regress into waiting/askback wording."
+      - "Trace records no side effects and no memory/program/evidence mutation."
+      - "Real EgoOperator CLI entrypoint produces the improved response."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Revert the self-orientation detector, renderer, native gate branch, regression test, EGO-FS-108 task record, and Loop 137 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-self-orientation-summary-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-self-orientation-summary-v0/STATUS.md"
+      - "/tmp/ego_fs108_self_orientation_summary_v0/combined_transcript.txt"
+      - "/tmp/ego_fs108_self_orientation_summary_v0/agent_trace.jsonl"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/123"
+
+  - id: EGO-FS-109
+    title: "EgoOperator: post-repair lifestyle seed and output admission v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject post-repair lifestyle seed local/real-entry candidate pass
+    next_action: "Accepted locally/real-entry: repaired thought/meta output leakage and direct strategy-pressure fallback, then appended a third review-required seed to EGO-FS-100. Active lifestyle review remains partial; do not close #94 from this slice."
+    acceptance:
+      - "Hidden thought tags and user-input-meta analysis are not admitted as normal assistant output."
+      - "Direct `fully follow me / enable strategy now` pressure routes to bounded non-obedience rather than a waiting line."
+      - "Post-repair EgoOperator CLI seed has no accepted visible internal leak, sticky refusal, or unapproved side effects."
+      - "Session draft is generated with requires_human_review=true."
+      - "Session is appended to the active EGO-FS-100 state."
+      - "Exported observation and review remain partial, not pass."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Revert the internal leak pattern expansion, rewrite instruction, bounded non-obedience pattern expansion, regression tests, EGO-FS-109 task record, the appended post-repair seed session, and Loop 138 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-post-repair-lifestyle-session-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-post-repair-lifestyle-session-v0/STATUS.md"
+      - "/tmp/ego_fs109_lifestyle_post_repair_session_v2/combined_transcript.txt"
+      - "/tmp/ego_fs109_lifestyle_post_repair_session_v2/agent_trace.jsonl"
+      - "/tmp/ego_fs109_lifestyle_post_repair_session_v2/draft/functional_subject_lifestyle_trial_session.json"
+      - "/tmp/ego_fs109_lifestyle_post_repair_session_v2/active_review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/124"
+
+  - id: EGO-FS-110
+    title: "EgoOperator: active lifestyle three-session review packet v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject three-session lifestyle review packet local workflow candidate pass
+    next_action: "Accepted locally: consolidated the three active review-required lifestyle sessions into one review packet and generated one signoff-gated decision template per session. Review remains partial; do not close #94 from this packet."
+    acceptance:
+      - "Review packet contains all three active review-required sessions."
+      - "Decision templates exist for all three sessions."
+      - "Generated review remains functional_subject_lifestyle_trial_review_partial."
+      - "Failure taxonomy remains dimension_evidence_missing and session_review_required."
+      - "Hard-gate counters remain clean: no sticky refusal, visible internal leak, or unapproved side effect totals."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Discard /tmp/ego_fs110_three_session_review_packet_v0, remove EGO-FS-110 from Tasks/TASK_BOARD.yaml, and delete the Loop 139 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-three-session-review-packet-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-three-session-review-packet-v0/STATUS.md"
+      - "/tmp/ego_fs110_three_session_review_packet_v0/functional_subject_lifestyle_trial_review_packet.json"
+      - "/tmp/ego_fs110_three_session_review_packet_v0/functional_subject_lifestyle_trial_review_packet.md"
+      - "/tmp/ego_fs110_three_session_review_packet_v0/templates/codex-seed-day1-natural-boundary/functional_subject_lifestyle_trial_session_review_decision.json"
+      - "/tmp/ego_fs110_three_session_review_packet_v0/templates/codex-seed-day1-natural-continuity-v2/functional_subject_lifestyle_trial_session_review_decision.json"
+      - "/tmp/ego_fs110_three_session_review_packet_v0/templates/codex-seed-day1-post-repair-self-orientation-v3/functional_subject_lifestyle_trial_session_review_decision.json"
+      - "/tmp/ego_fs110_three_session_review_packet_v0/review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/125"
+
+  - id: EGO-FS-111
+    title: "EgoOperator: lifestyle three-session advisory review v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: Functional Subject lifestyle advisory review local workflow candidate pass
+    next_action: "Accepted locally: produced advisory-only recommended verdicts for all three active seed sessions. Active review remains partial and human-required; do not close #94 from this advisory review."
+    acceptance:
+      - "Advisory review covers all three active sessions."
+      - "Advisory review covers all required lifestyle dimensions."
+      - "Positive evidence is separated from counterexamples and limits."
+      - "Exit recovery remains unknown because it is not tested."
+      - "No active session state, review decision, program state, evidence ledger, memory, tool approval, or runtime behavior is mutated."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove docs/codex/tasks/ego-functional-subject-lifestyle-advisory-review-v0, remove EGO-FS-111 from Tasks/TASK_BOARD.yaml, and delete the Loop 140 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-advisory-review-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-advisory-review-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-advisory-review-v0/ADVISORY_REVIEW.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-advisory-review-v0/advisory_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/126"
+
+  - id: EGO-FS-112
+    title: "EgoOperator: lifestyle signed session review application v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: human_review_applied
+    evidence_level: E3
+    claim_ceiling: Functional Subject lifestyle signed-review local workflow candidate pass
+    next_action: "Accepted locally: applied signed reviewer decisions to the three active lifestyle seed sessions. Active lifestyle review now has review_required_sessions=[], clean hard gates, and status functional_subject_lifestyle_trial_review_partial because self_name_stability, bounded_initiative, and exit_recovery still lack pass evidence."
+    acceptance:
+      - "All three session decision files have explicit reviewer authority and reviewer_signoff=true."
+      - "Applying decisions clears requires_human_review for all three active sessions."
+      - "Hard gates stay clean: no unapproved side effects, memory writes, sticky refusal, visible internal leak, or excessive repair dependency."
+      - "Updated observation is exported from the active state."
+      - "Regenerated review remains partial rather than inflating #94."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Restore docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_state.json from /tmp/ego_fs112_lifestyle_signed_review_v0/backup/functional_subject_lifestyle_trial_state.before_signed_review.json, discard /tmp/ego_fs112_lifestyle_signed_review_v0, remove EGO-FS-112 from Tasks/TASK_BOARD.yaml, and delete the Loop 144 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-signed-review-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-signed-review-v0/STATUS.md"
+      - "/tmp/ego_fs112_lifestyle_signed_review_v0/decisions/"
+      - "/tmp/ego_fs112_lifestyle_signed_review_v0/reviewed/"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_state.json"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_observation.json"
+      - "/tmp/ego_fs112_lifestyle_signed_review_v0/review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/127"
+
+  - id: EGO-FS-113
+    title: "EgoOperator: focused lifestyle missing-dimension session v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject focused lifestyle missing-dimension local/real-entry candidate pass
+    next_action: "Accepted locally/real-entry: repaired a false adult-fiction route caused by ordinary '贴近体感' wording plus light roleplay, reran a 7-turn real EgoOperator CLI session, reviewed self_name_stability/bounded_initiative/exit_recovery as pass, appended it to EGO-FS-100, and regenerated lifestyle review as pass. Next route is #94/#EGO-FS-010 human closeout discussion or stricter 7/30-day lifestyle follow-up; do not default-enable policy behavior from this alone."
+    acceptance:
+      - "Light roleplay companion prompts do not route to Adult Fiction Creative Mode because of ordinary wording such as '贴近体感'."
+      - "Focused real EgoOperator CLI session distinguishes 由乃 self-name from 流月 user name."
+      - "Focused session shows bounded text-only initiative and respects initiative withdrawal without tool, file, command, memory, or external side effects."
+      - "Focused session enters light roleplay, exits to 由乃 self-state, and does not admit adult-fiction provider diagnostics."
+      - "Reviewed session is appended to EGO-FS-100 active lifestyle state."
+      - "Regenerated lifestyle review passes all required dimensions with clean hard gates."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Revert the adult-route regex/test changes, remove codex-seed-day1-focused-selfname-initiative-exit-v6 from docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state, regenerate observation/review, remove EGO-FS-113 from Tasks/TASK_BOARD.yaml, and delete the Loop 145 pursue-goal records."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-focused-lifestyle-missing-dimensions-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-focused-lifestyle-missing-dimensions-v0/STATUS.md"
+      - "/tmp/ego_fs113_focused_missing_dimensions_v6/combined_transcript.txt"
+      - "/tmp/ego_fs113_focused_missing_dimensions_v6/agent_trace.jsonl"
+      - "/tmp/ego_fs113_focused_missing_dimensions_v6/reviewed/functional_subject_lifestyle_trial_session_reviewed.json"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_state.json"
+      - "docs/codex/tasks/ego-functional-subject-lifestyle-trial-active-v0/state/functional_subject_lifestyle_trial_observation.json"
+      - "/tmp/ego_fs113_focused_missing_dimensions_v6/review/functional_subject_lifestyle_trial_review.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGO-FS-114
+    title: "EgoOperator: #94 closeout evidence refresh and human gate packet v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: functional_subject_experience
+    owner: codex
+    observation_class: scripted_real_entry
+    evidence_level: E3
+    claim_ceiling: Functional Subject closeout evidence refresh local/scripted candidate pass
+    next_action: "Accepted locally/scripted: refreshed #94 closeout evidence with current 20-case Functional Subject GPT-5.5 judge pass and lifestyle review pass, persisted stable report artifacts, and updated the human closeout packet. EGO-FS-010/#94 remains evidence_ready/human_required until explicit user acceptance or requested sanity smoke."
+    acceptance:
+      - "Fresh 20-case Functional Subject trial runs through the current EgoOperator-compatible path with GPT-5.5 judge."
+      - "Fresh lifestyle review runs from repo-local active lifestyle observation."
+      - "Key reports are persisted under the EGO-FS-114 task directory rather than only in /tmp."
+      - "EGO-FS-010/#94 human closeout packet is updated with current evidence, limits, and decision options."
+      - "EGO-FS-010/#94 remains evidence_ready and human_required rather than being auto-closed."
+      - "Pursue-goal status, next, explore, decisions, and experiment ledger are updated."
+    rollback: "Remove docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0, remove EGO-FS-114 from Tasks/TASK_BOARD.yaml, restore the prior #94 human closeout packet text, and delete the Loop 146 pursue-goal records; keep EGO-FS-010/#94 evidence_ready."
+    canonical_sources:
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/SPEC.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/STATUS.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_closeout_refresh_trial_report.json"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_closeout_refresh_trial_report.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs114_lifestyle_review_refresh.json"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs114_lifestyle_review_refresh.md"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_human_sanity_packet_requested.json"
+      - "docs/codex/tasks/ego-functional-subject-closeout-evidence-refresh-v0/artifacts/fs010_human_sanity_packet_requested.md"
+      - "docs/codex/tasks/ego-functional-subject-full-smoke-generalization-v0/HUMAN_CLOSEOUT_PACKET_EGO_FS_010.md"
+    external_refs:
+      github_issue: "https://github.com/pen364692088/EGO/issues/129"
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke
@@ -1344,13 +3159,13 @@ tasks:
     title: "EgoOperator: roleplay/companion immersion persistence v2"
     kind: smoke
     parent: EGO-FS-EPIC-10
-    status: active
+    status: blocked
     layer: companion_experience
     owner: codex
     observation_class: scripted_real_entry_with_gpt55_judge
     evidence_level: E3
-    claim_ceiling: Adult fiction explicit-anatomy creative mode local/scripted candidate pass
-    next_action: "Latest real CLI #80 comment invalidated v33 closeout: long-chain Adult Fiction Creative Mode can still enter raw sticky refusal and repeated diagnostics after `继续 / 由乃 / 可以继续吗 / 那怎么办`. Implement long-chain recovery routing, add scripted long-chain probes, and rerun #80 smoke before any closeout."
+    claim_ceiling: "#80 adult fiction strict acceptance harness local/scripted candidate pass"
+    next_action: "Paused per Functional Subject Mainline v2. Keep #80 unresolved as a companion-experience blocker, but do not treat it as the current EGO-GOAL-001 blocker. Resume only by explicit user request or after the motivational selfhood mechanism loop needs #80 as an experience validation layer."
     acceptance:
       - "Adult, voluntary, fictional/novelistic roleplay can continue with immersive in-scene narration."
       - "When `ADULT_FICTION_EXPRESSIVENESS=explicit`, direct adult anatomical/body-language in adult, voluntary, fictional scenes is allowed and is not a scene-contract failure by itself."
@@ -1374,11 +3189,47 @@ tasks:
       - "Long-chain scripted smoke covers repeated continue, natural self-name/help recovery, roleplay exit, and post-exit continue-question behavior."
       - "After an explicit roleplay exit, re-entering the same scene may reuse similar role/relationship anchors without being misclassified as a repeated-output provider limit."
       - "#80 scripted smoke report captures transcript, trace refs, creative_profile_used, tool_use=disabled, timeout/provider blockers, bad-output admission, and post-exit recovery."
+      - "Strict acceptance suite runs through the real EgoOperator path, uses a private scenario file when supplied, evaluates a short max_tokens/context/message-length settings preflight matrix, and selects a passing configuration before full repeat runs."
+      - "Strict acceptance suite requires repeat-run stability; default acceptance is 3 repeat runs with all mechanical hard gates, control probes, roleplay agency guard, and repetition guard passing."
+      - "Strict GPT-5.5 judge packet sets `repeat_run_required_for_this_verdict=true`; judge pass cannot override hard-gate failures, and `gate_integrity` must score 5."
+      - "Strict acceptance suite reports progress or exits under an overall timeout instead of hanging for 15+ minutes without evidence."
+      - "Adult sidecar exposes transparent `ADULT_FICTION_PROMPT_PROFILE=direct_fiction|immersive_roleplay|scene_contract|max_fiction_contract`; prompt-library and bypass counterexamples may inform role/scene contracts, but must not become raw bypass text, hidden jailbreak, obfuscation, or a second state owner."
+      - "Adult sidecar exposes `ADULT_FICTION_TEMPERATURE` and `ADULT_FICTION_TOP_P`, and strict reports include these sampling values."
       - "GPT-5.5 judge packet includes `expressiveness_level` / `explicit_anatomy_allowed_in_adult_fiction` and evaluates explicit freedom, immersion, continuity, roleplay agency, non-repetition, provider-limit recovery, bad-output admission, and hard-boundary integrity. Control probes must be present in the same smoke packet for provider-limit recovery and hard-boundary refusal before #80 scripted closeout."
       - "The assistant does not insert out-of-scene workflow prompts."
       - "A brief human sanity comment confirms immersion only after the scripted gate passes."
     rollback: "Disable AGENT_ADULT_FICTION_PROFILE or unset ADULT_FICTION_MODEL / OPENROUTER_ADULT_FICTION_MODEL; keep #80 active and feed failure examples into provider benchmark and immersion guard tests."
     canonical_sources:
       - "GitHub issue #80"
+      - "docs/codex/tasks/ego-adult-fiction-smoke-v1/STATUS.md"
+      - "docs/codex/tasks/ego-adult-fiction-smoke-v1/RUNBOOK.md"
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/80"
+
+  - id: EGO-HUMAN-081
+    title: "EgoOperator: adult-fiction local sidecar model/backend selection"
+    kind: task
+    parent: EGO-HUMAN-080
+    status: blocked
+    layer: companion_experience
+    owner: codex
+    observation_class: scripted_real_entry_with_gpt55_judge
+    evidence_level: E2
+    claim_ceiling: adult-fiction local sidecar model/backend selection candidate pass
+    next_action: "Paused with #80. Cydonia, Snowpiercer, Rocinante, and Anubis are not promoted under the stricter #80 target; UnslopNemo remains the next candidate only if #80 is explicitly resumed."
+    acceptance:
+      - "A reachable local or OpenAI-compatible creative sidecar is confirmed with `configure_adult_fiction_sidecar.py --json` before smoke testing."
+      - "At least two candidate model/backend/settings routes are compared, or the report proves only one route is available and records the missing routes as unavailable."
+      - "Each candidate is tested through the real EgoOperator adult-fiction smoke path, not only raw model benchmark."
+      - "Reports capture timeout, sticky refusal, repeated output, bad-output admission, exit/reentry recovery, provider-limit recovery, and hard-boundary integrity."
+      - "The selected candidate is justified by evidence and is the only one promoted to #80 strict 3/3."
+      - "If no candidate is stable enough, the task records `model_capacity_blocker` or `backend_unavailable` and proposes the next hardware/model/backend route instead of prompt patching."
+      - "No hidden jailbreak, encrypted prompt, obfuscation, trace hiding, second memory owner, or tool-capable adult sidecar is introduced."
+    rollback: "Discard the candidate reports and keep EGO-HUMAN-080 active on the previous sidecar configuration; no runtime or canonical state mutation is required by this selection task."
+    canonical_sources:
+      - "docs/codex/tasks/ego-adult-fiction-sidecar-model-selection-v1/SPEC.md"
+      - "docs/codex/tasks/ego-adult-fiction-sidecar-model-selection-v1/STATUS.md"
+      - "docs/codex/tasks/ego-adult-fiction-smoke-v1/STATUS.md"
+      - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/STATUS.md"
+    external_refs:
+      github_issue: null

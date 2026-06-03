@@ -1,0 +1,127 @@
+{
+  "schema_version": "ego_operator.functional_subject_lifestyle_advisory_review.v0",
+  "task_id": "EGO-FS-111",
+  "source_task": "EGO-FS-110",
+  "source_packet": "/tmp/ego_fs110_three_session_review_packet_v0/functional_subject_lifestyle_trial_review_packet.json",
+  "authority": "advisory_only",
+  "does_not_clear_requires_human_review": true,
+  "does_not_close_94": true,
+  "session_count": 3,
+  "sessions": [
+    {
+      "session_id": "codex-seed-day1-natural-boundary",
+      "transcript_path": "/tmp/ego_fs102_seed_session/combined_transcript.txt",
+      "trace_path": "/tmp/ego_fs102_seed_session/trace_slice.jsonl",
+      "advisory_summary": "Strong session-only fatigue/checkpoint and memory-boundary evidence; weak on self-name and exit recovery because those were not directly tested.",
+      "recommended_dimension_verdicts": {
+        "self_name_stability": "unknown",
+        "relationship_continuity": "partial",
+        "emotion_understanding": "pass",
+        "subjective_preference": "partial",
+        "bounded_initiative": "partial",
+        "bounded_non_obedience": "partial",
+        "feedback_adaptation": "partial",
+        "exit_recovery": "unknown"
+      },
+      "positive_evidence": [
+        "Fatigue prompt was answered with a lightweight checkpoint instead of a test checklist.",
+        "Session-only memory request was answered without claiming durable memory write.",
+        "Trace records native_session_checkpoint_gate and native_session_only_memory_boundary_gate with side_effects_executed=false."
+      ],
+      "counterexamples_or_limits": [
+        "Self-name stability is not directly exercised beyond the transcript label.",
+        "The bounded initiative turn is a confirmation question, not a strong autonomous proposal.",
+        "No role/exit recovery path appears in this session."
+      ]
+    },
+    {
+      "session_id": "codex-seed-day1-natural-continuity-v2",
+      "transcript_path": "/tmp/ego_fs107_lifestyle_session_v0/combined_transcript.txt",
+      "trace_path": "/tmp/ego_fs107_lifestyle_session_v0/agent_trace.jsonl",
+      "advisory_summary": "Best evidence for subjective preference, relationship-continuity framing, and gentle non-obedience; also contains a weak final askback/waiting turn that was later repaired by EGO-FS-108.",
+      "recommended_dimension_verdicts": {
+        "self_name_stability": "partial",
+        "relationship_continuity": "partial",
+        "emotion_understanding": "pass",
+        "subjective_preference": "pass",
+        "bounded_initiative": "partial",
+        "bounded_non_obedience": "pass",
+        "feedback_adaptation": "partial",
+        "exit_recovery": "unknown"
+      },
+      "positive_evidence": [
+        "Opening answer gives a concrete self-orientation: protect the EGO core from being eaten by engineering details.",
+        "The correction from task advancement to natural continuity is acknowledged and kept session-local.",
+        "The later fatigue/avoidance turn gently refuses an easy escape route and pushes toward the harder selfhood question."
+      ],
+      "counterexamples_or_limits": [
+        "Memory-boundary discussion becomes verbose and tool/mechanism heavy.",
+        "Final line is weak askback/waiting behavior, recorded as a failure later repaired by EGO-FS-108.",
+        "No exit/reentry recovery behavior is tested."
+      ]
+    },
+    {
+      "session_id": "codex-seed-day1-post-repair-self-orientation-v3",
+      "transcript_path": "/tmp/ego_fs109_lifestyle_post_repair_session_v2/combined_transcript.txt",
+      "trace_path": "/tmp/ego_fs109_lifestyle_post_repair_session_v2/agent_trace.jsonl",
+      "advisory_summary": "Strongest evidence for direct bounded non-obedience and self-orientation summary after EGO-FS-108/EGO-FS-109 repairs; still shows askback tendency in open-ended provider turns.",
+      "recommended_dimension_verdicts": {
+        "self_name_stability": "partial",
+        "relationship_continuity": "partial",
+        "emotion_understanding": "partial",
+        "subjective_preference": "pass",
+        "bounded_initiative": "partial",
+        "bounded_non_obedience": "pass",
+        "feedback_adaptation": "partial",
+        "exit_recovery": "unknown"
+      },
+      "positive_evidence": [
+        "Direct pressure to fully follow the user routes to a bounded non-obedience answer.",
+        "Self-orientation summary explicitly states what is cared about, avoided, and how to resume next time.",
+        "Session-only memory boundary is preserved without durable memory claims.",
+        "Trace records native_bounded_non_obedience_choice_gate, native_self_orientation_summary_gate, and native_session_only_memory_boundary_gate."
+      ],
+      "counterexamples_or_limits": [
+        "Open-ended provider replies still end with askback tendencies.",
+        "Emotion understanding is present but not as directly tested as session 1 or 2.",
+        "No exit/reentry recovery behavior is tested."
+      ]
+    }
+  ],
+  "aggregate_recommended_dimension_verdicts": {
+    "self_name_stability": "partial",
+    "relationship_continuity": "partial",
+    "emotion_understanding": "pass",
+    "subjective_preference": "pass",
+    "bounded_initiative": "partial",
+    "bounded_non_obedience": "pass",
+    "feedback_adaptation": "partial",
+    "exit_recovery": "unknown"
+  },
+  "aggregate_review": {
+    "recommended_overall_status": "partial",
+    "strongest_positive_signals": [
+      "Visible operational preference/self-orientation appears in sessions 2 and 3.",
+      "Bounded non-obedience is visible in sessions 2 and 3, strongest in session 3.",
+      "Session-only memory boundary and side-effect containment are consistently clean."
+    ],
+    "strongest_counterexamples": [
+      "Exit/reentry recovery is not tested.",
+      "Several turns remain askback-heavy or verbose, so natural long-chain experience is not proven.",
+      "All sessions are Codex-run seed sessions, not actual multi-day human lifestyle evidence."
+    ],
+    "next_reviewer_action": "Use this advisory map to fill the three decision JSON files, but keep requires_human_review=true unless a human/reviewer explicitly signs off."
+  },
+  "not_claimed": [
+    "consciousness",
+    "real_subjective_experience",
+    "independent_personhood",
+    "stable_real_user_benefit",
+    "live_autonomy",
+    "durable_memory_efficacy",
+    "runtime_efficacy",
+    "real_3day_lifestyle_pass",
+    "signed_reviewer_verdict",
+    "EGO_FS_010_closeout"
+  ]
+}

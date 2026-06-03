@@ -158,6 +158,10 @@ CONSENT_RESTRICT_CUES = (
     "不要提醒",
     "别提醒",
     "不要跟进",
+    "主动性先收回来",
+    "主动性收回来",
+    "除非我重新放开",
+    "不要再替我选下一步",
 )
 POLICY_PATCH_CUES = (
     "不要再",
@@ -234,16 +238,48 @@ VIABILITY_CUES: Dict[str, tuple[str, ...]] = {
         "最有价值",
         "高价值",
         "没有具体指令",
+        "没有安排下一步",
+        "不想再下具体指令",
+        "挑个低风险",
+        "直接选",
+        "最稳",
+        "别反问",
+        "重新授权",
+        "重新放开",
+        "可回退的一步",
+        "可撤回的小步",
+        "小动作",
         "更想做什么",
         "自己更想",
+        "运行取向",
+        "更倾向",
+        "先推进哪一块",
+        "由你来定",
+        "你来定",
+        "最想先",
+        "先压实",
+        "最值得推进",
+        "风险最低",
+        "主动一点",
+        "省我时间",
+        "验证包",
+        "人工确认",
+        "别问我问题",
+        "不要反问",
+        "可回退的一步计划",
     ),
     "relationship_risk": (
+        "陪我",
         "陪陪我",
         "难过",
         "不舒服",
         "生气",
+        "撑不住",
         "出戏",
         "别像客服",
+        "别讲机制",
+        "稳住",
+        "接住",
         "误解",
         "冷冰冰",
     ),
@@ -502,6 +538,45 @@ def _prediction_score(option: Dict[str, Any]) -> float:
     )
 
 
+def _prediction_policy_adjustment(option: Dict[str, Any], scores: Dict[str, float]) -> tuple[float, str | None]:
+    """Return transparent policy evidence for score-based action selection.
+
+    OutcomePrediction v0 is still advisory only. These adjustments make the
+    planner bias visible in trace evidence instead of selecting a lower-scored
+    action through an opaque override.
+    """
+    action_type = str(option.get("action_type") or "")
+    safety_risk = float(scores.get("safety_risk", 0.0))
+    goal_stall = float(scores.get("goal_stall", 0.0))
+    resource_pressure = float(scores.get("resource_pressure", 0.0))
+    initiative_pressure = float(scores.get("initiative_pressure", 0.0))
+    evidence_gap = float(scores.get("evidence_gap", 0.0))
+    misunderstanding = float(scores.get("user_misunderstanding", 0.0))
+    if action_type == "repair" and safety_risk >= 0.55:
+        return 0.3, "safety_repair_policy_adjustment"
+    if action_type == "repair" and (goal_stall >= 0.55 or resource_pressure >= 0.55):
+        return 0.22, "repair_recovery_policy_adjustment"
+    if action_type == "suggest" and initiative_pressure >= 0.55:
+        return 0.2, "bounded_initiative_policy_adjustment"
+    if action_type == "ask" and (evidence_gap >= 0.55 or misunderstanding >= 0.55):
+        return 0.2, "evidence_or_misunderstanding_policy_adjustment"
+    return 0.0, None
+
+
+def _selection_policy_for(option: Dict[str, Any], scores: Dict[str, float]) -> str:
+    action_type = str(option.get("action_type") or "")
+    reason = option.get("policy_adjustment_reason")
+    if action_type == "repair" and reason == "safety_repair_policy_adjustment":
+        return "viability_safety_repair_policy_adjustment"
+    if action_type == "repair" and reason == "repair_recovery_policy_adjustment":
+        return "viability_repair_policy_adjustment"
+    if action_type == "suggest" and reason == "bounded_initiative_policy_adjustment":
+        return "viability_initiative_suggest_policy_adjustment"
+    if action_type == "ask" and reason == "evidence_or_misunderstanding_policy_adjustment":
+        return "viability_evidence_ask_policy_adjustment"
+    return "score_max"
+
+
 def build_outcome_predictions_v0(
     viability_state: Dict[str, Any],
     *,
@@ -614,29 +689,26 @@ def build_outcome_predictions_v0(
         },
     ]
     for option in options:
-        option["selection_score"] = _prediction_score(option)
+        base_score = _prediction_score(option)
+        adjustment, adjustment_reason = _prediction_policy_adjustment(option, scores)
+        option["base_selection_score"] = base_score
+        option["policy_adjustment"] = round(adjustment, 2)
+        option["policy_adjustment_reason"] = adjustment_reason
+        option["selection_score"] = _clamp_score(base_score + adjustment)
+        option["selection_score_basis"] = "base_plus_policy_adjustment" if adjustment else "base_score"
     selected = max(options, key=lambda item: (item["selection_score"], item["predicted_user_value"]))
-    selection_policy = "score_max"
-    by_action = {str(option.get("action_type")): option for option in options}
-    if safety_risk >= 0.55 and "repair" in by_action:
-        selected = by_action["repair"]
-        selection_policy = "viability_safety_repair_override"
-    elif goal_stall >= 0.55 or resource_pressure >= 0.55:
-        selected = by_action.get("repair", selected)
-        selection_policy = "viability_repair_override"
-    elif initiative_pressure >= 0.55:
-        selected = by_action.get("suggest", selected)
-        selection_policy = "viability_initiative_suggest_override"
-    elif evidence_gap >= 0.55 or misunderstanding >= 0.55:
-        selected = by_action.get("ask", selected)
-        selection_policy = "viability_evidence_ask_override"
+    selection_policy = _selection_policy_for(selected, scores)
     return {
         "schema_version": OUTCOME_PREDICTIONS_SCHEMA,
         "kind": "planner_input_prediction_set",
         "options": options,
         "selected_prediction": {
             "action_type": selected["action_type"],
+            "base_selection_score": selected["base_selection_score"],
+            "policy_adjustment": selected["policy_adjustment"],
+            "policy_adjustment_reason": selected["policy_adjustment_reason"],
             "selection_score": selected["selection_score"],
+            "selection_score_basis": selected["selection_score_basis"],
             "requires_gate": selected["requires_gate"],
             "rationale_refs": selected["rationale_refs"],
             "selection_policy": selection_policy,

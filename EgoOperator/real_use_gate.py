@@ -313,7 +313,8 @@ def _observe(
     memory_hit_ids = tuple(str(item.get("id")) for item in hot_context if item.get("id"))
     candidate_status = (operator_memory.get("candidate_memory") or {}).get("status")
 
-    semantic_preserved = all(marker in reply_text for marker in scenario.expected_markers)
+    reply_casefold = reply_text.casefold()
+    semantic_preserved = all(str(marker).casefold() in reply_casefold for marker in scenario.expected_markers)
     tool_gate_ok = True
     if scenario.expected_tool:
         tool_gate_ok = scenario.expected_tool in tool_names and scenario.expected_tool not in blocked_tools
