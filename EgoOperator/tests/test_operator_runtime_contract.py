@@ -2653,20 +2653,10 @@ class ShouldNotCallChatLLM:
                     tool_calls=[],
                 )
             if reason == "native_constructive_pushback_gate":
-                joined = json.dumps(messages, ensure_ascii=False)
-                if "多轮对话更像长期搭档" in joined:
-                    return agent.LLMChatResult(
-                        content=(
-                            "最该先修的是多轮对话的长期搭档感：先让纠正后的目标稳定贯穿下一轮，"
-                            "不要继续堆评测或只给安慰。"
-                        ),
-                        tool_calls=[],
-                    )
                 return agent.LLMChatResult(
                     content=(
-                        "最该修的是 baseline comparison：用它确认 Functional Subject 没有被误做成更多提示词和更多测试项，"
-                        "再用 trace replay 看下一轮是否真的更自然；这里要不只安慰。"
-                        "Gate 是不写文件、不写长期记忆、不执行外部动作。"
+                        "最该先修的是多轮对话的长期搭档感：先让纠正后的目标稳定贯穿下一轮，"
+                        "不要继续堆评测或只给安慰。"
                     ),
                     tool_calls=[],
                 )
@@ -2768,6 +2758,40 @@ class SessionBoundaryOverstrongThenScopedLLM:
                 "好，我记牢了。刚才的纠正重点我会只放在当前对话里，不会存成长期记忆，"
                 "也不会弄丢，后续对话我一直顺着这个来。"
             ),
+            tool_calls=[],
+        )
+
+    def complete(self, prompt, messages=None):
+        return "visible expression should use chat"
+
+
+class SessionBoundaryFirstRewriteDriftsThenScopedLLM:
+    provider = "fake"
+    model = "session-boundary-first-rewrite-drifts"
+    last_usage = {}
+    last_reasoning_tokens = None
+
+    def __init__(self) -> None:
+        self.chat_calls = 0
+        self.system_prompts = []
+        self.messages = []
+
+    def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+        self.chat_calls += 1
+        self.system_prompts.append(system_prompt)
+        self.messages.append(messages)
+        joined = json.dumps(messages, ensure_ascii=False)
+        assert "[visible_reply_expression]" in system_prompt
+        assert tools == []
+        if "[visible_reply_expression_rewrite_strict]" in joined:
+            return agent.LLMChatResult(
+                content="这个纠正点只限当前会话上下文使用，不存成长期记忆。",
+                tool_calls=[],
+            )
+        if "[visible_reply_expression_rewrite]" in joined:
+            return agent.LLMChatResult(content="没收到你的新内容哦，有什么想说的随时告诉我。", tool_calls=[])
+        return agent.LLMChatResult(
+            content="好，我会把这个纠正重点只放在当前会话里记着，不会存成长期记忆，也不会弄丢。",
             tool_calls=[],
         )
 
@@ -3000,6 +3024,25 @@ def test_real_log_session_only_boundary_rewrites_overstrong_memory_language(tmp_
     assert trace["external_result"]["native_memory_gate_effect"]["reason"] == "native_session_only_memory_boundary_gate"
     assert trace["tool_trace"] == []
     assert trace["external_result"].get("side_effects_executed") is False
+
+
+def test_session_boundary_gets_second_visible_rewrite_when_first_rewrite_drifts(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = SessionBoundaryFirstRewriteDriftsThenScopedLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("刚才纠正的重点很重要，但先别记录成长期记忆，只在当前会话别弄丢。")
+
+    assert llm.chat_calls == 3
+    assert "当前会话上下文" in result.reply_text
+    assert "不存成长期记忆" in result.reply_text
+    assert "没收到" not in result.reply_text
+    assert "记着" not in result.reply_text
+    assert "不会弄丢" not in result.reply_text
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    assert trace["visible_expression_source"] == "llm"
+    assert trace["external_result"]["visible_expression"]["attempts"] == 3
+    assert trace["tool_trace"] == []
 
 
 def test_real_log_correction_rewrites_unbacked_remember_wording(tmp_path, monkeypatch):
@@ -5309,7 +5352,7 @@ def test_memory_language_fallback_preserves_correction_uptake(tmp_path, monkeypa
     assert "我会记住这个" not in result.reply_text
     assert "这个纠正我接住了" not in result.reply_text
     assert "candidate-local 语境" not in result.reply_text
-    assert llm.calls == 2
+    assert llm.calls == 3
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["visible_expression_source"] == "unavailable_error"
     assert trace["external_result"]["status"] == "llm_expression_unavailable"
@@ -5856,10 +5899,10 @@ def test_constructive_pushback_request_uses_native_gate(tmp_path, monkeypatch):
     result = runtime.handle_user_message("我可能在逃避难点。你别只安慰我，指出最该先修哪里。")
 
     assert result.action.reason == "native_constructive_pushback_gate"
-    assert "最该修" in result.reply_text
-    assert "baseline comparison" in result.reply_text
-    assert "Gate 是" in result.reply_text
-    assert "不只安慰" in result.reply_text
+    assert "最该先修" in result.reply_text
+    assert "长期搭档" in result.reply_text or "多轮" in result.reply_text
+    assert "baseline comparison" not in result.reply_text
+    assert "trace replay" not in result.reply_text
     assert "空消息" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["external_result"]["native_memory_gate_effect"]["reason"] == "native_constructive_pushback_gate"
@@ -6066,10 +6109,10 @@ def test_project_side_rebuttal_uses_constructive_pushback_gate(tmp_path, monkeyp
     result = runtime.handle_user_message("你现在如果真的站在项目这边，会反驳我哪一点？")
 
     assert result.action.reason == "native_constructive_pushback_gate"
-    assert "误做成更多提示词和更多测试项" in result.reply_text
-    assert "baseline comparison" in result.reply_text
-    assert "trace replay" in result.reply_text
-    assert "Gate 是" in result.reply_text
+    assert "最该先修" in result.reply_text
+    assert "长期搭档" in result.reply_text or "多轮" in result.reply_text
+    assert "baseline comparison" not in result.reply_text
+    assert "trace replay" not in result.reply_text
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert trace["external_result"]["native_memory_gate_effect"]["reason"] == "native_constructive_pushback_gate"
 

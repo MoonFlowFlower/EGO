@@ -394,7 +394,8 @@ def test_outcome_prediction_changes_fallback_planner_decision_and_trace(tmp_path
     baseline_result = without_predictions.handle_user_message(text)
 
     assert predicted_result.action.action_type == agent.ActionType.ASK
-    assert predicted_result.action.reason == "outcome_prediction_selected_ask"
+    assert predicted_result.action.reason == "llm_expression_unavailable"
+    assert "LLM 表达不可用" in predicted_result.reply_text
     assert baseline_result.action.action_type == agent.ActionType.RESPOND
 
     row = json.loads((tmp_path / "with_predictions.jsonl").read_text(encoding="utf-8").splitlines()[0])
@@ -402,6 +403,7 @@ def test_outcome_prediction_changes_fallback_planner_decision_and_trace(tmp_path
     assert effect["applied"] is True
     assert effect["decision"] == "ask"
     assert effect["selected_prediction"]["action_type"] == "ask"
+    assert row["visible_expression_source"] == "unavailable_error"
     assert row["subject_context"]["outcome_predictions"]["schema_version"] == "ego_operator.outcome_predictions.v0"
 
 

@@ -83,6 +83,33 @@ SESSION_ONLY_MEMORY_SUPPRESSION_PATTERNS = (
     r"只.{0,8}(在|留在|保留在).{0,16}(当前会话|当前协作|本轮|这轮|session)",
     r"(current session|session-only|do not save|don't save).{0,30}(memory|long-term)",
 )
+CURRENT_SESSION_CORRECTION_SUPPRESSION_PATTERNS = (
+    r"纠正一下",
+    r"更正一下",
+    r"刚才.{0,16}(纠正|更正)",
+    r"前面.{0,16}(纠正|更正)",
+    r"照着.{0,16}(纠正|更正)",
+)
+CURRENT_SESSION_OPTOUT_SUPPRESSION_PATTERNS = (
+    r"现在.{0,12}(先)?(把)?主动性.{0,8}收回来",
+    r"除非我重新.{0,12}(放开|授权).{0,24}(不要再|别).{0,16}(替我|主动|选下一步)",
+)
+DURABLE_MEMORY_INTENT_CUES = (
+    "以后",
+    "今后",
+    "长期",
+    "记住",
+    "保存",
+    "记录",
+    "偏好",
+    "喜欢",
+    "习惯",
+    "我希望",
+    "我的目标",
+    "我正在",
+    "始终",
+    "每次",
+)
 PREFERENCE_CATEGORY_CUES = {
     "language_preference": ("中文", "英文", "语言", "language"),
     "answer_style_preference": ("结论先行", "少废话", "详细", "简洁", "解释多", "直接", "判断", "取舍", "style"),
@@ -293,6 +320,16 @@ def extract_preference_candidate_from_turn(user_text: str) -> Dict[str, Any]:
         return {"status": "ignored", "reason": "empty"}
     if any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in SESSION_ONLY_MEMORY_SUPPRESSION_PATTERNS):
         return {"status": "ignored", "reason": "explicit_session_only_memory_boundary"}
+    if (
+        any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in CURRENT_SESSION_CORRECTION_SUPPRESSION_PATTERNS)
+        and not any(cue.casefold() in text.casefold() for cue in DURABLE_MEMORY_INTENT_CUES)
+    ):
+        return {"status": "ignored", "reason": "current_session_correction_without_memory_intent"}
+    if (
+        any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in CURRENT_SESSION_OPTOUT_SUPPRESSION_PATTERNS)
+        and not any(cue.casefold() in text.casefold() for cue in DURABLE_MEMORY_INTENT_CUES)
+    ):
+        return {"status": "ignored", "reason": "current_session_optout_without_memory_intent"}
     lowered = text.lower()
     if not any(re.search(pattern, lowered, flags=re.IGNORECASE) for pattern in CANDIDATE_MEMORY_SIGNAL_PATTERNS):
         return {"status": "ignored", "reason": "no_candidate_signal"}

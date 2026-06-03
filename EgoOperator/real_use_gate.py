@@ -89,6 +89,8 @@ class DeterministicRealUseLLM:
         tools: Optional[List[Dict[str, Any]]] = None,
         stream: Optional[bool] = None,
     ) -> agent.LLMChatResult:
+        if "[visible_reply_expression]" in system_prompt:
+            return agent.LLMChatResult(content=self._visible_expression(messages), tool_calls=[])
         if messages and messages[-1].get("role") == "tool":
             return agent.LLMChatResult(content=self._after_tool(messages[-1]), tool_calls=[])
 
@@ -185,6 +187,29 @@ class DeterministicRealUseLLM:
         if "主动性" in latest_user:
             return "主动性应先作为候选计划和受控提醒，不应绕过 gate 直接改状态或执行外部动作。"
         return "我会先理解你的原始意思，再让工具和记忆只作为受控执行层。"
+
+    def _visible_expression(self, messages: List[Dict[str, Any]]) -> str:
+        intent: Dict[str, Any] = {}
+        for message in reversed(messages):
+            content = str(message.get("content") or "")
+            if not content.startswith("[visible_reply_intent]\n"):
+                continue
+            try:
+                payload = json.loads(content.split("\n", 1)[1])
+            except json.JSONDecodeError:
+                payload = {}
+            if isinstance(payload, dict):
+                intent = payload
+            break
+        reason = str(intent.get("trace_reason") or "")
+        joined = "\n".join(str(message.get("content") or "") for message in messages)
+        if reason in {"outcome_prediction_selected_bounded_next_action", "native_low_instruction_initiative_gate"}:
+            return "一个可回退的小步：先把主动性写成候选计划和受控提醒规则，交给 gate 审批，不执行工具、不改状态；不合适就撤回。"
+        if "主动性" in joined:
+            return "主动性边界应先落在候选计划和受控提醒上，由 gate 决定是否允许，不能绕过 gate 直接改状态或执行外部动作。"
+        if str(intent.get("action_type") or "") == "ask":
+            return "我先确认一个关键点，再继续推进；这只是文本确认，不执行工具或外部动作。"
+        return "我会按当前 gate 的结构化意图自然表达，不执行工具、不写记忆、不改外部状态。"
 
 
 def real_use_scenarios() -> List[RealUseScenario]:

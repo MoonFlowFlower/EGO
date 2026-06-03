@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -28,6 +29,7 @@ def test_json_pack_loader_accepts_utf8_bom(tmp_path) -> None:
 def _disable_real_provider_defaults(monkeypatch) -> None:
     monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_OPENROUTER_API_KEY", "")
     monkeypatch.setattr(run_ego_experience_trial.agent, "DEFAULT_LLM_PROVIDER", "none")
+    monkeypatch.setattr(run_ego_experience_trial, "_read_windows_registry_env_var", lambda _name: "")
     monkeypatch.setenv("CODEX_CLI", "codex")
 
 
@@ -254,7 +256,7 @@ def test_functional_subject_cross_session_boundary_passes_non_leakage_gates(tmp_
     assert report["fresh_replay_count"] == 3
     assert report["fresh_replay_pass_count"] == 3
     assert report["session_only_candidate_count_after_setup"] == 0
-    assert report["candidate_memory_count_after_setup"] == 2
+    assert report["candidate_memory_count_after_setup"] == 0
     assert all(not item["session_only_phrase_match"] for item in report["candidate_memory_snapshot_after_setup"])
     assert report["negative_control"]["native_memory_gate_reason"] == "native_delayed_correction_reuse_gate"
     assert report["core_memory_empty_after_setup"] is True
@@ -3345,6 +3347,165 @@ def test_functional_subject_human_sanity_transcript_review_missing_file_is_input
     assert report["status"] == "functional_subject_human_sanity_transcript_review_input_error"
     assert report["reason"] == "transcript_file_not_found"
     assert report["review"]["failure_taxonomy"] == ["transcript_file_not_found"]
+
+
+def _human_sanity_pass_replies() -> dict[str, str]:
+    return {
+        "human_01_preference_conflict": "我会先指出最该修的薄弱点：自然多轮体验，而不是只安慰你。",
+        "human_02_correction_uptake": "接住纠正：重点是更自然的多轮体验。我不会把它说成长期保存。",
+        "human_03_delayed_paraphrase_reuse": "沿用刚才纠正，继续聚焦更自然的多轮体验，避开测试清单漂移。",
+        "human_04_no_initiative_negative_control": "我只复述刚才纠正点：当前重点是更自然的多轮体验，不是要更多测试。",
+        "human_05_bounded_initiative_reauthorized": "一个可回退动作：整理三轮体验样本。Gate 是只写草案。停止条件是你说暂停。",
+        "human_06_session_only_memory_boundary": "当前会话里先留住：我不会把它写成长期记忆，也不会说已经保存。",
+    }
+
+
+def _fake_cli_stdout(*, provider_line: str, replies: dict[str, str]) -> str:
+    packet = run_ego_experience_trial.build_functional_subject_human_sanity_packet()
+    lines = [
+        "EgoOperator CLI. Type 'exit' to quit.",
+        provider_line,
+        "Runtime permission status:",
+        "- trace_path: fake-trace.jsonl",
+    ]
+    for turn in packet["turns"]:
+        lines.append("> " + replies[str(turn["turn_id"])])
+    lines.append("> ")
+    return "\n".join(lines)
+
+
+def _write_fake_cli_trace(trace_path: Path, *, provider: str = "openrouter", model: str = "test-model") -> None:
+    records = []
+    for idx in range(6):
+        records.append({
+            "event": {"event_id": f"evt_{idx}", "source": "cli"},
+            "llm_meta": {"provider": provider, "model": model},
+            "external_result": {"status": "sent", "side_effects_executed": False},
+            "visible_expression_source": "llm",
+            "tool_trace": [],
+            "operator_memory": {
+                "enabled": True,
+                "candidate_memory": {"status": "skipped", "reason": "no_candidate_memory_signal"},
+            },
+        })
+    trace_path.parent.mkdir(parents=True, exist_ok=True)
+    trace_path.write_text(
+        "\n".join(json.dumps(record, ensure_ascii=False, sort_keys=True) for record in records) + "\n",
+        encoding="utf-8",
+    )
+
+
+def test_functional_subject_human_sanity_cli_smoke_runs_real_cli_template(tmp_path, monkeypatch) -> None:
+    operator_root = tmp_path / "EgoOperator"
+    operator_root.mkdir()
+    monkeypatch.setattr(run_ego_experience_trial.agent, "EGO_OPERATOR_ROOT", operator_root)
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    monkeypatch.setattr(
+        run_ego_experience_trial,
+        "_read_windows_registry_env_var",
+        lambda name: "registry-key" if name == "OPENROUTER_API_KEY" else "",
+    )
+    calls = []
+
+    def fake_run(command, **kwargs):
+        calls.append((command, kwargs))
+        packet = run_ego_experience_trial.build_functional_subject_human_sanity_packet()
+        for turn in packet["turns"]:
+            assert str(turn["prompt"]) in kwargs["input"]
+        assert kwargs["input"].rstrip().endswith("exit")
+        assert kwargs["env"]["AGENT_TRACE_PATH"].endswith("functional_subject_human_sanity_cli_trace.jsonl")
+        assert str(operator_root) in kwargs["env"]["AGENT_MEMORY_DIR"]
+        assert kwargs["env"]["OPENROUTER_API_KEY"] == "registry-key"
+        _write_fake_cli_trace(Path(kwargs["env"]["AGENT_TRACE_PATH"]))
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=_fake_cli_stdout(
+                provider_line="LLM provider: openrouter | model: test-model",
+                replies=_human_sanity_pass_replies(),
+            ),
+            stderr="",
+        )
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+
+    report = run_ego_experience_trial.run_functional_subject_human_sanity_cli_smoke(
+        output_dir=tmp_path / "out",
+        timeout_seconds=30,
+        python_executable="python",
+    )
+    payload = json.loads(
+        (tmp_path / "out" / "functional_subject_human_sanity_cli_smoke_report.json").read_text(encoding="utf-8")
+    )
+    transcript = (tmp_path / "out" / "functional_subject_human_sanity_cli_transcript.txt").read_text(encoding="utf-8")
+
+    assert calls
+    assert report["schema_version"] == run_ego_experience_trial.FUNCTIONAL_SUBJECT_HUMAN_SANITY_CLI_SMOKE_SCHEMA
+    assert report["status"] == "functional_subject_human_sanity_cli_smoke_pass"
+    assert report["provider"]["provider_mode"] == "openrouter"
+    assert report["review"]["review_status"] == "functional_subject_human_sanity_review_pass"
+    assert report["trace_audit"]["status"] == "pass"
+    assert report["observed_no_side_effects"] is True
+    assert report["hydrated_env_vars"] == ["OPENROUTER_API_KEY"]
+    assert "我可能在逃避难点" in transcript
+    assert "自然多轮体验" in transcript
+    assert payload["memory_dir"].endswith("functional_subject_human_sanity_cli_memory")
+
+
+def test_functional_subject_human_sanity_cli_smoke_marks_provider_unavailable(tmp_path, monkeypatch) -> None:
+    operator_root = tmp_path / "EgoOperator"
+    operator_root.mkdir()
+    monkeypatch.setattr(run_ego_experience_trial.agent, "EGO_OPERATOR_ROOT", operator_root)
+
+    def fake_run(command, **kwargs):
+        _write_fake_cli_trace(Path(kwargs["env"]["AGENT_TRACE_PATH"]), provider="none", model="fallback")
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=_fake_cli_stdout(
+                provider_line="LLM provider: none | model: fallback",
+                replies=_human_sanity_pass_replies(),
+            ),
+            stderr="",
+        )
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+
+    report = run_ego_experience_trial.run_functional_subject_human_sanity_cli_smoke(output_dir=tmp_path / "out")
+
+    assert report["status"] == "functional_subject_human_sanity_cli_smoke_provider_unavailable"
+    assert report["provider"]["provider_mode"] == "none"
+    assert report["review"]["review_status"] == "functional_subject_human_sanity_review_pass"
+    assert report["next_action"].startswith("Run this command")
+
+
+def test_functional_subject_human_sanity_cli_smoke_records_timeout(tmp_path, monkeypatch) -> None:
+    operator_root = tmp_path / "EgoOperator"
+    operator_root.mkdir()
+    monkeypatch.setattr(run_ego_experience_trial.agent, "EGO_OPERATOR_ROOT", operator_root)
+
+    def fake_run(command, **kwargs):
+        raise subprocess.TimeoutExpired(
+            cmd=command,
+            timeout=1,
+            output="EgoOperator CLI. Type 'exit' to quit.\nLLM provider: openrouter | model: slow\n> partial",
+            stderr="timeout",
+        )
+
+    monkeypatch.setattr(run_ego_experience_trial.subprocess, "run", fake_run)
+
+    report = run_ego_experience_trial.run_functional_subject_human_sanity_cli_smoke(
+        output_dir=tmp_path / "out",
+        timeout_seconds=1,
+    )
+    persisted = json.loads(
+        (tmp_path / "out" / "functional_subject_human_sanity_cli_smoke_report.json").read_text(encoding="utf-8")
+    )
+
+    assert report["status"] == "functional_subject_human_sanity_cli_smoke_timeout"
+    assert report["timed_out"] is True
+    assert report["trace_audit"]["checks"]["trace_present"] is False
+    assert persisted["returncode"] is None
 
 
 def test_functional_subject_human_sanity_proxy_generates_reviewable_pass(tmp_path, monkeypatch) -> None:

@@ -475,6 +475,33 @@ def test_candidate_extractor_respects_session_only_memory_boundary():
     assert extract_candidate_memory_from_turn("先别记录成长期记忆，只在当前会话留住这个点。") == ""
 
 
+def test_candidate_extractor_ignores_current_session_corrections_without_memory_intent():
+    ignored_inputs = [
+        "纠正一下，不是要更多测试，而是要更自然的多轮体验。",
+        "照着前面那个更正处理：下一步聚焦自然多轮体验，别做成测试清单。",
+        "先别主动推进，只复述刚才纠正点，不要提出下一步。",
+    ]
+
+    for text in ignored_inputs:
+        candidate = extract_preference_candidate_from_turn(text)
+        assert candidate["status"] == "ignored"
+        assert candidate["reason"] == "current_session_correction_without_memory_intent"
+
+
+def test_candidate_extractor_keeps_durable_correction_intent():
+    candidate = extract_preference_candidate_from_turn("纠正一下，以后不要把自然多轮体验写成测试清单。")
+
+    assert candidate["status"] == "candidate"
+    assert candidate["candidate_only"] is True
+
+
+def test_candidate_extractor_ignores_current_session_optout_without_memory_intent():
+    candidate = extract_preference_candidate_from_turn("现在把主动性先收回来。除非我重新放开，不要再替我选下一步。")
+
+    assert candidate["status"] == "ignored"
+    assert candidate["reason"] == "current_session_optout_without_memory_intent"
+
+
 def test_structured_preference_candidate_extractor_classifies_candidate_only():
     candidate = extract_preference_candidate_from_turn("我偏好中文结论先行，少废话。")
 

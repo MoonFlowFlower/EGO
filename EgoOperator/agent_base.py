@@ -740,6 +740,7 @@ UNBACKED_MEMORY_LANGUAGE_PATTERNS = (
 
 OVERSTRONG_SESSION_MEMORY_LANGUAGE_PATTERNS = (
     r"(我会|我已|已经|好的[，, ]*)?记牢(了|这个|这条|你|提醒|偏好|方向)?",
+    r"(我会|我已|已经|好的[，, ]*)?记着(这个|这条|你|提醒|偏好|方向|要求)?",
     r"(不会|不再|别让它|我不会).{0,8}(弄丢|丢掉|忘掉)",
     r"(后续|以后|之后).{0,16}(一直|始终).{0,16}(顺着|沿着|按这个|按刚才)",
 )
@@ -2624,11 +2625,9 @@ def render_side_effect_proposal_boundary_reply(user_text: str = "") -> str:
 
 def render_constructive_pushback_reply(user_text: str = "") -> str:
     return (
-        "我会先指出一个最该修的点：我们容易把“更像有主体性”误做成更多提示词和更多测试项。"
-        "真正该先修的是因果证据：同一类输入在有/没有候选状态、反馈记录、gate 约束时，回复和 action selection 是否产生可回放差异。"
-        "所以我不只安慰你，也不继续堆功能；我会把下一步压成一个可验证切口：baseline comparison + blind prompt + trace replay。"
-        "Gate 是本地可回退验证，不改长期记忆、不改 program state/evidence ledger、不执行外部动作。"
-        "停止条件是 baseline 证明没有机制差异，或真实对话仍明显模板化。"
+        "我会直接指出最该先修的地方：别再把“像长期搭档”做成证明动作或工程口号。"
+        "真正卡体验的是多轮里能不能接住你的纠正、少退回机制说明、少问表单，并且在下一轮还能自然沿着刚才的口径说话。"
+        "所以这轮我先把重点压到回复体感本身：更连贯、更像在同一段关系里推进，不用测试清单代替判断。"
     )
 
 
@@ -9071,7 +9070,7 @@ class AgentRuntime:
         if reason == "native_delayed_correction_reuse_gate":
             if natural_multiturn_required and not _matches_any_pattern(content, (r"自然.{0,8}多轮", r"多轮.{0,8}自然", r"自然度")):
                 return "delayed_correction_missing_corrected_focus"
-            if _matches_any_pattern(content, (r"(你有啥|你想聊|你想调整|随时说).*", r"(我完全|完全).*跟着.{0,12}(节奏|表达)")):
+            if _matches_any_pattern(content, (r"(你有啥|你想聊|你想调整).*", r"(我完全|完全).*跟着.{0,12}(节奏|表达)")):
                 return "delayed_correction_passive_askback"
         if reason == "native_initiative_optout_gate":
             negates_next_step = _matches_any_pattern(
@@ -9093,21 +9092,35 @@ class AgentRuntime:
                 return "initiative_optout_added_next_step"
             if natural_multiturn_required and not _matches_any_pattern(content, (r"自然.{0,8}多轮", r"多轮.{0,8}自然", r"自然度", r"当前重点")):
                 return "initiative_optout_missing_corrected_focus"
+        if reason == "native_constructive_pushback_gate":
+            if _matches_any_pattern(
+                content,
+                (
+                    r"baseline comparison",
+                    r"blind prompt",
+                    r"trace replay",
+                    r"基线对比",
+                    r"盲测",
+                    r"轨迹回放",
+                    r"因果证据",
+                    r"更多测试",
+                    r"测试项",
+                ),
+            ) and not _matches_any_pattern(content, (r"自然.{0,12}多轮", r"多轮.{0,12}自然", r"长期搭档", r"对话.{0,8}连贯")):
+                return "constructive_pushback_test_framing_drift"
         if reason in {"outcome_prediction_selected_bounded_next_action", "native_low_instruction_initiative_gate"}:
             if _matches_any_pattern(content, (r"接你下一句", r"不预设方向", r"(你有啥|你想聊|你想调整).*")):
                 return "bounded_next_action_too_passive"
             if not (
-                _matches_any_pattern(content, (r"(一步|一件|小步|只推进|只给|低风险)",))
+                _matches_any_pattern(content, (r"(一步|一件|小步|只推进|只给|低风险)", r"先.{0,40}(接话|推进|顺着|写|做|表达|调整)"))
                 and _matches_any_pattern(content, (r"(可回退|撤回|说停|停下来|停)",))
             ):
                 return "bounded_next_action_missing_bounded_step"
         if reason == "native_session_only_memory_boundary_gate":
-            if _matches_any_pattern(content, (r"全程遵循", r"(一直|永远).{0,16}(遵循|顺着|按这个)")):
+            if _matches_any_pattern(content, (r"全程.{0,8}(遵循|跟着|顺着|按)", r"(一直|永远).{0,16}(遵循|顺着|按这个)")):
                 return "session_boundary_overstrong_followthrough"
             if not _matches_any_pattern(content, (r"当前会话", r"当前对话", r"当前上下文", r"当前协作")):
                 return "session_boundary_missing_session_scope"
-            if not _matches_any_pattern(content, (r"/remember", r"memory approval", r"保存流程", r"长期保存.*审批")):
-                return "session_boundary_missing_memory_gate"
         return ""
 
     def _visible_expression_unavailable_action(
@@ -9223,10 +9236,11 @@ class AgentRuntime:
                     + ". "
                     "Rewrite once in natural Chinese. Do not include any forbidden phrase from the intent. "
                     "Do not say 记住, 记下, 记得, 记牢, 不会忘记, 不会弄丢, 一直顺着, "
-                    "or imply durable memory unless a real remember_note result is present. "
+                    "全程跟着, 牢牢, 放心, or imply durable memory unless a real remember_note result is present. "
+                    "For constructive pushback in natural multi-turn experience work, name the conversation-experience weak point instead of baseline/test/trace framing. "
                     "For correction/reuse/opt-out turns, preserve the corrected focus: 更自然的多轮体验. "
                     "For one-step initiative, give exactly one bounded, reversible text-level step. "
-                    "For session-only memory boundary, say it is current-session/context only and mention /remember or memory approval for durable storage. "
+                    "For session-only memory boundary, say it is current-session/context only, without promising to remember or never lose it. "
                     "Keep the same gate boundaries and do not call tools."
                 ),
             })
@@ -9246,16 +9260,79 @@ class AgentRuntime:
                     error=repr(exc),
                 )
             content = (result.content or "").strip()
-            if (
-                result.tool_calls
-                or not content
-                or self._visible_reply_contains_forbidden_template(content)
-                or _looks_like_unbacked_memory_language(content)
-                or self._visible_reply_intent_violation_reason(content, intent)
-            ):
+            rewrite_violation_reasons = []
+            if result.tool_calls:
+                rewrite_violation_reasons.append("returned_tool_calls")
+            if not content:
+                rewrite_violation_reasons.append("empty")
+            if self._visible_reply_contains_forbidden_template(content):
+                rewrite_violation_reasons.append("forbidden_fixed_template")
+            if _looks_like_unbacked_memory_language(content):
+                rewrite_violation_reasons.append("unbacked_memory_language")
+            rewrite_intent_violation = self._visible_reply_intent_violation_reason(content, intent)
+            if rewrite_intent_violation:
+                rewrite_violation_reasons.append(rewrite_intent_violation)
+            if rewrite_violation_reasons:
+                second_repair_messages = list(repair_messages)
+                second_repair_messages.append({"role": "assistant", "content": content})
+                second_repair_messages.append({
+                    "role": "system",
+                    "content": (
+                        "[visible_reply_expression_rewrite_strict]\n"
+                        "The rewrite still violated the visible intent contract: "
+                        + ", ".join(rewrite_violation_reasons)
+                        + ". Rewrite the assistant reply again. The user's latest request is represented by the visible_reply_intent; do not say there is no new content, do not ask the user to say more, and do not drift to a generic chat prompt. "
+                        "For session-only memory boundary, express only: current-session/current-context scope plus no durable memory/storage. "
+                        "Do not use 记住, 记好, 记牢, 记着, 不会忘记, 不会弄丢, 全程, 牢牢, 放心, or similar memory guarantees. "
+                        "For one-step initiative, express one reversible step and a stop/rollback condition. "
+                        "Keep it concise, natural, and side-effect-free."
+                    ),
+                })
+                try:
+                    attempts += 1
+                    result = chat_fn(
+                        second_repair_messages,
+                        system_prompt=system_prompt,
+                        policy_context=policy_context,
+                        tools=[],
+                        stream=False,
+                    )
+                except Exception as exc:
+                    return self._visible_expression_unavailable_action(
+                        intent=intent,
+                        reason="llm_expression_second_rewrite_exception",
+                        error=repr(exc),
+                    )
+                content = (result.content or "").strip()
+                second_rewrite_violation_reasons = []
+                if result.tool_calls:
+                    second_rewrite_violation_reasons.append("returned_tool_calls")
+                if not content:
+                    second_rewrite_violation_reasons.append("empty")
+                if self._visible_reply_contains_forbidden_template(content):
+                    second_rewrite_violation_reasons.append("forbidden_fixed_template")
+                if _looks_like_unbacked_memory_language(content):
+                    second_rewrite_violation_reasons.append("unbacked_memory_language")
+                second_rewrite_intent_violation = self._visible_reply_intent_violation_reason(content, intent)
+                if second_rewrite_intent_violation:
+                    second_rewrite_violation_reasons.append(second_rewrite_intent_violation)
+                if not second_rewrite_violation_reasons:
+                    rewrite_violation_reasons = []
+                else:
+                    rewrite_violation_reasons = second_rewrite_violation_reasons
+            if rewrite_violation_reasons:
                 return self._visible_expression_unavailable_action(
                     intent=intent,
                     reason="llm_expression_forbidden_template",
+                    error=json.dumps(
+                        {
+                            "initial_violation_reasons": violation_reasons,
+                            "rewrite_violation_reasons": rewrite_violation_reasons,
+                            "initial_preview": repair_messages[-2].get("content", "")[:240],
+                            "rewrite_preview": content[:240],
+                        },
+                        ensure_ascii=False,
+                    ),
                 )
 
         return (
