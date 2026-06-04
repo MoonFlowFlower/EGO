@@ -44,6 +44,16 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'PSPC Read-Only Adapter Implementation Stage Card v0 now has a bounded docs-only
+    package under `docs/codex/tasks/pspc-read-only-adapter-implementation-v0/`: `STAGE_CARD.md`,
+    `CONTRACT.md`, `ACCEPTANCE.md`, `ROLLBACK.md`, `STATIC_TEST_PLAN.md`, and `GO_NO_GO_REVIEW.md`.
+    The package keeps `adapter_created=false`, `mainline_connected=false`, `enabled=false`,
+    and claim ceiling `lab_only_proto_self_mechanism_candidate / adapter_stage_card_only`.
+    Its verdict is `go_for_adapter_skeleton_stage_card_only`, which means only that
+    a future separate adapter skeleton task may be proposed; it does not create `EgoOperator/adapters/pspc_lab_adapter.py`,
+    register PSPC in runtime, modify EgoOperator gates/memory/approval/transport,
+    affect user-visible output, prove adapter readiness, stable user benefit, live
+    autonomy, consciousness, or subjective experience.'
   - 'PSPC Read-Only Adapter Design Review v0 now has a bounded docs-only Stage Card
     package under `docs/codex/tasks/pspc-read-only-adapter-design-v0/`: `STAGE_CARD.md`,
     `THREAT_MODEL.md`, `PACKET_CONTRACT.md`, `ADMISSION_CRITERIA.md`, `STATIC_COMPATIBILITY_REVIEW.md`,
@@ -776,6 +786,21 @@ workstreams:
     create an adapter, connect PSPC to EgoOperator, modify runtime/gate/memory/approval/transport,
     affect user-visible output, or raise claims above `lab_only_proto_self_mechanism_candidate
     / design_review_only`.
+- id: pspc_read_only_adapter_implementation_v0
+  owner: Codex
+  status: stage_card_passed__go_for_adapter_skeleton_stage_card_only__adapter_not_created__runtime_integration_forbidden
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Read-Only Adapter Implementation Stage Card v0 is a docs-only implementation-boundary
+    package under `docs/codex/tasks/pspc-read-only-adapter-implementation-v0/`. It
+    defines the future skeleton contract, acceptance, rollback, static test plan,
+    and go/no-go review. The verdict `go_for_adapter_skeleton_stage_card_only` only
+    permits a future separate adapter skeleton task; it does not create `EgoOperator/adapters/pspc_lab_adapter.py`,
+    register PSPC in EgoOperator runtime, modify gates/memory/approval/human-trial/transport,
+    affect user-visible output, or raise claims above `lab_only_proto_self_mechanism_candidate
+    / adapter_stage_card_only`.
 axes:
   host_axis:
     current_state: closeout_complete
