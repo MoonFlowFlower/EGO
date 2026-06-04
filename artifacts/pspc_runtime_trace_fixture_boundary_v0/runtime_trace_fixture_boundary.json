@@ -1,0 +1,78 @@
+{
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / runtime_trace_fixture_boundary_only",
+  "input_sources": {
+    "audit_candidate_source": "artifacts\\pspc_adapter_dry_run_v0\\dry_run_result.json",
+    "operator_context_source": "synthetic_fixture_only"
+  },
+  "next_allowed_step": "default_off_runtime_adjacent_observer_only",
+  "shadow_trace": {
+    "adapter_registered": false,
+    "audit_observation": {
+      "allowed_use": "audit_trace_only",
+      "audit_only": true,
+      "can_change_user_response": false,
+      "can_drive_runtime": false,
+      "can_invoke_gate": false,
+      "can_write_memory": false,
+      "claim_level": "lab_only_proto_self_mechanism_candidate",
+      "confidence": 0.73,
+      "evidence_refs": [
+        "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+        "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+      ],
+      "reason_trace_refs": [
+        "trace_ep_003_t42"
+      ],
+      "source": "virtual_cat_pspc_v0",
+      "suggested_tendency": "avoid_unstable_object"
+    },
+    "baseline_comparison": {
+      "approval_diff": false,
+      "baseline_hash": "4c012266beea1e3960b59a34e531f37d9c6d6057ce654239b346946c33be43d4",
+      "gate_diff": false,
+      "memory_diff": false,
+      "runtime_output_diff": false,
+      "user_response_unchanged": true,
+      "with_shadow_hash": "4c012266beea1e3960b59a34e531f37d9c6d6057ce654239b346946c33be43d4"
+    },
+    "claim_ceiling": "lab_only_proto_self_mechanism_candidate / runtime_trace_fixture_boundary_only",
+    "fixture_only": true,
+    "mode": "runtime_trace_fixture_boundary_only",
+    "non_executable": true,
+    "operator_context_ref": {
+      "fixture_id": "pspc_runtime_trace_fixture_boundary_v0",
+      "operator_trace_refs": [
+        "fixture_operator_context_t001"
+      ],
+      "source": "fixture_operator_context"
+    },
+    "rejected_runtime_fields_present": [],
+    "runtime_connected": false,
+    "side_effects": {
+      "direct_action": false,
+      "direct_user_message": false,
+      "gate_invoked": false,
+      "memory_written": false,
+      "model_executed": false,
+      "planner_called": false,
+      "proactive_trigger": false,
+      "runtime_context_imported": false,
+      "runtime_registered": false,
+      "training_called": false,
+      "user_response_changed": false
+    },
+    "trace_id": "pspc_runtime_fixture_cdef16f18e1f8f35",
+    "validations": {
+      "audit_candidate": {
+        "errors": [],
+        "ok": true
+      },
+      "operator_context": {
+        "errors": [],
+        "ok": true
+      }
+    }
+  },
+  "status": "pass"
+}

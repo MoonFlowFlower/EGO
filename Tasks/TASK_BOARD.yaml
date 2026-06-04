@@ -3287,13 +3287,13 @@ tasks:
     title: "PSPC Shadow: runtime trace fixture boundary v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_trace_fixture_boundary_only"
-    next_action: "Use fixture EgoOperator context plus PSPC audit candidate to write artifact-only shadow trace data without calling real runtime."
+    next_action: "Accepted locally: fixture harness writes artifact-only non-executable shadow trace data and rejects forbidden/runtime-authority fields. Next allowed task is PSPC-SHADOW-003 default-off observer only."
     acceptance:
       - "Fixture harness rejects missing forbidden flags, enabled:true, mainline_connected:true, action, user_message, memory_write, gate_decision, approval, transport, send, schedule, runtime_registration, and proactive_trigger fields."
       - "Output is a shadow trace artifact only and cannot be interpreted as action, runtime proposal execution, gate decision, memory write, or user-visible response."
@@ -3311,7 +3311,7 @@ tasks:
     title: "PSPC Shadow: default-off runtime-adjacent observer v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
