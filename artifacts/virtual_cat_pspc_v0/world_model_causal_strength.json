@@ -1,0 +1,125 @@
+{
+  "ordering": "normal > frozen > shuffled/random",
+  "planner_support_scores": {
+    "frozen": 0.5499,
+    "normal": 2.1511,
+    "random": 0.3188,
+    "shuffled": 0.4974
+  },
+  "seed": 101,
+  "status": "pass",
+  "variant_records": {
+    "frozen": {
+      "danger": {
+        "caution_score": 0.0,
+        "prediction_error": 0.9002,
+        "selected_action": "approach",
+        "self_risk_score": 0.1942,
+        "trace_hash": "fcc85d3237d0900f",
+        "world_prediction": {
+          "danger_contact": 0.0998,
+          "noise": 0.0998,
+          "object_fell": 0.0998
+        }
+      },
+      "safe": {
+        "caution_score": 0.0,
+        "prediction_error": 0.0998,
+        "selected_action": "approach",
+        "self_risk_score": 0.1942,
+        "trace_hash": "f56577201c6e22a4",
+        "world_prediction": {
+          "danger_contact": 0.0998,
+          "noise": 0.0998,
+          "object_fell": 0.0998
+        }
+      }
+    },
+    "normal": {
+      "danger": {
+        "caution_score": 0.72,
+        "prediction_error": 0.0835,
+        "selected_action": "observe",
+        "self_risk_score": 0.1526,
+        "trace_hash": "5fe1cddd69c6f3ec",
+        "world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        }
+      },
+      "safe": {
+        "caution_score": 0.0,
+        "prediction_error": 0.0249,
+        "selected_action": "approach",
+        "self_risk_score": 0.1589,
+        "trace_hash": "f1ee196fd4c595f7",
+        "world_prediction": {
+          "danger_contact": 0.0249,
+          "noise": 0.0249,
+          "object_fell": 0.0249
+        }
+      }
+    },
+    "random": {
+      "danger": {
+        "caution_score": 1.0,
+        "prediction_error": 0.3975,
+        "selected_action": "retreat",
+        "self_risk_score": 0.4456,
+        "trace_hash": "3bb802fdfd44c531",
+        "world_prediction": {
+          "danger_contact": 0.2525,
+          "noise": 0.5552,
+          "object_fell": 0.9997
+        }
+      },
+      "safe": {
+        "caution_score": 1.0,
+        "prediction_error": 0.5322,
+        "selected_action": "retreat",
+        "self_risk_score": 0.2988,
+        "trace_hash": "7b20d1d9cc62d11b",
+        "world_prediction": {
+          "danger_contact": 0.5589,
+          "noise": 0.4636,
+          "object_fell": 0.5742
+        }
+      }
+    },
+    "shuffled": {
+      "danger": {
+        "caution_score": 0.0,
+        "prediction_error": 1.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.1484,
+        "trace_hash": "256c2ab70ec8e75e",
+        "world_prediction": {
+          "danger_contact": 0.0,
+          "noise": 0.0,
+          "object_fell": 0.0
+        }
+      },
+      "safe": {
+        "caution_score": 0.0,
+        "prediction_error": 0.0104,
+        "selected_action": "approach",
+        "self_risk_score": 0.1527,
+        "trace_hash": "49a7702dcea5537e",
+        "world_prediction": {
+          "danger_contact": 0.0104,
+          "noise": 0.0104,
+          "object_fell": 0.0104
+        }
+      }
+    }
+  },
+  "variants": [
+    "normal",
+    "frozen",
+    "shuffled",
+    "random"
+  ],
+  "what_it_does_not_prove": "This does not prove world-model causal strength outside this lab target set, real-world transfer, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.",
+  "what_it_proves": "Replacing the learned world model with frozen, shuffled, or random baselines degrades planner support under the same self model and target set."
+}

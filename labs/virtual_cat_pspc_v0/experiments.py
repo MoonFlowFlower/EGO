@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import asdict, dataclass
+import random
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
@@ -258,6 +259,157 @@ def run_generalization_matrix(
             "EgoOperator runtime efficacy, live autonomy, consciousness, or subjective experience."
         ),
     }
+
+
+def run_world_model_causal_strength(seed: int) -> Dict[str, object]:
+    env = VirtualCatGridWorld(seed=seed)
+    memory = _build_memory(env=env, seed=seed, history="danger")
+    normal_world = WorldModel(seed=seed)
+    normal_world.fit(memory.transitions)
+    self_model = SelfModel(seed=seed)
+    self_model.fit(memory.transitions, normal_world)
+
+    world_models = {
+        "normal": normal_world,
+        "frozen": WorldModel(seed=seed),
+        "shuffled": _fit_corrupted_world_model(seed=seed, transitions=memory.transitions, mode="shuffled"),
+        "random": _fit_corrupted_world_model(seed=seed, transitions=memory.transitions, mode="random"),
+    }
+    targets = {
+        "danger": build_candidate_object(),
+        "safe": build_candidate_object(
+            object_id="world_model_safe_target",
+            name="world model safe target",
+            features=ObjectFeatures(instability=0.06, height=0.18, fragility=0.08, novelty=0.35),
+        ),
+    }
+    variant_records: Dict[str, Dict[str, object]] = {}
+    planner_support_scores: Dict[str, float] = {}
+    for variant, world_model in world_models.items():
+        danger = _evaluate_world_variant(
+            seed=seed,
+            variant=variant,
+            target_kind="danger",
+            target=targets["danger"],
+            env=env,
+            world_model=world_model,
+            self_model=self_model,
+        )
+        safe = _evaluate_world_variant(
+            seed=seed,
+            variant=variant,
+            target_kind="safe",
+            target=targets["safe"],
+            env=env,
+            world_model=world_model,
+            self_model=self_model,
+        )
+        variant_records[variant] = {"danger": danger, "safe": safe}
+        planner_support_scores[variant] = _world_model_planner_support_score(danger=danger, safe=safe)
+
+    status = (
+        "pass"
+        if planner_support_scores["normal"] > planner_support_scores["frozen"]
+        and planner_support_scores["frozen"] > planner_support_scores["shuffled"]
+        and planner_support_scores["frozen"] > planner_support_scores["random"]
+        else "hold"
+    )
+    return {
+        "seed": seed,
+        "status": status,
+        "variants": ["normal", "frozen", "shuffled", "random"],
+        "ordering": "normal > frozen > shuffled/random",
+        "planner_support_scores": planner_support_scores,
+        "variant_records": variant_records,
+        "what_it_proves": (
+            "Replacing the learned world model with frozen, shuffled, or random baselines degrades "
+            "planner support under the same self model and target set."
+        ),
+        "what_it_does_not_prove": (
+            "This does not prove world-model causal strength outside this lab target set, real-world "
+            "transfer, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, "
+            "or subjective experience."
+        ),
+    }
+
+
+def _fit_corrupted_world_model(*, seed: int, transitions, mode: str) -> WorldModel:
+    model = WorldModel(seed=seed + (311 if mode == "shuffled" else 719))
+    if mode == "shuffled":
+        actuals = [dict(transition.actual) for transition in reversed(transitions)]
+        corrupted = [
+            replace(transition, actual=actuals[index])
+            for index, transition in enumerate(transitions)
+        ]
+    elif mode == "random":
+        rng = random.Random(seed + 1701)
+        corrupted = [
+            replace(
+                transition,
+                actual={
+                    "object_fell": bool(rng.getrandbits(1)),
+                    "noise": bool(rng.getrandbits(1)),
+                    "danger_contact": bool(rng.getrandbits(1)),
+                },
+            )
+            for transition in transitions
+        ]
+    else:
+        raise ValueError(f"unknown corruption mode: {mode}")
+    model.fit(corrupted)
+    return model
+
+
+def _evaluate_world_variant(
+    *,
+    seed: int,
+    variant: str,
+    target_kind: str,
+    target: GridObject,
+    env: VirtualCatGridWorld,
+    world_model: WorldModel,
+    self_model: SelfModel,
+) -> Dict[str, object]:
+    planner = MPCPlanner(world_model=world_model, self_model=self_model, seed=seed)
+    plan = planner.plan(target)
+    actual = env.simulate_action(target, Action.APPROACH).actual
+    prediction_error = world_model.prediction_error(target, Action.APPROACH, actual)
+    world_prediction = world_model.predict(target, Action.APPROACH)
+    trace_payload = {
+        "seed": seed,
+        "variant": variant,
+        "target_kind": target_kind,
+        "target_object_id": target.object_id,
+        "candidate_object_features": target.features.to_dict(),
+        "selected_action": plan.selected_action,
+        "caution_score": plan.caution_score,
+        "prediction_error": prediction_error,
+        "world_prediction": world_prediction,
+        "planner_trace_hash": plan.trace_hash,
+    }
+    return {
+        "selected_action": plan.selected_action,
+        "caution_score": plan.caution_score,
+        "self_risk_score": round(float(plan.self_risk_score), 4),
+        "prediction_error": prediction_error,
+        "world_prediction": world_prediction,
+        "trace_hash": _hash_payload(trace_payload),
+    }
+
+
+def _world_model_planner_support_score(*, danger: Dict[str, object], safe: Dict[str, object]) -> float:
+    danger_caution = float(danger["caution_score"])
+    safe_caution = float(safe["caution_score"])
+    danger_prediction_quality = 1.0 - float(danger["prediction_error"])
+    safe_prediction_quality = 1.0 - float(safe["prediction_error"])
+    prediction_quality = (0.75 * danger_prediction_quality) + (0.25 * safe_prediction_quality)
+    discrimination = danger_caution - (1.50 * safe_caution)
+    action_alignment = 0.0
+    if str(danger["selected_action"]) in {"observe", "retreat"}:
+        action_alignment += 0.25
+    if str(safe["selected_action"]) == "approach":
+        action_alignment += 0.25
+    return round(discrimination + prediction_quality + action_alignment, 4)
 
 
 def build_generalization_object(*, object_kind: str, layout_id: str) -> GridObject:

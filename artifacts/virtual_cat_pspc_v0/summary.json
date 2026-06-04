@@ -40,5 +40,7 @@
     "philosophical consciousness",
     "subjective experience"
   ],
-  "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
+  "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds.",
+  "world_model_causal_strength": "artifacts/virtual_cat_pspc_v0/world_model_causal_strength.json",
+  "world_model_causal_strength_status": "pass"
 }

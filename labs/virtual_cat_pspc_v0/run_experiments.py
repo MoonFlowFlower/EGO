@@ -12,6 +12,7 @@ from .experiments import (
     result_to_dict,
     run_anti_hardcoding_audit,
     run_generalization_matrix,
+    run_world_model_causal_strength,
 )
 
 
@@ -37,6 +38,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     gates = gate_status(results)
     anti_hardcoding_audit = run_anti_hardcoding_audit(seed=seed_list[0])
     generalization_matrix = run_generalization_matrix(seeds=seed_list)
+    world_model_causal_strength = run_world_model_causal_strength(seed=seed_list[0])
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -67,12 +69,21 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_generalization_matrix(generalization_matrix),
         encoding="utf-8",
     )
+    (out_path / "world_model_causal_strength.json").write_text(
+        json.dumps(world_model_causal_strength, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md").write_text(
+        _render_world_model_causal_strength(world_model_causal_strength),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
         "pspc_local_status": overall_status,
         "anti_hardcoding_status": anti_hardcoding_audit["status"],
         "multi_seed_layout_generalization_status": generalization_matrix["status"],
+        "world_model_causal_strength_status": world_model_causal_strength["status"],
         "claim_level": "lab_only_proto_self_mechanism",
         "repo_wide_evidence_level": "E3",
         "repo_wide_evidence_remains": "E3",
@@ -90,6 +101,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "trace_dir": str(traces_dir.as_posix()),
         "anti_hardcoding_audit": "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
         "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
+        "world_model_causal_strength": "artifacts/virtual_cat_pspc_v0/world_model_causal_strength.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -104,6 +116,61 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_world_model_causal_strength(audit: Dict[str, object]) -> str:
+    records = audit["variant_records"] if isinstance(audit.get("variant_records"), dict) else {}
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 World Model Causal Strength Report",
+            "",
+            f"- status: `{audit['status']}`",
+            f"- seed: `{audit['seed']}`",
+            f"- ordering: `{audit['ordering']}`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            "",
+            "## Summary",
+            "This audit keeps the self model and target set fixed, then replaces only the world model used by the planner with normal, frozen, shuffled-label, and random-label variants.",
+            "",
+            "## Support Score Definition",
+            "Support score combines danger-target discrimination, prediction quality weighted toward the danger target, and action alignment. It penalizes over-cautious behavior on the safe target so a random model cannot pass by always retreating.",
+            "",
+            "## Metrics",
+            "| variant | support_score | danger_action | safe_action | danger_error | safe_error | danger_trace_hash | safe_trace_hash |",
+            "|---|---:|---|---|---:|---:|---|---|",
+            *[_world_model_variant_row(variant, audit, records) for variant in audit["variants"]],
+            "",
+            "## What It Proves",
+            str(audit["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(audit["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this fails, the planner may not depend strongly on world-model rollout, or the corruption baselines are not strong enough to expose causal dependence.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 3 world-model causal-strength audit code, tests, and artifacts. No EgoOperator rollback is needed because no runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _world_model_variant_row(variant: str, audit: Dict[str, object], records: Dict[str, object]) -> str:
+    variant_record = records.get(variant) if isinstance(records.get(variant), dict) else {}
+    danger = variant_record.get("danger") if isinstance(variant_record.get("danger"), dict) else {}
+    safe = variant_record.get("safe") if isinstance(variant_record.get("safe"), dict) else {}
+    scores = audit["planner_support_scores"] if isinstance(audit.get("planner_support_scores"), dict) else {}
+    return "| {variant} | {score:.4f} | {danger_action} | {safe_action} | {danger_error:.4f} | {safe_error:.4f} | `{danger_trace}` | `{safe_trace}` |".format(
+        variant=variant,
+        score=float(scores.get(variant, 0.0)),
+        danger_action=danger.get("selected_action", "unknown"),
+        safe_action=safe.get("selected_action", "unknown"),
+        danger_error=float(danger.get("prediction_error", 0.0)),
+        safe_error=float(safe.get("prediction_error", 0.0)),
+        danger_trace=danger.get("trace_hash", "unknown"),
+        safe_trace=safe.get("trace_hash", "unknown"),
+    )
 
 
 def _render_generalization_matrix(matrix: Dict[str, object]) -> str:

@@ -30,11 +30,10 @@ This is not a plan to implement consciousness, a Joi-like companion, a user-faci
 
 ## Current Milestone
 
-Task 2 only: multi-seed / multi-layout / multi-object generalization.
+Task 3 only: world-model causal strength.
 
 ## Out Of Scope For This Milestone
 
-- shuffled/random world-model baseline
 - self-model head ablations
 - memory consolidation gate
 - homeostatic anti-reward-hacking suite
@@ -44,18 +43,18 @@ Task 2 only: multi-seed / multi-layout / multi-object generalization.
 
 ## Acceptance
 
-- The lab runs more than one seed.
-- The lab runs more than one layout.
-- The lab runs the unstable object kinds `cup`, `vase`, `bottle`, and `tall_box`.
-- `artifacts/virtual_cat_pspc_v0/GENERALIZATION_MATRIX_REPORT.md` and `generalization_matrix.json` exist.
+- `artifacts/virtual_cat_pspc_v0/WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md` and `world_model_causal_strength.json` exist.
+- The audit compares `normal`, `frozen`, `shuffled`, and `random` world-model variants.
+- The same self model and target set are used while replacing only the world model used by the planner.
 - The aggregate status is `pass`.
-- Danger-history caution stays higher than safe-history baseline by more than `0.20` for every matrix case.
+- Planner support ordering is `normal > frozen > shuffled/random`.
+- `normal - frozen > 0.50` and `frozen - max(shuffled, random) > 0.05`, so the margin is not merely nominal.
 - The report includes what this proves, what this does not prove, failure meaning, and rollback note.
 
 ## What This Milestone Can Prove
 
-Within the deterministic PSPC lab, this milestone can prove that the current danger-generalization effect is not limited to one seed, one target layout, or one unstable object kind.
+Within the deterministic PSPC lab, this milestone can prove that replacing the learned world model with frozen, shuffled-label, or random-label baselines degrades planner support under a fixed self model and target set.
 
 ## What This Milestone Cannot Prove
 
-It cannot prove unlimited layout generalization, stronger world/self causal ranking, memory consolidation validity, homeostatic anti-reward-hacking, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.
+It cannot prove world-model causal strength outside this lab target set, self-model causal strength, memory consolidation validity, homeostatic anti-reward-hacking, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.

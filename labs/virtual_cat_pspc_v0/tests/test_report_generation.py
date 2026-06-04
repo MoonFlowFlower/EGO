@@ -16,6 +16,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "REPLAY_DETERMINISM_REPORT.md",
         "ANTI_HARDCODING_AUDIT.md",
         "GENERALIZATION_MATRIX_REPORT.md",
+        "WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -44,3 +45,11 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
     assert "cup, vase, bottle, tall_box" in matrix_text
     assert "## What It Proves" in matrix_text
     assert "## What It Does Not Prove" in matrix_text
+
+    world_model_json = Path(tmp_path) / "world_model_causal_strength.json"
+    assert world_model_json.exists()
+    world_model_text = (Path(tmp_path) / "WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md").read_text(encoding="utf-8")
+    assert "- status: `pass`" in world_model_text
+    assert "normal > frozen > shuffled/random" in world_model_text
+    assert "## What It Proves" in world_model_text
+    assert "## What It Does Not Prove" in world_model_text
