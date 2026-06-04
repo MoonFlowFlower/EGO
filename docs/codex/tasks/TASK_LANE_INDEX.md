@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 159 |
+| `reference_only` | 160 |
 
 ## Active Default
 
@@ -207,6 +207,7 @@
 | Openemotion V6K2 Whitelist Alert Stabilization | `codex_task` | n/a | `docs/codex/tasks/openemotion-v6k2-whitelist-alert-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Proto Self Seed Host Evidence Stabilization | `codex_task` | n/a | `docs/codex/tasks/proto-self-seed-host-evidence-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Proto Self Seed Real Rollout | `codex_task` | n/a | `docs/codex/tasks/proto-self-seed-real-rollout/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
+| Pspc Adapter Dry Run V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-adapter-dry-run-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Design V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-design-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Implementation V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-implementation-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Skeleton V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-skeleton-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

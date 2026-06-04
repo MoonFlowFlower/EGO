@@ -1,0 +1,88 @@
+{
+  "adapter": {
+    "enabled": false,
+    "mainline_connected": false,
+    "runtime_authority": "none"
+  },
+  "audit_candidate": {
+    "adapter_status": "disabled_read_only",
+    "allowed_use": "audit_trace_only",
+    "claim_level": "lab_only_proto_self_mechanism_candidate",
+    "enabled": false,
+    "evidence": {
+      "ablation_status": "E4_passed",
+      "evidence_refs": [
+        "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+        "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+      ]
+    },
+    "forbidden": {
+      "direct_action": true,
+      "direct_memory_write": true,
+      "direct_user_message": true,
+      "proactive_trigger": true,
+      "runtime_gate_bypass": true,
+      "runtime_registration": true
+    },
+    "mainline_connected": false,
+    "proposal_candidate": {
+      "confidence": 0.73,
+      "reason_trace_refs": [
+        "trace_ep_003_t42"
+      ],
+      "suggested_tendency": "avoid_unstable_object"
+    },
+    "source": "virtual_cat_pspc_v0"
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / adapter_dry_run_only",
+  "packet": {
+    "allowed_use": "audit_trace_only",
+    "claim_level": "lab_only_proto_self_mechanism_candidate",
+    "enabled": false,
+    "evidence": {
+      "ablation_status": "E4_passed",
+      "source_artifacts": [
+        "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+        "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+      ]
+    },
+    "evidence_refs": [
+      "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+      "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+      "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+    ],
+    "forbidden": {
+      "direct_action": true,
+      "direct_memory_write": true,
+      "direct_user_message": true,
+      "proactive_trigger": true,
+      "runtime_gate_bypass": true,
+      "runtime_registration": true
+    },
+    "mainline_connected": false,
+    "proposal_hint": {
+      "confidence": 0.73,
+      "reason_trace_refs": [
+        "trace_ep_003_t42"
+      ],
+      "suggested_tendency": "avoid_unstable_object"
+    },
+    "source": "virtual_cat_pspc_v0"
+  },
+  "runtime_side_effects": {
+    "direct_action": false,
+    "direct_user_message": false,
+    "gate_invoked": false,
+    "memory_written": false,
+    "planner_or_training_called": false,
+    "proactive_trigger": false,
+    "runtime_registered": false
+  },
+  "status": "pass",
+  "validation": {
+    "errors": [],
+    "ok": true
+  }
+}
