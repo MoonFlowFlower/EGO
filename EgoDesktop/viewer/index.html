@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-security-policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'; worker-src 'self' blob:; style-src 'self'; img-src 'self' data: blob:; connect-src 'self' data: blob:; media-src 'self' blob:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EgoDesktop Live2D</title>
+    <link rel="stylesheet" href="/viewer/styles.css">
+  </head>
+  <body>
+    <main id="surface">
+      <section id="stage" aria-label="Live2D presence surface">
+        <canvas id="live2d-canvas"></canvas>
+        <div id="watermark-cover" aria-hidden="true"></div>
+        <div id="status" aria-live="polite">Loading Live2D...</div>
+      </section>
+      <section id="chat-panel" aria-label="EgoOperator desktop chat">
+        <div id="chat-output" aria-live="polite">
+          <div class="message bot">
+            <div class="message-label">Bot</div>
+            <div class="message-text">Live2D 已就绪。</div>
+          </div>
+        </div>
+        <div id="voice-bar" aria-label="Voice controls">
+          <button id="voice-toggle" type="button" aria-pressed="true">语音开</button>
+          <button id="stop-voice" type="button">停止</button>
+          <span id="voice-status">语音待机</span>
+        </div>
+        <form id="chat-form">
+          <textarea id="user-input" rows="3" placeholder="输入消息..." aria-label="User message"></textarea>
+          <button id="send-button" type="submit">发送</button>
+        </form>
+      </section>
+    </main>
+    <script src="/vendor/live2dcubismcore/live2dcubismcore.min.js"></script>
+    <script src="/vendor/pixi/pixi.min.js"></script>
+    <script src="/vendor/pixi/unsafe-eval.min.js"></script>
+    <script src="/vendor/pixi-live2d-display/cubism5.min.js"></script>
+    <script src="/viewer/renderer.js"></script>
+  </body>
+</html>

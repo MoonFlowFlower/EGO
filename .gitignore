@@ -36,6 +36,7 @@ ENV/
 # Temporary files
 *.tmp
 *.temp
+node_modules/
 
 # Repo hygiene: operational exhaust
 OpenEmotion/artifacts/mvp12/cycle_traces/
