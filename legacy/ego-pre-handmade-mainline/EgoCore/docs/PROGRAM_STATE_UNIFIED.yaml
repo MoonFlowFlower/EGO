@@ -44,6 +44,13 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'VirtualCatPSPC v0 now has a lab-only task package plus deterministic local lab
+    artifacts: `python -m labs.virtual_cat_pspc_v0.run_experiments --out artifacts/virtual_cat_pspc_v0
+    --seeds 101,102,103` produced the required baseline, danger-generalization, ablation,
+    and replay reports with PSPC-local `overall_status=E4_passed`. This is local lab
+    mechanism evidence only; it does not connect PSPC to EgoOperator, change runtime
+    authority, prove stable user benefit, live autonomy, durable memory efficacy,
+    runtime efficacy, philosophical consciousness, or subjective experience.'
   - 'The current EgoOperator human-observation gate now has a fresh scripted real-provider
     v2 run: `EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_latest
     --run-scripted --auto-approve-writes` recorded `provider_mode=openrouter`, `observation_count=18`,
@@ -638,6 +645,21 @@ workstreams:
   enabled: true
   summary: Controlled-axis self-model / drive / reflection / developmental capability
     proofs are at maintenance strength, but they do not prove unrestricted live autonomy.
+- id: virtual_cat_pspc_v0_lab
+  owner: Codex
+  status: lab_ablation_passed__adapter_forbidden
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: VirtualCatPSPC v0 is admitted only as a lab-only proto-self predictive-control
+    mechanism experiment. Its v0 authority is limited to task docs, lab code, deterministic
+    artifacts, and ablation reports under `labs/virtual_cat_pspc_v0/` and `artifacts/virtual_cat_pspc_v0/`.
+    The local runner reports PSPC-local `E4_passed` for different histories, danger
+    generalization, memory deletion, frozen world model, frozen self model, no prediction-error
+    learning, and replay determinism; repo evidence remains local deterministic `E3`,
+    with no EgoOperator runtime authority, no mainline integration, no LLM action
+    selection, and no consciousness or live-autonomy claim.
 axes:
   host_axis:
     current_state: closeout_complete

@@ -1,0 +1,28 @@
+{
+  "claim_level": "lab_only_proto_self_mechanism",
+  "gates": {
+    "danger_generalization": true,
+    "different_histories": true,
+    "frozen_self_model": true,
+    "frozen_world_model": true,
+    "memory_deletion": true,
+    "no_prediction_error_learning": true,
+    "replay_determinism": true
+  },
+  "overall_status": "E4_passed",
+  "seeds": [
+    101,
+    102,
+    103
+  ],
+  "trace_dir": "artifacts/virtual_cat_pspc_v0/traces",
+  "what_it_does_not_prove": [
+    "stable real user benefit",
+    "live autonomy",
+    "durable operator memory efficacy",
+    "EgoOperator runtime efficacy",
+    "philosophical consciousness",
+    "subjective experience"
+  ],
+  "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
+}
