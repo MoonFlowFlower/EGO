@@ -44,6 +44,20 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Read-Only Shadow Hook Stage Card v0 now has a bounded docs-only package under
+    `docs/codex/tasks/pspc-read-only-shadow-hook-stage-card-v0/` plus a stage-card
+    review artifact under `artifacts/pspc_read_only_shadow_hook_stage_card_v0/`. The
+    package freezes a future hook boundary as default disabled, shadow/audit mode
+    only, read-only, artifact-producing only, non-blocking, non-executable, and non-authoritative;
+    it forbids changing proposal, plan, approval, gate decision, user response, memory,
+    transport, proactive state, runtime registry, or claim ceiling. Its verdict is
+    `go_for_disabled_shadow_hook_implementation_stage_card_or_task_only`, which permits
+    only a future separate disabled implementation stage card or bounded task. This
+    is `lab_only_proto_self_mechanism_candidate / shadow_hook_stage_card_only` evidence
+    only; it does not implement a hook, modify EgoOperator runtime, register PSPC,
+    prove hook safety, runtime integration safety, adapter readiness, EgoOperator
+    runtime efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness,
+    or subjective experience.
   - PSPC Fixture-Only Shadow Trace v0 now has an isolated fixture-only shadow trace
     harness at `scripts/run_pspc_fixture_shadow_trace.py`, tests at `tests/test_pspc_fixture_shadow_trace.py`,
     docs under `docs/codex/tasks/pspc-fixture-shadow-trace-v0/`, and shadow artifacts
@@ -908,6 +922,22 @@ workstreams:
     proactive behavior, does not import runtime context, and records no baseline response/memory/gate/runtime-output
     diff. This remains `lab_only_proto_self_mechanism_candidate / fixture_shadow_trace_only`
     evidence only.
+- id: pspc_read_only_shadow_hook_stage_card_v0
+  owner: Codex
+  status: stage_card_passed__go_for_disabled_shadow_hook_implementation_stage_card_or_task_only__hook_not_implemented
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Read-Only Shadow Hook Stage Card v0 is a docs-only future-hook boundary
+    package under `docs/codex/tasks/pspc-read-only-shadow-hook-stage-card-v0/`. It
+    freezes any future hook as default disabled, shadow/audit mode only, read-only,
+    artifact-producing only, non-blocking, non-executable, and non-authoritative;
+    it forbids changing proposal, plan, approval state, gate decision, user response,
+    memory, transport, proactive state, runtime registry, or claim ceiling. The verdict
+    only permits a future separate disabled implementation stage card or bounded task.
+    This remains `lab_only_proto_self_mechanism_candidate / shadow_hook_stage_card_only`
+    evidence only and does not implement or register a hook.
 axes:
   host_axis:
     current_state: closeout_complete
