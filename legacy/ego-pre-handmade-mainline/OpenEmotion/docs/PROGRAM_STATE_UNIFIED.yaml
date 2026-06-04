@@ -44,6 +44,18 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Read-Only Adapter Skeleton v0 now has a disabled read-only adapter skeleton
+    at `EgoOperator/adapters/pspc_lab_adapter.py`, static contract tests at `tests/test_pspc_lab_adapter_contract.py`,
+    docs under `docs/codex/tasks/pspc-read-only-adapter-skeleton-v0/`, and a contract
+    report at `artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md`. The
+    adapter exposes only packet validation, audit-only candidate conversion, and no-runtime-authority
+    assertion; static tests currently pass `30 passed` and check disabled defaults,
+    `mainline_connected=false`, `enabled=false`, rejection of direct action/user message/memory
+    write/gate bypass/runtime registration/proactive trigger, audit-only output, no
+    side-effect methods, and no runtime import/registration reference. This is adapter
+    skeleton evidence only; it does not register PSPC in EgoOperator runtime, invoke
+    gates, write memory, affect user-visible output, prove adapter readiness, stable
+    user benefit, live autonomy, consciousness, or subjective experience.
   - 'PSPC Read-Only Adapter Implementation Stage Card v0 now has a bounded docs-only
     package under `docs/codex/tasks/pspc-read-only-adapter-implementation-v0/`: `STAGE_CARD.md`,
     `CONTRACT.md`, `ACCEPTANCE.md`, `ROLLBACK.md`, `STATIC_TEST_PLAN.md`, and `GO_NO_GO_REVIEW.md`.
@@ -801,6 +813,22 @@ workstreams:
     register PSPC in EgoOperator runtime, modify gates/memory/approval/human-trial/transport,
     affect user-visible output, or raise claims above `lab_only_proto_self_mechanism_candidate
     / adapter_stage_card_only`.
+- id: pspc_read_only_adapter_skeleton_v0
+  owner: Codex
+  status: disabled_read_only_skeleton_static_contract_pass__not_registered__runtime_unchanged
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Read-Only Adapter Skeleton v0 creates a disabled read-only adapter
+    skeleton at `EgoOperator/adapters/pspc_lab_adapter.py` plus static contract tests
+    at `tests/test_pspc_lab_adapter_contract.py`. The adapter validates PSPC lab evidence
+    packets and converts them into audit-only candidates while remaining `enabled=false`,
+    `mainline_connected=false`, and `runtime_authority=none`. It is not registered
+    in EgoOperator runtime, does not import runtime/gate/memory/approval/transport
+    modules, does not write memory, does not emit user-visible output, does not invoke
+    gate or approval, and does not call PSPC planner/model/training. This remains
+    `lab_only_proto_self_mechanism_candidate / adapter_skeleton_only` evidence only.
 axes:
   host_axis:
     current_state: closeout_complete

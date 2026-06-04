@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 158 |
+| `reference_only` | 159 |
 
 ## Active Default
 
@@ -209,6 +209,7 @@
 | Proto Self Seed Real Rollout | `codex_task` | n/a | `docs/codex/tasks/proto-self-seed-real-rollout/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Pspc Read Only Adapter Design V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-design-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Implementation V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-implementation-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Pspc Read Only Adapter Skeleton V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-skeleton-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Simulated Shadow H1 Mainline Sampling | `codex_task` | n/a | `docs/codex/tasks/simulated-shadow-h1-mainline-sampling/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Subjective Loop V1 Product Cut | `codex_task` | n/a | `docs/codex/tasks/subjective-loop-v1-product-cut/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | V7 Stage 0 Operator Observability | `codex_task` | n/a | `docs/codex/tasks/v7-stage-0-operator-observability/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
