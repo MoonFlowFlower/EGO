@@ -3233,3 +3233,171 @@ tasks:
       - "docs/codex/tasks/ego-pursue-functional-subject-goal-v1/STATUS.md"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-EPIC
+    title: "PSPC Shadow: runtime-adjacent audit-only evidence lane"
+    kind: epic
+    parent: null
+    status: active
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_adjacent_shadow_lane_only"
+    next_action: "Advance PSPC-SHADOW-001 first. Keep PSPC disabled, mainline_disconnected, audit-only, and side-effect-free; do not register PSPC in EgoOperator runtime."
+    acceptance:
+      - "Child tasks preserve PSPC as audit-only shadow evidence and do not connect PSPC to EgoOperator runtime."
+      - "Every child task states what it proves, what it does not prove, rollback, forbidden runtime surfaces, and claim ceiling."
+      - "GitHub Project remains mirror-only; local Tasks/TASK_BOARD.yaml is the canonical task source while gh is unavailable."
+    rollback: "Remove PSPC-SHADOW-EPIC and PSPC-SHADOW-001 through PSPC-SHADOW-006 from Tasks/TASK_BOARD.yaml and remove the matching PSPC shadow allowed-path additions from .codex/project_contract.yaml."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-recorded-shadow-observation-v0/STATUS.md"
+      - "docs/codex/tasks/pspc-disabled-shadow-hook-v0/STATUS.md"
+      - "artifacts/pspc_recorded_shadow_observation_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-001
+    title: "PSPC Shadow: runtime-adjacent review package v0"
+    kind: task
+    parent: PSPC-SHADOW-EPIC
+    status: active
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_adjacent_shadow_review_only"
+    next_action: "Create the bounded runtime-adjacent review package under docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/ and produce a go/no-go for the fixture-boundary task only."
+    acceptance:
+      - "Review package defines default-off, audit-only, no runtime authority, no memory write, no user message, no gate invocation, no action, no transport, and no proactive side effect."
+      - "Review package states what this proves, what it does not prove, rollback, forbidden surfaces, failure meaning, and claim ceiling."
+      - "No EgoOperator runtime, gate, memory, approval, human-trial harness, transport, or proactive channel file is modified."
+      - "Static scan confirms PSPC is not imported or registered by EgoOperator runtime."
+      - "Verdict may only allow PSPC-SHADOW-002 or no_go_keep_artifact_only; it must not approve runtime integration."
+    rollback: "Delete docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/ and revert this task-board status update; PSPC remains recorded/offline shadow only."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/STAGE_CARD.md"
+      - "docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/CONTRACT.md"
+      - "docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/ACCEPTANCE.md"
+      - "docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/GO_NO_GO_REVIEW.md"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-002
+    title: "PSPC Shadow: runtime trace fixture boundary v0"
+    kind: task
+    parent: PSPC-SHADOW-EPIC
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_trace_fixture_boundary_only"
+    next_action: "Use fixture EgoOperator context plus PSPC audit candidate to write artifact-only shadow trace data without calling real runtime."
+    acceptance:
+      - "Fixture harness rejects missing forbidden flags, enabled:true, mainline_connected:true, action, user_message, memory_write, gate_decision, approval, transport, send, schedule, runtime_registration, and proactive_trigger fields."
+      - "Output is a shadow trace artifact only and cannot be interpreted as action, runtime proposal execution, gate decision, memory write, or user-visible response."
+      - "No real gate, memory, approval, transport, proactive channel, planner, training, or model execution is invoked."
+      - "Static scan confirms PSPC remains unregistered and unimported by EgoOperator runtime."
+    rollback: "Delete docs/codex/tasks/pspc-runtime-trace-fixture-boundary-v0/, tests/test_pspc_runtime_trace_fixture_boundary.py, any matching script, artifacts/pspc_runtime_trace_fixture_boundary_v0/, and this task-board status update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-runtime-trace-fixture-boundary-v0/STATUS.md"
+      - "tests/test_pspc_runtime_trace_fixture_boundary.py"
+      - "artifacts/pspc_runtime_trace_fixture_boundary_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-003
+    title: "PSPC Shadow: default-off runtime-adjacent observer v0"
+    kind: task
+    parent: PSPC-SHADOW-EPIC
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / default_off_observer_only"
+    next_action: "Create only a default-off observer surface that can convert sanitized runtime-adjacent fixture input into audit-only data; do not register it."
+    acceptance:
+      - "Observer defaults to enabled=false, mainline_connected=false, runtime_authority=none, and audit-only output."
+      - "Observer exposes no direct action, user message, memory write, gate invocation, approval, transport, proactive trigger, planner call, training call, or model execution path."
+      - "Static tests prove EgoOperator main loop, runtime registry, gate, memory, approval flow, human-trial harness, transport, and proactive channels do not import or register the observer."
+      - "Runtime behavior is unchanged because the observer is not wired into runtime."
+    rollback: "Delete the observer file, docs/codex/tasks/pspc-runtime-adjacent-observer-v0/, tests/test_pspc_runtime_adjacent_observer.py, artifacts/pspc_runtime_adjacent_observer_v0/, and this task-board status update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-runtime-adjacent-observer-v0/STATUS.md"
+      - "tests/test_pspc_runtime_adjacent_observer.py"
+      - "artifacts/pspc_runtime_adjacent_observer_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-004
+    title: "PSPC Shadow: recorded trace replay no-diff v0"
+    kind: task
+    parent: PSPC-SHADOW-EPIC
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / recorded_trace_replay_no_diff_only"
+    next_action: "Replay recorded EgoOperator trace inputs through the default-off observer and compare baseline output, memory, approval, gate, and runtime snapshots."
+    acceptance:
+      - "For the same recorded inputs, baseline user output hashes equal shadow replay output hashes."
+      - "Memory diff, approval diff, gate diff, runtime-output diff, direct action, direct user message, proactive trigger, and runtime registration are all false."
+      - "PSPC produces only additional shadow audit artifacts."
+      - "Replay report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete docs/codex/tasks/pspc-recorded-trace-replay-no-diff-v0/, tests/test_pspc_recorded_trace_replay_no_diff.py, any matching script, artifacts/pspc_recorded_trace_replay_no_diff_v0/, and this task-board status update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-recorded-trace-replay-no-diff-v0/STATUS.md"
+      - "tests/test_pspc_recorded_trace_replay_no_diff.py"
+      - "artifacts/pspc_recorded_trace_replay_no_diff_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-005
+    title: "PSPC Shadow: deterministic local runtime-adjacent smoke v0"
+    kind: task
+    parent: PSPC-SHADOW-EPIC
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / deterministic_runtime_adjacent_smoke_only"
+    next_action: "Run only deterministic no-live-user smoke around the observer boundary to prove runtime snapshots remain unchanged."
+    acceptance:
+      - "Smoke uses deterministic or recorded inputs only and never uses a live user channel."
+      - "Runtime behavior snapshot is unchanged with and without PSPC shadow observer."
+      - "No memory write, gate invocation, approval change, direct action, user message, transport call, proactive trigger, planner call, training call, or model execution occurs."
+      - "PSPC output remains audit-only and non-executable."
+    rollback: "Delete docs/codex/tasks/pspc-runtime-adjacent-smoke-v0/, tests/test_pspc_runtime_adjacent_smoke.py, any matching script, artifacts/pspc_runtime_adjacent_smoke_v0/, and this task-board status update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-runtime-adjacent-smoke-v0/STATUS.md"
+      - "tests/test_pspc_runtime_adjacent_smoke.py"
+      - "artifacts/pspc_runtime_adjacent_smoke_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-006
+    title: "PSPC Shadow: disabled runtime hook insertion go/no-go v0"
+    kind: task
+    parent: PSPC-SHADOW-EPIC
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_hook_go_no_go_only"
+    next_action: "Produce a go/no-go review for a future separate disabled runtime shadow hook insertion task; do not implement the insertion here."
+    acceptance:
+      - "Verdict is either go_for_separate_disabled_runtime_shadow_hook_stage or no_go_keep_artifact_only."
+      - "Review cites prior shadow evidence, static boundaries, no-diff replay, no-side-effect smoke, remaining gaps, rollback, failure meaning, and claim ceiling."
+      - "Review does not implement, register, enable, import, or connect PSPC to EgoOperator runtime."
+      - "Review does not claim adapter readiness, EgoOperator PSPC capability, runtime integration safety, real user benefit, live autonomy, durable memory efficacy, consciousness, or subjective experience."
+    rollback: "Delete docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/, artifacts/pspc_shadow_runtime_hook_go_no_go_v0/, and this task-board status update; keep PSPC artifact-only shadow evidence."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/GO_NO_GO_REVIEW.md"
+      - "artifacts/pspc_shadow_runtime_hook_go_no_go_v0/"
+    external_refs:
+      github_issue: null

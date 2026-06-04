@@ -269,12 +269,22 @@ allowed_mutation_paths:
   - docs/codex/tasks/pspc-read-only-shadow-hook-stage-card-v0/
   - docs/codex/tasks/pspc-disabled-shadow-hook-v0/
   - docs/codex/tasks/pspc-recorded-shadow-observation-v0/
+  - docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/
+  - docs/codex/tasks/pspc-runtime-trace-fixture-boundary-v0/
+  - docs/codex/tasks/pspc-runtime-adjacent-observer-v0/
+  - docs/codex/tasks/pspc-recorded-trace-replay-no-diff-v0/
+  - docs/codex/tasks/pspc-runtime-adjacent-smoke-v0/
+  - docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
   - tests/test_pspc_static_compatibility_review.py
   - tests/test_pspc_fixture_shadow_trace.py
   - tests/test_pspc_disabled_shadow_hook.py
   - tests/test_pspc_recorded_shadow_observation.py
+  - tests/test_pspc_runtime_trace_fixture_boundary.py
+  - tests/test_pspc_runtime_adjacent_observer.py
+  - tests/test_pspc_recorded_trace_replay_no_diff.py
+  - tests/test_pspc_runtime_adjacent_smoke.py
   - labs/virtual_cat_pspc_v0/
   - artifacts/virtual_cat_pspc_v0/
   - artifacts/pspc_adapter_skeleton_v0/
@@ -284,6 +294,11 @@ allowed_mutation_paths:
   - artifacts/pspc_read_only_shadow_hook_stage_card_v0/
   - artifacts/pspc_disabled_shadow_hook_v0/
   - artifacts/pspc_recorded_shadow_observation_v0/
+  - artifacts/pspc_runtime_trace_fixture_boundary_v0/
+  - artifacts/pspc_runtime_adjacent_observer_v0/
+  - artifacts/pspc_recorded_trace_replay_no_diff_v0/
+  - artifacts/pspc_runtime_adjacent_smoke_v0/
+  - artifacts/pspc_shadow_runtime_hook_go_no_go_v0/
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml
   - legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml
@@ -303,6 +318,7 @@ task_classification:
     - "EgoOperator:"
     - "EgoRoadmap:"
     - "EgoDesktop:"
+    - "PSPC Shadow:"
   epic_title_prefixes:
     - "Epic "
   research_title_prefixes:
