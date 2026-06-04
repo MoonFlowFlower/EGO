@@ -44,6 +44,19 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Static Compatibility Review v0 now has an isolated static review harness
+    at `scripts/run_pspc_static_compatibility_review.py`, tests at `tests/test_pspc_static_compatibility_review.py`,
+    docs under `docs/codex/tasks/pspc-static-compatibility-review-v0/`, and review
+    artifacts under `artifacts/pspc_static_compatibility_review_v0/`. The review classifies
+    `audit_candidate` fields into audit-only, proposal-hint, required-forbidden, and
+    rejected-runtime-authority groups; verifies missing forbidden flags, `enabled=true`,
+    and `mainline_connected=true` are rejected; verifies the proposal candidate is
+    audit hint only; and confirms EgoOperator runtime sources have no `pspc_lab_adapter`
+    or `PSPCLabAdapter` import/registry reference. This is `lab_only_proto_self_mechanism_candidate
+    / static_compatibility_only` evidence only; it does not prove fixture shadow trace
+    behavior, runtime integration safety, adapter production readiness, EgoOperator
+    runtime efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness,
+    or subjective experience.
   - PSPC Adapter Dry-Run Harness v0 now has an isolated artifact-only harness at `scripts/run_pspc_adapter_dry_run.py`,
     tests at `tests/test_pspc_adapter_dry_run.py`, docs under `docs/codex/tasks/pspc-adapter-dry-run-v0/`,
     and dry-run artifacts under `artifacts/pspc_adapter_dry_run_v0/`. The dry-run
@@ -853,6 +866,20 @@ workstreams:
     does not trigger proactive behavior, and does not call PSPC planner/model/training.
     This remains `lab_only_proto_self_mechanism_candidate / adapter_dry_run_only`
     evidence only.
+- id: pspc_static_compatibility_review_v0
+  owner: Codex
+  status: static_compatibility_pass__audit_candidate_non_executable__runtime_unregistered
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Static Compatibility Review v0 classifies the current PSPC audit candidate
+    against EgoOperator proposal/gate/trace boundaries and confirms it remains audit-only.
+    The review verifies no executable action/proposal/gate/memory/user-message fields,
+    proposal candidate is audit hint only, missing forbidden flags are rejected, `enabled=true`
+    and `mainline_connected=true` are rejected, and EgoOperator runtime sources do
+    not import or register `PSPCLabAdapter`. This remains `lab_only_proto_self_mechanism_candidate
+    / static_compatibility_only` evidence only.
 axes:
   host_axis:
     current_state: closeout_complete

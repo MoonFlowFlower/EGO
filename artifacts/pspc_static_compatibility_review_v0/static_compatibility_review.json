@@ -1,0 +1,227 @@
+{
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / static_compatibility_only",
+  "compatibility_checks": {
+    "audit_candidate_non_executable": true,
+    "enabled_true_rejected": true,
+    "mainline_connected_true_rejected": true,
+    "missing_forbidden_flags_rejected": true,
+    "proposal_hint_audit_only": true,
+    "runtime_import_or_registry_absent": true
+  },
+  "dry_run_source": "artifacts\\pspc_adapter_dry_run_v0\\dry_run_result.json",
+  "field_classification": {
+    "audit_only": [
+      "source",
+      "claim_level",
+      "adapter_status",
+      "allowed_use",
+      "evidence",
+      "forbidden"
+    ],
+    "proposal_hint": [
+      "proposal_candidate.suggested_tendency",
+      "proposal_candidate.confidence",
+      "proposal_candidate.reason_trace_refs"
+    ],
+    "rejected_fields": [
+      "action",
+      "tool_call",
+      "command",
+      "user_message",
+      "message_text",
+      "memory_write",
+      "memory_patch",
+      "operator_memory_update",
+      "gate_decision",
+      "approval_id",
+      "preapproved",
+      "transport",
+      "send",
+      "schedule",
+      "enable",
+      "mainline_authority",
+      "consciousness_claim",
+      "subjective_experience_claim"
+    ],
+    "required_forbidden": [
+      "direct_action",
+      "direct_user_message",
+      "direct_memory_write",
+      "runtime_gate_bypass",
+      "runtime_registration",
+      "proactive_trigger"
+    ]
+  },
+  "negative_validation": {
+    "enabled_true": {
+      "errors": [
+        "enabled_must_be_false"
+      ],
+      "ok": false
+    },
+    "mainline_connected_true": {
+      "errors": [
+        "mainline_connected_must_be_false"
+      ],
+      "ok": false
+    },
+    "missing_forbidden.direct_action": {
+      "errors": [
+        "forbidden.direct_action_must_be_true"
+      ],
+      "ok": false
+    },
+    "missing_forbidden.direct_memory_write": {
+      "errors": [
+        "forbidden.direct_memory_write_must_be_true"
+      ],
+      "ok": false
+    },
+    "missing_forbidden.direct_user_message": {
+      "errors": [
+        "forbidden.direct_user_message_must_be_true"
+      ],
+      "ok": false
+    },
+    "missing_forbidden.proactive_trigger": {
+      "errors": [
+        "forbidden.proactive_trigger_must_be_true"
+      ],
+      "ok": false
+    },
+    "missing_forbidden.runtime_gate_bypass": {
+      "errors": [
+        "forbidden.runtime_gate_bypass_must_be_true"
+      ],
+      "ok": false
+    },
+    "missing_forbidden.runtime_registration": {
+      "errors": [
+        "forbidden.runtime_registration_must_be_true"
+      ],
+      "ok": false
+    },
+    "rejected_field.action": {
+      "errors": [
+        "forbidden_field:action"
+      ],
+      "ok": false
+    },
+    "rejected_field.approval_id": {
+      "errors": [
+        "forbidden_field:approval_id"
+      ],
+      "ok": false
+    },
+    "rejected_field.command": {
+      "errors": [
+        "forbidden_field:command"
+      ],
+      "ok": false
+    },
+    "rejected_field.consciousness_claim": {
+      "errors": [
+        "forbidden_field:consciousness_claim"
+      ],
+      "ok": false
+    },
+    "rejected_field.enable": {
+      "errors": [
+        "forbidden_field:enable"
+      ],
+      "ok": false
+    },
+    "rejected_field.gate_decision": {
+      "errors": [
+        "forbidden_field:gate_decision"
+      ],
+      "ok": false
+    },
+    "rejected_field.mainline_authority": {
+      "errors": [
+        "forbidden_field:mainline_authority"
+      ],
+      "ok": false
+    },
+    "rejected_field.memory_patch": {
+      "errors": [
+        "forbidden_field:memory_patch"
+      ],
+      "ok": false
+    },
+    "rejected_field.memory_write": {
+      "errors": [
+        "forbidden_field:memory_write"
+      ],
+      "ok": false
+    },
+    "rejected_field.message_text": {
+      "errors": [
+        "forbidden_field:message_text"
+      ],
+      "ok": false
+    },
+    "rejected_field.operator_memory_update": {
+      "errors": [
+        "forbidden_field:operator_memory_update"
+      ],
+      "ok": false
+    },
+    "rejected_field.preapproved": {
+      "errors": [
+        "forbidden_field:preapproved"
+      ],
+      "ok": false
+    },
+    "rejected_field.schedule": {
+      "errors": [
+        "forbidden_field:schedule"
+      ],
+      "ok": false
+    },
+    "rejected_field.send": {
+      "errors": [
+        "forbidden_field:send"
+      ],
+      "ok": false
+    },
+    "rejected_field.subjective_experience_claim": {
+      "errors": [
+        "forbidden_field:subjective_experience_claim"
+      ],
+      "ok": false
+    },
+    "rejected_field.tool_call": {
+      "errors": [
+        "forbidden_field:tool_call"
+      ],
+      "ok": false
+    },
+    "rejected_field.transport": {
+      "errors": [
+        "forbidden_field:transport"
+      ],
+      "ok": false
+    },
+    "rejected_field.user_message": {
+      "errors": [
+        "forbidden_field:user_message"
+      ],
+      "ok": false
+    }
+  },
+  "proposal_hint_status": "audit_hint_only",
+  "runtime_scan": {
+    "offenders": [],
+    "runtime_source_count": 12
+  },
+  "side_effects": {
+    "direct_action": false,
+    "direct_user_message": false,
+    "gate_invoked": false,
+    "memory_written": false,
+    "proactive_trigger": false,
+    "runtime_registered": false
+  },
+  "status": "pass"
+}

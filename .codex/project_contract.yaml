@@ -264,12 +264,15 @@ allowed_mutation_paths:
   - docs/codex/tasks/pspc-read-only-adapter-implementation-v0/
   - docs/codex/tasks/pspc-read-only-adapter-skeleton-v0/
   - docs/codex/tasks/pspc-adapter-dry-run-v0/
+  - docs/codex/tasks/pspc-static-compatibility-review-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
+  - tests/test_pspc_static_compatibility_review.py
   - labs/virtual_cat_pspc_v0/
   - artifacts/virtual_cat_pspc_v0/
   - artifacts/pspc_adapter_skeleton_v0/
   - artifacts/pspc_adapter_dry_run_v0/
+  - artifacts/pspc_static_compatibility_review_v0/
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml
   - legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml
