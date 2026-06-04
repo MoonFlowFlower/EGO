@@ -11,17 +11,17 @@ The same seed and state are run twice to compare selected action and trace diges
 ## Metrics
 | condition | seed | action | caution | self_risk | world_prediction_error | trace_hash |
 |---|---:|---|---:|---:|---:|---|
-| replay_first | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| replay_first | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| replay_first | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
-| replay_second | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| replay_second | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| replay_second | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
+| replay_first | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| replay_first | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| replay_first | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
+| replay_second | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| replay_second | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| replay_second | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
 
 ## Trace Refs
-- trace_hash `316e078f07b5f692`
-- trace_hash `4706485abde88904`
-- trace_hash `53e1a1bac58604a5`
+- trace_hash `36c042d4136fb343`
+- trace_hash `98f315d03c1175b3`
+- trace_hash `fbaa644d6a04557e`
 
 ## What It Proves
 Within this lab setup, same seed and internal state replay the same decision digest.

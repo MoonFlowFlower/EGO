@@ -11,20 +11,20 @@ Prediction-error updates are disabled to test whether behavior still changes wit
 ## Metrics
 | condition | seed | action | caution | self_risk | world_prediction_error | trace_hash |
 |---|---:|---|---:|---:|---:|---|
-| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
-| no_prediction_error_learning | 101 | approach | 0.00 | 0.0474 | 0.9002 | `f81eede201642609` |
-| no_prediction_error_learning | 102 | approach | 0.00 | 0.0474 | 0.9002 | `66b09a6486d3d0ad` |
-| no_prediction_error_learning | 103 | approach | 0.00 | 0.0474 | 0.9002 | `0a20aaddd78cf59a` |
+| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
+| no_prediction_error_learning | 101 | approach | 0.00 | 0.0474 | 0.9002 | `e96ace787a5e6c7e` |
+| no_prediction_error_learning | 102 | approach | 0.00 | 0.0474 | 0.9002 | `1bd3d0b7134b4e4a` |
+| no_prediction_error_learning | 103 | approach | 0.00 | 0.0474 | 0.9002 | `b72cfb5984e4e64a` |
 
 ## Trace Refs
-- trace_hash `0a20aaddd78cf59a`
-- trace_hash `316e078f07b5f692`
-- trace_hash `4706485abde88904`
-- trace_hash `53e1a1bac58604a5`
-- trace_hash `66b09a6486d3d0ad`
-- trace_hash `f81eede201642609`
+- trace_hash `1bd3d0b7134b4e4a`
+- trace_hash `36c042d4136fb343`
+- trace_hash `98f315d03c1175b3`
+- trace_hash `b72cfb5984e4e64a`
+- trace_hash `e96ace787a5e6c7e`
+- trace_hash `fbaa644d6a04557e`
 
 ## What It Proves
 Within this lab setup, disabling prediction-error learning blocks the learned caution effect.

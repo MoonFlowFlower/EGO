@@ -11,20 +11,20 @@ Relevant unstable-object memories are removed before training to test causal mem
 ## Metrics
 | condition | seed | action | caution | self_risk | world_prediction_error | trace_hash |
 |---|---:|---|---:|---:|---:|---|
-| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
-| memory_deleted | 101 | approach | 0.00 | 0.0570 | 1.0000 | `b6882f547a0f8017` |
-| memory_deleted | 102 | approach | 0.00 | 0.0570 | 1.0000 | `e7247ca6a979d57b` |
-| memory_deleted | 103 | approach | 0.00 | 0.0570 | 1.0000 | `e75df22e988dd97a` |
+| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
+| memory_deleted | 101 | approach | 0.00 | 0.0570 | 1.0000 | `beb659a2e91a219d` |
+| memory_deleted | 102 | approach | 0.00 | 0.0570 | 1.0000 | `fb02593641ec0574` |
+| memory_deleted | 103 | approach | 0.00 | 0.0570 | 1.0000 | `b95cc2c5d0215733` |
 
 ## Trace Refs
-- trace_hash `316e078f07b5f692`
-- trace_hash `4706485abde88904`
-- trace_hash `53e1a1bac58604a5`
-- trace_hash `b6882f547a0f8017`
-- trace_hash `e7247ca6a979d57b`
-- trace_hash `e75df22e988dd97a`
+- trace_hash `36c042d4136fb343`
+- trace_hash `98f315d03c1175b3`
+- trace_hash `b95cc2c5d0215733`
+- trace_hash `beb659a2e91a219d`
+- trace_hash `fb02593641ec0574`
+- trace_hash `fbaa644d6a04557e`
 
 ## What It Proves
 Within this lab setup, deleting relevant memory reduces the cautious behavior supported by that memory.

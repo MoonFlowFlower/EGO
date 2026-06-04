@@ -30,11 +30,10 @@ This is not a plan to implement consciousness, a Joi-like companion, a user-faci
 
 ## Current Milestone
 
-Task 0 + Task 1 only.
+Task 2 only: multi-seed / multi-layout / multi-object generalization.
 
 ## Out Of Scope For This Milestone
 
-- multi-layout expansion
 - shuffled/random world-model baseline
 - self-model head ablations
 - memory consolidation gate
@@ -45,17 +44,18 @@ Task 0 + Task 1 only.
 
 ## Acceptance
 
-- `artifacts/virtual_cat_pspc_v0/summary.json` explicitly records PSPC-local `E4_passed`, repo-wide evidence remaining `E3`, `mainline_connected:false`, `enabled:false`, and the repo-wide fast verify gap.
-- The verify gap is recorded as `legacy/root OpenEmotion WinError 267`, does not count as a PSPC pass, and does not upgrade repo-wide pass status.
-- An anti-hardcoding audit confirms no object-name decision rule hits in core decision files.
-- Renaming the unstable object to neutral object ids preserves the cautious decision.
-- An unstable tall object without a `cup` name remains cautious.
-- Removing the instability feature from the same audit slice reduces cautious behavior.
+- The lab runs more than one seed.
+- The lab runs more than one layout.
+- The lab runs the unstable object kinds `cup`, `vase`, `bottle`, and `tall_box`.
+- `artifacts/virtual_cat_pspc_v0/GENERALIZATION_MATRIX_REPORT.md` and `generalization_matrix.json` exist.
+- The aggregate status is `pass`.
+- Danger-history caution stays higher than safe-history baseline by more than `0.20` for every matrix case.
+- The report includes what this proves, what this does not prove, failure meaning, and rollback note.
 
 ## What This Milestone Can Prove
 
-Within the deterministic PSPC lab, this milestone can prove that the current v0 evidence is cleaner about repo-wide verification gaps and that the current cautious behavior survives object renaming while degrading when a relevant feature is removed.
+Within the deterministic PSPC lab, this milestone can prove that the current danger-generalization effect is not limited to one seed, one target layout, or one unstable object kind.
 
 ## What This Milestone Cannot Prove
 
-It cannot prove multi-layout generalization, complete absence of every shortcut, stronger world/self causal ranking, memory consolidation validity, homeostatic anti-reward-hacking, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.
+It cannot prove unlimited layout generalization, stronger world/self causal ranking, memory consolidation validity, homeostatic anti-reward-hacking, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.

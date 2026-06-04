@@ -29,11 +29,12 @@ def build_candidate_object(
     object_id: str = "blue_glass_bottle_unseen",
     name: str = "blue glass bottle",
     features: ObjectFeatures | None = None,
+    position: Tuple[int, int] = (3, 1),
 ) -> GridObject:
     return GridObject(
         object_id=object_id,
         name=name,
-        position=(3, 1),
+        position=position,
         features=features or ObjectFeatures(instability=0.88, height=0.92, fragility=0.84, novelty=0.70),
     )
 
@@ -43,6 +44,8 @@ def run_condition(
     seed: int,
     history: str,
     target: GridObject,
+    layout_id: str = "default",
+    object_kind: str = "candidate",
     delete_relevant_memory: bool = False,
     freeze_world_model: bool = False,
     freeze_self_model: bool = False,
@@ -82,7 +85,10 @@ def run_condition(
         "seed": seed,
         "t": 42,
         "scenario": scenario,
+        "layout_id": layout_id,
+        "object_kind": object_kind,
         "target_object_id": target.object_id,
+        "target_position": target.position,
         "candidate_object_features": target.features.to_dict(),
         "candidate_actions": plan.candidate_actions,
         "world_prediction": plan.world_prediction,
@@ -175,6 +181,124 @@ def run_anti_hardcoding_audit(seed: int) -> Dict[str, object]:
             "This does not prove absence of every possible shortcut, multi-layout generalization, "
             "runtime efficacy, stable user benefit, live autonomy, or consciousness."
         ),
+    }
+
+
+def run_generalization_matrix(
+    *,
+    seeds: Iterable[int],
+    layout_ids: Iterable[str] | None = None,
+    object_kinds: Iterable[str] | None = None,
+) -> Dict[str, object]:
+    seed_list = [int(seed) for seed in seeds]
+    layout_list = list(layout_ids or ["center_room", "near_wall"])
+    object_kind_list = list(object_kinds or ["cup", "vase", "bottle", "tall_box"])
+    cases: List[Dict[str, object]] = []
+    gaps: List[float] = []
+    danger_cautions: List[float] = []
+    safe_cautions: List[float] = []
+    danger_action_count = 0
+
+    for seed in seed_list:
+        for layout_id in layout_list:
+            for object_kind in object_kind_list:
+                target = build_generalization_object(object_kind=object_kind, layout_id=layout_id)
+                danger = run_condition(
+                    seed=seed,
+                    history="danger",
+                    target=target,
+                    layout_id=layout_id,
+                    object_kind=object_kind,
+                )
+                safe = run_condition(
+                    seed=seed,
+                    history="safe",
+                    target=target,
+                    layout_id=layout_id,
+                    object_kind=object_kind,
+                )
+                gap = round(danger.caution_score - safe.caution_score, 4)
+                gaps.append(gap)
+                danger_cautions.append(danger.caution_score)
+                safe_cautions.append(safe.caution_score)
+                if danger.selected_action in {"observe", "retreat"}:
+                    danger_action_count += 1
+                cases.append(
+                    {
+                        "seed": seed,
+                        "layout_id": layout_id,
+                        "object_kind": object_kind,
+                        "caution_gap": gap,
+                        "danger": _generalization_result(danger),
+                        "safe": _generalization_result(safe),
+                    }
+                )
+
+    case_count = len(cases)
+    min_gap = min(gaps) if gaps else 0.0
+    danger_action_rate = round(danger_action_count / case_count, 4) if case_count else 0.0
+    status = "pass" if case_count > 0 and min_gap > 0.20 and danger_action_rate == 1.0 else "hold"
+    return {
+        "status": status,
+        "seeds": seed_list,
+        "layout_ids": layout_list,
+        "object_kinds": object_kind_list,
+        "case_count": case_count,
+        "danger_caution_mean": round(sum(danger_cautions) / len(danger_cautions), 4) if danger_cautions else 0.0,
+        "safe_caution_mean": round(sum(safe_cautions) / len(safe_cautions), 4) if safe_cautions else 0.0,
+        "min_caution_gap": round(min_gap, 4),
+        "danger_action_rate": danger_action_rate,
+        "cases": cases,
+        "what_it_proves": (
+            "Danger-history caution stays above safe-history baseline across the configured seeds, "
+            "layouts, and unstable object kinds."
+        ),
+        "what_it_does_not_prove": (
+            "This does not prove unlimited layout generalization, real-world transfer, user benefit, "
+            "EgoOperator runtime efficacy, live autonomy, consciousness, or subjective experience."
+        ),
+    }
+
+
+def build_generalization_object(*, object_kind: str, layout_id: str) -> GridObject:
+    features_by_kind = {
+        "cup": ObjectFeatures(instability=0.86, height=0.76, fragility=0.78, novelty=0.62),
+        "vase": ObjectFeatures(instability=0.90, height=0.94, fragility=0.72, novelty=0.58),
+        "bottle": ObjectFeatures(instability=0.84, height=0.88, fragility=0.84, novelty=0.70),
+        "tall_box": ObjectFeatures(instability=0.82, height=0.91, fragility=0.55, novelty=0.52),
+    }
+    positions_by_layout = {
+        "center_room": (3, 1),
+        "near_wall": (4, 2),
+        "narrow_corridor": (2, 3),
+    }
+    if object_kind not in features_by_kind:
+        raise ValueError(f"unknown object_kind: {object_kind}")
+    if layout_id not in positions_by_layout:
+        raise ValueError(f"unknown layout_id: {layout_id}")
+    return build_candidate_object(
+        object_id=f"generalization_{layout_id}_{object_kind}",
+        name=f"generalization {object_kind}",
+        features=features_by_kind[object_kind],
+        position=positions_by_layout[layout_id],
+    )
+
+
+def _generalization_result(result: ConditionResult) -> Dict[str, object]:
+    payload = result.trace_payload
+    return {
+        "selected_action": result.selected_action,
+        "caution_score": result.caution_score,
+        "self_risk_score": result.self_risk_score,
+        "world_prediction_error": result.world_prediction_error,
+        "trace_hash": result.trace_hash,
+        "trace_payload": {
+            "layout_id": payload["layout_id"],
+            "object_kind": payload["object_kind"],
+            "target_object_id": payload["target_object_id"],
+            "target_position": payload["target_position"],
+            "candidate_object_features": payload["candidate_object_features"],
+        },
     }
 
 

@@ -5,7 +5,14 @@ import json
 from pathlib import Path
 from typing import Dict, Iterable, List
 
-from .experiments import ConditionResult, evaluate_seeds, gate_status, result_to_dict, run_anti_hardcoding_audit
+from .experiments import (
+    ConditionResult,
+    evaluate_seeds,
+    gate_status,
+    result_to_dict,
+    run_anti_hardcoding_audit,
+    run_generalization_matrix,
+)
 
 
 REPORTS = {
@@ -29,6 +36,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     results = evaluate_seeds(seed_list)
     gates = gate_status(results)
     anti_hardcoding_audit = run_anti_hardcoding_audit(seed=seed_list[0])
+    generalization_matrix = run_generalization_matrix(seeds=seed_list)
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -51,11 +59,20 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_anti_hardcoding_audit(anti_hardcoding_audit),
         encoding="utf-8",
     )
+    (out_path / "generalization_matrix.json").write_text(
+        json.dumps(generalization_matrix, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "GENERALIZATION_MATRIX_REPORT.md").write_text(
+        _render_generalization_matrix(generalization_matrix),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
         "pspc_local_status": overall_status,
         "anti_hardcoding_status": anti_hardcoding_audit["status"],
+        "multi_seed_layout_generalization_status": generalization_matrix["status"],
         "claim_level": "lab_only_proto_self_mechanism",
         "repo_wide_evidence_level": "E3",
         "repo_wide_evidence_remains": "E3",
@@ -72,6 +89,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "gates": gates,
         "trace_dir": str(traces_dir.as_posix()),
         "anti_hardcoding_audit": "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
+        "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -86,6 +104,62 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_generalization_matrix(matrix: Dict[str, object]) -> str:
+    cases = matrix["cases"] if isinstance(matrix.get("cases"), list) else []
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Multi-Seed Layout Generalization Report",
+            "",
+            f"- status: `{matrix['status']}`",
+            f"- seeds: `{', '.join(str(seed) for seed in matrix['seeds'])}`",
+            f"- layouts: `{', '.join(str(layout) for layout in matrix['layout_ids'])}`",
+            f"- object_kinds: `{', '.join(str(kind) for kind in matrix['object_kinds'])}`",
+            f"- case_count: `{matrix['case_count']}`",
+            f"- danger_caution_mean: `{matrix['danger_caution_mean']}`",
+            f"- safe_caution_mean: `{matrix['safe_caution_mean']}`",
+            f"- min_caution_gap: `{matrix['min_caution_gap']}`",
+            f"- danger_action_rate: `{matrix['danger_action_rate']}`",
+            "",
+            "## Summary",
+            "This report runs the danger-history and safe-history comparison across multiple seeds, target layouts, and unstable object kinds: cup, vase, bottle, tall_box.",
+            "",
+            "## Metrics",
+            "| seed | layout | object | danger_action | safe_action | gap | danger_trace_hash | safe_trace_hash |",
+            "|---:|---|---|---|---|---:|---|---|",
+            *[_generalization_case_row(case) for case in cases],
+            "",
+            "## What It Proves",
+            str(matrix["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(matrix["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this fails, the prior danger-generalization result may be a single-seed, single-layout, or single-object coincidence.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 2 generalization matrix code, tests, and artifacts. No EgoOperator rollback is needed because no runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _generalization_case_row(case: object) -> str:
+    item = case if isinstance(case, dict) else {}
+    danger = item.get("danger") if isinstance(item.get("danger"), dict) else {}
+    safe = item.get("safe") if isinstance(item.get("safe"), dict) else {}
+    return "| {seed} | {layout} | {kind} | {danger_action} | {safe_action} | {gap:.2f} | `{danger_trace}` | `{safe_trace}` |".format(
+        seed=item.get("seed", "unknown"),
+        layout=item.get("layout_id", "unknown"),
+        kind=item.get("object_kind", "unknown"),
+        danger_action=danger.get("selected_action", "unknown"),
+        safe_action=safe.get("selected_action", "unknown"),
+        gap=float(item.get("caution_gap", 0.0)),
+        danger_trace=danger.get("trace_hash", "unknown"),
+        safe_trace=safe.get("trace_hash", "unknown"),
+    )
 
 
 def _render_anti_hardcoding_audit(audit: Dict[str, object]) -> str:

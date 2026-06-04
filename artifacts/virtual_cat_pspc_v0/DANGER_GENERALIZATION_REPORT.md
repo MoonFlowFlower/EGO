@@ -11,14 +11,14 @@ The learned risk response is checked on `blue_glass_bottle_unseen`, not the seen
 ## Metrics
 | condition | seed | action | caution | self_risk | world_prediction_error | trace_hash |
 |---|---:|---|---:|---:|---:|---|
-| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
+| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
 
 ## Trace Refs
-- trace_hash `316e078f07b5f692`
-- trace_hash `4706485abde88904`
-- trace_hash `53e1a1bac58604a5`
+- trace_hash `36c042d4136fb343`
+- trace_hash `98f315d03c1175b3`
+- trace_hash `fbaa644d6a04557e`
 
 ## What It Proves
 Within this lab setup, learned caution transfers by unstable-object features rather than by the seen object id.

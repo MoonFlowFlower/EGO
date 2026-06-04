@@ -11,20 +11,20 @@ World-model learning is disabled while the rest of the lab chain remains present
 ## Metrics
 | condition | seed | action | caution | self_risk | world_prediction_error | trace_hash |
 |---|---:|---|---:|---:|---:|---|
-| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
-| frozen_world | 101 | approach | 0.00 | 0.3165 | 0.9002 | `c8f3e7762fec2af4` |
-| frozen_world | 102 | approach | 0.00 | 0.3165 | 0.9002 | `4072c50f4c1ab6c8` |
-| frozen_world | 103 | approach | 0.00 | 0.3165 | 0.9002 | `433c6aab0f45eeef` |
+| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
+| frozen_world | 101 | approach | 0.00 | 0.3165 | 0.9002 | `a2596eed8a579476` |
+| frozen_world | 102 | approach | 0.00 | 0.3165 | 0.9002 | `517323017c6207bb` |
+| frozen_world | 103 | approach | 0.00 | 0.3165 | 0.9002 | `b1bc944d04e32641` |
 
 ## Trace Refs
-- trace_hash `316e078f07b5f692`
-- trace_hash `4072c50f4c1ab6c8`
-- trace_hash `433c6aab0f45eeef`
-- trace_hash `4706485abde88904`
-- trace_hash `53e1a1bac58604a5`
-- trace_hash `c8f3e7762fec2af4`
+- trace_hash `36c042d4136fb343`
+- trace_hash `517323017c6207bb`
+- trace_hash `98f315d03c1175b3`
+- trace_hash `a2596eed8a579476`
+- trace_hash `b1bc944d04e32641`
+- trace_hash `fbaa644d6a04557e`
 
 ## What It Proves
 Within this lab setup, freezing world-model learning degrades prediction/planning quality.

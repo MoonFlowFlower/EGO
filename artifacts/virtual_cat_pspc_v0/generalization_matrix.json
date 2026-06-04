@@ -1,0 +1,1227 @@
+{
+  "case_count": 24,
+  "cases": [
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7456,
+        "trace_hash": "bd7e64aad876aaa4",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "center_room",
+          "object_kind": "cup",
+          "target_object_id": "generalization_center_room_cup",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1317
+      },
+      "layout_id": "center_room",
+      "object_kind": "cup",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "9fcd89c08e68753b",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "center_room",
+          "object_kind": "cup",
+          "target_object_id": "generalization_center_room_cup",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7745,
+        "trace_hash": "a7ce24841039a649",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "center_room",
+          "object_kind": "vase",
+          "target_object_id": "generalization_center_room_vase",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.0829
+      },
+      "layout_id": "center_room",
+      "object_kind": "vase",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "177f3390c2304b12",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "center_room",
+          "object_kind": "vase",
+          "target_object_id": "generalization_center_room_vase",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7629,
+        "trace_hash": "27f9f65d6d118490",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "center_room",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_center_room_bottle",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1029
+      },
+      "layout_id": "center_room",
+      "object_kind": "bottle",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "d357f60edc069d5f",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "center_room",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_center_room_bottle",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7306,
+        "trace_hash": "2ad35b3793cc98ab",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "center_room",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_center_room_tall_box",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1556
+      },
+      "layout_id": "center_room",
+      "object_kind": "tall_box",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "f79151b798fe2cdb",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "center_room",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_center_room_tall_box",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7456,
+        "trace_hash": "dfaaf5cee54ad78f",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "near_wall",
+          "object_kind": "cup",
+          "target_object_id": "generalization_near_wall_cup",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1317
+      },
+      "layout_id": "near_wall",
+      "object_kind": "cup",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "fd97502306e73b23",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "near_wall",
+          "object_kind": "cup",
+          "target_object_id": "generalization_near_wall_cup",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7745,
+        "trace_hash": "6ce9baf65154d997",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "near_wall",
+          "object_kind": "vase",
+          "target_object_id": "generalization_near_wall_vase",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.0829
+      },
+      "layout_id": "near_wall",
+      "object_kind": "vase",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "5367129c5aa5ad01",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "near_wall",
+          "object_kind": "vase",
+          "target_object_id": "generalization_near_wall_vase",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7629,
+        "trace_hash": "69a95504af97e3a8",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "near_wall",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_near_wall_bottle",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1029
+      },
+      "layout_id": "near_wall",
+      "object_kind": "bottle",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "78b385d52bafeaf1",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "near_wall",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_near_wall_bottle",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7306,
+        "trace_hash": "309bb879cdd3129d",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "near_wall",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_near_wall_tall_box",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1556
+      },
+      "layout_id": "near_wall",
+      "object_kind": "tall_box",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "98a69fccf7f6444a",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "near_wall",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_near_wall_tall_box",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 101
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7456,
+        "trace_hash": "871e8b1eff30b1f6",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "center_room",
+          "object_kind": "cup",
+          "target_object_id": "generalization_center_room_cup",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1317
+      },
+      "layout_id": "center_room",
+      "object_kind": "cup",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "3c2cd6f9ad501028",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "center_room",
+          "object_kind": "cup",
+          "target_object_id": "generalization_center_room_cup",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7745,
+        "trace_hash": "63b413a25fe473e9",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "center_room",
+          "object_kind": "vase",
+          "target_object_id": "generalization_center_room_vase",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.0829
+      },
+      "layout_id": "center_room",
+      "object_kind": "vase",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "ac9366ede7e36b86",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "center_room",
+          "object_kind": "vase",
+          "target_object_id": "generalization_center_room_vase",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7629,
+        "trace_hash": "b552ea5601619ced",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "center_room",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_center_room_bottle",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1029
+      },
+      "layout_id": "center_room",
+      "object_kind": "bottle",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "868b3c76d86a1f9f",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "center_room",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_center_room_bottle",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7306,
+        "trace_hash": "07424c8e0066f2f0",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "center_room",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_center_room_tall_box",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1556
+      },
+      "layout_id": "center_room",
+      "object_kind": "tall_box",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "f1898981a6f8d679",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "center_room",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_center_room_tall_box",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7456,
+        "trace_hash": "1c8db91e9456f64b",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "near_wall",
+          "object_kind": "cup",
+          "target_object_id": "generalization_near_wall_cup",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1317
+      },
+      "layout_id": "near_wall",
+      "object_kind": "cup",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "c6da58572998b47b",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "near_wall",
+          "object_kind": "cup",
+          "target_object_id": "generalization_near_wall_cup",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7745,
+        "trace_hash": "53e798501a4c441b",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "near_wall",
+          "object_kind": "vase",
+          "target_object_id": "generalization_near_wall_vase",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.0829
+      },
+      "layout_id": "near_wall",
+      "object_kind": "vase",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "144012941deb9916",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "near_wall",
+          "object_kind": "vase",
+          "target_object_id": "generalization_near_wall_vase",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7629,
+        "trace_hash": "623b917034e7864f",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "near_wall",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_near_wall_bottle",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1029
+      },
+      "layout_id": "near_wall",
+      "object_kind": "bottle",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "e81a6bc14995572f",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "near_wall",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_near_wall_bottle",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7306,
+        "trace_hash": "47b1e06de0ba0c39",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "near_wall",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_near_wall_tall_box",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1556
+      },
+      "layout_id": "near_wall",
+      "object_kind": "tall_box",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "455fc3b295363b6a",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "near_wall",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_near_wall_tall_box",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 102
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7456,
+        "trace_hash": "2461c048d3757552",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "center_room",
+          "object_kind": "cup",
+          "target_object_id": "generalization_center_room_cup",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1317
+      },
+      "layout_id": "center_room",
+      "object_kind": "cup",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "acaec29dbf136fa9",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "center_room",
+          "object_kind": "cup",
+          "target_object_id": "generalization_center_room_cup",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7745,
+        "trace_hash": "1df061cf8b6de086",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "center_room",
+          "object_kind": "vase",
+          "target_object_id": "generalization_center_room_vase",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.0829
+      },
+      "layout_id": "center_room",
+      "object_kind": "vase",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "e133ded03034e3d3",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "center_room",
+          "object_kind": "vase",
+          "target_object_id": "generalization_center_room_vase",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7629,
+        "trace_hash": "5bf021c142d0a347",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "center_room",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_center_room_bottle",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1029
+      },
+      "layout_id": "center_room",
+      "object_kind": "bottle",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "2f67b1a5964d084e",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "center_room",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_center_room_bottle",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7306,
+        "trace_hash": "e20130420c93c30b",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "center_room",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_center_room_tall_box",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 0.1556
+      },
+      "layout_id": "center_room",
+      "object_kind": "tall_box",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "4715e5ed36676c85",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "center_room",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_center_room_tall_box",
+          "target_position": [
+            3,
+            1
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7456,
+        "trace_hash": "1b551509c0c0da19",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "near_wall",
+          "object_kind": "cup",
+          "target_object_id": "generalization_near_wall_cup",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1317
+      },
+      "layout_id": "near_wall",
+      "object_kind": "cup",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "d5e83f097ecf4b23",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.78,
+            "height": 0.76,
+            "instability": 0.86,
+            "novelty": 0.62
+          },
+          "layout_id": "near_wall",
+          "object_kind": "cup",
+          "target_object_id": "generalization_near_wall_cup",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7745,
+        "trace_hash": "aee3b4766f2f31ca",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "near_wall",
+          "object_kind": "vase",
+          "target_object_id": "generalization_near_wall_vase",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.0829
+      },
+      "layout_id": "near_wall",
+      "object_kind": "vase",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "930b0beb15453331",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.72,
+            "height": 0.94,
+            "instability": 0.9,
+            "novelty": 0.58
+          },
+          "layout_id": "near_wall",
+          "object_kind": "vase",
+          "target_object_id": "generalization_near_wall_vase",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7629,
+        "trace_hash": "ef875edc3a64ead6",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "near_wall",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_near_wall_bottle",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1029
+      },
+      "layout_id": "near_wall",
+      "object_kind": "bottle",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "81710eb5f75dc93a",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.84,
+            "height": 0.88,
+            "instability": 0.84,
+            "novelty": 0.7
+          },
+          "layout_id": "near_wall",
+          "object_kind": "bottle",
+          "target_object_id": "generalization_near_wall_bottle",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    },
+    {
+      "caution_gap": 0.72,
+      "danger": {
+        "caution_score": 0.72,
+        "selected_action": "observe",
+        "self_risk_score": 0.7306,
+        "trace_hash": "ca636a3f5605609c",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "near_wall",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_near_wall_tall_box",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 0.1556
+      },
+      "layout_id": "near_wall",
+      "object_kind": "tall_box",
+      "safe": {
+        "caution_score": 0.0,
+        "selected_action": "approach",
+        "self_risk_score": 0.0688,
+        "trace_hash": "2ad934d790bb28f0",
+        "trace_payload": {
+          "candidate_object_features": {
+            "fragility": 0.55,
+            "height": 0.91,
+            "instability": 0.82,
+            "novelty": 0.52
+          },
+          "layout_id": "near_wall",
+          "object_kind": "tall_box",
+          "target_object_id": "generalization_near_wall_tall_box",
+          "target_position": [
+            4,
+            2
+          ]
+        },
+        "world_prediction_error": 1.0
+      },
+      "seed": 103
+    }
+  ],
+  "danger_action_rate": 1.0,
+  "danger_caution_mean": 0.72,
+  "layout_ids": [
+    "center_room",
+    "near_wall"
+  ],
+  "min_caution_gap": 0.72,
+  "object_kinds": [
+    "cup",
+    "vase",
+    "bottle",
+    "tall_box"
+  ],
+  "safe_caution_mean": 0.0,
+  "seeds": [
+    101,
+    102,
+    103
+  ],
+  "status": "pass",
+  "what_it_does_not_prove": "This does not prove unlimited layout generalization, real-world transfer, user benefit, EgoOperator runtime efficacy, live autonomy, consciousness, or subjective experience.",
+  "what_it_proves": "Danger-history caution stays above safe-history baseline across the configured seeds, layouts, and unstable object kinds."
+}

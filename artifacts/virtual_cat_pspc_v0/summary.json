@@ -12,7 +12,9 @@
     "no_prediction_error_learning": true,
     "replay_determinism": true
   },
+  "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
   "mainline_connected": false,
+  "multi_seed_layout_generalization_status": "pass",
   "overall_status": "E4_passed",
   "pspc_local_status": "E4_passed",
   "repo_wide_evidence_level": "E3",

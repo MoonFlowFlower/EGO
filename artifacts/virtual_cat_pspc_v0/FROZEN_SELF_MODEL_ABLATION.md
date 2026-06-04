@@ -11,20 +11,20 @@ Self-model learning is disabled while world-risk prediction remains available.
 ## Metrics
 | condition | seed | action | caution | self_risk | world_prediction_error | trace_hash |
 |---|---:|---|---:|---:|---:|---|
-| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `4706485abde88904` |
-| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `53e1a1bac58604a5` |
-| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `316e078f07b5f692` |
-| frozen_self | 101 | approach | 0.00 | 0.0474 | 0.0835 | `9a5e70b4127fa808` |
-| frozen_self | 102 | approach | 0.00 | 0.0474 | 0.0835 | `839b35b2632b7eba` |
-| frozen_self | 103 | approach | 0.00 | 0.0474 | 0.0835 | `a6128b0d899fe040` |
+| danger | 101 | observe | 0.72 | 0.7742 | 0.0835 | `98f315d03c1175b3` |
+| danger | 102 | observe | 0.72 | 0.7742 | 0.0835 | `36c042d4136fb343` |
+| danger | 103 | observe | 0.72 | 0.7742 | 0.0835 | `fbaa644d6a04557e` |
+| frozen_self | 101 | approach | 0.00 | 0.0474 | 0.0835 | `c4b85345a186e6b7` |
+| frozen_self | 102 | approach | 0.00 | 0.0474 | 0.0835 | `175bed4a469239f8` |
+| frozen_self | 103 | approach | 0.00 | 0.0474 | 0.0835 | `15c57674c187df81` |
 
 ## Trace Refs
-- trace_hash `316e078f07b5f692`
-- trace_hash `4706485abde88904`
-- trace_hash `53e1a1bac58604a5`
-- trace_hash `839b35b2632b7eba`
-- trace_hash `9a5e70b4127fa808`
-- trace_hash `a6128b0d899fe040`
+- trace_hash `15c57674c187df81`
+- trace_hash `175bed4a469239f8`
+- trace_hash `36c042d4136fb343`
+- trace_hash `98f315d03c1175b3`
+- trace_hash `c4b85345a186e6b7`
+- trace_hash `fbaa644d6a04557e`
 
 ## What It Proves
 Within this lab setup, freezing self-model learning reduces self-risk judgment and changes action selection.

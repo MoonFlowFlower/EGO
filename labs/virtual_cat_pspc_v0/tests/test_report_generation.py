@@ -15,6 +15,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "NO_PREDICTION_ERROR_LEARNING_ABLATION.md",
         "REPLAY_DETERMINISM_REPORT.md",
         "ANTI_HARDCODING_AUDIT.md",
+        "GENERALIZATION_MATRIX_REPORT.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -35,3 +36,11 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
     assert "object-name decision rule hits: `0`" in audit_text
     assert "## What It Proves" in audit_text
     assert "## What It Does Not Prove" in audit_text
+
+    matrix_json = Path(tmp_path) / "generalization_matrix.json"
+    assert matrix_json.exists()
+    matrix_text = (Path(tmp_path) / "GENERALIZATION_MATRIX_REPORT.md").read_text(encoding="utf-8")
+    assert "- status: `pass`" in matrix_text
+    assert "cup, vase, bottle, tall_box" in matrix_text
+    assert "## What It Proves" in matrix_text
+    assert "## What It Does Not Prove" in matrix_text
