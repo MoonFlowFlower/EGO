@@ -52,3 +52,19 @@ def test_admission_packet_contract_freezes_proposal_only_schema():
         "What This Does Not Prove",
     ]:
         assert marker in text
+
+
+def test_go_no_go_review_records_limited_future_adapter_design_verdict():
+    text = (ROOT / "docs/codex/tasks/virtual-cat-pspc-v0/GO_NO_GO_REVIEW.md").read_text(encoding="utf-8")
+
+    for marker in [
+        "go_for_separate_read_only_adapter_design_review_only",
+        "not adapter approval",
+        "anti-hardcoding passed",
+        "world model ablation passed",
+        "memory deletion/corruption passed",
+        "adapter already exists before admission review: not triggered",
+        "What This Proves",
+        "What This Does Not Prove",
+    ]:
+        assert marker in text

@@ -21,6 +21,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "MEMORY_CONSOLIDATION_ADMISSION_REPORT.md",
         "HOMEOSTATIC_VALUE_ANTI_HACKING_REPORT.md",
         "ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "GO_NO_GO_REVIEW.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -90,3 +91,12 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
     assert "proposal-only packet schema" in admission_text
     assert "## What It Proves" in admission_text
     assert "## What It Does Not Prove" in admission_text
+
+    go_no_go_json = Path(tmp_path) / "go_no_go_review.json"
+    assert go_no_go_json.exists()
+    assert summary["go_no_go_review_status"] == "go"
+    go_no_go_text = (Path(tmp_path) / "GO_NO_GO_REVIEW.md").read_text(encoding="utf-8")
+    assert "- status: `go`" in go_no_go_text
+    assert "go_for_separate_read_only_adapter_design_review_only" in go_no_go_text
+    assert "## What It Proves" in go_no_go_text
+    assert "## What It Does Not Prove" in go_no_go_text

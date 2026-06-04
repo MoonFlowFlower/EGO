@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List
 
 from .admission_packet import schema_copy
+from .admission_review import run_go_no_go_review
 from .experiments import (
     ConditionResult,
     evaluate_seeds,
@@ -110,15 +111,6 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_homeostatic_value_anti_hacking(homeostatic_value_anti_hacking),
         encoding="utf-8",
     )
-    (out_path / "admission_packet_contract.schema.json").write_text(
-        json.dumps(admission_packet_schema, indent=2, sort_keys=True),
-        encoding="utf-8",
-    )
-    (out_path / "ADMISSION_PACKET_CONTRACT_REPORT.md").write_text(
-        _render_admission_packet_contract(admission_packet_contract_status),
-        encoding="utf-8",
-    )
-
     summary = {
         "overall_status": overall_status,
         "pspc_local_status": overall_status,
@@ -163,8 +155,85 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
             "subjective experience",
         ],
     }
+    go_no_go_review = run_go_no_go_review(
+        summary=summary,
+        adapter_exists=Path("EgoOperator/adapters/pspc_lab_adapter.py").exists(),
+    )
+    summary["go_no_go_review_status"] = go_no_go_review["status"]
+    summary["go_no_go_review_verdict"] = go_no_go_review["verdict"]
+    summary["go_no_go_review"] = "artifacts/virtual_cat_pspc_v0/go_no_go_review.json"
+
+    (out_path / "admission_packet_contract.schema.json").write_text(
+        json.dumps(admission_packet_schema, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "ADMISSION_PACKET_CONTRACT_REPORT.md").write_text(
+        _render_admission_packet_contract(admission_packet_contract_status),
+        encoding="utf-8",
+    )
+    (out_path / "go_no_go_review.json").write_text(
+        json.dumps(go_no_go_review, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "GO_NO_GO_REVIEW.md").write_text(
+        _render_go_no_go_review(go_no_go_review),
+        encoding="utf-8",
+    )
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_go_no_go_review(review: Dict[str, object]) -> str:
+    conditions = review.get("go_conditions") if isinstance(review.get("go_conditions"), list) else []
+    no_go_triggers = review.get("no_go_triggers") if isinstance(review.get("no_go_triggers"), list) else []
+    scope_limits = review.get("scope_limits") if isinstance(review.get("scope_limits"), dict) else {}
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Go / No-Go Review",
+            "",
+            f"- status: `{review['status']}`",
+            f"- verdict: `{review['verdict']}`",
+            "- trace_hash: `go_no_go_review_contract_audit`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            f"- adapter_created: `{str(scope_limits.get('adapter_created')).lower()}`",
+            f"- mainline_connected: `{str(scope_limits.get('mainline_connected')).lower()}`",
+            f"- enabled: `{str(scope_limits.get('enabled')).lower()}`",
+            "",
+            "## Summary",
+            "This Task 8 review checks whether PSPC v0 may move to a separate future read-only adapter design review. It does not create an adapter and does not connect PSPC to EgoOperator.",
+            "",
+            "## Go Conditions",
+            "| condition | status | actual | gate |",
+            "|---|---|---|---|",
+            *[_go_no_go_condition_row(condition) for condition in conditions],
+            "",
+            "## No-Go Triggers",
+            "\n".join(f"- `{trigger}`" for trigger in no_go_triggers) if no_go_triggers else "- none",
+            "",
+            "## What It Proves",
+            str(review["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(review["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this review returns `no_go`, at least one core evidence gate is missing, contradicted, or out of scope, so adapter design must not start until that gate is repaired and rerun.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 8 review module, tests, generated review artifacts, and status/ledger updates. No EgoOperator rollback is needed because no adapter or runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _go_no_go_condition_row(condition: object) -> str:
+    item = condition if isinstance(condition, dict) else {}
+    return "| {condition_id} | {status} | {actual} | {gate} |".format(
+        condition_id=item.get("id", "unknown"),
+        status=item.get("status", "unknown"),
+        actual=item.get("actual", "unknown"),
+        gate=item.get("gate_key") or "none",
+    )
 
 
 def _render_admission_packet_contract(status: str) -> str:

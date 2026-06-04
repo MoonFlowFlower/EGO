@@ -30,7 +30,7 @@ This is not a plan to implement consciousness, a Joi-like companion, a user-faci
 
 ## Current Milestone
 
-Task 7 only: admission packet contract, with no adapter.
+Task 8 only: go / no-go review for a future read-only adapter design.
 
 ## Out Of Scope For This Milestone
 
@@ -42,18 +42,17 @@ Task 7 only: admission packet contract, with no adapter.
 
 ## Acceptance
 
-- `docs/codex/tasks/virtual-cat-pspc-v0/ADMISSION_PACKET_CONTRACT.md` exists.
-- `artifacts/virtual_cat_pspc_v0/admission_packet_contract.schema.json` and `ADMISSION_PACKET_CONTRACT_REPORT.md` exist.
-- The schema requires `source`, `claim_level`, `mainline_connected`, `enabled`, `proposal`, `evidence`, and `forbidden`.
-- The packet requires `claim_level=lab_only_proto_self_mechanism_candidate`, `mainline_connected=false`, and `enabled=false`.
-- The packet uses `proposal.trace_refs`; `reason_trace_refs` is rejected.
-- All forbidden flags are required and true: `direct_action`, `direct_user_message`, `direct_memory_write`, and `runtime_gate_bypass`.
-- Tests prove no EgoOperator runtime import and no `EgoOperator/adapters/pspc_lab_adapter.py` file.
+- `docs/codex/tasks/virtual-cat-pspc-v0/GO_NO_GO_REVIEW.md` exists.
+- `artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md` and `go_no_go_review.json` exist.
+- The review checks all go conditions: anti-hardcoding, multi-seed generalization, world-model ablation, self-model ablation, memory deletion/corruption, homeostatic anti-hacking, and admission packet contract.
+- The review checks no-go triggers: failed ablation degradation, object-name dependence, planner not depending on world/self rollout, memory deletion not affecting behavior, single-reward value collapse, premature adapter creation, and mainline/enablement drift.
+- The verdict is `go_for_separate_read_only_adapter_design_review_only`, not adapter approval.
+- Tests prove no `EgoOperator/adapters/pspc_lab_adapter.py` file.
 - The report includes what this proves, what this does not prove, failure meaning, and rollback note.
 
 ## What This Milestone Can Prove
 
-Within the deterministic PSPC lab, this milestone can prove only that a future host-facing PSPC output is bounded to a disabled, mainline-disconnected, proposal-only packet schema with audited evidence fields and forbidden direct side effects.
+Within the deterministic PSPC lab, this milestone can prove only that the completed PSPC-local evidence chain is strong enough to justify a future separate read-only adapter design review under a new gate.
 
 ## What This Milestone Cannot Prove
 

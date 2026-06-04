@@ -15,6 +15,9 @@
     "replay_determinism": true
   },
   "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
+  "go_no_go_review": "artifacts/virtual_cat_pspc_v0/go_no_go_review.json",
+  "go_no_go_review_status": "go",
+  "go_no_go_review_verdict": "go_for_separate_read_only_adapter_design_review_only",
   "homeostatic_value_anti_hacking": "artifacts/virtual_cat_pspc_v0/homeostatic_value_anti_hacking.json",
   "homeostatic_value_anti_hacking_status": "pass",
   "mainline_connected": false,

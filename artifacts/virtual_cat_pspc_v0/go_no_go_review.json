@@ -1,0 +1,81 @@
+{
+  "go_conditions": [
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": null,
+      "gate_passed": true,
+      "id": "anti_hardcoding_passed",
+      "no_go_trigger": "behavior_depends_on_object_name_or_audit_not_passed",
+      "status": "pass"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": "danger_generalization",
+      "gate_passed": true,
+      "id": "multi_seed_generalization_passed",
+      "no_go_trigger": "multi_seed_generalization_not_passed",
+      "status": "pass"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": "frozen_world_model",
+      "gate_passed": true,
+      "id": "world_model_ablation_passed",
+      "no_go_trigger": "world_model_ablation_not_passed",
+      "status": "pass"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": "frozen_self_model",
+      "gate_passed": true,
+      "id": "self_model_ablation_passed",
+      "no_go_trigger": "self_model_ablation_not_passed",
+      "status": "pass"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": "memory_deletion",
+      "gate_passed": true,
+      "id": "memory_deletion_corruption_passed",
+      "no_go_trigger": "memory_deletion_or_corruption_not_passed",
+      "status": "pass"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": null,
+      "gate_passed": true,
+      "id": "homeostatic_anti_hacking_passed",
+      "no_go_trigger": "homeostatic_anti_hacking_not_passed",
+      "status": "pass"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "gate_key": null,
+      "gate_passed": true,
+      "id": "admission_packet_contract_passed",
+      "no_go_trigger": "admission_packet_contract_not_passed",
+      "status": "pass"
+    }
+  ],
+  "no_go_triggers": [],
+  "scope_limits": {
+    "adapter_created": false,
+    "ego_operator_runtime_change_allowed": false,
+    "enabled": false,
+    "mainline_connected": false,
+    "repo_wide_claim_ceiling_change_allowed": false,
+    "repo_wide_evidence_remains": "E3",
+    "user_facing_route_creation_allowed": false
+  },
+  "status": "go",
+  "verdict": "go_for_separate_read_only_adapter_design_review_only",
+  "what_it_does_not_prove": "This does not prove adapter readiness, EgoOperator runtime efficacy, stable real user benefit, live autonomy, production integration safety, consciousness, or subjective experience.",
+  "what_it_proves": "The current PSPC-local evidence is strong enough to justify a future read-only adapter design review under a separate task and gate, while keeping PSPC disabled and disconnected from mainline."
+}
