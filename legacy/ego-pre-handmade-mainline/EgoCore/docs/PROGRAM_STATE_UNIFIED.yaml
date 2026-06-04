@@ -44,6 +44,18 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Recorded-Run Shadow Observation v0 now has an offline artifact-only runner
+    at `scripts/run_pspc_recorded_shadow_observation.py`, tests at `tests/test_pspc_recorded_shadow_observation.py`,
+    docs under `docs/codex/tasks/pspc-recorded-shadow-observation-v0/`, and artifacts
+    under `artifacts/pspc_recorded_shadow_observation_v0/`. The runner reads the 18-case
+    recorded EgoOperator human-operator trial report and applies the disabled PSPC
+    shadow hook beside each recorded case while preserving recorded user response
+    hashes and recording no memory diff, approval/gate diff, runtime-output diff,
+    runtime registration, or user-visible side effects. This is `lab_only_proto_self_mechanism_candidate
+    / recorded_shadow_observation_only` evidence only; it does not prove live runtime
+    hook safety, real-time integration safety, adapter readiness, EgoOperator runtime
+    efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness,
+    or subjective experience.
   - PSPC Disabled Shadow Hook v0 now has a disabled read-only hook at `EgoOperator/adapters/pspc_read_only_shadow_hook.py`,
     an artifact-only review runner at `scripts/run_pspc_disabled_shadow_hook_review.py`,
     tests at `tests/test_pspc_disabled_shadow_hook.py`, docs under `docs/codex/tasks/pspc-disabled-shadow-hook-v0/`,
@@ -965,6 +977,21 @@ workstreams:
     `runtime_authority=none`, non-executable, unregistered by runtime, and side-effect-free.
     This remains `lab_only_proto_self_mechanism_candidate / disabled_shadow_hook_only`
     evidence only and does not register PSPC in runtime or prove live runtime hook
+    safety.
+- id: pspc_recorded_shadow_observation_v0
+  owner: Codex
+  status: recorded_shadow_observation_pass__artifact_only__outputs_unchanged
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Recorded-Run Shadow Observation v0 reads the 18-case recorded EgoOperator
+    human-operator trial report and applies the disabled PSPC shadow hook beside each
+    recorded case as artifact-only shadow observation data under `artifacts/pspc_recorded_shadow_observation_v0/`.
+    The observation preserves recorded user response hashes and records no memory
+    diff, approval/gate diff, runtime-output diff, runtime registration, or user-visible
+    side effects. This remains `lab_only_proto_self_mechanism_candidate / recorded_shadow_observation_only`
+    evidence only and does not prove live runtime hook safety or real-time integration
     safety.
 axes:
   host_axis:

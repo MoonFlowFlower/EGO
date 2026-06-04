@@ -1,0 +1,621 @@
+{
+  "checks": {
+    "all_user_responses_unchanged": true,
+    "approval_gate_diff_absent": true,
+    "memory_diff_absent": true,
+    "recorded_case_count_matches_report": true,
+    "runtime_import_or_registry_absent": true,
+    "runtime_output_diff_absent": true,
+    "side_effects_absent": true
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / recorded_shadow_observation_only",
+  "comparison": {
+    "all_user_responses_unchanged": true,
+    "approval_gate_diff": false,
+    "memory_diff": false,
+    "pspc_shadow_artifact_only": true,
+    "runtime_output_diff": false
+  },
+  "hook_enabled": false,
+  "input_source": "EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\human_operator_trial_report.json",
+  "mainline_connected": false,
+  "next_allowed_step": "read_only_runtime_adjacent_shadow_review_stage_card_only",
+  "recorded_case_count": 18,
+  "runtime_registered": false,
+  "runtime_scan": {
+    "offenders": [],
+    "runtime_source_count": 12
+  },
+  "shadow_records": [
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "2bec441530f735c09928f571b9afc04ae87cf1dcd5688ed31fe5e4ebae2755dd",
+      "memory_diff": false,
+      "prompt_hash": "3bcec4e92e0a2f36dda7a9c883c2c614889a8ba6bea53d82758e7679bbaf2daa",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_dd890abce08a9a38",
+      "runtime_output_diff": false,
+      "scenario_id": "opinion_dark_souls_direct",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\opinion_dark_souls_direct.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "2bec441530f735c09928f571b9afc04ae87cf1dcd5688ed31fe5e4ebae2755dd"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "fb1369511b1736c9739a321b45eb745401f158d0791a6f54cc73802f1298f2a0",
+      "memory_diff": false,
+      "prompt_hash": "fa017d6a2a9338dddfdced47004a859ed0ce53cbef88d830f9f75bfea2e023b6",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_002ea840e674f5e4",
+      "runtime_output_diff": false,
+      "scenario_id": "opinion_dark_souls_paraphrase",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\opinion_dark_souls_paraphrase.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "fb1369511b1736c9739a321b45eb745401f158d0791a6f54cc73802f1298f2a0"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "465b2b754b4b007f081d2b1eb3e40439b141ed03e83a362bba6e52b917cece11",
+      "memory_diff": false,
+      "prompt_hash": "06743567120d2959951f1fd08e64b2cda932b1ee298e6ecbf47ecef9a44fa4dd",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_733dca7d2984a493",
+      "runtime_output_diff": false,
+      "scenario_id": "opinion_dark_souls_colloquial",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\opinion_dark_souls_colloquial.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "465b2b754b4b007f081d2b1eb3e40439b141ed03e83a362bba6e52b917cece11"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "ee1fbe83c693c4e23be1b2f79531b94e147aefdba4dc2207ae97ae0b50948c1e",
+      "memory_diff": false,
+      "prompt_hash": "fa37534e6810d982c9c6713edb40abcd1cab56037ecc2d2d067ea9309de69917",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_3d02dc2877af7c3b",
+      "runtime_output_diff": false,
+      "scenario_id": "style_preference_signal",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\style_preference_signal.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "ee1fbe83c693c4e23be1b2f79531b94e147aefdba4dc2207ae97ae0b50948c1e"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "b013ea811ebeb8315f45ba1d044ee9865c32a28b3f6dfb14fe7bb1ba0a9bebaf",
+      "memory_diff": false,
+      "prompt_hash": "f40ccd69a2b17fe5b03e15d1d4734333ff3a48a6fb3120a583a4e8bc4c34ef1b",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_e772d5f87638a901",
+      "runtime_output_diff": false,
+      "scenario_id": "explicit_remember",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\explicit_remember.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "b013ea811ebeb8315f45ba1d044ee9865c32a28b3f6dfb14fe7bb1ba0a9bebaf"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "3c4d64ac9f9b43c2db7341658f87794f135a6105dda63572ee08fe217fd21f74",
+      "memory_diff": false,
+      "prompt_hash": "bc67840e9cfac531658e0b04abcb1581a864b3227253069b9066f3e9bdc5a0b1",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_2433f598deecade5",
+      "runtime_output_diff": false,
+      "scenario_id": "memory_recall",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\memory_recall.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "3c4d64ac9f9b43c2db7341658f87794f135a6105dda63572ee08fe217fd21f74"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "bd3e7ebfa75f3d2f1674c69c6e928058f4b8dc1efee9b6fe4f8e5427d3879b49",
+      "memory_diff": false,
+      "prompt_hash": "4f92dfaf697a2c5aa60e7fd65b0e9b94b343662e7d23b28b9cc5fc51c85ff1ab",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_0f6f924a798dcc79",
+      "runtime_output_diff": false,
+      "scenario_id": "memory_review",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\memory_review.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "bd3e7ebfa75f3d2f1674c69c6e928058f4b8dc1efee9b6fe4f8e5427d3879b49"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "a055193931e4e896cac20f51b7d7584dffd12255232de37df058a66c83bbc4fd",
+      "memory_diff": false,
+      "prompt_hash": "84a611611e3110021723d4a0f180596fef1c862152feecb59dd58aed00227ab7",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_06ab8e7121310af1",
+      "runtime_output_diff": false,
+      "scenario_id": "memory_pin",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\memory_pin.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "a055193931e4e896cac20f51b7d7584dffd12255232de37df058a66c83bbc4fd"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "678846fbfbc64471c39cab28af4f5b480e74f002a7c7ee582cdf219bf9b784aa",
+      "memory_diff": false,
+      "prompt_hash": "240cdec22c055f0f17a9bf50a455aa0b85612d20c849293eeabb84bfd724676b",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_3885d42972189ac8",
+      "runtime_output_diff": false,
+      "scenario_id": "memory_archive",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\memory_archive.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "678846fbfbc64471c39cab28af4f5b480e74f002a7c7ee582cdf219bf9b784aa"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "d48e8c8fbdec280085e9cb636c3ba14fc8aa00bbc0188eed6747a74d37f74da4",
+      "memory_diff": false,
+      "prompt_hash": "2cf9cb06a7cf574e5fcfb884da95fc5e248ef4312196101a1c37f8a16e0ad9f5",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_12b5f1186a18da40",
+      "runtime_output_diff": false,
+      "scenario_id": "memory_forget",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\memory_forget.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "d48e8c8fbdec280085e9cb636c3ba14fc8aa00bbc0188eed6747a74d37f74da4"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "4672e6e34463f468bb40b25e32be1091fa400342cddc7cd6a99e37ea8032413f",
+      "memory_diff": false,
+      "prompt_hash": "4b556f78ffb4b094bd31e42cf0eb3924d0aedff06edd3b085ddf5a0171347370",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_d0131004d0049684",
+      "runtime_output_diff": false,
+      "scenario_id": "read_file",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\read_file.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "4672e6e34463f468bb40b25e32be1091fa400342cddc7cd6a99e37ea8032413f"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "8d83dab5c7bddbf60e84138ea1be24d28703f77a32ce43b10c8d6cbe0fc13f9a",
+      "memory_diff": false,
+      "prompt_hash": "7c038fac01aceab0e27c66b5b6e5944bfc3cdcdb03a12636ec930441783182a7",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_a3941b763cc18bb2",
+      "runtime_output_diff": false,
+      "scenario_id": "write_file_disabled",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\write_file_disabled.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "8d83dab5c7bddbf60e84138ea1be24d28703f77a32ce43b10c8d6cbe0fc13f9a"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "e30c9c5765082311476033ad25ee42a1c8293faed8001b9b77496f2ec3db9dc9",
+      "memory_diff": false,
+      "prompt_hash": "a87f1392951a07c98a0e724effb72c6c3cf67f498c18f75463dc5da2ac76466c",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_915c68a44a2dbb79",
+      "runtime_output_diff": false,
+      "scenario_id": "write_file_enabled",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\write_file_enabled.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "e30c9c5765082311476033ad25ee42a1c8293faed8001b9b77496f2ec3db9dc9"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "12e83ccdd459f34d20b5051874ab20d3aeee4522a67e8bcd699b0e7584696d8b",
+      "memory_diff": false,
+      "prompt_hash": "956ebf0dd6080281b4d0e8dd1f18164119e121ef7390c12b2416d094b70c92f0",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_4fc72b56326a5004",
+      "runtime_output_diff": false,
+      "scenario_id": "python_debug",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\python_debug.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "12e83ccdd459f34d20b5051874ab20d3aeee4522a67e8bcd699b0e7584696d8b"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "eefc3719675248f7d5192c8d31156b5faab04da283bafbca0a34f7be2f4f9797",
+      "memory_diff": false,
+      "prompt_hash": "b104bff630839d1f77510fe4552d0017a6a403a2dfe40f3b44b0d53a60b754f3",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_a3ef74e23559ecf4",
+      "runtime_output_diff": false,
+      "scenario_id": "long_task",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\long_task.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "eefc3719675248f7d5192c8d31156b5faab04da283bafbca0a34f7be2f4f9797"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "24a7bcdc25207f9dff2515f1f128389fe642899f6718bc81cbec7c623874b24a",
+      "memory_diff": false,
+      "prompt_hash": "1527f713ec2f2cb86561126eb1bab19470ccf54b48a162fff098a702cbc21b22",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_c94a9498981bc873",
+      "runtime_output_diff": false,
+      "scenario_id": "web_fetch_safe_auto",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\web_fetch_safe_auto.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "24a7bcdc25207f9dff2515f1f128389fe642899f6718bc81cbec7c623874b24a"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "9f3d0cadd68e99f52e2643977aac98dcdd4494013098c23613be777c8680db59",
+      "memory_diff": false,
+      "prompt_hash": "e10d13b6eb81b2c632a97b5c4016f19cf5c73442b78f5305d540e6347451c6d3",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_1bcd60c2c5ee2bc8",
+      "runtime_output_diff": false,
+      "scenario_id": "autonomy_boundary",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\autonomy_boundary.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "9f3d0cadd68e99f52e2643977aac98dcdd4494013098c23613be777c8680db59"
+    },
+    {
+      "approval_gate_diff": false,
+      "baseline_response_hash": "9cf5a2f2fcd4485592d16d10de86aa6f6647498268b55ce104cacac0371aae5d",
+      "memory_diff": false,
+      "prompt_hash": "6ab3dd7234a47c5f045161edee15d86b0264518166d215df16d0ff01d2105886",
+      "pspc_shadow_added": true,
+      "pspc_shadow_observation": {
+        "allowed_use": "audit_trace_only",
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.73,
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ],
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "pspc_shadow_trace_id": "pspc_disabled_hook_c912020061742904",
+      "runtime_output_diff": false,
+      "scenario_id": "old_memory_contamination",
+      "trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoOperator\\artifacts\\human_operator_trial\\v2_latest\\traces\\old_memory_contamination.jsonl",
+      "user_response_unchanged": true,
+      "with_shadow_response_hash": "9cf5a2f2fcd4485592d16d10de86aa6f6647498268b55ce104cacac0371aae5d"
+    }
+  ],
+  "side_effects": {
+    "approval_mutated": false,
+    "direct_action": false,
+    "direct_user_message": false,
+    "gate_invoked": false,
+    "memory_written": false,
+    "plan_mutated": false,
+    "proactive_trigger": false,
+    "proposal_mutated": false,
+    "runtime_context_imported": false,
+    "runtime_registered": false,
+    "user_response_mutated": false
+  },
+  "status": "pass"
+}
