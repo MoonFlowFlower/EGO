@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 168 |
+| `reference_only` | 169 |
 
 ## Active Default
 
@@ -215,6 +215,7 @@
 | Pspc Read Only Adapter Skeleton V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-skeleton-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Shadow Hook Stage Card V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-shadow-hook-stage-card-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Recorded Shadow Observation V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-recorded-shadow-observation-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Pspc Recorded Trace Replay No Diff V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-recorded-trace-replay-no-diff-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Adjacent Observer V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-observer-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Adjacent Shadow Review V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Trace Fixture Boundary V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-trace-fixture-boundary-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

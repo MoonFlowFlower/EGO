@@ -3335,13 +3335,13 @@ tasks:
     title: "PSPC Shadow: recorded trace replay no-diff v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / recorded_trace_replay_no_diff_only"
-    next_action: "Replay recorded EgoOperator trace inputs through the default-off observer and compare baseline output, memory, approval, gate, and runtime snapshots."
+    next_action: "Accepted locally: recorded 18-case replay through the default-off observer preserves user output, memory, approval, gate, and runtime-output snapshots. Next allowed task is PSPC-SHADOW-005 deterministic local smoke only."
     acceptance:
       - "For the same recorded inputs, baseline user output hashes equal shadow replay output hashes."
       - "Memory diff, approval diff, gate diff, runtime-output diff, direct action, direct user message, proactive trigger, and runtime registration are all false."
@@ -3359,7 +3359,7 @@ tasks:
     title: "PSPC Shadow: deterministic local runtime-adjacent smoke v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
