@@ -1,0 +1,101 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "claim_level": {
+      "const": "lab_only_proto_self_mechanism_candidate"
+    },
+    "enabled": {
+      "const": false
+    },
+    "evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "ablation_status": {
+          "type": "string"
+        },
+        "homeostatic_score": {
+          "type": "object"
+        },
+        "self_prediction": {
+          "type": "object"
+        },
+        "world_prediction": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "world_prediction",
+        "self_prediction",
+        "homeostatic_score",
+        "ablation_status"
+      ],
+      "type": "object"
+    },
+    "forbidden": {
+      "additionalProperties": false,
+      "properties": {
+        "direct_action": {
+          "const": true
+        },
+        "direct_memory_write": {
+          "const": true
+        },
+        "direct_user_message": {
+          "const": true
+        },
+        "runtime_gate_bypass": {
+          "const": true
+        }
+      },
+      "required": [
+        "direct_action",
+        "direct_user_message",
+        "direct_memory_write",
+        "runtime_gate_bypass"
+      ],
+      "type": "object"
+    },
+    "mainline_connected": {
+      "const": false
+    },
+    "proposal": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "suggested_tendency": {
+          "type": "string"
+        },
+        "trace_refs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "suggested_tendency",
+        "confidence",
+        "trace_refs"
+      ],
+      "type": "object"
+    },
+    "source": {
+      "const": "virtual_cat_pspc_v0"
+    }
+  },
+  "required": [
+    "source",
+    "claim_level",
+    "mainline_connected",
+    "enabled",
+    "proposal",
+    "evidence",
+    "forbidden"
+  ],
+  "title": "VirtualCatPSPC v0 Admission Proposal Packet",
+  "type": "object"
+}

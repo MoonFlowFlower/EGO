@@ -77,11 +77,13 @@ An EgoOperator adapter may be proposed only after PSPC lab ablation status is `E
 ```json
 {
   "source": "virtual_cat_pspc_v0",
-  "claim_level": "lab_only_proto_self_mechanism",
+  "claim_level": "lab_only_proto_self_mechanism_candidate",
+  "mainline_connected": false,
+  "enabled": false,
   "proposal": {
     "suggested_tendency": "avoid_unstable_object",
     "confidence": 0.73,
-    "reason_trace_refs": ["trace_ep_003_t42"]
+    "trace_refs": ["trace_ep_003_t42"]
   },
   "evidence": {
     "world_prediction": {},
@@ -92,12 +94,15 @@ An EgoOperator adapter may be proposed only after PSPC lab ablation status is `E
   "forbidden": {
     "direct_action": true,
     "direct_user_message": true,
-    "direct_memory_write": true
+    "direct_memory_write": true,
+    "runtime_gate_bypass": true
   }
 }
 ```
 
 The packet is a proposal source only. Runtime gate remains the only admission authority.
+
+The canonical Task 7 schema is frozen in `ADMISSION_PACKET_CONTRACT.md`.
 
 ## Rollback
 

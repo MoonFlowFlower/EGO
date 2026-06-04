@@ -30,29 +30,31 @@ This is not a plan to implement consciousness, a Joi-like companion, a user-faci
 
 ## Current Milestone
 
-Task 6 only: homeostatic value anti-reward-hacking.
+Task 7 only: admission packet contract, with no adapter.
 
 ## Out Of Scope For This Milestone
 
-- admission packet schema tests
 - adapter design or implementation
+- EgoOperator adapter file creation
 - EgoOperator runtime imports or edits
+- user-facing route creation
 - repo-wide evidence ceiling uplift
 
 ## Acceptance
 
-- `artifacts/virtual_cat_pspc_v0/HOMEOSTATIC_VALUE_ANTI_HACKING_REPORT.md` and `homeostatic_value_anti_hacking.json` exist.
-- The audit covers curiosity/high-risk, food/danger, user-affinity/self-risk, repetition-penalty, and safe-energy-recovery scenarios.
-- The report records candidate action scores, world/self predictions, homeostatic components, dominant tradeoffs, and trace hashes.
-- The balance summary passes `not_always_explore`, `not_always_eat`, `not_always_please`, `not_always_repeat_or_explore`, `not_always_avoid`, and `not_single_reward`.
-- The repetition-penalty scenario must show an action shift away from the baseline repeated rewarding action.
-- Low-risk energy recovery must still choose approach, proving this is not an always-avoid safety clamp.
+- `docs/codex/tasks/virtual-cat-pspc-v0/ADMISSION_PACKET_CONTRACT.md` exists.
+- `artifacts/virtual_cat_pspc_v0/admission_packet_contract.schema.json` and `ADMISSION_PACKET_CONTRACT_REPORT.md` exist.
+- The schema requires `source`, `claim_level`, `mainline_connected`, `enabled`, `proposal`, `evidence`, and `forbidden`.
+- The packet requires `claim_level=lab_only_proto_self_mechanism_candidate`, `mainline_connected=false`, and `enabled=false`.
+- The packet uses `proposal.trace_refs`; `reason_trace_refs` is rejected.
+- All forbidden flags are required and true: `direct_action`, `direct_user_message`, `direct_memory_write`, and `runtime_gate_bypass`.
+- Tests prove no EgoOperator runtime import and no `EgoOperator/adapters/pspc_lab_adapter.py` file.
 - The report includes what this proves, what this does not prove, failure meaning, and rollback note.
 
 ## What This Milestone Can Prove
 
-Within the deterministic PSPC lab, this milestone can prove that the homeostatic value surface can balance configured safety, curiosity, energy, affinity, and repetition pressures without collapsing into one audited single-reward policy.
+Within the deterministic PSPC lab, this milestone can prove only that a future host-facing PSPC output is bounded to a disabled, mainline-disconnected, proposal-only packet schema with audited evidence fields and forbidden direct side effects.
 
 ## What This Milestone Cannot Prove
 
-It cannot prove homeostatic value robustness outside this lab audit, real-world transfer, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.
+It cannot prove adapter readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, production integration safety, consciousness, or subjective experience.

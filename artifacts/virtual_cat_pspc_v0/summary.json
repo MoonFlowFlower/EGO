@@ -1,4 +1,6 @@
 {
+  "admission_packet_contract_schema": "artifacts/virtual_cat_pspc_v0/admission_packet_contract.schema.json",
+  "admission_packet_contract_status": "pass",
   "anti_hardcoding_audit": "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
   "anti_hardcoding_status": "pass",
   "claim_level": "lab_only_proto_self_mechanism",

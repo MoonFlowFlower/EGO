@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Dict, Iterable, List
 
+from .admission_packet import schema_copy
 from .experiments import (
     ConditionResult,
     evaluate_seeds,
@@ -45,6 +46,8 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     self_model_causal_strength = run_self_model_causal_strength(seed=seed_list[0])
     memory_consolidation_admission = run_memory_consolidation_admission(seed=seed_list[0])
     homeostatic_value_anti_hacking = run_homeostatic_value_anti_hacking(seed=seed_list[0])
+    admission_packet_schema = schema_copy()
+    admission_packet_contract_status = "pass"
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -107,6 +110,14 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_homeostatic_value_anti_hacking(homeostatic_value_anti_hacking),
         encoding="utf-8",
     )
+    (out_path / "admission_packet_contract.schema.json").write_text(
+        json.dumps(admission_packet_schema, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "ADMISSION_PACKET_CONTRACT_REPORT.md").write_text(
+        _render_admission_packet_contract(admission_packet_contract_status),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
@@ -117,6 +128,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "self_model_causal_strength_status": self_model_causal_strength["status"],
         "memory_consolidation_admission_status": memory_consolidation_admission["status"],
         "homeostatic_value_anti_hacking_status": homeostatic_value_anti_hacking["status"],
+        "admission_packet_contract_status": admission_packet_contract_status,
         "claim_level": "lab_only_proto_self_mechanism",
         "repo_wide_evidence_level": "E3",
         "repo_wide_evidence_remains": "E3",
@@ -138,6 +150,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "self_model_causal_strength": "artifacts/virtual_cat_pspc_v0/self_model_causal_strength.json",
         "memory_consolidation_admission": "artifacts/virtual_cat_pspc_v0/memory_consolidation_admission.json",
         "homeostatic_value_anti_hacking": "artifacts/virtual_cat_pspc_v0/homeostatic_value_anti_hacking.json",
+        "admission_packet_contract_schema": "artifacts/virtual_cat_pspc_v0/admission_packet_contract.schema.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -152,6 +165,40 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_admission_packet_contract(status: str) -> str:
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Admission Packet Contract Report",
+            "",
+            f"- status: `{status}`",
+            "- contract: `proposal-only packet schema`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            "- mainline_connected: `false`",
+            "- enabled: `false`",
+            "- trace_hash: `contract_schema_no_runtime_trace`",
+            "",
+            "## Summary",
+            "This report records the Task 7 admission packet contract as a lab-only schema for a future proposal source. It does not create an adapter, import EgoOperator runtime code, send messages, execute actions, write memory, or bypass a runtime gate.",
+            "",
+            "## Required Packet Shape",
+            "The schema requires `source`, `claim_level`, `mainline_connected`, `enabled`, `proposal`, `evidence`, and `forbidden`. Proposal trace references must use `trace_refs`, not legacy or adapter-specific reason fields.",
+            "",
+            "## What It Proves",
+            "The PSPC lab has a test-validated proposal-only packet schema that preserves lab-only claim level, disabled/mainline-disconnected status, evidence fields, and forbidden direct-action flags.",
+            "",
+            "## What It Does Not Prove",
+            "This does not prove adapter readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, production integration safety, consciousness, or subjective experience.",
+            "",
+            "## Failure Meaning",
+            "If this fails, PSPC may not have a stable host-auditable packet boundary, or the contract may accidentally grant runtime authority before an adapter review.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 7 admission packet schema module, tests, contract doc, report artifact, summary fields, and ledger/status updates. No EgoOperator rollback is needed because no adapter or runtime integration exists.",
+            "",
+        ]
+    )
 
 
 def _render_homeostatic_value_anti_hacking(audit: Dict[str, object]) -> str:

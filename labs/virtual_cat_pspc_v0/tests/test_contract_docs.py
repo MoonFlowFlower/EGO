@@ -34,3 +34,21 @@ def test_acceptance_preregisters_ablation_failures_and_non_claims():
         "This does not prove stable real user benefit",
     ]:
         assert marker in text
+
+
+def test_admission_packet_contract_freezes_proposal_only_schema():
+    text = (ROOT / "docs/codex/tasks/virtual-cat-pspc-v0/ADMISSION_PACKET_CONTRACT.md").read_text(encoding="utf-8")
+
+    for marker in [
+        '"source": "virtual_cat_pspc_v0"',
+        '"claim_level": "lab_only_proto_self_mechanism_candidate"',
+        '"mainline_connected": false',
+        '"enabled": false',
+        '"trace_refs": []',
+        '"runtime_gate_bypass": true',
+        "no EgoOperator runtime import",
+        "no adapter created",
+        "What This Proves",
+        "What This Does Not Prove",
+    ]:
+        assert marker in text

@@ -20,6 +20,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "SELF_MODEL_CAUSAL_STRENGTH_REPORT.md",
         "MEMORY_CONSOLIDATION_ADMISSION_REPORT.md",
         "HOMEOSTATIC_VALUE_ANTI_HACKING_REPORT.md",
+        "ADMISSION_PACKET_CONTRACT_REPORT.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -80,3 +81,12 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
     assert "high_curiosity_high_risk / food_reward_danger_conflict / user_affinity_self_risk_conflict / repetition_penalty / safe_energy_recovery" in value_text
     assert "## What It Proves" in value_text
     assert "## What It Does Not Prove" in value_text
+
+    admission_schema = Path(tmp_path) / "admission_packet_contract.schema.json"
+    assert admission_schema.exists()
+    assert summary["admission_packet_contract_status"] == "pass"
+    admission_text = (Path(tmp_path) / "ADMISSION_PACKET_CONTRACT_REPORT.md").read_text(encoding="utf-8")
+    assert "- status: `pass`" in admission_text
+    assert "proposal-only packet schema" in admission_text
+    assert "## What It Proves" in admission_text
+    assert "## What It Does Not Prove" in admission_text
