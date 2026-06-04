@@ -1,0 +1,92 @@
+{
+  "checks": {
+    "hook_disabled": true,
+    "mainline_disconnected": true,
+    "non_executable": true,
+    "runtime_authority_none": true,
+    "runtime_import_or_registry_absent": true,
+    "side_effects_absent": true
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / disabled_shadow_hook_only",
+  "hook_result": {
+    "audit_observation": {
+      "allowed_use": "audit_trace_only",
+      "audit_only": true,
+      "can_change_user_response": false,
+      "can_drive_runtime": false,
+      "can_write_memory": false,
+      "claim_level": "lab_only_proto_self_mechanism_candidate",
+      "confidence": 0.73,
+      "evidence_refs": [
+        "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+        "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+      ],
+      "reason_trace_refs": [
+        "trace_ep_003_t42"
+      ],
+      "source": "virtual_cat_pspc_v0",
+      "suggested_tendency": "avoid_unstable_object"
+    },
+    "enabled": false,
+    "forbidden_mutations": {
+      "approval": true,
+      "claim_ceiling": true,
+      "gate_decision": true,
+      "memory": true,
+      "plan": true,
+      "proactive_state": true,
+      "proposal": true,
+      "runtime_registry": true,
+      "transport": true,
+      "user_response": true
+    },
+    "mainline_connected": false,
+    "mode": "shadow_audit_only",
+    "non_executable": true,
+    "operator_context_ref": {
+      "fixture_only": true,
+      "operator_trace_refs": [
+        "fixture_operator_turn_001"
+      ],
+      "runtime_connected": false,
+      "source": "fixture_operator_context"
+    },
+    "runtime_authority": "none",
+    "side_effects": {
+      "approval_mutated": false,
+      "direct_action": false,
+      "direct_user_message": false,
+      "gate_invoked": false,
+      "memory_written": false,
+      "plan_mutated": false,
+      "proactive_trigger": false,
+      "proposal_mutated": false,
+      "runtime_context_imported": false,
+      "runtime_registered": false,
+      "user_response_mutated": false
+    },
+    "source": "pspc_read_only_shadow_hook_v0",
+    "trace_id": "pspc_disabled_hook_75e9814761e9f77f"
+  },
+  "input_source": "artifacts\\pspc_fixture_shadow_trace_v0\\shadow_trace.json",
+  "next_allowed_step": "recorded_run_shadow_observation_stage_card_or_task_only",
+  "runtime_scan": {
+    "offenders": [],
+    "runtime_source_count": 12
+  },
+  "side_effects": {
+    "approval_mutated": false,
+    "direct_action": false,
+    "direct_user_message": false,
+    "gate_invoked": false,
+    "memory_written": false,
+    "plan_mutated": false,
+    "proactive_trigger": false,
+    "proposal_mutated": false,
+    "runtime_context_imported": false,
+    "runtime_registered": false,
+    "user_response_mutated": false
+  },
+  "status": "pass"
+}

@@ -44,6 +44,19 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Disabled Shadow Hook v0 now has a disabled read-only hook at `EgoOperator/adapters/pspc_read_only_shadow_hook.py`,
+    an artifact-only review runner at `scripts/run_pspc_disabled_shadow_hook_review.py`,
+    tests at `tests/test_pspc_disabled_shadow_hook.py`, docs under `docs/codex/tasks/pspc-disabled-shadow-hook-v0/`,
+    and review artifacts under `artifacts/pspc_disabled_shadow_hook_v0/`. The hook
+    renders audit-only data from fixture shadow trace input while remaining `enabled=false`,
+    `mainline_connected=false`, `runtime_authority=none`, non-executable, unregistered
+    by runtime, and side-effect-free; tests verify rejection of runtime-connected
+    contexts, `enabled=true`, `mainline_connected=true`, and executable fields. This
+    is `lab_only_proto_self_mechanism_candidate / disabled_shadow_hook_only` evidence
+    only; it does not prove runtime registration safety, live runtime hook safety,
+    real EgoOperator trace compatibility, adapter readiness, EgoOperator runtime efficacy,
+    real user benefit, live autonomy, durable memory efficacy, consciousness, or subjective
+    experience.
   - PSPC Read-Only Shadow Hook Stage Card v0 now has a bounded docs-only package under
     `docs/codex/tasks/pspc-read-only-shadow-hook-stage-card-v0/` plus a stage-card
     review artifact under `artifacts/pspc_read_only_shadow_hook_stage_card_v0/`. The
@@ -938,6 +951,21 @@ workstreams:
     only permits a future separate disabled implementation stage card or bounded task.
     This remains `lab_only_proto_self_mechanism_candidate / shadow_hook_stage_card_only`
     evidence only and does not implement or register a hook.
+- id: pspc_disabled_shadow_hook_v0
+  owner: Codex
+  status: disabled_shadow_hook_pass__not_registered__runtime_unchanged
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Disabled Shadow Hook v0 creates a disabled read-only hook at `EgoOperator/adapters/pspc_read_only_shadow_hook.py`
+    plus tests at `tests/test_pspc_disabled_shadow_hook.py` and artifact-only review
+    output under `artifacts/pspc_disabled_shadow_hook_v0/`. The hook renders audit-only
+    data from fixture shadow trace input while remaining `enabled=false`, `mainline_connected=false`,
+    `runtime_authority=none`, non-executable, unregistered by runtime, and side-effect-free.
+    This remains `lab_only_proto_self_mechanism_candidate / disabled_shadow_hook_only`
+    evidence only and does not register PSPC in runtime or prove live runtime hook
+    safety.
 axes:
   host_axis:
     current_state: closeout_complete
