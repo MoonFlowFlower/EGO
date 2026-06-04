@@ -3359,13 +3359,13 @@ tasks:
     title: "PSPC Shadow: deterministic local runtime-adjacent smoke v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / deterministic_runtime_adjacent_smoke_only"
-    next_action: "Run only deterministic no-live-user smoke around the observer boundary to prove runtime snapshots remain unchanged."
+    next_action: "Accepted locally: deterministic/no-live-user smoke confirms runtime snapshots are unchanged, PSPC output remains audit-only/non-executable, runtime imports/registry are absent, and no side effects occur. Next allowed task is PSPC-SHADOW-006 go/no-go review only."
     acceptance:
       - "Smoke uses deterministic or recorded inputs only and never uses a live user channel."
       - "Runtime behavior snapshot is unchanged with and without PSPC shadow observer."
@@ -3383,7 +3383,7 @@ tasks:
     title: "PSPC Shadow: disabled runtime hook insertion go/no-go v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local

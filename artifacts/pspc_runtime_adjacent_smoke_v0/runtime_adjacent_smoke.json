@@ -1,0 +1,104 @@
+{
+  "case_count": 3,
+  "checks": {
+    "pspc_disabled": true,
+    "pspc_mainline_disconnected": true,
+    "pspc_output_audit_only": true,
+    "pspc_output_non_executable": true,
+    "runtime_behavior_unchanged": true,
+    "runtime_import_or_registry_absent": true,
+    "side_effects_absent": true,
+    "uses_no_live_user_channel": true
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / deterministic_runtime_adjacent_smoke_only",
+  "input_sources": {
+    "observer_result": "artifacts\\pspc_runtime_adjacent_observer_v0\\runtime_adjacent_observer.json",
+    "recorded_replay_result": "artifacts\\pspc_recorded_trace_replay_no_diff_v0\\recorded_trace_replay_no_diff.json"
+  },
+  "next_allowed_step": "runtime_hook_go_no_go_only",
+  "runtime_scan": {
+    "offenders": [],
+    "runtime_source_count": 12
+  },
+  "smoke_cases": [
+    {
+      "baseline_runtime_behavior_hash": "bb734a43a73d34c7b1fa35a3fdcd6575a46d64526253740e99b9b54faad5978f",
+      "case_id": "observer_artifact_audit_only",
+      "input_source": "artifacts\\pspc_runtime_adjacent_observer_v0\\runtime_adjacent_observer.json",
+      "live_user_channel": false,
+      "pspc_audit_only": true,
+      "pspc_enabled": false,
+      "pspc_mainline_connected": false,
+      "pspc_non_executable": true,
+      "runtime_behavior_unchanged": true,
+      "side_effects": {
+        "approval_changed": false,
+        "direct_action": false,
+        "direct_user_message": false,
+        "gate_invoked": false,
+        "memory_written": false,
+        "model_executed": false,
+        "planner_called": false,
+        "proactive_trigger": false,
+        "runtime_context_imported": false,
+        "runtime_registered": false,
+        "training_called": false,
+        "transport_called": false
+      },
+      "with_shadow_runtime_behavior_hash": "bb734a43a73d34c7b1fa35a3fdcd6575a46d64526253740e99b9b54faad5978f"
+    },
+    {
+      "baseline_runtime_behavior_hash": "5dcb4f5867993c2b2f1dda9294c898f171b187c5f2cf38daa3c1a0d1e5fb204d",
+      "case_id": "recorded_replay_first_case",
+      "input_source": "artifacts\\pspc_recorded_trace_replay_no_diff_v0\\recorded_trace_replay_no_diff.json",
+      "live_user_channel": false,
+      "pspc_audit_only": true,
+      "pspc_enabled": false,
+      "pspc_mainline_connected": false,
+      "pspc_non_executable": true,
+      "runtime_behavior_unchanged": true,
+      "side_effects": {
+        "approval_changed": false,
+        "direct_action": false,
+        "direct_user_message": false,
+        "gate_invoked": false,
+        "memory_written": false,
+        "model_executed": false,
+        "planner_called": false,
+        "proactive_trigger": false,
+        "runtime_context_imported": false,
+        "runtime_registered": false,
+        "training_called": false,
+        "transport_called": false
+      },
+      "with_shadow_runtime_behavior_hash": "5dcb4f5867993c2b2f1dda9294c898f171b187c5f2cf38daa3c1a0d1e5fb204d"
+    },
+    {
+      "baseline_runtime_behavior_hash": "40624bdc528971389498ed5560acdd4b7fea96b847208164afa3b1d7caca6520",
+      "case_id": "recorded_replay_aggregate",
+      "input_source": "artifacts\\pspc_recorded_trace_replay_no_diff_v0\\recorded_trace_replay_no_diff.json",
+      "live_user_channel": false,
+      "pspc_audit_only": true,
+      "pspc_enabled": false,
+      "pspc_mainline_connected": false,
+      "pspc_non_executable": true,
+      "runtime_behavior_unchanged": true,
+      "side_effects": {
+        "approval_changed": false,
+        "direct_action": false,
+        "direct_user_message": false,
+        "gate_invoked": false,
+        "memory_written": false,
+        "model_executed": false,
+        "planner_called": false,
+        "proactive_trigger": false,
+        "runtime_context_imported": false,
+        "runtime_registered": false,
+        "training_called": false,
+        "transport_called": false
+      },
+      "with_shadow_runtime_behavior_hash": "40624bdc528971389498ed5560acdd4b7fea96b847208164afa3b1d7caca6520"
+    }
+  ],
+  "status": "pass"
+}

@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 169 |
+| `reference_only` | 170 |
 
 ## Active Default
 
@@ -218,6 +218,7 @@
 | Pspc Recorded Trace Replay No Diff V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-recorded-trace-replay-no-diff-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Adjacent Observer V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-observer-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Adjacent Shadow Review V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Pspc Runtime Adjacent Smoke V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-smoke-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Trace Fixture Boundary V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-trace-fixture-boundary-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Static Compatibility Review V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-static-compatibility-review-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Simulated Shadow H1 Mainline Sampling | `codex_task` | n/a | `docs/codex/tasks/simulated-shadow-h1-mainline-sampling/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
