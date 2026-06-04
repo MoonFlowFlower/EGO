@@ -25,6 +25,7 @@ from program_state_common import (
     render_state_yaml_with_header,
     render_status_markdown,
     render_summary_markdown,
+    repo_relative,
     validate_evidence_index,
     validate_program_state_schema,
 )
@@ -213,7 +214,7 @@ def main() -> int:
     }
     if declared_generated != expected_generated:
         errors.append("integrity.generated_views must exactly enumerate the generated status outputs and compatibility mirrors")
-    if integrity.get("shim_register") != str(SHIM_REGISTER_PATH.relative_to(ROOT)):
+    if integrity.get("shim_register") != repo_relative(SHIM_REGISTER_PATH):
         errors.append("integrity.shim_register must point at legacy/ego-pre-handmade-mainline/EgoCore/SHIM_REGISTER.md")
 
     for path in [ROOT_README, EGOCORE_README, OPENEMOTION_README, CURRENT_LOGIC_FLOW]:
@@ -252,8 +253,8 @@ def main() -> int:
 
     if not args.skip_diff_check:
         changed_files = _changed_files(args.base_ref, args.head_ref)
-        state_path_str = str(PROGRAM_STATE_PATH.relative_to(ROOT))
-        shim_path_str = str(SHIM_REGISTER_PATH.relative_to(ROOT))
+        state_path_str = repo_relative(PROGRAM_STATE_PATH)
+        shim_path_str = repo_relative(SHIM_REGISTER_PATH)
         if _any_path_matches(changed_files, CORE_DIR_PREFIXES) and state_path_str not in changed_files:
             errors.append(
                 "core governance/mainline paths changed without updating docs/PROGRAM_STATE_UNIFIED.yaml"

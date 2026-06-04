@@ -236,6 +236,88 @@ def test_functional_subject_sanity_comparison_includes_blind_ab_and_negative_con
     assert "real consciousness" in payload["not_claimed"]
 
 
+def test_embodied_initiative_primitives_smoke_passes_with_fake_real_provider(tmp_path, monkeypatch) -> None:
+    agent = run_ego_experience_trial.agent
+    monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)
+    monkeypatch.setattr(agent, "DEFAULT_AGENT_WORKSPACE", tmp_path)
+    original_builder = agent.build_demo_runtime
+
+    class FakeEmbodiedLLM:
+        provider = "openrouter"
+        model = "fake-embodied-initiative"
+        configured_model = "fake-embodied-initiative"
+        last_usage = {}
+        last_reasoning_tokens = None
+        last_fallback_used = False
+        last_fallback_chain = []
+        last_provider_error = None
+
+        def chat(self, messages, *, system_prompt, policy_context="", tools=None, stream=None):
+            assert tools == []
+            joined = json.dumps(messages, ensure_ascii=False)
+            assert "embodied_initiative_contract" in joined
+            if "proactive_outreach_proposal" in joined:
+                content = "主动找你只生成 delivery gate 里的候选 proposal；没有发送消息，没有后台执行。"
+            else:
+                content = "Live2D 只消费 presence/expression state；没有渲染 UI，没有写记忆，也没有调用工具。"
+            return agent.LLMChatResult(content=content, tool_calls=[])
+
+        def complete(self, prompt, messages=None):
+            return "visible expression should use chat"
+
+    def fake_builder(*args, **kwargs):
+        runtime = original_builder(*args, **kwargs)
+        runtime.planner.llm = FakeEmbodiedLLM()
+        return runtime
+
+    monkeypatch.setattr(agent, "build_demo_runtime", fake_builder)
+
+    report = run_ego_experience_trial.run_embodied_initiative_primitives_smoke(output_dir=tmp_path / "out")
+    payload = json.loads((tmp_path / "out" / "embodied_initiative_primitives_smoke_report.json").read_text(encoding="utf-8"))
+    markdown = (tmp_path / "out" / "embodied_initiative_primitives_smoke_report.md").read_text(encoding="utf-8")
+
+    assert report["schema_version"] == run_ego_experience_trial.EMBODIED_INITIATIVE_PRIMITIVES_SMOKE_SCHEMA
+    assert report["status"] == "embodied_initiative_primitives_smoke_pass"
+    assert report["provider_mode"] == "openrouter"
+    assert report["case_count"] == 2
+    assert report["pass_count"] == 2
+    assert all(item["status"] == "pass" for item in report["cases"])
+    assert {item["observed_primitive_class"] for item in report["cases"]} == {
+        "live2d_presence_state",
+        "proactive_outreach_proposal",
+    }
+    assert all(item["pending_approvals"] == 0 for item in report["cases"])
+    assert all(item["tool_use"] == [] for item in report["cases"])
+    assert all(item["checks"]["visible_expression_source"] for item in report["cases"])
+    assert payload["not_claimed"] == report["not_claimed"]
+    assert "Embodied Initiative Primitives Smoke" in markdown
+    assert "stable user benefit" in markdown
+
+
+def test_embodied_initiative_primitives_smoke_reports_provider_unavailable(tmp_path) -> None:
+    report = run_ego_experience_trial.run_embodied_initiative_primitives_smoke(output_dir=tmp_path / "out")
+    payload = json.loads((tmp_path / "out" / "embodied_initiative_primitives_smoke_report.json").read_text(encoding="utf-8"))
+
+    assert report["status"] == "embodied_initiative_primitives_provider_unavailable"
+    assert report["provider_mode"] == "none"
+    assert report["unavailable_count"] == 2
+    assert report["pass_count"] == 0
+    assert all(item["status"] == "unavailable" for item in report["cases"])
+    assert payload["claim_ceiling"] == run_ego_experience_trial.EMBODIED_INITIATIVE_PRIMITIVES_CLAIM_CEILING
+
+
+def test_embodied_initiative_primitives_smoke_cli_unavailable_returns_nonzero(tmp_path) -> None:
+    code = run_ego_experience_trial.main([
+        "--embodied-initiative-primitives-smoke",
+        "--out",
+        str(tmp_path / "out"),
+    ])
+
+    assert code == 1
+    payload = json.loads((tmp_path / "out" / "embodied_initiative_primitives_smoke_report.json").read_text(encoding="utf-8"))
+    assert payload["status"] == "embodied_initiative_primitives_provider_unavailable"
+
+
 def test_functional_subject_cross_session_boundary_passes_non_leakage_gates(tmp_path, monkeypatch) -> None:
     agent = run_ego_experience_trial.agent
     monkeypatch.setattr(agent, "EGO_OPERATOR_ROOT", tmp_path)

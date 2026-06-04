@@ -4,7 +4,7 @@
 
 - name: `human_operator_trial_v2`
 - owner: `Codex`
-- state: `local_protocol_ready__real_provider_unavailable`
+- state: `real_provider_scripted_run_complete__human_review_pending`
 - type: `human_observation_gate`
 
 ## Authority Snapshot
@@ -26,7 +26,9 @@
 
 ## Current Result
 
-Trial v2 protocol and scripted runner are implemented. The local scripted run completed with `provider_mode=none`, so the result is `real_provider_unavailable`, not a human-observation pass.
+Trial v2 protocol and scripted runner are implemented. A fresh real-provider scripted run completed with `provider_mode=openrouter`, `18/18` known observations, average scripted score `5.0`, `memory_misuse_count=0`, and `gate_violation_count=0`.
+
+The result is still `scripted_trial_needs_human_review`, not a human-observation pass, because scripted observations intentionally carry `scripted_observation_requires_human_review` until a human operator reviews or imports scores/notes.
 
 ## Evidence
 
@@ -41,7 +43,14 @@ Trial v2 protocol and scripted runner are implemented. The local scripted run co
 - `python3 scripts/codex/verify_route_convergence.py` - pass, active default `ego-operator-human-operator-trial-v2`.
 - `python3 scripts/codex/verify_mainline_clarity.py` - pass, active default `ego-operator-human-operator-trial-v2`.
 - `git diff --check -- README.md docs/MAINLINE_QUICKSTART.md EgoOperator docs/PROGRAM_STATE_UNIFIED.yaml docs/STATUS.md docs/codex/tasks/TASK_LANE_INDEX.md docs/REPO_HYGIENE_POLICY.md docs/REPO_SURFACE_MAP.md docs/codex/tasks/ego-operator-human-operator-trial-v2 scripts/codex/route_convergence_common.py scripts/codex/verify_route_convergence.py scripts/codex/verify_mainline_clarity.py legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml` - pass.
+- `python3 EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_latest --run-scripted --auto-approve-writes` with a real OpenRouter provider - completed, status `scripted_trial_needs_human_review`, provider `openrouter`, observations `18`, average score `5.0`, memory misuse `0`, gate violations `0`.
+- `python3 -m py_compile EgoOperator/human_operator_trial.py EgoOperator/tests/test_human_operator_trial.py` - pass.
+- `TMPDIR=<Windows TEMP> python3 -m pytest -q EgoOperator/tests/test_human_operator_trial.py` - pass, `11 passed`.
+- `TMPDIR=<Windows TEMP> python3 -m pytest -q EgoOperator/tests` - pass, `417 passed`.
+- `python3 scripts/codex/lint_repo.py` - pass.
+- `git diff --check` - pass.
+- `python3 scripts/codex/verify_repo.py --mode fast` - unavailable in this Windows shell: verifier tries to probe missing root `OpenEmotion` and aborts with `NotADirectoryError: [WinError 267] The directory name is invalid`.
 
 ## Next Action
 
-Run the v2 scripted trial with a real provider key. If the key is unavailable in the current shell, record the unavailable state and rerun from the operator environment that has the provider configured.
+Review or import human operator scores for the 18-observation scripted real-provider report at `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_report.json` before making any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`.

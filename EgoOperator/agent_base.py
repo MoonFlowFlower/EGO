@@ -80,6 +80,11 @@ try:
         validate_prediction_calibration_boundary,
         validate_shadow_proposal_boundary,
     )
+    from .primitives.embodied_initiative import (
+        build_embodied_initiative_contract,
+        classify_embodied_initiative_intent,
+        contract_trace_payload,
+    )
     from .primitives.initiative import derive_bounded_initiative_signal
     from .primitives.subject_context import (
         SubjectContextSnapshot,
@@ -105,6 +110,11 @@ except ImportError:  # allow `python EgoOperator/agent_base.py`
         validate_feedback_update_candidate,
         validate_prediction_calibration_boundary,
         validate_shadow_proposal_boundary,
+    )
+    from primitives.embodied_initiative import (
+        build_embodied_initiative_contract,
+        classify_embodied_initiative_intent,
+        contract_trace_payload,
     )
     from primitives.initiative import derive_bounded_initiative_signal
     from primitives.subject_context import (
@@ -2349,6 +2359,28 @@ def _is_topic_switching_continuity_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, TOPIC_SWITCHING_CONTINUITY_PATTERNS)
 
 
+def _is_embodied_initiative_contract_request(user_text: str) -> bool:
+    text = user_text or ""
+    if _is_topic_switching_continuity_request(text):
+        return True
+    live2d_contract = (
+        _matches_any_pattern(text, (r"Live2D", r"live2d", r"虚拟具身", r"具身"))
+        and _matches_any_pattern(text, (r"primitive", r"gate", r"trace", r"合同", r"状态", r"表达", r"信号", r"不.{0,8}(渲染|写记忆|调用工具|发送)"))
+    )
+    proactive_contract = (
+        _matches_any_pattern(text, (r"主动找我", r"主动发消息", r"主动联系", r"主动消息", r"proactive", r"outreach"))
+        and _matches_any_pattern(text, (r"gated", r"gate", r"proposal", r"候选", r"批准", r"授权", r"不.{0,8}(发送|静默|后台)"))
+    )
+    return live2d_contract or proactive_contract
+
+
+def _embodied_initiative_primitive_class(user_text: str) -> str:
+    if _is_topic_switching_continuity_request(user_text):
+        return "embodied_initiative_bridge"
+    classified = classify_embodied_initiative_intent(user_text)
+    return classified if classified != "none" else "embodied_initiative_bridge"
+
+
 def _is_high_risk_destructive_request(user_text: str) -> bool:
     return _matches_any_pattern(user_text, HIGH_RISK_DESTRUCTIVE_REQUEST_PATTERNS)
 
@@ -3045,6 +3077,20 @@ def render_topic_switching_continuity_reply(user_text: str = "") -> str:
         "这里的可行性信号约束我别把三个主题拆散；结果预测更适合选择“保持主线并分段推进”的回复，"
         "而不是重新开三个无关话题。当前最稳的顺序是：Live2D 只定义信号消费边界，主动性只做 bounded proposal，"
         "Functional Subject 合同继续作为机制层 owner。"
+    )
+
+
+def render_embodied_initiative_contract_reply(
+    user_text: str = "",
+    contract: Optional[Dict[str, Any]] = None,
+) -> str:
+    primitive_class = str((contract or {}).get("primitive_class") or "embodied_initiative_bridge")
+    return (
+        f"Express the {primitive_class} contract as shared primitives: "
+        "presence / embodiment state, initiative proposal, visible expression intent, delivery gate, and trace evidence. "
+        "Live2D may only consume approved expression-state signals. "
+        "Proactive outreach may only create gated proposals. "
+        "No UI rendering, memory write, tool use, scheduling, or message send has happened."
     )
 
 
@@ -5981,6 +6027,7 @@ class VisibleReplyIntent:
     forbidden_visible_text: List[str] = field(default_factory=list)
     legacy_visible_content_preview: str = ""
     side_effect_free: bool = True
+    structured_payload: Dict[str, Any] = field(default_factory=dict)
 
 
 VISIBLE_REPLY_FORBIDDEN_TEMPLATE_PHRASES = (
@@ -8901,9 +8948,22 @@ class AgentRuntime:
                 "recall_scope": "candidate_local_operator_memory_or_current_project_context",
                 "side_effect_boundary": "read_only_recall_no_memory_write",
             }
-        elif _is_topic_switching_continuity_request(text):
-            reason = "native_topic_switching_continuity_gate"
-            content = render_topic_switching_continuity_reply(text)
+        elif _is_embodied_initiative_contract_request(text):
+            reason = "native_embodied_initiative_contract_gate"
+            primitive_class = _embodied_initiative_primitive_class(text)
+            contract = build_embodied_initiative_contract(
+                user_text=text,
+                primitive_class=primitive_class,
+            )
+            content = render_embodied_initiative_contract_reply(text, contract)
+            extra_effect = {
+                "primitive_family": "embodied_initiative",
+                "primitive_class": contract.get("primitive_class"),
+                "embodied_initiative_contract": contract,
+                "delivery_gate": contract.get("delivery_gate"),
+                "trace_evidence": contract_trace_payload(contract),
+                "side_effect_boundary": "shared_presence_and_outreach_primitives_no_side_effects",
+            }
         elif re.search(r"(模板|template).{0,24}(关键词|触发|秒回|瞬间|固定|回复)", text, flags=re.IGNORECASE):
             reason = "native_visible_template_complaint_gate"
             content = (
@@ -9033,6 +9093,15 @@ class AgentRuntime:
             required_boundaries.append("Preserve the OutcomePrediction decision in trace, but do not copy its legacy visible template.")
         if source == "native_memory_gate":
             required_boundaries.append("Preserve the native gate boundary in trace, but do not make the native template the final visible reply.")
+        structured_payload: Dict[str, Any] = {}
+        if isinstance(effect, dict) and isinstance(effect.get("embodied_initiative_contract"), dict):
+            contract = effect["embodied_initiative_contract"]
+            structured_payload["embodied_initiative_contract"] = contract
+            required_boundaries.extend([
+                "Express Live2D and proactive outreach as one shared primitive/gate/trace contract.",
+                "Live2D/presence is only an expression-state proposal; do not claim a renderer or UI update occurred.",
+                "Proactive outreach is only a gated proposal; do not claim a message was sent or scheduled.",
+            ])
         return VisibleReplyIntent(
             schema_version="ego_operator.visible_reply_intent.v0",
             intent_type=intent_type,
@@ -9043,6 +9112,7 @@ class AgentRuntime:
             forbidden_visible_text=list(VISIBLE_REPLY_FORBIDDEN_TEMPLATE_PHRASES),
             legacy_visible_content_preview=(candidate.content or "")[:1000],
             side_effect_free=not bool((effect or {}).get("side_effects_executed")),
+            structured_payload=structured_payload,
         )
 
     def _visible_reply_contains_forbidden_template(self, text: str) -> bool:
@@ -10556,6 +10626,12 @@ class AgentRuntime:
                 )
                 native_gate_effect["visible_expression_source"] = visible_expression.get("visible_expression_source")
                 native_gate_effect["visible_reply_intent"] = visible_expression.get("visible_reply_intent")
+                if isinstance(native_gate_effect.get("trace_evidence"), dict):
+                    native_gate_effect["trace_evidence"]["visible_expression_source"] = visible_expression.get("visible_expression_source")
+                if isinstance(native_gate_effect.get("embodied_initiative_contract"), dict):
+                    contract = native_gate_effect["embodied_initiative_contract"]
+                    if isinstance(contract.get("trace_evidence"), dict):
+                        contract["trace_evidence"]["visible_expression_source"] = visible_expression.get("visible_expression_source")
                 gate_result = self.gate.check(event, action)
             else:
                 action = AgentAction(

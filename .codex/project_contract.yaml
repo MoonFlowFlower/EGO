@@ -197,6 +197,10 @@ allowed_mutation_paths:
   - .codex/memory/project_truth.jsonl
   - .codex/memory/user_preferences.jsonl
   - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/reports/
   - .codex/autopilot/
   - .agents/skills/codex-project-autopilot/
   - AGENTS.md
@@ -253,6 +257,10 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/
   - docs/codex/tasks/ego-joi-companion-roadmap-v1/
   - docs/codex/tasks/codex-session-bootstrap-closeout-v1/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/codex/tasks/ego-operator-human-operator-trial-v2/
+  - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml
+  - legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml
 
 commit_policy:
   mode: direct-main

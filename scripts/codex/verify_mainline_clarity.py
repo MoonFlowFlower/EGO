@@ -189,7 +189,7 @@ def _check_worktree_audit(errors: list[str]) -> None:
         return
 
     proc = subprocess.run(
-        ["python3", "scripts/codex/audit_worktree_noise.py", "--json"],
+        [sys.executable, "scripts/codex/audit_worktree_noise.py", "--json"],
         cwd=ROOT,
         capture_output=True,
         text=True,

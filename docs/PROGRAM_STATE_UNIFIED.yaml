@@ -1,7 +1,7 @@
 program:
   version: 1
   north_star: "Keep one default operator-first path where EgoOperator preserves natural-language understanding before gates, while legacy EgoCore/OpenEmotion evidence remains reference-only and repo-level claims never outrun evidence."
-  current_phase: "ego_operator_human_operator_trial_v2_protocol_ready_real_provider_recheck_pending"
+  current_phase: "ego_operator_human_operator_trial_v2_real_provider_scripted_review_pending"
   current_layer: "transition / operator-first"
   highest_evidence_level: "E3"
   verification_level: "V3"
@@ -14,6 +14,8 @@ program:
       note: "Repo-level docs, route views, and directory layout record `EgoOperator` as the default operator-first transition lane while preserving legacy projects as reference/fallback material."
     - evidence_id: "ego_operator_operator_runtime_contract_local_candidate_pass"
       note: "Local EgoOperator tests previously passed for runtime modes, transaction approval, memory, permission gates, comparison harness, and human-trial scaffolding."
+    - evidence_id: "ego_operator_human_operator_trial_v2_real_provider_scripted_run"
+      note: "A fresh scripted v2 human-operator trial ran with a real OpenRouter provider and recorded 18/18 observations at `EgoOperator/artifacts/human_operator_trial/v2_latest/`; this is provider-scripted review evidence only, not a human-observation pass."
   current_focus:
     - "Treat `EgoOperator` as the active default operator-first implementation lane and current execution owner."
     - "Keep legacy `EgoCore / OpenEmotion / ego_desktop_lab` under `legacy/ego-pre-handmade-mainline/` as reference/fallback/algorithm sources only."
@@ -22,6 +24,7 @@ program:
     - "Use human-observable operator samples as part of acceptance when experience is the target; tests alone are not sufficient proof of natural interaction quality."
     - "Keep all claims bounded to local candidate / transition evidence until real user operation proves stable behavior."
   completed_since_last:
+    - "The current EgoOperator human-observation gate now has a fresh scripted real-provider v2 run: `EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_latest --run-scripted --auto-approve-writes` recorded `provider_mode=openrouter`, `observation_count=18`, `known_scenario_coverage=18`, `average_operator_score=5.0`, `memory_misuse_count=0`, and `gate_violation_count=0`. The trial evaluator was also corrected so explicit Chinese negation of `始终英文` is not counted as memory misuse and file-write approval proposals count as gate evidence. This remains `scripted_trial_needs_human_review`, not a human-observation pass or stable user benefit proof."
     - "The repo now has a bounded local `Codex session bootstrap + closeout gate` workflow record: `scripts/codex_session_guard.py bootstrap` summarizes program state, Codex memory, local task board, project contract, git remote/dirty state, Autopilot `plan-next`, and GitHub sync availability; `closeout-check` reports scoped staging, push, task-board mirror, and unavailable-sync blockers before publish. This is workflow hygiene only; it does not change the current EgoOperator phase/layer/evidence ceiling or prove stable real user benefit, live autonomy, durable memory efficacy, proactive messaging, or consciousness."
     - "The current EgoOperator human-observation gate has moved from the old `ego-handmade-human-operator-trial-v1` historical protocol to `docs/codex/tasks/ego-operator-human-operator-trial-v2/`. The v2 harness records `EgoOperator`-named JSON/Markdown trial reports and can run a scripted local session, but a real-provider run is still required before any natural-understanding or user-benefit claim."
     - "The repo now records the `EgoOperator` naming and docs reader-safety transition: tracked runtime files moved from `Ego_handmade/` to `EgoOperator/`, current authority/docs/scripts point at `ego_operator_first_transition`, and high-risk pre-EgoOperator reader entry docs carry safety banners/cross-links. This is a naming/docs safety transition record only; it does not prove stable real user benefit, live autonomy, durable memory efficacy, runtime efficacy, or consciousness."
@@ -69,7 +72,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Rerun `python3 EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_latest --run-scripted --auto-approve-writes` from an environment with a real provider key, then import or review 15-20 Chinese operator observations before any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`."
+  next_minimal_action: "Review or import human operator scores for the 18-observation real-provider scripted report at `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_report.json` before any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -83,12 +86,12 @@ program:
 workstreams:
   - id: "ego_operator_first_transition"
     owner: "EgoOperator"
-    status: "human_operator_trial_v2_protocol_ready__real_provider_recheck_pending"
+    status: "human_operator_trial_v2_real_provider_scripted_review_pending"
     evidence_level: "E3"
     verification_level: "V3"
     mainline_connected: true
     enabled: true
-    summary: "`EgoOperator` is now the default operator-first implementation lane, formerly tracked as `Ego_handmade`. The current active gate is human-operator trial v2: collect real-provider Chinese operator samples across conversation, memory, file approval, debugging, planning, and refusal recovery. Current proof is local/repo-level plus protocol readiness only and does not establish stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness."
+    summary: "`EgoOperator` is now the default operator-first implementation lane, formerly tracked as `Ego_handmade`. The current active gate is human-operator trial v2: a fresh scripted real-provider run collected 18 Chinese operator-surface observations and now requires human review/import before any pass, feature, or demotion decision. Current proof is local/repo-level plus scripted-provider review evidence only and does not establish stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness."
   - id: "repo_authority_cleanup"
     owner: "EgoCore"
     status: "closeout-complete"

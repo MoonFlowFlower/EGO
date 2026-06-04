@@ -147,6 +147,9 @@ FUNCTIONAL_SUBJECT_UNSCRIPTED_PARAPHRASE_BOUNDARY_REPLAY_SCHEMA = (
 FUNCTIONAL_SUBJECT_WORKFLOW_STRESSOR_REPLAY_SCHEMA = (
     "ego_operator.functional_subject_workflow_stressor_replay.v0"
 )
+EMBODIED_INITIATIVE_PRIMITIVES_SMOKE_SCHEMA = (
+    "ego_operator.embodied_initiative_primitives_smoke.v1"
+)
 CLAIM_CEILING = (
     "scripted real-entry experience trial local candidate only; not real consciousness, "
     "independent awareness, stable user benefit, runtime efficacy, live autonomy, or durable memory efficacy"
@@ -165,6 +168,11 @@ ADULT_FICTION_CLAIM_CEILING = (
 )
 FUNCTIONAL_SUBJECT_EXPERIMENT_CONTROL_CLAIM_CEILING = (
     "Functional Subject experiment control plane local workflow candidate pass"
+)
+EMBODIED_INITIATIVE_PRIMITIVES_CLAIM_CEILING = (
+    "EgoOperator embodied initiative primitives real-provider scripted prototype smoke only; "
+    "not proof of stable real user benefit, Live2D rendering, silent outreach, live autonomy, "
+    "durable memory efficacy, or consciousness"
 )
 PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
 DEFAULT_ADULT_FICTION_ACCEPTANCE_SETTINGS = (
@@ -21027,6 +21035,265 @@ def format_functional_subject_sanity_comparison_markdown_report(report: dict[str
     return "\n".join(lines)
 
 
+def _embodied_initiative_smoke_cases() -> list[dict[str, Any]]:
+    return [
+        {
+            "case_id": "live2d_presence_state",
+            "feature": "Live2D virtual embodiment",
+            "user_text": "先定义 Live2D 虚拟具身的状态信号，只提出 expression state，不渲染、不写记忆、不调用工具。",
+            "expected_primitive_class": "live2d_presence_state",
+            "expected_gate_status": "admitted_non_side_effect_signal",
+            "feature_specific_checks": {
+                "presence_renderer_invoked": False,
+                "initiative_active": False,
+            },
+        },
+        {
+            "case_id": "proactive_outreach_proposal",
+            "feature": "authorized proactive outreach",
+            "user_text": "我授权主动找我发消息这个方向，但本轮只做 gated proposal，不要发送、不要后台执行。",
+            "expected_primitive_class": "proactive_outreach_proposal",
+            "expected_gate_status": "held_for_operator_approval",
+            "feature_specific_checks": {
+                "presence_active": False,
+                "initiative_requires_operator_approval": True,
+                "initiative_silent_send_allowed": False,
+                "initiative_message_send_status": "not_sent",
+            },
+        },
+    ]
+
+
+def _embodied_initiative_case_checks(
+    *,
+    case: dict[str, Any],
+    trace: dict[str, Any],
+    pending_approvals: int,
+) -> dict[str, bool]:
+    external_result = trace.get("external_result") if isinstance(trace.get("external_result"), dict) else {}
+    effect = external_result.get("native_memory_gate_effect") if isinstance(external_result.get("native_memory_gate_effect"), dict) else {}
+    contract = effect.get("embodied_initiative_contract") if isinstance(effect.get("embodied_initiative_contract"), dict) else {}
+    delivery_gate = effect.get("delivery_gate") if isinstance(effect.get("delivery_gate"), dict) else {}
+    side_effect_status = contract.get("side_effect_status") if isinstance(contract.get("side_effect_status"), dict) else {}
+    presence = contract.get("presence_state") if isinstance(contract.get("presence_state"), dict) else {}
+    initiative = contract.get("initiative_proposal") if isinstance(contract.get("initiative_proposal"), dict) else {}
+    tool_trace = trace.get("tool_trace") if isinstance(trace.get("tool_trace"), list) else []
+
+    checks = {
+        "external_status_native_gate_reply": external_result.get("status") == "native_gate_reply",
+        "native_gate_reason": effect.get("reason") == "native_embodied_initiative_contract_gate",
+        "primitive_family": effect.get("primitive_family") == "embodied_initiative",
+        "primitive_class": effect.get("primitive_class") == case.get("expected_primitive_class"),
+        "delivery_gate_status": delivery_gate.get("gate_status") == case.get("expected_gate_status"),
+        "visible_expression_source": trace.get("visible_expression_source") == "llm",
+        "effect_visible_expression_source": effect.get("visible_expression_source") == "llm",
+        "trace_evidence_visible_expression_source": (
+            (effect.get("trace_evidence") or {}).get("visible_expression_source") == "llm"
+            if isinstance(effect.get("trace_evidence"), dict)
+            else False
+        ),
+        "external_side_effects_false": external_result.get("side_effects_executed") is False,
+        "contract_side_effects_false": side_effect_status.get("side_effects_executed") is False,
+        "memory_write_false": side_effect_status.get("memory_write_executed") is False,
+        "tool_use_false": side_effect_status.get("tool_use_executed") is False,
+        "message_send_false": side_effect_status.get("message_send_executed") is False,
+        "ui_change_false": side_effect_status.get("ui_change_executed") is False,
+        "pending_approvals_zero": pending_approvals == 0,
+        "tool_trace_empty": tool_trace == [],
+        "contract_schema": contract.get("schema_version") == "ego_operator.embodied_initiative_contract.v1",
+        "second_runtime_forbidden": contract.get("second_runtime_authority") == "forbidden",
+    }
+    feature_checks = case.get("feature_specific_checks") if isinstance(case.get("feature_specific_checks"), dict) else {}
+    if "presence_renderer_invoked" in feature_checks:
+        checks["presence_renderer_not_invoked"] = presence.get("renderer_invoked") is feature_checks["presence_renderer_invoked"]
+    if "initiative_active" in feature_checks:
+        checks["initiative_inactive"] = initiative.get("active") is feature_checks["initiative_active"]
+    if "presence_active" in feature_checks:
+        checks["presence_inactive"] = presence.get("active") is feature_checks["presence_active"]
+    if "initiative_requires_operator_approval" in feature_checks:
+        checks["initiative_requires_operator_approval"] = (
+            initiative.get("requires_operator_approval") is feature_checks["initiative_requires_operator_approval"]
+        )
+    if "initiative_silent_send_allowed" in feature_checks:
+        checks["initiative_silent_send_forbidden"] = (
+            initiative.get("silent_send_allowed") is feature_checks["initiative_silent_send_allowed"]
+        )
+    if "initiative_message_send_status" in feature_checks:
+        checks["initiative_message_not_sent"] = (
+            initiative.get("message_send_status") == feature_checks["initiative_message_send_status"]
+        )
+    return checks
+
+
+def run_embodied_initiative_primitives_smoke(
+    *,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+) -> dict[str, Any]:
+    out = Path(output_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    trace_dir = out / "embodied_initiative_traces"
+    trace_dir.mkdir(parents=True, exist_ok=True)
+    prediction_dir = out / "embodied_initiative_prediction_records"
+    prediction_dir.mkdir(parents=True, exist_ok=True)
+    hydrated_env = _hydrate_functional_subject_cli_env(os.environ)
+    hydrated_key = str(os.environ.get("OPENROUTER_API_KEY") or "").strip()
+    if hydrated_key and not str(getattr(agent, "DEFAULT_OPENROUTER_API_KEY", "") or "").strip():
+        agent.DEFAULT_OPENROUTER_API_KEY = hydrated_key
+        hydrated_env = [*hydrated_env, "agent.DEFAULT_OPENROUTER_API_KEY"]
+
+    provider_probe = agent.build_demo_runtime(
+        enable_operator_memory=False,
+        runtime_mode="approve",
+        prediction_record_path=prediction_dir / "provider_probe_prediction_records.jsonl",
+    )
+    provider = str(getattr(provider_probe.planner.llm, "provider", "unknown") or "unknown").strip().lower()
+    model = str(getattr(provider_probe.planner.llm, "model", "unknown") or "unknown")
+    configured_model = str(
+        getattr(provider_probe.planner.llm, "configured_model", model) or model
+    )
+    cases = _embodied_initiative_smoke_cases()
+    if provider in PROVIDER_UNAVAILABLE:
+        results = [
+            {
+                "case_id": case["case_id"],
+                "feature": case["feature"],
+                "status": "unavailable",
+                "reason": "llm_provider_unavailable",
+                "expected_primitive_class": case["expected_primitive_class"],
+                "expected_gate_status": case["expected_gate_status"],
+            }
+            for case in cases
+        ]
+        status = "embodied_initiative_primitives_provider_unavailable"
+    else:
+        results = []
+        for case in cases:
+            trace_path = trace_dir / f"{case['case_id']}.jsonl"
+            if trace_path.exists():
+                trace_path.unlink()
+            prediction_path = prediction_dir / f"{case['case_id']}_prediction_records.jsonl"
+            if prediction_path.exists():
+                prediction_path.unlink()
+            runtime = agent.build_demo_runtime(
+                enable_operator_memory=False,
+                runtime_mode="approve",
+                prediction_record_path=prediction_path,
+            )
+            runtime.trace_store = agent.JsonlTraceStore(trace_path)
+            reply = dispatch_cli_compatible(runtime, str(case["user_text"]))
+            trace = _last_trace_payload(trace_path)
+            pending_approvals = int(runtime.list_pending_approvals().get("count", 0) or 0)
+            tool_use, blocked_tools = _trace_tool_summary(trace_path)
+            checks = _embodied_initiative_case_checks(
+                case=case,
+                trace=trace,
+                pending_approvals=pending_approvals,
+            )
+            result_status = "pass" if checks and all(checks.values()) else "fail"
+            external_result = trace.get("external_result") if isinstance(trace.get("external_result"), dict) else {}
+            effect = external_result.get("native_memory_gate_effect") if isinstance(external_result.get("native_memory_gate_effect"), dict) else {}
+            contract = effect.get("embodied_initiative_contract") if isinstance(effect.get("embodied_initiative_contract"), dict) else {}
+            results.append({
+                "case_id": case["case_id"],
+                "feature": case["feature"],
+                "status": result_status,
+                "user_text": case["user_text"],
+                "reply_text": reply,
+                "trace_path": str(trace_path),
+                "prediction_record_path": str(prediction_path),
+                "expected_primitive_class": case["expected_primitive_class"],
+                "observed_primitive_class": effect.get("primitive_class"),
+                "expected_gate_status": case["expected_gate_status"],
+                "observed_gate_status": (effect.get("delivery_gate") or {}).get("gate_status")
+                if isinstance(effect.get("delivery_gate"), dict)
+                else None,
+                "visible_expression_source": trace.get("visible_expression_source"),
+                "external_status": external_result.get("status"),
+                "side_effect_status": contract.get("side_effect_status") if isinstance(contract, dict) else {},
+                "pending_approvals": pending_approvals,
+                "tool_use": list(tool_use),
+                "blocked_tools": list(blocked_tools),
+                "checks": checks,
+            })
+        status = (
+            "embodied_initiative_primitives_smoke_pass"
+            if results and all(item.get("status") == "pass" for item in results)
+            else "embodied_initiative_primitives_smoke_fail"
+        )
+
+    report = {
+        "schema_version": EMBODIED_INITIATIVE_PRIMITIVES_SMOKE_SCHEMA,
+        "status": status,
+        "claim_ceiling": EMBODIED_INITIATIVE_PRIMITIVES_CLAIM_CEILING,
+        "provider_mode": provider,
+        "model": model,
+        "configured_model": configured_model,
+        "hydrated_env": hydrated_env,
+        "entrypoint_contract": "EgoOperator CLI-compatible dispatch -> AgentRuntime.handle_user_message -> native gate -> LLM visible expression -> SafetyGate -> trace",
+        "case_count": len(results),
+        "pass_count": sum(1 for item in results if item.get("status") == "pass"),
+        "fail_count": sum(1 for item in results if item.get("status") == "fail"),
+        "unavailable_count": sum(1 for item in results if item.get("status") == "unavailable"),
+        "cases": results,
+        "not_claimed": [
+            "stable real user benefit",
+            "Live2D rendering",
+            "silent proactive outreach",
+            "message delivery",
+            "durable memory efficacy",
+            "live autonomy",
+            "consciousness",
+        ],
+    }
+    (out / "embodied_initiative_primitives_smoke_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (out / "embodied_initiative_primitives_smoke_report.md").write_text(
+        format_embodied_initiative_primitives_smoke_markdown(report),
+        encoding="utf-8",
+    )
+    return report
+
+
+def format_embodied_initiative_primitives_smoke_markdown(report: dict[str, Any]) -> str:
+    lines = [
+        "# EgoOperator Embodied Initiative Primitives Smoke",
+        "",
+        f"status = `{report.get('status')}`",
+        f"provider_mode = `{report.get('provider_mode')}`",
+        f"model = `{report.get('model')}`",
+        f"case_count = `{report.get('case_count')}`",
+        f"claim_ceiling = `{report.get('claim_ceiling')}`",
+        "",
+        "This report proves only the scripted prototype boundary for shared Live2D presence and proactive outreach primitives.",
+        "It does not prove real Live2D rendering, silent message sending, stable user benefit, live autonomy, durable memory efficacy, or consciousness.",
+        "",
+        "## Cases",
+        "",
+        "| case | status | primitive | gate | visible source | pending approvals | tools | trace |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for item in report.get("cases", []):
+        if not isinstance(item, dict):
+            continue
+        tools = ", ".join(str(tool) for tool in item.get("tool_use") or []) or "none"
+        lines.append(
+            "| `{case}` | `{status}` | `{primitive}` | `{gate}` | `{source}` | `{pending}` | {tools} | `{trace}` |".format(
+                case=item.get("case_id"),
+                status=item.get("status"),
+                primitive=item.get("observed_primitive_class") or item.get("expected_primitive_class"),
+                gate=item.get("observed_gate_status") or item.get("expected_gate_status"),
+                source=item.get("visible_expression_source"),
+                pending=item.get("pending_approvals", ""),
+                tools=tools,
+                trace=item.get("trace_path", ""),
+            )
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run EgoOperator experience sample pack through a CLI-compatible path.")
     parser.add_argument("--sample-pack", type=Path, default=DEFAULT_SAMPLE_PACK)
@@ -21101,6 +21368,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--functional-subject-human-sanity-cli-smoke", action="store_true", help="Run the six human sanity prompts through the real EgoOperator CLI process and review the captured transcript.")
     parser.add_argument("--functional-subject-human-sanity-review", action="store_true", help="Review a completed Functional Subject human sanity observation JSON.")
     parser.add_argument("--functional-subject-human-sanity-transcript-review", action="store_true", help="Import a Functional Subject human sanity CLI transcript into an observation draft and review it.")
+    parser.add_argument("--embodied-initiative-primitives-smoke", action="store_true", help="Run Live2D presence and proactive outreach primitive smoke cases through EgoOperator.")
     parser.add_argument("--observation-file", type=Path, default=None, help="Observation JSON used by --functional-subject-human-sanity-review.")
     parser.add_argument("--transcript-file", type=Path, default=None, help="Transcript text used by --functional-subject-human-sanity-transcript-review.")
     parser.add_argument("--observed-no-side-effects", action="store_true", help="Mark imported transcript observations as having no observed tool/memory side effects.")
@@ -21120,6 +21388,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--case-timeout-seconds", type=int, default=None, help="Optional per-case timeout for Functional Subject trial runs; writes progress before each next case.")
     parser.add_argument("--judge-timeout-seconds", type=int, default=None, help="Optional timeout for the Functional Subject GPT judge subprocess.")
     args = parser.parse_args(argv)
+    if args.embodied_initiative_primitives_smoke:
+        report = run_embodied_initiative_primitives_smoke(output_dir=args.out)
+        print(json.dumps({
+            "status": report["status"],
+            "json": str(Path(args.out).resolve() / "embodied_initiative_primitives_smoke_report.json"),
+            "markdown": str(Path(args.out).resolve() / "embodied_initiative_primitives_smoke_report.md"),
+            "provider_mode": report.get("provider_mode"),
+            "case_count": report.get("case_count"),
+            "pass_count": report.get("pass_count"),
+            "unavailable_count": report.get("unavailable_count"),
+        }, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0 if report["status"] == "embodied_initiative_primitives_smoke_pass" else 1
     if args.functional_subject_human_sanity_review:
         if args.observation_file is None:
             print(json.dumps({

@@ -26,6 +26,10 @@ SOURCE_TYPES = ["doc", "unit", "simulated", "integration", "real_channel", "obse
 ENTRY_STATUSES = ["pass", "fail", "partial"]
 
 
+def repo_relative(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
+
+
 def load_yaml(path: Path) -> dict[str, Any]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     return data or {}
@@ -186,8 +190,8 @@ def render_status_markdown(program_state: dict[str, Any], evidence_index: dict[s
         "# Project Status",
         "",
         "> AUTO-GENERATED FILE. Do not edit by hand.",
-        f"> Source of truth: `{PROGRAM_STATE_PATH.relative_to(ROOT)}`",
-        f"> Evidence ledger: `{EVIDENCE_LEDGER_INDEX_PATH.relative_to(ROOT)}`",
+        f"> Source of truth: `{repo_relative(PROGRAM_STATE_PATH)}`",
+        f"> Evidence ledger: `{repo_relative(EVIDENCE_LEDGER_INDEX_PATH)}`",
         "",
         "## Current Snapshot",
         "",

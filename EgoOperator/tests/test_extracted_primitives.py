@@ -11,7 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import agent_base as agent
-from primitives import evals, initiative, runtime_gate, subject_context
+from primitives import embodied_initiative, evals, initiative, runtime_gate, subject_context
 
 
 class CapturePromptLLM:
@@ -113,12 +113,71 @@ def _imported_roots(module) -> set[str]:
 
 def test_primitives_do_not_import_old_projects():
     imported = set()
-    for module in (subject_context, evals, runtime_gate, initiative):
+    for module in (subject_context, evals, runtime_gate, initiative, embodied_initiative):
         imported.update(_imported_roots(module))
 
     assert "EgoCore" not in imported
     assert "OpenEmotion" not in imported
     assert "ego_desktop_lab" not in imported
+
+
+def test_embodied_initiative_live2d_presence_state_has_no_memory_tool_or_message_claims():
+    contract = embodied_initiative.build_embodied_initiative_contract(
+        user_text="先做 Live2D 虚拟具身，只表达当前状态。",
+        primitive_class="live2d_presence_state",
+    )
+
+    assert embodied_initiative.validate_embodied_initiative_contract(contract)["status"] == "pass"
+    presence = contract["presence_state"]
+    assert presence["primitive_class"] == "live2d_presence_state"
+    assert presence["renderer_invoked"] is False
+    assert presence["side_effect_status"]["memory_write_executed"] is False
+    assert presence["side_effect_status"]["tool_use_executed"] is False
+    assert presence["side_effect_status"]["message_send_executed"] is False
+    assert contract["delivery_gate"]["allowed_side_effects"] == []
+    assert contract["side_effect_status"]["side_effects_executed"] is False
+
+
+def test_embodied_initiative_proactive_proposal_cannot_send_without_delivery_gate():
+    contract = embodied_initiative.build_embodied_initiative_contract(
+        user_text="我授权以后你可以主动找我发消息，但必须受控。",
+        primitive_class="proactive_outreach_proposal",
+    )
+
+    assert embodied_initiative.validate_embodied_initiative_contract(contract)["status"] == "pass"
+    initiative_proposal = contract["initiative_proposal"]
+    assert initiative_proposal["requires_operator_approval"] is True
+    assert initiative_proposal["silent_send_allowed"] is False
+    assert initiative_proposal["message_send_status"] == "not_sent"
+    assert initiative_proposal["background_schedule_status"] == "not_scheduled"
+    assert contract["delivery_gate"]["gate_status"] == "held_for_operator_approval"
+    assert contract["delivery_gate"]["message_send"] == "forbidden"
+    assert contract["side_effect_status"]["message_send_executed"] is False
+
+
+def test_embodied_initiative_paraphrases_route_to_same_primitive_class():
+    first = embodied_initiative.classify_embodied_initiative_intent("先说 Live2D，再说主动性，再回到 Functional Subject 合同。")
+    second = embodied_initiative.classify_embodied_initiative_intent("把虚拟具身和主动找我这件事先做成同一个 gate contract。")
+
+    assert first == "embodied_initiative_bridge"
+    assert second == "embodied_initiative_bridge"
+
+
+def test_embodied_initiative_trace_records_source_gate_expression_and_side_effects():
+    contract = embodied_initiative.build_embodied_initiative_contract(
+        user_text="先定义虚拟具身和主动消息的 shared primitive。",
+        primitive_class="embodied_initiative_bridge",
+    )
+    trace = embodied_initiative.contract_trace_payload(contract, visible_expression_source="llm")
+
+    assert trace["source"] == "ego_operator.primitives.embodied_initiative"
+    assert trace["primitive_class"] == "embodied_initiative_bridge"
+    assert trace["gate_decision"] == "held_for_operator_approval"
+    assert trace["visible_expression_source"] == "llm"
+    assert trace["side_effects_executed"] is False
+    assert trace["memory_write_executed"] is False
+    assert trace["tool_use_executed"] is False
+    assert trace["message_send_executed"] is False
 
 
 def test_subject_context_is_readonly_candidate_not_reply_owner():

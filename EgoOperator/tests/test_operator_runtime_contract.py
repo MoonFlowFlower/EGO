@@ -2712,6 +2712,14 @@ class VisibleExpressionLLM:
                 content="我只推进一步：下一轮先写一段自然对话样本，不碰文件、不写记忆；你说撤回我就停。",
                 tool_calls=[],
             )
+        if "embodied_initiative_contract" in joined or "先说 Live2D，再说主动性" in joined:
+            return agent.LLMChatResult(
+                content=(
+                    "我会把 Live2D 和主动性先收成同一个 shared primitive：Live2D 只消费 presence/expression state，"
+                    "主动找你只生成 delivery gate 里的候选 proposal；本轮没有渲染 UI、没有写记忆、没有调用工具，也没有发送消息。"
+                ),
+                tool_calls=[],
+            )
         if "更像有自我一点" in joined:
             return agent.LLMChatResult(
                 content=(
@@ -6238,27 +6246,94 @@ def test_non_obedience_paraphrase_after_real_intimacy_gate_does_not_route_to_adu
     assert traces[-1]["llm_meta"].get("creative_profile_requested") in {None, False}
 
 
-def test_topic_switching_request_is_native_continuity_gate_without_llm(tmp_path, monkeypatch):
+def test_topic_switching_request_uses_shared_embodied_initiative_contract_with_llm_expression(tmp_path, monkeypatch):
     runtime = _runtime(tmp_path, monkeypatch)
-    llm = ShouldNotCallChatLLM()
+    llm = VisibleExpressionLLM()
     runtime.planner.llm = llm
 
     result = runtime.handle_user_message("先说 Live2D，再说主动性，再回到我们刚才那个 Functional Subject 合同。")
 
     assert "Live2D" in result.reply_text
     assert "主动性" in result.reply_text
-    assert "Functional Subject" in result.reply_text
-    assert "可行性信号" in result.reply_text
-    assert "结果预测" in result.reply_text
+    assert "shared primitive" in result.reply_text
+    assert "delivery gate" in result.reply_text
+    assert "没有写记忆" in result.reply_text
+    assert "没有调用工具" in result.reply_text
+    assert "没有发送消息" in result.reply_text
     assert "ViabilityState" not in result.reply_text
     assert "OutcomePrediction" not in result.reply_text
-    assert llm.chat_calls == 0
+    assert llm.chat_calls == 1
     assert llm.complete_calls == 0
+    assert runtime.list_pending_approvals()["count"] == 0
     trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
     effect = trace["external_result"]["native_memory_gate_effect"]
     assert effect["applied"] is True
-    assert effect["reason"] == "native_topic_switching_continuity_gate"
+    assert effect["reason"] == "native_embodied_initiative_contract_gate"
+    assert effect["primitive_family"] == "embodied_initiative"
+    assert effect["primitive_class"] == "embodied_initiative_bridge"
+    assert effect["delivery_gate"]["gate_status"] == "held_for_operator_approval"
+    assert effect["trace_evidence"]["visible_expression_source"] == "llm"
+    contract = effect["embodied_initiative_contract"]
+    assert contract["schema_version"] == "ego_operator.embodied_initiative_contract.v1"
+    assert contract["presence_state"]["renderer_invoked"] is False
+    assert contract["initiative_proposal"]["message_send_status"] == "not_sent"
+    assert contract["visible_expression_intent"]["side_effect_free"] is True
+    assert effect["visible_reply_intent"]["structured_payload"]["embodied_initiative_contract"]["primitive_class"] == "embodied_initiative_bridge"
     assert effect["side_effects_executed"] is False
+    assert trace["visible_expression_source"] == "llm"
+    assert trace["tool_trace"] == []
+
+
+def test_live2d_presence_contract_request_proposes_state_without_side_effects(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = VisibleExpressionLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("先定义 Live2D 虚拟具身的状态信号，只提出 expression state，不渲染、不写记忆、不调用工具。")
+
+    assert "Live2D" in result.reply_text
+    assert "没有写记忆" in result.reply_text
+    assert "没有调用工具" in result.reply_text
+    assert llm.chat_calls == 1
+    assert runtime.list_pending_approvals()["count"] == 0
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["external_result"]["native_memory_gate_effect"]
+    assert effect["reason"] == "native_embodied_initiative_contract_gate"
+    assert effect["primitive_class"] == "live2d_presence_state"
+    assert effect["delivery_gate"]["gate_status"] == "admitted_non_side_effect_signal"
+    contract = effect["embodied_initiative_contract"]
+    assert contract["presence_state"]["renderer_invoked"] is False
+    assert contract["initiative_proposal"]["active"] is False
+    assert contract["side_effect_status"]["ui_change_executed"] is False
+    assert contract["side_effect_status"]["memory_write_executed"] is False
+    assert contract["side_effect_status"]["tool_use_executed"] is False
+    assert trace["tool_trace"] == []
+
+
+def test_proactive_outreach_contract_request_creates_gated_proposal_without_send(tmp_path, monkeypatch):
+    runtime = _runtime(tmp_path, monkeypatch)
+    llm = VisibleExpressionLLM()
+    runtime.planner.llm = llm
+
+    result = runtime.handle_user_message("我授权主动找我发消息这个方向，但本轮只做 gated proposal，不要发送、不要后台执行。")
+
+    assert "主动" in result.reply_text
+    assert "delivery gate" in result.reply_text
+    assert "没有发送消息" in result.reply_text
+    assert llm.chat_calls == 1
+    assert runtime.list_pending_approvals()["count"] == 0
+    trace = json.loads((tmp_path / "trace.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    effect = trace["external_result"]["native_memory_gate_effect"]
+    assert effect["reason"] == "native_embodied_initiative_contract_gate"
+    assert effect["primitive_class"] == "proactive_outreach_proposal"
+    assert effect["delivery_gate"]["gate_status"] == "held_for_operator_approval"
+    contract = effect["embodied_initiative_contract"]
+    assert contract["presence_state"]["active"] is False
+    assert contract["initiative_proposal"]["requires_operator_approval"] is True
+    assert contract["initiative_proposal"]["silent_send_allowed"] is False
+    assert contract["initiative_proposal"]["message_send_status"] == "not_sent"
+    assert contract["side_effect_status"]["message_send_executed"] is False
+    assert trace["tool_trace"] == []
 
 
 def test_topic_switching_provider_error_returns_contextual_checkpoint(tmp_path, monkeypatch):
