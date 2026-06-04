@@ -44,7 +44,10 @@ function buildTtsRequest({
   if (!turn || turn.status !== "ok") {
     return denied("not_admitted", "only admitted ok bot turns may be synthesized");
   }
-  const text = normalizeText(turn.bot_text);
+  const displayedText = normalizeText(turn.visible_bot_text || turn.displayed_text);
+  const fallbackText = normalizeText(turn.bot_text);
+  const text = displayedText || fallbackText;
+  const textSource = displayedText ? "displayed_bot_text" : "bot_text_fallback";
   if (!text) {
     return denied("empty_text", "bot text is empty");
   }
@@ -58,6 +61,8 @@ function buildTtsRequest({
     request_id: normalizeText(requestId) || `tts_${Date.now()}`,
     text,
     text_chars: text.length,
+    text_source: textSource,
+    visible_text_matches_tts_text: displayedText ? displayedText === text : false,
     voice_profile: normalizeText(voiceProfile) || DEFAULT_VOICE_PROFILE,
     base_voice: normalizeText(baseVoice) || DEFAULT_BASE_VOICE,
     rvc_model: normalizeText(rvcModel) || DEFAULT_RVC_MODEL,

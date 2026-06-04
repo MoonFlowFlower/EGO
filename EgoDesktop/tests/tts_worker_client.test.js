@@ -55,10 +55,15 @@ test("TtsWorkerClient sends JSON requests and returns contained audio URLs", asy
       should_synthesize: true,
       request_id: "turn_1",
       text: "你好",
+      text_source: "displayed_bot_text",
+      visible_text_matches_tts_text: true,
     });
 
     assert.equal(result.status, "ok");
     assert.equal(result.audio_url, "/tts-audio/turn_1.wav");
+    assert.equal(result.text, "你好");
+    assert.equal(result.text_source, "displayed_bot_text");
+    assert.equal(result.visible_text_matches_tts_text, true);
     assert.equal(result.memory_write, false);
     assert.equal(result.tool_use, false);
     assert.equal(result.message_send, false);

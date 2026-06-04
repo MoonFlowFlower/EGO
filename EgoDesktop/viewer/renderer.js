@@ -14,6 +14,25 @@
   let voiceEnabled = true;
   let currentAudio = null;
   let ttsRequestPending = false;
+  const speechTurns = window.EgoDesktopSpeechTurns && typeof window.EgoDesktopSpeechTurns.createSpeechTurnGuard === "function"
+    ? window.EgoDesktopSpeechTurns.createSpeechTurnGuard()
+    : {
+      startTurn: () => Date.now(),
+      isCurrent: () => true,
+      currentTurnId: () => 0,
+      supersededResult: (turnId) => ({
+        status: "speech_superseded",
+        speech_turn_id: Number(turnId) || 0,
+        current_speech_turn_id: 0,
+        side_effects_executed: false,
+        ui_audio_delivery_executed: false,
+        memory_write: false,
+        tool_use: false,
+        message_send: false,
+        file_write: false,
+        network_call: false,
+      }),
+    };
 
   const RENDER_MODE = "official_live2d_model_from";
   const IDLE_MOUTH_PARAMETERS = {
@@ -267,9 +286,11 @@
 
   async function speakTurn(turn, config, options) {
     const settings = options || {};
+    const speechTurnId = settings.speechTurnId === undefined ? speechTurns.startTurn() : settings.speechTurnId;
     if (!voiceEnabled || !window.egoDesktop || typeof window.egoDesktop.synthesizeSpeech !== "function") {
       return {
         status: "voice_disabled",
+        speech_turn_id: speechTurnId,
         ui_audio_delivery_executed: false,
         memory_write: false,
         tool_use: false,
@@ -289,15 +310,24 @@
     } finally {
       ttsRequestPending = false;
     }
+    if (!speechTurns.isCurrent(speechTurnId)) {
+      return speechTurns.supersededResult(speechTurnId);
+    }
     if (!result || result.status !== "ok") {
       const statusText = result && result.status ? result.status : "tts_unavailable";
       setVoiceStatus(statusText, statusText.includes("unavailable") || statusText.includes("error") ? "error" : "");
       return result || { status: "tts_unavailable", ui_audio_delivery_executed: false };
     }
     setVoiceStatus("正在播放");
-    const playbackStatus = settings.playAudio === false ? "not_played" : await playAudioUrl(result.audio_url);
+    const playbackStatus = settings.playAudio === false ? "not_played" : (
+      speechTurns.isCurrent(speechTurnId) ? await playAudioUrl(result.audio_url) : "speech_superseded"
+    );
+    if (!speechTurns.isCurrent(speechTurnId)) {
+      return speechTurns.supersededResult(speechTurnId);
+    }
     return {
       ...result,
+      speech_turn_id: speechTurnId,
       playback_status: playbackStatus,
     };
   }
@@ -324,6 +354,7 @@
       if (!userText) {
         return;
       }
+      const speechTurnId = speechTurns.startTurn();
       stopSpeech();
       userInput.value = "";
       appendMessage("user", userText);
@@ -333,6 +364,7 @@
       try {
         const turn = await window.egoDesktop.sendChatTurn({ userText });
         pendingBody.textContent = turn && turn.bot_text ? turn.bot_text : "llm_expression_unavailable: empty_reply";
+        const visibleBotText = pendingBody.textContent.trim();
         if (turn && turn.status !== "ok") {
           pendingBody.parentElement.classList.add("error");
         }
@@ -340,7 +372,11 @@
           await applyNamedExpression(model, turn.expression_name);
         }
         if (turn && turn.status === "ok") {
-          speakTurn(turn, config).catch((error) => {
+          speakTurn({
+            ...turn,
+            visible_bot_text: visibleBotText,
+            displayed_text: visibleBotText,
+          }, config, { speechTurnId }).catch((error) => {
             setVoiceStatus("语音失败: " + error.message, "error");
           });
         } else {
@@ -859,15 +895,18 @@
     await waitForRenderFrames(app, 2);
     let ttsSmoke = null;
     if (config.ttsSmokeText) {
+      const ttsSmokeTurnId = speechTurns.startTurn();
       ttsSmoke = await speakTurn({
         schema_version: "ego_desktop.chat_turn.v1",
         status: "ok",
         bot_text: config.ttsSmokeText,
+        visible_bot_text: config.ttsSmokeText,
+        displayed_text: config.ttsSmokeText,
         side_effects_executed: false,
         memory_write: false,
         tool_use: false,
         message_send: false,
-      }, config, { playAudio: false });
+      }, config, { playAudio: false, speechTurnId: ttsSmokeTurnId });
     }
     let screenshotDataUrl = "";
     try {

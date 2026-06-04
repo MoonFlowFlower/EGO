@@ -86,6 +86,7 @@ class TtsWorkerClient {
         reject(new Error("TTS worker request timeout"));
       }, this.requestTimeoutMs);
       this.pending.set(requestId, {
+        request: payload,
         resolve: (value) => {
           clearTimeout(timeout);
           resolve(value);
@@ -159,6 +160,7 @@ class TtsWorkerClient {
       return;
     }
     this.pending.delete(requestId);
+    const request = pending.request || {};
     if (payload.status === "ok" && payload.audio_file) {
       try {
         const audioPath = resolveTtsAudioRequestPath(
@@ -169,6 +171,9 @@ class TtsWorkerClient {
           ...payload,
           audio_file: audioPath,
           audio_url: buildTtsAudioUrl(audioPath),
+          text: request.text || "",
+          text_source: request.text_source || "",
+          visible_text_matches_tts_text: Boolean(request.visible_text_matches_tts_text),
         });
       } catch (error) {
         pending.reject(error);
@@ -181,6 +186,9 @@ class TtsWorkerClient {
       tool_use: false,
       message_send: false,
       ui_audio_delivery_executed: false,
+      text: request.text || "",
+      text_source: request.text_source || "",
+      visible_text_matches_tts_text: Boolean(request.visible_text_matches_tts_text),
       ...payload,
     });
   }

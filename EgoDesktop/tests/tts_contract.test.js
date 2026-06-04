@@ -35,6 +35,24 @@ test("builds TTS request only for admitted bot text", () => {
   assert.equal(request.message_send, false);
 });
 
+test("builds TTS request from displayed bot text before raw bot text", () => {
+  const request = buildTtsRequest({
+    turn: {
+      schema_version: "ego_desktop.chat_turn.v1",
+      status: "ok",
+      bot_text: "这不是屏幕最终显示的文字。",
+      visible_bot_text: "这才是屏幕最终显示的文字。",
+    },
+    voiceEnabled: true,
+    requestId: "turn-visible-1",
+  });
+
+  assert.equal(request.status, "tts_request_admitted");
+  assert.equal(request.text, "这才是屏幕最终显示的文字。");
+  assert.equal(request.text_source, "displayed_bot_text");
+  assert.equal(request.visible_text_matches_tts_text, true);
+});
+
 test("does not synthesize disabled, empty, error, or too-long text", () => {
   assert.equal(buildTtsRequest({
     turn: { status: "ok", bot_text: "你好" },
@@ -47,12 +65,16 @@ test("does not synthesize disabled, empty, error, or too-long text", () => {
   }).status, "empty_text");
 
   assert.equal(buildTtsRequest({
-    turn: { status: "llm_expression_unavailable", bot_text: "llm_expression_unavailable" },
+    turn: {
+      status: "llm_expression_unavailable",
+      bot_text: "llm_expression_unavailable",
+      visible_bot_text: "屏幕错误文本也不能朗读",
+    },
     voiceEnabled: true,
   }).status, "not_admitted");
 
   assert.equal(buildTtsRequest({
-    turn: { status: "ok", bot_text: "啊".repeat(601) },
+    turn: { status: "ok", bot_text: "短文本", visible_bot_text: "啊".repeat(601) },
     voiceEnabled: true,
     maxChars: 600,
   }).status, "text_too_long");
