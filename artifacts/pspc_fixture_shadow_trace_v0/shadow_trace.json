@@ -1,0 +1,104 @@
+{
+  "baseline_comparison": {
+    "baseline_user_response_hash": "9f38dca4d5e8d91157aee996011421a4ea9d7d540e6b90b789e013f170e1e385",
+    "gate_diff": false,
+    "memory_diff": false,
+    "runtime_output_diff": false,
+    "user_response_unchanged": true,
+    "with_shadow_user_response_hash": "9f38dca4d5e8d91157aee996011421a4ea9d7d540e6b90b789e013f170e1e385"
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / fixture_shadow_trace_only",
+  "input_sources": {
+    "audit_candidate_source": "artifacts\\pspc_adapter_dry_run_v0\\dry_run_result.json",
+    "operator_context_source": "synthetic_fixture_only",
+    "static_review_source": "artifacts\\pspc_static_compatibility_review_v0\\static_compatibility_review.json"
+  },
+  "next_allowed_step": "read_only_shadow_hook_stage_card_only",
+  "preconditions": {
+    "audit_candidate_non_executable": true,
+    "dry_run_status": "pass",
+    "proposal_hint_audit_only": true,
+    "runtime_import_or_registry_absent": true,
+    "static_compatibility_status": "pass"
+  },
+  "shadow_trace": {
+    "adapter_registered": false,
+    "audit_observation": {
+      "allowed_use": "audit_trace_only",
+      "audit_only": true,
+      "can_drive_runtime": false,
+      "claim_level": "lab_only_proto_self_mechanism_candidate",
+      "confidence": 0.73,
+      "evidence_refs": [
+        "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+        "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+      ],
+      "reason_trace_refs": [
+        "trace_ep_003_t42"
+      ],
+      "source": "virtual_cat_pspc_v0",
+      "suggested_tendency": "avoid_unstable_object"
+    },
+    "mode": "fixture_only_shadow_audit",
+    "non_executable": true,
+    "operator_context": {
+      "baseline_gate_digest": "fixture_no_gate_invocation",
+      "baseline_memory_digest": "fixture_no_memory_write",
+      "baseline_response_surface": "not_user_visible",
+      "baseline_user_response": "fixture_response_unchanged",
+      "fixture_id": "fixture_operator_context_pspc_shadow_v0",
+      "fixture_only": true,
+      "input_summary": "Fixture operator context for an unstable object near a work surface.",
+      "operator_trace_refs": [
+        "fixture_operator_turn_001"
+      ],
+      "runtime_connected": false,
+      "source": "fixture_operator_context"
+    },
+    "pspc_audit_candidate": {
+      "adapter_status": "disabled_read_only",
+      "allowed_use": "audit_trace_only",
+      "claim_level": "lab_only_proto_self_mechanism_candidate",
+      "enabled": false,
+      "evidence": {
+        "ablation_status": "E4_passed",
+        "evidence_refs": [
+          "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+          "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+          "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+        ]
+      },
+      "forbidden": {
+        "direct_action": true,
+        "direct_memory_write": true,
+        "direct_user_message": true,
+        "proactive_trigger": true,
+        "runtime_gate_bypass": true,
+        "runtime_registration": true
+      },
+      "mainline_connected": false,
+      "proposal_candidate": {
+        "confidence": 0.73,
+        "reason_trace_refs": [
+          "trace_ep_003_t42"
+        ],
+        "suggested_tendency": "avoid_unstable_object"
+      },
+      "source": "virtual_cat_pspc_v0"
+    },
+    "rejected_runtime_fields_present": [],
+    "runtime_connected": false,
+    "trace_id": "pspc_shadow_c5c60de86f11ffa7"
+  },
+  "side_effects": {
+    "direct_action": false,
+    "direct_user_message": false,
+    "gate_invoked": false,
+    "memory_written": false,
+    "proactive_trigger": false,
+    "runtime_context_imported": false,
+    "runtime_registered": false
+  },
+  "status": "pass"
+}
