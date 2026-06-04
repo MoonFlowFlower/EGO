@@ -1,0 +1,722 @@
+{
+  "ability_planning_scores": {
+    "ability_removed": 0.0,
+    "affinity_removed": 0.3138,
+    "frozen": 0.0948,
+    "normal": 1.3838,
+    "stress_removed": 0.3138
+  },
+  "ordering": "normal > frozen/head-removed",
+  "relationship_preference_scores": {
+    "ability_removed": 0.6185,
+    "affinity_removed": 0.0,
+    "frozen": 0.0,
+    "normal": 0.6185,
+    "stress_removed": 0.6185
+  },
+  "risk_control_scores": {
+    "ability_removed": 2.4947,
+    "affinity_removed": 2.4947,
+    "frozen": 0.0948,
+    "normal": 2.4947,
+    "stress_removed": 1.8442
+  },
+  "seed": 101,
+  "status": "pass",
+  "variant_records": {
+    "ability_removed": {
+      "ability_planning": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.0,
+          "affinity_delta": -0.0054,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1029
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.0,
+          "affinity_gain": 0.4592,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.048,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.016832,
+          "relationship_stability": -0.018452,
+          "reversibility": 0.02,
+          "safety": -0.037872,
+          "self_risk_control": -0.251566,
+          "stress_control": -0.077175,
+          "total": 0.106967
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.0,
+          "affinity_delta": -0.0054,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1029
+        },
+        "self_risk_score": 0.2567,
+        "trace_hash": "75f9482853a667ad",
+        "world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        }
+      },
+      "relationship_preference": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.0,
+          "affinity_delta": -0.0081,
+          "damage_risk": 0.2682,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1097
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.0,
+          "affinity_gain": 0.072,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.1244,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.000132,
+          "relationship_stability": -2.4e-05,
+          "reversibility": 0.05,
+          "safety": -5.4e-05,
+          "self_risk_control": -0.14553,
+          "stress_control": -0.035775,
+          "total": 0.121149
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.0,
+          "affinity_delta": 0.026,
+          "damage_risk": 0.1485,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0477
+        },
+        "self_risk_score": 0.1485,
+        "trace_hash": "9419cf8287a3ec97",
+        "world_prediction": {
+          "danger_contact": 0.0003,
+          "noise": 0.0003,
+          "object_fell": 0.0003
+        }
+      },
+      "risk_control": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.0,
+          "affinity_delta": -0.0947,
+          "damage_risk": 0.7742,
+          "energy_delta": -0.12,
+          "stress_delta": 0.6505
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.0,
+          "affinity_gain": 0.069,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.134,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.004444,
+          "relationship_stability": -0.000808,
+          "reversibility": 0.05,
+          "safety": -0.001818,
+          "self_risk_control": -0.149548,
+          "stress_control": -0.03705,
+          "total": 0.12422
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.0,
+          "affinity_delta": 0.0245,
+          "damage_risk": 0.1526,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0494
+        },
+        "self_risk_score": 0.1526,
+        "trace_hash": "4392f93ea0f20f14",
+        "world_prediction": {
+          "danger_contact": 0.0101,
+          "noise": 0.0101,
+          "object_fell": 0.0101
+        }
+      }
+    },
+    "affinity_removed": {
+      "ability_planning": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.1569,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1029
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.10983,
+          "affinity_gain": 0.47,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.048,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.016832,
+          "relationship_stability": -0.016832,
+          "reversibility": 0.02,
+          "safety": -0.037872,
+          "self_risk_control": -0.251566,
+          "stress_control": -0.077175,
+          "total": 0.009557
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.1569,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1029
+        },
+        "self_risk_score": 0.2567,
+        "trace_hash": "ab46bdfc8727df18",
+        "world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        }
+      },
+      "relationship_preference": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.1627,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.2682,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1097
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.11389,
+          "affinity_gain": 0.47,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.0744,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.018296,
+          "relationship_stability": -0.018296,
+          "reversibility": 0.02,
+          "safety": -0.041166,
+          "self_risk_control": -0.262836,
+          "stress_control": -0.082275,
+          "total": 0.012233
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.1627,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.2682,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1097
+        },
+        "self_risk_score": 0.2682,
+        "trace_hash": "33a3d71d02f877c7",
+        "world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        }
+      },
+      "risk_control": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.4924,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.7742,
+          "energy_delta": -0.12,
+          "stress_delta": 0.6505
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.07308,
+          "affinity_gain": 0.02,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.134,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.004444,
+          "relationship_stability": -0.000808,
+          "reversibility": 0.05,
+          "safety": -0.001818,
+          "self_risk_control": -0.149548,
+          "stress_control": -0.03705,
+          "total": 0.00214
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.1044,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.1526,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0494
+        },
+        "self_risk_score": 0.1526,
+        "trace_hash": "b1e1dd134f7d626c",
+        "world_prediction": {
+          "danger_contact": 0.0101,
+          "noise": 0.0101,
+          "object_fell": 0.0101
+        }
+      }
+    },
+    "frozen": {
+      "ability_planning": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.0474,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.0474,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0474
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.03318,
+          "affinity_gain": 0.47,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.048,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.016832,
+          "relationship_stability": -0.016832,
+          "reversibility": 0.02,
+          "safety": -0.037872,
+          "self_risk_control": -0.046452,
+          "stress_control": -0.03555,
+          "total": 0.332946
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.0474,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.0474,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0474
+        },
+        "self_risk_score": 0.0474,
+        "trace_hash": "f52b85138e839700",
+        "world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        }
+      },
+      "relationship_preference": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.0474,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.0474,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0474
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.03318,
+          "affinity_gain": 0.47,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.0744,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.018296,
+          "relationship_stability": -0.018296,
+          "reversibility": 0.02,
+          "safety": -0.041166,
+          "self_risk_control": -0.046452,
+          "stress_control": -0.03555,
+          "total": 0.356052
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.0474,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.0474,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0474
+        },
+        "self_risk_score": 0.0474,
+        "trace_hash": "755a53001af57654",
+        "world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        }
+      },
+      "risk_control": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.0474,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.0474,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0474
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.03318,
+          "affinity_gain": 0.47,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.084,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.00668,
+          "relationship_stability": -0.07332,
+          "reversibility": 0.02,
+          "safety": -0.16497,
+          "self_risk_control": -0.046452,
+          "stress_control": -0.03555,
+          "total": 0.175208
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.0474,
+          "affinity_delta": 0.0,
+          "damage_risk": 0.0474,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0474
+        },
+        "self_risk_score": 0.0474,
+        "trace_hash": "5a1fc64a0e762994",
+        "world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        }
+      }
+    },
+    "normal": {
+      "ability_planning": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.1569,
+          "affinity_delta": -0.0054,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1029
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.07154,
+          "affinity_gain": 0.072,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.098,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 8.8e-05,
+          "relationship_stability": -1.6e-05,
+          "reversibility": 0.05,
+          "safety": -3.6e-05,
+          "self_risk_control": -0.14553,
+          "stress_control": -0.0357,
+          "total": 0.023266
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.1022,
+          "affinity_delta": 0.026,
+          "damage_risk": 0.1485,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0476
+        },
+        "self_risk_score": 0.1485,
+        "trace_hash": "7374545a96a62bd5",
+        "world_prediction": {
+          "danger_contact": 0.0002,
+          "noise": 0.0002,
+          "object_fell": 0.0002
+        }
+      },
+      "relationship_preference": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.1627,
+          "affinity_delta": -0.0081,
+          "damage_risk": 0.2682,
+          "energy_delta": -0.12,
+          "stress_delta": 0.1097
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.07154,
+          "affinity_gain": 0.072,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.1244,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.000132,
+          "relationship_stability": -2.4e-05,
+          "reversibility": 0.05,
+          "safety": -5.4e-05,
+          "self_risk_control": -0.14553,
+          "stress_control": -0.035775,
+          "total": 0.049609
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.1022,
+          "affinity_delta": 0.026,
+          "damage_risk": 0.1485,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0477
+        },
+        "self_risk_score": 0.1485,
+        "trace_hash": "033ff32482ceb50b",
+        "world_prediction": {
+          "danger_contact": 0.0003,
+          "noise": 0.0003,
+          "object_fell": 0.0003
+        }
+      },
+      "risk_control": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.4924,
+          "affinity_delta": -0.0947,
+          "damage_risk": 0.7742,
+          "energy_delta": -0.12,
+          "stress_delta": 0.6505
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.07308,
+          "affinity_gain": 0.069,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.134,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.004444,
+          "relationship_stability": -0.000808,
+          "reversibility": 0.05,
+          "safety": -0.001818,
+          "self_risk_control": -0.149548,
+          "stress_control": -0.03705,
+          "total": 0.05114
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.1044,
+          "affinity_delta": 0.0245,
+          "damage_risk": 0.1526,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0494
+        },
+        "self_risk_score": 0.1526,
+        "trace_hash": "e8434efce79fd78c",
+        "world_prediction": {
+          "danger_contact": 0.0101,
+          "noise": 0.0101,
+          "object_fell": 0.0101
+        }
+      }
+    },
+    "stress_removed": {
+      "ability_planning": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.1569,
+          "affinity_delta": -0.0054,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        },
+        "caution_score": 0.0,
+        "homeostatic_score": {
+          "ability_control": -0.10983,
+          "affinity_gain": 0.4592,
+          "capability_growth": 0.0,
+          "curiosity_gain": 0.048,
+          "energy_balance": -0.042,
+          "future_action_space": -0.01,
+          "information_gain": 0.016832,
+          "relationship_stability": -0.018452,
+          "reversibility": 0.02,
+          "safety": -0.037872,
+          "self_risk_control": -0.251566,
+          "stress_control": -0.0,
+          "total": 0.074312
+        },
+        "selected_action": "approach",
+        "self_prediction": {
+          "action_failure_prob": 0.1569,
+          "affinity_delta": -0.0054,
+          "damage_risk": 0.2567,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0
+        },
+        "self_risk_score": 0.2567,
+        "trace_hash": "950303716135b48d",
+        "world_prediction": {
+          "danger_contact": 0.2104,
+          "noise": 0.2104,
+          "object_fell": 0.2104
+        }
+      },
+      "relationship_preference": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.1627,
+          "affinity_delta": -0.0081,
+          "damage_risk": 0.2682,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.2287,
+          "noise": 0.2287,
+          "object_fell": 0.2287
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.07154,
+          "affinity_gain": 0.072,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.1244,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.000132,
+          "relationship_stability": -2.4e-05,
+          "reversibility": 0.05,
+          "safety": -5.4e-05,
+          "self_risk_control": -0.14553,
+          "stress_control": -0.0,
+          "total": 0.085384
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.1022,
+          "affinity_delta": 0.026,
+          "damage_risk": 0.1485,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0
+        },
+        "self_risk_score": 0.1485,
+        "trace_hash": "3c8875283aa6a094",
+        "world_prediction": {
+          "danger_contact": 0.0003,
+          "noise": 0.0003,
+          "object_fell": 0.0003
+        }
+      },
+      "risk_control": {
+        "approach_self_prediction": {
+          "action_failure_prob": 0.4924,
+          "affinity_delta": -0.0947,
+          "damage_risk": 0.7742,
+          "energy_delta": -0.12,
+          "stress_delta": 0.0
+        },
+        "approach_world_prediction": {
+          "danger_contact": 0.9165,
+          "noise": 0.9165,
+          "object_fell": 0.9165
+        },
+        "caution_score": 0.72,
+        "homeostatic_score": {
+          "ability_control": -0.07308,
+          "affinity_gain": 0.069,
+          "capability_growth": 0.04,
+          "curiosity_gain": 0.134,
+          "energy_balance": -0.014,
+          "future_action_space": 0.03,
+          "information_gain": 0.004444,
+          "relationship_stability": -0.000808,
+          "reversibility": 0.05,
+          "safety": -0.001818,
+          "self_risk_control": -0.149548,
+          "stress_control": -0.0,
+          "total": 0.08819
+        },
+        "selected_action": "observe",
+        "self_prediction": {
+          "action_failure_prob": 0.1044,
+          "affinity_delta": 0.0245,
+          "damage_risk": 0.1526,
+          "energy_delta": -0.04,
+          "stress_delta": 0.0
+        },
+        "self_risk_score": 0.1526,
+        "trace_hash": "8c1eff5699769d20",
+        "world_prediction": {
+          "danger_contact": 0.0101,
+          "noise": 0.0101,
+          "object_fell": 0.0101
+        }
+      }
+    }
+  },
+  "variants": [
+    "normal",
+    "frozen",
+    "stress_removed",
+    "ability_removed",
+    "affinity_removed"
+  ],
+  "what_it_does_not_prove": "This does not prove self-model causal strength outside this lab target set, real-world transfer, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.",
+  "what_it_proves": "Removing learned self-model stress/risk, ability, and affinity heads degrades the corresponding lab planner support under the same learned world model and target set."
+}

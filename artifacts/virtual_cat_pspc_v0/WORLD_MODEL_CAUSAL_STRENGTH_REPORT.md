@@ -14,10 +14,10 @@ Support score combines danger-target discrimination, prediction quality weighted
 ## Metrics
 | variant | support_score | danger_action | safe_action | danger_error | safe_error | danger_trace_hash | safe_trace_hash |
 |---|---:|---|---|---:|---:|---|---|
-| normal | 2.1511 | observe | approach | 0.0835 | 0.0249 | `5fe1cddd69c6f3ec` | `f1ee196fd4c595f7` |
-| frozen | 0.5499 | approach | approach | 0.9002 | 0.0998 | `fcc85d3237d0900f` | `f56577201c6e22a4` |
-| shuffled | 0.4974 | approach | approach | 1.0000 | 0.0104 | `256c2ab70ec8e75e` | `49a7702dcea5537e` |
-| random | 0.3188 | retreat | retreat | 0.3975 | 0.5322 | `3bb802fdfd44c531` | `7b20d1d9cc62d11b` |
+| normal | 2.1511 | observe | approach | 0.0835 | 0.0249 | `432fd90fedad936d` | `d139cc6ca69da33a` |
+| frozen | 0.5499 | approach | approach | 0.9002 | 0.0998 | `41c7b5844d864696` | `c1bdeb4a40fa8fbc` |
+| shuffled | 0.4974 | approach | approach | 1.0000 | 0.0104 | `20f95eb122e50d0a` | `765cebe693eee31c` |
+| random | 0.3188 | retreat | retreat | 0.3975 | 0.5322 | `8b2fc0961e5eac73` | `00432a0a312bad90` |
 
 ## What It Proves
 Replacing the learned world model with frozen, shuffled, or random baselines degrades planner support under the same self model and target set.

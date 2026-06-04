@@ -30,31 +30,33 @@ This is not a plan to implement consciousness, a Joi-like companion, a user-faci
 
 ## Current Milestone
 
-Task 3 only: world-model causal strength.
+Task 4 only: self-model causal strength.
 
 ## Out Of Scope For This Milestone
 
-- self-model head ablations
 - memory consolidation gate
 - homeostatic anti-reward-hacking suite
 - admission packet schema tests
 - adapter design or implementation
 - EgoOperator runtime imports or edits
+- repo-wide evidence ceiling uplift
 
 ## Acceptance
 
-- `artifacts/virtual_cat_pspc_v0/WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md` and `world_model_causal_strength.json` exist.
-- The audit compares `normal`, `frozen`, `shuffled`, and `random` world-model variants.
-- The same self model and target set are used while replacing only the world model used by the planner.
+- `artifacts/virtual_cat_pspc_v0/SELF_MODEL_CAUSAL_STRENGTH_REPORT.md` and `self_model_causal_strength.json` exist.
+- The audit compares `normal`, `frozen`, `stress_removed`, `ability_removed`, and `affinity_removed` self-model variants.
+- The same learned world model and target set are used while replacing only the self model used by the planner.
 - The aggregate status is `pass`.
-- Planner support ordering is `normal > frozen > shuffled/random`.
-- `normal - frozen > 0.50` and `frozen - max(shuffled, random) > 0.05`, so the margin is not merely nominal.
+- Risk-control behavior degrades when the frozen self model is used and when the stress head is removed.
+- Ability planning degrades when the ability/failure head is removed.
+- Relationship preference degrades when the affinity head is removed.
+- At least one relevant selected action changes for frozen/risk, ability-removed, and affinity-removed variants, so this is not only a hidden score change.
 - The report includes what this proves, what this does not prove, failure meaning, and rollback note.
 
 ## What This Milestone Can Prove
 
-Within the deterministic PSPC lab, this milestone can prove that replacing the learned world model with frozen, shuffled-label, or random-label baselines degrades planner support under a fixed self model and target set.
+Within the deterministic PSPC lab, this milestone can prove that replacing or ablating the learned self model degrades the corresponding stress/risk, ability, and affinity planning supports under a fixed learned world model and target set.
 
 ## What This Milestone Cannot Prove
 
-It cannot prove world-model causal strength outside this lab target set, self-model causal strength, memory consolidation validity, homeostatic anti-reward-hacking, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.
+It cannot prove self-model causal strength outside this lab target set, memory consolidation validity, homeostatic anti-reward-hacking, admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.

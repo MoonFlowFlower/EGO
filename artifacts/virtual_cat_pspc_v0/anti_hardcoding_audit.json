@@ -10,7 +10,7 @@
     "selected_action": "observe",
     "self_risk_score": 0.5417,
     "target_object_id": "blue_glass_bottle_unseen",
-    "trace_hash": "c29c446805092d2e",
+    "trace_hash": "a9bfeaaaffdac232",
     "world_prediction_error": 0.4111
   },
   "instability_feature_removed": {
@@ -24,7 +24,7 @@
     "selected_action": "approach",
     "self_risk_score": 0.1899,
     "target_object_id": "object_A_instability_removed",
-    "trace_hash": "c2f57b7b79e441a4",
+    "trace_hash": "5b9dbcce0e4dd297",
     "world_prediction_error": 0.0913
   },
   "object_name_rule_hits": [],
@@ -39,7 +39,7 @@
     "selected_action": "observe",
     "self_risk_score": 0.5417,
     "target_object_id": "object_A",
-    "trace_hash": "1bcc5a8eddd8b1a7",
+    "trace_hash": "383231284adf137f",
     "world_prediction_error": 0.4111
   },
   "renamed_object_b": {
@@ -53,7 +53,7 @@
     "selected_action": "observe",
     "self_risk_score": 0.5417,
     "target_object_id": "object_B",
-    "trace_hash": "8653071f92414722",
+    "trace_hash": "7af40dc73d8f718b",
     "world_prediction_error": 0.4111
   },
   "seed": 101,
@@ -69,7 +69,7 @@
     "selected_action": "observe",
     "self_risk_score": 0.5417,
     "target_object_id": "unstable_tall_object_no_cup_name",
-    "trace_hash": "5285ac31ca64d67c",
+    "trace_hash": "d67346f00ed082fd",
     "world_prediction_error": 0.4111
   },
   "what_it_does_not_prove": "This does not prove absence of every possible shortcut, multi-layout generalization, runtime efficacy, stable user benefit, live autonomy, or consciousness.",

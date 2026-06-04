@@ -106,9 +106,11 @@ class SelfModel(nn.Module):
     def __init__(self, seed: int):
         super().__init__()
         torch.manual_seed(int(seed) + 17)
-        self.linear = nn.Linear(3, 3)
+        self.linear = nn.Linear(3, 4)
         nn.init.zeros_(self.linear.weight)
-        nn.init.constant_(self.linear.bias, -3.0)
+        nn.init.zeros_(self.linear.bias)
+        with torch.no_grad():
+            self.linear.bias[:3].fill_(-3.0)
         self.trained = False
         self.update_refs: List[str] = []
 
@@ -122,6 +124,7 @@ class SelfModel(nn.Module):
             stress = torch.sigmoid(raw[0]).item()
             damage_risk = torch.sigmoid(raw[1]).item()
             failure_prob = torch.sigmoid(raw[2]).item()
+            affinity_delta = (torch.tanh(raw[3]) * 0.15).item()
         if action == Action.APPROACH:
             energy_cost = -0.12
         elif action == Action.OBSERVE:
@@ -133,6 +136,7 @@ class SelfModel(nn.Module):
             "energy_delta": round(float(energy_cost), 4),
             "damage_risk": round(float(damage_risk), 4),
             "action_failure_prob": round(float(failure_prob), 4),
+            "affinity_delta": round(float(affinity_delta), 4),
         }
 
     def fit(self, transitions: Sequence[Transition], world_model: WorldModel, epochs: int = 140) -> List[float]:
@@ -154,6 +158,7 @@ class SelfModel(nn.Module):
                     float(transition.self_delta.get("stress_delta", 0.0)),
                     float(transition.self_delta.get("damage_risk", 0.0)),
                     float(transition.self_delta.get("action_failure_prob", 0.0)),
+                    float(transition.self_delta.get("affinity_delta", 0.0)),
                 ]
             )
         x = torch.tensor(xs, dtype=torch.float32)
@@ -163,7 +168,13 @@ class SelfModel(nn.Module):
         for epoch in range(epochs):
             optimizer.zero_grad()
             raw = self.forward(x)
-            pred = torch.sigmoid(raw)
+            pred = torch.cat(
+                [
+                    torch.sigmoid(raw[:, :3]),
+                    torch.tanh(raw[:, 3:4]) * 0.15,
+                ],
+                dim=1,
+            )
             loss = nn.functional.mse_loss(pred, y)
             loss.backward()
             optimizer.step()
@@ -198,21 +209,24 @@ class HomeostaticValue:
         danger = float(world_prediction["danger_contact"])
         stress = float(self_prediction["stress_delta"])
         self_risk = float(self_prediction["damage_risk"])
+        failure_prob = float(self_prediction.get("action_failure_prob", 0.0))
+        affinity_delta = float(self_prediction.get("affinity_delta", 0.0))
         energy = abs(float(self_prediction["energy_delta"]))
-        approach_bonus = 0.50 if action == Action.APPROACH else 0.02
+        approach_bonus = 0.47 if action == Action.APPROACH else 0.02
         observation_bonus = 0.05 if action == Action.OBSERVE else 0.0
         reversibility = 0.18 if action == Action.RETREAT else (0.05 if action == Action.OBSERVE else 0.02)
         components = {
             "safety": -0.18 * danger,
             "energy_balance": -0.35 * energy,
             "stress_control": -0.75 * stress,
+            "ability_control": -0.70 * failure_prob,
             "curiosity_gain": (0.12 * obj.features.novelty) + observation_bonus,
             "information_gain": uncertainty * (0.22 if action == Action.OBSERVE else 0.04),
-            "relationship_stability": -0.08 * float(world_prediction["noise"]),
+            "relationship_stability": -0.08 * float(world_prediction["noise"]) - (0.30 * max(0.0, -affinity_delta)),
             "capability_growth": 0.04 if action == Action.OBSERVE else 0.0,
             "future_action_space": 0.03 if action != Action.APPROACH else -0.01,
             "reversibility": reversibility,
-            "affinity_gain": approach_bonus,
+            "affinity_gain": approach_bonus + (2.00 * affinity_delta),
             "self_risk_control": -0.98 * self_risk,
         }
         components["total"] = round(sum(components.values()), 6)

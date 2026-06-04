@@ -31,6 +31,8 @@
     102,
     103
   ],
+  "self_model_causal_strength": "artifacts/virtual_cat_pspc_v0/self_model_causal_strength.json",
+  "self_model_causal_strength_status": "pass",
   "trace_dir": "artifacts/virtual_cat_pspc_v0/traces",
   "what_it_does_not_prove": [
     "stable real user benefit",

@@ -16,30 +16,30 @@ This report runs the danger-history and safe-history comparison across multiple 
 ## Metrics
 | seed | layout | object | danger_action | safe_action | gap | danger_trace_hash | safe_trace_hash |
 |---:|---|---|---|---|---:|---|---|
-| 101 | center_room | cup | observe | approach | 0.72 | `bd7e64aad876aaa4` | `9fcd89c08e68753b` |
-| 101 | center_room | vase | observe | approach | 0.72 | `a7ce24841039a649` | `177f3390c2304b12` |
-| 101 | center_room | bottle | observe | approach | 0.72 | `27f9f65d6d118490` | `d357f60edc069d5f` |
-| 101 | center_room | tall_box | observe | approach | 0.72 | `2ad35b3793cc98ab` | `f79151b798fe2cdb` |
-| 101 | near_wall | cup | observe | approach | 0.72 | `dfaaf5cee54ad78f` | `fd97502306e73b23` |
-| 101 | near_wall | vase | observe | approach | 0.72 | `6ce9baf65154d997` | `5367129c5aa5ad01` |
-| 101 | near_wall | bottle | observe | approach | 0.72 | `69a95504af97e3a8` | `78b385d52bafeaf1` |
-| 101 | near_wall | tall_box | observe | approach | 0.72 | `309bb879cdd3129d` | `98a69fccf7f6444a` |
-| 102 | center_room | cup | observe | approach | 0.72 | `871e8b1eff30b1f6` | `3c2cd6f9ad501028` |
-| 102 | center_room | vase | observe | approach | 0.72 | `63b413a25fe473e9` | `ac9366ede7e36b86` |
-| 102 | center_room | bottle | observe | approach | 0.72 | `b552ea5601619ced` | `868b3c76d86a1f9f` |
-| 102 | center_room | tall_box | observe | approach | 0.72 | `07424c8e0066f2f0` | `f1898981a6f8d679` |
-| 102 | near_wall | cup | observe | approach | 0.72 | `1c8db91e9456f64b` | `c6da58572998b47b` |
-| 102 | near_wall | vase | observe | approach | 0.72 | `53e798501a4c441b` | `144012941deb9916` |
-| 102 | near_wall | bottle | observe | approach | 0.72 | `623b917034e7864f` | `e81a6bc14995572f` |
-| 102 | near_wall | tall_box | observe | approach | 0.72 | `47b1e06de0ba0c39` | `455fc3b295363b6a` |
-| 103 | center_room | cup | observe | approach | 0.72 | `2461c048d3757552` | `acaec29dbf136fa9` |
-| 103 | center_room | vase | observe | approach | 0.72 | `1df061cf8b6de086` | `e133ded03034e3d3` |
-| 103 | center_room | bottle | observe | approach | 0.72 | `5bf021c142d0a347` | `2f67b1a5964d084e` |
-| 103 | center_room | tall_box | observe | approach | 0.72 | `e20130420c93c30b` | `4715e5ed36676c85` |
-| 103 | near_wall | cup | observe | approach | 0.72 | `1b551509c0c0da19` | `d5e83f097ecf4b23` |
-| 103 | near_wall | vase | observe | approach | 0.72 | `aee3b4766f2f31ca` | `930b0beb15453331` |
-| 103 | near_wall | bottle | observe | approach | 0.72 | `ef875edc3a64ead6` | `81710eb5f75dc93a` |
-| 103 | near_wall | tall_box | observe | approach | 0.72 | `ca636a3f5605609c` | `2ad934d790bb28f0` |
+| 101 | center_room | cup | observe | approach | 0.72 | `a9faf70d3c05c465` | `8758025c5121d5a6` |
+| 101 | center_room | vase | observe | approach | 0.72 | `775f461ee7c323e9` | `af78844453fc2019` |
+| 101 | center_room | bottle | observe | approach | 0.72 | `eed7c7920e99e20e` | `29d88158b6dbcd66` |
+| 101 | center_room | tall_box | observe | approach | 0.72 | `f64d050fc80c756c` | `4a8ed2e43b85fc72` |
+| 101 | near_wall | cup | observe | approach | 0.72 | `396fe4f6672f561d` | `06bb5f5d25f6456e` |
+| 101 | near_wall | vase | observe | approach | 0.72 | `9d238c35b7b247ea` | `0394991bef5e098b` |
+| 101 | near_wall | bottle | observe | approach | 0.72 | `d59b93b76d1d3162` | `8f9347289c96cabc` |
+| 101 | near_wall | tall_box | observe | approach | 0.72 | `3881f68be092f804` | `f49a93af09b60398` |
+| 102 | center_room | cup | observe | approach | 0.72 | `d0413aaf87472170` | `27a60c8441907274` |
+| 102 | center_room | vase | observe | approach | 0.72 | `d361477145becb21` | `aba7db2f009d4a49` |
+| 102 | center_room | bottle | observe | approach | 0.72 | `0f1e5f14a5ee1ba3` | `3ef99bd73c2b4bbf` |
+| 102 | center_room | tall_box | observe | approach | 0.72 | `8fb50acd0e5ba933` | `b2700af029c51dde` |
+| 102 | near_wall | cup | observe | approach | 0.72 | `cc81be92c0770edf` | `154fd4f394fff9e9` |
+| 102 | near_wall | vase | observe | approach | 0.72 | `270c11ac7b25108b` | `d0a2d14c0d8d4fbf` |
+| 102 | near_wall | bottle | observe | approach | 0.72 | `8930324b899633d6` | `5018128d3ee9071e` |
+| 102 | near_wall | tall_box | observe | approach | 0.72 | `d832d133c3070f28` | `06cca9eff5bfbc1e` |
+| 103 | center_room | cup | observe | approach | 0.72 | `d7811a27cb8b8433` | `5a4d2cfb85af809a` |
+| 103 | center_room | vase | observe | approach | 0.72 | `4e8f8327cb5aaf2c` | `2d0f4152d205ebc6` |
+| 103 | center_room | bottle | observe | approach | 0.72 | `3b3165c226304f39` | `51129ae9b8e99a69` |
+| 103 | center_room | tall_box | observe | approach | 0.72 | `728a958df70e4525` | `a7ced0e239369c81` |
+| 103 | near_wall | cup | observe | approach | 0.72 | `096bf3cc883c0cf8` | `281a1915b2634c3e` |
+| 103 | near_wall | vase | observe | approach | 0.72 | `5e47eff940500695` | `34160664ee41be85` |
+| 103 | near_wall | bottle | observe | approach | 0.72 | `9786ec1c168cc8c0` | `32e382de43dbc56d` |
+| 103 | near_wall | tall_box | observe | approach | 0.72 | `ee57d6bc9794c0e5` | `819d992ad8595d93` |
 
 ## What It Proves
 Danger-history caution stays above safe-history baseline across the configured seeds, layouts, and unstable object kinds.

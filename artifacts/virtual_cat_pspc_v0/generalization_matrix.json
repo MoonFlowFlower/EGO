@@ -7,7 +7,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7456,
-        "trace_hash": "bd7e64aad876aaa4",
+        "trace_hash": "a9faf70d3c05c465",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -31,7 +31,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "9fcd89c08e68753b",
+        "trace_hash": "8758025c5121d5a6",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -57,7 +57,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7745,
-        "trace_hash": "a7ce24841039a649",
+        "trace_hash": "775f461ee7c323e9",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -81,7 +81,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "177f3390c2304b12",
+        "trace_hash": "af78844453fc2019",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -107,7 +107,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7629,
-        "trace_hash": "27f9f65d6d118490",
+        "trace_hash": "eed7c7920e99e20e",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -131,7 +131,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "d357f60edc069d5f",
+        "trace_hash": "29d88158b6dbcd66",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -157,7 +157,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7306,
-        "trace_hash": "2ad35b3793cc98ab",
+        "trace_hash": "f64d050fc80c756c",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -181,7 +181,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "f79151b798fe2cdb",
+        "trace_hash": "4a8ed2e43b85fc72",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -207,7 +207,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7456,
-        "trace_hash": "dfaaf5cee54ad78f",
+        "trace_hash": "396fe4f6672f561d",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -231,7 +231,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "fd97502306e73b23",
+        "trace_hash": "06bb5f5d25f6456e",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -257,7 +257,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7745,
-        "trace_hash": "6ce9baf65154d997",
+        "trace_hash": "9d238c35b7b247ea",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -281,7 +281,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "5367129c5aa5ad01",
+        "trace_hash": "0394991bef5e098b",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -307,7 +307,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7629,
-        "trace_hash": "69a95504af97e3a8",
+        "trace_hash": "d59b93b76d1d3162",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -331,7 +331,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "78b385d52bafeaf1",
+        "trace_hash": "8f9347289c96cabc",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -357,7 +357,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7306,
-        "trace_hash": "309bb879cdd3129d",
+        "trace_hash": "3881f68be092f804",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -381,7 +381,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "98a69fccf7f6444a",
+        "trace_hash": "f49a93af09b60398",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -407,7 +407,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7456,
-        "trace_hash": "871e8b1eff30b1f6",
+        "trace_hash": "d0413aaf87472170",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -431,7 +431,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "3c2cd6f9ad501028",
+        "trace_hash": "27a60c8441907274",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -457,7 +457,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7745,
-        "trace_hash": "63b413a25fe473e9",
+        "trace_hash": "d361477145becb21",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -481,7 +481,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "ac9366ede7e36b86",
+        "trace_hash": "aba7db2f009d4a49",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -507,7 +507,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7629,
-        "trace_hash": "b552ea5601619ced",
+        "trace_hash": "0f1e5f14a5ee1ba3",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -531,7 +531,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "868b3c76d86a1f9f",
+        "trace_hash": "3ef99bd73c2b4bbf",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -557,7 +557,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7306,
-        "trace_hash": "07424c8e0066f2f0",
+        "trace_hash": "8fb50acd0e5ba933",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -581,7 +581,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "f1898981a6f8d679",
+        "trace_hash": "b2700af029c51dde",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -607,7 +607,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7456,
-        "trace_hash": "1c8db91e9456f64b",
+        "trace_hash": "cc81be92c0770edf",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -631,7 +631,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "c6da58572998b47b",
+        "trace_hash": "154fd4f394fff9e9",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -657,7 +657,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7745,
-        "trace_hash": "53e798501a4c441b",
+        "trace_hash": "270c11ac7b25108b",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -681,7 +681,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "144012941deb9916",
+        "trace_hash": "d0a2d14c0d8d4fbf",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -707,7 +707,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7629,
-        "trace_hash": "623b917034e7864f",
+        "trace_hash": "8930324b899633d6",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -731,7 +731,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "e81a6bc14995572f",
+        "trace_hash": "5018128d3ee9071e",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -757,7 +757,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7306,
-        "trace_hash": "47b1e06de0ba0c39",
+        "trace_hash": "d832d133c3070f28",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -781,7 +781,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "455fc3b295363b6a",
+        "trace_hash": "06cca9eff5bfbc1e",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -807,7 +807,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7456,
-        "trace_hash": "2461c048d3757552",
+        "trace_hash": "d7811a27cb8b8433",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -831,7 +831,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "acaec29dbf136fa9",
+        "trace_hash": "5a4d2cfb85af809a",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -857,7 +857,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7745,
-        "trace_hash": "1df061cf8b6de086",
+        "trace_hash": "4e8f8327cb5aaf2c",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -881,7 +881,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "e133ded03034e3d3",
+        "trace_hash": "2d0f4152d205ebc6",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -907,7 +907,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7629,
-        "trace_hash": "5bf021c142d0a347",
+        "trace_hash": "3b3165c226304f39",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -931,7 +931,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "2f67b1a5964d084e",
+        "trace_hash": "51129ae9b8e99a69",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -957,7 +957,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7306,
-        "trace_hash": "e20130420c93c30b",
+        "trace_hash": "728a958df70e4525",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -981,7 +981,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "4715e5ed36676c85",
+        "trace_hash": "a7ced0e239369c81",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -1007,7 +1007,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7456,
-        "trace_hash": "1b551509c0c0da19",
+        "trace_hash": "096bf3cc883c0cf8",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -1031,7 +1031,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "d5e83f097ecf4b23",
+        "trace_hash": "281a1915b2634c3e",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.78,
@@ -1057,7 +1057,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7745,
-        "trace_hash": "aee3b4766f2f31ca",
+        "trace_hash": "5e47eff940500695",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -1081,7 +1081,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "930b0beb15453331",
+        "trace_hash": "34160664ee41be85",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.72,
@@ -1107,7 +1107,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7629,
-        "trace_hash": "ef875edc3a64ead6",
+        "trace_hash": "9786ec1c168cc8c0",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -1131,7 +1131,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "81710eb5f75dc93a",
+        "trace_hash": "32e382de43dbc56d",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.84,
@@ -1157,7 +1157,7 @@
         "caution_score": 0.72,
         "selected_action": "observe",
         "self_risk_score": 0.7306,
-        "trace_hash": "ca636a3f5605609c",
+        "trace_hash": "ee57d6bc9794c0e5",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,
@@ -1181,7 +1181,7 @@
         "caution_score": 0.0,
         "selected_action": "approach",
         "self_risk_score": 0.0688,
-        "trace_hash": "2ad934d790bb28f0",
+        "trace_hash": "819d992ad8595d93",
         "trace_payload": {
           "candidate_object_features": {
             "fragility": 0.55,

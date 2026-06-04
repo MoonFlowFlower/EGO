@@ -15,7 +15,7 @@
         "prediction_error": 0.9002,
         "selected_action": "approach",
         "self_risk_score": 0.1942,
-        "trace_hash": "fcc85d3237d0900f",
+        "trace_hash": "41c7b5844d864696",
         "world_prediction": {
           "danger_contact": 0.0998,
           "noise": 0.0998,
@@ -27,7 +27,7 @@
         "prediction_error": 0.0998,
         "selected_action": "approach",
         "self_risk_score": 0.1942,
-        "trace_hash": "f56577201c6e22a4",
+        "trace_hash": "c1bdeb4a40fa8fbc",
         "world_prediction": {
           "danger_contact": 0.0998,
           "noise": 0.0998,
@@ -41,7 +41,7 @@
         "prediction_error": 0.0835,
         "selected_action": "observe",
         "self_risk_score": 0.1526,
-        "trace_hash": "5fe1cddd69c6f3ec",
+        "trace_hash": "432fd90fedad936d",
         "world_prediction": {
           "danger_contact": 0.9165,
           "noise": 0.9165,
@@ -53,7 +53,7 @@
         "prediction_error": 0.0249,
         "selected_action": "approach",
         "self_risk_score": 0.1589,
-        "trace_hash": "f1ee196fd4c595f7",
+        "trace_hash": "d139cc6ca69da33a",
         "world_prediction": {
           "danger_contact": 0.0249,
           "noise": 0.0249,
@@ -67,7 +67,7 @@
         "prediction_error": 0.3975,
         "selected_action": "retreat",
         "self_risk_score": 0.4456,
-        "trace_hash": "3bb802fdfd44c531",
+        "trace_hash": "8b2fc0961e5eac73",
         "world_prediction": {
           "danger_contact": 0.2525,
           "noise": 0.5552,
@@ -79,7 +79,7 @@
         "prediction_error": 0.5322,
         "selected_action": "retreat",
         "self_risk_score": 0.2988,
-        "trace_hash": "7b20d1d9cc62d11b",
+        "trace_hash": "00432a0a312bad90",
         "world_prediction": {
           "danger_contact": 0.5589,
           "noise": 0.4636,
@@ -93,7 +93,7 @@
         "prediction_error": 1.0,
         "selected_action": "approach",
         "self_risk_score": 0.1484,
-        "trace_hash": "256c2ab70ec8e75e",
+        "trace_hash": "20f95eb122e50d0a",
         "world_prediction": {
           "danger_contact": 0.0,
           "noise": 0.0,
@@ -105,7 +105,7 @@
         "prediction_error": 0.0104,
         "selected_action": "approach",
         "self_risk_score": 0.1527,
-        "trace_hash": "49a7702dcea5537e",
+        "trace_hash": "765cebe693eee31c",
         "world_prediction": {
           "danger_contact": 0.0104,
           "noise": 0.0104,

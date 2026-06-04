@@ -333,6 +333,201 @@ def run_world_model_causal_strength(seed: int) -> Dict[str, object]:
     }
 
 
+def run_self_model_causal_strength(seed: int) -> Dict[str, object]:
+    env = VirtualCatGridWorld(seed=seed)
+    memory = _build_memory(env=env, seed=seed, history="danger")
+    world_model = WorldModel(seed=seed)
+    world_model.fit(memory.transitions)
+    normal_self = SelfModel(seed=seed)
+    normal_self.fit(memory.transitions, world_model)
+
+    self_models = {
+        "normal": normal_self,
+        "frozen": SelfModel(seed=seed + 887),
+        "stress_removed": _SelfModelHeadAblation(normal_self, "stress_removed"),
+        "ability_removed": _SelfModelHeadAblation(normal_self, "ability_removed"),
+        "affinity_removed": _SelfModelHeadAblation(normal_self, "affinity_removed"),
+    }
+    targets = {
+        "risk_control": build_candidate_object(),
+        "ability_planning": build_candidate_object(
+            object_id="self_model_ability_target",
+            name="self model ability target",
+            features=ObjectFeatures(instability=0.25, height=0.40, fragility=0.50, novelty=0.40),
+        ),
+        "relationship_preference": build_candidate_object(
+            object_id="self_model_relationship_target",
+            name="self model relationship target",
+            features=ObjectFeatures(instability=0.25, height=0.50, fragility=0.60, novelty=0.62),
+        ),
+    }
+
+    variant_records: Dict[str, Dict[str, object]] = {}
+    risk_control_scores: Dict[str, float] = {}
+    ability_planning_scores: Dict[str, float] = {}
+    relationship_preference_scores: Dict[str, float] = {}
+
+    for variant, self_model in self_models.items():
+        risk_record = _evaluate_self_variant(
+            seed=seed,
+            variant=variant,
+            task="risk_control",
+            target=targets["risk_control"],
+            world_model=world_model,
+            self_model=self_model,
+        )
+        ability_record = _evaluate_self_variant(
+            seed=seed,
+            variant=variant,
+            task="ability_planning",
+            target=targets["ability_planning"],
+            world_model=world_model,
+            self_model=self_model,
+        )
+        relationship_record = _evaluate_self_variant(
+            seed=seed,
+            variant=variant,
+            task="relationship_preference",
+            target=targets["relationship_preference"],
+            world_model=world_model,
+            self_model=self_model,
+        )
+        variant_records[variant] = {
+            "risk_control": risk_record,
+            "ability_planning": ability_record,
+            "relationship_preference": relationship_record,
+        }
+        risk_control_scores[variant] = _self_risk_control_score(risk_record)
+        ability_planning_scores[variant] = _self_ability_planning_score(ability_record)
+        relationship_preference_scores[variant] = _self_relationship_preference_score(relationship_record)
+
+    status = (
+        "pass"
+        if risk_control_scores["normal"] > risk_control_scores["frozen"]
+        and risk_control_scores["normal"] - risk_control_scores["stress_removed"] > 0.20
+        and ability_planning_scores["normal"] - ability_planning_scores["ability_removed"] > 0.20
+        and relationship_preference_scores["normal"] - relationship_preference_scores["affinity_removed"] > 0.20
+        else "hold"
+    )
+    return {
+        "seed": seed,
+        "status": status,
+        "variants": [
+            "normal",
+            "frozen",
+            "stress_removed",
+            "ability_removed",
+            "affinity_removed",
+        ],
+        "ordering": "normal > frozen/head-removed",
+        "risk_control_scores": risk_control_scores,
+        "ability_planning_scores": ability_planning_scores,
+        "relationship_preference_scores": relationship_preference_scores,
+        "variant_records": variant_records,
+        "what_it_proves": (
+            "Removing learned self-model stress/risk, ability, and affinity heads degrades the "
+            "corresponding lab planner support under the same learned world model and target set."
+        ),
+        "what_it_does_not_prove": (
+            "This does not prove self-model causal strength outside this lab target set, real-world "
+            "transfer, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, "
+            "or subjective experience."
+        ),
+    }
+
+
+class _SelfModelHeadAblation:
+    def __init__(self, base_model: SelfModel, mode: str):
+        self.base_model = base_model
+        self.mode = mode
+
+    def predict(self, world_prediction: Dict[str, float], action: Action) -> Dict[str, float]:
+        prediction = dict(self.base_model.predict(world_prediction, action))
+        if self.mode == "stress_removed":
+            prediction["stress_delta"] = 0.0
+        elif self.mode == "ability_removed":
+            prediction["action_failure_prob"] = 0.0
+        elif self.mode == "affinity_removed":
+            prediction["affinity_delta"] = 0.0
+        else:
+            raise ValueError(f"unknown self-model head ablation mode: {self.mode}")
+        return prediction
+
+
+def _evaluate_self_variant(
+    *,
+    seed: int,
+    variant: str,
+    task: str,
+    target: GridObject,
+    world_model: WorldModel,
+    self_model,
+) -> Dict[str, object]:
+    planner = MPCPlanner(world_model=world_model, self_model=self_model, seed=seed)
+    plan = planner.plan(target)
+    approach_world_prediction = world_model.predict(target, Action.APPROACH)
+    approach_self_prediction = self_model.predict(approach_world_prediction, Action.APPROACH)
+    trace_payload = {
+        "seed": seed,
+        "variant": variant,
+        "task": task,
+        "target_object_id": target.object_id,
+        "candidate_object_features": target.features.to_dict(),
+        "selected_action": plan.selected_action,
+        "caution_score": plan.caution_score,
+        "world_prediction": plan.world_prediction,
+        "self_prediction": plan.self_prediction,
+        "approach_world_prediction": approach_world_prediction,
+        "approach_self_prediction": approach_self_prediction,
+        "homeostatic_score": plan.homeostatic_score,
+        "planner_trace_hash": plan.trace_hash,
+    }
+    return {
+        "selected_action": plan.selected_action,
+        "caution_score": plan.caution_score,
+        "self_risk_score": round(float(plan.self_risk_score), 4),
+        "world_prediction": plan.world_prediction,
+        "self_prediction": plan.self_prediction,
+        "approach_world_prediction": approach_world_prediction,
+        "approach_self_prediction": approach_self_prediction,
+        "homeostatic_score": plan.homeostatic_score,
+        "trace_hash": _hash_payload(trace_payload),
+    }
+
+
+def _self_risk_control_score(record: Dict[str, object]) -> float:
+    approach_self = record["approach_self_prediction"] if isinstance(record.get("approach_self_prediction"), dict) else {}
+    protective_action = 0.35 if str(record.get("selected_action")) in {"observe", "retreat"} else 0.0
+    return round(
+        float(record.get("caution_score", 0.0))
+        + protective_action
+        + float(approach_self.get("stress_delta", 0.0))
+        + float(approach_self.get("damage_risk", 0.0)),
+        4,
+    )
+
+
+def _self_ability_planning_score(record: Dict[str, object]) -> float:
+    approach_self = record["approach_self_prediction"] if isinstance(record.get("approach_self_prediction"), dict) else {}
+    protective_action = 0.35 if str(record.get("selected_action")) in {"observe", "retreat"} else 0.0
+    return round(
+        float(record.get("caution_score", 0.0))
+        + protective_action
+        + (2.0 * float(approach_self.get("action_failure_prob", 0.0))),
+        4,
+    )
+
+
+def _self_relationship_preference_score(record: Dict[str, object]) -> float:
+    approach_self = record["approach_self_prediction"] if isinstance(record.get("approach_self_prediction"), dict) else {}
+    selected_self = record["self_prediction"] if isinstance(record.get("self_prediction"), dict) else {}
+    selected_action = str(record.get("selected_action"))
+    avoids_affinity_harm = 0.50 if selected_action != Action.APPROACH.value else 0.0
+    affinity_warning = 5.0 * max(0.0, -float(approach_self.get("affinity_delta", 0.0)))
+    selected_affinity_gain = 3.0 * max(0.0, float(selected_self.get("affinity_delta", 0.0)))
+    return round(avoids_affinity_harm + affinity_warning + selected_affinity_gain, 4)
+
+
 def _fit_corrupted_world_model(*, seed: int, transitions, mode: str) -> WorldModel:
     model = WorldModel(seed=seed + (311 if mode == "shuffled" else 719))
     if mode == "shuffled":

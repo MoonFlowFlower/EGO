@@ -12,6 +12,7 @@ from .experiments import (
     result_to_dict,
     run_anti_hardcoding_audit,
     run_generalization_matrix,
+    run_self_model_causal_strength,
     run_world_model_causal_strength,
 )
 
@@ -39,6 +40,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     anti_hardcoding_audit = run_anti_hardcoding_audit(seed=seed_list[0])
     generalization_matrix = run_generalization_matrix(seeds=seed_list)
     world_model_causal_strength = run_world_model_causal_strength(seed=seed_list[0])
+    self_model_causal_strength = run_self_model_causal_strength(seed=seed_list[0])
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -77,6 +79,14 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_world_model_causal_strength(world_model_causal_strength),
         encoding="utf-8",
     )
+    (out_path / "self_model_causal_strength.json").write_text(
+        json.dumps(self_model_causal_strength, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "SELF_MODEL_CAUSAL_STRENGTH_REPORT.md").write_text(
+        _render_self_model_causal_strength(self_model_causal_strength),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
@@ -84,6 +94,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "anti_hardcoding_status": anti_hardcoding_audit["status"],
         "multi_seed_layout_generalization_status": generalization_matrix["status"],
         "world_model_causal_strength_status": world_model_causal_strength["status"],
+        "self_model_causal_strength_status": self_model_causal_strength["status"],
         "claim_level": "lab_only_proto_self_mechanism",
         "repo_wide_evidence_level": "E3",
         "repo_wide_evidence_remains": "E3",
@@ -102,6 +113,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "anti_hardcoding_audit": "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
         "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
         "world_model_causal_strength": "artifacts/virtual_cat_pspc_v0/world_model_causal_strength.json",
+        "self_model_causal_strength": "artifacts/virtual_cat_pspc_v0/self_model_causal_strength.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -116,6 +128,74 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_self_model_causal_strength(audit: Dict[str, object]) -> str:
+    records = audit["variant_records"] if isinstance(audit.get("variant_records"), dict) else {}
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Self Model Causal Strength Report",
+            "",
+            f"- status: `{audit['status']}`",
+            f"- seed: `{audit['seed']}`",
+            f"- ordering: `{audit['ordering']}`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            "",
+            "## Summary",
+            "This audit keeps the learned world model and target set fixed, then replaces only the self model with normal, frozen, stress-removed, ability-removed, and affinity-removed variants.",
+            "",
+            "## Support Score Definition",
+            "Risk control combines cautious action, predicted approach stress, and predicted approach damage risk. Ability planning combines cautious action with predicted approach failure. Relationship preference combines avoidance of predicted affinity harm with selected positive affinity.",
+            "",
+            "## Metrics",
+            "| variant | risk_control | ability_planning | relationship_preference | risk_action | ability_action | relationship_action | risk_trace_hash | ability_trace_hash | relationship_trace_hash |",
+            "|---|---:|---:|---:|---|---|---|---|---|---|",
+            *[_self_model_variant_row(variant, audit, records) for variant in audit["variants"]],
+            "",
+            "## What It Proves",
+            str(audit["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(audit["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this fails, the planner may not depend strongly on one or more self-model heads, or the audit target set is not strong enough to expose causal dependence.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 4 self-model causal-strength audit code, tests, and artifacts. No EgoOperator rollback is needed because no runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _self_model_variant_row(variant: str, audit: Dict[str, object], records: Dict[str, object]) -> str:
+    variant_record = records.get(variant) if isinstance(records.get(variant), dict) else {}
+    risk = variant_record.get("risk_control") if isinstance(variant_record.get("risk_control"), dict) else {}
+    ability = variant_record.get("ability_planning") if isinstance(variant_record.get("ability_planning"), dict) else {}
+    relationship = (
+        variant_record.get("relationship_preference")
+        if isinstance(variant_record.get("relationship_preference"), dict)
+        else {}
+    )
+    risk_scores = audit["risk_control_scores"] if isinstance(audit.get("risk_control_scores"), dict) else {}
+    ability_scores = audit["ability_planning_scores"] if isinstance(audit.get("ability_planning_scores"), dict) else {}
+    relationship_scores = (
+        audit["relationship_preference_scores"]
+        if isinstance(audit.get("relationship_preference_scores"), dict)
+        else {}
+    )
+    return "| {variant} | {risk_score:.4f} | {ability_score:.4f} | {relationship_score:.4f} | {risk_action} | {ability_action} | {relationship_action} | `{risk_trace}` | `{ability_trace}` | `{relationship_trace}` |".format(
+        variant=variant,
+        risk_score=float(risk_scores.get(variant, 0.0)),
+        ability_score=float(ability_scores.get(variant, 0.0)),
+        relationship_score=float(relationship_scores.get(variant, 0.0)),
+        risk_action=risk.get("selected_action", "unknown"),
+        ability_action=ability.get("selected_action", "unknown"),
+        relationship_action=relationship.get("selected_action", "unknown"),
+        risk_trace=risk.get("trace_hash", "unknown"),
+        ability_trace=ability.get("trace_hash", "unknown"),
+        relationship_trace=relationship.get("trace_hash", "unknown"),
+    )
 
 
 def _render_world_model_causal_strength(audit: Dict[str, object]) -> str:
