@@ -205,7 +205,9 @@ class HomeostaticValue:
         world_prediction: Dict[str, float],
         self_prediction: Dict[str, float],
         uncertainty: float,
+        context: Dict[str, object] | None = None,
     ) -> Dict[str, float]:
+        context = dict(context or {})
         danger = float(world_prediction["danger_contact"])
         stress = float(self_prediction["stress_delta"])
         self_risk = float(self_prediction["damage_risk"])
@@ -229,5 +231,24 @@ class HomeostaticValue:
             "affinity_gain": approach_bonus + (2.00 * affinity_delta),
             "self_risk_control": -0.98 * self_risk,
         }
+        if context:
+            curiosity_pressure = float(context.get("curiosity_pressure", 0.0))
+            food_reward = float(context.get("food_reward", 0.0))
+            energy_need = float(context.get("energy_need", 0.0))
+            user_affinity_reward = float(context.get("user_affinity_reward", 0.0))
+            repeated_action = str(context.get("repeated_action", ""))
+            repetition_penalty = float(context.get("repetition_penalty", 0.0))
+            components.update(
+                {
+                    "curiosity_pressure": curiosity_pressure
+                    * obj.features.novelty
+                    * (0.28 if action == Action.OBSERVE else (0.10 if action == Action.APPROACH else 0.03)),
+                    "food_reward": food_reward if action == Action.APPROACH else 0.0,
+                    "energy_recovery_drive": energy_need * (0.36 if action == Action.APPROACH else 0.04),
+                    "user_affinity_reward": user_affinity_reward
+                    * (1.0 if action == Action.APPROACH else (0.14 if action == Action.OBSERVE else -0.08)),
+                    "repetition_penalty": -repetition_penalty if action.value == repeated_action else 0.0,
+                }
+            )
         components["total"] = round(sum(components.values()), 6)
         return {key: round(float(value), 6) for key, value in components.items()}

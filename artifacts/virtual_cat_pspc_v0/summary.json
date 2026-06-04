@@ -13,6 +13,8 @@
     "replay_determinism": true
   },
   "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
+  "homeostatic_value_anti_hacking": "artifacts/virtual_cat_pspc_v0/homeostatic_value_anti_hacking.json",
+  "homeostatic_value_anti_hacking_status": "pass",
   "mainline_connected": false,
   "memory_consolidation_admission": "artifacts/virtual_cat_pspc_v0/memory_consolidation_admission.json",
   "memory_consolidation_admission_status": "pass",

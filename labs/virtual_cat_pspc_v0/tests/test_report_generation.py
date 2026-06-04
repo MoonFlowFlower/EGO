@@ -19,6 +19,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md",
         "SELF_MODEL_CAUSAL_STRENGTH_REPORT.md",
         "MEMORY_CONSOLIDATION_ADMISSION_REPORT.md",
+        "HOMEOSTATIC_VALUE_ANTI_HACKING_REPORT.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -71,3 +72,11 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
     assert "normal / relevant_deleted / irrelevant_deleted / corrupted_relevant" in memory_text
     assert "## What It Proves" in memory_text
     assert "## What It Does Not Prove" in memory_text
+
+    value_json = Path(tmp_path) / "homeostatic_value_anti_hacking.json"
+    assert value_json.exists()
+    value_text = (Path(tmp_path) / "HOMEOSTATIC_VALUE_ANTI_HACKING_REPORT.md").read_text(encoding="utf-8")
+    assert "- status: `pass`" in value_text
+    assert "high_curiosity_high_risk / food_reward_danger_conflict / user_affinity_self_risk_conflict / repetition_penalty / safe_energy_recovery" in value_text
+    assert "## What It Proves" in value_text
+    assert "## What It Does Not Prove" in value_text

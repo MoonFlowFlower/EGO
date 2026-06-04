@@ -12,6 +12,7 @@ from .experiments import (
     result_to_dict,
     run_anti_hardcoding_audit,
     run_generalization_matrix,
+    run_homeostatic_value_anti_hacking,
     run_memory_consolidation_admission,
     run_self_model_causal_strength,
     run_world_model_causal_strength,
@@ -43,6 +44,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     world_model_causal_strength = run_world_model_causal_strength(seed=seed_list[0])
     self_model_causal_strength = run_self_model_causal_strength(seed=seed_list[0])
     memory_consolidation_admission = run_memory_consolidation_admission(seed=seed_list[0])
+    homeostatic_value_anti_hacking = run_homeostatic_value_anti_hacking(seed=seed_list[0])
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -97,6 +99,14 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_memory_consolidation_admission(memory_consolidation_admission),
         encoding="utf-8",
     )
+    (out_path / "homeostatic_value_anti_hacking.json").write_text(
+        json.dumps(homeostatic_value_anti_hacking, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "HOMEOSTATIC_VALUE_ANTI_HACKING_REPORT.md").write_text(
+        _render_homeostatic_value_anti_hacking(homeostatic_value_anti_hacking),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
@@ -106,6 +116,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "world_model_causal_strength_status": world_model_causal_strength["status"],
         "self_model_causal_strength_status": self_model_causal_strength["status"],
         "memory_consolidation_admission_status": memory_consolidation_admission["status"],
+        "homeostatic_value_anti_hacking_status": homeostatic_value_anti_hacking["status"],
         "claim_level": "lab_only_proto_self_mechanism",
         "repo_wide_evidence_level": "E3",
         "repo_wide_evidence_remains": "E3",
@@ -126,6 +137,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "world_model_causal_strength": "artifacts/virtual_cat_pspc_v0/world_model_causal_strength.json",
         "self_model_causal_strength": "artifacts/virtual_cat_pspc_v0/self_model_causal_strength.json",
         "memory_consolidation_admission": "artifacts/virtual_cat_pspc_v0/memory_consolidation_admission.json",
+        "homeostatic_value_anti_hacking": "artifacts/virtual_cat_pspc_v0/homeostatic_value_anti_hacking.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -140,6 +152,62 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_homeostatic_value_anti_hacking(audit: Dict[str, object]) -> str:
+    records = audit["scenario_records"] if isinstance(audit.get("scenario_records"), dict) else {}
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Homeostatic Value Anti-Hacking Report",
+            "",
+            f"- status: `{audit['status']}`",
+            f"- seed: `{audit['seed']}`",
+            "- scenarios: `high_curiosity_high_risk / food_reward_danger_conflict / user_affinity_self_risk_conflict / repetition_penalty / safe_energy_recovery`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            "",
+            "## Summary",
+            "This audit stress-tests the homeostatic value surface against single-reward collapse: curiosity, food/energy, affinity pressure, repetition, and low-risk energy recovery are scored as competing pressures rather than a single reward scalar.",
+            "",
+            "## Metrics",
+            "| scenario | action | anti_hacking_check | positive_axis | blocking_axis | trace_hash |",
+            "|---|---|---|---|---|---|",
+            *[_homeostatic_value_scenario_row(scenario, records) for scenario in audit["scenarios"]],
+            "",
+            "## Balance Summary",
+            "\n".join(
+                f"- {key}: `{value}`"
+                for key, value in sorted(
+                    (audit["balance_summary"] if isinstance(audit.get("balance_summary"), dict) else {}).items()
+                )
+            ),
+            "",
+            "## What It Proves",
+            str(audit["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(audit["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this fails, the value function may have collapsed into a single maximizer such as always explore, always eat, always please, always avoid, or always repeat a previously rewarding action.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 6 homeostatic value anti-hacking audit code, tests, and artifacts. No EgoOperator rollback is needed because no runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _homeostatic_value_scenario_row(scenario: str, records: Dict[str, object]) -> str:
+    record = records.get(scenario) if isinstance(records.get(scenario), dict) else {}
+    tradeoff = record.get("dominant_tradeoff") if isinstance(record.get("dominant_tradeoff"), dict) else {}
+    return "| {scenario} | {action} | {check} | {positive_axis} | {blocking_axis} | `{trace}` |".format(
+        scenario=scenario,
+        action=record.get("selected_action", "unknown"),
+        check=record.get("anti_hacking_check", "unknown"),
+        positive_axis=tradeoff.get("positive_axis", "unknown"),
+        blocking_axis=tradeoff.get("blocking_axis", "unknown"),
+        trace=record.get("trace_hash", "unknown"),
+    )
 
 
 def _render_memory_consolidation_admission(audit: Dict[str, object]) -> str:
