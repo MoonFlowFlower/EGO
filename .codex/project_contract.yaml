@@ -260,6 +260,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/TASK_LANE_INDEX.md
   - docs/codex/tasks/ego-operator-human-operator-trial-v2/
   - docs/codex/tasks/virtual-cat-pspc-v0/
+  - docs/codex/tasks/pspc-read-only-adapter-design-v0/
   - labs/virtual_cat_pspc_v0/
   - artifacts/virtual_cat_pspc_v0/
   - artifacts/evidence_ledger/
