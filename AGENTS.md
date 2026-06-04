@@ -102,6 +102,8 @@
 
 - `cmd.exe /c git commit ...`
 - `cmd.exe /c git push origin main`
+- 完成 scoped 功能且验证通过时，默认 commit 后推送 `origin main`；只 stage 本轮 source/test/docs/workflow 文件，不 stage `data/live2d/`、credentials、temp audio、runtime logs、`Test/`、或无关旧脏改。
+- 如果 `Tasks/TASK_BOARD.yaml` 有状态变更，本地任务板仍是 canonical，GitHub Project 只是 mirror；必须同步当前 contract 指向的 GitHub target。若 `gh` 不可用、权限不足或 Project 不可达，写入/保留 `artifacts/task_board/outbox.jsonl` 并报告 `remote_sync_unavailable`，不得声称 GitHub 任务板已更新。
 - 若改动触及 `WP12` maintenance docs / scripts / artifacts，且要给出 `WP12` maintenance 结论，发布前必须先跑 `PYTHONPATH=OpenEmotion python3 scripts/codex/run_wp12_maintenance_verification.py` 与 `python3 scripts/codex/verify_wp12_maintenance_gate.py --json`
 
 ## Acceptance / done definition
@@ -116,9 +118,11 @@
 ## Codex working gates
 
 - Prime directive: 不追求变更多，也不追求最小 diff；追求最小可验证主线修正。
+- Gate 0: 新会话正式处理 EGO 工程任务前，先运行 `python scripts/codex_session_guard.py bootstrap --format markdown`，并报告 `current_phase / current_layer / highest_evidence_level / next_minimal_action`、远端目标、dirty blocker、任务板状态和 GitHub sync 可用性；不得只凭聊天记忆声称已掌握最新进展。
 - Gate A: coding 前必须明确 contract / schema / authority source；不清楚就先收敛任务，不进入实现。
 - Gate B: completion claim 前必须运行与任务匹配的验证；repo-level wrapper 优先用 `scripts/run_verify.sh fast|full`，它只委托现有 canonical verifier，不另造验证逻辑。
 - Gate C: 收口前 review diff，重点检查 regression、第二套逻辑、证据缺口、过度设计、无关 temp/log/runtime JSONL。
+- Gate D: 收口前运行 `python scripts/codex_session_guard.py closeout-check --format markdown`。若未 scoped stage、未处理 push、任务板变更未同步 GitHub mirror、`gh`/权限/Project 不可用且未进入 outbox，必须报告 blocked/unavailable，不得宣称完成或已同步。
 - 如果 required check 无法运行，报告 `unavailable` 和具体原因；不得把 unavailable 降级写成 pass。
 - 最终报告必须列出 changed files、commands run、test results、evidence paths、unresolved risks、next smallest safe step。
 

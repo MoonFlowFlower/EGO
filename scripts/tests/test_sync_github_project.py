@@ -64,7 +64,7 @@ tasks:
     canonical_sources:
       - "test"
     external_refs:
-      github_issue: "https://github.com/pen364692088/EGO/issues/1"
+      github_issue: "https://github.com/MoonFlowFlower/EGO/issues/1"
 """,
         encoding="utf-8",
     )
@@ -94,7 +94,7 @@ tasks:
     canonical_sources:
       - "test"
     external_refs:
-      github_issue: "https://github.com/pen364692088/EGO/issues/1"
+      github_issue: "https://github.com/MoonFlowFlower/EGO/issues/1"
   - id: T-2
     title: "EgoSubject: Historical accepted task"
     kind: task
@@ -122,11 +122,11 @@ def write_state(tmp_path: Path, *, body_hash: str | None = None, state: str = "o
     path = tmp_path / "sync_state.json"
     payload = {
         "version": 1,
-        "repo": "pen364692088/EGO",
+        "repo": "MoonFlowFlower/EGO",
         "issues": {
             "T-1": {
                 "number": 1,
-                "url": "https://github.com/pen364692088/EGO/issues/1",
+                "url": "https://github.com/MoonFlowFlower/EGO/issues/1",
                 "title_hash": "old",
                 "body_hash": body_hash or "old",
                 "state": state,
@@ -285,13 +285,13 @@ def test_execute_uses_cached_issue_id_and_updates_state(tmp_path: Path, monkeypa
                 "edit",
                 "1",
                 "--repo",
-                "pen364692088/EGO",
+                "MoonFlowFlower/EGO",
                 "--title",
                 "EgoSubject: Local board test",
                 "--body",
                 sync_github_project.desired_issue_body(sync_github_project.load_yaml(board)["tasks"][0]),
             ): "",
-            ("issue", "close", "1", "--repo", "pen364692088/EGO"): "",
+            ("issue", "close", "1", "--repo", "MoonFlowFlower/EGO"): "",
         }
     )
 
@@ -336,7 +336,7 @@ def test_rate_limit_error_is_structured(tmp_path: Path) -> None:
                 "edit",
                 "1",
                 "--repo",
-                "pen364692088/EGO",
+                "MoonFlowFlower/EGO",
                 "--title",
                 task["title"],
                 "--body",

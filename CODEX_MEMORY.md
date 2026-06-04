@@ -24,6 +24,7 @@
 
 ## 新会话注入顺序
 
+0. `python scripts/codex_session_guard.py bootstrap --format markdown` 生成 Boot Snapshot
 1. 当前任务 handoff
 2. `CODEX_MEMORY.md`
 3. 上一任务 closure
@@ -36,12 +37,13 @@
 | project-boundary-v1 | EgoCore 与 OpenEmotion 边界 | PROJECT_MEMORY.md#系统边界;docs/AGENT_DEVELOPMENT_PLAYBOOK.md#1 一句话原则 | revalidate_when_boundary_docs_change |
 | project-evidence-gate-v1 | 结论强度不得高于证据强度 | PROJECT_MEMORY.md#核心协议;Tasks/templates/gate_acceptance_v1.md#Gate A/B/C 统一验收模板 | revalidate_when_acceptance_rules_change |
 | project-execution-env-v1 | 执行环境口径 | PROJECT_MEMORY.md#已验证的关键发现 | revalidate_when_runner_process_changes |
-| project-git-publish-v1 | 本仓提交流程 | PROJECT_MEMORY.md#Git 工作流;AGENTS.md#CLAUDE.md - 代码代理专用版 | revalidate_when_git_workflow_changes |
+| project-git-publish-v1 | 本仓提交流程 | PROJECT_MEMORY.md#Git 工作流;AGENTS.md#Publish;.codex/project_contract.yaml | revalidate_when_git_workflow_changes |
 | project-git-shell-default-v1 | Git shell 默认口径 | PROJECT_MEMORY.md#Git 工作流;PROJECT_MEMORY.md#已验证的关键发现 | revalidate_when_git_workflow_changes |
 | project-git-index-lock-v1 | Git index.lock 处理口径 | PROJECT_MEMORY.md#已验证的关键发现 | revalidate_when_git_workflow_changes |
 | project-closed-loop-workflow-v1 | 默认闭环自审开发流 | PROJECT_MEMORY.md#默认开发闭环;docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md | revalidate_when_workflow_contract_changes |
 | project-proactive-gain-check-v1 | 默认主动增益检查口径 | PROJECT_MEMORY.md#默认开发闭环;docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md | revalidate_when_workflow_contract_changes |
 | project-codex-memory-acceptance-v1 | Codex 结构化记忆层新会话验收 | PROJECT_MEMORY.md#已验证的关键发现 | revalidate_when_memory_injection_contract_changes |
+| project-codex-session-guard-v1 | Codex 新会话 bootstrap 与 closeout 硬门禁 | AGENTS.md#Codex working gates;scripts/codex_session_guard.py;.codex/project_contract.yaml | revalidate_when_session_or_closeout_contract_changes |
 
 ## 长期用户偏好
 
@@ -66,4 +68,6 @@
 python3 scripts/codex_memory.py validate
 python3 scripts/codex_memory.py render
 python3 scripts/codex_memory.py bootstrap
+python scripts/codex_session_guard.py bootstrap --format markdown
+python scripts/codex_session_guard.py closeout-check --format markdown
 ```

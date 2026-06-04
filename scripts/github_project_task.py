@@ -15,8 +15,8 @@ from pathlib import Path
 from typing import Any, TextIO
 
 
-DEFAULT_REPO = "pen364692088/EGO"
-DEFAULT_OWNER = "pen364692088"
+DEFAULT_REPO = "MoonFlowFlower/EGO"
+DEFAULT_OWNER = "MoonFlowFlower"
 DEFAULT_PROJECT_NUMBER = "1"
 DEFAULT_STATUS_FIELD = "Status"
 

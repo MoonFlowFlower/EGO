@@ -2,11 +2,11 @@ version: 1
 
 project:
   name: EGO
-  repo: pen364692088/EGO
+  repo: MoonFlowFlower/EGO
   default_branch: main
 
 github_project:
-  owner: pen364692088
+  owner: MoonFlowFlower
   number: 1
   status_field: Status
 
@@ -24,6 +24,54 @@ task_state:
   sync_log_path: artifacts/task_board/sync_log.jsonl
   outbox_path: artifacts/task_board/outbox.jsonl
 
+session_bootstrap:
+  required: true
+  command:
+    - python
+    - scripts/codex_session_guard.py
+    - bootstrap
+    - --format
+    - markdown
+  required_snapshot_fields:
+    - program_state.current_phase
+    - program_state.current_layer
+    - program_state.highest_evidence_level
+    - program_state.next_minimal_action
+    - git.origin_repo
+    - git.branch
+    - remote_contract_check.status
+    - dirty_state.counts
+    - task_board.plan_next
+    - github_sync.status
+  claim_ceiling: Codex session bootstrap local workflow candidate pass
+
+closeout_gate:
+  required: true
+  command:
+    - python
+    - scripts/codex_session_guard.py
+    - closeout-check
+    - --format
+    - markdown
+  require_scoped_staging: true
+  require_push: true
+  require_task_board_github_sync: true
+  local_only_path_prefixes:
+    - data/live2d/
+    - Test/
+    - EgoDesktop/tts_output/
+    - artifacts/desktop_tts/
+  verification_commands:
+    - python -m py_compile scripts/codex_session_guard.py scripts/codex_project_autopilot.py scripts/codex_memory.py
+    - python -m pytest -q scripts/tests/test_codex_session_guard.py scripts/tests/test_codex_project_autopilot.py
+    - git diff --check
+  claim_ceiling: Codex closeout gate local workflow candidate pass
+
+legacy_external_refs:
+  github_repos:
+    - pen364692088/EGO
+  policy: "Treat historical issue URLs as legacy references; future mirror sync targets project.repo/github_project.owner unless an explicit migration map is provided."
+
 verify_profiles:
   autopilot_target:
     commands:
@@ -33,6 +81,7 @@ verify_profiles:
           - -m
           - py_compile
           - scripts/codex_project_autopilot.py
+          - scripts/codex_session_guard.py
           - scripts/github_project_task.py
           - scripts/sync_github_project.py
           - scripts/ego_operator_devloop.py
@@ -50,6 +99,7 @@ verify_profiles:
           - pytest
           - -q
           - scripts/tests/test_codex_project_autopilot.py
+          - scripts/tests/test_codex_session_guard.py
           - scripts/tests/test_functional_subject_contract.py
         env:
           TMPDIR: /tmp
@@ -83,6 +133,7 @@ verify_profiles:
           - .codex
           - .agents/skills/codex-project-autopilot
           - AGENTS.md
+          - CODEX_MEMORY.md
           - scripts
           - scripts/tests
           - Tasks/TASK_BOARD.yaml
@@ -133,6 +184,7 @@ verify_profiles:
           - docs/codex/tasks/codex-github-rate-limit-wait-resume-v1
           - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1
           - docs/codex/tasks/ego-joi-companion-roadmap-v1
+          - docs/codex/tasks/codex-session-bootstrap-closeout-v1
           - EgoOperator
 
 protected_paths:
@@ -142,9 +194,13 @@ protected_paths:
 
 allowed_mutation_paths:
   - .codex/project_contract.yaml
+  - .codex/memory/project_truth.jsonl
+  - .codex/memory/user_preferences.jsonl
+  - docs/PROGRAM_STATE_UNIFIED.yaml
   - .codex/autopilot/
   - .agents/skills/codex-project-autopilot/
   - AGENTS.md
+  - CODEX_MEMORY.md
   - scripts/
   - scripts/tests/
   - Tasks/TASK_BOARD.yaml
@@ -196,6 +252,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/codex-github-rate-limit-wait-resume-v1/
   - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/
   - docs/codex/tasks/ego-joi-companion-roadmap-v1/
+  - docs/codex/tasks/codex-session-bootstrap-closeout-v1/
 
 commit_policy:
   mode: direct-main

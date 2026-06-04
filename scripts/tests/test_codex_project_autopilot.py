@@ -1585,7 +1585,10 @@ def test_closeout_check_hard_stop_blocks_before_reviewer(tmp_path: Path) -> None
     code, payload = run_cli(
         ["--contract", str(path), "closeout-check", "--issue", "24"],
         fake=FakeGh(responses_for_issue(ISSUE_HIGH)),
-        runner=FakeRunner(stdout='{"verdict":"closeout_allowed"}'),
+        runner=FakeRunner(
+            stdout='{"verdict":"closeout_allowed"}',
+            responses={("git", "status", "--short", "--untracked-files=all"): (0, "", "")},
+        ),
     )
 
     assert code == 0

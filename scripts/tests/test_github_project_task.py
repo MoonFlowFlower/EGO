@@ -20,7 +20,7 @@ PROJECT = {
     "id": "PVT_project",
     "number": 1,
     "title": "EGO main task",
-    "url": "https://github.com/users/pen364692088/projects/1",
+    "url": "https://github.com/users/MoonFlowFlower/projects/1",
 }
 FIELDS = {
     "fields": [
@@ -40,14 +40,14 @@ ISSUE = {
     "number": 1,
     "title": "测试任务版",
     "state": "OPEN",
-    "url": "https://github.com/pen364692088/EGO/issues/1",
+    "url": "https://github.com/MoonFlowFlower/EGO/issues/1",
 }
 ISSUE_CLOSED = {**ISSUE, "state": "CLOSED"}
 ITEM_TODO = {
     "id": "ITEM_1",
     "title": "测试任务版",
     "status": "Todo",
-    "content": {**ISSUE, "type": "Issue", "repository": "pen364692088/EGO"},
+    "content": {**ISSUE, "type": "Issue", "repository": "MoonFlowFlower/EGO"},
 }
 ITEM_PROGRESS = {**ITEM_TODO, "status": "In Progress"}
 ITEM_DONE = {**ITEM_TODO, "status": "Done"}
@@ -84,14 +84,14 @@ def j(payload: dict) -> str:
 
 def base_responses(*, items: list[dict] | None = None) -> dict[tuple[str, ...], list[str] | str]:
     return {
-        ("project", "view", "1", "--owner", "pen364692088", "--format", "json"): j(PROJECT),
-        ("project", "field-list", "1", "--owner", "pen364692088", "--format", "json"): j(FIELDS),
+        ("project", "view", "1", "--owner", "MoonFlowFlower", "--format", "json"): j(PROJECT),
+        ("project", "field-list", "1", "--owner", "MoonFlowFlower", "--format", "json"): j(FIELDS),
         (
             "project",
             "item-list",
             "1",
             "--owner",
-            "pen364692088",
+            "MoonFlowFlower",
             "--limit",
             "200",
             "--format",
@@ -102,7 +102,7 @@ def base_responses(*, items: list[dict] | None = None) -> dict[tuple[str, ...], 
             "view",
             "1",
             "--repo",
-            "pen364692088/EGO",
+            "MoonFlowFlower/EGO",
             "--json",
             "number,title,state,url",
         ): j(ISSUE),
@@ -115,7 +115,7 @@ def test_doctor_success(monkeypatch) -> None:
     responses[("--version",)] = "gh version 2.92.0\n"
     responses[("auth", "status")] = (
         "github.com\n"
-        "  ✓ Logged in to github.com account pen364692088\n"
+        "  ✓ Logged in to github.com account MoonFlowFlower\n"
         "  - Token scopes: 'gist', 'project', 'read:org', 'repo'\n"
     )
     fake = FakeGh(responses)
@@ -132,7 +132,7 @@ def test_doctor_reports_missing_project_scope(monkeypatch) -> None:
     fake = FakeGh(
         {
             ("--version",): "gh version 2.92.0\n",
-            ("auth", "status"): "github.com\n  ✓ Logged in to github.com account pen364692088\n",
+            ("auth", "status"): "github.com\n  ✓ Logged in to github.com account MoonFlowFlower\n",
         }
     )
 
@@ -148,7 +148,7 @@ def test_create_issue_adds_project_item_and_sets_status() -> None:
         "issue",
         "create",
         "--repo",
-        "pen364692088/EGO",
+        "MoonFlowFlower/EGO",
         "--title",
         "New task",
         "--body",
@@ -159,7 +159,7 @@ def test_create_issue_adds_project_item_and_sets_status() -> None:
         "view",
         ISSUE["url"],
         "--repo",
-        "pen364692088/EGO",
+        "MoonFlowFlower/EGO",
         "--json",
         "number,title,state,url",
     )] = j(ISSUE)
@@ -168,7 +168,7 @@ def test_create_issue_adds_project_item_and_sets_status() -> None:
         "item-add",
         "1",
         "--owner",
-        "pen364692088",
+        "MoonFlowFlower",
         "--url",
         ISSUE["url"],
     )] = ""
@@ -177,7 +177,7 @@ def test_create_issue_adds_project_item_and_sets_status() -> None:
         "item-list",
         "1",
         "--owner",
-        "pen364692088",
+        "MoonFlowFlower",
         "--limit",
         "200",
         "--format",
@@ -224,7 +224,7 @@ def test_set_status_calls_item_edit_and_verifies_readback() -> None:
         "item-list",
         "1",
         "--owner",
-        "pen364692088",
+        "MoonFlowFlower",
         "--limit",
         "200",
         "--format",
@@ -289,7 +289,7 @@ def test_closeout_comments_sets_done_closes_and_verifies() -> None:
         "view",
         "1",
         "--repo",
-        "pen364692088/EGO",
+        "MoonFlowFlower/EGO",
         "--json",
         "number,title,state,url",
     )] = [
@@ -303,7 +303,7 @@ def test_closeout_comments_sets_done_closes_and_verifies() -> None:
         "item-list",
         "1",
         "--owner",
-        "pen364692088",
+        "MoonFlowFlower",
         "--limit",
         "200",
         "--format",
@@ -313,7 +313,7 @@ def test_closeout_comments_sets_done_closes_and_verifies() -> None:
         j({"items": [ITEM_DONE]}),
         j({"items": [ITEM_DONE]}),
     ]
-    responses[("project", "field-list", "1", "--owner", "pen364692088", "--format", "json")] = [
+    responses[("project", "field-list", "1", "--owner", "MoonFlowFlower", "--format", "json")] = [
         j(FIELDS),
         j(FIELDS),
     ]
@@ -329,8 +329,8 @@ def test_closeout_comments_sets_done_closes_and_verifies() -> None:
         "--single-select-option-id",
         "OPT_done",
     )] = ""
-    responses[("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body")] = ""
-    responses[("issue", "close", "1", "--repo", "pen364692088/EGO")] = ""
+    responses[("issue", "comment", "1", "--repo", "MoonFlowFlower/EGO", "--body", "done body")] = ""
+    responses[("issue", "close", "1", "--repo", "MoonFlowFlower/EGO")] = ""
     fake = FakeGh(responses)
 
     code, payload = run_cli(fake, ["closeout", "--issue", "1", "--comment", "done body"])
@@ -339,8 +339,8 @@ def test_closeout_comments_sets_done_closes_and_verifies() -> None:
     assert payload["status"] == "ok"
     assert payload["closed"] is True
     assert payload["project_item"]["status"] == "Done"
-    assert ("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body") in fake.calls
-    assert ("issue", "close", "1", "--repo", "pen364692088/EGO") in fake.calls
+    assert ("issue", "comment", "1", "--repo", "MoonFlowFlower/EGO", "--body", "done body") in fake.calls
+    assert ("issue", "close", "1", "--repo", "MoonFlowFlower/EGO") in fake.calls
 
 
 def test_closeout_dry_run_does_not_call_gh() -> None:
@@ -484,7 +484,7 @@ def test_closeout_verify_stage_rate_limit_returns_resume_without_repeating_mutat
         "item-list",
         "1",
         "--owner",
-        "pen364692088",
+        "MoonFlowFlower",
         "--limit",
         "200",
         "--format",
@@ -494,7 +494,7 @@ def test_closeout_verify_stage_rate_limit_returns_resume_without_repeating_mutat
         j({"items": [ITEM_DONE]}),
         rate_limit_error(["project", "item-list"]),
     ]
-    responses[("project", "field-list", "1", "--owner", "pen364692088", "--format", "json")] = [
+    responses[("project", "field-list", "1", "--owner", "MoonFlowFlower", "--format", "json")] = [
         j(FIELDS),
         j(FIELDS),
     ]
@@ -510,14 +510,14 @@ def test_closeout_verify_stage_rate_limit_returns_resume_without_repeating_mutat
         "--single-select-option-id",
         "OPT_done",
     )] = ""
-    responses[("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body")] = ""
-    responses[("issue", "close", "1", "--repo", "pen364692088/EGO")] = ""
+    responses[("issue", "comment", "1", "--repo", "MoonFlowFlower/EGO", "--body", "done body")] = ""
+    responses[("issue", "close", "1", "--repo", "MoonFlowFlower/EGO")] = ""
     responses[(
         "issue",
         "view",
         "1",
         "--repo",
-        "pen364692088/EGO",
+        "MoonFlowFlower/EGO",
         "--json",
         "number,title,state,url",
     )] = [j(ISSUE), j(ISSUE_CLOSED)]
@@ -536,8 +536,8 @@ def test_closeout_verify_stage_rate_limit_returns_resume_without_repeating_mutat
     result = github_project_task.command_closeout(
         client,
         github_project_task.Config(
-            repo="pen364692088/EGO",
-            owner="pen364692088",
+            repo="MoonFlowFlower/EGO",
+            owner="MoonFlowFlower",
             project_number="1",
             status_field="Status",
         ),
@@ -546,5 +546,5 @@ def test_closeout_verify_stage_rate_limit_returns_resume_without_repeating_mutat
 
     assert result["status"] == "github_rate_limited_after_mutation"
     assert result["resume_command"].endswith("verify --issue 1 --expect-status Done")
-    assert fake.calls.count(("issue", "comment", "1", "--repo", "pen364692088/EGO", "--body", "done body")) == 1
-    assert fake.calls.count(("issue", "close", "1", "--repo", "pen364692088/EGO")) == 1
+    assert fake.calls.count(("issue", "comment", "1", "--repo", "MoonFlowFlower/EGO", "--body", "done body")) == 1
+    assert fake.calls.count(("issue", "close", "1", "--repo", "MoonFlowFlower/EGO")) == 1

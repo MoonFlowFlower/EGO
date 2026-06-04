@@ -303,6 +303,7 @@ class CodexMemoryWorkspace:
             "",
             "## 新会话注入顺序",
             "",
+            "0. `python scripts/codex_session_guard.py bootstrap --format markdown` 生成 Boot Snapshot",
             "1. 当前任务 handoff",
             "2. `CODEX_MEMORY.md`",
             "3. 上一任务 closure",
@@ -335,6 +336,8 @@ class CodexMemoryWorkspace:
                 "python3 scripts/codex_memory.py validate",
                 "python3 scripts/codex_memory.py render",
                 "python3 scripts/codex_memory.py bootstrap",
+                "python scripts/codex_session_guard.py bootstrap --format markdown",
+                "python scripts/codex_session_guard.py closeout-check --format markdown",
                 "```",
                 "",
             ]
