@@ -3261,13 +3261,13 @@ tasks:
     title: "PSPC Shadow: runtime-adjacent review package v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_adjacent_shadow_review_only"
-    next_action: "Create the bounded runtime-adjacent review package under docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/ and produce a go/no-go for the fixture-boundary task only."
+    next_action: "Accepted locally: the runtime-adjacent review package freezes PSPC as disabled, mainline-disconnected, audit-only, and no-authority; verdict allows PSPC-SHADOW-002 fixture-boundary work only."
     acceptance:
       - "Review package defines default-off, audit-only, no runtime authority, no memory write, no user message, no gate invocation, no action, no transport, and no proactive side effect."
       - "Review package states what this proves, what it does not prove, rollback, forbidden surfaces, failure meaning, and claim ceiling."
@@ -3287,7 +3287,7 @@ tasks:
     title: "PSPC Shadow: runtime trace fixture boundary v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local

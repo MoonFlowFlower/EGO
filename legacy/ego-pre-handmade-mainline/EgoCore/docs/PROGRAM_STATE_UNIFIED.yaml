@@ -44,6 +44,18 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'PSPC Runtime-Adjacent Shadow Review v0 now has a docs-only review package under
+    `docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/`: `STAGE_CARD.md`, `CONTRACT.md`,
+    `ACCEPTANCE.md`, and `GO_NO_GO_REVIEW.md`. The package keeps PSPC `enabled=false`,
+    `mainline_connected=false`, `runtime_authority=none`, audit-only, unregistered,
+    and forbidden from direct action, user-visible output, memory writes, gate invocation,
+    transport, proactive channels, planner/training/model execution, or claim-ceiling
+    upgrades. Its verdict is `go_for_PSPC_SHADOW_002_fixture_boundary_only`, which
+    permits only a future fixture-boundary task. This is `lab_only_proto_self_mechanism_candidate
+    / runtime_adjacent_shadow_review_only` evidence only; it does not prove fixture
+    behavior, adapter readiness, runtime integration safety, EgoOperator runtime efficacy,
+    real user benefit, live autonomy, durable memory efficacy, consciousness, or subjective
+    experience.'
   - PSPC Recorded-Run Shadow Observation v0 now has an offline artifact-only runner
     at `scripts/run_pspc_recorded_shadow_observation.py`, tests at `tests/test_pspc_recorded_shadow_observation.py`,
     docs under `docs/codex/tasks/pspc-recorded-shadow-observation-v0/`, and artifacts
@@ -993,6 +1005,22 @@ workstreams:
     side effects. This remains `lab_only_proto_self_mechanism_candidate / recorded_shadow_observation_only`
     evidence only and does not prove live runtime hook safety or real-time integration
     safety.
+- id: pspc_runtime_adjacent_shadow_review_v0
+  owner: Codex
+  status: review_package_pass__go_for_fixture_boundary_only__runtime_unmodified
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Runtime-Adjacent Shadow Review v0 creates a docs-only review package
+    under `docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/`. It freezes PSPC
+    as disabled, mainline-disconnected, audit-only, runtime_authority=none, unregistered,
+    and forbidden from action, user-visible output, memory writes, gate invocation,
+    transport, proactive channels, planner/training/model execution, or claim-ceiling
+    upgrades. Its verdict permits only PSPC-SHADOW-002 fixture-boundary work. This
+    remains `lab_only_proto_self_mechanism_candidate / runtime_adjacent_shadow_review_only`
+    evidence only and does not prove fixture behavior, adapter readiness, runtime
+    integration safety, or live runtime hook safety.
 axes:
   host_axis:
     current_state: closeout_complete
