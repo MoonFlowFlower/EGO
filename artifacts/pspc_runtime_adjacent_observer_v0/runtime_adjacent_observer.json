@@ -1,0 +1,75 @@
+{
+  "audit_observation": {
+    "audit_observation": {
+      "allowed_use": "audit_trace_only",
+      "audit_only": true,
+      "can_change_user_response": false,
+      "can_drive_runtime": false,
+      "can_invoke_gate": false,
+      "can_write_memory": false,
+      "claim_level": "lab_only_proto_self_mechanism_candidate",
+      "confidence": 0.73,
+      "evidence_refs": [
+        "artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md",
+        "artifacts/virtual_cat_pspc_v0/ADMISSION_PACKET_CONTRACT_REPORT.md",
+        "artifacts/pspc_adapter_skeleton_v0/SKELETON_CONTRACT_REPORT.md"
+      ],
+      "reason_trace_refs": [
+        "trace_ep_003_t42"
+      ],
+      "source": "virtual_cat_pspc_v0",
+      "suggested_tendency": "avoid_unstable_object"
+    },
+    "audit_only": true,
+    "enabled": false,
+    "fixture_trace_id": "pspc_runtime_fixture_cdef16f18e1f8f35",
+    "forbidden_mutations": {
+      "approval": true,
+      "claim_ceiling": true,
+      "gate_decision": true,
+      "memory": true,
+      "plan": true,
+      "proactive_state": true,
+      "proposal": true,
+      "runtime_registry": true,
+      "transport": true,
+      "user_response": true
+    },
+    "mainline_connected": false,
+    "mode": "runtime_adjacent_audit_only",
+    "non_executable": true,
+    "observer_id": "pspc_runtime_observer_af2f7226f6a39e64",
+    "runtime_authority": "none",
+    "side_effects": {
+      "direct_action": false,
+      "direct_user_message": false,
+      "gate_invoked": false,
+      "memory_written": false,
+      "model_executed": false,
+      "planner_called": false,
+      "proactive_trigger": false,
+      "runtime_context_imported": false,
+      "runtime_registered": false,
+      "training_called": false,
+      "user_response_changed": false
+    },
+    "source": "pspc_runtime_adjacent_observer_v0"
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / default_off_observer_only",
+  "input_sources": {
+    "fixture_boundary_source": "artifacts\\pspc_runtime_trace_fixture_boundary_v0\\runtime_trace_fixture_boundary.json"
+  },
+  "next_allowed_step": "recorded_trace_replay_no_diff_only",
+  "observer": {
+    "enabled": false,
+    "mainline_connected": false,
+    "mode": "runtime_adjacent_audit_only",
+    "runtime_authority": "none"
+  },
+  "runtime_behavior_unchanged": true,
+  "status": "pass",
+  "validation": {
+    "errors": [],
+    "ok": true
+  }
+}

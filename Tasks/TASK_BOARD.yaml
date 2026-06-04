@@ -3311,13 +3311,13 @@ tasks:
     title: "PSPC Shadow: default-off runtime-adjacent observer v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / default_off_observer_only"
-    next_action: "Create only a default-off observer surface that can convert sanitized runtime-adjacent fixture input into audit-only data; do not register it."
+    next_action: "Accepted locally: default-off observer converts fixture-boundary artifact data into audit-only non-executable data and remains unregistered. Next allowed task is PSPC-SHADOW-004 recorded trace replay no-diff only."
     acceptance:
       - "Observer defaults to enabled=false, mainline_connected=false, runtime_authority=none, and audit-only output."
       - "Observer exposes no direct action, user message, memory write, gate invocation, approval, transport, proactive trigger, planner call, training call, or model execution path."
@@ -3335,7 +3335,7 @@ tasks:
     title: "PSPC Shadow: recorded trace replay no-diff v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
