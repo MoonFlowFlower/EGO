@@ -1,0 +1,67 @@
+{
+  "allowed_future_task": "separate_default_off_hook_implementation_task_only",
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / disabled_runtime_shadow_hook_stage_card_only",
+  "contract": {
+    "allowed_use": "future_task_boundary_only",
+    "audit_only": true,
+    "enabled": false,
+    "mainline_connected": false,
+    "non_executable": true,
+    "read_only": true,
+    "runtime_authority": "none"
+  },
+  "evidence_basis": [
+    "docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/GO_NO_GO_REVIEW.md",
+    "artifacts/pspc_runtime_trace_fixture_boundary_v0/runtime_trace_fixture_boundary.json",
+    "artifacts/pspc_runtime_adjacent_observer_v0/runtime_adjacent_observer.json",
+    "artifacts/pspc_recorded_trace_replay_no_diff_v0/recorded_trace_replay_no_diff.json",
+    "artifacts/pspc_runtime_adjacent_smoke_v0/runtime_adjacent_smoke.json",
+    "docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/GO_NO_GO_REVIEW.md"
+  ],
+  "forbidden_surfaces": {
+    "approval_mutation": true,
+    "claim_ceiling_upgrade": true,
+    "direct_action": true,
+    "gate_invocation": true,
+    "mainline_connection": true,
+    "memory_write": true,
+    "model_execution": true,
+    "planner_call": true,
+    "proactive_trigger": true,
+    "proposal_or_plan_mutation": true,
+    "runtime_registration": true,
+    "training_call": true,
+    "transport_call": true,
+    "user_response_mutation": true
+  },
+  "future_admission_criteria": [
+    "enabled_false_by_default",
+    "mainline_connected_false_by_default",
+    "runtime_authority_none",
+    "audit_only_non_executable_output",
+    "no_runtime_registry_mutation",
+    "no_user_response_mutation",
+    "no_memory_gate_approval_transport_proactive_side_effect",
+    "no_planner_training_or_model_execution",
+    "static_runtime_import_scan",
+    "deterministic_no_diff_snapshot_test",
+    "deletion_rollback"
+  ],
+  "mainline_connected": false,
+  "status": "pass",
+  "task_id": "PSPC-SHADOW-HOOK-001",
+  "verdict": "go_for_separate_default_off_hook_implementation_task",
+  "what_it_does_not_prove": [
+    "hook_implementation_correctness",
+    "runtime_integration_safety",
+    "adapter_readiness",
+    "ego_operator_pspc_capability",
+    "ego_operator_runtime_efficacy",
+    "real_user_benefit",
+    "live_autonomy",
+    "durable_memory_efficacy",
+    "consciousness",
+    "subjective_experience"
+  ],
+  "what_it_proves": "A future separate default-off hook implementation task is admissible under a frozen audit-only no-authority contract."
+}

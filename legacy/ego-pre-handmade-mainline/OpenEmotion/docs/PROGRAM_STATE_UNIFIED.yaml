@@ -44,6 +44,18 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Disabled Runtime Shadow Hook Stage Card v0 now has a bounded review package
+    under `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/` and
+    artifacts under `artifacts/pspc_disabled_runtime_shadow_hook_stage_card_v0/`.
+    The package defines a future hook as default-off, audit-only, read-only, non-executable,
+    `runtime_authority=none`, `enabled=false`, and `mainline_connected=false`, and
+    forbids proposal/plan/approval/gate/user-response/memory/transport/proactive/runtime-registry/planner/training/model-execution
+    or claim-ceiling mutation. Its verdict is `go_for_separate_default_off_hook_implementation_task`,
+    which permits only a future separate default-off hook implementation task. This
+    is `lab_only_proto_self_mechanism_candidate / disabled_runtime_shadow_hook_stage_card_only`
+    evidence only; it does not implement a hook, prove runtime integration safety,
+    adapter readiness, EgoOperator PSPC capability, runtime efficacy, real user benefit,
+    live autonomy, durable memory efficacy, consciousness, or subjective experience.
   - PSPC Shadow Runtime Hook Go/No-Go v0 now has a verdict document at `docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/GO_NO_GO_REVIEW.md`
     and a machine-readable review artifact under `artifacts/pspc_shadow_runtime_hook_go_no_go_v0/`.
     The verdict is `go_for_separate_disabled_runtime_shadow_hook_stage`, which permits
@@ -1163,6 +1175,23 @@ workstreams:
     evidence only and does not prove adapter readiness, disabled hook readiness, runtime
     integration safety, EgoOperator PSPC capability, runtime efficacy, real user benefit,
     live autonomy, durable memory efficacy, consciousness, or subjective experience.
+- id: pspc_disabled_runtime_shadow_hook_stage_card_v0
+  owner: Codex
+  status: stage_card_passed__go_for_separate_default_off_hook_implementation_task__no_runtime_connection
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Disabled Runtime Shadow Hook Stage Card v0 creates a bounded review
+    package under `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/`
+    plus artifacts under `artifacts/pspc_disabled_runtime_shadow_hook_stage_card_v0/`.
+    It defines a future hook as default-off, audit-only, read-only, non-executable,
+    runtime_authority=none, enabled=false, and mainline_connected=false; it forbids
+    proposal/plan/approval/gate/user-response/memory/transport/proactive/runtime-registry/planner/training/model-execution
+    and claim-ceiling mutation. Its verdict only permits a future separate default-off
+    hook implementation task. This remains `lab_only_proto_self_mechanism_candidate
+    / disabled_runtime_shadow_hook_stage_card_only` evidence only and does not implement
+    or connect a hook.
 axes:
   host_axis:
     current_state: closeout_complete

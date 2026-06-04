@@ -3405,13 +3405,13 @@ tasks:
     title: "PSPC Shadow: disabled runtime hook review package v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / disabled_runtime_shadow_hook_stage_card_only"
-    next_action: "Create a bounded review package for a future disabled runtime shadow hook. Do not implement, register, import, enable, or connect PSPC to EgoOperator runtime."
+    next_action: "Accepted locally: review package verdict is go_for_separate_default_off_hook_implementation_task, which permits only a future separate default-off hook implementation task. PSPC remains disabled, mainline-disconnected, audit-only, unregistered, and not connected to EgoOperator runtime."
     acceptance:
       - "Review package defines the future hook as default-off, audit-only, read-only, non-executable, and no runtime authority."
       - "Review package forbids proposal, plan, approval, gate, user response, memory, transport, proactive state, runtime registry, planner, training, model execution, and claim-ceiling mutation."

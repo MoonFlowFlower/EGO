@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 171 |
+| `reference_only` | 172 |
 
 ## Active Default
 
@@ -208,6 +208,7 @@
 | Proto Self Seed Host Evidence Stabilization | `codex_task` | n/a | `docs/codex/tasks/proto-self-seed-host-evidence-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Proto Self Seed Real Rollout | `codex_task` | n/a | `docs/codex/tasks/proto-self-seed-real-rollout/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Pspc Adapter Dry Run V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-adapter-dry-run-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Pspc Disabled Runtime Shadow Hook Stage Card V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Disabled Shadow Hook V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-disabled-shadow-hook-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Fixture Shadow Trace V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-fixture-shadow-trace-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Design V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-design-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
