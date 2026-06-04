@@ -3400,3 +3400,30 @@ tasks:
       - "artifacts/pspc_shadow_runtime_hook_go_no_go_v0/"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-001
+    title: "PSPC Shadow: disabled runtime hook review package v0"
+    kind: task
+    parent: null
+    status: active
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / disabled_runtime_shadow_hook_stage_card_only"
+    next_action: "Create a bounded review package for a future disabled runtime shadow hook. Do not implement, register, import, enable, or connect PSPC to EgoOperator runtime."
+    acceptance:
+      - "Review package defines the future hook as default-off, audit-only, read-only, non-executable, and no runtime authority."
+      - "Review package forbids proposal, plan, approval, gate, user response, memory, transport, proactive state, runtime registry, planner, training, model execution, and claim-ceiling mutation."
+      - "Review package states what this proves, what it does not prove, rollback, failure meaning, admission criteria, and stop-loss conditions."
+      - "No EgoOperator runtime, gate, memory, approval, human-trial harness, transport, or proactive channel file is modified."
+      - "Verdict may only allow a future separate default-off hook implementation task or no_go_keep_artifact_only."
+    rollback: "Delete docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/, artifacts/pspc_disabled_runtime_shadow_hook_stage_card_v0/, and this task-board/project-contract update; PSPC remains artifact-only shadow evidence."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/STAGE_CARD.md"
+      - "docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/CONTRACT.md"
+      - "docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/ACCEPTANCE.md"
+      - "docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/GO_NO_GO_REVIEW.md"
+      - "artifacts/pspc_disabled_runtime_shadow_hook_stage_card_v0/"
+    external_refs:
+      github_issue: null
