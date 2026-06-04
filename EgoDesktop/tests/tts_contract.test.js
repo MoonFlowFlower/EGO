@@ -7,6 +7,7 @@ const test = require("node:test");
 const {
   buildTtsRequest,
   resolveTtsAudioRequestPath,
+  sanitizeSpeechTextForTts,
 } = require("../src/tts");
 
 test("builds TTS request only for admitted bot text", () => {
@@ -49,11 +50,39 @@ test("builds TTS request from displayed bot text before raw bot text", () => {
 
   assert.equal(request.status, "tts_request_admitted");
   assert.equal(request.text, "这才是屏幕最终显示的文字。");
-  assert.equal(request.text_source, "displayed_bot_text");
+  assert.equal(request.source_visible_text, "这才是屏幕最终显示的文字。");
+  assert.equal(request.text_source, "displayed_bot_text_sanitized");
   assert.equal(request.visible_text_matches_tts_text, true);
+  assert.equal(request.removed_non_speech_tokens, false);
 });
 
-test("does not synthesize disabled, empty, error, or too-long text", () => {
+test("sanitizes emoji and pictographic symbols out of TTS text", () => {
+  assert.equal(sanitizeSpeechTextForTts("哈哈，您好呀～ 😊"), "哈哈，您好呀～");
+  assert.equal(sanitizeSpeechTextForTts("可以👍🏽👩‍💻🇯🇵1️⃣，再说。"), "可以，再说。");
+});
+
+test("builds TTS request from displayed text but removes emoji for speech", () => {
+  const request = buildTtsRequest({
+    turn: {
+      schema_version: "ego_desktop.chat_turn.v1",
+      status: "ok",
+      bot_text: "raw fallback",
+      visible_bot_text: "哈哈，您好呀～ 😊",
+    },
+    voiceEnabled: true,
+    requestId: "turn-emoji-1",
+  });
+
+  assert.equal(request.status, "tts_request_admitted");
+  assert.equal(request.source_visible_text, "哈哈，您好呀～ 😊");
+  assert.equal(request.text, "哈哈，您好呀～");
+  assert.equal(request.text_source, "displayed_bot_text_sanitized");
+  assert.equal(request.visible_text_matches_tts_text, false);
+  assert.equal(request.removed_non_speech_tokens, true);
+  assert.deepEqual(request.prosody_hint_candidates, ["warm", "playful"]);
+});
+
+test("does not synthesize disabled, empty, error, emoji-only, or too-long text", () => {
   assert.equal(buildTtsRequest({
     turn: { status: "ok", bot_text: "你好" },
     voiceEnabled: false,
@@ -63,6 +92,11 @@ test("does not synthesize disabled, empty, error, or too-long text", () => {
     turn: { status: "ok", bot_text: "" },
     voiceEnabled: true,
   }).status, "empty_text");
+
+  assert.equal(buildTtsRequest({
+    turn: { status: "ok", bot_text: "fallback", visible_bot_text: "😊👩‍💻🇯🇵1️⃣" },
+    voiceEnabled: true,
+  }).status, "empty_speech_text");
 
   assert.equal(buildTtsRequest({
     turn: {

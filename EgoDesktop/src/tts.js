@@ -11,6 +11,28 @@ function normalizeText(text) {
   return String(text || "").trim();
 }
 
+function sanitizeSpeechTextForTts(text) {
+  return normalizeText(text)
+    .replace(/[#*0-9]\uFE0F?\u20E3/gu, "")
+    .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, "")
+    .replace(/[\u{1F3FB}-\u{1F3FF}]/gu, "")
+    .replace(/[\u{E0020}-\u{E007F}]/gu, "")
+    .replace(/\p{Extended_Pictographic}/gu, "")
+    .replace(/[\u200D\uFE00-\uFE0F]/gu, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\s+([，。！？、,.!?;；:：])/g, "$1")
+    .trim();
+}
+
+function prosodyHintCandidatesForText(text) {
+  const source = String(text || "");
+  const hints = [];
+  if (/[\u{1F600}-\u{1F64F}]/u.test(source)) {
+    hints.push("warm", "playful");
+  }
+  return hints;
+}
+
 function denied(status, reason) {
   return {
     schema_version: "ego_desktop.tts_request.v1",
@@ -46,10 +68,14 @@ function buildTtsRequest({
   }
   const displayedText = normalizeText(turn.visible_bot_text || turn.displayed_text);
   const fallbackText = normalizeText(turn.bot_text);
-  const text = displayedText || fallbackText;
-  const textSource = displayedText ? "displayed_bot_text" : "bot_text_fallback";
-  if (!text) {
+  const sourceText = displayedText || fallbackText;
+  const textSource = displayedText ? "displayed_bot_text_sanitized" : "bot_text_fallback_sanitized";
+  if (!sourceText) {
     return denied("empty_text", "bot text is empty");
+  }
+  const text = sanitizeSpeechTextForTts(sourceText);
+  if (!text) {
+    return denied("empty_speech_text", "bot text has no speakable content after sanitization");
   }
   if (text.length > Number(maxChars || DEFAULT_TTS_MAX_CHARS)) {
     return denied("text_too_long", "bot text exceeds desktop TTS maximum length");
@@ -61,8 +87,11 @@ function buildTtsRequest({
     request_id: normalizeText(requestId) || `tts_${Date.now()}`,
     text,
     text_chars: text.length,
+    source_visible_text: sourceText,
     text_source: textSource,
-    visible_text_matches_tts_text: displayedText ? displayedText === text : false,
+    visible_text_matches_tts_text: sourceText === text,
+    removed_non_speech_tokens: sourceText !== text,
+    prosody_hint_candidates: prosodyHintCandidatesForText(sourceText),
     voice_profile: normalizeText(voiceProfile) || DEFAULT_VOICE_PROFILE,
     base_voice: normalizeText(baseVoice) || DEFAULT_BASE_VOICE,
     rvc_model: normalizeText(rvcModel) || DEFAULT_RVC_MODEL,
@@ -127,4 +156,5 @@ module.exports = {
   buildTtsAudioUrl,
   buildTtsRequest,
   resolveTtsAudioRequestPath,
+  sanitizeSpeechTextForTts,
 };

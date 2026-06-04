@@ -172,8 +172,13 @@ class TtsWorkerClient {
           audio_file: audioPath,
           audio_url: buildTtsAudioUrl(audioPath),
           text: request.text || "",
+          source_visible_text: request.source_visible_text || "",
           text_source: request.text_source || "",
           visible_text_matches_tts_text: Boolean(request.visible_text_matches_tts_text),
+          removed_non_speech_tokens: Boolean(request.removed_non_speech_tokens),
+          prosody_hint_candidates: Array.isArray(request.prosody_hint_candidates)
+            ? request.prosody_hint_candidates
+            : [],
         });
       } catch (error) {
         pending.reject(error);
@@ -187,8 +192,13 @@ class TtsWorkerClient {
       message_send: false,
       ui_audio_delivery_executed: false,
       text: request.text || "",
+      source_visible_text: request.source_visible_text || "",
       text_source: request.text_source || "",
       visible_text_matches_tts_text: Boolean(request.visible_text_matches_tts_text),
+      removed_non_speech_tokens: Boolean(request.removed_non_speech_tokens),
+      prosody_hint_candidates: Array.isArray(request.prosody_hint_candidates)
+        ? request.prosody_hint_candidates
+        : [],
       ...payload,
     });
   }
