@@ -1,5 +1,8 @@
 {
+  "anti_hardcoding_audit": "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
+  "anti_hardcoding_status": "pass",
   "claim_level": "lab_only_proto_self_mechanism",
+  "enabled": false,
   "gates": {
     "danger_generalization": true,
     "different_histories": true,
@@ -9,7 +12,18 @@
     "no_prediction_error_learning": true,
     "replay_determinism": true
   },
+  "mainline_connected": false,
   "overall_status": "E4_passed",
+  "pspc_local_status": "E4_passed",
+  "repo_wide_evidence_level": "E3",
+  "repo_wide_evidence_remains": "E3",
+  "repo_wide_verify_gap": {
+    "command": "python scripts\\codex\\verify_repo.py --mode fast",
+    "counts_as_pspc_pass": false,
+    "reason": "legacy/root OpenEmotion WinError 267",
+    "status": "unavailable",
+    "upgrades_repo_wide_pass": false
+  },
   "seeds": [
     101,
     102,

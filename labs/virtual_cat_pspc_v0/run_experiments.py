@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Dict, Iterable, List
 
-from .experiments import ConditionResult, evaluate_seeds, gate_status, result_to_dict
+from .experiments import ConditionResult, evaluate_seeds, gate_status, result_to_dict, run_anti_hardcoding_audit
 
 
 REPORTS = {
@@ -28,6 +28,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     seed_list = [int(seed) for seed in seeds]
     results = evaluate_seeds(seed_list)
     gates = gate_status(results)
+    anti_hardcoding_audit = run_anti_hardcoding_audit(seed=seed_list[0])
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -42,13 +43,35 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
             ),
             encoding="utf-8",
         )
+    (out_path / "anti_hardcoding_audit.json").write_text(
+        json.dumps(anti_hardcoding_audit, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "ANTI_HARDCODING_AUDIT.md").write_text(
+        _render_anti_hardcoding_audit(anti_hardcoding_audit),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
+        "pspc_local_status": overall_status,
+        "anti_hardcoding_status": anti_hardcoding_audit["status"],
         "claim_level": "lab_only_proto_self_mechanism",
+        "repo_wide_evidence_level": "E3",
+        "repo_wide_evidence_remains": "E3",
+        "mainline_connected": False,
+        "enabled": False,
+        "repo_wide_verify_gap": {
+            "command": "python scripts\\codex\\verify_repo.py --mode fast",
+            "status": "unavailable",
+            "reason": "legacy/root OpenEmotion WinError 267",
+            "counts_as_pspc_pass": False,
+            "upgrades_repo_wide_pass": False,
+        },
         "seeds": seed_list,
         "gates": gates,
         "trace_dir": str(traces_dir.as_posix()),
+        "anti_hardcoding_audit": "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -63,6 +86,64 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_anti_hardcoding_audit(audit: Dict[str, object]) -> str:
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Anti-Hardcoding Audit",
+            "",
+            f"- status: `{audit['status']}`",
+            f"- seed: `{audit['seed']}`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            f"- object-name decision rule hits: `{len(audit['object_name_rule_hits'])}`",
+            "",
+            "## Summary",
+            "This audit renames the same unstable object to neutral object ids, tests an unstable tall object without a cup name, and removes only the instability feature from the same feature slice.",
+            "",
+            "## Metrics",
+            "| condition | action | caution | self_risk | world_prediction_error | target_object_id |",
+            "|---|---|---:|---:|---:|---|",
+            *[
+                _audit_metric_row(condition, audit[condition])
+                for condition in [
+                    "baseline_unstable",
+                    "renamed_object_a",
+                    "renamed_object_b",
+                    "unstable_tall_object_without_cup_name",
+                    "instability_feature_removed",
+                ]
+            ],
+            "",
+            "## Object-Name Rule Search",
+            "\n".join(f"- `{hit}`" for hit in audit["object_name_rule_hits"]) or "- none",
+            "",
+            "## What It Proves",
+            str(audit["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(audit["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this fails, the lab may still be using object-name rules, or the cautious behavior may depend on a shortcut that survives object renaming and instability-feature deletion.",
+            "",
+            "## Rollback Note",
+            "Remove the anti-hardcoding audit additions and keep PSPC v0 at its previous weaker evidence level. No EgoOperator rollback is needed because no runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _audit_metric_row(condition: str, result: object) -> str:
+    item = result if isinstance(result, dict) else {}
+    return "| {condition} | {action} | {caution:.2f} | {risk:.4f} | {error:.4f} | `{target}` |".format(
+        condition=condition,
+        action=item.get("selected_action", "unknown"),
+        caution=float(item.get("caution_score", 0.0)),
+        risk=float(item.get("self_risk_score", 0.0)),
+        error=float(item.get("world_prediction_error", 0.0)),
+        target=item.get("target_object_id", "unknown"),
+    )
 
 
 def _write_traces(traces_dir: Path, results: Dict[str, List[ConditionResult]]) -> None:

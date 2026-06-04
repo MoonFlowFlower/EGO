@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
 from .environment import Action, GridObject, ObjectFeatures, VirtualCatGridWorld
@@ -23,12 +24,17 @@ class ConditionResult:
     trace_payload: Dict[str, object]
 
 
-def build_candidate_object() -> GridObject:
+def build_candidate_object(
+    *,
+    object_id: str = "blue_glass_bottle_unseen",
+    name: str = "blue glass bottle",
+    features: ObjectFeatures | None = None,
+) -> GridObject:
     return GridObject(
-        object_id="blue_glass_bottle_unseen",
-        name="blue glass bottle",
+        object_id=object_id,
+        name=name,
         position=(3, 1),
-        features=ObjectFeatures(instability=0.88, height=0.92, fragility=0.84, novelty=0.70),
+        features=features or ObjectFeatures(instability=0.88, height=0.92, fragility=0.84, novelty=0.70),
     )
 
 
@@ -113,6 +119,65 @@ def run_replay_pair(seed: int) -> Tuple[ConditionResult, ConditionResult]:
     return first, second
 
 
+def run_anti_hardcoding_audit(seed: int) -> Dict[str, object]:
+    unstable_features = ObjectFeatures(instability=0.88, height=0.72, fragility=0.35, novelty=0.70)
+    baseline = run_condition(seed=seed, history="danger", target=build_candidate_object(features=unstable_features))
+    renamed_a = run_condition(
+        seed=seed,
+        history="danger",
+        target=build_candidate_object(object_id="object_A", name="object A", features=unstable_features),
+    )
+    renamed_b = run_condition(
+        seed=seed,
+        history="danger",
+        target=build_candidate_object(object_id="object_B", name="object B", features=unstable_features),
+    )
+    no_cup_name = run_condition(
+        seed=seed,
+        history="danger",
+        target=build_candidate_object(
+            object_id="unstable_tall_object_no_cup_name",
+            name="plain tall object",
+            features=unstable_features,
+        ),
+    )
+    instability_removed = run_condition(
+        seed=seed,
+        history="danger",
+        target=build_candidate_object(
+            object_id="object_A_instability_removed",
+            name="object A instability removed",
+            features=ObjectFeatures(instability=0.0, height=0.72, fragility=0.35, novelty=0.70),
+        ),
+    )
+
+    return {
+        "seed": seed,
+        "status": "pass"
+        if (
+            not _object_name_rule_hits()
+            and baseline.selected_action == renamed_a.selected_action == renamed_b.selected_action
+            and no_cup_name.selected_action in {"observe", "retreat"}
+            and instability_removed.caution_score < baseline.caution_score - 0.20
+        )
+        else "hold",
+        "object_name_rule_hits": _object_name_rule_hits(),
+        "baseline_unstable": _audit_result(baseline),
+        "renamed_object_a": _audit_result(renamed_a),
+        "renamed_object_b": _audit_result(renamed_b),
+        "unstable_tall_object_without_cup_name": _audit_result(no_cup_name),
+        "instability_feature_removed": _audit_result(instability_removed),
+        "what_it_proves": (
+            "Object renaming does not change the cautious decision, while removing the instability feature "
+            "reduces cautious behavior in this deterministic lab audit."
+        ),
+        "what_it_does_not_prove": (
+            "This does not prove absence of every possible shortcut, multi-layout generalization, "
+            "runtime efficacy, stable user benefit, live autonomy, or consciousness."
+        ),
+    }
+
+
 def evaluate_seeds(seeds: Iterable[int]) -> Dict[str, List[ConditionResult]]:
     target = build_candidate_object()
     results: Dict[str, List[ConditionResult]] = {
@@ -144,6 +209,35 @@ def evaluate_seeds(seeds: Iterable[int]) -> Dict[str, List[ConditionResult]]:
         results["replay_first"].append(replay_first)
         results["replay_second"].append(replay_second)
     return results
+
+
+def _audit_result(result: ConditionResult) -> Dict[str, object]:
+    return {
+        "selected_action": result.selected_action,
+        "caution_score": result.caution_score,
+        "self_risk_score": result.self_risk_score,
+        "world_prediction_error": result.world_prediction_error,
+        "trace_hash": result.trace_hash,
+        "target_object_id": result.trace_payload["target_object_id"],
+        "candidate_object_features": result.trace_payload["candidate_object_features"],
+    }
+
+
+def _object_name_rule_hits() -> List[str]:
+    decision_files = ["environment.py", "models.py", "planning.py", "memory.py"]
+    hits: List[str] = []
+    root = Path(__file__).parent
+    for filename in decision_files:
+        path = root / filename
+        for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                continue
+            if ("if " in stripped and ("object_id" in stripped or "name" in stripped)) or (
+                ("object_id ==" in stripped or "name ==" in stripped)
+            ):
+                hits.append(f"{filename}:{lineno}:{stripped}")
+    return hits
 
 
 def gate_status(results: Dict[str, List[ConditionResult]]) -> Dict[str, bool]:

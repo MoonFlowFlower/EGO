@@ -44,6 +44,16 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'VirtualCatPSPC v0 Task 0 + Task 1 hardening now records PSPC-local success separately
+    from repo-wide verification: `summary.json` has PSPC-local `E4_passed`, repo-wide
+    evidence remaining `E3`, `mainline_connected=false`, `enabled=false`, and `verify_repo.py
+    --mode fast` marked unavailable because of `legacy/root OpenEmotion WinError 267`
+    without counting as a PSPC pass. The new anti-hardcoding audit reports zero object-name
+    decision rule hits in core decision files, preserves caution under object renaming
+    and without a `cup` name, and reduces caution when the instability feature is
+    removed. This is local lab hardening only; it does not prove multi-layout generalization,
+    admission readiness, EgoOperator runtime efficacy, stable user benefit, live autonomy,
+    consciousness, or subjective experience.'
   - 'VirtualCatPSPC v0 now has a lab-only task package plus deterministic local lab
     artifacts: `python -m labs.virtual_cat_pspc_v0.run_experiments --out artifacts/virtual_cat_pspc_v0
     --seeds 101,102,103` produced the required baseline, danger-generalization, ablation,
@@ -647,7 +657,7 @@ workstreams:
     proofs are at maintenance strength, but they do not prove unrestricted live autonomy.
 - id: virtual_cat_pspc_v0_lab
   owner: Codex
-  status: lab_ablation_passed__adapter_forbidden
+  status: lab_ablation_passed__anti_hardcoding_passed__adapter_forbidden
   evidence_level: E3
   verification_level: V3
   mainline_connected: false
@@ -657,9 +667,11 @@ workstreams:
     artifacts, and ablation reports under `labs/virtual_cat_pspc_v0/` and `artifacts/virtual_cat_pspc_v0/`.
     The local runner reports PSPC-local `E4_passed` for different histories, danger
     generalization, memory deletion, frozen world model, frozen self model, no prediction-error
-    learning, and replay determinism; repo evidence remains local deterministic `E3`,
-    with no EgoOperator runtime authority, no mainline integration, no LLM action
-    selection, and no consciousness or live-autonomy claim.
+    learning, replay determinism, and Task 1 anti-hardcoding audit. Repo evidence
+    remains local deterministic `E3`; `verify_repo.py --mode fast` remains unavailable
+    because of the legacy/root OpenEmotion WinError 267 gap and does not count as
+    a PSPC pass. PSPC has no EgoOperator runtime authority, no mainline integration,
+    no LLM action selection, and no consciousness or live-autonomy claim.
 axes:
   host_axis:
     current_state: closeout_complete

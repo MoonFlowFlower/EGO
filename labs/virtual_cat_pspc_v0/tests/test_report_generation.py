@@ -14,6 +14,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "FROZEN_SELF_MODEL_ABLATION.md",
         "NO_PREDICTION_ERROR_LEARNING_ABLATION.md",
         "REPLAY_DETERMINISM_REPORT.md",
+        "ANTI_HARDCODING_AUDIT.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -25,4 +26,12 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         assert "## What It Does Not Prove" in text
         assert "## Failure Meaning" in text
         assert "## Rollback Note" in text
-        assert "trace_hash" in text
+        assert "trace_hash" in text or name == "ANTI_HARDCODING_AUDIT.md"
+
+    audit_json = Path(tmp_path) / "anti_hardcoding_audit.json"
+    assert audit_json.exists()
+    audit_text = (Path(tmp_path) / "ANTI_HARDCODING_AUDIT.md").read_text(encoding="utf-8")
+    assert "- status: `pass`" in audit_text
+    assert "object-name decision rule hits: `0`" in audit_text
+    assert "## What It Proves" in audit_text
+    assert "## What It Does Not Prove" in audit_text
