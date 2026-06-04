@@ -14,6 +14,8 @@
   },
   "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
   "mainline_connected": false,
+  "memory_consolidation_admission": "artifacts/virtual_cat_pspc_v0/memory_consolidation_admission.json",
+  "memory_consolidation_admission_status": "pass",
   "multi_seed_layout_generalization_status": "pass",
   "overall_status": "E4_passed",
   "pspc_local_status": "E4_passed",

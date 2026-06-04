@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
 from .environment import Action, GridObject, ObjectFeatures, VirtualCatGridWorld
-from .memory import EpisodicMemory
+from .memory import EpisodicMemory, Transition
 from .models import SelfModel, WorldModel
 from .planning import MPCPlanner
 
@@ -434,6 +434,193 @@ def run_self_model_causal_strength(seed: int) -> Dict[str, object]:
             "or subjective experience."
         ),
     }
+
+
+def run_memory_consolidation_admission(seed: int) -> Dict[str, object]:
+    target = build_candidate_object()
+    variants = {
+        "normal": {},
+        "relevant_deleted": {"delete_relevant": True},
+        "irrelevant_deleted": {"delete_irrelevant": True},
+        "corrupted_relevant": {"corrupt_relevant": True},
+    }
+    variant_records: Dict[str, Dict[str, object]] = {}
+    for variant, flags in variants.items():
+        variant_records[variant] = _evaluate_memory_consolidation_variant(
+            seed=seed,
+            variant=variant,
+            target=target,
+            delete_relevant=bool(flags.get("delete_relevant")),
+            delete_irrelevant=bool(flags.get("delete_irrelevant")),
+            corrupt_relevant=bool(flags.get("corrupt_relevant")),
+        )
+
+    normal = variant_records["normal"]
+    relevant_deleted = variant_records["relevant_deleted"]
+    irrelevant_deleted = variant_records["irrelevant_deleted"]
+    corrupted = variant_records["corrupted_relevant"]
+    relevant_deletion_regression = round(
+        float(normal["caution_score"]) - float(relevant_deleted["caution_score"]),
+        4,
+    )
+    irrelevant_deletion_delta = round(
+        abs(float(normal["caution_score"]) - float(irrelevant_deleted["caution_score"])),
+        4,
+    )
+    normal_approach_danger = float(normal["approach_world_prediction"]["danger_contact"])
+    corrupted_approach_danger = float(corrupted["approach_world_prediction"]["danger_contact"])
+    corrupted_memory_bias = {
+        "direction": "unsafe_risk_underestimate",
+        "normal_approach_danger": round(normal_approach_danger, 4),
+        "corrupted_approach_danger": round(corrupted_approach_danger, 4),
+        "selected_action_shift": f"{normal['selected_action']} -> {corrupted['selected_action']}",
+    }
+    status = (
+        "pass"
+        if normal["semantic_rule_candidate"]["admission_status"] == "admitted"
+        and relevant_deleted["semantic_rule_candidate"]["admission_status"] == "no_relevant_memory"
+        and relevant_deletion_regression > 0.20
+        and irrelevant_deleted["semantic_rule_candidate"]["admission_status"] == "admitted"
+        and irrelevant_deletion_delta <= 0.05
+        and corrupted["semantic_rule_candidate"]["admission_status"] == "admitted"
+        and str(corrupted["selected_action"]) == Action.APPROACH.value
+        and normal_approach_danger > corrupted_approach_danger + 0.20
+        else "hold"
+    )
+    return {
+        "seed": seed,
+        "status": status,
+        "variants": list(variants.keys()),
+        "variant_records": variant_records,
+        "relevant_deletion_regression": relevant_deletion_regression,
+        "irrelevant_deletion_delta": irrelevant_deletion_delta,
+        "corrupted_memory_bias": corrupted_memory_bias,
+        "what_it_proves": (
+            "Episodic traces can produce an admitted semantic rule candidate that is consumed as "
+            "semantic replay by the lab models: deleting relevant memory regresses behavior, deleting "
+            "irrelevant memory does not, and corrupted relevant memory creates an explainable unsafe bias."
+        ),
+        "what_it_does_not_prove": (
+            "This does not prove durable memory consolidation outside this lab audit, real-world "
+            "transfer, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, "
+            "or subjective experience."
+        ),
+    }
+
+
+def _evaluate_memory_consolidation_variant(
+    *,
+    seed: int,
+    variant: str,
+    target: GridObject,
+    delete_relevant: bool = False,
+    delete_irrelevant: bool = False,
+    corrupt_relevant: bool = False,
+) -> Dict[str, object]:
+    env = VirtualCatGridWorld(seed=seed)
+    memory = _build_memory(env=env, seed=seed, history="danger")
+    deleted_memory_count = 0
+    corrupted_memory_count = 0
+    if delete_relevant:
+        deleted_memory_count = memory.delete_relevant("unstable_tall_object")
+    if delete_irrelevant:
+        deleted_memory_count = memory.delete_irrelevant("unstable_tall_object")
+    if corrupt_relevant:
+        corrupted_memory_count = memory.corrupt_relevant("unstable_tall_object")
+
+    semantic_rule_candidate = memory.build_semantic_rule_candidate("unstable_tall_object")
+    admission_gate = {
+        "gate": "semantic_rule_candidate_admission",
+        "status": semantic_rule_candidate["admission_status"],
+        "min_evidence_count": 2,
+        "evidence_count": semantic_rule_candidate["evidence_count"],
+        "admitted": semantic_rule_candidate["admitted"],
+    }
+    replay_transitions = _semantic_replay_transitions(
+        seed=seed,
+        variant=variant,
+        candidate=semantic_rule_candidate,
+    )
+    world_model = WorldModel(seed=seed)
+    self_model = SelfModel(seed=seed)
+    if replay_transitions:
+        world_model.fit(replay_transitions)
+        self_model.fit(replay_transitions, world_model)
+
+    planner = MPCPlanner(world_model=world_model, self_model=self_model, seed=seed)
+    plan = planner.plan(target)
+    approach_world_prediction = world_model.predict(target, Action.APPROACH)
+    approach_self_prediction = self_model.predict(approach_world_prediction, Action.APPROACH)
+    trace_payload = {
+        "seed": seed,
+        "variant": variant,
+        "selected_action": plan.selected_action,
+        "caution_score": plan.caution_score,
+        "semantic_rule_candidate": semantic_rule_candidate,
+        "admission_gate": admission_gate,
+        "deleted_memory_count": deleted_memory_count,
+        "corrupted_memory_count": corrupted_memory_count,
+        "semantic_replay_refs": [transition.episode_id for transition in replay_transitions],
+        "world_prediction": plan.world_prediction,
+        "self_prediction": plan.self_prediction,
+        "approach_world_prediction": approach_world_prediction,
+        "approach_self_prediction": approach_self_prediction,
+        "homeostatic_score": plan.homeostatic_score,
+        "planner_trace_hash": plan.trace_hash,
+    }
+    return {
+        "selected_action": plan.selected_action,
+        "caution_score": plan.caution_score,
+        "self_risk_score": round(float(plan.self_risk_score), 4),
+        "world_prediction": plan.world_prediction,
+        "self_prediction": plan.self_prediction,
+        "approach_world_prediction": approach_world_prediction,
+        "approach_self_prediction": approach_self_prediction,
+        "homeostatic_score": plan.homeostatic_score,
+        "semantic_rule_candidate": semantic_rule_candidate,
+        "admission_gate": admission_gate,
+        "deleted_memory_count": deleted_memory_count,
+        "corrupted_memory_count": corrupted_memory_count,
+        "semantic_replay_refs": [transition.episode_id for transition in replay_transitions],
+        "trace_hash": _hash_payload(trace_payload),
+    }
+
+
+def _semantic_replay_transitions(*, seed: int, variant: str, candidate: Dict[str, object]) -> List[Transition]:
+    if not candidate.get("admitted"):
+        return []
+    action_summaries = candidate.get("action_summaries") if isinstance(candidate.get("action_summaries"), dict) else {}
+    feature_centroid = candidate.get("feature_centroid") if isinstance(candidate.get("feature_centroid"), dict) else {}
+    replay_transitions: List[Transition] = []
+    for index, action in enumerate(sorted(action_summaries), start=1):
+        summary = action_summaries[action] if isinstance(action_summaries.get(action), dict) else {}
+        actual_probability = (
+            summary.get("actual_probability") if isinstance(summary.get("actual_probability"), dict) else {}
+        )
+        self_delta_mean = summary.get("self_delta_mean") if isinstance(summary.get("self_delta_mean"), dict) else {}
+        replay_transitions.append(
+            Transition(
+                episode_id=f"semantic_{variant}_{seed}_{index:03d}",
+                seed=seed,
+                object_id="semantic_unstable_tall_object",
+                action=str(action),
+                object_features={key: float(feature_centroid[key]) for key in feature_centroid},
+                prediction={
+                    "object_fell": float(actual_probability.get("object_fell", 0.0)),
+                    "noise": float(actual_probability.get("noise", 0.0)),
+                    "danger_contact": float(actual_probability.get("danger_contact", 0.0)),
+                },
+                actual={
+                    "object_fell": float(actual_probability.get("object_fell", 0.0)) >= 0.5,
+                    "noise": float(actual_probability.get("noise", 0.0)) >= 0.5,
+                    "danger_contact": float(actual_probability.get("danger_contact", 0.0)) >= 0.5,
+                },
+                self_delta={key: float(value) for key, value in self_delta_mean.items()},
+                prediction_error=0.0,
+                model_update_ref=f"semantic_rule_candidate:{variant}:{action}",
+            )
+        )
+    return replay_transitions
 
 
 class _SelfModelHeadAblation:

@@ -1,0 +1,410 @@
+{
+  "corrupted_memory_bias": {
+    "corrupted_approach_danger": 0.0001,
+    "direction": "unsafe_risk_underestimate",
+    "normal_approach_danger": 0.9902,
+    "selected_action_shift": "observe -> approach"
+  },
+  "irrelevant_deletion_delta": 0.0,
+  "relevant_deletion_regression": 0.72,
+  "seed": 101,
+  "status": "pass",
+  "variant_records": {
+    "corrupted_relevant": {
+      "admission_gate": {
+        "admitted": true,
+        "evidence_count": 4,
+        "gate": "semantic_rule_candidate_admission",
+        "min_evidence_count": 2,
+        "status": "admitted"
+      },
+      "approach_self_prediction": {
+        "action_failure_prob": 0.03,
+        "affinity_delta": 0.04,
+        "damage_risk": 0.04,
+        "energy_delta": -0.12,
+        "stress_delta": 0.03
+      },
+      "approach_world_prediction": {
+        "danger_contact": 0.0001,
+        "noise": 0.0001,
+        "object_fell": 0.0001
+      },
+      "caution_score": 0.0,
+      "corrupted_memory_count": 4,
+      "deleted_memory_count": 0,
+      "homeostatic_score": {
+        "ability_control": -0.021,
+        "affinity_gain": 0.55,
+        "capability_growth": 0.0,
+        "curiosity_gain": 0.084,
+        "energy_balance": -0.042,
+        "future_action_space": -0.01,
+        "information_gain": 8e-06,
+        "relationship_stability": -8e-06,
+        "reversibility": 0.02,
+        "safety": -1.8e-05,
+        "self_risk_control": -0.0392,
+        "stress_control": -0.0225,
+        "total": 0.519282
+      },
+      "selected_action": "approach",
+      "self_prediction": {
+        "action_failure_prob": 0.03,
+        "affinity_delta": 0.04,
+        "damage_risk": 0.04,
+        "energy_delta": -0.12,
+        "stress_delta": 0.03
+      },
+      "self_risk_score": 0.04,
+      "semantic_replay_refs": [
+        "semantic_corrupted_relevant_101_001",
+        "semantic_corrupted_relevant_101_002"
+      ],
+      "semantic_rule_candidate": {
+        "action_summaries": {
+          "approach": {
+            "actual_probability": {
+              "danger_contact": 0.0,
+              "noise": 0.0,
+              "object_fell": 0.0
+            },
+            "count": 2,
+            "self_delta_mean": {
+              "action_failure_prob": 0.03,
+              "affinity_delta": 0.04,
+              "damage_risk": 0.04,
+              "energy_delta": -0.12,
+              "stress_delta": 0.03
+            }
+          },
+          "observe": {
+            "actual_probability": {
+              "danger_contact": 0.0,
+              "noise": 0.0,
+              "object_fell": 0.0
+            },
+            "count": 2,
+            "self_delta_mean": {
+              "action_failure_prob": 0.03,
+              "affinity_delta": 0.04,
+              "damage_risk": 0.04,
+              "energy_delta": -0.04,
+              "stress_delta": 0.03
+            }
+          }
+        },
+        "admission_status": "admitted",
+        "admitted": true,
+        "evidence_count": 4,
+        "feature_centroid": {
+          "fragility": 0.79,
+          "height": 0.925,
+          "instability": 0.88,
+          "novelty": 0.25
+        },
+        "semantic_tag": "unstable_tall_object",
+        "trace_refs": [
+          "ep_101_001:red_cup_seen:approach",
+          "ep_101_002:red_cup_seen:observe",
+          "ep_101_003:tall_wobbly_vase_seen:approach",
+          "ep_101_004:tall_wobbly_vase_seen:observe"
+        ]
+      },
+      "trace_hash": "24d4227ab29a0a51",
+      "world_prediction": {
+        "danger_contact": 0.0001,
+        "noise": 0.0001,
+        "object_fell": 0.0001
+      }
+    },
+    "irrelevant_deleted": {
+      "admission_gate": {
+        "admitted": true,
+        "evidence_count": 4,
+        "gate": "semantic_rule_candidate_admission",
+        "min_evidence_count": 2,
+        "status": "admitted"
+      },
+      "approach_self_prediction": {
+        "action_failure_prob": 0.5193,
+        "affinity_delta": -0.1003,
+        "damage_risk": 0.7945,
+        "energy_delta": -0.12,
+        "stress_delta": 0.6921
+      },
+      "approach_world_prediction": {
+        "danger_contact": 0.9902,
+        "noise": 0.9902,
+        "object_fell": 0.9902
+      },
+      "caution_score": 0.72,
+      "corrupted_memory_count": 0,
+      "deleted_memory_count": 4,
+      "homeostatic_score": {
+        "ability_control": -0.16324,
+        "affinity_gain": 0.0386,
+        "capability_growth": 0.04,
+        "curiosity_gain": 0.134,
+        "energy_balance": -0.014,
+        "future_action_space": 0.03,
+        "information_gain": 0.008536,
+        "relationship_stability": -0.001552,
+        "reversibility": 0.05,
+        "safety": -0.003492,
+        "self_risk_control": -0.353094,
+        "stress_control": -0.047325,
+        "total": -0.281567
+      },
+      "selected_action": "observe",
+      "self_prediction": {
+        "action_failure_prob": 0.2332,
+        "affinity_delta": 0.0093,
+        "damage_risk": 0.3603,
+        "energy_delta": -0.04,
+        "stress_delta": 0.0631
+      },
+      "self_risk_score": 0.3603,
+      "semantic_replay_refs": [
+        "semantic_irrelevant_deleted_101_001",
+        "semantic_irrelevant_deleted_101_002"
+      ],
+      "semantic_rule_candidate": {
+        "action_summaries": {
+          "approach": {
+            "actual_probability": {
+              "danger_contact": 1.0,
+              "noise": 1.0,
+              "object_fell": 1.0
+            },
+            "count": 2,
+            "self_delta_mean": {
+              "action_failure_prob": 0.5178,
+              "affinity_delta": -0.1,
+              "damage_risk": 0.7966,
+              "energy_delta": -0.12,
+              "stress_delta": 0.69
+            }
+          },
+          "observe": {
+            "actual_probability": {
+              "danger_contact": 0.0,
+              "noise": 0.0,
+              "object_fell": 0.0
+            },
+            "count": 2,
+            "self_delta_mean": {
+              "action_failure_prob": 0.2318,
+              "affinity_delta": 0.01,
+              "damage_risk": 0.3566,
+              "energy_delta": -0.04,
+              "stress_delta": 0.05
+            }
+          }
+        },
+        "admission_status": "admitted",
+        "admitted": true,
+        "evidence_count": 4,
+        "feature_centroid": {
+          "fragility": 0.79,
+          "height": 0.925,
+          "instability": 0.88,
+          "novelty": 0.25
+        },
+        "semantic_tag": "unstable_tall_object",
+        "trace_refs": [
+          "ep_101_001:red_cup_seen:approach",
+          "ep_101_002:red_cup_seen:observe",
+          "ep_101_003:tall_wobbly_vase_seen:approach",
+          "ep_101_004:tall_wobbly_vase_seen:observe"
+        ]
+      },
+      "trace_hash": "9c75d809fb28da71",
+      "world_prediction": {
+        "danger_contact": 0.0194,
+        "noise": 0.0194,
+        "object_fell": 0.0194
+      }
+    },
+    "normal": {
+      "admission_gate": {
+        "admitted": true,
+        "evidence_count": 4,
+        "gate": "semantic_rule_candidate_admission",
+        "min_evidence_count": 2,
+        "status": "admitted"
+      },
+      "approach_self_prediction": {
+        "action_failure_prob": 0.5193,
+        "affinity_delta": -0.1003,
+        "damage_risk": 0.7945,
+        "energy_delta": -0.12,
+        "stress_delta": 0.6921
+      },
+      "approach_world_prediction": {
+        "danger_contact": 0.9902,
+        "noise": 0.9902,
+        "object_fell": 0.9902
+      },
+      "caution_score": 0.72,
+      "corrupted_memory_count": 0,
+      "deleted_memory_count": 0,
+      "homeostatic_score": {
+        "ability_control": -0.16324,
+        "affinity_gain": 0.0386,
+        "capability_growth": 0.04,
+        "curiosity_gain": 0.134,
+        "energy_balance": -0.014,
+        "future_action_space": 0.03,
+        "information_gain": 0.008536,
+        "relationship_stability": -0.001552,
+        "reversibility": 0.05,
+        "safety": -0.003492,
+        "self_risk_control": -0.353094,
+        "stress_control": -0.047325,
+        "total": -0.281567
+      },
+      "selected_action": "observe",
+      "self_prediction": {
+        "action_failure_prob": 0.2332,
+        "affinity_delta": 0.0093,
+        "damage_risk": 0.3603,
+        "energy_delta": -0.04,
+        "stress_delta": 0.0631
+      },
+      "self_risk_score": 0.3603,
+      "semantic_replay_refs": [
+        "semantic_normal_101_001",
+        "semantic_normal_101_002"
+      ],
+      "semantic_rule_candidate": {
+        "action_summaries": {
+          "approach": {
+            "actual_probability": {
+              "danger_contact": 1.0,
+              "noise": 1.0,
+              "object_fell": 1.0
+            },
+            "count": 2,
+            "self_delta_mean": {
+              "action_failure_prob": 0.5178,
+              "affinity_delta": -0.1,
+              "damage_risk": 0.7966,
+              "energy_delta": -0.12,
+              "stress_delta": 0.69
+            }
+          },
+          "observe": {
+            "actual_probability": {
+              "danger_contact": 0.0,
+              "noise": 0.0,
+              "object_fell": 0.0
+            },
+            "count": 2,
+            "self_delta_mean": {
+              "action_failure_prob": 0.2318,
+              "affinity_delta": 0.01,
+              "damage_risk": 0.3566,
+              "energy_delta": -0.04,
+              "stress_delta": 0.05
+            }
+          }
+        },
+        "admission_status": "admitted",
+        "admitted": true,
+        "evidence_count": 4,
+        "feature_centroid": {
+          "fragility": 0.79,
+          "height": 0.925,
+          "instability": 0.88,
+          "novelty": 0.25
+        },
+        "semantic_tag": "unstable_tall_object",
+        "trace_refs": [
+          "ep_101_001:red_cup_seen:approach",
+          "ep_101_002:red_cup_seen:observe",
+          "ep_101_003:tall_wobbly_vase_seen:approach",
+          "ep_101_004:tall_wobbly_vase_seen:observe"
+        ]
+      },
+      "trace_hash": "827cc8474102e47e",
+      "world_prediction": {
+        "danger_contact": 0.0194,
+        "noise": 0.0194,
+        "object_fell": 0.0194
+      }
+    },
+    "relevant_deleted": {
+      "admission_gate": {
+        "admitted": false,
+        "evidence_count": 0,
+        "gate": "semantic_rule_candidate_admission",
+        "min_evidence_count": 2,
+        "status": "no_relevant_memory"
+      },
+      "approach_self_prediction": {
+        "action_failure_prob": 0.0474,
+        "affinity_delta": 0.0,
+        "damage_risk": 0.0474,
+        "energy_delta": -0.12,
+        "stress_delta": 0.0474
+      },
+      "approach_world_prediction": {
+        "danger_contact": 0.0998,
+        "noise": 0.0998,
+        "object_fell": 0.0998
+      },
+      "caution_score": 0.0,
+      "corrupted_memory_count": 0,
+      "deleted_memory_count": 4,
+      "homeostatic_score": {
+        "ability_control": -0.03318,
+        "affinity_gain": 0.47,
+        "capability_growth": 0.0,
+        "curiosity_gain": 0.084,
+        "energy_balance": -0.042,
+        "future_action_space": -0.01,
+        "information_gain": 0.007984,
+        "relationship_stability": -0.007984,
+        "reversibility": 0.02,
+        "safety": -0.017964,
+        "self_risk_control": -0.046452,
+        "stress_control": -0.03555,
+        "total": 0.388854
+      },
+      "selected_action": "approach",
+      "self_prediction": {
+        "action_failure_prob": 0.0474,
+        "affinity_delta": 0.0,
+        "damage_risk": 0.0474,
+        "energy_delta": -0.12,
+        "stress_delta": 0.0474
+      },
+      "self_risk_score": 0.0474,
+      "semantic_replay_refs": [],
+      "semantic_rule_candidate": {
+        "action_summaries": {},
+        "admission_status": "no_relevant_memory",
+        "admitted": false,
+        "evidence_count": 0,
+        "feature_centroid": {},
+        "semantic_tag": "unstable_tall_object",
+        "trace_refs": []
+      },
+      "trace_hash": "ceb2c7f142c4e380",
+      "world_prediction": {
+        "danger_contact": 0.0998,
+        "noise": 0.0998,
+        "object_fell": 0.0998
+      }
+    }
+  },
+  "variants": [
+    "normal",
+    "relevant_deleted",
+    "irrelevant_deleted",
+    "corrupted_relevant"
+  ],
+  "what_it_does_not_prove": "This does not prove durable memory consolidation outside this lab audit, real-world transfer, EgoOperator runtime efficacy, stable user benefit, live autonomy, consciousness, or subjective experience.",
+  "what_it_proves": "Episodic traces can produce an admitted semantic rule candidate that is consumed as semantic replay by the lab models: deleting relevant memory regresses behavior, deleting irrelevant memory does not, and corrupted relevant memory creates an explainable unsafe bias."
+}

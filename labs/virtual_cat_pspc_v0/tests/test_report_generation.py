@@ -18,6 +18,7 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
         "GENERALIZATION_MATRIX_REPORT.md",
         "WORLD_MODEL_CAUSAL_STRENGTH_REPORT.md",
         "SELF_MODEL_CAUSAL_STRENGTH_REPORT.md",
+        "MEMORY_CONSOLIDATION_ADMISSION_REPORT.md",
     ]
 
     assert summary["overall_status"] == "E4_passed"
@@ -62,3 +63,11 @@ def test_experiment_runner_writes_canonical_reports(tmp_path):
     assert "normal > frozen/head-removed" in self_model_text
     assert "## What It Proves" in self_model_text
     assert "## What It Does Not Prove" in self_model_text
+
+    memory_json = Path(tmp_path) / "memory_consolidation_admission.json"
+    assert memory_json.exists()
+    memory_text = (Path(tmp_path) / "MEMORY_CONSOLIDATION_ADMISSION_REPORT.md").read_text(encoding="utf-8")
+    assert "- status: `pass`" in memory_text
+    assert "normal / relevant_deleted / irrelevant_deleted / corrupted_relevant" in memory_text
+    assert "## What It Proves" in memory_text
+    assert "## What It Does Not Prove" in memory_text

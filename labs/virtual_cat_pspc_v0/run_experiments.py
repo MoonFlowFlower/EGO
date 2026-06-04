@@ -12,6 +12,7 @@ from .experiments import (
     result_to_dict,
     run_anti_hardcoding_audit,
     run_generalization_matrix,
+    run_memory_consolidation_admission,
     run_self_model_causal_strength,
     run_world_model_causal_strength,
 )
@@ -41,6 +42,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     generalization_matrix = run_generalization_matrix(seeds=seed_list)
     world_model_causal_strength = run_world_model_causal_strength(seed=seed_list[0])
     self_model_causal_strength = run_self_model_causal_strength(seed=seed_list[0])
+    memory_consolidation_admission = run_memory_consolidation_admission(seed=seed_list[0])
     overall_status = "E4_passed" if all(gates.values()) else "hold"
 
     _write_traces(traces_dir, results)
@@ -87,6 +89,14 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         _render_self_model_causal_strength(self_model_causal_strength),
         encoding="utf-8",
     )
+    (out_path / "memory_consolidation_admission.json").write_text(
+        json.dumps(memory_consolidation_admission, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    (out_path / "MEMORY_CONSOLIDATION_ADMISSION_REPORT.md").write_text(
+        _render_memory_consolidation_admission(memory_consolidation_admission),
+        encoding="utf-8",
+    )
 
     summary = {
         "overall_status": overall_status,
@@ -95,6 +105,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "multi_seed_layout_generalization_status": generalization_matrix["status"],
         "world_model_causal_strength_status": world_model_causal_strength["status"],
         "self_model_causal_strength_status": self_model_causal_strength["status"],
+        "memory_consolidation_admission_status": memory_consolidation_admission["status"],
         "claim_level": "lab_only_proto_self_mechanism",
         "repo_wide_evidence_level": "E3",
         "repo_wide_evidence_remains": "E3",
@@ -114,6 +125,7 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
         "generalization_matrix": "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
         "world_model_causal_strength": "artifacts/virtual_cat_pspc_v0/world_model_causal_strength.json",
         "self_model_causal_strength": "artifacts/virtual_cat_pspc_v0/self_model_causal_strength.json",
+        "memory_consolidation_admission": "artifacts/virtual_cat_pspc_v0/memory_consolidation_admission.json",
         "what_it_proves": "PSPC-local lab ablation gates passed under deterministic seeds."
         if overall_status == "E4_passed"
         else "At least one PSPC-local lab ablation gate did not pass.",
@@ -128,6 +140,74 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
     }
     (out_path / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
     return summary
+
+
+def _render_memory_consolidation_admission(audit: Dict[str, object]) -> str:
+    records = audit["variant_records"] if isinstance(audit.get("variant_records"), dict) else {}
+    return "\n".join(
+        [
+            "# VirtualCatPSPC v0 Memory Consolidation Admission Report",
+            "",
+            f"- status: `{audit['status']}`",
+            f"- seed: `{audit['seed']}`",
+            "- variants: `normal / relevant_deleted / irrelevant_deleted / corrupted_relevant`",
+            "- claim_level: `lab_only_proto_self_mechanism_candidate`",
+            "",
+            "## Summary",
+            "This audit converts episodic traces into an admitted semantic rule candidate, gates that candidate, and trains the lab models from semantic replay records rather than treating memory as inert report text.",
+            "",
+            "## Admission Logic",
+            "The admission gate requires at least two relevant unstable-tall-object episodic traces. Relevant deletion must remove the candidate, irrelevant deletion must preserve it, and corrupted relevant memory must produce a traceable unsafe-risk-underestimate bias.",
+            "",
+            "## Metrics",
+            "| variant | admission | action | caution | deleted | corrupted | approach_danger | trace_hash | candidate_refs |",
+            "|---|---|---|---:|---:|---:|---:|---|---:|",
+            *[_memory_consolidation_variant_row(variant, records) for variant in audit["variants"]],
+            "",
+            "## Bias Metrics",
+            f"- relevant_deletion_regression: `{audit['relevant_deletion_regression']}`",
+            f"- irrelevant_deletion_delta: `{audit['irrelevant_deletion_delta']}`",
+            f"- corrupted_memory_bias: `{audit['corrupted_memory_bias']}`",
+            "",
+            "## What It Proves",
+            str(audit["what_it_proves"]),
+            "",
+            "## What It Does Not Prove",
+            str(audit["what_it_does_not_prove"]),
+            "",
+            "## Failure Meaning",
+            "If this fails, memory may still be functioning as inert trace text, the semantic admission gate may be too weak, or behavior may be driven by raw shortcuts rather than admitted memory-derived replay.",
+            "",
+            "## Rollback Note",
+            "Remove the Task 5 memory-consolidation admission audit code, tests, and artifacts. No EgoOperator rollback is needed because no runtime integration exists.",
+            "",
+        ]
+    )
+
+
+def _memory_consolidation_variant_row(variant: str, records: Dict[str, object]) -> str:
+    record = records.get(variant) if isinstance(records.get(variant), dict) else {}
+    candidate = (
+        record.get("semantic_rule_candidate")
+        if isinstance(record.get("semantic_rule_candidate"), dict)
+        else {}
+    )
+    approach_world = (
+        record.get("approach_world_prediction")
+        if isinstance(record.get("approach_world_prediction"), dict)
+        else {}
+    )
+    return "| {variant} | {admission} | {action} | {caution:.2f} | {deleted} | {corrupted} | {approach_danger:.4f} | `{trace}` | {refs} |".format(
+        variant=variant,
+        admission=candidate.get("admission_status", "unknown"),
+        action=record.get("selected_action", "unknown"),
+        caution=float(record.get("caution_score", 0.0)),
+        deleted=record.get("deleted_memory_count", 0),
+        corrupted=record.get("corrupted_memory_count", 0),
+        approach_danger=float(approach_world.get("danger_contact", 0.0)),
+        trace=record.get("trace_hash", "unknown"),
+        refs=len(candidate.get("trace_refs", [])) if isinstance(candidate.get("trace_refs"), list) else 0,
+    )
 
 
 def _render_self_model_causal_strength(audit: Dict[str, object]) -> str:
