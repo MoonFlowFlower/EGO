@@ -1,0 +1,74 @@
+{
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / runtime_hook_go_no_go_only",
+  "evidence_reviewed": [
+    {
+      "artifact": "docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/GO_NO_GO_REVIEW.md",
+      "task_id": "PSPC-SHADOW-001",
+      "summary": "Review package froze PSPC as disabled, audit-only, mainline-disconnected, unregistered, and forbidden from runtime authority."
+    },
+    {
+      "artifact": "artifacts/pspc_runtime_trace_fixture_boundary_v0/runtime_trace_fixture_boundary.json",
+      "task_id": "PSPC-SHADOW-002",
+      "summary": "Fixture-boundary harness rejected missing or false forbidden flags, enabled=true, mainline_connected=true, and runtime-authority fields."
+    },
+    {
+      "artifact": "artifacts/pspc_runtime_adjacent_observer_v0/runtime_adjacent_observer.json",
+      "task_id": "PSPC-SHADOW-003",
+      "summary": "Default-off observer stayed enabled=false, mainline_connected=false, runtime_authority=none, unregistered, audit-only, and non-executable."
+    },
+    {
+      "artifact": "artifacts/pspc_recorded_trace_replay_no_diff_v0/recorded_trace_replay_no_diff.json",
+      "task_id": "PSPC-SHADOW-004",
+      "summary": "Recorded replay preserved response hashes, snapshot hashes, memory, approval, gate, and runtime-output state while PSPC added only audit artifacts."
+    },
+    {
+      "artifact": "artifacts/pspc_runtime_adjacent_smoke_v0/runtime_adjacent_smoke.json",
+      "task_id": "PSPC-SHADOW-005",
+      "summary": "Deterministic no-live-user smoke preserved runtime behavior hashes, confirmed no runtime import or registry offenders, and recorded no side effects."
+    }
+  ],
+  "enabled": false,
+  "go_criteria": {
+    "claim_ceiling_unchanged": true,
+    "default_off_unregistered_observer": true,
+    "deterministic_smoke_runtime_snapshots_unchanged": true,
+    "fixture_rejection_boundaries": true,
+    "recorded_replay_no_diff": true,
+    "runtime_source_import_or_registry_absent": true,
+    "static_boundaries_enforced": true
+  },
+  "mainline_connected": false,
+  "next_allowed_step": "separate_disabled_runtime_shadow_hook_stage_card_only",
+  "remaining_gaps": [
+    "No live runtime hook exists.",
+    "No runtime-adjacent hook insertion Stage Card exists yet.",
+    "No proof exists that a future disabled hook can be imported near runtime without accidental enablement.",
+    "No proof exists that runtime output remains unchanged when a hook module is physically present in a runtime-adjacent package.",
+    "No live user, memory, gate, approval, transport, or proactive-channel safety evidence exists for PSPC."
+  ],
+  "runtime_authority": "none",
+  "status": "pass",
+  "stop_loss": [
+    "runtime_import_or_registration_without_default_off_gate",
+    "enabled_true",
+    "mainline_connected_true",
+    "user_output_or_proposal_or_plan_or_approval_or_gate_or_memory_or_transport_or_proactive_or_registry_mutation",
+    "audit_candidate_has_executable_action_semantics",
+    "planner_or_training_or_model_execution_invoked",
+    "claim_ceiling_raised"
+  ],
+  "verdict": "go_for_separate_disabled_runtime_shadow_hook_stage",
+  "what_it_does_not_prove": [
+    "adapter_readiness",
+    "disabled_hook_readiness",
+    "runtime_integration_safety",
+    "ego_operator_pspc_capability",
+    "ego_operator_runtime_efficacy",
+    "real_user_benefit",
+    "live_autonomy",
+    "durable_memory_efficacy",
+    "consciousness",
+    "subjective_experience"
+  ],
+  "what_it_proves": "Prior PSPC shadow evidence is sufficient to write a future separate disabled runtime shadow hook Stage Card only."
+}

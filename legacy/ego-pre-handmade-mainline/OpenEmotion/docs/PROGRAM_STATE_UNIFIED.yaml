@@ -44,6 +44,16 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Shadow Runtime Hook Go/No-Go v0 now has a verdict document at `docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/GO_NO_GO_REVIEW.md`
+    and a machine-readable review artifact under `artifacts/pspc_shadow_runtime_hook_go_no_go_v0/`.
+    The verdict is `go_for_separate_disabled_runtime_shadow_hook_stage`, which permits
+    only a future separate Stage Card for a disabled runtime shadow hook. PSPC remains
+    `enabled=false`, `mainline_connected=false`, `runtime_authority=none`, audit-only,
+    non-executable, unregistered, and not connected to EgoOperator runtime. This is
+    `lab_only_proto_self_mechanism_candidate / runtime_hook_go_no_go_only` evidence
+    only; it does not prove adapter readiness, disabled hook readiness, runtime integration
+    safety, EgoOperator PSPC capability, EgoOperator runtime efficacy, real user benefit,
+    live autonomy, durable memory efficacy, consciousness, or subjective experience.
   - PSPC Runtime-Adjacent Smoke v0 now has a deterministic/no-live-user smoke runner
     at `scripts/run_pspc_runtime_adjacent_smoke.py`, tests at `tests/test_pspc_runtime_adjacent_smoke.py`,
     docs under `docs/codex/tasks/pspc-runtime-adjacent-smoke-v0/`, and artifacts under
@@ -1138,6 +1148,21 @@ workstreams:
     execution. This remains `lab_only_proto_self_mechanism_candidate / deterministic_runtime_adjacent_smoke_only`
     evidence only and does not prove live runtime hook safety or real-time integration
     safety.
+- id: pspc_shadow_runtime_hook_go_no_go_v0
+  owner: Codex
+  status: go_for_separate_disabled_runtime_shadow_hook_stage__no_runtime_connection
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Shadow Runtime Hook Go/No-Go v0 reviews PSPC-SHADOW-001 through PSPC-SHADOW-005
+    and returns `go_for_separate_disabled_runtime_shadow_hook_stage`. This permits
+    only a future separate Stage Card for a disabled runtime shadow hook. It does
+    not implement, register, enable, import, or connect PSPC to EgoOperator runtime.
+    PSPC remains `lab_only_proto_self_mechanism_candidate / runtime_hook_go_no_go_only`
+    evidence only and does not prove adapter readiness, disabled hook readiness, runtime
+    integration safety, EgoOperator PSPC capability, runtime efficacy, real user benefit,
+    live autonomy, durable memory efficacy, consciousness, or subjective experience.
 axes:
   host_axis:
     current_state: closeout_complete

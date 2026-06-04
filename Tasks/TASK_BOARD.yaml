@@ -3238,22 +3238,21 @@ tasks:
     title: "PSPC Shadow: runtime-adjacent audit-only evidence lane"
     kind: epic
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_adjacent_shadow_lane_only"
-    next_action: "Advance PSPC-SHADOW-001 first. Keep PSPC disabled, mainline_disconnected, audit-only, and side-effect-free; do not register PSPC in EgoOperator runtime."
+    next_action: "Accepted locally: PSPC-SHADOW-001 through PSPC-SHADOW-006 completed the runtime-adjacent audit-only evidence lane. Verdict permits only a future separate disabled runtime shadow hook Stage Card; PSPC remains disabled, mainline-disconnected, audit-only, and side-effect-free."
     acceptance:
       - "Child tasks preserve PSPC as audit-only shadow evidence and do not connect PSPC to EgoOperator runtime."
       - "Every child task states what it proves, what it does not prove, rollback, forbidden runtime surfaces, and claim ceiling."
       - "GitHub Project remains mirror-only; local Tasks/TASK_BOARD.yaml is the canonical task source while gh is unavailable."
     rollback: "Remove PSPC-SHADOW-EPIC and PSPC-SHADOW-001 through PSPC-SHADOW-006 from Tasks/TASK_BOARD.yaml and remove the matching PSPC shadow allowed-path additions from .codex/project_contract.yaml."
     canonical_sources:
-      - "docs/codex/tasks/pspc-recorded-shadow-observation-v0/STATUS.md"
-      - "docs/codex/tasks/pspc-disabled-shadow-hook-v0/STATUS.md"
-      - "artifacts/pspc_recorded_shadow_observation_v0/"
+      - "docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/GO_NO_GO_REVIEW.md"
+      - "artifacts/pspc_shadow_runtime_hook_go_no_go_v0/"
     external_refs:
       github_issue: null
 
@@ -3383,13 +3382,13 @@ tasks:
     title: "PSPC Shadow: disabled runtime hook insertion go/no-go v0"
     kind: task
     parent: PSPC-SHADOW-EPIC
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_hook_go_no_go_only"
-    next_action: "Produce a go/no-go review for a future separate disabled runtime shadow hook insertion task; do not implement the insertion here."
+    next_action: "Accepted locally: verdict is go_for_separate_disabled_runtime_shadow_hook_stage, which permits only a future separate Stage Card. PSPC remains disabled, mainline-disconnected, audit-only, unregistered, and not connected to EgoOperator runtime."
     acceptance:
       - "Verdict is either go_for_separate_disabled_runtime_shadow_hook_stage or no_go_keep_artifact_only."
       - "Review cites prior shadow evidence, static boundaries, no-diff replay, no-side-effect smoke, remaining gaps, rollback, failure meaning, and claim ceiling."
