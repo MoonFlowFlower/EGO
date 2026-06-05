@@ -12,6 +12,11 @@ contextBridge.exposeInMainWorld("egoDesktop", {
     ipcRenderer.on("ego-desktop:developer-settings-updated", listener);
     return () => ipcRenderer.off("ego-desktop:developer-settings-updated", listener);
   },
+  onPspcReplyPreviewUpdated: (callback) => {
+    const listener = (_event, payload) => callback(payload);
+    ipcRenderer.on("ego-desktop:pspc-reply-preview-updated", listener);
+    return () => ipcRenderer.off("ego-desktop:pspc-reply-preview-updated", listener);
+  },
   sendChatTurn: (payload) => ipcRenderer.invoke("ego-desktop:chat-turn", payload),
   synthesizeSpeech: (payload) => ipcRenderer.invoke("ego-desktop:synthesize-speech", payload),
   cancelSpeech: () => ipcRenderer.invoke("ego-desktop:cancel-speech"),

@@ -2,10 +2,11 @@ const fs = require("node:fs");
 const path = require("node:path");
 const {
   REPLY_PREVIEW_CLAIM_CEILING,
+  SEMANTIC_EXTRACTOR_CLAIM_CEILING,
+  applyPspcSemanticEventPacket,
   buildPspcReplyPreviewContext,
   buildPspcReplyPreviewScenario,
   createPspcReplyPreviewState,
-  updatePspcReplyPreviewState,
 } = require("../src/pspcReplyPreview");
 
 const SCENARIOS = [
@@ -81,10 +82,102 @@ function parseArgs(argv) {
   return parsed;
 }
 
+function semanticPacketFor(line, definition, index) {
+  let event = { event_kind: "neutral", category: "neutral", confidence: 0.8, salience: 0.1, state_delta: {} };
+  if (definition.expected_style === "warm_approach") {
+    event = {
+      event_kind: "comfort_presence",
+      category: "gentle",
+      confidence: 0.86,
+      salience: 0.75,
+      state_delta: { trust_proxy: 0.22, approach_tendency: 0.2, care_tendency: 0.05 },
+    };
+  } else if (definition.expected_style === "cautious_boundary") {
+    event = {
+      event_kind: "boundary_pressure",
+      category: "interruption",
+      confidence: 0.88,
+      salience: 0.8,
+      state_delta: { stress_proxy: 0.22, avoidance_tendency: 0.22, boundary_tendency: 0.24 },
+    };
+  } else if (definition.expected_style === "low_interrupt_care") {
+    event = {
+      event_kind: "fatigue_or_late_night",
+      category: "late_night",
+      confidence: 0.87,
+      salience: 0.78,
+      state_delta: { care_tendency: 0.22, low_interrupt_tendency: 0.24 },
+    };
+  } else if (definition.id === "mixed_history" && index >= 2) {
+    event = {
+      event_kind: "boundary_pressure",
+      category: "interruption",
+      confidence: 0.88,
+      salience: 0.8,
+      state_delta: { stress_proxy: 0.22, avoidance_tendency: 0.22, boundary_tendency: 0.24 },
+    };
+  } else {
+    event = {
+      event_kind: "comfort_presence",
+      category: "gentle",
+      confidence: 0.86,
+      salience: 0.75,
+      state_delta: { trust_proxy: 0.22, approach_tendency: 0.2, care_tendency: 0.05 },
+    };
+  }
+  return {
+    schema_version: "ego_desktop.pspc_semantic_interaction_events.v0",
+    source: "ego_desktop_pspc_semantic_signal_extractor",
+    claim_ceiling: SEMANTIC_EXTRACTOR_CLAIM_CEILING,
+    runtime_authority: "none",
+    enabled: false,
+    mainline_connected: false,
+    extractor_status: "ok",
+    input_text_hash_basis: String(line || "").slice(0, 24),
+    events: [{
+      ...event,
+      evidence_excerpt: String(line || "").slice(0, 40),
+      reason: "report fixture semantic event",
+    }],
+    forbidden: {
+      direct_action: true,
+      direct_user_message: true,
+      direct_memory_write: true,
+      runtime_gate_bypass: true,
+      runtime_registration: true,
+      proactive_trigger: true,
+      planner_execution: true,
+      model_execution: true,
+      training: true,
+    },
+    no_authority: {
+      direct_action_allowed: false,
+      direct_user_message_allowed: false,
+      direct_memory_write_allowed: false,
+      runtime_gate_bypass_allowed: false,
+      runtime_registration_allowed: false,
+      proactive_trigger_allowed: false,
+      planner_execution_allowed: false,
+      model_execution_allowed: false,
+      training_allowed: false,
+    },
+    side_effects_absent: {
+      real_memory_written: false,
+      gate_invoked: false,
+      approval_invoked: false,
+      transport_called: false,
+      proactive_triggered: false,
+      runtime_registered: false,
+      message_sent: false,
+    },
+  };
+}
+
 function buildScenarioPreview(definition) {
   let state = createPspcReplyPreviewState({ enabled: true });
-  for (const line of definition.history) {
-    state = updatePspcReplyPreviewState(state, line);
+  for (let index = 0; index < definition.history.length; index += 1) {
+    const line = definition.history[index];
+    state = applyPspcSemanticEventPacket(state, semanticPacketFor(line, definition, index));
   }
   const context = buildPspcReplyPreviewContext(state);
   const scenario = buildPspcReplyPreviewScenario(context);
@@ -164,7 +257,7 @@ npm start -- --model-path ..\\data\\live2d\\悠小喵\\悠小喵.model3.json --p
 - runtime registered: \`${result.side_effects_absent.runtime_registered}\`
 - adapter created: \`${result.side_effects_absent.adapter_created}\`
 - planner called: \`${result.side_effects_absent.planner_called}\`
-- model executed: \`${result.side_effects_absent.model_executed}\`
+- PSPC planner/model executed: \`${result.side_effects_absent.pspc_planner_model_executed}\`
 - training called: \`${result.side_effects_absent.training_called}\`
 
 ## What This Proves
@@ -234,7 +327,7 @@ function buildResult(options) {
       runtime_registered: false,
       adapter_created: false,
       planner_called: false,
-      model_executed: false,
+      pspc_planner_model_executed: false,
       training_called: false,
     },
   };

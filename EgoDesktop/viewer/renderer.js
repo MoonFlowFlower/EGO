@@ -368,6 +368,26 @@
         setVoiceStatus("语音已停止");
       });
     }
+    if (
+      config &&
+      config.pspcReplyPreviewMode &&
+      typeof window.egoDesktop.onPspcReplyPreviewUpdated === "function"
+    ) {
+      window.egoDesktop.onPspcReplyPreviewUpdated((payload) => {
+        const scenario = payload && payload.pspc_reply_preview_scenario;
+        if (!scenario) {
+          return;
+        }
+        if (pspcDemoPanel) {
+          pspcDemoPanel.hidden = false;
+        }
+        renderPspcDebugOverlay({
+          claim_ceiling: "local_reply_preview_observability_only",
+          debug_overlay: scenario.debug_overlay || null,
+        }, scenario);
+        applyPspcScenario(model, scenario).catch(() => {});
+      });
+    }
     chatForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       const userText = userInput.value.trim();
@@ -515,6 +535,15 @@
       ? row.recent_categories
       : [];
     const proxyBars = Array.isArray(overlay.proxy_bars) ? overlay.proxy_bars : [];
+    const detectedEvents = Array.isArray(overlay.detected_events)
+      ? overlay.detected_events
+      : (Array.isArray(row.detected_events) ? row.detected_events : []);
+    const eventLines = detectedEvents.slice(-6).map((event) => {
+      const stateDelta = event.state_delta && typeof event.state_delta === "object"
+        ? Object.entries(event.state_delta).map(([key, value]) => `${key}:${Number(value || 0).toFixed(2)}`).join(" ")
+        : "";
+      return `event: ${String(event.event_kind || "neutral")} category=${String(event.category || "neutral")} confidence=${Number(event.confidence || 0).toFixed(2)} salience=${Number(event.salience || 0).toFixed(2)} delta=${stateDelta} basis=${String(event.evidence_excerpt || event.reason || "")}`;
+    });
     const barLines = proxyBars.map((bar) => {
       const value = Math.max(0, Math.min(1, Number(bar.value || 0)));
       const filled = Math.round(value * 10);
@@ -528,12 +557,14 @@
       `style: ${String(row.style || scenario.style || scenario.perception_behavior || "")}`,
       `confidence: ${String(row.confidence !== undefined ? row.confidence : scenario.confidence || "")}`,
       `basis: ${String(row.basis || scenario.basis || "")}`,
+      `extractor_status: ${String(row.extractor_status || scenario.extractor_status || "")}`,
       `history_counts: gentle=${Number(historyCounts.gentle || 0)} interruption=${Number(historyCounts.interruption || 0)} late_night=${Number(historyCounts.late_night || 0)} neutral=${Number(historyCounts.neutral || 0)}`,
       `recent_categories: ${recentCategories.join(", ")}`,
       `reason_trace_refs: ${Array.isArray(row.reason_trace_refs)
         ? row.reason_trace_refs.join(", ")
         : (Array.isArray(scenario.reason_trace_refs) ? scenario.reason_trace_refs.join(", ") : "")}`,
       `claim_ceiling: ${String(row.claim_ceiling || overlay.claim_ceiling || demo.claim_ceiling || "")}`,
+      ...eventLines,
       ...barLines,
     ].join("\n");
   }

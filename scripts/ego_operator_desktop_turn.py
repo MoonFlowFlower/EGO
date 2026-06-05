@@ -51,7 +51,7 @@ from EgoOperator.agent_base import build_demo_runtime  # noqa: E402
 
 
 PSPC_REPLY_PREVIEW_SCHEMA_VERSION = "ego_desktop.pspc_reply_preview_context.v0"
-PSPC_REPLY_PREVIEW_CLAIM_CEILING = "local_reply_preview_only"
+PSPC_REPLY_PREVIEW_CLAIM_CEILING = "local_reply_preview_semantic_signal_extractor_only"
 PSPC_REPLY_PREVIEW_ALLOWED_USE = "ego_desktop_local_reply_preview_only"
 PSPC_REPLY_PREVIEW_EXECUTABLE_FIELDS = {
     "action",

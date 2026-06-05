@@ -1,0 +1,31 @@
+{
+  "schema_version": "egodesktop_pspc_semantic_interaction_extractor_v0.report",
+  "status": "pass",
+  "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
+  "runtime_authority": "none",
+  "enabled": false,
+  "mainline_connected": false,
+  "ego_operator_core_modified": false,
+  "semantic_events": [
+    "gift_or_care_offer",
+    "gentle_touch",
+    "affinity_statement",
+    "trust_probe",
+    "comfort_presence",
+    "boundary_pressure",
+    "fatigue_or_late_night",
+    "neutral"
+  ],
+  "side_effects_absent": {
+    "real_memory_written": false,
+    "gate_invoked": false,
+    "approval_invoked": false,
+    "transport_called": false,
+    "proactive_triggered": false,
+    "runtime_registered": false,
+    "adapter_created": false,
+    "direct_user_message_generated_by_extractor": false
+  },
+  "what_it_proves": "Local EgoDesktop PSPC Reply Preview can consume validated semantic event packets and deterministically update preview proxy state without keyword-hardcoded category routing in pspcReplyPreview.js.",
+  "what_it_does_not_prove": "It does not prove PSPC mainline integration, true learning, durable memory, runtime integration safety, stable real user benefit, live autonomy, consciousness, subjective experience, or real emotion."
+}

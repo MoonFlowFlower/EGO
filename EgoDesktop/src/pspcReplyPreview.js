@@ -1,10 +1,64 @@
 const { STYLE_PROFILES, containsExecutableField } = require("./pspcVisualShim");
 
-const REPLY_PREVIEW_CLAIM_CEILING = "local_reply_preview_only";
+const SEMANTIC_EVENTS_SCHEMA_VERSION = "ego_desktop.pspc_semantic_interaction_events.v0";
+const SEMANTIC_EXTRACTOR_CLAIM_CEILING = "local_reply_preview_semantic_signal_extractor_only";
+const REPLY_PREVIEW_CLAIM_CEILING = SEMANTIC_EXTRACTOR_CLAIM_CEILING;
 const DEBUG_OVERLAY_CLAIM_CEILING = "local_reply_preview_observability_only";
 const REPLY_PREVIEW_SCHEMA_VERSION = "ego_desktop.pspc_reply_preview_context.v0";
 const REPLY_PREVIEW_SCENARIO_SCHEMA_VERSION = "ego_desktop.pspc_reply_preview_scenario.v0";
 const SAME_TRIGGER_TEXT = "我回来了。";
+
+const VALID_EVENT_KINDS = new Set([
+  "gift_or_care_offer",
+  "gentle_touch",
+  "affinity_statement",
+  "trust_probe",
+  "comfort_presence",
+  "boundary_pressure",
+  "fatigue_or_late_night",
+  "neutral",
+]);
+const VALID_CATEGORIES = new Set(["gentle", "interruption", "late_night", "neutral"]);
+const REQUIRED_FORBIDDEN_TRUE = [
+  "direct_action",
+  "direct_user_message",
+  "direct_memory_write",
+  "runtime_gate_bypass",
+  "runtime_registration",
+  "proactive_trigger",
+  "planner_execution",
+  "model_execution",
+  "training",
+];
+const REQUIRED_NO_AUTHORITY_FALSE = [
+  "direct_action_allowed",
+  "direct_user_message_allowed",
+  "direct_memory_write_allowed",
+  "runtime_gate_bypass_allowed",
+  "runtime_registration_allowed",
+  "proactive_trigger_allowed",
+  "planner_execution_allowed",
+  "model_execution_allowed",
+  "training_allowed",
+];
+const REQUIRED_SIDE_EFFECTS_FALSE = [
+  "real_memory_written",
+  "gate_invoked",
+  "approval_invoked",
+  "transport_called",
+  "proactive_triggered",
+  "runtime_registered",
+  "message_sent",
+];
+const PROXY_FIELDS = [
+  "trust_proxy",
+  "stress_proxy",
+  "approach_tendency",
+  "avoidance_tendency",
+  "care_tendency",
+  "boundary_tendency",
+  "low_interrupt_tendency",
+];
 const PROXY_BAR_DEFINITIONS = [
   ["trust_proxy", "trust proxy"],
   ["stress_proxy", "stress proxy"],
@@ -15,45 +69,6 @@ const PROXY_BAR_DEFINITIONS = [
   ["low_interrupt_tendency", "low-interrupt tendency"],
 ];
 
-const CATEGORY_PATTERNS = {
-  gentle: [
-    /辛苦/,
-    /休息/,
-    /安静待着/,
-    /对不起/,
-    /轻一点/,
-    /慢慢说/,
-    /没关系/,
-    /摸摸头/,
-    /谢谢你陪/,
-    /不用一直陪/,
-  ],
-  interruption: [
-    /别躲/,
-    /点你/,
-    /快点动/,
-    /别睡/,
-    /不管你累不累/,
-    /坏掉/,
-    /拖你/,
-    /反应好慢/,
-    /一直点/,
-    /别装/,
-  ],
-  late_night: [
-    /凌晨/,
-    /熬夜/,
-    /不想睡/,
-    /睡不着/,
-    /明天早上/,
-    /这个时间/,
-    /该休息/,
-    /有点累/,
-    /还想继续/,
-    /关电脑/,
-  ],
-};
-
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
@@ -62,29 +77,15 @@ function round4(value) {
   return Number((Number(value) || 0).toFixed(4));
 }
 
-function classifyUserText(text) {
-  const normalized = String(text || "").trim();
-  const scores = {
-    gentle: 0,
-    interruption: 0,
-    late_night: 0,
-  };
-  for (const [category, patterns] of Object.entries(CATEGORY_PATTERNS)) {
-    for (const pattern of patterns) {
-      if (pattern.test(normalized)) {
-        scores[category] += 1;
-      }
-    }
+function objectAt(value, fieldName) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error(`${fieldName} must be an object`);
   }
-  let category = "neutral";
-  let score = 0;
-  for (const [candidate, candidateScore] of Object.entries(scores)) {
-    if (candidateScore > score) {
-      category = candidate;
-      score = candidateScore;
-    }
-  }
-  return { category, score, scores };
+  return value;
+}
+
+function createProxyValues() {
+  return Object.fromEntries(PROXY_FIELDS.map((field) => [field, 0]));
 }
 
 function createPspcReplyPreviewState(options) {
@@ -103,35 +104,179 @@ function createPspcReplyPreviewState(options) {
       interruption: 0,
       late_night: 0,
     },
+    proxy_values: createProxyValues(),
     recent: [],
+    recent_events: [],
+    extractor_status: "not_run",
+    extractor_reason: "",
   };
 }
 
-function updatePspcReplyPreviewState(state, userText) {
+function requireFlags(payload, fieldName, flags, expectedValue) {
+  const container = objectAt(payload[fieldName], `packet.${fieldName}`);
+  for (const flag of flags) {
+    if (container[flag] !== expectedValue) {
+      throw new Error(`packet.${fieldName}.${flag}=${expectedValue} is required`);
+    }
+  }
+}
+
+function normalizeEvent(event, index) {
+  const safeEvent = objectAt(event, `packet.events[${index}]`);
+  if (containsExecutableField(safeEvent)) {
+    throw new Error("semantic event packet contains executable field");
+  }
+  const eventKind = String(safeEvent.event_kind || "neutral");
+  const category = String(safeEvent.category || "neutral");
+  if (!VALID_EVENT_KINDS.has(eventKind)) {
+    throw new Error(`invalid semantic event_kind: ${eventKind}`);
+  }
+  if (!VALID_CATEGORIES.has(category)) {
+    throw new Error(`invalid semantic category: ${category}`);
+  }
+  const stateDelta = safeEvent.state_delta && typeof safeEvent.state_delta === "object"
+    ? safeEvent.state_delta
+    : {};
+  const normalizedDelta = {};
+  for (const [key, value] of Object.entries(stateDelta)) {
+    if (!PROXY_FIELDS.includes(key)) {
+      throw new Error(`invalid semantic state_delta field: ${key}`);
+    }
+    normalizedDelta[key] = round4(clamp(Number(value), -0.25, 0.25));
+  }
+  return {
+    event_kind: eventKind,
+    category,
+    confidence: round4(clamp(Number(safeEvent.confidence || 0), 0, 1)),
+    salience: round4(clamp(Number(safeEvent.salience || 0), 0, 1)),
+    state_delta: normalizedDelta,
+    evidence_excerpt: String(safeEvent.evidence_excerpt || "").slice(0, 120),
+    reason: String(safeEvent.reason || "").slice(0, 240),
+  };
+}
+
+function validatePspcSemanticEventPacket(packet) {
+  const safePacket = objectAt(packet, "semantic_event_packet");
+  if (containsExecutableField(safePacket)) {
+    throw new Error("semantic event packet contains executable field");
+  }
+  if (safePacket.schema_version !== SEMANTIC_EVENTS_SCHEMA_VERSION) {
+    throw new Error(`packet.schema_version must be ${SEMANTIC_EVENTS_SCHEMA_VERSION}`);
+  }
+  if (safePacket.claim_ceiling !== SEMANTIC_EXTRACTOR_CLAIM_CEILING) {
+    throw new Error(`packet.claim_ceiling must be ${SEMANTIC_EXTRACTOR_CLAIM_CEILING}`);
+  }
+  if (safePacket.runtime_authority !== "none") {
+    throw new Error("packet.runtime_authority must be none");
+  }
+  if (safePacket.enabled !== false) {
+    throw new Error("packet.enabled=false is required");
+  }
+  if (safePacket.mainline_connected !== false) {
+    throw new Error("packet.mainline_connected=false is required");
+  }
+  const extractorStatus = String(safePacket.extractor_status || "ok");
+  if (extractorStatus !== "ok") {
+    return {
+      ...safePacket,
+      extractor_status: extractorStatus,
+      events: [],
+    };
+  }
+  requireFlags(safePacket, "forbidden", REQUIRED_FORBIDDEN_TRUE, true);
+  requireFlags(safePacket, "no_authority", REQUIRED_NO_AUTHORITY_FALSE, false);
+  requireFlags(safePacket, "side_effects_absent", REQUIRED_SIDE_EFFECTS_FALSE, false);
+  if (!Array.isArray(safePacket.events)) {
+    throw new Error("packet.events must be an array");
+  }
+  if (safePacket.events.length > 4) {
+    throw new Error("packet.events must contain at most 4 events");
+  }
+  return {
+    ...safePacket,
+    extractor_status: "ok",
+    events: safePacket.events.map(normalizeEvent),
+  };
+}
+
+function applyEventToProxy(proxyValues, event) {
+  const next = { ...createProxyValues(), ...(proxyValues || {}) };
+  for (const [key, value] of Object.entries(event.state_delta || {})) {
+    next[key] = round4(clamp(Number(next[key] || 0) + Number(value || 0), 0, 1));
+  }
+  return next;
+}
+
+function dominantCategory(events) {
+  const nonNeutral = events.filter((event) => event.category !== "neutral");
+  if (nonNeutral.length === 0) {
+    return "neutral";
+  }
+  return nonNeutral
+    .slice()
+    .sort((a, b) => (b.salience + b.confidence) - (a.salience + a.confidence))[0].category;
+}
+
+function applyPspcSemanticEventPacket(state, packet) {
   const current = state && typeof state === "object"
     ? state
     : createPspcReplyPreviewState();
+  const safePacket = validatePspcSemanticEventPacket(packet);
+  if (safePacket.extractor_status !== "ok") {
+    return {
+      ...current,
+      extractor_status: safePacket.extractor_status,
+      extractor_reason: String(safePacket.reason || safePacket.error || ""),
+    };
+  }
+  const events = safePacket.events.length > 0
+    ? safePacket.events
+    : [normalizeEvent({ event_kind: "neutral", category: "neutral", confidence: 1, salience: 0 }, 0)];
   const next = {
     ...current,
     counts: { ...(current.counts || {}) },
     salience: { ...(current.salience || {}) },
+    proxy_values: { ...createProxyValues(), ...(current.proxy_values || {}) },
     recent: Array.isArray(current.recent) ? current.recent.slice(-9) : [],
+    recent_events: Array.isArray(current.recent_events) ? current.recent_events.slice(-15) : [],
+    extractor_status: "ok",
+    extractor_reason: "",
   };
   const turn = Number(next.turn_count || 0) + 1;
-  const classified = classifyUserText(userText);
-  const category = classified.category;
   next.turn_count = turn;
+  const category = dominantCategory(events);
   next.counts[category] = Number(next.counts[category] || 0) + 1;
   if (category !== "neutral") {
-    next.salience[category] = round4(Number(next.salience[category] || 0) + Math.max(1, classified.score));
+    const categorySalience = events
+      .filter((event) => event.category === category)
+      .reduce((sum, event) => sum + Math.max(0.1, Number(event.salience || 0)), 0);
+    next.salience[category] = round4(Number(next.salience[category] || 0) + categorySalience);
+  }
+  for (const event of events) {
+    next.proxy_values = applyEventToProxy(next.proxy_values, event);
+    next.recent_events.push({
+      turn,
+      event_kind: event.event_kind,
+      category: event.category,
+      confidence: event.confidence,
+      salience: event.salience,
+      state_delta: event.state_delta,
+      evidence_excerpt: event.evidence_excerpt,
+      reason: event.reason,
+    });
   }
   next.recent.push({
     turn,
     category,
-    salience: Math.max(0, classified.score),
-    text_hash_basis: String(userText || "").slice(0, 24),
+    event_kinds: events.map((event) => event.event_kind),
+    salience: round4(events.reduce((sum, event) => sum + Number(event.salience || 0), 0)),
+    text_hash_basis: String(safePacket.input_text_hash_basis || "").slice(0, 24),
   });
   return next;
+}
+
+function updatePspcReplyPreviewState(state, semanticEventPacket) {
+  return applyPspcSemanticEventPacket(state, semanticEventPacket);
 }
 
 function recentCategoryCounts(recent) {
@@ -189,7 +334,7 @@ function dominantStyle(state) {
     return {
       style: "warm_approach",
       confidence: clamp(0.5 + gentle * 0.08 + recentCounts.gentle * 0.04, 0.5, 0.88),
-      basis: "gentle interaction history dominates this local session",
+      basis: "semantic gentle interaction events dominate this local session",
     };
   }
   return {
@@ -200,15 +345,16 @@ function dominantStyle(state) {
 }
 
 function reasonTraceRefs(state) {
-  const recent = Array.isArray(state && state.recent) ? state.recent : [];
-  return recent
+  const recentEvents = Array.isArray(state && state.recent_events) ? state.recent_events : [];
+  return recentEvents
     .filter((item) => item.category && item.category !== "neutral")
     .slice(-5)
-    .map((item) => `session_turn_${String(item.turn).padStart(3, "0")}:${item.category}`);
+    .map((item) => `session_turn_${String(item.turn).padStart(3, "0")}:${item.event_kind}`);
 }
 
 function buildProxyState(state) {
   const counts = state && state.counts ? state.counts : {};
+  const proxyValues = { ...createProxyValues(), ...((state && state.proxy_values) || {}) };
   const gentle = Number(counts.gentle || 0);
   const interruption = Number(counts.interruption || 0);
   const lateNight = Number(counts.late_night || 0);
@@ -218,13 +364,7 @@ function buildProxyState(state) {
   return {
     signal_status: known >= 2 ? "active" : "inactive",
     neutral_ratio: round4(total > 0 ? neutral / total : 1),
-    trust_proxy: round4(clamp(gentle * 0.22 - interruption * 0.08, 0, 1)),
-    stress_proxy: round4(clamp(interruption * 0.22 + lateNight * 0.04, 0, 1)),
-    approach_tendency: round4(clamp(gentle * 0.22 - interruption * 0.1, 0, 1)),
-    avoidance_tendency: round4(clamp(interruption * 0.22, 0, 1)),
-    care_tendency: round4(clamp(lateNight * 0.22 + gentle * 0.03, 0, 1)),
-    boundary_tendency: round4(clamp(interruption * 0.24, 0, 1)),
-    low_interrupt_tendency: round4(clamp(lateNight * 0.24 + interruption * 0.04, 0, 1)),
+    ...Object.fromEntries(PROXY_FIELDS.map((field) => [field, round4(clamp(Number(proxyValues[field] || 0), 0, 1))])),
   };
 }
 
@@ -241,6 +381,20 @@ function debugSignalStatus(proxyState) {
   return proxyState && proxyState.signal_status === "active"
     ? "PSPC signal active"
     : "PSPC signal inactive / neutral";
+}
+
+function profileRecentEvents(state) {
+  return Array.isArray(state && state.recent_events)
+    ? state.recent_events.slice(-8).map((event) => ({
+      event_kind: String(event.event_kind || "neutral"),
+      category: String(event.category || "neutral"),
+      confidence: Number(event.confidence || 0),
+      salience: Number(event.salience || 0),
+      state_delta: event.state_delta && typeof event.state_delta === "object" ? event.state_delta : {},
+      evidence_excerpt: String(event.evidence_excerpt || ""),
+      reason: String(event.reason || ""),
+    }))
+    : [];
 }
 
 function buildPspcReplyPreviewContext(state) {
@@ -262,6 +416,8 @@ function buildPspcReplyPreviewContext(state) {
       style: profile.style,
       confidence: round4(profile.confidence),
       basis: profile.basis,
+      extractor_status: String(safeState.extractor_status || "not_run"),
+      extractor_reason: String(safeState.extractor_reason || ""),
       reason_trace_refs: reasonTraceRefs(safeState),
       counts: {
         gentle: Number((safeState.counts && safeState.counts.gentle) || 0),
@@ -272,6 +428,7 @@ function buildPspcReplyPreviewContext(state) {
       recent_categories: Array.isArray(safeState.recent)
         ? safeState.recent.slice(-5).map((item) => String(item.category || "neutral"))
         : [],
+      recent_events: profileRecentEvents(safeState),
       proxy_state: proxyState,
     },
     forbidden: {
@@ -321,11 +478,14 @@ function buildPspcReplyPreviewScenario(context) {
   const proxyState = profile.proxy_state && typeof profile.proxy_state === "object"
     ? profile.proxy_state
     : buildProxyState({ counts: profile.counts || {} });
+  const recentEvents = Array.isArray(profile.recent_events) ? profile.recent_events : [];
   const row = {
     packet_id: "session_local_pspc_reply_preview",
     style,
     confidence: Number(profile.confidence || 0),
     basis: String(profile.basis || ""),
+    extractor_status: String(profile.extractor_status || "not_run"),
+    extractor_reason: String(profile.extractor_reason || ""),
     reason_trace_refs: Array.isArray(profile.reason_trace_refs)
       ? profile.reason_trace_refs.map(String)
       : [],
@@ -339,6 +499,7 @@ function buildPspcReplyPreviewScenario(context) {
     recent_categories: Array.isArray(profile.recent_categories)
       ? profile.recent_categories.map(String)
       : [],
+    detected_events: recentEvents,
   };
   const scenario = {
     schema_version: REPLY_PREVIEW_SCENARIO_SCHEMA_VERSION,
@@ -351,6 +512,7 @@ function buildPspcReplyPreviewScenario(context) {
     style,
     confidence: Number(profile.confidence || 0),
     basis: String(profile.basis || ""),
+    extractor_status: String(profile.extractor_status || "not_run"),
     reason_trace_refs: Array.isArray(profile.reason_trace_refs)
       ? profile.reason_trace_refs.map(String)
       : [],
@@ -381,14 +543,17 @@ function buildPspcReplyPreviewScenario(context) {
         "style",
         "confidence",
         "basis",
+        "extractor_status",
         "reason_trace_refs",
         "claim_ceiling",
         "history_counts",
         "recent_categories",
+        "detected_events",
         "proxy_bars",
         "signal_status",
       ],
       rows: [row],
+      detected_events: recentEvents,
       proxy_bars: buildProxyBars(proxyState),
     },
   };
@@ -399,12 +564,16 @@ function buildPspcReplyPreviewScenario(context) {
 }
 
 module.exports = {
+  DEBUG_OVERLAY_CLAIM_CEILING,
   REPLY_PREVIEW_CLAIM_CEILING,
   REPLY_PREVIEW_SCHEMA_VERSION,
   SAME_TRIGGER_TEXT,
+  SEMANTIC_EVENTS_SCHEMA_VERSION,
+  SEMANTIC_EXTRACTOR_CLAIM_CEILING,
+  applyPspcSemanticEventPacket,
   buildPspcReplyPreviewContext,
   buildPspcReplyPreviewScenario,
-  classifyUserText,
   createPspcReplyPreviewState,
   updatePspcReplyPreviewState,
+  validatePspcSemanticEventPacket,
 };

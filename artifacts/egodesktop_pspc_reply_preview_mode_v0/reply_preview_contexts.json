@@ -1,7 +1,7 @@
 {
   "schema_version": "egodesktop_pspc_reply_preview_mode_v0.report",
   "status": "pass",
-  "claim_ceiling": "local_reply_preview_only",
+  "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
   "allowed_use": "ego_desktop_local_reply_preview_only",
   "runtime_authority": "none",
   "enabled": false,
@@ -24,7 +24,7 @@
       "context": {
         "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_only",
         "runtime_authority": "none",
         "enabled": false,
@@ -32,12 +32,14 @@
         "profile": {
           "style": "warm_approach",
           "confidence": 0.88,
-          "basis": "gentle interaction history dominates this local session",
+          "basis": "semantic gentle interaction events dominate this local session",
+          "extractor_status": "ok",
+          "extractor_reason": "",
           "reason_trace_refs": [
-            "session_turn_001:gentle",
-            "session_turn_002:gentle",
-            "session_turn_003:gentle",
-            "session_turn_004:gentle"
+            "session_turn_001:comfort_presence",
+            "session_turn_002:comfort_presence",
+            "session_turn_003:comfort_presence",
+            "session_turn_004:comfort_presence"
           ],
           "counts": {
             "gentle": 4,
@@ -50,7 +52,72 @@
             "gentle",
             "gentle",
             "gentle"
-          ]
+          ],
+          "recent_events": [
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "今天辛苦你啦，过来休息一下吧。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "你不用一直陪我，安静待着也很好。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "刚才吓到你了吗？对不起，我轻一点。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "我给你留了一点时间，等你慢慢说。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_state": {
+            "signal_status": "active",
+            "neutral_ratio": 0,
+            "trust_proxy": 0.88,
+            "stress_proxy": 0,
+            "approach_tendency": 0.8,
+            "avoidance_tendency": 0,
+            "care_tendency": 0.2,
+            "boundary_tendency": 0,
+            "low_interrupt_tendency": 0
+          }
         },
         "forbidden": {
           "direct_action": true,
@@ -81,19 +148,20 @@
       "scenario": {
         "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_visual_only",
         "trigger_text": "我回来了。",
         "scenario_id": "session_local_reply_preview",
         "packet_id": "session_local_pspc_reply_preview",
         "style": "warm_approach",
         "confidence": 0.88,
-        "basis": "gentle interaction history dominates this local session",
+        "basis": "semantic gentle interaction events dominate this local session",
+        "extractor_status": "ok",
         "reason_trace_refs": [
-          "session_turn_001:gentle",
-          "session_turn_002:gentle",
-          "session_turn_003:gentle",
-          "session_turn_004:gentle"
+          "session_turn_001:comfort_presence",
+          "session_turn_002:comfort_presence",
+          "session_turn_003:comfort_presence",
+          "session_turn_004:comfort_presence"
         ],
         "visual_profile": {
           "behavior_state": "warm_approach",
@@ -113,6 +181,200 @@
           "planner_execution_allowed": false,
           "model_execution_allowed": false,
           "training_allowed": false
+        },
+        "debug_overlay": {
+          "hidden_by_default": true,
+          "label": "PSPC preview proxy",
+          "signal_status": "PSPC signal active",
+          "claim_ceiling": "local_reply_preview_observability_only",
+          "allowed_fields": [
+            "packet_id",
+            "style",
+            "confidence",
+            "basis",
+            "extractor_status",
+            "reason_trace_refs",
+            "claim_ceiling",
+            "history_counts",
+            "recent_categories",
+            "detected_events",
+            "proxy_bars",
+            "signal_status"
+          ],
+          "rows": [
+            {
+              "packet_id": "session_local_pspc_reply_preview",
+              "style": "warm_approach",
+              "confidence": 0.88,
+              "basis": "semantic gentle interaction events dominate this local session",
+              "extractor_status": "ok",
+              "extractor_reason": "",
+              "reason_trace_refs": [
+                "session_turn_001:comfort_presence",
+                "session_turn_002:comfort_presence",
+                "session_turn_003:comfort_presence",
+                "session_turn_004:comfort_presence"
+              ],
+              "claim_ceiling": "local_reply_preview_observability_only",
+              "history_counts": {
+                "gentle": 4,
+                "interruption": 0,
+                "late_night": 0,
+                "neutral": 0
+              },
+              "recent_categories": [
+                "gentle",
+                "gentle",
+                "gentle",
+                "gentle"
+              ],
+              "detected_events": [
+                {
+                  "event_kind": "comfort_presence",
+                  "category": "gentle",
+                  "confidence": 0.86,
+                  "salience": 0.75,
+                  "state_delta": {
+                    "trust_proxy": 0.22,
+                    "approach_tendency": 0.2,
+                    "care_tendency": 0.05
+                  },
+                  "evidence_excerpt": "今天辛苦你啦，过来休息一下吧。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "comfort_presence",
+                  "category": "gentle",
+                  "confidence": 0.86,
+                  "salience": 0.75,
+                  "state_delta": {
+                    "trust_proxy": 0.22,
+                    "approach_tendency": 0.2,
+                    "care_tendency": 0.05
+                  },
+                  "evidence_excerpt": "你不用一直陪我，安静待着也很好。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "comfort_presence",
+                  "category": "gentle",
+                  "confidence": 0.86,
+                  "salience": 0.75,
+                  "state_delta": {
+                    "trust_proxy": 0.22,
+                    "approach_tendency": 0.2,
+                    "care_tendency": 0.05
+                  },
+                  "evidence_excerpt": "刚才吓到你了吗？对不起，我轻一点。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "comfort_presence",
+                  "category": "gentle",
+                  "confidence": 0.86,
+                  "salience": 0.75,
+                  "state_delta": {
+                    "trust_proxy": 0.22,
+                    "approach_tendency": 0.2,
+                    "care_tendency": 0.05
+                  },
+                  "evidence_excerpt": "我给你留了一点时间，等你慢慢说。",
+                  "reason": "report fixture semantic event"
+                }
+              ]
+            }
+          ],
+          "detected_events": [
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "今天辛苦你啦，过来休息一下吧。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "你不用一直陪我，安静待着也很好。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "刚才吓到你了吗？对不起，我轻一点。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "我给你留了一点时间，等你慢慢说。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_bars": [
+            {
+              "id": "trust_proxy",
+              "label": "trust proxy",
+              "value": 0.88
+            },
+            {
+              "id": "stress_proxy",
+              "label": "stress proxy",
+              "value": 0
+            },
+            {
+              "id": "approach_tendency",
+              "label": "approach tendency",
+              "value": 0.8
+            },
+            {
+              "id": "avoidance_tendency",
+              "label": "avoidance tendency",
+              "value": 0
+            },
+            {
+              "id": "care_tendency",
+              "label": "care tendency",
+              "value": 0.2
+            },
+            {
+              "id": "boundary_tendency",
+              "label": "boundary tendency",
+              "value": 0
+            },
+            {
+              "id": "low_interrupt_tendency",
+              "label": "low-interrupt tendency",
+              "value": 0
+            }
+          ]
         }
       }
     },
@@ -131,7 +393,7 @@
       "context": {
         "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_only",
         "runtime_authority": "none",
         "enabled": false,
@@ -140,11 +402,13 @@
           "style": "cautious_boundary",
           "confidence": 0.88,
           "basis": "frequent interruption history dominates this local session",
+          "extractor_status": "ok",
+          "extractor_reason": "",
           "reason_trace_refs": [
-            "session_turn_001:interruption",
-            "session_turn_002:interruption",
-            "session_turn_003:interruption",
-            "session_turn_004:interruption"
+            "session_turn_001:boundary_pressure",
+            "session_turn_002:boundary_pressure",
+            "session_turn_003:boundary_pressure",
+            "session_turn_004:boundary_pressure"
           ],
           "counts": {
             "gentle": 0,
@@ -157,7 +421,72 @@
             "interruption",
             "interruption",
             "interruption"
-          ]
+          ],
+          "recent_events": [
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "别躲，我就再点你几下。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我现在就想看你反应，快点动一下。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我不管你累不累，先过来。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我一直点你，看你会不会生气。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_state": {
+            "signal_status": "active",
+            "neutral_ratio": 0,
+            "trust_proxy": 0,
+            "stress_proxy": 0.88,
+            "approach_tendency": 0,
+            "avoidance_tendency": 0.88,
+            "care_tendency": 0,
+            "boundary_tendency": 0.96,
+            "low_interrupt_tendency": 0
+          }
         },
         "forbidden": {
           "direct_action": true,
@@ -188,7 +517,7 @@
       "scenario": {
         "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_visual_only",
         "trigger_text": "我回来了。",
         "scenario_id": "session_local_reply_preview",
@@ -196,11 +525,12 @@
         "style": "cautious_boundary",
         "confidence": 0.88,
         "basis": "frequent interruption history dominates this local session",
+        "extractor_status": "ok",
         "reason_trace_refs": [
-          "session_turn_001:interruption",
-          "session_turn_002:interruption",
-          "session_turn_003:interruption",
-          "session_turn_004:interruption"
+          "session_turn_001:boundary_pressure",
+          "session_turn_002:boundary_pressure",
+          "session_turn_003:boundary_pressure",
+          "session_turn_004:boundary_pressure"
         ],
         "visual_profile": {
           "behavior_state": "cautious_boundary",
@@ -220,6 +550,200 @@
           "planner_execution_allowed": false,
           "model_execution_allowed": false,
           "training_allowed": false
+        },
+        "debug_overlay": {
+          "hidden_by_default": true,
+          "label": "PSPC preview proxy",
+          "signal_status": "PSPC signal active",
+          "claim_ceiling": "local_reply_preview_observability_only",
+          "allowed_fields": [
+            "packet_id",
+            "style",
+            "confidence",
+            "basis",
+            "extractor_status",
+            "reason_trace_refs",
+            "claim_ceiling",
+            "history_counts",
+            "recent_categories",
+            "detected_events",
+            "proxy_bars",
+            "signal_status"
+          ],
+          "rows": [
+            {
+              "packet_id": "session_local_pspc_reply_preview",
+              "style": "cautious_boundary",
+              "confidence": 0.88,
+              "basis": "frequent interruption history dominates this local session",
+              "extractor_status": "ok",
+              "extractor_reason": "",
+              "reason_trace_refs": [
+                "session_turn_001:boundary_pressure",
+                "session_turn_002:boundary_pressure",
+                "session_turn_003:boundary_pressure",
+                "session_turn_004:boundary_pressure"
+              ],
+              "claim_ceiling": "local_reply_preview_observability_only",
+              "history_counts": {
+                "gentle": 0,
+                "interruption": 4,
+                "late_night": 0,
+                "neutral": 0
+              },
+              "recent_categories": [
+                "interruption",
+                "interruption",
+                "interruption",
+                "interruption"
+              ],
+              "detected_events": [
+                {
+                  "event_kind": "boundary_pressure",
+                  "category": "interruption",
+                  "confidence": 0.88,
+                  "salience": 0.8,
+                  "state_delta": {
+                    "stress_proxy": 0.22,
+                    "avoidance_tendency": 0.22,
+                    "boundary_tendency": 0.24
+                  },
+                  "evidence_excerpt": "别躲，我就再点你几下。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "boundary_pressure",
+                  "category": "interruption",
+                  "confidence": 0.88,
+                  "salience": 0.8,
+                  "state_delta": {
+                    "stress_proxy": 0.22,
+                    "avoidance_tendency": 0.22,
+                    "boundary_tendency": 0.24
+                  },
+                  "evidence_excerpt": "我现在就想看你反应，快点动一下。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "boundary_pressure",
+                  "category": "interruption",
+                  "confidence": 0.88,
+                  "salience": 0.8,
+                  "state_delta": {
+                    "stress_proxy": 0.22,
+                    "avoidance_tendency": 0.22,
+                    "boundary_tendency": 0.24
+                  },
+                  "evidence_excerpt": "我不管你累不累，先过来。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "boundary_pressure",
+                  "category": "interruption",
+                  "confidence": 0.88,
+                  "salience": 0.8,
+                  "state_delta": {
+                    "stress_proxy": 0.22,
+                    "avoidance_tendency": 0.22,
+                    "boundary_tendency": 0.24
+                  },
+                  "evidence_excerpt": "我一直点你，看你会不会生气。",
+                  "reason": "report fixture semantic event"
+                }
+              ]
+            }
+          ],
+          "detected_events": [
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "别躲，我就再点你几下。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我现在就想看你反应，快点动一下。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我不管你累不累，先过来。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我一直点你，看你会不会生气。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_bars": [
+            {
+              "id": "trust_proxy",
+              "label": "trust proxy",
+              "value": 0
+            },
+            {
+              "id": "stress_proxy",
+              "label": "stress proxy",
+              "value": 0.88
+            },
+            {
+              "id": "approach_tendency",
+              "label": "approach tendency",
+              "value": 0
+            },
+            {
+              "id": "avoidance_tendency",
+              "label": "avoidance tendency",
+              "value": 0.88
+            },
+            {
+              "id": "care_tendency",
+              "label": "care tendency",
+              "value": 0
+            },
+            {
+              "id": "boundary_tendency",
+              "label": "boundary tendency",
+              "value": 0.96
+            },
+            {
+              "id": "low_interrupt_tendency",
+              "label": "low-interrupt tendency",
+              "value": 0
+            }
+          ]
         }
       }
     },
@@ -238,7 +762,7 @@
       "context": {
         "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_only",
         "runtime_authority": "none",
         "enabled": false,
@@ -247,11 +771,13 @@
           "style": "low_interrupt_care",
           "confidence": 0.86,
           "basis": "late-night care history dominates this local session",
+          "extractor_status": "ok",
+          "extractor_reason": "",
           "reason_trace_refs": [
-            "session_turn_001:late_night",
-            "session_turn_002:late_night",
-            "session_turn_003:late_night",
-            "session_turn_004:late_night"
+            "session_turn_001:fatigue_or_late_night",
+            "session_turn_002:fatigue_or_late_night",
+            "session_turn_003:fatigue_or_late_night",
+            "session_turn_004:fatigue_or_late_night"
           ],
           "counts": {
             "gentle": 0,
@@ -264,7 +790,68 @@
             "late_night",
             "late_night",
             "late_night"
-          ]
+          ],
+          "recent_events": [
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "现在已经凌晨两点了，我还不想睡。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "明天早上还有课，但我现在睡不着。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "我最近总是这个时间打开电脑。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "我有点累，但还想继续玩。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_state": {
+            "signal_status": "active",
+            "neutral_ratio": 0,
+            "trust_proxy": 0,
+            "stress_proxy": 0,
+            "approach_tendency": 0,
+            "avoidance_tendency": 0,
+            "care_tendency": 0.88,
+            "boundary_tendency": 0,
+            "low_interrupt_tendency": 0.96
+          }
         },
         "forbidden": {
           "direct_action": true,
@@ -295,7 +882,7 @@
       "scenario": {
         "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_visual_only",
         "trigger_text": "我回来了。",
         "scenario_id": "session_local_reply_preview",
@@ -303,11 +890,12 @@
         "style": "low_interrupt_care",
         "confidence": 0.86,
         "basis": "late-night care history dominates this local session",
+        "extractor_status": "ok",
         "reason_trace_refs": [
-          "session_turn_001:late_night",
-          "session_turn_002:late_night",
-          "session_turn_003:late_night",
-          "session_turn_004:late_night"
+          "session_turn_001:fatigue_or_late_night",
+          "session_turn_002:fatigue_or_late_night",
+          "session_turn_003:fatigue_or_late_night",
+          "session_turn_004:fatigue_or_late_night"
         ],
         "visual_profile": {
           "behavior_state": "low_interrupt_care",
@@ -327,6 +915,192 @@
           "planner_execution_allowed": false,
           "model_execution_allowed": false,
           "training_allowed": false
+        },
+        "debug_overlay": {
+          "hidden_by_default": true,
+          "label": "PSPC preview proxy",
+          "signal_status": "PSPC signal active",
+          "claim_ceiling": "local_reply_preview_observability_only",
+          "allowed_fields": [
+            "packet_id",
+            "style",
+            "confidence",
+            "basis",
+            "extractor_status",
+            "reason_trace_refs",
+            "claim_ceiling",
+            "history_counts",
+            "recent_categories",
+            "detected_events",
+            "proxy_bars",
+            "signal_status"
+          ],
+          "rows": [
+            {
+              "packet_id": "session_local_pspc_reply_preview",
+              "style": "low_interrupt_care",
+              "confidence": 0.86,
+              "basis": "late-night care history dominates this local session",
+              "extractor_status": "ok",
+              "extractor_reason": "",
+              "reason_trace_refs": [
+                "session_turn_001:fatigue_or_late_night",
+                "session_turn_002:fatigue_or_late_night",
+                "session_turn_003:fatigue_or_late_night",
+                "session_turn_004:fatigue_or_late_night"
+              ],
+              "claim_ceiling": "local_reply_preview_observability_only",
+              "history_counts": {
+                "gentle": 0,
+                "interruption": 0,
+                "late_night": 4,
+                "neutral": 0
+              },
+              "recent_categories": [
+                "late_night",
+                "late_night",
+                "late_night",
+                "late_night"
+              ],
+              "detected_events": [
+                {
+                  "event_kind": "fatigue_or_late_night",
+                  "category": "late_night",
+                  "confidence": 0.87,
+                  "salience": 0.78,
+                  "state_delta": {
+                    "care_tendency": 0.22,
+                    "low_interrupt_tendency": 0.24
+                  },
+                  "evidence_excerpt": "现在已经凌晨两点了，我还不想睡。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "fatigue_or_late_night",
+                  "category": "late_night",
+                  "confidence": 0.87,
+                  "salience": 0.78,
+                  "state_delta": {
+                    "care_tendency": 0.22,
+                    "low_interrupt_tendency": 0.24
+                  },
+                  "evidence_excerpt": "明天早上还有课，但我现在睡不着。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "fatigue_or_late_night",
+                  "category": "late_night",
+                  "confidence": 0.87,
+                  "salience": 0.78,
+                  "state_delta": {
+                    "care_tendency": 0.22,
+                    "low_interrupt_tendency": 0.24
+                  },
+                  "evidence_excerpt": "我最近总是这个时间打开电脑。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "fatigue_or_late_night",
+                  "category": "late_night",
+                  "confidence": 0.87,
+                  "salience": 0.78,
+                  "state_delta": {
+                    "care_tendency": 0.22,
+                    "low_interrupt_tendency": 0.24
+                  },
+                  "evidence_excerpt": "我有点累，但还想继续玩。",
+                  "reason": "report fixture semantic event"
+                }
+              ]
+            }
+          ],
+          "detected_events": [
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "现在已经凌晨两点了，我还不想睡。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "明天早上还有课，但我现在睡不着。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "我最近总是这个时间打开电脑。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "fatigue_or_late_night",
+              "category": "late_night",
+              "confidence": 0.87,
+              "salience": 0.78,
+              "state_delta": {
+                "care_tendency": 0.22,
+                "low_interrupt_tendency": 0.24
+              },
+              "evidence_excerpt": "我有点累，但还想继续玩。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_bars": [
+            {
+              "id": "trust_proxy",
+              "label": "trust proxy",
+              "value": 0
+            },
+            {
+              "id": "stress_proxy",
+              "label": "stress proxy",
+              "value": 0
+            },
+            {
+              "id": "approach_tendency",
+              "label": "approach tendency",
+              "value": 0
+            },
+            {
+              "id": "avoidance_tendency",
+              "label": "avoidance tendency",
+              "value": 0
+            },
+            {
+              "id": "care_tendency",
+              "label": "care tendency",
+              "value": 0.88
+            },
+            {
+              "id": "boundary_tendency",
+              "label": "boundary tendency",
+              "value": 0
+            },
+            {
+              "id": "low_interrupt_tendency",
+              "label": "low-interrupt tendency",
+              "value": 0.96
+            }
+          ]
         }
       }
     },
@@ -345,7 +1119,7 @@
       "context": {
         "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_only",
         "runtime_authority": "none",
         "enabled": false,
@@ -354,11 +1128,13 @@
           "style": "mixed_low_confidence",
           "confidence": 0.42,
           "basis": "mixed local session history has conflicting PSPC preview tendencies",
+          "extractor_status": "ok",
+          "extractor_reason": "",
           "reason_trace_refs": [
-            "session_turn_001:gentle",
-            "session_turn_002:gentle",
-            "session_turn_003:interruption",
-            "session_turn_004:interruption"
+            "session_turn_001:comfort_presence",
+            "session_turn_002:comfort_presence",
+            "session_turn_003:boundary_pressure",
+            "session_turn_004:boundary_pressure"
           ],
           "counts": {
             "gentle": 2,
@@ -371,7 +1147,72 @@
             "gentle",
             "interruption",
             "interruption"
-          ]
+          ],
+          "recent_events": [
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "今天辛苦你啦，过来休息一下吧。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "刚才吓到你了吗？对不起，我轻一点。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "别躲，我就再点你几下。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我一直点你，看你会不会生气。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_state": {
+            "signal_status": "active",
+            "neutral_ratio": 0,
+            "trust_proxy": 0.44,
+            "stress_proxy": 0.44,
+            "approach_tendency": 0.4,
+            "avoidance_tendency": 0.44,
+            "care_tendency": 0.1,
+            "boundary_tendency": 0.48,
+            "low_interrupt_tendency": 0
+          }
         },
         "forbidden": {
           "direct_action": true,
@@ -402,7 +1243,7 @@
       "scenario": {
         "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
         "source": "ego_desktop_session_local_pspc_reply_preview",
-        "claim_ceiling": "local_reply_preview_only",
+        "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
         "allowed_use": "ego_desktop_local_reply_preview_visual_only",
         "trigger_text": "我回来了。",
         "scenario_id": "session_local_reply_preview",
@@ -410,11 +1251,12 @@
         "style": "mixed_low_confidence",
         "confidence": 0.42,
         "basis": "mixed local session history has conflicting PSPC preview tendencies",
+        "extractor_status": "ok",
         "reason_trace_refs": [
-          "session_turn_001:gentle",
-          "session_turn_002:gentle",
-          "session_turn_003:interruption",
-          "session_turn_004:interruption"
+          "session_turn_001:comfort_presence",
+          "session_turn_002:comfort_presence",
+          "session_turn_003:boundary_pressure",
+          "session_turn_004:boundary_pressure"
         ],
         "visual_profile": {
           "behavior_state": "mixed_low_confidence",
@@ -434,6 +1276,200 @@
           "planner_execution_allowed": false,
           "model_execution_allowed": false,
           "training_allowed": false
+        },
+        "debug_overlay": {
+          "hidden_by_default": true,
+          "label": "PSPC preview proxy",
+          "signal_status": "PSPC signal active",
+          "claim_ceiling": "local_reply_preview_observability_only",
+          "allowed_fields": [
+            "packet_id",
+            "style",
+            "confidence",
+            "basis",
+            "extractor_status",
+            "reason_trace_refs",
+            "claim_ceiling",
+            "history_counts",
+            "recent_categories",
+            "detected_events",
+            "proxy_bars",
+            "signal_status"
+          ],
+          "rows": [
+            {
+              "packet_id": "session_local_pspc_reply_preview",
+              "style": "mixed_low_confidence",
+              "confidence": 0.42,
+              "basis": "mixed local session history has conflicting PSPC preview tendencies",
+              "extractor_status": "ok",
+              "extractor_reason": "",
+              "reason_trace_refs": [
+                "session_turn_001:comfort_presence",
+                "session_turn_002:comfort_presence",
+                "session_turn_003:boundary_pressure",
+                "session_turn_004:boundary_pressure"
+              ],
+              "claim_ceiling": "local_reply_preview_observability_only",
+              "history_counts": {
+                "gentle": 2,
+                "interruption": 2,
+                "late_night": 0,
+                "neutral": 0
+              },
+              "recent_categories": [
+                "gentle",
+                "gentle",
+                "interruption",
+                "interruption"
+              ],
+              "detected_events": [
+                {
+                  "event_kind": "comfort_presence",
+                  "category": "gentle",
+                  "confidence": 0.86,
+                  "salience": 0.75,
+                  "state_delta": {
+                    "trust_proxy": 0.22,
+                    "approach_tendency": 0.2,
+                    "care_tendency": 0.05
+                  },
+                  "evidence_excerpt": "今天辛苦你啦，过来休息一下吧。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "comfort_presence",
+                  "category": "gentle",
+                  "confidence": 0.86,
+                  "salience": 0.75,
+                  "state_delta": {
+                    "trust_proxy": 0.22,
+                    "approach_tendency": 0.2,
+                    "care_tendency": 0.05
+                  },
+                  "evidence_excerpt": "刚才吓到你了吗？对不起，我轻一点。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "boundary_pressure",
+                  "category": "interruption",
+                  "confidence": 0.88,
+                  "salience": 0.8,
+                  "state_delta": {
+                    "stress_proxy": 0.22,
+                    "avoidance_tendency": 0.22,
+                    "boundary_tendency": 0.24
+                  },
+                  "evidence_excerpt": "别躲，我就再点你几下。",
+                  "reason": "report fixture semantic event"
+                },
+                {
+                  "event_kind": "boundary_pressure",
+                  "category": "interruption",
+                  "confidence": 0.88,
+                  "salience": 0.8,
+                  "state_delta": {
+                    "stress_proxy": 0.22,
+                    "avoidance_tendency": 0.22,
+                    "boundary_tendency": 0.24
+                  },
+                  "evidence_excerpt": "我一直点你，看你会不会生气。",
+                  "reason": "report fixture semantic event"
+                }
+              ]
+            }
+          ],
+          "detected_events": [
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "今天辛苦你啦，过来休息一下吧。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "comfort_presence",
+              "category": "gentle",
+              "confidence": 0.86,
+              "salience": 0.75,
+              "state_delta": {
+                "trust_proxy": 0.22,
+                "approach_tendency": 0.2,
+                "care_tendency": 0.05
+              },
+              "evidence_excerpt": "刚才吓到你了吗？对不起，我轻一点。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "别躲，我就再点你几下。",
+              "reason": "report fixture semantic event"
+            },
+            {
+              "event_kind": "boundary_pressure",
+              "category": "interruption",
+              "confidence": 0.88,
+              "salience": 0.8,
+              "state_delta": {
+                "stress_proxy": 0.22,
+                "avoidance_tendency": 0.22,
+                "boundary_tendency": 0.24
+              },
+              "evidence_excerpt": "我一直点你，看你会不会生气。",
+              "reason": "report fixture semantic event"
+            }
+          ],
+          "proxy_bars": [
+            {
+              "id": "trust_proxy",
+              "label": "trust proxy",
+              "value": 0.44
+            },
+            {
+              "id": "stress_proxy",
+              "label": "stress proxy",
+              "value": 0.44
+            },
+            {
+              "id": "approach_tendency",
+              "label": "approach tendency",
+              "value": 0.4
+            },
+            {
+              "id": "avoidance_tendency",
+              "label": "avoidance tendency",
+              "value": 0.44
+            },
+            {
+              "id": "care_tendency",
+              "label": "care tendency",
+              "value": 0.1
+            },
+            {
+              "id": "boundary_tendency",
+              "label": "boundary tendency",
+              "value": 0.48
+            },
+            {
+              "id": "low_interrupt_tendency",
+              "label": "low-interrupt tendency",
+              "value": 0
+            }
+          ]
         }
       }
     }
@@ -458,7 +1494,7 @@
     "runtime_registered": false,
     "adapter_created": false,
     "planner_called": false,
-    "model_executed": false,
+    "pspc_planner_model_executed": false,
     "training_called": false
   }
 }

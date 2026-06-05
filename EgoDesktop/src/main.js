@@ -17,11 +17,12 @@ const { resolveModelInput } = require("./modelResolver");
 const { listExpressionFiles } = require("./modelSettings");
 const { buildPspcPerceptionDemo } = require("./pspcPerceptionDemo");
 const {
+  applyPspcSemanticEventPacket,
   buildPspcReplyPreviewContext,
   buildPspcReplyPreviewScenario,
   createPspcReplyPreviewState,
-  updatePspcReplyPreviewState,
 } = require("./pspcReplyPreview");
+const { runPspcSignalExtractor } = require("./pspcSignalExtractor");
 const { buildPspcVisualShim } = require("./pspcVisualShim");
 const {
   appendDesktopSessionTurn,
@@ -451,6 +452,7 @@ async function run() {
   const pspcRecordingMode = Boolean(args["pspc-recording-mode"]);
   const pspcReplyPreviewMode = Boolean(args["pspc-reply-preview-mode"]);
   let pspcReplyPreviewState = createPspcReplyPreviewState({ enabled: pspcReplyPreviewMode });
+  let pspcSignalExtractorQueue = Promise.resolve();
   let desktopSessionState = createDesktopSessionState();
   let desktopRecoveryState = createDesktopRecoveryState();
   const expressionCatalog = loadExpressionCatalog(modelInfo.modelDir);
@@ -561,6 +563,43 @@ async function run() {
     developerSettingsReport: launchProfile.report,
     debugOverlayDefaultVisible: Boolean(developerSettings.debug_overlay_default_visible),
   };
+  function currentPspcReplyPreviewPayload() {
+    const context = buildPspcReplyPreviewContext(pspcReplyPreviewState);
+    return {
+      context,
+      scenario: buildPspcReplyPreviewScenario(context),
+    };
+  }
+
+  function schedulePspcSignalExtraction({ userText, desktopSessionContext }) {
+    if (!pspcReplyPreviewMode) {
+      return;
+    }
+    pspcSignalExtractorQueue = pspcSignalExtractorQueue.then(async () => {
+      const packet = await runPspcSignalExtractor({
+        repoRoot,
+        userText,
+        desktopSessionContext,
+        timeoutMs: Number(args["pspc-signal-extractor-timeout-ms"] || 6000),
+      });
+      pspcReplyPreviewState = applyPspcSemanticEventPacket(pspcReplyPreviewState, packet);
+      const current = currentPspcReplyPreviewPayload();
+      window.webContents.send("ego-desktop:pspc-reply-preview-updated", {
+        schema_version: "ego_desktop.pspc_reply_preview_async_update.v0",
+        claim_ceiling: "local_reply_preview_semantic_signal_extractor_only",
+        packet,
+        pspc_reply_preview_context: current.context,
+        pspc_reply_preview_scenario: current.scenario,
+      });
+    }).catch((error) => {
+      window.webContents.send("ego-desktop:pspc-reply-preview-updated", {
+        schema_version: "ego_desktop.pspc_reply_preview_async_update.v0",
+        claim_ceiling: "local_reply_preview_semantic_signal_extractor_only",
+        error: String(error && error.message ? error.message : error),
+      });
+    });
+  }
+
   ipcMain.handle("ego-desktop:get-config", () => config);
   ipcMain.handle("ego-desktop:open-developer-settings", () => openDeveloperSettingsWindow());
   ipcMain.handle("ego-desktop:get-developer-settings", () => currentDeveloperSettingsResponse());
@@ -610,9 +649,9 @@ async function run() {
       turnPayload.desktop_recovery_context = desktopRecoveryContext;
     }
     if (pspcReplyPreviewMode) {
-      pspcReplyPreviewState = updatePspcReplyPreviewState(pspcReplyPreviewState, userText);
-      pspcReplyPreviewContext = buildPspcReplyPreviewContext(pspcReplyPreviewState);
-      pspcReplyPreviewScenario = buildPspcReplyPreviewScenario(pspcReplyPreviewContext);
+      const current = currentPspcReplyPreviewPayload();
+      pspcReplyPreviewContext = current.context;
+      pspcReplyPreviewScenario = current.scenario;
       turnPayload.pspc_reply_preview_mode = true;
       turnPayload.pspc_reply_preview_context = pspcReplyPreviewContext;
     }
@@ -635,6 +674,7 @@ async function run() {
         userText,
       });
     }
+    schedulePspcSignalExtraction({ userText, desktopSessionContext });
     return {
       ...buildDesktopChatTurn({ userText, botText, status }),
       backend_status: backend.status || status,

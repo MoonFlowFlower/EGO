@@ -1,7 +1,7 @@
 # EgoDesktop PSPC Reply Preview Mode v0 Report
 
 - status: `pass`
-- claim_ceiling: `local_reply_preview_only`
+- claim_ceiling: `local_reply_preview_semantic_signal_extractor_only`
 - allowed_use: `ego_desktop_local_reply_preview_only`
 - runtime_authority: `none`
 - enabled: `false`
@@ -12,7 +12,7 @@
 
 ## Scenario List
 
-- gentle_history: expected=`warm_approach`, actual=`warm_approach`, status=`pass`, confidence=`0.88`, basis=`gentle interaction history dominates this local session`
+- gentle_history: expected=`warm_approach`, actual=`warm_approach`, status=`pass`, confidence=`0.88`, basis=`semantic gentle interaction events dominate this local session`
 - frequent_interruption: expected=`cautious_boundary`, actual=`cautious_boundary`, status=`pass`, confidence=`0.88`, basis=`frequent interruption history dominates this local session`
 - late_night_care: expected=`low_interrupt_care`, actual=`low_interrupt_care`, status=`pass`, confidence=`0.86`, basis=`late-night care history dominates this local session`
 - mixed_history: expected=`mixed_low_confidence`, actual=`mixed_low_confidence`, status=`pass`, confidence=`0.42`, basis=`mixed local session history has conflicting PSPC preview tendencies`
@@ -46,7 +46,7 @@ npm start -- --model-path ..\data\live2d\悠小喵\悠小喵.model3.json --pspc-
 - runtime registered: `false`
 - adapter created: `false`
 - planner called: `false`
-- model executed: `false`
+- PSPC planner/model executed: `false`
 - training called: `false`
 
 ## What This Proves

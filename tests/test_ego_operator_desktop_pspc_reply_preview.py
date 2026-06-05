@@ -10,7 +10,7 @@ from scripts.ego_operator_desktop_turn import (
 VALID_CONTEXT = {
     "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
     "source": "ego_desktop_session_local_pspc_reply_preview",
-    "claim_ceiling": "local_reply_preview_only",
+    "claim_ceiling": "local_reply_preview_semantic_signal_extractor_only",
     "allowed_use": "ego_desktop_local_reply_preview_only",
     "runtime_authority": "none",
     "enabled": False,
