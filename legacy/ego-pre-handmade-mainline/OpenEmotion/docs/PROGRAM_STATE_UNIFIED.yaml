@@ -44,6 +44,18 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Default-Off Runtime Shadow Hook v0 now has a disabled hook module at `EgoOperator/adapters/pspc_disabled_runtime_shadow_hook.py`,
+    an artifact-only runner at `scripts/run_pspc_disabled_runtime_shadow_hook.py`,
+    tests at `tests/test_pspc_disabled_runtime_shadow_hook.py`, docs under `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-v0/`,
+    and artifacts under `artifacts/pspc_disabled_runtime_shadow_hook_v0/`. The hook
+    exposes only `assert_no_runtime_authority()`, `validate_shadow_context()`, and
+    `render_shadow_artifact()`, remains `enabled=false`, `mainline_connected=false`,
+    `runtime_authority=none`, audit-only, read-only, non-executable, and unregistered
+    by active EgoOperator runtime sources. Targeted tests pass `7 passed`. This is
+    `lab_only_proto_self_mechanism_candidate / default_off_hook_module_only` evidence
+    only; it does not prove hook registration safety, runtime integration safety,
+    adapter readiness, EgoOperator PSPC capability, runtime efficacy, real user benefit,
+    live autonomy, durable memory efficacy, consciousness, or subjective experience.
   - PSPC Disabled Runtime Shadow Hook Stage Card v0 now has a bounded review package
     under `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-stage-card-v0/` and
     artifacts under `artifacts/pspc_disabled_runtime_shadow_hook_stage_card_v0/`.
@@ -1192,6 +1204,22 @@ workstreams:
     hook implementation task. This remains `lab_only_proto_self_mechanism_candidate
     / disabled_runtime_shadow_hook_stage_card_only` evidence only and does not implement
     or connect a hook.
+- id: pspc_disabled_runtime_shadow_hook_v0
+  owner: Codex
+  status: default_off_hook_module_pass__not_registered__runtime_unchanged
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Default-Off Runtime Shadow Hook v0 creates a disabled hook module
+    at `EgoOperator/adapters/pspc_disabled_runtime_shadow_hook.py` plus an artifact-only
+    runner, tests, docs, and artifacts under `artifacts/pspc_disabled_runtime_shadow_hook_v0/`.
+    The hook exposes only no-authority assertion, shadow context validation, and audit
+    artifact rendering; it remains enabled=false, mainline_connected=false, runtime_authority=none,
+    audit-only, read-only, non-executable, and unregistered by active EgoOperator
+    runtime sources. This remains `lab_only_proto_self_mechanism_candidate / default_off_hook_module_only`
+    evidence only and does not prove hook registration safety or runtime integration
+    safety.
 axes:
   host_axis:
     current_state: closeout_complete

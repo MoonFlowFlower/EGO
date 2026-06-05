@@ -3432,13 +3432,13 @@ tasks:
     title: "PSPC Shadow: default-off hook module v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / default_off_hook_module_only"
-    next_action: "Create a default-off PSPC runtime shadow hook module with only no-authority assertion, shadow context validation, and audit artifact rendering. Do not import, register, enable, or connect it to EgoOperator runtime."
+    next_action: "Accepted locally: default-off hook module exists, exposes only no-authority assertion/context validation/artifact rendering, remains unregistered, and targeted tests pass. Next allowed task is PSPC-SHADOW-HOOK-003 runtime snapshot no-diff only."
     acceptance:
       - "Hook defaults to enabled=false, mainline_connected=false, runtime_authority=none, audit-only, read-only, and non-executable."
       - "Hook exposes only assert_no_runtime_authority(), validate_shadow_context(), and render_shadow_artifact()."
@@ -3458,7 +3458,7 @@ tasks:
     title: "PSPC Shadow: runtime snapshot no-diff v0"
     kind: task
     parent: null
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
