@@ -44,6 +44,20 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Recorded Shadow Observation Audit Usefulness v0 now has an isolated audit-usefulness
+    runner at `scripts/run_pspc_recorded_shadow_observation_audit_usefulness.py`,
+    tests at `tests/test_pspc_recorded_shadow_observation_audit_usefulness.py`, docs
+    under `docs/codex/tasks/pspc-recorded-shadow-observation-audit-usefulness-v0/`,
+    and artifacts under `artifacts/pspc_recorded_shadow_observation_audit_usefulness_v0/`.
+    The runner evaluates the existing 18 recorded EgoOperator cases and reports `audit_useful_count=18/18`
+    against a `12/18` threshold while preserving user-output, memory, approval, gate,
+    runtime-output, transport, proactive, planner, training, and model-execution no-side-effect
+    boundaries. The verdict is `audit_usefulness_pass_go_for_disabled_runtime_flag_contract`,
+    which permits only a future separate disabled runtime flag contract task. This
+    is `lab_only_proto_self_mechanism_candidate / recorded_shadow_audit_usefulness_only`
+    evidence only; it does not prove runtime integration safety, registered hook safety,
+    adapter readiness, EgoOperator PSPC capability, runtime efficacy, real user benefit,
+    live autonomy, durable memory efficacy, consciousness, or subjective experience.
   - PSPC Runtime Shadow Snapshot No-Diff v0 now has a no-diff runner at `scripts/run_pspc_runtime_shadow_snapshot_no_diff.py`,
     tests at `tests/test_pspc_runtime_shadow_snapshot_no_diff.py`, docs under `docs/codex/tasks/pspc-runtime-shadow-snapshot-no-diff-v0/`,
     and artifacts under `artifacts/pspc_runtime_shadow_snapshot_no_diff_v0/`. The
@@ -1245,6 +1259,23 @@ workstreams:
     shadow artifacts. This remains `lab_only_proto_self_mechanism_candidate / runtime_snapshot_no_diff_only`
     evidence only and does not prove runtime integration safety or registered hook
     safety.
+- id: pspc_recorded_shadow_observation_audit_usefulness_v0
+  owner: Codex
+  status: audit_usefulness_pass__go_for_disabled_runtime_flag_contract__shadow_only
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Recorded Shadow Observation Audit Usefulness v0 evaluates the existing
+    18 recorded EgoOperator cases through the disabled PSPC runtime shadow hook and
+    records `audit_useful_count=18/18` against a `12/18` threshold. Each observation
+    remains trace-referenced, non-executable, audit-only, and free of action, tool-call,
+    user-message, memory-write, gate-decision, approval, transport, send, or schedule
+    fields. User-output, memory, approval, gate, runtime-output, transport, proactive,
+    planner, training, and model-execution side effects remain absent. This remains
+    `lab_only_proto_self_mechanism_candidate / recorded_shadow_audit_usefulness_only`
+    evidence only and permits only a future separate disabled runtime flag contract
+    task.
 axes:
   host_axis:
     current_state: closeout_complete

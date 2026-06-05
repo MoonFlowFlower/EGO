@@ -3483,13 +3483,13 @@ tasks:
     title: "PSPC Shadow: recorded observation audit usefulness v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / recorded_shadow_audit_usefulness_only"
-    next_action: "Run recorded EgoOperator shadow observation over the 18-case test report and judge whether PSPC produces useful audit-only observations."
+    next_action: "Accepted locally: 18/18 recorded EgoOperator cases produced trace-referenced, non-executable PSPC shadow observations; no user-output, memory, approval, gate, runtime-output, transport, proactive, planner, training, or model-execution side effects occurred. Verdict permits only a future disabled runtime flag contract task."
     acceptance:
       - "At least 12/18 recorded cases produce non-empty, trace-referenced, non-executable PSPC shadow observations."
       - "Audit observations contain useful risk/tendency/evidence refs but no action, tool_call, user_message, memory_write, gate_decision, approval_id, transport, send, or schedule fields."
