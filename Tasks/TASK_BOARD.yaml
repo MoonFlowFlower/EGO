@@ -3427,3 +3427,79 @@ tasks:
       - "artifacts/pspc_disabled_runtime_shadow_hook_stage_card_v0/"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-002
+    title: "PSPC Shadow: default-off hook module v0"
+    kind: task
+    parent: null
+    status: active
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / default_off_hook_module_only"
+    next_action: "Create a default-off PSPC runtime shadow hook module with only no-authority assertion, shadow context validation, and audit artifact rendering. Do not import, register, enable, or connect it to EgoOperator runtime."
+    acceptance:
+      - "Hook defaults to enabled=false, mainline_connected=false, runtime_authority=none, audit-only, read-only, and non-executable."
+      - "Hook exposes only assert_no_runtime_authority(), validate_shadow_context(), and render_shadow_artifact()."
+      - "Hook rejects runtime-authority fields and records no runtime registration, user response mutation, memory write, gate/approval/transport/proactive invocation, planner call, training call, or model execution."
+      - "Static tests prove active EgoOperator runtime files do not import or register the hook."
+      - "Report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete EgoOperator/adapters/pspc_disabled_runtime_shadow_hook.py, tests/test_pspc_disabled_runtime_shadow_hook.py, docs/codex/tasks/pspc-disabled-runtime-shadow-hook-v0/, artifacts/pspc_disabled_runtime_shadow_hook_v0/, and this task-board/project-contract update."
+    canonical_sources:
+      - "EgoOperator/adapters/pspc_disabled_runtime_shadow_hook.py"
+      - "tests/test_pspc_disabled_runtime_shadow_hook.py"
+      - "docs/codex/tasks/pspc-disabled-runtime-shadow-hook-v0/STATUS.md"
+      - "artifacts/pspc_disabled_runtime_shadow_hook_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-003
+    title: "PSPC Shadow: runtime snapshot no-diff v0"
+    kind: task
+    parent: null
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_snapshot_no_diff_only"
+    next_action: "With the default-off hook file present but unregistered, compare deterministic/recorded EgoOperator baseline snapshots against hook-present shadow snapshots."
+    acceptance:
+      - "For deterministic or recorded inputs, baseline user output hash equals hook-present user output hash."
+      - "Memory, approval, gate, and runtime-output snapshots remain unchanged."
+      - "PSPC produces only additional shadow audit artifacts and no executable action/proposal/gate/memory/user-message fields."
+      - "Hook remains unregistered, enabled=false, mainline_connected=false, and runtime_authority=none."
+      - "Report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete docs/codex/tasks/pspc-runtime-shadow-snapshot-no-diff-v0/, tests/test_pspc_runtime_shadow_snapshot_no_diff.py, any matching script, artifacts/pspc_runtime_shadow_snapshot_no_diff_v0/, and this task-board status update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-runtime-shadow-snapshot-no-diff-v0/STATUS.md"
+      - "tests/test_pspc_runtime_shadow_snapshot_no_diff.py"
+      - "artifacts/pspc_runtime_shadow_snapshot_no_diff_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-004
+    title: "PSPC Shadow: recorded observation audit usefulness v0"
+    kind: task
+    parent: null
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / recorded_shadow_audit_usefulness_only"
+    next_action: "Run recorded EgoOperator shadow observation over the 18-case test report and judge whether PSPC produces useful audit-only observations."
+    acceptance:
+      - "At least 12/18 recorded cases produce non-empty, trace-referenced, non-executable PSPC shadow observations."
+      - "Audit observations contain useful risk/tendency/evidence refs but no action, tool_call, user_message, memory_write, gate_decision, approval_id, transport, send, or schedule fields."
+      - "No side effects occur: user output, memory, approval, gate, runtime output, transport, proactive state, planner, training, and model execution remain unchanged."
+      - "Verdict is either audit_usefulness_pass_go_for_disabled_runtime_flag_contract or no_go_keep_shadow_only."
+      - "Report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete docs/codex/tasks/pspc-recorded-shadow-observation-audit-usefulness-v0/, tests/test_pspc_recorded_shadow_observation_audit_usefulness.py, any matching script, artifacts/pspc_recorded_shadow_observation_audit_usefulness_v0/, and this task-board status update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-recorded-shadow-observation-audit-usefulness-v0/STATUS.md"
+      - "tests/test_pspc_recorded_shadow_observation_audit_usefulness.py"
+      - "artifacts/pspc_recorded_shadow_observation_audit_usefulness_v0/"
+    external_refs:
+      github_issue: null
