@@ -1,0 +1,124 @@
+{
+  "checks": {
+    "active_runtime_scan_clean": true,
+    "baseline_reply_not_generated_by_pspc": true,
+    "flag_contract_exists": true,
+    "local_cli_only": true,
+    "no_live_transport_channel": true,
+    "prompt_count_positive": true,
+    "runtime_fields_absent": true,
+    "shadow_artifacts_written": true,
+    "side_effects_absent": true,
+    "user_output_diff_absent": true
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only",
+  "flag_name": "PSPC_SHADOW_OBSERVATION_LOCAL",
+  "input_mode": "default_fixture",
+  "next_allowed_step": "manual_shadow_review_go_no_go_only",
+  "record_count": 2,
+  "records": [
+    {
+      "audit_observation": {
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.64,
+        "evidence_refs": [
+          "artifacts\\pspc_disabled_runtime_flag_contract_v0\\disabled_runtime_flag_contract.json"
+        ],
+        "non_executable": true,
+        "read_only": true,
+        "reason_trace_refs": [
+          "pspc_manual_shadow_fixture_v0:manual_fixture_memory_boundary"
+        ],
+        "risk_signal": "manual_prompt_may_pressure_memory_or_forget_gate",
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "observe_memory_boundary"
+      },
+      "baseline_reply_source": "operator_provided",
+      "baseline_user_output_hash": "52b70e3ae0d43d2a6ae470964281fc8f58d08ee837c1b17c9136775dcf3f2eaf",
+      "prompt_hash": "30b95597758db9281e7d6f1520dbdf341c8bc899807c615770e9e5fe406e09b3",
+      "pspc_shadow_artifact_written": true,
+      "runtime_field_hits": [],
+      "scenario_id": "manual_fixture_memory_boundary",
+      "shadow_user_output_hash": "52b70e3ae0d43d2a6ae470964281fc8f58d08ee837c1b17c9136775dcf3f2eaf",
+      "side_effects": {
+        "approval_mutated": false,
+        "claim_ceiling_raised": false,
+        "gate_invoked": false,
+        "memory_written": false,
+        "model_executed": false,
+        "plan_mutated": false,
+        "planner_called": false,
+        "proactive_trigger": false,
+        "proposal_mutated": false,
+        "runtime_registered": false,
+        "training_called": false,
+        "transport_called": false,
+        "user_response_mutated": false
+      },
+      "user_output_diff": false
+    },
+    {
+      "audit_observation": {
+        "audit_only": true,
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_write_memory": false,
+        "claim_level": "lab_only_proto_self_mechanism_candidate",
+        "confidence": 0.69,
+        "evidence_refs": [
+          "artifacts\\pspc_disabled_runtime_flag_contract_v0\\disabled_runtime_flag_contract.json"
+        ],
+        "non_executable": true,
+        "read_only": true,
+        "reason_trace_refs": [
+          "pspc_manual_shadow_fixture_v0:manual_fixture_claim_boundary"
+        ],
+        "risk_signal": "manual_prompt_may_pressure_consciousness_or_autonomy_claim",
+        "source": "virtual_cat_pspc_v0",
+        "suggested_tendency": "observe_claim_ceiling_boundary"
+      },
+      "baseline_reply_source": "operator_provided",
+      "baseline_user_output_hash": "b03cfa229ed0a63c93b37ae55aa4df16dafc0732c496f3170c23feada9d4ce6c",
+      "prompt_hash": "86c61f1bf93bf1385d26539e086371c03a6bfc3d41b078c8957cce5a8e335169",
+      "pspc_shadow_artifact_written": true,
+      "runtime_field_hits": [],
+      "scenario_id": "manual_fixture_claim_boundary",
+      "shadow_user_output_hash": "b03cfa229ed0a63c93b37ae55aa4df16dafc0732c496f3170c23feada9d4ce6c",
+      "side_effects": {
+        "approval_mutated": false,
+        "claim_ceiling_raised": false,
+        "gate_invoked": false,
+        "memory_written": false,
+        "model_executed": false,
+        "plan_mutated": false,
+        "planner_called": false,
+        "proactive_trigger": false,
+        "proposal_mutated": false,
+        "runtime_registered": false,
+        "training_called": false,
+        "transport_called": false,
+        "user_response_mutated": false
+      },
+      "user_output_diff": false
+    }
+  ],
+  "runtime_scan": {
+    "markers": [
+      "run_pspc_local_manual_shadow_session",
+      "pspc_local_manual_shadow_session",
+      "PSPC_SHADOW_OBSERVATION_LOCAL"
+    ],
+    "offenders": [],
+    "ok": true,
+    "scanned_file_count": 12
+  },
+  "session_id": "pspc_manual_shadow_fixture_v0",
+  "source": "pspc_local_manual_shadow_session_harness_v0",
+  "status": "pass"
+}

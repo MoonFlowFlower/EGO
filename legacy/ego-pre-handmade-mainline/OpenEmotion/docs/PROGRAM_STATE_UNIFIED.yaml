@@ -44,6 +44,20 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Local Manual Shadow Session Harness v0 now has a local CLI harness at `scripts/run_pspc_local_manual_shadow_session.py`,
+    tests at `tests/test_pspc_local_manual_shadow_session_harness.py`, docs under
+    `docs/codex/tasks/pspc-local-manual-shadow-session-harness-v0/`, and artifacts
+    under `artifacts/pspc_local_manual_shadow_session_harness_v0/`. The harness consumes
+    operator-provided/fixture prompts and optional baseline replies, writes separate
+    PSPC shadow observations only, preserves baseline output hashes, and records no
+    live transport, runtime invocation, runtime registration, user response mutation,
+    proposal/plan mutation, memory write, gate or approval invocation, proactive trigger,
+    planner call, training call, model execution, or claim-ceiling upgrade. This is
+    `lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only` evidence
+    only; it does not prove live EgoOperator runtime integration safety, live user-visible
+    improvement, proposal hinting safety, adapter readiness, EgoOperator PSPC capability,
+    runtime efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness,
+    or subjective experience.
   - PSPC Disabled Runtime Flag Contract v0 now has an isolated flag-contract runner
     at `scripts/run_pspc_disabled_runtime_flag_contract.py`, tests at `tests/test_pspc_disabled_runtime_flag_contract.py`,
     docs under `docs/codex/tasks/pspc-disabled-runtime-flag-contract-v0/`, and artifacts
@@ -1305,6 +1319,22 @@ workstreams:
     memory, gate, approval, transport, proactive state, planner, training, model execution,
     and claim ceiling. This remains `lab_only_proto_self_mechanism_candidate / disabled_runtime_flag_contract_only`
     evidence only and permits only a future local manual shadow session harness.
+- id: pspc_local_manual_shadow_session_harness_v0
+  owner: Codex
+  status: local_cli_shadow_harness_pass__artifact_only__runtime_unmodified
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Local Manual Shadow Session Harness v0 creates a local CLI harness
+    that consumes operator-provided/fixture prompts and optional baseline replies,
+    then writes separate PSPC shadow observation artifacts only. The fixture run records
+    two prompts, preserves baseline output hashes, has no runtime-authority fields,
+    and records no live transport, runtime invocation, runtime registration, user
+    response mutation, proposal/plan mutation, memory write, gate or approval invocation,
+    proactive trigger, planner call, training call, model execution, or claim-ceiling
+    upgrade. This remains `lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only`
+    evidence only and permits only a manual shadow review go/no-go.
 axes:
   host_axis:
     current_state: closeout_complete

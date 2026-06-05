@@ -3533,13 +3533,13 @@ tasks:
     title: "PSPC Shadow: local manual shadow session harness v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only"
-    next_action: "After 005 passes, create a local CLI shadow harness where operator-entered text can produce baseline transcript plus PSPC shadow artifact only, with no user response mutation and no memory/gate/approval/transport/proactive side effect."
+    next_action: "Accepted locally: local CLI harness consumes operator-provided/fixture prompts and optional baseline replies, writes separate PSPC shadow artifacts only, preserves baseline output hashes, and records no runtime, memory, gate, approval, transport, proactive, planner, training, or model-execution side effects. Next allowed task is PSPC-SHADOW-HOOK-007 manual shadow review go/no-go only."
     acceptance:
       - "Harness is local CLI only and uses no live transport channel."
       - "For operator-entered prompts, baseline user-visible output remains the only reply surface; PSPC writes only separate shadow artifact data."
@@ -3558,7 +3558,7 @@ tasks:
     title: "PSPC Shadow: manual shadow review go-no-go v0"
     kind: task
     parent: null
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local

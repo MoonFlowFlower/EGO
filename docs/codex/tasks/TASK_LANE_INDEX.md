@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 176 |
+| `reference_only` | 177 |
 
 ## Active Default
 
@@ -213,6 +213,7 @@
 | Pspc Disabled Runtime Shadow Hook V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Disabled Shadow Hook V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-disabled-shadow-hook-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Fixture Shadow Trace V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-fixture-shadow-trace-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Pspc Local Manual Shadow Session Harness V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-local-manual-shadow-session-harness-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Design V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-design-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Implementation V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-implementation-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Read Only Adapter Skeleton V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-read-only-adapter-skeleton-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
