@@ -4,7 +4,7 @@
 
 - name: `human_operator_trial_v2`
 - owner: `Codex`
-- state: `real_provider_scripted_run_complete__human_review_pending`
+- state: `real_provider_scripted_run_complete__human_review_template_ready`
 - type: `human_observation_gate`
 
 ## Authority Snapshot
@@ -30,6 +30,8 @@ Trial v2 protocol and scripted runner are implemented. A fresh real-provider scr
 
 The result is still `scripted_trial_needs_human_review`, not a human-observation pass, because scripted observations intentionally carry `scripted_observation_requires_human_review` until a human operator reviews or imports scores/notes.
 
+A human-review template export path is now available. It converts the existing scripted report into a human-editable JSONL notes template and Markdown review packet while resetting `operator_score` to `0`, preserving scripted score only as `scripted_operator_score`, and omitting scripted `failure_notes` so the template cannot auto-pass without human scoring.
+
 ## Evidence
 
 - `python3 -m py_compile EgoOperator/human_operator_trial.py` - pass.
@@ -50,7 +52,26 @@ The result is still `scripted_trial_needs_human_review`, not a human-observation
 - `python3 scripts/codex/lint_repo.py` - pass.
 - `git diff --check` - pass.
 - `python3 scripts/codex/verify_repo.py --mode fast` - unavailable in this Windows shell: verifier tries to probe missing root `OpenEmotion` and aborts with `NotADirectoryError: [WinError 267] The directory name is invalid`.
+- `python -m py_compile EgoOperator\human_operator_trial.py EgoOperator\tests\test_human_operator_trial.py` - pass.
+- `$env:TMPDIR=$env:TEMP; python -m pytest -q EgoOperator\tests\test_human_operator_trial.py` - pass, `12 passed`.
+- `python EgoOperator\human_operator_trial.py --out EgoOperator\artifacts\human_operator_trial\v2_latest --export-review-template-from-report EgoOperator\artifacts\human_operator_trial\v2_latest\human_operator_trial_report.json` - pass, status `human_review_template_ready`, wrote `human_operator_trial_human_review_notes_template.jsonl` and `human_operator_trial_human_review_packet.md`.
+- `python scripts\codex\generate_program_state_views.py` - pass.
+- `python scripts\codex\generate_route_convergence_views.py` - pass.
+- `python scripts\codex\check_program_state_integrity.py --skip-diff-check` - pass.
+- `python scripts\codex\verify_route_convergence.py` - pass, active default `ego-operator-human-operator-trial-v2`.
+- `python scripts\codex\verify_mainline_clarity.py` - pass, active default `ego-operator-human-operator-trial-v2`.
+- `$env:TMPDIR=$env:TEMP; python -m pytest -q EgoOperator\tests` - pass, `418 passed`.
+- `python scripts\codex\lint_repo.py` - pass.
+- `git diff --check` - pass.
+- `python scripts\codex\verify_repo.py --mode fast` - unavailable in this Windows shell with `NotADirectoryError: [WinError 267]` while probing missing root `OpenEmotion`.
+- `wsl.exe bash -lc "cd /mnt/d/Project/AIProject/MyProject/Ego && python3 scripts/codex/verify_repo.py --mode fast"` - unavailable with `FileNotFoundError` while probing missing root `/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion`.
 
 ## Next Action
 
-Review or import human operator scores for the 18-observation scripted real-provider report at `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_report.json` before making any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`.
+Have a human operator fill `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl`, then import it with:
+
+```bash
+python EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_human_reviewed --notes EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl --provider-mode openrouter
+```
+
+Do this before making any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`.

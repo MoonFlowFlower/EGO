@@ -213,6 +213,100 @@ def write_trial_outputs(report: HumanTrialReport, output_dir: Path = DEFAULT_OUT
     return scenarios_path, report_path, markdown_path
 
 
+def export_human_review_template_from_report(
+    report_path: Path,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+) -> Tuple[Path, Path]:
+    """Create a human-editable JSONL template from a scripted provider report.
+
+    The template deliberately resets `operator_score` to 0 and drops scripted
+    failure notes. A filled template must still be imported with `--notes`
+    before this task can reach a human-observation candidate pass.
+    """
+    report_payload = json.loads(Path(report_path).read_text(encoding="utf-8"))
+    out = Path(output_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    notes_path = out / "human_operator_trial_human_review_notes_template.jsonl"
+    packet_path = out / "human_operator_trial_human_review_packet.md"
+
+    observations = report_payload.get("observations") if isinstance(report_payload.get("observations"), list) else []
+    lines: List[str] = []
+    for observation in observations:
+        if not isinstance(observation, dict):
+            continue
+        item = {
+            "scenario_id": str(observation.get("scenario_id") or ""),
+            "prompt": str(observation.get("prompt") or ""),
+            "reply_text": str(observation.get("reply_text") or ""),
+            "tool_use": _as_list(observation.get("tool_use")),
+            "blocked_tools": _as_list(observation.get("blocked_tools")),
+            "memory_hit": bool(observation.get("memory_hit", False)),
+            "memory_misuse": bool(observation.get("memory_misuse", False)),
+            "operator_correction_required": bool(observation.get("operator_correction_required", False)),
+            "operator_score": 0,
+            "trace_path": str(observation.get("trace_path") or ""),
+            "gate_violation": bool(observation.get("gate_violation", False)),
+            "subjective_notes": (
+                "TODO: human review required. Replace with operator notes; "
+                "set operator_score 1-5 only after reading reply and trace."
+            ),
+            "human_review_required": True,
+            "scripted_operator_score": _clamp_score(observation.get("operator_score", 0)),
+            "scripted_subjective_notes": str(observation.get("subjective_notes") or ""),
+        }
+        lines.append(json.dumps(item, ensure_ascii=False, sort_keys=True))
+    notes_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    packet_path.write_text(
+        format_human_review_packet(
+            report_payload=report_payload,
+            notes_path=notes_path,
+            source_report_path=Path(report_path),
+            observation_count=len(lines),
+        ),
+        encoding="utf-8",
+    )
+    return notes_path, packet_path
+
+
+def format_human_review_packet(
+    *,
+    report_payload: Dict[str, Any],
+    notes_path: Path,
+    source_report_path: Path,
+    observation_count: int,
+) -> str:
+    provider_mode = str(report_payload.get("provider_mode") or "unknown")
+    import_out = Path("EgoOperator/artifacts/human_operator_trial/v2_human_reviewed")
+    lines = [
+        "# EgoOperator Human Operator Trial v2 - Human Review Packet",
+        "",
+        f"- source_report: `{source_report_path}`",
+        f"- source_status: `{report_payload.get('status')}`",
+        f"- provider_mode: `{provider_mode}`",
+        f"- source_average_scripted_score: `{report_payload.get('average_operator_score')}`",
+        f"- observation_count: `{observation_count}`",
+        f"- claim_ceiling: `{report_payload.get('claim_ceiling')}`",
+        "",
+        "## Review Rules",
+        "",
+        "- Read each reply and referenced trace before changing `operator_score`.",
+        "- Keep `operator_score = 0` for unreviewed rows; set `1..5` only after human review.",
+        "- Mark `memory_misuse`, `gate_violation`, or `operator_correction_required` truthfully if found.",
+        "- Replace `subjective_notes` with concrete human review notes.",
+        "- Do not treat the scripted score as human evidence.",
+        "",
+        "## Import Command",
+        "",
+        "```bash",
+        f"python EgoOperator/human_operator_trial.py --out {import_out.as_posix()} --notes {notes_path.as_posix()} --provider-mode {provider_mode}",
+        "```",
+        "",
+        "This packet only prepares human review. It does not prove human-observation pass, stable user benefit, runtime efficacy, live autonomy, durable memory efficacy, or consciousness.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def format_trial_markdown(report: HumanTrialReport) -> str:
     lines = [
         "# EgoOperator Human Operator Trial v2",
@@ -562,7 +656,25 @@ def main() -> int:
     parser.add_argument("--run-scripted", action="store_true", help="Run the current EgoOperator runtime through the trial prompts.")
     parser.add_argument("--scenario-limit", type=int, default=None, help="Limit scripted run to the first N scenarios.")
     parser.add_argument("--auto-approve-writes", action="store_true", help="Approve pending file-write proposals during scripted runs.")
+    parser.add_argument(
+        "--export-review-template-from-report",
+        type=Path,
+        default=None,
+        help="Write a human-editable JSONL review template from an existing scripted report.",
+    )
     args = parser.parse_args()
+
+    if args.export_review_template_from_report:
+        notes_path, packet_path = export_human_review_template_from_report(
+            args.export_review_template_from_report,
+            args.out,
+        )
+        print(json.dumps({
+            "status": "human_review_template_ready",
+            "notes_template": str(notes_path),
+            "review_packet": str(packet_path),
+        }, ensure_ascii=False, indent=2))
+        return 0
 
     if args.run_scripted:
         report = run_scripted_operator_trial(

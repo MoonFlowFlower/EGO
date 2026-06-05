@@ -190,6 +190,37 @@ def test_load_observations_jsonl_round_trip(tmp_path):
     assert "ä½" not in observations[0].reply_text
 
 
+def test_export_human_review_template_does_not_auto_pass(tmp_path):
+    scripted_observations = [
+        trial.HumanTrialObservation(
+            scenario_id=scenario.scenario_id,
+            prompt=scenario.prompt,
+            reply_text="自然理解优先，工具和记忆都按 gate 处理。",
+            operator_score=5,
+            trace_path=f"traces/{scenario.scenario_id}.jsonl",
+            failure_notes=("scripted_observation_requires_human_review",),
+            subjective_notes="scripted_observation_requires_human_review",
+        )
+        for scenario in trial.human_trial_scenarios()
+    ]
+    scripted_report = trial.build_trial_report(scripted_observations, provider_mode="openrouter")
+    _, report_path, _ = trial.write_trial_outputs(scripted_report, tmp_path / "scripted")
+
+    notes_path, packet_path = trial.export_human_review_template_from_report(report_path, tmp_path / "review")
+    notes = [json.loads(line) for line in notes_path.read_text(encoding="utf-8").splitlines()]
+    packet = packet_path.read_text(encoding="utf-8")
+    imported_report = trial.build_trial_report(trial.load_observations_jsonl(notes_path), provider_mode="openrouter")
+
+    assert len(notes) == len(trial.human_trial_scenarios())
+    assert notes[0]["operator_score"] == 0
+    assert notes[0]["scripted_operator_score"] == 5
+    assert notes[0]["human_review_required"] is True
+    assert "failure_notes" not in notes[0]
+    assert imported_report.status == "human_trial_needs_review"
+    assert "human-observation pass" in packet
+    assert "--notes" in packet
+
+
 def test_scripted_trial_without_real_provider_cannot_pass(tmp_path, monkeypatch):
     import agent_base
 

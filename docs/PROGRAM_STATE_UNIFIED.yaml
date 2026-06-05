@@ -1,7 +1,7 @@
 program:
   version: 1
   north_star: "Keep one default operator-first path where EgoOperator preserves natural-language understanding before gates, while legacy EgoCore/OpenEmotion evidence remains reference-only and repo-level claims never outrun evidence."
-  current_phase: "ego_operator_human_operator_trial_v2_real_provider_scripted_review_pending"
+  current_phase: "ego_operator_human_operator_trial_v2_human_review_template_ready"
   current_layer: "transition / operator-first"
   highest_evidence_level: "E3"
   verification_level: "V3"
@@ -24,6 +24,7 @@ program:
     - "Use human-observable operator samples as part of acceptance when experience is the target; tests alone are not sufficient proof of natural interaction quality."
     - "Keep all claims bounded to local candidate / transition evidence until real user operation proves stable behavior."
   completed_since_last:
+    - "EgoOperator Human Operator Trial v2 now has a human-review template export path in `EgoOperator/human_operator_trial.py`. Running `python EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_latest --export-review-template-from-report EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_report.json` generated `human_operator_trial_human_review_notes_template.jsonl` and `human_operator_trial_human_review_packet.md` beside the scripted report. The template resets imported `operator_score` to `0`, preserves the scripted score only as `scripted_operator_score`, drops scripted `failure_notes`, and keeps `human_review_required=true`; this prepares human review/import only and does not prove a human-observation pass, stable user benefit, runtime efficacy, live autonomy, durable memory efficacy, or consciousness."
     - "EgoDesktop Companion Memory Wording + Route Misfire Repair v0 is accepted with report `artifacts/egodesktop_companion_memory_route_repair_v0/COMPANION_REPAIR_REPORT.md` and verdict `go_for_manual_companion_smoke`. The report combines desktop-visible same-window recall wording, route-neutral timeout fallback, ordinary-affection `general_chat` classification, explicit creative/adult classification, PSPC warm-approach retention as style/debug hint only, and no real memory write/gate/approval/transport/proactive/runtime-registration evidence. The claim ceiling remains `local_desktop_companion_wording_and_route_repair_only`. This admits only manual local EgoDesktop companion smoke; it does not prove PSPC mainline integration, durable memory, true learning, provider health, stable user benefit, live autonomy, consciousness, subjective experience, or real emotion."
     - "EgoDesktop Timeout Route Misfire Repair v0 now updates `EgoDesktop/src/desktopRecoveryContext.js` and tests at `EgoDesktop/tests/desktop_recovery_context.test.js` plus `tests/test_ego_operator_desktop_recovery_context.py`. The local timeout fallback now says `本地后端回复超时` instead of defaulting to `创作路线超时`, ordinary affectionate turns such as `喜欢你所以就摸摸你`, `像小猫一样`, and `摸摸头` classify as `general_chat`, and only explicit story/roleplay/adult-writing requests classify as `creative` or `adult_creative`. Recovery remains one-turn, local-only, no real memory write, no gate/approval/transport/proactive path, and claim ceiling `local_desktop_companion_wording_and_route_repair_only`. This is local desktop timeout route repair evidence only; it does not prove provider health, adult creative generation capability, PSPC integration, stable user benefit, durable memory, live autonomy, consciousness, subjective experience, or real emotion."
     - "EgoDesktop Companion Memory Wording Repair v0 now has a desktop-only visible reply rewrite in `scripts/ego_operator_desktop_turn.py` plus tests at `tests/test_ego_operator_desktop_companion_wording.py`. When an ordinary companion recall question receives engineering memory-boundary wording, the desktop entry translates the visible `reply_text` into natural current-window wording, can cite same-window facts such as `椰果珍珠奶茶`, and avoids exposing `candidate-local`, `operator memory`, `PROJECT_MEMORY`, `evidence ledger`, or `memory approval` unless the user explicitly asks an engineering memory question. It preserves `operator_memory_enabled=false`, no real memory write, no message send, no gate/approval/transport/proactive path, and claim ceiling `local_desktop_companion_wording_and_route_repair_only`. This is local EgoDesktop visible wording evidence only; it does not prove durable memory, PSPC mainline integration, stable user benefit, live autonomy, consciousness, subjective experience, or real emotion."
@@ -117,7 +118,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Review or import human operator scores for the 18-observation real-provider scripted report at `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_report.json` before any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`."
+  next_minimal_action: "Have a human operator fill `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl`, then import it with `python EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_human_reviewed --notes EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl --provider-mode openrouter` before any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -131,12 +132,12 @@ program:
 workstreams:
   - id: "ego_operator_first_transition"
     owner: "EgoOperator"
-    status: "human_operator_trial_v2_real_provider_scripted_review_pending"
+    status: "human_operator_trial_v2_human_review_template_ready"
     evidence_level: "E3"
     verification_level: "V3"
     mainline_connected: true
     enabled: true
-    summary: "`EgoOperator` is now the default operator-first implementation lane, formerly tracked as `Ego_handmade`. The current active gate is human-operator trial v2: a fresh scripted real-provider run collected 18 Chinese operator-surface observations and now requires human review/import before any pass, feature, or demotion decision. Current proof is local/repo-level plus scripted-provider review evidence only and does not establish stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness."
+    summary: "`EgoOperator` is now the default operator-first implementation lane, formerly tracked as `Ego_handmade`. The current active gate is human-operator trial v2: a fresh scripted real-provider run collected 18 Chinese operator-surface observations, and a human-review notes template is now generated for operator scoring/import before any pass, feature, or demotion decision. Current proof is local/repo-level plus scripted-provider review evidence plus review-template readiness only and does not establish a human-observation pass, stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness."
   - id: "repo_authority_cleanup"
     owner: "EgoCore"
     status: "closeout-complete"
