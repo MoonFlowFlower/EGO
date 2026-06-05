@@ -44,6 +44,20 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Disabled Runtime Flag Contract v0 now has an isolated flag-contract runner
+    at `scripts/run_pspc_disabled_runtime_flag_contract.py`, tests at `tests/test_pspc_disabled_runtime_flag_contract.py`,
+    docs under `docs/codex/tasks/pspc-disabled-runtime-flag-contract-v0/`, and artifacts
+    under `artifacts/pspc_disabled_runtime_flag_contract_v0/`. The contract defines
+    `PSPC_SHADOW_OBSERVATION_LOCAL` as default-false, admits no runtime value even
+    when requested true, and represents requested true only as artifact-only shadow
+    data. Active runtime scan reports no import/register/branch references, and side
+    effects remain absent for runtime registration, user response, proposal/plan,
+    memory, gate, approval, transport, proactive state, planner, training, model execution,
+    and claim ceiling. This is `lab_only_proto_self_mechanism_candidate / disabled_runtime_flag_contract_only`
+    evidence only; it does not install a runtime flag, prove local manual shadow session
+    safety, proposal hinting safety, runtime integration safety, adapter readiness,
+    EgoOperator PSPC capability, runtime efficacy, real user benefit, live autonomy,
+    durable memory efficacy, consciousness, or subjective experience.
   - PSPC Recorded Shadow Observation Audit Usefulness v0 now has an isolated audit-usefulness
     runner at `scripts/run_pspc_recorded_shadow_observation_audit_usefulness.py`,
     tests at `tests/test_pspc_recorded_shadow_observation_audit_usefulness.py`, docs
@@ -1276,6 +1290,21 @@ workstreams:
     `lab_only_proto_self_mechanism_candidate / recorded_shadow_audit_usefulness_only`
     evidence only and permits only a future separate disabled runtime flag contract
     task.
+- id: pspc_disabled_runtime_flag_contract_v0
+  owner: Codex
+  status: default_false_flag_contract_pass__artifact_only__runtime_unmodified
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Disabled Runtime Flag Contract v0 defines `PSPC_SHADOW_OBSERVATION_LOCAL`
+    as an isolated default-false contract, not an installed runtime flag. Requested
+    true admits no runtime value and can only produce artifact-only shadow data. Active
+    EgoOperator runtime files do not import, register, or branch on the flag, and
+    side effects remain absent for runtime registration, user response, proposal/plan,
+    memory, gate, approval, transport, proactive state, planner, training, model execution,
+    and claim ceiling. This remains `lab_only_proto_self_mechanism_candidate / disabled_runtime_flag_contract_only`
+    evidence only and permits only a future local manual shadow session harness.
 axes:
   host_axis:
     current_state: closeout_complete

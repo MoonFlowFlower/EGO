@@ -3508,13 +3508,13 @@ tasks:
     title: "PSPC Shadow: disabled runtime flag contract v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / disabled_runtime_flag_contract_only"
-    next_action: "Define and verify a default-false local PSPC shadow flag contract. The flag must not register PSPC, must not alter user responses, and even when true may only write artifact-only shadow observations."
+    next_action: "Accepted locally: PSPC_SHADOW_OBSERVATION_LOCAL is a default-false contract only; requested true admits no runtime value and can only produce artifact-only shadow data. Active runtime files do not import, register, or branch on the flag. Next allowed task is PSPC-SHADOW-HOOK-006 local manual shadow session harness only."
     acceptance:
       - "Local PSPC shadow flag defaults to false."
       - "Flag contract keeps enabled=false, mainline_connected=false, runtime_authority=none, audit-only, read-only, and non-executable."
@@ -3533,7 +3533,7 @@ tasks:
     title: "PSPC Shadow: local manual shadow session harness v0"
     kind: task
     parent: null
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
