@@ -3578,3 +3578,28 @@ tasks:
       - "artifacts/pspc_user_manual_shadow_review_go_no_go_v0/"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-008
+    title: "PSPC Shadow: sequence experience eval v0"
+    kind: task
+    parent: null
+    status: accepted
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only"
+    next_action: "Accepted locally: lab/shadow-only sequence eval records controlled history inputs as proxy state deltas and shows the shared trigger `我回来了。` produces divergent audit-only profiles for gentle interaction, frequent interruption, late-night care, no-history, and shuffled-history controls. PSPC-SHADOW-HOOK-007 remains human_required for manual review."
+    acceptance:
+      - "Dataset contains gentle_interaction, frequent_interruption, and late_night_care groups with 10 history inputs each plus shared trigger `我回来了。`."
+      - "Runner records state_before, state_delta, state_after, shadow_memory_event, salience, and expected_future_behavior for each history turn."
+      - "Trigger profiles diverge: gentle biases approach/trust, frequent interruption biases avoidance/boundary, late-night care biases care/low-interrupt, no-history is neutral, and shuffled-history is not identical to clean groups."
+      - "Artifacts contain no runtime-authority fields such as action, tool_call, user_message, memory_write, gate_decision, approval_id, transport, send, schedule, runtime_registration, mainline_authority, or enable."
+      - "No EgoOperator runtime import/registration, user response mutation, mainline memory write, gate/approval invocation, transport call, proactive trigger, planner/training/model execution, enabled=true, mainline_connected=true, or claim-ceiling upgrade occurs."
+    rollback: "Delete docs/codex/tasks/pspc-sequence-experience-eval-v0/, tests/test_pspc_sequence_experience_eval.py, scripts/run_pspc_sequence_experience_eval.py, artifacts/pspc_sequence_experience_eval_v0/, and this task-board/project-contract/program-state/evidence-ledger/generated-view update. Keep PSPC-SHADOW-HOOK-007 human_required."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-sequence-experience-eval-v0/STATUS.md"
+      - "tests/test_pspc_sequence_experience_eval.py"
+      - "artifacts/pspc_sequence_experience_eval_v0/"
+    external_refs:
+      github_issue: null

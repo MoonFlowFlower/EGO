@@ -44,6 +44,22 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Sequence Experience Eval v0 now has a lab/shadow-only sequence dataset at
+    `docs/codex/tasks/pspc-sequence-experience-eval-v0/sequence_eval_dataset_v0.jsonl`,
+    a runner at `scripts/run_pspc_sequence_experience_eval.py`, shared PSPC shadow
+    contract helpers at `scripts/pspc_shadow_contracts.py`, tests at `tests/test_pspc_sequence_experience_eval.py`,
+    docs under `docs/codex/tasks/pspc-sequence-experience-eval-v0/`, and artifacts
+    under `artifacts/pspc_sequence_experience_eval_v0/`. The eval records gentle interaction,
+    frequent interruption, and late-night care histories, applies the shared trigger
+    `我回来了。`, and produces divergent audit-only trigger profiles while keeping no-history
+    neutral and shuffled-history mixed. It records no runtime registration, user response
+    mutation, mainline memory write, gate or approval invocation, transport call,
+    proactive trigger, planner call, training call, model execution, or claim-ceiling
+    upgrade. This is `lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only`
+    evidence only; it does not prove PSPC is integrated into EgoOperator, adapter
+    readiness, runtime integration safety, real user benefit, durable memory efficacy,
+    live autonomy, consciousness, or subjective experience. `PSPC-SHADOW-HOOK-007`
+    remains human_required for manual review.
   - PSPC Local Manual Shadow Session Harness v0 now has a local CLI harness at `scripts/run_pspc_local_manual_shadow_session.py`,
     tests at `tests/test_pspc_local_manual_shadow_session_harness.py`, docs under
     `docs/codex/tasks/pspc-local-manual-shadow-session-harness-v0/`, and artifacts
@@ -1335,6 +1351,24 @@ workstreams:
     proactive trigger, planner call, training call, model execution, or claim-ceiling
     upgrade. This remains `lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only`
     evidence only and permits only a manual shadow review go/no-go.
+- id: pspc_sequence_experience_eval_v0
+  owner: Codex
+  status: sequence_experience_eval_pass__manual_review_still_required
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: 'PSPC Sequence Experience Eval v0 runs a lab/shadow-only sequence accumulator
+    over three controlled history groups and two controls. The same trigger `我回来了。`
+    yields divergent audit-only profiles: gentle interaction biases toward approach/trust,
+    frequent interruption biases toward avoidance/boundary, late-night care biases
+    toward care/low-interrupt, no-history remains neutral, and shuffled-history remains
+    mixed. The eval records proxy state deltas and shadow memory events only, avoids
+    runtime-authority fields, and preserves no runtime registration, user-response
+    mutation, mainline memory write, gate/approval invocation, transport call, proactive
+    trigger, planner/training/model execution, or claim-ceiling upgrade. This remains
+    `lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only` evidence
+    only; `PSPC-SHADOW-HOOK-007` remains human_required.'
 axes:
   host_axis:
     current_state: closeout_complete

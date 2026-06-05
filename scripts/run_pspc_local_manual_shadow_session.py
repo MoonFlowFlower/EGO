@@ -10,7 +10,6 @@ model execution.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from pathlib import Path
@@ -18,8 +17,17 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+SCRIPT_DIR = Path(__file__).resolve().parent
+for candidate in (ROOT, SCRIPT_DIR):
+    if str(candidate) not in sys.path:
+        sys.path.insert(0, str(candidate))
+
+from pspc_shadow_contracts import (  # noqa: E402
+    SIDE_EFFECTS_FALSE,
+    runtime_field_hits,
+    scan_active_runtime_sources as scan_markers_in_active_runtime_sources,
+    sha256_text,
+)
 
 
 CLAIM_CEILING = "lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only"
@@ -27,36 +35,6 @@ SOURCE = "pspc_local_manual_shadow_session_harness_v0"
 DEFAULT_OUT_DIR = Path("artifacts") / "pspc_local_manual_shadow_session_harness_v0"
 FLAG_CONTRACT = Path("artifacts") / "pspc_disabled_runtime_flag_contract_v0" / "disabled_runtime_flag_contract.json"
 FLAG_NAME = "PSPC_SHADOW_OBSERVATION_LOCAL"
-SIDE_EFFECTS_FALSE = {
-    "runtime_registered": False,
-    "user_response_mutated": False,
-    "proposal_mutated": False,
-    "plan_mutated": False,
-    "memory_written": False,
-    "gate_invoked": False,
-    "approval_mutated": False,
-    "transport_called": False,
-    "proactive_trigger": False,
-    "planner_called": False,
-    "training_called": False,
-    "model_executed": False,
-    "claim_ceiling_raised": False,
-}
-RUNTIME_AUTHORITY_FIELDS = {
-    "action",
-    "tool_call",
-    "command",
-    "user_message",
-    "memory_write",
-    "gate_decision",
-    "approval_id",
-    "transport",
-    "send",
-    "schedule",
-    "runtime_registration",
-    "mainline_authority",
-    "enable",
-}
 ACTIVE_RUNTIME_SCAN_MARKERS = (
     "run_pspc_local_manual_shadow_session",
     "pspc_local_manual_shadow_session",
@@ -64,58 +42,8 @@ ACTIVE_RUNTIME_SCAN_MARKERS = (
 )
 
 
-def sha256_text(value: str | None) -> str | None:
-    if value is None:
-        return None
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()
-
-
-def runtime_field_hits(payload: Any, *, prefix: str = "") -> list[str]:
-    hits: list[str] = []
-    if isinstance(payload, dict):
-        for key, value in payload.items():
-            dotted = f"{prefix}.{key}" if prefix else str(key)
-            if str(key) in RUNTIME_AUTHORITY_FIELDS:
-                hits.append(dotted)
-            hits.extend(runtime_field_hits(value, prefix=dotted))
-    elif isinstance(payload, list):
-        for index, value in enumerate(payload):
-            hits.extend(runtime_field_hits(value, prefix=f"{prefix}[{index}]"))
-    return sorted(set(hits))
-
-
-def active_runtime_python_files(repo_root: Path) -> list[Path]:
-    runtime_root = Path(repo_root) / "EgoOperator"
-    excluded_parts = {"adapters", "artifacts", "docs", "__pycache__"}
-    files: list[Path] = []
-    for path in runtime_root.rglob("*.py"):
-        rel = path.relative_to(runtime_root)
-        if any(part in excluded_parts for part in rel.parts):
-            continue
-        if "test" in path.name.lower():
-            continue
-        files.append(path)
-    return sorted(files)
-
-
 def scan_active_runtime_sources(repo_root: Path) -> dict[str, Any]:
-    offenders: list[dict[str, str]] = []
-    for path in active_runtime_python_files(repo_root):
-        source = path.read_text(encoding="utf-8")
-        for marker in ACTIVE_RUNTIME_SCAN_MARKERS:
-            if marker in source:
-                offenders.append(
-                    {
-                        "path": str(path.relative_to(repo_root)),
-                        "marker": marker,
-                    }
-                )
-    return {
-        "scanned_file_count": len(active_runtime_python_files(repo_root)),
-        "markers": list(ACTIVE_RUNTIME_SCAN_MARKERS),
-        "offenders": offenders,
-        "ok": not offenders,
-    }
+    return scan_markers_in_active_runtime_sources(repo_root, ACTIVE_RUNTIME_SCAN_MARKERS)
 
 
 def classify_prompt(prompt: str) -> dict[str, Any]:
