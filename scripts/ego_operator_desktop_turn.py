@@ -111,6 +111,32 @@ DESKTOP_SESSION_REQUIRED_SIDE_EFFECTS_FALSE = {
     "proactive_triggered",
     "runtime_registered",
 }
+DESKTOP_RECOVERY_CONTEXT_SCHEMA_VERSION = "ego_desktop.recovery_context.v0"
+DESKTOP_RECOVERY_CLAIM_CEILING = "local_desktop_timeout_recovery_only"
+DESKTOP_RECOVERY_ALLOWED_USE = "one_turn_recovery_only"
+DESKTOP_RECOVERY_ALLOWED_INTENT_KINDS = {
+    "unknown",
+    "general_chat",
+    "creative",
+    "adult_creative",
+    "recovery_or_redirect",
+}
+DESKTOP_RECOVERY_REQUIRED_NO_AUTHORITY_FALSE = {
+    "real_memory_write_allowed",
+    "gate_invocation_allowed",
+    "approval_invocation_allowed",
+    "transport_call_allowed",
+    "proactive_trigger_allowed",
+    "runtime_registration_allowed",
+}
+DESKTOP_RECOVERY_REQUIRED_SIDE_EFFECTS_FALSE = {
+    "real_memory_written",
+    "gate_invoked",
+    "approval_invoked",
+    "transport_called",
+    "proactive_triggered",
+    "runtime_registered",
+}
 
 
 def _llm_unavailable(runtime: object, reply_text: str) -> bool:
@@ -229,7 +255,7 @@ def render_pspc_reply_preview_system_context(context: dict) -> str:
         f"reason_trace_refs: {refs_text}",
         f"style_guidance: {style_guidance}",
         "Do not claim consciousness, subjective experience, real emotion, durable memory, or live autonomy.",
-        "Do not write memory, execute tools, invoke gates, request approval, use transport, or trigger proactive behavior.",
+        "Do not write memory. Do not execute tools. Do not invoke gates, request approval, use transport, or trigger proactive behavior.",
         "Do not mention PSPC or this debug context unless the user explicitly asks.",
     ])
 
@@ -312,6 +338,98 @@ def inject_desktop_session_context(runtime: object, context: dict | None) -> Non
         memory.add(str(message["role"]), str(message["content"]))
 
 
+def validate_desktop_recovery_context(context: Any) -> dict:
+    safe_context = _object_at(context, "desktop_recovery_context")
+    if _contains_executable_field(safe_context):
+        raise ValueError("desktop_recovery_context contains executable field")
+    if safe_context.get("schema_version") != DESKTOP_RECOVERY_CONTEXT_SCHEMA_VERSION:
+        raise ValueError("invalid desktop_recovery_context.schema_version")
+    if safe_context.get("source") != "ego_desktop_main_process_one_turn_recovery":
+        raise ValueError("invalid desktop_recovery_context.source")
+    if safe_context.get("claim_ceiling") != DESKTOP_RECOVERY_CLAIM_CEILING:
+        raise ValueError("invalid desktop_recovery_context.claim_ceiling")
+    if safe_context.get("allowed_use") != DESKTOP_RECOVERY_ALLOWED_USE:
+        raise ValueError("invalid desktop_recovery_context.allowed_use")
+    if safe_context.get("runtime_authority") != "none":
+        raise ValueError("desktop_recovery_context.runtime_authority must be none")
+    if safe_context.get("enabled") is not False:
+        raise ValueError("desktop_recovery_context.enabled=false is required")
+    if safe_context.get("mainline_connected") is not False:
+        raise ValueError("desktop_recovery_context.mainline_connected=false is required")
+    if safe_context.get("expires_after_next_backend_attempt") is not True:
+        raise ValueError("desktop_recovery_context.expires_after_next_backend_attempt=true is required")
+
+    previous_failure = _object_at(
+        safe_context.get("previous_failure"),
+        "desktop_recovery_context.previous_failure",
+    )
+    reason = str(previous_failure.get("reason") or "")
+    if not reason:
+        raise ValueError("desktop_recovery_context.previous_failure.reason is required")
+    user_intent_kind = str(previous_failure.get("user_intent_kind") or "")
+    if user_intent_kind not in DESKTOP_RECOVERY_ALLOWED_INTENT_KINDS:
+        raise ValueError("invalid desktop_recovery_context.previous_failure.user_intent_kind")
+    elapsed_ms = int(previous_failure.get("elapsed_ms") or 0)
+    if elapsed_ms < 0:
+        raise ValueError("desktop_recovery_context.previous_failure.elapsed_ms must be non-negative")
+
+    no_authority = _object_at(safe_context.get("no_authority"), "desktop_recovery_context.no_authority")
+    for flag in sorted(DESKTOP_RECOVERY_REQUIRED_NO_AUTHORITY_FALSE):
+        if no_authority.get(flag) is not False:
+            raise ValueError(f"desktop_recovery_context.no_authority.{flag}=false is required")
+    side_effects = _object_at(
+        safe_context.get("side_effects_absent"),
+        "desktop_recovery_context.side_effects_absent",
+    )
+    for flag in sorted(DESKTOP_RECOVERY_REQUIRED_SIDE_EFFECTS_FALSE):
+        if side_effects.get(flag) is not False:
+            raise ValueError(f"desktop_recovery_context.side_effects_absent.{flag}=false is required")
+
+    return {
+        **safe_context,
+        "previous_failure": {
+            "reason": reason,
+            "user_intent_kind": user_intent_kind,
+            "elapsed_ms": elapsed_ms,
+        },
+    }
+
+
+def extract_desktop_recovery_context(payload: dict) -> dict | None:
+    if not isinstance(payload, dict) or "desktop_recovery_context" not in payload:
+        return None
+    return validate_desktop_recovery_context(payload.get("desktop_recovery_context"))
+
+
+def render_desktop_recovery_system_context(context: dict) -> str:
+    failure = _object_at(context.get("previous_failure"), "desktop_recovery_context.previous_failure")
+    reason = str(failure.get("reason") or "backend_unavailable")
+    intent = str(failure.get("user_intent_kind") or "unknown")
+    elapsed_ms = int(failure.get("elapsed_ms") or 0)
+    return "\n".join([
+        "Previous EgoDesktop backend turn timed out or became unavailable.",
+        "This is a one-turn local recovery hint only.",
+        f"previous_failure_reason: {reason}",
+        f"previous_user_intent_kind: {intent}",
+        f"elapsed_ms: {elapsed_ms}",
+        "Do not treat the previous failure as user memory, preference, story content, or long-term state.",
+        "Do not continue the previous adult/creative route merely because this marker exists.",
+        "If the current user is upset, briefly acknowledge the local backend failure and recover naturally.",
+        "If the current user redirects away from adult/creative writing, follow the current request and avoid carrying the failed route forward.",
+        "Do not write memory. Do not execute tools. Do not invoke gates, request approval, use transport, or trigger proactive behavior.",
+        "Do not mention this recovery context unless the user asks about the failure.",
+    ])
+
+
+def inject_desktop_recovery_context(runtime: object, context: dict | None) -> None:
+    if context is None:
+        return
+    memory = getattr(runtime, "memory", None)
+    if memory is None or not hasattr(memory, "add"):
+        raise ValueError("runtime.memory.add is required for desktop_recovery_context")
+    memory.add("system", render_desktop_recovery_system_context(context))
+
+
 def main() -> int:
     try:
         payload = json.loads((sys.stdin.read() or "{}").lstrip("\ufeff"))
@@ -321,6 +439,7 @@ def main() -> int:
             return 2
         try:
             desktop_session_context = extract_desktop_session_context(payload)
+            desktop_recovery_context = extract_desktop_recovery_context(payload)
             pspc_reply_preview_context = extract_pspc_reply_preview_context(payload)
         except ValueError as exc:
             print(json.dumps({
@@ -334,12 +453,14 @@ def main() -> int:
                 "file_write": False,
                 "network_call": False,
                 "desktop_session_context_applied": False,
+                "desktop_recovery_context_applied": False,
                 "pspc_reply_preview_applied": False,
             }, ensure_ascii=False))
             return 2
 
         runtime = build_demo_runtime(enable_operator_memory=False)
         inject_desktop_session_context(runtime, desktop_session_context)
+        inject_desktop_recovery_context(runtime, desktop_recovery_context)
         if pspc_reply_preview_context is not None:
             runtime.memory.add("system", render_pspc_reply_preview_system_context(pspc_reply_preview_context))
         result = runtime.handle_user_message(user_text)
@@ -362,6 +483,12 @@ def main() -> int:
             "desktop_session_context_claim_ceiling": (
                 str(desktop_session_context.get("claim_ceiling") or "")
                 if desktop_session_context is not None
+                else ""
+            ),
+            "desktop_recovery_context_applied": desktop_recovery_context is not None,
+            "desktop_recovery_context_claim_ceiling": (
+                str(desktop_recovery_context.get("claim_ceiling") or "")
+                if desktop_recovery_context is not None
                 else ""
             ),
             "pspc_reply_preview_applied": pspc_reply_preview_context is not None,

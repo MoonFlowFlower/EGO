@@ -20,6 +20,13 @@ const {
   buildDesktopSessionContext,
   createDesktopSessionState,
 } = require("./sessionContext");
+const {
+  buildDesktopRecoveryContext,
+  clearDesktopRecoveryState,
+  createDesktopRecoveryState,
+  formatDesktopBackendFallback,
+  recordDesktopBackendFailure,
+} = require("./desktopRecoveryContext");
 const { buildViewerSignalFrame } = require("./signalFrame");
 const { buildTtsRequest } = require("./tts");
 const { TtsWorkerClient } = require("./ttsWorkerClient");
@@ -113,6 +120,7 @@ function backendEnv() {
 
 function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {
   return new Promise((resolve) => {
+    const startedAt = Date.now();
     const payload = typeof turnPayload === "string"
       ? { user_text: turnPayload }
       : { ...(turnPayload || {}) };
@@ -139,6 +147,7 @@ function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {
         status: "llm_expression_unavailable",
         reason: "desktop_turn_timeout",
         reply_text: "llm_expression_unavailable: desktop_turn_timeout",
+        elapsed_ms: Date.now() - startedAt,
       });
     }, Number(timeoutMs) || 180000);
 
@@ -159,6 +168,7 @@ function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {
         reason: "desktop_turn_spawn_error",
         error: error.message,
         reply_text: `llm_expression_unavailable: ${error.message}`,
+        elapsed_ms: Date.now() - startedAt,
       });
     });
     child.on("close", () => {
@@ -169,7 +179,10 @@ function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {
       clearTimeout(timeout);
       try {
         const payload = parseJsonLine(stdout);
-        resolve(payload);
+        resolve({
+          ...payload,
+          elapsed_ms: Number(payload.elapsed_ms || 0) || Date.now() - startedAt,
+        });
       } catch (error) {
         resolve({
           status: "llm_expression_unavailable",
@@ -177,6 +190,7 @@ function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {
           error: error.message,
           stderr: stderr.slice(0, 1200),
           reply_text: `llm_expression_unavailable: ${error.message}`,
+          elapsed_ms: Date.now() - startedAt,
         });
       }
     });
@@ -422,6 +436,7 @@ async function run() {
   const pspcReplyPreviewMode = Boolean(args["pspc-reply-preview-mode"]);
   let pspcReplyPreviewState = createPspcReplyPreviewState({ enabled: pspcReplyPreviewMode });
   let desktopSessionState = createDesktopSessionState();
+  let desktopRecoveryState = createDesktopRecoveryState();
   const expressionCatalog = loadExpressionCatalog(modelInfo.modelDir);
   const server = createViewerServer({
     appRoot,
@@ -498,10 +513,14 @@ async function run() {
     let pspcReplyPreviewContext = null;
     let pspcReplyPreviewScenario = null;
     const desktopSessionContext = buildDesktopSessionContext(desktopSessionState);
+    const desktopRecoveryContext = buildDesktopRecoveryContext(desktopRecoveryState);
     const turnPayload = {
       user_text: userText,
       desktop_session_context: desktopSessionContext,
     };
+    if (desktopRecoveryContext) {
+      turnPayload.desktop_recovery_context = desktopRecoveryContext;
+    }
     if (pspcReplyPreviewMode) {
       pspcReplyPreviewState = updatePspcReplyPreviewState(pspcReplyPreviewState, userText);
       pspcReplyPreviewContext = buildPspcReplyPreviewContext(pspcReplyPreviewState);
@@ -511,14 +530,21 @@ async function run() {
     }
     const backend = await runEgoOperatorDesktopTurn(turnPayload, args["chat-timeout-ms"]);
     const status = backend.status === "ok" ? "ok" : "llm_expression_unavailable";
+    const fallback = status === "ok" ? null : formatDesktopBackendFallback(backend);
     const botText = status === "ok"
       ? String(backend.reply_text || "")
-      : String(backend.reply_text || `llm_expression_unavailable: ${backend.reason || "backend_unavailable"}`);
+      : String(fallback.bot_text || "");
     if (status === "ok") {
       desktopSessionState = appendDesktopSessionTurn(desktopSessionState, {
         userText,
         assistantText: botText,
         status,
+      });
+      desktopRecoveryState = clearDesktopRecoveryState(desktopRecoveryState);
+    } else {
+      desktopRecoveryState = recordDesktopBackendFailure(desktopRecoveryState, {
+        backend,
+        userText,
       });
     }
     return {
@@ -535,6 +561,10 @@ async function run() {
       desktop_session_context_applied: Boolean(backend.desktop_session_context_applied),
       desktop_session_context_message_count: Number(backend.desktop_session_context_message_count || 0),
       desktop_session_context_claim_ceiling: backend.desktop_session_context_claim_ceiling || "",
+      desktop_recovery_context_applied: Boolean(backend.desktop_recovery_context_applied),
+      desktop_recovery_context_claim_ceiling: backend.desktop_recovery_context_claim_ceiling || "",
+      desktop_recovery_context_pending: status !== "ok",
+      desktop_recovery_context: desktopRecoveryContext,
       pspc_reply_preview_applied: Boolean(backend.pspc_reply_preview_applied),
       pspc_reply_preview_style: backend.pspc_reply_preview_style || (pspcReplyPreviewContext && pspcReplyPreviewContext.profile
         ? String(pspcReplyPreviewContext.profile.style || "")

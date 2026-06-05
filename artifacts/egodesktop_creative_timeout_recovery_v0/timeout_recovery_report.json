@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "claim_ceiling": "local_desktop_timeout_recovery_only",
+  "runtime_authority": "none",
+  "enabled": false,
+  "mainline_connected": false,
+  "ego_operator_core_modified": false,
+  "scenarios": [
+    "desktop_turn_timeout_visible_fallback",
+    "failed_turn_transcript_boundary",
+    "one_turn_recovery_context",
+    "short_emotional_feedback_recovery_fixture",
+    "normal_story_redirect_fixture"
+  ],
+  "side_effects": {
+    "real_memory_write": false,
+    "gate_invocation": false,
+    "approval_invocation": false,
+    "transport_call": false,
+    "proactive_trigger": false,
+    "message_send": false,
+    "tool_execution": false,
+    "runtime_registration": false,
+    "pspc_adapter_created": false
+  },
+  "what_this_proves": "EgoDesktop can represent a local backend timeout as bounded one-turn recovery context, hide raw timeout markers, keep failed turns out of session transcript, and avoid turning the timeout into adult-fiction scene memory or runtime authority.",
+  "what_this_does_not_prove": "This does not prove adult creative generation capability, provider latency health, sidecar readiness, PSPC mainline integration, EgoOperator runtime integration safety, stable real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, or real emotion.",
+  "rollback": "Delete recovery helper, tests, desktop turn script edits, task docs, artifact directory, and matching state/ledger/generated-view entries.",
+  "next_allowed_step": "Local manual smoke, then provider health / sidecar configuration review if timeouts persist."
+}
