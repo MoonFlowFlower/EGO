@@ -199,6 +199,7 @@ allowed_mutation_paths:
   - .gitignore
   - README.md
   - docs/AGENT_DEVELOPMENT_PLAYBOOK.md
+  - docs/ACTIVE_CONTEXT_PACK.md
   - docs/CAPABILITY_REGISTRY.md
   - docs/CURRENT_PROJECT_LOGIC_FLOW.md
   - docs/MAINLINE_QUICKSTART.md
@@ -362,9 +363,6 @@ allowed_mutation_paths:
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md
   - legacy/ego-pre-handmade-mainline/README.md
-  - legacy/ego-pre-handmade-mainline/EgoCore/
-  - legacy/ego-pre-handmade-mainline/OpenEmotion/
-  - legacy/ego-pre-handmade-mainline/ego_desktop_lab/
   - docs/archive/LEGACY_ALGORITHM_INVENTORY.md
   - artifacts/archive/legacy_pre_operator_mainline_manifest.json
 

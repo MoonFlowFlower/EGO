@@ -76,6 +76,8 @@ NUL
 autopilot.yaml
 
 # Local runtime stores and scratch outputs
+Test/
+data/live2d/
 data/*.db
 data/session_logs/
 artifacts/proto_self_store/

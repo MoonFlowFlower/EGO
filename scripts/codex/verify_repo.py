@@ -107,6 +107,11 @@ def detect_checks() -> list[Check]:
         name="Legacy archival purge anti-regression gate",
         rel_path="scripts/codex/verify_legacy_archival_purge.py",
     )
+    add_if_exists(
+        category="governance",
+        name="Runtime authority boundary gate",
+        rel_path="scripts/codex/check_runtime_authority_boundaries.py",
+    )
     return specs
 
 
