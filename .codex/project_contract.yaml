@@ -292,6 +292,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/egodesktop-session-local-conversation-context-v0/
   - docs/codex/tasks/egodesktop-creative-timeout-recovery-v0/
   - docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/
+  - docs/codex/tasks/egodesktop-developer-settings-launch-profile-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
   - tests/test_pspc_static_compatibility_review.py
@@ -344,6 +345,7 @@ allowed_mutation_paths:
   - artifacts/egodesktop_session_local_conversation_context_v0/
   - artifacts/egodesktop_creative_timeout_recovery_v0/
   - artifacts/egodesktop_pspc_debug_signal_overlay_v0/
+  - artifacts/egodesktop_developer_settings_launch_profile_v0/
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/EgoCore/SHIM_REGISTER.md
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml

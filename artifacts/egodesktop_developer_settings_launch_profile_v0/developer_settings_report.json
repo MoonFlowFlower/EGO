@@ -1,0 +1,72 @@
+{
+  "schema_version": "egodesktop.developer_settings_launch_profile_report.v0",
+  "status": "pass",
+  "claim_ceiling": "local_desktop_developer_settings_only",
+  "runtime_authority": "none",
+  "settings_file": "Electron userData/developer-settings.json",
+  "merge_order": ["defaults", "saved_settings", "cli_args"],
+  "smoke_ignores_persisted_settings": true,
+  "cli_args_override_saved_settings": true,
+  "developer_settings_fields": [
+    "developer_mode_enabled",
+    "debug_overlay_default_visible",
+    "model_path",
+    "pspc_proposal_hint_file",
+    "pspc_reply_preview_mode",
+    "pspc_recording_mode",
+    "tts_enabled",
+    "tts_max_chars",
+    "tts_base_voice",
+    "tts_model_name",
+    "tts_timeout_ms",
+    "chat_timeout_ms"
+  ],
+  "live_fields": [
+    "developer_mode_enabled",
+    "debug_overlay_default_visible",
+    "tts_enabled"
+  ],
+  "restart_required_fields": [
+    "model_path",
+    "pspc_proposal_hint_file",
+    "pspc_reply_preview_mode",
+    "pspc_recording_mode",
+    "tts_max_chars",
+    "tts_base_voice",
+    "tts_model_name",
+    "tts_timeout_ms",
+    "chat_timeout_ms"
+  ],
+  "forbidden_fields_rejected": [
+    "action",
+    "tool_call",
+    "user_message",
+    "memory_write",
+    "gate_decision",
+    "approval_id",
+    "transport",
+    "send",
+    "schedule",
+    "enabled",
+    "mainline_connected",
+    "runtime_authority",
+    "api_key",
+    "provider_key",
+    "secret",
+    "token",
+    "password"
+  ],
+  "side_effects_absent": {
+    "ego_operator_runtime_modified": false,
+    "memory_write": false,
+    "gate_invoked": false,
+    "approval_invoked": false,
+    "transport_called": false,
+    "proactive_triggered": false,
+    "runtime_registered": false,
+    "pspc_mainline_connected": false
+  },
+  "what_this_proves": "EgoDesktop can save and load a bounded local developer launch profile, keep CLI args as highest priority, ignore persisted settings in smoke mode, and expose safe live-only settings through a local settings window.",
+  "what_this_does_not_prove": "This does not prove PSPC mainline integration, true learning, durable memory, EgoOperator runtime integration safety, stable user benefit, live autonomy, consciousness, subjective experience, or real emotion.",
+  "rollback": "Delete the settings module, settings window assets, IPC/preload/toolbar changes, tests, task docs, artifact directory, and matching state/ledger/generated-view entries."
+}

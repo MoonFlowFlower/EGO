@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-security-policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self';">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EgoDesktop 设置</title>
+    <link rel="stylesheet" href="/viewer/settings.css">
+  </head>
+  <body>
+    <main id="settings-surface">
+      <header id="settings-header">
+        <h1>设置</h1>
+        <span id="settings-status" role="status"></span>
+      </header>
+      <form id="settings-form">
+        <section class="settings-section">
+          <label class="toggle-row">
+            <input id="developer-mode-toggle" type="checkbox" name="developer_mode_enabled">
+            <span>开发者模式</span>
+          </label>
+          <label class="toggle-row">
+            <input id="tts-enabled" type="checkbox" name="tts_enabled">
+            <span>语音启用</span>
+            <small>立即生效</small>
+          </label>
+          <label class="toggle-row">
+            <input id="debug-overlay-default-visible" type="checkbox" name="debug_overlay_default_visible">
+            <span>默认显示 PSPC 审计</span>
+            <small>立即生效</small>
+          </label>
+        </section>
+
+        <section id="developer-options" class="settings-section" hidden>
+          <label class="field-row">
+            <span>模型路径</span>
+            <input id="model-path" type="text" name="model_path" autocomplete="off">
+            <small>重启后生效</small>
+          </label>
+          <label class="field-row">
+            <span>PSPC proposal hint file</span>
+            <input id="pspc-proposal-hint-file" type="text" name="pspc_proposal_hint_file" autocomplete="off">
+            <small>重启后生效</small>
+          </label>
+          <label class="toggle-row">
+            <input id="pspc-reply-preview-mode" type="checkbox" name="pspc_reply_preview_mode">
+            <span>PSPC reply preview</span>
+            <small>重启后生效</small>
+          </label>
+          <label class="toggle-row">
+            <input id="pspc-recording-mode" type="checkbox" name="pspc_recording_mode">
+            <span>PSPC recording mode</span>
+            <small>重启后生效</small>
+          </label>
+          <label class="field-row">
+            <span>TTS max chars</span>
+            <input id="tts-max-chars" type="number" min="1" step="1" name="tts_max_chars">
+            <small>重启后生效</small>
+          </label>
+          <label class="field-row">
+            <span>TTS base voice</span>
+            <input id="tts-base-voice" type="text" name="tts_base_voice" autocomplete="off">
+            <small>重启后生效</small>
+          </label>
+          <label class="field-row">
+            <span>TTS model name</span>
+            <input id="tts-model-name" type="text" name="tts_model_name" autocomplete="off">
+            <small>重启后生效</small>
+          </label>
+          <label class="field-row">
+            <span>TTS timeout ms</span>
+            <input id="tts-timeout-ms" type="number" min="1" step="1" name="tts_timeout_ms">
+            <small>重启后生效</small>
+          </label>
+          <label class="field-row">
+            <span>Chat timeout ms</span>
+            <input id="chat-timeout-ms" type="number" min="1" step="1" name="chat_timeout_ms">
+            <small>重启后生效</small>
+          </label>
+        </section>
+
+        <footer id="settings-actions">
+          <button id="settings-save" type="submit">保存</button>
+        </footer>
+      </form>
+    </main>
+    <script src="/viewer/settings.js"></script>
+  </body>
+</html>

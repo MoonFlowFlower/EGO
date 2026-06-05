@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 186 |
+| `reference_only` | 187 |
 
 ## Active Default
 
@@ -184,6 +184,7 @@
 | Ego Viabilitystate V0 Signal Extraction | `codex_task` | n/a | `docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egocore Pytest Suite Stabilization | `codex_task` | n/a | `docs/codex/tasks/egocore-pytest-suite-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Egodesktop Creative Timeout Recovery V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-creative-timeout-recovery-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egodesktop Developer Settings Launch Profile V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-developer-settings-launch-profile-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Debug Signal Overlay V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Perception Demo V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-perception-demo-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Reply Preview Mode V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-reply-preview-mode-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

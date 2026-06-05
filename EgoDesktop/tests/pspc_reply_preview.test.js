@@ -173,5 +173,5 @@ test("EgoDesktop wires preview mode without hiding chat or invoking demo chat by
   assert.equal(chatSection[0].includes("config.pspcPerceptionDemo && !config.pspcReplyPreviewMode"), true);
   assert.equal(chatSection[0].includes("pspc_reply_preview_scenario"), true);
   assert.equal(renderer.includes("function setupPspcDebugOverlayToggle"), true);
-  assert.match(renderer, /setupPspcDebugOverlayToggle\(\);\s*setupChat\(model, config\);/);
+  assert.match(renderer, /setupPspcDebugOverlayToggle\(Boolean\(config\.debugOverlayDefaultVisible\)\);\s*setupChat\(model, config\);/);
 });

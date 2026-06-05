@@ -5,6 +5,14 @@ const { spawn } = require("node:child_process");
 const { app, BrowserWindow, ipcMain, nativeImage } = require("electron");
 const { parseArgs } = require("./args");
 const { buildDesktopChatTurn } = require("./chatTurn");
+const {
+  DEVELOPER_SETTINGS_CLAIM_CEILING,
+  buildEffectiveLaunchProfile,
+  buildLiveDeveloperSettingsUpdate,
+  developerSettingsFilePath,
+  saveDeveloperSettings,
+  validateDeveloperSettings,
+} = require("./developerSettings");
 const { resolveModelInput } = require("./modelResolver");
 const { listExpressionFiles } = require("./modelSettings");
 const { buildPspcPerceptionDemo } = require("./pspcPerceptionDemo");
@@ -34,10 +42,10 @@ const { createViewerServer, listen } = require("./server");
 
 const appRoot = path.resolve(__dirname, "..");
 const repoRoot = path.resolve(appRoot, "..");
-const launchArgs = parseArgs(process.argv.slice(1));
+const rawLaunchArgs = parseArgs(process.argv.slice(1));
 
-if (launchArgs.smoke) {
-  const smokeOutDir = path.resolve(String(launchArgs.out || path.join(os.tmpdir(), "ego_live2d_desktop_smoke")));
+if (rawLaunchArgs.smoke) {
+  const smokeOutDir = path.resolve(String(rawLaunchArgs.out || path.join(os.tmpdir(), "ego_live2d_desktop_smoke")));
   app.setPath("userData", path.join(smokeOutDir, "electron-user-data"));
 }
 
@@ -402,7 +410,15 @@ async function captureSmoke(window, outDir, rendererPayload, signalFrame) {
 }
 
 async function run() {
-  const args = launchArgs;
+  const settingsPath = developerSettingsFilePath(app.getPath("userData"));
+  let launchProfile = buildEffectiveLaunchProfile({
+    settingsPath,
+    cliArgs: rawLaunchArgs,
+  });
+  const args = launchProfile.effectiveArgs;
+  let developerSettings = launchProfile.settings;
+  let savedDeveloperSettings = launchProfile.settings;
+  let settingsWindow = null;
   const modelInfo = resolveModelInput(args["model-path"]);
   const ttsAudioRoot = path.join(app.getPath("userData"), "tts-audio");
   fs.mkdirSync(ttsAudioRoot, { recursive: true });
@@ -461,6 +477,48 @@ async function run() {
       sandbox: false,
     },
   });
+  function currentDeveloperSettingsResponse() {
+    launchProfile = buildEffectiveLaunchProfile({
+      settingsPath,
+      settings: savedDeveloperSettings,
+      cliArgs: rawLaunchArgs,
+    });
+    return {
+      schema_version: "ego_desktop.developer_settings_response.v0",
+      claim_ceiling: DEVELOPER_SETTINGS_CLAIM_CEILING,
+      settings_path: settingsPath,
+      settings: savedDeveloperSettings,
+      effective_launch_config: launchProfile.report,
+    };
+  }
+
+  function openDeveloperSettingsWindow() {
+    if (settingsWindow && !settingsWindow.isDestroyed()) {
+      settingsWindow.focus();
+      return { status: "already_open" };
+    }
+    settingsWindow = new BrowserWindow({
+      width: 560,
+      height: 720,
+      minWidth: 520,
+      minHeight: 620,
+      parent: window,
+      title: "EgoDesktop Settings",
+      backgroundColor: "#f7f7f4",
+      show: true,
+      webPreferences: {
+        preload: path.join(__dirname, "preload.js"),
+        contextIsolation: true,
+        nodeIntegration: false,
+        sandbox: false,
+      },
+    });
+    settingsWindow.on("closed", () => {
+      settingsWindow = null;
+    });
+    settingsWindow.loadURL(`${baseUrl}/viewer/settings.html`);
+    return { status: "opened" };
+  }
   window.__egoConsoleMessages = [];
   window.webContents.on("console-message", (_event, level, message, line, sourceId) => {
     window.__egoConsoleMessages.push({ level, message, line, sourceId });
@@ -498,8 +556,38 @@ async function run() {
     pspcPerceptionDemo,
     pspcRecordingMode,
     pspcReplyPreviewMode,
+    developerSettings,
+    developerSettingsClaimCeiling: DEVELOPER_SETTINGS_CLAIM_CEILING,
+    developerSettingsReport: launchProfile.report,
+    debugOverlayDefaultVisible: Boolean(developerSettings.debug_overlay_default_visible),
   };
   ipcMain.handle("ego-desktop:get-config", () => config);
+  ipcMain.handle("ego-desktop:open-developer-settings", () => openDeveloperSettingsWindow());
+  ipcMain.handle("ego-desktop:get-developer-settings", () => currentDeveloperSettingsResponse());
+  ipcMain.handle("ego-desktop:get-effective-launch-config", () => currentDeveloperSettingsResponse().effective_launch_config);
+  ipcMain.handle("ego-desktop:save-developer-settings", (_event, payload) => {
+    savedDeveloperSettings = saveDeveloperSettings(settingsPath, payload && payload.settings ? payload.settings : payload);
+    config.developerSettingsReport = currentDeveloperSettingsResponse().effective_launch_config;
+    return currentDeveloperSettingsResponse();
+  });
+  ipcMain.handle("ego-desktop:apply-live-developer-settings", (_event, payload) => {
+    const requested = validateDeveloperSettings(payload && payload.settings ? payload.settings : payload);
+    const live = buildLiveDeveloperSettingsUpdate({
+      currentSettings: developerSettings,
+      requestedSettings: requested,
+    });
+    developerSettings = {
+      ...developerSettings,
+      developer_mode_enabled: live.applied.developer_mode_enabled,
+      debug_overlay_default_visible: live.applied.debug_overlay_default_visible,
+      tts_enabled: live.applied.tts_enabled,
+    };
+    config.developerSettings = developerSettings;
+    config.voiceEnabled = Boolean(developerSettings.tts_enabled);
+    config.debugOverlayDefaultVisible = Boolean(developerSettings.debug_overlay_default_visible);
+    window.webContents.send("ego-desktop:developer-settings-updated", live);
+    return live;
+  });
   ipcMain.handle("ego-desktop:chat-turn", async (_event, payload) => {
     const userText = String((payload && payload.userText) || "").trim();
     if (!userText) {
@@ -672,6 +760,11 @@ app.on("before-quit", () => {
   try {
     ipcMain.removeHandler("ego-desktop:synthesize-speech");
     ipcMain.removeHandler("ego-desktop:cancel-speech");
+    ipcMain.removeHandler("ego-desktop:open-developer-settings");
+    ipcMain.removeHandler("ego-desktop:get-developer-settings");
+    ipcMain.removeHandler("ego-desktop:save-developer-settings");
+    ipcMain.removeHandler("ego-desktop:get-effective-launch-config");
+    ipcMain.removeHandler("ego-desktop:apply-live-developer-settings");
   } catch (_error) {
     // Handler cleanup is best effort during shutdown.
   }

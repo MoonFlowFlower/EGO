@@ -14,6 +14,7 @@
   const pspcDebugOverlay = document.getElementById("pspc-debug-overlay");
   const pspcBubble = document.getElementById("pspc-bubble");
   const pspcTrace = document.getElementById("pspc-trace");
+  const settingsButton = document.getElementById("settings-button");
   const voiceBar = document.getElementById("voice-bar");
   const voiceToggle = document.getElementById("voice-toggle");
   const stopVoiceButton = document.getElementById("stop-voice");
@@ -475,16 +476,25 @@
     pspcDebugToggle.setAttribute("aria-pressed", visible ? "true" : "false");
   }
 
-  function setupPspcDebugOverlayToggle() {
+  function setupPspcDebugOverlayToggle(defaultVisible) {
     if (!pspcDebugOverlay || !pspcDebugToggle || pspcDebugOverlayToggleReady) {
       return;
     }
-    pspcDebugOverlay.hidden = true;
-    pspcDebugToggle.setAttribute("aria-pressed", "false");
+    pspcDebugOverlay.hidden = !Boolean(defaultVisible);
+    pspcDebugToggle.setAttribute("aria-pressed", defaultVisible ? "true" : "false");
     pspcDebugToggle.addEventListener("click", () => {
       setPspcDebugOverlayVisible(pspcDebugOverlay.hidden);
     });
     pspcDebugOverlayToggleReady = true;
+  }
+
+  function setupSettingsButton() {
+    if (!settingsButton || !window.egoDesktop || typeof window.egoDesktop.openDeveloperSettings !== "function") {
+      return;
+    }
+    settingsButton.addEventListener("click", () => {
+      window.egoDesktop.openDeveloperSettings().catch(() => {});
+    });
   }
 
   function renderPspcDebugOverlay(demo, scenario) {
@@ -1078,8 +1088,20 @@
         visualFit = result;
       }).catch(() => {});
     });
-    setupPspcDebugOverlayToggle();
+    setupSettingsButton();
+    setupPspcDebugOverlayToggle(Boolean(config.debugOverlayDefaultVisible));
     setupChat(model, config);
+    if (window.egoDesktop && typeof window.egoDesktop.onDeveloperSettingsUpdated === "function") {
+      window.egoDesktop.onDeveloperSettingsUpdated((payload) => {
+        const liveSettings = payload && payload.applied ? payload.applied : {};
+        if (Object.prototype.hasOwnProperty.call(liveSettings, "debug_overlay_default_visible")) {
+          setPspcDebugOverlayVisible(Boolean(liveSettings.debug_overlay_default_visible));
+        }
+        if (Object.prototype.hasOwnProperty.call(liveSettings, "tts_enabled")) {
+          setVoiceEnabled(Boolean(liveSettings.tts_enabled));
+        }
+      });
+    }
     if (!setupPspcPerceptionDemo(model, config)) {
       setupPspcVisualShim(model, config);
     }

@@ -44,6 +44,21 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - EgoDesktop Developer Settings / Launch Profile v0 now has a bounded local settings
+    profile at `EgoDesktop/src/developerSettings.js`, a `设置` button and local settings
+    window under `EgoDesktop/viewer/settings.*`, IPC/preload wiring in `EgoDesktop/src/main.js`
+    and `EgoDesktop/src/preload.js`, and tests at `EgoDesktop/tests/developer_settings.test.js`.
+    The profile persists to Electron `userData/developer-settings.json`, merges as
+    `defaults < saved settings < CLI args`, ignores persisted settings in smoke mode,
+    rejects unknown/executable/authority/credential fields, and limits live-safe updates
+    to developer mode, debug overlay default visibility, and TTS enabled state. Artifacts
+    under `artifacts/egodesktop_developer_settings_launch_profile_v0/` record `runtime_authority=none`,
+    no EgoOperator runtime/gate/memory/approval/transport/proactive changes, no PSPC
+    adapter or mainline connection, and claim ceiling `local_desktop_developer_settings_only`.
+    This is local desktop launch/profile ergonomics evidence only; it does not prove
+    PSPC mainline integration, true learning, durable memory, runtime integration
+    safety, stable real user benefit, live autonomy, consciousness, subjective experience,
+    or real emotion.
   - 'EgoDesktop PSPC Debug Signal Overlay v0 now exposes PSPC Reply Preview observability
     in the hidden `审计` overlay: `EgoDesktop/src/pspcReplyPreview.js` adds `profile.proxy_state`
     and seven presentation-only proxy bars, `EgoDesktop/viewer/renderer.js` renders
