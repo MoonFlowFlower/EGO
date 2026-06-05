@@ -15,6 +15,11 @@ const {
   updatePspcReplyPreviewState,
 } = require("./pspcReplyPreview");
 const { buildPspcVisualShim } = require("./pspcVisualShim");
+const {
+  appendDesktopSessionTurn,
+  buildDesktopSessionContext,
+  createDesktopSessionState,
+} = require("./sessionContext");
 const { buildViewerSignalFrame } = require("./signalFrame");
 const { buildTtsRequest } = require("./tts");
 const { TtsWorkerClient } = require("./ttsWorkerClient");
@@ -416,6 +421,7 @@ async function run() {
   const pspcRecordingMode = Boolean(args["pspc-recording-mode"]);
   const pspcReplyPreviewMode = Boolean(args["pspc-reply-preview-mode"]);
   let pspcReplyPreviewState = createPspcReplyPreviewState({ enabled: pspcReplyPreviewMode });
+  let desktopSessionState = createDesktopSessionState();
   const expressionCatalog = loadExpressionCatalog(modelInfo.modelDir);
   const server = createViewerServer({
     appRoot,
@@ -491,7 +497,11 @@ async function run() {
     }
     let pspcReplyPreviewContext = null;
     let pspcReplyPreviewScenario = null;
-    const turnPayload = { user_text: userText };
+    const desktopSessionContext = buildDesktopSessionContext(desktopSessionState);
+    const turnPayload = {
+      user_text: userText,
+      desktop_session_context: desktopSessionContext,
+    };
     if (pspcReplyPreviewMode) {
       pspcReplyPreviewState = updatePspcReplyPreviewState(pspcReplyPreviewState, userText);
       pspcReplyPreviewContext = buildPspcReplyPreviewContext(pspcReplyPreviewState);
@@ -504,6 +514,13 @@ async function run() {
     const botText = status === "ok"
       ? String(backend.reply_text || "")
       : String(backend.reply_text || `llm_expression_unavailable: ${backend.reason || "backend_unavailable"}`);
+    if (status === "ok") {
+      desktopSessionState = appendDesktopSessionTurn(desktopSessionState, {
+        userText,
+        assistantText: botText,
+        status,
+      });
+    }
     return {
       ...buildDesktopChatTurn({ userText, botText, status }),
       backend_status: backend.status || status,
@@ -515,6 +532,9 @@ async function run() {
       message_send: Boolean(backend.message_send),
       file_write: Boolean(backend.file_write),
       network_call: Boolean(backend.network_call),
+      desktop_session_context_applied: Boolean(backend.desktop_session_context_applied),
+      desktop_session_context_message_count: Number(backend.desktop_session_context_message_count || 0),
+      desktop_session_context_claim_ceiling: backend.desktop_session_context_claim_ceiling || "",
       pspc_reply_preview_applied: Boolean(backend.pspc_reply_preview_applied),
       pspc_reply_preview_style: backend.pspc_reply_preview_style || (pspcReplyPreviewContext && pspcReplyPreviewContext.profile
         ? String(pspcReplyPreviewContext.profile.style || "")

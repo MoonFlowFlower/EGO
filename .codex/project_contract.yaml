@@ -289,6 +289,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/egodesktop-pspc-visual-shim-v0/
   - docs/codex/tasks/egodesktop-pspc-perception-demo-v0/
   - docs/codex/tasks/egodesktop-pspc-reply-preview-mode-v0/
+  - docs/codex/tasks/egodesktop-session-local-conversation-context-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
   - tests/test_pspc_static_compatibility_review.py
@@ -309,6 +310,7 @@ allowed_mutation_paths:
   - tests/test_pspc_sequence_experience_eval_v0_1.py
   - tests/test_pspc_shadow_proposal_hint_contract.py
   - tests/test_ego_operator_desktop_pspc_reply_preview.py
+  - tests/test_ego_operator_desktop_session_context.py
   - labs/virtual_cat_pspc_v0/
   - artifacts/virtual_cat_pspc_v0/
   - artifacts/pspc_adapter_skeleton_v0/
@@ -336,6 +338,7 @@ allowed_mutation_paths:
   - artifacts/egodesktop_pspc_live2d_behavior_v0/
   - artifacts/egodesktop_pspc_perception_demo_v0/
   - artifacts/egodesktop_pspc_reply_preview_mode_v0/
+  - artifacts/egodesktop_session_local_conversation_context_v0/
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/EgoCore/SHIM_REGISTER.md
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml

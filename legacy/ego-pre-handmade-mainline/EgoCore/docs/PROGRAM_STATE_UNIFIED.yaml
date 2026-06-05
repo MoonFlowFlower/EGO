@@ -44,6 +44,23 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'EgoDesktop Session-Local Conversation Context v0 now has bounded window-lifetime
+    transcript context for local desktop chat: `EgoDesktop/src/sessionContext.js`
+    builds `desktop_session_context` with recent user/assistant turns only, `EgoDesktop/src/main.js`
+    sends that context on each chat turn and appends only successful backend turns,
+    and `scripts/ego_operator_desktop_turn.py` validates and injects the prior transcript
+    into in-session `runtime.memory` after `build_demo_runtime(enable_operator_memory=False)`
+    and before current `handle_user_message()`. Tests at `EgoDesktop/tests/session_context.test.js`
+    and `tests/test_ego_operator_desktop_session_context.py` verify trimming limits,
+    failed-turn exclusion, no executable fields, rejection of `system` role/authority
+    escalation/over-limit payloads, and local transcript injection. Artifacts under
+    `artifacts/egodesktop_session_local_conversation_context_v0/` record `desktop_session_context_applied=true`,
+    `runtime_authority=none`, `enabled=false`, `mainline_connected=false`, no real
+    memory write, no gate/approval/transport/proactive path, and claim ceiling `local_session_context_only`.
+    This fixes local EgoDesktop chat continuity only; it does not prove durable memory,
+    preference promotion, PSPC durable memory, EgoOperator runtime integration safety,
+    stable real user benefit, live autonomy, consciousness, subjective experience,
+    or real emotion.'
   - 'EgoDesktop PSPC Reply Preview Mode v0 now has an explicit local-only preview
     path: `EgoDesktop/src/pspcReplyPreview.js` accumulates a session-local PSPC profile,
     `EgoDesktop/src/main.js` passes `pspc_reply_preview_context` only when `--pspc-reply-preview-mode`

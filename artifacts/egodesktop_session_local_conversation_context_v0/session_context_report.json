@@ -1,0 +1,72 @@
+{
+  "schema_version": "egodesktop_session_local_conversation_context_v0.report",
+  "status": "pass",
+  "claim_ceiling": "local_session_context_only",
+  "desktop_session_context_applied": true,
+  "persistence": "window_lifetime_only",
+  "runtime_authority": "none",
+  "enabled": false,
+  "mainline_connected": false,
+  "message_count": 4,
+  "sample_context": {
+    "schema_version": "ego_desktop.session_context.v0",
+    "source": "ego_desktop_main_process_session_local",
+    "claim_ceiling": "local_session_context_only",
+    "persistence": "window_lifetime_only",
+    "runtime_authority": "none",
+    "enabled": false,
+    "mainline_connected": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "我喜欢喝带椰果和珍珠的奶茶，很有嚼劲。",
+        "turn_index": 1
+      },
+      {
+        "role": "assistant",
+        "content": "本次会话里你说过喜欢椰果和珍珠奶茶，我会按本窗口上下文记着。",
+        "turn_index": 1
+      },
+      {
+        "role": "user",
+        "content": "明日方舟的斯卡蒂和博士，来段角色扮演吧。",
+        "turn_index": 2
+      },
+      {
+        "role": "assistant",
+        "content": "可以，我们在本次会话里继续斯卡蒂和博士的创作场景。",
+        "turn_index": 2
+      }
+    ],
+    "no_authority": {
+      "real_memory_write_allowed": false,
+      "gate_invocation_allowed": false,
+      "approval_invocation_allowed": false,
+      "transport_call_allowed": false,
+      "proactive_trigger_allowed": false,
+      "runtime_registration_allowed": false
+    },
+    "side_effects_absent": {
+      "real_memory_written": false,
+      "gate_invoked": false,
+      "approval_invoked": false,
+      "transport_called": false,
+      "proactive_triggered": false,
+      "runtime_registered": false
+    }
+  },
+  "acceptance_probe": {
+    "continue_expected": "Continue the prior Skadi/Doctor creation from this window context.",
+    "milk_tea_probe_expected": "Mention coconut jelly and pearls only as this-session context.",
+    "after_restart_expected": "No session context remains after window restart."
+  },
+  "side_effects_absent": {
+    "real_memory_written": false,
+    "gate_invoked": false,
+    "approval_invoked": false,
+    "transport_called": false,
+    "proactive_triggered": false,
+    "runtime_registered": false,
+    "pspc_memory_authority": false
+  }
+}

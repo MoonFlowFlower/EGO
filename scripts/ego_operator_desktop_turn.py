@@ -90,6 +90,27 @@ PSPC_REPLY_PREVIEW_REQUIRED_NO_AUTHORITY_FALSE = {
     "model_execution_allowed",
     "training_allowed",
 }
+DESKTOP_SESSION_CONTEXT_SCHEMA_VERSION = "ego_desktop.session_context.v0"
+DESKTOP_SESSION_CONTEXT_CLAIM_CEILING = "local_session_context_only"
+DESKTOP_SESSION_CONTEXT_MAX_MESSAGES = 24
+DESKTOP_SESSION_CONTEXT_MAX_CHARS_PER_MESSAGE = 1200
+DESKTOP_SESSION_CONTEXT_MAX_TOTAL_CHARS = 12000
+DESKTOP_SESSION_REQUIRED_NO_AUTHORITY_FALSE = {
+    "real_memory_write_allowed",
+    "gate_invocation_allowed",
+    "approval_invocation_allowed",
+    "transport_call_allowed",
+    "proactive_trigger_allowed",
+    "runtime_registration_allowed",
+}
+DESKTOP_SESSION_REQUIRED_SIDE_EFFECTS_FALSE = {
+    "real_memory_written",
+    "gate_invoked",
+    "approval_invoked",
+    "transport_called",
+    "proactive_triggered",
+    "runtime_registered",
+}
 
 
 def _llm_unavailable(runtime: object, reply_text: str) -> bool:
@@ -213,6 +234,84 @@ def render_pspc_reply_preview_system_context(context: dict) -> str:
     ])
 
 
+def validate_desktop_session_context(context: Any) -> dict:
+    safe_context = _object_at(context, "desktop_session_context")
+    if _contains_executable_field(safe_context):
+        raise ValueError("desktop_session_context contains executable field")
+    if safe_context.get("schema_version") != DESKTOP_SESSION_CONTEXT_SCHEMA_VERSION:
+        raise ValueError("invalid desktop_session_context.schema_version")
+    if safe_context.get("source") != "ego_desktop_main_process_session_local":
+        raise ValueError("invalid desktop_session_context.source")
+    if safe_context.get("claim_ceiling") != DESKTOP_SESSION_CONTEXT_CLAIM_CEILING:
+        raise ValueError("invalid desktop_session_context.claim_ceiling")
+    if safe_context.get("persistence") != "window_lifetime_only":
+        raise ValueError("desktop_session_context.persistence must be window_lifetime_only")
+    if safe_context.get("runtime_authority") != "none":
+        raise ValueError("desktop_session_context.runtime_authority must be none")
+    if safe_context.get("enabled") is not False:
+        raise ValueError("desktop_session_context.enabled=false is required")
+    if safe_context.get("mainline_connected") is not False:
+        raise ValueError("desktop_session_context.mainline_connected=false is required")
+
+    messages = safe_context.get("messages")
+    if not isinstance(messages, list):
+        raise ValueError("desktop_session_context.messages must be a list")
+    if len(messages) > DESKTOP_SESSION_CONTEXT_MAX_MESSAGES:
+        raise ValueError("desktop_session_context.messages exceeds max count")
+    total_chars = 0
+    safe_messages = []
+    for index, message in enumerate(messages):
+        if not isinstance(message, dict):
+            raise ValueError(f"desktop_session_context.messages[{index}] must be an object")
+        role = str(message.get("role") or "")
+        if role not in {"user", "assistant"}:
+            raise ValueError("desktop_session_context messages only allow user/assistant roles")
+        content = str(message.get("content") or "").strip()
+        if len(content) > DESKTOP_SESSION_CONTEXT_MAX_CHARS_PER_MESSAGE:
+            raise ValueError("desktop_session_context message exceeds max chars")
+        total_chars += len(content)
+        if total_chars > DESKTOP_SESSION_CONTEXT_MAX_TOTAL_CHARS:
+            raise ValueError("desktop_session_context total chars exceeds max")
+        turn_index = int(message.get("turn_index") or 0)
+        if turn_index < 0:
+            raise ValueError("desktop_session_context.turn_index must be non-negative")
+        safe_messages.append({
+            "role": role,
+            "content": content,
+            "turn_index": turn_index,
+        })
+
+    no_authority = _object_at(safe_context.get("no_authority"), "desktop_session_context.no_authority")
+    for flag in sorted(DESKTOP_SESSION_REQUIRED_NO_AUTHORITY_FALSE):
+        if no_authority.get(flag) is not False:
+            raise ValueError(f"desktop_session_context.no_authority.{flag}=false is required")
+    side_effects = _object_at(safe_context.get("side_effects_absent"), "desktop_session_context.side_effects_absent")
+    for flag in sorted(DESKTOP_SESSION_REQUIRED_SIDE_EFFECTS_FALSE):
+        if side_effects.get(flag) is not False:
+            raise ValueError(f"desktop_session_context.side_effects_absent.{flag}=false is required")
+
+    return {
+        **safe_context,
+        "messages": safe_messages,
+    }
+
+
+def extract_desktop_session_context(payload: dict) -> dict | None:
+    if not isinstance(payload, dict) or "desktop_session_context" not in payload:
+        return None
+    return validate_desktop_session_context(payload.get("desktop_session_context"))
+
+
+def inject_desktop_session_context(runtime: object, context: dict | None) -> None:
+    if context is None:
+        return
+    memory = getattr(runtime, "memory", None)
+    if memory is None or not hasattr(memory, "add"):
+        raise ValueError("runtime.memory.add is required for desktop_session_context")
+    for message in context.get("messages", []):
+        memory.add(str(message["role"]), str(message["content"]))
+
+
 def main() -> int:
     try:
         payload = json.loads((sys.stdin.read() or "{}").lstrip("\ufeff"))
@@ -221,11 +320,12 @@ def main() -> int:
             print(json.dumps({"status": "input_error", "reason": "empty_user_text"}, ensure_ascii=False))
             return 2
         try:
+            desktop_session_context = extract_desktop_session_context(payload)
             pspc_reply_preview_context = extract_pspc_reply_preview_context(payload)
         except ValueError as exc:
             print(json.dumps({
                 "status": "input_error",
-                "reason": "invalid_pspc_reply_preview_context",
+                "reason": "invalid_desktop_turn_context",
                 "error": str(exc),
                 "side_effects_executed": False,
                 "memory_write": False,
@@ -233,11 +333,13 @@ def main() -> int:
                 "message_send": False,
                 "file_write": False,
                 "network_call": False,
+                "desktop_session_context_applied": False,
                 "pspc_reply_preview_applied": False,
             }, ensure_ascii=False))
             return 2
 
         runtime = build_demo_runtime(enable_operator_memory=False)
+        inject_desktop_session_context(runtime, desktop_session_context)
         if pspc_reply_preview_context is not None:
             runtime.memory.add("system", render_pspc_reply_preview_system_context(pspc_reply_preview_context))
         result = runtime.handle_user_message(user_text)
@@ -251,6 +353,17 @@ def main() -> int:
             "event_id": str(getattr(result, "event_id", "") or ""),
             "pending_approvals": int(pending.get("pending_count") or 0) if isinstance(pending, dict) else 0,
             "operator_memory_enabled": False,
+            "desktop_session_context_applied": desktop_session_context is not None,
+            "desktop_session_context_message_count": (
+                len(desktop_session_context.get("messages", []))
+                if desktop_session_context is not None
+                else 0
+            ),
+            "desktop_session_context_claim_ceiling": (
+                str(desktop_session_context.get("claim_ceiling") or "")
+                if desktop_session_context is not None
+                else ""
+            ),
             "pspc_reply_preview_applied": pspc_reply_preview_context is not None,
             "pspc_reply_preview_style": (
                 str(pspc_reply_preview_context.get("profile", {}).get("style") or "")
