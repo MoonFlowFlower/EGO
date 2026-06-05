@@ -7,6 +7,7 @@ const { parseArgs } = require("./args");
 const { buildDesktopChatTurn } = require("./chatTurn");
 const { resolveModelInput } = require("./modelResolver");
 const { listExpressionFiles } = require("./modelSettings");
+const { buildPspcVisualShim } = require("./pspcVisualShim");
 const { buildViewerSignalFrame } = require("./signalFrame");
 const { buildTtsRequest } = require("./tts");
 const { TtsWorkerClient } = require("./ttsWorkerClient");
@@ -33,6 +34,14 @@ function loadSignalFrame(args) {
     contract = JSON.parse(String(args["signal-json"]));
   }
   return buildViewerSignalFrame(contract);
+}
+
+function loadPspcVisualShim(args) {
+  if (!args["pspc-proposal-hint-file"]) {
+    return null;
+  }
+  const artifactPath = path.resolve(String(args["pspc-proposal-hint-file"]));
+  return buildPspcVisualShim(readJsonFile(artifactPath), { artifactPath });
 }
 
 function loadExpressionCatalog(modelDir) {
@@ -392,6 +401,7 @@ async function run() {
     requestTimeoutMs: Number(args["tts-timeout-ms"] || 240000),
   });
   const signalFrame = loadSignalFrame(args);
+  const pspcVisualShim = loadPspcVisualShim(args);
   const expressionCatalog = loadExpressionCatalog(modelInfo.modelDir);
   const server = createViewerServer({
     appRoot,
@@ -447,6 +457,7 @@ async function run() {
     ttsRvcModel: String(args["tts-model-name"] || "Skadi_CN.pth"),
     ttsF0Method: String(args["tts-f0method"] || "rmvpe"),
     ttsSmokeText: String(args["tts-smoke-text"] || ""),
+    pspcVisualShim,
   };
   ipcMain.handle("ego-desktop:get-config", () => config);
   ipcMain.handle("ego-desktop:chat-turn", async (_event, payload) => {

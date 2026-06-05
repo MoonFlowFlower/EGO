@@ -6,6 +6,10 @@
   const userInput = document.getElementById("user-input");
   const sendButton = document.getElementById("send-button");
   const chatOutput = document.getElementById("chat-output");
+  const pspcDemoPanel = document.getElementById("pspc-demo-panel");
+  const pspcScenarioSelect = document.getElementById("pspc-scenario-select");
+  const pspcBubble = document.getElementById("pspc-bubble");
+  const pspcTrace = document.getElementById("pspc-trace");
   const voiceToggle = document.getElementById("voice-toggle");
   const stopVoiceButton = document.getElementById("stop-voice");
   const voiceStatus = document.getElementById("voice-status");
@@ -406,6 +410,56 @@
         sendButton.click();
       }
     });
+  }
+
+  async function applyPspcScenario(model, scenario) {
+    if (!scenario || !scenario.visual_profile) {
+      return;
+    }
+    const profile = scenario.visual_profile;
+    if (pspcBubble) {
+      pspcBubble.textContent = String(profile.bubble_text || "");
+    }
+    if (pspcTrace) {
+      pspcTrace.textContent = [
+        String(scenario.packet_id || ""),
+        String(profile.motion_hint || ""),
+        String(scenario.confidence_tag || ""),
+        String(profile.trace_explanation || ""),
+      ].filter(Boolean).join(" | ");
+    }
+    const expressionNameByHint = {
+      smile_soft: "星星眼",
+      cautious: "黑脸",
+      quiet_care: "记笔记",
+      hesitate_observe: "晕晕眼",
+    };
+    const expressionName = expressionNameByHint[String(profile.expression_hint || "")] || "";
+    if (expressionName) {
+      await applyNamedExpression(model, expressionName);
+    }
+  }
+
+  function setupPspcVisualShim(model, config) {
+    const shim = config && config.pspcVisualShim;
+    const scenarios = shim && Array.isArray(shim.scenarios) ? shim.scenarios : [];
+    if (!pspcDemoPanel || !pspcScenarioSelect || !pspcBubble || scenarios.length === 0) {
+      return;
+    }
+    pspcDemoPanel.hidden = false;
+    pspcScenarioSelect.textContent = "";
+    scenarios.forEach((scenario, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = `${scenario.packet_id} / ${scenario.visual_profile.behavior_state}`;
+      pspcScenarioSelect.appendChild(option);
+    });
+    const selectCurrent = () => {
+      const index = Number(pspcScenarioSelect.value || 0);
+      applyPspcScenario(model, scenarios[index] || scenarios[0]).catch(() => {});
+    };
+    pspcScenarioSelect.addEventListener("change", selectCurrent);
+    selectCurrent();
   }
 
   function rendererResolution() {
@@ -872,6 +926,7 @@
       }).catch(() => {});
     });
     setupChat(model, config);
+    setupPspcVisualShim(model, config);
 
     const expression = config.signalFrame &&
       config.signalFrame.presence_state &&
@@ -933,6 +988,10 @@
       tickerSource: "app.ticker",
       watermarkDefaultOff: true,
       chatUiReady: Boolean(chatForm && userInput && sendButton && chatOutput),
+      pspcVisualShimReady: Boolean(config.pspcVisualShim && Array.isArray(config.pspcVisualShim.scenarios)),
+      pspcVisualScenarioCount: config.pspcVisualShim && Array.isArray(config.pspcVisualShim.scenarios)
+        ? config.pspcVisualShim.scenarios.length
+        : 0,
       initialExpressionName: String(config.initialExpressionName || ""),
       initialExpressionApplied,
       hiddenDrawableIds: diagnosticHiddenDrawableIds,

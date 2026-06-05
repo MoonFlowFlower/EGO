@@ -15,6 +15,14 @@
         <div id="status" aria-live="polite">Loading Live2D...</div>
       </section>
       <section id="chat-panel" aria-label="EgoOperator desktop chat">
+        <section id="pspc-demo-panel" aria-label="PSPC local visual demo" hidden>
+          <div id="pspc-demo-header">
+            <span id="pspc-demo-title">PSPC visual shim</span>
+            <select id="pspc-scenario-select" aria-label="PSPC scenario"></select>
+          </div>
+          <div id="pspc-bubble" aria-live="polite"></div>
+          <div id="pspc-trace"></div>
+        </section>
         <div id="chat-output" aria-live="polite">
           <div class="message bot">
             <div class="message-label">Bot</div>

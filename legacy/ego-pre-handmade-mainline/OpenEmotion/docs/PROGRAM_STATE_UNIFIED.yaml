@@ -44,6 +44,18 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - EgoDesktop PSPC Visual Shim v0 now has a product-only local visual mapper at `EgoDesktop/src/pspcVisualShim.js`,
+    a local Live2D viewer scenario selector, tests at `EgoDesktop/tests/pspc_visual_shim.test.js`,
+    docs under `docs/codex/tasks/egodesktop-pspc-visual-shim-v0/`, and artifacts under
+    `artifacts/egodesktop_pspc_live2d_behavior_v0/`. The mapper reads the existing
+    PSPC `shadow_proposal_hint` artifact and converts seven packets into presentation-only
+    visual states for `warm_approach`, `cautious_boundary`, and `low_interrupt_care`
+    while keeping `runtime_authority=none`, `enabled=false`, `mainline_connected=false`,
+    no executable fields, no EgoOperator runtime import/registry, no memory write,
+    no gate/approval/transport/proactive path, and claim ceiling `product_only_local_visual_behavior_mapping_from_shadow_proposal_hint`.
+    This is local visual demo evidence only; it does not prove PSPC runtime integration,
+    adapter readiness, EgoOperator efficacy, real user benefit, live autonomy, durable
+    memory efficacy, consciousness, subjective experience, or real emotion.
   - PSPC Shadow Proposal Hint Contract v0 now has an artifact-only converter at `scripts/run_pspc_shadow_proposal_hint_contract.py`,
     tests at `tests/test_pspc_shadow_proposal_hint_contract.py`, docs under `docs/codex/tasks/pspc-shadow-proposal-hint-contract-v0/`,
     and artifacts under `artifacts/pspc_shadow_proposal_hint_contract_v0/`. The converter
