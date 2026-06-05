@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "archive_id": "legacy_pre_operator_mainline_archival_purge_v1",
+  "created_from_commit": "67347a759b5911f14e151748f294938fe53058ae",
+  "archive_pointer": {
+    "type": "git_tag",
+    "name": "legacy-pre-operator-mainline-before-purge",
+    "commit": "67347a759b5911f14e151748f294938fe53058ae"
+  },
+  "removed_paths": [
+    "legacy/ego-pre-handmade-mainline/EgoCore/",
+    "legacy/ego-pre-handmade-mainline/OpenEmotion/",
+    "legacy/ego-pre-handmade-mainline/ego_desktop_lab/"
+  ],
+  "reason_for_removal": "Remove bulky pre-operator legacy runtime, subject-kernel, and deterministic lab code from the current main working tree so EgoOperator remains the only default runtime owner and future AI/Codex routing is not polluted by old active-looking surfaces.",
+  "preserved_current_tree_pointers": [
+    "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
+    "docs/archive/LEGACY_ALGORITHM_INVENTORY.md",
+    "artifacts/archive/legacy_pre_operator_mainline_manifest.json"
+  ],
+  "claim_boundary": {
+    "proves": [
+      "the removed legacy code has a git rollback pointer",
+      "the current main working tree no longer needs the bulky legacy code directories as active surfaces",
+      "the reusable ideas are documented as reference-only inventory"
+    ],
+    "does_not_prove": [
+      "EgoOperator runtime efficacy",
+      "stable real user benefit",
+      "live autonomy",
+      "durable memory efficacy",
+      "functional selfhood",
+      "consciousness",
+      "subjective experience"
+    ]
+  },
+  "authority_boundary": {
+    "current_runtime_owner": "EgoOperator",
+    "legacy_runtime_authority": "none",
+    "default_task_path": "EgoOperator",
+    "reuse_requirement": "A new Stage Card and evidence gate are required before any archived legacy idea or code can influence runtime authority, task defaults, memory, approval, trace, transport, or proactive behavior."
+  },
+  "rollback_instructions": [
+    "git checkout legacy-pre-operator-mainline-before-purge -- legacy/ego-pre-handmade-mainline/EgoCore legacy/ego-pre-handmade-mainline/OpenEmotion legacy/ego-pre-handmade-mainline/ego_desktop_lab",
+    "Run the relevant verification for the restored branch or commit.",
+    "Do not treat restored code as runtime authority without a new Stage Card and evidence gate."
+  ]
+}

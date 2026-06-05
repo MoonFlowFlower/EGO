@@ -1,1 +1,0 @@
-User event: The current plan keeps repeating the same continuation step for "verify whether reflection changes behavior", but it does not resolve the uncertainty. The plan needs repair or replanning before the goal can progress.

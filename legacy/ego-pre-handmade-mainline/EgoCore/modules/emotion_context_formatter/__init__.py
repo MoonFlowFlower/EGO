@@ -1,1 +1,0 @@
-"""Emotion context formatter package."""

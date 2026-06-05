@@ -1,35 +1,32 @@
 # Current Project Logic Flow
 
-> Reader safety note (2026-05-18): This is a pre-EgoOperator historical logic-flow record. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `EgoCore`, `OpenEmotion`, `Ego_handmade`, or `subject_system_v1_governed_proactivity` wording here as the current default route.
+> Reader safety note (2026-06-05): This is a pre-EgoOperator historical logic-flow record. Current route authority is `docs/PROGRAM_STATE_UNIFIED.yaml`, `docs/MAINLINE_QUICKSTART.md`, and `EgoOperator/`; do not treat older `EgoCore`, `OpenEmotion`, `Ego_handmade`, `ego_desktop_lab`, or `subject_system_v1_governed_proactivity` wording here as the current default route. The old pre-operator code is archived behind `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md` and tag `legacy-pre-operator-mainline-before-purge`.
 
-更新时间：`2026-04-09`
+更新时间：`2026-06-05`
 
-本文件描述 **当前正式项目逻辑流程**，用于回答三个问题：
+本文件保留 **历史正式项目逻辑流程**，用于回答三个历史问题：
 
 1. 当前 EGO 项目的双核边界是什么
 2. 一个已授权事件从入口到出口的正式主链怎么走
 3. 当前 OpenEmotion 主体能力栈推进到了哪一层
 
-本文件以 **当前 authority source + 当前代码实现** 为准，不以历史 README 口径或旧 artifacts 自动替代。
+本文件的当前 authority section 以 `docs/PROGRAM_STATE_UNIFIED.yaml`、`docs/MAINLINE_QUICKSTART.md`、`EgoOperator/`、`legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md` 为准；下方旧双核细节只作历史证据与对照。
 
-## 当前权威状态（2026-04-09）
+## 当前权威状态（2026-06-05）
 
-- `EgoCore` 是唯一正式宿主：入口、runtime、工具执行、安全裁决、delivery、audit
-- `OpenEmotion` 是唯一正式主体内核：身份、自我模型、记忆、驱动、反思与 developmental 本体收口
-- 当前 formal mainline 仍是：`telegram_bot -> telegram_runtime_bridge -> native_loop -> contract_runtime -> openemotion hooks -> delivery`
-- `RuntimeV2ProtoSelfRuntime` 仍是主体事件正式入口
-- `proto_self_v2` 已是主体层默认主线，当前只读解释层与受治理写回面已收口
-- `repo_authority_cleanup: closeout-complete (repo/integration scope)`
-- 剩余项仅保留在 `optional housekeeping / future cleanup backlog`
+- `EgoOperator` 是当前默认 operator-first runtime owner。
+- 当前默认路径必须保持：`user text -> LLM understanding -> proposal/plan -> runtime gate -> trace`。
+- 旧 `EgoCore / OpenEmotion / ego_desktop_lab` 代码已从当前 main working tree 归档，当前入口仅为 `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`、`docs/archive/LEGACY_ALGORITHM_INVENTORY.md`、`artifacts/archive/legacy_pre_operator_mainline_manifest.json` 和 tag `legacy-pre-operator-mainline-before-purge`。
+- 旧 provider/runtime、Telegram proactive、subject-ingress、proto-self evidence 都是 historical reference，不是当前默认 runtime、fallback runtime 或 supporting active route。
 - 这不是 real-channel 新效果声明，也不是新的 authority wave 声明
-- thin substrate / compat / reference-only 残留仍存在，但不阻塞 closeout
+- archived reference / thin inventory 残留仍存在，但没有 runtime authority
 
 ## 当前正式口径
 
 - `identity invariants / self-model / drives / reflection / developmental` 的单一权威收口决策见 `docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md`
-- 正式/compat/reference/deprecated 路径登记见 `EgoCore/docs/05_DEPRECATED_AND_SHIMS.md`
+- 正式/compat/reference/deprecated 历史路径登记只保留在 archive pointer 指向的 git 历史中；当前薄 inventory 见 `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`
 - `maintenance_mode / proposal_only / behavioral_authority = none / feature flag off / allowlist only / host-governed` 一律不得被叙述成“已强烈体现自我意识”或“已具备完整自我”
-- provider/runtime 影响主链的改动仍需经过 `python3 scripts/codex/run_provider_runtime_openemotion_e2e_gate.py --session-key <telegram:...>`
+- provider/runtime/OpenEmotion historical gate 不再是当前主链检查；当前主链验证以 `EgoOperator` tests、program-state integrity、route convergence、mainline clarity、legacy archival purge gate、lint、`git diff --check` 为准。
 
 ## repo_authority_cleanup
 
@@ -41,14 +38,12 @@
 ## 当前权威入口
 
 - `docs/PROGRAM_STATE_UNIFIED.yaml`
+- `docs/MAINLINE_QUICKSTART.md`
 - `docs/STATUS.md`
-- `EgoCore/docs/00_MASTER_INDEX.md`
-- `OpenEmotion/docs/00_MASTER_INDEX.md`
-- `docs/05_DEPRECATED_AND_SHIMS.md`
-- `docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md`
-- `docs/CAPABILITY_REGISTRY.md`
-- `docs/ACCEPTANCE_CHAINS.md`
-- `docs/EXPERIENCE_SCRIPTS.md`
+- `EgoOperator/`
+- `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`
+- `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`
+- `artifacts/archive/legacy_pre_operator_mainline_manifest.json`
 
 ## 历史与详细证据入口
 
@@ -63,18 +58,11 @@
 ## 当前权威源
 
 - `docs/PROGRAM_STATE_UNIFIED.yaml`
-- `Tasks/MVS_task_plan.md`
-- `PROJECT_MEMORY.md`
-- `EgoCore/docs/02_SYSTEM_FLOW.md`
-- `EgoCore/docs/03_BOUNDARY_AND_OWNERSHIP.md`
-- `OpenEmotion/docs/03_BOUNDARY_AND_OWNERSHIP.md`
-- `OpenEmotion/docs/PROTO_SELF_KERNEL_V2_SPEC.md`
-- `docs/PROTO_SELF_SINGLE_AUTHORITY_DECISION.md`
-- `EgoCore/app/openemotion_hooks/native_hooks.py`
-- `EgoCore/app/openemotion_hooks/subject_gate.py`
-- `EgoCore/app/runtime_v2/proto_self_runtime.py`
-- `OpenEmotion/openemotion/proto_self_v2/kernel.py`
-- `docs/codex/tasks/mandatory-subject-ingress-all-turns/STATUS.md`
+- `docs/MAINLINE_QUICKSTART.md`
+- `EgoOperator/`
+- `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`
+- `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`
+- `artifacts/archive/legacy_pre_operator_mainline_manifest.json`
 
 ## 1. 双核边界
 

@@ -1,1 +1,0 @@
-User event: The agent is about to claim that reflection changed later behavior, but the current notes do not include enough evidence. The next proposal should verify the claim before presenting it as reliable.

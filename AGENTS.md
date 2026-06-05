@@ -14,7 +14,7 @@
 6. `docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
 7. `README.md`
 8. 如果改 `EgoOperator/`，再读 `EgoOperator/docs/ALGORITHM_INVENTORY.md`
-9. 如果只读旧参考实现，再读 `legacy/ego-pre-handmade-mainline/EgoCore/README.md` 或 `legacy/ego-pre-handmade-mainline/OpenEmotion/README.md`
+9. 如果只读旧参考实现，先读 `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`、`docs/archive/LEGACY_ALGORITHM_INVENTORY.md` 和 `artifacts/archive/legacy_pre_operator_mainline_manifest.json`
 
 读取优先级：
 
@@ -41,9 +41,9 @@
 ## Directory routing
 
 - `EgoOperator/`: 当前默认 operator-first runtime candidate、memory、permission gate、transaction approval、trace、human-trial harness
-- `legacy/ego-pre-handmade-mainline/EgoCore/`: 旧宿主参考实现；只作 legacy reference / fallback / algorithm source
-- `legacy/ego-pre-handmade-mainline/OpenEmotion/`: 旧主体内核参考实现；只作 legacy reference / algorithm source
-- `legacy/ego-pre-handmade-mainline/ego_desktop_lab/`: 旧 deterministic lab/reference harness；不得恢复为第二套 active runtime
+- `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`: 旧 pre-operator mainline 的 archive pointer；旧 `EgoCore / OpenEmotion / ego_desktop_lab` code 不在当前 working tree
+- `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`: 旧算法思想薄 inventory；reference only、no runtime authority、no default path
+- `artifacts/archive/legacy_pre_operator_mainline_manifest.json`: removed paths、archive pointer、rollback instructions、claim boundary
 - `Tasks/`: 任务单、spec、plan、acceptance、status、handoff；新任务默认使用 `Tasks/templates/`
 - `docs/codex/`: Codex long-run harness 文档、模板、示例、任务目录
 - `scripts/`: 跨仓脚本与 capture runner；`scripts/codex/` 承载 long-run harness 工具
@@ -57,33 +57,29 @@
 仓库根目录没有统一 build 命令。按子仓执行：
 
 - 默认 operator runtime 不需要安装旧双核依赖即可做本地 NoLLM/pytest 验证。
-- 旧双核参考实现如需运行，路径已迁移到 `legacy/ego-pre-handmade-mainline/`，只在 legacy/fallback 任务中使用。
+- 旧双核参考实现不在当前 working tree。若确需运行，必须先通过 tag `legacy-pre-operator-mainline-before-purge` 在隔离分支/工作区恢复，并且需要新的 Stage Card 与 evidence gate。
 
 ### Run
 
 - `cd EgoOperator && python3 agent_base.py`
-- legacy fallback only: `cd legacy/ego-pre-handmade-mainline/EgoCore && python3 -m app.main --telegram`
-- legacy fallback only: `cd legacy/ego-pre-handmade-mainline/OpenEmotion && make run`
+- archived legacy fallback: no current-tree run command; restore from `legacy-pre-operator-mainline-before-purge` only after a new Stage Card and evidence gate.
 
 ### Test
 
 - `TMPDIR=/tmp python3 -m pytest -q EgoOperator/tests`
-- legacy fallback only: `cd legacy/ego-pre-handmade-mainline/EgoCore && python3 -m pytest tests/ -v`
-- legacy fallback only: `cd legacy/ego-pre-handmade-mainline/OpenEmotion && python3 -m pytest tests/ -q`
+- archived legacy tests: no current-tree test command; restore from `legacy-pre-operator-mainline-before-purge` only after a new Stage Card and evidence gate.
 
 ### Lint / typecheck
 
-当前仓库的稳定 lint 入口与 OpenEmotion 专用 typecheck 如下：
+当前仓库的稳定 lint 入口如下：
 
 - `python3 scripts/codex/lint_repo.py`
-- legacy fallback only: `cd legacy/ego-pre-handmade-mainline/OpenEmotion && python3 verify_typecheck_simple.py`
-- legacy fallback only: `cd legacy/ego-pre-handmade-mainline/OpenEmotion && python3 verify_typecheck.py`
 
 规则：
 
 - 不要编造 `ruff` / `black` / `mypy` / repo-root CI gate
-- 旧 `verify_repo.py` 仍可作为 legacy/fallback 检查，但默认新主线验收优先跑 `EgoOperator/tests`
-- 在 WSL + mounted drive 环境下，OpenEmotion verifier runtime 允许优先使用 Windows Python 驱动的 `OpenEmotion/.venv`，以避开 Linux-side `venv/pip` 的 I/O 卡顿
+- `verify_repo.py` 是 EgoOperator-first repo verifier，不再默认探测旧双核 runtime。
+- archived legacy checks must run only from an isolated restoration of `legacy-pre-operator-mainline-before-purge`.
 - 如任务需要静态预检，仍可直接使用 `python3 -m py_compile path/to/file.py`
 
 ### Review / preflight
@@ -93,8 +89,7 @@
 - `python3 scripts/codex/lint_repo.py`
 - `python3 scripts/codex/verify_repo.py --mode fast`
 - `python3 scripts/codex/verify_repo.py --mode full`
-- OpenEmotion CI 参考：`OpenEmotion/.github/workflows/emotiond-test.yml`
-- Testbot CI 参考：`OpenEmotion/.github/workflows/testbot-e2e.yml`
+- `python3 scripts/codex/verify_legacy_archival_purge.py`
 
 ### Publish
 
@@ -268,7 +263,7 @@ Before any implementation:
 3. `AGENTS.md`
 4. 如果改 `EgoOperator/`，再读 `EgoOperator/docs/ALGORITHM_INVENTORY.md`
 
-不要把旧 `EgoCore / OpenEmotion / ego_desktop_lab` 重新升格成默认主线。它们现在只作为 legacy reference / fallback / algorithm source，除非当前任务明确授权 legacy/fallback 工作。
+不要把旧 `EgoCore / OpenEmotion / ego_desktop_lab` 重新升格成默认主线。它们现在只作为 archive reference / algorithm source；当前工作树没有 legacy fallback runtime。任何恢复或复用都必须先有新的 Stage Card 和 evidence gate。
 
 ## 0. Current Mainline
 

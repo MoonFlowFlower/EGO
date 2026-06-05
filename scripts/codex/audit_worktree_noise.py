@@ -32,40 +32,26 @@ RECOMMENDED_NEXT_OWNER = {
 
 AUTHORITY_PATHS = {
     "docs/PROGRAM_STATE_UNIFIED.yaml",
-    "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
-    "OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml",
+    "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
 }
 
 FORMAL_EVIDENCE_PREFIXES = (
     "artifacts/evidence_ledger/",
     "artifacts/reports/",
     "artifacts/capability_registry/",
+    "artifacts/archive/",
     "artifacts/telegram_real_mainline_v1/",
-    "EgoCore/artifacts/test_runs/",
 )
 
 FORMAL_RUNTIME_PREFIXES = (
-    "EgoCore/app/",
-    "EgoCore/config/",
-    "EgoCore/modules/",
-    "EgoCore/scripts/",
-    "EgoCore/tests/",
-    "EgoCore/tools/",
-    "OpenEmotion/openemotion/",
-    "OpenEmotion/tests/",
-    "OpenEmotion/scripts/",
-    "OpenEmotion/data/",
-    "ego_desktop_lab/",
+    "EgoOperator/",
+    "EgoDesktop/",
+    "labs/virtual_cat_pspc_v0/",
 )
 
 OPERATIONAL_EXHAUST_PREFIXES = (
     "temp/",
     "logs/",
-    "EgoCore/logs/",
-    "OpenEmotion/logs/",
-    "EgoCore/.venv_run/",
-    "OpenEmotion/.venv/",
-    "OpenEmotion/venv/",
     ".pytest_cache/",
     ".venv-env-restore/",
     ".ssh/",
@@ -82,10 +68,7 @@ GENERATED_OR_MIRROR_PREFIXES = (
     "docs/STATUS.md",
     "docs/OVERALL_PROGRESS.md",
     "docs/CURRENT_PROJECT_LOGIC_FLOW.md",
-    "EgoCore/docs/generated/",
     "artifacts/proto_self_mirror/",
-    "EgoCore/artifacts/proto_self_mirror/",
-    "OpenEmotion/artifacts/",
 )
 
 CLEANUP_CANDIDATE_PREFIXES = (

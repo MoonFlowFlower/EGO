@@ -13,9 +13,10 @@ Derived route view: `docs/codex/tasks/TASK_LANE_INDEX.md`.
 ## Runtime Ownership
 
 - `EgoOperator` owns the current operator-first runtime candidate: natural language understanding, runtime modes, transaction approval, local operator memory, trace, and human-trial reports.
-- `legacy/ego-pre-handmade-mainline/EgoCore` is a legacy runtime reference and fallback source for gates, transport, replay, and audit ideas.
-- `legacy/ego-pre-handmade-mainline/OpenEmotion` is a legacy subject-semantics reference and algorithm source.
-- `legacy/ego-pre-handmade-mainline/ego_desktop_lab` is a legacy deterministic lab/reference harness. It is not a product runtime and must not become a second active runtime.
+- `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md` is the working-tree tombstone for the archived pre-operator mainline.
+- `docs/archive/LEGACY_ALGORITHM_INVENTORY.md` is the thin reusable-idea inventory. It is reference only, with no runtime authority and no default path.
+- `artifacts/archive/legacy_pre_operator_mainline_manifest.json` records the removed paths, archive pointer, claim boundary, and rollback instructions.
+- The archive pointer is `legacy-pre-operator-mainline-before-purge`. Restoring or reusing old `EgoCore / OpenEmotion / ego_desktop_lab` code requires a new Stage Card and evidence gate.
 - New work should preserve the `user text -> LLM understanding -> proposal/plan -> gate -> trace` path. Do not reintroduce keyword-first semantic routing as the default entry.
 
 ## First 5 Files To Read
@@ -33,7 +34,7 @@ Derived route view: `docs/codex/tasks/TASK_LANE_INDEX.md`.
 - `subject_system_v1_governed_proactivity` is now legacy/pre-EgoOperator evidence, not the active default implementation lane.
 - `repo_authority_cleanup` is closeout-complete; only explicit housekeeping slices should reopen cleanup.
 - `thought_probe / weak-generic rebind / bare-continue repair / proactive timing / self-DM live gate` are regression evidence unless the active lane explicitly admits a new task.
-- `legacy/ego-pre-handmade-mainline/ego_desktop_lab` should not become a Telegram path, GUI path, desktop executor, or third core.
+- Archived pre-operator `EgoCore / OpenEmotion / ego_desktop_lab` code should not become a Telegram path, GUI path, desktop executor, subject kernel, fallback runtime, or third core without a new Stage Card and evidence gate.
 
 ## Claim Ceiling
 

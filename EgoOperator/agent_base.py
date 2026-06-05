@@ -7555,7 +7555,7 @@ class StateStore:
 
 
 # -----------------------------
-# EgoCore-like host runtime
+# EgoOperator host runtime
 # -----------------------------
 
 @dataclass

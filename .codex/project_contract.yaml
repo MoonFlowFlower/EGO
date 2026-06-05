@@ -188,7 +188,7 @@ verify_profiles:
           - EgoOperator
 
 protected_paths:
-  - legacy/ego-pre-handmade-mainline/
+  - legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md
   - docs/PROGRAM_STATE_UNIFIED.yaml
   - artifacts/evidence_ledger/
 
@@ -196,6 +196,12 @@ allowed_mutation_paths:
   - .codex/project_contract.yaml
   - .codex/memory/project_truth.jsonl
   - .codex/memory/user_preferences.jsonl
+  - .gitignore
+  - README.md
+  - docs/AGENT_DEVELOPMENT_PLAYBOOK.md
+  - docs/CAPABILITY_REGISTRY.md
+  - docs/CURRENT_PROJECT_LOGIC_FLOW.md
+  - docs/MAINLINE_QUICKSTART.md
   - docs/PROGRAM_STATE_UNIFIED.yaml
   - docs/STATUS.md
   - docs/REPO_HYGIENE_POLICY.md
@@ -258,6 +264,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/
   - docs/codex/tasks/ego-joi-companion-roadmap-v1/
   - docs/codex/tasks/codex-session-bootstrap-closeout-v1/
+  - docs/codex/tasks/legacy-pre-operator-mainline-archival-purge-v1/
   - docs/codex/tasks/TASK_LANE_INDEX.md
   - docs/codex/tasks/ego-operator-human-operator-trial-v2/
   - docs/codex/tasks/virtual-cat-pspc-v0/
@@ -353,9 +360,13 @@ allowed_mutation_paths:
   - artifacts/egodesktop_pspc_semantic_interaction_extractor_v0/
   - artifacts/egodesktop_companion_memory_route_repair_v0/
   - artifacts/evidence_ledger/
-  - legacy/ego-pre-handmade-mainline/EgoCore/SHIM_REGISTER.md
-  - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml
-  - legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml
+  - legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md
+  - legacy/ego-pre-handmade-mainline/README.md
+  - legacy/ego-pre-handmade-mainline/EgoCore/
+  - legacy/ego-pre-handmade-mainline/OpenEmotion/
+  - legacy/ego-pre-handmade-mainline/ego_desktop_lab/
+  - docs/archive/LEGACY_ALGORITHM_INVENTORY.md
+  - artifacts/archive/legacy_pre_operator_mainline_manifest.json
 
 commit_policy:
   mode: direct-main

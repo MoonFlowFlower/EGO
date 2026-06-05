@@ -41,8 +41,8 @@ def test_baseline_references_are_marked_unavailable_not_faked():
     baselines = comparison.baseline_references()
 
     assert {item.status for item in baselines} == {"baseline_unavailable"}
-    assert any(item.system == "EgoCore/OpenEmotion" for item in baselines)
-    assert any(item.system == "ego_desktop_lab" for item in baselines)
+    assert any(item.system == "archived_pre_operator_mainline" for item in baselines)
+    assert any(item.system == "archived_ego_desktop_lab" for item in baselines)
     assert all(item.entrypoints for item in baselines)
 
 

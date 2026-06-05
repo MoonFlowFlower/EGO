@@ -13,17 +13,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 PYTHON_DIRS = [
-    ROOT / "EgoCore" / "app",
-    ROOT / "OpenEmotion" / "emotiond",
-    ROOT / "OpenEmotion" / "openemotion",
+    ROOT / "EgoOperator",
+    ROOT / "labs" / "virtual_cat_pspc_v0",
     ROOT / "scripts" / "codex",
 ]
 
-PYTHON_FILES = [
-    ROOT / "OpenEmotion" / "test_smoke.py",
-    ROOT / "OpenEmotion" / "verify_typecheck.py",
-    ROOT / "OpenEmotion" / "verify_typecheck_simple.py",
-]
+PYTHON_FILES: list[Path] = []
 
 TEXT_GLOBS = [
     ROOT / "AGENTS.md",

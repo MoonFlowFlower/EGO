@@ -18,10 +18,10 @@
 | lane | count |
 |---|---:|
 | `active_default` | 1 |
-| `supporting_active` | 5 |
+| `supporting_active` | 2 |
 | `parked` | 1 |
-| `closed_evidence` | 17 |
-| `reference_only` | 189 |
+| `closed_evidence` | 20 |
+| `reference_only` | 190 |
 
 ## Active Default
 
@@ -33,11 +33,8 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| Provider/Runtime/OpenEmotion E2E Gate | `codex_task` | `provider_runtime_openemotion_e2e_gate` | `docs/codex/tasks/provider-runtime-openemotion-e2e-gate/` | Real-channel supporting gate for the current mainline; supports Stage 1 truth but is not a competing route. Current workstream status: `pass`. |
 | Repo Cleanup Route Convergence | `codex_task` | `repo_cleanup_route_convergence` | `docs/codex/tasks/repo-cleanup-route-convergence/` | Supporting cleanup lane for route index, hygiene gate, and Stage 1 evidence convergence; must not replace the active default track. Current workstream status: `supporting_active`. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
-| Telegram Subject Mainline Audit | `codex_task` | `live_subject_ingress_observation` | `docs/codex/tasks/telegram-subject-mainline-audit/` | Supporting audit slice for Stage 1 subject-ingress accounting and live evidence discipline. Current workstream status: `partial`. |
-| Unified Host Contract Correctness | `codex_task` | `unified_host_contract_correctness` | `docs/codex/tasks/unified-host-contract-correctness/` | Frozen predecessor tranche that still supports Stage 1 equivalent-entry reasoning. Current workstream status: `pass`. |
 
 ## Parked
 
@@ -54,7 +51,8 @@
 | Ego Mainline Demotion v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
 | EgoOperator Rename + Docs Safety v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-operator-rename-docs-safety-v1/` | Previous EgoOperator naming and reader-safety transition record; superseded by the human operator trial v2 task as the active observation owner. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
 | MVS-Aligned Compact Closed Evidence | `authority_refs` | n/a | `docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md`<br>`docs/codex/tasks/ai-self-awareness-minimal-framework/MVS_ALIGNED_COMPACT_PROTOTYPE_DESIGN.md` | Closed evidence only; selection closeout keeps it out of the default implementation track. |
-| Repo Authority Cleanup | `codex_task` | `repo_authority_cleanup` | `docs/codex/tasks/repo-authority-cleanup/` | Repo/integration boundary cleanup is closed out and no longer competes for current execution ownership. Current workstream status: `closeout-complete`. |
+| Pre-Operator Provider/Runtime/OpenEmotion E2E Gate | `codex_task` | `provider_runtime_openemotion_e2e_gate` | `docs/codex/tasks/provider-runtime-openemotion-e2e-gate/` | Pre-EgoOperator real-channel gate evidence retained for historical comparison only; it is no longer a current supporting route. Current workstream status: `closed_evidence__legacy_e2e_preserved`. |
+| Repo Authority Cleanup | `codex_task` | `repo_authority_cleanup` | `docs/codex/tasks/repo-authority-cleanup/` | Repo/integration boundary cleanup is closed out and no longer competes for current execution ownership. Current workstream status: `closed_evidence__repo_authority_cleanup_preserved`. |
 | Runtime Proximal Basic Standard Admission Planning | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-basic-standard-admission-planning/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Basic Standard Admission Runner Implementation | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-basic-standard-admission-runner-implementation/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Host Consumption Causal Planning | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-host-consumption-causal-planning/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
@@ -66,6 +64,8 @@
 | Runtime Proximal Stronger Admission Planning | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-stronger-admission-planning/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Stronger Admission Runner Implementation | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-stronger-admission-runner-implementation/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Subject System v1 Governed Proactivity | `codex_task` | `subject_system_v1_governed_proactivity` | `docs/codex/tasks/subject-system-v1-governed-proactivity/` | Legacy pre-EgoOperator governed-proactivity evidence; preserved for reference and fallback, not the active default route. Current workstream status: `legacy_reference__pre_ego_operator_evidence_preserved`. |
+| Telegram Subject Mainline Audit | `codex_task` | `live_subject_ingress_observation` | `docs/codex/tasks/telegram-subject-mainline-audit/` | Pre-EgoOperator subject-ingress audit evidence retained for history only; it does not route new default work. Current workstream status: `closed_evidence__legacy_subject_ingress_preserved`. |
+| Unified Host Contract Correctness | `codex_task` | `unified_host_contract_correctness` | `docs/codex/tasks/unified-host-contract-correctness/` | Frozen predecessor tranche retained as closed evidence, not a current supporting route. Current workstream status: `closed_evidence__legacy_host_contract_preserved`. |
 
 ## Reference Only
 
@@ -197,6 +197,7 @@
 | H1 Preflight Same Surface Unblock | `codex_task` | n/a | `docs/codex/tasks/h1-preflight-same-surface-unblock/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Identify Public Causal Driver For Mvs Trial 2 | `codex_task` | n/a | `docs/codex/tasks/identify-public-causal-driver-for-mvs-trial-2/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Interface Layer Consolidation | `codex_task` | n/a | `docs/codex/tasks/interface-layer-consolidation/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
+| Legacy Pre Operator Mainline Archival Purge V1 | `codex_task` | n/a | `docs/codex/tasks/legacy-pre-operator-mainline-archival-purge-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Live Chat Subjective Variability | `codex_task` | n/a | `docs/codex/tasks/live-chat-subjective-variability/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Llm In Loop Whole Chain Sampling | `codex_task` | n/a | `docs/codex/tasks/llm-in-loop-whole-chain-sampling/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Mandatory Subject Ingress All Turns | `codex_task` | n/a | `docs/codex/tasks/mandatory-subject-ingress-all-turns/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |

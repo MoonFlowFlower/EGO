@@ -31,13 +31,6 @@ def _git_lines(args: list[str]) -> list[str]:
     return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
 
 
-def _is_legacy_migration_addition(path: str, deleted_paths: set[str]) -> bool:
-    prefix = "legacy/ego-pre-handmade-mainline/"
-    if not path.startswith(prefix):
-        return False
-    return path[len(prefix) :] in deleted_paths
-
-
 def _check_generated_file(path, expected: str, errors: list[str]) -> None:
     if not path.exists():
         errors.append(f"missing generated file: {path}")
@@ -76,7 +69,6 @@ def main() -> int:
         errors.append("repo_cleanup_route_convergence workstream must exist and stay `supporting_active`")
 
     gitignore_text = (REPO_HYGIENE_POLICY_PATH.parents[1] / ".gitignore").read_text(encoding="utf-8")
-    deleted_paths = set(_git_lines(["diff", "--name-only", "--no-renames", "--diff-filter=D", "HEAD"]))
 
     for rule in HYGIENE_RULES:
         for snippet in rule.ignore_snippets:
@@ -91,7 +83,6 @@ def main() -> int:
 
         added = set(_git_lines(["diff", "--name-only", "--diff-filter=A", "HEAD", "--", rule.path_prefix]))
         added.update(_git_lines(["diff", "--cached", "--name-only", "--diff-filter=A", "--", rule.path_prefix]))
-        added = {path for path in added if not _is_legacy_migration_addition(path, deleted_paths)}
         if added:
             errors.append(
                 f"new tracked operational exhaust detected under {rule.path_prefix}: {', '.join(sorted(added)[:5])}"

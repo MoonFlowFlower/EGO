@@ -1,9 +1,0 @@
-{
-  "timestamp": "2026-03-16T04:30:00Z",
-  "action": "created",
-  "authorized": true,
-  "trigger": "p1c1_implementation",
-  "changes_summary": "初始生成 P1-C1 Summary",
-  "summary_id": "summary_20260316_ceo_p1c1",
-  "session_id": "session_20260316_001"
-}

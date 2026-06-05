@@ -2,7 +2,7 @@
 
 > AUTO-GENERATED FILE. Do not edit by hand.
 
-- phase: `ego_operator_human_operator_trial_v2_human_review_template_ready`
+- phase: `legacy_pre_operator_mainline_archived_from_current_tree`
 - layer: `transition / operator-first`
 - highest evidence: `E3`
 - verification: `V3`

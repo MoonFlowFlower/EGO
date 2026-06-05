@@ -1,1 +1,0 @@
-User event: The unfinished goal "verify whether reflection changes behavior" is too broad. I cannot tell what counts as success, which behavior should change, or whether the goal should be split into definition and verification steps before continuing.

@@ -2,8 +2,8 @@
 Candidate-local operator comparison harness for EgoOperator.
 
 This harness evaluates EgoOperator with deterministic fake LLM behavior and
-records old systems as reference baselines only. It does not execute or mutate
-EgoCore, OpenEmotion, or ego_desktop_lab.
+records old systems as archive-only reference baselines. It does not restore,
+execute, or mutate archived legacy code.
 """
 
 from __future__ import annotations
@@ -246,30 +246,30 @@ def baseline_references(repo_root: Optional[Path] = None) -> Tuple[BaselineRefer
     root = repo_root or Path(__file__).resolve().parents[1]
     candidates = [
         BaselineReference(
-            system="EgoCore/OpenEmotion",
-            role="formal reference/fallback mainline",
+            system="archived_pre_operator_mainline",
+            role="archive-only historical baseline",
             entrypoints=(
-                "EgoCore/app/main.py --status",
-                "EgoCore/app/main.py --telegram",
-                "OpenEmotion/README.md",
+                "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
+                "docs/archive/LEGACY_ALGORITHM_INVENTORY.md",
+                "artifacts/archive/legacy_pre_operator_mainline_manifest.json",
             ),
             status="baseline_unavailable",
             reason=(
-                "Comparable natural-chat operator run requires formal runtime config/live context; "
-                "this candidate-local slice records it as reference only."
+                "The old runtime code is archived out of the current working tree; "
+                "comparison can use only documented archive pointers unless a new Stage Card restores a baseline."
             ),
         ),
         BaselineReference(
-            system="ego_desktop_lab",
-            role="lab/reference harness",
+            system="archived_ego_desktop_lab",
+            role="archive-only historical lab baseline",
             entrypoints=(
-                "ego_desktop_lab/main.py --semantic-scenario",
-                "ego_desktop_lab/stage_runner.py --out",
+                "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
+                "docs/archive/LEGACY_ALGORITHM_INVENTORY.md",
             ),
             status="baseline_unavailable",
             reason=(
-                "The lab has deterministic stage/semantic runners, but not the same operator-chat "
-                "runtime surface; this slice does not execute or mutate lab artifacts."
+                "The old deterministic lab code is archived out of the current working tree; "
+                "this slice does not restore, execute, or mutate archived lab artifacts."
             ),
         ),
     ]

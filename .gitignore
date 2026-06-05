@@ -39,34 +39,11 @@ ENV/
 node_modules/
 
 # Repo hygiene: operational exhaust
-OpenEmotion/artifacts/mvp12/cycle_traces/
-EgoCore/artifacts/proto_self_store/
-EgoCore/logs/
-EgoCore/data/session_logs/
 artifacts/dashboard_runtime_logs/
 artifacts/launcher_meta/
 temp/
 .pytest_cache/
 logs/
-EgoCore/temp/
-EgoCore/tmp/
-OpenEmotion/logs/
-
-# Legacy pre-handmade runtime exhaust after demotion
-legacy/ego-pre-handmade-mainline/EgoCore/.venv_run/
-legacy/ego-pre-handmade-mainline/EgoCore/.pytest_cache/
-legacy/ego-pre-handmade-mainline/EgoCore/artifacts/proto_self_store/
-legacy/ego-pre-handmade-mainline/EgoCore/logs/
-legacy/ego-pre-handmade-mainline/EgoCore/data/session_logs/
-legacy/ego-pre-handmade-mainline/EgoCore/temp/
-legacy/ego-pre-handmade-mainline/EgoCore/tmp/
-legacy/ego-pre-handmade-mainline/OpenEmotion/.pytest_cache/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp12/cycle_traces/
-legacy/ego-pre-handmade-mainline/OpenEmotion/logs/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp13/mirror/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/proto_self_store/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/self_report/manual_review/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/testbot/tapes/
 
 # Backup directories
 *.local_backup/
@@ -122,29 +99,3 @@ artifacts/mvp13/mirror/
 artifacts/research_campaign/*.lock
 artifacts/task_board/sync_log.jsonl
 artifacts/task_board/outbox.jsonl
-
-# Legacy generated mirrors and local evidence runs after demotion
-legacy/ego-pre-handmade-mainline/EgoCore/artifacts/proto_self_mirror/
-legacy/ego-pre-handmade-mainline/EgoCore/artifacts/proto_self_v2/
-legacy/ego-pre-handmade-mainline/EgoCore/artifacts/compacted/
-legacy/ego-pre-handmade-mainline/EgoCore/artifacts/restore/audit/
-legacy/ego-pre-handmade-mainline/EgoCore/prompts/tempsaved/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp12/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp12/shadow_state.json
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp13/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp13/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp15/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp15/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp16/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp16/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp17/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp17/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp18/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp18/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp19/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp19/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp20/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp20/formal_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/mvp21/controlled_*/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/proto_self_mirror/
-legacy/ego-pre-handmade-mainline/OpenEmotion/artifacts/subject_system_v1/

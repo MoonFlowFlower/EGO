@@ -33,9 +33,10 @@ REQUIRED_README_REFS = (
 REQUIRED_QUICKSTART_REFS = (
     "ego_operator_first_transition",
     "EgoOperator/agent_base.py",
-    "legacy/ego-pre-handmade-mainline/EgoCore",
-    "legacy/ego-pre-handmade-mainline/OpenEmotion",
-    "legacy/ego-pre-handmade-mainline/ego_desktop_lab",
+    "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
+    "docs/archive/LEGACY_ALGORITHM_INVENTORY.md",
+    "artifacts/archive/legacy_pre_operator_mainline_manifest.json",
+    "legacy-pre-operator-mainline-before-purge",
     "operator-first runtime",
     "docs/PROGRAM_STATE_UNIFIED.yaml",
     "docs/codex/tasks/TASK_LANE_INDEX.md",
@@ -75,16 +76,20 @@ HUMAN_TRIAL_STAGE_PREFIXES = (
     "EgoOperator/",
 )
 
+ARCHIVAL_PURGE_STAGE_PREFIXES = (
+    "docs/codex/tasks/legacy-pre-operator-mainline-archival-purge-v1/",
+    "legacy/ego-pre-handmade-mainline/",
+    "docs/archive/LEGACY_ALGORITHM_INVENTORY.md",
+    "artifacts/archive/legacy_pre_operator_mainline_manifest.json",
+    "scripts/codex/verify_legacy_archival_purge.py",
+)
+
 FORBIDDEN_CLEANUP_STAGE_PATHS = (
     "docs/PROGRAM_STATE_UNIFIED.yaml",
-    "legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
-    "legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml",
     "artifacts/evidence_ledger/index.yaml",
 )
 
 FORBIDDEN_CLEANUP_STAGE_PREFIXES = (
-    "legacy/ego-pre-handmade-mainline/EgoCore/",
-    "legacy/ego-pre-handmade-mainline/OpenEmotion/",
     "artifacts/evidence_ledger/",
     "artifacts/reports/",
     "artifacts/telegram_real_mainline_v1/",
@@ -124,16 +129,8 @@ def _matches_prefix(path: str, prefix: str) -> bool:
     return path == prefix.rstrip("/") or path.startswith(prefix)
 
 
-def _is_legacy_migration_addition(path: str, deleted_paths: set[str]) -> bool:
-    prefix = "legacy/ego-pre-handmade-mainline/"
-    if not path.startswith(prefix):
-        return False
-    return path[len(prefix) :] in deleted_paths
-
-
 def _check_staged_operational_exhaust(errors: list[str]) -> None:
     staged_paths = _git_lines(["diff", "--cached", "--name-only"])
-    deleted_paths = set(_git_lines(["diff", "--cached", "--name-only", "--no-renames", "--diff-filter=D"]))
     reader_safety_stage_active = any(
         any(_matches_prefix(path, prefix) for prefix in READER_SAFETY_STAGE_PREFIXES)
         for path in staged_paths
@@ -142,7 +139,11 @@ def _check_staged_operational_exhaust(errors: list[str]) -> None:
         any(_matches_prefix(path, prefix) for prefix in HUMAN_TRIAL_STAGE_PREFIXES)
         for path in staged_paths
     )
-    cleanup_stage_active = not (reader_safety_stage_active or human_trial_stage_active) and any(
+    archival_purge_stage_active = any(
+        any(_matches_prefix(path, prefix) for prefix in ARCHIVAL_PURGE_STAGE_PREFIXES)
+        for path in staged_paths
+    )
+    cleanup_stage_active = not (reader_safety_stage_active or human_trial_stage_active or archival_purge_stage_active) and any(
         any(_matches_prefix(path, prefix) for prefix in CLEANUP_STAGE_PREFIXES)
         for path in staged_paths
     )
@@ -160,8 +161,6 @@ def _check_staged_operational_exhaust(errors: list[str]) -> None:
                 continue
         elif path.startswith(FORBIDDEN_ALWAYS_STAGE_PREFIXES):
             blocked.append(f"{path} (operational_exhaust)")
-            continue
-        if _is_legacy_migration_addition(path, deleted_paths):
             continue
         for rule in HYGIENE_RULES:
             if _matches_prefix(path, rule.path_prefix):

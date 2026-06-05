@@ -1,6 +1,0 @@
-{"cycle_id": "dev-34bf90072d2debea", "success": true, "trigger": "idle", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "34bf90072d2debea", "timestamp": "2026-04-02T02:59:12.590150"}
-{"cycle_id": "dev-9239409d925a4a20", "success": true, "trigger": "idle", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "9239409d925a4a20", "timestamp": "2026-04-02T02:59:12.873647"}
-{"cycle_id": "dev-930d9e654cc7127d", "success": true, "trigger": "idle", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "930d9e654cc7127d", "timestamp": "2026-04-02T02:59:13.184140"}
-{"cycle_id": "dev-df65b5e00639528e", "success": true, "trigger": "unresolved_tension", "candidates_generated": 2, "candidates_approved": 2, "trace_hash": "df65b5e00639528e", "timestamp": "2026-04-02T02:59:13.498034"}
-{"cycle_id": "dev-6e18e4a999c9726a", "success": true, "trigger": "replay_event", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "6e18e4a999c9726a", "timestamp": "2026-04-02T02:59:13.797953"}
-{"cycle_id": "dev-6e18e4a999c9726a", "success": true, "trigger": "replay_event", "candidates_generated": 1, "candidates_approved": 1, "trace_hash": "6e18e4a999c9726a", "timestamp": "2026-04-02T02:59:14.144734"}

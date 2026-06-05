@@ -13,12 +13,10 @@ PROGRAM_STATE_PATH = ROOT / "docs" / "PROGRAM_STATE_UNIFIED.yaml"
 STATUS_MD_PATH = ROOT / "docs" / "STATUS.md"
 SUMMARY_MD_PATH = ROOT / "artifacts" / "reports" / "program_state_summary.md"
 LEGACY_PRE_HANDMADE_ROOT = ROOT / "legacy" / "ego-pre-handmade-mainline"
-EGOCORE_PROGRAM_STATE_MIRROR = LEGACY_PRE_HANDMADE_ROOT / "EgoCore" / "docs" / "PROGRAM_STATE_UNIFIED.yaml"
-OPENEMOTION_PROGRAM_STATE_MIRROR = LEGACY_PRE_HANDMADE_ROOT / "OpenEmotion" / "docs" / "PROGRAM_STATE_UNIFIED.yaml"
+LEGACY_ARCHIVE_POINTER_PATH = LEGACY_PRE_HANDMADE_ROOT / "ARCHIVED_POINTER.md"
 EVIDENCE_LEDGER_DIR = ROOT / "artifacts" / "evidence_ledger"
 EVIDENCE_LEDGER_SCHEMA_PATH = EVIDENCE_LEDGER_DIR / "schema.yaml"
 EVIDENCE_LEDGER_INDEX_PATH = EVIDENCE_LEDGER_DIR / "index.yaml"
-SHIM_REGISTER_PATH = LEGACY_PRE_HANDMADE_ROOT / "EgoCore" / "SHIM_REGISTER.md"
 
 EVIDENCE_LEVELS = [f"E{index}" for index in range(0, 7)]
 VERIFICATION_LEVELS = [f"V{index}" for index in range(0, 6)]
@@ -112,7 +110,7 @@ def validate_program_state_schema(data: dict[str, Any]) -> list[str]:
     else:
         if not isinstance(integrity.get("generated_views"), list):
             errors.append("integrity.generated_views must be a list")
-        for field in ["evidence_ledger_dir", "shim_register"]:
+        for field in ["evidence_ledger_dir", "legacy_archive_pointer"]:
             if not integrity.get(field):
                 errors.append(f"integrity.{field} must be set")
 
