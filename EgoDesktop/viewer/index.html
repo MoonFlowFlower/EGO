@@ -17,11 +17,17 @@
       <section id="chat-panel" aria-label="EgoOperator desktop chat">
         <section id="pspc-demo-panel" aria-label="PSPC local visual demo" hidden>
           <div id="pspc-demo-header">
-            <span id="pspc-demo-title">PSPC visual shim</span>
+            <span id="pspc-demo-title">同句触发</span>
             <select id="pspc-scenario-select" aria-label="PSPC scenario"></select>
+          </div>
+          <div id="pspc-demo-controls">
+            <span id="pspc-same-trigger"></span>
+            <button id="pspc-playback-button" type="button" aria-label="Play PSPC perception sequence">播放</button>
+            <button id="pspc-debug-toggle" type="button" aria-pressed="false" aria-label="Toggle PSPC debug overlay">审计</button>
           </div>
           <div id="pspc-bubble" aria-live="polite"></div>
           <div id="pspc-trace"></div>
+          <pre id="pspc-debug-overlay" hidden></pre>
         </section>
         <div id="chat-output" aria-live="polite">
           <div class="message bot">

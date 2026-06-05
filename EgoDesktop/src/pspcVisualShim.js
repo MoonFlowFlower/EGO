@@ -154,6 +154,7 @@ function mapPspcProposalHintPacket(packet) {
     output_claim_ceiling: "product_only_local_visual_behavior_mapping_from_shadow_proposal_hint",
     suggested_interaction_style: style,
     confidence: Number.isFinite(confidence) ? Number(confidence.toFixed(4)) : 0,
+    basis: String(proposalHint.basis || ""),
     confidence_tag: confidenceTag(safePacket),
     evidence_refs: Array.isArray(safePacket.evidence_refs) ? safePacket.evidence_refs.map(String) : [],
     reason_trace_refs: Array.isArray(proposalHint.reason_trace_refs)
@@ -265,4 +266,3 @@ module.exports = {
   mapPspcProposalHintPacket,
   validatePspcProposalHintPacket,
 };
-

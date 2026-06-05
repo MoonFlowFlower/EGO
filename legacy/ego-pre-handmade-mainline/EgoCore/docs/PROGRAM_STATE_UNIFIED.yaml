@@ -44,6 +44,21 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'EgoDesktop PSPC Perception Demo v0 now has a product-only local perception demo
+    builder at `EgoDesktop/src/pspcPerceptionDemo.js`, deterministic same-trigger
+    Live2D playback controls in the local viewer, tests at `EgoDesktop/tests/pspc_perception_demo.test.js`,
+    docs under `docs/codex/tasks/egodesktop-pspc-perception-demo-v0/`, and artifacts
+    under `artifacts/egodesktop_pspc_perception_demo_v0/`. The demo reads existing
+    PSPC proposal-hint visual shim data and replays four histories for `我回来了。`: `warm_approach`,
+    `cautious_boundary`, `low_interrupt_care`, and `hesitation_low_confidence`, with
+    debug overlay hidden by default and recording-friendly deterministic timing. It
+    keeps `runtime_authority=none`, `enabled=false`, `mainline_connected=false`, creates
+    no adapter, records no EgoOperator runtime import/registry, no user response mutation,
+    no memory write, no gate/approval/transport/proactive path, and claim ceiling
+    `product_only_local_perception_demo_from_shadow_proposal_hint`. This is local
+    product perception demo evidence only; it does not prove PSPC runtime integration,
+    adapter readiness, EgoOperator efficacy, real user benefit, durable memory efficacy,
+    live autonomy, consciousness, subjective experience, real emotion, or market fit.'
   - EgoDesktop PSPC Visual Shim v0 now has a product-only local visual mapper at `EgoDesktop/src/pspcVisualShim.js`,
     a local Live2D viewer scenario selector, tests at `EgoDesktop/tests/pspc_visual_shim.test.js`,
     docs under `docs/codex/tasks/egodesktop-pspc-visual-shim-v0/`, and artifacts under

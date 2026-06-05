@@ -287,6 +287,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/pspc-sequence-experience-eval-v0-1/
   - docs/codex/tasks/pspc-shadow-proposal-hint-contract-v0/
   - docs/codex/tasks/egodesktop-pspc-visual-shim-v0/
+  - docs/codex/tasks/egodesktop-pspc-perception-demo-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
   - tests/test_pspc_static_compatibility_review.py
@@ -331,7 +332,9 @@ allowed_mutation_paths:
   - artifacts/pspc_sequence_experience_eval_v0_1/
   - artifacts/pspc_shadow_proposal_hint_contract_v0/
   - artifacts/egodesktop_pspc_live2d_behavior_v0/
+  - artifacts/egodesktop_pspc_perception_demo_v0/
   - artifacts/evidence_ledger/
+  - legacy/ego-pre-handmade-mainline/EgoCore/SHIM_REGISTER.md
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml
   - legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml
 

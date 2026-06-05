@@ -7,6 +7,7 @@ const { parseArgs } = require("./args");
 const { buildDesktopChatTurn } = require("./chatTurn");
 const { resolveModelInput } = require("./modelResolver");
 const { listExpressionFiles } = require("./modelSettings");
+const { buildPspcPerceptionDemo } = require("./pspcPerceptionDemo");
 const { buildPspcVisualShim } = require("./pspcVisualShim");
 const { buildViewerSignalFrame } = require("./signalFrame");
 const { buildTtsRequest } = require("./tts");
@@ -402,6 +403,8 @@ async function run() {
   });
   const signalFrame = loadSignalFrame(args);
   const pspcVisualShim = loadPspcVisualShim(args);
+  const pspcPerceptionDemo = pspcVisualShim ? buildPspcPerceptionDemo(pspcVisualShim) : null;
+  const pspcRecordingMode = Boolean(args["pspc-recording-mode"]);
   const expressionCatalog = loadExpressionCatalog(modelInfo.modelDir);
   const server = createViewerServer({
     appRoot,
@@ -411,9 +414,11 @@ async function run() {
   });
   const address = await listen(server, args.port);
   const baseUrl = `http://${address.address}:${address.port}`;
+  const recordingWindow = pspcRecordingMode && pspcPerceptionDemo && pspcPerceptionDemo.recording_mode;
   const window = new BrowserWindow({
-    width: 900,
-    height: 700,
+    width: recordingWindow ? pspcPerceptionDemo.recording_mode.width : 900,
+    height: recordingWindow ? pspcPerceptionDemo.recording_mode.height : 700,
+    resizable: !recordingWindow,
     title: "EgoDesktop Live2D",
     backgroundColor: "#f7f7f4",
     show: true,
@@ -458,6 +463,8 @@ async function run() {
     ttsF0Method: String(args["tts-f0method"] || "rmvpe"),
     ttsSmokeText: String(args["tts-smoke-text"] || ""),
     pspcVisualShim,
+    pspcPerceptionDemo,
+    pspcRecordingMode,
   };
   ipcMain.handle("ego-desktop:get-config", () => config);
   ipcMain.handle("ego-desktop:chat-turn", async (_event, payload) => {

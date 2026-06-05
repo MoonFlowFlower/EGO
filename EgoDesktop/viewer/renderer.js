@@ -8,8 +8,13 @@
   const chatOutput = document.getElementById("chat-output");
   const pspcDemoPanel = document.getElementById("pspc-demo-panel");
   const pspcScenarioSelect = document.getElementById("pspc-scenario-select");
+  const pspcSameTrigger = document.getElementById("pspc-same-trigger");
+  const pspcPlaybackButton = document.getElementById("pspc-playback-button");
+  const pspcDebugToggle = document.getElementById("pspc-debug-toggle");
+  const pspcDebugOverlay = document.getElementById("pspc-debug-overlay");
   const pspcBubble = document.getElementById("pspc-bubble");
   const pspcTrace = document.getElementById("pspc-trace");
+  const voiceBar = document.getElementById("voice-bar");
   const voiceToggle = document.getElementById("voice-toggle");
   const stopVoiceButton = document.getElementById("stop-voice");
   const voiceStatus = document.getElementById("voice-status");
@@ -337,6 +342,15 @@
   }
 
   function setupChat(model, config) {
+    if (config && config.pspcPerceptionDemo) {
+      if (chatForm) {
+        chatForm.hidden = true;
+      }
+      if (voiceBar) {
+        voiceBar.hidden = true;
+      }
+      return;
+    }
     if (!chatForm || !userInput || !sendButton || !window.egoDesktop || typeof window.egoDesktop.sendChatTurn !== "function") {
       return;
     }
@@ -422,6 +436,8 @@
     }
     if (pspcTrace) {
       pspcTrace.textContent = [
+        String(scenario.title || ""),
+        String(scenario.trigger_text || ""),
         String(scenario.packet_id || ""),
         String(profile.motion_hint || ""),
         String(scenario.confidence_tag || ""),
@@ -440,13 +456,107 @@
     }
   }
 
+  function setPspcDebugOverlayVisible(visible) {
+    if (!pspcDebugOverlay || !pspcDebugToggle) {
+      return;
+    }
+    pspcDebugOverlay.hidden = !visible;
+    pspcDebugToggle.setAttribute("aria-pressed", visible ? "true" : "false");
+  }
+
+  function renderPspcDebugOverlay(demo, scenario) {
+    if (!pspcDebugOverlay || !scenario) {
+      return;
+    }
+    const rows = demo && demo.debug_overlay && Array.isArray(demo.debug_overlay.rows)
+      ? demo.debug_overlay.rows
+      : [];
+    const row = rows.find((item) => String(item.packet_id || "") === String(scenario.packet_id || "")) || {};
+    pspcDebugOverlay.textContent = [
+      `packet_id: ${String(row.packet_id || scenario.packet_id || "")}`,
+      `style: ${String(row.style || scenario.style || scenario.perception_behavior || "")}`,
+      `confidence: ${String(row.confidence !== undefined ? row.confidence : scenario.confidence || "")}`,
+      `basis: ${String(row.basis || scenario.basis || "")}`,
+      `reason_trace_refs: ${Array.isArray(row.reason_trace_refs) ? row.reason_trace_refs.join(", ") : ""}`,
+      `claim_ceiling: ${String(row.claim_ceiling || demo.claim_ceiling || "")}`,
+    ].join("\n");
+  }
+
+  function setupPspcPerceptionDemo(model, config) {
+    const demo = config && config.pspcPerceptionDemo;
+    const scenarios = demo && Array.isArray(demo.scenarios) ? demo.scenarios : [];
+    if (!pspcDemoPanel || !pspcScenarioSelect || !pspcBubble || scenarios.length === 0) {
+      return false;
+    }
+    pspcDemoPanel.hidden = false;
+    if (pspcSameTrigger) {
+      pspcSameTrigger.textContent = String(demo.trigger_text || "");
+    }
+    if (pspcDebugOverlay) {
+      pspcDebugOverlay.hidden = true;
+    }
+    if (pspcDebugToggle) {
+      pspcDebugToggle.setAttribute("aria-pressed", "false");
+      pspcDebugToggle.addEventListener("click", () => {
+        setPspcDebugOverlayVisible(pspcDebugOverlay ? pspcDebugOverlay.hidden : false);
+      });
+    }
+    pspcScenarioSelect.textContent = "";
+    scenarios.forEach((scenario, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = `${scenario.title} / ${scenario.perception_behavior}`;
+      pspcScenarioSelect.appendChild(option);
+    });
+
+    let playbackTimers = [];
+    const clearPlaybackTimers = () => {
+      for (const timer of playbackTimers) {
+        clearTimeout(timer);
+      }
+      playbackTimers = [];
+    };
+    const selectIndex = (index) => {
+      const safeIndex = Math.max(0, Math.min(scenarios.length - 1, Number(index) || 0));
+      pspcScenarioSelect.value = String(safeIndex);
+      const scenario = scenarios[safeIndex] || scenarios[0];
+      renderPspcDebugOverlay(demo, scenario);
+      applyPspcScenario(model, scenario).catch(() => {});
+    };
+    pspcScenarioSelect.addEventListener("change", () => {
+      clearPlaybackTimers();
+      selectIndex(Number(pspcScenarioSelect.value || 0));
+    });
+    if (pspcPlaybackButton) {
+      pspcPlaybackButton.addEventListener("click", () => {
+        clearPlaybackTimers();
+        const steps = demo && Array.isArray(demo.playback) ? demo.playback : [];
+        for (const step of steps) {
+          const index = scenarios.findIndex((scenario) => scenario.demo_id === step.demo_id);
+          if (index < 0) {
+            continue;
+          }
+          playbackTimers.push(setTimeout(() => selectIndex(index), Number(step.start_ms) || 0));
+        }
+      });
+    }
+    selectIndex(0);
+    return true;
+  }
+
   function setupPspcVisualShim(model, config) {
     const shim = config && config.pspcVisualShim;
     const scenarios = shim && Array.isArray(shim.scenarios) ? shim.scenarios : [];
     if (!pspcDemoPanel || !pspcScenarioSelect || !pspcBubble || scenarios.length === 0) {
-      return;
+      return false;
     }
     pspcDemoPanel.hidden = false;
+    if (pspcSameTrigger) {
+      pspcSameTrigger.textContent = "";
+    }
+    if (pspcDebugOverlay) {
+      pspcDebugOverlay.hidden = true;
+    }
     pspcScenarioSelect.textContent = "";
     scenarios.forEach((scenario, index) => {
       const option = document.createElement("option");
@@ -460,6 +570,7 @@
     };
     pspcScenarioSelect.addEventListener("change", selectCurrent);
     selectCurrent();
+    return true;
   }
 
   function rendererResolution() {
@@ -926,14 +1037,18 @@
       }).catch(() => {});
     });
     setupChat(model, config);
-    setupPspcVisualShim(model, config);
+    if (!setupPspcPerceptionDemo(model, config)) {
+      setupPspcVisualShim(model, config);
+    }
 
     const expression = config.signalFrame &&
       config.signalFrame.presence_state &&
       config.signalFrame.presence_state.expression;
     const intensity = expression === "focused" ? 1 : 0.6;
+    let deterministicFrame = 0;
     app.ticker.add(() => {
-      const seconds = performance.now() / 1000;
+      const seconds = config && config.pspcRecordingMode ? deterministicFrame / 60 : performance.now() / 1000;
+      deterministicFrame += 1;
       setParameter(model, "Param85", Number.isFinite(Number(config.watermarkParamValue)) ? Number(config.watermarkParamValue) : 1);
       setParameter(model, "ParamAngleX", Math.sin(seconds * 0.7) * 5 * intensity);
       setParameter(model, "ParamAngleY", Math.sin(seconds * 0.47) * 2 * intensity);
@@ -992,6 +1107,13 @@
       pspcVisualScenarioCount: config.pspcVisualShim && Array.isArray(config.pspcVisualShim.scenarios)
         ? config.pspcVisualShim.scenarios.length
         : 0,
+      pspcPerceptionDemoReady: Boolean(config.pspcPerceptionDemo && Array.isArray(config.pspcPerceptionDemo.scenarios)),
+      pspcPerceptionScenarioCount: config.pspcPerceptionDemo && Array.isArray(config.pspcPerceptionDemo.scenarios)
+        ? config.pspcPerceptionDemo.scenarios.length
+        : 0,
+      pspcSameTriggerText: config.pspcPerceptionDemo ? String(config.pspcPerceptionDemo.trigger_text || "") : "",
+      pspcRecordingMode: Boolean(config.pspcRecordingMode),
+      pspcPerceptionChatDisabled: Boolean(config.pspcPerceptionDemo && chatForm && chatForm.hidden),
       initialExpressionName: String(config.initialExpressionName || ""),
       initialExpressionApplied,
       hiddenDrawableIds: diagnosticHiddenDrawableIds,

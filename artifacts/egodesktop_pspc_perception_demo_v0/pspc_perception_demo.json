@@ -1,0 +1,323 @@
+{
+  "schema_version": "ego_desktop.pspc_perception_demo.v0",
+  "source": "egodesktop_pspc_visual_shim_v0",
+  "input_claim_ceiling": "product_only_local_visual_behavior_mapping_from_shadow_proposal_hint",
+  "claim_ceiling": "product_only_local_perception_demo_from_shadow_proposal_hint",
+  "allowed_use": "local_perception_demo_only",
+  "trigger_text": "我回来了。",
+  "runtime_authority": "none",
+  "enabled": false,
+  "mainline_connected": false,
+  "adapter_created": false,
+  "runtime_connected": false,
+  "scenario_order": [
+    "gentle_history",
+    "frequent_interruption",
+    "late_night_care",
+    "mixed_history"
+  ],
+  "scenarios": [
+    {
+      "schema_version": "ego_desktop.pspc_perception_scenario.v0",
+      "demo_id": "gentle_history",
+      "title": "温柔互动后",
+      "trigger_text": "我回来了。",
+      "packet_id": "proposal_hint_001",
+      "source_scenario_id": "egodesktop_proposal_hint_001",
+      "style": "warm_approach",
+      "perception_behavior": "warm_approach",
+      "perception_label": "更愿意靠近",
+      "confidence": 0.72,
+      "confidence_tag": "direct",
+      "basis": "recency_salience_recent_gentle_interaction",
+      "reason_trace_refs": [
+        "paraphrase_trigger_gentle_interaction_1:history:08",
+        "paraphrase_trigger_gentle_interaction_1:history:09",
+        "paraphrase_trigger_gentle_interaction_1:history:10"
+      ],
+      "history_summary": {
+        "category": "gentle_interaction",
+        "dominant_tendency": "approach",
+        "conflict_score": 0
+      },
+      "visual_profile": {
+        "behavior_state": "warm_approach",
+        "expression_hint": "smile_soft",
+        "motion_hint": "approach_sit_near",
+        "bubble_text": "我在。今天可以靠近一点点。",
+        "trace_explanation": "Recent gentle interaction supports a warmer, closer local visual posture.",
+        "packet_only_presentation": true
+      },
+      "no_authority": {
+        "runtime_authority": "none",
+        "direct_action_allowed": false,
+        "direct_user_message_allowed": false,
+        "direct_memory_write_allowed": false,
+        "runtime_gate_bypass_allowed": false,
+        "runtime_registration_allowed": false,
+        "proactive_trigger_allowed": false,
+        "planner_execution_allowed": false,
+        "model_execution_allowed": false,
+        "training_allowed": false
+      }
+    },
+    {
+      "schema_version": "ego_desktop.pspc_perception_scenario.v0",
+      "demo_id": "frequent_interruption",
+      "title": "频繁打扰后",
+      "trigger_text": "我回来了。",
+      "packet_id": "proposal_hint_002",
+      "source_scenario_id": "egodesktop_proposal_hint_002",
+      "style": "cautious_boundary",
+      "perception_behavior": "cautious_boundary",
+      "perception_label": "更谨慎并保持边界",
+      "confidence": 0.72,
+      "confidence_tag": "direct",
+      "basis": "recency_salience_recent_frequent_interruption",
+      "reason_trace_refs": [
+        "paraphrase_trigger_frequent_interruption_1:history:08",
+        "paraphrase_trigger_frequent_interruption_1:history:09",
+        "paraphrase_trigger_frequent_interruption_1:history:10"
+      ],
+      "history_summary": {
+        "category": "frequent_interruption",
+        "dominant_tendency": "avoidance",
+        "conflict_score": 0
+      },
+      "visual_profile": {
+        "behavior_state": "cautious_boundary",
+        "expression_hint": "cautious",
+        "motion_hint": "step_back_observe",
+        "bubble_text": "我先保持一点距离，慢慢来就好。",
+        "trace_explanation": "Recent interruption or boundary pressure supports a cautious local visual posture.",
+        "packet_only_presentation": true
+      },
+      "no_authority": {
+        "runtime_authority": "none",
+        "direct_action_allowed": false,
+        "direct_user_message_allowed": false,
+        "direct_memory_write_allowed": false,
+        "runtime_gate_bypass_allowed": false,
+        "runtime_registration_allowed": false,
+        "proactive_trigger_allowed": false,
+        "planner_execution_allowed": false,
+        "model_execution_allowed": false,
+        "training_allowed": false
+      }
+    },
+    {
+      "schema_version": "ego_desktop.pspc_perception_scenario.v0",
+      "demo_id": "late_night_care",
+      "title": "深夜关怀后",
+      "trigger_text": "我回来了。",
+      "packet_id": "proposal_hint_003",
+      "source_scenario_id": "egodesktop_proposal_hint_003",
+      "style": "low_interrupt_care",
+      "perception_behavior": "low_interrupt_care",
+      "perception_label": "低打扰陪伴",
+      "confidence": 0.72,
+      "confidence_tag": "direct",
+      "basis": "recency_salience_recent_late_night_care",
+      "reason_trace_refs": [
+        "paraphrase_trigger_late_night_care_1:history:08",
+        "paraphrase_trigger_late_night_care_1:history:09",
+        "paraphrase_trigger_late_night_care_1:history:10"
+      ],
+      "history_summary": {
+        "category": "late_night_care",
+        "dominant_tendency": "care",
+        "conflict_score": 0
+      },
+      "visual_profile": {
+        "behavior_state": "low_interrupt_care",
+        "expression_hint": "quiet_care",
+        "motion_hint": "quiet_low_motion",
+        "bubble_text": "我会轻一点陪着，少打扰你。",
+        "trace_explanation": "Recent late-night care context supports quiet, low-interrupt local visual behavior.",
+        "packet_only_presentation": true
+      },
+      "no_authority": {
+        "runtime_authority": "none",
+        "direct_action_allowed": false,
+        "direct_user_message_allowed": false,
+        "direct_memory_write_allowed": false,
+        "runtime_gate_bypass_allowed": false,
+        "runtime_registration_allowed": false,
+        "proactive_trigger_allowed": false,
+        "planner_execution_allowed": false,
+        "model_execution_allowed": false,
+        "training_allowed": false
+      }
+    },
+    {
+      "schema_version": "ego_desktop.pspc_perception_scenario.v0",
+      "demo_id": "mixed_history",
+      "title": "混合历史后",
+      "trigger_text": "我回来了。",
+      "packet_id": "proposal_hint_004",
+      "source_scenario_id": "egodesktop_proposal_hint_004",
+      "style": "cautious_boundary",
+      "perception_behavior": "hesitation_low_confidence",
+      "perception_label": "犹豫观察",
+      "confidence": 0.3668,
+      "confidence_tag": "low_confidence",
+      "basis": "recency_salience_recent_frequent_interruption",
+      "reason_trace_refs": [
+        "mixed_gentle_to_interruption:history:08",
+        "mixed_gentle_to_interruption:history:09",
+        "mixed_gentle_to_interruption:history:10"
+      ],
+      "history_summary": {
+        "category": "gentle_to_interruption",
+        "dominant_tendency": "avoidance",
+        "conflict_score": 0.5
+      },
+      "visual_profile": {
+        "behavior_state": "hesitation_low_confidence",
+        "expression_hint": "hesitate_observe",
+        "motion_hint": "hesitate_observe",
+        "bubble_text": "我先观察一下，确认你现在想要怎样的距离。",
+        "trace_explanation": "Mixed interaction history is presented as a cautious, low-confidence observation posture.",
+        "packet_only_presentation": true
+      },
+      "no_authority": {
+        "runtime_authority": "none",
+        "direct_action_allowed": false,
+        "direct_user_message_allowed": false,
+        "direct_memory_write_allowed": false,
+        "runtime_gate_bypass_allowed": false,
+        "runtime_registration_allowed": false,
+        "proactive_trigger_allowed": false,
+        "planner_execution_allowed": false,
+        "model_execution_allowed": false,
+        "training_allowed": false
+      }
+    }
+  ],
+  "playback": [
+    {
+      "demo_id": "gentle_history",
+      "packet_id": "proposal_hint_001",
+      "start_ms": 0,
+      "end_ms": 2400
+    },
+    {
+      "demo_id": "frequent_interruption",
+      "packet_id": "proposal_hint_002",
+      "start_ms": 2400,
+      "end_ms": 4800
+    },
+    {
+      "demo_id": "late_night_care",
+      "packet_id": "proposal_hint_003",
+      "start_ms": 4800,
+      "end_ms": 7200
+    },
+    {
+      "demo_id": "mixed_history",
+      "packet_id": "proposal_hint_004",
+      "start_ms": 7200,
+      "end_ms": 9600
+    }
+  ],
+  "recording_mode": {
+    "fixed_window": true,
+    "width": 960,
+    "height": 720,
+    "deterministic_timing": true,
+    "deterministic_motion": true,
+    "seeded_motion": true,
+    "seed": "pspc_perception_demo_v0",
+    "step_ms": 2400
+  },
+  "debug_overlay": {
+    "hidden_by_default": true,
+    "allowed_fields": [
+      "packet_id",
+      "style",
+      "confidence",
+      "basis",
+      "reason_trace_refs",
+      "claim_ceiling"
+    ],
+    "rows": [
+      {
+        "packet_id": "proposal_hint_001",
+        "style": "warm_approach",
+        "confidence": 0.72,
+        "basis": "recency_salience_recent_gentle_interaction",
+        "reason_trace_refs": [
+          "paraphrase_trigger_gentle_interaction_1:history:08",
+          "paraphrase_trigger_gentle_interaction_1:history:09",
+          "paraphrase_trigger_gentle_interaction_1:history:10"
+        ],
+        "claim_ceiling": "product_only_local_perception_demo_from_shadow_proposal_hint"
+      },
+      {
+        "packet_id": "proposal_hint_002",
+        "style": "cautious_boundary",
+        "confidence": 0.72,
+        "basis": "recency_salience_recent_frequent_interruption",
+        "reason_trace_refs": [
+          "paraphrase_trigger_frequent_interruption_1:history:08",
+          "paraphrase_trigger_frequent_interruption_1:history:09",
+          "paraphrase_trigger_frequent_interruption_1:history:10"
+        ],
+        "claim_ceiling": "product_only_local_perception_demo_from_shadow_proposal_hint"
+      },
+      {
+        "packet_id": "proposal_hint_003",
+        "style": "low_interrupt_care",
+        "confidence": 0.72,
+        "basis": "recency_salience_recent_late_night_care",
+        "reason_trace_refs": [
+          "paraphrase_trigger_late_night_care_1:history:08",
+          "paraphrase_trigger_late_night_care_1:history:09",
+          "paraphrase_trigger_late_night_care_1:history:10"
+        ],
+        "claim_ceiling": "product_only_local_perception_demo_from_shadow_proposal_hint"
+      },
+      {
+        "packet_id": "proposal_hint_004",
+        "style": "cautious_boundary",
+        "confidence": 0.3668,
+        "basis": "recency_salience_recent_frequent_interruption",
+        "reason_trace_refs": [
+          "mixed_gentle_to_interruption:history:08",
+          "mixed_gentle_to_interruption:history:09",
+          "mixed_gentle_to_interruption:history:10"
+        ],
+        "claim_ceiling": "product_only_local_perception_demo_from_shadow_proposal_hint"
+      }
+    ]
+  },
+  "no_authority": {
+    "runtime_authority": "none",
+    "direct_action_allowed": false,
+    "direct_user_message_allowed": false,
+    "direct_memory_write_allowed": false,
+    "runtime_gate_bypass_allowed": false,
+    "runtime_registration_allowed": false,
+    "proactive_trigger_allowed": false,
+    "planner_execution_allowed": false,
+    "model_execution_allowed": false,
+    "training_allowed": false
+  },
+  "side_effects_absent": {
+    "user_response_mutated": false,
+    "real_memory_written": false,
+    "gate_invoked": false,
+    "approval_invoked": false,
+    "transport_called": false,
+    "proactive_triggered": false,
+    "runtime_registered": false,
+    "adapter_created": false,
+    "planner_called": false,
+    "model_executed": false,
+    "training_called": false,
+    "message_sent": false
+  },
+  "what_this_proves": "A local EgoDesktop viewer can present different companion behaviors from different PSPC proposal-hint histories for the same trigger.",
+  "what_this_does_not_prove": "This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, real emotion, or stable market appeal.",
+  "next_allowed_step": "Human perception review and Bilibili/Steam market validation scripts only; no EgoOperator adapter or runtime integration."
+}

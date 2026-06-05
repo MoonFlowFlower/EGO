@@ -1,7 +1,7 @@
 # SHIM_REGISTER.md
 
 > 注册日期: 2026-03-16
-> 最后更新: 2026-04-27
+> 最后更新: 2026-06-05
 > 目的: 登记所有过渡期 shim 实现
 
 ---
@@ -12,6 +12,28 @@
 2. 每个 shim 必须有明确迁移计划和到期版本
 3. 迁移完成后必须删除 shim
 4. 正式主链只使用 `/cycle`，其他路径都是 shim 或 fallback
+
+---
+
+## Repo-local Presentation Shim 记录
+
+这些记录不是 EgoCore 正式 shim，也不是 legacy 主链组件。登记它们是为了避免 repo-local 展示层映射被误读为主体决策源。
+
+### PRESENTATION-SHIM-001: EgoDesktop PSPC visual/perception demo
+
+| 字段 | 值 |
+|------|-----|
+| 名称 | EgoDesktop PSPC visual/perception demo |
+| 路径 | EgoDesktop/src/pspcVisualShim.js；EgoDesktop/src/pspcPerceptionDemo.js |
+| 类型 | product-only local presentation shim (not EgoCore runtime shim) |
+| 正式归属 | EgoDesktop local viewer presentation layer |
+| 为什么存在 | 将 PSPC proposal-hint artifacts 映射为本地 Live2D 可视化/感知评审 demo，便于市场与体验观察 |
+| 权威输入 | artifacts/pspc_shadow_proposal_hint_contract_v0/proposal_hint_contract.json |
+| 运行权限 | none；enabled=false；mainline_connected=false；adapter_created=false |
+| 禁止 | EgoOperator runtime 接入、gate/approval/transport/proactive 调用、真实 memory 写入、真实 user response mutation、LLM chat/action selection |
+| 到期版本 | product validation closeout 或 PSPC visual demo 删除时 |
+| 迁移计划 | 不能迁移为 EgoCore/OpenEmotion 主链；若未来接近 EgoOperator，只能另开 Stage Card，并保持 gate-owned proposal/audit contract |
+| 删除动作 | 删除 EgoDesktop PSPC visual/perception demo 文件、测试、docs/codex task、artifacts，并移除此登记 |
 
 ---
 
