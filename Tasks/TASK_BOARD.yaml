@@ -3603,3 +3603,29 @@ tasks:
       - "artifacts/pspc_sequence_experience_eval_v0/"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-009
+    title: "PSPC Shadow: sequence robustness review v0.1"
+    kind: task
+    parent: null
+    status: accepted
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only"
+    next_action: "Accepted locally: v0.1 robustness review passes trigger paraphrase, lexical shortcut, counterfactual deletion, mixed-history, and manual packet checks while PSPC remains lab/shadow-only. PSPC-SHADOW-HOOK-007 remains human_required for manual go/no-go."
+    acceptance:
+      - "Clean history groups keep dominant tendency across trigger paraphrases: `我回来了。`, `我上线了。`, `我刚打开电脑。`, and `我来了，今天还在吗？`."
+      - "Paraphrased history sequences remove obvious keywords such as 熬夜, 点你, 别躲, 陪我, and 温柔 while preserving directional profile consistency."
+      - "Counterfactual deletion shows high-salience history deletion shifts trigger profiles more than low-salience deletion."
+      - "Mixed histories expose conflict and recency/salience resolution rather than neutral collapse."
+      - "Manual review packet exists and states sample histories, state deltas, shadow memory candidates, trigger observations, expected behavior, failure meaning, claim ceiling, and human go/no-go checklist."
+      - "No EgoOperator runtime import/registration, user response mutation, mainline memory write, gate/approval invocation, transport call, proactive trigger, planner/training/model execution, enabled=true, mainline_connected=true, or claim-ceiling upgrade occurs."
+    rollback: "Delete docs/codex/tasks/pspc-sequence-experience-eval-v0-1/, tests/test_pspc_sequence_experience_eval_v0_1.py, scripts/run_pspc_sequence_experience_eval_v0_1.py, artifacts/pspc_sequence_experience_eval_v0_1/, and this task-board/project-contract/program-state/evidence-ledger/generated-view update. Keep PSPC-SHADOW-HOOK-007 human_required."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-sequence-experience-eval-v0-1/STATUS.md"
+      - "tests/test_pspc_sequence_experience_eval_v0_1.py"
+      - "artifacts/pspc_sequence_experience_eval_v0_1/"
+    external_refs:
+      github_issue: null
