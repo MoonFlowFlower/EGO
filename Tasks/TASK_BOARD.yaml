@@ -3655,3 +3655,94 @@ tasks:
       - "artifacts/pspc_shadow_proposal_hint_contract_v0/"
     external_refs:
       github_issue: null
+
+  - id: EGODESKTOP-COMPANION-001
+    title: "EgoDesktop: companion wording and route repair package v0"
+    kind: task
+    parent: null
+    status: accepted
+    layer: egodesktop_local_companion_presentation
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E2
+    claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
+    next_action: "Accepted locally: task package exists and permits only local EgoDesktop companion-visible wording and route recovery repair. Next task is EGODESKTOP-COMPANION-002."
+    acceptance:
+      - "Stage Card records the problem reframe, authority source, allowed change surface, no-authority boundaries, rollback, and claim ceiling."
+      - "The task sequence separates package, session-local recall wording, timeout route misfire repair, and combined regression report."
+      - "No EgoOperator runtime/gate/memory/approval/transport/proactive path is modified by this package task."
+    rollback: "Delete docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/ and remove EGODESKTOP-COMPANION-001..004 plus this project-contract update."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/STAGE_CARD.md"
+      - "docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/ACCEPTANCE.md"
+      - "docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/STATUS.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-COMPANION-002
+    title: "EgoDesktop: session-local recall wording repair v0"
+    kind: task
+    parent: null
+    status: active
+    layer: egodesktop_local_companion_presentation
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
+    next_action: "Implement desktop-only visible reply rewrite for session-local recall wording; do not modify EgoOperator core memory gate."
+    acceptance:
+      - "`由乃你还记得我吗` does not expose candidate-local/operator-memory/PROJECT_MEMORY/evidence-ledger wording in EgoDesktop visible reply."
+      - "With window-lifetime session context containing `椰果珍珠奶茶`, recall can cite that same-window fact."
+      - "Without session context, recall does not fabricate durable memory."
+      - "No real memory write, gate invocation, approval invocation, transport call, proactive trigger, runtime registration, or PSPC authority escalation occurs."
+    rollback: "Revert the desktop-only visible reply rewrite and remove matching tests/artifacts."
+    canonical_sources:
+      - "scripts/ego_operator_desktop_turn.py"
+      - "tests/test_ego_operator_desktop_companion_wording.py"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-COMPANION-003
+    title: "EgoDesktop: timeout route misfire repair v0"
+    kind: task
+    parent: null
+    status: planned
+    layer: egodesktop_local_companion_presentation
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
+    next_action: "After EGODESKTOP-COMPANION-002, repair desktop timeout fallback wording and recovery intent classification."
+    acceptance:
+      - "Generic timeout fallback says local backend reply timed out, not creative route timeout."
+      - "Ordinary affectionate turns such as `喜欢你所以就摸摸你`, `像小猫一样`, and `摸摸头` are not classified as creative/adult creative recovery."
+      - "Explicit story/roleplay/18x/adult creative requests can still be classified as creative/adult creative."
+      - "Recovery remains one-turn, local-only, and side-effect-free."
+    rollback: "Revert EgoDesktop/src/desktopRecoveryContext.js changes and matching tests/artifacts."
+    canonical_sources:
+      - "EgoDesktop/src/desktopRecoveryContext.js"
+      - "EgoDesktop/tests/desktop_recovery_context.test.js"
+      - "tests/test_ego_operator_desktop_recovery_context.py"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-COMPANION-004
+    title: "EgoDesktop: combined companion regression report v0"
+    kind: task
+    parent: null
+    status: planned
+    layer: egodesktop_local_companion_presentation
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
+    next_action: "After EGODESKTOP-COMPANION-003, generate combined regression report and go/no-go for manual companion smoke."
+    acceptance:
+      - "Report covers PSPC warm approach retention, natural session-local recall wording, route-neutral timeout recovery, and side-effect absence."
+      - "Verdict is either `go_for_manual_companion_smoke` or `needs_more_desktop_contract_repair`."
+      - "Report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete artifacts/egodesktop_companion_memory_route_repair_v0/ and revert this task-board/status/evidence update."
+    canonical_sources:
+      - "artifacts/egodesktop_companion_memory_route_repair_v0/COMPANION_REPAIR_REPORT.md"
+    external_refs:
+      github_issue: null

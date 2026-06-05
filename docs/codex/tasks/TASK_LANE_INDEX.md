@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 188 |
+| `reference_only` | 189 |
 
 ## Active Default
 
@@ -183,6 +183,7 @@
 | Ego Subjectstate V0 Candidate Context | `codex_task` | n/a | `docs/codex/tasks/ego-subjectstate-v0-candidate-context/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Viabilitystate V0 Signal Extraction | `codex_task` | n/a | `docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egocore Pytest Suite Stabilization | `codex_task` | n/a | `docs/codex/tasks/egocore-pytest-suite-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
+| Egodesktop Companion Memory Route Repair V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Creative Timeout Recovery V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-creative-timeout-recovery-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Developer Settings Launch Profile V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-developer-settings-launch-profile-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Debug Signal Overlay V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

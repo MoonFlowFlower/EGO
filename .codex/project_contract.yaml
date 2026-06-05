@@ -294,6 +294,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/
   - docs/codex/tasks/egodesktop-developer-settings-launch-profile-v0/
   - docs/codex/tasks/egodesktop-pspc-semantic-interaction-extractor-v0/
+  - docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
   - tests/test_pspc_static_compatibility_review.py
@@ -314,6 +315,7 @@ allowed_mutation_paths:
   - tests/test_pspc_sequence_experience_eval_v0_1.py
   - tests/test_pspc_shadow_proposal_hint_contract.py
   - tests/test_ego_desktop_pspc_signal_extract.py
+  - tests/test_ego_operator_desktop_companion_wording.py
   - tests/test_ego_operator_desktop_pspc_reply_preview.py
   - tests/test_ego_operator_desktop_session_context.py
   - tests/test_ego_operator_desktop_recovery_context.py
@@ -349,6 +351,7 @@ allowed_mutation_paths:
   - artifacts/egodesktop_pspc_debug_signal_overlay_v0/
   - artifacts/egodesktop_developer_settings_launch_profile_v0/
   - artifacts/egodesktop_pspc_semantic_interaction_extractor_v0/
+  - artifacts/egodesktop_companion_memory_route_repair_v0/
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/EgoCore/SHIM_REGISTER.md
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml

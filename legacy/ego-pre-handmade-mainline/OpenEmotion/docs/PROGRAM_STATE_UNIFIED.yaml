@@ -44,6 +44,16 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - EgoDesktop Companion Memory Wording + Route Misfire Repair v0 now has a bounded
+    local task package under `docs/codex/tasks/egodesktop-companion-memory-route-repair-v0/`
+    and local task-board entries `EGODESKTOP-COMPANION-001..004`. `EGODESKTOP-COMPANION-001`
+    seeds the package and board only, `EGODESKTOP-COMPANION-002` is active for desktop-visible
+    session-local recall wording repair, and later tasks are limited to timeout route
+    repair plus a combined local regression report. The claim ceiling is `local_desktop_companion_wording_and_route_repair_only`;
+    this stage does not modify EgoOperator core runtime, gate, memory, approval, transport,
+    proactive paths, or PSPC mainline authority, and it does not prove PSPC integration,
+    durable memory, stable user benefit, live autonomy, consciousness, subjective
+    experience, or real emotion.
   - EgoDesktop PSPC Semantic Interaction Extractor v0 replaces PSPC Reply Preview's
     keyword/regex category route in `EgoDesktop/src/pspcReplyPreview.js` with validated
     semantic event packets and deterministic proxy-state updates. `scripts/ego_desktop_pspc_signal_extract.py`
