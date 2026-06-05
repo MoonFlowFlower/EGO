@@ -3683,13 +3683,13 @@ tasks:
     title: "EgoDesktop: session-local recall wording repair v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: egodesktop_local_companion_presentation
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
-    next_action: "Implement desktop-only visible reply rewrite for session-local recall wording; do not modify EgoOperator core memory gate."
+    next_action: "Accepted locally: desktop-only visible reply rewrite keeps ordinary companion recall natural while preserving no real memory write. Next task is EGODESKTOP-COMPANION-003."
     acceptance:
       - "`由乃你还记得我吗` does not expose candidate-local/operator-memory/PROJECT_MEMORY/evidence-ledger wording in EgoDesktop visible reply."
       - "With window-lifetime session context containing `椰果珍珠奶茶`, recall can cite that same-window fact."
@@ -3706,13 +3706,13 @@ tasks:
     title: "EgoDesktop: timeout route misfire repair v0"
     kind: task
     parent: null
-    status: planned
+    status: active
     layer: egodesktop_local_companion_presentation
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
-    next_action: "After EGODESKTOP-COMPANION-002, repair desktop timeout fallback wording and recovery intent classification."
+    next_action: "Repair desktop timeout fallback wording and recovery intent classification; keep recovery one-turn/local-only/no-side-effect."
     acceptance:
       - "Generic timeout fallback says local backend reply timed out, not creative route timeout."
       - "Ordinary affectionate turns such as `喜欢你所以就摸摸你`, `像小猫一样`, and `摸摸头` are not classified as creative/adult creative recovery."

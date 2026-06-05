@@ -137,6 +137,152 @@ DESKTOP_RECOVERY_REQUIRED_SIDE_EFFECTS_FALSE = {
     "proactive_triggered",
     "runtime_registered",
 }
+DESKTOP_COMPANION_WORDING_CLAIM_CEILING = "local_desktop_companion_wording_and_route_repair_only"
+DESKTOP_COMPANION_ENGINEERING_MEMORY_MARKERS = {
+    "candidate-local",
+    "operator memory",
+    "PROJECT_MEMORY",
+    "evidence ledger",
+    "memory approval",
+    "program state",
+    "EgoOperator candidate-local",
+}
+DESKTOP_COMPANION_EXPLICIT_ENGINEERING_MARKERS = {
+    "工程",
+    "机制",
+    "EgoOperator",
+    "candidate-local",
+    "operator memory",
+    "PROJECT_MEMORY",
+    "evidence ledger",
+    "memory approval",
+    "/remember",
+    "/memory_review",
+}
+DESKTOP_COMPANION_RECALL_MARKERS = {
+    "记得",
+    "还记得",
+    "remember",
+    "记住",
+}
+
+
+def _contains_any(text: str, markers: set[str]) -> bool:
+    folded = str(text or "").lower()
+    return any(str(marker).lower() in folded for marker in markers)
+
+
+def _looks_like_engineering_memory_boundary(reply_text: str) -> bool:
+    return _contains_any(reply_text, DESKTOP_COMPANION_ENGINEERING_MEMORY_MARKERS)
+
+
+def _is_explicit_engineering_memory_question(user_text: str) -> bool:
+    text = str(user_text or "")
+    folded = text.lower()
+    has_memory_topic = (
+        "memory" in folded
+        or "记忆" in text
+        or "记住" in text
+        or "保存" in text
+        or "PROJECT_MEMORY" in text
+    )
+    return has_memory_topic and _contains_any(text, DESKTOP_COMPANION_EXPLICIT_ENGINEERING_MARKERS)
+
+
+def _is_companion_recall_question(user_text: str) -> bool:
+    text = str(user_text or "")
+    if not _contains_any(text, DESKTOP_COMPANION_RECALL_MARKERS):
+        return False
+    return not _is_explicit_engineering_memory_question(text)
+
+
+def _session_user_messages(desktop_session_context: dict | None) -> list[str]:
+    if desktop_session_context is None:
+        return []
+    messages = desktop_session_context.get("messages")
+    if not isinstance(messages, list):
+        return []
+    result: list[str] = []
+    for message in messages:
+        if not isinstance(message, dict) or message.get("role") != "user":
+            continue
+        content = str(message.get("content") or "").strip()
+        if content:
+            result.append(content)
+    return result
+
+
+def _shorten_visible_session_fact(text: str, *, max_chars: int = 48) -> str:
+    clean = " ".join(str(text or "").replace("\n", " ").split())
+    if len(clean) <= max_chars:
+        return clean
+    return clean[: max_chars - 1].rstrip() + "…"
+
+
+def _find_same_window_preference(user_text: str, user_messages: list[str]) -> str:
+    text = str(user_text or "")
+    topic_markers: list[str] = []
+    for marker in ("奶茶", "故事", "斯卡蒂", "博士", "称呼", "名字"):
+        if marker in text:
+            topic_markers.append(marker)
+    for message in reversed(user_messages):
+        if message == text:
+            continue
+        has_preference = any(marker in message for marker in ("喜欢", "爱喝", "偏好", "习惯"))
+        has_topic = not topic_markers or any(marker in message for marker in topic_markers)
+        if has_preference and has_topic:
+            return _shorten_visible_session_fact(message)
+    return ""
+
+
+def _summarize_same_window_topics(user_messages: list[str]) -> str:
+    topics = [_shorten_visible_session_fact(message, max_chars=28) for message in user_messages[-3:]]
+    topics = [topic for topic in topics if topic]
+    if not topics:
+        return ""
+    if len(topics) == 1:
+        return topics[0]
+    return "、".join(topics)
+
+
+def rewrite_desktop_companion_visible_reply(
+    *,
+    user_text: str,
+    reply_text: str,
+    desktop_session_context: dict | None,
+) -> dict:
+    """Translate desktop-only engineering memory wording into companion-visible wording.
+
+    This only changes the visible desktop reply. It does not mutate runtime memory,
+    gates, approvals, transport, PSPC state, or trace authority.
+    """
+    if not _looks_like_engineering_memory_boundary(reply_text):
+        return {"reply_text": reply_text, "applied": False, "reason": "no_engineering_boundary"}
+    if not _is_companion_recall_question(user_text):
+        return {"reply_text": reply_text, "applied": False, "reason": "not_companion_recall"}
+
+    user_messages = _session_user_messages(desktop_session_context)
+    preference = _find_same_window_preference(user_text, user_messages)
+    if preference:
+        visible = (
+            f"记得呀，本次会话里你说过：{preference}。\n\n"
+            "我会在这个窗口里按这个继续陪你聊；如果你希望重启后也保留，需要你明确说“记住”。"
+        )
+        return {"reply_text": visible, "applied": True, "reason": "same_window_preference_recall"}
+
+    topics = _summarize_same_window_topics(user_messages)
+    if topics:
+        visible = (
+            f"记得呀，我记得的是本次会话里的你。刚才我们聊过：{topics}。\n\n"
+            "这些只属于当前窗口；如果你希望之后也保留，需要你明确说“记住”。"
+        )
+        return {"reply_text": visible, "applied": True, "reason": "same_window_companion_recall"}
+
+    visible = (
+        "我现在只看到这个窗口里的当前对话，还没有足够的本次会话内容来确认更早的你。\n\n"
+        "你可以重新告诉我；如果你希望之后也保留，需要你明确说“记住”。"
+    )
+    return {"reply_text": visible, "applied": True, "reason": "empty_same_window_recall"}
 
 
 def _llm_unavailable(runtime: object, reply_text: str) -> bool:
@@ -466,6 +612,12 @@ def main() -> int:
         result = runtime.handle_user_message(user_text)
         pending = runtime.list_pending_approvals()
         reply_text = str(getattr(result, "reply_text", "") or "")
+        companion_rewrite = rewrite_desktop_companion_visible_reply(
+            user_text=user_text,
+            reply_text=reply_text,
+            desktop_session_context=desktop_session_context,
+        )
+        reply_text = str(companion_rewrite["reply_text"])
         unavailable = _llm_unavailable(runtime, reply_text)
         response = {
             "status": "llm_expression_unavailable" if unavailable else "ok",
@@ -474,6 +626,11 @@ def main() -> int:
             "event_id": str(getattr(result, "event_id", "") or ""),
             "pending_approvals": int(pending.get("pending_count") or 0) if isinstance(pending, dict) else 0,
             "operator_memory_enabled": False,
+            "desktop_companion_visible_rewrite_applied": bool(companion_rewrite["applied"]),
+            "desktop_companion_visible_rewrite_reason": str(companion_rewrite["reason"]),
+            "desktop_companion_visible_claim_ceiling": (
+                DESKTOP_COMPANION_WORDING_CLAIM_CEILING if companion_rewrite["applied"] else ""
+            ),
             "desktop_session_context_applied": desktop_session_context is not None,
             "desktop_session_context_message_count": (
                 len(desktop_session_context.get("messages", []))

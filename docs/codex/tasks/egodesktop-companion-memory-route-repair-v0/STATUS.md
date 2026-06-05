@@ -1,7 +1,7 @@
 # Status
 
 - status: `in_progress`
-- current_task: `EGODESKTOP-COMPANION-001`
+- current_task: `EGODESKTOP-COMPANION-003`
 - lane: `EgoDesktop local companion presentation`
 - claim_ceiling: `local_desktop_companion_wording_and_route_repair_only`
 - runtime_authority: `none`
@@ -17,4 +17,8 @@
 
 ## Current Notes
 
-The user-visible failure is not that PSPC signal is absent; current PSPC overlay can show active warm approach. The remaining problem is desktop visible reply contract quality.
+`EGODESKTOP-COMPANION-001` is accepted: the local task package and board lane exist.
+
+`EGODESKTOP-COMPANION-002` is accepted: `scripts/ego_operator_desktop_turn.py` now applies a desktop-only visible reply rewrite when ordinary companion recall questions receive engineering memory-boundary text. The visible reply can cite same-window facts such as `椰果珍珠奶茶`, says the scope is `本次会话` / current window, and does not expose `candidate-local`, `operator memory`, `PROJECT_MEMORY`, `evidence ledger`, or `memory approval` unless the user explicitly asks an engineering memory question. Tests: `python -m pytest -q tests\test_ego_operator_desktop_session_context.py tests\test_ego_operator_desktop_companion_wording.py` passed.
+
+Current task is `EGODESKTOP-COMPANION-003`: repair timeout fallback wording and recovery route classification.
