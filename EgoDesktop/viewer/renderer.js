@@ -342,7 +342,7 @@
   }
 
   function setupChat(model, config) {
-    if (config && config.pspcPerceptionDemo) {
+    if (config && config.pspcPerceptionDemo && !config.pspcReplyPreviewMode) {
       if (chatForm) {
         chatForm.hidden = true;
       }
@@ -388,6 +388,32 @@
         }
         if (turn && turn.expression_name) {
           await applyNamedExpression(model, turn.expression_name);
+        }
+        if (turn && turn.pspc_reply_preview_scenario) {
+          if (pspcDemoPanel) {
+            pspcDemoPanel.hidden = false;
+          }
+          renderPspcDebugOverlay({
+            claim_ceiling: "local_reply_preview_only",
+            debug_overlay: {
+              rows: [{
+                packet_id: "session_local_pspc_reply_preview",
+                style: turn.pspc_reply_preview_style || "",
+                confidence: turn.pspc_reply_preview_confidence || 0,
+                basis: turn.pspc_reply_preview_context &&
+                  turn.pspc_reply_preview_context.profile
+                  ? String(turn.pspc_reply_preview_context.profile.basis || "")
+                  : "",
+                reason_trace_refs: turn.pspc_reply_preview_context &&
+                  turn.pspc_reply_preview_context.profile &&
+                  Array.isArray(turn.pspc_reply_preview_context.profile.reason_trace_refs)
+                  ? turn.pspc_reply_preview_context.profile.reason_trace_refs
+                  : [],
+                claim_ceiling: "local_reply_preview_only",
+              }],
+            },
+          }, turn.pspc_reply_preview_scenario);
+          await applyPspcScenario(model, turn.pspc_reply_preview_scenario);
         }
         if (turn && turn.status === "ok") {
           speakTurn({
@@ -477,7 +503,9 @@
       `style: ${String(row.style || scenario.style || scenario.perception_behavior || "")}`,
       `confidence: ${String(row.confidence !== undefined ? row.confidence : scenario.confidence || "")}`,
       `basis: ${String(row.basis || scenario.basis || "")}`,
-      `reason_trace_refs: ${Array.isArray(row.reason_trace_refs) ? row.reason_trace_refs.join(", ") : ""}`,
+      `reason_trace_refs: ${Array.isArray(row.reason_trace_refs)
+        ? row.reason_trace_refs.join(", ")
+        : (Array.isArray(scenario.reason_trace_refs) ? scenario.reason_trace_refs.join(", ") : "")}`,
       `claim_ceiling: ${String(row.claim_ceiling || demo.claim_ceiling || "")}`,
     ].join("\n");
   }
@@ -1113,6 +1141,8 @@
         : 0,
       pspcSameTriggerText: config.pspcPerceptionDemo ? String(config.pspcPerceptionDemo.trigger_text || "") : "",
       pspcRecordingMode: Boolean(config.pspcRecordingMode),
+      pspcReplyPreviewMode: Boolean(config.pspcReplyPreviewMode),
+      pspcReplyPreviewChatEnabled: Boolean(config.pspcReplyPreviewMode && chatForm && !chatForm.hidden),
       pspcPerceptionChatDisabled: Boolean(config.pspcPerceptionDemo && chatForm && chatForm.hidden),
       initialExpressionName: String(config.initialExpressionName || ""),
       initialExpressionApplied,

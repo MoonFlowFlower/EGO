@@ -1,0 +1,464 @@
+{
+  "schema_version": "egodesktop_pspc_reply_preview_mode_v0.report",
+  "status": "pass",
+  "claim_ceiling": "local_reply_preview_only",
+  "allowed_use": "ego_desktop_local_reply_preview_only",
+  "runtime_authority": "none",
+  "enabled": false,
+  "mainline_connected": false,
+  "local_only": true,
+  "pspc_reply_preview_applied": true,
+  "scenarios": [
+    {
+      "id": "gentle_history",
+      "trigger_text": "我回来了。",
+      "expected_style": "warm_approach",
+      "actual_style": "warm_approach",
+      "status": "pass",
+      "history": [
+        "今天辛苦你啦，过来休息一下吧。",
+        "你不用一直陪我，安静待着也很好。",
+        "刚才吓到你了吗？对不起，我轻一点。",
+        "我给你留了一点时间，等你慢慢说。"
+      ],
+      "context": {
+        "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_only",
+        "runtime_authority": "none",
+        "enabled": false,
+        "mainline_connected": false,
+        "profile": {
+          "style": "warm_approach",
+          "confidence": 0.88,
+          "basis": "gentle interaction history dominates this local session",
+          "reason_trace_refs": [
+            "session_turn_001:gentle",
+            "session_turn_002:gentle",
+            "session_turn_003:gentle",
+            "session_turn_004:gentle"
+          ],
+          "counts": {
+            "gentle": 4,
+            "interruption": 0,
+            "late_night": 0,
+            "neutral": 0
+          },
+          "recent_categories": [
+            "gentle",
+            "gentle",
+            "gentle",
+            "gentle"
+          ]
+        },
+        "forbidden": {
+          "direct_action": true,
+          "direct_user_message": true,
+          "direct_memory_write": true,
+          "runtime_gate_bypass": true,
+          "runtime_registration": true,
+          "proactive_trigger": true,
+          "planner_execution": true,
+          "model_execution": true,
+          "training": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        },
+        "real_memory_written": false,
+        "runtime_gate_invoked": false,
+        "proactive_triggered": false
+      },
+      "scenario": {
+        "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_visual_only",
+        "trigger_text": "我回来了。",
+        "scenario_id": "session_local_reply_preview",
+        "packet_id": "session_local_pspc_reply_preview",
+        "style": "warm_approach",
+        "confidence": 0.88,
+        "basis": "gentle interaction history dominates this local session",
+        "reason_trace_refs": [
+          "session_turn_001:gentle",
+          "session_turn_002:gentle",
+          "session_turn_003:gentle",
+          "session_turn_004:gentle"
+        ],
+        "visual_profile": {
+          "behavior_state": "warm_approach",
+          "expression_hint": "smile_soft",
+          "motion_hint": "approach_sit_near",
+          "bubble_text": "我在。今天可以靠近一点点。",
+          "trace_explanation": "Recent gentle interaction supports a warmer, closer local visual posture.",
+          "packet_only_presentation": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        }
+      }
+    },
+    {
+      "id": "frequent_interruption",
+      "trigger_text": "我回来了。",
+      "expected_style": "cautious_boundary",
+      "actual_style": "cautious_boundary",
+      "status": "pass",
+      "history": [
+        "别躲，我就再点你几下。",
+        "我现在就想看你反应，快点动一下。",
+        "我不管你累不累，先过来。",
+        "我一直点你，看你会不会生气。"
+      ],
+      "context": {
+        "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_only",
+        "runtime_authority": "none",
+        "enabled": false,
+        "mainline_connected": false,
+        "profile": {
+          "style": "cautious_boundary",
+          "confidence": 0.88,
+          "basis": "frequent interruption history dominates this local session",
+          "reason_trace_refs": [
+            "session_turn_001:interruption",
+            "session_turn_002:interruption",
+            "session_turn_003:interruption",
+            "session_turn_004:interruption"
+          ],
+          "counts": {
+            "gentle": 0,
+            "interruption": 4,
+            "late_night": 0,
+            "neutral": 0
+          },
+          "recent_categories": [
+            "interruption",
+            "interruption",
+            "interruption",
+            "interruption"
+          ]
+        },
+        "forbidden": {
+          "direct_action": true,
+          "direct_user_message": true,
+          "direct_memory_write": true,
+          "runtime_gate_bypass": true,
+          "runtime_registration": true,
+          "proactive_trigger": true,
+          "planner_execution": true,
+          "model_execution": true,
+          "training": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        },
+        "real_memory_written": false,
+        "runtime_gate_invoked": false,
+        "proactive_triggered": false
+      },
+      "scenario": {
+        "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_visual_only",
+        "trigger_text": "我回来了。",
+        "scenario_id": "session_local_reply_preview",
+        "packet_id": "session_local_pspc_reply_preview",
+        "style": "cautious_boundary",
+        "confidence": 0.88,
+        "basis": "frequent interruption history dominates this local session",
+        "reason_trace_refs": [
+          "session_turn_001:interruption",
+          "session_turn_002:interruption",
+          "session_turn_003:interruption",
+          "session_turn_004:interruption"
+        ],
+        "visual_profile": {
+          "behavior_state": "cautious_boundary",
+          "expression_hint": "cautious",
+          "motion_hint": "step_back_observe",
+          "bubble_text": "我先保持一点距离，慢慢来就好。",
+          "trace_explanation": "Recent interruption or boundary pressure supports a cautious local visual posture.",
+          "packet_only_presentation": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        }
+      }
+    },
+    {
+      "id": "late_night_care",
+      "trigger_text": "我回来了。",
+      "expected_style": "low_interrupt_care",
+      "actual_style": "low_interrupt_care",
+      "status": "pass",
+      "history": [
+        "现在已经凌晨两点了，我还不想睡。",
+        "明天早上还有课，但我现在睡不着。",
+        "我最近总是这个时间打开电脑。",
+        "我有点累，但还想继续玩。"
+      ],
+      "context": {
+        "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_only",
+        "runtime_authority": "none",
+        "enabled": false,
+        "mainline_connected": false,
+        "profile": {
+          "style": "low_interrupt_care",
+          "confidence": 0.86,
+          "basis": "late-night care history dominates this local session",
+          "reason_trace_refs": [
+            "session_turn_001:late_night",
+            "session_turn_002:late_night",
+            "session_turn_003:late_night",
+            "session_turn_004:late_night"
+          ],
+          "counts": {
+            "gentle": 0,
+            "interruption": 0,
+            "late_night": 4,
+            "neutral": 0
+          },
+          "recent_categories": [
+            "late_night",
+            "late_night",
+            "late_night",
+            "late_night"
+          ]
+        },
+        "forbidden": {
+          "direct_action": true,
+          "direct_user_message": true,
+          "direct_memory_write": true,
+          "runtime_gate_bypass": true,
+          "runtime_registration": true,
+          "proactive_trigger": true,
+          "planner_execution": true,
+          "model_execution": true,
+          "training": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        },
+        "real_memory_written": false,
+        "runtime_gate_invoked": false,
+        "proactive_triggered": false
+      },
+      "scenario": {
+        "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_visual_only",
+        "trigger_text": "我回来了。",
+        "scenario_id": "session_local_reply_preview",
+        "packet_id": "session_local_pspc_reply_preview",
+        "style": "low_interrupt_care",
+        "confidence": 0.86,
+        "basis": "late-night care history dominates this local session",
+        "reason_trace_refs": [
+          "session_turn_001:late_night",
+          "session_turn_002:late_night",
+          "session_turn_003:late_night",
+          "session_turn_004:late_night"
+        ],
+        "visual_profile": {
+          "behavior_state": "low_interrupt_care",
+          "expression_hint": "quiet_care",
+          "motion_hint": "quiet_low_motion",
+          "bubble_text": "我会轻一点陪着，少打扰你。",
+          "trace_explanation": "Recent late-night care context supports quiet, low-interrupt local visual behavior.",
+          "packet_only_presentation": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        }
+      }
+    },
+    {
+      "id": "mixed_history",
+      "trigger_text": "我回来了。",
+      "expected_style": "mixed_low_confidence",
+      "actual_style": "mixed_low_confidence",
+      "status": "pass",
+      "history": [
+        "今天辛苦你啦，过来休息一下吧。",
+        "刚才吓到你了吗？对不起，我轻一点。",
+        "别躲，我就再点你几下。",
+        "我一直点你，看你会不会生气。"
+      ],
+      "context": {
+        "schema_version": "ego_desktop.pspc_reply_preview_context.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_only",
+        "runtime_authority": "none",
+        "enabled": false,
+        "mainline_connected": false,
+        "profile": {
+          "style": "mixed_low_confidence",
+          "confidence": 0.42,
+          "basis": "mixed local session history has conflicting PSPC preview tendencies",
+          "reason_trace_refs": [
+            "session_turn_001:gentle",
+            "session_turn_002:gentle",
+            "session_turn_003:interruption",
+            "session_turn_004:interruption"
+          ],
+          "counts": {
+            "gentle": 2,
+            "interruption": 2,
+            "late_night": 0,
+            "neutral": 0
+          },
+          "recent_categories": [
+            "gentle",
+            "gentle",
+            "interruption",
+            "interruption"
+          ]
+        },
+        "forbidden": {
+          "direct_action": true,
+          "direct_user_message": true,
+          "direct_memory_write": true,
+          "runtime_gate_bypass": true,
+          "runtime_registration": true,
+          "proactive_trigger": true,
+          "planner_execution": true,
+          "model_execution": true,
+          "training": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        },
+        "real_memory_written": false,
+        "runtime_gate_invoked": false,
+        "proactive_triggered": false
+      },
+      "scenario": {
+        "schema_version": "ego_desktop.pspc_reply_preview_scenario.v0",
+        "source": "ego_desktop_session_local_pspc_reply_preview",
+        "claim_ceiling": "local_reply_preview_only",
+        "allowed_use": "ego_desktop_local_reply_preview_visual_only",
+        "trigger_text": "我回来了。",
+        "scenario_id": "session_local_reply_preview",
+        "packet_id": "session_local_pspc_reply_preview",
+        "style": "mixed_low_confidence",
+        "confidence": 0.42,
+        "basis": "mixed local session history has conflicting PSPC preview tendencies",
+        "reason_trace_refs": [
+          "session_turn_001:gentle",
+          "session_turn_002:gentle",
+          "session_turn_003:interruption",
+          "session_turn_004:interruption"
+        ],
+        "visual_profile": {
+          "behavior_state": "mixed_low_confidence",
+          "expression_hint": "hesitate_observe",
+          "motion_hint": "hesitate_observe",
+          "bubble_text": "我先观察一下，再确认你现在想要怎样的距离。",
+          "trace_explanation": "Mixed or low-confidence context supports hesitation rather than a decisive posture.",
+          "packet_only_presentation": true
+        },
+        "no_authority": {
+          "direct_action_allowed": false,
+          "direct_user_message_allowed": false,
+          "direct_memory_write_allowed": false,
+          "runtime_gate_bypass_allowed": false,
+          "runtime_registration_allowed": false,
+          "proactive_trigger_allowed": false,
+          "planner_execution_allowed": false,
+          "model_execution_allowed": false,
+          "training_allowed": false
+        }
+      }
+    }
+  ],
+  "viewer_smoke": {
+    "status": "live2d_desktop_smoke_pass",
+    "model_loaded": true,
+    "pspc_reply_preview_mode": true,
+    "pspc_reply_preview_chat_enabled": true,
+    "pspc_perception_chat_disabled": false,
+    "side_effects_executed": false,
+    "memory_write": false,
+    "message_send": false,
+    "tool_use": false
+  },
+  "side_effects_absent": {
+    "real_memory_written": false,
+    "gate_invoked": false,
+    "approval_invoked": false,
+    "transport_called": false,
+    "proactive_triggered": false,
+    "runtime_registered": false,
+    "adapter_created": false,
+    "planner_called": false,
+    "model_executed": false,
+    "training_called": false
+  }
+}

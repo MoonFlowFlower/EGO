@@ -8,6 +8,12 @@ const { buildDesktopChatTurn } = require("./chatTurn");
 const { resolveModelInput } = require("./modelResolver");
 const { listExpressionFiles } = require("./modelSettings");
 const { buildPspcPerceptionDemo } = require("./pspcPerceptionDemo");
+const {
+  buildPspcReplyPreviewContext,
+  buildPspcReplyPreviewScenario,
+  createPspcReplyPreviewState,
+  updatePspcReplyPreviewState,
+} = require("./pspcReplyPreview");
 const { buildPspcVisualShim } = require("./pspcVisualShim");
 const { buildViewerSignalFrame } = require("./signalFrame");
 const { buildTtsRequest } = require("./tts");
@@ -100,8 +106,11 @@ function backendEnv() {
   };
 }
 
-function runEgoOperatorDesktopTurn(userText, timeoutMs) {
+function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {
   return new Promise((resolve) => {
+    const payload = typeof turnPayload === "string"
+      ? { user_text: turnPayload }
+      : { ...(turnPayload || {}) };
     const child = spawn(
       pythonExecutable(),
       [path.join(repoRoot, "scripts", "ego_operator_desktop_turn.py")],
@@ -166,7 +175,7 @@ function runEgoOperatorDesktopTurn(userText, timeoutMs) {
         });
       }
     });
-    child.stdin.end(JSON.stringify({ user_text: userText }));
+    child.stdin.end(JSON.stringify(payload));
   });
 }
 
@@ -405,6 +414,8 @@ async function run() {
   const pspcVisualShim = loadPspcVisualShim(args);
   const pspcPerceptionDemo = pspcVisualShim ? buildPspcPerceptionDemo(pspcVisualShim) : null;
   const pspcRecordingMode = Boolean(args["pspc-recording-mode"]);
+  const pspcReplyPreviewMode = Boolean(args["pspc-reply-preview-mode"]);
+  let pspcReplyPreviewState = createPspcReplyPreviewState({ enabled: pspcReplyPreviewMode });
   const expressionCatalog = loadExpressionCatalog(modelInfo.modelDir);
   const server = createViewerServer({
     appRoot,
@@ -465,6 +476,7 @@ async function run() {
     pspcVisualShim,
     pspcPerceptionDemo,
     pspcRecordingMode,
+    pspcReplyPreviewMode,
   };
   ipcMain.handle("ego-desktop:get-config", () => config);
   ipcMain.handle("ego-desktop:chat-turn", async (_event, payload) => {
@@ -477,7 +489,17 @@ async function run() {
         expressionName: "晕晕眼",
       });
     }
-    const backend = await runEgoOperatorDesktopTurn(userText, args["chat-timeout-ms"]);
+    let pspcReplyPreviewContext = null;
+    let pspcReplyPreviewScenario = null;
+    const turnPayload = { user_text: userText };
+    if (pspcReplyPreviewMode) {
+      pspcReplyPreviewState = updatePspcReplyPreviewState(pspcReplyPreviewState, userText);
+      pspcReplyPreviewContext = buildPspcReplyPreviewContext(pspcReplyPreviewState);
+      pspcReplyPreviewScenario = buildPspcReplyPreviewScenario(pspcReplyPreviewContext);
+      turnPayload.pspc_reply_preview_mode = true;
+      turnPayload.pspc_reply_preview_context = pspcReplyPreviewContext;
+    }
+    const backend = await runEgoOperatorDesktopTurn(turnPayload, args["chat-timeout-ms"]);
     const status = backend.status === "ok" ? "ok" : "llm_expression_unavailable";
     const botText = status === "ok"
       ? String(backend.reply_text || "")
@@ -493,6 +515,15 @@ async function run() {
       message_send: Boolean(backend.message_send),
       file_write: Boolean(backend.file_write),
       network_call: Boolean(backend.network_call),
+      pspc_reply_preview_applied: Boolean(backend.pspc_reply_preview_applied),
+      pspc_reply_preview_style: backend.pspc_reply_preview_style || (pspcReplyPreviewContext && pspcReplyPreviewContext.profile
+        ? String(pspcReplyPreviewContext.profile.style || "")
+        : ""),
+      pspc_reply_preview_confidence: pspcReplyPreviewContext && pspcReplyPreviewContext.profile
+        ? Number(pspcReplyPreviewContext.profile.confidence || 0)
+        : 0,
+      pspc_reply_preview_context: pspcReplyPreviewContext,
+      pspc_reply_preview_scenario: pspcReplyPreviewScenario,
     };
   });
   ipcMain.handle("ego-desktop:synthesize-speech", async (_event, payload) => {

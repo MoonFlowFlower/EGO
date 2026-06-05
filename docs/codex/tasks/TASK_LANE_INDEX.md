@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 182 |
+| `reference_only` | 183 |
 
 ## Active Default
 
@@ -184,6 +184,7 @@
 | Ego Viabilitystate V0 Signal Extraction | `codex_task` | n/a | `docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egocore Pytest Suite Stabilization | `codex_task` | n/a | `docs/codex/tasks/egocore-pytest-suite-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Egodesktop Pspc Perception Demo V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-perception-demo-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egodesktop Pspc Reply Preview Mode V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-reply-preview-mode-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Visual Shim V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-visual-shim-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | H1 Canonical Promotion Prep | `codex_task` | n/a | `docs/codex/tasks/h1-canonical-promotion-prep/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | H1 Canonical Shadow Patch | `codex_task` | n/a | `docs/codex/tasks/h1-canonical-shadow-patch/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |

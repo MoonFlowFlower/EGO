@@ -44,6 +44,23 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'EgoDesktop PSPC Reply Preview Mode v0 now has an explicit local-only preview
+    path: `EgoDesktop/src/pspcReplyPreview.js` accumulates a session-local PSPC profile,
+    `EgoDesktop/src/main.js` passes `pspc_reply_preview_context` only when `--pspc-reply-preview-mode`
+    is set, `scripts/ego_operator_desktop_turn.py` validates that context and injects
+    it only as temporary in-session system context after `build_demo_runtime(enable_operator_memory=False)`,
+    and `EgoDesktop/viewer/renderer.js` keeps chat enabled while applying presentation-only
+    Live2D preview scenarios. Tests at `EgoDesktop/tests/pspc_reply_preview.test.js`
+    and `tests/test_ego_operator_desktop_pspc_reply_preview.py` verify normal mode
+    omits PSPC context, preview context rejects runtime-authority fields, and four
+    local histories map to `warm_approach`, `cautious_boundary`, `low_interrupt_care`,
+    and `mixed_low_confidence`. Artifacts under `artifacts/egodesktop_pspc_reply_preview_mode_v0/`
+    record status `pass`, side effects absent, `runtime_authority=none`, `enabled=false`,
+    `mainline_connected=false`, and claim ceiling `local_reply_preview_only`. This
+    is local reply preview evidence only; it does not prove PSPC production integration,
+    runtime integration safety, adapter readiness, stable real user benefit, durable
+    memory efficacy, live autonomy, consciousness, subjective experience, or real
+    emotion.'
   - 'EgoDesktop PSPC Perception Demo v0 now has a product-only local perception demo
     builder at `EgoDesktop/src/pspcPerceptionDemo.js`, deterministic same-trigger
     Live2D playback controls in the local viewer, tests at `EgoDesktop/tests/pspc_perception_demo.test.js`,
