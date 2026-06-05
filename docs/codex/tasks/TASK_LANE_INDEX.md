@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 190 |
+| `reference_only` | 191 |
 
 ## Active Default
 
@@ -195,6 +195,7 @@
 | H1 Canonical Promotion Prep | `codex_task` | n/a | `docs/codex/tasks/h1-canonical-promotion-prep/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | H1 Canonical Shadow Patch | `codex_task` | n/a | `docs/codex/tasks/h1-canonical-shadow-patch/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | H1 Preflight Same Surface Unblock | `codex_task` | n/a | `docs/codex/tasks/h1-preflight-same-surface-unblock/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
+| High Impact Refactor Workflow Optimization V1 | `codex_task` | n/a | `docs/codex/tasks/high-impact-refactor-workflow-optimization-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Identify Public Causal Driver For Mvs Trial 2 | `codex_task` | n/a | `docs/codex/tasks/identify-public-causal-driver-for-mvs-trial-2/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Interface Layer Consolidation | `codex_task` | n/a | `docs/codex/tasks/interface-layer-consolidation/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Legacy Pre Operator Mainline Archival Purge V1 | `codex_task` | n/a | `docs/codex/tasks/legacy-pre-operator-mainline-archival-purge-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

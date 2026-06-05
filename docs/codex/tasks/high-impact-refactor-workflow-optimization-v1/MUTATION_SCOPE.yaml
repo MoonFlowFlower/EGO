@@ -1,0 +1,25 @@
+schema_version: codex.mutation_scope.v1
+task: high-impact-refactor-workflow-optimization-v1
+expected_mutation_surface:
+  - closeout guard task-scoped mutation allowance and dirty diagnostics
+  - archival verifier manifest-backed helper extraction
+  - workflow task template and EGO skill checklist updates
+  - program-state and evidence-ledger workflow-only notes
+allowed_mutation_paths:
+  - scripts/codex_session_guard.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/codex/archive_verifier_common.py
+  - scripts/codex/verify_legacy_archival_purge.py
+  - scripts/tests/test_archive_verifier_common.py
+  - docs/templates/CODEX_TASK_TEMPLATE.md
+  - docs/codex/tasks/high-impact-refactor-workflow-optimization-v1/
+  - AGENTS.md
+  - docs/AGENT_DEVELOPMENT_PLAYBOOK.md
+  - .agents/skills/ai-architecture-boundary/SKILL.md
+  - .agents/skills/ego-implement-milestone/SKILL.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+  - artifacts/evidence_ledger/index.yaml
+claim_ceiling: "local workflow guard hardening only; no runtime efficacy, stable benefit, autonomy, memory efficacy, selfhood, consciousness, or subjective-experience claim"

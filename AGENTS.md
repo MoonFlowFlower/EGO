@@ -117,7 +117,7 @@
 - Gate A: coding 前必须明确 contract / schema / authority source；不清楚就先收敛任务，不进入实现。
 - Gate B: completion claim 前必须运行与任务匹配的验证；repo-level wrapper 优先用 `scripts/run_verify.sh fast|full`，它只委托现有 canonical verifier，不另造验证逻辑。
 - Gate C: 收口前 review diff，重点检查 regression、第二套逻辑、证据缺口、过度设计、无关 temp/log/runtime JSONL。
-- Gate D: 收口前运行 `python scripts/codex_session_guard.py closeout-check --format markdown`。若未 scoped stage、未处理 push、任务板变更未同步 GitHub mirror、`gh`/权限/Project 不可用且未进入 outbox，必须报告 blocked/unavailable，不得宣称完成或已同步。
+- Gate D: 收口前运行 `python scripts/codex_session_guard.py closeout-check --format markdown`。若本轮是大删除、目录迁移、authority/evidence/state 变更，先在任务包写 `Expected Mutation Surface` 与 `MUTATION_SCOPE.yaml`，并改跑 `python scripts/codex_session_guard.py --mutation-scope <task>/MUTATION_SCOPE.yaml closeout-check --format markdown`；不要为了单次任务永久扩大全局 `.codex/project_contract.yaml`。若未 scoped stage、未处理 push、任务板变更未同步 GitHub mirror、`gh`/权限/Project 不可用且未进入 outbox，必须报告 blocked/unavailable，不得宣称完成或已同步。
 - 如果 required check 无法运行，报告 `unavailable` 和具体原因；不得把 unavailable 降级写成 pass。
 - 最终报告必须列出 changed files、commands run、test results、evidence paths、unresolved risks、next smallest safe step。
 

@@ -40,6 +40,14 @@ Before implementation, answer:
 
 If these are unclear, write a Stage Card before coding.
 
+For large deletion, migration, archive purge, program-state, project-contract, or evidence-ledger work, the Stage Card must also include `Expected Mutation Surface`. Add a task-local `MUTATION_SCOPE.yaml` beside the task docs and run closeout with:
+
+```bash
+python scripts/codex_session_guard.py --mutation-scope <task>/MUTATION_SCOPE.yaml closeout-check --format markdown
+```
+
+Do not permanently broaden `.codex/project_contract.yaml` for one-off mutation surfaces.
+
 ## Current Mainline Shape
 
 Keep the default path:

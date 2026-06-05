@@ -32,6 +32,19 @@ description: Use only for AIProject architecture-boundary tasks involving legacy
    - 已启用但未触发
    - 已触发但仍缺长期观测
 
+## Archival Purge Checklist
+
+When the task archives or purges legacy `EgoCore`, `OpenEmotion`, `ego_desktop_lab`, OpenClaw, or other old authority-looking surfaces, run this sequence before closeout:
+
+1. Dependency proof: classify references as `active_dependency`, `historical_reference`, `archive_pointer`, or `forbidden_active_authority`.
+2. Archive pointer: create or document the tag/branch/commit before deleting current-tree code.
+3. Manifest: record removed paths, reason, archive pointer, claim boundary, and rollback instructions.
+4. Inventory: preserve reusable ideas as reference only, with no runtime authority or default path.
+5. Tombstone: leave a thin pointer in the old location.
+6. Anti-regression: add a deterministic verifier that rejects active imports, default routes, registry references, or active-doc authority claims.
+7. Closeout scope: declare an `Expected Mutation Surface` and, for large deletion/migration, a task-local `MUTATION_SCOPE.yaml`; do not permanently broaden global allowed paths for one-off deletion surfaces.
+8. Publish: run closeout, commit the scoped diff, push `origin main`, and push the archive tag when the pointer is a tag.
+
 ## Guardrails
 
 - 不让 EgoCore 偷做 OpenEmotion 本体。

@@ -183,6 +183,24 @@ tasks:
     return path
 
 
+def write_mutation_scope(tmp_path: Path, allowed_paths: list[str]) -> Path:
+    path = tmp_path / "MUTATION_SCOPE.yaml"
+    allowed = "\n".join(f"  - {item}" for item in allowed_paths)
+    path.write_text(
+        f"""
+schema_version: codex.mutation_scope.v1
+task: test-task
+expected_mutation_surface:
+  - test fixture mutation surface
+allowed_mutation_paths:
+{allowed}
+claim_ceiling: test task-scoped mutation allowance only
+""",
+        encoding="utf-8",
+    )
+    return path
+
+
 def build_snapshot(tmp_path: Path, runner: FakeRunner, *, repo: str = "MoonFlowFlower/EGO") -> dict:
     contract = write_contract(tmp_path, repo=repo)
     program = write_program_state(tmp_path)
@@ -232,8 +250,75 @@ def test_dirty_state_distinguishes_scoped_local_only_and_unsafe(tmp_path: Path) 
     payload = build_snapshot(tmp_path, FakeRunner(git_status=status + "\n"))
 
     assert payload["dirty_state"]["counts"]["scoped"] == 1
+    assert payload["dirty_state"]["counts"]["task_scoped"] == 0
     assert payload["dirty_state"]["counts"]["local_only"] == 2
     assert payload["dirty_state"]["counts"]["unsafe"] == 1
+
+
+def test_closeout_check_allows_staged_deletion_under_task_scoped_allowance(tmp_path: Path) -> None:
+    contract = write_contract(tmp_path)
+    program = write_program_state(tmp_path)
+    memory = write_memory(tmp_path)
+    board = write_board(tmp_path)
+    scope = write_mutation_scope(tmp_path, ["legacy/old-runtime/"])
+
+    payload = codex_session_guard.build_closeout_check(
+        contract_path=contract,
+        program_state_path=program,
+        codex_memory_path=memory,
+        task_board_path=board,
+        mutation_scope_path=scope,
+        runner=FakeRunner(git_status="D  legacy/old-runtime/app.py\n"),
+    )
+
+    assert payload["eligible"] is True
+    assert payload["dirty_state"]["counts"]["task_scoped"] == 1
+    assert payload["dirty_state"]["counts"]["unsafe"] == 0
+    assert payload["task_mutation_scope"]["path"] == str(scope)
+    assert "legacy/old-runtime/" not in codex_session_guard.codex_project_autopilot.load_contract(contract).allowed_mutation_paths
+
+
+def test_closeout_check_blocks_same_deletion_without_task_scope_and_explains_group(tmp_path: Path) -> None:
+    contract = write_contract(tmp_path)
+    program = write_program_state(tmp_path)
+    memory = write_memory(tmp_path)
+    board = write_board(tmp_path)
+
+    payload = codex_session_guard.build_closeout_check(
+        contract_path=contract,
+        program_state_path=program,
+        codex_memory_path=memory,
+        task_board_path=board,
+        runner=FakeRunner(git_status="D  legacy/old-runtime/app.py\n"),
+    )
+
+    assert payload["eligible"] is False
+    blocker = next(reason for reason in payload["blocked_reasons"] if reason["reason"] == "unsafe_dirty_paths")
+    assert blocker["groups"][0]["path_prefix"] == "legacy/old-runtime/"
+    assert blocker["groups"][0]["staged_count"] == 1
+    assert blocker["candidate_scoped_paths"] == ["legacy/old-runtime/"]
+
+
+def test_closeout_check_blocks_staged_local_only_even_when_task_scope_allows_it(tmp_path: Path) -> None:
+    contract = write_contract(tmp_path)
+    program = write_program_state(tmp_path)
+    memory = write_memory(tmp_path)
+    board = write_board(tmp_path)
+    scope = write_mutation_scope(tmp_path, ["data/live2d/"])
+
+    payload = codex_session_guard.build_closeout_check(
+        contract_path=contract,
+        program_state_path=program,
+        codex_memory_path=memory,
+        task_board_path=board,
+        mutation_scope_path=scope,
+        runner=FakeRunner(git_status="A  data/live2d/model.model3.json\n"),
+    )
+
+    assert payload["eligible"] is False
+    assert payload["dirty_state"]["counts"]["local_only"] == 1
+    assert payload["dirty_state"]["counts"]["task_scoped"] == 0
+    assert any(reason["reason"] == "local_only_paths_staged" for reason in payload["blocked_reasons"])
 
 
 def test_closeout_check_blocks_task_board_change_when_github_sync_unavailable(tmp_path: Path) -> None:

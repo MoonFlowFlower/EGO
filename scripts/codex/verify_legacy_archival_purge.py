@@ -3,44 +3,25 @@ from __future__ import annotations
 
 import ast
 import json
-import subprocess
 import sys
 from pathlib import Path
-from typing import Iterable
 
 import yaml
 
+from archive_verifier_common import (
+    ArchivalManifest,
+    check_archive_core,
+    check_forbidden_snippets,
+    check_historical_safety_notes,
+    check_required_snippets,
+    load_archival_manifest,
+)
 from route_convergence_common import build_route_entries, load_program_state
 
 
 ROOT = Path(__file__).resolve().parents[2]
-ARCHIVE_TAG = "legacy-pre-operator-mainline-before-purge"
-ARCHIVE_COMMIT = "67347a759b5911f14e151748f294938fe53058ae"
+MANIFEST_PATH = ROOT / "artifacts" / "archive" / "legacy_pre_operator_mainline_manifest.json"
 
-REMOVED_DIRS = (
-    "legacy/ego-pre-handmade-mainline/EgoCore",
-    "legacy/ego-pre-handmade-mainline/OpenEmotion",
-    "legacy/ego-pre-handmade-mainline/ego_desktop_lab",
-)
-
-REQUIRED_POINTERS = {
-    "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md": [
-        ARCHIVE_TAG,
-        "docs/PROGRAM_STATE_UNIFIED.yaml",
-        "no runtime authority",
-        "new Stage Card and evidence gate",
-    ],
-    "docs/archive/LEGACY_ALGORITHM_INVENTORY.md": [
-        "Reference only",
-        "No runtime authority",
-        "No default path",
-        "Reuse requires a new Stage Card and evidence gate",
-    ],
-    "artifacts/archive/legacy_pre_operator_mainline_manifest.json": [
-        ARCHIVE_TAG,
-        ARCHIVE_COMMIT,
-    ],
-}
 
 ACTIVE_DOCS = (
     "AGENTS.md",
@@ -72,20 +53,6 @@ ACTIVE_SCRIPT_FILES = (
     "scripts/codex/verify_route_convergence.py",
 )
 
-FORBIDDEN_ACTIVE_SNIPPETS = (
-    "legacy/ego-pre-handmade-mainline/EgoCore/",
-    "legacy/ego-pre-handmade-mainline/OpenEmotion/",
-    "legacy/ego-pre-handmade-mainline/ego_desktop_lab/",
-    "legacy/ego-pre-handmade-mainline/EgoCore",
-    "legacy/ego-pre-handmade-mainline/OpenEmotion",
-    "legacy/ego-pre-handmade-mainline/ego_desktop_lab",
-    "EgoCore/app/",
-    "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
-    "OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml",
-    "OpenEmotion/openemotion/",
-    "ego_desktop_lab/main.py",
-)
-
 LEGACY_IMPORT_MODULES = (
     "EgoCore",
     "OpenEmotion",
@@ -95,45 +62,53 @@ LEGACY_IMPORT_MODULES = (
 )
 
 
-def _git_stdout(args: list[str]) -> str:
-    proc = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=False)
-    return proc.stdout.strip() if proc.returncode == 0 else ""
+def _load_manifest(errors: list[str]) -> ArchivalManifest | None:
+    try:
+        return load_archival_manifest(MANIFEST_PATH)
+    except Exception as exc:
+        errors.append(f"missing or invalid archive manifest: {MANIFEST_PATH.relative_to(ROOT).as_posix()} ({exc})")
+        return None
 
 
-def _contains_any(text: str, snippets: Iterable[str]) -> list[str]:
-    return [snippet for snippet in snippets if snippet in text]
+def _required_pointers(manifest: ArchivalManifest) -> dict[str, list[str]]:
+    return {
+        "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md": [
+            manifest.archive_tag,
+            "docs/PROGRAM_STATE_UNIFIED.yaml",
+            "no runtime authority",
+            "new Stage Card and evidence gate",
+        ],
+        "docs/archive/LEGACY_ALGORITHM_INVENTORY.md": [
+            "Reference only",
+            "No runtime authority",
+            "No default path",
+            "Reuse requires a new Stage Card and evidence gate",
+        ],
+        "artifacts/archive/legacy_pre_operator_mainline_manifest.json": [
+            manifest.archive_tag,
+            manifest.archive_commit,
+        ],
+    }
 
 
-def _check_removed_dirs(errors: list[str]) -> None:
-    for rel_path in REMOVED_DIRS:
-        if (ROOT / rel_path).exists():
-            errors.append(f"removed legacy directory still exists: {rel_path}")
+def _forbidden_active_snippets(manifest: ArchivalManifest) -> tuple[str, ...]:
+    removed = []
+    for rel_path in manifest.removed_dirs:
+        removed.append(f"{rel_path}/")
+        removed.append(rel_path)
+    return (
+        *removed,
+        "EgoCore/app/",
+        "EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml",
+        "OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml",
+        "OpenEmotion/openemotion/",
+        "ego_desktop_lab/main.py",
+    )
 
 
-def _check_archive_pointers(errors: list[str]) -> None:
-    resolved = _git_stdout(["rev-parse", "--verify", ARCHIVE_TAG])
-    if resolved != ARCHIVE_COMMIT:
-        errors.append(f"archive tag {ARCHIVE_TAG} resolves to {resolved or 'unavailable'}, expected {ARCHIVE_COMMIT}")
-
-    for rel_path, snippets in REQUIRED_POINTERS.items():
-        path = ROOT / rel_path
-        if not path.exists():
-            errors.append(f"missing archive pointer surface: {rel_path}")
-            continue
-        text = path.read_text(encoding="utf-8")
-        for snippet in snippets:
-            if snippet not in text:
-                errors.append(f"{rel_path} missing required archive snippet: {snippet}")
-
-    manifest_path = ROOT / "artifacts/archive/legacy_pre_operator_mainline_manifest.json"
-    if manifest_path.exists():
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("created_from_commit") != ARCHIVE_COMMIT:
-            errors.append("manifest created_from_commit does not match archive commit")
-        if manifest.get("archive_pointer", {}).get("name") != ARCHIVE_TAG:
-            errors.append("manifest archive pointer name mismatch")
-        if sorted(manifest.get("removed_paths") or []) != sorted(f"{item}/" for item in REMOVED_DIRS):
-            errors.append("manifest removed_paths mismatch")
+def _check_archive_pointers(errors: list[str], manifest: ArchivalManifest) -> None:
+    check_archive_core(root=ROOT, manifest=manifest, errors=errors)
+    check_required_snippets(ROOT, _required_pointers(manifest), errors)
 
 
 def _check_program_state(errors: list[str]) -> None:
@@ -169,31 +144,20 @@ def _check_route_entries(errors: list[str]) -> None:
             errors.append(f"active/supporting route references archived legacy: {entry.key}")
 
 
-def _check_active_docs_and_scripts(errors: list[str]) -> None:
-    for rel_path in ACTIVE_DOCS + ACTIVE_SCRIPT_FILES:
-        path = ROOT / rel_path
-        if not path.exists():
-            errors.append(f"missing active surface: {rel_path}")
-            continue
-        text = path.read_text(encoding="utf-8")
-        matches = _contains_any(text, FORBIDDEN_ACTIVE_SNIPPETS)
-        if matches:
-            errors.append(f"{rel_path} contains forbidden active legacy path snippets: {', '.join(matches[:5])}")
-
-    for rel_path in HISTORICAL_DOCS_WITH_SAFETY_NOTE:
-        path = ROOT / rel_path
-        if not path.exists():
-            errors.append(f"missing historical surface with safety note: {rel_path}")
-            continue
-        text = path.read_text(encoding="utf-8")
-        required = [
-            "pre-EgoOperator historical logic-flow record",
-            "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
-            ARCHIVE_TAG,
-        ]
-        for snippet in required:
-            if snippet not in text:
-                errors.append(f"{rel_path} missing historical safety snippet: {snippet}")
+def _check_active_docs_and_scripts(errors: list[str], manifest: ArchivalManifest) -> None:
+    check_forbidden_snippets(ROOT, ACTIVE_DOCS + ACTIVE_SCRIPT_FILES, _forbidden_active_snippets(manifest), errors)
+    check_historical_safety_notes(
+        ROOT,
+        {
+            rel_path: [
+                "pre-EgoOperator historical logic-flow record",
+                "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
+                manifest.archive_tag,
+            ]
+            for rel_path in HISTORICAL_DOCS_WITH_SAFETY_NOTE
+        },
+        errors,
+    )
 
 
 def _check_ego_operator_imports(errors: list[str]) -> None:
@@ -220,20 +184,28 @@ def _check_project_contract(errors: list[str]) -> None:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     for field in ("protected_paths", "allowed_mutation_paths"):
         for item in data.get(field) or []:
-            if any(item.startswith(f"{removed}/") or item == removed for removed in REMOVED_DIRS):
+            if any(item.startswith(f"{removed}/") or item == removed for removed in _forbidden_contract_removed_dirs()):
                 errors.append(f"project_contract.{field} still references removed legacy path: {item}")
     for prefix in data.get("task_classification", {}).get("ready_title_prefixes") or []:
         if prefix.startswith(("EgoCore", "OpenEmotion", "ego_desktop_lab")):
             errors.append(f"project contract task default uses archived legacy title prefix: {prefix}")
 
 
+def _forbidden_contract_removed_dirs() -> tuple[str, ...]:
+    manifest = load_archival_manifest(MANIFEST_PATH)
+    return manifest.removed_dirs
+
+
 def main() -> int:
     errors: list[str] = []
-    _check_removed_dirs(errors)
-    _check_archive_pointers(errors)
+    manifest = _load_manifest(errors)
+    if manifest is None:
+        print(json.dumps({"status": "fail", "errors": errors}, ensure_ascii=False, indent=2))
+        return 1
+    _check_archive_pointers(errors, manifest)
     _check_program_state(errors)
     _check_route_entries(errors)
-    _check_active_docs_and_scripts(errors)
+    _check_active_docs_and_scripts(errors, manifest)
     _check_ego_operator_imports(errors)
     _check_project_contract(errors)
 
@@ -245,9 +217,9 @@ def main() -> int:
         json.dumps(
             {
                 "status": "pass",
-                "archive_tag": ARCHIVE_TAG,
-                "archive_commit": ARCHIVE_COMMIT,
-                "removed_dirs_absent": list(REMOVED_DIRS),
+                "archive_tag": manifest.archive_tag,
+                "archive_commit": manifest.archive_commit,
+                "removed_dirs_absent": list(manifest.removed_dirs),
                 "runtime_owner": "EgoOperator",
             },
             ensure_ascii=False,

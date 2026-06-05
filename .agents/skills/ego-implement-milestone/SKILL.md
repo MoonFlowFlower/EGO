@@ -13,14 +13,19 @@ description: "Use when a milestone is already defined by a spec, plan, acceptanc
 
 1. 明确当前只实现哪个 milestone，以及哪些内容不在 scope 内。
 2. 确认 authority source、入口、主链位置、完成标准。
-3. 若适用，先补或更新测试 / 最小复现；若不适用，要明确说明为什么。
-4. 只做当前 milestone 的最小可验证主线修正：以触达真实入口、当前 owner、gate/trace 和验收信号为准，不以最小 diff 为目标。
-5. 运行该 milestone 的最小验证：
+3. 对大删除、目录迁移、program state、project contract、evidence ledger、archive/purge、或其他高影响治理面，先做 closeout scope preflight：
+   - 在 Stage Card 中写 `Expected Mutation Surface`
+   - 新增任务本地 `MUTATION_SCOPE.yaml`
+   - 预期只在本轮 `closeout-check --mutation-scope ...` 使用
+   - 不为一次性 mutation surface 永久扩大全局 `.codex/project_contract.yaml`
+4. 若适用，先补或更新测试 / 最小复现；若不适用，要明确说明为什么。
+5. 只做当前 milestone 的最小可验证主线修正：以触达真实入口、当前 owner、gate/trace 和验收信号为准，不以最小 diff 为目标。
+6. 运行该 milestone 的最小验证：
    - 语法 / 导入
    - 定向测试
    - 相关脚本或主链入口验证
-6. 更新任务状态文件或状态报告。
-7. 最后按 acceptance 做一次自检，确认哪些已证明、哪些未证明。
+7. 更新任务状态文件或状态报告。
+8. 最后按 acceptance 做一次自检，确认哪些已证明、哪些未证明。
 
 ## Output
 
