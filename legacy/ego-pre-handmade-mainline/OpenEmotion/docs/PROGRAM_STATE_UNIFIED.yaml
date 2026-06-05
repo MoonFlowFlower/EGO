@@ -44,6 +44,16 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - EgoDesktop Companion Memory Wording + Route Misfire Repair v0 is accepted with
+    report `artifacts/egodesktop_companion_memory_route_repair_v0/COMPANION_REPAIR_REPORT.md`
+    and verdict `go_for_manual_companion_smoke`. The report combines desktop-visible
+    same-window recall wording, route-neutral timeout fallback, ordinary-affection
+    `general_chat` classification, explicit creative/adult classification, PSPC warm-approach
+    retention as style/debug hint only, and no real memory write/gate/approval/transport/proactive/runtime-registration
+    evidence. The claim ceiling remains `local_desktop_companion_wording_and_route_repair_only`.
+    This admits only manual local EgoDesktop companion smoke; it does not prove PSPC
+    mainline integration, durable memory, true learning, provider health, stable user
+    benefit, live autonomy, consciousness, subjective experience, or real emotion.
   - EgoDesktop Timeout Route Misfire Repair v0 now updates `EgoDesktop/src/desktopRecoveryContext.js`
     and tests at `EgoDesktop/tests/desktop_recovery_context.test.js` plus `tests/test_ego_operator_desktop_recovery_context.py`.
     The local timeout fallback now says `本地后端回复超时` instead of defaulting to `创作路线超时`,

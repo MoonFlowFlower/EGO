@@ -3730,13 +3730,13 @@ tasks:
     title: "EgoDesktop: combined companion regression report v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: egodesktop_local_companion_presentation
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
-    next_action: "Generate combined regression report and go/no-go for manual companion smoke."
+    next_action: "Accepted locally: combined regression report verdict is go_for_manual_companion_smoke. Next allowed step is manual local EgoDesktop companion smoke only."
     acceptance:
       - "Report covers PSPC warm approach retention, natural session-local recall wording, route-neutral timeout recovery, and side-effect absence."
       - "Verdict is either `go_for_manual_companion_smoke` or `needs_more_desktop_contract_repair`."
