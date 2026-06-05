@@ -3503,3 +3503,78 @@ tasks:
       - "artifacts/pspc_recorded_shadow_observation_audit_usefulness_v0/"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-005
+    title: "PSPC Shadow: disabled runtime flag contract v0"
+    kind: task
+    parent: null
+    status: active
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / disabled_runtime_flag_contract_only"
+    next_action: "Define and verify a default-false local PSPC shadow flag contract. The flag must not register PSPC, must not alter user responses, and even when true may only write artifact-only shadow observations."
+    acceptance:
+      - "Local PSPC shadow flag defaults to false."
+      - "Flag contract keeps enabled=false, mainline_connected=false, runtime_authority=none, audit-only, read-only, and non-executable."
+      - "Flag true, if represented in a fixture or contract test, can only produce shadow artifact output and cannot alter user response, proposal, plan, approval, gate, memory, transport, proactive state, runtime registry, planner, training, model execution, or claim ceiling."
+      - "Static tests prove active EgoOperator runtime files do not import, register, or branch on the PSPC shadow flag."
+      - "Report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete docs/codex/tasks/pspc-disabled-runtime-flag-contract-v0/, tests/test_pspc_disabled_runtime_flag_contract.py, any matching script, artifacts/pspc_disabled_runtime_flag_contract_v0/, and this task-board/project-contract update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-disabled-runtime-flag-contract-v0/STATUS.md"
+      - "tests/test_pspc_disabled_runtime_flag_contract.py"
+      - "artifacts/pspc_disabled_runtime_flag_contract_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-006
+    title: "PSPC Shadow: local manual shadow session harness v0"
+    kind: task
+    parent: null
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / local_manual_shadow_session_only"
+    next_action: "After 005 passes, create a local CLI shadow harness where operator-entered text can produce baseline transcript plus PSPC shadow artifact only, with no user response mutation and no memory/gate/approval/transport/proactive side effect."
+    acceptance:
+      - "Harness is local CLI only and uses no live transport channel."
+      - "For operator-entered prompts, baseline user-visible output remains the only reply surface; PSPC writes only separate shadow artifact data."
+      - "Harness records no memory write, gate invocation, approval mutation, transport call, proactive trigger, planner call, training call, model execution, runtime registration, or claim-ceiling upgrade."
+      - "The user can inspect shadow artifacts without PSPC affecting the conversation output."
+      - "Report states what this proves, what it does not prove, rollback, failure meaning, and claim ceiling."
+    rollback: "Delete docs/codex/tasks/pspc-local-manual-shadow-session-harness-v0/, tests/test_pspc_local_manual_shadow_session_harness.py, any matching script, artifacts/pspc_local_manual_shadow_session_harness_v0/, and this task-board/project-contract update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-local-manual-shadow-session-harness-v0/STATUS.md"
+      - "tests/test_pspc_local_manual_shadow_session_harness.py"
+      - "artifacts/pspc_local_manual_shadow_session_harness_v0/"
+    external_refs:
+      github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-007
+    title: "PSPC Shadow: manual shadow review go-no-go v0"
+    kind: task
+    parent: null
+    status: planned
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / manual_shadow_review_only"
+    next_action: "After local manual shadow samples exist, summarize reviewed samples and decide go_for_proposal_hint_design_review or no_go_keep_shadow_only without enabling PSPC or connecting it to user-visible output."
+    acceptance:
+      - "Review cites manual shadow sample artifacts and no-side-effect evidence."
+      - "Verdict is either go_for_proposal_hint_design_review or no_go_keep_shadow_only."
+      - "Review does not implement proposal hinting, runtime registration, memory writes, gate invocation, user response mutation, transport, proactive behavior, planner/model execution, or claim-ceiling upgrade."
+      - "Report states evidence, gaps, rollback, failure meaning, and what the verdict permits next."
+      - "PSPC remains enabled=false, mainline_connected=false, runtime_authority=none, audit-only, and side-effect-free."
+    rollback: "Delete docs/codex/tasks/pspc-user-manual-shadow-review-go-no-go-v0/, tests/test_pspc_user_manual_shadow_review_go_no_go.py, any matching script, artifacts/pspc_user_manual_shadow_review_go_no_go_v0/, and this task-board/project-contract update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-user-manual-shadow-review-go-no-go-v0/STATUS.md"
+      - "tests/test_pspc_user_manual_shadow_review_go_no_go.py"
+      - "artifacts/pspc_user_manual_shadow_review_go_no_go_v0/"
+    external_refs:
+      github_issue: null
