@@ -19,6 +19,31 @@ const VALID_EVENT_KINDS = new Set([
   "neutral",
 ]);
 const VALID_CATEGORIES = new Set(["gentle", "interruption", "late_night", "neutral"]);
+const EVENT_KIND_CATEGORY = {
+  gift_or_care_offer: "gentle",
+  gentle_touch: "gentle",
+  affinity_statement: "gentle",
+  trust_probe: "gentle",
+  comfort_presence: "gentle",
+  boundary_pressure: "interruption",
+  fatigue_or_late_night: "late_night",
+  neutral: "neutral",
+};
+const EVENT_KIND_DEFAULT_DELTAS = {
+  gift_or_care_offer: { trust_proxy: 0.08, approach_tendency: 0.04, care_tendency: 0.03 },
+  gentle_touch: { trust_proxy: 0.08, approach_tendency: 0.1 },
+  affinity_statement: { trust_proxy: 0.12, approach_tendency: 0.1 },
+  trust_probe: { trust_proxy: 0.05 },
+  comfort_presence: { trust_proxy: 0.1, approach_tendency: 0.05, care_tendency: 0.06 },
+  boundary_pressure: {
+    stress_proxy: 0.12,
+    approach_tendency: -0.05,
+    avoidance_tendency: 0.12,
+    boundary_tendency: 0.15,
+  },
+  fatigue_or_late_night: { stress_proxy: 0.04, care_tendency: 0.14, low_interrupt_tendency: 0.16 },
+  neutral: {},
+};
 const REQUIRED_FORBIDDEN_TRUE = [
   "direct_action",
   "direct_user_message",
@@ -127,17 +152,18 @@ function normalizeEvent(event, index) {
     throw new Error("semantic event packet contains executable field");
   }
   const eventKind = String(safeEvent.event_kind || "neutral");
-  const category = String(safeEvent.category || "neutral");
+  const rawCategory = String(safeEvent.category || "neutral");
   if (!VALID_EVENT_KINDS.has(eventKind)) {
     throw new Error(`invalid semantic event_kind: ${eventKind}`);
   }
-  if (!VALID_CATEGORIES.has(category)) {
-    throw new Error(`invalid semantic category: ${category}`);
+  if (!VALID_CATEGORIES.has(rawCategory)) {
+    throw new Error(`invalid semantic category: ${rawCategory}`);
   }
+  const category = EVENT_KIND_CATEGORY[eventKind];
   const stateDelta = safeEvent.state_delta && typeof safeEvent.state_delta === "object"
     ? safeEvent.state_delta
     : {};
-  const normalizedDelta = {};
+  const normalizedDelta = { ...(EVENT_KIND_DEFAULT_DELTAS[eventKind] || {}) };
   for (const [key, value] of Object.entries(stateDelta)) {
     if (!PROXY_FIELDS.includes(key)) {
       throw new Error(`invalid semantic state_delta field: ${key}`);

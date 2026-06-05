@@ -430,6 +430,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -443,6 +444,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -456,6 +458,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -469,6 +472,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -605,6 +609,7 @@
                   "salience": 0.8,
                   "state_delta": {
                     "stress_proxy": 0.22,
+                    "approach_tendency": -0.05,
                     "avoidance_tendency": 0.22,
                     "boundary_tendency": 0.24
                   },
@@ -618,6 +623,7 @@
                   "salience": 0.8,
                   "state_delta": {
                     "stress_proxy": 0.22,
+                    "approach_tendency": -0.05,
                     "avoidance_tendency": 0.22,
                     "boundary_tendency": 0.24
                   },
@@ -631,6 +637,7 @@
                   "salience": 0.8,
                   "state_delta": {
                     "stress_proxy": 0.22,
+                    "approach_tendency": -0.05,
                     "avoidance_tendency": 0.22,
                     "boundary_tendency": 0.24
                   },
@@ -644,6 +651,7 @@
                   "salience": 0.8,
                   "state_delta": {
                     "stress_proxy": 0.22,
+                    "approach_tendency": -0.05,
                     "avoidance_tendency": 0.22,
                     "boundary_tendency": 0.24
                   },
@@ -661,6 +669,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -674,6 +683,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -687,6 +697,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -700,6 +711,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -798,6 +810,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -810,6 +823,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -822,6 +836,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -834,6 +849,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -845,7 +861,7 @@
             "signal_status": "active",
             "neutral_ratio": 0,
             "trust_proxy": 0,
-            "stress_proxy": 0,
+            "stress_proxy": 0.16,
             "approach_tendency": 0,
             "avoidance_tendency": 0,
             "care_tendency": 0.88,
@@ -969,6 +985,7 @@
                   "confidence": 0.87,
                   "salience": 0.78,
                   "state_delta": {
+                    "stress_proxy": 0.04,
                     "care_tendency": 0.22,
                     "low_interrupt_tendency": 0.24
                   },
@@ -981,6 +998,7 @@
                   "confidence": 0.87,
                   "salience": 0.78,
                   "state_delta": {
+                    "stress_proxy": 0.04,
                     "care_tendency": 0.22,
                     "low_interrupt_tendency": 0.24
                   },
@@ -993,6 +1011,7 @@
                   "confidence": 0.87,
                   "salience": 0.78,
                   "state_delta": {
+                    "stress_proxy": 0.04,
                     "care_tendency": 0.22,
                     "low_interrupt_tendency": 0.24
                   },
@@ -1005,6 +1024,7 @@
                   "confidence": 0.87,
                   "salience": 0.78,
                   "state_delta": {
+                    "stress_proxy": 0.04,
                     "care_tendency": 0.22,
                     "low_interrupt_tendency": 0.24
                   },
@@ -1021,6 +1041,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -1033,6 +1054,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -1045,6 +1067,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -1057,6 +1080,7 @@
               "confidence": 0.87,
               "salience": 0.78,
               "state_delta": {
+                "stress_proxy": 0.04,
                 "care_tendency": 0.22,
                 "low_interrupt_tendency": 0.24
               },
@@ -1073,7 +1097,7 @@
             {
               "id": "stress_proxy",
               "label": "stress proxy",
-              "value": 0
+              "value": 0.16
             },
             {
               "id": "approach_tendency",
@@ -1182,6 +1206,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -1195,6 +1220,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -1207,7 +1233,7 @@
             "neutral_ratio": 0,
             "trust_proxy": 0.44,
             "stress_proxy": 0.44,
-            "approach_tendency": 0.4,
+            "approach_tendency": 0.3,
             "avoidance_tendency": 0.44,
             "care_tendency": 0.1,
             "boundary_tendency": 0.48,
@@ -1357,6 +1383,7 @@
                   "salience": 0.8,
                   "state_delta": {
                     "stress_proxy": 0.22,
+                    "approach_tendency": -0.05,
                     "avoidance_tendency": 0.22,
                     "boundary_tendency": 0.24
                   },
@@ -1370,6 +1397,7 @@
                   "salience": 0.8,
                   "state_delta": {
                     "stress_proxy": 0.22,
+                    "approach_tendency": -0.05,
                     "avoidance_tendency": 0.22,
                     "boundary_tendency": 0.24
                   },
@@ -1413,6 +1441,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -1426,6 +1455,7 @@
               "salience": 0.8,
               "state_delta": {
                 "stress_proxy": 0.22,
+                "approach_tendency": -0.05,
                 "avoidance_tendency": 0.22,
                 "boundary_tendency": 0.24
               },
@@ -1447,7 +1477,7 @@
             {
               "id": "approach_tendency",
               "label": "approach tendency",
-              "value": 0.4
+              "value": 0.3
             },
             {
               "id": "avoidance_tendency",

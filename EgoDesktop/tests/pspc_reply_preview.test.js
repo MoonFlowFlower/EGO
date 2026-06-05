@@ -263,6 +263,26 @@ test("natural companion interaction semantic packets activate trust and approach
   assert.equal(containsExecutableField(scenario.debug_overlay), false);
 });
 
+test("semantic event kind canonicalizes category when extractor category is weak", () => {
+  const state = applyPspcSemanticEventPacket(
+    createPspcReplyPreviewState(),
+    semanticPacketFor("摸摸你", [{
+      event_kind: "gentle_touch",
+      category: "neutral",
+      confidence: 0.82,
+      salience: 0.7,
+      state_delta: { trust_proxy: 0.12, approach_tendency: 0.1 },
+    }]),
+  );
+  const context = buildPspcReplyPreviewContext(state);
+
+  assert.equal(context.profile.counts.gentle, 1);
+  assert.equal(context.profile.counts.neutral, 0);
+  assert.equal(context.profile.recent_events[0].category, "gentle");
+  assert.ok(context.profile.proxy_state.trust_proxy > 0);
+  assert.ok(context.profile.proxy_state.approach_tendency > 0);
+});
+
 test("extractor unavailable and forbidden semantic packets do not update preview state", () => {
   const state = createPspcReplyPreviewState();
   const unavailable = {

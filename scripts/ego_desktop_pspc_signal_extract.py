@@ -22,6 +22,13 @@ SEMANTIC_EXTRACTOR_CLAIM_CEILING = "local_reply_preview_semantic_signal_extracto
 DEFAULT_OPENROUTER_KEY_FILE = Path(r"D:\Project\AIProject\MyProject\Test\openrouterKey.txt")
 DEFAULT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
 DEFAULT_MODEL = os.getenv("OPENROUTER_MODEL", "tencent/hy3-preview")
+DEFAULT_FALLBACK_MODELS_TEXT = os.getenv(
+    "OPENROUTER_PSPC_SIGNAL_FALLBACK_MODELS",
+    os.getenv(
+        "OPENROUTER_FALLBACK_MODELS",
+        "google/gemini-2.5-flash-lite,google/gemini-3.1-flash-lite,openai/gpt-4.1-mini",
+    ),
+)
 FORBIDDEN_FIELDS = {
     "action",
     "tool_call",
@@ -51,6 +58,16 @@ EVENT_KINDS = {
     "neutral",
 }
 CATEGORIES = {"gentle", "interruption", "late_night", "neutral"}
+EVENT_KIND_CATEGORY = {
+    "gift_or_care_offer": "gentle",
+    "gentle_touch": "gentle",
+    "affinity_statement": "gentle",
+    "trust_probe": "gentle",
+    "comfort_presence": "gentle",
+    "boundary_pressure": "interruption",
+    "fatigue_or_late_night": "late_night",
+    "neutral": "neutral",
+}
 STATE_DELTA_FIELDS = {
     "trust_proxy",
     "stress_proxy",
@@ -183,8 +200,7 @@ def _normalize_event(value: Any) -> dict[str, Any]:
         raise ValueError(f"invalid event_kind: {event_kind}")
     if category not in CATEGORIES:
         raise ValueError(f"invalid category: {category}")
-    if event_kind == "neutral":
-        category = "neutral"
+    category = EVENT_KIND_CATEGORY[event_kind]
     return {
         "event_kind": event_kind,
         "category": category,
@@ -273,16 +289,28 @@ def build_prompt(payload: dict[str, Any]) -> list[dict[str, str]]:
     ]
 
 
-def call_openrouter(payload: dict[str, Any], *, timeout_ms: int) -> str:
+def _candidate_models() -> list[str]:
+    primary = os.getenv("OPENROUTER_PSPC_SIGNAL_MODEL", DEFAULT_MODEL).strip()
+    fallbacks = [
+        item.strip()
+        for item in DEFAULT_FALLBACK_MODELS_TEXT.split(",")
+        if item.strip()
+    ]
+    return list(dict.fromkeys([primary, *fallbacks] if primary else fallbacks))
+
+
+def _call_openrouter_model(payload: dict[str, Any], *, timeout_ms: int, model: str) -> str:
     key = _openrouter_key()
     if not key:
         raise RuntimeError("OPENROUTER_API_KEY is empty")
     body = {
-        "model": os.getenv("OPENROUTER_PSPC_SIGNAL_MODEL", DEFAULT_MODEL),
+        "model": model,
         "messages": build_prompt(payload),
         "temperature": 0,
         "max_tokens": 500,
     }
+    if os.getenv("OPENROUTER_PSPC_SIGNAL_RESPONSE_FORMAT", "json_object").strip().lower() != "off":
+        body["response_format"] = {"type": "json_object"}
     request = urllib.request.Request(
         os.getenv("OPENROUTER_BASE_URL", DEFAULT_OPENROUTER_BASE_URL),
         data=json.dumps(body).encode("utf-8"),
@@ -306,9 +334,24 @@ def call_openrouter(payload: dict[str, Any], *, timeout_ms: int) -> str:
     return str(content)
 
 
-def read_stdin_payload() -> dict[str, Any]:
+def call_openrouter(payload: dict[str, Any], *, timeout_ms: int) -> str:
+    errors: list[str] = []
+    for model in _candidate_models():
+        try:
+            return _call_openrouter_model(payload, timeout_ms=timeout_ms, model=model)
+        except (RuntimeError, urllib.error.URLError, TimeoutError) as exc:
+            errors.append(f"{model}: {exc}")
+    raise RuntimeError("OpenRouter PSPC extractor failed for all models: " + " | ".join(errors))
+
+
+def read_stdin_payload(stream: Any = None) -> dict[str, Any]:
     try:
-        raw = sys.stdin.read().lstrip("\ufeff")
+        source = stream if stream is not None else sys.stdin
+        source_buffer = getattr(source, "buffer", None)
+        if source_buffer is not None:
+            raw = source_buffer.read().decode("utf-8-sig")
+        else:
+            raw = source.read().lstrip("\ufeff")
         parsed = json.loads(raw or "{}")
     except json.JSONDecodeError as exc:
         raise ValueError(f"invalid input JSON: {exc}") from exc
