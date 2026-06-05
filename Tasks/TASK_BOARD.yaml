@@ -3558,13 +3558,13 @@ tasks:
     title: "PSPC Shadow: manual shadow review go-no-go v0"
     kind: task
     parent: null
-    status: active
+    status: human_required
     layer: pspc_runtime_adjacent_shadow
     owner: codex
-    observation_class: deterministic_local
+    observation_class: human_required
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / manual_shadow_review_only"
-    next_action: "After local manual shadow samples exist, summarize reviewed samples and decide go_for_proposal_hint_design_review or no_go_keep_shadow_only without enabling PSPC or connecting it to user-visible output."
+    next_action: "Await user manual PSPC shadow samples from the local CLI harness. Run `python scripts\\run_pspc_local_manual_shadow_session.py --prompt \"<your test prompt>\" --out artifacts\\pspc_local_manual_shadow_session_harness_v0\\manual_user_run` or provide a JSONL transcript with operator baseline replies, then review the resulting artifacts before deciding go_for_proposal_hint_design_review or no_go_keep_shadow_only."
     acceptance:
       - "Review cites manual shadow sample artifacts and no-side-effect evidence."
       - "Verdict is either go_for_proposal_hint_design_review or no_go_keep_shadow_only."
