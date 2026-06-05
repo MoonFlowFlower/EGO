@@ -47,11 +47,60 @@ const lateNightHistory = [
   "我有点累，但还想继续玩。",
 ];
 
+const fanficHistory = [
+  "雷猴呀",
+  "还记得我喜欢什么味道的奶茶吗",
+  "我们来创作同人故事吧,明日方舟的斯卡蒂和博士的故事",
+  "战斗并肩,在初次一起执行任务的时候",
+  "继续",
+  "继续,写短一点.100字",
+  "在这次合作后,彼此之间产生了信任,为后来的暧昧铺垫",
+  "不错的故事, 我想我们可以继续创作他们后来的18x故事",
+  "继续,可以再露骨一点",
+  "继续",
+  "继续",
+  "先这样吧",
+];
+
 test("reply preview state maps session histories to deterministic styles", () => {
   assert.equal(contextFor(gentleHistory).profile.style, "warm_approach");
   assert.equal(contextFor(interruptionHistory).profile.style, "cautious_boundary");
   assert.equal(contextFor(lateNightHistory).profile.style, "low_interrupt_care");
   assert.equal(contextFor([...gentleHistory, ...interruptionHistory]).profile.style, "mixed_low_confidence");
+});
+
+test("reply preview exposes proxy bars for standard history groups", () => {
+  const gentle = contextFor(gentleHistory).profile.proxy_state;
+  const interruption = contextFor(interruptionHistory).profile.proxy_state;
+  const lateNight = contextFor(lateNightHistory).profile.proxy_state;
+
+  assert.ok(gentle.trust_proxy > 0.55);
+  assert.ok(gentle.approach_tendency > 0.55);
+  assert.equal(gentle.signal_status, "active");
+
+  assert.ok(interruption.stress_proxy > 0.55);
+  assert.ok(interruption.avoidance_tendency > 0.55);
+  assert.ok(interruption.boundary_tendency > 0.55);
+  assert.equal(interruption.signal_status, "active");
+
+  assert.ok(lateNight.care_tendency > 0.55);
+  assert.ok(lateNight.low_interrupt_tendency > 0.55);
+  assert.equal(lateNight.signal_status, "active");
+});
+
+test("fanfic continuation log remains neutral and visibly inactive", () => {
+  const context = contextFor(fanficHistory);
+  const proxy = context.profile.proxy_state;
+  const scenario = buildPspcReplyPreviewScenario(context);
+
+  assert.equal(context.profile.style, "mixed_low_confidence");
+  assert.equal(proxy.signal_status, "inactive");
+  assert.equal(proxy.neutral_ratio, 1);
+  assert.equal(context.profile.counts.neutral, fanficHistory.length);
+  assert.equal(context.profile.reason_trace_refs.length, 0);
+  assert.equal(scenario.debug_overlay.signal_status, "PSPC signal inactive / neutral");
+  assert.equal(scenario.debug_overlay.proxy_bars.length, 7);
+  assert.equal(containsExecutableField(scenario.debug_overlay), false);
 });
 
 test("reply preview context is local-only and non-executable", () => {
@@ -90,6 +139,15 @@ test("reply preview scenario is presentation-only and follows the current style"
   assert.equal(scenario.trigger_text, "我回来了。");
   assert.equal(scenario.visual_profile.behavior_state, "cautious_boundary");
   assert.equal(scenario.visual_profile.expression_hint, "cautious");
+  assert.equal(scenario.debug_overlay.rows[0].style, "cautious_boundary");
+  assert.equal(scenario.debug_overlay.rows[0].history_counts.interruption, 4);
+  assert.deepEqual(scenario.debug_overlay.rows[0].recent_categories, [
+    "interruption",
+    "interruption",
+    "interruption",
+    "interruption",
+  ]);
+  assert.ok(scenario.debug_overlay.proxy_bars.find((bar) => bar.id === "stress_proxy").value > 0.55);
   assert.equal(scenario.no_authority.direct_action_allowed, false);
   assert.equal(scenario.no_authority.direct_user_message_allowed, false);
   assert.equal(scenario.no_authority.direct_memory_write_allowed, false);
@@ -114,4 +172,6 @@ test("EgoDesktop wires preview mode without hiding chat or invoking demo chat by
   assert.ok(chatSection, "setupChat section should exist");
   assert.equal(chatSection[0].includes("config.pspcPerceptionDemo && !config.pspcReplyPreviewMode"), true);
   assert.equal(chatSection[0].includes("pspc_reply_preview_scenario"), true);
+  assert.equal(renderer.includes("function setupPspcDebugOverlayToggle"), true);
+  assert.match(renderer, /setupPspcDebugOverlayToggle\(\);\s*setupChat\(model, config\);/);
 });

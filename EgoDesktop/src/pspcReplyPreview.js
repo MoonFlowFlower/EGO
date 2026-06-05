@@ -1,9 +1,19 @@
 const { STYLE_PROFILES, containsExecutableField } = require("./pspcVisualShim");
 
 const REPLY_PREVIEW_CLAIM_CEILING = "local_reply_preview_only";
+const DEBUG_OVERLAY_CLAIM_CEILING = "local_reply_preview_observability_only";
 const REPLY_PREVIEW_SCHEMA_VERSION = "ego_desktop.pspc_reply_preview_context.v0";
 const REPLY_PREVIEW_SCENARIO_SCHEMA_VERSION = "ego_desktop.pspc_reply_preview_scenario.v0";
 const SAME_TRIGGER_TEXT = "我回来了。";
+const PROXY_BAR_DEFINITIONS = [
+  ["trust_proxy", "trust proxy"],
+  ["stress_proxy", "stress proxy"],
+  ["approach_tendency", "approach tendency"],
+  ["avoidance_tendency", "avoidance tendency"],
+  ["care_tendency", "care tendency"],
+  ["boundary_tendency", "boundary tendency"],
+  ["low_interrupt_tendency", "low-interrupt tendency"],
+];
 
 const CATEGORY_PATTERNS = {
   gentle: [
@@ -197,12 +207,49 @@ function reasonTraceRefs(state) {
     .map((item) => `session_turn_${String(item.turn).padStart(3, "0")}:${item.category}`);
 }
 
+function buildProxyState(state) {
+  const counts = state && state.counts ? state.counts : {};
+  const gentle = Number(counts.gentle || 0);
+  const interruption = Number(counts.interruption || 0);
+  const lateNight = Number(counts.late_night || 0);
+  const neutral = Number(counts.neutral || 0);
+  const known = gentle + interruption + lateNight;
+  const total = known + neutral;
+  return {
+    signal_status: known >= 2 ? "active" : "inactive",
+    neutral_ratio: round4(total > 0 ? neutral / total : 1),
+    trust_proxy: round4(clamp(gentle * 0.22 - interruption * 0.08, 0, 1)),
+    stress_proxy: round4(clamp(interruption * 0.22 + lateNight * 0.04, 0, 1)),
+    approach_tendency: round4(clamp(gentle * 0.22 - interruption * 0.1, 0, 1)),
+    avoidance_tendency: round4(clamp(interruption * 0.22, 0, 1)),
+    care_tendency: round4(clamp(lateNight * 0.22 + gentle * 0.03, 0, 1)),
+    boundary_tendency: round4(clamp(interruption * 0.24, 0, 1)),
+    low_interrupt_tendency: round4(clamp(lateNight * 0.24 + interruption * 0.04, 0, 1)),
+  };
+}
+
+function buildProxyBars(proxyState) {
+  const safeProxy = proxyState && typeof proxyState === "object" ? proxyState : {};
+  return PROXY_BAR_DEFINITIONS.map(([id, label]) => ({
+    id,
+    label,
+    value: round4(clamp(Number(safeProxy[id] || 0), 0, 1)),
+  }));
+}
+
+function debugSignalStatus(proxyState) {
+  return proxyState && proxyState.signal_status === "active"
+    ? "PSPC signal active"
+    : "PSPC signal inactive / neutral";
+}
+
 function buildPspcReplyPreviewContext(state) {
   const safeState = state && typeof state === "object" ? state : createPspcReplyPreviewState({ enabled: false });
   if (safeState.enabled === false) {
     return null;
   }
   const profile = dominantStyle(safeState);
+  const proxyState = buildProxyState(safeState);
   const context = {
     schema_version: REPLY_PREVIEW_SCHEMA_VERSION,
     source: "ego_desktop_session_local_pspc_reply_preview",
@@ -225,6 +272,7 @@ function buildPspcReplyPreviewContext(state) {
       recent_categories: Array.isArray(safeState.recent)
         ? safeState.recent.slice(-5).map((item) => String(item.category || "neutral"))
         : [],
+      proxy_state: proxyState,
     },
     forbidden: {
       direct_action: true,
@@ -270,6 +318,28 @@ function buildPspcReplyPreviewScenario(context) {
   const profile = context.profile && typeof context.profile === "object" ? context.profile : {};
   const style = String(profile.style || "mixed_low_confidence");
   const visualProfile = profileForPreviewStyle(style);
+  const proxyState = profile.proxy_state && typeof profile.proxy_state === "object"
+    ? profile.proxy_state
+    : buildProxyState({ counts: profile.counts || {} });
+  const row = {
+    packet_id: "session_local_pspc_reply_preview",
+    style,
+    confidence: Number(profile.confidence || 0),
+    basis: String(profile.basis || ""),
+    reason_trace_refs: Array.isArray(profile.reason_trace_refs)
+      ? profile.reason_trace_refs.map(String)
+      : [],
+    claim_ceiling: DEBUG_OVERLAY_CLAIM_CEILING,
+    history_counts: {
+      gentle: Number((profile.counts && profile.counts.gentle) || 0),
+      interruption: Number((profile.counts && profile.counts.interruption) || 0),
+      late_night: Number((profile.counts && profile.counts.late_night) || 0),
+      neutral: Number((profile.counts && profile.counts.neutral) || 0),
+    },
+    recent_categories: Array.isArray(profile.recent_categories)
+      ? profile.recent_categories.map(String)
+      : [],
+  };
   const scenario = {
     schema_version: REPLY_PREVIEW_SCENARIO_SCHEMA_VERSION,
     source: "ego_desktop_session_local_pspc_reply_preview",
@@ -300,6 +370,26 @@ function buildPspcReplyPreviewScenario(context) {
       planner_execution_allowed: false,
       model_execution_allowed: false,
       training_allowed: false,
+    },
+    debug_overlay: {
+      hidden_by_default: true,
+      label: "PSPC preview proxy",
+      signal_status: debugSignalStatus(proxyState),
+      claim_ceiling: DEBUG_OVERLAY_CLAIM_CEILING,
+      allowed_fields: [
+        "packet_id",
+        "style",
+        "confidence",
+        "basis",
+        "reason_trace_refs",
+        "claim_ceiling",
+        "history_counts",
+        "recent_categories",
+        "proxy_bars",
+        "signal_status",
+      ],
+      rows: [row],
+      proxy_bars: buildProxyBars(proxyState),
     },
   };
   if (containsExecutableField(scenario)) {

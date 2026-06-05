@@ -44,6 +44,20 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - 'EgoDesktop PSPC Debug Signal Overlay v0 now exposes PSPC Reply Preview observability
+    in the hidden `审计` overlay: `EgoDesktop/src/pspcReplyPreview.js` adds `profile.proxy_state`
+    and seven presentation-only proxy bars, `EgoDesktop/viewer/renderer.js` renders
+    style, confidence, history counts, recent categories, reason refs, basis, claim
+    ceiling, and active/neutral status, and `EgoDesktop/tests/pspc_reply_preview.test.js`
+    verifies standard gentle/interruption/late-night histories move the expected bars
+    while the current fanfic/creative continuation log remains `mixed_low_confidence`
+    and `PSPC signal inactive / neutral`. Artifacts under `artifacts/egodesktop_pspc_debug_signal_overlay_v0/`
+    record `runtime_authority=none`, `enabled=false`, `mainline_connected=false`,
+    no adapter, no real memory write, no gate/approval/transport/proactive path, and
+    claim ceiling `local_reply_preview_observability_only`. This is local observability
+    evidence only; it does not prove PSPC mainline integration, true learning, durable
+    memory, runtime integration safety, stable real user benefit, live autonomy, consciousness,
+    subjective experience, or real emotion.'
   - 'EgoDesktop Creative Timeout Recovery & Route Isolation v0 now has a local desktop
     timeout recovery helper at `EgoDesktop/src/desktopRecoveryContext.js`, bridge
     wiring in `EgoDesktop/src/main.js`, validated `desktop_recovery_context` support

@@ -1,0 +1,55 @@
+{
+  "schema_version": "egodesktop.pspc_debug_signal_overlay_report.v0",
+  "status": "pass",
+  "claim_ceiling": "local_reply_preview_observability_only",
+  "runtime_authority": "none",
+  "enabled_by_default": false,
+  "mainline_connected": false,
+  "debug_overlay_hidden_by_default": true,
+  "ui_label": "PSPC preview proxy",
+  "standard_history_expectations": {
+    "gentle_history": {
+      "style": "warm_approach",
+      "signal_status": "active",
+      "dominant_proxy_bars": ["trust_proxy", "approach_tendency"]
+    },
+    "frequent_interruption_history": {
+      "style": "cautious_boundary",
+      "signal_status": "active",
+      "dominant_proxy_bars": ["stress_proxy", "avoidance_tendency", "boundary_tendency"]
+    },
+    "late_night_history": {
+      "style": "low_interrupt_care",
+      "signal_status": "active",
+      "dominant_proxy_bars": ["care_tendency", "low_interrupt_tendency"]
+    },
+    "fanfic_creative_log": {
+      "style": "mixed_low_confidence",
+      "signal_status": "inactive",
+      "neutral_ratio": 1.0,
+      "dominant_proxy_bars": []
+    }
+  },
+  "proxy_bars": [
+    "trust_proxy",
+    "stress_proxy",
+    "approach_tendency",
+    "avoidance_tendency",
+    "care_tendency",
+    "boundary_tendency",
+    "low_interrupt_tendency"
+  ],
+  "side_effects_absent": {
+    "user_response_mutated_by_overlay": false,
+    "real_memory_written": false,
+    "gate_invoked": false,
+    "approval_invoked": false,
+    "transport_called": false,
+    "proactive_triggered": false,
+    "adapter_created": false,
+    "runtime_registered": false
+  },
+  "what_this_proves": "EgoDesktop can expose PSPC Reply Preview proxy-state observability in a hidden audit overlay, including active versus neutral signal state and seven presentation-only proxy bars.",
+  "what_this_does_not_prove": "This does not prove PSPC mainline integration, true learning, durable memory, runtime integration safety, stable user benefit, live autonomy, consciousness, subjective experience, or real emotion.",
+  "rollback": "Delete the debug overlay additions, tests, task docs, artifact directory, and matching state/ledger/generated-view entries."
+}

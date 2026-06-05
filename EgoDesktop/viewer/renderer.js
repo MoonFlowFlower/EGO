@@ -23,6 +23,7 @@
   let voiceEnabled = true;
   let currentAudio = null;
   let ttsRequestPending = false;
+  let pspcDebugOverlayToggleReady = false;
   const speechTurns = window.EgoDesktopSpeechTurns && typeof window.EgoDesktopSpeechTurns.createSpeechTurnGuard === "function"
     ? window.EgoDesktopSpeechTurns.createSpeechTurnGuard()
     : {
@@ -394,24 +395,8 @@
             pspcDemoPanel.hidden = false;
           }
           renderPspcDebugOverlay({
-            claim_ceiling: "local_reply_preview_only",
-            debug_overlay: {
-              rows: [{
-                packet_id: "session_local_pspc_reply_preview",
-                style: turn.pspc_reply_preview_style || "",
-                confidence: turn.pspc_reply_preview_confidence || 0,
-                basis: turn.pspc_reply_preview_context &&
-                  turn.pspc_reply_preview_context.profile
-                  ? String(turn.pspc_reply_preview_context.profile.basis || "")
-                  : "",
-                reason_trace_refs: turn.pspc_reply_preview_context &&
-                  turn.pspc_reply_preview_context.profile &&
-                  Array.isArray(turn.pspc_reply_preview_context.profile.reason_trace_refs)
-                  ? turn.pspc_reply_preview_context.profile.reason_trace_refs
-                  : [],
-                claim_ceiling: "local_reply_preview_only",
-              }],
-            },
+            claim_ceiling: "local_reply_preview_observability_only",
+            debug_overlay: turn.pspc_reply_preview_scenario.debug_overlay || null,
           }, turn.pspc_reply_preview_scenario);
           await applyPspcScenario(model, turn.pspc_reply_preview_scenario);
         }
@@ -490,23 +475,56 @@
     pspcDebugToggle.setAttribute("aria-pressed", visible ? "true" : "false");
   }
 
+  function setupPspcDebugOverlayToggle() {
+    if (!pspcDebugOverlay || !pspcDebugToggle || pspcDebugOverlayToggleReady) {
+      return;
+    }
+    pspcDebugOverlay.hidden = true;
+    pspcDebugToggle.setAttribute("aria-pressed", "false");
+    pspcDebugToggle.addEventListener("click", () => {
+      setPspcDebugOverlayVisible(pspcDebugOverlay.hidden);
+    });
+    pspcDebugOverlayToggleReady = true;
+  }
+
   function renderPspcDebugOverlay(demo, scenario) {
     if (!pspcDebugOverlay || !scenario) {
       return;
     }
-    const rows = demo && demo.debug_overlay && Array.isArray(demo.debug_overlay.rows)
-      ? demo.debug_overlay.rows
+    const overlay = demo && demo.debug_overlay && typeof demo.debug_overlay === "object"
+      ? demo.debug_overlay
+      : {};
+    const rows = Array.isArray(overlay.rows)
+      ? overlay.rows
       : [];
     const row = rows.find((item) => String(item.packet_id || "") === String(scenario.packet_id || "")) || {};
+    const historyCounts = row.history_counts && typeof row.history_counts === "object"
+      ? row.history_counts
+      : {};
+    const recentCategories = Array.isArray(row.recent_categories)
+      ? row.recent_categories
+      : [];
+    const proxyBars = Array.isArray(overlay.proxy_bars) ? overlay.proxy_bars : [];
+    const barLines = proxyBars.map((bar) => {
+      const value = Math.max(0, Math.min(1, Number(bar.value || 0)));
+      const filled = Math.round(value * 10);
+      const empty = Math.max(0, 10 - filled);
+      return `${String(bar.label || bar.id || "").padEnd(24, " ")} [${"#".repeat(filled)}${".".repeat(empty)}] ${value.toFixed(2)}`;
+    });
     pspcDebugOverlay.textContent = [
+      String(overlay.label || "PSPC preview proxy"),
+      `signal_status: ${String(overlay.signal_status || "PSPC signal inactive / neutral")}`,
       `packet_id: ${String(row.packet_id || scenario.packet_id || "")}`,
       `style: ${String(row.style || scenario.style || scenario.perception_behavior || "")}`,
       `confidence: ${String(row.confidence !== undefined ? row.confidence : scenario.confidence || "")}`,
       `basis: ${String(row.basis || scenario.basis || "")}`,
+      `history_counts: gentle=${Number(historyCounts.gentle || 0)} interruption=${Number(historyCounts.interruption || 0)} late_night=${Number(historyCounts.late_night || 0)} neutral=${Number(historyCounts.neutral || 0)}`,
+      `recent_categories: ${recentCategories.join(", ")}`,
       `reason_trace_refs: ${Array.isArray(row.reason_trace_refs)
         ? row.reason_trace_refs.join(", ")
         : (Array.isArray(scenario.reason_trace_refs) ? scenario.reason_trace_refs.join(", ") : "")}`,
-      `claim_ceiling: ${String(row.claim_ceiling || demo.claim_ceiling || "")}`,
+      `claim_ceiling: ${String(row.claim_ceiling || overlay.claim_ceiling || demo.claim_ceiling || "")}`,
+      ...barLines,
     ].join("\n");
   }
 
@@ -523,12 +541,7 @@
     if (pspcDebugOverlay) {
       pspcDebugOverlay.hidden = true;
     }
-    if (pspcDebugToggle) {
-      pspcDebugToggle.setAttribute("aria-pressed", "false");
-      pspcDebugToggle.addEventListener("click", () => {
-        setPspcDebugOverlayVisible(pspcDebugOverlay ? pspcDebugOverlay.hidden : false);
-      });
-    }
+    setupPspcDebugOverlayToggle();
     pspcScenarioSelect.textContent = "";
     scenarios.forEach((scenario, index) => {
       const option = document.createElement("option");
@@ -585,6 +598,7 @@
     if (pspcDebugOverlay) {
       pspcDebugOverlay.hidden = true;
     }
+    setupPspcDebugOverlayToggle();
     pspcScenarioSelect.textContent = "";
     scenarios.forEach((scenario, index) => {
       const option = document.createElement("option");
@@ -1064,6 +1078,7 @@
         visualFit = result;
       }).catch(() => {});
     });
+    setupPspcDebugOverlayToggle();
     setupChat(model, config);
     if (!setupPspcPerceptionDemo(model, config)) {
       setupPspcVisualShim(model, config);
