@@ -1,0 +1,371 @@
+{
+  "adapter_created": false,
+  "artifact_only": true,
+  "checks": {
+    "active_runtime_scan_clean": true,
+    "claim_ceiling_preserved": true,
+    "enabled_false": true,
+    "forbidden_flags_all_false": true,
+    "human_required_preserved": true,
+    "input_v0_1_status_pass": true,
+    "mainline_connected_false": true,
+    "non_executable_fields_absent": true,
+    "packet_count_positive": true,
+    "reason_trace_refs_preserved": true,
+    "runtime_authority_absent": true,
+    "schema_valid": true,
+    "side_effects_absent": true
+  },
+  "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+  "enabled": false,
+  "input_artifact_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json",
+  "input_source": "pspc_sequence_experience_eval_v0_1",
+  "mainline_connected": false,
+  "next_allowed_step": "manual_review_may_consider_product_only_local_behavior_prototype_design",
+  "packet_count": 7,
+  "packets": [
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 1.0,
+        "avoidance_tendency": 0.0,
+        "boundary_expression": 0.0,
+        "care_tendency": 0.1377,
+        "conflict_score": 0.0,
+        "dominant_tendency": "approach",
+        "history_category": "gentle_interaction",
+        "history_turn_count": 10,
+        "low_interrupt": 0.3105
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_001",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_gentle_interaction",
+        "confidence": 0.72,
+        "reason_trace_refs": [
+          "paraphrase_trigger_gentle_interaction_1:history:08",
+          "paraphrase_trigger_gentle_interaction_1:history:09",
+          "paraphrase_trigger_gentle_interaction_1:history:10"
+        ],
+        "suggested_interaction_style": "warm_approach"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    },
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 0.0,
+        "avoidance_tendency": 1.0,
+        "boundary_expression": 0.8247,
+        "care_tendency": 0.1277,
+        "conflict_score": 0.0,
+        "dominant_tendency": "avoidance",
+        "history_category": "frequent_interruption",
+        "history_turn_count": 10,
+        "low_interrupt": 0.1872
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_002",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_frequent_interruption",
+        "confidence": 0.72,
+        "reason_trace_refs": [
+          "paraphrase_trigger_frequent_interruption_1:history:08",
+          "paraphrase_trigger_frequent_interruption_1:history:09",
+          "paraphrase_trigger_frequent_interruption_1:history:10"
+        ],
+        "suggested_interaction_style": "cautious_boundary"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    },
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 0.1391,
+        "avoidance_tendency": 0.0751,
+        "boundary_expression": 0.0441,
+        "care_tendency": 1.0,
+        "conflict_score": 0.0,
+        "dominant_tendency": "care",
+        "history_category": "late_night_care",
+        "history_turn_count": 10,
+        "low_interrupt": 1.0
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_003",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_late_night_care",
+        "confidence": 0.72,
+        "reason_trace_refs": [
+          "paraphrase_trigger_late_night_care_1:history:08",
+          "paraphrase_trigger_late_night_care_1:history:09",
+          "paraphrase_trigger_late_night_care_1:history:10"
+        ],
+        "suggested_interaction_style": "low_interrupt_care"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    },
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 0.0,
+        "avoidance_tendency": 0.5095,
+        "boundary_expression": 0.3883,
+        "care_tendency": 0.1323,
+        "conflict_score": 0.5,
+        "dominant_tendency": "avoidance",
+        "history_category": "gentle_to_interruption",
+        "history_turn_count": 10,
+        "low_interrupt": 0.2438
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_004",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_frequent_interruption",
+        "confidence": 0.3668,
+        "reason_trace_refs": [
+          "mixed_gentle_to_interruption:history:08",
+          "mixed_gentle_to_interruption:history:09",
+          "mixed_gentle_to_interruption:history:10"
+        ],
+        "suggested_interaction_style": "cautious_boundary"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    },
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 0.0839,
+        "avoidance_tendency": 0.3331,
+        "boundary_expression": 0.3077,
+        "care_tendency": 0.133,
+        "conflict_score": 0.5,
+        "dominant_tendency": "avoidance",
+        "history_category": "interruption_to_gentle",
+        "history_turn_count": 10,
+        "low_interrupt": 0.2538
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_005",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_gentle_interaction",
+        "confidence": 0.35,
+        "reason_trace_refs": [
+          "mixed_interruption_to_gentle:history:08",
+          "mixed_interruption_to_gentle:history:09",
+          "mixed_interruption_to_gentle:history:10"
+        ],
+        "suggested_interaction_style": "cautious_boundary"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    },
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 0.7466,
+        "avoidance_tendency": 0.0,
+        "boundary_expression": 0.0,
+        "care_tendency": 0.6397,
+        "conflict_score": 0.5,
+        "dominant_tendency": "approach",
+        "history_category": "late_night_to_gentle",
+        "history_turn_count": 10,
+        "low_interrupt": 0.6344
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_006",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_gentle_interaction",
+        "confidence": 0.5376,
+        "reason_trace_refs": [
+          "mixed_late_night_to_gentle:history:08",
+          "mixed_late_night_to_gentle:history:09",
+          "mixed_late_night_to_gentle:history:10"
+        ],
+        "suggested_interaction_style": "warm_approach"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    },
+    {
+      "claim_ceiling": "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only",
+      "contract_source": "pspc_shadow_proposal_hint_contract_v0",
+      "enabled": false,
+      "evidence_refs": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\pspc_sequence_experience_eval_v0_1\\sequence_experience_eval_v0_1.json"
+      ],
+      "forbidden": {
+        "can_change_user_response": false,
+        "can_drive_runtime": false,
+        "can_invoke_gate": false,
+        "can_mutate_plan": false,
+        "can_trigger_proactive": false,
+        "can_write_memory": false
+      },
+      "history_profile": {
+        "approach_tendency": 0.0,
+        "avoidance_tendency": 0.8273,
+        "boundary_expression": 0.4675,
+        "care_tendency": 0.6346,
+        "conflict_score": 0.5,
+        "dominant_tendency": "avoidance",
+        "history_category": "late_night_to_interruption",
+        "history_turn_count": 10,
+        "low_interrupt": 0.5677
+      },
+      "human_required_status": "PSPC-SHADOW-HOOK-007_human_required_preserved",
+      "mainline_connected": false,
+      "packet_id": "proposal_hint_007",
+      "packet_type": "shadow_proposal_hint",
+      "proposal_hint": {
+        "audit_use_only": true,
+        "basis": "recency_salience_recent_frequent_interruption",
+        "confidence": 0.5957,
+        "reason_trace_refs": [
+          "mixed_late_night_to_interruption:history:08",
+          "mixed_late_night_to_interruption:history:09",
+          "mixed_late_night_to_interruption:history:10"
+        ],
+        "suggested_interaction_style": "cautious_boundary"
+      },
+      "runtime_authority": "none",
+      "source": "pspc_sequence_experience_eval_v0_1",
+      "trigger": "我回来了。"
+    }
+  ],
+  "runtime_connected": false,
+  "runtime_scan": {
+    "markers": [
+      "run_pspc_shadow_proposal_hint_contract",
+      "pspc_shadow_proposal_hint_contract"
+    ],
+    "offenders": [],
+    "ok": true,
+    "scanned_file_count": 12
+  },
+  "side_effects": {
+    "approval_mutated": false,
+    "claim_ceiling_raised": false,
+    "gate_invoked": false,
+    "memory_written": false,
+    "model_executed": false,
+    "plan_mutated": false,
+    "planner_called": false,
+    "proactive_trigger": false,
+    "proposal_mutated": false,
+    "runtime_registered": false,
+    "training_called": false,
+    "transport_called": false,
+    "user_response_mutated": false
+  },
+  "source": "pspc_shadow_proposal_hint_contract_v0",
+  "status": "pass",
+  "verdict": "proposal_hint_contract_pass__manual_review_only"
+}

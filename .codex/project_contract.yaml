@@ -284,6 +284,7 @@ allowed_mutation_paths:
   - docs/codex/tasks/pspc-user-manual-shadow-review-go-no-go-v0/
   - docs/codex/tasks/pspc-sequence-experience-eval-v0/
   - docs/codex/tasks/pspc-sequence-experience-eval-v0-1/
+  - docs/codex/tasks/pspc-shadow-proposal-hint-contract-v0/
   - tests/test_pspc_lab_adapter_contract.py
   - tests/test_pspc_adapter_dry_run.py
   - tests/test_pspc_static_compatibility_review.py
@@ -302,6 +303,7 @@ allowed_mutation_paths:
   - tests/test_pspc_user_manual_shadow_review_go_no_go.py
   - tests/test_pspc_sequence_experience_eval.py
   - tests/test_pspc_sequence_experience_eval_v0_1.py
+  - tests/test_pspc_shadow_proposal_hint_contract.py
   - labs/virtual_cat_pspc_v0/
   - artifacts/virtual_cat_pspc_v0/
   - artifacts/pspc_adapter_skeleton_v0/
@@ -325,6 +327,7 @@ allowed_mutation_paths:
   - artifacts/pspc_user_manual_shadow_review_go_no_go_v0/
   - artifacts/pspc_sequence_experience_eval_v0/
   - artifacts/pspc_sequence_experience_eval_v0_1/
+  - artifacts/pspc_shadow_proposal_hint_contract_v0/
   - artifacts/evidence_ledger/
   - legacy/ego-pre-handmade-mainline/EgoCore/docs/PROGRAM_STATE_UNIFIED.yaml
   - legacy/ego-pre-handmade-mainline/OpenEmotion/docs/PROGRAM_STATE_UNIFIED.yaml

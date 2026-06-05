@@ -44,6 +44,17 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Shadow Proposal Hint Contract v0 now has an artifact-only converter at `scripts/run_pspc_shadow_proposal_hint_contract.py`,
+    tests at `tests/test_pspc_shadow_proposal_hint_contract.py`, docs under `docs/codex/tasks/pspc-shadow-proposal-hint-contract-v0/`,
+    and artifacts under `artifacts/pspc_shadow_proposal_hint_contract_v0/`. The converter
+    reads v0.1 shadow observations and writes seven read-only `shadow_proposal_hint`
+    packets that preserve evidence refs and reason trace refs while keeping `enabled=false`,
+    `mainline_connected=false`, `runtime_authority=none`, `PSPC-SHADOW-HOOK-007_human_required_preserved`,
+    forbidden authority flags all false, and no runtime-authority fields. This remains
+    `lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only` evidence
+    only; it does not prove adapter readiness, EgoOperator runtime integration safety,
+    model learning, durable memory efficacy, real user benefit, live autonomy, consciousness,
+    or subjective experience.
   - PSPC Sequence Experience Eval v0.1 now has a lab/shadow-only robustness runner
     at `scripts/run_pspc_sequence_experience_eval_v0_1.py`, tests at `tests/test_pspc_sequence_experience_eval_v0_1.py`,
     docs under `docs/codex/tasks/pspc-sequence-experience-eval-v0-1/`, a paraphrased
@@ -1397,6 +1408,22 @@ workstreams:
     / sequence_experience_eval_only` evidence only; it does not prove semantic understanding,
     model learning, runtime integration safety, real user benefit, live autonomy,
     consciousness, or subjective experience.
+- id: pspc_shadow_proposal_hint_contract_v0
+  owner: Codex
+  status: proposal_hint_contract_pass__manual_review_only
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Shadow Proposal Hint Contract v0 converts PSPC v0.1 shadow observations
+    into seven read-only, non-executable `shadow_proposal_hint` artifacts. Each packet
+    preserves reason trace refs and evidence refs, records only a suggested interaction
+    style/confidence/basis, keeps `enabled=false`, `mainline_connected=false`, `runtime_authority=none`,
+    and `PSPC-SHADOW-HOOK-007_human_required_preserved`, and forbids runtime driving,
+    user-response mutation, memory writes, gate invocation, plan mutation, and proactive
+    triggers. This remains `lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only`
+    evidence only and permits only manual review of product-only local behavior prototype
+    design, not EgoOperator adapter or runtime integration.
 axes:
   host_axis:
     current_state: closeout_complete

@@ -3629,3 +3629,29 @@ tasks:
       - "artifacts/pspc_sequence_experience_eval_v0_1/"
     external_refs:
       github_issue: null
+
+  - id: PSPC-SHADOW-HOOK-010
+    title: "PSPC Shadow: proposal hint contract v0"
+    kind: task
+    parent: null
+    status: accepted
+    layer: pspc_runtime_adjacent_shadow
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "lab_only_proto_self_mechanism_candidate / sequence_experience_eval_only"
+    next_action: "Accepted locally: v0.1 shadow observations can be converted into read-only, non-executable proposal-hint packets as artifacts only. Next allowed step is manual review of product-only local behavior prototype design; EgoOperator adapter/runtime integration remains forbidden."
+    acceptance:
+      - "Converter reads v0.1 shadow observation artifact and writes proposal-hint packet artifacts only."
+      - "Each packet validates schema fields: source, packet_type, claim_ceiling, enabled, mainline_connected, runtime_authority, trigger, history_profile, proposal_hint, evidence refs, reason trace refs, and forbidden authority flags."
+      - "Each packet keeps enabled=false, mainline_connected=false, runtime_authority=none, and PSPC-SHADOW-HOOK-007 human_required status."
+      - "Forbidden flags for runtime driving, user-response mutation, memory write, gate invocation, plan mutation, and proactive trigger are all false."
+      - "Packets contain no executable action, tool_call, command, user_message, memory_write, gate_decision, approval_id, transport, send, schedule, runtime_registration, mainline_authority, enable, or plan_mutation fields."
+      - "No EgoOperator runtime/gate/memory/approval/human-trial/transport/proactive files are modified, no adapter is created, and claim ceiling is unchanged."
+    rollback: "Delete docs/codex/tasks/pspc-shadow-proposal-hint-contract-v0/, tests/test_pspc_shadow_proposal_hint_contract.py, scripts/run_pspc_shadow_proposal_hint_contract.py, artifacts/pspc_shadow_proposal_hint_contract_v0/, and this task-board/project-contract/program-state/evidence-ledger/generated-view update."
+    canonical_sources:
+      - "docs/codex/tasks/pspc-shadow-proposal-hint-contract-v0/STATUS.md"
+      - "tests/test_pspc_shadow_proposal_hint_contract.py"
+      - "artifacts/pspc_shadow_proposal_hint_contract_v0/"
+    external_refs:
+      github_issue: null
