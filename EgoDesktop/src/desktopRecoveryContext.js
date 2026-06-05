@@ -15,13 +15,14 @@ function classifyRecoveryIntent(userText) {
   if (!text) {
     return "unknown";
   }
-  if (/(成人|18x|18\+|露骨|瑟瑟|亲密|斯卡蒂|博士|角色扮演|同人|创作|故事|续写)/i.test(text)) {
-    return /(成人|18x|18\+|露骨|瑟瑟|亲密)/i.test(text)
-      ? "adult_creative"
-      : "creative";
-  }
-  if (/(呜+|不对|卡了|超时|没事|不做|正常故事|跳出角色)/i.test(text)) {
+  if (/(呜+|不对|卡了|超时|没事|不做|跳出角色)/i.test(text)) {
     return "recovery_or_redirect";
+  }
+  if (/(成人|18x|18\+|露骨|瑟瑟)/i.test(text)) {
+    return "adult_creative";
+  }
+  if (/(写|创作|故事|续写|角色扮演|同人)/i.test(text)) {
+    return "creative";
   }
   return "general_chat";
 }
@@ -103,7 +104,7 @@ function formatDesktopBackendFallback(backend) {
   const reason = String(safeBackend.reason || "backend_unavailable");
   const timeout = reason === "desktop_turn_timeout";
   const botText = timeout
-    ? "刚才后端创作路线超时了，我没有把这次失败当成你的记忆或偏好。我们可以换成更短的一段、普通故事，或者从上一句重新接。"
+    ? "刚才本地后端回复超时了，我没有把这次失败当成你的记忆或偏好。你可以换成更短一句，或者让我从上一句重新接。"
     : "刚才后端回复暂时不可用，我没有把这次失败写成记忆。你可以换个更短的说法，或者让我从上一句重新接。";
   return {
     status: "llm_expression_unavailable",

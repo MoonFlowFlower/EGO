@@ -44,6 +44,16 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - EgoDesktop Timeout Route Misfire Repair v0 now updates `EgoDesktop/src/desktopRecoveryContext.js`
+    and tests at `EgoDesktop/tests/desktop_recovery_context.test.js` plus `tests/test_ego_operator_desktop_recovery_context.py`.
+    The local timeout fallback now says `本地后端回复超时` instead of defaulting to `创作路线超时`,
+    ordinary affectionate turns such as `喜欢你所以就摸摸你`, `像小猫一样`, and `摸摸头` classify as
+    `general_chat`, and only explicit story/roleplay/adult-writing requests classify
+    as `creative` or `adult_creative`. Recovery remains one-turn, local-only, no real
+    memory write, no gate/approval/transport/proactive path, and claim ceiling `local_desktop_companion_wording_and_route_repair_only`.
+    This is local desktop timeout route repair evidence only; it does not prove provider
+    health, adult creative generation capability, PSPC integration, stable user benefit,
+    durable memory, live autonomy, consciousness, subjective experience, or real emotion.
   - EgoDesktop Companion Memory Wording Repair v0 now has a desktop-only visible reply
     rewrite in `scripts/ego_operator_desktop_turn.py` plus tests at `tests/test_ego_operator_desktop_companion_wording.py`.
     When an ordinary companion recall question receives engineering memory-boundary

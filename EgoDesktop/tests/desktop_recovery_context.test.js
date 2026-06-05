@@ -7,6 +7,7 @@ const { containsExecutableField } = require("../src/pspcVisualShim");
 const {
   DESKTOP_RECOVERY_CLAIM_CEILING,
   buildDesktopRecoveryContext,
+  classifyRecoveryIntent,
   clearDesktopRecoveryState,
   createDesktopRecoveryState,
   formatDesktopBackendFallback,
@@ -74,7 +75,36 @@ test("desktop timeout fallback hides raw backend marker and preserves local-only
   assert.equal(fallback.message_send, false);
   assert.equal(fallback.bot_text.includes("llm_expression_unavailable"), false);
   assert.equal(fallback.bot_text.includes("desktop_turn_timeout"), false);
+  assert.equal(fallback.bot_text.includes("创作路线超时"), false);
   assert.match(fallback.bot_text, /后端|超时/);
+});
+
+test("ordinary affectionate turns are not classified as creative recovery", () => {
+  assert.equal(classifyRecoveryIntent("喜欢你所以就摸摸你 像小猫一样"), "general_chat");
+  assert.equal(classifyRecoveryIntent("摸摸头"), "general_chat");
+  assert.equal(classifyRecoveryIntent("你就像小猫一样可爱"), "general_chat");
+  assert.equal(classifyRecoveryIntent("斯卡蒂和博士挺有意思"), "general_chat");
+  assert.equal(classifyRecoveryIntent("更亲密一点地摸摸头"), "general_chat");
+});
+
+test("only explicit story roleplay or adult writing turns enter creative recovery", () => {
+  assert.equal(classifyRecoveryIntent("创作明日方舟的斯卡蒂和博士的故事"), "creative");
+  assert.equal(classifyRecoveryIntent("来段角色扮演吧"), "creative");
+  assert.equal(classifyRecoveryIntent("我想写成人18x故事"), "adult_creative");
+  assert.equal(classifyRecoveryIntent("继续，可以再露骨一点"), "adult_creative");
+});
+
+test("recorded affectionate timeout stores general chat recovery intent", () => {
+  const state = recordDesktopBackendFailure(createDesktopRecoveryState(), {
+    backend: { status: "llm_expression_unavailable", reason: "desktop_turn_timeout" },
+    userText: "喜欢你所以就摸摸你 像小猫一样",
+  });
+
+  const context = buildDesktopRecoveryContext(state);
+
+  assert.equal(context.previous_failure.user_intent_kind, "general_chat");
+  assert.equal(context.previous_failure.reason, "desktop_turn_timeout");
+  assert.equal(context.side_effects_absent.real_memory_written, false);
 });
 
 test("EgoDesktop wires recovery context without changing PSPC or session claim ceilings", () => {

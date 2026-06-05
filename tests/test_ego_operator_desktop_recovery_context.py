@@ -77,6 +77,21 @@ def test_valid_recovery_context_renders_one_turn_timeout_recovery_only():
     assert "Do not invoke gates" in rendered
 
 
+def test_general_chat_recovery_context_is_accepted_for_affection_timeout():
+    context = validate_desktop_recovery_context(valid_context(
+        previous_failure={
+            "reason": "desktop_turn_timeout",
+            "user_intent_kind": "general_chat",
+            "elapsed_ms": 180123,
+        },
+    ))
+    rendered = render_desktop_recovery_system_context(context)
+
+    assert context["previous_failure"]["user_intent_kind"] == "general_chat"
+    assert "Previous EgoDesktop backend turn timed out" in rendered
+    assert "Do not write memory" in rendered
+
+
 @pytest.mark.parametrize(
     "field,value",
     [
@@ -148,7 +163,7 @@ class FakeDesktopRuntime:
         joined = "\n".join(message["content"] for message in self.memory.messages)
         assert "Previous EgoDesktop backend turn timed out" in joined
         if "呜" in user_text:
-            reply = "刚才后端创作路线超时了，不是你的问题。我在这里，我们可以换个短一点的方式重新接。"
+            reply = "刚才本地后端回复超时了，不是你的问题。我在这里，我们可以换个短一点的方式重新接。"
         else:
             reply = "好，我们不接刚才的成人路线了。改写一个正常的斯卡蒂和博士故事，从安静的罗德岛夜晚开始。"
         return SimpleNamespace(
@@ -190,7 +205,8 @@ def test_desktop_turn_recovery_fixture_handles_short_emotional_feedback(monkeypa
 
     assert response["status"] == "ok"
     assert response["desktop_recovery_context_applied"] is True
-    assert "后端创作路线超时" in response["reply_text"]
+    assert "本地后端回复超时" in response["reply_text"]
+    assert "创作路线超时" not in response["reply_text"]
     assert response["side_effects_executed"] is False
     assert response["memory_write"] is False
     assert response["message_send"] is False

@@ -3706,13 +3706,13 @@ tasks:
     title: "EgoDesktop: timeout route misfire repair v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: egodesktop_local_companion_presentation
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
-    next_action: "Repair desktop timeout fallback wording and recovery intent classification; keep recovery one-turn/local-only/no-side-effect."
+    next_action: "Accepted locally: timeout fallback is route-neutral and ordinary affectionate turns are not classified as creative/adult recovery. Next task is EGODESKTOP-COMPANION-004."
     acceptance:
       - "Generic timeout fallback says local backend reply timed out, not creative route timeout."
       - "Ordinary affectionate turns such as `喜欢你所以就摸摸你`, `像小猫一样`, and `摸摸头` are not classified as creative/adult creative recovery."
@@ -3730,13 +3730,13 @@ tasks:
     title: "EgoDesktop: combined companion regression report v0"
     kind: task
     parent: null
-    status: planned
+    status: active
     layer: egodesktop_local_companion_presentation
     owner: codex
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: "local_desktop_companion_wording_and_route_repair_only"
-    next_action: "After EGODESKTOP-COMPANION-003, generate combined regression report and go/no-go for manual companion smoke."
+    next_action: "Generate combined regression report and go/no-go for manual companion smoke."
     acceptance:
       - "Report covers PSPC warm approach retention, natural session-local recall wording, route-neutral timeout recovery, and side-effect absence."
       - "Verdict is either `go_for_manual_companion_smoke` or `needs_more_desktop_contract_repair`."
