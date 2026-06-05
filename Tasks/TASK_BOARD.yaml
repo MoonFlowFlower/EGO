@@ -3458,13 +3458,13 @@ tasks:
     title: "PSPC Shadow: runtime snapshot no-diff v0"
     kind: task
     parent: null
-    status: active
+    status: accepted
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "lab_only_proto_self_mechanism_candidate / runtime_snapshot_no_diff_only"
-    next_action: "With the default-off hook file present but unregistered, compare deterministic/recorded EgoOperator baseline snapshots against hook-present shadow snapshots."
+    next_action: "Accepted locally: 18 recorded EgoOperator baseline snapshots equal hook-present snapshots, no memory/approval/gate/runtime-output diffs occur, and PSPC adds only non-executable shadow artifacts. Next allowed task is PSPC-SHADOW-HOOK-004 audit usefulness only."
     acceptance:
       - "For deterministic or recorded inputs, baseline user output hash equals hook-present user output hash."
       - "Memory, approval, gate, and runtime-output snapshots remain unchanged."
@@ -3483,7 +3483,7 @@ tasks:
     title: "PSPC Shadow: recorded observation audit usefulness v0"
     kind: task
     parent: null
-    status: planned
+    status: active
     layer: pspc_runtime_adjacent_shadow
     owner: codex
     observation_class: deterministic_local

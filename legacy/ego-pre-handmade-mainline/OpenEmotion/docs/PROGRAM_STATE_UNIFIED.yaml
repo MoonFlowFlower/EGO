@@ -44,6 +44,17 @@ program:
   - Keep all claims bounded to local candidate / transition evidence until real user
     operation proves stable behavior.
   completed_since_last:
+  - PSPC Runtime Shadow Snapshot No-Diff v0 now has a no-diff runner at `scripts/run_pspc_runtime_shadow_snapshot_no_diff.py`,
+    tests at `tests/test_pspc_runtime_shadow_snapshot_no_diff.py`, docs under `docs/codex/tasks/pspc-runtime-shadow-snapshot-no-diff-v0/`,
+    and artifacts under `artifacts/pspc_runtime_shadow_snapshot_no_diff_v0/`. The
+    runner compares 18 recorded EgoOperator baseline snapshots with hook-present shadow
+    snapshots while the PSPC hook remains unregistered and disabled; user output hashes,
+    runtime snapshot hashes, memory, approval, gate, and runtime-output state remain
+    unchanged, and PSPC adds only non-executable shadow artifacts. This is `lab_only_proto_self_mechanism_candidate
+    / runtime_snapshot_no_diff_only` evidence only; it does not prove runtime integration
+    safety, registered hook safety, adapter readiness, EgoOperator PSPC capability,
+    runtime efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness,
+    or subjective experience.
   - PSPC Default-Off Runtime Shadow Hook v0 now has a disabled hook module at `EgoOperator/adapters/pspc_disabled_runtime_shadow_hook.py`,
     an artifact-only runner at `scripts/run_pspc_disabled_runtime_shadow_hook.py`,
     tests at `tests/test_pspc_disabled_runtime_shadow_hook.py`, docs under `docs/codex/tasks/pspc-disabled-runtime-shadow-hook-v0/`,
@@ -1219,6 +1230,20 @@ workstreams:
     audit-only, read-only, non-executable, and unregistered by active EgoOperator
     runtime sources. This remains `lab_only_proto_self_mechanism_candidate / default_off_hook_module_only`
     evidence only and does not prove hook registration safety or runtime integration
+    safety.
+- id: pspc_runtime_shadow_snapshot_no_diff_v0
+  owner: Codex
+  status: recorded_snapshot_no_diff_pass__hook_present_unregistered
+  evidence_level: E3
+  verification_level: V3
+  mainline_connected: false
+  enabled: false
+  summary: PSPC Runtime Shadow Snapshot No-Diff v0 compares 18 recorded EgoOperator
+    baseline snapshots with hook-present shadow snapshots while the PSPC hook remains
+    unregistered and disabled. User output hashes, runtime snapshot hashes, memory,
+    approval, gate, and runtime-output state remain unchanged; PSPC adds only non-executable
+    shadow artifacts. This remains `lab_only_proto_self_mechanism_candidate / runtime_snapshot_no_diff_only`
+    evidence only and does not prove runtime integration safety or registered hook
     safety.
 axes:
   host_axis:

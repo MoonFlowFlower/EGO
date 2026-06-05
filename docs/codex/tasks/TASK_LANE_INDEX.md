@@ -21,7 +21,7 @@
 | `supporting_active` | 5 |
 | `parked` | 1 |
 | `closed_evidence` | 17 |
-| `reference_only` | 173 |
+| `reference_only` | 174 |
 
 ## Active Default
 
@@ -221,6 +221,7 @@
 | Pspc Runtime Adjacent Observer V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-observer-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Adjacent Shadow Review V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-shadow-review-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Adjacent Smoke V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-adjacent-smoke-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Pspc Runtime Shadow Snapshot No Diff V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-shadow-snapshot-no-diff-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Runtime Trace Fixture Boundary V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-runtime-trace-fixture-boundary-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Shadow Runtime Hook Go No Go V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-shadow-runtime-hook-go-no-go-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Pspc Static Compatibility Review V0 | `codex_task` | n/a | `docs/codex/tasks/pspc-static-compatibility-review-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
