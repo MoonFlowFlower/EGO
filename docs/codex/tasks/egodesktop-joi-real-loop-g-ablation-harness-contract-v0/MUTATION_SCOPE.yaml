@@ -1,0 +1,17 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-harness-contract-v0
+expected_mutation_surface:
+  - default-off EgoDesktop real-loop G-ABLATION harness contract module
+  - targeted EgoDesktop contract tests
+  - local contract report and task docs
+  - local task-board entry/status updates
+  - no default runtime enablement, program-state update, or evidence-ledger claim update
+allowed_mutation_paths:
+  - EgoDesktop/src/joiRealLoopGAblationHarness.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_harness.test.js
+  - artifacts/egodesktop_joi_real_loop_g_ablation_harness_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STATUS.md
+  - Tasks/TASK_BOARD.yaml
+  - artifacts/task_board/outbox.jsonl
+claim_ceiling: "egodesktop_real_loop_g_ablation_harness_contract_only; no runtime efficacy, stable benefit, route-B pass, EGO integration, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

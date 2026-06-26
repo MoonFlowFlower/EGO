@@ -3660,13 +3660,13 @@ tasks:
     title: "EgoDesktop: Joi real-loop G-ABLATION stage card v0"
     kind: stage_card
     parent: null
-    status: planned
+    status: accepted
     layer: egodesktop_real_loop_attribution_governance
     owner: codex
     observation_class: docs_contract
     evidence_level: E2
     claim_ceiling: "egodesktop_real_loop_g_ablation_stage_card_only"
-    next_action: "Review the docs-only EGO-side stage card. If accepted, create a separate default-off implementation task for an EgoDesktop real-loop harness that obeys the accepted joi-demo 001C contract. Do not modify runtime from this stage card."
+    next_action: "Accepted locally after operator requested continue: proceed to EGODESKTOP-GABLATION-002, a default-off EgoDesktop harness contract module. Do not run a real-loop experiment or enable runtime from this stage card."
     acceptance:
       - "Stage Card cites the accepted joi-demo real-loop G-ABLATION 001C contract and commit."
       - "Stage Card forbids default runtime enablement, EgoOperator memory/gate/approval/transport/proactive changes, claim upgrades, push/tag/remote anchor, and product/EGO pass wording."
@@ -3678,6 +3678,36 @@ tasks:
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STAGE_CARD.md"
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STATUS.md"
       - "../joi-demo/JOI-DEMO-GRAD-G-ABLATION-RUNTIME-001C-REAL-LOOP-CARD.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-002
+    title: "EgoDesktop: Joi real-loop G-ABLATION harness contract v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-001
+    status: accepted
+    layer: egodesktop_real_loop_attribution_contract
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: "egodesktop_real_loop_g_ablation_harness_contract_only"
+    next_action: "Accepted locally: default-off harness contract module, tests, and local report are in place. Next allowed slice is a separate default-off trace runner that invokes actual EgoDesktop chat-turn/render path only under explicit experiment flags."
+    acceptance:
+      - "Default-disabled contract reports enabled=false, runtime_authority=none, mainline_connected=false, and no adapter registration."
+      - "Enabled contract requires explicit JOI_REAL_LOOP_G_ABLATION flags, replay-locked LLM mode, prompt pack, trace dir, condition, and calibration/heldout split."
+      - "Contract recursively rejects executable/runtime-authority fields."
+      - "Trace-row builder records condition, split, prompt id/hash, chat-turn hash, CreatureState hash, public inputs, adapter outputs, renderer-idle exclusion, and replay inputs."
+      - "Baseline plan preserves same-pack static replay as diagnostic only, heldout static replay as decisive, and same-access reproducer battery as strongest/closest family."
+      - "Verdict helper blocks positive attribution under leakage, replay misuse, heldout replay equivalence, same-access equivalence, renderer-idle dominance, unlocked LLM, or no creature effect."
+      - "Targeted Node tests and git diff check pass."
+    rollback: "Delete EgoDesktop/src/joiRealLoopGAblationHarness.js, EgoDesktop/tests/joi_real_loop_g_ablation_harness.test.js, artifacts/egodesktop_joi_real_loop_g_ablation_harness_v0/, docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/, and this task-board entry."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/STATUS.md"
+      - "EgoDesktop/src/joiRealLoopGAblationHarness.js"
+      - "EgoDesktop/tests/joi_real_loop_g_ablation_harness.test.js"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_harness_v0/CONTRACT_REPORT.md"
     external_refs:
       github_issue: null
 

@@ -1,19 +1,19 @@
 # EgoDesktop Joi Real-Loop G-ABLATION Stage Card v0 Status
 
-- status: `stage_card_ready__implementation_not_started`
+- status: `accepted__implementation_task_started`
 - task_id: `EGODESKTOP-GABLATION-001`
 - claim_ceiling: `egodesktop_real_loop_g_ablation_stage_card_only`
 - mainline_connected: `false`
 - enabled: `false`
 - real_trigger_evidence: `none`
 - runtime_authority: `none`
-- implementation_started: `false`
+- implementation_started: `true`
 
 ## Current Result
 
-The EGO-side boundary card exists for a possible future default-off EgoDesktop real-loop G-ABLATION harness. It cites the
-accepted `joi-demo` source contract and preserves the required same-access reproducer, heldout static replay, replay,
-leakage, LLM-lock, and renderer-idle exclusion gates.
+The EGO-side boundary card has been accepted locally after the operator requested continuation. It cites the accepted
+`joi-demo` source contract and preserves the required same-access reproducer, heldout static replay, replay, leakage,
+LLM-lock, and renderer-idle exclusion gates. Follow-up implementation task `EGODESKTOP-GABLATION-002` has started.
 
 ## Evidence
 
@@ -42,5 +42,4 @@ or Bar-2 specialness.
 
 ## Next Minimal Closed-Loop Action
 
-Review this card. If accepted, create a separate implementation task for a default-off EgoDesktop harness. Do not modify
-runtime from this docs-only card.
+Continue through `EGODESKTOP-GABLATION-002`. Do not treat this stage card as runtime evidence or product enablement.
