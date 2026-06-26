@@ -89,6 +89,9 @@ The row must include:
 - `llm_dependency: excluded_from_d`;
 - complete serialized state object;
 - complete observation object;
+- explicit `synthetic_reference` calibration provenance until a captured/fitted calibration source exists;
+- true hash for the heldout prompt-pack descriptor plus an explicit `single_smoke_prompt_not_full_pack` scope;
+- observation-shuffle control labeled as a constructive regression guard, not final input-blind evidence;
 - `offline_replay_function_id: off_static_replay_heldout_non_llm_adapter_v0`;
 - recomputed adapter output hash equal to the row's adapter output hash.
 
@@ -153,5 +156,6 @@ offline replay module/script/tests, revert the evaluator precondition extension,
 
 ## Next Minimal Closed-Loop Action
 
-After this row is replayable, the next separate slice may build the paired `CREATURE_ON` non-LLM `D` replay row or a
-minimal contrast card. Do not score or compare in this task.
+After this row is replayable, the next separate slice must replace the synthetic calibration reference with a
+captured/fitted calibration source before building the paired `CREATURE_ON` non-LLM `D` replay row or a minimal contrast
+card. Do not score or compare in this task.

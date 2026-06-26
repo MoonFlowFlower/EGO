@@ -61,9 +61,29 @@ function buildCalibrationReference() {
   };
 }
 
+function buildHeldoutPromptPackDescriptor(sourceRow) {
+  const source = objectOrEmpty(sourceRow);
+  const sourceInputs = objectOrEmpty(source.public_inputs);
+  return {
+    schema_version: "ego_desktop.joi_real_loop_off_static_replay_heldout_prompt_pack_descriptor.v0",
+    prompt_pack_id: text(sourceInputs.prompt_pack, text(source.prompt_pack_hash, "egodesktop-gablation-006-smoke-single-prompt")),
+    prompt_id: text(source.prompt_id, "prompt-heldout"),
+    split_id: "heldout",
+    source_row_hash: sourceHashFor(source),
+    scope: "single_smoke_prompt_not_full_pack",
+  };
+}
+
 function buildCompleteSerializedState(sourceRow) {
   const source = objectOrEmpty(sourceRow);
   const calibrationReference = buildCalibrationReference();
+  const calibrationReferenceHash = hashValue(calibrationReference);
+  const adapterSeed = {
+    ...calibrationReference.adapter_seed,
+    calibration_reference_hash: calibrationReferenceHash,
+    calibration_reference_kind: "synthetic_reference",
+    seed_source: "synthetic_calibration_reference_v0",
+  };
 
   return {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_state.v0",
@@ -72,8 +92,10 @@ function buildCompleteSerializedState(sourceRow) {
     state_source: "off_static_replay_heldout_serialized_state",
     source_row_hash: sourceHashFor(source),
     reference_sequence_id: "off_static_replay_heldout_v0",
+    calibration_reference_hash: calibrationReferenceHash,
+    calibration_reference_kind: "synthetic_reference",
     calibration_reference: calibrationReference,
-    adapter_seed: calibrationReference.adapter_seed,
+    adapter_seed: adapterSeed,
     d_field_mode: "non_llm_adapter_output_only",
     llm_dependency: "excluded_from_d",
   };
@@ -81,19 +103,22 @@ function buildCompleteSerializedState(sourceRow) {
 
 function buildCompleteObservation(sourceRow) {
   const source = objectOrEmpty(sourceRow);
-  const sourceInputs = objectOrEmpty(source.public_inputs);
+  const heldoutPromptPack = buildHeldoutPromptPackDescriptor(source);
   return {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_observation.v0",
     claim_ceiling: CLAIM_CEILING,
     condition: "OFF_STATIC_REPLAY_HELDOUT",
-    prompt_id: text(source.prompt_id, "prompt-heldout"),
-    prompt_pack: text(source.prompt_pack_hash, text(sourceInputs.prompt_pack, "prompt-pack-heldout")),
-    prompt_pack_hash: text(source.prompt_pack_hash, text(sourceInputs.prompt_pack, "prompt-pack-heldout")),
+    prompt_id: heldoutPromptPack.prompt_id,
+    prompt_pack: heldoutPromptPack.prompt_pack_id,
+    prompt_pack_id: heldoutPromptPack.prompt_pack_id,
+    prompt_pack_hash: hashValue(heldoutPromptPack),
+    prompt_pack_scope: heldoutPromptPack.scope,
+    prompt_pack_descriptor: heldoutPromptPack,
     split: "heldout",
     split_id: "heldout",
     llm_mode: "replay_locked",
     source_row_hash: sourceHashFor(source),
-    user_text_hash: text(sourceInputs.user_text_hash, ""),
+    user_text_hash: text(objectOrEmpty(source.public_inputs).user_text_hash, ""),
     renderer_idle_excluded: true,
   };
 }
@@ -115,6 +140,8 @@ function recomputeOffStaticReplayHeldoutAdapter({ serializedState }) {
     expression_name: text(adapterSeed.expression_name, ""),
     live2d_parameter_samples: samples,
     source_row_hash: text(state.source_row_hash, ""),
+    calibration_reference_hash: text(adapterSeed.calibration_reference_hash, ""),
+    adapter_seed_source: text(adapterSeed.seed_source, ""),
     d_field_mode: "non_llm_adapter_output_only",
     llm_dependency: "excluded_from_d",
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
@@ -149,6 +176,7 @@ function buildObservationShuffleControl({ completeState, completeObservation, ad
     status: invariant ? "pass" : "fail",
     adapter_output_invariant: invariant,
     producer_function: "buildObservationShuffleControl",
+    evidence_scope: "regression_guard_constructive_until_nontrivial_calibration",
     original_observation_hash: hashValue(completeObservation),
     shuffled_observation_hash: hashValue(shuffledObservation),
     recomputed_adapter_output_hash: hashValue(recomputed),
@@ -177,13 +205,16 @@ function buildOffStaticReplayHeldoutRow({
   });
   const staticReplayProvenance = {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_provenance.v0",
-    split_contract_status: "calibration_and_heldout_distinct",
+    split_contract_status: "synthetic_calibration_reference_distinct_from_heldout_observation",
     calibration_split_id: "calibration",
     heldout_split_id: "heldout",
+    calibration_reference_kind: completeState.calibration_reference_kind,
     calibration_reference_hash: hashValue(completeState.calibration_reference),
     calibration_reference_pack_hash: completeState.calibration_reference.reference_pack_hash,
     heldout_observation_source_hash: sourceHashFor(source),
+    heldout_prompt_pack_id: completeObservation.prompt_pack_id,
     heldout_prompt_pack_hash: completeObservation.prompt_pack_hash,
+    heldout_prompt_pack_scope: completeObservation.prompt_pack_scope,
     input_blind_contract: "adapter_output_recomputed_from_calibration_reference_state_not_heldout_observation_content",
     observation_shuffle_control_hash: hashValue(observationShuffleControl),
   };
@@ -222,13 +253,14 @@ function buildOffStaticReplayHeldoutRow({
       source_row_hash: sourceHashFor(source),
       calibration_reference_hash: staticReplayProvenance.calibration_reference_hash,
       heldout_observation_source_hash: staticReplayProvenance.heldout_observation_source_hash,
+      heldout_prompt_pack_hash: staticReplayProvenance.heldout_prompt_pack_hash,
       offline_replay_module_hash: hashValue({
         function_id: OFFLINE_REPLAY_FUNCTION_ID,
         policy: "offline_non_llm_adapter_recompute_v0",
       }),
     },
     promptId: text(completeObservation.prompt_id, "prompt-heldout"),
-    promptPackHash: text(completeObservation.prompt_pack, "prompt-pack-heldout"),
+    promptPackHash: completeObservation.prompt_pack_hash,
     splitId: "heldout",
     llmReplayId: "none",
     chatTurn: {
@@ -264,9 +296,13 @@ function renderBuilderReport(report) {
     `- trace_rows_path: \`${report.trace_rows_path}\``,
     `- row_hash: \`${report.row_hash}\``,
     `- split_contract_status: \`${report.split_contract_status}\``,
+    `- calibration_reference_kind: \`${report.calibration_reference_kind}\``,
     `- calibration_reference_hash: \`${report.calibration_reference_hash}\``,
     `- heldout_observation_source_hash: \`${report.heldout_observation_source_hash}\``,
+    `- heldout_prompt_pack_hash: \`${report.heldout_prompt_pack_hash}\``,
+    `- heldout_prompt_pack_scope: \`${report.heldout_prompt_pack_scope}\``,
     `- observation_shuffle_control_status: \`${report.observation_shuffle_control_status}\``,
+    `- observation_shuffle_control_evidence_scope: \`${report.observation_shuffle_control_evidence_scope}\``,
     "",
     "## Current Meaning",
     "",
@@ -315,11 +351,14 @@ function writeOffStaticReplayHeldoutRows({
     row_hash: row.row_hash,
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
     split_contract_status: row.replay_inputs.static_replay_provenance.split_contract_status,
+    calibration_reference_kind: row.replay_inputs.static_replay_provenance.calibration_reference_kind,
     calibration_reference_hash: row.replay_inputs.static_replay_provenance.calibration_reference_hash,
     calibration_reference_pack_hash: row.replay_inputs.static_replay_provenance.calibration_reference_pack_hash,
     heldout_observation_source_hash: row.replay_inputs.static_replay_provenance.heldout_observation_source_hash,
     heldout_prompt_pack_hash: row.replay_inputs.static_replay_provenance.heldout_prompt_pack_hash,
+    heldout_prompt_pack_scope: row.replay_inputs.static_replay_provenance.heldout_prompt_pack_scope,
     observation_shuffle_control_status: row.replay_inputs.observation_shuffle_control.status,
+    observation_shuffle_control_evidence_scope: row.replay_inputs.observation_shuffle_control.evidence_scope,
     observation_shuffle_control_hash: row.replay_inputs.static_replay_provenance.observation_shuffle_control_hash,
     verdict_authorized: false,
   };

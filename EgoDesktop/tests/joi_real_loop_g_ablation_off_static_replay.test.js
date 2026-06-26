@@ -18,6 +18,7 @@ const {
 
 const FORBIDDEN_BASELINE_STOP = /baseline_saturated_stop/;
 const FORBIDDEN_ATTRIBUTION_PASS = new RegExp(`attribution_${"pass"}`);
+const SHA256_HEX = /^[a-f0-9]{64}$/;
 
 function sourceCollectOnlyRow() {
   const creatureState = {
@@ -88,13 +89,25 @@ test("OFF_STATIC_REPLAY_HELDOUT row is replayable from serialized state plus obs
   assert.equal(row.replay_inputs.d_fields_frozen, true);
   assert.equal(row.replay_inputs.llm_dependency, "excluded_from_d");
   assert.equal(row.replay_inputs.offline_replay_function_id, "off_static_replay_heldout_non_llm_adapter_v0");
-  assert.equal(row.replay_inputs.static_replay_provenance.split_contract_status, "calibration_and_heldout_distinct");
+  assert.equal(
+    row.replay_inputs.static_replay_provenance.split_contract_status,
+    "synthetic_calibration_reference_distinct_from_heldout_observation",
+  );
+  assert.equal(row.replay_inputs.static_replay_provenance.calibration_reference_kind, "synthetic_reference");
   assert.notEqual(
     row.replay_inputs.static_replay_provenance.calibration_reference_hash,
     row.replay_inputs.static_replay_provenance.heldout_observation_source_hash,
   );
+  assert.equal(
+    row.replay_inputs.complete_serialized_state.adapter_seed.calibration_reference_hash,
+    row.replay_inputs.static_replay_provenance.calibration_reference_hash,
+  );
+  assert.equal(row.adapter_output.calibration_reference_hash, row.replay_inputs.static_replay_provenance.calibration_reference_hash);
+  assert.match(row.replay_inputs.static_replay_provenance.heldout_prompt_pack_hash, SHA256_HEX);
+  assert.equal(row.replay_inputs.static_replay_provenance.heldout_prompt_pack_scope, "single_smoke_prompt_not_full_pack");
   assert.equal(row.replay_inputs.observation_shuffle_control.status, "pass");
   assert.equal(row.replay_inputs.observation_shuffle_control.adapter_output_invariant, true);
+  assert.equal(row.replay_inputs.observation_shuffle_control.evidence_scope, "regression_guard_constructive_until_nontrivial_calibration");
   assert.equal(row.replay_inputs.serialized_state_hash, hashValue(row.replay_inputs.complete_serialized_state));
   assert.equal(row.replay_inputs.observation_hash, hashValue(row.replay_inputs.complete_observation));
   assert.equal(row.creature_state_hash, hashValue(row.replay_inputs.complete_serialized_state));
@@ -171,9 +184,16 @@ test("builder CLI writes one heldout row and evaluator precondition passes witho
   assert.equal(builderStdout.status, "off_static_replay_heldout_row_written");
   assert.equal(builderStdout.trace_row_count, 1);
   const builderReport = JSON.parse(fs.readFileSync(path.join(buildOutDir, "builder_report.json"), "utf8"));
-  assert.equal(builderReport.split_contract_status, "calibration_and_heldout_distinct");
+  assert.equal(
+    builderReport.split_contract_status,
+    "synthetic_calibration_reference_distinct_from_heldout_observation",
+  );
+  assert.equal(builderReport.calibration_reference_kind, "synthetic_reference");
   assert.notEqual(builderReport.calibration_reference_hash, builderReport.heldout_observation_source_hash);
+  assert.match(builderReport.heldout_prompt_pack_hash, SHA256_HEX);
+  assert.equal(builderReport.heldout_prompt_pack_scope, "single_smoke_prompt_not_full_pack");
   assert.equal(builderReport.observation_shuffle_control_status, "pass");
+  assert.equal(builderReport.observation_shuffle_control_evidence_scope, "regression_guard_constructive_until_nontrivial_calibration");
 
   const rowsPath = path.join(buildOutDir, "trace_rows.jsonl");
   const rows = parseTraceRowsJsonl(fs.readFileSync(rowsPath, "utf8"));
