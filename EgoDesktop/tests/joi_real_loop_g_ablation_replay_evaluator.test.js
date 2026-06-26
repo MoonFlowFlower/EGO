@@ -117,6 +117,24 @@ test("jsonl parser and writer produce underclaiming reports", () => {
   assert.doesNotMatch(markdown, /consciousness pass/i);
 });
 
+test("report markdown distinguishes no-blocker preflight pass from scoring authorization", () => {
+  const markdown = renderEvaluationReport({
+    status: "replay_integrity_preflight_pass_no_verdict",
+    rows_evaluated: 1,
+    leakage_scan_status: "pass",
+    leakage_positive_control_status: "pass",
+    blockers: [],
+    verdict_authorized: false,
+    d_field_replay_precondition_satisfied: true,
+    scoring_run_authorized: false,
+  });
+
+  assert.match(markdown, /preflight passes without authorizing a verdict/i);
+  assert.match(markdown, /no scoring run is authorized/i);
+  assert.doesNotMatch(markdown, /listed replay blockers prevent verdicts/i);
+  assert.doesNotMatch(markdown, FORBIDDEN_ROUTE_PASS);
+});
+
 test("007 scoring precondition blocks collect-only rows before any scoring run", () => {
   const report = evaluateScoringPreconditions([sampleRow()], {
     runId: "scoring-precondition-001",
@@ -125,7 +143,9 @@ test("007 scoring precondition blocks collect-only rows before any scoring run",
 
   assert.equal(report.status, "blocked_d_field_replay_precondition_not_satisfied");
   assert.equal(report.claim_ceiling, "egodesktop_real_loop_g_ablation_replay_precondition_contract_only");
+  assert.equal(report.d_field_replay_precondition_satisfied, false);
   assert.equal(report.scoring_authorized, false);
+  assert.equal(report.scoring_run_authorized, false);
   assert.equal(report.rows_evaluated, 1);
   assert.ok(report.blockers.includes("condition_not_off_static_replay_heldout"));
   assert.ok(report.blockers.includes("d_field_freeze_missing"));
@@ -158,5 +178,7 @@ test("CLI aborts when 007 scoring precondition is requested for current collect-
   assert.ok(stdout.blockers.includes("complete_state_serialized_missing"));
   const report = JSON.parse(fs.readFileSync(path.join(reportDir, "evaluation_report.json"), "utf8"));
   assert.equal(report.status, "blocked_d_field_replay_precondition_not_satisfied");
+  assert.equal(report.scoring_precondition.d_field_replay_precondition_satisfied, false);
   assert.equal(report.scoring_precondition.scoring_authorized, false);
+  assert.equal(report.scoring_precondition.scoring_run_authorized, false);
 });

@@ -4,6 +4,7 @@ const path = require("node:path");
 
 const { hashValue } = require("./joiRealLoopGAblationHarness");
 const {
+  NON_LLM_D_FIELDS,
   OFFLINE_REPLAY_FUNCTION_ID,
   recomputeOffStaticReplayHeldoutAdapter,
 } = require("./joiRealLoopGAblationOfflineReplay");
@@ -39,6 +40,10 @@ const AUTHORITY_FIELD_NAMES = new Set([
   "runtime_registration",
   "proposal_id",
 ]);
+
+const NON_LLM_D_FIELD_WHITELIST = new Set(NON_LLM_D_FIELDS);
+const LLM_OR_OBSERVATION_D_FIELD_PATTERN =
+  /bot_text|llm|prompt|public_inputs|complete_observation|observation|user_text/i;
 
 function sha256File(filePath) {
   try {
@@ -156,9 +161,9 @@ function checkReplayIntegrity(row) {
   if (replayInputs.replay_policy === "trace_runner_v0_collect_only") {
     blockers.push("collect_only_replay_policy");
   }
-  const nonLlmDExcludesLlm = replayInputs.d_field_mode === "non_llm_adapter_output_only"
-    && replayInputs.llm_dependency === "excluded_from_d";
-  if (!nonLlmDExcludesLlm && (!row.llm_replay_id || row.llm_replay_id === "none")) {
+  const dFieldExclusion = checkNonLlmDFieldExclusion(row);
+  blockers.push(...dFieldExclusion.blockers);
+  if (!dFieldExclusion.pass && (!row.llm_replay_id || row.llm_replay_id === "none")) {
     blockers.push("missing_llm_replay_id");
   }
   return {
@@ -174,6 +179,40 @@ function objectOrNull(value) {
 function isNonEmptyObject(value) {
   const object = objectOrNull(value);
   return Boolean(object && Object.keys(object).length > 0);
+}
+
+function checkNonLlmDFieldExclusion(row) {
+  const replayInputs = objectOrNull(row && row.replay_inputs) || {};
+  const nonLlmFlags = replayInputs.d_field_mode === "non_llm_adapter_output_only"
+    && replayInputs.llm_dependency === "excluded_from_d";
+  if (!nonLlmFlags) {
+    return { pass: false, blockers: [] };
+  }
+
+  const blockers = [];
+  const dFields = Array.isArray(replayInputs.d_fields)
+    ? replayInputs.d_fields.map((field) => String(field))
+    : [];
+  if (dFields.length === 0) {
+    blockers.push("d_fields_missing");
+  }
+  if (dFields.some((field) => !NON_LLM_D_FIELD_WHITELIST.has(field))) {
+    blockers.push("non_llm_d_field_whitelist_violation");
+  }
+  if (dFields.some((field) => LLM_OR_OBSERVATION_D_FIELD_PATTERN.test(field))) {
+    blockers.push("llm_or_observation_d_field_present");
+  }
+  const provenance = objectOrNull(replayInputs.d_field_provenance) || {};
+  if (provenance.mode !== "offline_adapter_whitelist_v0") {
+    blockers.push("d_field_provenance_missing");
+  }
+  if (String(replayInputs.offline_replay_function_id || "") !== OFFLINE_REPLAY_FUNCTION_ID) {
+    blockers.push("offline_replay_function_unavailable");
+  }
+  return {
+    pass: blockers.length === 0,
+    blockers: sortedUnique(blockers),
+  };
 }
 
 function resolveOfflineReplayFunction(row, options = {}) {
@@ -206,6 +245,7 @@ function checkScoringPreconditionRow(row, options = {}) {
   if (replayInputs.d_field_mode !== "non_llm_adapter_output_only" || replayInputs.d_fields_frozen !== true) {
     blockers.push("d_field_freeze_missing");
   }
+  blockers.push(...checkNonLlmDFieldExclusion(row).blockers);
   if (!isNonEmptyObject(completeState)) {
     blockers.push("complete_state_serialized_missing");
   } else if (replayInputs.serialized_state_hash !== hashValue(completeState)) {
@@ -390,6 +430,11 @@ function evaluateScoringPreconditions(rows, options = {}) {
     ...rowResults.flatMap((result) => result.blockers),
   ]);
   const passed = safeRows.length > 0 && blockers.length === 0;
+  const scoringRunAuthorizationBlockers = [
+    "baseline_battery_not_present",
+    "creature_on_pair_missing",
+    "thresholds_not_frozen_for_scoring",
+  ];
   return {
     schema_version: "ego_desktop.joi_real_loop_d_field_replay_precondition.v0",
     status: passed
@@ -409,7 +454,10 @@ function evaluateScoringPreconditions(rows, options = {}) {
     },
     blockers,
     row_results: rowResults,
-    scoring_authorized: passed,
+    d_field_replay_precondition_satisfied: passed,
+    scoring_authorized: false,
+    scoring_run_authorized: false,
+    scoring_run_authorization_blockers: scoringRunAuthorizationBlockers,
     verdict_authorized: false,
     what_this_proves: "executable replay/D-field scoring precondition gate only",
     what_this_does_not_prove:
@@ -419,6 +467,16 @@ function evaluateScoringPreconditions(rows, options = {}) {
 
 function renderEvaluationReport(report) {
   const safe = report && typeof report === "object" ? report : {};
+  const blockers = Array.isArray(safe.blockers) ? safe.blockers : [];
+  const meaningLines = blockers.length
+    ? [
+      "This is replay/leakage evaluator contract only. It can check row hash integrity and leakage scanner positive",
+      "controls, but the listed replay blockers prevent verdicts: no real replay, baseline, or attribution claim is authorized.",
+    ]
+    : [
+      "This is replay/leakage evaluator contract only. The preflight passes without authorizing a verdict, baseline,",
+      "attribution claim, or route decision. No scoring run is authorized by this report.",
+    ];
   return [
     "# EgoDesktop Joi Real-Loop G-ABLATION Replay/Leakage Evaluator Report",
     "",
@@ -430,12 +488,11 @@ function renderEvaluationReport(report) {
     "",
     "## Current Meaning",
     "",
-    "This is replay/leakage evaluator contract only. It can check row hash integrity and leakage scanner positive",
-    "controls, but the listed replay blockers prevent verdicts: no real replay, baseline, or attribution claim is authorized.",
+    ...meaningLines,
     "",
     "## Blockers",
     "",
-    ...(safe.blockers || []).map((blocker) => `- \`${blocker}\``),
+    ...(blockers.length ? blockers.map((blocker) => `- \`${blocker}\``) : ["- `none`"]),
     "",
     "## What This Does Not Prove",
     "",
@@ -473,8 +530,10 @@ function writeEvaluationReport({
       requiredCondition,
     });
     report.scoring_precondition = scoringPrecondition;
+    report.d_field_replay_precondition_satisfied = scoringPrecondition.d_field_replay_precondition_satisfied;
     report.scoring_authorized = scoringPrecondition.scoring_authorized;
-    if (!scoringPrecondition.scoring_authorized) {
+    report.scoring_run_authorized = scoringPrecondition.scoring_run_authorized;
+    if (!scoringPrecondition.d_field_replay_precondition_satisfied) {
       report.status = scoringPrecondition.status;
       report.blockers = sortedUnique([
         ...(report.blockers || []),

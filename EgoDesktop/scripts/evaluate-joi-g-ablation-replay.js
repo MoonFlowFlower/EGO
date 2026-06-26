@@ -40,9 +40,11 @@ function main() {
     status: report.status,
     rows_evaluated: report.rows_evaluated,
     leakage_positive_control_status: report.leakage_positive_control_status,
+    d_field_replay_precondition_satisfied: report.d_field_replay_precondition_satisfied,
+    scoring_run_authorized: report.scoring_run_authorized,
     blockers: report.blockers,
   }, null, 2));
-  if (requireScoringPrecondition && report.scoring_authorized !== true) {
+  if (requireScoringPrecondition && report.d_field_replay_precondition_satisfied !== true) {
     process.exitCode = 3;
   }
 }

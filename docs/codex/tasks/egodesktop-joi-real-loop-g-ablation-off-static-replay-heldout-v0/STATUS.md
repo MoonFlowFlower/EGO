@@ -22,7 +22,12 @@ must pass for this row, but no baseline, attribution, or route verdict may be em
 - evaluator report:
   `artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/evaluator/evaluation_report.json`
 - source row hash: `7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1`
-- produced row hash: `ead657e9eb5812b981060eb65f259bac8f1bdd7394ac9a2cf4e3a23d6f68bac3`
+- produced row hash: `bb4f8ed40545a1933d56db1d9860849b31f9e4ac1ad33d33daf5a6b5a4d53b98`
+- split contract status: `calibration_and_heldout_distinct`
+- calibration reference hash: `ba6172ab57fc4b3b2f1f937666969f86610fc23e49377b49c0180d59ee81ccd3`
+- calibration reference pack hash: `958d1af423bd716ad2f53dce152178a9d517af87d684ca60bbd87d878a107a76`
+- heldout observation source hash: `7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1`
+- observation shuffle control: `pass`
 - row condition: `OFF_STATIC_REPLAY_HELDOUT`
 - `llm_replay_id`: `none`
 - `d_field_mode`: `non_llm_adapter_output_only`
@@ -32,34 +37,35 @@ must pass for this row, but no baseline, attribution, or route verdict may be em
 
 ## Acceptance Readback
 
-- `node --test EgoDesktop\tests\joi_real_loop_g_ablation_off_static_replay.test.js`: `2 passed`
-- `node --test EgoDesktop\tests\joi_real_loop_g_ablation_replay_evaluator.test.js`: `6 passed`
+- `node --test EgoDesktop\tests\joi_real_loop_g_ablation_off_static_replay.test.js`: `3 passed`
+- `node --test EgoDesktop\tests\joi_real_loop_g_ablation_replay_evaluator.test.js`: `7 passed`
 - `node --test EgoDesktop\tests\joi_real_loop_g_ablation_backend_snapshot.test.js`: `5 passed`
 - `node --test EgoDesktop\tests\joi_real_loop_g_ablation_trace_runner.test.js`: `7 passed`
 - `node --test EgoDesktop\tests\joi_real_loop_g_ablation_chat_turn_trace.test.js`: `2 passed`
-- `npm test` from `EgoDesktop`: `88 passed`
+- `npm test` from `EgoDesktop`: `90 passed`
 - builder CLI:
   `off_static_replay_heldout_row_written`, `trace_row_count=1`
 - evaluator CLI:
   `status=replay_integrity_preflight_pass_no_verdict`, `blockers=[]`
 - scoring precondition:
   `status=d_field_replay_precondition_pass_no_scoring_verdict`,
-  `scoring_authorized=true`, `verdict_authorized=false`
+  `d_field_replay_precondition_satisfied=true`, `scoring_authorized=false`,
+  `scoring_run_authorized=false`, `verdict_authorized=false`
 - `python -m pytest -q tests\test_egodesktop_gablation_review_repair.py tests\test_ego_operator_desktop_trace_snapshot.py`:
   `6 passed`
 - `python scripts\codex\verify_route_convergence.py`: `pass`
 - `python scripts\codex\verify_repo.py --mode fast`: `pass`
 - `git diff --check`: clean
 - scoped closeout:
-  mutation scope loaded, dirty scoped/task scoped/local-only/unsafe = `6 / 9 / 0 / 0`; remaining blockers were
-  `push_pending`, `no_staged_changes`, and `remote_sync_unavailable`, with push/remote anchor not authorized by this
-  task.
+  mutation scope loaded, post-commit dirty scoped/task scoped/local-only/unsafe = `0 / 0 / 0 / 0`; remaining blockers
+  were `push_pending` and `no_staged_changes`, with push/remote anchor not authorized by this task.
 
 ## What This Proves
 
 One `OFF_STATIC_REPLAY_HELDOUT` static replay heldout row can be rebuilt from complete serialized state plus public
-observation by a callable local non-LLM adapter recompute path, and the 007 precondition can authorize future scoring
-input readiness for this row without authorizing any verdict.
+observation by a callable local non-LLM adapter recompute path, with distinct calibration/heldout source hashes and an
+observation-shuffle control showing the non-LLM adapter output is invariant to heldout observation content. The 007
+D-field replay precondition is satisfied for this row, but scoring and verdict runs remain unauthorized.
 
 ## What This Does Not Prove
 

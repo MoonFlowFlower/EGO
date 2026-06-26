@@ -64,6 +64,14 @@ function sourceCollectOnlyRow() {
   });
 }
 
+function rehashRow(row) {
+  const next = JSON.parse(JSON.stringify(row));
+  next.replay_inputs_hash = hashValue(next.replay_inputs || {});
+  delete next.row_hash;
+  next.row_hash = hashValue(next);
+  return next;
+}
+
 test("OFF_STATIC_REPLAY_HELDOUT row is replayable from serialized state plus observation", () => {
   const row = buildOffStaticReplayHeldoutRow({
     sourceRow: sourceCollectOnlyRow(),
@@ -80,6 +88,13 @@ test("OFF_STATIC_REPLAY_HELDOUT row is replayable from serialized state plus obs
   assert.equal(row.replay_inputs.d_fields_frozen, true);
   assert.equal(row.replay_inputs.llm_dependency, "excluded_from_d");
   assert.equal(row.replay_inputs.offline_replay_function_id, "off_static_replay_heldout_non_llm_adapter_v0");
+  assert.equal(row.replay_inputs.static_replay_provenance.split_contract_status, "calibration_and_heldout_distinct");
+  assert.notEqual(
+    row.replay_inputs.static_replay_provenance.calibration_reference_hash,
+    row.replay_inputs.static_replay_provenance.heldout_observation_source_hash,
+  );
+  assert.equal(row.replay_inputs.observation_shuffle_control.status, "pass");
+  assert.equal(row.replay_inputs.observation_shuffle_control.adapter_output_invariant, true);
   assert.equal(row.replay_inputs.serialized_state_hash, hashValue(row.replay_inputs.complete_serialized_state));
   assert.equal(row.replay_inputs.observation_hash, hashValue(row.replay_inputs.complete_observation));
   assert.equal(row.creature_state_hash, hashValue(row.replay_inputs.complete_serialized_state));
@@ -101,10 +116,40 @@ test("OFF_STATIC_REPLAY_HELDOUT row is replayable from serialized state plus obs
     requiredCondition: "OFF_STATIC_REPLAY_HELDOUT",
   });
   assert.equal(precondition.status, "d_field_replay_precondition_pass_no_scoring_verdict");
-  assert.equal(precondition.scoring_authorized, true);
+  assert.equal(precondition.d_field_replay_precondition_satisfied, true);
+  assert.equal(precondition.scoring_authorized, false);
+  assert.equal(precondition.scoring_run_authorized, false);
+  assert.ok(precondition.scoring_run_authorization_blockers.includes("creature_on_pair_missing"));
+  assert.ok(precondition.scoring_run_authorization_blockers.includes("baseline_battery_not_present"));
+  assert.ok(precondition.scoring_run_authorization_blockers.includes("thresholds_not_frozen_for_scoring"));
   assert.equal(precondition.verdict_authorized, false);
   assert.doesNotMatch(JSON.stringify({ evaluatorReport, precondition }), FORBIDDEN_BASELINE_STOP);
   assert.doesNotMatch(JSON.stringify({ evaluatorReport, precondition }), FORBIDDEN_ATTRIBUTION_PASS);
+});
+
+test("LLM replay exception rejects D-field smuggling despite self-reported flags", () => {
+  const row = buildOffStaticReplayHeldoutRow({
+    sourceRow: sourceCollectOnlyRow(),
+    runId: "run-008-smuggle",
+    turnId: "turn-008-smuggle",
+    tickId: "tick-008-smuggle",
+    seed: "seed-008-smuggle",
+  });
+  const smuggled = rehashRow({
+    ...row,
+    replay_inputs: {
+      ...row.replay_inputs,
+      d_fields: [
+        ...row.replay_inputs.d_fields,
+        "chat_turn.bot_text_hash",
+      ],
+    },
+  });
+
+  const report = evaluateTraceRows([smuggled], { runId: "eval-smuggle" });
+  assert.equal(report.status, "blocked_unreplayable_runtime_trace");
+  assert.ok(report.blockers.includes("llm_or_observation_d_field_present"));
+  assert.ok(report.blockers.includes("non_llm_d_field_whitelist_violation"));
 });
 
 test("builder CLI writes one heldout row and evaluator precondition passes without verdict", () => {
@@ -125,6 +170,10 @@ test("builder CLI writes one heldout row and evaluator precondition passes witho
   const builderStdout = JSON.parse(builder.stdout);
   assert.equal(builderStdout.status, "off_static_replay_heldout_row_written");
   assert.equal(builderStdout.trace_row_count, 1);
+  const builderReport = JSON.parse(fs.readFileSync(path.join(buildOutDir, "builder_report.json"), "utf8"));
+  assert.equal(builderReport.split_contract_status, "calibration_and_heldout_distinct");
+  assert.notEqual(builderReport.calibration_reference_hash, builderReport.heldout_observation_source_hash);
+  assert.equal(builderReport.observation_shuffle_control_status, "pass");
 
   const rowsPath = path.join(buildOutDir, "trace_rows.jsonl");
   const rows = parseTraceRowsJsonl(fs.readFileSync(rowsPath, "utf8"));
@@ -143,7 +192,10 @@ test("builder CLI writes one heldout row and evaluator precondition passes witho
   assert.equal(evaluator.status, 0, evaluator.stderr || evaluator.stdout);
   const report = JSON.parse(fs.readFileSync(path.join(evalOutDir, "evaluation_report.json"), "utf8"));
   assert.equal(report.status, "replay_integrity_preflight_pass_no_verdict");
-  assert.equal(report.scoring_precondition.scoring_authorized, true);
+  assert.equal(report.scoring_precondition.d_field_replay_precondition_satisfied, true);
+  assert.equal(report.scoring_precondition.scoring_authorized, false);
+  assert.equal(report.scoring_precondition.scoring_run_authorized, false);
+  assert.equal(report.scoring_run_authorized, false);
   assert.equal(report.verdict_authorized, false);
   assert.doesNotMatch(JSON.stringify(report), FORBIDDEN_BASELINE_STOP);
   assert.doesNotMatch(JSON.stringify(report), FORBIDDEN_ATTRIBUTION_PASS);

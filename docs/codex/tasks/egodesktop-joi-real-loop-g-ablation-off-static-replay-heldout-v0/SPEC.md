@@ -59,7 +59,8 @@ Acceptance requires:
    `artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/trace/trace_rows.jsonl`
 2. Run the existing evaluator CLI with:
    `--require-007-scoring-precondition --required-condition OFF_STATIC_REPLAY_HELDOUT`
-3. The precondition subreport must show `scoring_authorized=true`, while the overall report still has
+3. The precondition subreport must show `d_field_replay_precondition_satisfied=true`,
+   `scoring_authorized=false`, and `scoring_run_authorized=false`, while the overall report still has
    `verdict_authorized=false` and no baseline/attribution verdict.
 
 ## Hypothesis
@@ -133,6 +134,7 @@ offline replay module/script/tests, revert the evaluator precondition extension,
 - `EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js`
 - `EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js`
 - `EgoDesktop/scripts/build-joi-g-ablation-off-static-replay-heldout.js`
+- `EgoDesktop/scripts/evaluate-joi-g-ablation-replay.js`
 - `EgoDesktop/tests/joi_real_loop_g_ablation_off_static_replay.test.js`
 - `EgoDesktop/tests/joi_real_loop_g_ablation_replay_evaluator.test.js`
 - `artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/`

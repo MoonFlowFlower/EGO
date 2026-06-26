@@ -10,7 +10,7 @@
   "rows_evaluated": 1,
   "aggregation_rule": "any hash failure, leakage finding, missing positive control, or replay blocker prevents verdict",
   "source_hashes": {
-    "evaluator_hash": "8895b99a8c69227a501030dd839e81433711dcf8ef566ef72bf1fdc17df857ee"
+    "evaluator_hash": "e4b8e07ef60af51c8aea1870d3cd10eeecad009474388694ad55efaea4834ffe"
   },
   "leakage_scan_status": "pass",
   "leakage_positive_control_status": "pass",
@@ -30,7 +30,7 @@
       "row_index": 0,
       "run_id": "egodesktop_gablation_008_off_static_replay_heldout",
       "turn_id": "turn-off-static-replay-heldout-0001",
-      "row_hash": "ead657e9eb5812b981060eb65f259bac8f1bdd7394ac9a2cf4e3a23d6f68bac3",
+      "row_hash": "bb4f8ed40545a1933d56db1d9860849b31f9e4ac1ad33d33daf5a6b5a4d53b98",
       "hash_integrity_status": "pass",
       "hash_failures": [],
       "replay_integrity_status": "pass",
@@ -56,7 +56,7 @@
     "required_d_field_mode": "non_llm_adapter_output_only",
     "aggregation_rule": "any missing condition, D-field freeze, complete state, complete observation, replay policy, or offline recompute callable blocks >=007 scoring",
     "source_hashes": {
-      "evaluator_hash": "8895b99a8c69227a501030dd839e81433711dcf8ef566ef72bf1fdc17df857ee"
+      "evaluator_hash": "e4b8e07ef60af51c8aea1870d3cd10eeecad009474388694ad55efaea4834ffe"
     },
     "blockers": [],
     "row_results": [
@@ -65,15 +65,24 @@
         "run_id": "egodesktop_gablation_008_off_static_replay_heldout",
         "condition_id": "OFF_STATIC_REPLAY_HELDOUT",
         "turn_id": "turn-off-static-replay-heldout-0001",
-        "row_hash": "ead657e9eb5812b981060eb65f259bac8f1bdd7394ac9a2cf4e3a23d6f68bac3",
+        "row_hash": "bb4f8ed40545a1933d56db1d9860849b31f9e4ac1ad33d33daf5a6b5a4d53b98",
         "status": "pass",
         "blockers": []
       }
     ],
-    "scoring_authorized": true,
+    "d_field_replay_precondition_satisfied": true,
+    "scoring_authorized": false,
+    "scoring_run_authorized": false,
+    "scoring_run_authorization_blockers": [
+      "baseline_battery_not_present",
+      "creature_on_pair_missing",
+      "thresholds_not_frozen_for_scoring"
+    ],
     "verdict_authorized": false,
     "what_this_proves": "executable replay/D-field scoring precondition gate only",
     "what_this_does_not_prove": "does not prove replay readiness, baseline superiority, attribution, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness"
   },
-  "scoring_authorized": true
+  "d_field_replay_precondition_satisfied": true,
+  "scoring_authorized": false,
+  "scoring_run_authorized": false
 }

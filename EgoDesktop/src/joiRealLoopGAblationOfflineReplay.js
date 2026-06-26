@@ -8,6 +8,11 @@ const {
 
 const CLAIM_CEILING = "egodesktop_real_loop_g_ablation_off_static_replay_heldout_replay_row_contract_only";
 const OFFLINE_REPLAY_FUNCTION_ID = "off_static_replay_heldout_non_llm_adapter_v0";
+const NON_LLM_D_FIELDS = Object.freeze([
+  "chat_turn.expression_name",
+  "adapter_output.expression_name",
+  "output_event.order_index",
+]);
 
 function objectOrEmpty(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -35,13 +40,30 @@ function sourceHashFor(sourceRow) {
   return text(row.row_hash, hashValue(row));
 }
 
+function buildCalibrationReference() {
+  const reference = {
+    schema_version: "ego_desktop.joi_real_loop_off_static_replay_calibration_reference.v0",
+    claim_ceiling: CLAIM_CEILING,
+    reference_pack_id: "off_static_replay_calibration_reference_v0",
+    split_id: "calibration",
+    reference_sequence_id: "calibration_reference_sequence_0001",
+    adapter_seed: {
+      schema_version: "ego_desktop.joi_real_loop_off_static_replay_adapter_seed.v0",
+      expression_name: "看手机",
+      adapter_status: "recomputed_off_static_replay_heldout",
+      output_authority: "none",
+      live2d_parameter_samples: [],
+    },
+  };
+  return {
+    ...reference,
+    reference_pack_hash: hashValue(reference),
+  };
+}
+
 function buildCompleteSerializedState(sourceRow) {
   const source = objectOrEmpty(sourceRow);
-  const sourceAdapter = objectOrEmpty(source.adapter_output);
-  const expressionName = text(
-    source.chat_turn && source.chat_turn.expression_name,
-    text(sourceAdapter.expression_name, "记笔记"),
-  );
+  const calibrationReference = buildCalibrationReference();
 
   return {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_state.v0",
@@ -50,13 +72,8 @@ function buildCompleteSerializedState(sourceRow) {
     state_source: "off_static_replay_heldout_serialized_state",
     source_row_hash: sourceHashFor(source),
     reference_sequence_id: "off_static_replay_heldout_v0",
-    adapter_seed: {
-      schema_version: "ego_desktop.joi_real_loop_off_static_replay_adapter_seed.v0",
-      expression_name: expressionName,
-      adapter_status: "recomputed_off_static_replay_heldout",
-      output_authority: "none",
-      live2d_parameter_samples: [],
-    },
+    calibration_reference: calibrationReference,
+    adapter_seed: calibrationReference.adapter_seed,
     d_field_mode: "non_llm_adapter_output_only",
     llm_dependency: "excluded_from_d",
   };
@@ -71,7 +88,9 @@ function buildCompleteObservation(sourceRow) {
     condition: "OFF_STATIC_REPLAY_HELDOUT",
     prompt_id: text(source.prompt_id, "prompt-heldout"),
     prompt_pack: text(source.prompt_pack_hash, text(sourceInputs.prompt_pack, "prompt-pack-heldout")),
+    prompt_pack_hash: text(source.prompt_pack_hash, text(sourceInputs.prompt_pack, "prompt-pack-heldout")),
     split: "heldout",
+    split_id: "heldout",
     llm_mode: "replay_locked",
     source_row_hash: sourceHashFor(source),
     user_text_hash: text(sourceInputs.user_text_hash, ""),
@@ -79,9 +98,8 @@ function buildCompleteObservation(sourceRow) {
   };
 }
 
-function recomputeOffStaticReplayHeldoutAdapter({ serializedState, observation }) {
+function recomputeOffStaticReplayHeldoutAdapter({ serializedState }) {
   const state = objectOrEmpty(serializedState);
-  const observed = objectOrEmpty(observation);
   const adapterSeed = objectOrEmpty(state.adapter_seed);
   const samples = Array.isArray(adapterSeed.live2d_parameter_samples)
     ? adapterSeed.live2d_parameter_samples.map((sample) => clone(sample))
@@ -96,10 +114,45 @@ function recomputeOffStaticReplayHeldoutAdapter({ serializedState, observation }
     condition: "OFF_STATIC_REPLAY_HELDOUT",
     expression_name: text(adapterSeed.expression_name, ""),
     live2d_parameter_samples: samples,
-    source_row_hash: text(state.source_row_hash, text(observed.source_row_hash, "")),
+    source_row_hash: text(state.source_row_hash, ""),
     d_field_mode: "non_llm_adapter_output_only",
     llm_dependency: "excluded_from_d",
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
+  };
+}
+
+function buildObservationShuffleControl({ completeState, completeObservation, adapterOutput }) {
+  const shuffledObservation = {
+    ...completeObservation,
+    prompt_id: `${text(completeObservation.prompt_id, "prompt-heldout")}__shuffle_control`,
+    prompt_pack: `${text(completeObservation.prompt_pack, "prompt-pack-heldout")}__shuffle_control`,
+    prompt_pack_hash: hashValue({
+      source_prompt_pack_hash: completeObservation.prompt_pack_hash,
+      control: "observation_content_shuffle",
+    }),
+    user_text_hash: hashValue({
+      source_user_text_hash: completeObservation.user_text_hash,
+      control: "observation_content_shuffle",
+    }),
+    source_row_hash: hashValue({
+      source_row_hash: completeObservation.source_row_hash,
+      control: "observation_content_shuffle",
+    }),
+  };
+  const recomputed = recomputeOffStaticReplayHeldoutAdapter({
+    serializedState: completeState,
+    observation: shuffledObservation,
+  });
+  const invariant = hashValue(recomputed) === hashValue(adapterOutput);
+  return {
+    schema_version: "ego_desktop.joi_real_loop_off_static_replay_observation_shuffle_control.v0",
+    status: invariant ? "pass" : "fail",
+    adapter_output_invariant: invariant,
+    producer_function: "buildObservationShuffleControl",
+    original_observation_hash: hashValue(completeObservation),
+    shuffled_observation_hash: hashValue(shuffledObservation),
+    recomputed_adapter_output_hash: hashValue(recomputed),
+    original_adapter_output_hash: hashValue(adapterOutput),
   };
 }
 
@@ -117,6 +170,23 @@ function buildOffStaticReplayHeldoutRow({
     serializedState: completeState,
     observation: completeObservation,
   });
+  const observationShuffleControl = buildObservationShuffleControl({
+    completeState,
+    completeObservation,
+    adapterOutput,
+  });
+  const staticReplayProvenance = {
+    schema_version: "ego_desktop.joi_real_loop_off_static_replay_provenance.v0",
+    split_contract_status: "calibration_and_heldout_distinct",
+    calibration_split_id: "calibration",
+    heldout_split_id: "heldout",
+    calibration_reference_hash: hashValue(completeState.calibration_reference),
+    calibration_reference_pack_hash: completeState.calibration_reference.reference_pack_hash,
+    heldout_observation_source_hash: sourceHashFor(source),
+    heldout_prompt_pack_hash: completeObservation.prompt_pack_hash,
+    input_blind_contract: "adapter_output_recomputed_from_calibration_reference_state_not_heldout_observation_content",
+    observation_shuffle_control_hash: hashValue(observationShuffleControl),
+  };
   const replayInputs = {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_inputs.v0",
     claim_ceiling: CLAIM_CEILING,
@@ -125,14 +195,19 @@ function buildOffStaticReplayHeldoutRow({
     replay_policy: "offline_non_llm_adapter_recompute_v0",
     d_field_mode: "non_llm_adapter_output_only",
     d_fields_frozen: true,
-    d_fields: [
-      "chat_turn.expression_name",
-      "adapter_output.expression_name",
-      "output_event.order_index",
-    ],
+    d_fields: [...NON_LLM_D_FIELDS],
+    d_field_provenance: {
+      schema_version: "ego_desktop.joi_real_loop_non_llm_d_field_provenance.v0",
+      mode: "offline_adapter_whitelist_v0",
+      allowed_fields: [...NON_LLM_D_FIELDS],
+      excluded_sources: ["llm_text", "complete_observation", "public_inputs", "renderer_idle_params"],
+      producer_function: "recomputeOffStaticReplayHeldoutAdapter",
+    },
     llm_dependency: "excluded_from_d",
     complete_serialized_state: completeState,
     complete_observation: completeObservation,
+    static_replay_provenance: staticReplayProvenance,
+    observation_shuffle_control: observationShuffleControl,
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
   };
   const sourceHashes = objectOrEmpty(source.source_hashes);
@@ -145,6 +220,8 @@ function buildOffStaticReplayHeldoutRow({
     sourceHashes: {
       ...sourceHashes,
       source_row_hash: sourceHashFor(source),
+      calibration_reference_hash: staticReplayProvenance.calibration_reference_hash,
+      heldout_observation_source_hash: staticReplayProvenance.heldout_observation_source_hash,
       offline_replay_module_hash: hashValue({
         function_id: OFFLINE_REPLAY_FUNCTION_ID,
         policy: "offline_non_llm_adapter_recompute_v0",
@@ -186,6 +263,10 @@ function renderBuilderReport(report) {
     `- source_rows_path: \`${report.source_rows_path}\``,
     `- trace_rows_path: \`${report.trace_rows_path}\``,
     `- row_hash: \`${report.row_hash}\``,
+    `- split_contract_status: \`${report.split_contract_status}\``,
+    `- calibration_reference_hash: \`${report.calibration_reference_hash}\``,
+    `- heldout_observation_source_hash: \`${report.heldout_observation_source_hash}\``,
+    `- observation_shuffle_control_status: \`${report.observation_shuffle_control_status}\``,
     "",
     "## Current Meaning",
     "",
@@ -233,6 +314,13 @@ function writeOffStaticReplayHeldoutRows({
     source_row_hash: sourceHashFor(sourceRows[0]),
     row_hash: row.row_hash,
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
+    split_contract_status: row.replay_inputs.static_replay_provenance.split_contract_status,
+    calibration_reference_hash: row.replay_inputs.static_replay_provenance.calibration_reference_hash,
+    calibration_reference_pack_hash: row.replay_inputs.static_replay_provenance.calibration_reference_pack_hash,
+    heldout_observation_source_hash: row.replay_inputs.static_replay_provenance.heldout_observation_source_hash,
+    heldout_prompt_pack_hash: row.replay_inputs.static_replay_provenance.heldout_prompt_pack_hash,
+    observation_shuffle_control_status: row.replay_inputs.observation_shuffle_control.status,
+    observation_shuffle_control_hash: row.replay_inputs.static_replay_provenance.observation_shuffle_control_hash,
     verdict_authorized: false,
   };
   fs.writeFileSync(path.join(resolvedOutDir, "builder_report.json"), JSON.stringify(report, null, 2), "utf8");
@@ -242,6 +330,7 @@ function writeOffStaticReplayHeldoutRows({
 
 module.exports = {
   CLAIM_CEILING,
+  NON_LLM_D_FIELDS,
   OFFLINE_REPLAY_FUNCTION_ID,
   buildOffStaticReplayHeldoutRow,
   recomputeOffStaticReplayHeldoutAdapter,

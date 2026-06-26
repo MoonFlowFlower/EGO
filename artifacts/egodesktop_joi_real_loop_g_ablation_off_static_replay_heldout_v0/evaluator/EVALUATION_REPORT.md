@@ -8,11 +8,12 @@
 
 ## Current Meaning
 
-This is replay/leakage evaluator contract only. It can check row hash integrity and leakage scanner positive
-controls, but the listed replay blockers prevent verdicts: no real replay, baseline, or attribution claim is authorized.
+This is replay/leakage evaluator contract only. The preflight passes without authorizing a verdict, baseline,
+attribution claim, or route decision. No scoring run is authorized by this report.
 
 ## Blockers
 
+- `none`
 
 ## What This Does Not Prove
 
