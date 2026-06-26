@@ -3839,13 +3839,13 @@ tasks:
     title: "EgoDesktop: Joi real-loop G-ABLATION replay precondition v0"
     kind: task
     parent: EGODESKTOP-GABLATION-006
-    status: active
+    status: accepted
     layer: egodesktop_real_loop_replay_precondition
     owner: codex
     observation_class: deterministic_local
-    evidence_level: E2
+    evidence_level: E3
     claim_ceiling: "egodesktop_real_loop_g_ablation_replay_precondition_contract_only"
-    next_action: "Implement the executable 007 scoring-precondition gate so current collect-only rows abort before any baseline/scoring path. Do not implement baseline scoring or attribution labels in this slice."
+    next_action: "Accepted locally: executable 007 scoring-precondition gate blocks current collect-only 006 rows before any baseline/scoring path, writes blocked report, exits non-zero under explicit precondition flag, and keeps verdict_authorized=false. Next active slice is EGODESKTOP-GABLATION-008: produce one replayable OFF_STATIC_REPLAY_HELDOUT non-LLM D row without scoring."
     acceptance:
       - "Task card cites Claude source-limited NO_BLOCKING_FINDINGS for 006A and treats carry-forward items as pre-scoring gates."
       - "Tests are written before implementation and prove current collect-only rows block when a 007 scoring precondition is explicitly requested."
@@ -3860,6 +3860,36 @@ tasks:
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-precondition-v0/STATUS.md"
       - "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js"
       - "EgoDesktop/scripts/evaluate-joi-g-ablation-replay.js"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-008
+    title: "EgoDesktop: Joi real-loop G-ABLATION OFF_STATIC_REPLAY_HELDOUT replay row v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-007
+    status: accepted
+    layer: egodesktop_real_loop_off_static_replay_heldout
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "egodesktop_real_loop_g_ablation_off_static_replay_heldout_replay_row_contract_only"
+    next_action: "Accepted locally: one OFF_STATIC_REPLAY_HELDOUT non-LLM D row was built from the current 006 trace row, complete serialized state plus observation are embedded, offline adapter recompute passes, evaluator replay integrity passes with blockers=[], and the 007 scoring precondition reports scoring_authorized=true while verdict_authorized=false. Next separate slice may build the paired CREATURE_ON non-LLM D replay row or stop for external review; do not score or compare in 008."
+    acceptance:
+      - "Task card preserves default-off, explicit CLI-only, no-program-state-update, and no-evidence-ledger-update boundaries."
+      - "Tests are written before implementation and prove row construction, complete state/observation serialization, offline adapter recompute, and evaluator precondition pass."
+      - "The row uses condition_id OFF_STATIC_REPLAY_HELDOUT, llm_replay_id none, d_field_mode non_llm_adapter_output_only, d_fields_frozen true, and llm_dependency excluded_from_d."
+      - "Evaluator precondition passes for the row while verdict_authorized remains false and no baseline or attribution verdict is emitted."
+      - "Artifact path: artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/trace/trace_rows.jsonl; produced row_hash ead657e9eb5812b981060eb65f259bac8f1bdd7394ac9a2cf4e3a23d6f68bac3."
+      - "No baseline score, baseline_saturated_stop, attribution verdict, route advancement, product benefit, agency, emotion, subjectivity, consciousness, alive-status, Bar-2 claim, push, tag, or remote anchor is authorized by this card."
+    rollback: "Delete artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/, docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-off-static-replay-heldout-v0/, remove this task-board entry, delete the offline replay module/script/tests, revert evaluator precondition extension, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-off-static-replay-heldout-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-off-static-replay-heldout-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-off-static-replay-heldout-v0/STATUS.md"
+      - "EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js"
+      - "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js"
+      - "EgoDesktop/scripts/build-joi-g-ablation-off-static-replay-heldout.js"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/evaluator/evaluation_report.json"
     external_refs:
       github_issue: null
 

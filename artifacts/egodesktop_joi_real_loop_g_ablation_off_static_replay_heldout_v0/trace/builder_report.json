@@ -1,0 +1,13 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_off_static_replay_builder_report.v0",
+  "status": "off_static_replay_heldout_row_written",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_off_static_replay_heldout_replay_row_contract_only",
+  "producer_function": "writeOffStaticReplayHeldoutRows",
+  "source_rows_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0\\trace\\trace_rows.jsonl",
+  "trace_rows_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0\\trace\\trace_rows.jsonl",
+  "trace_row_count": 1,
+  "source_row_hash": "7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1",
+  "row_hash": "ead657e9eb5812b981060eb65f259bac8f1bdd7394ac9a2cf4e3a23d6f68bac3",
+  "offline_replay_function_id": "off_static_replay_heldout_non_llm_adapter_v0",
+  "verdict_authorized": false
+}

@@ -3,6 +3,10 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const { hashValue } = require("./joiRealLoopGAblationHarness");
+const {
+  OFFLINE_REPLAY_FUNCTION_ID,
+  recomputeOffStaticReplayHeldoutAdapter,
+} = require("./joiRealLoopGAblationOfflineReplay");
 
 const CLAIM_CEILING = "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only";
 const SCORING_PRECONDITION_CLAIM_CEILING =
@@ -152,7 +156,9 @@ function checkReplayIntegrity(row) {
   if (replayInputs.replay_policy === "trace_runner_v0_collect_only") {
     blockers.push("collect_only_replay_policy");
   }
-  if (!row.llm_replay_id || row.llm_replay_id === "none") {
+  const nonLlmDExcludesLlm = replayInputs.d_field_mode === "non_llm_adapter_output_only"
+    && replayInputs.llm_dependency === "excluded_from_d";
+  if (!nonLlmDExcludesLlm && (!row.llm_replay_id || row.llm_replay_id === "none")) {
     blockers.push("missing_llm_replay_id");
   }
   return {
@@ -170,15 +176,25 @@ function isNonEmptyObject(value) {
   return Boolean(object && Object.keys(object).length > 0);
 }
 
+function resolveOfflineReplayFunction(row, options = {}) {
+  if (typeof options.offlineReplayFunction === "function") {
+    return options.offlineReplayFunction;
+  }
+  const replayInputs = objectOrNull(row && row.replay_inputs) || {};
+  const functionId = String(replayInputs.offline_replay_function_id || "");
+  if (functionId === OFFLINE_REPLAY_FUNCTION_ID) {
+    return recomputeOffStaticReplayHeldoutAdapter;
+  }
+  return null;
+}
+
 function checkScoringPreconditionRow(row, options = {}) {
   const blockers = [];
   const replayInputs = objectOrNull(row && row.replay_inputs) || {};
   const requiredCondition = String(options.requiredCondition || "");
   const completeState = objectOrNull(replayInputs.complete_serialized_state);
   const completeObservation = objectOrNull(replayInputs.complete_observation);
-  const offlineReplayFunction = typeof options.offlineReplayFunction === "function"
-    ? options.offlineReplayFunction
-    : null;
+  const offlineReplayFunction = resolveOfflineReplayFunction(row, options);
 
   if (requiredCondition && String(row.condition_id || "") !== requiredCondition) {
     blockers.push(
