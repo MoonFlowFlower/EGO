@@ -1,0 +1,11 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-stage-card-v0
+expected_mutation_surface:
+  - docs-only EGO-side stage card for future Joi real-loop G-ABLATION harness
+  - local task-board entry for EGODESKTOP-GABLATION-001
+  - no runtime, program-state, evidence-ledger, or default product mutation
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/
+  - Tasks/TASK_BOARD.yaml
+  - artifacts/task_board/outbox.jsonl
+claim_ceiling: "egodesktop_real_loop_g_ablation_stage_card_only; no runtime efficacy, stable benefit, route-B pass, EGO integration, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

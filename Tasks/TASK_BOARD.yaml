@@ -3656,6 +3656,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-001
+    title: "EgoDesktop: Joi real-loop G-ABLATION stage card v0"
+    kind: stage_card
+    parent: null
+    status: planned
+    layer: egodesktop_real_loop_attribution_governance
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E2
+    claim_ceiling: "egodesktop_real_loop_g_ablation_stage_card_only"
+    next_action: "Review the docs-only EGO-side stage card. If accepted, create a separate default-off implementation task for an EgoDesktop real-loop harness that obeys the accepted joi-demo 001C contract. Do not modify runtime from this stage card."
+    acceptance:
+      - "Stage Card cites the accepted joi-demo real-loop G-ABLATION 001C contract and commit."
+      - "Stage Card forbids default runtime enablement, EgoOperator memory/gate/approval/transport/proactive changes, claim upgrades, push/tag/remote anchor, and product/EGO pass wording."
+      - "Future implementation surface is limited to explicit non-default EgoDesktop harness flags, trace capture, baselines, replay/leakage checks, and local artifacts."
+      - "Same-access reproducer battery, heldout input-blind static replay, LLM replay lock, renderer-idle exclusion, and privileged-state invalidation are preserved."
+      - "No runtime files are changed by this docs-only stage."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/ and remove EGODESKTOP-GABLATION-001 from Tasks/TASK_BOARD.yaml."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STAGE_CARD.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STATUS.md"
+      - "../joi-demo/JOI-DEMO-GRAD-G-ABLATION-RUNTIME-001C-REAL-LOOP-CARD.md"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
