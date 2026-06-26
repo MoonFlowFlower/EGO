@@ -1,0 +1,104 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_replay_leakage_evaluation.v0",
+  "status": "blocked_d_field_replay_precondition_not_satisfied",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only",
+  "run_id": "egodesktop_gablation_007_precondition_current_006_row",
+  "producer_function": "evaluateTraceRows",
+  "input_artifacts": [
+    "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0\\trace\\trace_rows.jsonl"
+  ],
+  "rows_evaluated": 1,
+  "aggregation_rule": "any hash failure, leakage finding, missing positive control, or replay blocker prevents verdict",
+  "source_hashes": {
+    "evaluator_hash": "fe23444d1ad1d2ffb039b133a48db448f1d735affbded4a965b575d70fc31c0b"
+  },
+  "leakage_scan_status": "pass",
+  "leakage_positive_control_status": "pass",
+  "leakage_positive_control_findings": [
+    {
+      "path": "row.adapter_output.memory_write",
+      "reason": "runtime_authority_field"
+    },
+    {
+      "path": "row.public_inputs.future_target_label",
+      "reason": "future_or_target_leakage_field"
+    }
+  ],
+  "blockers": [
+    "collect_only_replay_policy",
+    "complete_observation_serialized_missing",
+    "complete_state_serialized_missing",
+    "condition_not_off_static_replay_heldout",
+    "d_field_freeze_missing",
+    "missing_llm_replay_id",
+    "offline_replay_function_unavailable"
+  ],
+  "row_results": [
+    {
+      "row_index": 0,
+      "run_id": "egodesktop_backend_trace_snapshot_v0_smoke",
+      "turn_id": "turn_1",
+      "row_hash": "7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1",
+      "hash_integrity_status": "pass",
+      "hash_failures": [],
+      "replay_integrity_status": "blocked_unreplayable_runtime_trace",
+      "replay_blockers": [
+        "collect_only_replay_policy",
+        "missing_llm_replay_id"
+      ],
+      "leakage_scan_status": "pass",
+      "leakage_findings": []
+    }
+  ],
+  "verdict_authorized": false,
+  "what_this_proves": "replay/leakage evaluator contract only",
+  "what_this_does_not_prove": "does not prove real-loop effect, baseline superiority, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness",
+  "scoring_precondition": {
+    "schema_version": "ego_desktop.joi_real_loop_d_field_replay_precondition.v0",
+    "status": "blocked_d_field_replay_precondition_not_satisfied",
+    "claim_ceiling": "egodesktop_real_loop_g_ablation_replay_precondition_contract_only",
+    "run_id": "egodesktop_gablation_007_precondition_current_006_row__scoring_precondition",
+    "producer_function": "evaluateScoringPreconditions",
+    "input_artifacts": [
+      "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0\\trace\\trace_rows.jsonl"
+    ],
+    "rows_evaluated": 1,
+    "required_condition": "OFF_STATIC_REPLAY_HELDOUT",
+    "required_d_field_mode": "non_llm_adapter_output_only",
+    "aggregation_rule": "any missing condition, D-field freeze, complete state, complete observation, replay policy, or offline recompute callable blocks >=007 scoring",
+    "source_hashes": {
+      "evaluator_hash": "fe23444d1ad1d2ffb039b133a48db448f1d735affbded4a965b575d70fc31c0b"
+    },
+    "blockers": [
+      "collect_only_replay_policy",
+      "complete_observation_serialized_missing",
+      "complete_state_serialized_missing",
+      "condition_not_off_static_replay_heldout",
+      "d_field_freeze_missing",
+      "offline_replay_function_unavailable"
+    ],
+    "row_results": [
+      {
+        "row_index": 0,
+        "run_id": "egodesktop_backend_trace_snapshot_v0_smoke",
+        "condition_id": "CURRENT_SHIM",
+        "turn_id": "turn_1",
+        "row_hash": "7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1",
+        "status": "blocked",
+        "blockers": [
+          "collect_only_replay_policy",
+          "complete_observation_serialized_missing",
+          "complete_state_serialized_missing",
+          "condition_not_off_static_replay_heldout",
+          "d_field_freeze_missing",
+          "offline_replay_function_unavailable"
+        ]
+      }
+    ],
+    "scoring_authorized": false,
+    "verdict_authorized": false,
+    "what_this_proves": "executable replay/D-field scoring precondition gate only",
+    "what_this_does_not_prove": "does not prove replay readiness, baseline superiority, attribution, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness"
+  },
+  "scoring_authorized": false
+}

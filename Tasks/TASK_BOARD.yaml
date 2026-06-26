@@ -3811,7 +3811,7 @@ tasks:
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "egodesktop_real_loop_g_ablation_backend_trace_snapshot_contract_only"
-    next_action: "Blocked pending Claude re-review after source-limited BLOCKING_FINDINGS: 006A repairs downgraded the row label to schema_valid_collect_only_snapshot, attached minimal surface and D-field replay precondition, corrected mutation-scope closeout readback, and added blocker-delta/placeholder-positive-control tests plus artifact. Next action is send CLAUDE_REVIEW_PACKET_006A_AFTER_BLOCKER_REPAIR.md; do not implement 007 until re-review clears or narrows blockers."
+    next_action: "Accepted for the narrow source-limited 006A surface claim after Claude returned NO_BLOCKING_FINDINGS: 006 rows remain schema_valid_collect_only_snapshot and collect_only. Carry forward before any 007 scoring: executable precondition abort gate, consistent test-count readback, git-pinned blocker-delta provenance, honest mutation scope, low-signal leakage note, and trace_id/replay_id deferred status. Next active slice is EGODESKTOP-GABLATION-007."
     acceptance:
       - "Task card cites EGODESKTOP-GABLATION-005 and preserves default-off, no-authority, no-program-state-update, and no-evidence-ledger-update boundaries."
       - "Tests were written before implementation and prove backend snapshot sanitization, no fabricated LLM replay id, adapter output construction, main-process trace payload wiring, and evaluator blocker reduction."
@@ -3832,6 +3832,34 @@ tasks:
       - "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js"
       - "artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/trace/trace_rows.jsonl"
       - "artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/evaluator/evaluation_report.json"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-007
+    title: "EgoDesktop: Joi real-loop G-ABLATION replay precondition v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-006
+    status: active
+    layer: egodesktop_real_loop_replay_precondition
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E2
+    claim_ceiling: "egodesktop_real_loop_g_ablation_replay_precondition_contract_only"
+    next_action: "Implement the executable 007 scoring-precondition gate so current collect-only rows abort before any baseline/scoring path. Do not implement baseline scoring or attribution labels in this slice."
+    acceptance:
+      - "Task card cites Claude source-limited NO_BLOCKING_FINDINGS for 006A and treats carry-forward items as pre-scoring gates."
+      - "Tests are written before implementation and prove current collect-only rows block when a 007 scoring precondition is explicitly requested."
+      - "Evaluator/CLI writes a blocked report and exits non-zero under --require-007-scoring-precondition until non-LLM D fields are frozen, complete state and observation are serialized, and an offline replay callable is available."
+      - "Current leakage pass is recorded as low-signal until CREATURE_ON privileged/stateful rows exist."
+      - "trace_id/replay_id distinction remains deferred until any LLM-modulated D field is introduced."
+      - "No baseline score, attribution verdict, route advancement, product benefit, agency, emotion, subjectivity, consciousness, alive-status, Bar-2 claim, push, tag, or remote anchor is authorized by this card."
+    rollback: "Delete artifacts/egodesktop_joi_real_loop_g_ablation_replay_precondition_v0/, docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-precondition-v0/, remove this task-board entry, revert the evaluator/CLI/test changes, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-precondition-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-precondition-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-precondition-v0/STATUS.md"
+      - "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js"
+      - "EgoDesktop/scripts/evaluate-joi-g-ablation-replay.js"
     external_refs:
       github_issue: null
 

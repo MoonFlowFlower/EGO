@@ -7,7 +7,7 @@
 - enabled: `false_by_default`
 - real_trigger_evidence: `electron_smoke_backend_trace_snapshot_row`
 - runtime_authority: `none`
-- claude_reviewer_status: `BLOCKING_FINDINGS_SOURCE_LIMITED__006A_REPAIRS_APPLIED_PENDING_RE_REVIEW`
+- claude_reviewer_status: `NO_BLOCKING_FINDINGS_SOURCE_LIMITED_FOR_006A_NARROW_CLAIM`
 
 ## Current Result
 
@@ -112,12 +112,22 @@ Rows are still unreplayable for verdict purposes because the row uses `trace_run
 true LLM replay id exists. The backend trace hash and LLM metadata hash are trace identifiers only; they are not replay
 contracts.
 
+## Carry-Forward To 007
+
+- The 007 precondition must be enforced by executable evaluator/CLI abort logic, not only by this status file.
+- The current leakage pass is low-signal because the 006 row lacks CREATURE_ON privileged/stateful fields; leakage verdict
+  work is deferred until CREATURE_ON rows exist.
+- The trace_id/replay_id distinction is deferred, not repaired. Add a schema-level `trace_id != replay_id` assertion
+  before any LLM-modulated `D` field appears.
+- Report test counts with a consistent command scope and confirm no net test deletion before 007 closeout.
+- Generate future blocker-delta evidence from a git-pinned evaluator run, not static literal blocker lists.
+- Keep mutation scope narrow and prove it with `codex_session_guard.py --mutation-scope`.
+
 ## Next Minimal Closed-Loop Action
 
-Send `CLAUDE_REVIEW_PACKET_006A_AFTER_BLOCKER_REPAIR.md` for re-review. Do not implement 007 until the source-limited
-blockers are either cleared by Claude or narrowed to a specific local repair. If cleared, 007 may only satisfy
-`D_FIELD_REPLAY_PRECONDITION_007.md`: freeze non-LLM `D` fields, serialize complete state plus observation, and prove
-offline recomputation. Do not add baseline verdict logic while rows remain collect-only or `llm_replay_id: none`.
+Proceed to `EGODESKTOP-GABLATION-007`: convert `D_FIELD_REPLAY_PRECONDITION_007.md` into an executable evaluator/CLI
+abort gate. Do not add baseline verdict logic while rows remain collect-only or while complete state/observation
+serialization is absent.
 
 ## What This Does Not Prove
 

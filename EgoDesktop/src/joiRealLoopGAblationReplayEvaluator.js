@@ -5,6 +5,8 @@ const path = require("node:path");
 const { hashValue } = require("./joiRealLoopGAblationHarness");
 
 const CLAIM_CEILING = "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only";
+const SCORING_PRECONDITION_CLAIM_CEILING =
+  "egodesktop_real_loop_g_ablation_replay_precondition_contract_only";
 
 const LEAKAGE_FIELD_NAMES = new Set([
   "future_info",
@@ -159,6 +161,73 @@ function checkReplayIntegrity(row) {
   };
 }
 
+function objectOrNull(value) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+}
+
+function isNonEmptyObject(value) {
+  const object = objectOrNull(value);
+  return Boolean(object && Object.keys(object).length > 0);
+}
+
+function checkScoringPreconditionRow(row, options = {}) {
+  const blockers = [];
+  const replayInputs = objectOrNull(row && row.replay_inputs) || {};
+  const requiredCondition = String(options.requiredCondition || "");
+  const completeState = objectOrNull(replayInputs.complete_serialized_state);
+  const completeObservation = objectOrNull(replayInputs.complete_observation);
+  const offlineReplayFunction = typeof options.offlineReplayFunction === "function"
+    ? options.offlineReplayFunction
+    : null;
+
+  if (requiredCondition && String(row.condition_id || "") !== requiredCondition) {
+    blockers.push(
+      requiredCondition === "OFF_STATIC_REPLAY_HELDOUT"
+        ? "condition_not_off_static_replay_heldout"
+        : "condition_not_required_condition",
+    );
+  }
+  if (replayInputs.d_field_mode !== "non_llm_adapter_output_only" || replayInputs.d_fields_frozen !== true) {
+    blockers.push("d_field_freeze_missing");
+  }
+  if (!isNonEmptyObject(completeState)) {
+    blockers.push("complete_state_serialized_missing");
+  } else if (replayInputs.serialized_state_hash !== hashValue(completeState)) {
+    blockers.push("complete_state_hash_mismatch");
+  }
+  if (!isNonEmptyObject(completeObservation)) {
+    blockers.push("complete_observation_serialized_missing");
+  } else if (replayInputs.observation_hash !== hashValue(completeObservation)) {
+    blockers.push("complete_observation_hash_mismatch");
+  }
+  if (replayInputs.replay_policy === "trace_runner_v0_collect_only") {
+    blockers.push("collect_only_replay_policy");
+  }
+  if (!replayInputs.replay_policy) {
+    blockers.push("replay_policy_missing");
+  }
+  if (!offlineReplayFunction) {
+    blockers.push("offline_replay_function_unavailable");
+  } else if (isNonEmptyObject(completeState) && isNonEmptyObject(completeObservation)) {
+    try {
+      const recomputed = offlineReplayFunction({
+        serializedState: completeState,
+        observation: completeObservation,
+        row,
+      });
+      if (hashValue(recomputed || {}) !== row.adapter_output_hash) {
+        blockers.push("offline_adapter_recompute_mismatch");
+      }
+    } catch (_error) {
+      blockers.push("offline_adapter_recompute_error");
+    }
+  }
+  return {
+    status: blockers.length ? "blocked" : "pass",
+    blockers: sortedUnique(blockers),
+  };
+}
+
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
 }
@@ -286,6 +355,52 @@ function evaluateTraceRows(rows, options = {}) {
   };
 }
 
+function evaluateScoringPreconditions(rows, options = {}) {
+  const safeRows = Array.isArray(rows) ? rows : [];
+  const rowResults = safeRows.map((row, index) => {
+    const result = checkScoringPreconditionRow(row, options);
+    return {
+      row_index: index,
+      run_id: String(row.run_id || ""),
+      condition_id: String(row.condition_id || ""),
+      turn_id: String(row.turn_id || ""),
+      row_hash: String(row.row_hash || ""),
+      status: result.status,
+      blockers: result.blockers,
+    };
+  });
+  const blockers = sortedUnique([
+    ...(safeRows.length === 0 ? ["no_trace_rows"] : []),
+    ...rowResults.flatMap((result) => result.blockers),
+  ]);
+  const passed = safeRows.length > 0 && blockers.length === 0;
+  return {
+    schema_version: "ego_desktop.joi_real_loop_d_field_replay_precondition.v0",
+    status: passed
+      ? "d_field_replay_precondition_pass_no_scoring_verdict"
+      : "blocked_d_field_replay_precondition_not_satisfied",
+    claim_ceiling: SCORING_PRECONDITION_CLAIM_CEILING,
+    run_id: String(options.runId || "joi_g_ablation_d_field_replay_precondition_v0"),
+    producer_function: "evaluateScoringPreconditions",
+    input_artifacts: options.inputArtifacts || [],
+    rows_evaluated: safeRows.length,
+    required_condition: String(options.requiredCondition || ""),
+    required_d_field_mode: "non_llm_adapter_output_only",
+    aggregation_rule:
+      "any missing condition, D-field freeze, complete state, complete observation, replay policy, or offline recompute callable blocks >=007 scoring",
+    source_hashes: {
+      evaluator_hash: sha256File(__filename),
+    },
+    blockers,
+    row_results: rowResults,
+    scoring_authorized: passed,
+    verdict_authorized: false,
+    what_this_proves: "executable replay/D-field scoring precondition gate only",
+    what_this_does_not_prove:
+      "does not prove replay readiness, baseline superiority, attribution, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness",
+  };
+}
+
 function renderEvaluationReport(report) {
   const safe = report && typeof report === "object" ? report : {};
   return [
@@ -315,7 +430,13 @@ function renderEvaluationReport(report) {
   ].join("\n");
 }
 
-function writeEvaluationReport({ rowsPath, outDir, runId }) {
+function writeEvaluationReport({
+  rowsPath,
+  outDir,
+  runId,
+  requireScoringPrecondition = false,
+  requiredCondition = "",
+}) {
   if (!rowsPath) {
     throw new Error("rowsPath is required");
   }
@@ -329,6 +450,22 @@ function writeEvaluationReport({ rowsPath, outDir, runId }) {
     runId,
     inputArtifacts: [resolvedRowsPath],
   });
+  if (requireScoringPrecondition) {
+    const scoringPrecondition = evaluateScoringPreconditions(rows, {
+      runId: `${runId || "joi_g_ablation_replay_leakage_eval_v0"}__scoring_precondition`,
+      inputArtifacts: [resolvedRowsPath],
+      requiredCondition,
+    });
+    report.scoring_precondition = scoringPrecondition;
+    report.scoring_authorized = scoringPrecondition.scoring_authorized;
+    if (!scoringPrecondition.scoring_authorized) {
+      report.status = scoringPrecondition.status;
+      report.blockers = sortedUnique([
+        ...(report.blockers || []),
+        ...(scoringPrecondition.blockers || []),
+      ]);
+    }
+  }
   fs.mkdirSync(resolvedOutDir, { recursive: true });
   fs.writeFileSync(path.join(resolvedOutDir, "evaluation_report.json"), JSON.stringify(report, null, 2), "utf8");
   fs.writeFileSync(path.join(resolvedOutDir, "EVALUATION_REPORT.md"), renderEvaluationReport(report), "utf8");
@@ -337,6 +474,8 @@ function writeEvaluationReport({ rowsPath, outDir, runId }) {
 
 module.exports = {
   CLAIM_CEILING,
+  SCORING_PRECONDITION_CLAIM_CEILING,
+  evaluateScoringPreconditions,
   evaluateTraceRows,
   injectLeakagePositiveControl,
   parseTraceRowsJsonl,

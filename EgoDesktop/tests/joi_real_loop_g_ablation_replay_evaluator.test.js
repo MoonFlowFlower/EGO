@@ -7,6 +7,7 @@ const test = require("node:test");
 const { buildJoiRealLoopTraceRow, hashValue } = require("../src/joiRealLoopGAblationHarness");
 const {
   CLAIM_CEILING,
+  evaluateScoringPreconditions,
   evaluateTraceRows,
   injectLeakagePositiveControl,
   parseTraceRowsJsonl,
@@ -114,4 +115,48 @@ test("jsonl parser and writer produce underclaiming reports", () => {
   assert.match(markdown, /blocked_unreplayable_runtime_trace/);
   assert.doesNotMatch(markdown, FORBIDDEN_ROUTE_PASS);
   assert.doesNotMatch(markdown, /consciousness pass/i);
+});
+
+test("007 scoring precondition blocks collect-only rows before any scoring run", () => {
+  const report = evaluateScoringPreconditions([sampleRow()], {
+    runId: "scoring-precondition-001",
+    requiredCondition: "OFF_STATIC_REPLAY_HELDOUT",
+  });
+
+  assert.equal(report.status, "blocked_d_field_replay_precondition_not_satisfied");
+  assert.equal(report.claim_ceiling, "egodesktop_real_loop_g_ablation_replay_precondition_contract_only");
+  assert.equal(report.scoring_authorized, false);
+  assert.equal(report.rows_evaluated, 1);
+  assert.ok(report.blockers.includes("condition_not_off_static_replay_heldout"));
+  assert.ok(report.blockers.includes("d_field_freeze_missing"));
+  assert.ok(report.blockers.includes("complete_state_serialized_missing"));
+  assert.ok(report.blockers.includes("complete_observation_serialized_missing"));
+  assert.ok(report.blockers.includes("offline_replay_function_unavailable"));
+  assert.ok(report.blockers.includes("collect_only_replay_policy"));
+  assert.doesNotMatch(JSON.stringify(report), FORBIDDEN_ATTRIBUTION_PASS);
+});
+
+test("CLI aborts when 007 scoring precondition is requested for current collect-only rows", () => {
+  const outDir = fs.mkdtempSync(path.join(os.tmpdir(), "ego-joi-scoring-precondition-"));
+  const rowsPath = path.join(outDir, "trace_rows.jsonl");
+  const reportDir = path.join(outDir, "report");
+  const scriptPath = path.join(__dirname, "..", "scripts", "evaluate-joi-g-ablation-replay.js");
+  fs.writeFileSync(rowsPath, `${JSON.stringify(sampleRow())}\n`, "utf8");
+
+  const result = require("node:child_process").spawnSync(process.execPath, [
+    scriptPath,
+    "--rows", rowsPath,
+    "--out", reportDir,
+    "--run-id", "scoring-precondition-cli",
+    "--require-007-scoring-precondition",
+    "--required-condition", "OFF_STATIC_REPLAY_HELDOUT",
+  ], { encoding: "utf8" });
+
+  assert.equal(result.status, 3);
+  const stdout = JSON.parse(result.stdout);
+  assert.equal(stdout.status, "blocked_d_field_replay_precondition_not_satisfied");
+  assert.ok(stdout.blockers.includes("complete_state_serialized_missing"));
+  const report = JSON.parse(fs.readFileSync(path.join(reportDir, "evaluation_report.json"), "utf8"));
+  assert.equal(report.status, "blocked_d_field_replay_precondition_not_satisfied");
+  assert.equal(report.scoring_precondition.scoring_authorized, false);
 });

@@ -16,17 +16,25 @@ function readArg(name, fallback = "") {
   return fallback;
 }
 
+function hasFlag(name) {
+  return process.argv.includes(`--${name}`);
+}
+
 function main() {
   const rowsPath = readArg("rows");
   const outDir = readArg("out");
   const runId = readArg("run-id", "joi_g_ablation_replay_leakage_eval_v0");
+  const requireScoringPrecondition = hasFlag("require-007-scoring-precondition");
+  const requiredCondition = readArg("required-condition", "");
   if (!rowsPath || !outDir) {
-    throw new Error("usage: node scripts/evaluate-joi-g-ablation-replay.js --rows <trace_rows.jsonl> --out <dir> [--run-id <id>]");
+    throw new Error("usage: node scripts/evaluate-joi-g-ablation-replay.js --rows <trace_rows.jsonl> --out <dir> [--run-id <id>] [--require-007-scoring-precondition] [--required-condition <condition>]");
   }
   const report = writeEvaluationReport({
     rowsPath: path.resolve(rowsPath),
     outDir: path.resolve(outDir),
     runId,
+    requireScoringPrecondition,
+    requiredCondition,
   });
   process.stdout.write(JSON.stringify({
     status: report.status,
@@ -34,6 +42,9 @@ function main() {
     leakage_positive_control_status: report.leakage_positive_control_status,
     blockers: report.blockers,
   }, null, 2));
+  if (requireScoringPrecondition && report.scoring_authorized !== true) {
+    process.exitCode = 3;
+  }
 }
 
 main();
