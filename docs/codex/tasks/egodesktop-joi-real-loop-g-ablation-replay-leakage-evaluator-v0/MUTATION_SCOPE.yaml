@@ -1,0 +1,18 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0
+expected_mutation_surface:
+  - default-off EgoDesktop replay/leakage evaluator task card
+  - pure artifact evaluator module and explicit CLI
+  - targeted tests and local evaluator artifacts
+  - local task-board entry/status updates
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no default runtime enablement, program-state update, or evidence-ledger claim update
+allowed_mutation_paths:
+  - EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js
+  - EgoDesktop/scripts/evaluate-joi-g-ablation-replay.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_replay_evaluator.test.js
+  - artifacts/egodesktop_joi_real_loop_g_ablation_replay_leakage_evaluator_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only; no runtime efficacy, stable benefit, route advancement, EGO integration, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

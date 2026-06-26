@@ -3753,7 +3753,7 @@ tasks:
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "egodesktop_real_loop_g_ablation_chat_turn_trace_contract_only"
-    next_action: "Accepted locally: default-off Electron chat-turn trace smoke invokes window.egoDesktop.sendChatTurn through the renderer IPC path under explicit JOI_REAL_LOOP flags and produced trace_rows.jsonl with trace_row_count > 0. Next bounded slice is callable replay/baseline evaluation over produced rows; start with replay integrity and leakage positive controls before any verdict logic."
+    next_action: "Accepted locally: default-off Electron chat-turn trace smoke invokes window.egoDesktop.sendChatTurn through the renderer IPC path under explicit JOI_REAL_LOOP flags and produced trace_rows.jsonl with trace_row_count > 0. Next active slice is EGODESKTOP-GABLATION-005, callable replay/leakage preflight over produced rows; start with replay integrity and leakage positive controls before any baseline verdict logic."
     acceptance:
       - "Task card cites EGODESKTOP-GABLATION-001/002/003 and preserves default-off, no-authority, no-program-state-update, and no-evidence-ledger-update boundaries."
       - "Tests are written before implementation and prove explicit smoke wiring, default inertness, renderer IPC usage, and renderer-ready payload reporting."
@@ -3770,6 +3770,34 @@ tasks:
       - "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js"
       - "EgoDesktop/src/main.js"
       - "EgoDesktop/viewer/renderer.js"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-005
+    title: "EgoDesktop: Joi real-loop G-ABLATION replay/leakage evaluator v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-004
+    status: accepted
+    layer: egodesktop_real_loop_replay_leakage_preflight
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only"
+    next_action: "Accepted locally as blocked-expected preflight: evaluator recomputes 004 trace-row hashes, detects a leakage positive-control injection, and blocks verdicts because rows still contain placeholder creature state, placeholder adapter output, collect-only replay policy, and no LLM replay id. Next bounded slice must first connect real CreatureState/adapter snapshot and replay id into rows before any baseline verdict logic."
+    acceptance:
+      - "Task card cites EGODESKTOP-GABLATION-004 and preserves default-off, no-authority, no-program-state-update, and no-evidence-ledger-update boundaries."
+      - "Tests are written before implementation and prove hash recomputation, leakage positive-control detection, placeholder replay blocking, and report underclaiming."
+      - "Evaluator reads produced trace_rows.jsonl through an explicit CLI and writes evaluation_report.json plus EVALUATION_REPORT.md."
+      - "Report records rows_evaluated=1, hash_integrity_status=pass, leakage_scan_status=pass, leakage_positive_control_status=pass, and blocked_unreplayable_runtime_trace."
+      - "Report does not authorize baseline verdict, route advancement, product benefit, agency, emotion, subjectivity, consciousness, alive-status, Bar-2 claim, push, tag, or remote anchor."
+    rollback: "Delete artifacts/egodesktop_joi_real_loop_g_ablation_replay_leakage_evaluator_v0/, docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0/, EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js, EgoDesktop/scripts/evaluate-joi-g-ablation-replay.js, EgoDesktop/tests/joi_real_loop_g_ablation_replay_evaluator.test.js, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0/STATUS.md"
+      - "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js"
+      - "EgoDesktop/scripts/evaluate-joi-g-ablation-replay.js"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_replay_leakage_evaluator_v0/evaluation_report.json"
     external_refs:
       github_issue: null
 

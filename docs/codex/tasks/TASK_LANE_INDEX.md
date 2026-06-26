@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 195 |
+| `reference_only` | 196 |
 
 ## Active Default
 
@@ -188,6 +188,7 @@
 | Egodesktop Developer Settings Launch Profile V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-developer-settings-launch-profile-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Chat Turn Trace V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-chat-turn-trace-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Harness Contract V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egodesktop Joi Real Loop G Ablation Replay Leakage Evaluator V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-replay-leakage-evaluator-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Stage Card V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Trace Runner V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Debug Signal Overlay V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
