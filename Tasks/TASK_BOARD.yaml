@@ -3691,7 +3691,7 @@ tasks:
     observation_class: deterministic_local
     evidence_level: E2
     claim_ceiling: "egodesktop_real_loop_g_ablation_harness_contract_only"
-    next_action: "Accepted locally: default-off harness contract module, tests, and local report are in place. Next allowed slice is a separate default-off trace runner that invokes actual EgoDesktop chat-turn/render path only under explicit experiment flags."
+    next_action: "Accepted locally: default-off harness contract module, tests, and local report are in place. Next active slice is EGODESKTOP-GABLATION-003, a separate default-off trace runner that invokes actual EgoDesktop chat-turn/render path only under explicit experiment flags."
     acceptance:
       - "Default-disabled contract reports enabled=false, runtime_authority=none, mainline_connected=false, and no adapter registration."
       - "Enabled contract requires explicit JOI_REAL_LOOP_G_ABLATION flags, replay-locked LLM mode, prompt pack, trace dir, condition, and calibration/heldout split."
@@ -3708,6 +3708,38 @@ tasks:
       - "EgoDesktop/src/joiRealLoopGAblationHarness.js"
       - "EgoDesktop/tests/joi_real_loop_g_ablation_harness.test.js"
       - "artifacts/egodesktop_joi_real_loop_g_ablation_harness_v0/CONTRACT_REPORT.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-003
+    title: "EgoDesktop: Joi real-loop G-ABLATION trace runner v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-002
+    status: accepted
+    layer: egodesktop_real_loop_attribution_trace_runner
+    owner: codex
+    observation_class: deterministic_local
+    evidence_level: E3
+    claim_ceiling: "egodesktop_real_loop_g_ablation_trace_runner_contract_only"
+    next_action: "Accepted locally: default-off trace-runner module, main-process hook, targeted tests, and Electron renderer-ready smoke artifact are in place. Next bounded slice is a replay-locked chat-turn prompt pack runner that produces actual trace rows; do not add baseline/replay verdicts until those rows exist."
+    acceptance:
+      - "Task card cites EGODESKTOP-GABLATION-001/002 and the accepted joi-demo real-loop G-ABLATION 001C contract."
+      - "Implementation plan requires default-off behavior, explicit experiment flags, replay-locked LLM mode, trace dir, condition, prompt pack, and split."
+      - "Implementation reuses EgoDesktop/src/joiRealLoopGAblationHarness.js for contract and trace-row authority instead of duplicating verdict logic."
+      - "Trace artifacts include renderer-ready metadata, idle exclusion, source hashes, and report fields; targeted tests cover chat-turn row construction with CreatureState/adapter placeholders, public inputs, and replay inputs."
+      - "No default runtime enablement, EgoOperator memory/gate/approval/transport/proactive mutation, program-state update, evidence-ledger update, push, tag, or remote anchor is authorized by this card."
+      - "Targeted tests, EgoDesktop tests, Electron smoke, git diff check, and mutation-scope closeout are required before any implementation closeout claim."
+    rollback: "Delete EgoDesktop/src/joiRealLoopGAblationTraceRunner.js, EgoDesktop/tests/joi_real_loop_g_ablation_trace_runner.test.js, artifacts/egodesktop_joi_real_loop_g_ablation_trace_runner_v0/, docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/, this task-board entry, and revert the narrow EgoDesktop/src/main.js hook."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/SPEC.md"
+      - "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js"
+      - "EgoDesktop/tests/joi_real_loop_g_ablation_trace_runner.test.js"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_trace_runner_v0/trace/trace_runner_report.json"
+      - "EgoDesktop/src/joiRealLoopGAblationHarness.js"
+      - "../joi-demo/JOI-DEMO-GRAD-G-ABLATION-RUNTIME-001C-REAL-LOOP-CARD.md"
     external_refs:
       github_issue: null
 

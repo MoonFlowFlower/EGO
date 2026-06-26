@@ -1,0 +1,19 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-trace-runner-v0
+expected_mutation_surface:
+  - default-off EgoDesktop real-loop G-ABLATION trace runner task card
+  - future targeted trace-runner module and tests
+  - local trace-runner report and task docs
+  - local task-board entry/status updates
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no default runtime enablement, program-state update, or evidence-ledger claim update
+allowed_mutation_paths:
+  - EgoDesktop/src/joiRealLoopGAblationTraceRunner.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_trace_runner.test.js
+  - EgoDesktop/src/main.js
+  - artifacts/egodesktop_joi_real_loop_g_ablation_trace_runner_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+  - artifacts/task_board/outbox.jsonl
+claim_ceiling: "egodesktop_real_loop_g_ablation_trace_runner_contract_only; no runtime efficacy, stable benefit, route-B pass, EGO integration, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

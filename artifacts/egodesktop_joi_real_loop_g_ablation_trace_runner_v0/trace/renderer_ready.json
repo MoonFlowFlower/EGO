@@ -1,0 +1,26 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_renderer_ready.v0",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_trace_runner_contract_only",
+  "model_loaded": true,
+  "parameter_samples": {
+    "Param85": 1,
+    "Param107": 0,
+    "Param111": 0,
+    "Param113": 0,
+    "ParamMouthForm": -1,
+    "ParamMouthOpenY": 0,
+    "ParamJawOpen": 0
+  },
+  "visual_fit_pass": true,
+  "renderer_idle_excluded": true,
+  "renderer_idle_params_excluded_from_d": [
+    "ParamMouthOpenY",
+    "ParamJawOpen"
+  ],
+  "source_hashes": {
+    "harness_hash": "51b2342e0cf06bb2e789b5a61bea1a37262e2f7da000036418e55ecc0b7742ea",
+    "trace_runner_hash": "5cae81e5a0e75e116f13677f1fabb9a54b6e79e636d90ea35196c50c81c6d0ff",
+    "main_js_hash": "cbd43fbf99238405add9336fb38c42f4630f02fcc341a53183697c0c72dcfd4f",
+    "repo_root_hash": "bff00ab84a810861a77ae85bcc928f77d8227559a39675cd032989679ac1a2ab"
+  }
+}

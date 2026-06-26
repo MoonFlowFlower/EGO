@@ -5,6 +5,7 @@ const { spawn } = require("node:child_process");
 const { app, BrowserWindow, ipcMain, nativeImage } = require("electron");
 const { parseArgs } = require("./args");
 const { buildDesktopChatTurn } = require("./chatTurn");
+const { createJoiRealLoopTraceRunner } = require("./joiRealLoopGAblationTraceRunner");
 const {
   DEVELOPER_SETTINGS_CLAIM_CEILING,
   buildEffectiveLaunchProfile,
@@ -447,6 +448,7 @@ async function run() {
     requestTimeoutMs: Number(args["tts-timeout-ms"] || 240000),
   });
   const signalFrame = loadSignalFrame(args);
+  const joiTraceRunner = createJoiRealLoopTraceRunner(process.env, { repoRoot });
   const pspcVisualShim = loadPspcVisualShim(args);
   const pspcPerceptionDemo = pspcVisualShim ? buildPspcPerceptionDemo(pspcVisualShim) : null;
   const pspcRecordingMode = Boolean(args["pspc-recording-mode"]);
@@ -675,7 +677,7 @@ async function run() {
       });
     }
     schedulePspcSignalExtraction({ userText, desktopSessionContext });
-    return {
+    const desktopTurn = {
       ...buildDesktopChatTurn({ userText, botText, status }),
       backend_status: backend.status || status,
       backend_reason: backend.reason || "",
@@ -703,6 +705,16 @@ async function run() {
       pspc_reply_preview_context: pspcReplyPreviewContext,
       pspc_reply_preview_scenario: pspcReplyPreviewScenario,
     };
+    joiTraceRunner.recordChatTurn({
+      userText,
+      turn: desktopTurn,
+      backend,
+      desktopSessionContext,
+      desktopRecoveryContext,
+      pspcReplyPreviewContext,
+      pspcReplyPreviewScenario,
+    });
+    return desktopTurn;
   });
   ipcMain.handle("ego-desktop:synthesize-speech", async (_event, payload) => {
     const request = buildTtsRequest({
@@ -742,6 +754,7 @@ async function run() {
 
   let smokeSettled = false;
   ipcMain.on("ego-desktop:renderer-ready", async (_event, payload) => {
+    joiTraceRunner.recordRendererReady({ rendererPayload: payload, signalFrame });
     if (!args.smoke || smokeSettled) {
       return;
     }
