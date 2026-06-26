@@ -1,0 +1,51 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_replay_leakage_evaluation.v0",
+  "status": "blocked_unreplayable_runtime_trace",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only",
+  "run_id": "egodesktop_backend_trace_snapshot_eval_v0_on_006",
+  "producer_function": "evaluateTraceRows",
+  "input_artifacts": [
+    "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0\\trace\\trace_rows.jsonl"
+  ],
+  "rows_evaluated": 1,
+  "aggregation_rule": "any hash failure, leakage finding, missing positive control, or replay blocker prevents verdict",
+  "source_hashes": {
+    "evaluator_hash": "ef62bdddbea7a0b9da14be18d1a2259b1ecd34d15c2e54bde23197be94df5245"
+  },
+  "leakage_scan_status": "pass",
+  "leakage_positive_control_status": "pass",
+  "leakage_positive_control_findings": [
+    {
+      "path": "row.adapter_output.memory_write",
+      "reason": "runtime_authority_field"
+    },
+    {
+      "path": "row.public_inputs.future_target_label",
+      "reason": "future_or_target_leakage_field"
+    }
+  ],
+  "blockers": [
+    "collect_only_replay_policy",
+    "missing_llm_replay_id"
+  ],
+  "row_results": [
+    {
+      "row_index": 0,
+      "run_id": "egodesktop_backend_trace_snapshot_v0_smoke",
+      "turn_id": "turn_1",
+      "row_hash": "7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1",
+      "hash_integrity_status": "pass",
+      "hash_failures": [],
+      "replay_integrity_status": "blocked_unreplayable_runtime_trace",
+      "replay_blockers": [
+        "collect_only_replay_policy",
+        "missing_llm_replay_id"
+      ],
+      "leakage_scan_status": "pass",
+      "leakage_findings": []
+    }
+  ],
+  "verdict_authorized": false,
+  "what_this_proves": "replay/leakage evaluator contract only",
+  "what_this_does_not_prove": "does not prove real-loop effect, baseline superiority, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness"
+}

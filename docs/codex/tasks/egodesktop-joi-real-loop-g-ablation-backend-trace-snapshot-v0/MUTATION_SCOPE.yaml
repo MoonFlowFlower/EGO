@@ -1,0 +1,22 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-backend-trace-snapshot-v0
+expected_mutation_surface:
+  - default-off EgoDesktop backend trace snapshot task card
+  - flag-gated backend trace-store tap around the existing desktop backend turn
+  - main-process trace payload wiring at the existing chat-turn result boundary
+  - targeted tests and local smoke/evaluator artifacts
+  - local task-board entry/status updates
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no default runtime enablement, program-state update, or evidence-ledger claim update
+allowed_mutation_paths:
+  - scripts/ego_operator_desktop_turn.py
+  - tests/test_ego_operator_desktop_trace_snapshot.py
+  - EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js
+  - EgoDesktop/src/joiRealLoopGAblationTraceRunner.js
+  - EgoDesktop/src/main.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_backend_snapshot.test.js
+  - artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-backend-trace-snapshot-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "egodesktop_real_loop_g_ablation_backend_trace_snapshot_contract_only; no replay readiness, runtime efficacy, stable benefit, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

@@ -243,7 +243,7 @@ function renderEvaluationReport(report) {
     "## Current Meaning",
     "",
     "This is replay/leakage evaluator contract only. It can check row hash integrity and leakage scanner positive",
-    "controls, but placeholder trace-runner state remains blocked for real replay or baseline verdicts.",
+    "controls, but the listed replay blockers prevent verdicts: no real replay, baseline, or attribution claim is authorized.",
     "",
     "## Blockers",
     "",

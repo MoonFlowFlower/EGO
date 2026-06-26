@@ -5,7 +5,10 @@ const { spawn } = require("node:child_process");
 const { app, BrowserWindow, ipcMain, nativeImage } = require("electron");
 const { parseArgs } = require("./args");
 const { buildDesktopChatTurn } = require("./chatTurn");
-const { createJoiRealLoopTraceRunner } = require("./joiRealLoopGAblationTraceRunner");
+const {
+  buildJoiRealLoopBackendAdapterOutput,
+  createJoiRealLoopTraceRunner,
+} = require("./joiRealLoopGAblationTraceRunner");
 const {
   DEVELOPER_SETTINGS_CLAIM_CEILING,
   buildEffectiveLaunchProfile,
@@ -710,6 +713,9 @@ async function run() {
       userText,
       turn: desktopTurn,
       backend,
+      creatureState: backend.joi_real_loop_trace_snapshot,
+      adapterOutput: buildJoiRealLoopBackendAdapterOutput({ desktopTurn, backend }),
+      llmReplayId: backend.joi_real_loop_llm_replay_id,
       desktopSessionContext,
       desktopRecoveryContext,
       pspcReplyPreviewContext,

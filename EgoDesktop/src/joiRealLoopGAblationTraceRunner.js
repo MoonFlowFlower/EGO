@@ -108,6 +108,40 @@ function placeholderAdapterOutput() {
   };
 }
 
+function buildJoiRealLoopBackendAdapterOutput(payload = {}) {
+  const desktopTurn = payload.desktopTurn && typeof payload.desktopTurn === "object" ? payload.desktopTurn : {};
+  const backend = payload.backend && typeof payload.backend === "object" ? payload.backend : {};
+  const snapshot = backend.joi_real_loop_trace_snapshot && typeof backend.joi_real_loop_trace_snapshot === "object"
+    ? backend.joi_real_loop_trace_snapshot
+    : {};
+  const traceRecordHash = String(snapshot.trace_record_hash || "");
+  const hasBackendSnapshot = snapshot.state_source === "ego_operator_runtime_trace_store" && traceRecordHash;
+  return {
+    schema_version: "ego_desktop.joi_real_loop_backend_adapter_output.v0",
+    source: "ego_desktop_chat_turn_result_boundary",
+    adapter_status: hasBackendSnapshot
+      ? "connected_real_backend_trace_snapshot"
+      : "backend_trace_snapshot_absent",
+    output_authority: "none",
+    expression_name: String(desktopTurn.expression_name || ""),
+    chat_turn_status: String(desktopTurn.status || ""),
+    backend_status: String(backend.status || desktopTurn.backend_status || ""),
+    backend_reason: String(backend.reason || desktopTurn.backend_reason || ""),
+    backend_trace_record_hash: traceRecordHash,
+    backend_trace_state_source: String(snapshot.state_source || ""),
+    llm_trace_id: String(backend.joi_real_loop_llm_trace_id || ""),
+    side_effect_boundary: {
+      side_effects_executed: Boolean(desktopTurn.side_effects_executed || backend.side_effects_executed),
+      memory_written: Boolean(desktopTurn.memory_write || backend.memory_write),
+      tools_used: Boolean(desktopTurn.tool_use || backend.tool_use),
+      messages_sent: Boolean(desktopTurn.message_send || backend.message_send),
+      files_written: Boolean(desktopTurn.file_write || backend.file_write),
+      network_used: Boolean(desktopTurn.network_call || backend.network_call),
+    },
+    claim_ceiling: CLAIM_CEILING,
+  };
+}
+
 function renderTraceRunnerReport(summary) {
   const safe = summary && typeof summary === "object" ? summary : {};
   return [
@@ -289,6 +323,7 @@ function createJoiRealLoopTraceRunner(env, options = {}) {
 module.exports = {
   CLAIM_CEILING,
   DEFAULT_IDLE_PARAMS,
+  buildJoiRealLoopBackendAdapterOutput,
   createJoiRealLoopTraceRunner,
   renderTraceRunnerReport,
 };

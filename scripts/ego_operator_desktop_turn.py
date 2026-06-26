@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import hashlib
 from pathlib import Path
 import sys
 from typing import Any
@@ -47,7 +48,7 @@ _load_openrouter_key_before_agent_import()
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from EgoOperator.agent_base import build_demo_runtime  # noqa: E402
+from EgoOperator.agent_base import JsonlTraceStore, build_demo_runtime  # noqa: E402
 
 
 PSPC_REPLY_PREVIEW_SCHEMA_VERSION = "ego_desktop.pspc_reply_preview_context.v0"
@@ -138,6 +139,10 @@ DESKTOP_RECOVERY_REQUIRED_SIDE_EFFECTS_FALSE = {
     "runtime_registered",
 }
 DESKTOP_COMPANION_WORDING_CLAIM_CEILING = "local_desktop_companion_wording_and_route_repair_only"
+JOI_REAL_LOOP_TRACE_SNAPSHOT_SCHEMA_VERSION = "ego_desktop.joi_real_loop_backend_trace_snapshot.v0"
+JOI_REAL_LOOP_TRACE_SNAPSHOT_CLAIM_CEILING = (
+    "egodesktop_real_loop_g_ablation_backend_trace_snapshot_contract_only"
+)
 DESKTOP_COMPANION_ENGINEERING_MEMORY_MARKERS = {
     "candidate-local",
     "operator memory",
@@ -170,6 +175,97 @@ DESKTOP_COMPANION_RECALL_MARKERS = {
 def _contains_any(text: str, markers: set[str]) -> bool:
     folded = str(text or "").lower()
     return any(str(marker).lower() in folded for marker in markers)
+
+
+def stable_json_hash(value: Any) -> str:
+    payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _joi_real_loop_slug(value: str) -> str:
+    text = "".join(ch if ch.isalnum() or ch in {"-", "_"} else "_" for ch in str(value or ""))
+    text = "_".join(part for part in text.split("_") if part)
+    return (text or "trace_runner_v0_run")[:80]
+
+
+def joi_real_loop_backend_trace_path() -> Path | None:
+    if os.getenv("JOI_REAL_LOOP_G_ABLATION", "").strip() != "1":
+        return None
+    trace_dir = os.getenv("JOI_REAL_LOOP_TRACE_DIR", "").strip()
+    if not trace_dir:
+        return None
+    run_id = _joi_real_loop_slug(os.getenv("JOI_REAL_LOOP_RUN_ID", "trace_runner_v0_run"))
+    return Path(trace_dir).resolve() / "backend_traces" / f"{run_id}_{os.getpid()}.jsonl"
+
+
+def read_latest_jsonl_record(path: Path | None) -> dict | None:
+    if path is None or not path.exists():
+        return None
+    latest = ""
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                if line.strip():
+                    latest = line
+    except OSError:
+        return None
+    if not latest:
+        return None
+    try:
+        payload = json.loads(latest)
+    except json.JSONDecodeError:
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def _dict_at(value: Any) -> dict:
+    return value if isinstance(value, dict) else {}
+
+
+def build_joi_real_loop_trace_snapshot(trace_record: dict, trace_path: Path) -> dict:
+    safe_record = _dict_at(trace_record)
+    event = _dict_at(safe_record.get("event"))
+    state_digest = _dict_at(safe_record.get("state_digest"))
+    subject_context = _dict_at(safe_record.get("subject_context"))
+    viability_state = _dict_at(subject_context.get("viability_state"))
+    llm_meta = _dict_at(safe_record.get("llm_meta"))
+    external_result = _dict_at(safe_record.get("external_result"))
+    return {
+        "schema_version": JOI_REAL_LOOP_TRACE_SNAPSHOT_SCHEMA_VERSION,
+        "source": "ego_operator_desktop_turn_trace_store",
+        "state_source": "ego_operator_runtime_trace_store",
+        "event_id": str(event.get("event_id") or ""),
+        "trace_record_hash": stable_json_hash(safe_record),
+        "trace_path_hash": stable_json_hash(str(trace_path.resolve())),
+        "state_digest": {
+            "mode": str(state_digest.get("mode") or ""),
+            "focus": str(state_digest.get("focus") or ""),
+            "drives": _dict_at(state_digest.get("drives")),
+            "revision_counter": int(state_digest.get("revision_counter") or 0),
+            "cycle_count": int(state_digest.get("cycle_count") or 0),
+        },
+        "viability_state": viability_state,
+        "subject_context_hash": stable_json_hash(subject_context),
+        "bounded_initiative_hash": stable_json_hash(_dict_at(safe_record.get("bounded_initiative"))),
+        "llm_meta_hash": stable_json_hash(llm_meta),
+        "llm_replay_contract": "absent",
+        "external_result_status": str(external_result.get("status") or ""),
+        "side_effect_boundary": {
+            "side_effects_executed": bool(external_result.get("side_effects_executed")),
+            "memory_written": bool(external_result.get("memory_write_executed")),
+            "tools_used": bool(external_result.get("tool_use_executed")),
+            "messages_sent": bool(external_result.get("message_send_executed")),
+            "files_written": bool(external_result.get("file_write_executed")),
+            "network_used": bool(external_result.get("network_call_executed")),
+        },
+        "claim_ceiling": JOI_REAL_LOOP_TRACE_SNAPSHOT_CLAIM_CEILING,
+    }
+
+
+def extract_joi_real_loop_llm_replay_id(trace_record: dict | None) -> str:
+    llm_meta = _dict_at(_dict_at(trace_record).get("llm_meta"))
+    replay_id = str(llm_meta.get("llm_replay_id") or llm_meta.get("replay_id") or "").strip()
+    return replay_id
 
 
 def _looks_like_engineering_memory_boundary(reply_text: str) -> bool:
@@ -605,11 +701,20 @@ def main() -> int:
             return 2
 
         runtime = build_demo_runtime(enable_operator_memory=False)
+        joi_trace_path = joi_real_loop_backend_trace_path()
+        if joi_trace_path is not None:
+            runtime.trace_store = JsonlTraceStore(joi_trace_path)
         inject_desktop_session_context(runtime, desktop_session_context)
         inject_desktop_recovery_context(runtime, desktop_recovery_context)
         if pspc_reply_preview_context is not None:
             runtime.memory.add("system", render_pspc_reply_preview_system_context(pspc_reply_preview_context))
         result = runtime.handle_user_message(user_text)
+        joi_trace_record = read_latest_jsonl_record(joi_trace_path)
+        joi_trace_snapshot = (
+            build_joi_real_loop_trace_snapshot(joi_trace_record, joi_trace_path)
+            if joi_trace_record is not None and joi_trace_path is not None
+            else None
+        )
         pending = runtime.list_pending_approvals()
         reply_text = str(getattr(result, "reply_text", "") or "")
         companion_rewrite = rewrite_desktop_companion_visible_reply(
@@ -661,6 +766,12 @@ def main() -> int:
             ),
             **_side_effects_from_result(result),
         }
+        if joi_trace_snapshot is not None:
+            response["joi_real_loop_trace_snapshot"] = joi_trace_snapshot
+            response["joi_real_loop_llm_trace_id"] = joi_trace_snapshot["llm_meta_hash"]
+            llm_replay_id = extract_joi_real_loop_llm_replay_id(joi_trace_record)
+            if llm_replay_id:
+                response["joi_real_loop_llm_replay_id"] = llm_replay_id
         print(json.dumps(response, ensure_ascii=False))
         return 0
     except Exception as exc:  # pragma: no cover - exercised by Electron smoke/error paths.
