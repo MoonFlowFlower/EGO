@@ -7,7 +7,7 @@
 - enabled: `false_by_default`
 - real_trigger_evidence: `electron_smoke_backend_trace_snapshot_row`
 - runtime_authority: `none`
-- claude_reviewer_status: `pending`
+- claude_reviewer_status: `BLOCKING_FINDINGS_SOURCE_LIMITED__006A_REPAIRS_APPLIED_PENDING_RE_REVIEW`
 
 ## Current Result
 
@@ -20,6 +20,9 @@ writes a row containing:
 - `adapter_output.adapter_status: connected_real_backend_trace_snapshot`
 - `llm_replay_id: none`
 - `replay_inputs.replay_policy: trace_runner_v0_collect_only`
+
+This row is now labeled `schema_valid_collect_only_snapshot`. It does not satisfy 001C section 12 because it cannot yet
+recompute `D` from complete serialized state plus observation.
 
 Produced artifacts:
 
@@ -39,6 +42,29 @@ The evaluator result is intentionally still blocked:
 - blockers: `collect_only_replay_policy`, `missing_llm_replay_id`
 
 The 005 placeholder blockers are removed for this 006 row, but no replay, baseline, or attribution verdict is authorized.
+
+## Claude Source-Limited Blocking Findings
+
+Claude returned `BLOCKING_FINDINGS` on the 006-to-007 packet, source-limited because it could not read the Ego repo or
+artifacts. The blockers are treated as valid review gates for this lane:
+
+1. The packet used a too-strong "conformant" label for an unreplayable row.
+2. Digest / viability state cannot prove `D` replay recomputation.
+3. Placeholder blocker disappearance needed a non-wording blocker-delta gate and placeholder positive control.
+4. Mutation-scope closeout was called incorrectly, so the packet overstated the closeout tooling limitation.
+5. The packet did not attach the previous minimal surface definition.
+
+006A repairs applied:
+
+- Claim label is now `schema_valid_collect_only_snapshot`; the row explicitly does not satisfy 001C section 12.
+- `D_FIELD_REPLAY_PRECONDITION_007.md` freezes the 007 precondition and blocks any >=007 scoring run until complete state
+  plus observation can be serialized and replayed offline for non-LLM `D`.
+- `summarizeReplayBlockerDelta` plus tests provide a non-wording blocker-delta gate.
+- `artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/evaluator/blocker_delta_report.json` records
+  `placeholder_positive_control_status: pass`, `placeholder_removed_status: pass`, and
+  `replay_blockers_preserved_status: pass`.
+- `CLOSEOUT_SCOPE_READBACK_006A.md` records the correct mutation-scope command form and the latest loaded-scope readback.
+- `MINIMAL_SURFACE_006.md` attaches the minimal surface for re-review.
 
 ## Verification
 
@@ -67,10 +93,18 @@ The 005 placeholder blockers are removed for this 006 row, but no replay, baseli
 - Strict secret-pattern scan over the 006 docs/tests/artifacts found no API keys.
 - `python scripts\codex_session_guard.py closeout-check --format markdown` was run before staging and correctly reported
   not-eligible due to `no_staged_changes`, `unsafe_dirty_paths`, `push_pending`, and `remote_sync_unavailable`.
-- The same closeout check was run after scoped staging. It still reported `unsafe_dirty_paths` because the guard has no
-  CLI option to load this task's mutation scope and prints `mutation_scope: not_configured`; the listed unsafe paths are
-  the staged 006 docs/tests/artifacts directories and no unstaged paths remain. This is recorded as a closeout tooling
-  limitation, not a code/test pass.
+- The initial scoped closeout command was invoked with the wrong argument order. Correct usage is
+  `python scripts\codex_session_guard.py --mutation-scope docs\codex\tasks\egodesktop-joi-real-loop-g-ablation-backend-trace-snapshot-v0\MUTATION_SCOPE.yaml closeout-check --format markdown`.
+  With the correct form, mutation scope loads and unsafe dirty paths drop to `0`; current blockers are publication-related
+  or no-staged-change state, not mutation-scope failure.
+- Red 006A review-repair checks:
+  - `node --test EgoDesktop\tests\joi_real_loop_g_ablation_backend_snapshot.test.js` failed before implementation because
+    `summarizeReplayBlockerDelta` was absent.
+  - `python -m pytest -q tests\test_egodesktop_gablation_review_repair.py` failed before docs repair because the
+    `conformant` wording remained and precondition/minimal-surface/closeout readback docs were absent.
+- Green 006A review-repair checks:
+  - `node --test EgoDesktop\tests\joi_real_loop_g_ablation_backend_snapshot.test.js` passed: `5 passed`.
+  - `python -m pytest -q tests\test_egodesktop_gablation_review_repair.py` passed: `3 passed`.
 
 ## Current Blocker
 
@@ -80,8 +114,10 @@ contracts.
 
 ## Next Minimal Closed-Loop Action
 
-Create the next bounded slice only if it adds real replay recomputation from serialized state plus observation, or a true
-LLM replay contract. Do not add baseline verdict logic while rows remain collect-only or `llm_replay_id: none`.
+Send `CLAUDE_REVIEW_PACKET_006A_AFTER_BLOCKER_REPAIR.md` for re-review. Do not implement 007 until the source-limited
+blockers are either cleared by Claude or narrowed to a specific local repair. If cleared, 007 may only satisfy
+`D_FIELD_REPLAY_PRECONDITION_007.md`: freeze non-LLM `D` fields, serialize complete state plus observation, and prove
+offline recomputation. Do not add baseline verdict logic while rows remain collect-only or `llm_replay_id: none`.
 
 ## What This Does Not Prove
 

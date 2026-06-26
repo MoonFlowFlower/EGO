@@ -1,0 +1,43 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_replay_blocker_delta.v0",
+  "status": "placeholder_blockers_removed_replay_blockers_remain",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only",
+  "producer_function": "summarizeReplayBlockerDelta",
+  "before_label": "005_placeholder_positive_control_report",
+  "after_label": "006_backend_trace_snapshot_report",
+  "before_status": "blocked_unreplayable_runtime_trace",
+  "after_status": "blocked_unreplayable_runtime_trace",
+  "before_blockers": [
+    "collect_only_replay_policy",
+    "missing_llm_replay_id",
+    "placeholder_adapter_output",
+    "placeholder_creature_state"
+  ],
+  "after_blockers": [
+    "collect_only_replay_policy",
+    "missing_llm_replay_id"
+  ],
+  "removed_blockers": [
+    "placeholder_adapter_output",
+    "placeholder_creature_state"
+  ],
+  "added_blockers": [],
+  "retained_blockers": [
+    "collect_only_replay_policy",
+    "missing_llm_replay_id"
+  ],
+  "placeholder_positive_control_status": "pass",
+  "placeholder_removed_status": "pass",
+  "replay_blockers_preserved_status": "pass",
+  "required_replay_blockers": [
+    "collect_only_replay_policy",
+    "missing_llm_replay_id"
+  ],
+  "verdict_authorized": false,
+  "what_this_proves": "blocker-delta gate only; placeholder positive control still fires and 006 snapshot rows remain non-verdict replay-blocked",
+  "what_this_does_not_prove": "does not prove replay readiness, baseline superiority, attribution, route advancement, product benefit, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness",
+  "input_artifacts": [
+    "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_replay_leakage_evaluator_v0\\evaluation_report.json",
+    "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0\\evaluator\\evaluation_report.json"
+  ]
+}

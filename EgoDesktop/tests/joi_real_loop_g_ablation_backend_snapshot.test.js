@@ -10,6 +10,7 @@ const {
 const {
   evaluateTraceRows,
   renderEvaluationReport,
+  summarizeReplayBlockerDelta,
 } = require("../src/joiRealLoopGAblationReplayEvaluator");
 
 const AUTHORITY_FIELD_NAMES = new Set([
@@ -135,6 +136,48 @@ function rowWithBackendSnapshot() {
   });
 }
 
+function placeholderPositiveControlRow() {
+  const creatureState = {
+    schema_version: "ego_desktop.joi_trace_runner.placeholder_state.v0",
+    state_source: "not_connected_in_trace_runner_v0",
+    condition: "CURRENT_SHIM",
+  };
+  const adapterOutput = {
+    source: "joi_real_loop_trace_runner_v0",
+    adapter_status: "not_connected_trace_runner_v0",
+    output_authority: "none",
+  };
+  const publicInputs = {
+    user_text_hash: hashValue("snapshot prompt"),
+    condition: "CURRENT_SHIM",
+    prompt_pack: "prompt-pack",
+    split: "heldout",
+    llm_mode: "replay_locked",
+  };
+  return buildJoiRealLoopTraceRow({
+    runId: "run-placeholder-control",
+    conditionId: "CURRENT_SHIM",
+    turnId: "turn-placeholder-control",
+    tickId: "tick-placeholder-control",
+    seed: "seed-placeholder-control",
+    sourceHashes: { harness_hash: "harness", trace_runner_hash: "trace-runner" },
+    promptId: "prompt-placeholder-control",
+    promptPackHash: "prompt-pack",
+    splitId: "heldout",
+    llmReplayId: "none",
+    chatTurn: { status: "ok", expression_name: "记笔记", bot_text: "snapshot reply" },
+    creatureState,
+    adapterOutput,
+    publicInputs,
+    replayInputs: {
+      serialized_state_hash: hashValue(creatureState),
+      observation_hash: hashValue(publicInputs),
+      replay_policy: "trace_runner_v0_collect_only",
+    },
+    outputEvent: { order: 1, timestamp_ms: 1 },
+  });
+}
+
 test("backend adapter output is source-limited and carries no runtime authority", () => {
   const adapterOutput = buildJoiRealLoopBackendAdapterOutput({
     desktopTurn: desktopTurn(),
@@ -170,6 +213,42 @@ test("evaluator removes placeholder blockers but still blocks collect-only non-r
   const markdown = renderEvaluationReport(report);
   assert.doesNotMatch(markdown, /placeholder trace-runner state remains blocked/);
   assert.match(markdown, /replay blockers prevent verdicts/);
+});
+
+test("blocker delta gate uses placeholder positive control, not report wording", () => {
+  const beforeReport = evaluateTraceRows([placeholderPositiveControlRow()], { runId: "eval-placeholder-control" });
+  const afterReport = evaluateTraceRows([rowWithBackendSnapshot()], { runId: "eval-006" });
+
+  const delta = summarizeReplayBlockerDelta({
+    beforeReport,
+    afterReport,
+    beforeLabel: "placeholder_positive_control",
+    afterLabel: "006_backend_snapshot",
+  });
+
+  assert.equal(delta.status, "placeholder_blockers_removed_replay_blockers_remain");
+  assert.equal(delta.placeholder_positive_control_status, "pass");
+  assert.equal(delta.placeholder_removed_status, "pass");
+  assert.equal(delta.replay_blockers_preserved_status, "pass");
+  assert.deepEqual(delta.removed_blockers, ["placeholder_adapter_output", "placeholder_creature_state"]);
+  assert.deepEqual(delta.after_blockers, ["collect_only_replay_policy", "missing_llm_replay_id"]);
+  assert.equal(delta.verdict_authorized, false);
+});
+
+test("blocker delta gate fails if placeholder positive control does not fire", () => {
+  const beforeReport = evaluateTraceRows([rowWithBackendSnapshot()], { runId: "eval-bad-control" });
+  const afterReport = evaluateTraceRows([rowWithBackendSnapshot()], { runId: "eval-006" });
+
+  const delta = summarizeReplayBlockerDelta({
+    beforeReport,
+    afterReport,
+    beforeLabel: "bad_placeholder_control",
+    afterLabel: "006_backend_snapshot",
+  });
+
+  assert.equal(delta.status, "invalid_placeholder_positive_control_not_blocked");
+  assert.equal(delta.placeholder_positive_control_status, "fail");
+  assert.equal(delta.verdict_authorized, false);
 });
 
 test("main process passes backend snapshot at the existing chat-turn trace seam", () => {

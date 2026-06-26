@@ -163,6 +163,63 @@ function unique(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
+function sortedUnique(values) {
+  return unique(values).sort((left, right) => left.localeCompare(right));
+}
+
+function summarizeReplayBlockerDelta(payload = {}) {
+  const beforeReport = payload.beforeReport && typeof payload.beforeReport === "object" ? payload.beforeReport : {};
+  const afterReport = payload.afterReport && typeof payload.afterReport === "object" ? payload.afterReport : {};
+  const beforeBlockers = sortedUnique(beforeReport.blockers || []);
+  const afterBlockers = sortedUnique(afterReport.blockers || []);
+  const placeholderBlockers = ["placeholder_adapter_output", "placeholder_creature_state"];
+  const requiredReplayBlockers = ["collect_only_replay_policy", "missing_llm_replay_id"];
+  const removedBlockers = beforeBlockers.filter((blocker) => !afterBlockers.includes(blocker));
+  const addedBlockers = afterBlockers.filter((blocker) => !beforeBlockers.includes(blocker));
+  const retainedBlockers = afterBlockers.filter((blocker) => beforeBlockers.includes(blocker));
+  const placeholderPositiveControlStatus = placeholderBlockers.every((blocker) => beforeBlockers.includes(blocker))
+    ? "pass"
+    : "fail";
+  const placeholderRemovedStatus = placeholderBlockers.every((blocker) => !afterBlockers.includes(blocker))
+    ? "pass"
+    : "fail";
+  const replayBlockersPreservedStatus = requiredReplayBlockers.every((blocker) => afterBlockers.includes(blocker))
+    ? "pass"
+    : "fail";
+  let status = "placeholder_blockers_removed_replay_blockers_remain";
+  if (placeholderPositiveControlStatus !== "pass") {
+    status = "invalid_placeholder_positive_control_not_blocked";
+  } else if (placeholderRemovedStatus !== "pass") {
+    status = "blocked_placeholder_blockers_remain";
+  } else if (replayBlockersPreservedStatus !== "pass") {
+    status = "invalid_replay_blocker_not_preserved";
+  }
+  return {
+    schema_version: "ego_desktop.joi_real_loop_replay_blocker_delta.v0",
+    status,
+    claim_ceiling: CLAIM_CEILING,
+    producer_function: "summarizeReplayBlockerDelta",
+    before_label: String(payload.beforeLabel || ""),
+    after_label: String(payload.afterLabel || ""),
+    before_status: String(beforeReport.status || ""),
+    after_status: String(afterReport.status || ""),
+    before_blockers: beforeBlockers,
+    after_blockers: afterBlockers,
+    removed_blockers: sortedUnique(removedBlockers),
+    added_blockers: sortedUnique(addedBlockers),
+    retained_blockers: sortedUnique(retainedBlockers),
+    placeholder_positive_control_status: placeholderPositiveControlStatus,
+    placeholder_removed_status: placeholderRemovedStatus,
+    replay_blockers_preserved_status: replayBlockersPreservedStatus,
+    required_replay_blockers: requiredReplayBlockers,
+    verdict_authorized: false,
+    what_this_proves:
+      "blocker-delta gate only; placeholder positive control still fires and 006 snapshot rows remain non-verdict replay-blocked",
+    what_this_does_not_prove:
+      "does not prove replay readiness, baseline superiority, attribution, route advancement, product benefit, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness",
+  };
+}
+
 function evaluateTraceRows(rows, options = {}) {
   const safeRows = Array.isArray(rows) ? rows : [];
   const rowResults = safeRows.map((row, index) => {
@@ -285,5 +342,6 @@ module.exports = {
   parseTraceRowsJsonl,
   renderEvaluationReport,
   scanForLeakage,
+  summarizeReplayBlockerDelta,
   writeEvaluationReport,
 };

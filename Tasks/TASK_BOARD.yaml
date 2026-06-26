@@ -3811,14 +3811,15 @@ tasks:
     observation_class: deterministic_local
     evidence_level: E3
     claim_ceiling: "egodesktop_real_loop_g_ablation_backend_trace_snapshot_contract_only"
-    next_action: "Accepted locally as blocked-expected: explicit Electron chat-turn smoke wrote a row with real backend trace snapshot state and connected adapter output, and evaluator removed placeholder blockers while preserving collect_only_replay_policy and missing_llm_replay_id blockers. Next bounded slice must add real replay recomputation or a true LLM replay contract before any baseline or attribution verdict logic."
+    next_action: "Blocked pending Claude re-review after source-limited BLOCKING_FINDINGS: 006A repairs downgraded the row label to schema_valid_collect_only_snapshot, attached minimal surface and D-field replay precondition, corrected mutation-scope closeout readback, and added blocker-delta/placeholder-positive-control tests plus artifact. Next action is send CLAUDE_REVIEW_PACKET_006A_AFTER_BLOCKER_REPAIR.md; do not implement 007 until re-review clears or narrows blockers."
     acceptance:
       - "Task card cites EGODESKTOP-GABLATION-005 and preserves default-off, no-authority, no-program-state-update, and no-evidence-ledger-update boundaries."
       - "Tests were written before implementation and prove backend snapshot sanitization, no fabricated LLM replay id, adapter output construction, main-process trace payload wiring, and evaluator blocker reduction."
       - "Implementation uses a flag-gated EgoOperator JsonlTraceStore tap around the existing desktop backend runtime.handle_user_message call and does not create a second chat-turn logic path."
       - "Existing main-process chat-turn result boundary passes backend snapshot and adapter output to joiTraceRunner.recordChatTurn."
-      - "Electron smoke with explicit JOI_REAL_LOOP flags writes trace_rows.jsonl with trace_row_count > 0, non-placeholder creature_state.state_source, non-placeholder adapter_output.adapter_status, and llm_replay_id=none."
+      - "Electron smoke with explicit JOI_REAL_LOOP flags writes trace_rows.jsonl with trace_row_count > 0, non-placeholder creature_state.state_source, non-placeholder adapter_output.adapter_status, llm_replay_id=none, and evidence label schema_valid_collect_only_snapshot rather than 001C section 12 replay conformance."
       - "Evaluator over the 006 row records blocked_unreplayable_runtime_trace with blockers collect_only_replay_policy and missing_llm_replay_id, and no placeholder creature/adapter blockers."
+      - "006A review repairs add a non-wording blocker-delta gate with placeholder positive control and freeze the 007 non-LLM D replay precondition."
       - "No baseline/replay verdict, route advancement, product benefit, agency, emotion, subjectivity, consciousness, alive-status, Bar-2 claim, push, tag, or remote anchor is authorized by this card."
     rollback: "Delete artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/, docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-backend-trace-snapshot-v0/, EgoDesktop/tests/joi_real_loop_g_ablation_backend_snapshot.test.js, tests/test_ego_operator_desktop_trace_snapshot.py, remove this task-board entry, revert the narrow changes to scripts/ego_operator_desktop_turn.py, EgoDesktop/src/main.js, EgoDesktop/src/joiRealLoopGAblationTraceRunner.js, and evaluator report wording, then regenerate route-convergence views."
     canonical_sources:

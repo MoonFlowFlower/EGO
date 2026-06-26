@@ -63,6 +63,8 @@ Key row facts:
 - `creature_state.state_source: ego_operator_runtime_trace_store`
 - `adapter_output.adapter_status: connected_real_backend_trace_snapshot`
 - `replay_inputs.replay_policy: trace_runner_v0_collect_only`
+- evidence label: `schema_valid_collect_only_snapshot`; this does not satisfy 001C section 12 because replay
+  recomputation from complete serialized state plus observation is not implemented
 - `renderer_idle_excluded: true`
 
 Evaluator path:
@@ -119,8 +121,8 @@ benefit, agency, real emotion, subjectivity, consciousness, alive status, or Bar
 
 The strongest allowed claim is:
 
-> Under explicit flags, EgoDesktop can collect conformant real desktop backend trace snapshot rows through the existing
-> chat-turn path; the current rows remain unreplayable and no verdict is authorized.
+> Under explicit flags, EgoDesktop can collect `schema_valid_collect_only_snapshot` rows through the existing chat-turn
+> path; the current rows remain unreplayable, do not satisfy 001C section 12, and no verdict is authorized.
 
 ## Requested Verdict Format
 

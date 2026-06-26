@@ -63,7 +63,9 @@ and produces rows under:
 - `artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/trace/trace_rows.jsonl`
 
 The new row must have `trace_row_count > 0`, non-placeholder `creature_state.state_source`, non-placeholder
-`adapter_output.adapter_status`, and no fabricated `llm_replay_id`.
+`adapter_output.adapter_status`, and no fabricated `llm_replay_id`. Its evidence label is
+`schema_valid_collect_only_snapshot`; it does not satisfy 001C section 12 because replay recomputation from complete
+serialized state plus observation is not implemented.
 
 ## Hypothesis
 
@@ -109,7 +111,8 @@ The slice must record:
 - Backend snapshot helpers hash the real trace-store record and expose a sanitized source-limited state snapshot.
 - Main-process trace runner call passes backend snapshot and adapter output at the existing chat-turn result boundary.
 - Default-off behavior remains no-op.
-- Electron smoke produces at least one conformant row with non-placeholder state and adapter output.
+- Electron smoke produces at least one `schema_valid_collect_only_snapshot` row with non-placeholder state and adapter
+  output; this row does not satisfy 001C section 12 while replay remains collect-only.
 - Evaluator over the new rows keeps `blocked_unreplayable_runtime_trace`, removes placeholder blockers, and preserves
   replay blockers such as `collect_only_replay_policy` and `missing_llm_replay_id` when no true replay id exists.
 - `npm test` from `EgoDesktop` passes.
@@ -120,10 +123,10 @@ The slice must record:
 
 `egodesktop_real_loop_g_ablation_backend_trace_snapshot_contract_only`.
 
-This can prove only that explicit flags can collect conformant real desktop backend trace snapshot rows through the
-existing chat-turn path. It cannot prove replay readiness, baseline superiority, route advancement, product benefit,
-stable user benefit, durable memory efficacy, runtime integration safety, agency, real emotion, subjectivity,
-consciousness, alive status, or Bar-2 specialness.
+This can prove only that explicit flags can collect `schema_valid_collect_only_snapshot` rows through the existing
+chat-turn path. It cannot prove replay readiness, 001C section 12 conformance, baseline superiority, route advancement,
+product benefit, stable user benefit, durable memory efficacy, runtime integration safety, agency, real emotion,
+subjectivity, consciousness, alive status, or Bar-2 specialness.
 
 ## Rollback Plan
 

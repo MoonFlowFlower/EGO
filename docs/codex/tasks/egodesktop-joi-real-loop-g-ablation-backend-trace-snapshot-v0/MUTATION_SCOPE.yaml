@@ -15,6 +15,7 @@ allowed_mutation_paths:
   - EgoDesktop/src/joiRealLoopGAblationTraceRunner.js
   - EgoDesktop/src/main.js
   - EgoDesktop/tests/joi_real_loop_g_ablation_backend_snapshot.test.js
+  - tests/test_egodesktop_gablation_review_repair.py
   - artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/
   - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-backend-trace-snapshot-v0/
   - docs/codex/tasks/TASK_LANE_INDEX.md
