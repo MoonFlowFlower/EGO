@@ -1,0 +1,19 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-chat-turn-trace-v0
+expected_mutation_surface:
+  - default-off EgoDesktop chat-turn trace smoke task card
+  - explicit smoke-only renderer/main wiring for chat-turn trace row production
+  - targeted tests and local trace/smoke artifacts
+  - local task-board entry/status updates
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no default runtime enablement, program-state update, or evidence-ledger claim update
+allowed_mutation_paths:
+  - EgoDesktop/src/main.js
+  - EgoDesktop/viewer/renderer.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_chat_turn_trace.test.js
+  - artifacts/egodesktop_joi_real_loop_g_ablation_chat_turn_trace_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-chat-turn-trace-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+  - artifacts/task_board/outbox.jsonl
+claim_ceiling: "egodesktop_real_loop_g_ablation_chat_turn_trace_contract_only; no runtime efficacy, stable benefit, route-B pass, EGO integration, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

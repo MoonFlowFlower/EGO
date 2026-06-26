@@ -556,6 +556,7 @@ async function run() {
     ttsRvcModel: String(args["tts-model-name"] || "Skadi_CN.pth"),
     ttsF0Method: String(args["tts-f0method"] || "rmvpe"),
     ttsSmokeText: String(args["tts-smoke-text"] || ""),
+    joiRealLoopChatSmokeText: String(args["joi-real-loop-chat-smoke-text"] || ""),
     pspcVisualShim,
     pspcPerceptionDemo,
     pspcRecordingMode,
@@ -778,7 +779,7 @@ async function run() {
   });
 
   if (args.smoke) {
-    const smokeTimeoutMs = args["tts-smoke-text"] ? 240000 : 90000;
+    const smokeTimeoutMs = args["tts-smoke-text"] || args["joi-real-loop-chat-smoke-text"] ? 240000 : 90000;
     setTimeout(() => {
       if (smokeSettled) {
         return;
