@@ -1,75 +1,101 @@
 # SESSION_HANDOFF
 
-## 当前主题
-- theme_id: N2
-- status: verified
-- title: 递归核有效性实验主题
+## Decision
+- recommend_new_session: `yes`
+- reason: current thread now contains cross-repo joi-demo context, Claude-review coordination, EGO stage-card drafting, implementation, tests, and commit closeout. A new session should recover from repo artifacts instead of long chat context.
+- handoff_written_at: `2026-06-26`
+- repo: `D:\Project\AIProject\MyProject\Ego`
 
-## 当前子任务
-- 无（N2 主题已完成）
+## Execution Readback Before This Handoff Edit
+- branch: `main`
+- execution_head_before_handoff_doc: `3dd4c15a98ab70b8f316c7307f752a2b64a33e76`
+- remote_tracking_before_handoff_doc: `main...origin/main [ahead 2]`
+- worktree_status_before_handoff_doc: `clean`
+- origin_main_at_last_read: `1862875f`
+- recent_local_commits:
+  - `3dd4c15a feat: add egodesktop g-ablation harness contract`
+  - `f40b539b docs: add egodesktop g-ablation stage card`
 
-## 已完成子任务
-1. N2A - 实验合同冻结 ✅
-2. N2B - 实验脚手架与 artifact 通道 ✅
-3. N2C - 主实验运行 ✅
-4. N2D - Ablation 与对比实验 ✅
-5. N2E - 主题汇总与结论报告 ✅
+## Program State Boundary
+- `scripts/codex_session_guard.py bootstrap --format markdown` reports:
+  - current_phase: `legacy_pre_operator_mainline_archived_from_current_tree`
+  - current_layer: `transition / operator-first`
+  - highest_evidence_level: `E3`
+  - canonical next_minimal_action remains the human-operator trial notes/import path.
+- The G-ABLATION work below is an EgoDesktop default-off engineering chain. It does not update `docs/PROGRAM_STATE_UNIFIED.yaml`, does not update evidence ledger, and does not override the operator-first program state.
 
-## 已完成主题
-- N1 - 治理收尾与默认 Gate 固化 ✅
-- N2 - 递归核有效性实验主题 ✅
+## Current Execution Chain
+- chain: `EgoDesktop Joi real-loop G-ABLATION`
+- current_layer: `engineering implementation / default-off evidence harness contract`
+- mainline_integration_status: `contract module only; not connected to default EgoDesktop runtime`
+- enabled_status: `false_by_default`
+- real_trigger_evidence: `none`
+- claim_ceiling: `egodesktop_real_loop_g_ablation_harness_contract_only`
 
-## 当前状态
-- verified: N2 主题全部完成
-- ready_to_start: N3（下一会话）
+## Completed Tasks
+1. `EGODESKTOP-GABLATION-001`
+   - status: `accepted__implementation_task_started`
+   - file: `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STATUS.md`
+   - purpose: EGO-side stage card for the accepted joi-demo real-loop G-ABLATION source contract.
+   - source contract: `D:\Project\AIProject\MyProject\joi-demo\JOI-DEMO-GRAD-G-ABLATION-RUNTIME-001C-REAL-LOOP-CARD.md`
+   - source contract commit: `2e14328f1f5887f3dd5298a4768fbb02841f131b`
 
-## 关键 Artifacts
-```
-artifacts/n2_experiments/
-├── N2A_EXPERIMENT_CONTRACT.md          # 实验合同
-├── n2_overall_summary.json             # 基础实验汇总 (11/11 通过)
-├── n2c_primary_experiments_summary.json # 主实验汇总 (9/9 通过)
-├── n2d_ablation_summary.json           # Ablation 汇总 (4/4 显著影响)
-└── [各实验目录...]
+2. `EGODESKTOP-GABLATION-002`
+   - status: `pass`
+   - file: `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/STATUS.md`
+   - purpose: default-off harness contract module, targeted tests, local contract report.
+   - commit: `3dd4c15a98ab70b8f316c7307f752a2b64a33e76`
 
-OpenEmotion/scripts/
-├── n2_experiment_harness.py            # 实验脚手架
-├── n2c_primary_experiments.py          # 主实验脚本
-└── n2d_ablation_experiments.py         # Ablation 脚本
+## Changed Files In 002 Commit
+- `EgoDesktop/src/joiRealLoopGAblationHarness.js`
+- `EgoDesktop/tests/joi_real_loop_g_ablation_harness.test.js`
+- `Tasks/TASK_BOARD.yaml`
+- `artifacts/egodesktop_joi_real_loop_g_ablation_harness_v0/CONTRACT_REPORT.md`
+- `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/*`
+- `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STATUS.md`
 
-reports/
-├── N2A_REPORT.md ~ N2D_REPORT.md
-└── N2_THEME_REPORT.md
-```
+## Verification Evidence
+- `node --test EgoDesktop\tests\joi_real_loop_g_ablation_harness.test.js`: `9 passed`
+- `npm test` from `EgoDesktop`: `66 passed`
+- `git diff --check HEAD^ HEAD`: clean
+- `python scripts/codex_session_guard.py --mutation-scope docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/MUTATION_SCOPE.yaml closeout-check --format markdown` after commit:
+  - dirty counts: `0 / 0 / 0 / 0`
+  - blockers: `push_pending`, `no_staged_changes`
+- GitHub Project sync unavailable in this environment: `gh_not_found`. Task-board outbox had local operations for `EGODESKTOP-GABLATION-001` and `EGODESKTOP-GABLATION-002`.
 
-## 关键未知
-1. 真实 Telegram 环境下是否表现一致
-2. 泛化边界（N3 主题）
-3. 用户可测入口（N4 主题）
+## What Is Proved
+- EGO now has a default-off EgoDesktop contract module for a future real-loop G-ABLATION harness.
+- The module can validate explicit experiment flags, reject runtime-authority fields, build replay-oriented trace rows, describe same-access and static replay baselines, and compute bounded verdict labels from declared rule inputs.
 
-## N2 核心结论
-**Proto-Self Kernel v1 在实验条件下表现出预期的递归更新行为，各组件均产生可观测的行为差异。**
+## What Is Not Proved
+- No real-loop experiment ran.
+- No default EgoDesktop runtime behavior was enabled.
+- No creature adapter was connected to mainline chat/render behavior.
+- No stable user benefit, durable memory efficacy, route-B pass/reopen/close, Bar-2 specialness, agency, real emotion, subjectivity, consciousness, or alive-status claim is supported.
 
-### Ablation 发现
-| 组件 | 禁用后影响 |
-|------|-----------|
-| Reflection | revision_counter 差异 5 |
-| Cycle Strengthen | strength 差异 0.90 |
-| External Result | revision_counter 差异 1 |
-| Drive Field 更新 | caution 差异 1.00 |
+## Next Minimal Closed-Loop Action
+- Create a separate default-off trace-runner slice.
+- It should invoke the actual EgoDesktop chat-turn/render path only under explicit experiment flags.
+- It should produce replayable trace artifacts with public inputs, CreatureState or adapter state hash, LLM replay-lock metadata, renderer-idle exclusion, and baseline-ready condition labels.
+- It must still not enable default runtime behavior and must still not update program-state or evidence-ledger claims.
 
-## 下一子任务入口动作
-1. 读取 `runtime/RUN_STATE.json` 确认 N2 verified
-2. 读取 `tasks/N3_THEME_GENERALIZATION_AND_FALSIFICATION.md`
-3. 读取 `tasks/N3_subtasks/N3A_SAMPLE_CONTRACT.md`
-4. 开始 N3 主题
+## Suggested First Actions In New Session
+1. `cd D:\Project\AIProject\MyProject\Ego`
+2. Read this file, then run:
+   - `git rev-parse --show-toplevel`
+   - `git branch --show-current`
+   - `git rev-parse HEAD`
+   - `git status --short --branch`
+   - `python scripts/codex_session_guard.py bootstrap --format markdown`
+3. Read:
+   - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-stage-card-v0/STAGE_CARD.md`
+   - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/SPEC.md`
+   - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/STATUS.md`
+   - `EgoDesktop/src/joiRealLoopGAblationHarness.js`
+4. If continuing implementation, draft a new bounded task card for the trace runner before editing runtime path files.
+5. Do not push, tag, or remote-anchor unless the operator explicitly authorizes it.
 
-## 建议
-- 继续下一会话执行 N3
-- 本会话上下文使用 54%，可以继续但建议新会话开始 N3
-
----
-
-注意：
-- 本文件是交接层，不是真相源本体
-- 真相源仍然是 `runtime/RUN_STATE.json`、`reports/*.md`、`artifacts/`
+## Compact Note
+- compact_done: `yes`
+- representation: status-first handoff with source paths, commits, verification commands, claim ceiling, and next closed-loop action.
+- truth_source_warning: this file is a handoff artifact, not live truth. Re-read repo state at the start of the next session.
