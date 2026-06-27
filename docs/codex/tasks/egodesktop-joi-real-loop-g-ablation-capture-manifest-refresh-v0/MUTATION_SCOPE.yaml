@@ -1,0 +1,18 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0
+expected_mutation_surface:
+  - 025 capture manifest artifact refresh after Wizard public source expansion
+  - freshness regression test for committed capture manifest versus current RAW_CACHE_REPORT
+  - refreshed capture manifest artifacts only, with raw source_cache remaining ignored
+  - task-board entry for EGODESKTOP-GABLATION-025
+  - task-board outbox entry if GitHub Project sync is unavailable
+  - route-convergence generated task-lane index refresh
+  - no raw text staging, desktop capture, replay, scoring, same-access execution, route advancement, runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/
+  - scripts/tests/test_build_egodesktop_gablation_capture_manifest.py
+  - artifacts/egodesktop_joi_real_loop_g_ablation_capture_manifest_v0/
+  - artifacts/task_board/outbox.jsonl
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "capture_manifest_hash_selection_only; no desktop-chat-turn capture, CREATURE_ON effect, replay, D-provenance, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

@@ -56,6 +56,35 @@ def test_capture_manifest_rejects_cache_hash_mismatch(tmp_path: Path) -> None:
         raise AssertionError("cache hash mismatch was not rejected")
 
 
+def test_committed_capture_manifest_matches_current_raw_cache_sources() -> None:
+    raw_report_path = ROOT / "artifacts" / "egodesktop_joi_real_loop_g_ablation_source_cache_v0" / "RAW_CACHE_REPORT.json"
+    manifest_path = ROOT / "artifacts" / "egodesktop_joi_real_loop_g_ablation_capture_manifest_v0" / "CAPTURE_MANIFEST.json"
+    build_report_path = ROOT / "artifacts" / "egodesktop_joi_real_loop_g_ablation_capture_manifest_v0" / "BUILD_REPORT.json"
+    raw_report = json.loads(raw_report_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    build_report = json.loads(build_report_path.read_text(encoding="utf-8"))
+
+    cache_written_results = [result for result in raw_report["results"] if result.get("cache_written")]
+    expected_sources = {result["source_id"] for result in cache_written_results}
+    selected_sources = {row["source_id"] for row in manifest["selected_rows"]}
+    expected_row_count = sum(min(5, int(result["row_count"])) for result in cache_written_results)
+    manifest_text = manifest_path.read_text(encoding="utf-8")
+
+    assert manifest["raw_text_in_manifest"] is False
+    assert manifest["runtime_authority"] is False
+    assert manifest["scoring_authority"] is False
+    assert selected_sources == expected_sources
+    assert "wizard_of_wikipedia_hf" in selected_sources
+    assert len(manifest["selected_rows"]) == expected_row_count
+    assert build_report["source_count"] == len(expected_sources)
+    assert build_report["selected_row_count"] == expected_row_count
+    for result in cache_written_results:
+        cache_path = Path(result["cache_path"])
+        resolved_cache_path = cache_path if cache_path.is_absolute() else ROOT / cache_path
+        for line in [line for line in resolved_cache_path.read_text(encoding="utf-8").splitlines() if line.strip()][:5]:
+            assert line not in manifest_text
+
+
 def _write_raw_cache_fixture(tmp_path: Path) -> Path:
     daily_cache = tmp_path / "source_cache" / "dailydialog_hf" / "train_sample.jsonl"
     empath_cache = tmp_path / "source_cache" / "empathetic_dialogues_hf" / "train_sample.jsonl"

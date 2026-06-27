@@ -4363,6 +4363,37 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-025
+    title: "EgoDesktop: Joi real-loop G-ABLATION capture manifest refresh v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-024
+    status: accepted
+    layer: egodesktop_real_loop_capture_manifest_refresh
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "capture_manifest_hash_selection_only"
+    next_action: "Accepted local-only: refreshed the hash-only capture manifest so the current three-source raw-local cache from 024 is represented before any future selected-source desktop trigger. Current artifact records source_count=3, selected_row_count=15, and capture_manifest_sha256=32ccd9925bf46b555b2ffbcb225beb6e3bd7834a0b23d1b80296884b6ecfdc26. Next minimal action is a separate selected-source desktop trigger smoke for a predeclared Wizard row through window.egoDesktop.sendChatTurn(...), still with no scoring or verdict. This task authorizes no raw text staging, desktop-chat-turn capture, replay, CREATURE_ON, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, runtime enablement, push, tag, or remote anchor."
+    acceptance:
+      - "Focused freshness test fails on the stale two-source capture manifest and passes after regeneration."
+      - "BUILD_REPORT.json reports source_count=3 and selected_row_count=15."
+      - "CAPTURE_MANIFEST.json selected source ids include dailydialog_hf, empathetic_dialogues_hf, and wizard_of_wikipedia_hf."
+      - "Manifest and build report contain no raw source text."
+      - "Raw source_cache remains ignored and unstaged."
+      - "No desktop-chat-turn capture, CREATURE_ON effect, replay, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized."
+    rollback: "Revert freshness test and regenerated capture artifacts, delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/IMPLEMENT.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-capture-manifest-refresh-v0/MUTATION_SCOPE.yaml"
+      - "scripts/tests/test_build_egodesktop_gablation_capture_manifest.py"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_capture_manifest_v0/CAPTURE_MANIFEST.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_capture_manifest_v0/BUILD_REPORT.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
