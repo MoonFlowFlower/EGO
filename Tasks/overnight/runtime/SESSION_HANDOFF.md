@@ -3,210 +3,208 @@
 ## Decision
 
 - recommend_new_session: `yes`
-- reason: current thread now contains cross-repo joi-demo context, Claude-review coordination, EGO G-ABLATION 001-009
-  task-card/implementation/review loops, real UI capture, artifact generation, tests, and local commit closeout. A new
-  session should recover from repo artifacts and this handoff instead of long chat context.
 - handoff_written_at: `2026-06-27`
 - repo: `D:\Project\AIProject\MyProject\Ego`
+- reason: current thread now spans EgoOperator human-trial review, EgoDesktop G-ABLATION capture/replay work,
+  public dialogue source-cache expansion, Claude/fallback review coordination, and multiple local commits. A new session
+  should recover from this file plus live repo readback rather than long chat context.
+- truth_source_warning: this file is a handoff artifact, not live truth. Re-run the readback commands below at the start
+  of the next session.
 
 ## Live Repo Readback Before This Handoff Edit
 
 - branch: `main`
-- execution_head_before_handoff_doc: `ef09df112649eb726d10185b0281a2d69225f074`
-- remote_tracking_before_handoff_doc: `main...origin/main [ahead 16]`
+- execution_head_before_handoff_doc: `6ed58852066520ad44de1ff1d66a2359ceb929ed`
+- remote_tracking_before_handoff_doc: `main...origin/main [ahead 31]`
 - worktree_status_before_handoff_doc: `clean`
-- latest_local_commit: `ef09df11 feat: add egodesktop gablation calibration reference`
+- ignored_runtime_cache_seen: `artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/source_cache/`
+- latest_local_commit: `6ed58852 feat: add wizard public source cache support`
 - recent_local_commits:
-  - `ef09df11 feat: add egodesktop gablation calibration reference`
-  - `e59011d8 docs: add egodesktop gablation calibration reference card`
-  - `4fffb768 fix: clarify egodesktop off static replay provenance`
-  - `8df1119d fix: repair egodesktop off static replay review blockers`
-  - `3ee1376f feat: add egodesktop off static replay row`
-  - `6052a922 feat: add egodesktop gablation replay precondition gate`
-  - `048c4bb8 fix: repair egodesktop gablation review blockers`
-  - `c1e8b56f docs: add claude review packet for g-ablation replay gate`
+  - `6ed58852 feat: add wizard public source cache support`
+  - `2545f3bd test: add selected source replay preflight evidence`
+  - `6f19bd8e test: add selected source chat smoke evidence`
+  - `fa14bffc feat: add egodesktop capture manifest builder`
+  - `4c1d8a81 docs: define egodesktop desktop capture provenance`
 
 ## Program State Boundary
 
-- `python scripts\codex_session_guard.py bootstrap --format markdown` reports:
+- `python scripts\codex_session_guard.py bootstrap --format json` reports:
+  - status: `ok`
   - current_phase: `legacy_pre_operator_mainline_archived_from_current_tree`
   - current_layer: `transition / operator-first`
   - highest_evidence_level: `E3`
-  - canonical next_minimal_action remains the human-operator trial notes/import path for `EgoOperator`.
+  - verification_level: `V3`
+  - status_owner: `EgoOperator`
+  - task_board plan_next: `stopped / no_ready_task / valid_stop=true`
   - dirty_total: `0`
   - github_sync: `unavailable` / `gh_not_found`
-- The G-ABLATION work below is an EgoDesktop default-off engineering/evidence-harness chain. It does not update
-  `docs/PROGRAM_STATE_UNIFIED.yaml`, does not update evidence ledger, and does not override the operator-first program
-  state.
+  - canonical next_minimal_action: have a human operator fill
+    `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl`,
+    then import it with `python EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_human_reviewed --notes EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl --provider-mode openrouter`
+    before any next feature or demotion decision.
+- The EgoDesktop G-ABLATION work below is a default-off engineering/evidence-hygiene chain. It does not update
+  `docs/PROGRAM_STATE_UNIFIED.yaml`, does not update the evidence ledger, and does not override the operator-first
+  program state.
 
-## Current Execution Chain
+## Current Layer / Claim Ceiling
 
-- chain: `EgoDesktop Joi real-loop G-ABLATION`
-- current_layer: `engineering implementation / calibration provenance and replay hygiene`
+- current_layer: `engineering implementation / evidence-hygiene for operator-first and default-off EgoDesktop G-ABLATION`
 - mainline_integration_status: `not connected to default EgoDesktop runtime`
 - enabled_status: `explicit CLI / experiment flags only; default runtime remains off`
-- real_trigger_evidence: `window.egoDesktop.sendChatTurn_ui_capture_to_existing_006_tap`
-- runtime_authority: `none`
-- claim_ceiling: `egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only`
-- reviewer_status: desktop Claude returned `NO_BLOCKING_FINDINGS (source-limited)` for the 009 B-009-IMPL-1 repair.
+- real_trigger_evidence:
+  - EgoOperator: local scenario traces exist from the human trial run, but the report still says
+    `human_trial_needs_review`.
+  - EgoDesktop: selected-source trigger smoke passed through `window.egoDesktop.sendChatTurn(...)`; replay preflight
+    consumed that row without scoring or verdict.
+- claim_ceiling: `local implementation / local observation / selected-source trigger and replay-preflight evidence only`
+- not_authorized_claims: no stable user benefit, runtime efficacy, mainline replacement success, live autonomy, durable
+  memory efficacy, agency, real emotion, subjectivity, consciousness, Bar-2 specialness, scoring pass, or Gate success.
 
-## Completed G-ABLATION Tasks
+## Human Trial State
 
-1. `EGODESKTOP-GABLATION-001`
-   - status: `accepted`
-   - purpose: EGO-side stage card for the accepted joi-demo real-loop G-ABLATION 001C source contract.
+- User ran:
+  `python EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_operator_trial/v2_human_reviewed --notes EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl --provider-mode openrouter`
+- Command output paths:
+  - scenarios: `EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_scenarios.json`
+  - json: `EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_report.json`
+  - markdown: `EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_report.md`
+- Current report readback:
+  - status: `human_trial_needs_review`
+  - schema_version: `ego_operator.human_operator_trial.v2`
+  - provider_mode: `openrouter`
+  - scenario_count: `18`
+  - observation_count: `18`
+  - known_scenario_coverage: `18`
+  - invalid_observation_count: `0`
+  - average_operator_score: `0.0`
+  - correction_count: `0`
+  - memory_misuse_count: `0`
+  - gate_violation_count: `0`
+  - next_action: `Classify failures as semantic, memory, gate, trace, or recovery regression and fix the current slice.`
+- Important boundary: this is not a pass. The report still contains TODO human-review notes and zero operator scores.
 
-2. `EGODESKTOP-GABLATION-002`
-   - status: `accepted`
-   - purpose: default-off EgoDesktop harness contract module, targeted tests, and local contract report.
-   - commit: `3dd4c15a98ab70b8f316c7307f752a2b64a33e76`
+## Completed Recent EgoDesktop G-ABLATION Slices
 
-3. `EGODESKTOP-GABLATION-003`
-   - status: `accepted`
-   - purpose: default-off trace-runner module and main-process hook through real chat-turn/render seams only under
-     explicit experiment flags.
+### 021 Capture Manifest Builder
 
-4. `EGODESKTOP-GABLATION-004`
-   - status: `accepted`
-   - purpose: replay-locked Electron chat-turn trace smoke through `window.egoDesktop.sendChatTurn`, producing real
-     `trace_rows.jsonl` rows with `trace_row_count > 0`.
+- commit: `fa14bffc feat: add egodesktop capture manifest builder`
+- purpose: create a provenance-preserving capture manifest for selected public source rows.
+- boundary: at commit time this covered the then-current raw cache. It has not yet been refreshed after adding
+  `wizard_of_wikipedia_hf`.
 
-5. `EGODESKTOP-GABLATION-005`
-   - status: `accepted_as_blocked_expected_preflight`
-   - purpose: callable replay/leakage preflight over 004 rows; evaluator recomputes hashes and detects leakage positive
-     controls, while correctly blocking verdicts on collect-only/placeholder replay blockers.
+### 022 Selected-Source Desktop Trigger Smoke
 
-6. `EGODESKTOP-GABLATION-006` / `006A`
-   - status: `accepted`
-   - purpose: backend trace snapshot row and surface repairs. Rows remain collect-only; source-limited Claude review
-     accepted the narrow surface only, not scoring or attribution.
+- commit: `6f19bd8e test: add selected source chat smoke evidence`
+- purpose: materialize one selected DailyDialog utterance and send it through real `window.egoDesktop.sendChatTurn(...)`
+  with the existing desktop trace tap.
+- key evidence:
+  - `chat_turn_trace_smoke_pass`
+  - `live2d_desktop_smoke_pass`
+  - `trace_rows=1`
+  - selected-source `user_text_hash` matched trace `user_text_hash`:
+    `fef12a004cfca8ce6b04203ec40e70b9f46ba563d53a530ed94dc5af30ab88c8`
+  - prompt length: `58`
+- privacy/provenance boundary: raw backend trace contained selected source text and was deleted before staging; admitted
+  artifact report raw-leak scan was `0`.
+- claim ceiling: `selected_source_desktop_trigger_smoke_only`.
 
-7. `EGODESKTOP-GABLATION-007`
-   - status: `accepted`
-   - purpose: executable scoring-precondition gate that aborts before any scoring path when D-field replay
-     prerequisites are not satisfied.
+### 023 Selected-Source Replay Preflight
 
-8. `EGODESKTOP-GABLATION-008`
-   - status: `accepted`
-   - purpose: one replayable `OFF_STATIC_REPLAY_HELDOUT` non-LLM `D` row without scoring. It preserved
-     `scoring_run_authorized=false` and `verdict_authorized=false`, but still used a synthetic calibration reference.
-
-9. `EGODESKTOP-GABLATION-009`
-   - status: `accepted`
-   - commit: `ef09df112649eb726d10185b0281a2d69225f074`
-   - purpose: replace the 008 synthetic calibration caveat with a captured/fitted calibration reference before any
-     future `CREATURE_ON` row or scoring slice.
-   - task docs:
-     - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/SPEC.md`
-     - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/PLAN.md`
-     - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/STATUS.md`
-     - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/MUTATION_SCOPE.yaml`
-
-## 009 Key Artifacts
-
-- Predeclared calibration prompt pack:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_predeclared_single/PREDECLARED_CALIBRATION_PROMPT_PACK.json`
-- predeclared prompt pack hash:
-  `63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db`
-- Real UI calibration trace:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_predeclared_single/trace/trace_rows.jsonl`
-- captured calibration row hash:
-  `aebbdbedaca71d8955e470ffc6977d1bb9816e49f8af5878abd20eebbc5a4b28`
-- Captured calibration reference:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/calibration_reference/calibration_reference.json`
-- calibration reference hash:
-  `52411a8378e4a258a03f16b606052d9fcc42650af16c655684db07dc94356067`
-- Split partition manifest:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/calibration_reference/partition/SPLIT_PARTITION_MANIFEST.json`
-- partition protocol hash:
-  `2d7a6e745a68812348ea49cbf579e8e0e866e11b37b1541cecbf6ebc28804b50`
-- Rebuilt heldout row:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/trace/trace_rows.jsonl`
-- rebuilt `OFF_STATIC_REPLAY_HELDOUT` row hash:
-  `95722e9c2be9e29a188e759f4490f75bb8518d99e70fd79c41533f5b60345166`
-- Evaluator report:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/evaluator/evaluation_report.json`
-- Preserved blocked negative attempt:
-  `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_turn2/`
-
-## 009 Reviewer / Evidence Readback
-
-- Claude initially blocked 009 implementation as `B-009-IMPL-1`: the two-row capture selected `turn_2` after rejecting
-  `turn_1` due positional `turn_id` overlap. That was post-hoc selection and overclaimed `partition_disjointness_status`.
-- Repair:
-  - predeclared one calibration prompt pack before capture;
-  - captured exactly one matching calibration row through the visible EgoDesktop UI/default IPC seam;
-  - builder requires `--predeclared-calibration-prompt-pack`;
-  - builder exact-matches `prompt_id + public_inputs.user_text_hash`;
-  - multirow post-hoc selection is rejected;
-  - `content_disjointness = prompt_id + user_text_hash`;
-  - `provenance_distinctness = source_row_hash + trace_record_hash + capture_run_id`;
-  - `turn_id` is informational position provenance only.
-- Claude re-review verdict: `NO_BLOCKING_FINDINGS (source-limited)`.
-- 009 accepted readback:
-  - `selection_policy_status=deterministic_predeclared_single_prompt_consumed`
-  - `post_hoc_selection_status=absent`
-  - `content_disjointness_status=pass`
-  - `provenance_distinctness_status=pass`
-  - `turn_id_provenance_status=informational_only_not_content_disjointness_gate`
-  - `partition_disjointness_status=pass`
-  - `replay_integrity_preflight_pass_no_verdict`
-  - `d_field_replay_precondition_satisfied=true`
+- commit: `2545f3bd test: add selected source replay preflight evidence`
+- purpose: consume the 022 trace row through the existing `OFF_STATIC_REPLAY_HELDOUT` builder/evaluator path.
+- key evidence:
+  - builder status: `off_static_replay_heldout_row_written`
+  - row_count: `1`
+  - `calibration_reference_kind=synthetic_reference`
   - `scoring_run_authorized=false`
   - `verdict_authorized=false`
+  - evaluator status: `replay_integrity_preflight_pass_no_verdict`
+  - leakage positive control: pass
+  - D-field replay precondition: true
+- claim ceiling: `selected_source_off_static_replay_preflight_only`.
 
-## Verification Evidence
+### 024 Public Source Cache Expansion
 
-- Focused G-ABLATION suite:
-  - `node --test tests\joi_real_loop_g_ablation_calibration_reference.test.js tests\joi_real_loop_g_ablation_off_static_replay.test.js tests\joi_real_loop_g_ablation_replay_evaluator.test.js tests\joi_real_loop_g_ablation_backend_snapshot.test.js tests\joi_real_loop_g_ablation_trace_runner.test.js`
-  - result: `26/26 pass`
-- `npm test` from `EgoDesktop`: `94/94 pass`
-- `python scripts\codex\generate_route_convergence_views.py`: exit `0`
-- YAML parse for `Tasks/TASK_BOARD.yaml` and 009 `MUTATION_SCOPE.yaml`: ok
-- `python scripts\codex\verify_route_convergence.py`: pass
-- `python scripts\codex\verify_repo.py --mode fast`: pass
-- `git diff --check` and `git diff --cached --check`: clean
-- Post-commit scoped closeout:
-  - command: `python scripts\codex_session_guard.py --mutation-scope docs\codex\tasks\egodesktop-joi-real-loop-g-ablation-calibration-reference-v0\MUTATION_SCOPE.yaml closeout-check --format markdown`
-  - dirty counts: `0 / 0 / 0 / 0`
-  - mutation_scope: loaded
-  - eligible: `false`
-  - blockers: `push_pending`, `no_staged_changes`
-- No push, tag, or remote-anchor was authorized or performed.
+- commit: `6ed58852 feat: add wizard public source cache support`
+- purpose: expand the raw local public dialogue source cache from two sources to three by adding Wizard of Wikipedia.
+- source manifest hash: `cfe381eb608d609efd07bc3cf1d83718d8ed21b25a0c108bdd928d41ff3ee913`
+- download plan hash: `a9e1aaf5a582c22f1a421301e19f6d5ea59e9f494db2fcd9595e882d24678d5b`
+- cached raw-local sources:
+  - `dailydialog_hf`: sampled row_count `25`, num_rows_total `11118`, license `cc-by-nc-sa-4.0`, cache_sha256
+    `b2b6a2d348b2f71cea91a25e94c170f61e7eac5c5d4233121a56232883d50036`
+  - `empathetic_dialogues_hf`: sampled row_count `25`, license `cc-by-nc-4.0`, cache_sha256
+    `7f5fa7fc25a429d6959ac0cab5549e47c239f8a0ffb637486308d6aa2e72e494`
+  - `wizard_of_wikipedia_hf`: sampled row_count `25`, num_rows_total `18430`, license `cc-by-nc-4.0`, cache_sha256
+    `622253df96a131ac3e6e807ad0ca573c93f742e3caf1e860719ea111f964eb4d`
+- HF metadata readback for Wizard:
+  - dataset id: `chujiezheng/wizard_of_wikipedia`
+  - gated: `False`
+  - cardData license: `cc-by-nc-4.0`
+- report raw text leak scan:
+  - sampled raw needles: `194`
+  - report_file_leak_count: `0`
+- raw cache path is ignored and intentionally not committed:
+  `artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/source_cache/`
+- claim ceiling: `public_source_metadata_and_raw_local_cache_only`; this does not prove desktop trigger coverage for the
+  new Wizard rows.
 
-## What Is Proved
+## Real Desktop-Chat-Turn Capture Definition
 
-- 009 proves only that the static replay heldout row now consumes a captured/fitted calibration reference instead of a
-  synthetic constant.
-- The captured calibration source was produced through the real EgoDesktop UI/default IPC seam and existing 006
-  tap/writer under explicit flags.
-- The accepted 009 artifact has deterministic predeclared selection, no post-hoc multirow selection, and no scoring or
-  verdict authorization.
+- `real_source_text`: non-synthetic text from local EgoDesktop/operator artifacts or licensed public dialogue sources.
+- `real_desktop_trigger`: the text goes through the real EgoDesktop chat-turn entrypoint such as
+  `window.egoDesktop.sendChatTurn(...)` / default IPC, not evaluator-only code.
+- `replayable_capture_row`: the approved writer emits row-level provenance including run/condition/split/source hashes,
+  public inputs, adapter output, D provenance, replay inputs, and row hash.
+- Existing EgoDesktop logs and public corpora count as real source material only. They become capture evidence only after
+  they pass through the real desktop trigger and are serialized by the approved writer under the frozen design.
 
-## What Is Not Proved
+## Reviewer / Claude State
 
-- No `CREATURE_ON` row exists from 009.
-- No baseline score, comparison, attribution verdict, route advancement, `baseline_saturated_stop`, or readiness claim
-  is produced by 009.
-- No default EgoDesktop runtime behavior was enabled.
-- No program state or evidence ledger claim was updated.
-- No stable user benefit, durable memory efficacy, agency, real emotion, subjectivity, consciousness, alive-status, or
-  Bar-2 specialness claim is supported.
+- Desktop Claude / Claude CLI did not provide the latest 024 review because the available path returned
+  `403 coding_plan_subscription_expired`.
+- Fallback reviewer subagent `019f0965-1f70-7a91-8cc4-9949859480d8` reported `NO_BLOCKING_FINDINGS` for 024.
+- Treat that as fallback review only, not as Claude-reviewed evidence. Re-check the Claude cowork route in a new session
+  if the user still wants Claude in the loop.
 
-## Next Minimal Closed-Loop Action
+## Verification Evidence From Recent Slice
 
-- Create a separate task card for `EGODESKTOP-GABLATION-010`.
-- Proposed objective: decisive same-access comparison slice:
-  - `SAME_ACCESS_REPRODUCER_BATTERY + CREATURE_ON`;
-  - outcome-blind predeclared multi-prompt calibration/heldout split;
-  - thresholds frozen before execution;
-  - same-access reproducer battery such as EMA / hysteresis / logistic or equivalent independent callable controllers;
-  - fit on calibration, evaluate on heldout;
-  - `CREATURE_ON` row through the same real EgoDesktop chat-turn seam and existing tap/writer;
-  - honest expected outcome remains `baseline_saturated_stop`.
-- Do not implement 010 before drafting the card and sending it to desktop Claude for review.
+- 024 focused tests:
+  - `node --test EgoDesktop/tests/joi_real_loop_g_ablation_public_sources_manifest.test.js EgoDesktop/tests/joi_real_loop_g_ablation_public_sources_downloader.test.js`
+  - result: `11/11 pass`
+- route convergence:
+  - `python scripts\codex\generate_route_convergence_views.py`
+  - `python scripts\codex\verify_route_convergence.py`
+  - result: pass
+- repo fast verification:
+  - `python scripts\codex\verify_repo.py --mode fast`
+  - result: pass
+- diff checks:
+  - `git diff --check`
+  - result: clean except CRLF warnings in checked files
+- scoped closeout after 024:
+  - dirty unsafe counts: `0`
+  - blocker: `push_pending` only; no push/tag/remote-anchor was authorized or performed.
+
+## Next Minimal Closed-Loop Actions
+
+1. Operator-first route:
+   inspect `EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_report.md` and replace TODO
+   human-review notes with real operator classifications/scores, or explicitly preserve failures. Do not call the current
+   report a pass.
+2. EgoDesktop data-chain route:
+   draft the next bounded task card to refresh the capture manifest from the now three-source raw cache, including
+   `wizard_of_wikipedia_hf`. This should happen before any new selected-source desktop trigger for Wizard rows.
+3. Only after a refreshed manifest exists:
+   run a selected-source desktop trigger smoke for a predeclared Wizard row through `window.egoDesktop.sendChatTurn(...)`;
+   still no scoring, no `CREATURE_ON`, and no verdict.
+
+## Forbidden / Not Yet Authorized
+
+- Do not stage or commit raw `source_cache/` content.
 - Do not score, compare, emit `CREATURE_ON`, update `PROGRAM_STATE_UNIFIED.yaml`, update evidence ledger, push, tag, or
-  remote-anchor as part of 009.
+  remote-anchor from the current state.
+- Do not promote `human_trial_needs_review` to pass.
+- Do not claim runtime efficacy, stable user benefit, agency, emotion, subjectivity, consciousness, or mainline readiness.
 
 ## Suggested First Actions In New Session
 
@@ -215,23 +213,23 @@
    - `git rev-parse --show-toplevel`
    - `git branch --show-current`
    - `git rev-parse HEAD`
-   - `git status --short --branch`
+   - `git status --short --branch --untracked-files=all`
    - `python scripts\codex_session_guard.py bootstrap --format markdown`
-3. Read the active G-ABLATION files:
-   - `Tasks/TASK_BOARD.yaml`
-   - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/STATUS.md`
-   - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/SPEC.md`
-   - `EgoDesktop/src/joiRealLoopGAblationCalibrationReference.js`
-   - `EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js`
-4. If continuing G-ABLATION, draft `EGODESKTOP-GABLATION-010` as a new bounded task card first.
-5. Use the Claude cowork loop by default if the user asks to continue this lane; do not ask for per-send confirmation
-   inside the same authorized bounded loop.
-6. Treat this handoff as recoverability context only. Re-read live repo state at the start of the new session.
+3. For the operator-first lane, read:
+   - `EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_report.md`
+   - `EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_report.json`
+   - `EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl`
+4. For the EgoDesktop public-source lane, read:
+   - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-cache-v0/STATUS.md`
+   - `artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/RAW_CACHE_REPORT.json`
+   - `artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/PUBLIC_SOURCE_MANIFEST.json`
+   - `EgoDesktop/scripts/joi_real_loop_g_ablation_public_source_downloader.mjs`
+5. If continuing with Claude cowork, first re-check whether the Claude path is available. If it still returns
+   `coding_plan_subscription_expired`, state that clearly and use fallback review only if the user accepts it.
 
 ## Compact Note
 
 - compact_done: `yes`
-- representation: status-first handoff with repo readback, commit, artifacts, verification, claim ceiling, and next
-  closed-loop action.
-- truth_source_warning: this file is a handoff artifact, not live truth. Re-read repo state at the start of the next
-  session.
+- representation: status-first handoff with live repo readback, program boundary, latest commits, human-trial state,
+  public-source cache evidence, claim ceiling, and next minimal actions.
+- truth_source_warning: re-read live repo state at the start of the next session before acting.
