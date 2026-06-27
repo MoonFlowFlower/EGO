@@ -1,0 +1,40 @@
+{
+  "blocked_source_ids": [
+    "local_egodesktop_session_context_v0",
+    "egodesktop_gablation_009_predeclared_single_capture",
+    "egodesktop_gablation_009_turn2_rejected_posthoc",
+    "lmsys_chat_1m_hf",
+    "personachat_parlai"
+  ],
+  "claim_ceiling": "source_manifest_artifact_only",
+  "created_at": "2026-06-27T00:00:00+00:00",
+  "download_authority": "none_in_016",
+  "plan_id": "egodesktop_joi_real_loop_g_ablation_source_download_plan_v0",
+  "planned_actions": [
+    {
+      "action": "future_local_download_conditional",
+      "required_before_download": [
+        "separate_downloader_task",
+        "license_card_hash_readback",
+        "raw_cache_local_only",
+        "no_capture_or_scoring"
+      ],
+      "source_id": "dailydialog_hf",
+      "source_url": "https://huggingface.co/datasets/daily_dialog"
+    },
+    {
+      "action": "future_local_download_conditional",
+      "required_before_download": [
+        "separate_downloader_task",
+        "license_card_hash_readback",
+        "raw_cache_local_only",
+        "no_capture_or_scoring"
+      ],
+      "source_id": "empathetic_dialogues_hf",
+      "source_url": "https://huggingface.co/datasets/facebook/empathetic_dialogues"
+    }
+  ],
+  "producer_function": "build_source_manifest",
+  "raw_cache_created": false,
+  "schema": "egodesktop.joi_real_loop.source_download_plan.v0"
+}

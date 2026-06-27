@@ -4099,6 +4099,37 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-016
+    title: "EgoDesktop: Joi real-loop G-ABLATION source manifest artifact v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-015
+    status: accepted
+    layer: egodesktop_real_loop_source_manifest_artifact
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "source_manifest_artifact_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS. The builder generates SOURCE_MANIFEST.json and SOURCE_DOWNLOAD_PLAN.json with SHA256 sidecars, and the build report records download_executed=false and raw_cache_created=false. This task authorizes no dataset download, source cache creation, gated terms acceptance, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, push, tag, or remote anchor. Next action is a separate downloader/cache task if raw local source caching is still wanted."
+    acceptance:
+      - "A callable builder creates deterministic SOURCE_MANIFEST.json and SOURCE_DOWNLOAD_PLAN.json artifacts with SHA256 sidecars."
+      - "Manifest-level authority denial fields for capture, scoring, product claims, runtime, program state, evidence ledger, and remote publication are true."
+      - "Candidate source rows preserve 015 admission classes and blocked reasons."
+      - "The download plan includes only future conditional actions for eligible non-gated public sources and includes no download action for gated, unknown-license, local-private, or negative-evidence-only sources."
+      - "Raw source cache directory is not created."
+      - "No source cache existence, raw dataset availability, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this artifact slice."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-v0/, scripts/codex/build_egodesktop_gablation_source_manifest.py, scripts/tests/test_build_egodesktop_gablation_source_manifest.py, artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-v0/MUTATION_SCOPE.yaml"
+      - "scripts/codex/build_egodesktop_gablation_source_manifest.py"
+      - "scripts/tests/test_build_egodesktop_gablation_source_manifest.py"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/SOURCE_MANIFEST.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/SOURCE_DOWNLOAD_PLAN.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
