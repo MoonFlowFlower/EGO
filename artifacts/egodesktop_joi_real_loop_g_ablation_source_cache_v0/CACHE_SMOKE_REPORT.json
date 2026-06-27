@@ -12,7 +12,7 @@
   "results": [
     {
       "byte_count": 926846,
-      "content_sha256": "02077dbb95790f80ba429efc381a069fbddd93a1e6a73c8e040ff3a6d91e8592",
+      "content_sha256": "bdf188018a7cb87f6003686c3aafa383721945114173de561f12bd73cd1b4fe3",
       "content_type": "text/html; charset=utf-8",
       "license_name": "cc-by-nc-sa-4.0",
       "raw_text_stored": false,
@@ -24,7 +24,7 @@
     },
     {
       "byte_count": 178269,
-      "content_sha256": "29befbd011da29e9a63e75d1cc923bfcecc3dc17f98824de2eb512bc65bc4a45",
+      "content_sha256": "3ec3edbf1220b2495b6f0560e53527ce90d2dd18969acd6a6b9e61db41e3928d",
       "content_type": "text/html; charset=utf-8",
       "license_name": "cc-by-nc-4.0",
       "raw_text_stored": false,
@@ -33,6 +33,18 @@
       "source_license_tier": "public_noncommercial",
       "status_code": 200,
       "url": "https://huggingface.co/datasets/facebook/empathetic_dialogues"
+    },
+    {
+      "byte_count": 551774,
+      "content_sha256": "d235b8006f257c06a9ab9355b806029c3e805e342f75b584be5928b66cdd40b7",
+      "content_type": "text/html; charset=utf-8",
+      "license_name": "cc-by-nc-4.0",
+      "raw_text_stored": false,
+      "reachable": true,
+      "source_id": "wizard_of_wikipedia_hf",
+      "source_license_tier": "public_noncommercial",
+      "status_code": 200,
+      "url": "https://huggingface.co/datasets/chujiezheng/wizard_of_wikipedia"
     }
   ],
   "runtime_authority": false,

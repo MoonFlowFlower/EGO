@@ -4334,6 +4334,35 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-024
+    title: "EgoDesktop: Joi real-loop G-ABLATION public source expansion Wizard v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-019
+    status: done
+    layer: egodesktop_real_loop_public_source_collection
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "public_source_expansion_raw_local_cache_only"
+    next_action: "Done local-only: added Wizard of Wikipedia as one more public noncommercial human-dialogue candidate source, refreshed source manifest/download plan and metadata/raw-cache reports, and kept raw text ignored with no capture/replay/scoring/runtime authority."
+    acceptance:
+      - "Manifest includes wizard_of_wikipedia_hf with license cc-by-nc-4.0 and future_local_download_conditional status."
+      - "Download plan includes wizard_of_wikipedia_hf."
+      - "Downloader supports wizard_of_wikipedia_hf through HF rows API."
+      - "RAW_CACHE_REPORT records a wizard_of_wikipedia_hf cache sample without storing raw text in committed report fields."
+      - "Raw source_cache remains ignored and no raw source text is staged."
+      - "No capture, replay, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized."
+    rollback: "Revert script/tests/artifacts/task-board changes, delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0/, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0/MUTATION_SCOPE.yaml"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/SOURCE_MANIFEST.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/RAW_CACHE_REPORT.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task

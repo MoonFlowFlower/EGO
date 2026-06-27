@@ -52,6 +52,27 @@
       "split": "train",
       "status_code": 200,
       "url": "https://dl.fbaipublicfiles.com/parlai/empatheticdialogues/empatheticdialogues.tar.gz"
+    },
+    {
+      "byte_count": 1201086,
+      "cache_path": "artifacts\\egodesktop_joi_real_loop_g_ablation_source_cache_v0\\source_cache\\wizard_of_wikipedia_hf\\train_sample.jsonl",
+      "cache_sha256": "622253df96a131ac3e6e807ad0ca573c93f742e3caf1e860719ea111f964eb4d",
+      "cache_written": true,
+      "content_sha256": "8e81e9acec2e3e2a0565cecf34b1c52403108658c315feff2e3d13f747c0a161",
+      "content_type": "application/json",
+      "license_name": "cc-by-nc-4.0",
+      "max_rows": 25,
+      "method": "hf_rows_api",
+      "num_rows_total": 18430,
+      "raw_text_stored": true,
+      "reachable": true,
+      "row_count": 25,
+      "source_id": "wizard_of_wikipedia_hf",
+      "source_license_tier": "public_noncommercial",
+      "source_url": "https://huggingface.co/datasets/chujiezheng/wizard_of_wikipedia",
+      "split": "train",
+      "status_code": 200,
+      "url": "https://datasets-server.huggingface.co/rows?dataset=chujiezheng%2Fwizard_of_wikipedia&config=default&split=train&offset=0&length=25"
     }
   ],
   "runtime_authority": false,

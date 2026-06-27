@@ -1,0 +1,20 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0
+expected_mutation_surface:
+  - 024 public Wizard of Wikipedia source manifest/downloader support
+  - source manifest/download plan/report artifact refresh
+  - raw-cache report refresh, while raw source_cache remains ignored
+  - task-board entry for EGODESKTOP-GABLATION-024
+  - route-convergence generated task-lane index refresh
+  - no raw text staging, capture, replay, scoring, same-access execution, route advancement, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - scripts/codex/build_egodesktop_gablation_source_manifest.py
+  - scripts/codex/run_egodesktop_gablation_source_cache_downloader.py
+  - scripts/tests/test_build_egodesktop_gablation_source_manifest.py
+  - scripts/tests/test_run_egodesktop_gablation_source_cache_downloader.py
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-source-expansion-wizard-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "public_source_expansion_raw_local_cache_only; no capture, replay, CREATURE_ON effect, baseline score, same-access saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

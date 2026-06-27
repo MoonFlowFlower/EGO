@@ -1,7 +1,7 @@
 {
   "claim_ceiling": "source_manifest_artifact_only",
   "created_at": "2026-06-27T00:00:00+00:00",
-  "download_plan_hash": "eb4c81abff9284b841af191189cc4fd7d5a7bcc3a6f54e211e7d8c73d58cddc4",
+  "download_plan_hash": "a9e1aaf5a582c22f1a421301e19f6d5ea59e9f494db2fcd9595e882d24678d5b",
   "manifest_id": "egodesktop_joi_real_loop_g_ablation_source_manifest_v0",
   "no_capture_authority": true,
   "no_evidence_ledger_authority": true,
@@ -267,6 +267,57 @@
       "source_kind": "public_dataset",
       "source_license_tier": "public_noncommercial",
       "source_url_or_local_path": "https://huggingface.co/datasets/facebook/empathetic_dialogues",
+      "split_meta_leakage_scan_required": true
+    },
+    {
+      "admission_status": "candidate_metadata_only",
+      "allowed_claim_ceiling": "local_noncommercial_evidence_only",
+      "attribution_required": true,
+      "b011_carry_forward_required": true,
+      "blocked_downstream_claims": [
+        "product_claim",
+        "companion_readiness",
+        "commercial_use",
+        "stable_user_benefit",
+        "agency",
+        "emotion",
+        "subjectivity",
+        "consciousness",
+        "alive_status",
+        "bar2_specialness"
+      ],
+      "blocked_reason": "future capture blocked until source manifest, leakage, independence, affect, and anti-degeneracy gates pass",
+      "cache_policy": "future_local_cache_only",
+      "content_hash_strategy": "hash_only_or_redacted_excerpt_before_capture",
+      "download_status": "future_local_download_conditional",
+      "future_capture_blockers": [
+        "blocked_until_manifest_and_leakage_gates"
+      ],
+      "future_capture_eligible": false,
+      "gated_terms_required": false,
+      "independence_cluster_keys": [
+        "dataset_or_local_artifact",
+        "session_or_speaker_id",
+        "topic",
+        "template_or_near_duplicate_surface",
+        "affect_band"
+      ],
+      "license_name": "cc-by-nc-4.0",
+      "license_text_hash_or_card_hash": "4a562095f1bf4d8fb08fa4c5173b7f0c40981f5443a5d652c2947aff3d28ec94",
+      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "noncommercial_only": true,
+      "operator_terms_review_required": false,
+      "operator_terms_review_status": "not_required_metadata_only",
+      "pii_review_required": true,
+      "privacy_mode": "redacted_excerpt_or_hash_only_before_capture",
+      "raw_text_policy": "raw_local_only_or_hash_only",
+      "retrieved_at": "2026-06-27T00:00:00+00:00",
+      "sharealike_required": false,
+      "source_hash": "67409f3595babd007c11e213a7309f51b06583aa01a09e79027ae614ed5c257d",
+      "source_id": "wizard_of_wikipedia_hf",
+      "source_kind": "public_dataset",
+      "source_license_tier": "public_noncommercial",
+      "source_url_or_local_path": "https://huggingface.co/datasets/chujiezheng/wizard_of_wikipedia",
       "split_meta_leakage_scan_required": true
     },
     {

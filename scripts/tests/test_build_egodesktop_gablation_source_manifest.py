@@ -55,6 +55,14 @@ def test_candidate_sources_preserve_admission_and_blocked_downloads() -> None:
     assert rows["empathetic_dialogues_hf"]["source_license_tier"] == "public_noncommercial"
     assert rows["empathetic_dialogues_hf"]["noncommercial_only"] is True
 
+    assert rows["wizard_of_wikipedia_hf"]["download_status"] == "future_local_download_conditional"
+    assert rows["wizard_of_wikipedia_hf"]["source_url_or_local_path"] == (
+        "https://huggingface.co/datasets/chujiezheng/wizard_of_wikipedia"
+    )
+    assert rows["wizard_of_wikipedia_hf"]["license_name"] == "cc-by-nc-4.0"
+    assert rows["wizard_of_wikipedia_hf"]["source_license_tier"] == "public_noncommercial"
+    assert rows["wizard_of_wikipedia_hf"]["noncommercial_only"] is True
+
     assert rows["lmsys_chat_1m_hf"]["admission_status"] == "blocked"
     assert rows["lmsys_chat_1m_hf"]["blocked_reason"] == (
         "raw card access returned unauthorized during 014 metadata check"
@@ -68,7 +76,7 @@ def test_candidate_sources_preserve_admission_and_blocked_downloads() -> None:
     )
 
     planned_ids = {item["source_id"] for item in download_plan["planned_actions"]}
-    assert planned_ids == {"dailydialog_hf", "empathetic_dialogues_hf"}
+    assert planned_ids == {"dailydialog_hf", "empathetic_dialogues_hf", "wizard_of_wikipedia_hf"}
     assert all(item["action"] == "future_local_download_conditional" for item in download_plan["planned_actions"])
 
 

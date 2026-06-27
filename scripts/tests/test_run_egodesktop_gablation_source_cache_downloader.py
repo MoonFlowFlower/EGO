@@ -25,7 +25,11 @@ def test_build_metadata_smoke_plan_only_includes_allowed_public_sources() -> Non
     )
 
     actions = downloader.build_metadata_smoke_actions(manifest, plan)
-    assert {action["source_id"] for action in actions} == {"dailydialog_hf", "empathetic_dialogues_hf"}
+    assert {action["source_id"] for action in actions} == {
+        "dailydialog_hf",
+        "empathetic_dialogues_hf",
+        "wizard_of_wikipedia_hf",
+    }
     assert all(action["url"].startswith("https://huggingface.co/datasets/") for action in actions)
 
 
@@ -165,7 +169,11 @@ def test_build_raw_cache_actions_includes_only_public_candidate_sources() -> Non
 
     actions = downloader.build_raw_cache_actions(manifest, plan, split="train", max_rows=2)
 
-    assert {action["source_id"] for action in actions} == {"dailydialog_hf", "empathetic_dialogues_hf"}
+    assert {action["source_id"] for action in actions} == {
+        "dailydialog_hf",
+        "empathetic_dialogues_hf",
+        "wizard_of_wikipedia_hf",
+    }
     assert {action["method"] for action in actions} == {"hf_rows_api", "direct_archive_csv"}
     assert all(action["max_rows"] == 2 for action in actions)
     assert all(action["split"] == "train" for action in actions)
@@ -194,12 +202,22 @@ def test_raw_cache_sample_writes_ignored_cache_and_hash_report_without_committin
             "license_name": "cc-by-nc-4.0",
             "source_license_tier": "public_nc",
         },
+        {
+            "source_id": "wizard_of_wikipedia_hf",
+            "method": "hf_rows_api",
+            "url": "https://datasets-server.huggingface.co/rows?dataset=chujiezheng%2Fwizard_of_wikipedia&config=default&split=train&offset=0&length=2",
+            "source_url": "https://huggingface.co/datasets/chujiezheng/wizard_of_wikipedia",
+            "split": "train",
+            "max_rows": 2,
+            "license_name": "cc-by-nc-4.0",
+            "source_license_tier": "public_noncommercial",
+        },
     ]
 
     archive_bytes = _fake_empathetic_archive()
 
     def fake_fetch(url: str) -> downloader.FetchResult:
-        if "datasets-server.huggingface.co/rows" in url:
+        if "dataset=roskoN%2Fdailydialog" in url or "dataset=roskoN/dailydialog" in url:
             return downloader.FetchResult(
                 url=url,
                 status_code=200,
@@ -207,6 +225,19 @@ def test_raw_cache_sample_writes_ignored_cache_and_hash_report_without_committin
                     b'{"rows":[{"row_idx":0,"row":{"utterances":["alpha raw text"]}},'
                     b'{"row_idx":1,"row":{"utterances":["beta raw text"]}}],'
                     b'"num_rows_total":11118}'
+                ),
+                content_type="application/json",
+            )
+        if "dataset=chujiezheng%2Fwizard_of_wikipedia" in url:
+            return downloader.FetchResult(
+                url=url,
+                status_code=200,
+                content=(
+                    b'{"rows":[{"row_idx":0,"row":{"post":["wizard raw prompt"],'
+                    b'"response":["wizard raw response"],"topics":["science"]}},'
+                    b'{"row_idx":1,"row":{"post":["wizard second prompt"],'
+                    b'"response":["wizard second response"],"topics":["history"]}}],'
+                    b'"num_rows_total":18430}'
                 ),
                 content_type="application/json",
             )
@@ -237,8 +268,11 @@ def test_raw_cache_sample_writes_ignored_cache_and_hash_report_without_committin
 
     daily_cache = tmp_path / "source_cache" / "dailydialog_hf" / "train_sample.jsonl"
     empath_cache = tmp_path / "source_cache" / "empathetic_dialogues_hf" / "train_sample.jsonl"
+    wizard_cache = tmp_path / "source_cache" / "wizard_of_wikipedia_hf" / "train_sample.jsonl"
     assert "alpha raw text" in daily_cache.read_text(encoding="utf-8")
     assert "I felt proud" in empath_cache.read_text(encoding="utf-8")
+    assert "wizard raw prompt" in wizard_cache.read_text(encoding="utf-8")
+    assert "wizard raw prompt" not in str(report)
     assert (tmp_path / "RAW_CACHE_REPORT.json").exists()
     assert (tmp_path / "RAW_CACHE_REPORT.sha256").exists()
     assert written["raw_cache_report"].endswith("RAW_CACHE_REPORT.json")

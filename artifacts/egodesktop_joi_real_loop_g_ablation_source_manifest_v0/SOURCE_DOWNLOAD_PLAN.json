@@ -32,6 +32,17 @@
       ],
       "source_id": "empathetic_dialogues_hf",
       "source_url": "https://huggingface.co/datasets/facebook/empathetic_dialogues"
+    },
+    {
+      "action": "future_local_download_conditional",
+      "required_before_download": [
+        "separate_downloader_task",
+        "license_card_hash_readback",
+        "raw_cache_local_only",
+        "no_capture_or_scoring"
+      ],
+      "source_id": "wizard_of_wikipedia_hf",
+      "source_url": "https://huggingface.co/datasets/chujiezheng/wizard_of_wikipedia"
     }
   ],
   "producer_function": "build_source_manifest",

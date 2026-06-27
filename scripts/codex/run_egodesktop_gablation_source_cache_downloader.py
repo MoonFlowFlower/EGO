@@ -39,6 +39,11 @@ RAW_CACHE_SOURCE_METHODS = {
             "test": "empatheticdialogues/test.csv",
         },
     },
+    "wizard_of_wikipedia_hf": {
+        "method": "hf_rows_api",
+        "dataset": "chujiezheng/wizard_of_wikipedia",
+        "config": "default",
+    },
 }
 
 
