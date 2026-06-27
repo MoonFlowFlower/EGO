@@ -1,0 +1,16 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0
+expected_mutation_surface:
+  - 022 selected-source explicit EgoDesktop smoke docs and artifacts
+  - narrow trigger-input materializer and tests required to recompute hash-only provenance
+  - task-board entry for EGODESKTOP-GABLATION-022
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no raw text staging, scoring, same-access execution, route advancement, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0/
+  - artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0/
+  - scripts/codex/materialize_egodesktop_selected_source_trigger_input.py
+  - scripts/tests/test_materialize_egodesktop_selected_source_trigger_input.py
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "selected_source_desktop_trigger_smoke_only; no CREATURE_ON effect, replay validity, D-provenance sufficiency, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

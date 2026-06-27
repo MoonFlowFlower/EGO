@@ -1,0 +1,3703 @@
+{
+  "status": "live2d_desktop_smoke_pass",
+  "report_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0\\smoke\\live2d_desktop_smoke_report.json",
+  "model_loaded": true,
+  "renderer_payload": {
+    "modelLoaded": true,
+    "modelUrl": "http://127.0.0.1:7381/model/%E6%82%A0%E5%B0%8F%E5%96%B5.model3.json",
+    "primitiveClass": "live2d_presence_state",
+    "expressionNames": [
+      "飞头",
+      "扶脸",
+      "黑脸",
+      "记笔记",
+      "看手机",
+      "哭哭",
+      "脸红",
+      "流泪",
+      "前倾",
+      "水印开关",
+      "星星眼",
+      "隐藏耳朵",
+      "隐藏发夹",
+      "隐藏帽子",
+      "隐藏外套",
+      "晕晕眼"
+    ],
+    "renderMode": "official_live2d_model_from",
+    "modelCreationMode": "Live2DFactory.setupLive2DModel",
+    "settingsPoseGuard": {
+      "modelSettingsDeclaredPose": false,
+      "disabledDefaultPose": true,
+      "finalPoseSetting": ""
+    },
+    "manualRendererBinding": false,
+    "manualDrawableMutation": false,
+    "cssCanvasTransform": false,
+    "highDpiCanvas": false,
+    "highDpiDisabledReason": "pixi8_live2d_viewport_mismatch",
+    "watermarkCover": true,
+    "tickerSource": "app.ticker",
+    "watermarkDefaultOff": true,
+    "chatUiReady": true,
+    "pspcVisualShimReady": false,
+    "pspcVisualScenarioCount": 0,
+    "pspcPerceptionDemoReady": false,
+    "pspcPerceptionScenarioCount": 0,
+    "pspcSameTriggerText": "",
+    "pspcRecordingMode": false,
+    "pspcReplyPreviewMode": false,
+    "pspcReplyPreviewChatEnabled": false,
+    "pspcPerceptionChatDisabled": false,
+    "initialExpressionName": "",
+    "initialExpressionApplied": false,
+    "hiddenDrawableIds": [],
+    "parameterSamples": {
+      "Param85": 1,
+      "Param107": 0,
+      "Param111": 0,
+      "Param113": 0,
+      "ParamMouthForm": -1,
+      "ParamMouthOpenY": 0,
+      "ParamJawOpen": 0
+    },
+    "partOpacitySamples": {
+      "Part5": 1,
+      "Part8": 1
+    },
+    "modelDebug": {
+      "x": 247,
+      "y": 346,
+      "scaleX": 0.0657,
+      "scaleY": 0.0657,
+      "width": 287,
+      "height": 559,
+      "renderable": true,
+      "stageX": 104,
+      "stageY": 66,
+      "stageWidth": 287,
+      "stageHeight": 559,
+      "visible": true,
+      "alpha": 1,
+      "autoUpdate": false,
+      "canRender": true,
+      "hasValidRenderer": true,
+      "internalReady": true,
+      "internalTextureCount": null,
+      "internalTextureLoadedCount": null,
+      "textureCount": 2,
+      "textureSizes": [
+        {
+          "width": 8192,
+          "height": 8192,
+          "valid": false
+        },
+        {
+          "width": 8192,
+          "height": 8192,
+          "valid": false
+        }
+      ],
+      "appCanvasMatchesDomCanvas": true
+    },
+    "rendererDebug": {
+      "rendererType": "n0",
+      "hasGl": true,
+      "isWebGL2": true,
+      "width": 504,
+      "height": 635,
+      "resolution": 1,
+      "maxTextureSize": 16384,
+      "maxTextureImageUnits": 16,
+      "vendor": "Google Inc. (NVIDIA)",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Ti Laptop GPU (0x00002F18) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "visualFitPass": true,
+    "visualPixelBounds": {
+      "available": true,
+      "x": 156,
+      "y": 103,
+      "width": 187,
+      "height": 532,
+      "centerX": 249.5,
+      "bottom": 635,
+      "canvasWidth": 504,
+      "canvasHeight": 635,
+      "nonTransparentPixels": 41883
+    },
+    "visualFitAttempts": [
+      {
+        "phase": "initial",
+        "bounds": {
+          "available": true,
+          "x": 161,
+          "y": 59,
+          "width": 187,
+          "height": 538,
+          "centerX": 254.5,
+          "bottom": 597,
+          "canvasWidth": 504,
+          "canvasHeight": 635,
+          "nonTransparentPixels": 42133
+        },
+        "modelScale": 0.0657,
+        "modelX": 252,
+        "modelY": 337.6
+      },
+      {
+        "phase": "pixi_visual_fit_1",
+        "bounds": {
+          "available": true,
+          "x": 161,
+          "y": 79,
+          "width": 187,
+          "height": 538,
+          "centerX": 254.5,
+          "bottom": 617,
+          "canvasWidth": 504,
+          "canvasHeight": 635,
+          "nonTransparentPixels": 42155
+        },
+        "modelScale": 0.0657,
+        "modelX": 249.5,
+        "modelY": 359.6
+      },
+      {
+        "phase": "pixi_visual_fit_2",
+        "bounds": {
+          "available": true,
+          "x": 158,
+          "y": 101,
+          "width": 188,
+          "height": 534,
+          "centerX": 252,
+          "bottom": 635,
+          "canvasWidth": 504,
+          "canvasHeight": 635,
+          "nonTransparentPixels": 41980
+        },
+        "modelScale": 0.0657,
+        "modelX": 247,
+        "modelY": 361.6
+      }
+    ],
+    "visualFitScale": 0.0657,
+    "visualCssScale": 1,
+    "visualCssTranslate": {
+      "x": 0,
+      "y": 0
+    },
+    "visualHeightRatio": 0.8378,
+    "drawableDebug": [
+      {
+        "index": 0,
+        "id": "ArtMesh17",
+        "bounds": {
+          "x": 1210.545654296875,
+          "y": 1863.521728515625,
+          "width": 1214.2626953125,
+          "height": 1377.05419921875
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 1,
+        "id": "ArtMesh19",
+        "bounds": {
+          "x": 1924.00048828125,
+          "y": 1566.6693115234375,
+          "width": 464.046142578125,
+          "height": 529.3800048828125
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 2,
+        "id": "ArtMesh20",
+        "bounds": {
+          "x": 2223.53466796875,
+          "y": 1688.8927001953125,
+          "width": 116.30859375,
+          "height": 418.0399169921875
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 3,
+        "id": "ArtMesh21",
+        "bounds": {
+          "x": 1889.741943359375,
+          "y": 1515.808349609375,
+          "width": 556.6494140625,
+          "height": 664.863525390625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 4,
+        "id": "ArtMesh22",
+        "bounds": {
+          "x": 1924.9888916015625,
+          "y": 1568.6519775390625,
+          "width": 460.0416259765625,
+          "height": 527.4029541015625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 5,
+        "id": "ArtMesh23",
+        "bounds": {
+          "x": 1414.72802734375,
+          "y": 1939.0177001953125,
+          "width": 863.701416015625,
+          "height": 1105.5877685546875
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 6,
+        "id": "ArtMesh24",
+        "bounds": {
+          "x": 1224.343017578125,
+          "y": 1850.7376708984375,
+          "width": 1207.635498046875,
+          "height": 1319.6783447265625
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 7,
+        "id": "ArtMesh25",
+        "bounds": {
+          "x": 1403.362060546875,
+          "y": 1934.2056884765625,
+          "width": 878.0673828125,
+          "height": 1124.4727783203125
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 12
+      },
+      {
+        "index": 8,
+        "id": "ArtMesh26",
+        "bounds": {
+          "x": 2353.52001953125,
+          "y": 2160.321044921875,
+          "width": 932.309814453125,
+          "height": 1137.71435546875
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 29
+      },
+      {
+        "index": 9,
+        "id": "ArtMesh27",
+        "bounds": {
+          "x": 2329.100830078125,
+          "y": 2088.949951171875,
+          "width": 429.557373046875,
+          "height": 352.5107421875
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 29
+      },
+      {
+        "index": 10,
+        "id": "ArtMesh28",
+        "bounds": {
+          "x": 2600.528564453125,
+          "y": 2312.845947265625,
+          "width": 418.70166015625,
+          "height": 820.0810546875
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 29
+      },
+      {
+        "index": 11,
+        "id": "ArtMesh29",
+        "bounds": {
+          "x": 2137.661865234375,
+          "y": 1680.7828369140625,
+          "width": 349.115966796875,
+          "height": 200.9322509765625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 29
+      },
+      {
+        "index": 12,
+        "id": "ArtMesh30",
+        "bounds": {
+          "x": 2326.076904296875,
+          "y": 2095.943115234375,
+          "width": 434.583251953125,
+          "height": 359.34423828125
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 29
+      },
+      {
+        "index": 13,
+        "id": "ArtMesh31",
+        "bounds": {
+          "x": 2018.2906494140625,
+          "y": 1819.0809326171875,
+          "width": 588.7020263671875,
+          "height": 798.4300537109375
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 29
+      },
+      {
+        "index": 14,
+        "id": "ArtMesh32",
+        "bounds": {
+          "x": 1198.4163818359375,
+          "y": 2133.723388671875,
+          "width": 949.1058349609375,
+          "height": 1128.37060546875
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 30
+      },
+      {
+        "index": 15,
+        "id": "ArtMesh33",
+        "bounds": {
+          "x": 1759.7366943359375,
+          "y": 1980.4693603515625,
+          "width": 388.5950927734375,
+          "height": 422.8404541015625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 30
+      },
+      {
+        "index": 16,
+        "id": "ArtMesh34",
+        "bounds": {
+          "x": 1428.372314453125,
+          "y": 2303.8037109375,
+          "width": 495.032470703125,
+          "height": 884.310791015625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 30
+      },
+      {
+        "index": 17,
+        "id": "ArtMesh35",
+        "bounds": {
+          "x": 1855.3045654296875,
+          "y": 2058.512939453125,
+          "width": 356.1629638671875,
+          "height": 53.482421875
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 30
+      },
+      {
+        "index": 18,
+        "id": "ArtMesh36",
+        "bounds": {
+          "x": 1197.5396728515625,
+          "y": 2065.9638671875,
+          "width": 840.2325439453125,
+          "height": 1176.9521484375
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 14
+      },
+      {
+        "index": 19,
+        "id": "ArtMesh37",
+        "bounds": {
+          "x": 1632.1199951171875,
+          "y": 1662.9910888671875,
+          "width": 372.7840576171875,
+          "height": 583.1905517578125
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 14
+      },
+      {
+        "index": 20,
+        "id": "ArtMesh38",
+        "bounds": {
+          "x": 1405.3665771484375,
+          "y": 2184.036376953125,
+          "width": 459.86865234375,
+          "height": 972.62255859375
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 14
+      },
+      {
+        "index": 21,
+        "id": "ArtMesh39",
+        "bounds": {
+          "x": 1630.22509765625,
+          "y": 1669.99658203125,
+          "width": 377.1893310546875,
+          "height": 587.282958984375
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 14
+      },
+      {
+        "index": 22,
+        "id": "ArtMesh41",
+        "bounds": {
+          "x": 2557.712890625,
+          "y": 1033.6956787109375,
+          "width": 158.3515625,
+          "height": 94.8414306640625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 15
+      },
+      {
+        "index": 23,
+        "id": "ArtMesh42",
+        "bounds": {
+          "x": 1831.949951171875,
+          "y": 1041.4361572265625,
+          "width": 150.250732421875,
+          "height": 138.683837890625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 15
+      },
+      {
+        "index": 24,
+        "id": "ArtMesh43",
+        "bounds": {
+          "x": 1964.4959716796875,
+          "y": 1012.4855346679688,
+          "width": 91.9434814453125,
+          "height": 101.46832275390625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 15
+      },
+      {
+        "index": 25,
+        "id": "ArtMesh53",
+        "bounds": {
+          "x": 2270.4501953125,
+          "y": 422.10003662109375,
+          "width": 496.571044921875,
+          "height": 1117.5433959960938
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 32
+      },
+      {
+        "index": 26,
+        "id": "ArtMesh54",
+        "bounds": {
+          "x": 2286.733154296875,
+          "y": 521.7387084960938,
+          "width": 424.260986328125,
+          "height": 843.5372924804688
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 32
+      },
+      {
+        "index": 27,
+        "id": "ArtMesh55",
+        "bounds": {
+          "x": 1724.7730712890625,
+          "y": 420.7440490722656,
+          "width": 558.8424072265625,
+          "height": 1105.2986755371094
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 32
+      },
+      {
+        "index": 28,
+        "id": "ArtMesh56",
+        "bounds": {
+          "x": 1815.49267578125,
+          "y": 519.344482421875,
+          "width": 464.72265625,
+          "height": 835.4500732421875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 32
+      },
+      {
+        "index": 29,
+        "id": "ArtMesh47",
+        "bounds": {
+          "x": 2270.2568359375,
+          "y": 454.6672668457031,
+          "width": 563.545654296875,
+          "height": 1092.5771179199219
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 30,
+        "id": "ArtMesh48",
+        "bounds": {
+          "x": 1638.2452392578125,
+          "y": 451.70147705078125,
+          "width": 646.0128173828125,
+          "height": 1080.7819213867188
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 31,
+        "id": "ArtMesh49",
+        "bounds": {
+          "x": 1978.290771484375,
+          "y": 519.5531005859375,
+          "width": 589.152587890625,
+          "height": 237.55712890625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 32,
+        "id": "ArtMesh50",
+        "bounds": {
+          "x": 2215.090576171875,
+          "y": 620.0701904296875,
+          "width": 307.483642578125,
+          "height": 533.0736083984375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 33,
+        "id": "ArtMesh51",
+        "bounds": {
+          "x": 2116.2314453125,
+          "y": 551.8764038085938,
+          "width": 383.908935546875,
+          "height": 752.5817260742188
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 34,
+        "id": "ArtMesh52",
+        "bounds": {
+          "x": 2277.89404296875,
+          "y": 701.635986328125,
+          "width": 262.07421875,
+          "height": 586.8594970703125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 35,
+        "id": "ArtMesh57",
+        "bounds": {
+          "x": 2408.363525390625,
+          "y": 1067.261962890625,
+          "width": 201.9130859375,
+          "height": 59.4759521484375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 36,
+        "id": "ArtMesh80",
+        "bounds": {
+          "x": 2502.25537109375,
+          "y": 1360.71337890625,
+          "width": 31.383056640625,
+          "height": 22.935302734375
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 0,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 37,
+        "id": "ArtMesh81",
+        "bounds": {
+          "x": 2417.332275390625,
+          "y": 1250.884765625,
+          "width": 65.94580078125,
+          "height": 81.050537109375
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 0,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 38,
+        "id": "ArtMesh82",
+        "bounds": {
+          "x": 2453.631591796875,
+          "y": 1351.4403076171875,
+          "width": 15.96630859375,
+          "height": 8.3504638671875
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 1,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 39,
+        "id": "ArtMesh83",
+        "bounds": {
+          "x": 2412.989013671875,
+          "y": 1273.0040283203125,
+          "width": 80.92431640625,
+          "height": 96.04248046875
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 1,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 40,
+        "id": "ArtMesh84",
+        "bounds": {
+          "x": 2384.320068359375,
+          "y": 1232.1392822265625,
+          "width": 150.71484375,
+          "height": 181.324462890625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 41,
+        "id": "ArtMesh73",
+        "bounds": {
+          "x": 2461.533203125,
+          "y": 1202.595458984375,
+          "width": 63.1201171875,
+          "height": 54.076171875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 42,
+        "id": "ArtMesh75",
+        "bounds": {
+          "x": 2362.971923828125,
+          "y": 1211.7001953125,
+          "width": 267.365478515625,
+          "height": 133.8238525390625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 43,
+        "id": "ArtMesh76",
+        "bounds": {
+          "x": 2547.07177734375,
+          "y": 1283.2061767578125,
+          "width": 48.275634765625,
+          "height": 92.6693115234375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 44,
+        "id": "ArtMesh77",
+        "bounds": {
+          "x": 2382.667236328125,
+          "y": 1202.1553955078125,
+          "width": 175.547119140625,
+          "height": 60.854248046875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 45,
+        "id": "ArtMesh78",
+        "bounds": {
+          "x": 2367.867919921875,
+          "y": 1249.683349609375,
+          "width": 203.85546875,
+          "height": 55.4307861328125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 46,
+        "id": "ArtMesh79",
+        "bounds": {
+          "x": 2419.449462890625,
+          "y": 1388.6595458984375,
+          "width": 110.04052734375,
+          "height": 21.2872314453125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 47,
+        "id": "ArtMesh85",
+        "bounds": {
+          "x": 2367.557373046875,
+          "y": 1240.92626953125,
+          "width": 213.770263671875,
+          "height": 172.503173828125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 48,
+        "id": "ArtMesh86",
+        "bounds": {
+          "x": 2404.704345703125,
+          "y": 1296.5137939453125,
+          "width": 196.717529296875,
+          "height": 137.821533203125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 49,
+        "id": "ArtMesh87",
+        "bounds": {
+          "x": 1815.4830322265625,
+          "y": 526.7178344726562,
+          "width": 519.9979248046875,
+          "height": 835.0263061523438
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 36
+      },
+      {
+        "index": 50,
+        "id": "ArtMesh88",
+        "bounds": {
+          "x": 2230.05859375,
+          "y": 528.1226196289062,
+          "width": 480.95703125,
+          "height": 844.1310424804688
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 36
+      },
+      {
+        "index": 51,
+        "id": "ArtMesh89",
+        "bounds": {
+          "x": 2096.795166015625,
+          "y": 558.962890625,
+          "width": 403.44970703125,
+          "height": 752.676025390625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 36
+      },
+      {
+        "index": 52,
+        "id": "ArtMesh90",
+        "bounds": {
+          "x": 2230.391357421875,
+          "y": 1364.7283935546875,
+          "width": 102.65478515625,
+          "height": 111.9478759765625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 37
+      },
+      {
+        "index": 53,
+        "id": "ArtMesh91",
+        "bounds": {
+          "x": 2230.906005859375,
+          "y": 1364.718505859375,
+          "width": 101.201904296875,
+          "height": 111.984619140625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 37
+      },
+      {
+        "index": 54,
+        "id": "ArtMesh92",
+        "bounds": {
+          "x": 2104.662109375,
+          "y": 1470.12060546875,
+          "width": 231.7890625,
+          "height": 220.00830078125
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 38
+      },
+      {
+        "index": 55,
+        "id": "ArtMesh93",
+        "bounds": {
+          "x": 1819.15673828125,
+          "y": 652.314208984375,
+          "width": 865.333984375,
+          "height": 1053.412353515625
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 38
+      },
+      {
+        "index": 56,
+        "id": "ArtMesh94",
+        "bounds": {
+          "x": 1664.6136474609375,
+          "y": 1023.5031127929688,
+          "width": 1164.2742919921875,
+          "height": 902.0012817382812
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 38
+      },
+      {
+        "index": 57,
+        "id": "ArtMesh108",
+        "bounds": {
+          "x": 1819.1563720703125,
+          "y": 652.314208984375,
+          "width": 865.3350830078125,
+          "height": 1053.41259765625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 38
+      },
+      {
+        "index": 58,
+        "id": "ArtMesh109",
+        "bounds": {
+          "x": 2361.554443359375,
+          "y": 347.7586975097656,
+          "width": 476.71337890625,
+          "height": 433.2437438964844
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 1,
+        "parentPartIndex": 49
+      },
+      {
+        "index": 59,
+        "id": "ArtMesh110",
+        "bounds": {
+          "x": 2462.71337890625,
+          "y": 508.95361328125,
+          "width": 349.753662109375,
+          "height": 395.6566162109375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 49
+      },
+      {
+        "index": 60,
+        "id": "ArtMesh111",
+        "bounds": {
+          "x": 2359.645263671875,
+          "y": 347.0028991699219,
+          "width": 498.930908203125,
+          "height": 621.8179016113281
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 49
+      },
+      {
+        "index": 61,
+        "id": "ArtMesh117",
+        "bounds": {
+          "x": 2270.975341796875,
+          "y": 485.39398193359375,
+          "width": 479.83251953125,
+          "height": 1183.9024047851562
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 17
+      },
+      {
+        "index": 62,
+        "id": "ArtMesh118",
+        "bounds": {
+          "x": 1701.595458984375,
+          "y": 482.9288330078125,
+          "width": 584.000732421875,
+          "height": 1175.06396484375
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 17
+      },
+      {
+        "index": 63,
+        "id": "ArtMesh44",
+        "bounds": {
+          "x": 2554.293212890625,
+          "y": 1038.1741943359375,
+          "width": 164.12744140625,
+          "height": 102.014404296875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 2
+      },
+      {
+        "index": 64,
+        "id": "ArtMesh45",
+        "bounds": {
+          "x": 1960.4112548828125,
+          "y": 1017.4420776367188,
+          "width": 103.6710205078125,
+          "height": 108.18084716796875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 2
+      },
+      {
+        "index": 65,
+        "id": "ArtMesh46",
+        "bounds": {
+          "x": 1826.530029296875,
+          "y": 1045.3485107421875,
+          "width": 163.9490966796875,
+          "height": 145.7176513671875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 2
+      },
+      {
+        "index": 66,
+        "id": "ArtMesh122",
+        "bounds": {
+          "x": 2444.243408203125,
+          "y": 3407.844970703125,
+          "width": 99.75537109375,
+          "height": 96.769775390625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 61
+      },
+      {
+        "index": 67,
+        "id": "ArtMesh123",
+        "bounds": {
+          "x": 2442.048828125,
+          "y": 3208.728271484375,
+          "width": 97.867431640625,
+          "height": 96.0009765625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 61
+      },
+      {
+        "index": 68,
+        "id": "ArtMesh124",
+        "bounds": {
+          "x": 2446.921875,
+          "y": 3029.288330078125,
+          "width": 97.349609375,
+          "height": 96.267822265625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 61
+      },
+      {
+        "index": 69,
+        "id": "ArtMesh125",
+        "bounds": {
+          "x": 2635.33935546875,
+          "y": 3084.249755859375,
+          "width": 436.933837890625,
+          "height": 161.698486328125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 54
+      },
+      {
+        "index": 70,
+        "id": "ArtMesh126",
+        "bounds": {
+          "x": 2571.04931640625,
+          "y": 3092.20458984375,
+          "width": 521.21875,
+          "height": 229.45703125
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 54
+      },
+      {
+        "index": 71,
+        "id": "ArtMesh127",
+        "bounds": {
+          "x": 2407.949951171875,
+          "y": 2565.47265625,
+          "width": 764.87841796875,
+          "height": 1194.193603515625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 54
+      },
+      {
+        "index": 72,
+        "id": "ArtMesh120",
+        "bounds": {
+          "x": 2439.1357421875,
+          "y": 2219.09375,
+          "width": 604.30126953125,
+          "height": 798.16259765625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 39
+      },
+      {
+        "index": 73,
+        "id": "ArtMesh121",
+        "bounds": {
+          "x": 2370.928466796875,
+          "y": 2257.146484375,
+          "width": 684.013916015625,
+          "height": 864.34912109375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 39
+      },
+      {
+        "index": 74,
+        "id": "ArtMesh130",
+        "bounds": {
+          "x": 1342.2183837890625,
+          "y": 3083.168212890625,
+          "width": 413.9207763671875,
+          "height": 163.041015625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 55
+      },
+      {
+        "index": 75,
+        "id": "ArtMesh131",
+        "bounds": {
+          "x": 1321.57275390625,
+          "y": 3091.198486328125,
+          "width": 493.607177734375,
+          "height": 231.284912109375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 55
+      },
+      {
+        "index": 76,
+        "id": "ArtMesh132",
+        "bounds": {
+          "x": 1240.8050537109375,
+          "y": 2559.66748046875,
+          "width": 723.6558837890625,
+          "height": 1203.479736328125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 55
+      },
+      {
+        "index": 77,
+        "id": "ArtMesh128",
+        "bounds": {
+          "x": 1389.5531005859375,
+          "y": 2213.28759765625,
+          "width": 552.87255859375,
+          "height": 803.43359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 40
+      },
+      {
+        "index": 78,
+        "id": "ArtMesh129",
+        "bounds": {
+          "x": 1376.343505859375,
+          "y": 2251.760498046875,
+          "width": 630.6431884765625,
+          "height": 869.404296875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 40
+      },
+      {
+        "index": 79,
+        "id": "ArtMesh133",
+        "bounds": {
+          "x": 1980.9669189453125,
+          "y": 2183.267578125,
+          "width": 443.3533935546875,
+          "height": 161.0546875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 41
+      },
+      {
+        "index": 80,
+        "id": "ArtMesh134",
+        "bounds": {
+          "x": 2209.19482421875,
+          "y": 2209.576171875,
+          "width": 119.91162109375,
+          "height": 573.470947265625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 41
+      },
+      {
+        "index": 81,
+        "id": "ArtMesh135",
+        "bounds": {
+          "x": 2054.373779296875,
+          "y": 2209.2880859375,
+          "width": 134.157470703125,
+          "height": 573.4345703125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 41
+      },
+      {
+        "index": 82,
+        "id": "ArtMesh141",
+        "bounds": {
+          "x": 1465.1678466796875,
+          "y": 3568.99169921875,
+          "width": 315.04541015625,
+          "height": 175.809326171875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 63
+      },
+      {
+        "index": 83,
+        "id": "ArtMesh142",
+        "bounds": {
+          "x": 1406.3807373046875,
+          "y": 3810.2177734375,
+          "width": 336.9228515625,
+          "height": 176.9150390625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 63
+      },
+      {
+        "index": 84,
+        "id": "ArtMesh151",
+        "bounds": {
+          "x": 1189.69677734375,
+          "y": 2306.1875,
+          "width": 2042.935302734375,
+          "height": 1878.35888671875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 57
+      },
+      {
+        "index": 85,
+        "id": "ArtMesh152",
+        "bounds": {
+          "x": 1092.44921875,
+          "y": 3919.868408203125,
+          "width": 2238.664794921875,
+          "height": 508.943115234375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 57
+      },
+      {
+        "index": 86,
+        "id": "ArtMesh138",
+        "bounds": {
+          "x": 1685.263427734375,
+          "y": 2219.99560546875,
+          "width": 1048.3125,
+          "height": 374.54248046875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 87,
+        "id": "ArtMesh143",
+        "bounds": {
+          "x": 1785.7279052734375,
+          "y": 2135.989501953125,
+          "width": 848.3267822265625,
+          "height": 150.76806640625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 88,
+        "id": "ArtMesh144",
+        "bounds": {
+          "x": 1458.987548828125,
+          "y": 3576.724609375,
+          "width": 326.9456787109375,
+          "height": 186.6728515625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 89,
+        "id": "ArtMesh146",
+        "bounds": {
+          "x": 1400.7203369140625,
+          "y": 3818.00341796875,
+          "width": 349.00341796875,
+          "height": 187.52099609375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 90,
+        "id": "ArtMesh148",
+        "bounds": {
+          "x": 1672.917236328125,
+          "y": 2246.4638671875,
+          "width": 1071.95703125,
+          "height": 400.409912109375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 91,
+        "id": "ArtMesh149",
+        "bounds": {
+          "x": 1166.5101318359375,
+          "y": 2211.0634765625,
+          "width": 2090.1256103515625,
+          "height": 2016.365234375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 92,
+        "id": "ArtMesh150",
+        "bounds": {
+          "x": 1161.1607666015625,
+          "y": 2222.0283203125,
+          "width": 2101.1690673828125,
+          "height": 2026.14794921875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 42
+      },
+      {
+        "index": 93,
+        "id": "ArtMesh157",
+        "bounds": {
+          "x": 1810.8321533203125,
+          "y": 1866.17236328125,
+          "width": 147.341796875,
+          "height": 499.21435546875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 58
+      },
+      {
+        "index": 94,
+        "id": "ArtMesh158",
+        "bounds": {
+          "x": 2476.08251953125,
+          "y": 1868.7398681640625,
+          "width": 134.194580078125,
+          "height": 500.1632080078125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 58
+      },
+      {
+        "index": 95,
+        "id": "ArtMesh154",
+        "bounds": {
+          "x": 1798.19189453125,
+          "y": 1931.3245849609375,
+          "width": 139.6873779296875,
+          "height": 148.9810791015625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 43
+      },
+      {
+        "index": 96,
+        "id": "ArtMesh156",
+        "bounds": {
+          "x": 1795.458251953125,
+          "y": 1938.421630859375,
+          "width": 145.4990234375,
+          "height": 154.85791015625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 43
+      },
+      {
+        "index": 97,
+        "id": "ArtMesh136",
+        "bounds": {
+          "x": 1974.1353759765625,
+          "y": 2198.319580078125,
+          "width": 457.0391845703125,
+          "height": 175.0849609375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 20
+      },
+      {
+        "index": 98,
+        "id": "ArtMesh137",
+        "bounds": {
+          "x": 2197.614990234375,
+          "y": 2223.49072265625,
+          "width": 129.168701171875,
+          "height": 586.77294921875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 20
+      },
+      {
+        "index": 99,
+        "id": "ArtMesh159",
+        "bounds": {
+          "x": 2157.150634765625,
+          "y": 1857.62548828125,
+          "width": 113.570556640625,
+          "height": 96.8642578125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 44
+      },
+      {
+        "index": 100,
+        "id": "ArtMesh160",
+        "bounds": {
+          "x": 2204.572509765625,
+          "y": 1841.2647705078125,
+          "width": 24.325439453125,
+          "height": 24.363525390625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 44
+      },
+      {
+        "index": 101,
+        "id": "ArtMesh161",
+        "bounds": {
+          "x": 2132.0634765625,
+          "y": 1764.7890625,
+          "width": 36.849365234375,
+          "height": 79.4976806640625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 44
+      },
+      {
+        "index": 102,
+        "id": "ArtMesh162",
+        "bounds": {
+          "x": 2263.443603515625,
+          "y": 1765.9246826171875,
+          "width": 38.663330078125,
+          "height": 79.2298583984375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 44
+      },
+      {
+        "index": 103,
+        "id": "ArtMesh163",
+        "bounds": {
+          "x": 2076.3828125,
+          "y": 1745.2591552734375,
+          "width": 283.881103515625,
+          "height": 95.874755859375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 44
+      },
+      {
+        "index": 104,
+        "id": "ArtMesh164",
+        "bounds": {
+          "x": 2071.7236328125,
+          "y": 1404.6553955078125,
+          "width": 301.356689453125,
+          "height": 434.8392333984375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 21
+      },
+      {
+        "index": 105,
+        "id": "ArtMesh165",
+        "bounds": {
+          "x": 2081.581787109375,
+          "y": 1735.77978515625,
+          "width": 275.363525390625,
+          "height": 77.2431640625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 21
+      },
+      {
+        "index": 106,
+        "id": "ArtMesh174",
+        "bounds": {
+          "x": 1227.017578125,
+          "y": 2377.861572265625,
+          "width": 664.3236083984375,
+          "height": 787.43359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 47
+      },
+      {
+        "index": 107,
+        "id": "ArtMesh169",
+        "bounds": {
+          "x": 1181.081298828125,
+          "y": 2672.046875,
+          "width": 302.740234375,
+          "height": 302.81005859375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 23
+      },
+      {
+        "index": 108,
+        "id": "ArtMesh170",
+        "bounds": {
+          "x": 862.897705078125,
+          "y": 3256.909423828125,
+          "width": 298.10302734375,
+          "height": 308.11669921875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 23
+      },
+      {
+        "index": 109,
+        "id": "ArtMesh171",
+        "bounds": {
+          "x": 1374.7432861328125,
+          "y": 2307.103515625,
+          "width": 631.67626953125,
+          "height": 869.69091796875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 23
+      },
+      {
+        "index": 110,
+        "id": "ArtMesh172",
+        "bounds": {
+          "x": 854.6279907226562,
+          "y": 3270.853271484375,
+          "width": 313.98614501953125,
+          "height": 324.014404296875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 23
+      },
+      {
+        "index": 111,
+        "id": "ArtMesh173",
+        "bounds": {
+          "x": 1172.0234375,
+          "y": 2689.623046875,
+          "width": 318.873779296875,
+          "height": 318.990966796875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 23
+      },
+      {
+        "index": 112,
+        "id": "ArtMesh179",
+        "bounds": {
+          "x": 2539.50927734375,
+          "y": 2378.676025390625,
+          "width": 673.72509765625,
+          "height": 816.847900390625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 48
+      },
+      {
+        "index": 113,
+        "id": "ArtMesh176",
+        "bounds": {
+          "x": 3247.046630859375,
+          "y": 3151.305908203125,
+          "width": 244.211181640625,
+          "height": 234.814208984375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 24
+      },
+      {
+        "index": 114,
+        "id": "ArtMesh177",
+        "bounds": {
+          "x": 2370.839111328125,
+          "y": 2312.2646484375,
+          "width": 683.45751953125,
+          "height": 864.840087890625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 24
+      },
+      {
+        "index": 115,
+        "id": "ArtMesh178",
+        "bounds": {
+          "x": 3239.609619140625,
+          "y": 3167.79736328125,
+          "width": 260.024169921875,
+          "height": 249.759521484375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 24
+      },
+      {
+        "index": 116,
+        "id": "ArtMesh181",
+        "bounds": {
+          "x": 2712.8828125,
+          "y": 2791.001220703125,
+          "width": 640.7939453125,
+          "height": 920.161865234375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 25
+      },
+      {
+        "index": 117,
+        "id": "ArtMesh182",
+        "bounds": {
+          "x": 2523.414306640625,
+          "y": 1943.24365234375,
+          "width": 467.85302734375,
+          "height": 1069.554443359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 25
+      },
+      {
+        "index": 118,
+        "id": "ArtMesh183",
+        "bounds": {
+          "x": 3257.20654296875,
+          "y": 3610.36572265625,
+          "width": 426.10791015625,
+          "height": 373.609375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 25
+      },
+      {
+        "index": 119,
+        "id": "ArtMesh184",
+        "bounds": {
+          "x": 3190.13330078125,
+          "y": 3621.140380859375,
+          "width": 221.674072265625,
+          "height": 383.068603515625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 25
+      },
+      {
+        "index": 120,
+        "id": "ArtMesh185",
+        "bounds": {
+          "x": 3394.88330078125,
+          "y": 3770.6337890625,
+          "width": 297.114013671875,
+          "height": 238.73486328125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 25
+      },
+      {
+        "index": 121,
+        "id": "ArtMesh186",
+        "bounds": {
+          "x": 1089.2733154296875,
+          "y": 2810.9482421875,
+          "width": 633.8365478515625,
+          "height": 898.99365234375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 26
+      },
+      {
+        "index": 122,
+        "id": "ArtMesh187",
+        "bounds": {
+          "x": 1444.55078125,
+          "y": 1953.027587890625,
+          "width": 465.0609130859375,
+          "height": 1059.937744140625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 26
+      },
+      {
+        "index": 123,
+        "id": "ArtMesh188",
+        "bounds": {
+          "x": 762.6566772460938,
+          "y": 3611.294921875,
+          "width": 426.15045166015625,
+          "height": 367.820068359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 26
+      },
+      {
+        "index": 124,
+        "id": "ArtMesh189",
+        "bounds": {
+          "x": 1037.687255859375,
+          "y": 3620.15087890625,
+          "width": 217.9051513671875,
+          "height": 385.650146484375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 26
+      },
+      {
+        "index": 125,
+        "id": "ArtMesh190",
+        "bounds": {
+          "x": 754.0764770507812,
+          "y": 3771.255859375,
+          "width": 297.88177490234375,
+          "height": 235.132080078125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 26
+      },
+      {
+        "index": 126,
+        "id": "ArtMesh193",
+        "bounds": {
+          "x": 2455.89599609375,
+          "y": 6311.501953125,
+          "width": 316.864501953125,
+          "height": 146.16162109375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 127,
+        "id": "ArtMesh194",
+        "bounds": {
+          "x": 2507.48095703125,
+          "y": 6585.58203125,
+          "width": 313.7900390625,
+          "height": 279.21435546875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 128,
+        "id": "ArtMesh195",
+        "bounds": {
+          "x": 2450.36572265625,
+          "y": 6319.22314453125,
+          "width": 326.85205078125,
+          "height": 155.859375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 129,
+        "id": "ArtMesh196",
+        "bounds": {
+          "x": 2502.9892578125,
+          "y": 6594.62451171875,
+          "width": 323.3154296875,
+          "height": 291.59716796875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 130,
+        "id": "L7",
+        "bounds": {
+          "x": 2219.76123046875,
+          "y": 6064.482421875,
+          "width": 522.705810546875,
+          "height": 1156.21923828125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 131,
+        "id": "ArtMesh197",
+        "bounds": {
+          "x": 2212.197265625,
+          "y": 6086.2490234375,
+          "width": 536.8056640625,
+          "height": 1169.1044921875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 132,
+        "id": "ArtMesh198",
+        "bounds": {
+          "x": 2193.693603515625,
+          "y": 7012.7919921875,
+          "width": 493.362060546875,
+          "height": 710.5
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 133,
+        "id": "ArtMesh199",
+        "bounds": {
+          "x": 2559.013671875,
+          "y": 7141.91796875,
+          "width": 97.414794921875,
+          "height": 86.837890625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 134,
+        "id": "ArtMesh200",
+        "bounds": {
+          "x": 2172.85888671875,
+          "y": 3723.5419921875,
+          "width": 762.228271484375,
+          "height": 3900.57373046875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 135,
+        "id": "ArtMesh201",
+        "bounds": {
+          "x": 1571.5673828125,
+          "y": 6694.81201171875,
+          "width": 239.3436279296875,
+          "height": 280.70263671875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 136,
+        "id": "ArtMesh204",
+        "bounds": {
+          "x": 1566.5533447265625,
+          "y": 6700.88232421875,
+          "width": 249.260498046875,
+          "height": 289.8955078125
+        },
+        "opacity": 0.9803921580314636,
+        "textureIndex": 1,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 137,
+        "id": "R7",
+        "bounds": {
+          "x": 1633.7705078125,
+          "y": 6055.45947265625,
+          "width": 509.617431640625,
+          "height": 1163.23876953125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 138,
+        "id": "ArtMesh205",
+        "bounds": {
+          "x": 1626.4334716796875,
+          "y": 6076.751953125,
+          "width": 523.9337158203125,
+          "height": 1176.88818359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 139,
+        "id": "ArtMesh206",
+        "bounds": {
+          "x": 1673.9715576171875,
+          "y": 7009.21484375,
+          "width": 493.3287353515625,
+          "height": 713.873046875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 140,
+        "id": "ArtMesh207",
+        "bounds": {
+          "x": 1709.073486328125,
+          "y": 7141.40771484375,
+          "width": 95.5499267578125,
+          "height": 85.27783203125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 141,
+        "id": "ArtMesh208",
+        "bounds": {
+          "x": 1473.4580078125,
+          "y": 3726.04345703125,
+          "width": 727.1064453125,
+          "height": 3897.12548828125
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 142,
+        "id": "ArtMesh211",
+        "bounds": {
+          "x": 1156.4918212890625,
+          "y": 1926.6920166015625,
+          "width": 407.74169921875,
+          "height": 374.5308837890625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 7
+      },
+      {
+        "index": 143,
+        "id": "ArtMesh166",
+        "bounds": {
+          "x": 2471.0634765625,
+          "y": 1866.6993408203125,
+          "width": 164.29052734375,
+          "height": 504.1612548828125
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 3
+      },
+      {
+        "index": 144,
+        "id": "ArtMesh167",
+        "bounds": {
+          "x": 1800.7513427734375,
+          "y": 1864.17724609375,
+          "width": 162.4429931640625,
+          "height": 503.226318359375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 3
+      },
+      {
+        "index": 145,
+        "id": "ArtMesh168",
+        "bounds": {
+          "x": 1627.04833984375,
+          "y": 1774.4415283203125,
+          "width": 1178.503173828125,
+          "height": 957.1768798828125
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 3
+      },
+      {
+        "index": 146,
+        "id": "ArtMesh191",
+        "bounds": {
+          "x": 1082.5452880859375,
+          "y": 4012.72021484375,
+          "width": 2260.9263916015625,
+          "height": 548.89794921875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 3
+      },
+      {
+        "index": 147,
+        "id": "ArtMesh213",
+        "bounds": {
+          "x": 1827.438720703125,
+          "y": 367.0984191894531,
+          "width": 817.908203125,
+          "height": 166.19326782226562
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 4
+      },
+      {
+        "index": 148,
+        "id": "ArtMesh214",
+        "bounds": {
+          "x": 1512.13916015625,
+          "y": 370.9884033203125,
+          "width": 1380.190185546875,
+          "height": 1499.0615234375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 4
+      },
+      {
+        "index": 149,
+        "id": "ArtMesh215",
+        "bounds": {
+          "x": 1745.0291748046875,
+          "y": 626.9613037109375,
+          "width": 938.1436767578125,
+          "height": 1264.101806640625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 4
+      },
+      {
+        "index": 150,
+        "id": "ArtMesh119",
+        "bounds": {
+          "x": 1579.967529296875,
+          "y": 270.3782958984375,
+          "width": 1276.140380859375,
+          "height": 635.7222290039062
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": -1
+      },
+      {
+        "index": 151,
+        "id": "ArtMesh216",
+        "bounds": {
+          "x": 2066.355712890625,
+          "y": 802.953857421875,
+          "width": 193.62451171875,
+          "height": 470.46923828125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 16
+      },
+      {
+        "index": 152,
+        "id": "ArtMesh217",
+        "bounds": {
+          "x": 2879.359619140625,
+          "y": 1952.073974609375,
+          "width": 397.806884765625,
+          "height": 360.79638671875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 7
+      },
+      {
+        "index": 153,
+        "id": "ArtMesh210",
+        "bounds": {
+          "x": 1447.6337890625,
+          "y": 4987.91259765625,
+          "width": 1517.293212890625,
+          "height": 1842.54150390625
+        },
+        "opacity": 0.05737483501434326,
+        "textureIndex": 0,
+        "parentPartIndex": 46
+      },
+      {
+        "index": 154,
+        "id": "ArtMesh192",
+        "bounds": {
+          "x": 1466.342529296875,
+          "y": 4975.7548828125,
+          "width": 1515.392333984375,
+          "height": 1849.765625
+        },
+        "opacity": 0.05737483501434326,
+        "textureIndex": 0,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 155,
+        "id": "ArtMesh230",
+        "bounds": {
+          "x": 1617.1875,
+          "y": 332.9644775390625,
+          "width": 516.846435546875,
+          "height": 624.1027221679688
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 49
+      },
+      {
+        "index": 156,
+        "id": "ArtMesh229",
+        "bounds": {
+          "x": 1662.9571533203125,
+          "y": 498.6129150390625,
+          "width": 363.625,
+          "height": 396.40460205078125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 49
+      },
+      {
+        "index": 157,
+        "id": "ArtMesh228",
+        "bounds": {
+          "x": 1639.53515625,
+          "y": 333.8915100097656,
+          "width": 497.415771484375,
+          "height": 440.4045715332031
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 1,
+        "parentPartIndex": 49
+      },
+      {
+        "index": 158,
+        "id": "ArtMesh231",
+        "bounds": {
+          "x": 1927.4478759765625,
+          "y": 1287.873046875,
+          "width": 209.0003662109375,
+          "height": 140.8359375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 159,
+        "id": "ArtMesh114",
+        "bounds": {
+          "x": 1949.783935546875,
+          "y": 1234.9891357421875,
+          "width": 225.581787109375,
+          "height": 172.9417724609375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 160,
+        "id": "ArtMesh113",
+        "bounds": {
+          "x": 1982.8253173828125,
+          "y": 1227.083984375,
+          "width": 163.2415771484375,
+          "height": 181.219482421875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 161,
+        "id": "ArtMesh112",
+        "bounds": {
+          "x": 2020.927978515625,
+          "y": 1268.147705078125,
+          "width": 90,
+          "height": 95.798828125
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 162,
+        "id": "ArtMesh107",
+        "bounds": {
+          "x": 2064.357177734375,
+          "y": 1345.927978515625,
+          "width": 17.151123046875,
+          "height": 8.2530517578125
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 163,
+        "id": "ArtMesh106",
+        "bounds": {
+          "x": 2051.43212890625,
+          "y": 1245.244384765625,
+          "width": 71.094970703125,
+          "height": 81.5216064453125
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 164,
+        "id": "ArtMesh105",
+        "bounds": {
+          "x": 1991.8165283203125,
+          "y": 1353.607421875,
+          "width": 35.3890380859375,
+          "height": 22.4837646484375
+        },
+        "opacity": 0.9999998211860657,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 165,
+        "id": "ArtMesh104",
+        "bounds": {
+          "x": 2002.7904052734375,
+          "y": 1381.8287353515625,
+          "width": 118.1898193359375,
+          "height": 23.280029296875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 166,
+        "id": "ArtMesh102",
+        "bounds": {
+          "x": 1980.626953125,
+          "y": 1197.0701904296875,
+          "width": 185.806884765625,
+          "height": 62.2840576171875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 167,
+        "id": "ArtMesh101",
+        "bounds": {
+          "x": 1935.7528076171875,
+          "y": 1274.9554443359375,
+          "width": 47.443115234375,
+          "height": 93.45654296875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 168,
+        "id": "ArtMesh97",
+        "bounds": {
+          "x": 1935.1842041015625,
+          "y": 1062.5347900390625,
+          "width": 221.9708251953125,
+          "height": 55.127197265625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 169,
+        "id": "ArtMesh232",
+        "bounds": {
+          "x": 2054.82568359375,
+          "y": 2223.333740234375,
+          "width": 145.03271484375,
+          "height": 586.668212890625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 20
+      },
+      {
+        "index": 170,
+        "id": "ArtMesh234",
+        "bounds": {
+          "x": 2492.462890625,
+          "y": 2049.74267578125,
+          "width": 149.78466796875,
+          "height": 155.13525390625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 43
+      },
+      {
+        "index": 171,
+        "id": "ArtMesh233",
+        "bounds": {
+          "x": 2496.224365234375,
+          "y": 2042.6380615234375,
+          "width": 143.63916015625,
+          "height": 149.2137451171875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 43
+      },
+      {
+        "index": 172,
+        "id": "ArtMesh155",
+        "bounds": {
+          "x": 2614.61962890625,
+          "y": 3573.121826171875,
+          "width": 342.512451171875,
+          "height": 187.537841796875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 63
+      },
+      {
+        "index": 173,
+        "id": "ArtMesh153",
+        "bounds": {
+          "x": 2620.802001953125,
+          "y": 3565.468994140625,
+          "width": 329.801025390625,
+          "height": 176.6318359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 63
+      },
+      {
+        "index": 174,
+        "id": "ArtMesh235",
+        "bounds": {
+          "x": 2650.040771484375,
+          "y": 3811.7265625,
+          "width": 368.340087890625,
+          "height": 190.567138671875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 63
+      },
+      {
+        "index": 175,
+        "id": "ArtMesh145",
+        "bounds": {
+          "x": 2656.7265625,
+          "y": 3804.033935546875,
+          "width": 355.70947265625,
+          "height": 179.89794921875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 63
+      },
+      {
+        "index": 176,
+        "id": "ArtMesh175",
+        "bounds": {
+          "x": 831.3511962890625,
+          "y": 2795.054931640625,
+          "width": 916.7882080078125,
+          "height": 1211.156982421875
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 47
+      },
+      {
+        "index": 177,
+        "id": "ArtMesh180",
+        "bounds": {
+          "x": 2688.1435546875,
+          "y": 2795.6943359375,
+          "width": 924.121826171875,
+          "height": 1212.22900390625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": 48
+      },
+      {
+        "index": 178,
+        "id": "ArtMesh58",
+        "bounds": {
+          "x": 1589.595703125,
+          "y": 1445.61474609375,
+          "width": 505.61376953125,
+          "height": 676.494384765625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 14
+      },
+      {
+        "index": 179,
+        "id": "ArtMesh15",
+        "bounds": {
+          "x": 1548.3092041015625,
+          "y": 241.9995574951172,
+          "width": 1395.1134033203125,
+          "height": 1094.2895050048828
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 18
+      },
+      {
+        "index": 180,
+        "id": "ArtMesh16",
+        "bounds": {
+          "x": 1825.7763671875,
+          "y": 1218.666748046875,
+          "width": 829.0859375,
+          "height": 362.067138671875
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 18
+      },
+      {
+        "index": 181,
+        "id": "ArtMesh7",
+        "bounds": {
+          "x": 2516.006103515625,
+          "y": 1387.831787109375,
+          "width": 31.9755859375,
+          "height": 62.186279296875
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 18
+      },
+      {
+        "index": 182,
+        "id": "ArtMesh9",
+        "bounds": {
+          "x": 2484.2890625,
+          "y": 1358.2672119140625,
+          "width": 80.399169921875,
+          "height": 70.3775634765625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 18
+      },
+      {
+        "index": 183,
+        "id": "ArtMesh10",
+        "bounds": {
+          "x": 1956.9857177734375,
+          "y": 1353.3919677734375,
+          "width": 91.2601318359375,
+          "height": 68.4674072265625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 18
+      },
+      {
+        "index": 184,
+        "id": "ArtMesh11",
+        "bounds": {
+          "x": 2386.54052734375,
+          "y": 1246.0716552734375,
+          "width": 147.226806640625,
+          "height": 157.9063720703125
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 185,
+        "id": "ArtMesh14",
+        "bounds": {
+          "x": 2404.85791015625,
+          "y": 1267.187744140625,
+          "width": 103.1591796875,
+          "height": 115.0101318359375
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 186,
+        "id": "ArtMesh4",
+        "bounds": {
+          "x": 2013.697509765625,
+          "y": 1248.2806396484375,
+          "width": 103.746826171875,
+          "height": 72.8603515625
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 187,
+        "id": "ArtMesh5",
+        "bounds": {
+          "x": 2065.1298828125,
+          "y": 1307.042236328125,
+          "width": 65.816162109375,
+          "height": 72.4351806640625
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 188,
+        "id": "ArtMesh6",
+        "bounds": {
+          "x": 1994.0306396484375,
+          "y": 1308.195068359375,
+          "width": 69.3414306640625,
+          "height": 71.7642822265625
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 189,
+        "id": "ArtMesh12",
+        "bounds": {
+          "x": 1981.832763671875,
+          "y": 1241.0386962890625,
+          "width": 159.8408203125,
+          "height": 160.2718505859375
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 190,
+        "id": "ArtMesh13",
+        "bounds": {
+          "x": 2010.8990478515625,
+          "y": 1263.2645263671875,
+          "width": 111.6046142578125,
+          "height": 112.802734375
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 191,
+        "id": "ArtMesh237",
+        "bounds": {
+          "x": 1617.142822265625,
+          "y": 6312.00537109375,
+          "width": 326.181640625,
+          "height": 163.64453125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 192,
+        "id": "ArtMesh236",
+        "bounds": {
+          "x": 1622.330810546875,
+          "y": 6304.12451171875,
+          "width": 316.3131103515625,
+          "height": 153.111328125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 45
+      },
+      {
+        "index": 193,
+        "id": "ArtMesh95",
+        "bounds": {
+          "x": 1828.650146484375,
+          "y": 1257.015380859375,
+          "width": 847.8671875,
+          "height": 382.451904296875
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 38
+      },
+      {
+        "index": 194,
+        "id": "ArtMesh74",
+        "bounds": {
+          "x": 2510.67578125,
+          "y": 1228.5743408203125,
+          "width": 69.810791015625,
+          "height": 50.1650390625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 52
+      },
+      {
+        "index": 195,
+        "id": "ArtMesh96",
+        "bounds": {
+          "x": 2017.127197265625,
+          "y": 1195.7305908203125,
+          "width": 67.78515625,
+          "height": 54.501708984375
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 196,
+        "id": "ArtMesh140",
+        "bounds": {
+          "x": 1956.033203125,
+          "y": 1220.2264404296875,
+          "width": 76.9278564453125,
+          "height": 50.864013671875
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 197,
+        "id": "ArtMesh147",
+        "bounds": {
+          "x": 1962.063720703125,
+          "y": 1243.6298828125,
+          "width": 216.486328125,
+          "height": 54.853759765625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 0,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 198,
+        "id": "ArtMesh98",
+        "bounds": {
+          "x": 1897.4901123046875,
+          "y": 1205.6192626953125,
+          "width": 285.8206787109375,
+          "height": 131.4146728515625
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 34
+      },
+      {
+        "index": 199,
+        "id": "ArtMesh202",
+        "bounds": {
+          "x": 1092.453125,
+          "y": 3919.876220703125,
+          "width": 2238.6552734375,
+          "height": 508.926025390625
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": -1
+      },
+      {
+        "index": 200,
+        "id": "ArtMesh209",
+        "bounds": {
+          "x": 1481.5587158203125,
+          "y": 2169.886474609375,
+          "width": 1469.6060791015625,
+          "height": 1599.277099609375
+        },
+        "opacity": 1,
+        "textureIndex": 0,
+        "parentPartIndex": -1
+      },
+      {
+        "index": 201,
+        "id": "ArtMesh18",
+        "bounds": {
+          "x": 2412.834716796875,
+          "y": 1253.7398681640625,
+          "width": 95.647216796875,
+          "height": 72.7969970703125
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 202,
+        "id": "ArtMesh40",
+        "bounds": {
+          "x": 2398.060302734375,
+          "y": 1311.1466064453125,
+          "width": 61.300537109375,
+          "height": 72.552490234375
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 203,
+        "id": "ArtMesh59",
+        "bounds": {
+          "x": 2460.964599609375,
+          "y": 1314.4847412109375,
+          "width": 63.643798828125,
+          "height": 71.3482666015625
+        },
+        "opacity": 0,
+        "textureIndex": 0,
+        "parentPartIndex": 60
+      },
+      {
+        "index": 204,
+        "id": "ArtMesh60",
+        "bounds": {
+          "x": 1977.310302734375,
+          "y": 1381.552978515625,
+          "width": 35.5728759765625,
+          "height": 65.83056640625
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": 18
+      },
+      {
+        "index": 205,
+        "id": "ArtMesh238",
+        "bounds": {
+          "x": 2112.699462890625,
+          "y": 3411.6591796875,
+          "width": 221.491943359375,
+          "height": 214.996337890625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 206,
+        "id": "ArtMesh239",
+        "bounds": {
+          "x": 2114.974853515625,
+          "y": 3507.92626953125,
+          "width": 237.33935546875,
+          "height": 278.061767578125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 207,
+        "id": "ArtMesh240",
+        "bounds": {
+          "x": 2128.5654296875,
+          "y": 3655.8251953125,
+          "width": 251.1767578125,
+          "height": 288.124267578125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 208,
+        "id": "ArtMesh241",
+        "bounds": {
+          "x": 2151.80224609375,
+          "y": 3801.63671875,
+          "width": 264.470703125,
+          "height": 298.06396484375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 209,
+        "id": "ArtMesh242",
+        "bounds": {
+          "x": 2185.054931640625,
+          "y": 3945.808349609375,
+          "width": 262.638916015625,
+          "height": 282.441162109375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 210,
+        "id": "ArtMesh243",
+        "bounds": {
+          "x": 2203.836181640625,
+          "y": 4096.4033203125,
+          "width": 243.857666015625,
+          "height": 321.63427734375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 211,
+        "id": "ArtMesh244",
+        "bounds": {
+          "x": 2130.81640625,
+          "y": 4246.32275390625,
+          "width": 302.017822265625,
+          "height": 314.47119140625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 212,
+        "id": "ArtMesh245",
+        "bounds": {
+          "x": 2032.0498046875,
+          "y": 4339.482421875,
+          "width": 309.910888671875,
+          "height": 287.56103515625
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 213,
+        "id": "ArtMesh246",
+        "bounds": {
+          "x": 1881.5115966796875,
+          "y": 4401.80859375,
+          "width": 300.2718505859375,
+          "height": 226.5498046875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 214,
+        "id": "ArtMesh247",
+        "bounds": {
+          "x": 1716.801513671875,
+          "y": 4396.79296875,
+          "width": 275.1767578125,
+          "height": 231.5654296875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 215,
+        "id": "ArtMesh248",
+        "bounds": {
+          "x": 1555.33984375,
+          "y": 4364.24365234375,
+          "width": 292.1080322265625,
+          "height": 256.28271484375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 216,
+        "id": "ArtMesh249",
+        "bounds": {
+          "x": 1399.16162109375,
+          "y": 4316.40576171875,
+          "width": 307.9075927734375,
+          "height": 278.2919921875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 217,
+        "id": "ArtMesh250",
+        "bounds": {
+          "x": 1267.1810302734375,
+          "y": 4255.21923828125,
+          "width": 302.8780517578125,
+          "height": 295.4580078125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 218,
+        "id": "ArtMesh251",
+        "bounds": {
+          "x": 1133.607421875,
+          "y": 4218.98974609375,
+          "width": 301.1346435546875,
+          "height": 269.76318359375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 219,
+        "id": "ArtMesh252",
+        "bounds": {
+          "x": 1018.077880859375,
+          "y": 4209.8896484375,
+          "width": 255.285888671875,
+          "height": 235.7802734375
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 220,
+        "id": "ArtMesh253",
+        "bounds": {
+          "x": 891.6122436523438,
+          "y": 4209.8896484375,
+          "width": 235.20513916015625,
+          "height": 215.76953125
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 221,
+        "id": "ArtMesh254",
+        "bounds": {
+          "x": 891.6122436523438,
+          "y": 4211.9921875,
+          "width": 107.4083251953125,
+          "height": 213.6669921875
+        },
+        "opacity": 1,
+        "textureIndex": 1,
+        "parentPartIndex": 27
+      },
+      {
+        "index": 222,
+        "id": "ArtMesh255",
+        "bounds": {
+          "x": 173.15142822265625,
+          "y": 895.0479125976562,
+          "width": 4012.4618530273438,
+          "height": 4168.776306152344
+        },
+        "opacity": 0,
+        "textureIndex": 1,
+        "parentPartIndex": -1
+      },
+      {
+        "index": 223,
+        "id": "ArtMesh203",
+        "bounds": {
+          "x": 928.6463012695312,
+          "y": 652.3154907226562,
+          "width": 2434.9740600585938,
+          "height": 7797.671813964844
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 38
+      },
+      {
+        "index": 224,
+        "id": "ArtMesh115",
+        "bounds": {
+          "x": 2430.95458984375,
+          "y": 483.5555114746094,
+          "width": 405.02490234375,
+          "height": 1088.4581604003906
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 2
+      },
+      {
+        "index": 225,
+        "id": "ArtMesh116",
+        "bounds": {
+          "x": 1633.94775390625,
+          "y": 479.0565185546875,
+          "width": 474.25927734375,
+          "height": 1078.28955078125
+        },
+        "opacity": 0.9999998807907104,
+        "textureIndex": 1,
+        "parentPartIndex": 2
+      },
+      {
+        "index": 226,
+        "id": "ArtMesh227",
+        "bounds": {
+          "x": 2218.466064453125,
+          "y": 1504.4884033203125,
+          "width": 109.93212890625,
+          "height": 53.821533203125
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 0,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 227,
+        "id": "ArtMesh226",
+        "bounds": {
+          "x": 2196.8759765625,
+          "y": 1520.6739501953125,
+          "width": 138.621826171875,
+          "height": 74.421630859375
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 228,
+        "id": "ArtMesh225",
+        "bounds": {
+          "x": 2181.5546875,
+          "y": 1520.8955078125,
+          "width": 35.029541015625,
+          "height": 56.6395263671875
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 229,
+        "id": "ArtMesh224",
+        "bounds": {
+          "x": 2319.2919921875,
+          "y": 1523.969482421875,
+          "width": 34.255126953125,
+          "height": 55.294189453125
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 0,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 230,
+        "id": "ArtMesh223",
+        "bounds": {
+          "x": 2188.735107421875,
+          "y": 1546.6826171875,
+          "width": 155.8837890625,
+          "height": 50.454833984375
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 231,
+        "id": "ArtMesh222",
+        "bounds": {
+          "x": 2181.520751953125,
+          "y": 1476.9281005859375,
+          "width": 177.3310546875,
+          "height": 37.558349609375
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 232,
+        "id": "ArtMesh221",
+        "bounds": {
+          "x": 2216.54931640625,
+          "y": 1525.977783203125,
+          "width": 108.875244140625,
+          "height": 78.6717529296875
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 233,
+        "id": "ArtMesh220",
+        "bounds": {
+          "x": 2234.971923828125,
+          "y": 1528.4326171875,
+          "width": 68.836669921875,
+          "height": 21.498779296875
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 234,
+        "id": "ArtMesh219",
+        "bounds": {
+          "x": 2191.47314453125,
+          "y": 1443.0035400390625,
+          "width": 161.549072265625,
+          "height": 116.0208740234375
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 0,
+        "parentPartIndex": 53
+      },
+      {
+        "index": 235,
+        "id": "ArtMesh218",
+        "bounds": {
+          "x": 2234.311279296875,
+          "y": 1528.96240234375,
+          "width": 70.463134765625,
+          "height": 22.5897216796875
+        },
+        "opacity": 0.9999999403953552,
+        "textureIndex": 1,
+        "parentPartIndex": 53
+      }
+    ],
+    "partDebug": [
+      {
+        "index": 0,
+        "id": "Part",
+        "opacity": 1
+      },
+      {
+        "index": 1,
+        "id": "Part6",
+        "opacity": 1
+      },
+      {
+        "index": 2,
+        "id": "Part11",
+        "opacity": 1
+      },
+      {
+        "index": 3,
+        "id": "Part29",
+        "opacity": 1
+      },
+      {
+        "index": 4,
+        "id": "Part47",
+        "opacity": 1
+      },
+      {
+        "index": 5,
+        "id": "Part41",
+        "opacity": 1
+      },
+      {
+        "index": 6,
+        "id": "Part44",
+        "opacity": 1
+      },
+      {
+        "index": 7,
+        "id": "Part46",
+        "opacity": 1
+      },
+      {
+        "index": 8,
+        "id": "Part2",
+        "opacity": 1
+      },
+      {
+        "index": 9,
+        "id": "Part3",
+        "opacity": 1
+      },
+      {
+        "index": 10,
+        "id": "Part4",
+        "opacity": 1
+      },
+      {
+        "index": 11,
+        "id": "Part5",
+        "opacity": 1
+      },
+      {
+        "index": 12,
+        "id": "Part7",
+        "opacity": 1
+      },
+      {
+        "index": 13,
+        "id": "Part8",
+        "opacity": 1
+      },
+      {
+        "index": 14,
+        "id": "Part9",
+        "opacity": 1
+      },
+      {
+        "index": 15,
+        "id": "Part12",
+        "opacity": 1
+      },
+      {
+        "index": 16,
+        "id": "Part13",
+        "opacity": 1
+      },
+      {
+        "index": 17,
+        "id": "Part28",
+        "opacity": 1
+      },
+      {
+        "index": 18,
+        "id": "Part15",
+        "opacity": 1
+      },
+      {
+        "index": 19,
+        "id": "Part30",
+        "opacity": 1
+      },
+      {
+        "index": 20,
+        "id": "Part32",
+        "opacity": 1
+      },
+      {
+        "index": 21,
+        "id": "Part39",
+        "opacity": 1
+      },
+      {
+        "index": 22,
+        "id": "Part45",
+        "opacity": 1
+      },
+      {
+        "index": 23,
+        "id": "R5",
+        "opacity": 1
+      },
+      {
+        "index": 24,
+        "id": "L5",
+        "opacity": 1
+      },
+      {
+        "index": 25,
+        "id": "l2",
+        "opacity": 1
+      },
+      {
+        "index": 26,
+        "id": "r2",
+        "opacity": 1
+      },
+      {
+        "index": 27,
+        "id": "ArtMesh212_Skinning",
+        "opacity": 1
+      },
+      {
+        "index": 28,
+        "id": "Part24",
+        "opacity": 1
+      },
+      {
+        "index": 29,
+        "id": "L",
+        "opacity": 1
+      },
+      {
+        "index": 30,
+        "id": "R",
+        "opacity": 1
+      },
+      {
+        "index": 31,
+        "id": "Part10",
+        "opacity": 1
+      },
+      {
+        "index": 32,
+        "id": "Part14",
+        "opacity": 1
+      },
+      {
+        "index": 33,
+        "id": "Part25",
+        "opacity": 1
+      },
+      {
+        "index": 34,
+        "id": "Part16",
+        "opacity": 1
+      },
+      {
+        "index": 35,
+        "id": "Part17",
+        "opacity": 1
+      },
+      {
+        "index": 36,
+        "id": "Part20",
+        "opacity": 1
+      },
+      {
+        "index": 37,
+        "id": "Part21",
+        "opacity": 1
+      },
+      {
+        "index": 38,
+        "id": "Part22",
+        "opacity": 1
+      },
+      {
+        "index": 39,
+        "id": "L3",
+        "opacity": 1
+      },
+      {
+        "index": 40,
+        "id": "R3",
+        "opacity": 1
+      },
+      {
+        "index": 41,
+        "id": "Part33",
+        "opacity": 1
+      },
+      {
+        "index": 42,
+        "id": "Part34",
+        "opacity": 1
+      },
+      {
+        "index": 43,
+        "id": "Part37",
+        "opacity": 1
+      },
+      {
+        "index": 44,
+        "id": "Part40",
+        "opacity": 1
+      },
+      {
+        "index": 45,
+        "id": "L6",
+        "opacity": 1
+      },
+      {
+        "index": 46,
+        "id": "R6",
+        "opacity": 1
+      },
+      {
+        "index": 47,
+        "id": "Part42",
+        "opacity": 1
+      },
+      {
+        "index": 48,
+        "id": "Part43",
+        "opacity": 1
+      },
+      {
+        "index": 49,
+        "id": "Part26",
+        "opacity": 1
+      },
+      {
+        "index": 50,
+        "id": "Part27",
+        "opacity": 1
+      },
+      {
+        "index": 51,
+        "id": "R2",
+        "opacity": 1
+      },
+      {
+        "index": 52,
+        "id": "L2",
+        "opacity": 1
+      },
+      {
+        "index": 53,
+        "id": "Part23",
+        "opacity": 1
+      },
+      {
+        "index": 54,
+        "id": "L4",
+        "opacity": 1
+      },
+      {
+        "index": 55,
+        "id": "R4",
+        "opacity": 1
+      },
+      {
+        "index": 56,
+        "id": "Part35",
+        "opacity": 1
+      },
+      {
+        "index": 57,
+        "id": "Part36",
+        "opacity": 1
+      },
+      {
+        "index": 58,
+        "id": "Part38",
+        "opacity": 1
+      },
+      {
+        "index": 59,
+        "id": "Part18",
+        "opacity": 1
+      },
+      {
+        "index": 60,
+        "id": "Part19",
+        "opacity": 1
+      },
+      {
+        "index": 61,
+        "id": "Part31",
+        "opacity": 1
+      },
+      {
+        "index": 62,
+        "id": "l",
+        "opacity": 1
+      },
+      {
+        "index": 63,
+        "id": "r",
+        "opacity": 1
+      }
+    ],
+    "canvasPixelSample": {
+      "available": true,
+      "width": 504,
+      "height": 635,
+      "samples": 160020,
+      "nonTransparentSamples": 160020
+    },
+    "ttsSmoke": null,
+    "joiRealLoopChatSmoke": {
+      "status": "chat_turn_trace_smoke_pass",
+      "prompt_text_length": 58,
+      "turn_status": "ok",
+      "expression_name": "",
+      "backend_status": "ok",
+      "backend_reason": "",
+      "side_effects_executed": false,
+      "memory_write": false,
+      "tool_use": false,
+      "message_send": false,
+      "file_write": false,
+      "network_call": false
+    },
+    "screenshotDataUrl": "[omitted; screenshot_path contains PNG artifact]",
+    "sideEffectsExecuted": false
+  },
+  "console_messages": [
+    {
+      "level": 2,
+      "message": "%cElectron Security Warning (Insecure Content-Security-Policy) font-weight: bold; This renderer process has either no Content Security\n  Policy set or a policy with \"unsafe-eval\" enabled. This exposes users of\n  this app to unnecessary security risks.\n\nFor more information and help, consult\nhttps://electronjs.org/docs/tutorial/security.\nThis warning will not show up\nonce the app is packaged.",
+      "line": 2,
+      "sourceId": "node:electron/js2c/renderer_init"
+    },
+    {
+      "level": 1,
+      "message": "[CSM][I]Live2D Cubism Core version: 05.00.0000 (83886080)\n",
+      "line": 1,
+      "sourceId": "http://127.0.0.1:7381/vendor/pixi-live2d-display/cubism5.min.js"
+    },
+    {
+      "level": 1,
+      "message": "[CSM][I]CubismFramework.startUp() is complete.\n",
+      "line": 1,
+      "sourceId": "http://127.0.0.1:7381/vendor/pixi-live2d-display/cubism5.min.js"
+    },
+    {
+      "level": 1,
+      "message": "[CSM][I]CubismFramework.initialize() is complete.\n",
+      "line": 1,
+      "sourceId": "http://127.0.0.1:7381/vendor/pixi-live2d-display/cubism5.min.js"
+    },
+    {
+      "level": 1,
+      "message": "Live2D Cubism SDK Core Version 5.0.0",
+      "line": 9,
+      "sourceId": "http://127.0.0.1:7381/vendor/live2dcubismcore/live2dcubismcore.min.js"
+    }
+  ],
+  "screenshot_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0\\smoke\\live2d_desktop_smoke.png",
+  "canvas_screenshot_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0\\smoke\\live2d_desktop_canvas.png",
+  "face_crop_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0\\smoke\\live2d_desktop_face_crop.png",
+  "window_screenshot_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0\\smoke\\live2d_desktop_window.png",
+  "screenshot_source": "electron_capture_page",
+  "screenshot_size": {
+    "width": 884,
+    "height": 635
+  },
+  "non_blank_pixel_count": 6934,
+  "model_visible_geometry": true,
+  "render_mode": "official_live2d_model_from",
+  "manual_renderer_binding": false,
+  "manual_drawable_mutation": false,
+  "css_canvas_transform": false,
+  "high_dpi_canvas": false,
+  "high_dpi_disabled_reason": "pixi8_live2d_viewport_mismatch",
+  "watermark_cover": true,
+  "ticker_source": "app.ticker",
+  "tts_smoke": null,
+  "tts_status": "",
+  "tts_source_visible_text": "",
+  "tts_text": "",
+  "tts_text_source": "",
+  "tts_text_matches_displayed": false,
+  "tts_removed_non_speech_tokens": false,
+  "ui_audio_delivery_executed": false,
+  "base_tts_network_call": false,
+  "tts_temp_audio_file_write": false,
+  "prohibited_side_effects_executed": false,
+  "side_effects_executed": false,
+  "memory_write": false,
+  "tool_use": false,
+  "message_send": false,
+  "file_write": false,
+  "network_call": false,
+  "signal_frame": {
+    "schema_version": "ego_desktop.viewer_signal_frame.v1",
+    "primitive_class": "live2d_presence_state",
+    "source": "ego_desktop.signal_frame_sanitizer",
+    "presence_state": {
+      "state": "attentive_planning",
+      "expression": "focused",
+      "motion": "idle_listen",
+      "intensity": "low"
+    },
+    "visible_expression_intent": {
+      "intent_type": "embodied_initiative_expression",
+      "side_effect_free": true
+    },
+    "side_effects_executed": false,
+    "memory_write": false,
+    "tool_use": false,
+    "message_send": false,
+    "file_write": false,
+    "network_call": false,
+    "allowed_to_send_message": false,
+    "allowed_to_write_memory": false,
+    "allowed_to_use_tools": false,
+    "allowed_to_write_files": false,
+    "allowed_to_use_network": false
+  },
+  "claim_ceiling": "local Live2D rendering smoke only; not stable embodiment, live autonomy, proactive messaging, durable memory efficacy, or consciousness proof"
+}

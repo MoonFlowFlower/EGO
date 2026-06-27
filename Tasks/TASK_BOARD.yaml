@@ -4274,6 +4274,37 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-022
+    title: "EgoDesktop: Joi real-loop G-ABLATION selected source chat smoke v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-021
+    status: done
+    layer: egodesktop_real_loop_selected_source_chat_smoke
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "selected_source_desktop_trigger_smoke_only"
+    next_action: "Done local-only: one explicit EgoDesktop smoke used a single-chat-turn userText materialized from a 021 selected source row. Evidence is limited to smoke pass, trace_row_count > 0, and trace row user_text_hash matching the trigger input report. This task authorizes no raw text staging, CREATURE_ON claim, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, default runtime enablement, push, tag, or remote anchor."
+    acceptance:
+      - "TRIGGER_INPUT_REPORT records selection id, source row hash, derivation rule, trace-compatible user text hash, plain text sha256, and length without raw text."
+      - "EgoDesktop smoke report records chat_turn_trace_smoke_pass."
+      - "Trace runner report records trace_row_count > 0."
+      - "Trace row public_inputs.user_text_hash matches TRIGGER_INPUT_REPORT.user_text_hash."
+      - "No raw text is committed; source_cache remains ignored."
+      - "No CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0/, artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-chat-smoke-v0/MUTATION_SCOPE.yaml"
+      - "scripts/codex/materialize_egodesktop_selected_source_trigger_input.py"
+      - "scripts/tests/test_materialize_egodesktop_selected_source_trigger_input.py"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0/TRIGGER_INPUT_REPORT.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0/trace/trace_rows.jsonl"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
