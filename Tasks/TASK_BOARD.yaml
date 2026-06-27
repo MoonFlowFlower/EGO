@@ -4041,6 +4041,36 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-014
+    title: "EgoDesktop: Joi real-loop G-ABLATION real source capture design v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-013
+    status: accepted
+    layer: egodesktop_real_loop_data_provenance_capture_design
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E3
+    claim_ceiling: "real_source_capture_design_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS; Claude re-review was unavailable and is not claimed as accepted. User authorization is recorded for local EgoDesktop/EgoOperator source candidates and public internet dialogue data, but this 014 card authorizes no dataset download, gated terms acceptance, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, push, tag, or remote anchor. Next action is a separate source-manifest/download-boundary card before any source cache or download work."
+    acceptance:
+      - "\"Real\" is split into real_source_text, real_desktop_trigger, and replayable_capture_row."
+      - "Existing local EgoDesktop trace rows and session-local conversation artifacts are classified as source/capture-smoke/calibration material, not final heldout CREATURE_ON evidence."
+      - "Rejected/superseded post-hoc capture artifacts such as the 009 calibration_ui_turn2 attempt are preserved only as negative evidence and excluded from future source manifests, calibration bases, capture bases, scores, and comparisons."
+      - "Public dialogue data candidates are license/provenance gated; gated or unclear-license sources are not admitted for automatic download."
+      - "License tier meanings for non-commercial, attribution, share-alike, gated, and unknown-license sources are operationalized before any source-manifest or download task."
+      - "Future real-source preregistration must carry forward B-011 gates for no split/meta leakage, effective independence beyond unique ids, and causal-path/affect/anti-degeneracy coverage."
+      - "Operator-authored demand-characteristic risk and source-text PII/privacy minimization are recorded as future source-manifest gates."
+      - "Future capture must go through window.egoDesktop.sendChatTurn or equivalent real IPC seam plus the existing G-ABLATION tap/writer under explicit flags."
+      - "No dataset download, gated terms acceptance, capture, same-access execution, scoring, comparison, verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this design card."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0/MUTATION_SCOPE.yaml"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task

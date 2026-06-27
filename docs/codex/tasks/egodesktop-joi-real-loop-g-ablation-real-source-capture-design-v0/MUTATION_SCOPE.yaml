@@ -1,0 +1,12 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0
+expected_mutation_surface:
+  - docs-only 014 real-source/capture semantics and authorization design after explicit operator authorization
+  - task-board entry for EGODESKTOP-GABLATION-014
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no dataset download, gated terms acceptance, row capture, scoring run, verdict, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-real-source-capture-design-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "real_source_capture_design_only; no CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"
