@@ -1,0 +1,14 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0
+expected_mutation_surface:
+  - 028 Wizard captured calibration reference replay preflight card package
+  - task-board entry for EGODESKTOP-GABLATION-028
+  - task-board outbox entry if GitHub Project sync is unavailable
+  - route-convergence generated task-lane index refresh
+  - no artifact builder execution, code changes, raw text staging, CREATURE_ON, same-access execution, scoring, comparison, verdict, route advancement, runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0/
+  - artifacts/task_board/outbox.jsonl
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "wizard_captured_calibration_reference_replay_card_only; no implementation-run, captured-reference-validity, CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"
