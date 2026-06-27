@@ -1,0 +1,43 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_g_ablation_calibration_row_selection_report.v0",
+  "status": "blocked_superseded_post_hoc_selection_attempt_recorded",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only",
+  "producer_function": "codex_artifact_readback",
+  "selection_scope": "blocked_attempt_provenance_only_not_scoring_evidence",
+  "review_blocker": "B-009-IMPL-1_post_hoc_positional_selection",
+  "superseded_by": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_predeclared_single/PREDECLARED_CAPTURE_REPORT.json",
+  "raw_capture_rows_path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_turn2/trace/trace_rows.jsonl",
+  "raw_capture_rows_file_sha256": "e3d6636f5835683f46d7c53fb149540ea827a853239d7c08f35c04866264b10d",
+  "raw_capture_rows_count": 2,
+  "heldout_rows_path": "artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/trace/trace_rows.jsonl",
+  "heldout_rows_file_sha256": "5ccf6cc0d5518b53857eca689647300a0004954877e3f4d1a052571726ac7d4b",
+  "heldout_row_hashes": [
+    "7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1"
+  ],
+  "heldout_turn_ids": [
+    "turn_1"
+  ],
+  "selection_rule": "consume only a calibration row whose split-disjointness dimensions are non-overlapping with the heldout source rows; reject rows with literal turn_id overlap before building the 009 calibration reference",
+  "selected_rows_path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_turn2/selected_calibration_trace_rows.jsonl",
+  "selected_rows_file_sha256": "0643d74e4090f45403269efe234a46c55391aa8e842e233be53fb39b4fa84304",
+  "selected_rows_count": 1,
+  "selected_row": {
+    "run_id": "egodesktop_gablation_009_calibration_capture_ui_turn2",
+    "split_id": "calibration",
+    "turn_id": "turn_2",
+    "prompt_id": "prompt_99cf31b6e86b",
+    "source_row_hash": "f335d25a50fb944e11278917c8421a4e23399c3e092049a7533c95c250a73d3c",
+    "trace_record_hash": "f149b373368d186ef1edb9d890bf57da4cac01c640576b66f9f3f57f68b076db"
+  },
+  "rejected_rows": [
+    {
+      "run_id": "egodesktop_gablation_009_calibration_capture_ui_turn2",
+      "split_id": "calibration",
+      "turn_id": "turn_1",
+      "prompt_id": "prompt_1429179c47a6",
+      "source_row_hash": "4f215fb0dee1a3f31fc40a6590aa2fb8b026a77ed060c69b189f57fbb3e83e10",
+      "rejection_reason": "literal_turn_id_overlap_with_heldout_turn_1"
+    }
+  ],
+  "limitation": "This report records a blocked post-hoc selection attempt only. It is not the accepted 009 calibration input, baseline comparison, attribution verdict, route decision, or scoring run."
+}

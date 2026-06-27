@@ -1,13 +1,13 @@
 # EgoDesktop Joi Real-Loop G-ABLATION Captured Calibration Reference v0 Spec
 
 - task_id: `EGODESKTOP-GABLATION-009`
-- status: `card_reviewed_no_blocking_findings__implementation_not_started`
+- status: `accepted_after_claude_no_blocking__local_commit_pending`
 - created_at: `2026-06-27`
 - owner: `Codex`
 - layer: `engineering implementation / calibration provenance and replay hygiene`
 - main_chain_status: `not_connected_to_default_runtime`
 - enabled_status: `explicit_cli_only`
-- real_trigger_evidence: `none_yet_for_this_slice`
+- real_trigger_evidence: `window.egoDesktop.sendChatTurn_ui_capture_to_existing_006_tap`
 - claim_ceiling: `egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only`
 - auto_remote_anchor: `forbidden`
 
@@ -27,9 +27,9 @@ This slice opens that boundary. It does not score, compare, emit `CREATURE_ON`, 
 - `EGODESKTOP-GABLATION-008` row hash: `bd120552670850025ab531a8dc8b9a064c50ba30277115451a0d86c84b38de04`.
 - Existing 006 source trace artifact has exactly one `CURRENT_SHIM` / `heldout` row:
   `artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/trace/trace_rows.jsonl`.
-- No current artifact provides a separate `calibration` split trace row. Therefore 009 must capture or consume a real
-  calibration-source artifact before it can replace the synthetic reference. It must not relabel the heldout row as
-  calibration and must not derive the adapter seed from heldout observation content.
+- Before 009, no current artifact provided a separate `calibration` split trace row. 009 now captures a predeclared real
+  calibration-source artifact before replacing the synthetic reference. It does not relabel the heldout row as
+  calibration and does not derive the adapter seed from heldout observation content.
 
 ## Bounded Audit
 
@@ -42,8 +42,8 @@ This slice opens that boundary. It does not score, compare, emit `CREATURE_ON`, 
 - falsifier for this framing: no separate calibration source can be captured or serialized, or the rebuilt heldout row
   still reports `synthetic_reference`.
 - insufficient evidence: a renamed constant, a hardcoded calibration JSON, a calibration hash with no source row, a
-  calibration row that overlaps heldout prompts/turns/runs, or a reference that cannot be traced back to real backend
-  trace-row fields.
+  calibration row that overlaps heldout prompt/user-text content, a source/capture provenance overlap, post-hoc
+  multi-row selection, or a reference that cannot be traced back to real backend trace-row fields.
 - task type: evidence-hygiene and replay-provenance implementation only.
 - leakage check: leakage remains a schema/authority hygiene gate only until `CREATURE_ON` privileged/stateful rows exist.
 - trace/replay-id check: `llm_replay_id` remains `none` while `D` excludes LLM text; do not invent an LLM replay id from
@@ -55,7 +55,8 @@ This slice opens that boundary. It does not score, compare, emit `CREATURE_ON`, 
 
 The target is still explicit local artifact tooling plus the existing replay evaluator:
 
-- a pre-capture split partition manifest that freezes calibration and heldout prompt partitions before any capture;
+- a predeclared calibration prompt pack frozen before capture, plus a split partition manifest built against that
+  predeclared pack after capture;
 - a calibration-reference builder that consumes real calibration split trace rows;
 - the 008 offline replay builder updated to consume that calibration reference instead of a static synthetic object;
 - a CLI path that writes a captured/fitted calibration reference artifact and a rebuilt `OFF_STATIC_REPLAY_HELDOUT` row;
@@ -73,18 +74,22 @@ All 009 behavior is CLI-only and artifact-only. Default EgoDesktop runtime behav
 
 Acceptance requires:
 
-1. A split partition manifest frozen before capture. It must record:
+1. A predeclared single-prompt calibration pack frozen before capture, followed by a split partition manifest. The
+   manifest must record:
    - `producer_function`;
    - `partition_protocol_hash`;
    - calibration prompt pack id/hash;
    - heldout prompt pack id/hash;
    - calibration prompt ids/user-text hashes;
    - heldout prompt ids/user-text hashes;
-   - disjointness assertions for prompt ids, user-text hashes, source row hashes, turn ids, trace record hashes, and
-     capture run ids;
+   - content-disjointness assertions for prompt ids and user-text hashes;
+   - provenance-distinctness assertions for source row hashes, trace record hashes, and capture run ids;
+   - turn ids recorded as informational position provenance only, not as a content-disjointness gate;
    - an overlap-positive-control case that intentionally reuses at least one heldout prompt/hash and must be rejected.
 2. A calibration source artifact built from a real trace row with `split_id: calibration` or from a fitted artifact that
    embeds and hashes its real calibration trace-row inputs.
+   For the 009 acceptance artifact, the calibration prompt pack must be predeclared before capture and the builder must
+   consume exactly one row that matches its `prompt_id` and `user_text_hash`. Multi-row post-hoc selection is blocked.
 3. The calibration source row must be produced through the existing 006 tap surface:
    - explicit `JOI_REAL_LOOP_*` flags;
    - real `window.egoDesktop.sendChatTurn(...)` / default chat-turn result boundary;
@@ -134,6 +139,8 @@ The 009 row must preserve all 008 replay fields and additionally prove:
 
 - calibration source is serialized or reconstructable from a captured calibration artifact;
 - calibration reference hash is computed from captured/fitted calibration data, not a literal constant;
+- calibration reference records `selection_policy_status=deterministic_predeclared_single_prompt_consumed` and
+  `post_hoc_selection_status=absent`;
 - adapter seed carries `calibration_reference_hash` and non-synthetic `seed_source`;
 - heldout `D` recompute consumes the captured fixed output schedule only, not the captured calibration `creature_state`,
   `state_digest`, `viability_state`, `subject_context_hash`, `llm_meta_hash`, bot text, prompt text, or heldout
@@ -164,6 +171,9 @@ Reports must record:
 
 - Task card and mutation scope exist before production implementation.
 - Tests are written first and fail before implementation.
+- The accepted calibration capture uses a predeclared single-prompt calibration pack and contains exactly one matching
+  captured row.
+- The builder rejects post-hoc multi-row selection for the accepted calibration artifact.
 - Calibration reference cannot be built from a heldout-only artifact without an explicit blocked result.
 - The builder consumes a calibration reference artifact path; it no longer silently creates a synthetic reference for 009.
 - Split overlap positive control must fire by reusing a heldout prompt/hash/row as calibration input.
@@ -200,6 +210,8 @@ route-convergence views.
 - `EgoDesktop/tests/joi_real_loop_g_ablation_calibration_reference.test.js`
 - `EgoDesktop/tests/joi_real_loop_g_ablation_off_static_replay.test.js`
 - `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/partition/SPLIT_PARTITION_MANIFEST.json`
+- `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_predeclared_single/PREDECLARED_CALIBRATION_PROMPT_PACK.json`
+- `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_predeclared_single/PREDECLARED_CAPTURE_REPORT.json`
 - `artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/`
 - `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/*`
 - `docs/codex/tasks/TASK_LANE_INDEX.md`
@@ -217,8 +229,9 @@ route-convergence views.
   wording, push, tag, or remote anchor.
 - No relabeling heldout rows as calibration.
 - No synthetic calibration fallback in the 009 acceptance artifact.
-- No shared prompt id, user-text hash, source row hash, turn id, trace record hash, or capture run id between calibration
-  and heldout partitions.
+- No shared prompt id or user-text hash between calibration and heldout content partitions.
+- No shared source row hash, trace record hash, or capture run id between calibration and heldout provenance sources.
+- No use of `turn_id` as a content-disjointness gate; `turn_id` is informational position provenance only.
 - No use of captured calibration state beyond fixed output schedule fields for heldout `D` recompute.
 
 ## Claude Card Review Repair
@@ -226,8 +239,8 @@ route-convergence views.
 Desktop Claude returned `BLOCKING_FINDINGS` source-limited for the first 009 card draft. The card-level repairs now
 incorporated are:
 
-1. Freeze a pre-capture calibration/heldout split partition manifest, require disjointness assertions, and require an
-   overlap positive control.
+1. Freeze a predeclared calibration prompt pack before capture, build a calibration/heldout split partition manifest
+   against it, require disjointness assertions, and require an overlap positive control.
 2. Define input-blind replay as fixed output schedule replay, with captured calibration state fields marked
    provenance-only and forbidden from heldout `D` recompute.
 3. Require calibration rows to be produced by the existing 006 tap / real sendChatTurn path under explicit flags, with no
@@ -242,8 +255,13 @@ Desktop Claude then returned `NO_BLOCKING_FINDINGS` source-limited for the repai
 review accepted that B-009-1..4 are closed in the card text and that the card is blocker-free for implementation, while
 not claiming repo/artifact execution proof.
 
+Desktop Claude re-reviewed the B-009-IMPL-1 implementation repair and returned
+`NO_BLOCKING_FINDINGS (source-limited)`. The review accepted that the predeclared single-prompt capture closes the
+post-hoc selection blocker, the exact-match builder is deterministic, `turn_id` is informational provenance only, and
+default-off/CLI-only/no-scoring boundaries remain intact.
+
 ## Next Minimal Closed-Loop Action
 
-Implement only the tests-first calibration-reference builder and rebuilt `OFF_STATIC_REPLAY_HELDOUT` row that consumes
-it. Do not score, compare, emit `CREATURE_ON`, update program state, update evidence ledger, push, tag, or remote-anchor
-in 009.
+Commit 009 locally only. Do not score, compare, emit `CREATURE_ON`, update program state, update evidence ledger, push,
+tag, or remote-anchor in 009. The decisive same-access battery plus `CREATURE_ON` comparison is a separate future
+slice with pre-frozen thresholds.

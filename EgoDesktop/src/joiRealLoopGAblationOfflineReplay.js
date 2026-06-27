@@ -5,6 +5,11 @@ const {
   buildJoiRealLoopTraceRow,
   hashValue,
 } = require("./joiRealLoopGAblationHarness");
+const {
+  CAPTURED_REFERENCE_KIND,
+  FIXED_OUTPUT_SOURCE,
+  loadCalibrationReference,
+} = require("./joiRealLoopGAblationCalibrationReference");
 
 const CLAIM_CEILING = "egodesktop_real_loop_g_ablation_off_static_replay_heldout_replay_row_contract_only";
 const OFFLINE_REPLAY_FUNCTION_ID = "off_static_replay_heldout_non_llm_adapter_v0";
@@ -40,7 +45,7 @@ function sourceHashFor(sourceRow) {
   return text(row.row_hash, hashValue(row));
 }
 
-function buildCalibrationReference() {
+function buildSyntheticCalibrationReference() {
   const reference = {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_calibration_reference.v0",
     claim_ceiling: CLAIM_CEILING,
@@ -61,6 +66,36 @@ function buildCalibrationReference() {
   };
 }
 
+function normalizeCalibrationReference(value) {
+  const reference = objectOrEmpty(value);
+  if (!Object.keys(reference).length) {
+    return buildSyntheticCalibrationReference();
+  }
+  if (reference.calibration_reference_kind === "synthetic_reference") {
+    throw new Error("synthetic calibration reference is not allowed for captured-reference replay");
+  }
+  if (![CAPTURED_REFERENCE_KIND, "fitted_from_captured_calibration_trace"].includes(reference.calibration_reference_kind)) {
+    throw new Error(`unsupported calibration reference kind: ${reference.calibration_reference_kind || "missing"}`);
+  }
+  if (reference.calibration_reference_source !== FIXED_OUTPUT_SOURCE) {
+    throw new Error("captured calibration reference must use fixed output schedule source");
+  }
+  if (reference.partition_disjointness_status !== "pass") {
+    throw new Error("captured calibration reference partition disjointness must pass");
+  }
+  if (!objectOrEmpty(reference.adapter_seed).seed_source) {
+    return {
+      ...reference,
+      adapter_seed: {
+        ...objectOrEmpty(reference.adapter_seed),
+        seed_source: reference.calibration_reference_kind,
+        calibration_reference_kind: reference.calibration_reference_kind,
+      },
+    };
+  }
+  return reference;
+}
+
 function buildHeldoutPromptPackDescriptor(sourceRow) {
   const source = objectOrEmpty(sourceRow);
   const sourceInputs = objectOrEmpty(source.public_inputs);
@@ -74,15 +109,22 @@ function buildHeldoutPromptPackDescriptor(sourceRow) {
   };
 }
 
-function buildCompleteSerializedState(sourceRow) {
+function buildCompleteSerializedState(sourceRow, options = {}) {
   const source = objectOrEmpty(sourceRow);
-  const calibrationReference = buildCalibrationReference();
+  const calibrationReference = normalizeCalibrationReference(options.calibrationReference);
   const calibrationReferenceHash = hashValue(calibrationReference);
+  const calibrationReferenceKind = text(calibrationReference.calibration_reference_kind, "synthetic_reference");
+  const seedSource = text(
+    objectOrEmpty(calibrationReference.adapter_seed).seed_source,
+    calibrationReferenceKind === "synthetic_reference"
+      ? "synthetic_calibration_reference_v0"
+      : calibrationReferenceKind,
+  );
   const adapterSeed = {
     ...calibrationReference.adapter_seed,
     calibration_reference_hash: calibrationReferenceHash,
-    calibration_reference_kind: "synthetic_reference",
-    seed_source: "synthetic_calibration_reference_v0",
+    calibration_reference_kind: calibrationReferenceKind,
+    seed_source: seedSource,
   };
 
   return {
@@ -93,7 +135,7 @@ function buildCompleteSerializedState(sourceRow) {
     source_row_hash: sourceHashFor(source),
     reference_sequence_id: "off_static_replay_heldout_v0",
     calibration_reference_hash: calibrationReferenceHash,
-    calibration_reference_kind: "synthetic_reference",
+    calibration_reference_kind: calibrationReferenceKind,
     calibration_reference: calibrationReference,
     adapter_seed: adapterSeed,
     d_field_mode: "non_llm_adapter_output_only",
@@ -176,7 +218,9 @@ function buildObservationShuffleControl({ completeState, completeObservation, ad
     status: invariant ? "pass" : "fail",
     adapter_output_invariant: invariant,
     producer_function: "buildObservationShuffleControl",
-    evidence_scope: "regression_guard_constructive_until_nontrivial_calibration",
+    evidence_scope: completeState.calibration_reference_kind === "synthetic_reference"
+      ? "regression_guard_constructive_until_nontrivial_calibration"
+      : "captured_calibration_reference_input_blind_control",
     original_observation_hash: hashValue(completeObservation),
     shuffled_observation_hash: hashValue(shuffledObservation),
     recomputed_adapter_output_hash: hashValue(recomputed),
@@ -184,15 +228,50 @@ function buildObservationShuffleControl({ completeState, completeObservation, ad
   };
 }
 
+function buildCalibrationStateShuffleControl({ completeState, completeObservation, adapterOutput }) {
+  const shuffledState = clone(completeState);
+  shuffledState.calibration_reference = objectOrEmpty(shuffledState.calibration_reference);
+  shuffledState.calibration_reference.captured_source_field_hashes = {
+    ...objectOrEmpty(shuffledState.calibration_reference.captured_source_field_hashes),
+    state_digest_hash: hashValue({
+      source: shuffledState.calibration_reference.captured_source_field_hashes,
+      control: "non_seed_calibration_state_mutation",
+    }),
+    viability_state_hash: hashValue({
+      source: shuffledState.calibration_reference.captured_source_field_hashes,
+      control: "non_seed_calibration_viability_mutation",
+    }),
+  };
+  const recomputed = recomputeOffStaticReplayHeldoutAdapter({
+    serializedState: shuffledState,
+    observation: completeObservation,
+  });
+  const invariant = hashValue(recomputed) === hashValue(adapterOutput);
+  return {
+    schema_version: "ego_desktop.joi_real_loop_off_static_replay_calibration_state_shuffle_control.v0",
+    status: invariant ? "pass" : "fail",
+    adapter_output_invariant: invariant,
+    producer_function: "buildCalibrationStateShuffleControl",
+    evidence_scope: completeState.calibration_reference_kind === "synthetic_reference"
+      ? "not_applicable_synthetic_reference_regression_guard"
+      : "captured_calibration_state_provenance_only_control",
+    original_serialized_state_hash: hashValue(completeState),
+    shuffled_serialized_state_hash: hashValue(shuffledState),
+    recomputed_adapter_output_hash: hashValue(recomputed),
+    original_adapter_output_hash: hashValue(adapterOutput),
+  };
+}
+
 function buildOffStaticReplayHeldoutRow({
   sourceRow,
+  calibrationReference,
   runId = "egodesktop_gablation_008_off_static_replay_heldout",
   turnId = "turn-off-static-replay-heldout-0001",
   tickId = "tick-off-static-replay-heldout-0001",
   seed = "off-static-replay-heldout-seed-0001",
 } = {}) {
   const source = objectOrEmpty(sourceRow);
-  const completeState = buildCompleteSerializedState(source);
+  const completeState = buildCompleteSerializedState(source, { calibrationReference });
   const completeObservation = buildCompleteObservation(source);
   const adapterOutput = recomputeOffStaticReplayHeldoutAdapter({
     serializedState: completeState,
@@ -203,21 +282,51 @@ function buildOffStaticReplayHeldoutRow({
     completeObservation,
     adapterOutput,
   });
+  const calibrationStateShuffleControl = buildCalibrationStateShuffleControl({
+    completeState,
+    completeObservation,
+    adapterOutput,
+  });
+  const capturedReference = completeState.calibration_reference_kind !== "synthetic_reference";
   const staticReplayProvenance = {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_provenance.v0",
-    split_contract_status: "synthetic_calibration_reference_distinct_from_heldout_observation",
+    split_contract_status: capturedReference
+      ? "captured_calibration_reference_distinct_from_heldout_observation"
+      : "synthetic_calibration_reference_distinct_from_heldout_observation",
     calibration_split_id: "calibration",
     heldout_split_id: "heldout",
     calibration_reference_kind: completeState.calibration_reference_kind,
+    calibration_reference_source: text(completeState.calibration_reference.calibration_reference_source, ""),
     calibration_reference_hash: hashValue(completeState.calibration_reference),
     calibration_reference_pack_hash: completeState.calibration_reference.reference_pack_hash,
+    calibration_source_row_hash: text(completeState.calibration_reference.source_row_hash, ""),
+    calibration_source_trace_record_hash: text(completeState.calibration_reference.source_trace_record_hash, ""),
+    partition_protocol_hash: text(completeState.calibration_reference.partition_protocol_hash, ""),
+    partition_disjointness_status: text(completeState.calibration_reference.partition_disjointness_status, capturedReference ? "missing" : "not_applicable_synthetic_reference"),
     heldout_observation_source_hash: sourceHashFor(source),
     heldout_prompt_pack_id: completeObservation.prompt_pack_id,
     heldout_prompt_pack_hash: completeObservation.prompt_pack_hash,
     heldout_prompt_pack_scope: completeObservation.prompt_pack_scope,
-    input_blind_contract: "adapter_output_recomputed_from_calibration_reference_state_not_heldout_observation_content",
+    input_blind_contract: capturedReference
+      ? "adapter_output_recomputed_from_fixed_output_schedule_not_captured_state_or_heldout_observation"
+      : "adapter_output_recomputed_from_calibration_reference_state_not_heldout_observation_content",
     observation_shuffle_control_hash: hashValue(observationShuffleControl),
+    calibration_state_shuffle_control_hash: hashValue(calibrationStateShuffleControl),
   };
+  const excludedSources = [
+    "llm_text",
+    "complete_observation",
+    "public_inputs",
+    "renderer_idle_params",
+  ];
+  if (capturedReference) {
+    excludedSources.push(
+      "captured_calibration_state",
+      "captured_calibration_bot_text",
+      "captured_calibration_prompt_text",
+      "heldout_observation_content",
+    );
+  }
   const replayInputs = {
     schema_version: "ego_desktop.joi_real_loop_off_static_replay_inputs.v0",
     claim_ceiling: CLAIM_CEILING,
@@ -231,7 +340,7 @@ function buildOffStaticReplayHeldoutRow({
       schema_version: "ego_desktop.joi_real_loop_non_llm_d_field_provenance.v0",
       mode: "offline_adapter_whitelist_v0",
       allowed_fields: [...NON_LLM_D_FIELDS],
-      excluded_sources: ["llm_text", "complete_observation", "public_inputs", "renderer_idle_params"],
+      excluded_sources: excludedSources,
       producer_function: "recomputeOffStaticReplayHeldoutAdapter",
     },
     llm_dependency: "excluded_from_d",
@@ -239,6 +348,7 @@ function buildOffStaticReplayHeldoutRow({
     complete_observation: completeObservation,
     static_replay_provenance: staticReplayProvenance,
     observation_shuffle_control: observationShuffleControl,
+    calibration_state_shuffle_control: calibrationStateShuffleControl,
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
   };
   const sourceHashes = objectOrEmpty(source.source_hashes);
@@ -252,6 +362,8 @@ function buildOffStaticReplayHeldoutRow({
       ...sourceHashes,
       source_row_hash: sourceHashFor(source),
       calibration_reference_hash: staticReplayProvenance.calibration_reference_hash,
+      calibration_source_row_hash: staticReplayProvenance.calibration_source_row_hash,
+      partition_protocol_hash: staticReplayProvenance.partition_protocol_hash,
       heldout_observation_source_hash: staticReplayProvenance.heldout_observation_source_hash,
       heldout_prompt_pack_hash: staticReplayProvenance.heldout_prompt_pack_hash,
       offline_replay_module_hash: hashValue({
@@ -298,11 +410,13 @@ function renderBuilderReport(report) {
     `- split_contract_status: \`${report.split_contract_status}\``,
     `- calibration_reference_kind: \`${report.calibration_reference_kind}\``,
     `- calibration_reference_hash: \`${report.calibration_reference_hash}\``,
+    `- partition_disjointness_status: \`${report.partition_disjointness_status}\``,
     `- heldout_observation_source_hash: \`${report.heldout_observation_source_hash}\``,
     `- heldout_prompt_pack_hash: \`${report.heldout_prompt_pack_hash}\``,
     `- heldout_prompt_pack_scope: \`${report.heldout_prompt_pack_scope}\``,
     `- observation_shuffle_control_status: \`${report.observation_shuffle_control_status}\``,
     `- observation_shuffle_control_evidence_scope: \`${report.observation_shuffle_control_evidence_scope}\``,
+    `- calibration_state_shuffle_control_status: \`${report.calibration_state_shuffle_control_status}\``,
     "",
     "## Current Meaning",
     "",
@@ -314,6 +428,7 @@ function renderBuilderReport(report) {
 
 function writeOffStaticReplayHeldoutRows({
   sourceRowsPath,
+  calibrationReferencePath = "",
   outDir,
   runId = "egodesktop_gablation_008_off_static_replay_heldout",
 } = {}) {
@@ -326,6 +441,9 @@ function writeOffStaticReplayHeldoutRows({
   const resolvedSourceRowsPath = path.resolve(sourceRowsPath);
   const resolvedOutDir = path.resolve(outDir);
   const sourceRows = readJsonlRows(resolvedSourceRowsPath);
+  const calibrationReference = calibrationReferencePath
+    ? loadCalibrationReference(path.resolve(calibrationReferencePath))
+    : undefined;
   if (sourceRows.length < 1) {
     throw new Error("at least one source row is required");
   }
@@ -335,6 +453,7 @@ function writeOffStaticReplayHeldoutRows({
     turnId: "turn-off-static-replay-heldout-0001",
     tickId: "tick-off-static-replay-heldout-0001",
     seed: "off-static-replay-heldout-seed-0001",
+    calibrationReference,
   });
   fs.mkdirSync(resolvedOutDir, { recursive: true });
   const traceRowsPath = path.join(resolvedOutDir, "trace_rows.jsonl");
@@ -345,6 +464,7 @@ function writeOffStaticReplayHeldoutRows({
     claim_ceiling: CLAIM_CEILING,
     producer_function: "writeOffStaticReplayHeldoutRows",
     source_rows_path: resolvedSourceRowsPath,
+    calibration_reference_path: calibrationReferencePath ? path.resolve(calibrationReferencePath) : "",
     trace_rows_path: traceRowsPath,
     trace_row_count: 1,
     source_row_hash: sourceHashFor(sourceRows[0]),
@@ -352,14 +472,21 @@ function writeOffStaticReplayHeldoutRows({
     offline_replay_function_id: OFFLINE_REPLAY_FUNCTION_ID,
     split_contract_status: row.replay_inputs.static_replay_provenance.split_contract_status,
     calibration_reference_kind: row.replay_inputs.static_replay_provenance.calibration_reference_kind,
+    calibration_reference_source: row.replay_inputs.static_replay_provenance.calibration_reference_source,
     calibration_reference_hash: row.replay_inputs.static_replay_provenance.calibration_reference_hash,
     calibration_reference_pack_hash: row.replay_inputs.static_replay_provenance.calibration_reference_pack_hash,
+    calibration_source_row_hash: row.replay_inputs.static_replay_provenance.calibration_source_row_hash,
+    partition_protocol_hash: row.replay_inputs.static_replay_provenance.partition_protocol_hash,
+    partition_disjointness_status: row.replay_inputs.static_replay_provenance.partition_disjointness_status,
     heldout_observation_source_hash: row.replay_inputs.static_replay_provenance.heldout_observation_source_hash,
     heldout_prompt_pack_hash: row.replay_inputs.static_replay_provenance.heldout_prompt_pack_hash,
     heldout_prompt_pack_scope: row.replay_inputs.static_replay_provenance.heldout_prompt_pack_scope,
     observation_shuffle_control_status: row.replay_inputs.observation_shuffle_control.status,
     observation_shuffle_control_evidence_scope: row.replay_inputs.observation_shuffle_control.evidence_scope,
     observation_shuffle_control_hash: row.replay_inputs.static_replay_provenance.observation_shuffle_control_hash,
+    calibration_state_shuffle_control_status: row.replay_inputs.calibration_state_shuffle_control.status,
+    calibration_state_shuffle_control_hash: row.replay_inputs.static_replay_provenance.calibration_state_shuffle_control_hash,
+    scoring_run_authorized: false,
     verdict_authorized: false,
   };
   fs.writeFileSync(path.join(resolvedOutDir, "builder_report.json"), JSON.stringify(report, null, 2), "utf8");
@@ -373,5 +500,6 @@ module.exports = {
   OFFLINE_REPLAY_FUNCTION_ID,
   buildOffStaticReplayHeldoutRow,
   recomputeOffStaticReplayHeldoutAdapter,
+  buildCalibrationStateShuffleControl,
   writeOffStaticReplayHeldoutRows,
 };

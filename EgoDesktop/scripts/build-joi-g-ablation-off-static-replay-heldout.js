@@ -20,6 +20,7 @@ function readArg(name, fallback = "") {
 
 function main() {
   const sourceRowsPath = readArg("source-rows");
+  const calibrationReferencePath = readArg("calibration-reference");
   const outDir = readArg("out");
   const runId = readArg("run-id", "egodesktop_gablation_008_off_static_replay_heldout");
   if (!sourceRowsPath || !outDir) {
@@ -27,6 +28,7 @@ function main() {
   }
   const report = writeOffStaticReplayHeldoutRows({
     sourceRowsPath: path.resolve(sourceRowsPath),
+    calibrationReferencePath: calibrationReferencePath ? path.resolve(calibrationReferencePath) : "",
     outDir: path.resolve(outDir),
     runId,
   });
@@ -35,6 +37,7 @@ function main() {
     trace_row_count: report.trace_row_count,
     trace_rows_path: report.trace_rows_path,
     row_hash: report.row_hash,
+    calibration_reference_kind: report.calibration_reference_kind,
   }, null, 2));
 }
 

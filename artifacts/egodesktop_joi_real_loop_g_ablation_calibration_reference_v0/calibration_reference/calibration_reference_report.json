@@ -1,0 +1,32 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_captured_calibration_reference_builder_report.v0",
+  "status": "captured_calibration_reference_written",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only",
+  "producer_function": "writeCalibrationReference",
+  "run_id": "egodesktop_gablation_009_captured_calibration_reference_predeclared_single",
+  "calibration_rows_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\capture\\calibration_ui_predeclared_single\\trace\\trace_rows.jsonl",
+  "heldout_rows_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0\\trace\\trace_rows.jsonl",
+  "predeclared_calibration_prompt_pack_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\capture\\calibration_ui_predeclared_single\\PREDECLARED_CALIBRATION_PROMPT_PACK.json",
+  "predeclared_calibration_prompt_pack_hash": "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db",
+  "calibration_reference_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\calibration_reference\\calibration_reference.json",
+  "split_partition_manifest_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\calibration_reference\\partition\\SPLIT_PARTITION_MANIFEST.json",
+  "calibration_reference_hash": "52411a8378e4a258a03f16b606052d9fcc42650af16c655684db07dc94356067",
+  "split_partition_manifest_hash": "c1879f06142041a97f10131d7e17a42674b2535ad0c9eecd1a6d3f25808242cc",
+  "calibration_source_row_hash": "aebbdbedaca71d8955e470ffc6977d1bb9816e49f8af5878abd20eebbc5a4b28",
+  "heldout_source_row_hashes": [
+    "7f1d608088609b7909d2f527c336f4403d67553ea4b6d8512f1967fbd6b249f1"
+  ],
+  "calibration_reference_kind": "captured_backend_trace_reference",
+  "calibration_reference_source": "fixed_output_schedule_from_calibration_trace",
+  "partition_protocol_hash": "2d7a6e745a68812348ea49cbf579e8e0e866e11b37b1541cecbf6ebc28804b50",
+  "partition_disjointness_status": "pass",
+  "content_disjointness_status": "pass",
+  "provenance_distinctness_status": "pass",
+  "turn_id_provenance_status": "informational_only_not_content_disjointness_gate",
+  "selection_policy_status": "deterministic_predeclared_single_prompt_consumed",
+  "post_hoc_selection_status": "absent",
+  "overlap_positive_control_status": "pass",
+  "synthetic_fallback_positive_control_status": "pass",
+  "scoring_run_authorized": false,
+  "verdict_authorized": false
+}

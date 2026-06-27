@@ -1,0 +1,32 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_g_ablation_predeclared_calibration_prompt_pack.v0",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only",
+  "producer_function": "writePredeclaredCalibrationPromptPack",
+  "run_id": "egodesktop_gablation_009_predeclared_calibration_prompt_pack_v1",
+  "prompt_pack_id": "egodesktop_gablation_009_predeclared_single_calibration_prompt_pack_v0",
+  "split_id": "calibration",
+  "selection_policy": "single_predeclared_prompt_exact_match_no_post_hoc_selection",
+  "content_partition_dimensions": [
+    "prompt_ids",
+    "user_text_hashes"
+  ],
+  "provenance_distinctness_dimensions": [
+    "source_row_hashes",
+    "trace_record_hashes",
+    "capture_run_ids"
+  ],
+  "informational_provenance_dimensions": [
+    "turn_ids"
+  ],
+  "heldout_rows_path": "artifacts/egodesktop_joi_real_loop_g_ablation_backend_trace_snapshot_v0/trace/trace_rows.jsonl",
+  "prompts": [
+    {
+      "prompt_id": "prompt_0620302aac45",
+      "user_text_hash": "0620302aac45bb7fb849e41490fad77c909547b8306dfb0a0ca1c6a342d3baf2",
+      "prompt_text_hash": "0620302aac45bb7fb849e41490fad77c909547b8306dfb0a0ca1c6a342d3baf2",
+      "split_id": "calibration"
+    }
+  ],
+  "prompt_count": 1,
+  "prompt_pack_hash": "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db"
+}

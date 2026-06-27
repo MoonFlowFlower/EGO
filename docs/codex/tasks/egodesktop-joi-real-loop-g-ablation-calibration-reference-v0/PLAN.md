@@ -3,7 +3,7 @@
 1. Add task card, mutation scope, and task-board entry.
 2. Send the card to desktop Claude for review before implementation.
 3. Repair card-level blockers before implementation:
-   - freeze a pre-capture calibration/heldout split partition manifest;
+   - freeze a predeclared calibration prompt pack before capture and build the split partition manifest against it;
    - add disjointness assertions and overlap-positive control;
    - define captured calibration as fixed output schedule replay, not captured state reuse;
    - require calibration row capture through the existing 006 tap / real sendChatTurn path;
@@ -22,8 +22,10 @@
 7. Update the existing offline replay builder to accept a required calibration-reference artifact for the 009 artifact.
 8. Build the calibration reference and rebuilt heldout row, then run the evaluator precondition.
 9. Update status/task board and regenerate route-convergence views.
-10. Run focused tests, `npm test`, repo fast verify, scoped closeout, and commit locally only.
-11. Send Claude a commit readback.
+10. Run focused tests, `npm test`, repo fast verify, and scoped closeout.
+11. Sent Claude the B-009-IMPL-1 implementation repair packet.
+12. Claude returned `NO_BLOCKING_FINDINGS (source-limited)` for the repair; mark accepted, commit locally only, and send
+    Claude a commit readback.
 
 ## Non-Goals
 

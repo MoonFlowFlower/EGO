@@ -1,0 +1,64 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_trace_runner_report.v0",
+  "status": "blocked_unreplayable_runtime_trace",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_trace_runner_contract_only",
+  "harness_claim_ceiling": "egodesktop_real_loop_g_ablation_harness_contract_only",
+  "trace_dir": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\capture\\calibration_ui_turn2\\trace",
+  "trace_row_count": 2,
+  "contract": {
+    "schema_version": "ego_desktop.joi_real_loop_g_ablation_harness.v0",
+    "contract_type": "default_off_real_loop_g_ablation_contract",
+    "claim_ceiling": "egodesktop_real_loop_g_ablation_harness_contract_only",
+    "enabled": true,
+    "status": "ready_for_explicit_harness_run",
+    "blockers": [],
+    "missing_required_flags": [],
+    "condition": "CURRENT_SHIM",
+    "trace_dir": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\capture\\calibration_ui_turn2\\trace",
+    "llm_mode": "replay_locked",
+    "prompt_pack": "egodesktop-gablation-009-calibration-ui-turn2-prompt",
+    "split": "calibration",
+    "runtime_authority": "none",
+    "mainline_connected": false,
+    "adapter_registered": false,
+    "default_behavior_unchanged_when_disabled": true,
+    "no_authority": {
+      "direct_action_allowed": false,
+      "direct_user_message_allowed": false,
+      "direct_memory_write_allowed": false,
+      "runtime_gate_bypass_allowed": false,
+      "runtime_registration_allowed": false,
+      "proactive_trigger_allowed": false,
+      "planner_execution_allowed": false,
+      "model_execution_allowed": false,
+      "training_allowed": false
+    },
+    "required_conditions": [
+      "CREATURE_ON",
+      "CREATURE_FROZEN",
+      "OFF_STATE_FLAT",
+      "OFF_REACTIVE_ONLY",
+      "OFF_STATIC_REPLAY_SAME_PACK",
+      "OFF_STATIC_REPLAY_HELDOUT",
+      "OFF_SHUFFLED_STATE",
+      "CURRENT_SHIM",
+      "SAME_ACCESS_REPRODUCER_BATTERY",
+      "LLM_REPLAY_LOCKED"
+    ],
+    "diagnostic_conditions": [
+      "ZERO_OUTPUT",
+      "RANDOM_STATE",
+      "LEAK_INJECTED_POSCTRL"
+    ],
+    "required_experiment_flags": [
+      "JOI_REAL_LOOP_G_ABLATION",
+      "JOI_REAL_LOOP_CONDITION",
+      "JOI_REAL_LOOP_TRACE_DIR",
+      "JOI_REAL_LOOP_LLM_MODE",
+      "JOI_REAL_LOOP_PROMPT_PACK",
+      "JOI_REAL_LOOP_SPLIT"
+    ]
+  },
+  "what_this_proves": "default-off local trace-runner artifact collection only",
+  "what_this_does_not_prove": "does not prove real-loop effect, product benefit, stable user benefit, durable memory efficacy, runtime integration safety, agency, real emotion, subjectivity, consciousness, alive status, Bar-2 specialness, or route advancement"
+}
