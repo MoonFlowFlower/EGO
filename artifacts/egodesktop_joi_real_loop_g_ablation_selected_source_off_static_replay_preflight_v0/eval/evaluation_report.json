@@ -1,0 +1,88 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_replay_leakage_evaluation.v0",
+  "status": "replay_integrity_preflight_pass_no_verdict",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_replay_leakage_evaluator_contract_only",
+  "run_id": "egodesktop_gablation_023_selected_source_off_static_replay_eval",
+  "producer_function": "evaluateTraceRows",
+  "input_artifacts": [
+    "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_off_static_replay_preflight_v0\\replay\\trace_rows.jsonl"
+  ],
+  "rows_evaluated": 1,
+  "aggregation_rule": "any hash failure, leakage finding, missing positive control, or replay blocker prevents verdict",
+  "source_hashes": {
+    "evaluator_hash": "e4b8e07ef60af51c8aea1870d3cd10eeecad009474388694ad55efaea4834ffe"
+  },
+  "leakage_scan_status": "pass",
+  "leakage_positive_control_status": "pass",
+  "leakage_positive_control_findings": [
+    {
+      "path": "row.adapter_output.memory_write",
+      "reason": "runtime_authority_field"
+    },
+    {
+      "path": "row.public_inputs.future_target_label",
+      "reason": "future_or_target_leakage_field"
+    }
+  ],
+  "blockers": [],
+  "row_results": [
+    {
+      "row_index": 0,
+      "run_id": "egodesktop_gablation_023_selected_source_off_static_replay",
+      "turn_id": "turn-off-static-replay-heldout-0001",
+      "row_hash": "853bf6dc6350e922b3f94e419ba34b96b0cde7d42f6b81ad187f45c0b5b4dbe1",
+      "hash_integrity_status": "pass",
+      "hash_failures": [],
+      "replay_integrity_status": "pass",
+      "replay_blockers": [],
+      "leakage_scan_status": "pass",
+      "leakage_findings": []
+    }
+  ],
+  "verdict_authorized": false,
+  "what_this_proves": "replay/leakage evaluator contract only",
+  "what_this_does_not_prove": "does not prove real-loop effect, baseline superiority, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness",
+  "scoring_precondition": {
+    "schema_version": "ego_desktop.joi_real_loop_d_field_replay_precondition.v0",
+    "status": "d_field_replay_precondition_pass_no_scoring_verdict",
+    "claim_ceiling": "egodesktop_real_loop_g_ablation_replay_precondition_contract_only",
+    "run_id": "egodesktop_gablation_023_selected_source_off_static_replay_eval__scoring_precondition",
+    "producer_function": "evaluateScoringPreconditions",
+    "input_artifacts": [
+      "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_selected_source_off_static_replay_preflight_v0\\replay\\trace_rows.jsonl"
+    ],
+    "rows_evaluated": 1,
+    "required_condition": "OFF_STATIC_REPLAY_HELDOUT",
+    "required_d_field_mode": "non_llm_adapter_output_only",
+    "aggregation_rule": "any missing condition, D-field freeze, complete state, complete observation, replay policy, or offline recompute callable blocks >=007 scoring",
+    "source_hashes": {
+      "evaluator_hash": "e4b8e07ef60af51c8aea1870d3cd10eeecad009474388694ad55efaea4834ffe"
+    },
+    "blockers": [],
+    "row_results": [
+      {
+        "row_index": 0,
+        "run_id": "egodesktop_gablation_023_selected_source_off_static_replay",
+        "condition_id": "OFF_STATIC_REPLAY_HELDOUT",
+        "turn_id": "turn-off-static-replay-heldout-0001",
+        "row_hash": "853bf6dc6350e922b3f94e419ba34b96b0cde7d42f6b81ad187f45c0b5b4dbe1",
+        "status": "pass",
+        "blockers": []
+      }
+    ],
+    "d_field_replay_precondition_satisfied": true,
+    "scoring_authorized": false,
+    "scoring_run_authorized": false,
+    "scoring_run_authorization_blockers": [
+      "baseline_battery_not_present",
+      "creature_on_pair_missing",
+      "thresholds_not_frozen_for_scoring"
+    ],
+    "verdict_authorized": false,
+    "what_this_proves": "executable replay/D-field scoring precondition gate only",
+    "what_this_does_not_prove": "does not prove replay readiness, baseline superiority, attribution, route advancement, product benefit, runtime integration safety, agency, emotion, subjectivity, consciousness, alive status, or Bar-2 specialness"
+  },
+  "d_field_replay_precondition_satisfied": true,
+  "scoring_authorized": false,
+  "scoring_run_authorized": false
+}

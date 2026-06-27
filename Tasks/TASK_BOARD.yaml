@@ -4305,6 +4305,35 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-023
+    title: "EgoDesktop: Joi real-loop G-ABLATION selected source OFF_STATIC replay preflight v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-022
+    status: done
+    layer: egodesktop_real_loop_selected_source_replay_preflight
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "selected_source_off_static_replay_preflight_only"
+    next_action: "Done local-only: used the accepted 022 selected-source desktop chat-turn trace row as source input for the existing OFF_STATIC replay builder and replay evaluator. Evidence is limited to replay preflight pass without scoring/verdict authority, no raw text staging, and no CREATURE_ON/same-access/scoring/attribution/route-advancement claim."
+    acceptance:
+      - "Builder consumes artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0/trace/trace_rows.jsonl."
+      - "Builder writes one OFF_STATIC_REPLAY_HELDOUT row with complete serialized state, complete observation, frozen non-LLM D fields, and offline_replay_function_id."
+      - "Evaluator reports replay_integrity_preflight_pass_no_verdict."
+      - "Evaluator keeps scoring_run_authorized=false and verdict_authorized=false."
+      - "No selected source raw text is committed in 023 artifacts."
+      - "No CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-off-static-replay-preflight-v0/, artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_off_static_replay_preflight_v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-off-static-replay-preflight-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-off-static-replay-preflight-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-off-static-replay-preflight-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-selected-source-off-static-replay-preflight-v0/MUTATION_SCOPE.yaml"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_off_static_replay_preflight_v0/replay/trace_rows.jsonl"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_selected_source_off_static_replay_preflight_v0/eval/evaluation_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
