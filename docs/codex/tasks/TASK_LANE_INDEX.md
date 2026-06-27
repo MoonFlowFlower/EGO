@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 199 |
+| `reference_only` | 200 |
 
 ## Active Default
 
@@ -187,6 +187,7 @@
 | Egodesktop Creative Timeout Recovery V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-creative-timeout-recovery-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Developer Settings Launch Profile V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-developer-settings-launch-profile-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Backend Trace Snapshot V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-backend-trace-snapshot-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egodesktop Joi Real Loop G Ablation Calibration Reference V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Chat Turn Trace V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-chat-turn-trace-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Harness Contract V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Off Static Replay Heldout V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-off-static-replay-heldout-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

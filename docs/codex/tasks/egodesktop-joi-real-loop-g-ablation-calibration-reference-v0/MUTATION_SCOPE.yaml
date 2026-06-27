@@ -1,0 +1,25 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-calibration-reference-v0
+expected_mutation_surface:
+  - pre-capture calibration/heldout split partition manifest and overlap-positive-control contract
+  - captured/fitted calibration-reference source artifact for the existing OFF_STATIC_REPLAY_HELDOUT replay row
+  - explicit calibration-reference builder CLI and tests
+  - existing offline replay builder updated to consume a non-synthetic calibration reference artifact
+  - rebuilt single-condition OFF_STATIC_REPLAY_HELDOUT non-LLM D replay row
+  - evaluator CLI readback for D-field replay precondition vs scoring-run authorization
+  - local task-board/status updates
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no default runtime enablement, program-state update, evidence-ledger claim update, CREATURE_ON row, scoring run, or verdict
+allowed_mutation_paths:
+  - EgoDesktop/src/joiRealLoopGAblationCalibrationReference.js
+  - EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js
+  - EgoDesktop/scripts/build-joi-g-ablation-calibration-reference.js
+  - EgoDesktop/scripts/build-joi-g-ablation-off-static-replay-heldout.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_calibration_reference.test.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_off_static_replay.test.js
+  - artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/partition/
+  - artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only; no baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"
