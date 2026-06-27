@@ -4071,6 +4071,34 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-015
+    title: "EgoDesktop: Joi real-loop G-ABLATION source manifest download boundary v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-014
+    status: accepted
+    layer: egodesktop_real_loop_source_manifest_download_boundary
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E3
+    claim_ceiling: "source_manifest_download_boundary_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS. This card specifies manifest schema, candidate admission, download/cache/privacy/license boundaries, and B-011 carry-forward gates before any data movement. It authorizes no dataset download, source cache creation, gated terms acceptance, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, push, tag, or remote anchor. Next action is a separate implementation task before creating SOURCE_MANIFEST.json, creating a source cache, or downloading eligible non-gated public datasets."
+    acceptance:
+      - "Candidate sources are classified as metadata-only, future-local-download-conditional, blocked, or negative-evidence-only."
+      - "The download boundary blocks gated, unknown-license, local-private-without-privacy-mode, and negative-evidence sources."
+      - "Non-commercial and share-alike constraints are preserved in allowed claim ceilings."
+      - "Raw cache content is local-only by default and not staged by default."
+      - "B-011 leakage, independence, causal path, affect coverage, and anti-degeneracy gates carry forward."
+      - "015 does not create SOURCE_MANIFEST.json, download data, create a source cache, capture rows, score, compare, or emit a verdict."
+      - "No source cache existence, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this card."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-download-boundary-v0/, remove this task-board entry, restore 014 next-action text if needed, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-download-boundary-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-download-boundary-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-download-boundary-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-manifest-download-boundary-v0/MUTATION_SCOPE.yaml"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
