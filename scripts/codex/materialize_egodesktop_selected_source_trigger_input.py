@@ -13,6 +13,22 @@ DEFAULT_CAPTURE_MANIFEST = (
     ROOT / "artifacts" / "egodesktop_joi_real_loop_g_ablation_capture_manifest_v0" / "CAPTURE_MANIFEST.json"
 )
 DEFAULT_OUTPUT_DIR = ROOT / "artifacts" / "egodesktop_joi_real_loop_g_ablation_selected_source_chat_smoke_v0"
+EXPECTED_DESKTOP_TRIGGER = "window.egoDesktop.sendChatTurn"
+EXPECTED_WRITER = "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js"
+REQUIRED_TRACE_FIELDS = {
+    "run_id",
+    "condition_id",
+    "split_id",
+    "source_id",
+    "source_text_sha256",
+    "source_cache_sha256",
+    "serialized_state",
+    "public_inputs",
+    "adapter_output",
+    "d_field_provenance",
+    "replay_inputs",
+    "row_hash",
+}
 
 
 def sha256_text(text: str) -> str:
@@ -68,6 +84,50 @@ def _selected_manifest_row(manifest: dict[str, Any], selection_id: str | None) -
     raise ValueError(f"selection_id not found in capture manifest: {selection_id}")
 
 
+def _source_ids_from_manifest(manifest: dict[str, Any]) -> list[str]:
+    source_ids = {
+        str(row.get("source_id") or "")
+        for row in (manifest.get("source_summaries") or manifest.get("selected_rows") or [])
+        if row.get("source_id")
+    }
+    return sorted(source_ids)
+
+
+def _validate_capture_manifest_contract(
+    manifest: dict[str, Any],
+    selected: dict[str, Any],
+    *,
+    require_three_source_manifest: bool,
+) -> dict[str, Any]:
+    if manifest.get("schema") != "egodesktop.joi_real_loop.capture_manifest.v0":
+        raise ValueError("unsupported capture manifest schema")
+    if manifest.get("raw_text_in_manifest", False) is not False:
+        raise ValueError("capture manifest must not contain raw text")
+    for field in ("capture_authority", "scoring_authority", "runtime_authority"):
+        if field in manifest and manifest[field] is not False:
+            raise ValueError(f"capture manifest must not carry {field}")
+    if selected.get("desktop_trigger_required") != EXPECTED_DESKTOP_TRIGGER:
+        raise ValueError("selected row missing required desktop trigger contract")
+    if selected.get("writer_required") != EXPECTED_WRITER:
+        raise ValueError("selected row missing required trace writer contract")
+    future_fields = {str(item) for item in selected.get("future_trace_required_fields") or []}
+    missing_fields = sorted(REQUIRED_TRACE_FIELDS - future_fields)
+    if missing_fields:
+        raise ValueError(f"selected row missing future trace fields: {missing_fields}")
+
+    source_ids = _source_ids_from_manifest(manifest)
+    if require_three_source_manifest and len(source_ids) < 3:
+        raise ValueError("capture manifest is not a three-source manifest")
+    return {
+        "capture_manifest_source_ids": source_ids,
+        "capture_manifest_source_count": len(source_ids),
+        "capture_manifest_selected_row_count": len(manifest.get("selected_rows") or []),
+        "three_source_manifest_status": "pass" if len(source_ids) >= 3 else "not_required",
+        "desktop_trigger_contract_status": "pass",
+        "future_trace_fields_status": "pass",
+    }
+
+
 def _derive_user_text(source_row: dict[str, Any]) -> tuple[str, str]:
     row = source_row.get("row")
     if not isinstance(row, dict):
@@ -97,11 +157,17 @@ def materialize_trigger_input(
     *,
     capture_manifest_path: Path = DEFAULT_CAPTURE_MANIFEST,
     selection_id: str | None = None,
+    require_three_source_manifest: bool = False,
 ) -> tuple[dict[str, Any], str]:
     manifest = load_json(capture_manifest_path)
     manifest_text = capture_manifest_path.read_text(encoding="utf-8")
     manifest_hash = sha256_text(manifest_text)
     selected = _selected_manifest_row(manifest, selection_id)
+    contract = _validate_capture_manifest_contract(
+        manifest,
+        selected,
+        require_three_source_manifest=require_three_source_manifest,
+    )
 
     cache_path = _resolve(str(selected["source_cache_path"]))
     cache_text = cache_path.read_text(encoding="utf-8")
@@ -143,8 +209,9 @@ def materialize_trigger_input(
         "user_text_length": len(user_text),
         "user_text_line_count": user_text.count("\n") + 1 if user_text else 0,
         "raw_text_in_report": False,
-        "desktop_trigger_required": "window.egoDesktop.sendChatTurn",
-        "writer_required": "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+        "desktop_trigger_required": EXPECTED_DESKTOP_TRIGGER,
+        "writer_required": EXPECTED_WRITER,
+        **contract,
         "capture_authority": False,
         "scoring_authority": False,
         "runtime_authority": "explicit_smoke_only",
@@ -173,11 +240,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--capture-manifest", type=Path, default=DEFAULT_CAPTURE_MANIFEST)
     parser.add_argument("--selection-id", default=None)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--require-three-source-manifest", action="store_true")
     args = parser.parse_args(argv)
 
     report, _user_text = materialize_trigger_input(
         capture_manifest_path=args.capture_manifest,
         selection_id=args.selection_id,
+        require_three_source_manifest=args.require_three_source_manifest,
     )
     write_result = write_report(args.out, report)
     print(artifact_json_text(write_result), end="")

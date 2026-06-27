@@ -21,6 +21,8 @@
 
 - Task package created and scoped.
 - Predeclared selected row: `wizard_of_wikipedia_hf:train:0`.
+- Hardened the selected-source materializer so trigger materialization can require the refreshed three-source capture
+  manifest and the desktop trigger contract fields before writing a report.
 - Claude blocking-review packet sent.
 - Claude returned a blocking review: hash equality alone was insufficient to prove the IPC entrypoint.
 - Added IPC-boundary `entrypoint_provenance` from `_event.sender` at `ipcMain.handle("ego-desktop:chat-turn")`.
@@ -58,6 +60,8 @@
 
 - A future replay/ablation slice may consume this row only under a new task card. Do not treat this trigger smoke as a
   replay, scoring, or route-advancement result.
+- A future operation-learning Gate may consume this row only after recomputing the three-source manifest and desktop
+  trigger contract checks; the trigger report alone is not learning admission.
 
 ## Last validation results
 
@@ -97,6 +101,18 @@
   - `selection_id=wizard_of_wikipedia_hf:train:0`
   - `user_text_derivation_rule=first_row_post_as_single_chat_turn`
   - `user_text_hash=593a0c04daacd8eee592efae98c83745204bf8d3ee599890a4e929c50623073f`
+- Hardened trigger materialization:
+  - `python -m pytest -q scripts\tests\test_materialize_egodesktop_selected_source_trigger_input.py`
+  - result: `6 passed`
+  - `python scripts\codex\materialize_egodesktop_selected_source_trigger_input.py --selection-id wizard_of_wikipedia_hf:train:0 --require-three-source-manifest --out artifacts\egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0`
+  - `trigger_input_report_sha256=961837233ff7a362da0d00e1b2e1f3ef55855fb93603be8363bb0b7072f8b3b3`
+  - `capture_manifest_source_count=3`
+  - selected sources: `dailydialog_hf`, `empathetic_dialogues_hf`, `wizard_of_wikipedia_hf`
+  - `capture_manifest_selected_row_count=15`
+  - `three_source_manifest_status=pass`
+  - `desktop_trigger_contract_status=pass`
+  - `future_trace_fields_status=pass`
+  - `raw_text_in_report=false`
 - Reviewer/blocker repair tests:
   - `node --test EgoDesktop\tests\joi_real_loop_g_ablation_trace_runner.test.js`
   - result: `8 passed`

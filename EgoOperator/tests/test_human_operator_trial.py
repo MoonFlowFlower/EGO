@@ -217,8 +217,40 @@ def test_export_human_review_template_does_not_auto_pass(tmp_path):
     assert notes[0]["human_review_required"] is True
     assert "failure_notes" not in notes[0]
     assert imported_report.status == "human_trial_needs_review"
+    assert imported_report.review_blocker_count == len(trial.human_trial_scenarios())
+    assert set(imported_report.observations[0].failure_notes) == {
+        "human_review_required_not_cleared",
+        "human_review_notes_missing_or_template",
+        "operator_score_zero_unreviewed",
+    }
     assert "human-observation pass" in packet
     assert "--notes" in packet
+
+
+def test_human_review_template_flag_blocks_even_with_imported_scores(tmp_path):
+    notes_path = tmp_path / "notes.jsonl"
+    rows = []
+    for scenario in trial.human_trial_scenarios():
+        rows.append({
+            "scenario_id": scenario.scenario_id,
+            "prompt": scenario.prompt,
+            "reply_text": "自然理解优先，工具和记忆都按 gate 处理。",
+            "operator_score": 5,
+            "subjective_notes": "人工已读回复，但忘了清除模板 review flag。",
+            "trace_path": f"traces/{scenario.scenario_id}.jsonl",
+            "human_review_required": True,
+        })
+    notes_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+
+    report = trial.build_trial_report(trial.load_observations_jsonl(notes_path), provider_mode="openrouter")
+
+    assert report.status == "human_trial_needs_review"
+    assert report.average_operator_score == 5.0
+    assert report.review_blocker_count == len(trial.human_trial_scenarios())
+    assert report.observations[0].failure_notes == ("human_review_required_not_cleared",)
 
 
 def test_scripted_trial_without_real_provider_cannot_pass(tmp_path, monkeypatch):

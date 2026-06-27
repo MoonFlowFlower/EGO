@@ -3092,6 +3092,40 @@ tasks:
     external_refs:
       github_issue: "https://github.com/pen364692088/EGO/issues/129"
 
+  - id: EGO-FS-115
+    title: "EgoOperator: operation-learning Gate candidate runner v0"
+    kind: task
+    parent: EGO-FS-EPIC-10
+    status: accepted
+    layer: ego_operator_operation_learning_gate_design
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: default_off_operation_learning_candidate_runner_only
+    next_action: "Accepted local-only: implemented a default-off task-local operation-learning candidate runner that recomputes human-review and selected-source trigger admission before writing review-only candidates. Current real repo inputs intentionally block candidate generation because human trial review remains uncleared (`human_review_admission.status=fail`, `review_blocker_count=18`) while trigger admission passes. Next minimal action is human-filled v2 review import, then rerun this runner; no runtime Gate integration, proactive communication, runtime enablement, memory promotion, file/tool/network/message side effect, program-state update, evidence-ledger update, push, tag, or remote anchor is authorized."
+    acceptance:
+      - "Task card chooses operation-learning before proactive communication and explains the safety reason."
+      - "Runner keeps the Gate default-off, task-local, and review-only until separate authorization."
+      - "Runner requires human-review clearance before human-trial evidence can become learning input."
+      - "Runner requires three-source capture manifest and desktop-trigger contract validation before selected-source input can become learning input."
+      - "Tests cover negative controls for unedited/uncleared human review and missing desktop trigger contract."
+      - "Runner forbids memory promotion, tool calls, file writes beyond its artifact directory, network calls, message sends, schedulers/timers, default runtime enablement, program-state/evidence-ledger update, push, tag, and remote anchor."
+      - "Current artifact records blocked/no candidates until human review is filled."
+      - "No runtime behavior change is claimed in this slice."
+    rollback: "Delete scripts/codex/run_egooperator_operation_learning_gate.py, scripts/tests/test_run_egooperator_operation_learning_gate.py, artifacts/egooperator_operation_learning_gate_v0, docs/codex/tasks/egooperator-operation-learning-gate-v0, remove EGO-FS-115 from Tasks/TASK_BOARD.yaml, regenerate derived task views if changed, and keep human-trial/capture evidence at their prior claim ceilings."
+    canonical_sources:
+      - "docs/codex/tasks/egooperator-operation-learning-gate-v0/SPEC.md"
+      - "docs/codex/tasks/egooperator-operation-learning-gate-v0/PLAN.md"
+      - "docs/codex/tasks/egooperator-operation-learning-gate-v0/IMPLEMENT.md"
+      - "docs/codex/tasks/egooperator-operation-learning-gate-v0/STATUS.md"
+      - "docs/codex/tasks/egooperator-operation-learning-gate-v0/MUTATION_SCOPE.yaml"
+      - "scripts/codex/run_egooperator_operation_learning_gate.py"
+      - "scripts/tests/test_run_egooperator_operation_learning_gate.py"
+      - "artifacts/egooperator_operation_learning_gate_v0/operation_learning_gate_report.json"
+      - "artifacts/egooperator_operation_learning_gate_v0/operation_learning_candidates.jsonl"
+    external_refs:
+      github_issue: null
+
   - id: EGO-HUMAN-072
     title: "EgoOperator: warm expressive self and roleplay default UX"
     kind: smoke

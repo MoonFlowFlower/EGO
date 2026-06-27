@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 219 |
+| `reference_only` | 220 |
 
 ## Active Default
 
@@ -220,6 +220,7 @@
 | Egodesktop Pspc Semantic Interaction Extractor V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-semantic-interaction-extractor-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Visual Shim V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-visual-shim-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Session Local Conversation Context V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-session-local-conversation-context-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egooperator Operation Learning Gate V0 | `codex_task` | n/a | `docs/codex/tasks/egooperator-operation-learning-gate-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | H1 Canonical Promotion Prep | `codex_task` | n/a | `docs/codex/tasks/h1-canonical-promotion-prep/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | H1 Canonical Shadow Patch | `codex_task` | n/a | `docs/codex/tasks/h1-canonical-shadow-patch/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | H1 Preflight Same Surface Unblock | `codex_task` | n/a | `docs/codex/tasks/h1-preflight-same-surface-unblock/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |

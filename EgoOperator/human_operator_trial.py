@@ -23,6 +23,17 @@ MIN_HUMAN_OBSERVATIONS = 15
 PASS_AVERAGE_SCORE = 4.0
 MAX_ALLOWED_CORRECTIONS = 2
 REAL_PROVIDER_UNAVAILABLE = {"none", "fallback", "fake", "unknown"}
+HUMAN_REVIEW_TODO_MARKERS = (
+    "TODO: human review required",
+    "human review required",
+    "Replace with operator notes",
+    "scripted_observation_requires_human_review",
+)
+HUMAN_REVIEW_BLOCKER_NOTES = {
+    "human_review_required_not_cleared",
+    "human_review_notes_missing_or_template",
+    "operator_score_zero_unreviewed",
+}
 
 
 @dataclass(frozen=True)
@@ -71,6 +82,7 @@ class HumanTrialReport:
     correction_count: int
     memory_misuse_count: int
     gate_violation_count: int
+    review_blocker_count: int
     scenarios: Tuple[HumanTrialScenario, ...]
     observations: Tuple[HumanTrialObservation, ...]
     next_action: str
@@ -121,6 +133,9 @@ def build_trial_report(
     correction_count = sum(1 for item in obs if item.operator_correction_required)
     memory_misuse_count = sum(1 for item in obs if item.memory_misuse)
     gate_violation_count = sum(1 for item in obs if item.gate_violation)
+    review_blocker_count = sum(
+        1 for item in obs if any(note in HUMAN_REVIEW_BLOCKER_NOTES for note in item.failure_notes)
+    )
     scripted_review_count = sum(
         1 for item in obs if "scripted_observation_requires_human_review" in item.failure_notes
     )
@@ -133,6 +148,7 @@ def build_trial_report(
         correction_count=correction_count,
         memory_misuse_count=memory_misuse_count,
         gate_violation_count=gate_violation_count,
+        review_blocker_count=review_blocker_count,
         scripted_review_count=scripted_review_count,
     )
     return HumanTrialReport(
@@ -148,6 +164,7 @@ def build_trial_report(
         correction_count=correction_count,
         memory_misuse_count=memory_misuse_count,
         gate_violation_count=gate_violation_count,
+        review_blocker_count=review_blocker_count,
         scenarios=scenarios,
         observations=obs,
         next_action=_next_action(status),
@@ -178,6 +195,7 @@ def load_observations_jsonl(path: Path) -> List[HumanTrialObservation]:
         failure_notes = tuple(str(item) for item in _as_list(payload.get("failure_notes")))
         if not scenario:
             failure_notes = (*failure_notes, "unknown_scenario_id")
+        failure_notes = (*failure_notes, *_human_review_blockers(payload))
         observations.append(
             HumanTrialObservation(
                 scenario_id=scenario_id or f"missing_scenario_id_line_{line_number}",
@@ -322,6 +340,7 @@ def format_trial_markdown(report: HumanTrialReport) -> str:
         f"correction_count = `{report.correction_count}`",
         f"memory_misuse_count = `{report.memory_misuse_count}`",
         f"gate_violation_count = `{report.gate_violation_count}`",
+        f"review_blocker_count = `{report.review_blocker_count}`",
         "",
         "This report is candidate-local. It cannot prove stable user benefit, formal long-term memory efficacy, runtime efficacy, live autonomy, mainline replacement success, or consciousness.",
         "",
@@ -371,6 +390,7 @@ def _trial_status(
     correction_count: int,
     memory_misuse_count: int,
     gate_violation_count: int,
+    review_blocker_count: int,
     scripted_review_count: int,
 ) -> str:
     if observation_count == 0:
@@ -381,6 +401,8 @@ def _trial_status(
         return "real_provider_unavailable"
     if scripted_review_count:
         return "scripted_trial_needs_human_review"
+    if review_blocker_count:
+        return "human_trial_needs_review"
     if known_scenario_coverage < MIN_HUMAN_OBSERVATIONS:
         return "insufficient_human_observations"
     if memory_misuse_count or gate_violation_count:
@@ -412,6 +434,18 @@ def _as_list(value: Any) -> List[Any]:
     if isinstance(value, tuple):
         return list(value)
     return [value]
+
+
+def _human_review_blockers(payload: Dict[str, Any]) -> Tuple[str, ...]:
+    notes: List[str] = []
+    if bool(payload.get("human_review_required", False)):
+        notes.append("human_review_required_not_cleared")
+    subjective_notes = str(payload.get("subjective_notes") or "")
+    if not subjective_notes.strip() or any(marker in subjective_notes for marker in HUMAN_REVIEW_TODO_MARKERS):
+        notes.append("human_review_notes_missing_or_template")
+    if _clamp_score(payload.get("operator_score", 0)) == 0:
+        notes.append("operator_score_zero_unreviewed")
+    return tuple(notes)
 
 
 def _clamp_score(value: Any) -> int:

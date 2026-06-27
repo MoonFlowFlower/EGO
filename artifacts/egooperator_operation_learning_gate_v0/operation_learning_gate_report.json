@@ -1,0 +1,69 @@
+{
+  "candidate_count": 0,
+  "candidate_generation_rule": "score_gte_4_known_reviewed_observations_to_review_only_operation_candidates",
+  "candidates": [],
+  "claim_ceiling": "default_off_operation_learning_candidate_runner_only",
+  "default_off": true,
+  "enabled": false,
+  "explicit_cli_only": true,
+  "human_review_admission": {
+    "admission_rule": "status_candidate_pass_and_no_blockers_and_score_gte_4_and_min_three_candidate_observations",
+    "candidate_source_observation_count": 0,
+    "reasons": [
+      "human_report_status_not_candidate_pass",
+      "human_review_blockers_present",
+      "average_operator_score_below_threshold",
+      "fewer_than_three_reviewable_candidate_observations"
+    ],
+    "review_blocker_count": 18,
+    "source_status": "human_trial_needs_review",
+    "status": "fail"
+  },
+  "input_artifacts": {
+    "human_report": {
+      "path": "EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/human_operator_trial_report.json",
+      "sha256": "18567ac258d339da7141cc9b952f6eaa1eae04eb58d2ce0b816869c44599b605"
+    },
+    "trigger_report": {
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/TRIGGER_INPUT_REPORT.json",
+      "sha256": "d854fb38454e1dbcb44705c7213d5b7f6f92bc2d4f3ac2e86e1fe59469c13e93"
+    }
+  },
+  "mainline_connected": false,
+  "next_action": "Clear human-review and selected-source trigger admission blockers before generating operation-learning candidates.",
+  "producer_code_path": "scripts/codex/run_egooperator_operation_learning_gate.py",
+  "producer_code_sha256": "a30ecd21d0d4e983a00b0c8b96ba82f824037cde72222f77cffad7e0df9a9410",
+  "producer_function": "build_operation_learning_report",
+  "run_id": "egooperator-operation-learning-gate-v0-current",
+  "runtime_authority": false,
+  "schema": "ego_operator.operation_learning_gate.v0",
+  "side_effect_absence": {
+    "default_runtime_enablement": true,
+    "memory_write": true,
+    "message_send": true,
+    "network_call": true,
+    "non_artifact_file_write": true,
+    "runtime_registration": true,
+    "scheduler_or_timer": true,
+    "tool_call": true
+  },
+  "status": "operation_learning_blocked",
+  "trigger_admission": {
+    "admission_rule": "three_source_manifest_and_desktop_trigger_contract_and_no_raw_text",
+    "reasons": [],
+    "selection_id": "wizard_of_wikipedia_hf:train:0",
+    "source_id": "wizard_of_wikipedia_hf",
+    "status": "pass"
+  },
+  "what_this_does_not_prove": [
+    "operation learning effectiveness",
+    "proactive communication readiness",
+    "runtime integration safety",
+    "stable user benefit",
+    "durable memory efficacy",
+    "live autonomy",
+    "subjectivity",
+    "emotion",
+    "consciousness"
+  ]
+}

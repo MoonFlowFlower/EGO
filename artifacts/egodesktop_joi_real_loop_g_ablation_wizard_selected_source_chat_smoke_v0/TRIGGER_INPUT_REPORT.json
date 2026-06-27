@@ -1,10 +1,19 @@
 {
   "capture_authority": false,
   "capture_manifest": "artifacts\\egodesktop_joi_real_loop_g_ablation_capture_manifest_v0\\CAPTURE_MANIFEST.json",
+  "capture_manifest_selected_row_count": 15,
   "capture_manifest_sha256": "32ccd9925bf46b555b2ffbcb225beb6e3bd7834a0b23d1b80296884b6ecfdc26",
+  "capture_manifest_source_count": 3,
+  "capture_manifest_source_ids": [
+    "dailydialog_hf",
+    "empathetic_dialogues_hf",
+    "wizard_of_wikipedia_hf"
+  ],
   "claim_ceiling": "selected_source_desktop_trigger_smoke_only",
+  "desktop_trigger_contract_status": "pass",
   "desktop_trigger_required": "window.egoDesktop.sendChatTurn",
   "evidence_ledger_authority": false,
+  "future_trace_fields_status": "pass",
   "producer_function": "materialize_selected_source_trigger_input",
   "program_state_authority": false,
   "raw_text_in_report": false,
@@ -19,6 +28,7 @@
   "source_cache_sha256": "622253df96a131ac3e6e807ad0ca573c93f742e3caf1e860719ea111f964eb4d",
   "source_id": "wizard_of_wikipedia_hf",
   "split": "train",
+  "three_source_manifest_status": "pass",
   "user_text_derivation_rule": "first_row_post_as_single_chat_turn",
   "user_text_hash": "593a0c04daacd8eee592efae98c83745204bf8d3ee599890a4e929c50623073f",
   "user_text_hash_basis": "EgoDesktop/src/joiRealLoopGAblationHarness.hashValue(string)",

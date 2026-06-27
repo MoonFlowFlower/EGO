@@ -32,6 +32,12 @@ The result is still `scripted_trial_needs_human_review`, not a human-observation
 
 A human-review template export path is now available. It converts the existing scripted report into a human-editable JSONL notes template and Markdown review packet while resetting `operator_score` to `0`, preserving scripted score only as `scripted_operator_score`, and omitting scripted `failure_notes` so the template cannot auto-pass without human scoring.
 
+Review import is now hardened against template or uncleared rows. Importing the current template into
+`EgoOperator/artifacts/human_operator_trial/v2_human_reviewed/` reports `status=human_trial_needs_review`,
+`review_blocker_count=18`, and first-row blockers
+`human_review_required_not_cleared`, `human_review_notes_missing_or_template`, and
+`operator_score_zero_unreviewed`. This is a deliberate non-pass boundary, not a human review.
+
 ## Evidence
 
 - `python3 -m py_compile EgoOperator/human_operator_trial.py` - pass.
@@ -65,6 +71,8 @@ A human-review template export path is now available. It converts the existing s
 - `git diff --check` - pass.
 - `python scripts\codex\verify_repo.py --mode fast` - unavailable in this Windows shell with `NotADirectoryError: [WinError 267]` while probing missing root `OpenEmotion`.
 - `wsl.exe bash -lc "cd /mnt/d/Project/AIProject/MyProject/Ego && python3 scripts/codex/verify_repo.py --mode fast"` - unavailable with `FileNotFoundError` while probing missing root `/mnt/d/Project/AIProject/MyProject/Ego/OpenEmotion`.
+- `python -m pytest -q EgoOperator\tests\test_human_operator_trial.py` - pass, `13 passed`.
+- `python EgoOperator\human_operator_trial.py --out EgoOperator\artifacts\human_operator_trial\v2_human_reviewed --notes EgoOperator\artifacts\human_operator_trial\v2_latest\human_operator_trial_human_review_notes_template.jsonl --provider-mode openrouter` - expected non-pass import, status `human_trial_needs_review`, `review_blocker_count=18`.
 
 ## Next Action
 
@@ -75,3 +83,6 @@ python EgoOperator/human_operator_trial.py --out EgoOperator/artifacts/human_ope
 ```
 
 Do this before making any next feature or demotion decision. Keep the claim ceiling at `EgoOperator human-operator trial local observation pass`.
+
+Do not use `v2_human_reviewed` from the template import as learning input. It is evidence that the unedited
+template remains blocked.

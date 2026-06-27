@@ -1,0 +1,30 @@
+schema_version: codex.mutation_scope.v1
+task: egooperator-operation-learning-gate-v0
+expected_mutation_surface:
+  - operation-learning Gate task-card package only
+  - default-off operation-learning candidate runner and focused tests
+  - artifact-only operation-learning gate report for current inputs
+  - human-trial review import hardening
+  - selected-source materializer three-source capture manifest and desktop-trigger contract hardening
+  - regenerated Wizard selected-source trigger input report with explicit three-source and desktop-trigger contract fields
+  - status/readback updates for the existing human-trial and Wizard selected-source smoke tasks
+  - task-board registration for EGO-FS-115 as proposed task-card only
+  - task-board mirror outbox plan for EGO-FS-115 if remote sync is not executed
+  - no runtime Gate integration, proactive communication implementation, runtime enablement, memory promotion, side effects, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - EgoOperator/human_operator_trial.py
+  - EgoOperator/tests/test_human_operator_trial.py
+  - scripts/codex/materialize_egodesktop_selected_source_trigger_input.py
+  - scripts/tests/test_materialize_egodesktop_selected_source_trigger_input.py
+  - artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/TRIGGER_INPUT_REPORT.json
+  - artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/TRIGGER_INPUT_REPORT.sha256
+  - artifacts/egooperator_operation_learning_gate_v0/
+  - scripts/codex/run_egooperator_operation_learning_gate.py
+  - scripts/tests/test_run_egooperator_operation_learning_gate.py
+  - docs/codex/tasks/egooperator-operation-learning-gate-v0/
+  - docs/codex/tasks/ego-operator-human-operator-trial-v2/STATUS.md
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+  - artifacts/task_board/outbox.jsonl
+claim_ceiling: "default_off_operation_learning_candidate_runner_only; human-trial review hardening only; selected-source trigger-report contract hardening only; no runtime Gate integration, proactive communication, runtime enablement, stable benefit, live autonomy, subjectivity, emotion, consciousness, or Gate success claim"
