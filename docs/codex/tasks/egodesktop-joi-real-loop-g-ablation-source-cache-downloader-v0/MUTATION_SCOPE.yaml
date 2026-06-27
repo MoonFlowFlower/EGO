@@ -1,0 +1,19 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0
+expected_mutation_surface:
+  - 017 manifest-driven local-only source cache downloader and focused tests
+  - metadata-only cache smoke report and SHA256 sidecar
+  - .gitignore raw source-cache exclusion
+  - task-board entry for EGODESKTOP-GABLATION-017
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no committed raw dataset text, gated terms acceptance, row capture, scoring run, verdict, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - .gitignore
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0/
+  - scripts/codex/run_egodesktop_gablation_source_cache_downloader.py
+  - scripts/tests/test_run_egodesktop_gablation_source_cache_downloader.py
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.json
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.sha256
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "source_cache_downloader_tool_and_metadata_smoke_only; no raw source cache completeness, dataset row availability, CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

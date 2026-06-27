@@ -1,0 +1,41 @@
+{
+  "capture_authority": false,
+  "claim_ceiling": "source_cache_downloader_tool_and_metadata_smoke_only",
+  "created_at": "2026-06-27T00:00:00+00:00",
+  "download_authority": "metadata_only_no_raw_cache",
+  "evidence_ledger_authority": false,
+  "producer_function": "run_metadata_smoke",
+  "program_state_authority": false,
+  "raw_cache_created": false,
+  "raw_text_stored": false,
+  "remote_authority": false,
+  "results": [
+    {
+      "byte_count": 49233,
+      "content_sha256": "66fc0d5ba9df7ada98dca4c640c936a121c371619868f3c2eb87216c43b6d8b8",
+      "content_type": "text/html; charset=utf-8",
+      "license_name": "cc-by-nc-sa-4.0",
+      "raw_text_stored": false,
+      "reachable": false,
+      "source_id": "dailydialog_hf",
+      "source_license_tier": "public_nc_sa",
+      "status_code": 404,
+      "url": "https://huggingface.co/datasets/daily_dialog"
+    },
+    {
+      "byte_count": 178269,
+      "content_sha256": "6d1b76fbeaa715ad1b5249a19740c15fe36ce359884da15ad3c0a8699498ea85",
+      "content_type": "text/html; charset=utf-8",
+      "license_name": "cc-by-nc-4.0",
+      "raw_text_stored": false,
+      "reachable": true,
+      "source_id": "empathetic_dialogues_hf",
+      "source_license_tier": "public_noncommercial",
+      "status_code": 200,
+      "url": "https://huggingface.co/datasets/facebook/empathetic_dialogues"
+    }
+  ],
+  "runtime_authority": false,
+  "schema": "egodesktop.joi_real_loop.source_cache_metadata_smoke.v0",
+  "scoring_authority": false
+}

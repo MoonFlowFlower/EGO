@@ -85,6 +85,7 @@ artifacts/runtime/
 artifacts/tmp/
 artifacts/tmp_*/
 artifacts/tmp*.log
+artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/source_cache/
 reports/self_reports/
 EgoOperator/artifacts/experience_trial/*memory*/
 EgoOperator/artifacts/experience_trial/mem/

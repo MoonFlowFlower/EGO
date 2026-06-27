@@ -4130,6 +4130,37 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-017
+    title: "EgoDesktop: Joi real-loop G-ABLATION source cache downloader v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-016
+    status: accepted
+    layer: egodesktop_real_loop_source_cache_downloader
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "source_cache_downloader_tool_and_metadata_smoke_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS. The tool refuses blocked/local/private/negative-evidence sources and writes hash-only metadata smoke. Current smoke found dailydialog_hf status_code=404/reachable=false and empathetic_dialogues_hf status_code=200/reachable=true; no raw text was stored and no source_cache directory was created. DailyDialog 404 is preserved as negative metadata evidence, not rewritten as reachable. Next action is a separate source-id repair/update task for dailydialog_hf before any raw-cache population task. This card authorizes no committed raw dataset text, gated terms acceptance, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, push, tag, or remote anchor."
+    acceptance:
+      - "Downloader reads 016 manifest and plan."
+      - "Downloader refuses blocked, local-private, and negative-evidence-only sources."
+      - "Default run is metadata-only and records no raw text."
+      - "Raw cache directory is ignored by git and not staged."
+      - "Smoke report records no capture/scoring/runtime/program-state/evidence-ledger/remote authority."
+      - "DailyDialog URL 404 is preserved as negative metadata evidence rather than rewritten as reachable."
+      - "No raw source cache completeness, dataset row availability, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this slice."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0/, scripts/codex/run_egodesktop_gablation_source_cache_downloader.py, scripts/tests/test_run_egodesktop_gablation_source_cache_downloader.py, artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.*, remove the .gitignore raw-cache entry and this task-board entry, then regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-source-cache-downloader-v0/MUTATION_SCOPE.yaml"
+      - "scripts/codex/run_egodesktop_gablation_source_cache_downloader.py"
+      - "scripts/tests/test_run_egodesktop_gablation_source_cache_downloader.py"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
