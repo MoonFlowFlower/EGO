@@ -1,0 +1,58 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_captured_calibration_reference.v0",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only",
+  "producer_function": "writeCalibrationReference",
+  "calibration_reference_kind": "captured_backend_trace_reference",
+  "calibration_reference_source": "fixed_output_schedule_from_calibration_trace",
+  "reference_pack_id": "egodesktop_gablation_009_captured_calibration_reference_v0",
+  "split_id": "calibration",
+  "source_trace_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\egodesktop_joi_real_loop_g_ablation_calibration_reference_v0\\capture\\calibration_ui_predeclared_single\\trace\\trace_rows.jsonl",
+  "source_row_hash": "aebbdbedaca71d8955e470ffc6977d1bb9816e49f8af5878abd20eebbc5a4b28",
+  "source_trace_record_hash": "ee58fbae18758da22973201d86ac9dc52617c6292186aee56be29706830e99be",
+  "source_prompt_id": "prompt_0620302aac45",
+  "source_prompt_pack_hash": "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db",
+  "source_adapter_output_hash": "537169ad887c59b2b455502f597a3ae4732ae882bd56c642f7fc03c967c95e61",
+  "source_expression_name": "记笔记",
+  "source_hashes": {
+    "harness_hash": "51b2342e0cf06bb2e789b5a61bea1a37262e2f7da000036418e55ecc0b7742ea",
+    "trace_runner_hash": "613e37a01c24cbd8f86ec812929a9a306cb0257d2116c4b4df61967b77e25fed",
+    "main_js_hash": "a42e91ed4e38ce347c70d0bda81179bce3216d29019466fd012568073518df61",
+    "repo_root_hash": "bff00ab84a810861a77ae85bcc928f77d8227559a39675cd032989679ac1a2ab"
+  },
+  "predeclared_calibration_prompt_pack_hash": "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db",
+  "selection_policy_status": "deterministic_predeclared_single_prompt_consumed",
+  "post_hoc_selection_status": "absent",
+  "partition_protocol_hash": "4151364928a1d83d8fac4441d94956809a47cfb32c7014895afaff863d9ee8fc",
+  "partition_disjointness_status": "pass",
+  "content_disjointness_status": "pass",
+  "provenance_distinctness_status": "pass",
+  "turn_id_provenance_status": "informational_only_not_content_disjointness_gate",
+  "split_partition_manifest_hash": "e524292d86f59295313c374777188d9aa148f189b930b71ba62b070b55dabcc0",
+  "adapter_seed": {
+    "schema_version": "ego_desktop.joi_real_loop_off_static_replay_adapter_seed.v0",
+    "expression_name": "记笔记",
+    "adapter_status": "recomputed_off_static_replay_heldout",
+    "output_authority": "none",
+    "live2d_parameter_samples": [],
+    "seed_source": "captured_backend_trace_reference",
+    "calibration_reference_kind": "captured_backend_trace_reference"
+  },
+  "provenance_only_forbidden_from_heldout_d": [
+    "creature_state.state_digest",
+    "creature_state.viability_state",
+    "creature_state.subject_context_hash",
+    "creature_state.llm_meta_hash",
+    "chat_turn.bot_text_hash",
+    "public_inputs.user_text_hash",
+    "heldout_observation_content"
+  ],
+  "captured_source_field_hashes": {
+    "state_digest_hash": "31993ae59327fa6db971afde0d89aac33ceadce25115e291bf58ffebb27d61b9",
+    "viability_state_hash": "18980da3c0b4483f473b93eb198732a4eea0c6e515fcb95c5397b2f3feb71bbe",
+    "subject_context_hash": "31c1d050e77cdf1442f60e12e67875a7542e554a1c29807642239aea77674f07",
+    "llm_meta_hash": "22b73341319c22b463a5a3665432301eff0608f15656bec61503dc62a2122ada",
+    "bot_text_hash": "bd3a259ebd0763cf612f01872a89ab5e32d1ff896b5deea8e75dfb7c877e014f",
+    "public_user_text_hash": "0620302aac45bb7fb849e41490fad77c909547b8306dfb0a0ca1c6a342d3baf2"
+  },
+  "reference_pack_hash": "c5242610a7da1f96a7fd40cf2e357f943dde3dd2db28fb23b837c13b4e96901f"
+}

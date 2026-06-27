@@ -4460,21 +4460,22 @@ tasks:
       github_issue: null
 
   - id: EGODESKTOP-GABLATION-028
-    title: "EgoDesktop: Joi real-loop G-ABLATION Wizard captured calibration reference replay preflight card v0"
+    title: "EgoDesktop: Joi real-loop G-ABLATION Wizard captured calibration reference replay preflight v0"
     kind: task
     parent: EGODESKTOP-GABLATION-027
     status: accepted
-    layer: egodesktop_real_loop_selected_source_captured_reference_replay_card
+    layer: egodesktop_real_loop_selected_source_captured_reference_replay_preflight
     owner: codex
-    observation_class: docs_contract
-    evidence_level: E2
-    claim_ceiling: "wizard_captured_calibration_reference_replay_card_only"
-    next_action: "Accepted card-only: future implementation may build a new Wizard-specific captured calibration reference by consuming the accepted 009 predeclared calibration row and accepted 026 Wizard heldout row, then rebuild/evaluate OFF_STATIC replay preflight. This card does not run builders or produce artifacts. Do not reuse the old 009 calibration_reference.json as final Wizard partition evidence; future implementation must write a new 028 partition/reference report against the 026 Wizard heldout row."
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "wizard_captured_calibration_reference_replay_preflight_only"
+    next_action: "Accepted local preflight: callable scripts built a new 028 Wizard-specific captured calibration reference from the accepted 009 predeclared calibration row and accepted 026 Wizard heldout row, rebuilt OFF_STATIC replay, and evaluated replay integrity with scoring/verdict disabled. This does not authorize CREATURE_ON, same-access baseline, scoring, comparison, attribution verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor. Next minimal closed-loop action, if explicitly authorized, is a separate same-access baseline/scoring contract task."
     acceptance:
       - "Task card cites EGODESKTOP-GABLATION-009, EGODESKTOP-GABLATION-026, and EGODESKTOP-GABLATION-027."
       - "Card separates 028 calibration/reference planning from 027 synthetic-reference replay preflight."
-      - "Card requires a new 028 partition/reference report against the 026 Wizard heldout row before any future captured-reference replay acceptance."
-      - "Card forbids raw text staging, code changes in this slice, artifact builder execution in this slice, CREATURE_ON, same-access execution, scoring, comparison, attribution verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor."
+      - "A new 028 partition/reference report is produced against the 026 Wizard heldout row; the old 009 calibration_reference.json is not reused as final Wizard partition evidence."
+      - "Replay preflight reports replay_integrity_preflight_pass_no_verdict, d_field_replay_precondition_satisfied=true, scoring_run_authorized=false, and verdict_authorized=false."
+      - "Task forbids raw text staging, code changes, CREATURE_ON, same-access execution, scoring, comparison, attribution verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor."
       - "Route-convergence view keeps the task reference-only and does not promote it to active default."
     rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0/, remove this task-board entry, and regenerate route-convergence views."
     canonical_sources:
@@ -4483,6 +4484,10 @@ tasks:
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0/IMPLEMENT.md"
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0/STATUS.md"
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0/MUTATION_SCOPE.yaml"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_captured_calibration_reference_replay_preflight_v0/calibration_reference/calibration_reference_report.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_captured_calibration_reference_replay_preflight_v0/calibration_reference/partition/SPLIT_PARTITION_MANIFEST.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_captured_calibration_reference_replay_preflight_v0/replay/builder_report.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_captured_calibration_reference_replay_preflight_v0/eval/evaluation_report.json"
     external_refs:
       github_issue: null
 

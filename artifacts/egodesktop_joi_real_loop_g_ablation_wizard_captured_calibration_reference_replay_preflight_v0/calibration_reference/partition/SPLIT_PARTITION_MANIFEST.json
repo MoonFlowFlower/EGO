@@ -1,0 +1,173 @@
+{
+  "schema_version": "ego_desktop.joi_real_loop_g_ablation_split_partition_manifest.v0",
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_captured_calibration_reference_contract_only",
+  "producer_function": "writeCalibrationReference.partition",
+  "partition_protocol_id": "egodesktop_gablation_009_calibration_heldout_disjoint_v0",
+  "content_partition_dimensions": [
+    "prompt_ids",
+    "user_text_hashes"
+  ],
+  "provenance_distinctness_dimensions": [
+    "source_row_hashes",
+    "trace_record_hashes",
+    "capture_run_ids"
+  ],
+  "informational_provenance_dimensions": [
+    "turn_ids"
+  ],
+  "partition_dimensions": [
+    "prompt_ids",
+    "user_text_hashes",
+    "source_row_hashes",
+    "trace_record_hashes",
+    "capture_run_ids"
+  ],
+  "predeclared_calibration_prompt_pack_hash": "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db",
+  "predeclared_selection_policy": "single_predeclared_prompt_exact_match_no_post_hoc_selection",
+  "selection_policy_status": "deterministic_predeclared_single_prompt_consumed",
+  "post_hoc_selection_status": "absent",
+  "calibration_prompt_pack_hashes": [
+    "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db"
+  ],
+  "heldout_prompt_pack_hashes": [
+    "egodesktop_capture_manifest_v0_wizard_of_wikipedia_hf_train_0"
+  ],
+  "calibration_source_row_hashes": [
+    "aebbdbedaca71d8955e470ffc6977d1bb9816e49f8af5878abd20eebbc5a4b28"
+  ],
+  "heldout_source_row_hashes": [
+    "3a4569e77c39733a4d13034e3ad9cdfc5879e1974b9561760c06703e38d06a76"
+  ],
+  "calibration_capture_run_ids": [
+    "egodesktop_gablation_009_calibration_capture_predeclared_single"
+  ],
+  "heldout_capture_run_ids": [
+    "egodesktop_gablation_026_wizard_selected_source_chat_smoke"
+  ],
+  "content_disjointness": {
+    "prompt_ids": {
+      "status": "pass",
+      "calibration": [
+        "prompt_0620302aac45"
+      ],
+      "heldout": [
+        "prompt_593a0c04daac"
+      ],
+      "overlap": []
+    },
+    "user_text_hashes": {
+      "status": "pass",
+      "calibration": [
+        "0620302aac45bb7fb849e41490fad77c909547b8306dfb0a0ca1c6a342d3baf2"
+      ],
+      "heldout": [
+        "593a0c04daacd8eee592efae98c83745204bf8d3ee599890a4e929c50623073f"
+      ],
+      "overlap": []
+    }
+  },
+  "provenance_distinctness": {
+    "source_row_hashes": {
+      "status": "pass",
+      "calibration": [
+        "aebbdbedaca71d8955e470ffc6977d1bb9816e49f8af5878abd20eebbc5a4b28"
+      ],
+      "heldout": [
+        "3a4569e77c39733a4d13034e3ad9cdfc5879e1974b9561760c06703e38d06a76"
+      ],
+      "overlap": []
+    },
+    "trace_record_hashes": {
+      "status": "pass",
+      "calibration": [
+        "ee58fbae18758da22973201d86ac9dc52617c6292186aee56be29706830e99be"
+      ],
+      "heldout": [
+        "3d2925703617f8c448d09fe3640e3dbfda25ad6bca06225e64ed5d5b433402dd"
+      ],
+      "overlap": []
+    },
+    "capture_run_ids": {
+      "status": "pass",
+      "calibration": [
+        "egodesktop_gablation_009_calibration_capture_predeclared_single"
+      ],
+      "heldout": [
+        "egodesktop_gablation_026_wizard_selected_source_chat_smoke"
+      ],
+      "overlap": []
+    }
+  },
+  "turn_id_provenance": {
+    "turn_ids": {
+      "status": "fail",
+      "calibration": [
+        "turn_1"
+      ],
+      "heldout": [
+        "turn_1"
+      ],
+      "overlap": [
+        "turn_1"
+      ]
+    }
+  },
+  "disjointness": {
+    "prompt_ids": {
+      "status": "pass",
+      "calibration": [
+        "prompt_0620302aac45"
+      ],
+      "heldout": [
+        "prompt_593a0c04daac"
+      ],
+      "overlap": []
+    },
+    "user_text_hashes": {
+      "status": "pass",
+      "calibration": [
+        "0620302aac45bb7fb849e41490fad77c909547b8306dfb0a0ca1c6a342d3baf2"
+      ],
+      "heldout": [
+        "593a0c04daacd8eee592efae98c83745204bf8d3ee599890a4e929c50623073f"
+      ],
+      "overlap": []
+    },
+    "source_row_hashes": {
+      "status": "pass",
+      "calibration": [
+        "aebbdbedaca71d8955e470ffc6977d1bb9816e49f8af5878abd20eebbc5a4b28"
+      ],
+      "heldout": [
+        "3a4569e77c39733a4d13034e3ad9cdfc5879e1974b9561760c06703e38d06a76"
+      ],
+      "overlap": []
+    },
+    "trace_record_hashes": {
+      "status": "pass",
+      "calibration": [
+        "ee58fbae18758da22973201d86ac9dc52617c6292186aee56be29706830e99be"
+      ],
+      "heldout": [
+        "3d2925703617f8c448d09fe3640e3dbfda25ad6bca06225e64ed5d5b433402dd"
+      ],
+      "overlap": []
+    },
+    "capture_run_ids": {
+      "status": "pass",
+      "calibration": [
+        "egodesktop_gablation_009_calibration_capture_predeclared_single"
+      ],
+      "heldout": [
+        "egodesktop_gablation_026_wizard_selected_source_chat_smoke"
+      ],
+      "overlap": []
+    }
+  },
+  "content_disjointness_status": "pass",
+  "provenance_distinctness_status": "pass",
+  "turn_id_provenance_status": "informational_only_not_content_disjointness_gate",
+  "partition_disjointness_status": "pass",
+  "overlap_positive_control_status": "pass",
+  "partition_protocol_hash": "4151364928a1d83d8fac4441d94956809a47cfb32c7014895afaff863d9ee8fc"
+}
