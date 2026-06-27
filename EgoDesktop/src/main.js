@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const crypto = require("node:crypto");
 const { spawn } = require("node:child_process");
 const { app, BrowserWindow, ipcMain, nativeImage } = require("electron");
 const { parseArgs } = require("./args");
@@ -56,6 +57,29 @@ if (rawLaunchArgs.smoke) {
 
 function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function hashText(value) {
+  return crypto.createHash("sha256").update(String(value || "")).digest("hex");
+}
+
+function buildChatTurnEntrypointProvenance(event) {
+  const sender = event && event.sender ? event.sender : {};
+  const senderFrame = event && event.senderFrame ? event.senderFrame : {};
+  return {
+    schema_version: "ego_desktop.joi_real_loop_entrypoint_provenance.v0",
+    claim_ceiling: "egodesktop_real_loop_g_ablation_trace_runner_contract_only",
+    status: "ipc_event_observed",
+    entrypoint_name: "window.egoDesktop.sendChatTurn",
+    ipc_channel: "ego-desktop:chat-turn",
+    ipc_handler: "ipcMain.handle",
+    preload_bridge_name: "contextBridge.egoDesktop.sendChatTurn",
+    event_source: "main_process_ipc_event",
+    web_contents_id: Number(sender.id || 0),
+    frame_routing_id: Number(senderFrame.routingId || 0),
+    frame_process_id: Number(senderFrame.processId || 0),
+    frame_url_hash: hashText(senderFrame.url || ""),
+  };
 }
 
 function loadSignalFrame(args) {
@@ -634,6 +658,7 @@ async function run() {
     return live;
   });
   ipcMain.handle("ego-desktop:chat-turn", async (_event, payload) => {
+    const entrypointProvenance = buildChatTurnEntrypointProvenance(_event);
     const userText = String((payload && payload.userText) || "").trim();
     if (!userText) {
       return buildDesktopChatTurn({
@@ -720,6 +745,7 @@ async function run() {
       desktopRecoveryContext,
       pspcReplyPreviewContext,
       pspcReplyPreviewScenario,
+      entrypointProvenance,
     });
     return desktopTurn;
   });

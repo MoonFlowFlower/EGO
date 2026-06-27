@@ -1,0 +1,39 @@
+{
+  "status": "live2d_desktop_smoke_timeout",
+  "console_messages": [
+    {
+      "level": 2,
+      "message": "%cElectron Security Warning (Insecure Content-Security-Policy) font-weight: bold; This renderer process has either no Content Security\n  Policy set or a policy with \"unsafe-eval\" enabled. This exposes users of\n  this app to unnecessary security risks.\n\nFor more information and help, consult\nhttps://electronjs.org/docs/tutorial/security.\nThis warning will not show up\nonce the app is packaged.",
+      "line": 2,
+      "sourceId": "node:electron/js2c/renderer_init"
+    },
+    {
+      "level": 1,
+      "message": "[CSM][I]Live2D Cubism Core version: 05.00.0000 (83886080)\n",
+      "line": 1,
+      "sourceId": "http://127.0.0.1:8158/vendor/pixi-live2d-display/cubism5.min.js"
+    },
+    {
+      "level": 1,
+      "message": "[CSM][I]CubismFramework.startUp() is complete.\n",
+      "line": 1,
+      "sourceId": "http://127.0.0.1:8158/vendor/pixi-live2d-display/cubism5.min.js"
+    },
+    {
+      "level": 1,
+      "message": "[CSM][I]CubismFramework.initialize() is complete.\n",
+      "line": 1,
+      "sourceId": "http://127.0.0.1:8158/vendor/pixi-live2d-display/cubism5.min.js"
+    },
+    {
+      "level": 1,
+      "message": "Live2D Cubism SDK Core Version 5.0.0",
+      "line": 9,
+      "sourceId": "http://127.0.0.1:8158/vendor/live2dcubismcore/live2dcubismcore.min.js"
+    }
+  ],
+  "side_effects_executed": false,
+  "memory_write": false,
+  "tool_use": false,
+  "message_send": false
+}

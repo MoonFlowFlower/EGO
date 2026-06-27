@@ -108,6 +108,39 @@ function placeholderAdapterOutput() {
   };
 }
 
+function normalizeEntrypointProvenance(value) {
+  const safe = value && typeof value === "object" ? value : {};
+  if (safe.status === "ipc_event_observed") {
+    return {
+      schema_version: "ego_desktop.joi_real_loop_entrypoint_provenance.v0",
+      claim_ceiling: CLAIM_CEILING,
+      status: "ipc_event_observed",
+      entrypoint_name: String(safe.entrypoint_name || "window.egoDesktop.sendChatTurn"),
+      ipc_channel: String(safe.ipc_channel || "ego-desktop:chat-turn"),
+      ipc_handler: String(safe.ipc_handler || "ipcMain.handle"),
+      preload_bridge_name: String(safe.preload_bridge_name || "contextBridge.egoDesktop.sendChatTurn"),
+      event_source: String(safe.event_source || "main_process_ipc_event"),
+      web_contents_id: Number(safe.web_contents_id || 0),
+      frame_routing_id: Number(safe.frame_routing_id || 0),
+      frame_process_id: Number(safe.frame_process_id || 0),
+      frame_url_hash: String(safe.frame_url_hash || ""),
+      direct_call_negative_control:
+        "absent when createJoiRealLoopTraceRunner.recordChatTurn is invoked without the main-process IPC event",
+    };
+  }
+  return {
+    schema_version: "ego_desktop.joi_real_loop_entrypoint_provenance.v0",
+    claim_ceiling: CLAIM_CEILING,
+    status: "absent_direct_record_chat_turn_or_legacy_row",
+    entrypoint_name: "",
+    ipc_channel: "",
+    ipc_handler: "",
+    preload_bridge_name: "",
+    event_source: "not_observed",
+    direct_call_negative_control: "positive_control_for_missing_ipc_event_boundary",
+  };
+}
+
 function buildJoiRealLoopBackendAdapterOutput(payload = {}) {
   const desktopTurn = payload.desktopTurn && typeof payload.desktopTurn === "object" ? payload.desktopTurn : {};
   const backend = payload.backend && typeof payload.backend === "object" ? payload.backend : {};
@@ -248,6 +281,7 @@ function createJoiRealLoopTraceRunner(env, options = {}) {
     const condition = contract.condition;
     const creatureState = payload.creatureState || placeholderCreatureState(condition);
     const adapterOutput = payload.adapterOutput || placeholderAdapterOutput();
+    const entrypointProvenance = normalizeEntrypointProvenance(payload.entrypointProvenance);
     const publicInputs = {
       user_text_hash: hashValue(userText),
       condition,
@@ -256,6 +290,8 @@ function createJoiRealLoopTraceRunner(env, options = {}) {
       llm_mode: contract.llm_mode,
       desktop_session_context_hash: hashValue(payload.desktopSessionContext || {}),
       desktop_recovery_context_hash: hashValue(payload.desktopRecoveryContext || {}),
+      entrypoint_provenance_hash: hashValue(entrypointProvenance),
+      entrypoint_provenance: entrypointProvenance,
     };
     const replayInputs = payload.replayInputs || {
       serialized_state_hash: hashValue(creatureState),
@@ -295,7 +331,8 @@ function createJoiRealLoopTraceRunner(env, options = {}) {
     });
     appendJsonLine(path.join(traceDir, "trace_rows.jsonl"), row);
     traceRowCount += 1;
-    const verdictLabel = payload.creatureState
+    const hasIpcEntrypoint = entrypointProvenance.status === "ipc_event_observed";
+    const verdictLabel = payload.creatureState && hasIpcEntrypoint
       ? "blocked_unreplayable_runtime_trace"
       : "blocked_missing_real_loop_entrypoint";
     writeReport(verdictLabel);
@@ -325,5 +362,6 @@ module.exports = {
   DEFAULT_IDLE_PARAMS,
   buildJoiRealLoopBackendAdapterOutput,
   createJoiRealLoopTraceRunner,
+  normalizeEntrypointProvenance,
   renderTraceRunnerReport,
 };

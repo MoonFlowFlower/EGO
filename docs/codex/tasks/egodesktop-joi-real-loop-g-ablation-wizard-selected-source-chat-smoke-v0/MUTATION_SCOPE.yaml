@@ -1,0 +1,28 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0
+expected_mutation_surface:
+  - 026 Wizard selected-source desktop trigger smoke task package
+  - hash-only trigger input report for wizard_of_wikipedia_hf:train:0
+  - direct EgoDesktop smoke artifacts and trace rows under the 026 artifact directory
+  - IPC-boundary entrypoint provenance for explicit chat-turn smoke rows
+  - renderer sequencing repair so explicit chat-turn smoke runs before Live2D model setup can block
+  - Wizard row materializer support for source rows shaped as post/response/knowledge/topics
+  - task-board entry for EGODESKTOP-GABLATION-026
+  - task-board outbox entry if GitHub Project sync is unavailable
+  - route-convergence generated task-lane index refresh
+  - no raw text staging, replay, scoring, same-access execution, route advancement, runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/
+  - artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/
+  - EgoDesktop/src/main.js
+  - EgoDesktop/src/joiRealLoopGAblationTraceRunner.js
+  - EgoDesktop/viewer/renderer.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_chat_turn_trace.test.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_trace_runner.test.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_backend_snapshot.test.js
+  - scripts/codex/materialize_egodesktop_selected_source_trigger_input.py
+  - scripts/tests/test_materialize_egodesktop_selected_source_trigger_input.py
+  - artifacts/task_board/outbox.jsonl
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "selected_source_desktop_trigger_smoke_only; no desktop-chat-turn route pass, CREATURE_ON effect, replay, D-provenance, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

@@ -84,6 +84,12 @@ def _derive_user_text(source_row: dict[str, Any]) -> tuple[str, str]:
     text = row.get("text")
     if isinstance(text, str):
         return text, "single_row_text"
+    posts = row.get("post")
+    if isinstance(posts, list) and all(isinstance(item, str) for item in posts):
+        for item in posts:
+            if item:
+                return item, "first_row_post_as_single_chat_turn"
+        raise ValueError("source cache row post list is empty")
     raise ValueError("source cache row has no supported text field")
 
 

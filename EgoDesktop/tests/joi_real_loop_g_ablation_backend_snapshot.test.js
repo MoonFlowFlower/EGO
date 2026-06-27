@@ -111,6 +111,14 @@ function rowWithBackendSnapshot() {
     llm_mode: "replay_locked",
     desktop_session_context_hash: hashValue({}),
     desktop_recovery_context_hash: hashValue({}),
+    entrypoint_provenance_hash: "e".repeat(64),
+    entrypoint_provenance: {
+      schema_version: "ego_desktop.joi_real_loop_entrypoint_provenance.v0",
+      status: "ipc_event_observed",
+      entrypoint_name: "window.egoDesktop.sendChatTurn",
+      ipc_channel: "ego-desktop:chat-turn",
+      ipc_handler: "ipcMain.handle",
+    },
   };
   return buildJoiRealLoopTraceRow({
     runId: "run-006",
@@ -257,5 +265,6 @@ test("main process passes backend snapshot at the existing chat-turn trace seam"
   assert.match(mainSource, /buildJoiRealLoopBackendAdapterOutput/);
   assert.match(mainSource, /creatureState:\s*backend\.joi_real_loop_trace_snapshot/);
   assert.match(mainSource, /adapterOutput:\s*buildJoiRealLoopBackendAdapterOutput\(/);
+  assert.match(mainSource, /entrypointProvenance,/);
   assert.doesNotMatch(mainSource, /llmReplayId:\s*backend\.joi_real_loop_llm_trace_id/);
 });

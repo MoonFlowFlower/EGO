@@ -25,8 +25,11 @@ test("renderer drives chat-turn trace smoke through preload IPC before renderer-
   assert.match(rendererSource, /joiRealLoopChatSmoke/);
 
   const chatSmokeIndex = rendererSource.indexOf("sendChatTurn({ userText: config.joiRealLoopChatSmokeText })");
+  const modelLoadIndex = rendererSource.indexOf("const loaded = await loadLive2DModel(config");
   const reportReadyIndex = rendererSource.indexOf("reportReady({");
   assert.ok(chatSmokeIndex > 0, "chat-turn smoke call should exist");
+  assert.ok(modelLoadIndex > 0, "model load should exist");
   assert.ok(reportReadyIndex > 0, "renderer-ready payload should exist");
+  assert.ok(chatSmokeIndex < modelLoadIndex, "chat-turn smoke should run before Live2D model loading can block");
   assert.ok(chatSmokeIndex < reportReadyIndex, "chat-turn smoke should run before renderer-ready is reported");
 });

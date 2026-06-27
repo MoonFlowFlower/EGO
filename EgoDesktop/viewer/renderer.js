@@ -936,6 +936,44 @@
     }
   }
 
+  async function runJoiRealLoopChatSmoke(config) {
+    if (
+      config.joiRealLoopChatSmokeText &&
+      window.egoDesktop &&
+      typeof window.egoDesktop.sendChatTurn === "function"
+    ) {
+      try {
+        const turn = await window.egoDesktop.sendChatTurn({ userText: config.joiRealLoopChatSmokeText });
+        return {
+          status: "chat_turn_trace_smoke_pass",
+          prompt_text_length: config.joiRealLoopChatSmokeText.length,
+          turn_status: turn && turn.status ? String(turn.status) : "",
+          expression_name: turn && turn.expression_name ? String(turn.expression_name) : "",
+          backend_status: turn && turn.backend_status ? String(turn.backend_status) : "",
+          backend_reason: turn && turn.backend_reason ? String(turn.backend_reason) : "",
+          side_effects_executed: Boolean(turn && turn.side_effects_executed),
+          memory_write: Boolean(turn && turn.memory_write),
+          tool_use: Boolean(turn && turn.tool_use),
+          message_send: Boolean(turn && turn.message_send),
+          file_write: Boolean(turn && turn.file_write),
+          network_call: Boolean(turn && turn.network_call),
+        };
+      } catch (error) {
+        return {
+          status: "chat_turn_trace_smoke_error",
+          error: error && error.message ? String(error.message) : String(error),
+          side_effects_executed: false,
+          memory_write: false,
+          tool_use: false,
+          message_send: false,
+          file_write: false,
+          network_call: false,
+        };
+      }
+    }
+    return null;
+  }
+
   function modelDebug(model) {
     const bounds = model.getBounds();
     const internalModel = model.internalModel || {};
@@ -1090,6 +1128,7 @@
       }));
     }
     const config = await window.egoDesktop.getConfig();
+    const joiRealLoopChatSmoke = await runJoiRealLoopChatSmoke(config);
     const app = await createPixiApplication(canvas, stage || window);
     window.app = app;
     window.__egoAppCanvasMatchesDomCanvas = (app.canvas || app.view) === canvas;
@@ -1173,41 +1212,6 @@
         tool_use: false,
         message_send: false,
       }, config, { playAudio: false, speechTurnId: ttsSmokeTurnId });
-    }
-    let joiRealLoopChatSmoke = null;
-    if (
-      config.joiRealLoopChatSmokeText &&
-      window.egoDesktop &&
-      typeof window.egoDesktop.sendChatTurn === "function"
-    ) {
-      try {
-        const turn = await window.egoDesktop.sendChatTurn({ userText: config.joiRealLoopChatSmokeText });
-        joiRealLoopChatSmoke = {
-          status: "chat_turn_trace_smoke_pass",
-          prompt_text_length: config.joiRealLoopChatSmokeText.length,
-          turn_status: turn && turn.status ? String(turn.status) : "",
-          expression_name: turn && turn.expression_name ? String(turn.expression_name) : "",
-          backend_status: turn && turn.backend_status ? String(turn.backend_status) : "",
-          backend_reason: turn && turn.backend_reason ? String(turn.backend_reason) : "",
-          side_effects_executed: Boolean(turn && turn.side_effects_executed),
-          memory_write: Boolean(turn && turn.memory_write),
-          tool_use: Boolean(turn && turn.tool_use),
-          message_send: Boolean(turn && turn.message_send),
-          file_write: Boolean(turn && turn.file_write),
-          network_call: Boolean(turn && turn.network_call),
-        };
-      } catch (error) {
-        joiRealLoopChatSmoke = {
-          status: "chat_turn_trace_smoke_error",
-          error: error && error.message ? String(error.message) : String(error),
-          side_effects_executed: false,
-          memory_write: false,
-          tool_use: false,
-          message_send: false,
-          file_write: false,
-          network_call: false,
-        };
-      }
     }
     let screenshotDataUrl = "";
     try {

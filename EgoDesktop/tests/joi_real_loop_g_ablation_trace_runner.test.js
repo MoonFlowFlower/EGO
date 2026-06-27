@@ -6,6 +6,7 @@ const test = require("node:test");
 
 const {
   createJoiRealLoopTraceRunner,
+  normalizeEntrypointProvenance,
   renderTraceRunnerReport,
 } = require("../src/joiRealLoopGAblationTraceRunner");
 
@@ -104,7 +105,49 @@ test("enabled runner writes trace row through existing harness contract", () => 
   assert.equal(row.renderer_idle_excluded, true);
   assert.deepEqual(row.renderer_idle_params_excluded_from_d, ["ParamMouthOpenY", "ParamJawOpen"]);
   assert.equal(row.adapter_output.adapter_status, "not_connected_trace_runner_v0");
+  assert.equal(row.public_inputs.entrypoint_provenance.status, "absent_direct_record_chat_turn_or_legacy_row");
   assert.match(row.row_hash, /^[a-f0-9]{64}$/);
+});
+
+test("ipc entrypoint provenance separates real IPC rows from direct trace-runner calls", () => {
+  const outDir = tempDir();
+  const runner = createJoiRealLoopTraceRunner(validEnv(outDir), { repoRoot: process.cwd() });
+
+  const result = runner.recordChatTurn({
+    userText: "record a bounded trace",
+    turn: validTurn(),
+    creatureState: {
+      schema_version: "ego_desktop.joi_real_loop_backend_trace_snapshot.v0",
+      state_source: "ego_operator_runtime_trace_store",
+      trace_record_hash: "a".repeat(64),
+    },
+    adapterOutput: {
+      schema_version: "ego_desktop.joi_real_loop_backend_adapter_output.v0",
+      source: "ego_desktop_chat_turn_result_boundary",
+      adapter_status: "connected_real_backend_trace_snapshot",
+      output_authority: "none",
+    },
+    entrypointProvenance: {
+      status: "ipc_event_observed",
+      web_contents_id: 42,
+      frame_routing_id: 7,
+      frame_process_id: 11,
+      frame_url_hash: "b".repeat(64),
+    },
+  });
+
+  assert.equal(result.status, "trace_row_written");
+  assert.equal(result.verdict_label, "blocked_unreplayable_runtime_trace");
+  const rowPath = path.join(outDir, "trace_rows.jsonl");
+  const row = JSON.parse(fs.readFileSync(rowPath, "utf8").trim());
+  assert.equal(row.public_inputs.entrypoint_provenance.status, "ipc_event_observed");
+  assert.equal(row.public_inputs.entrypoint_provenance.entrypoint_name, "window.egoDesktop.sendChatTurn");
+  assert.equal(row.public_inputs.entrypoint_provenance.ipc_channel, "ego-desktop:chat-turn");
+  assert.equal(row.public_inputs.entrypoint_provenance.web_contents_id, 42);
+  assert.match(row.public_inputs.entrypoint_provenance_hash, /^[a-f0-9]{64}$/);
+
+  const direct = normalizeEntrypointProvenance(null);
+  assert.equal(direct.status, "absent_direct_record_chat_turn_or_legacy_row");
 });
 
 test("renderer-ready metadata is recorded only when contract is enabled", () => {
@@ -159,6 +202,8 @@ test("main process wires trace runner only through chat-turn and renderer-ready 
   const mainSource = fs.readFileSync(path.join(__dirname, "..", "src", "main.js"), "utf8");
 
   assert.match(mainSource, /createJoiRealLoopTraceRunner/);
+  assert.match(mainSource, /buildChatTurnEntrypointProvenance\(_event\)/);
+  assert.match(mainSource, /entrypointProvenance,/);
   assert.match(mainSource, /joiTraceRunner\.recordChatTurn/);
   assert.match(mainSource, /joiTraceRunner\.recordRendererReady/);
   assert.doesNotMatch(mainSource, /JOI_REAL_LOOP_G_ABLATION\s*=\s*["']1["']/);

@@ -4394,6 +4394,39 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-026
+    title: "EgoDesktop: Joi real-loop G-ABLATION Wizard selected source chat smoke v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-025
+    status: accepted
+    layer: egodesktop_real_loop_selected_source_chat_smoke
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "selected_source_desktop_trigger_smoke_only"
+    next_action: "Accepted local-only: predeclared wizard_of_wikipedia_hf:train:0 from the refreshed 025 capture manifest, materialized a hash-only trigger report, ran direct Electron smoke through window.egoDesktop.sendChatTurn(...), and verified trace public_inputs.user_text_hash matches the trigger report with entrypoint_provenance.status=ipc_event_observed. Evidence is limited to selected-source desktop trigger provenance. Next minimal action, if continuing, is a separate replay/ablation preflight task that consumes this row without raw text staging. This task authorizes no replay, CREATURE_ON, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, default runtime enablement, push, tag, or remote anchor."
+    acceptance:
+      - "TRIGGER_INPUT_REPORT records selection id wizard_of_wikipedia_hf:train:0, source row hash, derivation rule, trace-compatible user text hash, plain text sha256, and length without raw text."
+      - "EgoDesktop smoke report records chat_turn_trace_smoke_pass."
+      - "Trace runner report records trace_row_count == 1."
+      - "Trace row public_inputs.user_text_hash matches TRIGGER_INPUT_REPORT.user_text_hash."
+      - "Trace row public_inputs.entrypoint_provenance.status is ipc_event_observed."
+      - "No raw text is committed; source_cache remains ignored."
+      - "Claude blocking review required IPC-boundary provenance; the scope-valid blocker was repaired before closeout."
+      - "No CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/, artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/IMPLEMENT.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/MUTATION_SCOPE.yaml"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/TRIGGER_INPUT_REPORT.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/smoke/live2d_desktop_smoke_report.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/trace/trace_rows.jsonl"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task

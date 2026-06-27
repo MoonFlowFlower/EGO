@@ -36,6 +36,40 @@ def test_materializer_hashes_selected_utterances_without_raw_text(tmp_path: Path
     )
 
 
+def test_materializer_hashes_selected_wizard_post_without_raw_text(tmp_path: Path) -> None:
+    manifest_path, _cache_path = _write_fixture(
+        tmp_path,
+        source_id="wizard_of_wikipedia_hf",
+        rows=[
+            {
+                "row_idx": 0,
+                "source_id": "wizard_of_wikipedia_hf",
+                "split": "train",
+                "row": {
+                    "post": ["wizard prompt raw text", "wizard followup raw text"],
+                    "response": ["assistant-style response raw text"],
+                    "knowledge": [["knowledge raw text"]],
+                    "topics": ["topic raw text"],
+                },
+            }
+        ],
+    )
+
+    report, user_text = materializer.materialize_trigger_input(
+        capture_manifest_path=manifest_path,
+        selection_id="wizard_of_wikipedia_hf:train:0",
+    )
+
+    assert user_text == "wizard prompt raw text"
+    assert report["raw_text_in_report"] is False
+    assert report["user_text_hash"] == _trace_hash_value(user_text)
+    assert report["user_text_derivation_rule"] == "first_row_post_as_single_chat_turn"
+    serialized = json.dumps(report, ensure_ascii=False)
+    assert "wizard prompt raw text" not in serialized
+    assert "assistant-style response raw text" not in serialized
+    assert "knowledge raw text" not in serialized
+
+
 def test_materializer_rejects_source_cache_hash_mismatch(tmp_path: Path) -> None:
     manifest_path, _cache_path = _write_fixture(tmp_path)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -64,20 +98,26 @@ def test_materializer_rejects_source_row_hash_mismatch(tmp_path: Path) -> None:
         raise AssertionError("row content hash mismatch was not rejected")
 
 
-def _write_fixture(tmp_path: Path) -> tuple[Path, Path]:
-    cache_path = tmp_path / "source_cache" / "dailydialog_hf" / "train_sample.jsonl"
+def _write_fixture(
+    tmp_path: Path,
+    *,
+    source_id: str = "dailydialog_hf",
+    rows: list[dict] | None = None,
+) -> tuple[Path, Path]:
+    cache_path = tmp_path / "source_cache" / source_id / "train_sample.jsonl"
     cache_path.parent.mkdir(parents=True)
-    lines = [
-        json.dumps({"row_idx": 0, "row": {"utterances": ["alpha raw text", "beta raw text"]}}, sort_keys=True),
-        json.dumps({"row_idx": 1, "row": {"utterances": ["gamma raw text"]}}, sort_keys=True),
+    rows = rows or [
+        {"row_idx": 0, "row": {"utterances": ["alpha raw text", "beta raw text"]}},
+        {"row_idx": 1, "row": {"utterances": ["gamma raw text"]}},
     ]
+    lines = [json.dumps(row, sort_keys=True) for row in rows]
     cache_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     manifest = {
         "schema": "egodesktop.joi_real_loop.capture_manifest.v0",
         "selected_rows": [
             {
-                "selection_id": "dailydialog_hf:train:0",
-                "source_id": "dailydialog_hf",
+                "selection_id": f"{source_id}:train:0",
+                "source_id": source_id,
                 "split": "train",
                 "row_idx": 0,
                 "source_cache_path": str(cache_path),
