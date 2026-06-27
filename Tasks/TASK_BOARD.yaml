@@ -4191,6 +4191,36 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-019
+    title: "EgoDesktop: Joi real-loop G-ABLATION public raw cache sample v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-018
+    status: accepted
+    layer: egodesktop_real_loop_public_raw_cache_sample
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "bounded_public_raw_cache_sample_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS. Current run cached 25 train rows for dailydialog_hf via HF rows API and 25 train rows for empathetic_dialogues_hf via its public archive CSV into ignored artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/source_cache/. Committed artifacts are hash/count/provenance reports only. Next minimal action is a separate desktop-chat-turn capture/replay provenance design task before any capture, scoring, comparison, or route advancement. This task authorizes no full-cache completeness claim, desktop-chat-turn capture, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, runtime enablement, push, tag, or remote anchor."
+    acceptance:
+      - "Downloader default remains metadata-only unless --raw-cache-sample is explicitly set."
+      - "DailyDialog bounded rows are fetched through the Hugging Face datasets-server rows API."
+      - "EmpatheticDialogues bounded rows are extracted from its public archive source."
+      - "Raw cached text is local-only under ignored source_cache and is not staged."
+      - "Committed report records producer function, source ids, methods, URLs, split, max rows, row counts, cache file hashes, and no capture/scoring/runtime/program-state/evidence-ledger/remote authority."
+      - "No full raw source cache completeness, desktop-chat-turn capture, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this slice."
+    rollback: "Restore prior downloader/tests, delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0/, remove RAW_CACHE_REPORT.*, remove this task-board entry, optionally delete ignored source_cache files, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0/MUTATION_SCOPE.yaml"
+      - "scripts/codex/run_egodesktop_gablation_source_cache_downloader.py"
+      - "scripts/tests/test_run_egodesktop_gablation_source_cache_downloader.py"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/RAW_CACHE_REPORT.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task

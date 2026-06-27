@@ -1,0 +1,18 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0
+expected_mutation_surface:
+  - 019 opt-in bounded public raw-cache sample mode in source cache downloader and tests
+  - tracked hash/count raw-cache report only
+  - ignored local source_cache raw text files not staged
+  - task-board entry for EGODESKTOP-GABLATION-019
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no desktop capture, scoring, same-access execution, route advancement, runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-public-raw-cache-sample-v0/
+  - scripts/codex/run_egodesktop_gablation_source_cache_downloader.py
+  - scripts/tests/test_run_egodesktop_gablation_source_cache_downloader.py
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/RAW_CACHE_REPORT.json
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/RAW_CACHE_REPORT.sha256
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "bounded_public_raw_cache_sample_only; no full raw source cache completeness, desktop-chat-turn capture, CREATURE_ON effect, replay, D-provenance, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"
