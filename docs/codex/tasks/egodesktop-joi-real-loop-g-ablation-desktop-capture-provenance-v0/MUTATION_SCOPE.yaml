@@ -1,0 +1,12 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0
+expected_mutation_surface:
+  - 020 docs-only desktop capture provenance contract
+  - task-board entry for EGODESKTOP-GABLATION-020
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no raw text staging, desktop capture, scoring, same-access execution, route advancement, runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "desktop_capture_provenance_contract_only; no desktop-chat-turn capture, CREATURE_ON effect, replay, D-provenance, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

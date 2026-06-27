@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 210 |
+| `reference_only` | 211 |
 
 ## Active Default
 
@@ -190,6 +190,7 @@
 | Egodesktop Joi Real Loop G Ablation Calibration Reference V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-calibration-reference-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Chat Turn Trace V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-chat-turn-trace-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Dailydialog Source Id Repair V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egodesktop Joi Real Loop G Ablation Desktop Capture Provenance V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Harness Contract V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-harness-contract-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Off Static Replay Heldout V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-off-static-replay-heldout-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Preregistration Manifest V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

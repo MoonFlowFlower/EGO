@@ -4221,6 +4221,31 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-020
+    title: "EgoDesktop: Joi real-loop G-ABLATION desktop capture provenance v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-019
+    status: accepted
+    layer: egodesktop_real_loop_capture_provenance_contract
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E2
+    claim_ceiling: "desktop_capture_provenance_contract_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS. This docs-only contract freezes what future real desktop-chat-turn capture means after 018/019. It distinguishes real_source_text, real_desktop_trigger, and replayable_capture_row, and carries forward that local EgoDesktop/public dataset text is source material only until sent through EgoDesktop under a frozen capture design. Next minimal action is a separate explicit capture-manifest task before any EgoDesktop run or row serialization. This task authorizes no raw text staging, desktop capture, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, runtime enablement, push, tag, or remote anchor."
+    acceptance:
+      - "Contract distinguishes source text, desktop trigger, and replayable row provenance."
+      - "018/019 source boundaries are carried forward without promoting raw cache rows to capture evidence."
+      - "Future capture prerequisites include source hashes, row selection, privacy mode, split/leakage gates, independence clustering, condition plan, writer path hashes, and stop conditions."
+      - "No desktop-chat-turn capture, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this contract."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-desktop-capture-provenance-v0/MUTATION_SCOPE.yaml"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
