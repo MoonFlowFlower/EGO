@@ -1,0 +1,14 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0
+expected_mutation_surface:
+  - docs-only 011 preregistration manifest and prompt-pack freeze for future SAME_ACCESS_REPRODUCER_BATTERY + CREATURE_ON comparison
+  - SHA256 sidecars for manifest and prompt packs
+  - source-limited Claude review preservation
+  - task-board entry marking 011 as preregistration-review-only before capture or scoring
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no row capture, same-access execution, scoring run, verdict, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "egodesktop_real_loop_g_ablation_preregistration_manifest_only; no CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

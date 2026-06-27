@@ -1,0 +1,14 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0
+expected_mutation_surface:
+  - docs-only route decision closing or downgrading the synthetic prompt-pack preregistration path after 011 Claude v2 blockers
+  - preservation of 011 Claude v2 BLOCKING_FINDINGS in 011 review/status/spec surfaces
+  - task-board entry marking 012 as route-decision-only
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no synthetic prompt-pack v3, row capture, same-access execution, scoring run, verdict, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "synthetic_prompt_pack_route_decision_only; no CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

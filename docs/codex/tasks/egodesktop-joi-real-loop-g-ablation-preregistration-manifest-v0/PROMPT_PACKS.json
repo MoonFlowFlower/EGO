@@ -1,0 +1,3241 @@
+{
+  "created_at": "2026-06-27",
+  "disjointness_policy": {
+    "exact_hash_overlap_allowed": false,
+    "near_duplicate_scanner_required_before_capture": true,
+    "scenario_family_overlap_allowed_across_splits": false
+  },
+  "freeze_scope": "pre_capture_preregistration_source_limited_review_only",
+  "generator_id": "egodesktop_gablation_011_independent_prompt_family_generator_v2",
+  "independence_policy": {
+    "minimum_independent_families_per_split": 160,
+    "one_prompt_per_family_per_split": true,
+    "repeated_rows_per_family_must_be_collapsed_before_scoring": true,
+    "unit_of_analysis": "independent_prompt_family"
+  },
+  "near_duplicate_self_check": {
+    "char_5gram_jaccard_max_observed_cross_split": 0.18435754189944134,
+    "char_5gram_jaccard_threshold": 0.25,
+    "cross_split_pairs_over_threshold": 0,
+    "scanner_id": "egodesktop_gablation_011_surface_template_overlap_scanner_v1",
+    "token_jaccard_max_observed_cross_split": 0.30434782608695654,
+    "token_jaccard_threshold": 0.45
+  },
+  "prompt_text_policy": "prompts contain no expected D labels, no target verdicts, no heldout answers, and no creature-state fields",
+  "schema_version": "ego_desktop.joi_real_loop_g_ablation_prompt_packs.v0",
+  "splits": {
+    "calibration": {
+      "prompts": [
+        {
+          "independence_unit_id": "cal_family_001",
+          "prompt_id": "cal_001",
+          "prompt_text": "Calibration family. User context: calendar moved later. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "d555fe9d94aa9e92c2eab003c66dc041ce2d78e9ca6d2bbdd335d14758754f35",
+          "scenario_family": "cal_family_001",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "d555fe9d94aa9e92c2eab003c66dc041ce2d78e9ca6d2bbdd335d14758754f35"
+        },
+        {
+          "independence_unit_id": "cal_family_002",
+          "prompt_id": "cal_002",
+          "prompt_text": "Calibration sample. Visible situation: calendar feels cramped. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "f483adae50ead316186d9d0d638293073810fe4e76ad35275f2632e55749011e",
+          "scenario_family": "cal_family_002",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "f483adae50ead316186d9d0d638293073810fe4e76ad35275f2632e55749011e"
+        },
+        {
+          "independence_unit_id": "cal_family_003",
+          "prompt_id": "cal_003",
+          "prompt_text": "Calibration prompt. The user reports that calendar needs one quiet choice. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "026408d1bda4c2b4ad214c498ae766f2d8ce51465ea52c7849d8c3b05fba35d4",
+          "scenario_family": "cal_family_003",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "026408d1bda4c2b4ad214c498ae766f2d8ce51465ea52c7849d8c3b05fba35d4"
+        },
+        {
+          "independence_unit_id": "cal_family_004",
+          "prompt_id": "cal_004",
+          "prompt_text": "Calibration case. Current cue: calendar lost its order. Return one practical line without advice.",
+          "prompt_text_hash": "673c2ccd5c0be70a05154d4901f6cd1de73204fcdb3008852ab640d31c2e1f3e",
+          "scenario_family": "cal_family_004",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "673c2ccd5c0be70a05154d4901f6cd1de73204fcdb3008852ab640d31c2e1f3e"
+        },
+        {
+          "independence_unit_id": "cal_family_005",
+          "prompt_id": "cal_005",
+          "prompt_text": "Calibration sample. Visible situation: errand runs tighter than expected. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "c4fdccb7376ef43d6715ec0814c80d435530955f0cb59d4dbafaa9e72089286b",
+          "scenario_family": "cal_family_005",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "c4fdccb7376ef43d6715ec0814c80d435530955f0cb59d4dbafaa9e72089286b"
+        },
+        {
+          "independence_unit_id": "cal_family_006",
+          "prompt_id": "cal_006",
+          "prompt_text": "Calibration prompt. The user reports that errand feels uncertain. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "f99792002c88cc9a32eeb6579f8bad01b344d79aeaee3b8c99832aa32db510a8",
+          "scenario_family": "cal_family_006",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "f99792002c88cc9a32eeb6579f8bad01b344d79aeaee3b8c99832aa32db510a8"
+        },
+        {
+          "independence_unit_id": "cal_family_007",
+          "prompt_id": "cal_007",
+          "prompt_text": "Calibration case. Current cue: errand takes longer than planned. Return one practical line without advice.",
+          "prompt_text_hash": "b1b21d38d5550885223d10000aa99776ce32f8384c1b94b390b7444c51ba3a05",
+          "scenario_family": "cal_family_007",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "b1b21d38d5550885223d10000aa99776ce32f8384c1b94b390b7444c51ba3a05"
+        },
+        {
+          "independence_unit_id": "cal_family_008",
+          "prompt_id": "cal_008",
+          "prompt_text": "Calibration family. User context: errand has low energy. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "70ab67cbb1f5188e0b92fd4e50fdb3d20d35ea88d3ff083ce25af5b1def40438",
+          "scenario_family": "cal_family_008",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "70ab67cbb1f5188e0b92fd4e50fdb3d20d35ea88d3ff083ce25af5b1def40438"
+        },
+        {
+          "independence_unit_id": "cal_family_009",
+          "prompt_id": "cal_009",
+          "prompt_text": "Calibration prompt. The user reports that dinner changed because of rain. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "091f850a9cd0a2b52a0f4b2dd90034d6531053975bf75f2fa446f5ffe1ad3774",
+          "scenario_family": "cal_family_009",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "091f850a9cd0a2b52a0f4b2dd90034d6531053975bf75f2fa446f5ffe1ad3774"
+        },
+        {
+          "independence_unit_id": "cal_family_010",
+          "prompt_id": "cal_010",
+          "prompt_text": "Calibration case. Current cue: dinner overlaps lightly. Return one practical line without advice.",
+          "prompt_text_hash": "d8204a7516546d8c781c97486bf47a88d9424e981f973988d662aa474140a54c",
+          "scenario_family": "cal_family_010",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "d8204a7516546d8c781c97486bf47a88d9424e981f973988d662aa474140a54c"
+        },
+        {
+          "independence_unit_id": "cal_family_011",
+          "prompt_id": "cal_011",
+          "prompt_text": "Calibration family. User context: dinner is waiting on an update. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "4b39d8d753dcc5bbab2639f4a76fee40071e416d1b801ca07b6d317df0cea460",
+          "scenario_family": "cal_family_011",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "4b39d8d753dcc5bbab2639f4a76fee40071e416d1b801ca07b6d317df0cea460"
+        },
+        {
+          "independence_unit_id": "cal_family_012",
+          "prompt_id": "cal_012",
+          "prompt_text": "Calibration sample. Visible situation: dinner ends during another task. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "8f01283e2abce5a638ebdad04fff15a4e31313fec2494d02bcc02e36a84f2376",
+          "scenario_family": "cal_family_012",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "8f01283e2abce5a638ebdad04fff15a4e31313fec2494d02bcc02e36a84f2376"
+        },
+        {
+          "independence_unit_id": "cal_family_013",
+          "prompt_id": "cal_013",
+          "prompt_text": "Calibration case. Current cue: desk has an unclear window. Return one practical line without advice.",
+          "prompt_text_hash": "6577ec78c3a975d61ef63cac2e0a6249df3a225c03e5a7f3ec98081cf291d3a9",
+          "scenario_family": "cal_family_013",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "6577ec78c3a975d61ef63cac2e0a6249df3a225c03e5a7f3ec98081cf291d3a9"
+        },
+        {
+          "independence_unit_id": "cal_family_014",
+          "prompt_id": "cal_014",
+          "prompt_text": "Calibration family. User context: desk needs a short pause. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "19f132fc570945f8229aeede4aa8dadd73fc8ae7c6ac17350898bcf1f3237ef9",
+          "scenario_family": "cal_family_014",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "19f132fc570945f8229aeede4aa8dadd73fc8ae7c6ac17350898bcf1f3237ef9"
+        },
+        {
+          "independence_unit_id": "cal_family_015",
+          "prompt_id": "cal_015",
+          "prompt_text": "Calibration sample. Visible situation: desk helps focus return. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "05c2f48780fec488f36d039e976a7eae03a7ac7d5777d19fd2ea60b620999c05",
+          "scenario_family": "cal_family_015",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "05c2f48780fec488f36d039e976a7eae03a7ac7d5777d19fd2ea60b620999c05"
+        },
+        {
+          "independence_unit_id": "cal_family_016",
+          "prompt_id": "cal_016",
+          "prompt_text": "Calibration prompt. The user reports that desk needs softer brightness. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "79e15302bd896960792383334c92e723179431ad7691e58a0ff018099ebfca5e",
+          "scenario_family": "cal_family_016",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "79e15302bd896960792383334c92e723179431ad7691e58a0ff018099ebfca5e"
+        },
+        {
+          "independence_unit_id": "cal_family_017",
+          "prompt_id": "cal_017",
+          "prompt_text": "Calibration family. User context: budget sounds too stiff. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "ae2a6ad0e1adf0b9fa24e7f85b4655894e650958b6d12c2a8dc612dbe6f6ce11",
+          "scenario_family": "cal_family_017",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "ae2a6ad0e1adf0b9fa24e7f85b4655894e650958b6d12c2a8dc612dbe6f6ce11"
+        },
+        {
+          "independence_unit_id": "cal_family_018",
+          "prompt_id": "cal_018",
+          "prompt_text": "Calibration sample. Visible situation: budget needs a route. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "b92bb2f83290cb41c73a2246596b22d18761fbc1f5c7d541e34f1ea3cead940c",
+          "scenario_family": "cal_family_018",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "b92bb2f83290cb41c73a2246596b22d18761fbc1f5c7d541e34f1ea3cead940c"
+        },
+        {
+          "independence_unit_id": "cal_family_019",
+          "prompt_id": "cal_019",
+          "prompt_text": "Calibration prompt. The user reports that budget has mismatched parts. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "c3fa77230ebba0ad47f0c86ec71748dbf41086e713768e412661a0b1f3a72fbe",
+          "scenario_family": "cal_family_019",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "c3fa77230ebba0ad47f0c86ec71748dbf41086e713768e412661a0b1f3a72fbe"
+        },
+        {
+          "independence_unit_id": "cal_family_020",
+          "prompt_id": "cal_020",
+          "prompt_text": "Calibration case. Current cue: budget arrived earlier than expected. Return one practical line without advice.",
+          "prompt_text_hash": "91d8580b8061705c853a3822e72bca1f473516af4bf5f59a0adad8f58b3bb547",
+          "scenario_family": "cal_family_020",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "91d8580b8061705c853a3822e72bca1f473516af4bf5f59a0adad8f58b3bb547"
+        },
+        {
+          "independence_unit_id": "cal_family_021",
+          "prompt_id": "cal_021",
+          "prompt_text": "Calibration sample. Visible situation: message needs a page marker. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "f6c2b7a2781c5705f32b10888d9b62fae04ee9bd8d69f334c92bd7153be79dd7",
+          "scenario_family": "cal_family_021",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "f6c2b7a2781c5705f32b10888d9b62fae04ee9bd8d69f334c92bd7153be79dd7"
+        },
+        {
+          "independence_unit_id": "cal_family_022",
+          "prompt_id": "cal_022",
+          "prompt_text": "Calibration prompt. The user reports that message is stuck in a queue. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "2840b0866665c2abce1e5736f6b8900c302ee6111bf243eaf79f92a3faeef2ef",
+          "scenario_family": "cal_family_022",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "2840b0866665c2abce1e5736f6b8900c302ee6111bf243eaf79f92a3faeef2ef"
+        },
+        {
+          "independence_unit_id": "cal_family_023",
+          "prompt_id": "cal_023",
+          "prompt_text": "Calibration case. Current cue: message needs refilling. Return one practical line without advice.",
+          "prompt_text_hash": "c940efc9db58c21d6db57abb622bcd1ac90b33317fb12addd2aa7a5357729f40",
+          "scenario_family": "cal_family_023",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "c940efc9db58c21d6db57abb622bcd1ac90b33317fb12addd2aa7a5357729f40"
+        },
+        {
+          "independence_unit_id": "cal_family_024",
+          "prompt_id": "cal_024",
+          "prompt_text": "Calibration family. User context: message lets in glare. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "75efb8dfede05f682988f4e7a5b43103b2015e296b390e06e7f0b4321bf9ebf6",
+          "scenario_family": "cal_family_024",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "75efb8dfede05f682988f4e7a5b43103b2015e296b390e06e7f0b4321bf9ebf6"
+        },
+        {
+          "independence_unit_id": "cal_family_025",
+          "prompt_id": "cal_025",
+          "prompt_text": "Calibration prompt. The user reports that recipe has too many items. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "497bfdf240b2314d19c810fd37bf5fb260a0bb4eba47db6f47a85ef21a4dfdc2",
+          "scenario_family": "cal_family_025",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "497bfdf240b2314d19c810fd37bf5fb260a0bb4eba47db6f47a85ef21a4dfdc2"
+        },
+        {
+          "independence_unit_id": "cal_family_026",
+          "prompt_id": "cal_026",
+          "prompt_text": "Calibration case. Current cue: recipe is not where expected. Return one practical line without advice.",
+          "prompt_text_hash": "dac338d6cc8d82a33e588b8f83ed8d7f7efaf77162a21d7934f930da99319eb7",
+          "scenario_family": "cal_family_026",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "dac338d6cc8d82a33e588b8f83ed8d7f7efaf77162a21d7934f930da99319eb7"
+        },
+        {
+          "independence_unit_id": "cal_family_027",
+          "prompt_id": "cal_027",
+          "prompt_text": "Calibration family. User context: recipe feels loud today. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "fccaad9b38b1d848bd42136bc9b9ec6581829718e37e82caa62f4abc969cb98b",
+          "scenario_family": "cal_family_027",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "fccaad9b38b1d848bd42136bc9b9ec6581829718e37e82caa62f4abc969cb98b"
+        },
+        {
+          "independence_unit_id": "cal_family_028",
+          "prompt_id": "cal_028",
+          "prompt_text": "Calibration sample. Visible situation: recipe should stay brief. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "65c752721cce6d714ed5f281f4179ed8628201b059b370b09d2c99589e3afb35",
+          "scenario_family": "cal_family_028",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "65c752721cce6d714ed5f281f4179ed8628201b059b370b09d2c99589e3afb35"
+        },
+        {
+          "independence_unit_id": "cal_family_029",
+          "prompt_id": "cal_029",
+          "prompt_text": "Calibration case. Current cue: study has limited space. Return one practical line without advice.",
+          "prompt_text_hash": "03e802bcac1438f3f10a527e6f99d61c17e74927bb2d671fc94563c42bf12360",
+          "scenario_family": "cal_family_029",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "03e802bcac1438f3f10a527e6f99d61c17e74927bb2d671fc94563c42bf12360"
+        },
+        {
+          "independence_unit_id": "cal_family_030",
+          "prompt_id": "cal_030",
+          "prompt_text": "Calibration family. User context: study needs a clean label. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "84a9521df95d8ecb7b6cd076c70e380b18fe18ae676f42dc77dd7afd778ce9fa",
+          "scenario_family": "cal_family_030",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "84a9521df95d8ecb7b6cd076c70e380b18fe18ae676f42dc77dd7afd778ce9fa"
+        },
+        {
+          "independence_unit_id": "cal_family_031",
+          "prompt_id": "cal_031",
+          "prompt_text": "Calibration sample. Visible situation: study has too many columns. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "d85b233dc1153147e590886be4c57c17235820914c5ee2b425e23d97f1697590",
+          "scenario_family": "cal_family_031",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "d85b233dc1153147e590886be4c57c17235820914c5ee2b425e23d97f1697590"
+        },
+        {
+          "independence_unit_id": "cal_family_032",
+          "prompt_id": "cal_032",
+          "prompt_text": "Calibration prompt. The user reports that study is hard to close. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "1b34e2c9926431351f7fa346b7711703420df10ec75a8b6d36d448ffe49ed3f9",
+          "scenario_family": "cal_family_032",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "1b34e2c9926431351f7fa346b7711703420df10ec75a8b6d36d448ffe49ed3f9"
+        },
+        {
+          "independence_unit_id": "cal_family_033",
+          "prompt_id": "cal_033",
+          "prompt_text": "Calibration family. User context: commute needs a gentle reminder. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "65f0b1173e9270af0f1741da3fca21d79a109268ec6404e96354762722b3581c",
+          "scenario_family": "cal_family_033",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "65f0b1173e9270af0f1741da3fca21d79a109268ec6404e96354762722b3581c"
+        },
+        {
+          "independence_unit_id": "cal_family_034",
+          "prompt_id": "cal_034",
+          "prompt_text": "Calibration sample. Visible situation: commute changes the plan. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "9831d30a77a899018cb2b8747f8f43b6153a6d85d39a7fe2f634014895a1dcf0",
+          "scenario_family": "cal_family_034",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "9831d30a77a899018cb2b8747f8f43b6153a6d85d39a7fe2f634014895a1dcf0"
+        },
+        {
+          "independence_unit_id": "cal_family_035",
+          "prompt_id": "cal_035",
+          "prompt_text": "Calibration prompt. The user reports that commute needs one saved place. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "9d8990dd0fabe47ceb61178534e6fb5f6082fd0838629c9cb5a49ff859576708",
+          "scenario_family": "cal_family_035",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "9d8990dd0fabe47ceb61178534e6fb5f6082fd0838629c9cb5a49ff859576708"
+        },
+        {
+          "independence_unit_id": "cal_family_036",
+          "prompt_id": "cal_036",
+          "prompt_text": "Calibration case. Current cue: commute needs a clearer name. Return one practical line without advice.",
+          "prompt_text_hash": "9eb71073230ecff0ff02a334e6c427d5ace684328e49c1ae2840c0f9cef33645",
+          "scenario_family": "cal_family_036",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "9eb71073230ecff0ff02a334e6c427d5ace684328e49c1ae2840c0f9cef33645"
+        },
+        {
+          "independence_unit_id": "cal_family_037",
+          "prompt_id": "cal_037",
+          "prompt_text": "Calibration sample. Visible situation: meeting has crowded items. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "8f192353257adaaccacb47040fa5414b1cde93bb84dc846a22e6d6396a1cf501",
+          "scenario_family": "cal_family_037",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "8f192353257adaaccacb47040fa5414b1cde93bb84dc846a22e6d6396a1cf501"
+        },
+        {
+          "independence_unit_id": "cal_family_038",
+          "prompt_id": "cal_038",
+          "prompt_text": "Calibration prompt. The user reports that meeting arrives at an odd time. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "b172a860a220c5dc515cd251b3e49f837bc266348c2c156e8805f1196ab4a9e5",
+          "scenario_family": "cal_family_038",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "b172a860a220c5dc515cd251b3e49f837bc266348c2c156e8805f1196ab4a9e5"
+        },
+        {
+          "independence_unit_id": "cal_family_039",
+          "prompt_id": "cal_039",
+          "prompt_text": "Calibration case. Current cue: meeting goes off too early. Return one practical line without advice.",
+          "prompt_text_hash": "61ea52e34eb9c9bb3dcdaeb557d68b476cf5098461ba45acc171c051a571127c",
+          "scenario_family": "cal_family_039",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "61ea52e34eb9c9bb3dcdaeb557d68b476cf5098461ba45acc171c051a571127c"
+        },
+        {
+          "independence_unit_id": "cal_family_040",
+          "prompt_id": "cal_040",
+          "prompt_text": "Calibration family. User context: meeting needs a posture reset. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "9de90301f2bef0f7ca4872883a4a66a0600da196e4db52945cfeef4a897a5f53",
+          "scenario_family": "cal_family_040",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "9de90301f2bef0f7ca4872883a4a66a0600da196e4db52945cfeef4a897a5f53"
+        },
+        {
+          "independence_unit_id": "cal_family_041",
+          "prompt_id": "cal_041",
+          "prompt_text": "Calibration prompt. The user reports that software moved later. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "955063e44f520ab3c1425effec2d7ab9b5c0ad75b072c431a71c4a2eea795a67",
+          "scenario_family": "cal_family_041",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "955063e44f520ab3c1425effec2d7ab9b5c0ad75b072c431a71c4a2eea795a67"
+        },
+        {
+          "independence_unit_id": "cal_family_042",
+          "prompt_id": "cal_042",
+          "prompt_text": "Calibration case. Current cue: software feels cramped. Return one practical line without advice.",
+          "prompt_text_hash": "7d12349db7847d969b28e33f6f69cc7b3e8d3927924d2f8dcccf541d5de9ce83",
+          "scenario_family": "cal_family_042",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "7d12349db7847d969b28e33f6f69cc7b3e8d3927924d2f8dcccf541d5de9ce83"
+        },
+        {
+          "independence_unit_id": "cal_family_043",
+          "prompt_id": "cal_043",
+          "prompt_text": "Calibration family. User context: software needs one quiet choice. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "c8d8ded104cfd426ea73360571b715fe243a874eeedcb75d17a574f30f8d213e",
+          "scenario_family": "cal_family_043",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "c8d8ded104cfd426ea73360571b715fe243a874eeedcb75d17a574f30f8d213e"
+        },
+        {
+          "independence_unit_id": "cal_family_044",
+          "prompt_id": "cal_044",
+          "prompt_text": "Calibration sample. Visible situation: software lost its order. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "056704c9213bce406def4d8f55659013a3525c67a5ea769c64371ca267a438a8",
+          "scenario_family": "cal_family_044",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "056704c9213bce406def4d8f55659013a3525c67a5ea769c64371ca267a438a8"
+        },
+        {
+          "independence_unit_id": "cal_family_045",
+          "prompt_id": "cal_045",
+          "prompt_text": "Calibration case. Current cue: laundry runs tighter than expected. Return one practical line without advice.",
+          "prompt_text_hash": "3b1f4cd2dd1317d2a9d965ed65dfa9472de75beeb71ff49fe2bfe32d865546ed",
+          "scenario_family": "cal_family_045",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "3b1f4cd2dd1317d2a9d965ed65dfa9472de75beeb71ff49fe2bfe32d865546ed"
+        },
+        {
+          "independence_unit_id": "cal_family_046",
+          "prompt_id": "cal_046",
+          "prompt_text": "Calibration family. User context: laundry feels uncertain. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "c06564ea247ba9ef574d03614bfe7314af6db54bace394742c3d3b3a723530ed",
+          "scenario_family": "cal_family_046",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "c06564ea247ba9ef574d03614bfe7314af6db54bace394742c3d3b3a723530ed"
+        },
+        {
+          "independence_unit_id": "cal_family_047",
+          "prompt_id": "cal_047",
+          "prompt_text": "Calibration sample. Visible situation: laundry takes longer than planned. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "2b762b03123d85be05e025fb7188e42a1856f7920ae7863b4ee3a94417e96ce9",
+          "scenario_family": "cal_family_047",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "2b762b03123d85be05e025fb7188e42a1856f7920ae7863b4ee3a94417e96ce9"
+        },
+        {
+          "independence_unit_id": "cal_family_048",
+          "prompt_id": "cal_048",
+          "prompt_text": "Calibration prompt. The user reports that laundry has low energy. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "30ad86d7adca15f3116daa5cbec1e442dca6f47e56cc750870976d000f972c79",
+          "scenario_family": "cal_family_048",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "30ad86d7adca15f3116daa5cbec1e442dca6f47e56cc750870976d000f972c79"
+        },
+        {
+          "independence_unit_id": "cal_family_049",
+          "prompt_id": "cal_049",
+          "prompt_text": "Calibration family. User context: delivery changed because of rain. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "ecaa145136aa365a8667c60953d710f6811cf23b3235762540c48aa8882bfcf9",
+          "scenario_family": "cal_family_049",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "ecaa145136aa365a8667c60953d710f6811cf23b3235762540c48aa8882bfcf9"
+        },
+        {
+          "independence_unit_id": "cal_family_050",
+          "prompt_id": "cal_050",
+          "prompt_text": "Calibration sample. Visible situation: delivery overlaps lightly. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "11ee89b7aa7a34c06b9f06dc4e8cef32671e48acdcf0db2729cb0d6b4c0f225a",
+          "scenario_family": "cal_family_050",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "11ee89b7aa7a34c06b9f06dc4e8cef32671e48acdcf0db2729cb0d6b4c0f225a"
+        },
+        {
+          "independence_unit_id": "cal_family_051",
+          "prompt_id": "cal_051",
+          "prompt_text": "Calibration prompt. The user reports that delivery is waiting on an update. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "02f036c0664903216f23bd51558ff9a10152d4cd0060c27f87670bf8d23b57d5",
+          "scenario_family": "cal_family_051",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "02f036c0664903216f23bd51558ff9a10152d4cd0060c27f87670bf8d23b57d5"
+        },
+        {
+          "independence_unit_id": "cal_family_052",
+          "prompt_id": "cal_052",
+          "prompt_text": "Calibration case. Current cue: delivery ends during another task. Return one practical line without advice.",
+          "prompt_text_hash": "2593c1d937bf6535bdfafc269cee733f5137e03c2d8e706d3a97d7d69cb70c21",
+          "scenario_family": "cal_family_052",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "2593c1d937bf6535bdfafc269cee733f5137e03c2d8e706d3a97d7d69cb70c21"
+        },
+        {
+          "independence_unit_id": "cal_family_053",
+          "prompt_id": "cal_053",
+          "prompt_text": "Calibration sample. Visible situation: rest has an unclear window. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "81ab6c64aea7924e70619c3c116c56e3c0ea2a1869a2d16df0f078726cab82bb",
+          "scenario_family": "cal_family_053",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "81ab6c64aea7924e70619c3c116c56e3c0ea2a1869a2d16df0f078726cab82bb"
+        },
+        {
+          "independence_unit_id": "cal_family_054",
+          "prompt_id": "cal_054",
+          "prompt_text": "Calibration prompt. The user reports that rest needs a short pause. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "6bd297553fde7971dba7d315fdf01d916403de053c37036dc136bf3bed8b90e2",
+          "scenario_family": "cal_family_054",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "6bd297553fde7971dba7d315fdf01d916403de053c37036dc136bf3bed8b90e2"
+        },
+        {
+          "independence_unit_id": "cal_family_055",
+          "prompt_id": "cal_055",
+          "prompt_text": "Calibration case. Current cue: rest helps focus return. Return one practical line without advice.",
+          "prompt_text_hash": "6fa4b4b416a3b00cdef08f87751db4c672107efabf022845bd2f338405000636",
+          "scenario_family": "cal_family_055",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "6fa4b4b416a3b00cdef08f87751db4c672107efabf022845bd2f338405000636"
+        },
+        {
+          "independence_unit_id": "cal_family_056",
+          "prompt_id": "cal_056",
+          "prompt_text": "Calibration family. User context: rest needs softer brightness. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "1cb4a48d7ee1e51c15b6a9283fa23c41e1d48238d922029ccfa715b3284b4497",
+          "scenario_family": "cal_family_056",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "1cb4a48d7ee1e51c15b6a9283fa23c41e1d48238d922029ccfa715b3284b4497"
+        },
+        {
+          "independence_unit_id": "cal_family_057",
+          "prompt_id": "cal_057",
+          "prompt_text": "Calibration prompt. The user reports that music sounds too stiff. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "45d8879260fa4ff1bbc2edd1bb93c7f1e713444910d08ccbb13524ab60d436cc",
+          "scenario_family": "cal_family_057",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "45d8879260fa4ff1bbc2edd1bb93c7f1e713444910d08ccbb13524ab60d436cc"
+        },
+        {
+          "independence_unit_id": "cal_family_058",
+          "prompt_id": "cal_058",
+          "prompt_text": "Calibration case. Current cue: music needs a route. Return one practical line without advice.",
+          "prompt_text_hash": "8148057e133992fde1bdb23dbc3cff0efd93af4c326b09c08180c0b90fa8c15d",
+          "scenario_family": "cal_family_058",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "8148057e133992fde1bdb23dbc3cff0efd93af4c326b09c08180c0b90fa8c15d"
+        },
+        {
+          "independence_unit_id": "cal_family_059",
+          "prompt_id": "cal_059",
+          "prompt_text": "Calibration family. User context: music has mismatched parts. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "3adddeea6e268d46c05007c81ba159b7cf1ef113513293eef8faf4a364323268",
+          "scenario_family": "cal_family_059",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "3adddeea6e268d46c05007c81ba159b7cf1ef113513293eef8faf4a364323268"
+        },
+        {
+          "independence_unit_id": "cal_family_060",
+          "prompt_id": "cal_060",
+          "prompt_text": "Calibration sample. Visible situation: music arrived earlier than expected. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "14d30e2422154901559567c7f877917171525b638327293ec93427b7f983bf65",
+          "scenario_family": "cal_family_060",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "14d30e2422154901559567c7f877917171525b638327293ec93427b7f983bf65"
+        },
+        {
+          "independence_unit_id": "cal_family_061",
+          "prompt_id": "cal_061",
+          "prompt_text": "Calibration case. Current cue: lighting needs a page marker. Return one practical line without advice.",
+          "prompt_text_hash": "1d3a6799f6ed75a0d4ffce4bb254ce7d88a73fc2d6e5866a0526da6eb93a84e8",
+          "scenario_family": "cal_family_061",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "1d3a6799f6ed75a0d4ffce4bb254ce7d88a73fc2d6e5866a0526da6eb93a84e8"
+        },
+        {
+          "independence_unit_id": "cal_family_062",
+          "prompt_id": "cal_062",
+          "prompt_text": "Calibration family. User context: lighting is stuck in a queue. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "4dd064102de6a26baf4de230e8bf678396a05d8d068a2f7587b1aa9700e0d547",
+          "scenario_family": "cal_family_062",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "4dd064102de6a26baf4de230e8bf678396a05d8d068a2f7587b1aa9700e0d547"
+        },
+        {
+          "independence_unit_id": "cal_family_063",
+          "prompt_id": "cal_063",
+          "prompt_text": "Calibration sample. Visible situation: lighting needs refilling. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "3949a4499ecf106bb2cd5f2873156ba9673c219d20abe17247204177dcd6d7a1",
+          "scenario_family": "cal_family_063",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "3949a4499ecf106bb2cd5f2873156ba9673c219d20abe17247204177dcd6d7a1"
+        },
+        {
+          "independence_unit_id": "cal_family_064",
+          "prompt_id": "cal_064",
+          "prompt_text": "Calibration prompt. The user reports that lighting lets in glare. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "df379389d06c3bfcbd2f8f67667c86b23bfe5b1c7bd896bac92d040cee25f8e2",
+          "scenario_family": "cal_family_064",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "df379389d06c3bfcbd2f8f67667c86b23bfe5b1c7bd896bac92d040cee25f8e2"
+        },
+        {
+          "independence_unit_id": "cal_family_065",
+          "prompt_id": "cal_065",
+          "prompt_text": "Calibration family. User context: email has too many items. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "0a4a2575964c3032d5de27bd20663f5736d0ff3f41f1aad503bbf34051aac0d0",
+          "scenario_family": "cal_family_065",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "0a4a2575964c3032d5de27bd20663f5736d0ff3f41f1aad503bbf34051aac0d0"
+        },
+        {
+          "independence_unit_id": "cal_family_066",
+          "prompt_id": "cal_066",
+          "prompt_text": "Calibration sample. Visible situation: email is not where expected. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "0e352c3ff85024aae46fc9b777d3c4e435b2d154a9116cc4b3b6dcb0dc155885",
+          "scenario_family": "cal_family_066",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "0e352c3ff85024aae46fc9b777d3c4e435b2d154a9116cc4b3b6dcb0dc155885"
+        },
+        {
+          "independence_unit_id": "cal_family_067",
+          "prompt_id": "cal_067",
+          "prompt_text": "Calibration prompt. The user reports that email feels loud today. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "8ecf7ab070a0875d1c0bcec7768d18e50e5df212534a1d9a34a1ac308192016d",
+          "scenario_family": "cal_family_067",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "8ecf7ab070a0875d1c0bcec7768d18e50e5df212534a1d9a34a1ac308192016d"
+        },
+        {
+          "independence_unit_id": "cal_family_068",
+          "prompt_id": "cal_068",
+          "prompt_text": "Calibration case. Current cue: email should stay brief. Return one practical line without advice.",
+          "prompt_text_hash": "a4cb4e777dbe933a20ca320e0f86de2b848bc4164f2d5cc196c4f42b6fbcbead",
+          "scenario_family": "cal_family_068",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "a4cb4e777dbe933a20ca320e0f86de2b848bc4164f2d5cc196c4f42b6fbcbead"
+        },
+        {
+          "independence_unit_id": "cal_family_069",
+          "prompt_id": "cal_069",
+          "prompt_text": "Calibration sample. Visible situation: weekend has limited space. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "8e36e3d001700ed9e852ba601a95b23494e7113a52fb56129e9de880c9b05bd3",
+          "scenario_family": "cal_family_069",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "8e36e3d001700ed9e852ba601a95b23494e7113a52fb56129e9de880c9b05bd3"
+        },
+        {
+          "independence_unit_id": "cal_family_070",
+          "prompt_id": "cal_070",
+          "prompt_text": "Calibration prompt. The user reports that weekend needs a clean label. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "d1f601d9aa091a8155c0c0e7bf14e7921917d974ed3bd9417712dde6f833c88c",
+          "scenario_family": "cal_family_070",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "d1f601d9aa091a8155c0c0e7bf14e7921917d974ed3bd9417712dde6f833c88c"
+        },
+        {
+          "independence_unit_id": "cal_family_071",
+          "prompt_id": "cal_071",
+          "prompt_text": "Calibration case. Current cue: weekend has too many columns. Return one practical line without advice.",
+          "prompt_text_hash": "fcaaea4ddf611858a477a56dce688263a792287084bc884b929f403c05f4ffd8",
+          "scenario_family": "cal_family_071",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "fcaaea4ddf611858a477a56dce688263a792287084bc884b929f403c05f4ffd8"
+        },
+        {
+          "independence_unit_id": "cal_family_072",
+          "prompt_id": "cal_072",
+          "prompt_text": "Calibration family. User context: weekend is hard to close. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "6bf5b55333ef0553bd57f68f3c5f6bccdcd75891c13eb580f6f862fde4c8ac36",
+          "scenario_family": "cal_family_072",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "6bf5b55333ef0553bd57f68f3c5f6bccdcd75891c13eb580f6f862fde4c8ac36"
+        },
+        {
+          "independence_unit_id": "cal_family_073",
+          "prompt_id": "cal_073",
+          "prompt_text": "Calibration prompt. The user reports that meal needs a gentle reminder. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "dafeacc5a3ada77699280d30189d116b0a42be30634f7aab7146db9e7876baa1",
+          "scenario_family": "cal_family_073",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "dafeacc5a3ada77699280d30189d116b0a42be30634f7aab7146db9e7876baa1"
+        },
+        {
+          "independence_unit_id": "cal_family_074",
+          "prompt_id": "cal_074",
+          "prompt_text": "Calibration case. Current cue: meal changes the plan. Return one practical line without advice.",
+          "prompt_text_hash": "37176b911fe3dd961e3ae9f644c13e9e98a66b755c00500f2bbdeeb56ba30c84",
+          "scenario_family": "cal_family_074",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "37176b911fe3dd961e3ae9f644c13e9e98a66b755c00500f2bbdeeb56ba30c84"
+        },
+        {
+          "independence_unit_id": "cal_family_075",
+          "prompt_id": "cal_075",
+          "prompt_text": "Calibration family. User context: meal needs one saved place. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "7078e7f20cc8ef11b84a92fc88972502956476ee49c9f7d9683bdf5dd1926a89",
+          "scenario_family": "cal_family_075",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "7078e7f20cc8ef11b84a92fc88972502956476ee49c9f7d9683bdf5dd1926a89"
+        },
+        {
+          "independence_unit_id": "cal_family_076",
+          "prompt_id": "cal_076",
+          "prompt_text": "Calibration sample. Visible situation: meal needs a clearer name. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "50ef8977ce73cb11d91868df02794c24b8047452ea94b73349a632d39b4e60eb",
+          "scenario_family": "cal_family_076",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "50ef8977ce73cb11d91868df02794c24b8047452ea94b73349a632d39b4e60eb"
+        },
+        {
+          "independence_unit_id": "cal_family_077",
+          "prompt_id": "cal_077",
+          "prompt_text": "Calibration case. Current cue: appointment has crowded items. Return one practical line without advice.",
+          "prompt_text_hash": "943c6142f67e156b523100b17da390acfb7b968be3d508e7743b8109a26a5926",
+          "scenario_family": "cal_family_077",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "943c6142f67e156b523100b17da390acfb7b968be3d508e7743b8109a26a5926"
+        },
+        {
+          "independence_unit_id": "cal_family_078",
+          "prompt_id": "cal_078",
+          "prompt_text": "Calibration family. User context: appointment arrives at an odd time. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "8cc24329189118b59a8c3d267e539d27bbf3fc0392cc9025e9330893092d4063",
+          "scenario_family": "cal_family_078",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "8cc24329189118b59a8c3d267e539d27bbf3fc0392cc9025e9330893092d4063"
+        },
+        {
+          "independence_unit_id": "cal_family_079",
+          "prompt_id": "cal_079",
+          "prompt_text": "Calibration sample. Visible situation: appointment goes off too early. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "96e9821eef5f26bdb5f39ccb23a0c223058cccaa8d34134a93c0665ac90e6186",
+          "scenario_family": "cal_family_079",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "96e9821eef5f26bdb5f39ccb23a0c223058cccaa8d34134a93c0665ac90e6186"
+        },
+        {
+          "independence_unit_id": "cal_family_080",
+          "prompt_id": "cal_080",
+          "prompt_text": "Calibration prompt. The user reports that appointment needs a posture reset. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "f4d915af2e9dc75dbcc2d6faa1d3a2b8afc86972d0b544c19a0b7c19a18865bf",
+          "scenario_family": "cal_family_080",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "f4d915af2e9dc75dbcc2d6faa1d3a2b8afc86972d0b544c19a0b7c19a18865bf"
+        },
+        {
+          "independence_unit_id": "cal_family_081",
+          "prompt_id": "cal_081",
+          "prompt_text": "Calibration family. User context: notebook moved later. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "03e0a64a4c4e3030c2d612ef32d698058fd0561adf6003fa6ae9b46f03d5db09",
+          "scenario_family": "cal_family_081",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "03e0a64a4c4e3030c2d612ef32d698058fd0561adf6003fa6ae9b46f03d5db09"
+        },
+        {
+          "independence_unit_id": "cal_family_082",
+          "prompt_id": "cal_082",
+          "prompt_text": "Calibration sample. Visible situation: notebook feels cramped. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "0221ee628b7f04b4a495f5405fe33c9be9c87105f1c20438fdce202b25512e46",
+          "scenario_family": "cal_family_082",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "0221ee628b7f04b4a495f5405fe33c9be9c87105f1c20438fdce202b25512e46"
+        },
+        {
+          "independence_unit_id": "cal_family_083",
+          "prompt_id": "cal_083",
+          "prompt_text": "Calibration prompt. The user reports that notebook needs one quiet choice. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "2da7d0bd4b4ac5aa0e50acfd36fbb63aba1e7b908b8469b5066654eebd39ca66",
+          "scenario_family": "cal_family_083",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "2da7d0bd4b4ac5aa0e50acfd36fbb63aba1e7b908b8469b5066654eebd39ca66"
+        },
+        {
+          "independence_unit_id": "cal_family_084",
+          "prompt_id": "cal_084",
+          "prompt_text": "Calibration case. Current cue: notebook lost its order. Return one practical line without advice.",
+          "prompt_text_hash": "8c5615a7b27a7062b44e824c47eb4e91ab0989b93fdba4afc047fa25f2d14536",
+          "scenario_family": "cal_family_084",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "8c5615a7b27a7062b44e824c47eb4e91ab0989b93fdba4afc047fa25f2d14536"
+        },
+        {
+          "independence_unit_id": "cal_family_085",
+          "prompt_id": "cal_085",
+          "prompt_text": "Calibration sample. Visible situation: printer runs tighter than expected. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "18eaf6973f79fe38683602cec3e3616755b515a39a770b6eb894f0dfdb584a33",
+          "scenario_family": "cal_family_085",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "18eaf6973f79fe38683602cec3e3616755b515a39a770b6eb894f0dfdb584a33"
+        },
+        {
+          "independence_unit_id": "cal_family_086",
+          "prompt_id": "cal_086",
+          "prompt_text": "Calibration prompt. The user reports that printer feels uncertain. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "eea115f4dd936ff5fef1a0246ee71ec1f054b4f42bf328494947873a60f1fa6b",
+          "scenario_family": "cal_family_086",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "eea115f4dd936ff5fef1a0246ee71ec1f054b4f42bf328494947873a60f1fa6b"
+        },
+        {
+          "independence_unit_id": "cal_family_087",
+          "prompt_id": "cal_087",
+          "prompt_text": "Calibration case. Current cue: printer takes longer than planned. Return one practical line without advice.",
+          "prompt_text_hash": "30ebc9125620df26e7e054d27c2ce4c26c3592a3cc6d13ea16ff9400db5d921f",
+          "scenario_family": "cal_family_087",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "30ebc9125620df26e7e054d27c2ce4c26c3592a3cc6d13ea16ff9400db5d921f"
+        },
+        {
+          "independence_unit_id": "cal_family_088",
+          "prompt_id": "cal_088",
+          "prompt_text": "Calibration family. User context: printer has low energy. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "793f81e954fae3bce040e714ef231a313a1a72295abfa849e0681bffd32b4b19",
+          "scenario_family": "cal_family_088",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "793f81e954fae3bce040e714ef231a313a1a72295abfa849e0681bffd32b4b19"
+        },
+        {
+          "independence_unit_id": "cal_family_089",
+          "prompt_id": "cal_089",
+          "prompt_text": "Calibration prompt. The user reports that water bottle changed because of rain. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "f16d3fd3bdc6426012c34d6eb49304955b56f5f202f611a5d1468a9b55c565a8",
+          "scenario_family": "cal_family_089",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "f16d3fd3bdc6426012c34d6eb49304955b56f5f202f611a5d1468a9b55c565a8"
+        },
+        {
+          "independence_unit_id": "cal_family_090",
+          "prompt_id": "cal_090",
+          "prompt_text": "Calibration case. Current cue: water bottle overlaps lightly. Return one practical line without advice.",
+          "prompt_text_hash": "4f9a083ead0b8a45e981b29471fe2339de76b0052a01a594ec1c131e8be0d6aa",
+          "scenario_family": "cal_family_090",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "4f9a083ead0b8a45e981b29471fe2339de76b0052a01a594ec1c131e8be0d6aa"
+        },
+        {
+          "independence_unit_id": "cal_family_091",
+          "prompt_id": "cal_091",
+          "prompt_text": "Calibration family. User context: water bottle is waiting on an update. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "c9f64cae338388a56306123bc2a75f52ab34cf6ddf609ad1d709202003637e62",
+          "scenario_family": "cal_family_091",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "c9f64cae338388a56306123bc2a75f52ab34cf6ddf609ad1d709202003637e62"
+        },
+        {
+          "independence_unit_id": "cal_family_092",
+          "prompt_id": "cal_092",
+          "prompt_text": "Calibration sample. Visible situation: water bottle ends during another task. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "0e67750b6790d0d2fb552fb9209e59e1e420e18f6eaf18f7a6064f8ba1dd3564",
+          "scenario_family": "cal_family_092",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "0e67750b6790d0d2fb552fb9209e59e1e420e18f6eaf18f7a6064f8ba1dd3564"
+        },
+        {
+          "independence_unit_id": "cal_family_093",
+          "prompt_id": "cal_093",
+          "prompt_text": "Calibration case. Current cue: window shade has an unclear window. Return one practical line without advice.",
+          "prompt_text_hash": "e566b82186e4293e426eb62abb95b7392c6ff491632349fa710218ccfcd4460b",
+          "scenario_family": "cal_family_093",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "e566b82186e4293e426eb62abb95b7392c6ff491632349fa710218ccfcd4460b"
+        },
+        {
+          "independence_unit_id": "cal_family_094",
+          "prompt_id": "cal_094",
+          "prompt_text": "Calibration family. User context: window shade needs a short pause. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "cf813bf06cb594f312b6a5857ace51d5b2cece4d4a893e76f1ee2eb87d1d64b9",
+          "scenario_family": "cal_family_094",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "cf813bf06cb594f312b6a5857ace51d5b2cece4d4a893e76f1ee2eb87d1d64b9"
+        },
+        {
+          "independence_unit_id": "cal_family_095",
+          "prompt_id": "cal_095",
+          "prompt_text": "Calibration sample. Visible situation: window shade helps focus return. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "03f3f06930b40bad06c134b09ac2eacc6978e161facd660065f23832eb4b4a31",
+          "scenario_family": "cal_family_095",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "03f3f06930b40bad06c134b09ac2eacc6978e161facd660065f23832eb4b4a31"
+        },
+        {
+          "independence_unit_id": "cal_family_096",
+          "prompt_id": "cal_096",
+          "prompt_text": "Calibration prompt. The user reports that window shade needs softer brightness. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "b684c16324dedee5b3193b9ea6d3a8eb7731a9ebb970c771c7b5c11004a720a7",
+          "scenario_family": "cal_family_096",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "b684c16324dedee5b3193b9ea6d3a8eb7731a9ebb970c771c7b5c11004a720a7"
+        },
+        {
+          "independence_unit_id": "cal_family_097",
+          "prompt_id": "cal_097",
+          "prompt_text": "Calibration family. User context: checklist sounds too stiff. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "3761156c5b4b73ae74010e316522d6f12b7e39a2296a778f68b994f3d5379090",
+          "scenario_family": "cal_family_097",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "3761156c5b4b73ae74010e316522d6f12b7e39a2296a778f68b994f3d5379090"
+        },
+        {
+          "independence_unit_id": "cal_family_098",
+          "prompt_id": "cal_098",
+          "prompt_text": "Calibration sample. Visible situation: checklist needs a route. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "42872712e4b0a065c8753d4c31eae0723d0d7ed4128071694024fc610cd75fbd",
+          "scenario_family": "cal_family_098",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "42872712e4b0a065c8753d4c31eae0723d0d7ed4128071694024fc610cd75fbd"
+        },
+        {
+          "independence_unit_id": "cal_family_099",
+          "prompt_id": "cal_099",
+          "prompt_text": "Calibration prompt. The user reports that checklist has mismatched parts. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "6d208b0c486113794acaa0ab9fe9a54605bf3f6c5a8aaa963e2f7555e9dd5dcb",
+          "scenario_family": "cal_family_099",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "6d208b0c486113794acaa0ab9fe9a54605bf3f6c5a8aaa963e2f7555e9dd5dcb"
+        },
+        {
+          "independence_unit_id": "cal_family_100",
+          "prompt_id": "cal_100",
+          "prompt_text": "Calibration case. Current cue: checklist arrived earlier than expected. Return one practical line without advice.",
+          "prompt_text_hash": "7e2cf2d3550889fead4d3007a92e8336ddd94d3e1c97a51c7c241898ba582d4c",
+          "scenario_family": "cal_family_100",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "7e2cf2d3550889fead4d3007a92e8336ddd94d3e1c97a51c7c241898ba582d4c"
+        },
+        {
+          "independence_unit_id": "cal_family_101",
+          "prompt_id": "cal_101",
+          "prompt_text": "Calibration sample. Visible situation: charger needs a page marker. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "c1f0ccf9f672b3e976f1fbe209734d01fe448272a16f1dda5001c7bb5d193f13",
+          "scenario_family": "cal_family_101",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "c1f0ccf9f672b3e976f1fbe209734d01fe448272a16f1dda5001c7bb5d193f13"
+        },
+        {
+          "independence_unit_id": "cal_family_102",
+          "prompt_id": "cal_102",
+          "prompt_text": "Calibration prompt. The user reports that charger is stuck in a queue. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "e886a7190f65b9994a8d48113bb94c754eb10cf1ad76774abc21dd0d49530f3a",
+          "scenario_family": "cal_family_102",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "e886a7190f65b9994a8d48113bb94c754eb10cf1ad76774abc21dd0d49530f3a"
+        },
+        {
+          "independence_unit_id": "cal_family_103",
+          "prompt_id": "cal_103",
+          "prompt_text": "Calibration case. Current cue: charger needs refilling. Return one practical line without advice.",
+          "prompt_text_hash": "7298838c009edf8da8e726b5f61c447924660c4a1025896310d47ee61f132382",
+          "scenario_family": "cal_family_103",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "7298838c009edf8da8e726b5f61c447924660c4a1025896310d47ee61f132382"
+        },
+        {
+          "independence_unit_id": "cal_family_104",
+          "prompt_id": "cal_104",
+          "prompt_text": "Calibration family. User context: charger lets in glare. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "43610004f45114528e43d39e2859ca316c1b1c43202c8822624929b57c00880a",
+          "scenario_family": "cal_family_104",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "43610004f45114528e43d39e2859ca316c1b1c43202c8822624929b57c00880a"
+        },
+        {
+          "independence_unit_id": "cal_family_105",
+          "prompt_id": "cal_105",
+          "prompt_text": "Calibration prompt. The user reports that keyboard has too many items. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "bd1a32ba720c8f033e6ee8e3978b3a1018870848a5f5ea9272ca3fd13e68b860",
+          "scenario_family": "cal_family_105",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "bd1a32ba720c8f033e6ee8e3978b3a1018870848a5f5ea9272ca3fd13e68b860"
+        },
+        {
+          "independence_unit_id": "cal_family_106",
+          "prompt_id": "cal_106",
+          "prompt_text": "Calibration case. Current cue: keyboard is not where expected. Return one practical line without advice.",
+          "prompt_text_hash": "0a443d8d8a8b8af7d6946ae0773c1d02fc68985fe71c316c65682c4cd3d0310c",
+          "scenario_family": "cal_family_106",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "0a443d8d8a8b8af7d6946ae0773c1d02fc68985fe71c316c65682c4cd3d0310c"
+        },
+        {
+          "independence_unit_id": "cal_family_107",
+          "prompt_id": "cal_107",
+          "prompt_text": "Calibration family. User context: keyboard feels loud today. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "d9482a3877f608741fe64d9818c1002fcf757792981ff13cc543174a94358098",
+          "scenario_family": "cal_family_107",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "d9482a3877f608741fe64d9818c1002fcf757792981ff13cc543174a94358098"
+        },
+        {
+          "independence_unit_id": "cal_family_108",
+          "prompt_id": "cal_108",
+          "prompt_text": "Calibration sample. Visible situation: keyboard should stay brief. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "e9f8b796d5a86cbfb9bd8fc74f12085f22bc7f7b5a356dc94c73bc5e1a664dde",
+          "scenario_family": "cal_family_108",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "e9f8b796d5a86cbfb9bd8fc74f12085f22bc7f7b5a356dc94c73bc5e1a664dde"
+        },
+        {
+          "independence_unit_id": "cal_family_109",
+          "prompt_id": "cal_109",
+          "prompt_text": "Calibration case. Current cue: tea break has limited space. Return one practical line without advice.",
+          "prompt_text_hash": "4acf31daf7fa82c7d7311c4f8f1c3d7e3a6c389dcc5de1597333d8cedf234534",
+          "scenario_family": "cal_family_109",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "4acf31daf7fa82c7d7311c4f8f1c3d7e3a6c389dcc5de1597333d8cedf234534"
+        },
+        {
+          "independence_unit_id": "cal_family_110",
+          "prompt_id": "cal_110",
+          "prompt_text": "Calibration family. User context: tea break needs a clean label. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "e59e6c70ff508b95455e136f3d518701b3d3b08ca48c030aad953ed4b4787a58",
+          "scenario_family": "cal_family_110",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "e59e6c70ff508b95455e136f3d518701b3d3b08ca48c030aad953ed4b4787a58"
+        },
+        {
+          "independence_unit_id": "cal_family_111",
+          "prompt_id": "cal_111",
+          "prompt_text": "Calibration sample. Visible situation: tea break has too many columns. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "b33a64ea5f1b4e3456ab2854988e628a182a19edef30a4c670efcbd66ba0864e",
+          "scenario_family": "cal_family_111",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "b33a64ea5f1b4e3456ab2854988e628a182a19edef30a4c670efcbd66ba0864e"
+        },
+        {
+          "independence_unit_id": "cal_family_112",
+          "prompt_id": "cal_112",
+          "prompt_text": "Calibration prompt. The user reports that tea break is hard to close. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "77c5225c4e1b86f9f10afb3caf7b06f16853f9bc712e1f662676c6fa589ae27e",
+          "scenario_family": "cal_family_112",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "77c5225c4e1b86f9f10afb3caf7b06f16853f9bc712e1f662676c6fa589ae27e"
+        },
+        {
+          "independence_unit_id": "cal_family_113",
+          "prompt_id": "cal_113",
+          "prompt_text": "Calibration family. User context: parking needs a gentle reminder. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "e986b8b5b892c4fec6a5a9803e7d4b5e757f739bd9b77c48151f53041e965c46",
+          "scenario_family": "cal_family_113",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "e986b8b5b892c4fec6a5a9803e7d4b5e757f739bd9b77c48151f53041e965c46"
+        },
+        {
+          "independence_unit_id": "cal_family_114",
+          "prompt_id": "cal_114",
+          "prompt_text": "Calibration sample. Visible situation: parking changes the plan. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "ae40c31f3c58af9481422c6af658c062bc1022e63621963acb02bc1e47634d14",
+          "scenario_family": "cal_family_114",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "ae40c31f3c58af9481422c6af658c062bc1022e63621963acb02bc1e47634d14"
+        },
+        {
+          "independence_unit_id": "cal_family_115",
+          "prompt_id": "cal_115",
+          "prompt_text": "Calibration prompt. The user reports that parking needs one saved place. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "8734295879db2cd721b4c603f062271a904f79b4d82357c2c3901d0d2db0d44c",
+          "scenario_family": "cal_family_115",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "8734295879db2cd721b4c603f062271a904f79b4d82357c2c3901d0d2db0d44c"
+        },
+        {
+          "independence_unit_id": "cal_family_116",
+          "prompt_id": "cal_116",
+          "prompt_text": "Calibration case. Current cue: parking needs a clearer name. Return one practical line without advice.",
+          "prompt_text_hash": "b61be447b5056bc9a739108b2a6e2393157147bd660777a20d943548726ac414",
+          "scenario_family": "cal_family_116",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "b61be447b5056bc9a739108b2a6e2393157147bd660777a20d943548726ac414"
+        },
+        {
+          "independence_unit_id": "cal_family_117",
+          "prompt_id": "cal_117",
+          "prompt_text": "Calibration sample. Visible situation: invoice has crowded items. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "0b43faea97c2b3e6ea5c3d48c16145453124c0431f65949001b890ae76ba711e",
+          "scenario_family": "cal_family_117",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "0b43faea97c2b3e6ea5c3d48c16145453124c0431f65949001b890ae76ba711e"
+        },
+        {
+          "independence_unit_id": "cal_family_118",
+          "prompt_id": "cal_118",
+          "prompt_text": "Calibration prompt. The user reports that invoice arrives at an odd time. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "405170f527240ae2158c165e9be72f7e5d3d2020ae8a2343f951c994ad19456c",
+          "scenario_family": "cal_family_118",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "405170f527240ae2158c165e9be72f7e5d3d2020ae8a2343f951c994ad19456c"
+        },
+        {
+          "independence_unit_id": "cal_family_119",
+          "prompt_id": "cal_119",
+          "prompt_text": "Calibration case. Current cue: invoice goes off too early. Return one practical line without advice.",
+          "prompt_text_hash": "c14cbeb3877afc621f19d4d640cb3932709c282766572cc8d57d31c7ff4e7404",
+          "scenario_family": "cal_family_119",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "c14cbeb3877afc621f19d4d640cb3932709c282766572cc8d57d31c7ff4e7404"
+        },
+        {
+          "independence_unit_id": "cal_family_120",
+          "prompt_id": "cal_120",
+          "prompt_text": "Calibration family. User context: invoice needs a posture reset. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "da5f1e7d3bbe9a6878988ce335dab3c8bca518f88af8e06c1369cbbc1c80e883",
+          "scenario_family": "cal_family_120",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "da5f1e7d3bbe9a6878988ce335dab3c8bca518f88af8e06c1369cbbc1c80e883"
+        },
+        {
+          "independence_unit_id": "cal_family_121",
+          "prompt_id": "cal_121",
+          "prompt_text": "Calibration prompt. The user reports that planner moved later. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "0b39de6528aee4bfdf9867af707a0822fcff22e62a4560453c2c7008dfd5dd3c",
+          "scenario_family": "cal_family_121",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "0b39de6528aee4bfdf9867af707a0822fcff22e62a4560453c2c7008dfd5dd3c"
+        },
+        {
+          "independence_unit_id": "cal_family_122",
+          "prompt_id": "cal_122",
+          "prompt_text": "Calibration case. Current cue: planner feels cramped. Return one practical line without advice.",
+          "prompt_text_hash": "dd250602134517f24600649dd494ca8792345585f2cff2a8dd1e4e4752999148",
+          "scenario_family": "cal_family_122",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "dd250602134517f24600649dd494ca8792345585f2cff2a8dd1e4e4752999148"
+        },
+        {
+          "independence_unit_id": "cal_family_123",
+          "prompt_id": "cal_123",
+          "prompt_text": "Calibration family. User context: planner needs one quiet choice. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "b6d36f35df2f53ad92d1d20b6766cab1c685090e079b1108ad80ef0892f9d9bc",
+          "scenario_family": "cal_family_123",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "b6d36f35df2f53ad92d1d20b6766cab1c685090e079b1108ad80ef0892f9d9bc"
+        },
+        {
+          "independence_unit_id": "cal_family_124",
+          "prompt_id": "cal_124",
+          "prompt_text": "Calibration sample. Visible situation: planner lost its order. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "9e7c2c09a65201cd4abe7f0741d83dbe52e4b7dedab294374a46d9375514f1ab",
+          "scenario_family": "cal_family_124",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "9e7c2c09a65201cd4abe7f0741d83dbe52e4b7dedab294374a46d9375514f1ab"
+        },
+        {
+          "independence_unit_id": "cal_family_125",
+          "prompt_id": "cal_125",
+          "prompt_text": "Calibration case. Current cue: drawer runs tighter than expected. Return one practical line without advice.",
+          "prompt_text_hash": "c03da84364ae4285d6796714ba729c964aeb6f8820b57592e74a61867396d620",
+          "scenario_family": "cal_family_125",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "c03da84364ae4285d6796714ba729c964aeb6f8820b57592e74a61867396d620"
+        },
+        {
+          "independence_unit_id": "cal_family_126",
+          "prompt_id": "cal_126",
+          "prompt_text": "Calibration family. User context: drawer feels uncertain. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "69c96605a54bf12d1e3041b3f0b6176287663df34394a169ea5226200ea5d0dc",
+          "scenario_family": "cal_family_126",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "69c96605a54bf12d1e3041b3f0b6176287663df34394a169ea5226200ea5d0dc"
+        },
+        {
+          "independence_unit_id": "cal_family_127",
+          "prompt_id": "cal_127",
+          "prompt_text": "Calibration sample. Visible situation: drawer takes longer than planned. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "ce9e8ec5c6e6ac088ccd53abe52f06139055b6b197eb5e3c1925759c55a81c6c",
+          "scenario_family": "cal_family_127",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "ce9e8ec5c6e6ac088ccd53abe52f06139055b6b197eb5e3c1925759c55a81c6c"
+        },
+        {
+          "independence_unit_id": "cal_family_128",
+          "prompt_id": "cal_128",
+          "prompt_text": "Calibration prompt. The user reports that drawer has low energy. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "417156ed32a367be1d3398c79344826d5b9d4de4aaec719e3d11532345348a85",
+          "scenario_family": "cal_family_128",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "417156ed32a367be1d3398c79344826d5b9d4de4aaec719e3d11532345348a85"
+        },
+        {
+          "independence_unit_id": "cal_family_129",
+          "prompt_id": "cal_129",
+          "prompt_text": "Calibration family. User context: medicine reminder changed because of rain. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "aa56fb61f1eb1ffd7ea54b9f8653e502abeaf3ea8fc6f76c9631d5c4f4419283",
+          "scenario_family": "cal_family_129",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "aa56fb61f1eb1ffd7ea54b9f8653e502abeaf3ea8fc6f76c9631d5c4f4419283"
+        },
+        {
+          "independence_unit_id": "cal_family_130",
+          "prompt_id": "cal_130",
+          "prompt_text": "Calibration sample. Visible situation: medicine reminder overlaps lightly. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "9e0cc5a03449aeda7728e7d605546e8489112cec8d682572e05330fa43ed1a8f",
+          "scenario_family": "cal_family_130",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "9e0cc5a03449aeda7728e7d605546e8489112cec8d682572e05330fa43ed1a8f"
+        },
+        {
+          "independence_unit_id": "cal_family_131",
+          "prompt_id": "cal_131",
+          "prompt_text": "Calibration prompt. The user reports that medicine reminder is waiting on an update. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "21bfa9980543989fd1be5e4012e422e7701a63f93fa51f8565d5edda2de47995",
+          "scenario_family": "cal_family_131",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "21bfa9980543989fd1be5e4012e422e7701a63f93fa51f8565d5edda2de47995"
+        },
+        {
+          "independence_unit_id": "cal_family_132",
+          "prompt_id": "cal_132",
+          "prompt_text": "Calibration case. Current cue: medicine reminder ends during another task. Return one practical line without advice.",
+          "prompt_text_hash": "db8867b5f3b5f196d358c93dc587d4fff72faedf63ee92ebe55dd2d73e8e5eb3",
+          "scenario_family": "cal_family_132",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "db8867b5f3b5f196d358c93dc587d4fff72faedf63ee92ebe55dd2d73e8e5eb3"
+        },
+        {
+          "independence_unit_id": "cal_family_133",
+          "prompt_id": "cal_133",
+          "prompt_text": "Calibration sample. Visible situation: weather note has an unclear window. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "a4132fffe54111c744488c100885d2a7971b836ed9b5ebac38502c0d24c2f4de",
+          "scenario_family": "cal_family_133",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "a4132fffe54111c744488c100885d2a7971b836ed9b5ebac38502c0d24c2f4de"
+        },
+        {
+          "independence_unit_id": "cal_family_134",
+          "prompt_id": "cal_134",
+          "prompt_text": "Calibration prompt. The user reports that weather note needs a short pause. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "7e3c956e327e51ff89935b9649d92a4c6e4bafbd2cc1196673e5c5f7777ca332",
+          "scenario_family": "cal_family_134",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "7e3c956e327e51ff89935b9649d92a4c6e4bafbd2cc1196673e5c5f7777ca332"
+        },
+        {
+          "independence_unit_id": "cal_family_135",
+          "prompt_id": "cal_135",
+          "prompt_text": "Calibration case. Current cue: weather note helps focus return. Return one practical line without advice.",
+          "prompt_text_hash": "0fbeb21867e36f8832d7de51c84ce15b84b75810629db4b119e8bc97dd10328f",
+          "scenario_family": "cal_family_135",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "0fbeb21867e36f8832d7de51c84ce15b84b75810629db4b119e8bc97dd10328f"
+        },
+        {
+          "independence_unit_id": "cal_family_136",
+          "prompt_id": "cal_136",
+          "prompt_text": "Calibration family. User context: weather note needs softer brightness. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "9d1ff1567a60a45279125c20053a940432d5c265705010750a797bce7d601800",
+          "scenario_family": "cal_family_136",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "9d1ff1567a60a45279125c20053a940432d5c265705010750a797bce7d601800"
+        },
+        {
+          "independence_unit_id": "cal_family_137",
+          "prompt_id": "cal_137",
+          "prompt_text": "Calibration prompt. The user reports that browser bookmark sounds too stiff. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "33698d14bf572a1bf9e0fe3cc63d46d98e436dd8f62f16a3d79440ea88cb1a81",
+          "scenario_family": "cal_family_137",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "33698d14bf572a1bf9e0fe3cc63d46d98e436dd8f62f16a3d79440ea88cb1a81"
+        },
+        {
+          "independence_unit_id": "cal_family_138",
+          "prompt_id": "cal_138",
+          "prompt_text": "Calibration case. Current cue: browser bookmark needs a route. Return one practical line without advice.",
+          "prompt_text_hash": "eb4a74929d04e4a8fefce3487c843a9560a1f4d009ebeb8a296904f5b93867c5",
+          "scenario_family": "cal_family_138",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "eb4a74929d04e4a8fefce3487c843a9560a1f4d009ebeb8a296904f5b93867c5"
+        },
+        {
+          "independence_unit_id": "cal_family_139",
+          "prompt_id": "cal_139",
+          "prompt_text": "Calibration family. User context: browser bookmark has mismatched parts. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "bc951e7527a99b321865b8da62ed06396b4be385937a1c9a8b9c0a1420047781",
+          "scenario_family": "cal_family_139",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "bc951e7527a99b321865b8da62ed06396b4be385937a1c9a8b9c0a1420047781"
+        },
+        {
+          "independence_unit_id": "cal_family_140",
+          "prompt_id": "cal_140",
+          "prompt_text": "Calibration sample. Visible situation: browser bookmark arrived earlier than expected. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "ed2a09e7ce7396ddcff7c1463cd07603cf9f4861e8e20b75754ef1aec30d15fc",
+          "scenario_family": "cal_family_140",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "ed2a09e7ce7396ddcff7c1463cd07603cf9f4861e8e20b75754ef1aec30d15fc"
+        },
+        {
+          "independence_unit_id": "cal_family_141",
+          "prompt_id": "cal_141",
+          "prompt_text": "Calibration case. Current cue: document title needs a page marker. Return one practical line without advice.",
+          "prompt_text_hash": "6f6ad334a2d9fc66c54c1a6f9ee6727ecadbb7098becc5ae7643c9bd2aaa5169",
+          "scenario_family": "cal_family_141",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "6f6ad334a2d9fc66c54c1a6f9ee6727ecadbb7098becc5ae7643c9bd2aaa5169"
+        },
+        {
+          "independence_unit_id": "cal_family_142",
+          "prompt_id": "cal_142",
+          "prompt_text": "Calibration family. User context: document title is stuck in a queue. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "8c06606972ae45df07b15e8564d90dd910f809f4f27eebe50c84adbdab8cfbeb",
+          "scenario_family": "cal_family_142",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "8c06606972ae45df07b15e8564d90dd910f809f4f27eebe50c84adbdab8cfbeb"
+        },
+        {
+          "independence_unit_id": "cal_family_143",
+          "prompt_id": "cal_143",
+          "prompt_text": "Calibration sample. Visible situation: document title needs refilling. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "303cec6e63946a2b8609878d08c871976e000bd6d2484eb8c452f957b6082c01",
+          "scenario_family": "cal_family_143",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "303cec6e63946a2b8609878d08c871976e000bd6d2484eb8c452f957b6082c01"
+        },
+        {
+          "independence_unit_id": "cal_family_144",
+          "prompt_id": "cal_144",
+          "prompt_text": "Calibration prompt. The user reports that document title lets in glare. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "82a7e8ddc90be25fc91220ded461d94ddd4b1543c6c6b4392ef808f03b8d2c67",
+          "scenario_family": "cal_family_144",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "82a7e8ddc90be25fc91220ded461d94ddd4b1543c6c6b4392ef808f03b8d2c67"
+        },
+        {
+          "independence_unit_id": "cal_family_145",
+          "prompt_id": "cal_145",
+          "prompt_text": "Calibration family. User context: pantry shelf has too many items. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "d8650e7b326e25b1b616250ce4ebe457f27f90e976532344cc67e8b0d8610290",
+          "scenario_family": "cal_family_145",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "d8650e7b326e25b1b616250ce4ebe457f27f90e976532344cc67e8b0d8610290"
+        },
+        {
+          "independence_unit_id": "cal_family_146",
+          "prompt_id": "cal_146",
+          "prompt_text": "Calibration sample. Visible situation: pantry shelf is not where expected. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "0dbc99d1df95609bef168c8ece577e6ce79404e0fcdb95fd975aa64e073f03a1",
+          "scenario_family": "cal_family_146",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "0dbc99d1df95609bef168c8ece577e6ce79404e0fcdb95fd975aa64e073f03a1"
+        },
+        {
+          "independence_unit_id": "cal_family_147",
+          "prompt_id": "cal_147",
+          "prompt_text": "Calibration prompt. The user reports that pantry shelf feels loud today. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "62e1e2192a1181abc6a8e5868800dfd1b200527645c54cc31605ab21bd379012",
+          "scenario_family": "cal_family_147",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "62e1e2192a1181abc6a8e5868800dfd1b200527645c54cc31605ab21bd379012"
+        },
+        {
+          "independence_unit_id": "cal_family_148",
+          "prompt_id": "cal_148",
+          "prompt_text": "Calibration case. Current cue: pantry shelf should stay brief. Return one practical line without advice.",
+          "prompt_text_hash": "09cfa6ad59cff0305034a4e859c34ed44291b31e8cf4e79c638d7cfaa3924091",
+          "scenario_family": "cal_family_148",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "09cfa6ad59cff0305034a4e859c34ed44291b31e8cf4e79c638d7cfaa3924091"
+        },
+        {
+          "independence_unit_id": "cal_family_149",
+          "prompt_id": "cal_149",
+          "prompt_text": "Calibration sample. Visible situation: train ticket has limited space. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "a5ed704c87107d423df29d70a9177b2301d966c14c95d35fd5ead8d96778b4e9",
+          "scenario_family": "cal_family_149",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "a5ed704c87107d423df29d70a9177b2301d966c14c95d35fd5ead8d96778b4e9"
+        },
+        {
+          "independence_unit_id": "cal_family_150",
+          "prompt_id": "cal_150",
+          "prompt_text": "Calibration prompt. The user reports that train ticket needs a clean label. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "7e8097b64acaefa1b96ccfa8de39b05c639eb2a6f4a786deac3b2db3b7989af0",
+          "scenario_family": "cal_family_150",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "7e8097b64acaefa1b96ccfa8de39b05c639eb2a6f4a786deac3b2db3b7989af0"
+        },
+        {
+          "independence_unit_id": "cal_family_151",
+          "prompt_id": "cal_151",
+          "prompt_text": "Calibration case. Current cue: train ticket has too many columns. Return one practical line without advice.",
+          "prompt_text_hash": "88575a626f0115fd91d32cc5eeec4d17bb732480b827b3491b96606bab5dd703",
+          "scenario_family": "cal_family_151",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "88575a626f0115fd91d32cc5eeec4d17bb732480b827b3491b96606bab5dd703"
+        },
+        {
+          "independence_unit_id": "cal_family_152",
+          "prompt_id": "cal_152",
+          "prompt_text": "Calibration family. User context: train ticket is hard to close. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "7ad325641043c58fdd20795ccfef330b5c7cac5afe4414067591edf985153ca9",
+          "scenario_family": "cal_family_152",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "7ad325641043c58fdd20795ccfef330b5c7cac5afe4414067591edf985153ca9"
+        },
+        {
+          "independence_unit_id": "cal_family_153",
+          "prompt_id": "cal_153",
+          "prompt_text": "Calibration prompt. The user reports that phone alarm needs a gentle reminder. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "1c4c0018b9e69a8d4121772aa250417b1d388b552d3f3764ed6e86eceba0fee7",
+          "scenario_family": "cal_family_153",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "1c4c0018b9e69a8d4121772aa250417b1d388b552d3f3764ed6e86eceba0fee7"
+        },
+        {
+          "independence_unit_id": "cal_family_154",
+          "prompt_id": "cal_154",
+          "prompt_text": "Calibration case. Current cue: phone alarm changes the plan. Return one practical line without advice.",
+          "prompt_text_hash": "49ea82352f4af4f39dbb78484cad278e0f529a4e81ade28f81e25f667f7a42db",
+          "scenario_family": "cal_family_154",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "49ea82352f4af4f39dbb78484cad278e0f529a4e81ade28f81e25f667f7a42db"
+        },
+        {
+          "independence_unit_id": "cal_family_155",
+          "prompt_id": "cal_155",
+          "prompt_text": "Calibration family. User context: phone alarm needs one saved place. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "545c963af7e1bcc0f025c023e5041fb7c9585b14ab26f72a8b6690a60ed7dbad",
+          "scenario_family": "cal_family_155",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "545c963af7e1bcc0f025c023e5041fb7c9585b14ab26f72a8b6690a60ed7dbad"
+        },
+        {
+          "independence_unit_id": "cal_family_156",
+          "prompt_id": "cal_156",
+          "prompt_text": "Calibration sample. Visible situation: phone alarm needs a clearer name. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "53eef1d8311a98663ab43ba4b75b32ed59a7727c2d81946c0c89ff6bcfa9868c",
+          "scenario_family": "cal_family_156",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "53eef1d8311a98663ab43ba4b75b32ed59a7727c2d81946c0c89ff6bcfa9868c"
+        },
+        {
+          "independence_unit_id": "cal_family_157",
+          "prompt_id": "cal_157",
+          "prompt_text": "Calibration case. Current cue: workspace chair has crowded items. Return one practical line without advice.",
+          "prompt_text_hash": "19511b28804e89115d246964cdf91d3d02bfb5737e944da7c43e67ba3738bf4a",
+          "scenario_family": "cal_family_157",
+          "split_id": "calibration",
+          "style_id": "cal_style_04",
+          "user_text_hash": "19511b28804e89115d246964cdf91d3d02bfb5737e944da7c43e67ba3738bf4a"
+        },
+        {
+          "independence_unit_id": "cal_family_158",
+          "prompt_id": "cal_158",
+          "prompt_text": "Calibration family. User context: workspace chair arrives at an odd time. Reply with one grounded sentence and no question.",
+          "prompt_text_hash": "aff84027f78d9ae9f1cdb88b9fe161a556a905a081d20ccc01b790f558025925",
+          "scenario_family": "cal_family_158",
+          "split_id": "calibration",
+          "style_id": "cal_style_01",
+          "user_text_hash": "aff84027f78d9ae9f1cdb88b9fe161a556a905a081d20ccc01b790f558025925"
+        },
+        {
+          "independence_unit_id": "cal_family_159",
+          "prompt_id": "cal_159",
+          "prompt_text": "Calibration sample. Visible situation: workspace chair goes off too early. Keep the desktop response calm and brief.",
+          "prompt_text_hash": "6f26e69e7e763bfbba4cc89c70abb70ff82fb4f940c7a6e5dd39817dafd26d6d",
+          "scenario_family": "cal_family_159",
+          "split_id": "calibration",
+          "style_id": "cal_style_02",
+          "user_text_hash": "6f26e69e7e763bfbba4cc89c70abb70ff82fb4f940c7a6e5dd39817dafd26d6d"
+        },
+        {
+          "independence_unit_id": "cal_family_160",
+          "prompt_id": "cal_160",
+          "prompt_text": "Calibration prompt. The user reports that workspace chair needs a posture reset. Offer a low-intensity acknowledgement.",
+          "prompt_text_hash": "3d4c998f4dde4d4a62f05caf06c2bb5f4ec289c327512cf2996312258cf1ec09",
+          "scenario_family": "cal_family_160",
+          "split_id": "calibration",
+          "style_id": "cal_style_03",
+          "user_text_hash": "3d4c998f4dde4d4a62f05caf06c2bb5f4ec289c327512cf2996312258cf1ec09"
+        }
+      ],
+      "required_independent_families_for_future_capture": 160,
+      "split_id": "calibration"
+    },
+    "heldout": {
+      "prompts": [
+        {
+          "independence_unit_id": "hld_family_001",
+          "prompt_id": "hld_001",
+          "prompt_text": "Heldout family. Surface cue: receipt folder needs sorting before lunch. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "360177859eeef83734e2f136620b28e633601210e56da9c1542c0408350d29f9",
+          "scenario_family": "hld_family_001",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "360177859eeef83734e2f136620b28e633601210e56da9c1542c0408350d29f9"
+        },
+        {
+          "independence_unit_id": "hld_family_002",
+          "prompt_id": "hld_002",
+          "prompt_text": "Heldout sample. The visible update is receipt folder needs another pass. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "9c77f79136b7ce7f60b6e94813acd53ad920ad5d4c8ebfc8b5eff001c1cc67ab",
+          "scenario_family": "hld_family_002",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "9c77f79136b7ce7f60b6e94813acd53ad920ad5d4c8ebfc8b5eff001c1cc67ab"
+        },
+        {
+          "independence_unit_id": "hld_family_003",
+          "prompt_id": "hld_003",
+          "prompt_text": "Evaluation prompt. User-facing cue: receipt folder needs a first heading. Answer with a short steady sentence.",
+          "prompt_text_hash": "635e5e1ef9e162f53578debf6aa2877f84e4799ecc0026d2ed7e754976e65860",
+          "scenario_family": "hld_family_003",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "635e5e1ef9e162f53578debf6aa2877f84e4799ecc0026d2ed7e754976e65860"
+        },
+        {
+          "independence_unit_id": "hld_family_004",
+          "prompt_id": "hld_004",
+          "prompt_text": "Review split case. The user mentions that receipt folder needs a reset. Write a minimal acknowledgement.",
+          "prompt_text_hash": "057fedcb2e47eaf6e511e5a61711e1da0a9d2a6f4f60b3af5fc971202120907b",
+          "scenario_family": "hld_family_004",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "057fedcb2e47eaf6e511e5a61711e1da0a9d2a6f4f60b3af5fc971202120907b"
+        },
+        {
+          "independence_unit_id": "hld_family_005",
+          "prompt_id": "hld_005",
+          "prompt_text": "Heldout sample. The visible update is meeting notes creates a small tradeoff. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "9ef9d96780b7bcbca27461a2de023c73ccae8cb285c22f2f8847bef3ea31bbac",
+          "scenario_family": "hld_family_005",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "9ef9d96780b7bcbca27461a2de023c73ccae8cb285c22f2f8847bef3ea31bbac"
+        },
+        {
+          "independence_unit_id": "hld_family_006",
+          "prompt_id": "hld_006",
+          "prompt_text": "Evaluation prompt. User-facing cue: meeting notes needs pruning. Answer with a short steady sentence.",
+          "prompt_text_hash": "8f4b049fd1cbda7a9c535a585bacdfc519c39e2bec93f61ea10f93c3d209178b",
+          "scenario_family": "hld_family_006",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "8f4b049fd1cbda7a9c535a585bacdfc519c39e2bec93f61ea10f93c3d209178b"
+        },
+        {
+          "independence_unit_id": "hld_family_007",
+          "prompt_id": "hld_007",
+          "prompt_text": "Review split case. The user mentions that meeting notes needs restraint. Write a minimal acknowledgement.",
+          "prompt_text_hash": "4a01bfc4104a6fc0d474e0c836fa9223edfa722967a02eb2b4ed2afbaa942258",
+          "scenario_family": "hld_family_007",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "4a01bfc4104a6fc0d474e0c836fa9223edfa722967a02eb2b4ed2afbaa942258"
+        },
+        {
+          "independence_unit_id": "hld_family_008",
+          "prompt_id": "hld_008",
+          "prompt_text": "Heldout family. Surface cue: meeting notes needs a tiny routine. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "753a00b101cf97b9597ca236db550f5b6fa33283866b459e4cae3b82d83b078e",
+          "scenario_family": "hld_family_008",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "753a00b101cf97b9597ca236db550f5b6fa33283866b459e4cae3b82d83b078e"
+        },
+        {
+          "independence_unit_id": "hld_family_009",
+          "prompt_id": "hld_009",
+          "prompt_text": "Evaluation prompt. User-facing cue: slide outline needs a quieter ending. Answer with a short steady sentence.",
+          "prompt_text_hash": "b43b3ec0693b66a763f139b0977af12d0b2d97dc4d42aff5803699c89346fd4f",
+          "scenario_family": "hld_family_009",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "b43b3ec0693b66a763f139b0977af12d0b2d97dc4d42aff5803699c89346fd4f"
+        },
+        {
+          "independence_unit_id": "hld_family_010",
+          "prompt_id": "hld_010",
+          "prompt_text": "Review split case. The user mentions that slide outline is missing from the desk. Write a minimal acknowledgement.",
+          "prompt_text_hash": "4df89c6d14daeb8f9116937a3aa55de3cc75e2f6a10e79078509ec0e8e258e32",
+          "scenario_family": "hld_family_010",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "4df89c6d14daeb8f9116937a3aa55de3cc75e2f6a10e79078509ec0e8e258e32"
+        },
+        {
+          "independence_unit_id": "hld_family_011",
+          "prompt_id": "hld_011",
+          "prompt_text": "Heldout family. Surface cue: slide outline is overdue. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "eaf44a45170958436f09f0e40d8bd90b4e570bc16fbcecd32339f3fe897cb21f",
+          "scenario_family": "hld_family_011",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "eaf44a45170958436f09f0e40d8bd90b4e570bc16fbcecd32339f3fe897cb21f"
+        },
+        {
+          "independence_unit_id": "hld_family_012",
+          "prompt_id": "hld_012",
+          "prompt_text": "Heldout sample. The visible update is slide outline needs a pattern. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "c5ab6bd048b6319a5e1161d6c0c0308e1133dcf5708894b3ee2477ef3d20ef50",
+          "scenario_family": "hld_family_012",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "c5ab6bd048b6319a5e1161d6c0c0308e1133dcf5708894b3ee2477ef3d20ef50"
+        },
+        {
+          "independence_unit_id": "hld_family_013",
+          "prompt_id": "hld_013",
+          "prompt_text": "Review split case. The user mentions that morning focus should pause at a marker. Write a minimal acknowledgement.",
+          "prompt_text_hash": "27c4a64bb496a4a9ac9ff17b219269409782e897c553a63415552d746d9c1167",
+          "scenario_family": "hld_family_013",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "27c4a64bb496a4a9ac9ff17b219269409782e897c553a63415552d746d9c1167"
+        },
+        {
+          "independence_unit_id": "hld_family_014",
+          "prompt_id": "hld_014",
+          "prompt_text": "Heldout family. Surface cue: morning focus needs a reset. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "63f39ea56321fbae54aff7bcc409083a94dd24354c1dd6b8517fcbe5b1b4bd7c",
+          "scenario_family": "hld_family_014",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "63f39ea56321fbae54aff7bcc409083a94dd24354c1dd6b8517fcbe5b1b4bd7c"
+        },
+        {
+          "independence_unit_id": "hld_family_015",
+          "prompt_id": "hld_015",
+          "prompt_text": "Heldout sample. The visible update is morning focus needs triage. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "f5bbf10549bf3a5dd599dd8dd150734dd36407987c2d84cb701b71f6ccf7f1e4",
+          "scenario_family": "hld_family_015",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "f5bbf10549bf3a5dd599dd8dd150734dd36407987c2d84cb701b71f6ccf7f1e4"
+        },
+        {
+          "independence_unit_id": "hld_family_016",
+          "prompt_id": "hld_016",
+          "prompt_text": "Evaluation prompt. User-facing cue: morning focus need labels. Answer with a short steady sentence.",
+          "prompt_text_hash": "a4617bf55f043186be585ae694469d8b6e558e9da5a150535009e9bb23479423",
+          "scenario_family": "hld_family_016",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "a4617bf55f043186be585ae694469d8b6e558e9da5a150535009e9bb23479423"
+        },
+        {
+          "independence_unit_id": "hld_family_017",
+          "prompt_id": "hld_017",
+          "prompt_text": "Heldout family. Surface cue: subscription needs softening. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "8df8330418a633add82b51bc9110bb7c7f4d72051d5ae4248164f951be81ff3a",
+          "scenario_family": "hld_family_017",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "8df8330418a633add82b51bc9110bb7c7f4d72051d5ae4248164f951be81ff3a"
+        },
+        {
+          "independence_unit_id": "hld_family_018",
+          "prompt_id": "hld_018",
+          "prompt_text": "Heldout sample. The visible update is subscription feels too sharp. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "35ac9f96665f2286bddaa25261ef9906ddcd9e62e1d869fa9d8429a52e62d32c",
+          "scenario_family": "hld_family_018",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "35ac9f96665f2286bddaa25261ef9906ddcd9e62e1d869fa9d8429a52e62d32c"
+        },
+        {
+          "independence_unit_id": "hld_family_019",
+          "prompt_id": "hld_019",
+          "prompt_text": "Evaluation prompt. User-facing cue: subscription needs compression. Answer with a short steady sentence.",
+          "prompt_text_hash": "d826ac54265f1f3a70e72f47b019da8046cd33af201e987048805fef27a6c328",
+          "scenario_family": "hld_family_019",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "d826ac54265f1f3a70e72f47b019da8046cd33af201e987048805fef27a6c328"
+        },
+        {
+          "independence_unit_id": "hld_family_020",
+          "prompt_id": "hld_020",
+          "prompt_text": "Review split case. The user mentions that subscription feels minor. Write a minimal acknowledgement.",
+          "prompt_text_hash": "db3cf08aa47789d945ef9e5aeec1abd3ff87dfd6144997446298cf2aae487686",
+          "scenario_family": "hld_family_020",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "db3cf08aa47789d945ef9e5aeec1abd3ff87dfd6144997446298cf2aae487686"
+        },
+        {
+          "independence_unit_id": "hld_family_021",
+          "prompt_id": "hld_021",
+          "prompt_text": "Heldout sample. The visible update is browser tabs needs a better name. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "b03e8e7272dfa0c76bdff8995d5e52b80c0a568194d5635b70fc1abccb3eb39c",
+          "scenario_family": "hld_family_021",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "b03e8e7272dfa0c76bdff8995d5e52b80c0a568194d5635b70fc1abccb3eb39c"
+        },
+        {
+          "independence_unit_id": "hld_family_022",
+          "prompt_id": "hld_022",
+          "prompt_text": "Evaluation prompt. User-facing cue: browser tabs slides out of place. Answer with a short steady sentence.",
+          "prompt_text_hash": "8b22ab4eff1a5e339b18e1dccaa534c0811e6bda2334e4b5140b2f3c4e1fe26a",
+          "scenario_family": "hld_family_022",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "8b22ab4eff1a5e339b18e1dccaa534c0811e6bda2334e4b5140b2f3c4e1fe26a"
+        },
+        {
+          "independence_unit_id": "hld_family_023",
+          "prompt_id": "hld_023",
+          "prompt_text": "Review split case. The user mentions that browser tabs should stay nearby. Write a minimal acknowledgement.",
+          "prompt_text_hash": "6e09eb06a80de7bb09573f987c2e832780926e397fcd8c18e11ecd4f39034156",
+          "scenario_family": "hld_family_023",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "6e09eb06a80de7bb09573f987c2e832780926e397fcd8c18e11ecd4f39034156"
+        },
+        {
+          "independence_unit_id": "hld_family_024",
+          "prompt_id": "hld_024",
+          "prompt_text": "Heldout family. Surface cue: browser tabs needs narrower terms. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "585ee90c777e185597930a8ffd51bbd1b85b2a192e5e2c649cbf65602931f086",
+          "scenario_family": "hld_family_024",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "585ee90c777e185597930a8ffd51bbd1b85b2a192e5e2c649cbf65602931f086"
+        },
+        {
+          "independence_unit_id": "hld_family_025",
+          "prompt_id": "hld_025",
+          "prompt_text": "Evaluation prompt. User-facing cue: shared comment should be less distracting. Answer with a short steady sentence.",
+          "prompt_text_hash": "54033594b32f4ec07b6c27857075e709c3311bc05d291721239dde5031b592f8",
+          "scenario_family": "hld_family_025",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "54033594b32f4ec07b6c27857075e709c3311bc05d291721239dde5031b592f8"
+        },
+        {
+          "independence_unit_id": "hld_family_026",
+          "prompt_id": "hld_026",
+          "prompt_text": "Review split case. The user mentions that shared comment needs trimming. Write a minimal acknowledgement.",
+          "prompt_text_hash": "5c83726b6bee165c1b177fd1d4b09f8b25783804a4b26da0bbf5e6fa9c4229ac",
+          "scenario_family": "hld_family_026",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "5c83726b6bee165c1b177fd1d4b09f8b25783804a4b26da0bbf5e6fa9c4229ac"
+        },
+        {
+          "independence_unit_id": "hld_family_027",
+          "prompt_id": "hld_027",
+          "prompt_text": "Heldout family. Surface cue: shared comment feels crowded. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "e0563afdc1aeab21eff53e4622060e252e223dbfebd89cf9ea81e38eb91fbbbd",
+          "scenario_family": "hld_family_027",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "e0563afdc1aeab21eff53e4622060e252e223dbfebd89cf9ea81e38eb91fbbbd"
+        },
+        {
+          "independence_unit_id": "hld_family_028",
+          "prompt_id": "hld_028",
+          "prompt_text": "Heldout sample. The visible update is shared comment needs cleanup. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "176743fbe6b9249c7f3cef71be5d6011e69e34c25301e2e96c21f7112fb6be8f",
+          "scenario_family": "hld_family_028",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "176743fbe6b9249c7f3cef71be5d6011e69e34c25301e2e96c21f7112fb6be8f"
+        },
+        {
+          "independence_unit_id": "hld_family_029",
+          "prompt_id": "hld_029",
+          "prompt_text": "Review split case. The user mentions that language drill needs rotation. Write a minimal acknowledgement.",
+          "prompt_text_hash": "0454165f2bc25a2ab4e54831209c3681dddc5acb1b699a0f5ea92bfdfb1cded6",
+          "scenario_family": "hld_family_029",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "0454165f2bc25a2ab4e54831209c3681dddc5acb1b699a0f5ea92bfdfb1cded6"
+        },
+        {
+          "independence_unit_id": "hld_family_030",
+          "prompt_id": "hld_030",
+          "prompt_text": "Heldout family. Surface cue: language drill should start small. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "60684f30a5f3ce5ca2a563976c220996212971d2819929014d00e660aaf343d0",
+          "scenario_family": "hld_family_030",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "60684f30a5f3ce5ca2a563976c220996212971d2819929014d00e660aaf343d0"
+        },
+        {
+          "independence_unit_id": "hld_family_031",
+          "prompt_id": "hld_031",
+          "prompt_text": "Heldout sample. The visible update is language drill needs a final home. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "41bc67e16770e454e670b99d88aa6318a857dcb6d2d3621f397deb5390f4b1bf",
+          "scenario_family": "hld_family_031",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "41bc67e16770e454e670b99d88aa6318a857dcb6d2d3621f397deb5390f4b1bf"
+        },
+        {
+          "independence_unit_id": "hld_family_032",
+          "prompt_id": "hld_032",
+          "prompt_text": "Evaluation prompt. User-facing cue: language drill feels unfinished. Answer with a short steady sentence.",
+          "prompt_text_hash": "40c4ad4e890f71e4573b144663a205f9e95f1ca4819fc7c641885d6e310fc55d",
+          "scenario_family": "hld_family_032",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "40c4ad4e890f71e4573b144663a205f9e95f1ca4819fc7c641885d6e310fc55d"
+        },
+        {
+          "independence_unit_id": "hld_family_033",
+          "prompt_id": "hld_033",
+          "prompt_text": "Heldout family. Surface cue: sleep routine needs a warmer setting. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "7d7cffcace83bbf67e17265683bc96631bbc1e2d3a35b638d146cf2da33f2fc9",
+          "scenario_family": "hld_family_033",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "7d7cffcace83bbf67e17265683bc96631bbc1e2d3a35b638d146cf2da33f2fc9"
+        },
+        {
+          "independence_unit_id": "hld_family_034",
+          "prompt_id": "hld_034",
+          "prompt_text": "Heldout sample. The visible update is sleep routine needs practice. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "03b86a2f1436684d2f6a488abe6c9449543810e1e1db84633c1e20417669dd49",
+          "scenario_family": "hld_family_034",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "03b86a2f1436684d2f6a488abe6c9449543810e1e1db84633c1e20417669dd49"
+        },
+        {
+          "independence_unit_id": "hld_family_035",
+          "prompt_id": "hld_035",
+          "prompt_text": "Evaluation prompt. User-facing cue: sleep routine should stay concise. Answer with a short steady sentence.",
+          "prompt_text_hash": "3047acd9f0f6b8e5bb5de63f43b9aa5c4f871afa92de70d09fe051320dad9b89",
+          "scenario_family": "hld_family_035",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "3047acd9f0f6b8e5bb5de63f43b9aa5c4f871afa92de70d09fe051320dad9b89"
+        },
+        {
+          "independence_unit_id": "hld_family_036",
+          "prompt_id": "hld_036",
+          "prompt_text": "Review split case. The user mentions that sleep routine needs a visible marker. Write a minimal acknowledgement.",
+          "prompt_text_hash": "354a3d66831dfa5631b781fd23a2d41f1b439d545f318072ef06c79f881a911c",
+          "scenario_family": "hld_family_036",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "354a3d66831dfa5631b781fd23a2d41f1b439d545f318072ef06c79f881a911c"
+        },
+        {
+          "independence_unit_id": "hld_family_037",
+          "prompt_id": "hld_037",
+          "prompt_text": "Heldout sample. The visible update is charging cable should look calmer. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "d65abc5988834f0ecc1382a1d293b566956ac024ff988e9de5087753c1be02d0",
+          "scenario_family": "hld_family_037",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "d65abc5988834f0ecc1382a1d293b566956ac024ff988e9de5087753c1be02d0"
+        },
+        {
+          "independence_unit_id": "hld_family_038",
+          "prompt_id": "hld_038",
+          "prompt_text": "Evaluation prompt. User-facing cue: charging cable needs a quick title. Answer with a short steady sentence.",
+          "prompt_text_hash": "21c173b496e6eea278a928ef96c8ef494997e31dd0d8e253df4d8ea6f65b3a65",
+          "scenario_family": "hld_family_038",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "21c173b496e6eea278a928ef96c8ef494997e31dd0d8e253df4d8ea6f65b3a65"
+        },
+        {
+          "independence_unit_id": "hld_family_039",
+          "prompt_id": "hld_039",
+          "prompt_text": "Review split case. The user mentions that charging cable needs fewer steps. Write a minimal acknowledgement.",
+          "prompt_text_hash": "d800e24cb5cd0fca42a4c147910635bbf0c15455e335992a127ba79a60e3dac0",
+          "scenario_family": "hld_family_039",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "d800e24cb5cd0fca42a4c147910635bbf0c15455e335992a127ba79a60e3dac0"
+        },
+        {
+          "independence_unit_id": "hld_family_040",
+          "prompt_id": "hld_040",
+          "prompt_text": "Heldout family. Surface cue: charging cable should stay quiet. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "3b7b61e078e09e031ca3cbad99b5921f1db3caae1cf71ae63d9a9588d6dd5b68",
+          "scenario_family": "hld_family_040",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "3b7b61e078e09e031ca3cbad99b5921f1db3caae1cf71ae63d9a9588d6dd5b68"
+        },
+        {
+          "independence_unit_id": "hld_family_041",
+          "prompt_id": "hld_041",
+          "prompt_text": "Evaluation prompt. User-facing cue: backup drive needs sorting before lunch. Answer with a short steady sentence.",
+          "prompt_text_hash": "7993ea1ae9b015dc33f3ec29c5d48b3c09ee7108a53616a204d52f460c57c8dc",
+          "scenario_family": "hld_family_041",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "7993ea1ae9b015dc33f3ec29c5d48b3c09ee7108a53616a204d52f460c57c8dc"
+        },
+        {
+          "independence_unit_id": "hld_family_042",
+          "prompt_id": "hld_042",
+          "prompt_text": "Review split case. The user mentions that backup drive needs another pass. Write a minimal acknowledgement.",
+          "prompt_text_hash": "3316d91d576dd2e7a589ea815f81a1b617879375e0c0d683e8f5d7115c9ef8fc",
+          "scenario_family": "hld_family_042",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "3316d91d576dd2e7a589ea815f81a1b617879375e0c0d683e8f5d7115c9ef8fc"
+        },
+        {
+          "independence_unit_id": "hld_family_043",
+          "prompt_id": "hld_043",
+          "prompt_text": "Heldout family. Surface cue: backup drive needs a first heading. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "dda06b4814e39c28dc444890b0afeaee837775bddae6859b198de9fdb1d67d11",
+          "scenario_family": "hld_family_043",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "dda06b4814e39c28dc444890b0afeaee837775bddae6859b198de9fdb1d67d11"
+        },
+        {
+          "independence_unit_id": "hld_family_044",
+          "prompt_id": "hld_044",
+          "prompt_text": "Heldout sample. The visible update is backup drive needs a reset. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "33450bf4e14d6d8868a6b49f7e4d9413a746ef0357ce00aca6e37acf79dbc71f",
+          "scenario_family": "hld_family_044",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "33450bf4e14d6d8868a6b49f7e4d9413a746ef0357ce00aca6e37acf79dbc71f"
+        },
+        {
+          "independence_unit_id": "hld_family_045",
+          "prompt_id": "hld_045",
+          "prompt_text": "Review split case. The user mentions that filename batch creates a small tradeoff. Write a minimal acknowledgement.",
+          "prompt_text_hash": "f24394b29af89b412cfdc3296972f5ab6f1de5fffb25fcc8919cf3000c45753d",
+          "scenario_family": "hld_family_045",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "f24394b29af89b412cfdc3296972f5ab6f1de5fffb25fcc8919cf3000c45753d"
+        },
+        {
+          "independence_unit_id": "hld_family_046",
+          "prompt_id": "hld_046",
+          "prompt_text": "Heldout family. Surface cue: filename batch needs pruning. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "f01584ec2eb8792d3f21f22f67ec06a00e878cdec8b8f78b3390ece6c96cdba9",
+          "scenario_family": "hld_family_046",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "f01584ec2eb8792d3f21f22f67ec06a00e878cdec8b8f78b3390ece6c96cdba9"
+        },
+        {
+          "independence_unit_id": "hld_family_047",
+          "prompt_id": "hld_047",
+          "prompt_text": "Heldout sample. The visible update is filename batch needs restraint. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "48ff7219cc75723637e2229dd6611e9cd5518b2a2e88c53f2f80c29035fb9cfc",
+          "scenario_family": "hld_family_047",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "48ff7219cc75723637e2229dd6611e9cd5518b2a2e88c53f2f80c29035fb9cfc"
+        },
+        {
+          "independence_unit_id": "hld_family_048",
+          "prompt_id": "hld_048",
+          "prompt_text": "Evaluation prompt. User-facing cue: filename batch needs a tiny routine. Answer with a short steady sentence.",
+          "prompt_text_hash": "4b49181cd73fb23a47ad2ead2e2efc7c6943ef63ac1cd1aae7dae21d8715e818",
+          "scenario_family": "hld_family_048",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "4b49181cd73fb23a47ad2ead2e2efc7c6943ef63ac1cd1aae7dae21d8715e818"
+        },
+        {
+          "independence_unit_id": "hld_family_049",
+          "prompt_id": "hld_049",
+          "prompt_text": "Heldout family. Surface cue: training video needs a quieter ending. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "0c108bea6ceb187b9d97cfb4f5434d41f46834b7225e6a20ff7b805c09b43516",
+          "scenario_family": "hld_family_049",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "0c108bea6ceb187b9d97cfb4f5434d41f46834b7225e6a20ff7b805c09b43516"
+        },
+        {
+          "independence_unit_id": "hld_family_050",
+          "prompt_id": "hld_050",
+          "prompt_text": "Heldout sample. The visible update is training video is missing from the desk. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "cf4d0d26334477bd90e542f8fb158a0352e6e91653eec3b80f657deb2499be4d",
+          "scenario_family": "hld_family_050",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "cf4d0d26334477bd90e542f8fb158a0352e6e91653eec3b80f657deb2499be4d"
+        },
+        {
+          "independence_unit_id": "hld_family_051",
+          "prompt_id": "hld_051",
+          "prompt_text": "Evaluation prompt. User-facing cue: training video is overdue. Answer with a short steady sentence.",
+          "prompt_text_hash": "ffe462a409d66ef8c567f7420e2af0d6df8cf69fc4d2179ad4b0a8f9ad530517",
+          "scenario_family": "hld_family_051",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "ffe462a409d66ef8c567f7420e2af0d6df8cf69fc4d2179ad4b0a8f9ad530517"
+        },
+        {
+          "independence_unit_id": "hld_family_052",
+          "prompt_id": "hld_052",
+          "prompt_text": "Review split case. The user mentions that training video needs a pattern. Write a minimal acknowledgement.",
+          "prompt_text_hash": "08fedc188d57e33c4455dbc24fe8e3537c3320d347b691c9a0bba7509e7f5278",
+          "scenario_family": "hld_family_052",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "08fedc188d57e33c4455dbc24fe8e3537c3320d347b691c9a0bba7509e7f5278"
+        },
+        {
+          "independence_unit_id": "hld_family_053",
+          "prompt_id": "hld_053",
+          "prompt_text": "Heldout sample. The visible update is kitchen timer should pause at a marker. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "ea56edf18d4b2a29a00fbf38ced5dcfa2be8f3e59dbb9d2eeb811de3038aaed1",
+          "scenario_family": "hld_family_053",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "ea56edf18d4b2a29a00fbf38ced5dcfa2be8f3e59dbb9d2eeb811de3038aaed1"
+        },
+        {
+          "independence_unit_id": "hld_family_054",
+          "prompt_id": "hld_054",
+          "prompt_text": "Evaluation prompt. User-facing cue: kitchen timer needs a reset. Answer with a short steady sentence.",
+          "prompt_text_hash": "de81a5f15b626441fc3d02f56fa8716417b19193f3092b46792cb9de0a92eb8d",
+          "scenario_family": "hld_family_054",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "de81a5f15b626441fc3d02f56fa8716417b19193f3092b46792cb9de0a92eb8d"
+        },
+        {
+          "independence_unit_id": "hld_family_055",
+          "prompt_id": "hld_055",
+          "prompt_text": "Review split case. The user mentions that kitchen timer needs triage. Write a minimal acknowledgement.",
+          "prompt_text_hash": "fa41126ac319db68a4b58c17c22c505ce354cfb5ea9e5fbf394bfe20c5e470de",
+          "scenario_family": "hld_family_055",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "fa41126ac319db68a4b58c17c22c505ce354cfb5ea9e5fbf394bfe20c5e470de"
+        },
+        {
+          "independence_unit_id": "hld_family_056",
+          "prompt_id": "hld_056",
+          "prompt_text": "Heldout family. Surface cue: kitchen timer need labels. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "a16658288857d035dbf90992e8aa36a80d9a004a39f58f49e111a15abafe17e5",
+          "scenario_family": "hld_family_056",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "a16658288857d035dbf90992e8aa36a80d9a004a39f58f49e111a15abafe17e5"
+        },
+        {
+          "independence_unit_id": "hld_family_057",
+          "prompt_id": "hld_057",
+          "prompt_text": "Evaluation prompt. User-facing cue: reading queue needs softening. Answer with a short steady sentence.",
+          "prompt_text_hash": "41b22298c14e6dee7eb019738cae63ae645671f5e3350df9c08a1cf20cda4319",
+          "scenario_family": "hld_family_057",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "41b22298c14e6dee7eb019738cae63ae645671f5e3350df9c08a1cf20cda4319"
+        },
+        {
+          "independence_unit_id": "hld_family_058",
+          "prompt_id": "hld_058",
+          "prompt_text": "Review split case. The user mentions that reading queue feels too sharp. Write a minimal acknowledgement.",
+          "prompt_text_hash": "ef5ac65c5e56a31ffd96a77a5f0abbcfc4a293414bbcb559e19096edd6dfdbd1",
+          "scenario_family": "hld_family_058",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "ef5ac65c5e56a31ffd96a77a5f0abbcfc4a293414bbcb559e19096edd6dfdbd1"
+        },
+        {
+          "independence_unit_id": "hld_family_059",
+          "prompt_id": "hld_059",
+          "prompt_text": "Heldout family. Surface cue: reading queue needs compression. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "b3570339889d42c5c6818920be4463722816d75036dc14bd5685b4495feb1eac",
+          "scenario_family": "hld_family_059",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "b3570339889d42c5c6818920be4463722816d75036dc14bd5685b4495feb1eac"
+        },
+        {
+          "independence_unit_id": "hld_family_060",
+          "prompt_id": "hld_060",
+          "prompt_text": "Heldout sample. The visible update is reading queue feels minor. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "f3256e66664f5ed1d3128c85df761a91d3862da80cde9489e5a46f499e0783b1",
+          "scenario_family": "hld_family_060",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "f3256e66664f5ed1d3128c85df761a91d3862da80cde9489e5a46f499e0783b1"
+        },
+        {
+          "independence_unit_id": "hld_family_061",
+          "prompt_id": "hld_061",
+          "prompt_text": "Review split case. The user mentions that cable labels needs a better name. Write a minimal acknowledgement.",
+          "prompt_text_hash": "ca2b2fc9bb65282d91b035c8cd02e96a509a44e813c7f8bab2bfca7cb84a8426",
+          "scenario_family": "hld_family_061",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "ca2b2fc9bb65282d91b035c8cd02e96a509a44e813c7f8bab2bfca7cb84a8426"
+        },
+        {
+          "independence_unit_id": "hld_family_062",
+          "prompt_id": "hld_062",
+          "prompt_text": "Heldout family. Surface cue: cable labels slides out of place. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "53efb754fa09ab068e230f4ccbe880bf60325e25db1656d4bb57d4bb7152e8ff",
+          "scenario_family": "hld_family_062",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "53efb754fa09ab068e230f4ccbe880bf60325e25db1656d4bb57d4bb7152e8ff"
+        },
+        {
+          "independence_unit_id": "hld_family_063",
+          "prompt_id": "hld_063",
+          "prompt_text": "Heldout sample. The visible update is cable labels should stay nearby. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "07eefe10a9bb1e7557ed1d529be21b56e728b7607afd984eddf60e746def41ad",
+          "scenario_family": "hld_family_063",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "07eefe10a9bb1e7557ed1d529be21b56e728b7607afd984eddf60e746def41ad"
+        },
+        {
+          "independence_unit_id": "hld_family_064",
+          "prompt_id": "hld_064",
+          "prompt_text": "Evaluation prompt. User-facing cue: cable labels needs narrower terms. Answer with a short steady sentence.",
+          "prompt_text_hash": "cb67f33e43b1fdf15edd3ecc9b448e96ae8df9a0dba788ac91f015d8e07b1f28",
+          "scenario_family": "hld_family_064",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "cb67f33e43b1fdf15edd3ecc9b448e96ae8df9a0dba788ac91f015d8e07b1f28"
+        },
+        {
+          "independence_unit_id": "hld_family_065",
+          "prompt_id": "hld_065",
+          "prompt_text": "Heldout family. Surface cue: invite wording should be less distracting. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "de5507d90c02261dca7d7bdd3aa284cab8f723147eb03f1a5c98c34720f5cc06",
+          "scenario_family": "hld_family_065",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "de5507d90c02261dca7d7bdd3aa284cab8f723147eb03f1a5c98c34720f5cc06"
+        },
+        {
+          "independence_unit_id": "hld_family_066",
+          "prompt_id": "hld_066",
+          "prompt_text": "Heldout sample. The visible update is invite wording needs trimming. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "d8bca9d6a53e657315d5b6d715781e0fbdec491f6a48fbc134368410f6450b8e",
+          "scenario_family": "hld_family_066",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "d8bca9d6a53e657315d5b6d715781e0fbdec491f6a48fbc134368410f6450b8e"
+        },
+        {
+          "independence_unit_id": "hld_family_067",
+          "prompt_id": "hld_067",
+          "prompt_text": "Evaluation prompt. User-facing cue: invite wording feels crowded. Answer with a short steady sentence.",
+          "prompt_text_hash": "ec97d60a18b738442490f72754dacaff3176a9525b84675c675332b22840ff9a",
+          "scenario_family": "hld_family_067",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "ec97d60a18b738442490f72754dacaff3176a9525b84675c675332b22840ff9a"
+        },
+        {
+          "independence_unit_id": "hld_family_068",
+          "prompt_id": "hld_068",
+          "prompt_text": "Review split case. The user mentions that invite wording needs cleanup. Write a minimal acknowledgement.",
+          "prompt_text_hash": "1c0486f2cae65f35ad182d5e577f81fe1c03cb9e538b9c7cb7ba4e31c1ae9124",
+          "scenario_family": "hld_family_068",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "1c0486f2cae65f35ad182d5e577f81fe1c03cb9e538b9c7cb7ba4e31c1ae9124"
+        },
+        {
+          "independence_unit_id": "hld_family_069",
+          "prompt_id": "hld_069",
+          "prompt_text": "Heldout sample. The visible update is screen brightness needs rotation. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "9dcaf8b51ea09ae27af241f415959f890b47dd913ea023fa96e2c5d9481dc71e",
+          "scenario_family": "hld_family_069",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "9dcaf8b51ea09ae27af241f415959f890b47dd913ea023fa96e2c5d9481dc71e"
+        },
+        {
+          "independence_unit_id": "hld_family_070",
+          "prompt_id": "hld_070",
+          "prompt_text": "Evaluation prompt. User-facing cue: screen brightness should start small. Answer with a short steady sentence.",
+          "prompt_text_hash": "4c3b9b258f4a216344195af78f0edd88674eefe3122717cb9653897c0c550288",
+          "scenario_family": "hld_family_070",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "4c3b9b258f4a216344195af78f0edd88674eefe3122717cb9653897c0c550288"
+        },
+        {
+          "independence_unit_id": "hld_family_071",
+          "prompt_id": "hld_071",
+          "prompt_text": "Review split case. The user mentions that screen brightness needs a final home. Write a minimal acknowledgement.",
+          "prompt_text_hash": "89f56538dc9d8bd5b5068ef5afad2720fd1a54c396a995859102718f8dd40121",
+          "scenario_family": "hld_family_071",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "89f56538dc9d8bd5b5068ef5afad2720fd1a54c396a995859102718f8dd40121"
+        },
+        {
+          "independence_unit_id": "hld_family_072",
+          "prompt_id": "hld_072",
+          "prompt_text": "Heldout family. Surface cue: screen brightness feels unfinished. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "6e4d688c0457f202cc833f084049f892a378e597a04f72a8a0561c87b6cb014b",
+          "scenario_family": "hld_family_072",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "6e4d688c0457f202cc833f084049f892a378e597a04f72a8a0561c87b6cb014b"
+        },
+        {
+          "independence_unit_id": "hld_family_073",
+          "prompt_id": "hld_073",
+          "prompt_text": "Evaluation prompt. User-facing cue: task list needs a warmer setting. Answer with a short steady sentence.",
+          "prompt_text_hash": "f231c174d147fa83732a0f9f764b447e960d012b888cf8ed0474097f721442c0",
+          "scenario_family": "hld_family_073",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "f231c174d147fa83732a0f9f764b447e960d012b888cf8ed0474097f721442c0"
+        },
+        {
+          "independence_unit_id": "hld_family_074",
+          "prompt_id": "hld_074",
+          "prompt_text": "Review split case. The user mentions that task list needs practice. Write a minimal acknowledgement.",
+          "prompt_text_hash": "93019eeac480c39960f7b51bd228f853e74463da57b9fbce5cf7395fff8de0c3",
+          "scenario_family": "hld_family_074",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "93019eeac480c39960f7b51bd228f853e74463da57b9fbce5cf7395fff8de0c3"
+        },
+        {
+          "independence_unit_id": "hld_family_075",
+          "prompt_id": "hld_075",
+          "prompt_text": "Heldout family. Surface cue: task list should stay concise. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "278264da58fbc59f6aa25a88f117302aaaf46ad089105f233fffe27c48cbd3cb",
+          "scenario_family": "hld_family_075",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "278264da58fbc59f6aa25a88f117302aaaf46ad089105f233fffe27c48cbd3cb"
+        },
+        {
+          "independence_unit_id": "hld_family_076",
+          "prompt_id": "hld_076",
+          "prompt_text": "Heldout sample. The visible update is task list needs a visible marker. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "fe78834efcfdf02d4945e57fdaae9195a6a326e955970ba63f933c2fc09aef2b",
+          "scenario_family": "hld_family_076",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "fe78834efcfdf02d4945e57fdaae9195a6a326e955970ba63f933c2fc09aef2b"
+        },
+        {
+          "independence_unit_id": "hld_family_077",
+          "prompt_id": "hld_077",
+          "prompt_text": "Review split case. The user mentions that route choice should look calmer. Write a minimal acknowledgement.",
+          "prompt_text_hash": "0e4d1d7d5582065bf41cebdbc958ec4ee57ceb27aab730768ff68e5027d5a1fc",
+          "scenario_family": "hld_family_077",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "0e4d1d7d5582065bf41cebdbc958ec4ee57ceb27aab730768ff68e5027d5a1fc"
+        },
+        {
+          "independence_unit_id": "hld_family_078",
+          "prompt_id": "hld_078",
+          "prompt_text": "Heldout family. Surface cue: route choice needs a quick title. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "f7036b43591c33d714d4b034fb40ec27599296e016f09c5a7d2f867397279913",
+          "scenario_family": "hld_family_078",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "f7036b43591c33d714d4b034fb40ec27599296e016f09c5a7d2f867397279913"
+        },
+        {
+          "independence_unit_id": "hld_family_079",
+          "prompt_id": "hld_079",
+          "prompt_text": "Heldout sample. The visible update is route choice needs fewer steps. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "ef2e2822b88c94d5e12425bad0bc4ee543336e9078af9bbdd061fe99c4563e54",
+          "scenario_family": "hld_family_079",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "ef2e2822b88c94d5e12425bad0bc4ee543336e9078af9bbdd061fe99c4563e54"
+        },
+        {
+          "independence_unit_id": "hld_family_080",
+          "prompt_id": "hld_080",
+          "prompt_text": "Evaluation prompt. User-facing cue: route choice should stay quiet. Answer with a short steady sentence.",
+          "prompt_text_hash": "f98d13465699a87ab03c82dc5d725e24bcd3e2e46e9ddfdd15b67e3d6e0f055d",
+          "scenario_family": "hld_family_080",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "f98d13465699a87ab03c82dc5d725e24bcd3e2e46e9ddfdd15b67e3d6e0f055d"
+        },
+        {
+          "independence_unit_id": "hld_family_081",
+          "prompt_id": "hld_081",
+          "prompt_text": "Heldout family. Surface cue: spreadsheet tab needs sorting before lunch. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "f292d613bcca8713246b1d0afff6e76c282b6eabbd5612449d273cbf05e1feb2",
+          "scenario_family": "hld_family_081",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "f292d613bcca8713246b1d0afff6e76c282b6eabbd5612449d273cbf05e1feb2"
+        },
+        {
+          "independence_unit_id": "hld_family_082",
+          "prompt_id": "hld_082",
+          "prompt_text": "Heldout sample. The visible update is spreadsheet tab needs another pass. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "d3f7dc0faa3f4e434dc47567fedd20d6195ac7d59dd4c63d10a6455a7d6cb06a",
+          "scenario_family": "hld_family_082",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "d3f7dc0faa3f4e434dc47567fedd20d6195ac7d59dd4c63d10a6455a7d6cb06a"
+        },
+        {
+          "independence_unit_id": "hld_family_083",
+          "prompt_id": "hld_083",
+          "prompt_text": "Evaluation prompt. User-facing cue: spreadsheet tab needs a first heading. Answer with a short steady sentence.",
+          "prompt_text_hash": "551d6fb0dff459b8335a50ad6afd6d405de8e6b55c4a71e113a29ac5a7e314fe",
+          "scenario_family": "hld_family_083",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "551d6fb0dff459b8335a50ad6afd6d405de8e6b55c4a71e113a29ac5a7e314fe"
+        },
+        {
+          "independence_unit_id": "hld_family_084",
+          "prompt_id": "hld_084",
+          "prompt_text": "Review split case. The user mentions that spreadsheet tab needs a reset. Write a minimal acknowledgement.",
+          "prompt_text_hash": "7a849a946c28616a216f8fcc9e8a8ec31cd65a37a7b65e1ff196e9088d168d14",
+          "scenario_family": "hld_family_084",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "7a849a946c28616a216f8fcc9e8a8ec31cd65a37a7b65e1ff196e9088d168d14"
+        },
+        {
+          "independence_unit_id": "hld_family_085",
+          "prompt_id": "hld_085",
+          "prompt_text": "Heldout sample. The visible update is desk mat creates a small tradeoff. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "a19481c14a122f932311a5cf56ac09fb448b4efa7adb5b7ba5f72e2d4c548f7c",
+          "scenario_family": "hld_family_085",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "a19481c14a122f932311a5cf56ac09fb448b4efa7adb5b7ba5f72e2d4c548f7c"
+        },
+        {
+          "independence_unit_id": "hld_family_086",
+          "prompt_id": "hld_086",
+          "prompt_text": "Evaluation prompt. User-facing cue: desk mat needs pruning. Answer with a short steady sentence.",
+          "prompt_text_hash": "04eb12ce9d528ac74549a59f8df3d7d8550d5e688ff18fb6c552742f1be254a0",
+          "scenario_family": "hld_family_086",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "04eb12ce9d528ac74549a59f8df3d7d8550d5e688ff18fb6c552742f1be254a0"
+        },
+        {
+          "independence_unit_id": "hld_family_087",
+          "prompt_id": "hld_087",
+          "prompt_text": "Review split case. The user mentions that desk mat needs restraint. Write a minimal acknowledgement.",
+          "prompt_text_hash": "fef90269bd5380e78e032e157d4b4e071cc25ce4b1afe100f916ce8214cca4e4",
+          "scenario_family": "hld_family_087",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "fef90269bd5380e78e032e157d4b4e071cc25ce4b1afe100f916ce8214cca4e4"
+        },
+        {
+          "independence_unit_id": "hld_family_088",
+          "prompt_id": "hld_088",
+          "prompt_text": "Heldout family. Surface cue: desk mat needs a tiny routine. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "043feebdb082c7cb1c1a8c04937b601f041ff6f99ef926f8a96d245b5156d816",
+          "scenario_family": "hld_family_088",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "043feebdb082c7cb1c1a8c04937b601f041ff6f99ef926f8a96d245b5156d816"
+        },
+        {
+          "independence_unit_id": "hld_family_089",
+          "prompt_id": "hld_089",
+          "prompt_text": "Evaluation prompt. User-facing cue: water glass needs a quieter ending. Answer with a short steady sentence.",
+          "prompt_text_hash": "15f9981af2fa3012009908125c78220b69d770ad945c275f1f0dfebb23e551c4",
+          "scenario_family": "hld_family_089",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "15f9981af2fa3012009908125c78220b69d770ad945c275f1f0dfebb23e551c4"
+        },
+        {
+          "independence_unit_id": "hld_family_090",
+          "prompt_id": "hld_090",
+          "prompt_text": "Review split case. The user mentions that water glass is missing from the desk. Write a minimal acknowledgement.",
+          "prompt_text_hash": "68b0dde0380c679c23d4c4927a15894ad65f38adf674078e1fba30d030676643",
+          "scenario_family": "hld_family_090",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "68b0dde0380c679c23d4c4927a15894ad65f38adf674078e1fba30d030676643"
+        },
+        {
+          "independence_unit_id": "hld_family_091",
+          "prompt_id": "hld_091",
+          "prompt_text": "Heldout family. Surface cue: water glass is overdue. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "137abd4636f8d657266e7b9a6624ac5a6ac7bf386a5605b64e713d010178ed62",
+          "scenario_family": "hld_family_091",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "137abd4636f8d657266e7b9a6624ac5a6ac7bf386a5605b64e713d010178ed62"
+        },
+        {
+          "independence_unit_id": "hld_family_092",
+          "prompt_id": "hld_092",
+          "prompt_text": "Heldout sample. The visible update is water glass needs a pattern. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "eacc3511de2468d645c072a83843af3ae5a886f12937860a146f8bada820dd10",
+          "scenario_family": "hld_family_092",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "eacc3511de2468d645c072a83843af3ae5a886f12937860a146f8bada820dd10"
+        },
+        {
+          "independence_unit_id": "hld_family_093",
+          "prompt_id": "hld_093",
+          "prompt_text": "Review split case. The user mentions that search query should pause at a marker. Write a minimal acknowledgement.",
+          "prompt_text_hash": "86084cf8ef5f7af39475b9767a47ebb2ad02fcaeef04917cc2faa2fcf20319ee",
+          "scenario_family": "hld_family_093",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "86084cf8ef5f7af39475b9767a47ebb2ad02fcaeef04917cc2faa2fcf20319ee"
+        },
+        {
+          "independence_unit_id": "hld_family_094",
+          "prompt_id": "hld_094",
+          "prompt_text": "Heldout family. Surface cue: search query needs a reset. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "3de0558e2464f9144f2ca1748fc5f12922d1ecd9f9cc5eaadb3bb94a8977628a",
+          "scenario_family": "hld_family_094",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "3de0558e2464f9144f2ca1748fc5f12922d1ecd9f9cc5eaadb3bb94a8977628a"
+        },
+        {
+          "independence_unit_id": "hld_family_095",
+          "prompt_id": "hld_095",
+          "prompt_text": "Heldout sample. The visible update is search query needs triage. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "153d6c0413b6a2636aa2d040169e34588b9f1b783ea23ca1f07462f89bd3abf3",
+          "scenario_family": "hld_family_095",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "153d6c0413b6a2636aa2d040169e34588b9f1b783ea23ca1f07462f89bd3abf3"
+        },
+        {
+          "independence_unit_id": "hld_family_096",
+          "prompt_id": "hld_096",
+          "prompt_text": "Evaluation prompt. User-facing cue: search query need labels. Answer with a short steady sentence.",
+          "prompt_text_hash": "968974734ce57249bb1c5dce4607f911a2f50abae52287018433f7394772ca03",
+          "scenario_family": "hld_family_096",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "968974734ce57249bb1c5dce4607f911a2f50abae52287018433f7394772ca03"
+        },
+        {
+          "independence_unit_id": "hld_family_097",
+          "prompt_id": "hld_097",
+          "prompt_text": "Heldout family. Surface cue: calendar color needs softening. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "20e843db5f729b2a612f9bc373cf54db9f78f36a3ca74bbf2e0c59dbd2d743e7",
+          "scenario_family": "hld_family_097",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "20e843db5f729b2a612f9bc373cf54db9f78f36a3ca74bbf2e0c59dbd2d743e7"
+        },
+        {
+          "independence_unit_id": "hld_family_098",
+          "prompt_id": "hld_098",
+          "prompt_text": "Heldout sample. The visible update is calendar color feels too sharp. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "4494264fb39f947a574bcc0f0513b407d796e735031f7358acc9a7e49a91e07c",
+          "scenario_family": "hld_family_098",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "4494264fb39f947a574bcc0f0513b407d796e735031f7358acc9a7e49a91e07c"
+        },
+        {
+          "independence_unit_id": "hld_family_099",
+          "prompt_id": "hld_099",
+          "prompt_text": "Evaluation prompt. User-facing cue: calendar color needs compression. Answer with a short steady sentence.",
+          "prompt_text_hash": "45acdbe897b2ba27056eecb2289e5b8e9dae670b8222082f77fe7bff67193764",
+          "scenario_family": "hld_family_099",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "45acdbe897b2ba27056eecb2289e5b8e9dae670b8222082f77fe7bff67193764"
+        },
+        {
+          "independence_unit_id": "hld_family_100",
+          "prompt_id": "hld_100",
+          "prompt_text": "Review split case. The user mentions that calendar color feels minor. Write a minimal acknowledgement.",
+          "prompt_text_hash": "6739e0a58fb791b345a3797e7064d10ff2eb3263387edee8d957c9f208ba80df",
+          "scenario_family": "hld_family_100",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "6739e0a58fb791b345a3797e7064d10ff2eb3263387edee8d957c9f208ba80df"
+        },
+        {
+          "independence_unit_id": "hld_family_101",
+          "prompt_id": "hld_101",
+          "prompt_text": "Heldout sample. The visible update is text snippet needs a better name. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "a51012fe4d873352adcc435b1b3b22f1bdda9f98629351dc155a13f2f8d606de",
+          "scenario_family": "hld_family_101",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "a51012fe4d873352adcc435b1b3b22f1bdda9f98629351dc155a13f2f8d606de"
+        },
+        {
+          "independence_unit_id": "hld_family_102",
+          "prompt_id": "hld_102",
+          "prompt_text": "Evaluation prompt. User-facing cue: text snippet slides out of place. Answer with a short steady sentence.",
+          "prompt_text_hash": "0d3ed2e760dfc95ea527aaac6993fbeeb92bfb02761319a42b5f25ca74c742ce",
+          "scenario_family": "hld_family_102",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "0d3ed2e760dfc95ea527aaac6993fbeeb92bfb02761319a42b5f25ca74c742ce"
+        },
+        {
+          "independence_unit_id": "hld_family_103",
+          "prompt_id": "hld_103",
+          "prompt_text": "Review split case. The user mentions that text snippet should stay nearby. Write a minimal acknowledgement.",
+          "prompt_text_hash": "1290c969c435cd33107305287fc7422542aa765067accfb37b8aef97979fc783",
+          "scenario_family": "hld_family_103",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "1290c969c435cd33107305287fc7422542aa765067accfb37b8aef97979fc783"
+        },
+        {
+          "independence_unit_id": "hld_family_104",
+          "prompt_id": "hld_104",
+          "prompt_text": "Heldout family. Surface cue: text snippet needs narrower terms. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "42a6d709f7a7c4f21146deca4397d6ea17651392f446249d0aee73b79c571fcb",
+          "scenario_family": "hld_family_104",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "42a6d709f7a7c4f21146deca4397d6ea17651392f446249d0aee73b79c571fcb"
+        },
+        {
+          "independence_unit_id": "hld_family_105",
+          "prompt_id": "hld_105",
+          "prompt_text": "Evaluation prompt. User-facing cue: window layout should be less distracting. Answer with a short steady sentence.",
+          "prompt_text_hash": "066a657b65362b4d30b5189e0ffceb45867c26f7bafbb0aeb5e0874b3fb574a6",
+          "scenario_family": "hld_family_105",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "066a657b65362b4d30b5189e0ffceb45867c26f7bafbb0aeb5e0874b3fb574a6"
+        },
+        {
+          "independence_unit_id": "hld_family_106",
+          "prompt_id": "hld_106",
+          "prompt_text": "Review split case. The user mentions that window layout needs trimming. Write a minimal acknowledgement.",
+          "prompt_text_hash": "20cad022da77dd52c854395bb7120834a2f751f2888c0fb97906e227f05a8747",
+          "scenario_family": "hld_family_106",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "20cad022da77dd52c854395bb7120834a2f751f2888c0fb97906e227f05a8747"
+        },
+        {
+          "independence_unit_id": "hld_family_107",
+          "prompt_id": "hld_107",
+          "prompt_text": "Heldout family. Surface cue: window layout feels crowded. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "9a8d75a3b1900352e3288050493225cdfb77d15bf5a0a93ac1e01ce0a562f42b",
+          "scenario_family": "hld_family_107",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "9a8d75a3b1900352e3288050493225cdfb77d15bf5a0a93ac1e01ce0a562f42b"
+        },
+        {
+          "independence_unit_id": "hld_family_108",
+          "prompt_id": "hld_108",
+          "prompt_text": "Heldout sample. The visible update is window layout needs cleanup. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "a010683243532f35f3a03eb17ec7da7ff21af888bf391f371a567141f904334a",
+          "scenario_family": "hld_family_108",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "a010683243532f35f3a03eb17ec7da7ff21af888bf391f371a567141f904334a"
+        },
+        {
+          "independence_unit_id": "hld_family_109",
+          "prompt_id": "hld_109",
+          "prompt_text": "Review split case. The user mentions that download folder needs rotation. Write a minimal acknowledgement.",
+          "prompt_text_hash": "1f380b2fe6aeea1eae9c63337db9da8469ec7ae52896a832fe354c7bd578d6c3",
+          "scenario_family": "hld_family_109",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "1f380b2fe6aeea1eae9c63337db9da8469ec7ae52896a832fe354c7bd578d6c3"
+        },
+        {
+          "independence_unit_id": "hld_family_110",
+          "prompt_id": "hld_110",
+          "prompt_text": "Heldout family. Surface cue: download folder should start small. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "b92117789633b48abe4685c7c3bb67df354095a99e5b41a196953640d6df2b1b",
+          "scenario_family": "hld_family_110",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "b92117789633b48abe4685c7c3bb67df354095a99e5b41a196953640d6df2b1b"
+        },
+        {
+          "independence_unit_id": "hld_family_111",
+          "prompt_id": "hld_111",
+          "prompt_text": "Heldout sample. The visible update is download folder needs a final home. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "68ba40d189b0dab5f4982541bd4d26c644664e05357b9707c6eca5b907e4afb3",
+          "scenario_family": "hld_family_111",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "68ba40d189b0dab5f4982541bd4d26c644664e05357b9707c6eca5b907e4afb3"
+        },
+        {
+          "independence_unit_id": "hld_family_112",
+          "prompt_id": "hld_112",
+          "prompt_text": "Evaluation prompt. User-facing cue: download folder feels unfinished. Answer with a short steady sentence.",
+          "prompt_text_hash": "2da97fb8d1ee61f880a3b2c5aa07166bb996ce982d3a78c35aea2c8e06bface0",
+          "scenario_family": "hld_family_112",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "2da97fb8d1ee61f880a3b2c5aa07166bb996ce982d3a78c35aea2c8e06bface0"
+        },
+        {
+          "independence_unit_id": "hld_family_113",
+          "prompt_id": "hld_113",
+          "prompt_text": "Heldout family. Surface cue: whiteboard photo needs a warmer setting. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "4972bbe183ef275c79de1a84cd47fe31d25c6b70f20248b2cc1ee11a12b6a9be",
+          "scenario_family": "hld_family_113",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "4972bbe183ef275c79de1a84cd47fe31d25c6b70f20248b2cc1ee11a12b6a9be"
+        },
+        {
+          "independence_unit_id": "hld_family_114",
+          "prompt_id": "hld_114",
+          "prompt_text": "Heldout sample. The visible update is whiteboard photo needs practice. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "84a48916dae70bc5202542c0a5a4e26f67aa318a2faa61ee4b9e185596e92e7a",
+          "scenario_family": "hld_family_114",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "84a48916dae70bc5202542c0a5a4e26f67aa318a2faa61ee4b9e185596e92e7a"
+        },
+        {
+          "independence_unit_id": "hld_family_115",
+          "prompt_id": "hld_115",
+          "prompt_text": "Evaluation prompt. User-facing cue: whiteboard photo should stay concise. Answer with a short steady sentence.",
+          "prompt_text_hash": "b2b4fe4cd888333c7e26535833cf8eb6b7b3ae526509645d0feca9025b63b5ec",
+          "scenario_family": "hld_family_115",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "b2b4fe4cd888333c7e26535833cf8eb6b7b3ae526509645d0feca9025b63b5ec"
+        },
+        {
+          "independence_unit_id": "hld_family_116",
+          "prompt_id": "hld_116",
+          "prompt_text": "Review split case. The user mentions that whiteboard photo needs a visible marker. Write a minimal acknowledgement.",
+          "prompt_text_hash": "4f35e3b2f29a17b5f950615777c1d92e4c53f6bd7d442fea3ed1c8e90dcfb4e2",
+          "scenario_family": "hld_family_116",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "4f35e3b2f29a17b5f950615777c1d92e4c53f6bd7d442fea3ed1c8e90dcfb4e2"
+        },
+        {
+          "independence_unit_id": "hld_family_117",
+          "prompt_id": "hld_117",
+          "prompt_text": "Heldout sample. The visible update is focus timer should look calmer. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "05a139fd493cdeb2cc2532b75636bd6cfc599784f633cd8388097d8ed1040f29",
+          "scenario_family": "hld_family_117",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "05a139fd493cdeb2cc2532b75636bd6cfc599784f633cd8388097d8ed1040f29"
+        },
+        {
+          "independence_unit_id": "hld_family_118",
+          "prompt_id": "hld_118",
+          "prompt_text": "Evaluation prompt. User-facing cue: focus timer needs a quick title. Answer with a short steady sentence.",
+          "prompt_text_hash": "79545dbd13c26206862e48ef2e6d35c7e47ef02512fe3dfb7362ee802484f2bf",
+          "scenario_family": "hld_family_118",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "79545dbd13c26206862e48ef2e6d35c7e47ef02512fe3dfb7362ee802484f2bf"
+        },
+        {
+          "independence_unit_id": "hld_family_119",
+          "prompt_id": "hld_119",
+          "prompt_text": "Review split case. The user mentions that focus timer needs fewer steps. Write a minimal acknowledgement.",
+          "prompt_text_hash": "c4056fb32c0c1684c4f904bca7be0542ca9db530663715c136cc599905f69d88",
+          "scenario_family": "hld_family_119",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "c4056fb32c0c1684c4f904bca7be0542ca9db530663715c136cc599905f69d88"
+        },
+        {
+          "independence_unit_id": "hld_family_120",
+          "prompt_id": "hld_120",
+          "prompt_text": "Heldout family. Surface cue: focus timer should stay quiet. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "022a2071e2eeba75679ae18c68272f41edce73a228ecd3b37e2bdb49077a5cc7",
+          "scenario_family": "hld_family_120",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "022a2071e2eeba75679ae18c68272f41edce73a228ecd3b37e2bdb49077a5cc7"
+        },
+        {
+          "independence_unit_id": "hld_family_121",
+          "prompt_id": "hld_121",
+          "prompt_text": "Evaluation prompt. User-facing cue: archive folder needs sorting before lunch. Answer with a short steady sentence.",
+          "prompt_text_hash": "90f6a9fe1da1a82c57b9825f5c644231a39cabf8f5aa05ce539ce3819327386b",
+          "scenario_family": "hld_family_121",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "90f6a9fe1da1a82c57b9825f5c644231a39cabf8f5aa05ce539ce3819327386b"
+        },
+        {
+          "independence_unit_id": "hld_family_122",
+          "prompt_id": "hld_122",
+          "prompt_text": "Review split case. The user mentions that archive folder needs another pass. Write a minimal acknowledgement.",
+          "prompt_text_hash": "207288ca0e16fcb21b83edc1c7bc4ded3a59ecf277d9af7f87e608971aef7281",
+          "scenario_family": "hld_family_122",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "207288ca0e16fcb21b83edc1c7bc4ded3a59ecf277d9af7f87e608971aef7281"
+        },
+        {
+          "independence_unit_id": "hld_family_123",
+          "prompt_id": "hld_123",
+          "prompt_text": "Heldout family. Surface cue: archive folder needs a first heading. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "3458692ebf4d2a6788731b0662055a753128a4d2a047e990b135030396dbf0dc",
+          "scenario_family": "hld_family_123",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "3458692ebf4d2a6788731b0662055a753128a4d2a047e990b135030396dbf0dc"
+        },
+        {
+          "independence_unit_id": "hld_family_124",
+          "prompt_id": "hld_124",
+          "prompt_text": "Heldout sample. The visible update is archive folder needs a reset. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "bfb32b071ab109c6282376236b3a88a617530434040e459c370d64ae6c0089a2",
+          "scenario_family": "hld_family_124",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "bfb32b071ab109c6282376236b3a88a617530434040e459c370d64ae6c0089a2"
+        },
+        {
+          "independence_unit_id": "hld_family_125",
+          "prompt_id": "hld_125",
+          "prompt_text": "Review split case. The user mentions that form draft creates a small tradeoff. Write a minimal acknowledgement.",
+          "prompt_text_hash": "5e6befba4536f9d1d142d11516e941b9e68f7a5ca25a7727c3470b0ae1c7b21b",
+          "scenario_family": "hld_family_125",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "5e6befba4536f9d1d142d11516e941b9e68f7a5ca25a7727c3470b0ae1c7b21b"
+        },
+        {
+          "independence_unit_id": "hld_family_126",
+          "prompt_id": "hld_126",
+          "prompt_text": "Heldout family. Surface cue: form draft needs pruning. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "8bb5c444b8d67848a03dca1f849103aef70b541657829fb10ab6375f9af1fbb5",
+          "scenario_family": "hld_family_126",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "8bb5c444b8d67848a03dca1f849103aef70b541657829fb10ab6375f9af1fbb5"
+        },
+        {
+          "independence_unit_id": "hld_family_127",
+          "prompt_id": "hld_127",
+          "prompt_text": "Heldout sample. The visible update is form draft needs restraint. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "b16d13d77fc48b40c0418ac46dbd633ba220314ac95d95f3580076011d17fa9e",
+          "scenario_family": "hld_family_127",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "b16d13d77fc48b40c0418ac46dbd633ba220314ac95d95f3580076011d17fa9e"
+        },
+        {
+          "independence_unit_id": "hld_family_128",
+          "prompt_id": "hld_128",
+          "prompt_text": "Evaluation prompt. User-facing cue: form draft needs a tiny routine. Answer with a short steady sentence.",
+          "prompt_text_hash": "c2c84cd9a7415591dc2966c65be5d633a36892deb210ee4475038609e667b159",
+          "scenario_family": "hld_family_128",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "c2c84cd9a7415591dc2966c65be5d633a36892deb210ee4475038609e667b159"
+        },
+        {
+          "independence_unit_id": "hld_family_129",
+          "prompt_id": "hld_129",
+          "prompt_text": "Heldout family. Surface cue: reading lamp needs a quieter ending. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "e010bfe27222de2318b5868e216f6d2c891354db623e7622a16b010c1a37731c",
+          "scenario_family": "hld_family_129",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "e010bfe27222de2318b5868e216f6d2c891354db623e7622a16b010c1a37731c"
+        },
+        {
+          "independence_unit_id": "hld_family_130",
+          "prompt_id": "hld_130",
+          "prompt_text": "Heldout sample. The visible update is reading lamp is missing from the desk. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "78437fe93bd73ffe65f9fa0bd3da3e10e38b6625e70150e31c778e95105bb7f2",
+          "scenario_family": "hld_family_130",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "78437fe93bd73ffe65f9fa0bd3da3e10e38b6625e70150e31c778e95105bb7f2"
+        },
+        {
+          "independence_unit_id": "hld_family_131",
+          "prompt_id": "hld_131",
+          "prompt_text": "Evaluation prompt. User-facing cue: reading lamp is overdue. Answer with a short steady sentence.",
+          "prompt_text_hash": "a142950d59655e67732e5345cf45074b21a820b6a754335bb4c0f83eb4c67fbb",
+          "scenario_family": "hld_family_131",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "a142950d59655e67732e5345cf45074b21a820b6a754335bb4c0f83eb4c67fbb"
+        },
+        {
+          "independence_unit_id": "hld_family_132",
+          "prompt_id": "hld_132",
+          "prompt_text": "Review split case. The user mentions that reading lamp needs a pattern. Write a minimal acknowledgement.",
+          "prompt_text_hash": "e71384ce4730850e872a0e944609baf66f4d0f2109fcc29fc339edeea76662d4",
+          "scenario_family": "hld_family_132",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "e71384ce4730850e872a0e944609baf66f4d0f2109fcc29fc339edeea76662d4"
+        },
+        {
+          "independence_unit_id": "hld_family_133",
+          "prompt_id": "hld_133",
+          "prompt_text": "Heldout sample. The visible update is keyboard shortcut should pause at a marker. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "e4ad192924a1a29ae891997390a237788ba38505d2124bf1488abd872ae8eb3f",
+          "scenario_family": "hld_family_133",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "e4ad192924a1a29ae891997390a237788ba38505d2124bf1488abd872ae8eb3f"
+        },
+        {
+          "independence_unit_id": "hld_family_134",
+          "prompt_id": "hld_134",
+          "prompt_text": "Evaluation prompt. User-facing cue: keyboard shortcut needs a reset. Answer with a short steady sentence.",
+          "prompt_text_hash": "34798e78cc8ae84c9a3767fedd2e7c7b1ebe3476973ba270e757407dbf32f005",
+          "scenario_family": "hld_family_134",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "34798e78cc8ae84c9a3767fedd2e7c7b1ebe3476973ba270e757407dbf32f005"
+        },
+        {
+          "independence_unit_id": "hld_family_135",
+          "prompt_id": "hld_135",
+          "prompt_text": "Review split case. The user mentions that keyboard shortcut needs triage. Write a minimal acknowledgement.",
+          "prompt_text_hash": "d7804d398c161c8a2140702e589b811752b172ee75653337d091c32842db0300",
+          "scenario_family": "hld_family_135",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "d7804d398c161c8a2140702e589b811752b172ee75653337d091c32842db0300"
+        },
+        {
+          "independence_unit_id": "hld_family_136",
+          "prompt_id": "hld_136",
+          "prompt_text": "Heldout family. Surface cue: keyboard shortcut need labels. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "25af659c0b862b27543feaac1bf8849ddb2d65c4a989ccecf27c9213e2d9c0c2",
+          "scenario_family": "hld_family_136",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "25af659c0b862b27543feaac1bf8849ddb2d65c4a989ccecf27c9213e2d9c0c2"
+        },
+        {
+          "independence_unit_id": "hld_family_137",
+          "prompt_id": "hld_137",
+          "prompt_text": "Evaluation prompt. User-facing cue: status update needs softening. Answer with a short steady sentence.",
+          "prompt_text_hash": "1735c6f58f25e4ef44bbd32f61230dfc934863800cc064e017c4ff87e349229c",
+          "scenario_family": "hld_family_137",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "1735c6f58f25e4ef44bbd32f61230dfc934863800cc064e017c4ff87e349229c"
+        },
+        {
+          "independence_unit_id": "hld_family_138",
+          "prompt_id": "hld_138",
+          "prompt_text": "Review split case. The user mentions that status update feels too sharp. Write a minimal acknowledgement.",
+          "prompt_text_hash": "783bbf892c6cf453f4846e6a9339c459d97757daf3cfa2f3971790c2c51e87b6",
+          "scenario_family": "hld_family_138",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "783bbf892c6cf453f4846e6a9339c459d97757daf3cfa2f3971790c2c51e87b6"
+        },
+        {
+          "independence_unit_id": "hld_family_139",
+          "prompt_id": "hld_139",
+          "prompt_text": "Heldout family. Surface cue: status update needs compression. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "4e9c12ae6eaa50f38ab0ec5cb823f9d6f5828f3f084ca6fae8a6d3c1bd72b1d9",
+          "scenario_family": "hld_family_139",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "4e9c12ae6eaa50f38ab0ec5cb823f9d6f5828f3f084ca6fae8a6d3c1bd72b1d9"
+        },
+        {
+          "independence_unit_id": "hld_family_140",
+          "prompt_id": "hld_140",
+          "prompt_text": "Heldout sample. The visible update is status update feels minor. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "1542d22269bb72114ed83110642ec10ee8c0df75f5017dbc9048475a25e7ffd5",
+          "scenario_family": "hld_family_140",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "1542d22269bb72114ed83110642ec10ee8c0df75f5017dbc9048475a25e7ffd5"
+        },
+        {
+          "independence_unit_id": "hld_family_141",
+          "prompt_id": "hld_141",
+          "prompt_text": "Review split case. The user mentions that sticky note needs a better name. Write a minimal acknowledgement.",
+          "prompt_text_hash": "d4e50a520f12b54d14c94731aa7c5335e700b8a0fbfd5865f95167d31252e5c3",
+          "scenario_family": "hld_family_141",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "d4e50a520f12b54d14c94731aa7c5335e700b8a0fbfd5865f95167d31252e5c3"
+        },
+        {
+          "independence_unit_id": "hld_family_142",
+          "prompt_id": "hld_142",
+          "prompt_text": "Heldout family. Surface cue: sticky note slides out of place. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "716e7172924235f5ab305e46b0e1d8fea23f9aa2588260f6fbef3d3e1cad4df1",
+          "scenario_family": "hld_family_142",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "716e7172924235f5ab305e46b0e1d8fea23f9aa2588260f6fbef3d3e1cad4df1"
+        },
+        {
+          "independence_unit_id": "hld_family_143",
+          "prompt_id": "hld_143",
+          "prompt_text": "Heldout sample. The visible update is sticky note should stay nearby. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "c97641873d1519a3f5e3a59c3b2f9fc4f0b01e3a52296c4845438432c92cc371",
+          "scenario_family": "hld_family_143",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "c97641873d1519a3f5e3a59c3b2f9fc4f0b01e3a52296c4845438432c92cc371"
+        },
+        {
+          "independence_unit_id": "hld_family_144",
+          "prompt_id": "hld_144",
+          "prompt_text": "Evaluation prompt. User-facing cue: sticky note needs narrower terms. Answer with a short steady sentence.",
+          "prompt_text_hash": "c869387fde3c555e5b19f3b476959a95d2b82be1cc1dfbe9c81e716bda9c7442",
+          "scenario_family": "hld_family_144",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "c869387fde3c555e5b19f3b476959a95d2b82be1cc1dfbe9c81e716bda9c7442"
+        },
+        {
+          "independence_unit_id": "hld_family_145",
+          "prompt_id": "hld_145",
+          "prompt_text": "Heldout family. Surface cue: folder icon should be less distracting. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "80224ff914a17561def972dbf4c134a5ecac24a0f8bc46d8f2b2a93516d09c81",
+          "scenario_family": "hld_family_145",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "80224ff914a17561def972dbf4c134a5ecac24a0f8bc46d8f2b2a93516d09c81"
+        },
+        {
+          "independence_unit_id": "hld_family_146",
+          "prompt_id": "hld_146",
+          "prompt_text": "Heldout sample. The visible update is folder icon needs trimming. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "9c1f69f6eb102cfd7a5f336b73db07b7e69d2f94a3bcef25e466a78384934374",
+          "scenario_family": "hld_family_146",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "9c1f69f6eb102cfd7a5f336b73db07b7e69d2f94a3bcef25e466a78384934374"
+        },
+        {
+          "independence_unit_id": "hld_family_147",
+          "prompt_id": "hld_147",
+          "prompt_text": "Evaluation prompt. User-facing cue: folder icon feels crowded. Answer with a short steady sentence.",
+          "prompt_text_hash": "a080ba6a4c85b24ce5aed66ea5940c260b3c6fda170445ea1f962fce3526c892",
+          "scenario_family": "hld_family_147",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "a080ba6a4c85b24ce5aed66ea5940c260b3c6fda170445ea1f962fce3526c892"
+        },
+        {
+          "independence_unit_id": "hld_family_148",
+          "prompt_id": "hld_148",
+          "prompt_text": "Review split case. The user mentions that folder icon needs cleanup. Write a minimal acknowledgement.",
+          "prompt_text_hash": "bc1a1818eff7d230c77f02a93dbe9d677251c2a820f3e8b1e9fc1d8b72f05b2f",
+          "scenario_family": "hld_family_148",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "bc1a1818eff7d230c77f02a93dbe9d677251c2a820f3e8b1e9fc1d8b72f05b2f"
+        },
+        {
+          "independence_unit_id": "hld_family_149",
+          "prompt_id": "hld_149",
+          "prompt_text": "Heldout sample. The visible update is voice memo needs rotation. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "6b933022b2bf7f3ce8eeeb2fb7c833664421bbaa30f8fc77980445548aa98f62",
+          "scenario_family": "hld_family_149",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "6b933022b2bf7f3ce8eeeb2fb7c833664421bbaa30f8fc77980445548aa98f62"
+        },
+        {
+          "independence_unit_id": "hld_family_150",
+          "prompt_id": "hld_150",
+          "prompt_text": "Evaluation prompt. User-facing cue: voice memo should start small. Answer with a short steady sentence.",
+          "prompt_text_hash": "8202897283bc2f58ab12e3ffd03f776bd381de0d16868222500de92c34c71e01",
+          "scenario_family": "hld_family_150",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "8202897283bc2f58ab12e3ffd03f776bd381de0d16868222500de92c34c71e01"
+        },
+        {
+          "independence_unit_id": "hld_family_151",
+          "prompt_id": "hld_151",
+          "prompt_text": "Review split case. The user mentions that voice memo needs a final home. Write a minimal acknowledgement.",
+          "prompt_text_hash": "6f57963ea8fa7d502907255fb0636d596c539fc923c6197186a4528392fe2796",
+          "scenario_family": "hld_family_151",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "6f57963ea8fa7d502907255fb0636d596c539fc923c6197186a4528392fe2796"
+        },
+        {
+          "independence_unit_id": "hld_family_152",
+          "prompt_id": "hld_152",
+          "prompt_text": "Heldout family. Surface cue: voice memo feels unfinished. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "b9fc62b5b80fa60c43c305d818ba6e5233623357ed66d5f3a95f6aa526ea0158",
+          "scenario_family": "hld_family_152",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "b9fc62b5b80fa60c43c305d818ba6e5233623357ed66d5f3a95f6aa526ea0158"
+        },
+        {
+          "independence_unit_id": "hld_family_153",
+          "prompt_id": "hld_153",
+          "prompt_text": "Evaluation prompt. User-facing cue: packing list needs a warmer setting. Answer with a short steady sentence.",
+          "prompt_text_hash": "f493ffdc7fe9283be56d3d67886c3f50db50951b6a5d516d09b233d232b7f253",
+          "scenario_family": "hld_family_153",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "f493ffdc7fe9283be56d3d67886c3f50db50951b6a5d516d09b233d232b7f253"
+        },
+        {
+          "independence_unit_id": "hld_family_154",
+          "prompt_id": "hld_154",
+          "prompt_text": "Review split case. The user mentions that packing list needs practice. Write a minimal acknowledgement.",
+          "prompt_text_hash": "9ec5e668d9aef677625536c82318e95dfd656b65681c8beebd2c405ec37c42d9",
+          "scenario_family": "hld_family_154",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "9ec5e668d9aef677625536c82318e95dfd656b65681c8beebd2c405ec37c42d9"
+        },
+        {
+          "independence_unit_id": "hld_family_155",
+          "prompt_id": "hld_155",
+          "prompt_text": "Heldout family. Surface cue: packing list should stay concise. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "51b9c29b33c734a267a7749a104afac7b29bf7c0eae7bf15c4ff996426920b9e",
+          "scenario_family": "hld_family_155",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "51b9c29b33c734a267a7749a104afac7b29bf7c0eae7bf15c4ff996426920b9e"
+        },
+        {
+          "independence_unit_id": "hld_family_156",
+          "prompt_id": "hld_156",
+          "prompt_text": "Heldout sample. The visible update is packing list needs a visible marker. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "bdc81504427bc34d3557b9753551f5ffcc24e4883f54ee2ed1d44f1d2766be3c",
+          "scenario_family": "hld_family_156",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "bdc81504427bc34d3557b9753551f5ffcc24e4883f54ee2ed1d44f1d2766be3c"
+        },
+        {
+          "independence_unit_id": "hld_family_157",
+          "prompt_id": "hld_157",
+          "prompt_text": "Review split case. The user mentions that quiet alarm should look calmer. Write a minimal acknowledgement.",
+          "prompt_text_hash": "d4b29f91e7bc61369a0ea0bec732c1dbaf36ff2776871c8f40ab792eadf1f8c3",
+          "scenario_family": "hld_family_157",
+          "split_id": "heldout",
+          "style_id": "hld_style_04",
+          "user_text_hash": "d4b29f91e7bc61369a0ea0bec732c1dbaf36ff2776871c8f40ab792eadf1f8c3"
+        },
+        {
+          "independence_unit_id": "hld_family_158",
+          "prompt_id": "hld_158",
+          "prompt_text": "Heldout family. Surface cue: quiet alarm needs a quick title. Produce one compact note and avoid questions.",
+          "prompt_text_hash": "5b2fc77ffd331505c83b15dd956ef2c449f6508cd67fa71472b4081f5ac33744",
+          "scenario_family": "hld_family_158",
+          "split_id": "heldout",
+          "style_id": "hld_style_01",
+          "user_text_hash": "5b2fc77ffd331505c83b15dd956ef2c449f6508cd67fa71472b4081f5ac33744"
+        },
+        {
+          "independence_unit_id": "hld_family_159",
+          "prompt_id": "hld_159",
+          "prompt_text": "Heldout sample. The visible update is quiet alarm needs fewer steps. Give a restrained desktop-chat reaction.",
+          "prompt_text_hash": "58138ed5b09943745222874ce11d4b98d8999870775324fa5a73fb8272e6d3d2",
+          "scenario_family": "hld_family_159",
+          "split_id": "heldout",
+          "style_id": "hld_style_02",
+          "user_text_hash": "58138ed5b09943745222874ce11d4b98d8999870775324fa5a73fb8272e6d3d2"
+        },
+        {
+          "independence_unit_id": "hld_family_160",
+          "prompt_id": "hld_160",
+          "prompt_text": "Evaluation prompt. User-facing cue: quiet alarm should stay quiet. Answer with a short steady sentence.",
+          "prompt_text_hash": "9ac0126391283f962fe8bed3c8dbf4209c6a793435aa35f956b88b0d7b7b06fd",
+          "scenario_family": "hld_family_160",
+          "split_id": "heldout",
+          "style_id": "hld_style_03",
+          "user_text_hash": "9ac0126391283f962fe8bed3c8dbf4209c6a793435aa35f956b88b0d7b7b06fd"
+        }
+      ],
+      "required_independent_families_for_future_capture": 160,
+      "split_id": "heldout"
+    }
+  },
+  "task_id": "EGODESKTOP-GABLATION-011"
+}

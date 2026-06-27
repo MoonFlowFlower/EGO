@@ -3955,6 +3955,65 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-011
+    title: "EgoDesktop: Joi real-loop G-ABLATION preregistration manifest v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-010
+    status: blocked
+    layer: egodesktop_real_loop_preregistration_manifest
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E3
+    claim_ceiling: "egodesktop_real_loop_g_ablation_preregistration_manifest_only"
+    superseded_by: EGODESKTOP-GABLATION-012
+    next_action: "Claude returned BLOCKING_FINDINGS for repaired v2. Statistical/surface-gate repairs were accepted, but prompt text leaks split/meta identity, nominal independent families collapse to repeated templates, and the prompt set remains one narrow calm affect band. Do not attempt a third synthetic prompt-pack repair in 011. Next action is a separate docs-only route-decision card closing/downgrading the synthetic prompt-pack path without claiming saturation or authorizing capture/scoring. Do not capture CREATURE_ON rows, run same-access reproducers, score, compare, emit a verdict, update program state/evidence ledger, push, tag, or remote-anchor."
+    acceptance:
+      - "PREREGISTRATION_MANIFEST.json and PROMPT_PACKS.json exist with SHA256 sidecars and parse as JSON."
+      - "Manifest freezes prompt packs, split protocol, D-field whitelist, metric definition, equivalence/power gate, same-access baseline battery, positive controls, verdict matrix, and provenance requirements."
+      - "Prompt packs contain a nominal 160 calibration prompts and 160 heldout prompts before capture, but Claude v2 review found the nominal independent-family labels collapse to repeated templates; effective independence is unproven and blocks 011 acceptance."
+      - "Surface-template overlap gate records exact cross-split hash overlap, token and char-5gram maxima, threshold-violating pair count, and positive/negative control behavior."
+      - "Equivalence/power gate predeclares epsilon=0.05, alpha=0.05, minimum independent prompt families=160, critical mismatch count=3, and MDE <= epsilon for any baseline_saturated_stop claim."
+      - "Repeated rows per prompt family require family-level collapse or block as blocked_clustered_or_underpowered_equivalence_design."
+      - "Baseline battery requires full_public_history_steelman_regularized_multinomial_sequence_model_v0 or an accepted low-order Markov upper-bound proof before capture."
+      - "Manifest preserves 009 captured-calibration artifacts as prior evidence only and excludes the older 008 synthetic-reference row from the 011 frozen scoring basis."
+      - "No capture, same-access execution, scoring, comparison, verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this manifest slice."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/PREREGISTRATION_MANIFEST.json"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/PROMPT_PACKS.json"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/MUTATION_SCOPE.yaml"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-012
+    title: "EgoDesktop: Joi real-loop G-ABLATION synthetic-pack route decision v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-011
+    status: accepted
+    layer: egodesktop_real_loop_route_governance
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E3
+    claim_ceiling: "synthetic_prompt_pack_route_decision_only"
+    next_action: "Accepted locally after Claude NO_BLOCKING_FINDINGS (source-limited): the synthetic prompt-pack preregistration path is closed/downgraded as an unusable measurement route only, without claiming same-access saturation or broader attribution closure. 011 remains blocked and superseded by this route decision. If future real evidence is wanted, draft a separate real captured desktop-chat-turn design card with explicit capture authority and review. Do not create synthetic prompt-pack v3, capture CREATURE_ON rows, run same-access reproducers, score, compare, emit a verdict, update program state/evidence ledger, push, tag, or remote-anchor."
+    acceptance:
+      - "011 Claude v2 BLOCKING_FINDINGS are preserved in 011 review/status/spec surfaces."
+      - "012 records a route decision to stop repairing synthetic prompt packs in the 011 lane."
+      - "012 does not claim baseline saturation, candidate attribution failure, route advancement, runtime effect, mechanism evidence, agency, emotion, subjectivity, consciousness, alive status, product readiness, or Bar-2 specialness."
+      - "Any future real captured desktop-chat-turn design is explicitly separated into a later task card with separate capture authority."
+      - "No capture, same-access execution, scoring, comparison, verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this route-decision slice."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/, remove this task-board entry, restore 011 to blocked awaiting operator route choice, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/MUTATION_SCOPE.yaml"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/REVIEW.md"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task

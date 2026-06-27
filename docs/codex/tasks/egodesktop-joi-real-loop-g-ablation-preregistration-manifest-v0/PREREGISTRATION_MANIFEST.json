@@ -1,0 +1,311 @@
+{
+  "anti_degeneracy_gate": {
+    "condition_base_rate_report_required": true,
+    "equivalence_epsilon_must_be_at_most_one_quarter_of_minimum_mechanism_presence_movement": true,
+    "expression_name_entropy_report_required": true,
+    "mechanism_presence_minimum_family_mismatch_rate": 0.2,
+    "status_if_expression_channel_nearly_constant": "blocked_degenerate_expression_channel"
+  },
+  "authorization": {
+    "creature_on_capture_authorized": false,
+    "evidence_ledger_update_authorized": false,
+    "program_state_update_authorized": false,
+    "push_tag_remote_anchor_authorized": false,
+    "same_access_execution_authorized": false,
+    "scoring_authorized": false,
+    "verdict_authorized": false
+  },
+  "baseline_battery": {
+    "controller_families": [
+      "current_turn_reactive",
+      "ema_history",
+      "hysteresis_history",
+      "logistic_short_context",
+      "linear_short_context",
+      "fixed_shim_template",
+      "full_public_history_steelman_regularized_multinomial_sequence_model_v0"
+    ],
+    "full_public_history_steelman": {
+      "allowed_features": [
+        "prompt_id",
+        "user_text_hash",
+        "prompt_pack_hash",
+        "split_id",
+        "visible_history_hash",
+        "desktop_session_context_hash",
+        "desktop_recovery_context_hash",
+        "independence_unit_id"
+      ],
+      "evaluation_split": "heldout_only",
+      "fit_split": "calibration_only",
+      "forbidden_features": [
+        "creature_state",
+        "adapter_output",
+        "bot_text",
+        "heldout_d_fields",
+        "expected_verdict",
+        "future_target",
+        "threshold_tuning_after_capture"
+      ],
+      "hyperparameter_grid_frozen": {
+        "class_prior": [
+          "empirical_calibration",
+          "uniform"
+        ],
+        "history_window": [
+          "current_turn",
+          "last_4_public_turns",
+          "full_public_calibration_history"
+        ],
+        "l2_regularization": [
+          0.01,
+          0.1,
+          1,
+          10
+        ]
+      },
+      "required": true
+    },
+    "independent_callable_path_required": true,
+    "same_access_public_inputs_only": true,
+    "selection_rule": "report best or closest reproducer on heldout split; best same-access equivalence means baseline_saturated_stop within this narrow expression_name channel only",
+    "weak_baseline_policy": "if full_public_history_steelman is absent and no accepted low_order_markov_upper_bound proof exists, status=blocked_weak_same_access_baseline"
+  },
+  "claim_ceiling": "egodesktop_real_loop_g_ablation_preregistration_manifest_only",
+  "controls": {
+    "leakage_positive_control": {
+      "must_detect_fields": [
+        "future_target_label",
+        "expected_verdict",
+        "memory_write",
+        "tool_call"
+      ],
+      "scanner_id": "egodesktop_gablation_011_structural_leakage_scanner_v0",
+      "status_if_positive_control_fails": "invalid_leakage_positive_control_not_detected"
+    },
+    "llm_replay_control": {
+      "llm_mode_required": "replay_locked_or_excluded_from_d",
+      "status_if_unlocked": "invalid_llm_unlocked_confounds_metric"
+    },
+    "mechanism_presence_positive_control": {
+      "pass_rule": "family-level adapter_output.expression_name mismatch rate between CREATURE_ON and CREATURE_FROZEN must be at least 0.20 with exact-binomial support; otherwise fail_no_creature_effect or blocked_no_creature_to_d_path",
+      "required_conditions": [
+        "CREATURE_ON",
+        "CREATURE_FROZEN"
+      ],
+      "required_minimum_independent_families_per_condition": 160
+    },
+    "near_duplicate_control": {
+      "frozen_thresholds": {
+        "char_5gram_jaccard_max": 0.25,
+        "token_jaccard_max": 0.45
+      },
+      "negative_control_expected_to_pass": true,
+      "negative_control_pair": [
+        "The invoice filenames need a cleaner pattern before archiving.",
+        "Screen brightness feels too sharp after sunset."
+      ],
+      "positive_control_observed": {
+        "char_5gram_jaccard": 0.364,
+        "expected_to_trigger": true,
+        "token_jaccard": 0.526
+      },
+      "positive_control_pair": [
+        "The user is choosing a quiet dinner after changing plans. Give one calm short response.",
+        "The user changed plans toward a quiet dinner; answer with one calm short response."
+      ],
+      "scanner_claim": "surface template overlap gate, not embedding semantic equivalence",
+      "scanner_id": "egodesktop_gablation_011_surface_template_overlap_scanner_v1",
+      "status_if_pack_pair_exceeds_threshold": "blocked_prompt_pack_near_duplicate_overlap",
+      "status_if_positive_control_fails": "blocked_near_duplicate_scanner_positive_control_failed"
+    },
+    "renderer_idle_control": {
+      "renderer_idle_params_excluded_from_d": true,
+      "status_if_renderer_idle_drives_metric": "invalid_renderer_idle_drives_metric"
+    }
+  },
+  "created_at": "2026-06-27",
+  "d_fields": {
+    "chat_turn_adapter_expression_relation": "chat_turn.expression_name must equal adapter_output.expression_name for a valid row; it is not counted as a second independent scored channel",
+    "consistency_check_fields": [
+      "chat_turn.expression_name"
+    ],
+    "d_field_mode": "non_llm_adapter_output_only",
+    "d_tuple_mismatch_unit": "independent_prompt_family_row",
+    "excluded_sources": [
+      "llm_text",
+      "prompt_text",
+      "public_inputs",
+      "complete_observation",
+      "renderer_idle_params",
+      "captured_calibration_state",
+      "captured_calibration_bot_text",
+      "heldout_observation_content",
+      "future_target",
+      "expected_verdict"
+    ],
+    "integrity_only_fields": [
+      "output_event.order_index"
+    ],
+    "primary_scored_fields": [
+      "adapter_output.expression_name"
+    ],
+    "whitelist": [
+      "adapter_output.expression_name",
+      "chat_turn.expression_name",
+      "output_event.order_index"
+    ]
+  },
+  "enabled_status": "explicit_future_experiment_flags_only",
+  "equivalence_power_gate": {
+    "alpha": 0.05,
+    "alpha_tail_at_epsilon_for_n_160": 0.03882069438748457,
+    "cluster_guard": "if fewer than 160 independent prompt families exist, or if rows repeat a family without family-level collapse, status=blocked_clustered_or_underpowered_equivalence_design",
+    "critical_mismatch_count_for_n_160": 3,
+    "declared_mde_mismatch_rate_gap": 0.04,
+    "design_alternative_mismatch_rate": 0.01,
+    "equivalence_boundary_epsilon": 0.05,
+    "insufficient_power_status": "blocked_underpowered_equivalence_design",
+    "mde_leq_epsilon": true,
+    "minimum_independent_families_per_condition_pair": 160,
+    "null_hypothesis": "family_mismatch_rate >= epsilon",
+    "power_at_design_alternative_for_n_160": 0.9221584908704471,
+    "statistical_test_id": "one_sided_exact_binomial_equivalence_for_family_mismatch_rate_v1",
+    "target_power": 0.8,
+    "unit_of_analysis": "independent_prompt_family"
+  },
+  "mainline_integration_status": "not_connected_to_default_runtime",
+  "metrics": {
+    "aggregate_metric": "family_level_mismatch_rate_by_condition_pair",
+    "missing_or_invalid_family_policy": "block_scoring_or_mark_invalid; never impute",
+    "row_distance_definition": "per independent prompt family, mismatch=1 when adapter_output.expression_name differs between compared conditions after replay recompute; chat_turn expression is a consistency check only",
+    "row_distance_function_id": "egodesktop_gablation_011_expression_name_family_mismatch_v1"
+  },
+  "parent_task_id": "EGODESKTOP-GABLATION-010",
+  "prompt_packs": {
+    "calibration_independent_family_count": 160,
+    "calibration_prompt_count": 160,
+    "file": "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/PROMPT_PACKS.json",
+    "file_sha256": "cafe9a2336e251c4cd3d4bc0397dde207e3a6ad1d7decb372219dd5f1e9d0199",
+    "heldout_independent_family_count": 160,
+    "heldout_prompt_count": 160,
+    "near_duplicate_self_check": {
+      "char_5gram_jaccard_max_observed_cross_split": 0.18435754189944134,
+      "char_5gram_jaccard_threshold": 0.25,
+      "cross_split_pairs_over_threshold": 0,
+      "scanner_id": "egodesktop_gablation_011_surface_template_overlap_scanner_v1",
+      "token_jaccard_max_observed_cross_split": 0.30434782608695654,
+      "token_jaccard_threshold": 0.45
+    },
+    "prompt_pack_hash_definition": "sha256 of canonical JSON file PROMPT_PACKS.json",
+    "prompt_text_policy": "prompts contain no expected D labels, no target verdicts, no heldout answers, and no creature-state fields"
+  },
+  "real_trigger_evidence": "none_for_011_manifest",
+  "repo_root": "D:/Project/AIProject/MyProject/Ego",
+  "required_future_artifact_provenance": {
+    "aggregation_rule_required": true,
+    "code_path_hash_required": true,
+    "input_artifacts_required": true,
+    "manifest_sha256_required": true,
+    "producer_function_required": true,
+    "run_id_required": true,
+    "seed_prompt_episode_split_ids_required": true
+  },
+  "schema_version": "ego_desktop.joi_real_loop_g_ablation_preregistration_manifest.v0",
+  "source_artifacts": {
+    "captured_calibration_reference_009": {
+      "calibration_reference_hash": "52411a8378e4a258a03f16b606052d9fcc42650af16c655684db07dc94356067",
+      "file_sha256": "9cd7888af4657a72b0c8ea47e52432f7c3b9eae13ae7c0cbf1c0c302c5009806",
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/calibration_reference/calibration_reference.json",
+      "role": "captured fixed-output-schedule calibration reference for prior OFF_STATIC replay row"
+    },
+    "historical_008_static_replay": {
+      "file_sha256": "825f2fe07ae66eee86139bec3cf6cbaf2f6183678e3b7606c71edf003530d7ae",
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_off_static_replay_heldout_v0/trace/trace_rows.jsonl",
+      "role": "historical synthetic-reference row only; excluded from 011 frozen scoring basis",
+      "row_hash": "bd120552670850025ab531a8dc8b9a064c50ba30277115451a0d86c84b38de04"
+    },
+    "predeclared_calibration_prompt_pack_009": {
+      "file_sha256": "3f6575899305635348bb82713e57615b896a3d574abbb30f883eb4107704353b",
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/capture/calibration_ui_predeclared_single/PREDECLARED_CALIBRATION_PROMPT_PACK.json",
+      "prompt_pack_hash": "63704cafe002d3ee07f7b5a61a0f3820fca8688c9e52a844cd7d97600c7bc0db",
+      "role": "prior captured calibration source only; insufficient for future scoring n"
+    },
+    "rebuilt_off_static_replay_009": {
+      "file_sha256": "4ff838dbf1daa84f7520427e7d312b85d97bc8de30b6db0bb9c45ee486cfe4c3",
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/trace/trace_rows.jsonl",
+      "role": "prior OFF_STATIC_REPLAY_HELDOUT row rebuilt from captured calibration reference; not a future scoring sample",
+      "row_hash": "95722e9c2be9e29a188e759f4490f75bb8518d99e70fd79c41533f5b60345166"
+    },
+    "replay_precondition_report_009": {
+      "d_field_replay_precondition_satisfied": true,
+      "file_sha256": "16866ea1fa73e4c408f2dac51446b3298b6d8bedb724716e420a9a16b10ac9ad",
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/evaluator/evaluation_report.json",
+      "role": "prior replay/D-field precondition evidence only",
+      "scoring_run_authorized": false,
+      "status": "replay_integrity_preflight_pass_no_verdict",
+      "verdict_authorized": false
+    },
+    "split_partition_manifest_009": {
+      "file_sha256": "4a823eebc7b15466133d737d64bb1ee4f398750bd8aa7ed3fafd61c72bbdc1c0",
+      "partition_protocol_hash": "2d7a6e745a68812348ea49cbf579e8e0e866e11b37b1541cecbf6ebc28804b50",
+      "path": "artifacts/egodesktop_joi_real_loop_g_ablation_calibration_reference_v0/calibration_reference/partition/SPLIT_PARTITION_MANIFEST.json",
+      "role": "prior partition protocol reference"
+    }
+  },
+  "source_head_before_manifest": "f87379429086bf6227b0bf34d076bd6b14007541",
+  "split_protocol": {
+    "calibration_split": "calibration",
+    "capture_order": [
+      "calibration",
+      "heldout"
+    ],
+    "exact_user_text_hash_overlap_allowed": false,
+    "heldout_labels_or_outputs_available_during_baseline_fit": false,
+    "heldout_split": "heldout",
+    "independence_unit": "independent_prompt_family",
+    "one_prompt_per_family_per_split": true,
+    "prompt_id_overlap_allowed": false,
+    "scenario_family_overlap_allowed_across_splits": false,
+    "split_protocol_id": "egodesktop_gablation_011_pre_capture_split_protocol_v1"
+  },
+  "status": "preregistration_manifest_hash_frozen_for_claude_source_limited_review",
+  "stop_conditions": [
+    "Claude returns BLOCKING_FINDINGS on this manifest",
+    "PROMPT_PACKS.json hash changes after review",
+    "capture starts before this manifest receives NO_BLOCKING_FINDINGS",
+    "independent prompt families per required condition pair are below 160",
+    "rows repeat prompt families without family-level collapse",
+    "full_public_history_steelman is omitted without accepted low-order Markov proof",
+    "near-duplicate or leakage positive controls are absent or fail",
+    "any runtime default path, program state, evidence ledger, push, tag, or remote anchor mutation is required"
+  ],
+  "task_id": "EGODESKTOP-GABLATION-011",
+  "verdict_matrix": {
+    "best_same_access_equivalent_to_creature_on": "real_loop_g_ablation_baseline_saturated_stop",
+    "candidate_non_equivalent_to_static_and_same_access_with_clean_controls": "bounded_local_attribution_candidate_only_not_route_advancement",
+    "candidate_worse_than_static_floor": "real_loop_g_ablation_fail_no_creature_effect",
+    "clustered_prompt_families_or_repeated_rows": "blocked_clustered_or_underpowered_equivalence_design",
+    "heldout_static_replay_equivalent_to_creature_on": "real_loop_g_ablation_baseline_saturated_stop",
+    "leakage_or_future_info": "invalid_leakage_or_future_info",
+    "missing_full_public_history_steelman": "blocked_weak_same_access_baseline",
+    "no_mechanism_presence_movement": "real_loop_g_ablation_fail_no_creature_effect_or_blocked_no_creature_to_d_path",
+    "no_preregistration_review": "blocked_preregistration_not_accepted",
+    "renderer_idle_or_unlocked_llm": "invalid_renderer_idle_or_llm_confounded_metric",
+    "rows_below_minimum_n_or_power": "blocked_underpowered_equivalence_design"
+  },
+  "what_this_does_not_prove": [
+    "CREATURE_ON effect",
+    "same-access saturation beyond the narrow expression_name channel and frozen prompt distribution",
+    "candidate attribution",
+    "route advancement",
+    "runtime readiness",
+    "product benefit",
+    "agency",
+    "emotion",
+    "subjectivity",
+    "consciousness",
+    "alive status",
+    "Bar-2 specialness"
+  ]
+}
