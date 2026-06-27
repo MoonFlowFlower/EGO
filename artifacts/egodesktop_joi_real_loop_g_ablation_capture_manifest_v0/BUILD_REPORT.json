@@ -1,0 +1,15 @@
+{
+  "capture_authority": false,
+  "capture_manifest": "artifacts\\egodesktop_joi_real_loop_g_ablation_capture_manifest_v0\\CAPTURE_MANIFEST.json",
+  "capture_manifest_sha256": "54af881d9d276524e5566230602a46e9d4a4f7e03cb90b34ea5c9ba1cbfc08bd",
+  "claim_ceiling": "capture_manifest_hash_selection_only",
+  "producer_function": "build_capture_manifest",
+  "raw_cache_report": "artifacts\\egodesktop_joi_real_loop_g_ablation_source_cache_v0\\RAW_CACHE_REPORT.json",
+  "raw_cache_report_sha256": "051cb9f4863d285cef78f0d15b6df2e3617125d16844cf2cd84095a722d6c1c2",
+  "raw_text_in_manifest": false,
+  "runtime_authority": false,
+  "schema": "egodesktop.joi_real_loop.capture_manifest_build_report.v0",
+  "scoring_authority": false,
+  "selected_row_count": 10,
+  "source_count": 2
+}
