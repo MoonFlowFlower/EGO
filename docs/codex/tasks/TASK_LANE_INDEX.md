@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 217 |
+| `reference_only` | 218 |
 
 ## Active Default
 
@@ -212,6 +212,7 @@
 | Egodesktop Joi Real Loop G Ablation Synthetic Pack Route Decision V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Trace Runner V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-trace-runner-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Wizard Selected Source Chat Smoke V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Egodesktop Joi Real Loop G Ablation Wizard Selected Source Off Static Replay Preflight V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Debug Signal Overlay V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Perception Demo V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-perception-demo-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Reply Preview Mode V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-reply-preview-mode-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

@@ -1,0 +1,16 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0
+expected_mutation_surface:
+  - 027 Wizard selected-source OFF_STATIC replay preflight task package
+  - replay/evaluator artifacts under the 027 artifact directory
+  - task-board entry for EGODESKTOP-GABLATION-027
+  - task-board outbox entry if GitHub Project sync is unavailable
+  - route-convergence generated task-lane index refresh
+  - no raw text staging, code changes, CREATURE_ON, same-access execution, scoring, comparison, verdict, route advancement, runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/
+  - artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_off_static_replay_preflight_v0/
+  - artifacts/task_board/outbox.jsonl
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "wizard_selected_source_off_static_replay_preflight_only; no desktop-chat-turn route pass, CREATURE_ON effect, D-provenance, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

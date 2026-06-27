@@ -4427,6 +4427,38 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-027
+    title: "EgoDesktop: Joi real-loop G-ABLATION Wizard selected source OFF_STATIC replay preflight v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-026
+    status: accepted
+    layer: egodesktop_real_loop_selected_source_replay_preflight
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "wizard_selected_source_off_static_replay_preflight_only"
+    next_action: "Accepted local-only: used the accepted 026 Wizard selected-source desktop chat-turn trace row as source input for the existing OFF_STATIC replay builder and replay evaluator. Evidence is limited to replay preflight pass without scoring/verdict authority, no raw text staging, source linkage by source_row_hash to the 026 row, and no CREATURE_ON/same-access/scoring/attribution/route-advancement claim. The rebuilt OFF_STATIC row does not directly carry 026 IPC entrypoint_provenance; provenance is cited only through the source artifact path and source_row_hash."
+    acceptance:
+      - "Task card cites EGODESKTOP-GABLATION-026 and preserves default-off, no-authority, no-program-state-update, and no-evidence-ledger-update boundaries."
+      - "Builder consumes only artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_chat_smoke_v0/trace/trace_rows.jsonl."
+      - "Builder writes one OFF_STATIC_REPLAY_HELDOUT row with source_row_hash equal to the 026 row_hash."
+      - "Evaluator reports replay_integrity_preflight_pass_no_verdict with d_field_replay_precondition_satisfied=true."
+      - "Evaluator reports scoring_run_authorized=false and verdict_authorized=false."
+      - "Artifact raw-text scan reports selected_source_utterance_leak_count=0."
+      - "The task card explicitly avoids claiming that rebuilt OFF_STATIC public_inputs preserves 026 IPC provenance directly."
+      - "No CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/, artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_off_static_replay_preflight_v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/IMPLEMENT.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/MUTATION_SCOPE.yaml"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_off_static_replay_preflight_v0/replay/trace_rows.jsonl"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_wizard_selected_source_off_static_replay_preflight_v0/eval/evaluation_report.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
