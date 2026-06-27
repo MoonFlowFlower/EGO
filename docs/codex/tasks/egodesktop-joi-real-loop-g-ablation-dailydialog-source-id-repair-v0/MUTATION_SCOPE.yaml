@@ -1,0 +1,18 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0
+expected_mutation_surface:
+  - 018 DailyDialog source-id repair in manifest builder and tests
+  - regenerated source manifest/download-plan artifacts and metadata smoke report
+  - task-board entry for EGODESKTOP-GABLATION-018
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no raw dataset row download, source cache creation, gated terms acceptance, row capture, scoring run, verdict, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/
+  - scripts/codex/build_egodesktop_gablation_source_manifest.py
+  - scripts/tests/test_build_egodesktop_gablation_source_manifest.py
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.json
+  - artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.sha256
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "source_id_repair_and_metadata_smoke_only; no raw source cache completeness, dataset row availability, CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

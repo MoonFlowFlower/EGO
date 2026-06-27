@@ -1,7 +1,7 @@
 {
   "claim_ceiling": "source_manifest_artifact_only",
   "created_at": "2026-06-27T00:00:00+00:00",
-  "download_plan_hash": "a3bde027dbe02e0fa331c1af58b2db968af7868d487f9d9343bab4f6e26e866f",
+  "download_plan_hash": "eb4c81abff9284b841af191189cc4fd7d5a7bcc3a6f54e211e7d8c73d58cddc4",
   "manifest_id": "egodesktop_joi_real_loop_g_ablation_source_manifest_v0",
   "no_capture_authority": true,
   "no_evidence_ledger_authority": true,
@@ -201,7 +201,7 @@
         "affect_band"
       ],
       "license_name": "cc-by-nc-sa-4.0",
-      "license_text_hash_or_card_hash": "78083fc35fbc95dae1f1073f10a020d7dcee81b8d4acfa3a67ae3826bd81976b",
+      "license_text_hash_or_card_hash": "a2d5efcc2d6f7fa67db1d5aeb368c5c8100def0ff0eb674fd799ece9c6153cba",
       "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
       "noncommercial_only": true,
       "operator_terms_review_required": false,
@@ -211,11 +211,11 @@
       "raw_text_policy": "raw_local_only_or_hash_only",
       "retrieved_at": "2026-06-27T00:00:00+00:00",
       "sharealike_required": true,
-      "source_hash": "e6b732fce7b48535126d465b0e0c623912daa9d383b19952966edef25219a32f",
+      "source_hash": "d26f53e2edd1fca8109122a845827ad7d7de4cac6ce50cb9b7bfb69c4870467c",
       "source_id": "dailydialog_hf",
       "source_kind": "public_dataset",
       "source_license_tier": "public_nc_sa",
-      "source_url_or_local_path": "https://huggingface.co/datasets/daily_dialog",
+      "source_url_or_local_path": "https://huggingface.co/datasets/roskoN/dailydialog",
       "split_meta_leakage_scan_required": true
     },
     {

@@ -4161,6 +4161,36 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-018
+    title: "EgoDesktop: Joi real-loop G-ABLATION DailyDialog source id repair v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-017
+    status: accepted
+    layer: egodesktop_real_loop_source_id_repair
+    owner: codex
+    observation_class: deterministic_local_artifact
+    evidence_level: E3
+    claim_ceiling: "source_id_repair_and_metadata_smoke_only"
+    next_action: "Accepted locally after source-limited fallback reviewer NO_BLOCKING_FINDINGS. The stale dailydialog_hf URL that returned 404 in 017 was updated to https://huggingface.co/datasets/roskoN/dailydialog after live metadata/card checks found status 200 and explicit CC BY-NC-SA 4.0 card text. Regenerated metadata smoke records dailydialog_hf status_code=200/reachable=true and empathetic_dialogues_hf status_code=200/reachable=true, with raw_text_stored=false and raw_cache_created=false. Next minimal action is a separate raw-cache population task if continuing the public-source path. This task authorizes no raw dataset row download, source cache creation, gated terms acceptance, CREATURE_ON capture, same-access execution, scoring, comparison, verdict, program-state/evidence-ledger update, push, tag, or remote anchor."
+    acceptance:
+      - "dailydialog_hf source URL is updated to a currently reachable source with explicit CC BY-NC-SA 4.0 card text."
+      - "DailyDialog source tier remains public_nc_sa."
+      - "Manifest/download-plan artifacts are regenerated with SHA256 sidecars."
+      - "Metadata smoke is rerun without storing raw text or creating source_cache."
+      - "No raw source cache completeness, dataset row availability, CREATURE_ON effect, same-access saturation, baseline score, attribution, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this repair."
+    rollback: "Restore prior dailydialog_hf URL/artifacts, delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-dailydialog-source-id-repair-v0/MUTATION_SCOPE.yaml"
+      - "scripts/codex/build_egodesktop_gablation_source_manifest.py"
+      - "scripts/tests/test_build_egodesktop_gablation_source_manifest.py"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_manifest_v0/SOURCE_MANIFEST.json"
+      - "artifacts/egodesktop_joi_real_loop_g_ablation_source_cache_v0/CACHE_SMOKE_REPORT.json"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task

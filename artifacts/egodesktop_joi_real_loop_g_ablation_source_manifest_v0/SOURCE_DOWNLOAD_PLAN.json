@@ -20,7 +20,7 @@
         "no_capture_or_scoring"
       ],
       "source_id": "dailydialog_hf",
-      "source_url": "https://huggingface.co/datasets/daily_dialog"
+      "source_url": "https://huggingface.co/datasets/roskoN/dailydialog"
     },
     {
       "action": "future_local_download_conditional",

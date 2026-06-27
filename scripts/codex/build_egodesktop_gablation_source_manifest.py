@@ -200,10 +200,12 @@ def build_source_manifest(*, created_at: str | None = None) -> tuple[dict[str, A
             source_id="dailydialog_hf",
             source_kind="public_dataset",
             source_license_tier="public_nc_sa",
-            source_url_or_local_path="https://huggingface.co/datasets/daily_dialog",
+            source_url_or_local_path="https://huggingface.co/datasets/roskoN/dailydialog",
             license_name="cc-by-nc-sa-4.0",
             license_url="https://creativecommons.org/licenses/by-nc-sa/4.0/",
-            license_text_hash_or_card_hash=sha256_text("https://huggingface.co/datasets/daily_dialog|cc-by-nc-sa-4.0"),
+            license_text_hash_or_card_hash=sha256_text(
+                "https://huggingface.co/datasets/roskoN/dailydialog/raw/main/README.md|cc-by-nc-sa-4.0"
+            ),
             attribution_required=True,
             sharealike_required=True,
             noncommercial_only=True,

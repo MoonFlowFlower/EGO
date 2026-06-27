@@ -5,7 +5,7 @@
   "raw_cache_created": false,
   "schema": "egodesktop.joi_real_loop.source_manifest_build_report.v0",
   "source_download_plan": "artifacts\\egodesktop_joi_real_loop_g_ablation_source_manifest_v0\\SOURCE_DOWNLOAD_PLAN.json",
-  "source_download_plan_sha256": "a3bde027dbe02e0fa331c1af58b2db968af7868d487f9d9343bab4f6e26e866f",
+  "source_download_plan_sha256": "eb4c81abff9284b841af191189cc4fd7d5a7bcc3a6f54e211e7d8c73d58cddc4",
   "source_manifest": "artifacts\\egodesktop_joi_real_loop_g_ablation_source_manifest_v0\\SOURCE_MANIFEST.json",
-  "source_manifest_sha256": "36b0bf2d86a02338ef906f507174cee6b9b1c17f2004355ab22807dba44e77ea"
+  "source_manifest_sha256": "2bb0596b657e16fba31df18c3be9d3f0935d8a5fe88ba3a32e584ff626ca1997"
 }

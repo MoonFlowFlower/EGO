@@ -47,6 +47,7 @@ def test_candidate_sources_preserve_admission_and_blocked_downloads() -> None:
 
     assert rows["dailydialog_hf"]["download_status"] == "future_local_download_conditional"
     assert rows["dailydialog_hf"]["source_license_tier"] == "public_nc_sa"
+    assert rows["dailydialog_hf"]["source_url_or_local_path"] == "https://huggingface.co/datasets/roskoN/dailydialog"
     assert rows["dailydialog_hf"]["noncommercial_only"] is True
     assert rows["dailydialog_hf"]["sharealike_required"] is True
 

@@ -11,20 +11,20 @@
   "remote_authority": false,
   "results": [
     {
-      "byte_count": 49233,
-      "content_sha256": "66fc0d5ba9df7ada98dca4c640c936a121c371619868f3c2eb87216c43b6d8b8",
+      "byte_count": 926846,
+      "content_sha256": "02077dbb95790f80ba429efc381a069fbddd93a1e6a73c8e040ff3a6d91e8592",
       "content_type": "text/html; charset=utf-8",
       "license_name": "cc-by-nc-sa-4.0",
       "raw_text_stored": false,
-      "reachable": false,
+      "reachable": true,
       "source_id": "dailydialog_hf",
       "source_license_tier": "public_nc_sa",
-      "status_code": 404,
-      "url": "https://huggingface.co/datasets/daily_dialog"
+      "status_code": 200,
+      "url": "https://huggingface.co/datasets/roskoN/dailydialog"
     },
     {
       "byte_count": 178269,
-      "content_sha256": "6d1b76fbeaa715ad1b5249a19740c15fe36ce359884da15ad3c0a8699498ea85",
+      "content_sha256": "29befbd011da29e9a63e75d1cc923bfcecc3dc17f98824de2eb512bc65bc4a45",
       "content_type": "text/html; charset=utf-8",
       "license_name": "cc-by-nc-4.0",
       "raw_text_stored": false,
