@@ -1,7 +1,7 @@
 # EgoDesktop Joi Real-Loop G-ABLATION Same-Access + CREATURE_ON v0 Spec
 
 - task_id: `EGODESKTOP-GABLATION-010`
-- status: `card_repaired_claude_no_blocking__preregistration_manifest_next`
+- status: `card_accepted__synthetic_preregistration_path_closed__real_capture_card_required`
 - created_at: `2026-06-27`
 - owner: `Codex`
 - layer: `engineering implementation / decisive comparison design`
@@ -50,6 +50,12 @@ does not authorize implementation. Claude's next minimal action is a separate pr
 epsilon, power, MDE, minimum n, prompt packs, baseline battery, verdict matrix, and hashes, then receives independent
 source-limited review. `CREATURE_ON` capture, scoring, verdicts, program-state updates, evidence-ledger updates, push,
 tag, and remote anchor remain forbidden.
+
+Post-012 route readback: that preregistration-manifest slice was attempted as `EGODESKTOP-GABLATION-011` and then
+blocked because the repaired synthetic prompt packs still leaked split/meta identity, collapsed into repeated templates,
+and stayed in a narrow calm affect band. `EGODESKTOP-GABLATION-012` closed or downgraded the synthetic prompt-pack
+preregistration path only. This does not close the broader 010 card, does not prove baseline saturation, and does not
+authorize capture or scoring.
 
 ## Current Stage / Layer
 
@@ -391,5 +397,6 @@ explicit CLI/test modules named by a repaired implementation plan.
 
 ## Next Minimal Closed-Loop Action
 
-Open a separate preregistration-manifest slice only. Do not capture or score `CREATURE_ON` until the frozen manifest
-also receives independent source-limited review.
+No active implementation child is authorized. If future real evidence is wanted, open a separate real captured
+desktop-chat-turn design card with explicit capture authority and independent source-limited review. Do not capture or
+score `CREATURE_ON` until that future card and its frozen preregistration boundary are accepted.

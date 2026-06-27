@@ -38,7 +38,8 @@ task-board bytes and found B-012-1 fully closed with no new blockers.
 
 ## Next Minimal Closed-Loop Action
 
-Commit the bounded docs-only decision locally.
+After the bounded docs-only decision was committed locally, reconcile the parent 010 route status so no task-board or
+task-doc surface still points to the blocked 011 synthetic manifest as the active next action.
 
 ## What This Does Not Prove
 

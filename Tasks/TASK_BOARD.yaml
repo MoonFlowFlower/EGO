@@ -3928,13 +3928,13 @@ tasks:
     title: "EgoDesktop: Joi real-loop G-ABLATION same-access + CREATURE_ON card v0"
     kind: task
     parent: EGODESKTOP-GABLATION-009
-    status: active
+    status: accepted
     layer: egodesktop_real_loop_same_access_creature_on_card
     owner: codex
     observation_class: docs_contract
     evidence_level: E3
     claim_ceiling: "egodesktop_real_loop_g_ablation_same_access_creature_on_task_card_only"
-    next_action: "Claude returned NO_BLOCKING_FINDINGS source-limited for the repaired card after B1-B3/A1-A4 repairs. Next action is only a separate preregistration-manifest slice freezing epsilon, power, MDE, minimum n, prompt packs, baseline battery, verdict matrix, and hashes, followed by independent source-limited review. Do not capture CREATURE_ON rows, run same-access reproducers, score, compare, emit a verdict, update program state/evidence ledger, push, tag, or remote-anchor."
+    next_action: "Card remains accepted as a design boundary only. The preregistration-manifest child was attempted as EGODESKTOP-GABLATION-011, then blocked and closed/downgraded by EGODESKTOP-GABLATION-012 because the synthetic prompt-pack basis stayed invalid. No implementation/capture/scoring child is active. If future real evidence is wanted, open a separate real captured desktop-chat-turn design card with explicit capture authority and independent review. Do not capture CREATURE_ON rows, run same-access reproducers, score, compare, emit a verdict, update program state/evidence ledger, push, tag, or remote-anchor."
     acceptance:
       - "Task card freezes the future comparison objective as SAME_ACCESS_REPRODUCER_BATTERY + CREATURE_ON with predeclared prompt splits, thresholds, baseline battery, equivalence rule, and expected baseline-saturation semantics."
       - "Card requires CREATURE_ON rows to be captured through the real EgoDesktop chat-turn seam and existing 006 tap/writer under explicit flags only."
@@ -4011,6 +4011,33 @@ tasks:
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/STATUS.md"
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-synthetic-pack-route-decision-v0/MUTATION_SCOPE.yaml"
       - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-preregistration-manifest-v0/REVIEW.md"
+    external_refs:
+      github_issue: null
+
+  - id: EGODESKTOP-GABLATION-013
+    title: "EgoDesktop: Joi real-loop G-ABLATION route status reconciliation v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-012
+    status: accepted
+    layer: egodesktop_real_loop_route_governance
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E3
+    claim_ceiling: "route_status_reconciliation_only"
+    next_action: "Accepted locally after Claude NO_BLOCKING_FINDINGS (source-limited, docs-only route governance): 010 no longer points to blocked 011 as the current next action; 010 remains card-only; 011 remains blocked/superseded by 012; 012 remains a route decision only; 013 authorizes no capture/scoring/remotes. Commit locally only. Do not create synthetic prompt-pack v3, capture CREATURE_ON rows, run same-access reproducers, score, compare, emit a verdict, update program state/evidence ledger, push, tag, or remote-anchor."
+    acceptance:
+      - "010 no longer directs the next action to the completed/blocked 011 synthetic manifest path."
+      - "010 remains accepted as card-only and does not authorize implementation, capture, scoring, or route advancement."
+      - "011 remains blocked and superseded by 012."
+      - "012 remains accepted as a synthetic prompt-pack route decision only, not baseline saturation or attribution evidence."
+      - "No capture, same-access execution, scoring, comparison, verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this reconciliation."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-route-status-reconciliation-v0/, remove this task-board entry, restore previous 010 next-action/status wording, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-route-status-reconciliation-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-route-status-reconciliation-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-route-status-reconciliation-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-route-status-reconciliation-v0/MUTATION_SCOPE.yaml"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/STATUS.md"
     external_refs:
       github_issue: null
 
