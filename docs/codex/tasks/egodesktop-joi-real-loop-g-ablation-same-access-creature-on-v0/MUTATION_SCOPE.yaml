@@ -1,0 +1,13 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0
+expected_mutation_surface:
+  - docs-only 010 task card for future SAME_ACCESS_REPRODUCER_BATTERY + CREATURE_ON comparison
+  - source-limited Claude review preservation and card-level blocker repairs
+  - task-board entry marking 010 as card/review-only before implementation
+  - route-convergence generated task-lane index refresh caused by task-board/task-doc additions
+  - no row capture, scoring run, verdict, default runtime enablement, program-state update, evidence-ledger update, push, tag, or remote anchor
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+claim_ceiling: "egodesktop_real_loop_g_ablation_same_access_creature_on_task_card_only; no CREATURE_ON effect, baseline saturation, attribution, route advancement, EGO readiness, agency, emotion, subjectivity, consciousness, alive-status, or Bar-2 claim"

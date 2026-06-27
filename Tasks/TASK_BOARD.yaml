@@ -3924,6 +3924,37 @@ tasks:
     external_refs:
       github_issue: null
 
+  - id: EGODESKTOP-GABLATION-010
+    title: "EgoDesktop: Joi real-loop G-ABLATION same-access + CREATURE_ON card v0"
+    kind: task
+    parent: EGODESKTOP-GABLATION-009
+    status: active
+    layer: egodesktop_real_loop_same_access_creature_on_card
+    owner: codex
+    observation_class: docs_contract
+    evidence_level: E3
+    claim_ceiling: "egodesktop_real_loop_g_ablation_same_access_creature_on_task_card_only"
+    next_action: "Claude returned NO_BLOCKING_FINDINGS source-limited for the repaired card after B1-B3/A1-A4 repairs. Next action is only a separate preregistration-manifest slice freezing epsilon, power, MDE, minimum n, prompt packs, baseline battery, verdict matrix, and hashes, followed by independent source-limited review. Do not capture CREATURE_ON rows, run same-access reproducers, score, compare, emit a verdict, update program state/evidence ledger, push, tag, or remote-anchor."
+    acceptance:
+      - "Task card freezes the future comparison objective as SAME_ACCESS_REPRODUCER_BATTERY + CREATURE_ON with predeclared prompt splits, thresholds, baseline battery, equivalence rule, and expected baseline-saturation semantics."
+      - "Card requires CREATURE_ON rows to be captured through the real EgoDesktop chat-turn seam and existing 006 tap/writer under explicit flags only."
+      - "Card requires independent callable same-access controllers fit on calibration and evaluated on heldout data with the same public inputs as the candidate."
+      - "Card requires a high-capacity full-public-history same-access steelman baseline or a computed low-order Markov upper-bound proof before capture."
+      - "Card requires a TOST/equivalent equivalence protocol with epsilon, power target, minimum n, and MDE <= epsilon before any baseline_saturated_stop claim."
+      - "Card requires a hash-frozen preregistration manifest plus independent source-limited review before any CREATURE_ON capture or scoring."
+      - "Card requires a creature-to-D mechanism-presence positive control and semantic near-duplicate leakage positive control."
+      - "Card preserves OFF_STATIC_REPLAY_HELDOUT as the decisive input-blind replay floor and same-pack static replay as diagnostic only."
+      - "Card blocks positive attribution under same-access equivalence, heldout static replay equivalence, leakage, renderer idle dominance, unlocked LLM, weak baseline, underpowered equivalence, preregistration mutation, or no creature effect."
+      - "No implementation, CREATURE_ON row, scoring run, baseline_saturated_stop, attribution verdict, route advancement, default runtime enablement, program-state/evidence-ledger update, push, tag, or remote anchor is authorized by this card."
+    rollback: "Delete docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/, remove this task-board entry, and regenerate route-convergence views."
+    canonical_sources:
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/SPEC.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/PLAN.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/STATUS.md"
+      - "docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-same-access-creature-on-v0/MUTATION_SCOPE.yaml"
+    external_refs:
+      github_issue: null
+
   - id: EGODESKTOP-COMPANION-001
     title: "EgoDesktop: companion wording and route repair package v0"
     kind: task
