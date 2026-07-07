@@ -37,6 +37,8 @@
 - 普通实现细节由 Codex 直接收敛执行；重大项必须先给 Stage Card 并获得确认。
 - 重大项包括：主线切换、目录迁移、权限扩大、记忆晋升、删除大块旧代码、`PROGRAM_STATE_UNIFIED` 或 evidence ledger 变更。
 - 不要把旧 `semantic_route` / keyword-first route / template fallback 重新引回默认入口；默认路径应保持 `user text -> LLM understanding -> proposal/plan -> gate -> trace`。
+- Spend time on thinking; you do not need to use the commentary channel to report progress to me.
+- DO NOT send optional commentary.
 
 ## Directory routing
 
