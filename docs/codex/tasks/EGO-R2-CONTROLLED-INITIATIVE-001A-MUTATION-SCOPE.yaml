@@ -1,0 +1,28 @@
+task_id: ego-r2-controlled-initiative-001a
+scope_version: 1
+resolution: resolved_at_landing   # Codex resolves the two placeholders below at D1, records them in the landing report; after that they are frozen and any deviation is a scope violation
+
+allowed_paths:
+  - "<R2_ROOT>/**"                # NEW isolated directory; <R2_ROOT> = sibling of the R1 validation harness directory (locate R1 harness via its stage card / memory_baselines.py location; e.g. validation/r2_initiative/). No existing file under it.
+  - "<CARD_DIR>/EGO-R2-CONTROLLED-INITIATIVE-001A-STAGE-CARD.md"   # <CARD_DIR> = same directory that holds the R1/R3 stage cards
+  - "<CARD_DIR>/EGO-R2-CONTROLLED-INITIATIVE-001A-MUTATION-SCOPE.yaml"
+  - conditional: TASK_LANE_INDEX single additive entry mirroring the R3 entry format, ONLY if repo convention registers new cards there; regenerate derived views via generate_program_state_views.py ONLY (never hand-edit derived views)
+
+forbidden_paths:
+  - EgoDesktop/**        # including the five g_ablation modules; R3 adapter not touched
+  - EgoOperator/**
+  - PSPC/**
+  - main.js / viewer / chatTurn surfaces
+  - any existing R0/R1/R3 module (read-only reference; NO imports from R1 harness into R2 code — isolation, copy patterns only)
+  - PROGRAM_STATE_UNIFIED (closure entries need a separate authorized instruction; NOT this landing)
+  - any banked artifact under artifacts/ (no rewrite, no delete, ever)
+  - anything in the intelligence-theory-lab repo (evidence firewall)
+
+git_discipline:
+  - per commit: git reset -> git add -- <explicit paths> -> porcelain gate (staged set == intended set) -> commit -> push (Ego push standing auth)
+  - one logical change per commit; unrelated dirty files triaged, never swept
+  - no -A, no ".", no amend after push, no rebase, no history rewrite
+
+deletions: none permitted anywhere
+
+execution_note: this scope covers D1 landing only; I1/P0/P2 execution requires the operator-issued execution instruction and inherits this scope unchanged.
