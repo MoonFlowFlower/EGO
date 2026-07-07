@@ -43,3 +43,20 @@ exactly these ceilings. Append-only; corrections add rows.
   framing 2026-06-28).
 - instrument-repair discipline: fix instrument FORM predeclared, never tune a
   threshold to flip a verdict (capacity 001A→001C lesson).
+
+## Backup & publication status (2026-07-06)
+
+- GitHub publication: CLOSED_NOT_APPLICABLE — committed history contains
+  >100MB blobs (e.g. trace_capacity_b.jsonl ~3.0GB); rewriting frozen
+  history (LFS migrate / filter) is forbidden. Canonical corpus = local
+  repo at tag `frozen-reference-corpus-20260706` =
+  `52714ed9f7ede8dfd14da7f4c310a9e9db28c834`.
+- Offline backup: git bundle `joi-demo-frozen-20260706.bundle`,
+  sha256 = `1bd31e103497388a1adb0de0085c7cbe3673dc3f5101fc450890dcb47d94d6e9`,
+  stored at: `D:\Project\AIProject\MyProject\joi-demo-frozen-20260706.bundle`
+  (local same-device bundle; off-device copy waived by operator, no
+  off-device redundancy claimed).
+- Pin citation rule: per pin_verification_report.json = 231 match /
+  43 mismatch / 0 missing; the 43 are EOL-era (capacity/generality lines
+  predate .gitattributes LF coverage) — cite byte-level pins ONLY through
+  that report; content-level golden checks (8/8) passed independently.
