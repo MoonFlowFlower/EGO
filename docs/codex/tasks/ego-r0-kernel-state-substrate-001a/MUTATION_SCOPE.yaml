@@ -1,0 +1,18 @@
+schema_version: codex.mutation_scope.v1
+task: ego-r0-kernel-state-substrate-001a
+expected_mutation_surface:
+  - card-first anchor for R0 kernel state substrate predeclared gates
+  - default-off Python kernel substrate library, runner, focused tests, and artifacts
+  - completion-only PROGRAM_STATE entry and regenerated derived views if gates pass
+  - no EgoDesktop/src or EgoOperator modification
+  - no runtime registration, gate/approval/transport/proactive path, network call, API key, or real LLM call
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-r0-kernel-state-substrate-001a/
+  - scripts/ego_kernel/
+  - scripts/run_ego_kernel_substrate_validation.py
+  - tests/test_ego_kernel_substrate.py
+  - artifacts/ego_r0_kernel_state_substrate_001a/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+claim_ceiling: "kernel_substrate_engineering_only; no mechanism validity, learning, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, consciousness, subjective experience, or real emotion claim"
