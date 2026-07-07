@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 226 |
+| `reference_only` | 227 |
 
 ## Active Default
 
@@ -184,6 +184,7 @@
 | Ego R1 Memory Ownership 001A | `codex_task` | n/a | `docs/codex/tasks/ego-r1-memory-ownership-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego R1 Memory Ownership Instrument Repair 001A | `codex_task` | n/a | `docs/codex/tasks/ego-r1-memory-ownership-instrument-repair-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego R1 Memory Ownership Instrument Repair 001B | `codex_task` | n/a | `docs/codex/tasks/ego-r1-memory-ownership-instrument-repair-001b/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego R3 Adoption Slice 001A | `codex_task` | n/a | `docs/codex/tasks/ego-r3-adoption-slice-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Subject State Mutation Gate Audit Trace | `codex_task` | n/a | `docs/codex/tasks/ego-subject-state-mutation-gate-audit-trace/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Subjectstate V0 Candidate Context | `codex_task` | n/a | `docs/codex/tasks/ego-subjectstate-v0-candidate-context/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Viabilitystate V0 Signal Extraction | `codex_task` | n/a | `docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

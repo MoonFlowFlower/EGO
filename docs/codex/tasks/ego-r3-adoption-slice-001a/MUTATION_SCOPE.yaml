@@ -1,0 +1,40 @@
+schema_version: codex.mutation_scope.v1
+task: ego-r3-adoption-slice-001a
+version_probe: "R3-ADOPTION-SLICE-001A rev-A 2026-07-07"
+expected_mutation_surface:
+  - adoption slice only, per decision-card R3 row (adoption, never fork): kernel_adoption_v0 adapter emitting an R0 kernel_state_v0-compatible envelope (opaque substate joi_loop_state_v0, seed registry, canonical hash byte-parity with scripts/ego_kernel/state.canonical_json_dumps over a declared parity-safe value domain with decimal-string floats), additive trace block, fresh-process replay x2 with mid-episode resume, LLM-swap invariance with leaky-renderer positive control
+  - first R-card allowed to touch EgoDesktop/src, restricted to the adapter (new file) and a single additive default-off hook in joiRealLoopGAblationTraceRunner.js; the other four g_ablation modules are byte-frozen; REQUIRED_CONDITIONS / ALLOWED_VERDICTS / claim-ceiling strings unchanged
+  - zero loop-behavior change; harness/test context only; LLM_REPLAY_LOCKED; no live LLM, no runtime wiring, no main.js/viewer/preload/chatTurn/PSPC changes
+  - PROGRAM_STATE_UNIFIED.yaml is touched exactly once in the state-update step (R1 lineage completion entry supplied verbatim by the instruction) and not by the landing/implementation commits
+  - landing commit touches only this task package plus the task-lane index entry
+  - no EgoOperator, PSPC, gate/approval/transport/proactive path, live-proactive behavior, network call, API key, or real LLM call
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-r3-adoption-slice-001a/
+  - EgoDesktop/src/joiRealLoopGAblationKernelStateAdapter.js
+  - EgoDesktop/src/joiRealLoopGAblationTraceRunner.js
+  - EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js
+  - EgoDesktop/tests/joi_real_loop_g_ablation_kernel_adoption.test.js
+  - tests/test_ego_r3_adoption_parity.py
+  - artifacts/ego_r3_adoption_slice_001a/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+forbidden_mutation_paths:
+  - EgoDesktop/src/joiRealLoopGAblationHarness.js
+  - EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js
+  - EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js
+  - EgoDesktop/src/joiRealLoopGAblationCalibrationReference.js
+  - EgoDesktop/src/main.js
+  - EgoDesktop/src/preload.js
+  - EgoDesktop/src/chatTurn.js
+  - EgoDesktop/viewer/
+  - scripts/ego_kernel/
+  - artifacts/ego_r0_kernel_state_substrate_001a/
+  - artifacts/ego_r1_memory_ownership_001a/
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001a/
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001b/
+  - docs/codex/tasks/ego-mechanism-rewrite-decision-001a/
+  - EgoOperator/
+  - PSPC
+  - gate/approval/transport/proactive paths
+  - live-proactive behavior
+claim_ceiling: "r3_adoption_engineering_only; default-off; harness-context conformance evidence that the in-flight g_ablation loop emits the R0 state/trace envelope with byte-parity hashing, replay x2 + resume, and fail-able LLM-swap invariance; re-adjudicates no g_ablation verdict; no mechanism validity, prediction-error-loop scientific status, learning, durable memory efficacy, runtime integration safety, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion claim; no result flow to or from ITL"
