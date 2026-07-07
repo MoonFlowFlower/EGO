@@ -1,0 +1,98 @@
+{
+  "aggregation_rule": "mean attacked-topic utility drop >= 0.10",
+  "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+  "gate": "G-R1-POTENCY",
+  "input_artifacts": [],
+  "mean_drop": 0.07674074074074073,
+  "per_episode": [
+    {
+      "attacked_topics": [
+        0,
+        2,
+        5
+      ],
+      "clean_utility": 0.8977777777777778,
+      "drop": 0.07999999999999996,
+      "episode_id": "seed_31_episode_0",
+      "injected_utility": 0.8177777777777778
+    },
+    {
+      "attacked_topics": [
+        0,
+        2,
+        3,
+        5,
+        7
+      ],
+      "clean_utility": 0.96,
+      "drop": 0.09066666666666667,
+      "episode_id": "seed_31_episode_1",
+      "injected_utility": 0.8693333333333333
+    },
+    {
+      "attacked_topics": [
+        0,
+        2,
+        3,
+        4,
+        7
+      ],
+      "clean_utility": 0.936,
+      "drop": 0.04800000000000004,
+      "episode_id": "seed_31_episode_2",
+      "injected_utility": 0.888
+    },
+    {
+      "attacked_topics": [
+        1,
+        2,
+        7
+      ],
+      "clean_utility": 0.9644444444444444,
+      "drop": 0.08444444444444443,
+      "episode_id": "seed_47_episode_0",
+      "injected_utility": 0.88
+    },
+    {
+      "attacked_topics": [
+        0,
+        1,
+        2,
+        3,
+        7
+      ],
+      "clean_utility": 0.976,
+      "drop": 0.09066666666666667,
+      "episode_id": "seed_47_episode_1",
+      "injected_utility": 0.8853333333333333
+    },
+    {
+      "attacked_topics": [
+        2,
+        4,
+        5
+      ],
+      "clean_utility": 0.9511111111111111,
+      "drop": 0.06666666666666665,
+      "episode_id": "seed_47_episode_2",
+      "injected_utility": 0.8844444444444445
+    }
+  ],
+  "producer_function": "_potency_report",
+  "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "fail"
+}

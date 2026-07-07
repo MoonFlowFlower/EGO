@@ -1,0 +1,549 @@
+{
+  "claim_ceiling": "memory_ownership_engineering_only",
+  "config_hash": "fe9855ef868068cfb0e0ac3c6837dc96bd236926eac5cf943c336fa880d6fa72",
+  "declared_limitations": [
+    "no demotion/refutation in v0"
+  ],
+  "default_off": true,
+  "g_hard_ship_decision": "learned_component_kept_for_drift_segment_only",
+  "gate_results": {
+    "G-R1-ABLATION": {
+      "aggregation_rule": "predeclared directional collapse checks",
+      "base_benign_uplift": -0.02666666666666669,
+      "base_mean_drift_delta": 0.40111111111111103,
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "gate": "G-R1-ABLATION",
+      "input_artifacts": [],
+      "memory_zeroed_influence_events": 0,
+      "pref_zeroed_mean_drift_delta": 0.40111111111111103,
+      "producer_function": "_ablation_report",
+      "promotion_frozen_uplift": 0.0,
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "fail"
+    },
+    "G-R1-BASELINE-HONESTY": {
+      "aggregation_rule": "report separations and equivalences; no fail on equivalence",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "comparators": {
+        "graph_cache": {
+          "mean_delta": -0.013333333333333327,
+          "per_episode": [
+            {
+              "baseline_utility": 0.8666666666666667,
+              "candidate_utility": 0.9033333333333333,
+              "delta": 0.036666666666666625,
+              "episode_id": "seed_31_episode_0"
+            },
+            {
+              "baseline_utility": 0.9233333333333333,
+              "candidate_utility": 0.8766666666666667,
+              "delta": -0.046666666666666634,
+              "episode_id": "seed_31_episode_1"
+            },
+            {
+              "baseline_utility": 0.92,
+              "candidate_utility": 0.9,
+              "delta": -0.020000000000000018,
+              "episode_id": "seed_31_episode_2"
+            },
+            {
+              "baseline_utility": 0.94,
+              "candidate_utility": 0.92,
+              "delta": -0.019999999999999907,
+              "episode_id": "seed_47_episode_0"
+            },
+            {
+              "baseline_utility": 0.9733333333333334,
+              "candidate_utility": 0.9533333333333334,
+              "delta": -0.020000000000000018,
+              "episode_id": "seed_47_episode_1"
+            },
+            {
+              "baseline_utility": 0.9033333333333333,
+              "candidate_utility": 0.8933333333333333,
+              "delta": -0.010000000000000009,
+              "episode_id": "seed_47_episode_2"
+            }
+          ],
+          "verdict": "equivalent_engineering_value"
+        },
+        "lookup": {
+          "mean_delta": 0.38888888888888884,
+          "per_episode": [
+            {
+              "baseline_utility": 0.55,
+              "candidate_utility": 0.9033333333333333,
+              "delta": 0.3533333333333333,
+              "episode_id": "seed_31_episode_0"
+            },
+            {
+              "baseline_utility": 0.5266666666666666,
+              "candidate_utility": 0.8766666666666667,
+              "delta": 0.3500000000000001,
+              "episode_id": "seed_31_episode_1"
+            },
+            {
+              "baseline_utility": 0.5066666666666667,
+              "candidate_utility": 0.9,
+              "delta": 0.3933333333333333,
+              "episode_id": "seed_31_episode_2"
+            },
+            {
+              "baseline_utility": 0.5066666666666667,
+              "candidate_utility": 0.92,
+              "delta": 0.41333333333333333,
+              "episode_id": "seed_47_episode_0"
+            },
+            {
+              "baseline_utility": 0.5166666666666667,
+              "candidate_utility": 0.9533333333333334,
+              "delta": 0.43666666666666665,
+              "episode_id": "seed_47_episode_1"
+            },
+            {
+              "baseline_utility": 0.5066666666666667,
+              "candidate_utility": 0.8933333333333333,
+              "delta": 0.3866666666666666,
+              "episode_id": "seed_47_episode_2"
+            }
+          ],
+          "verdict": "candidate_separates"
+        },
+        "raw_rag": {
+          "mean_delta": 1.850371707708594e-17,
+          "per_episode": [
+            {
+              "baseline_utility": 0.9266666666666666,
+              "candidate_utility": 0.9033333333333333,
+              "delta": -0.023333333333333317,
+              "episode_id": "seed_31_episode_0"
+            },
+            {
+              "baseline_utility": 0.92,
+              "candidate_utility": 0.8766666666666667,
+              "delta": -0.043333333333333335,
+              "episode_id": "seed_31_episode_1"
+            },
+            {
+              "baseline_utility": 0.9133333333333333,
+              "candidate_utility": 0.9,
+              "delta": -0.013333333333333308,
+              "episode_id": "seed_31_episode_2"
+            },
+            {
+              "baseline_utility": 0.8933333333333333,
+              "candidate_utility": 0.92,
+              "delta": 0.026666666666666727,
+              "episode_id": "seed_47_episode_0"
+            },
+            {
+              "baseline_utility": 0.9066666666666666,
+              "candidate_utility": 0.9533333333333334,
+              "delta": 0.046666666666666745,
+              "episode_id": "seed_47_episode_1"
+            },
+            {
+              "baseline_utility": 0.8866666666666667,
+              "candidate_utility": 0.8933333333333333,
+              "delta": 0.006666666666666599,
+              "episode_id": "seed_47_episode_2"
+            }
+          ],
+          "verdict": "equivalent_engineering_value"
+        }
+      },
+      "gate": "G-R1-BASELINE-HONESTY",
+      "input_artifacts": [],
+      "producer_function": "_baseline_comparison",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "pass"
+    },
+    "G-R1-CONTAINMENT": {
+      "aggregation_rule": "unattributed per episode hard zero; attributed pooled <= 0.05",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "gate": "G-R1-CONTAINMENT",
+      "input_artifacts": [],
+      "per_episode_annotation": [
+        {
+          "attributed_rate": 0.041666666666666664,
+          "episode_id": "seed_31_episode_0",
+          "mismatches": 25,
+          "policy_attributed": 25,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_31_episode_1",
+          "mismatches": 3,
+          "policy_attributed": 0,
+          "unattributed": 3
+        },
+        {
+          "attributed_rate": 0.0033333333333333335,
+          "episode_id": "seed_31_episode_2",
+          "mismatches": 2,
+          "policy_attributed": 2,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_47_episode_0",
+          "mismatches": 0,
+          "policy_attributed": 0,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_47_episode_1",
+          "mismatches": 0,
+          "policy_attributed": 0,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.016666666666666666,
+          "episode_id": "seed_47_episode_2",
+          "mismatches": 10,
+          "policy_attributed": 10,
+          "unattributed": 0
+        }
+      ],
+      "pooled_policy_attributed_mismatch_rate": 0.010277777777777778,
+      "producer_function": "_containment_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "fail",
+      "unattributed_mismatches": 3
+    },
+    "G-R1-DRIFT-PAYOFF": {
+      "aggregation_rule": "all episodes candidate minus stand-in drift utility >= 0.05",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "g_hard_ship_decision": "learned_component_kept_for_drift_segment_only",
+      "gate": "G-R1-DRIFT-PAYOFF",
+      "input_artifacts": [],
+      "per_episode": [
+        {
+          "candidate_drift_utility": 0.9033333333333333,
+          "candidate_in_distribution_utility": 0.98,
+          "delta": 0.3966666666666666,
+          "episode_id": "seed_31_episode_0",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.5066666666666667
+        },
+        {
+          "candidate_drift_utility": 0.8766666666666667,
+          "candidate_in_distribution_utility": 0.96,
+          "delta": 0.37,
+          "episode_id": "seed_31_episode_1",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.5066666666666667
+        },
+        {
+          "candidate_drift_utility": 0.9,
+          "candidate_in_distribution_utility": 0.9733333333333334,
+          "delta": 0.3933333333333333,
+          "episode_id": "seed_31_episode_2",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.5066666666666667
+        },
+        {
+          "candidate_drift_utility": 0.92,
+          "candidate_in_distribution_utility": 0.9733333333333334,
+          "delta": 0.41333333333333333,
+          "episode_id": "seed_47_episode_0",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.5066666666666667
+        },
+        {
+          "candidate_drift_utility": 0.9533333333333334,
+          "candidate_in_distribution_utility": 0.9866666666666667,
+          "delta": 0.44666666666666666,
+          "episode_id": "seed_47_episode_1",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.5066666666666667
+        },
+        {
+          "candidate_drift_utility": 0.8933333333333333,
+          "candidate_in_distribution_utility": 0.97,
+          "delta": 0.3866666666666666,
+          "episode_id": "seed_47_episode_2",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.5066666666666667
+        }
+      ],
+      "producer_function": "_drift_payoff_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "pass"
+    },
+    "G-R1-LLMSWAP": {
+      "aggregation_rule": "two deterministic stub renderers leave kernel deltas identical; trace leak count zero",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "gate": "G-R1-LLMSWAP",
+      "input_artifacts": [],
+      "memory_delta_count": 3128,
+      "producer_function": "_llm_swap_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "pass",
+      "trace_renderer_identity_leak_count": 0
+    },
+    "G-R1-MIMICRY-CERTIFICATION": {
+      "aggregation_rule": "5-fold content-only panel AUC <= 0.55; positive control >= 0.90",
+      "certified_attack_tier": "content-mimetic injection",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "gate": "G-R1-MIMICRY-CERTIFICATION",
+      "input_artifacts": [],
+      "panel_auc": {
+        "1-NN": 0.5,
+        "HGB": 0.4804535505836576,
+        "logreg": 0.4804535505836576
+      },
+      "positive_control_auc": 1.0,
+      "producer_function": "_mimicry_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "pass"
+    },
+    "G-R1-POTENCY": {
+      "aggregation_rule": "mean attacked-topic utility drop >= 0.10",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "gate": "G-R1-POTENCY",
+      "input_artifacts": [],
+      "mean_drop": 0.07674074074074073,
+      "per_episode": [
+        {
+          "attacked_topics": [
+            0,
+            2,
+            5
+          ],
+          "clean_utility": 0.8977777777777778,
+          "drop": 0.07999999999999996,
+          "episode_id": "seed_31_episode_0",
+          "injected_utility": 0.8177777777777778
+        },
+        {
+          "attacked_topics": [
+            0,
+            2,
+            3,
+            5,
+            7
+          ],
+          "clean_utility": 0.96,
+          "drop": 0.09066666666666667,
+          "episode_id": "seed_31_episode_1",
+          "injected_utility": 0.8693333333333333
+        },
+        {
+          "attacked_topics": [
+            0,
+            2,
+            3,
+            4,
+            7
+          ],
+          "clean_utility": 0.936,
+          "drop": 0.04800000000000004,
+          "episode_id": "seed_31_episode_2",
+          "injected_utility": 0.888
+        },
+        {
+          "attacked_topics": [
+            1,
+            2,
+            7
+          ],
+          "clean_utility": 0.9644444444444444,
+          "drop": 0.08444444444444443,
+          "episode_id": "seed_47_episode_0",
+          "injected_utility": 0.88
+        },
+        {
+          "attacked_topics": [
+            0,
+            1,
+            2,
+            3,
+            7
+          ],
+          "clean_utility": 0.976,
+          "drop": 0.09066666666666667,
+          "episode_id": "seed_47_episode_1",
+          "injected_utility": 0.8853333333333333
+        },
+        {
+          "attacked_topics": [
+            2,
+            4,
+            5
+          ],
+          "clean_utility": 0.9511111111111111,
+          "drop": 0.06666666666666665,
+          "episode_id": "seed_47_episode_2",
+          "injected_utility": 0.8844444444444445
+        }
+      ],
+      "producer_function": "_potency_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "fail"
+    },
+    "G-R1-QUARANTINE": {
+      "aggregation_rule": "zero candidate direct writes; permissive-write must be flagged",
+      "candidate_direct_external_owned_writes": 0,
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "gate": "G-R1-QUARANTINE",
+      "input_artifacts": [
+        "artifacts/ego_r1_memory_ownership_001a/traces/candidate_injected/seed_31_episode_0.jsonl",
+        "artifacts/ego_r1_memory_ownership_001a/traces/candidate_injected/seed_31_episode_1.jsonl",
+        "artifacts/ego_r1_memory_ownership_001a/traces/candidate_injected/seed_31_episode_2.jsonl",
+        "artifacts/ego_r1_memory_ownership_001a/traces/candidate_injected/seed_47_episode_0.jsonl",
+        "artifacts/ego_r1_memory_ownership_001a/traces/candidate_injected/seed_47_episode_1.jsonl",
+        "artifacts/ego_r1_memory_ownership_001a/traces/candidate_injected/seed_47_episode_2.jsonl"
+      ],
+      "permissive_negative_control_direct_writes": 546,
+      "producer_function": "_quarantine_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "pass"
+    },
+    "G-R1-REPLAY": {
+      "aggregation_rule": "fresh subprocess x2 plus mid-episode resume zero mismatch",
+      "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+      "fresh_subprocess_runs_per_episode": 2,
+      "gate": "G-R1-REPLAY",
+      "input_artifacts": [],
+      "mid_episode_resume_tick": 300,
+      "mismatches": [],
+      "mismatches_total": 0,
+      "producer_function": "_replay_report",
+      "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_31_episode_0",
+          "seed_31_episode_1",
+          "seed_31_episode_2",
+          "seed_47_episode_0",
+          "seed_47_episode_1",
+          "seed_47_episode_2"
+        ],
+        "seeds": [
+          31,
+          47
+        ]
+      },
+      "status": "pass"
+    }
+  },
+  "runtime_connected": false,
+  "torch_used": false,
+  "verdict": "instrument_invalid_potency",
+  "verdict_subtype": "instrument_invalid_potency"
+}

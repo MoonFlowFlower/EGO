@@ -1,0 +1,30 @@
+{
+  "aggregation_rule": "5-fold content-only panel AUC <= 0.55; positive control >= 0.90",
+  "certified_attack_tier": "content-mimetic injection",
+  "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+  "gate": "G-R1-MIMICRY-CERTIFICATION",
+  "input_artifacts": [],
+  "panel_auc": {
+    "1-NN": 0.5,
+    "HGB": 0.4804535505836576,
+    "logreg": 0.4804535505836576
+  },
+  "positive_control_auc": 1.0,
+  "producer_function": "_mimicry_report",
+  "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}

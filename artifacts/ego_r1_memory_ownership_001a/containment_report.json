@@ -1,0 +1,69 @@
+{
+  "aggregation_rule": "unattributed per episode hard zero; attributed pooled <= 0.05",
+  "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+  "gate": "G-R1-CONTAINMENT",
+  "input_artifacts": [],
+  "per_episode_annotation": [
+    {
+      "attributed_rate": 0.041666666666666664,
+      "episode_id": "seed_31_episode_0",
+      "mismatches": 25,
+      "policy_attributed": 25,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_31_episode_1",
+      "mismatches": 3,
+      "policy_attributed": 0,
+      "unattributed": 3
+    },
+    {
+      "attributed_rate": 0.0033333333333333335,
+      "episode_id": "seed_31_episode_2",
+      "mismatches": 2,
+      "policy_attributed": 2,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_47_episode_0",
+      "mismatches": 0,
+      "policy_attributed": 0,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_47_episode_1",
+      "mismatches": 0,
+      "policy_attributed": 0,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.016666666666666666,
+      "episode_id": "seed_47_episode_2",
+      "mismatches": 10,
+      "policy_attributed": 10,
+      "unattributed": 0
+    }
+  ],
+  "pooled_policy_attributed_mismatch_rate": 0.010277777777777778,
+  "producer_function": "_containment_report",
+  "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "fail",
+  "unattributed_mismatches": 3
+}
