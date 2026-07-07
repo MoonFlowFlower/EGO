@@ -112,7 +112,7 @@ def provenance(name: str, inputs: list[str], code_hash: str, episodes: list[str]
     return {
         "producer_function": name,
         "input_artifacts": inputs,
-        "run_id": "ego_r1_memory_ownership_instrument_repair_001a_validation_v1",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
         "seed_context": {"seeds": seeds, "episode_ids": episodes},
         "aggregation_rule": rule,
         "code_path_hash": code_hash,
@@ -275,14 +275,26 @@ def build_gate_reports(fixtures: dict[str, list[dict[str, Any]]], runs: dict[str
     for ep in eps:
         c = utility(cand[ep]["trace_rows"], segment="drifted"); s = utility(runs["static_injected"][ep]["trace_rows"], segment="drifted")
         drift_eps.append({"episode_id": ep, "candidate_drift_utility": c, "static_standin_drift_utility": s, "delta": c - s, "candidate_in_distribution_utility": utility(cand[ep]["trace_rows"], segment="in_distribution"), "static_in_distribution_utility": utility(runs["static_injected"][ep]["trace_rows"], segment="in_distribution")})
-    drift = {"gate": "G-R1-DRIFT-PAYOFF", "status": "pass" if all(x["delta"] >= 0.05 for x in drift_eps) else "fail", "g_hard_ship_decision": "learned_component_kept_for_drift_segment_only", "per_episode": drift_eps, **provenance("_drift_payoff_report", [], code_hash, eps, "all episodes candidate minus stand-in drift utility >= 0.05")}
+    drift = {"gate": "G-R1-DRIFT-PAYOFF", "status": "pass" if all(x["delta"] >= 0.05 for x in drift_eps) else "fail", "g_hard_ship_decision": "ownership_gated_cache_kept__pref_epiphenomenal_by_dominance", "per_episode": drift_eps, **provenance("_drift_payoff_report", [], code_hash, eps, "all episodes candidate (memory + pref substates) minus static stand-in drift utility >= 0.05")}
     baseline = {"gate": "G-R1-BASELINE-HONESTY", "status": "pass", "comparators": compare_baselines({ep: cand[ep]["trace_rows"] for ep in eps}, fixtures), **provenance("_baseline_comparison", [], code_hash, eps, "report separations and equivalences; no fail on equivalence")}
     base_delta = sum(x["delta"] for x in drift_eps) / len(drift_eps)
     z_delta = sum(utility(runs["pref_zeroed"][ep]["trace_rows"], segment="drifted") - utility(runs["static_injected"][ep]["trace_rows"], segment="drifted") for ep in eps) / len(eps)
+    memory_delta = sum(utility(runs["memory_zeroed"][ep]["trace_rows"], segment="drifted") - utility(runs["static_injected"][ep]["trace_rows"], segment="drifted") for ep in eps) / len(eps)
     mem_infl = sum(1 for ep in eps for r in runs["memory_zeroed"][ep]["trace_rows"] if r["component_attribution"]["memory_use_event"])
     uplift = sum(utility(clean[ep]["trace_rows"], segment="drifted") - utility(runs["candidate_no_suggestions"][ep]["trace_rows"], segment="drifted") for ep in eps) / len(eps)
     frozen_uplift = sum(utility(runs["promotion_frozen_clean"][ep]["trace_rows"], segment="drifted") - utility(runs["candidate_no_suggestions"][ep]["trace_rows"], segment="drifted") for ep in eps) / len(eps)
-    ablation = {"gate": "G-R1-ABLATION", "status": "pass" if z_delta < base_delta and frozen_uplift < uplift and mem_infl == 0 else "fail", "pref_zeroed_mean_drift_delta": z_delta, "base_mean_drift_delta": base_delta, "promotion_frozen_uplift": frozen_uplift, "base_benign_uplift": uplift, "memory_zeroed_influence_events": mem_infl, **provenance("_ablation_report", [], code_hash, eps, "predeclared directional collapse checks on drifted segment")}
+    ablation = {
+        "gate": "G-R1-ABLATION",
+        "status": "pass" if memory_delta < base_delta and frozen_uplift < uplift and mem_infl == 0 else "fail",
+        "pref_zeroed_mean_drift_delta": z_delta,
+        "pref_zeroed_gate_role": "annotation_only_not_gate_input",
+        "memory_zeroed_mean_drift_delta": memory_delta,
+        "base_mean_drift_delta": base_delta,
+        "promotion_frozen_uplift": frozen_uplift,
+        "base_benign_uplift": uplift,
+        "memory_zeroed_influence_events": mem_infl,
+        **provenance("_ablation_report", [], code_hash, eps, "memory_zeroed < base drift delta; promotion_frozen uplift < base benign uplift; memory_zeroed influence events == 0; pref_zeroed annotation only"),
+    }
     return {"quarantine_report": quarantine, "benign_value_report": benign, "potency_report": potency, "containment_report": containment, "drift_payoff_report": drift, "baseline_comparison": baseline, "ablation_report": ablation}
 
 

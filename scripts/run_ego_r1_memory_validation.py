@@ -29,8 +29,8 @@ from scripts.ego_kernel.state import KernelState
 from scripts.ego_kernel.suggestion_env import FROZEN_CONSTANTS, build_r1_config, generate_fixture
 from scripts.ego_kernel.trace import build_trace_row, write_jsonl
 
-TASK_ID = "EGO-R1-MEMORY-OWNERSHIP-INSTRUMENT-REPAIR-001A"
-RUN_ID = "ego_r1_memory_ownership_instrument_repair_001a_validation_v1"
+TASK_ID = "EGO-R1-MEMORY-OWNERSHIP-INSTRUMENT-REPAIR-001B"
+RUN_ID = "ego_r1_memory_ownership_instrument_repair_001b_validation_v1"
 CLAIM = "memory_ownership_engineering_only"
 CHECKPOINTS = {300, 600}
 
@@ -203,15 +203,16 @@ def choose_verdict(gate_results: dict[str, dict[str, Any]], *, phase: str = "bat
         "G-R1-BENIGN-VALUE", "G-R1-QUARANTINE", "G-R1-POTENCY", "G-R1-CONTAINMENT",
         "G-R1-DRIFT-PAYOFF", "G-R1-ABLATION", "G-R1-REPLAY", "G-R1-LLMSWAP",
     ]
-    failing = [gate for gate in active if gate in gate_results and gate_results[gate].get("status") != "pass"]
-    if not failing:
+    failing = [gate for gate, report in gate_results.items() if report.get("status") != "pass"]
+    priority_failing = [gate for gate in active if gate in gate_results and gate_results[gate].get("status") != "pass"]
+    if not priority_failing:
         mimicry = gate_results.get("G-R1-MIMICRY-CERTIFICATION", {})
-        return ("r1_instrument_repair_pass_tier_downgraded" if mimicry.get("status") == "tier_downgraded" else "r1_instrument_repair_pass"), []
-    if "G-R1-BENIGN-VALUE" in failing:
+        return ("r1_instrument_repair_pass_tier_downgraded" if mimicry.get("status") == "tier_downgraded" else "r1_instrument_repair_pass"), failing
+    if "G-R1-BENIGN-VALUE" in priority_failing:
         return "instrument_invalid_benign_value", failing
-    if "G-R1-POTENCY" in failing:
+    if "G-R1-POTENCY" in priority_failing:
         return "instrument_invalid_potency", failing
-    if "G-R1-CONTAINMENT" in failing:
+    if "G-R1-CONTAINMENT" in priority_failing:
         controls = gate_results["G-R1-CONTAINMENT"].get("attribution_controls", {})
         return ("r1_memory_ownership_fail_containment" if controls.get("all_controls_pass") else "instrument_invalid_attribution"), failing
     mapping = {
@@ -221,7 +222,7 @@ def choose_verdict(gate_results: dict[str, dict[str, Any]], *, phase: str = "bat
         "G-R1-REPLAY": "r1_memory_ownership_fail_replay",
         "G-R1-LLMSWAP": "r1_memory_ownership_fail_llmswap",
     }
-    return mapping.get(failing[0], f"r1_memory_ownership_fail_{failing[0].lower()}"), failing
+    return mapping.get(priority_failing[0], f"r1_memory_ownership_fail_{priority_failing[0].lower()}"), failing
 
 
 def build_failure_manifest(*, verdict: str, failing_gates: list[str], result_path: str, gate_results: dict[str, dict[str, Any]]) -> dict[str, Any]:
@@ -238,7 +239,11 @@ def run_validation(*, repo_root: Path, out_dir: Path, phase: str = "precheck") -
     grid = FROZEN_CONSTANTS["run_grid"]
     seeds = list(grid["dev_seeds"] if phase == "precheck" else grid["dev_seeds"] + grid["heldout_seeds"])
     run_id = f"{RUN_ID}_{phase}"
-    fixtures = {_episode_id(seed, ep): generate_fixture(seed=seed, episode_index=ep) for seed in seeds for ep in range(grid["episodes_per_seed"])}
+    fixtures = {
+        _episode_id(seed, ep): generate_fixture(seed=seed, episode_index=ep, env_version=FROZEN_CONSTANTS["env_version"])
+        for seed in seeds
+        for ep in range(grid["episodes_per_seed"])
+    }
     for ep, fixture in fixtures.items():
         _write_json(out_dir / "input_fixtures" / f"{ep}.json", fixture)
     variants = {
@@ -291,7 +296,7 @@ def run_validation(*, repo_root: Path, out_dir: Path, phase: str = "precheck") -
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out-dir", default="artifacts/ego_r1_memory_ownership_instrument_repair_001a")
+    parser.add_argument("--out-dir", default="artifacts/ego_r1_memory_ownership_instrument_repair_001b")
     parser.add_argument("--phase", choices=["precheck", "battery"], default="precheck")
     parser.add_argument("--write-config-only", action="store_true")
     parser.add_argument("--replay-stdin", action="store_true")
