@@ -1,0 +1,12 @@
+schema_version: codex.mutation_scope.v1
+task: ego-r1-memory-ownership-001a
+expected_mutation_surface:
+  - card-first anchor for R1 writable memory ownership and contamination-resistance gates
+  - card landing plus regenerated task-lane index only; no implementation, scoring, artifact, program-state, or evidence-ledger change in this commit
+  - future implementation remains default-off and must freeze thresholds in config_frozen.json before any scored run
+  - no EgoDesktop/src or EgoOperator modification at card landing
+  - no runtime registration, gate/approval/transport/proactive path, network call, API key, or real LLM call
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-r1-memory-ownership-001a/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+claim_ceiling: "memory_ownership_engineering_only; card landing only; no mechanism validity, structure-necessity, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion claim"
