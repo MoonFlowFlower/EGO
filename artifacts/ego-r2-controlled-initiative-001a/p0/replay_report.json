@@ -1,0 +1,25 @@
+{
+  "digest_1": "c87bd0ba490b7671077de0e48e0490e9d4c335aeefffdaac353f4277d20fa32b",
+  "digest_2": "c87bd0ba490b7671077de0e48e0490e9d4c335aeefffdaac353f4277d20fa32b",
+  "phase": "p0-digest",
+  "process_reports": [
+    {
+      "returncode": 0,
+      "status": "ok",
+      "stderr_tail": [],
+      "stdout_tail": [
+        "{\"digest\": \"c87bd0ba490b7671077de0e48e0490e9d4c335aeefffdaac353f4277d20fa32b\"}"
+      ]
+    },
+    {
+      "returncode": 0,
+      "status": "ok",
+      "stderr_tail": [],
+      "stdout_tail": [
+        "{\"digest\": \"c87bd0ba490b7671077de0e48e0490e9d4c335aeefffdaac353f4277d20fa32b\"}"
+      ]
+    }
+  ],
+  "producer_function": "_fresh_digest",
+  "status": "pass"
+}
