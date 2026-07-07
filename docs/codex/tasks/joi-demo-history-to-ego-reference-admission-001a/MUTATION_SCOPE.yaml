@@ -1,0 +1,18 @@
+schema_version: codex.mutation_scope.v1
+task: joi-demo-history-to-ego-reference-admission-001a
+expected_mutation_surface:
+  - default-off read-only joi-demo frozen corpus reader/verifier/importer tools
+  - compatibility tests for byte-faithful corpus readback and golden index values
+  - admission readback artifacts and generated schema contract
+  - program-state and evidence-ledger entry for the admission-tool verdict
+allowed_mutation_paths:
+  - scripts/joi_corpus/
+  - scripts/run_joi_corpus_admission_readback.py
+  - tests/test_joi_corpus_admission.py
+  - docs/codex/tasks/joi-demo-history-to-ego-reference-admission-001a/
+  - artifacts/joi_demo_reference_admission_001a/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - artifacts/evidence_ledger/index.yaml
+claim_ceiling: "frozen_reference_corpus_admission_only; file-format compatibility evidence only; no runtime integration, mechanism validity, stable benefit, autonomy, selfhood, consciousness, subjective experience, or real emotion claim"
