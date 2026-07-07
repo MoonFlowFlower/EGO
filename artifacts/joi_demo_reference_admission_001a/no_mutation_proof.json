@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "tag_commit_identical": true,
+    "status_porcelain_identical": true,
+    "status_sha256_identical": true
+  },
+  "passed": true,
+  "before": {
+    "corpus_root": "D:\\Project\\AIProject\\MyProject\\joi-demo",
+    "frozen_tag": "frozen-reference-corpus-20260706",
+    "tag_commit": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+    "expected_tag_commit": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+    "head": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+    "branch": "main",
+    "status_porcelain": [
+      "?? AGENTS.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001A-CLAUDE-AUDIT.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001A-card.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001B-CLAUDE-AUDIT.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001B-card.md",
+      "?? JOI-DEMO-JOI-LIKE-MECHANISM-PROXY-ROADMAP-001A.md",
+      "?? artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/",
+      "?? artifacts/JOI-DEMO-G4-USER-MODEL-001A/",
+      "?? artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/",
+      "?? stage1/cs/run_host_native_cs_nogit.ps1",
+      "?? stage1/g4/",
+      "?? stage1/interactive_food/"
+    ],
+    "status_sha256": "adce5bd6f8bbf52fe9e3755ef578e5ac1e383588a339bc0ca9650dc5f2f45161",
+    "untracked_count": 12,
+    "disallowed_status_entries": []
+  },
+  "after": {
+    "corpus_root": "D:\\Project\\AIProject\\MyProject\\joi-demo",
+    "frozen_tag": "frozen-reference-corpus-20260706",
+    "tag_commit": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+    "expected_tag_commit": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+    "head": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+    "branch": "main",
+    "status_porcelain": [
+      "?? AGENTS.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001A-CLAUDE-AUDIT.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001A-card.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001B-CLAUDE-AUDIT.md",
+      "?? JOI-DEMO-G4-USER-MODEL-001B-card.md",
+      "?? JOI-DEMO-JOI-LIKE-MECHANISM-PROXY-ROADMAP-001A.md",
+      "?? artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/",
+      "?? artifacts/JOI-DEMO-G4-USER-MODEL-001A/",
+      "?? artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/",
+      "?? stage1/cs/run_host_native_cs_nogit.ps1",
+      "?? stage1/g4/",
+      "?? stage1/interactive_food/"
+    ],
+    "status_sha256": "adce5bd6f8bbf52fe9e3755ef578e5ac1e383588a339bc0ca9650dc5f2f45161",
+    "untracked_count": 12,
+    "disallowed_status_entries": []
+  }
+}

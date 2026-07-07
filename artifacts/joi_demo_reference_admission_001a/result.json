@@ -1,0 +1,39 @@
+{
+  "task_id": "JOI-DEMO-HISTORY-TO-EGO-REFERENCE-ADMISSION-001A",
+  "verdict": "reference_admission_readback_pass",
+  "claim_ceiling": "frozen_reference_corpus_admission_only",
+  "created_at": "2026-07-07T01:49:24.438348+00:00",
+  "corpus_tag": "frozen-reference-corpus-20260706",
+  "corpus_tag_commit": "52714ed9f7ede8dfd14da7f4c310a9e9db28c834",
+  "readback_summary": {
+    "artifact_dir_count": 47,
+    "file_count": 384,
+    "json_count": 241,
+    "jsonl_count": 98,
+    "jsonl_total_lines": 20670870,
+    "parse_error_count": 2,
+    "critical_parse_error_count": 0
+  },
+  "pin_verification_counts": {
+    "match": 231,
+    "mismatch": 43,
+    "pinned_file_missing": 0
+  },
+  "shape_result_count": 32,
+  "no_mutation_passed": true,
+  "default_off_scan_clean": true,
+  "hard_failures": [],
+  "what_this_does_not_prove": [
+    "mechanism validity",
+    "transfer of any joi-demo Bar-1 result to Ego scale",
+    "runtime integration safety",
+    "durable memory efficacy",
+    "learning headroom",
+    "stable user benefit",
+    "live autonomy",
+    "functional selfhood",
+    "consciousness",
+    "subjective experience",
+    "real emotion"
+  ]
+}

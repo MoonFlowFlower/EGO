@@ -1,0 +1,15 @@
+{
+  "scanned_roots": [
+    "EgoOperator",
+    "EgoDesktop"
+  ],
+  "scanned_file_count": 2730,
+  "patterns": [
+    "scripts.joi_corpus",
+    "joi_corpus",
+    "run_joi_corpus_admission_readback"
+  ],
+  "match_count": 0,
+  "matches": [],
+  "clean": true
+}

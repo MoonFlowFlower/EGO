@@ -1,0 +1,2774 @@
+{
+  "corpus_root": "D:\\Project\\AIProject\\MyProject\\joi-demo",
+  "manifest_count": 41,
+  "pin_count": 274,
+  "counts": {
+    "match": 231,
+    "mismatch": 43,
+    "pinned_file_missing": 0
+  },
+  "named_checks": {
+    "creaturestate_v0_2_card": {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/freeze_manifest.json",
+      "pin_path": "JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A-v0_2.md",
+      "source": "pins",
+      "expected_sha256": "5f1afdb34dd6840d0b1c5d9aee0851df2ee2c3baa67b90be401592a2e1fae3bd",
+      "resolution": "direct",
+      "resolved_path": "JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A-v0_2.md",
+      "actual_sha256": "5f1afdb34dd6840d0b1c5d9aee0851df2ee2c3baa67b90be401592a2e1fae3bd",
+      "verdict": "match"
+    },
+    "creaturestate_v0_2_schema": {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/freeze_manifest.json",
+      "pin_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/creaturestate_schema_v0_2.json",
+      "source": "pins",
+      "expected_sha256": "ddcce43f04e4ca74d4774f9f7edd6eec67db03c5a3a3c85c081b5659e9988c9f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/creaturestate_schema_v0_2.json",
+      "actual_sha256": "ddcce43f04e4ca74d4774f9f7edd6eec67db03c5a3a3c85c081b5659e9988c9f",
+      "verdict": "match"
+    }
+  },
+  "checks": [
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "277910667d2493d63e079706ac45c75270b831bdd48fd4fd10c401cc6c2f1275",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/RUN_REPORT.md",
+      "actual_sha256": "8f852a019a924844f94c37f5a34b350bf65a1a61ebd5e6efc6ce422a94d9c8e3",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "60858984b085aeaf9ed12db9595b607ac7c0eb8cd74bcebd679a790e03013a4c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/host_native_invocation.json",
+      "actual_sha256": "60858984b085aeaf9ed12db9595b607ac7c0eb8cd74bcebd679a790e03013a4c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "fa4b380098aa13f1060f9cd41a6f52c00a6f677e5e645503417351d236537550",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/metrics.json",
+      "actual_sha256": "07632c4896858f52fa206aa3d7bc6144413cc19601cf4ac90438225bac76b3f8",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "635f52450970c9f30d23e28155108b12a3c6e9e38d87da8bc7fb0ff9d8c9e260",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/pre_run_hashes.json",
+      "actual_sha256": "1d636e3b2dcd01a78ec16bafa8e8f6341e01ba008b590b598eec92b86109ff50",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a74b6379da0fec8b489e250377f60556834e76b2a4da123eef547cc71d9a10b9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/result.json",
+      "actual_sha256": "e45c1968aacb154667fb0f411cb79423efd4a531fafd2ee9973fd45b2d79a8a6",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/manifest.json",
+      "pin_path": "trace_capacity.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "519b3cc96103f58800d7a5bdb2138375688c7ec305c27ac7cc290c43c064af04",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/trace_capacity.jsonl",
+      "actual_sha256": "689f2f3e36ea8ebbd9d8fc92522a46686354563ea0d8dfb77122968df3d86b62",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/pre_run_hashes.json",
+      "pin_path": "config_capacity.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "9479940803cbbb3faeccaa8075b611dfd612ba12b2c6cd4652cdda43b72fe993",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/capacity/config_capacity.py",
+      "actual_sha256": "e42f6ab0cfb7176f2646158b0e47b41873bea80c114ca955174886d808cbce72",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/pre_run_hashes.json",
+      "pin_path": "env_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/env_growth.py",
+      "actual_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "9020eb297ed32d598f1c60b9b41e9b9eca673abdc06c8f72196fa4ae7de86999",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/RUN_REPORT.md",
+      "actual_sha256": "fe4508fd20989c75815e2738cea3c569ae2998602f1e0f00dcbe0fea4b2b8e5b",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "60858984b085aeaf9ed12db9595b607ac7c0eb8cd74bcebd679a790e03013a4c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/host_native_invocation.json",
+      "actual_sha256": "60858984b085aeaf9ed12db9595b607ac7c0eb8cd74bcebd679a790e03013a4c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "0389a0820e99d776ec202a0def651139b94899201b96fb69e33e8ac92e080533",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/metrics.json",
+      "actual_sha256": "be0ad1fd2bbf45f2305e1c15bfc1cf819f68b9af896081ce38798bc2a219b55d",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "635f52450970c9f30d23e28155108b12a3c6e9e38d87da8bc7fb0ff9d8c9e260",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/pre_run_hashes.json",
+      "actual_sha256": "1d636e3b2dcd01a78ec16bafa8e8f6341e01ba008b590b598eec92b86109ff50",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "1a085669f518fabfe48a88b767880feb277059b77e173c3dd4b3459ef6ee62e1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/result.json",
+      "actual_sha256": "90adfa4e971936cac01d5017188c91c80fc667ef097332ee189aa82b2c8cae2a",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/manifest.json",
+      "pin_path": "trace_capacity.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "519b3cc96103f58800d7a5bdb2138375688c7ec305c27ac7cc290c43c064af04",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/trace_capacity.jsonl",
+      "actual_sha256": "689f2f3e36ea8ebbd9d8fc92522a46686354563ea0d8dfb77122968df3d86b62",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/pre_run_hashes.json",
+      "pin_path": "config_capacity.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "9479940803cbbb3faeccaa8075b611dfd612ba12b2c6cd4652cdda43b72fe993",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/capacity/config_capacity.py",
+      "actual_sha256": "e42f6ab0cfb7176f2646158b0e47b41873bea80c114ca955174886d808cbce72",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/pre_run_hashes.json",
+      "pin_path": "env_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/env_growth.py",
+      "actual_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "c0c0ae2545df8a8c6268dcfa55255ada4be42db2d1c4a3a79f1f88b1f14c2d15",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/RUN_REPORT.md",
+      "actual_sha256": "98841dce1273387c2690fa8930121d91dcd1e25ea59f54a95436692ff61795b5",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e61c97af8c676aac6c8a639836019a246e07f510bac367b3b5e3faf2d35c3453",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/host_native_invocation.json",
+      "actual_sha256": "e61c97af8c676aac6c8a639836019a246e07f510bac367b3b5e3faf2d35c3453",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "dc999e7065e93ed71056019c49b8d2a2b0375da7a816ec17377293bf0d74f5fc",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/metrics.json",
+      "actual_sha256": "a8edc34e0edfe2369ad7c1dcc188666831fee637a2bf3f0ef4e1b61e7654592f",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "4058c0a3d582e3ccdb0b795934283166f28ec906f78b15e5bb7a875773998f16",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/pre_run_hashes.json",
+      "actual_sha256": "1f899bb7413fdfc4c1830e999531ffe18a940b38fd1f2dbe261ffa8fd622bdca",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "9a833d767747a4edfc7d6fd661e4fad5cec2beaf66933194a90bae5c5a27c1f7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/result.json",
+      "actual_sha256": "391b13997811bd4f3a049c3c4d343afc075830b64516f563eac0b0a93687aa3f",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/manifest.json",
+      "pin_path": "trace_capacity_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "2e713700a59e9b9c76a2ce8175f4f3caabacb6a238e036c763fd0c75ac66b203",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/trace_capacity_b.jsonl",
+      "actual_sha256": "66cae7fb9577a8f7dae4320a8bbea6cbc62c67cb6338840bc6892213012f566b",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/pre_run_hashes.json",
+      "pin_path": "config_capacity_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "4289a51027ccadf9a7f68c579345518bcb16761416718509865430f61d8290fa",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/capacity_b/config_capacity_b.py",
+      "actual_sha256": "74ab4b8054d13610a2556412cd894538f801e5bd9f1f0c0d87e0f38bbee47a23",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/pre_run_hashes.json",
+      "pin_path": "env_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/env_growth.py",
+      "actual_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "774a7f48bac75af6e141cdcc4343bc55941924046863a7c96be78f117c3897fc",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/RUN_REPORT.md",
+      "actual_sha256": "59e0b02b1b465c7149e7e18450b2c64271b95a1f504cec9c17cdedab3d634755",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "3820428e5505feba729f289b42d9f4cbf6d6be7ca4762b2d57ceef4a6d14b9fa",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/host_native_invocation.json",
+      "actual_sha256": "3820428e5505feba729f289b42d9f4cbf6d6be7ca4762b2d57ceef4a6d14b9fa",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7443cacc66531fa3f1060147c61f5106cabcd650a508bfb5814e2dfc66f24e6a",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/metrics.json",
+      "actual_sha256": "fd4075dc98ab752702213d622c27232702f19e8fe7b6c929b478eecb2f31c3a5",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "5acdbc468994b71af7fc0c87e518dbe83744f9cc36cf5ed45c8d07150bac64fd",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/pre_run_hashes.json",
+      "actual_sha256": "ffe1849c3d83bbccced412fdae79e1bb87a754bbfad347701aaa7d1479df4f85",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "f71aa167eb3418f26b6a5493e450facea40777d02b02214dcb50e62a15e50c42",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/result.json",
+      "actual_sha256": "002175a27cfbda2f1785a9b12ecd0495b4ed55964a4f6f2c9f9e65076a79d2bb",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/manifest.json",
+      "pin_path": "trace_capacity_c.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "2e713700a59e9b9c76a2ce8175f4f3caabacb6a238e036c763fd0c75ac66b203",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/trace_capacity_c.jsonl",
+      "actual_sha256": "66cae7fb9577a8f7dae4320a8bbea6cbc62c67cb6338840bc6892213012f566b",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/pre_run_hashes.json",
+      "pin_path": "config_capacity_c.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "a43e635a555ef023323684f18bcc1b29ec634d0164190fd832f0b1dfdee63e02",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/capacity_c/config_capacity_c.py",
+      "actual_sha256": "1d6c53e4fb6d835d662600aea2fb055f864052cfe40612bd11b4cc70d5d540c3",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/pre_run_hashes.json",
+      "pin_path": "env_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/env_growth.py",
+      "actual_sha256": "ce9dcf66175dada1ddbe84548ac95986db48c9fb513296f5b18b214241e77fca",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "ec43358c1441e59c590e5eb3f380121dbe98e106c10defd5a81f361377826475",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/RUN_REPORT.md",
+      "actual_sha256": "ec43358c1441e59c590e5eb3f380121dbe98e106c10defd5a81f361377826475",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ca796c2f67cb2349b6b07bade7ec63b6b2c38e6428383669bb1cd94d52588615",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/host_native_invocation.json",
+      "actual_sha256": "65064cc9f25a298e9511fed07eb0f8400baa9041b6489a3a1cc3150d922f7dad",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a547c76208aee4f7c917c868ad0d729ceedb4a3fd7d9a29209e039b787034664",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/metrics.json",
+      "actual_sha256": "a547c76208aee4f7c917c868ad0d729ceedb4a3fd7d9a29209e039b787034664",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "f001c1921f3d07b13598d37ba8959b35481b220d4a7f9e4b9d767c2ad693d8b2",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/pre_run_hashes.json",
+      "actual_sha256": "f001c1921f3d07b13598d37ba8959b35481b220d4a7f9e4b9d767c2ad693d8b2",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "8fa37da2eec65d486bfeeea928416d406579f8f25b620833939b41bd082b0efc",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/result.json",
+      "actual_sha256": "8fa37da2eec65d486bfeeea928416d406579f8f25b620833939b41bd082b0efc",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/manifest.json",
+      "pin_path": "trace_growth.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1ff7164e820085809de1a0b65e0226576337ad06eb8787d2c4b3aee191229fc1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/trace_growth.jsonl",
+      "actual_sha256": "1ff7164e820085809de1a0b65e0226576337ad06eb8787d2c4b3aee191229fc1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/pre_run_hashes.json",
+      "pin_path": "config_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/config_growth.py",
+      "actual_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "7a0e2c37a536829bee6465c64a09dd1c949ccbc0897603b0b119003713a6a203",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/RUN_REPORT.md",
+      "actual_sha256": "7a0e2c37a536829bee6465c64a09dd1c949ccbc0897603b0b119003713a6a203",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "b3a0ea8b67d91a31bc4e916fd03f790eb557e99af937752fa740b1a47557de77",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/host_native_invocation.json",
+      "actual_sha256": "fca6cd6fdecd4832d226fa2076656f580fe8f62e133583e820a831f2de4a9016",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "097364225490a42f63a44ba373a2b0371e6ff6954ff953d47dcd8084dcc02ab2",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/metrics.json",
+      "actual_sha256": "097364225490a42f63a44ba373a2b0371e6ff6954ff953d47dcd8084dcc02ab2",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "796def7e88e2fe63ddb30b219ce4146fe9f28dd9ad4e45dbf55b938f6a68d6af",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/pre_run_hashes.json",
+      "actual_sha256": "796def7e88e2fe63ddb30b219ce4146fe9f28dd9ad4e45dbf55b938f6a68d6af",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "aa9692ddf6b9b2d97efbdf5b15f2e640360790981981c694d10f7b1171326d05",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/result.json",
+      "actual_sha256": "aa9692ddf6b9b2d97efbdf5b15f2e640360790981981c694d10f7b1171326d05",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/manifest.json",
+      "pin_path": "trace_growth.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "85085154583a8e8d96098e7e9e00be98e4d2629e0a674cf9f069fbb419a26ffd",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/trace_growth.jsonl",
+      "actual_sha256": "85085154583a8e8d96098e7e9e00be98e4d2629e0a674cf9f069fbb419a26ffd",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/pre_run_hashes.json",
+      "pin_path": "config_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "d05c188ec0614170124b667b846ab4cb4fdc9d96a12254ef5bae191cfdb38b2c",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/config_growth.py",
+      "actual_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "038ea524c883a8ef19566bd6ac659ec118458072c38a149a9f6401d9463feb5e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/RUN_REPORT.md",
+      "actual_sha256": "038ea524c883a8ef19566bd6ac659ec118458072c38a149a9f6401d9463feb5e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "b3a0ea8b67d91a31bc4e916fd03f790eb557e99af937752fa740b1a47557de77",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/host_native_invocation.json",
+      "actual_sha256": "fca6cd6fdecd4832d226fa2076656f580fe8f62e133583e820a831f2de4a9016",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e83105699bc5254d461cdd9f0ffddc4a836e67bb31bae4138bb4f2a86a315780",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/metrics.json",
+      "actual_sha256": "e83105699bc5254d461cdd9f0ffddc4a836e67bb31bae4138bb4f2a86a315780",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "796def7e88e2fe63ddb30b219ce4146fe9f28dd9ad4e45dbf55b938f6a68d6af",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/pre_run_hashes.json",
+      "actual_sha256": "796def7e88e2fe63ddb30b219ce4146fe9f28dd9ad4e45dbf55b938f6a68d6af",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "98fa48fa4f7fb6a3453d4e464e2def2b6eda5a7d0c1a0934b97cdc8fb709974c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/result.json",
+      "actual_sha256": "98fa48fa4f7fb6a3453d4e464e2def2b6eda5a7d0c1a0934b97cdc8fb709974c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/manifest.json",
+      "pin_path": "trace_growth.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "85085154583a8e8d96098e7e9e00be98e4d2629e0a674cf9f069fbb419a26ffd",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/trace_growth.jsonl",
+      "actual_sha256": "85085154583a8e8d96098e7e9e00be98e4d2629e0a674cf9f069fbb419a26ffd",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/pre_run_hashes.json",
+      "pin_path": "config_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "d05c188ec0614170124b667b846ab4cb4fdc9d96a12254ef5bae191cfdb38b2c",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/config_growth.py",
+      "actual_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "e4ceb92c3c89cefee78aa6ac62e8cf8cfa62209da92ba94865f75a213d032cd0",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/RUN_REPORT.md",
+      "actual_sha256": "e4ceb92c3c89cefee78aa6ac62e8cf8cfa62209da92ba94865f75a213d032cd0",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ca796c2f67cb2349b6b07bade7ec63b6b2c38e6428383669bb1cd94d52588615",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/host_native_invocation.json",
+      "actual_sha256": "65064cc9f25a298e9511fed07eb0f8400baa9041b6489a3a1cc3150d922f7dad",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "6af954a35aeb5ad54e1ccef598816cf7bde8e7b25ca26745c00c49addf211ec1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/metrics.json",
+      "actual_sha256": "6af954a35aeb5ad54e1ccef598816cf7bde8e7b25ca26745c00c49addf211ec1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "f001c1921f3d07b13598d37ba8959b35481b220d4a7f9e4b9d767c2ad693d8b2",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/pre_run_hashes.json",
+      "actual_sha256": "f001c1921f3d07b13598d37ba8959b35481b220d4a7f9e4b9d767c2ad693d8b2",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "8c772657f4ebdd0b640539e9ebb0b4d0439eb3d367fb3b9d10cd505ace4b01c1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/result.json",
+      "actual_sha256": "8c772657f4ebdd0b640539e9ebb0b4d0439eb3d367fb3b9d10cd505ace4b01c1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/manifest.json",
+      "pin_path": "trace_growth.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1ff7164e820085809de1a0b65e0226576337ad06eb8787d2c4b3aee191229fc1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/trace_growth.jsonl",
+      "actual_sha256": "1ff7164e820085809de1a0b65e0226576337ad06eb8787d2c4b3aee191229fc1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/pre_run_hashes.json",
+      "pin_path": "config_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/config_growth.py",
+      "actual_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "e4ceb92c3c89cefee78aa6ac62e8cf8cfa62209da92ba94865f75a213d032cd0",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/RUN_REPORT.md",
+      "actual_sha256": "e4ceb92c3c89cefee78aa6ac62e8cf8cfa62209da92ba94865f75a213d032cd0",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ca796c2f67cb2349b6b07bade7ec63b6b2c38e6428383669bb1cd94d52588615",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/host_native_invocation.json",
+      "actual_sha256": "65064cc9f25a298e9511fed07eb0f8400baa9041b6489a3a1cc3150d922f7dad",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "6af954a35aeb5ad54e1ccef598816cf7bde8e7b25ca26745c00c49addf211ec1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/metrics.json",
+      "actual_sha256": "dc20cab01e37feed8c1e6dabc5dfed609abfaa87e34c036928bae3b9b20cdf8e",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "f001c1921f3d07b13598d37ba8959b35481b220d4a7f9e4b9d767c2ad693d8b2",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/pre_run_hashes.json",
+      "actual_sha256": "f001c1921f3d07b13598d37ba8959b35481b220d4a7f9e4b9d767c2ad693d8b2",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "8c772657f4ebdd0b640539e9ebb0b4d0439eb3d367fb3b9d10cd505ace4b01c1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/result.json",
+      "actual_sha256": "8c772657f4ebdd0b640539e9ebb0b4d0439eb3d367fb3b9d10cd505ace4b01c1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/manifest.json",
+      "pin_path": "trace_growth.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1ff7164e820085809de1a0b65e0226576337ad06eb8787d2c4b3aee191229fc1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/trace_growth.jsonl",
+      "actual_sha256": "1ff7164e820085809de1a0b65e0226576337ad06eb8787d2c4b3aee191229fc1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/pre_run_hashes.json",
+      "pin_path": "agent_b.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "resolution": "basename_unique",
+      "resolved_path": "battery/agent_b.py",
+      "actual_sha256": "21970d83a53b1c819b7e57b2a5df7a02e1d1d9a3cf80d379feafb0c84b74f289",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/pre_run_hashes.json",
+      "pin_path": "config_growth.py",
+      "source": "pre_run_hashes",
+      "expected_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "resolution": "basename_unique",
+      "resolved_path": "stage1/growth/config_growth.py",
+      "actual_sha256": "e193da47cfe80cae4374f686303bd19e55347b07c74282a2afd10b0d816f5816",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "2e86bf2b3f8a23cabff86c5986eb65d101eca679d1988cf5bfa7ff6ce2463ab3",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/RUN_REPORT.md",
+      "actual_sha256": "2e86bf2b3f8a23cabff86c5986eb65d101eca679d1988cf5bfa7ff6ce2463ab3",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "33c7d1ad7e2cb14462dc376fde9e5cc9692f26490689d2a890ce2bf97a6857ea",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/ablation_report.json",
+      "actual_sha256": "33c7d1ad7e2cb14462dc376fde9e5cc9692f26490689d2a890ce2bf97a6857ea",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "episode_traces.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "599c36b70f115714113f17ec8e7c5c0d7d98328c055fe0279a818ec83ecf8349",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/episode_traces.jsonl",
+      "actual_sha256": "599c36b70f115714113f17ec8e7c5c0d7d98328c055fe0279a818ec83ecf8349",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "fa671c4b1968f03afa7dae2663d7e64da4b3dd3bf2127b6bf97c81a25fa9a143",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/leakage_report.json",
+      "actual_sha256": "fa671c4b1968f03afa7dae2663d7e64da4b3dd3bf2127b6bf97c81a25fa9a143",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "877e207e6e3254c55e69e795cd4d001fc956182996848aa2041f292976351ad0",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/metric_report.json",
+      "actual_sha256": "877e207e6e3254c55e69e795cd4d001fc956182996848aa2041f292976351ad0",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "4e29f890af3a3d105ce141ca635cb914aca78a56351b6d90ad7792348efddb34",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/replay_report.json",
+      "actual_sha256": "4e29f890af3a3d105ce141ca635cb914aca78a56351b6d90ad7792348efddb34",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "52e7b3d217fbe06f12e1bc5f94baf515e599909edd993c36021e2fe73d488c78",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/result.json",
+      "actual_sha256": "52e7b3d217fbe06f12e1bc5f94baf515e599909edd993c36021e2fe73d488c78",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "3ffc2706a0ce925b75f4947c912045d4e00736e5f260e37404f8b7d60575c03a",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/RUN_REPORT.md",
+      "actual_sha256": "3ffc2706a0ce925b75f4947c912045d4e00736e5f260e37404f8b7d60575c03a",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "9c97c5da1261a5dc92a4e79c0a632609625d5e7ff2e10561eb0db56b507383cf",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/ablation_report.json",
+      "actual_sha256": "9c97c5da1261a5dc92a4e79c0a632609625d5e7ff2e10561eb0db56b507383cf",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "episode_traces.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "ea4209b9cb9a92dde1275f0a2ee81057552629c14e0886f68e6748624f376837",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/episode_traces.jsonl",
+      "actual_sha256": "ea4209b9cb9a92dde1275f0a2ee81057552629c14e0886f68e6748624f376837",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "b19bb43bd30479b9bdc45948e6a4e7189f1ebd3818c0c8e57e4d925e1c7b7637",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/leakage_report.json",
+      "actual_sha256": "b19bb43bd30479b9bdc45948e6a4e7189f1ebd3818c0c8e57e4d925e1c7b7637",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "150d407c3e75ef2593fcb6bd82a1e6423ce4add33827fa94bb841ceaab18d414",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/metric_report.json",
+      "actual_sha256": "150d407c3e75ef2593fcb6bd82a1e6423ce4add33827fa94bb841ceaab18d414",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ff5b842eb5722b1a3a4f4471415481dc95d4ff8ffa9bff89b72a4c998f79bf18",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/replay_report.json",
+      "actual_sha256": "ff5b842eb5722b1a3a4f4471415481dc95d4ff8ffa9bff89b72a4c998f79bf18",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ba872481ec9fcb1a1b45da3e7948c52cce614ff87742d177dd058dd5d277dfb4",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/result.json",
+      "actual_sha256": "ba872481ec9fcb1a1b45da3e7948c52cce614ff87742d177dd058dd5d277dfb4",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "4bd504ea2ce0065e6971cb71b57e3b5d5df028a761c672bcc335e0a20c0afa68",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/RUN_REPORT.md",
+      "actual_sha256": "4bd504ea2ce0065e6971cb71b57e3b5d5df028a761c672bcc335e0a20c0afa68",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "0822e4690f92cb82492290c9335dd82d44ac359ee8f5d585dc656002a69046af",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/ablation_report.json",
+      "actual_sha256": "0822e4690f92cb82492290c9335dd82d44ac359ee8f5d585dc656002a69046af",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "episode_traces.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "8f5595648064c4d6282f634bc1c862b324ca799861d5de420b0e29386ee30528",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/episode_traces.jsonl",
+      "actual_sha256": "8f5595648064c4d6282f634bc1c862b324ca799861d5de420b0e29386ee30528",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "3a1a85bdc121772d6c76a9d7e8285d7af0da5434e8cf2e2b381c9990a9f5f509",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/leakage_report.json",
+      "actual_sha256": "3a1a85bdc121772d6c76a9d7e8285d7af0da5434e8cf2e2b381c9990a9f5f509",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ac92695bccc067aff81ba86b8dba60fe0c5a4d129fcfd3ff53f482b7602d1723",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/metric_report.json",
+      "actual_sha256": "ac92695bccc067aff81ba86b8dba60fe0c5a4d129fcfd3ff53f482b7602d1723",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a433dd4c8ce55b6cf841f916093c672069cc229a0b5e7e284163023d88e36df1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/replay_report.json",
+      "actual_sha256": "a433dd4c8ce55b6cf841f916093c672069cc229a0b5e7e284163023d88e36df1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "28d549620517363c0e80fea1ec5b0221cf1d8098206f883e8a15f61f9bef9723",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/result.json",
+      "actual_sha256": "28d549620517363c0e80fea1ec5b0221cf1d8098206f883e8a15f61f9bef9723",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "37e89cbcd1fc10d7f8db02fe1846f6da781aeb1ddb4662f4e4bbc23873c677e7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/RUN_REPORT.md",
+      "actual_sha256": "37e89cbcd1fc10d7f8db02fe1846f6da781aeb1ddb4662f4e4bbc23873c677e7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "95a58f11f743b33e86e3e0f982db6059e24b40f617f9e939eba04b92d98761aa",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/ablation_report.json",
+      "actual_sha256": "95a58f11f743b33e86e3e0f982db6059e24b40f617f9e939eba04b92d98761aa",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "episode_traces.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "2be5fd2fc1e42e632c61dbb2a5b3031981a4c94edb81b5235886031e3b5a2a36",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/episode_traces.jsonl",
+      "actual_sha256": "2be5fd2fc1e42e632c61dbb2a5b3031981a4c94edb81b5235886031e3b5a2a36",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e49b37f2dd85ee689daf07f13996165f8f8cac45e2170669b790605efd234f54",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/leakage_report.json",
+      "actual_sha256": "e49b37f2dd85ee689daf07f13996165f8f8cac45e2170669b790605efd234f54",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "1e910b01c65dc41c58860f1612ed17fcbf93799f6b2153d5fbf40ad3c73817d9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/metric_report.json",
+      "actual_sha256": "1e910b01c65dc41c58860f1612ed17fcbf93799f6b2153d5fbf40ad3c73817d9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "96bb9bde685cb1ad6bd2fb45232d1abf2b53822c2959998979fc5fb89d4349f9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/replay_report.json",
+      "actual_sha256": "96bb9bde685cb1ad6bd2fb45232d1abf2b53822c2959998979fc5fb89d4349f9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c30a199a5e1d83a24b56f01ac7367157e97dd790afc77e1b908409589cbe39a7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/result.json",
+      "actual_sha256": "c30a199a5e1d83a24b56f01ac7367157e97dd790afc77e1b908409589cbe39a7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "298158f5e545f8ebfc1d5f3d5a68f92e5f2daf909f18d9b70ce5e908713dfe84",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/RUN_REPORT.md",
+      "actual_sha256": "298158f5e545f8ebfc1d5f3d5a68f92e5f2daf909f18d9b70ce5e908713dfe84",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "d2f29e98783cc13d9f0904861781f4795f5a70efbc1afba571d77a6ff789e836",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/metric_report.json",
+      "actual_sha256": "d2f29e98783cc13d9f0904861781f4795f5a70efbc1afba571d77a6ff789e836",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "18b58df87697e09e1c25c1a31e53e730e683281c304e859d6894536a7ed2896f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/result.json",
+      "actual_sha256": "18b58df87697e09e1c25c1a31e53e730e683281c304e859d6894536a7ed2896f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/manifest.json",
+      "pin_path": "spike_trace.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "469b5929cae7f7f2330bed17e44be66b13f14052f752f437e877567e36d1d353",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/spike_trace.jsonl",
+      "actual_sha256": "469b5929cae7f7f2330bed17e44be66b13f14052f752f437e877567e36d1d353",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "8a0e9572ce5f50ca9451df47eac43350403074a1744593020188502955f3aeab",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/RUN_REPORT.md",
+      "actual_sha256": "8a0e9572ce5f50ca9451df47eac43350403074a1744593020188502955f3aeab",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7b8d58a4ca2ac68b5d697e4c4b42b0b1f9f7410d83be7aeadd9d4df92938b227",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/ablation_report.json",
+      "actual_sha256": "7b8d58a4ca2ac68b5d697e4c4b42b0b1f9f7410d83be7aeadd9d4df92938b227",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "anti_hardcoding_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "fc2bc98b19cad1c897921c2120732c4e2cccb7bef4908c49ab9a8fc14d3da8bd",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/anti_hardcoding_report.json",
+      "actual_sha256": "fc2bc98b19cad1c897921c2120732c4e2cccb7bef4908c49ab9a8fc14d3da8bd",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/CANDIDATE_USER_MODEL.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "facd5bc0d0f1baf1f03a3e89d521014585251bc1fa3f565229a369a3fbc81f7f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/CANDIDATE_USER_MODEL.jsonl",
+      "actual_sha256": "facd5bc0d0f1baf1f03a3e89d521014585251bc1fa3f565229a369a3fbc81f7f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/FREEZE_BELIEF_ABLATION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "461c93d5d8e1c594ed9473bc41e9ab130e709333a99178af5d7376f279cd70ad",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/FREEZE_BELIEF_ABLATION.jsonl",
+      "actual_sha256": "461c93d5d8e1c594ed9473bc41e9ab130e709333a99178af5d7376f279cd70ad",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/NO_INFERENCE_FIXED_PRIOR.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "aaaeb82e4072b9f83c532d8680741a70b951d12cb8121ada7c370aaebd5bba4c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/NO_INFERENCE_FIXED_PRIOR.jsonl",
+      "actual_sha256": "aaaeb82e4072b9f83c532d8680741a70b951d12cb8121ada7c370aaebd5bba4c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/POPULATION_BEST.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "38a30d4e9ca36871d0f55cfdc42033c385fd0c666df99f7888c1e35763730396",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/POPULATION_BEST.jsonl",
+      "actual_sha256": "38a30d4e9ca36871d0f55cfdc42033c385fd0c666df99f7888c1e35763730396",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/RANDOM_ACTION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "6646c2b29992caa37546ae04bda0aadffa323f4e622383fda4ceb2838f88f5ea",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/RANDOM_ACTION.jsonl",
+      "actual_sha256": "6646c2b29992caa37546ae04bda0aadffa323f4e622383fda4ceb2838f88f5ea",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/SAME_ACCESS_BAYES_OPTIMAL.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "5297f72921163a9f7f9cd7a31fb73de91cef4e061ac35f32ddb7ea64829799f8",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/SAME_ACCESS_BAYES_OPTIMAL.jsonl",
+      "actual_sha256": "5297f72921163a9f7f9cd7a31fb73de91cef4e061ac35f32ddb7ea64829799f8",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/SHUFFLED_REACTIONS.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "ff5076442bd6e34cac2101ac03cb969d2604cc18a187d8e718d099880f688ab8",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/SHUFFLED_REACTIONS.jsonl",
+      "actual_sha256": "ff5076442bd6e34cac2101ac03cb969d2604cc18a187d8e718d099880f688ab8",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/STATIC_LOOKUP_NO_LABEL.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "450b7760b2455de5149e84437925942c4da85e594e51b70146754e5e52bcb88d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/STATIC_LOOKUP_NO_LABEL.jsonl",
+      "actual_sha256": "450b7760b2455de5149e84437925942c4da85e594e51b70146754e5e52bcb88d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "episode_traces/WIPE_MEMORY_ABLATION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1c72592eb3aa424a5838465240cdb57e770bcdf5a6f49a7c2f8835242fcb2603",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/episode_traces/WIPE_MEMORY_ABLATION.jsonl",
+      "actual_sha256": "1c72592eb3aa424a5838465240cdb57e770bcdf5a6f49a7c2f8835242fcb2603",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "3c6c8bf200c91c30b522c527c67e2df11c3a76d71292c0e13084ebc72431de3c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/leakage_report.json",
+      "actual_sha256": "3c6c8bf200c91c30b522c527c67e2df11c3a76d71292c0e13084ebc72431de3c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7bf0d17570d23210517238806e194904a8da33e2604bf4862d34415e2dc04766",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/metric_report.json",
+      "actual_sha256": "7bf0d17570d23210517238806e194904a8da33e2604bf4862d34415e2dc04766",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "negative_controls_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "57bd97fd8198a78189d7d4518becff05fb36690c8f328e146464f26f7f556b05",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/negative_controls_report.json",
+      "actual_sha256": "57bd97fd8198a78189d7d4518becff05fb36690c8f328e146464f26f7f556b05",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "1366b13954384919e45dd74cc8a19cf962ed082fda5270ecd0ec83a6a05b8b03",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/replay_report.json",
+      "actual_sha256": "1366b13954384919e45dd74cc8a19cf962ed082fda5270ecd0ec83a6a05b8b03",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "9d8b8214fbb99929c9e46174ff6c752ab0e97f0448a34ab98cfe5d89aae1367e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/result.json",
+      "actual_sha256": "9d8b8214fbb99929c9e46174ff6c752ab0e97f0448a34ab98cfe5d89aae1367e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "37166bac792ae21fa759ee3423e6bf72800c8bfc1fc66d5258b4d6c04ba8842e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/RUN_REPORT.md",
+      "actual_sha256": "37166bac792ae21fa759ee3423e6bf72800c8bfc1fc66d5258b4d6c04ba8842e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a9e88de47951874fe440221b489e0458e4981be68594246f2075108c6abea5e5",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/ablation_report.json",
+      "actual_sha256": "a9e88de47951874fe440221b489e0458e4981be68594246f2075108c6abea5e5",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "anti_hardcoding_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "12f826486fdc563bb4d57a3fa88b30b789054b695944a921d89b678c0a5f7182",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/anti_hardcoding_report.json",
+      "actual_sha256": "12f826486fdc563bb4d57a3fa88b30b789054b695944a921d89b678c0a5f7182",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/CANDIDATE_USER_MODEL.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "facd5bc0d0f1baf1f03a3e89d521014585251bc1fa3f565229a369a3fbc81f7f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/CANDIDATE_USER_MODEL.jsonl",
+      "actual_sha256": "facd5bc0d0f1baf1f03a3e89d521014585251bc1fa3f565229a369a3fbc81f7f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/FREEZE_BELIEF_ABLATION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "461c93d5d8e1c594ed9473bc41e9ab130e709333a99178af5d7376f279cd70ad",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/FREEZE_BELIEF_ABLATION.jsonl",
+      "actual_sha256": "461c93d5d8e1c594ed9473bc41e9ab130e709333a99178af5d7376f279cd70ad",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/NO_INFERENCE_FIXED_PRIOR.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "aaaeb82e4072b9f83c532d8680741a70b951d12cb8121ada7c370aaebd5bba4c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/NO_INFERENCE_FIXED_PRIOR.jsonl",
+      "actual_sha256": "aaaeb82e4072b9f83c532d8680741a70b951d12cb8121ada7c370aaebd5bba4c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/POPULATION_BEST.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "38a30d4e9ca36871d0f55cfdc42033c385fd0c666df99f7888c1e35763730396",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/POPULATION_BEST.jsonl",
+      "actual_sha256": "38a30d4e9ca36871d0f55cfdc42033c385fd0c666df99f7888c1e35763730396",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/RANDOM_ACTION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "6646c2b29992caa37546ae04bda0aadffa323f4e622383fda4ceb2838f88f5ea",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/RANDOM_ACTION.jsonl",
+      "actual_sha256": "6646c2b29992caa37546ae04bda0aadffa323f4e622383fda4ceb2838f88f5ea",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/SAME_ACCESS_BAYES_OPTIMAL.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "5297f72921163a9f7f9cd7a31fb73de91cef4e061ac35f32ddb7ea64829799f8",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/SAME_ACCESS_BAYES_OPTIMAL.jsonl",
+      "actual_sha256": "5297f72921163a9f7f9cd7a31fb73de91cef4e061ac35f32ddb7ea64829799f8",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/SHUFFLED_REACTIONS.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "c634ec6fe5ff4a0fe77998fb124f90babfd33caeb01fb5e7a634dbf3eca806a7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/SHUFFLED_REACTIONS.jsonl",
+      "actual_sha256": "c634ec6fe5ff4a0fe77998fb124f90babfd33caeb01fb5e7a634dbf3eca806a7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/STATIC_LOOKUP_NO_LABEL.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "450b7760b2455de5149e84437925942c4da85e594e51b70146754e5e52bcb88d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/STATIC_LOOKUP_NO_LABEL.jsonl",
+      "actual_sha256": "450b7760b2455de5149e84437925942c4da85e594e51b70146754e5e52bcb88d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "episode_traces/WIPE_MEMORY_ABLATION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1c72592eb3aa424a5838465240cdb57e770bcdf5a6f49a7c2f8835242fcb2603",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/episode_traces/WIPE_MEMORY_ABLATION.jsonl",
+      "actual_sha256": "1c72592eb3aa424a5838465240cdb57e770bcdf5a6f49a7c2f8835242fcb2603",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "f6785b482c6dcf0b37a6c59c8676d61da539b41a0c9c94d4cd96e21add90e033",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/leakage_report.json",
+      "actual_sha256": "f6785b482c6dcf0b37a6c59c8676d61da539b41a0c9c94d4cd96e21add90e033",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ced04ddd2794664f8bc8276a501780a3aecdae3ea2cf50fcb199f04a166ba09b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/metric_report.json",
+      "actual_sha256": "ced04ddd2794664f8bc8276a501780a3aecdae3ea2cf50fcb199f04a166ba09b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "negative_controls_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "bf0cc53e2e0b22c4a97ee08537963a9dafa40d2459b7b0f442d9377e5e90c769",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/negative_controls_report.json",
+      "actual_sha256": "bf0cc53e2e0b22c4a97ee08537963a9dafa40d2459b7b0f442d9377e5e90c769",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c047e263be60f47627c356fc64687ffb32a25c8bc2cafc4dc8535142649e9d92",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/replay_report.json",
+      "actual_sha256": "c047e263be60f47627c356fc64687ffb32a25c8bc2cafc4dc8535142649e9d92",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "96ec407d8b2bed06d378f96c3c0c66312d2fbb51d5970de75e4791cb2df4a74f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/result.json",
+      "actual_sha256": "96ec407d8b2bed06d378f96c3c0c66312d2fbb51d5970de75e4791cb2df4a74f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "647836709fce434e76d2514027b08968f77ab938d1fcb940703eef6070c8b0d7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/RUN_REPORT.md",
+      "actual_sha256": "647836709fce434e76d2514027b08968f77ab938d1fcb940703eef6070c8b0d7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "42f4349874b22bdc74964c49cc04128ae3ae081e6d905852de4f6a24bffdabda",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/ablation_report.json",
+      "actual_sha256": "42f4349874b22bdc74964c49cc04128ae3ae081e6d905852de4f6a24bffdabda",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/CANDIDATE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "b2b3fdc0c5accdfd603f797325becbd8f5f07960e02e555034bc7157414fbd02",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/CANDIDATE.jsonl",
+      "actual_sha256": "b2b3fdc0c5accdfd603f797325becbd8f5f07960e02e555034bc7157414fbd02",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/ERROR_DRIVE_FALSE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "7f8d20a0881b581a13fa1667db0b47a6e518b06db3aa469ccf2d5c3bb6b4b41b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/ERROR_DRIVE_FALSE.jsonl",
+      "actual_sha256": "7f8d20a0881b581a13fa1667db0b47a6e518b06db3aa469ccf2d5c3bb6b4b41b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/FIXED_CUE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "5f7b48f818c9a8f8d962a75fff43571a728150f4685993a934f9a9d7889123dc",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/FIXED_CUE.jsonl",
+      "actual_sha256": "5f7b48f818c9a8f8d962a75fff43571a728150f4685993a934f9a9d7889123dc",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/FREEZE_BELIEF.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "59dc1ea00ee9d335cab0d6818df2d5a3823809e355cb7ec1441941a5c5ea25dc",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/FREEZE_BELIEF.jsonl",
+      "actual_sha256": "59dc1ea00ee9d335cab0d6818df2d5a3823809e355cb7ec1441941a5c5ea25dc",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/FUTURE_CUE_LEAK.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "fc32314b456358b33ddf95f182d134b865466839324a55386eb13a70d7c75fc7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/FUTURE_CUE_LEAK.jsonl",
+      "actual_sha256": "fc32314b456358b33ddf95f182d134b865466839324a55386eb13a70d7c75fc7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/GENERATOR_PARAMS.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "76aaa491f18af3ed5316602b76d09371c8dbaf8c88878ac724aa34cb01cf2c3f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/GENERATOR_PARAMS.jsonl",
+      "actual_sha256": "76aaa491f18af3ed5316602b76d09371c8dbaf8c88878ac724aa34cb01cf2c3f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/LABEL_IN_OBS_CLEAN.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "53a83a80f093deb38972cfecb20be77fc8ff2d3e65f30bdeb0e50d5242ce2234",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/LABEL_IN_OBS_CLEAN.jsonl",
+      "actual_sha256": "53a83a80f093deb38972cfecb20be77fc8ff2d3e65f30bdeb0e50d5242ce2234",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/LABEL_LEAK.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "ddb6b242419c359972b80a3320120905548394b2ca3fcc71683e7180983c2180",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/LABEL_LEAK.jsonl",
+      "actual_sha256": "ddb6b242419c359972b80a3320120905548394b2ca3fcc71683e7180983c2180",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/NO_INFERENCE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "5df63df37b124164bb94585cfce2b92a2d9a7ac1e153042c0ed3d8c5078dd28d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/NO_INFERENCE.jsonl",
+      "actual_sha256": "5df63df37b124164bb94585cfce2b92a2d9a7ac1e153042c0ed3d8c5078dd28d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/POPULATION_BEST.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "e93544b46f8d0bc8e76d366174a4cd6b765b4cafcc78ac433e7b1ba0c9e939f0",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/POPULATION_BEST.jsonl",
+      "actual_sha256": "e93544b46f8d0bc8e76d366174a4cd6b765b4cafcc78ac433e7b1ba0c9e939f0",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/PROBE_REVEAL_REMOVED.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "b269425b80502c6e04c773642536450307f2ff029e0f3e46e51fdc451d7e571c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/PROBE_REVEAL_REMOVED.jsonl",
+      "actual_sha256": "b269425b80502c6e04c773642536450307f2ff029e0f3e46e51fdc451d7e571c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/RANDOM.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "7c9b86e685cee92c797781ce852eab36b6a763dd568c894ace4a42811d337a8b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/RANDOM.jsonl",
+      "actual_sha256": "7c9b86e685cee92c797781ce852eab36b6a763dd568c894ace4a42811d337a8b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/SAME_ACCESS_BAYES.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "dde1d6660bf7d31b31054cabf0096a0101a984e8a8cce8217b57dced0e38156e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/SAME_ACCESS_BAYES.jsonl",
+      "actual_sha256": "dde1d6660bf7d31b31054cabf0096a0101a984e8a8cce8217b57dced0e38156e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "episode_traces/SHUFFLED_CUE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "a2083478b958d52f6827e5777ab76bd0c155fb3a4798980bf8b6e398d0dd1361",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/episode_traces/SHUFFLED_CUE.jsonl",
+      "actual_sha256": "a2083478b958d52f6827e5777ab76bd0c155fb3a4798980bf8b6e398d0dd1361",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "eb3d079f34170248fcbffed966be4c5ef1b810201c106f06d10c0849889dfd69",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/metric_report.json",
+      "actual_sha256": "eb3d079f34170248fcbffed966be4c5ef1b810201c106f06d10c0849889dfd69",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "negative_controls_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "af2ef0e67d09098fd498d5e8e194a6d34729e7d2b9f88f7b599bef8b4741dd59",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/negative_controls_report.json",
+      "actual_sha256": "af2ef0e67d09098fd498d5e8e194a6d34729e7d2b9f88f7b599bef8b4741dd59",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "bfc5a1d09c68ce5d01134f19717af7fad90edd3eae9aaccc0ada98ce72d0a1c3",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/replay_report.json",
+      "actual_sha256": "bfc5a1d09c68ce5d01134f19717af7fad90edd3eae9aaccc0ada98ce72d0a1c3",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a7e9b49120ad4e99d7647aecf99bd0c9d6df006e4e4422960e5996e550a8fe46",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/result.json",
+      "actual_sha256": "a7e9b49120ad4e99d7647aecf99bd0c9d6df006e4e4422960e5996e550a8fe46",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "ce8b9ba16985d128709739c7391cc0f85b241e7d2c7f06025b56e0b144e60c38",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/RUN_REPORT.md",
+      "actual_sha256": "89c85ff966d72a441467ab58c9938577e805c13dda5af49198b7c9883916449c",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "01e002c86c990dab02dd4e14a5034b531876127df1a7063513f97d1339388245",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/metrics.json",
+      "actual_sha256": "977803b503ae97b712a81bee5f6e8ea670157430f244536f8f4d741c16d57cc8",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "762758e6bc8355a3f71ff30c82222bf6fe27382518e859153f06812e776fbbc7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/result.json",
+      "actual_sha256": "a966c48f56078127c7b558041ce25f07ebcc9bf38c9e7eff6fb12f5e0a2dca91",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "23e190a451e7106e86f8599eda4d1fdaebdef2a4bc76900f1ff5c06b0611feb0",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/RUN_REPORT.md",
+      "actual_sha256": "d2c7fb1797d4a64f4d13544c5858fad445417acebdf8e247c1927dc836305de2",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7ff2eba61e45e59f106875fc0a37f036b7a4553bd452460e713da0315ecc52ee",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/metrics.json",
+      "actual_sha256": "ab8d887b16bc3088697d73df4ce34900ffc19c668f3f27667cacbbd7b97f720b",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "5c4b698f41c5272e18a54ecf420a4e5516413ea09a2c07750f9b9dcbd28b584d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/result.json",
+      "actual_sha256": "1b586f6effb8b8225922280e4d14514aa17a69767e05badb0c19f3fc7c827713",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "41e3a6e727bb6026e91d75e1fa0c19f2de1b06b0dc55cc409429afecb802ead3",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/RUN_REPORT.md",
+      "actual_sha256": "41e3a6e727bb6026e91d75e1fa0c19f2de1b06b0dc55cc409429afecb802ead3",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "consumer_purity_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e52b90206d617b141d1f39ecfbe538542e276f588fb4cdadc248cbedf485ba16",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/consumer_purity_report.json",
+      "actual_sha256": "e52b90206d617b141d1f39ecfbe538542e276f588fb4cdadc248cbedf485ba16",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "consumer_trace_agent_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "29cccd1d63a2d30c6efe978a23a176b9416bba285201da5383d3fd9440ae67f9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/consumer_trace_agent_b.jsonl",
+      "actual_sha256": "29cccd1d63a2d30c6efe978a23a176b9416bba285201da5383d3fd9440ae67f9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "consumer_trace_agent_p4.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1b564d05694e4848c4ca24e3b21425b118f0b0e02077a227727c78e624dca744",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/consumer_trace_agent_p4.jsonl",
+      "actual_sha256": "1b564d05694e4848c4ca24e3b21425b118f0b0e02077a227727c78e624dca744",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "consumer_trace_agent_p4_payoff.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "480b9d2ce0c2c8019588a3eef7ea3ddb5e856f57c1e1e4b0814c403f5dab50f5",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/consumer_trace_agent_p4_payoff.jsonl",
+      "actual_sha256": "480b9d2ce0c2c8019588a3eef7ea3ddb5e856f57c1e1e4b0814c403f5dab50f5",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "consumer_trace_agent_s1.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1bd5691d78cd9813c42b858f1a4a60777340eeb5790289894ac527d34c78bbd1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/consumer_trace_agent_s1.jsonl",
+      "actual_sha256": "1bd5691d78cd9813c42b858f1a4a60777340eeb5790289894ac527d34c78bbd1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "dependency_bank_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "9aec319bee9c22bb99507d9cea965809f7fe74138c2a4697741ba362509b7917",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/dependency_bank_report.json",
+      "actual_sha256": "9aec319bee9c22bb99507d9cea965809f7fe74138c2a4697741ba362509b7917",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "determinism_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7137b9d433c140d79a742f8ec0134ce3cf4495319a7a5e430f143c44f05c552f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/determinism_report.json",
+      "actual_sha256": "7137b9d433c140d79a742f8ec0134ce3cf4495319a7a5e430f143c44f05c552f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "field_ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c7c6db4e37d27ff6ad43a8a75e0316a0f1364ddd2749600c10333561d2cd024f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/field_ablation_report.json",
+      "actual_sha256": "c7c6db4e37d27ff6ad43a8a75e0316a0f1364ddd2749600c10333561d2cd024f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "forbidden_input_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "21267231d0c36cd83f6d0472a4403b58397b8d252b3bd965baa64d065543b759",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/forbidden_input_report.json",
+      "actual_sha256": "21267231d0c36cd83f6d0472a4403b58397b8d252b3bd965baa64d065543b759",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "host_native_manifest.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "d49b22e7f084acf7a889b392d0450607c80fadbdaa36554a7d883dccf3839a2e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/host_native_manifest.json",
+      "actual_sha256": "d49b22e7f084acf7a889b392d0450607c80fadbdaa36554a7d883dccf3839a2e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "negative_controls_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "05764f2ce3cf15f5274efe05399160d30a8f62fb12d2f470559630fe1d4207ba",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/negative_controls_report.json",
+      "actual_sha256": "05764f2ce3cf15f5274efe05399160d30a8f62fb12d2f470559630fe1d4207ba",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "no_mood_table_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "5581d9253baafce60cf8d94e3148adeb7d68dc88ced84688121f65c84099c97d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/no_mood_table_report.json",
+      "actual_sha256": "5581d9253baafce60cf8d94e3148adeb7d68dc88ced84688121f65c84099c97d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e875f0f71e40a191c05a0e5c6e60c926d83b4aa824c40ab34e50a08a9926a18d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/replay_report.json",
+      "actual_sha256": "e875f0f71e40a191c05a0e5c6e60c926d83b4aa824c40ab34e50a08a9926a18d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "004e87b023929486187e66dd65e48604dc5c0dff8753b38176e6f0a8984553b1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/result.json",
+      "actual_sha256": "004e87b023929486187e66dd65e48604dc5c0dff8753b38176e6f0a8984553b1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "schema_input_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "cf3399867079889015963b563be53d49b3f3a62efa8bf11b247147a319e96d53",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/schema_input_report.json",
+      "actual_sha256": "cf3399867079889015963b563be53d49b3f3a62efa8bf11b247147a319e96d53",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "sensitivity_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a1fa475d36e7c6ad60793e84bf3d3ce676cd614cd49540643cb078567a444141",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/sensitivity_report.json",
+      "actual_sha256": "a1fa475d36e7c6ad60793e84bf3d3ce676cd614cd49540643cb078567a444141",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "theta_freeze_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "b5569e58f105995c05123fee7a780cdd57861454009b4797521d79c5b77db8f9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/theta_freeze_report.json",
+      "actual_sha256": "b5569e58f105995c05123fee7a780cdd57861454009b4797521d79c5b77db8f9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "theta_g.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "fcdfe80751fabdc07e46cdac7202852c056c70aaca2604ed69eeba534023426a",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/theta_g.json",
+      "actual_sha256": "fcdfe80751fabdc07e46cdac7202852c056c70aaca2604ed69eeba534023426a",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/manifest.json",
+      "pin_path": "theta_g.sha256",
+      "source": "artifact_hashes",
+      "expected_sha256": "69005eb58c9268be40bae066715d580f3b2ec08eb8280df225a4adc455d29327",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/theta_g.sha256",
+      "actual_sha256": "69005eb58c9268be40bae066715d580f3b2ec08eb8280df225a4adc455d29327",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/freeze_manifest.json",
+      "pin_path": "JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A-v0_2.md",
+      "source": "pins",
+      "expected_sha256": "5f1afdb34dd6840d0b1c5d9aee0851df2ee2c3baa67b90be401592a2e1fae3bd",
+      "resolution": "direct",
+      "resolved_path": "JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A-v0_2.md",
+      "actual_sha256": "5f1afdb34dd6840d0b1c5d9aee0851df2ee2c3baa67b90be401592a2e1fae3bd",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/freeze_manifest.json",
+      "pin_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/creaturestate_schema_v0_2.json",
+      "source": "pins",
+      "expected_sha256": "ddcce43f04e4ca74d4774f9f7edd6eec67db03c5a3a3c85c081b5659e9988c9f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/creaturestate_schema_v0_2.json",
+      "actual_sha256": "ddcce43f04e4ca74d4774f9f7edd6eec67db03c5a3a3c85c081b5659e9988c9f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/freeze_manifest.json",
+      "pin_path": "JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A.md",
+      "source": "superseded.v0_1_pins",
+      "expected_sha256": "1de77236a13385130b1e97479501c665b1ba4f3996363e355c451f878e922a4d",
+      "resolution": "direct",
+      "resolved_path": "JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A.md",
+      "actual_sha256": "1de77236a13385130b1e97479501c665b1ba4f3996363e355c451f878e922a4d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/freeze_manifest.json",
+      "pin_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/creaturestate_schema_v0.json",
+      "source": "superseded.v0_1_pins",
+      "expected_sha256": "dccf451dd26b399a8057718a4564bfedc0c7683f38126ac3b1b56bab44ca9ef7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-INTERFACE-SPEC-001A/creaturestate_schema_v0.json",
+      "actual_sha256": "dccf451dd26b399a8057718a4564bfedc0c7683f38126ac3b1b56bab44ca9ef7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "6fb09ba94c8b36f1b6956575bccecdc9d67e6ca829020996cbf66675fad67bf8",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/RUN_REPORT.md",
+      "actual_sha256": "6fb09ba94c8b36f1b6956575bccecdc9d67e6ca829020996cbf66675fad67bf8",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "anti_hardcoding_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "067c2f9b856db0fb8f36c139da254d31293dcf195eb30f093825cac0ec1b244a",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/anti_hardcoding_report.json",
+      "actual_sha256": "067c2f9b856db0fb8f36c139da254d31293dcf195eb30f093825cac0ec1b244a",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "baseline_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "2ac3853fad1d7e1abb2eef01abda9d8068e61d8c82ffa99fcb62698784a0cf88",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/baseline_report.json",
+      "actual_sha256": "2ac3853fad1d7e1abb2eef01abda9d8068e61d8c82ffa99fcb62698784a0cf88",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/CREATURE_ON_INTERACTIVE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "fa3c4ce297764dfd54bd671c2a32610cd3afa625880b70906c8f790fe1ffeb3c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/CREATURE_ON_INTERACTIVE.jsonl",
+      "actual_sha256": "fa3c4ce297764dfd54bd671c2a32610cd3afa625880b70906c8f790fe1ffeb3c",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/LOOKUP_OR_SCRIPTED_ANIMATION.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1b28a5a21641c756886c199d2080f6d6351b7e2c68cef06f7eb3628e05f699d9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/LOOKUP_OR_SCRIPTED_ANIMATION.jsonl",
+      "actual_sha256": "1b28a5a21641c756886c199d2080f6d6351b7e2c68cef06f7eb3628e05f699d9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/NO_MOVE.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "1989630b628612fc579d4f8307c6880687011cc9e4882648d3f64732a179036e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/NO_MOVE.jsonl",
+      "actual_sha256": "1989630b628612fc579d4f8307c6880687011cc9e4882648d3f64732a179036e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/RANDOM_POLICY.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "3efee4ef64582e9224bc434620f8aad291c5179ad2856aff7215298de6c5d0ab",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/RANDOM_POLICY.jsonl",
+      "actual_sha256": "3efee4ef64582e9224bc434620f8aad291c5179ad2856aff7215298de6c5d0ab",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/SAME_ACCESS_CLASSICAL_CONTROLLER.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "16d7f7972289691ad4bed3323b9f5c457dc814433f7faa328d4c2a64a12cafcf",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/SAME_ACCESS_CLASSICAL_CONTROLLER.jsonl",
+      "actual_sha256": "16d7f7972289691ad4bed3323b9f5c457dc814433f7faa328d4c2a64a12cafcf",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/SHUFFLED_REPLAY.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "f9603079f6bb7430b4ef291a3cbe8022d870d890a3b0bcdb419a1fecc67ed596",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/SHUFFLED_REPLAY.jsonl",
+      "actual_sha256": "f9603079f6bb7430b4ef291a3cbe8022d870d890a3b0bcdb419a1fecc67ed596",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "episode_traces/STATIC_REPLAY.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "e53979c520a6317313331d3509b00db7c88f626ebdae67abd102ead09ea1c4b6",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/episode_traces/STATIC_REPLAY.jsonl",
+      "actual_sha256": "e53979c520a6317313331d3509b00db7c88f626ebdae67abd102ead09ea1c4b6",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "2b262a6599f3206b4e196035b2f4fc6a874dfd7685004639e87e1bc65db38bf9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/leakage_report.json",
+      "actual_sha256": "2b262a6599f3206b4e196035b2f4fc6a874dfd7685004639e87e1bc65db38bf9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "5a68d3c928e0c260db1ec1f63f64a08b6f85896c2b79d23128cf654d835e89ce",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/metric_report.json",
+      "actual_sha256": "5a68d3c928e0c260db1ec1f63f64a08b6f85896c2b79d23128cf654d835e89ce",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "negative_controls_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "8dd91b3b6c052c4c202b1d4d333e1086287e9df3fa55bc8bfa2719b2e3645b44",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/negative_controls_report.json",
+      "actual_sha256": "8dd91b3b6c052c4c202b1d4d333e1086287e9df3fa55bc8bfa2719b2e3645b44",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "526f51f0dd89782cb211b1031287c25113a1e6d6e8fe7a2992b106fa630ef2fa",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/result.json",
+      "actual_sha256": "526f51f0dd89782cb211b1031287c25113a1e6d6e8fe7a2992b106fa630ef2fa",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_REACTIVE_ONLY_trace_agent_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "0c631e427c6f3fa1588800095847d030af2554f097e6db768cd62ac7b5b87a10",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_REACTIVE_ONLY_trace_agent_b.jsonl",
+      "actual_sha256": "0c631e427c6f3fa1588800095847d030af2554f097e6db768cd62ac7b5b87a10",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_REACTIVE_ONLY_trace_agent_p4.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "baf8acae44d18e55e4c0d8e3b5a987c699455b13953a5a2dd3316aef0b91ec2b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_REACTIVE_ONLY_trace_agent_p4.jsonl",
+      "actual_sha256": "baf8acae44d18e55e4c0d8e3b5a987c699455b13953a5a2dd3316aef0b91ec2b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_REACTIVE_ONLY_trace_agent_p4_payoff.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "ba39baa8da51c2e0e6ab81b77afadb58772b9fef9419345e1b68f3335a054505",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_REACTIVE_ONLY_trace_agent_p4_payoff.jsonl",
+      "actual_sha256": "ba39baa8da51c2e0e6ab81b77afadb58772b9fef9419345e1b68f3335a054505",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_REACTIVE_ONLY_trace_agent_s1.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "e904e14e657ddd7ce54cb46af63ae7c324153665495b484967cf49ae3361cce0",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_REACTIVE_ONLY_trace_agent_s1.jsonl",
+      "actual_sha256": "e904e14e657ddd7ce54cb46af63ae7c324153665495b484967cf49ae3361cce0",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_SHUFFLED_trace_agent_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "d40868a65c7648fe9d52df2c5267666cf957bef315f38a1aa92bfb685386baa6",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_SHUFFLED_trace_agent_b.jsonl",
+      "actual_sha256": "d40868a65c7648fe9d52df2c5267666cf957bef315f38a1aa92bfb685386baa6",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_SHUFFLED_trace_agent_p4.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "ea5678fa83dccbc07444d73bdc30f167ff1dc55273e05e6ed37670b432b1d98b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_SHUFFLED_trace_agent_p4.jsonl",
+      "actual_sha256": "ea5678fa83dccbc07444d73bdc30f167ff1dc55273e05e6ed37670b432b1d98b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_SHUFFLED_trace_agent_p4_payoff.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "6c36571d182717efed3aa73b32256e9e9adb10f87e46a4e5fdbc7dc156b2d86d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_SHUFFLED_trace_agent_p4_payoff.jsonl",
+      "actual_sha256": "6c36571d182717efed3aa73b32256e9e9adb10f87e46a4e5fdbc7dc156b2d86d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_SHUFFLED_trace_agent_s1.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "c7505691a56a7236cf90025c59847e9b9192117881a2b21c85911322aa74fdd7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_SHUFFLED_trace_agent_s1.jsonl",
+      "actual_sha256": "c7505691a56a7236cf90025c59847e9b9192117881a2b21c85911322aa74fdd7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATE_FLAT_trace_agent_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "7febd2b3df0c8f2853216e0ae13fda6dd9a3b657a3c8327134d097979b00e563",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATE_FLAT_trace_agent_b.jsonl",
+      "actual_sha256": "7febd2b3df0c8f2853216e0ae13fda6dd9a3b657a3c8327134d097979b00e563",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATE_FLAT_trace_agent_p4.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "70b3d67bb30bb6ef5a78df00dff765fb6ed8c3b7d6444f84f47288e9f26811fb",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATE_FLAT_trace_agent_p4.jsonl",
+      "actual_sha256": "70b3d67bb30bb6ef5a78df00dff765fb6ed8c3b7d6444f84f47288e9f26811fb",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATE_FLAT_trace_agent_p4_payoff.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "8c86f980962d6fe5a5e25e9e294c6c4f57feab8fc18cb4d45c5de8b563fb9de7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATE_FLAT_trace_agent_p4_payoff.jsonl",
+      "actual_sha256": "8c86f980962d6fe5a5e25e9e294c6c4f57feab8fc18cb4d45c5de8b563fb9de7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATE_FLAT_trace_agent_s1.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "3053fc18d432a33efa7f9afb68a02e28c9a32fb300f96df817747dcb41f6cef9",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATE_FLAT_trace_agent_s1.jsonl",
+      "actual_sha256": "3053fc18d432a33efa7f9afb68a02e28c9a32fb300f96df817747dcb41f6cef9",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATIC_REPLAY_trace_agent_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "867c12fe64047bb1f25a031cfa5ab1e06e4af12d021d42a20c01a67a051e2d51",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATIC_REPLAY_trace_agent_b.jsonl",
+      "actual_sha256": "867c12fe64047bb1f25a031cfa5ab1e06e4af12d021d42a20c01a67a051e2d51",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATIC_REPLAY_trace_agent_p4.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "bec6b865fa419e76d55c17dce5d43ece74259e13a9b81e7879ef63e27ce2cf7d",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATIC_REPLAY_trace_agent_p4.jsonl",
+      "actual_sha256": "bec6b865fa419e76d55c17dce5d43ece74259e13a9b81e7879ef63e27ce2cf7d",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATIC_REPLAY_trace_agent_p4_payoff.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "d726023e11812562838d201b6ff33522260b6f1a56fd859646c1d057c23c5061",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATIC_REPLAY_trace_agent_p4_payoff.jsonl",
+      "actual_sha256": "d726023e11812562838d201b6ff33522260b6f1a56fd859646c1d057c23c5061",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "OFF_STATIC_REPLAY_trace_agent_s1.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "b54dcb741bcc22b145c8156ab197ddfdf8dad8fa8c110b832e4e31788557ff61",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/OFF_STATIC_REPLAY_trace_agent_s1.jsonl",
+      "actual_sha256": "b54dcb741bcc22b145c8156ab197ddfdf8dad8fa8c110b832e4e31788557ff61",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "ON_trace_agent_b.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "0d7b7b2615910a21ab6b702538f702fa30029e4cb449c0d06a5a4c8607e3e738",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/ON_trace_agent_b.jsonl",
+      "actual_sha256": "0d7b7b2615910a21ab6b702538f702fa30029e4cb449c0d06a5a4c8607e3e738",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "ON_trace_agent_p4.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "730ed0f387faf76bfa0e5f382f84b5fbf39686e5b31c947c9316ee1f1ffe08cf",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/ON_trace_agent_p4.jsonl",
+      "actual_sha256": "730ed0f387faf76bfa0e5f382f84b5fbf39686e5b31c947c9316ee1f1ffe08cf",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "ON_trace_agent_p4_payoff.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "8536943e6b96e595d37c4772ce8e85c37ca1cec38cd498249dc1ab46b071eb5e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/ON_trace_agent_p4_payoff.jsonl",
+      "actual_sha256": "8536943e6b96e595d37c4772ce8e85c37ca1cec38cd498249dc1ab46b071eb5e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "ON_trace_agent_s1.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "adcfbf5d30700fbdb4a6b4fdd5ec681a0d51f9301e58f9c95199b22c1cb01271",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/ON_trace_agent_s1.jsonl",
+      "actual_sha256": "adcfbf5d30700fbdb4a6b4fdd5ec681a0d51f9301e58f9c95199b22c1cb01271",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "91622d62fb002d92450ce4ebe676c237ae943b7f840622e83a93c109ea6b8e36",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/RUN_REPORT.md",
+      "actual_sha256": "91622d62fb002d92450ce4ebe676c237ae943b7f840622e83a93c109ea6b8e36",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "anti_hardcoding_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e817a2dc7890befc3ad3fb0e760a70d080626c7707a60e138f4be3f03ff169a7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/anti_hardcoding_report.json",
+      "actual_sha256": "e817a2dc7890befc3ad3fb0e760a70d080626c7707a60e138f4be3f03ff169a7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "baseline_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "fecd8e920c87c6e2be1a4decb84f2f2673fed9df59f2620fc47fd1ccaebb3a30",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/baseline_report.json",
+      "actual_sha256": "fecd8e920c87c6e2be1a4decb84f2f2673fed9df59f2620fc47fd1ccaebb3a30",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "field_attribution_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "ee148c546b81aa234b2e9727923c87c78e672fd19e376f4862e02e8da2ce7d7b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/field_attribution_report.json",
+      "actual_sha256": "ee148c546b81aa234b2e9727923c87c78e672fd19e376f4862e02e8da2ce7d7b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "345983ea3e6c8fe71c34dd70a413554ca905d4b302e9f6537a7f03f1aa4ed7aa",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/leakage_report.json",
+      "actual_sha256": "345983ea3e6c8fe71c34dd70a413554ca905d4b302e9f6537a7f03f1aa4ed7aa",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "35ad55c25c5d6cc1d3aec318e4bd32b9a1fcc7a53686c5a43b9f5edf40c17005",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/metric_report.json",
+      "actual_sha256": "35ad55c25c5d6cc1d3aec318e4bd32b9a1fcc7a53686c5a43b9f5edf40c17005",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "negative_controls_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "5095ed29c7c7aa3e5eb06225175ba129c80aba3bfdc4e83363945fa5461b5bfb",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/negative_controls_report.json",
+      "actual_sha256": "5095ed29c7c7aa3e5eb06225175ba129c80aba3bfdc4e83363945fa5461b5bfb",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "49fab23156790cf657ee35bb2d33ecb47a65c280d4615621294120509fc5f32f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/replay_report.json",
+      "actual_sha256": "49fab23156790cf657ee35bb2d33ecb47a65c280d4615621294120509fc5f32f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "3f260a391418bda22068faa74ce13d90181fcc68fcc65e641c9e6047aeeed189",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/result.json",
+      "actual_sha256": "3f260a391418bda22068faa74ce13d90181fcc68fcc65e641c9e6047aeeed189",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "e55f99d79e019a37fb69310c5e0c294fd87b3fdf36ef640ea75eae7c16818062",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/RUN_REPORT.md",
+      "actual_sha256": "e55f99d79e019a37fb69310c5e0c294fd87b3fdf36ef640ea75eae7c16818062",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "allocation_trace.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a2727aaf90e41d7ff1cea547f3d0b165143a0911d602779c391905d4081ba9e1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/allocation_trace.json",
+      "actual_sha256": "a2727aaf90e41d7ff1cea547f3d0b165143a0911d602779c391905d4081ba9e1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c274f1e75397c7a99cdad5b0a27e10751f8de52ffc7e5de8c2a2c40c85731875",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/host_native_invocation.json",
+      "actual_sha256": "61099e03203d394d8136653d3e14db4519bb18dbd35b0cce0c1baf77a9e1f4f8",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "236ebddabc9119e2c8e9cb3123f0bf1e6a2f8c29137760b1560034b548561b88",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/metrics.json",
+      "actual_sha256": "236ebddabc9119e2c8e9cb3123f0bf1e6a2f8c29137760b1560034b548561b88",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7f6c4a610c57872b4f02c06d8ce5dd74e0c5f0f5257ec65ef43f4149d796232f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/pre_run_hashes.json",
+      "actual_sha256": "7f6c4a610c57872b4f02c06d8ce5dd74e0c5f0f5257ec65ef43f4149d796232f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "8b75147054476a1d792fdaa6d5f5953cf8fbe0e80805705e84f76b868c7e28aa",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/result.json",
+      "actual_sha256": "8b75147054476a1d792fdaa6d5f5953cf8fbe0e80805705e84f76b868c7e28aa",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/manifest.json",
+      "pin_path": "trace.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "caff758cec00481bad666e80fe5df9d4da321c5c9466a36a20392375a92ac15e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/trace.jsonl",
+      "actual_sha256": "caff758cec00481bad666e80fe5df9d4da321c5c9466a36a20392375a92ac15e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "02cfcc1a8c3ddf63ac1fa5eb37f513d28f3feafd3ce6a0a233109cfed4ca4452",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/RUN_REPORT.md",
+      "actual_sha256": "02cfcc1a8c3ddf63ac1fa5eb37f513d28f3feafd3ce6a0a233109cfed4ca4452",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "allocation_trace.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "2430a8d3820eb3e8980665bff22468fe25d2accd3ac008347f4ed24e23c76186",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/allocation_trace.json",
+      "actual_sha256": "2430a8d3820eb3e8980665bff22468fe25d2accd3ac008347f4ed24e23c76186",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c274f1e75397c7a99cdad5b0a27e10751f8de52ffc7e5de8c2a2c40c85731875",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/host_native_invocation.json",
+      "actual_sha256": "61099e03203d394d8136653d3e14db4519bb18dbd35b0cce0c1baf77a9e1f4f8",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7794a28aa4e2972a922451fd57e0b0e2fe113cc357f88715a2c2759592a26806",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/metrics.json",
+      "actual_sha256": "7794a28aa4e2972a922451fd57e0b0e2fe113cc357f88715a2c2759592a26806",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "7ef7692f1416b7b23066b4d3cb73d77babcb8a8e6133c32916950c53fcb03faa",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/pre_run_hashes.json",
+      "actual_sha256": "7ef7692f1416b7b23066b4d3cb73d77babcb8a8e6133c32916950c53fcb03faa",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "9d2539f754e5543889dbf76d8f842592515e56a64f802d1a92cefec7e2b97624",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/result.json",
+      "actual_sha256": "9d2539f754e5543889dbf76d8f842592515e56a64f802d1a92cefec7e2b97624",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/manifest.json",
+      "pin_path": "trace.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "e2952f88f4216655ec8b3d1e7bd44fa7eebae8f53fbb3cfe0c756ade797006d7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/trace.jsonl",
+      "actual_sha256": "e2952f88f4216655ec8b3d1e7bd44fa7eebae8f53fbb3cfe0c756ade797006d7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "50b726dd980c2ebfc32eac9a992e1c924bf17883e04629a7a4527cd1f9380bb3",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/RUN_REPORT.md",
+      "actual_sha256": "50b726dd980c2ebfc32eac9a992e1c924bf17883e04629a7a4527cd1f9380bb3",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "allocation_trace.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "09cd9bde38443252cafa3dff783802f9fb60d596d386f7b182d06c8abcf72a66",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/allocation_trace.json",
+      "actual_sha256": "09cd9bde38443252cafa3dff783802f9fb60d596d386f7b182d06c8abcf72a66",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "calibration_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "b927bc0909829dd387cdb3d85998df4481d962279393c8869666c4e46304c82f",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/calibration_report.json",
+      "actual_sha256": "b927bc0909829dd387cdb3d85998df4481d962279393c8869666c4e46304c82f",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "host_native_invocation.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "02183128b597f10293ffe58a40f31bb020e310326a3988ea456bb7645bfdcda6",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/host_native_invocation.json",
+      "actual_sha256": "cb69fb41497e056bcfc31911d4d272e8a6357763527935adcfe16c7136b6beb2",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "metrics.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c9c9d9590c646163aa58be50680aae2f3085cee57ea750ae4abb0b7ce3e463df",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/metrics.json",
+      "actual_sha256": "c9c9d9590c646163aa58be50680aae2f3085cee57ea750ae4abb0b7ce3e463df",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "pre_run_hashes.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "f90f1d3cd6e7e427633e0a5222dbf8378c13193e54f8cbb7e6babf81bcd90018",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/pre_run_hashes.json",
+      "actual_sha256": "f90f1d3cd6e7e427633e0a5222dbf8378c13193e54f8cbb7e6babf81bcd90018",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "c14e869792b5801c1840f3072b2f7f73ab42e661cf358ee9831c207386764b01",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/result.json",
+      "actual_sha256": "c14e869792b5801c1840f3072b2f7f73ab42e661cf358ee9831c207386764b01",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/manifest.json",
+      "pin_path": "trace.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "5acc93e0db89141d0aaa72b8182a9e6358a3c56e4812442d640981f8eebd2884",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/trace.jsonl",
+      "actual_sha256": "5acc93e0db89141d0aaa72b8182a9e6358a3c56e4812442d640981f8eebd2884",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "c84277247040107dc56ca15d8ca7a7cadeb7523dc53517fecc08d21877b5303c",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/RUN_REPORT.md",
+      "actual_sha256": "9bb6bd302c6ca9fee88d9838bbb41195d78e7f677c498a9d4bc62e9e68931ac7",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "610108990a4851ca22d0ec74210fa632a20385e68c897f7148df8581039f0f7b",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/ablation_report.json",
+      "actual_sha256": "610108990a4851ca22d0ec74210fa632a20385e68c897f7148df8581039f0f7b",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "baseline_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "beaecce65e251ba10c9f6d15fb173594d52273ac42a953183984124c084b3c69",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/baseline_report.json",
+      "actual_sha256": "beaecce65e251ba10c9f6d15fb173594d52273ac42a953183984124c084b3c69",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "episode_traces.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "b8c61cbb24522557c644c0faa7a7a6e341c794ed311025d7c8e5ea96b5098eb3",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/episode_traces.jsonl",
+      "actual_sha256": "b8c61cbb24522557c644c0faa7a7a6e341c794ed311025d7c8e5ea96b5098eb3",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "6a353f952d15d4603c6d0634d5e1b880eca47137f361f515144c0445759b95b1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/leakage_report.json",
+      "actual_sha256": "6a353f952d15d4603c6d0634d5e1b880eca47137f361f515144c0445759b95b1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "a8eef00696c7a0209b2699e98789790d67739bf0e2248e70072d4d4bd205f11e",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/metric_report.json",
+      "actual_sha256": "a8eef00696c7a0209b2699e98789790d67739bf0e2248e70072d4d4bd205f11e",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "647faaf1b74c61963951fc5598231356988190427fcb501a6af5b3fb33fb833a",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/replay_report.json",
+      "actual_sha256": "647faaf1b74c61963951fc5598231356988190427fcb501a6af5b3fb33fb833a",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "98f39343eac95535c765779cad10717b0fa3c52e69016375e531824269217bc3",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/result.json",
+      "actual_sha256": "98f39343eac95535c765779cad10717b0fa3c52e69016375e531824269217bc3",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "RUN_REPORT.md",
+      "source": "artifact_hashes",
+      "expected_sha256": "b5a6b43f452163fd67b6ca89ffb0a71caec41045d2ac998af4a2a0d5034c2192",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/RUN_REPORT.md",
+      "actual_sha256": "d08bba5e4e8b7e57659474f4d99089b0a2e299ad5ff19bead66af38c39f2aa12",
+      "verdict": "mismatch"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "ablation_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "42bcf4ee2518a68e5e324d98963d8559ccb7d7559380c769d2d0296be41994f6",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/ablation_report.json",
+      "actual_sha256": "42bcf4ee2518a68e5e324d98963d8559ccb7d7559380c769d2d0296be41994f6",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "baseline_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "79dc7a3ebfd386082f6c3781b6d629a772f26bbd742252361cbb754b2a972682",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/baseline_report.json",
+      "actual_sha256": "79dc7a3ebfd386082f6c3781b6d629a772f26bbd742252361cbb754b2a972682",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "delayed_feedback_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "85eb40ad47a72619c62ee9e1f884e70922d35f9256a13caee55703a79c026615",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/delayed_feedback_report.json",
+      "actual_sha256": "85eb40ad47a72619c62ee9e1f884e70922d35f9256a13caee55703a79c026615",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "episode_traces.jsonl",
+      "source": "artifact_hashes",
+      "expected_sha256": "67f9cf7c5aa6ca1a13efc41512051b657385cfd6c249d4782f9a12ed9b80cca7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/episode_traces.jsonl",
+      "actual_sha256": "67f9cf7c5aa6ca1a13efc41512051b657385cfd6c249d4782f9a12ed9b80cca7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "leakage_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "e978687581eb236b851e54fd69fdadfcc48a2876febacc52784f9013cc7bc5e7",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/leakage_report.json",
+      "actual_sha256": "e978687581eb236b851e54fd69fdadfcc48a2876febacc52784f9013cc7bc5e7",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "metric_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "b22d0f6a696a003c3224792b1f1e9b4161f3e66c895d21aa87eacc041938dd0a",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/metric_report.json",
+      "actual_sha256": "b22d0f6a696a003c3224792b1f1e9b4161f3e66c895d21aa87eacc041938dd0a",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "replay_report.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "9ef45fd3e0f52703b12cc08c31a67051a7aaee66f176e3d0ace0b5121a3b82f1",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/replay_report.json",
+      "actual_sha256": "9ef45fd3e0f52703b12cc08c31a67051a7aaee66f176e3d0ace0b5121a3b82f1",
+      "verdict": "match"
+    },
+    {
+      "manifest": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/manifest.json",
+      "pin_path": "result.json",
+      "source": "artifact_hashes",
+      "expected_sha256": "96c5d5deb109ae399a373b127d06c9b6012fb8230d111fa3830dc4087016d848",
+      "resolution": "direct",
+      "resolved_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/result.json",
+      "actual_sha256": "96c5d5deb109ae399a373b127d06c9b6012fb8230d111fa3830dc4087016d848",
+      "verdict": "match"
+    }
+  ]
+}

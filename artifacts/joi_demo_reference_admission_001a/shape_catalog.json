@@ -1,0 +1,1674 @@
+{
+  "corpus_root": "D:\\Project\\AIProject\\MyProject\\joi-demo",
+  "result_count": 32,
+  "common_top_level_fields": [
+    "claim_ceiling",
+    "task_id",
+    "verdict"
+  ],
+  "canonical_field_coverage": {
+    "candidate_brier": 1,
+    "claim_ceiling": 32,
+    "config_sha": 9,
+    "run_id": 20,
+    "task_id": 32,
+    "verdict": 32
+  },
+  "core_contract_rule": "Ego-side rewrites MUST emit at least task_id, verdict, claim_ceiling, and provenance/run_id when the run has one; new fields are additive, never redefinitions of observed corpus fields.",
+  "variants": [
+    {
+      "variant_id": "variant_04f7c28e0b",
+      "top_level_fields": [
+        "canonical",
+        "claim_ceiling",
+        "dependency_hash_post",
+        "dependency_hash_pre",
+        "hash_method",
+        "host_native_evidence",
+        "is_evidence",
+        "negative_controls",
+        "per_creature",
+        "provenance",
+        "ran_conformance",
+        "run_context",
+        "schema_version",
+        "task_id",
+        "unbanked",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-GRAD-CREATURESTATE-EMITTER-CONFORMANCE-001A"
+      ]
+    },
+    {
+      "variant_id": "variant_15a5588b1c",
+      "top_level_fields": [
+        "aggregate",
+        "claim_ceiling",
+        "metrics",
+        "prerequisites",
+        "provenance",
+        "strongest_baseline",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B"
+      ]
+    },
+    {
+      "variant_id": "variant_1c24c71684",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "prediction_improvement",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-OPERATION-LEARNING-GATE-001A"
+      ]
+    },
+    {
+      "variant_id": "variant_44f7462895",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 4,
+      "examples": [
+        "JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay",
+        "JOI-DEMO-G4-USER-MODEL-001A",
+        "JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls"
+      ]
+    },
+    {
+      "variant_id": "variant_4ae9a01868",
+      "top_level_fields": [
+        "claim_ceiling",
+        "comparisons",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-OPERATION-LEARNING-GATE-001B"
+      ]
+    },
+    {
+      "variant_id": "variant_635f863291",
+      "top_level_fields": [
+        "brier",
+        "claim_ceiling",
+        "gates",
+        "provenance",
+        "reason",
+        "run_id",
+        "schema",
+        "task_id",
+        "thresholds",
+        "verdict"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-G4G0-COUPLING-SPIKE-001A"
+      ]
+    },
+    {
+      "variant_id": "variant_64c19b571a",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "form_adequacy",
+        "monotonic_cis",
+        "positive_control",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C"
+      ]
+    },
+    {
+      "variant_id": "variant_69f7807332",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "positive_control_pass",
+        "provenance",
+        "targeted_leak_hit",
+        "task_id",
+        "verdict"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE"
+      ]
+    },
+    {
+      "variant_id": "variant_73991b1fe2",
+      "top_level_fields": [
+        "claim_ceiling",
+        "curiosity_arm",
+        "growth_detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 3,
+      "examples": [
+        "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A",
+        "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate",
+        "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build"
+      ]
+    },
+    {
+      "variant_id": "variant_80d060dab2",
+      "top_level_fields": [
+        "anti_hardcoding_audit",
+        "bar1_pass",
+        "claim_ceiling",
+        "config",
+        "gates",
+        "oracle_ceiling",
+        "research_layer",
+        "task_id",
+        "train_family_food_rate",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-001A"
+      ]
+    },
+    {
+      "variant_id": "variant_82b93c7500",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "form_adequacy",
+        "monotonic_cis",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B"
+      ]
+    },
+    {
+      "variant_id": "variant_89c7a22e78",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "monotonic_cis",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 2,
+      "examples": [
+        "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A",
+        "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical"
+      ]
+    },
+    {
+      "variant_id": "variant_93711c5a0c",
+      "top_level_fields": [
+        "baselines",
+        "canonical",
+        "checks_pass",
+        "claim_ceiling",
+        "consumer_definition",
+        "is_evidence",
+        "provenance",
+        "reports",
+        "run_context",
+        "task_id",
+        "theta_g_hash",
+        "unbanked",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A"
+      ]
+    },
+    {
+      "variant_id": "variant_95b40e48e5",
+      "top_level_fields": [
+        "A3_naive_reproduces_noise_chasing",
+        "G0",
+        "K_SNR",
+        "P1",
+        "P2",
+        "P3",
+        "S1_competence_auc_ci_vs_strongest_weak",
+        "W",
+        "ablation_deltas",
+        "allocation_by_type_over_time",
+        "allocation_postwarmup",
+        "calibration_grid",
+        "calibration_selected",
+        "claim_ceiling",
+        "competence_auc",
+        "config_sha",
+        "forbidden_scan",
+        "oracle_allocation",
+        "provenance",
+        "reason",
+        "replay_max_err",
+        "schema",
+        "seeds",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A"
+      ]
+    },
+    {
+      "variant_id": "variant_a5a65b72ad",
+      "top_level_fields": [
+        "claim_ceiling",
+        "detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict"
+      ],
+      "result_count": 2,
+      "examples": [
+        "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract",
+        "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm"
+      ]
+    },
+    {
+      "variant_id": "variant_a8d4e7c43e",
+      "top_level_fields": [
+        "A_delta",
+        "A_pass",
+        "B_delta",
+        "B_pass",
+        "O_only_policy",
+        "accuracy_EMA_defer",
+        "agent_b_sha",
+        "arms",
+        "calibration_grid",
+        "calibration_selected",
+        "candidate_defer_rate",
+        "claim_ceiling",
+        "code_path_hash",
+        "config_b_sha",
+        "config_s2_002a_sha",
+        "ema_delta",
+        "forbidden_scan_clean",
+        "forbidden_scan_positive_control",
+        "git_head",
+        "invalid_degenerate_gate",
+        "leak_probe",
+        "leak_probe_auc",
+        "leq_oracle",
+        "native_conf_defer",
+        "positive_control",
+        "postflip_stratified_A",
+        "provenance",
+        "replay_max_err",
+        "run_id",
+        "s_rel_lam",
+        "schema",
+        "source_hashes",
+        "straddle_frac",
+        "task_id",
+        "ties_accuracy_EMA",
+        "var_s_rel",
+        "verdict"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-S2-LOADBEARING-SELFMODEL-002A"
+      ]
+    },
+    {
+      "variant_id": "variant_b6a48a83ac",
+      "top_level_fields": [
+        "claim_ceiling",
+        "observed_collapse",
+        "reason",
+        "schema",
+        "scope_tag",
+        "task_id",
+        "verdict"
+      ],
+      "result_count": 2,
+      "examples": [
+        "JOI-DEMO-GENERALITY-EXTENSIBILITY-001A",
+        "JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY"
+      ]
+    },
+    {
+      "variant_id": "variant_d63c5a6a77",
+      "top_level_fields": [
+        "candidate",
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "strongest_baseline",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK"
+      ]
+    },
+    {
+      "variant_id": "variant_d6ed067487",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "surface_flags",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 3,
+      "examples": [
+        "JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A",
+        "JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B",
+        "JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment"
+      ]
+    },
+    {
+      "variant_id": "variant_df28150da9",
+      "top_level_fields": [
+        "A_delta",
+        "A_pass",
+        "B_delta",
+        "B_pass",
+        "O_only_policy",
+        "agent_b_sha",
+        "arms",
+        "candidate_defer_rate",
+        "claim_ceiling",
+        "code_path_hash",
+        "conf_ece",
+        "config_s2_sha",
+        "ema_delta",
+        "forbidden_scan_clean",
+        "forbidden_scan_positive_control",
+        "git_head",
+        "leak_probe",
+        "leak_probe_auc",
+        "learn_off",
+        "leq_oracle",
+        "positive_control",
+        "postflip_stratified_A",
+        "provenance",
+        "regime_balance",
+        "replay_max_err",
+        "run_id",
+        "schema",
+        "seeds",
+        "source_hashes",
+        "task_id",
+        "ties_accuracy_EMA",
+        "verdict"
+      ],
+      "result_count": 1,
+      "examples": [
+        "JOI-DEMO-S2-LOADBEARING-SELFMODEL-001A"
+      ]
+    },
+    {
+      "variant_id": "variant_fea9256b80",
+      "top_level_fields": [
+        "G0",
+        "G1_G7",
+        "ablation_deltas",
+        "allocation_by_type_over_time",
+        "arms",
+        "claim_ceiling",
+        "config_lp_sha",
+        "forbidden_scan",
+        "lp_window",
+        "noise_share_postwarmup",
+        "oracle_bracket_ok",
+        "provenance",
+        "reason",
+        "replay_max_err",
+        "schema",
+        "seeds",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "result_count": 2,
+      "examples": [
+        "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A",
+        "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "artifact_dir": "JOI-DEMO-001A",
+      "relative_path": "artifacts/JOI-DEMO-001A/result.json",
+      "variant_id": "variant_80d060dab2",
+      "top_level_fields": [
+        "anti_hardcoding_audit",
+        "bar1_pass",
+        "claim_ceiling",
+        "config",
+        "gates",
+        "oracle_ceiling",
+        "research_layer",
+        "task_id",
+        "train_family_food_rate",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "BAR1_PASS_bounded_learned_not_hardcoded"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline evidence that THIS agent's competence depends on a LEARNED, action-conditioned, generalizing generative model rather than a hardcoded policy/lookup/fixed-mood table (Bar-1), in a toy hidden-contingency POMDP. Does NOT test Bar-2 (fair Bayes/RL non-equivalence) or Bar-3 (subjectivity/emotion/consciousness). 'Looks alive' is not used as evidence."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A",
+      "relative_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A/result.json",
+      "variant_id": "variant_89c7a22e78",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "monotonic_cis",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "curiosity_harmful_persists"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded capacity-causal sweep only; NOT open-ended growth, specialness, emergence, consciousness, subjectivity, agency, product readiness, or EGO readiness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical",
+      "relative_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A-attempt_001_failed_replay_byte_identical/result.json",
+      "variant_id": "variant_89c7a22e78",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "monotonic_cis",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "capacity_invalid"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded capacity-causal sweep only; NOT open-ended growth, specialness, emergence, consciousness, subjectivity, agency, product readiness, or EGO readiness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B",
+      "relative_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B/result.json",
+      "variant_id": "variant_82b93c7500",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "form_adequacy",
+        "monotonic_cis",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001B"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "capacity_invalid"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded capacity-causal sweep with form confound removed only; NOT open-ended growth, specialness, emergence, consciousness, subjectivity, agency, product readiness, or EGO readiness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C",
+      "relative_path": "artifacts/JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C/result.json",
+      "variant_id": "variant_64c19b571a",
+      "top_level_fields": [
+        "C_star_table",
+        "claim_ceiling",
+        "curiosity_by_k",
+        "curiosity_flip_k",
+        "form_adequacy",
+        "monotonic_cis",
+        "positive_control",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CAPACITY-SCALABLE-LEARNER-001C"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "capacity_is_binding_constraint"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded capacity-causal sweep with form confound removed and positive control corrected only; NOT open-ended growth, specialness, emergence, consciousness, subjectivity, agency, product readiness, or EGO readiness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A",
+      "relative_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A/result.json",
+      "variant_id": "variant_73991b1fe2",
+      "top_level_fields": [
+        "claim_ceiling",
+        "curiosity_arm",
+        "growth_detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "growth_absent_saturates_early"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Toy competence-growth measurement only; NOT specialness, intelligence emergence, self-awareness, subjectivity, consciousness, agency, emotion, EGO readiness, or mainline effect."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract",
+      "relative_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_001_failed_evaluator_contract/result.json",
+      "variant_id": "variant_a5a65b72ad",
+      "top_level_fields": [
+        "claim_ceiling",
+        "detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "growth_present_bounded"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Toy competence-growth measurement only; NOT specialness, intelligence emergence, self-awareness, subjectivity, consciousness, agency, emotion, EGO readiness, or mainline effect."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm",
+      "relative_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_002_failed_missing_updated_curiosity_arm/result.json",
+      "variant_id": "variant_a5a65b72ad",
+      "top_level_fields": [
+        "claim_ceiling",
+        "detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "growth_absent_saturates_early"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Toy competence-growth measurement only; NOT specialness, intelligence emergence, self-awareness, subjectivity, consciousness, agency, emotion, EGO readiness, or mainline effect."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate",
+      "relative_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_003_failed_growth_evaluator_gate/result.json",
+      "variant_id": "variant_73991b1fe2",
+      "top_level_fields": [
+        "claim_ceiling",
+        "curiosity_arm",
+        "growth_detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "growth_present_bounded"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Toy competence-growth measurement only; NOT specialness, intelligence emergence, self-awareness, subjectivity, consciousness, agency, emotion, EGO readiness, or mainline effect."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build",
+      "relative_path": "artifacts/JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A-attempt_004_failed_trace_open_after_full_build/result.json",
+      "variant_id": "variant_73991b1fe2",
+      "top_level_fields": [
+        "claim_ceiling",
+        "curiosity_arm",
+        "growth_detail",
+        "measured_capacity_ceiling",
+        "metric_artifact_flag",
+        "reason",
+        "schema",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-CURIOSITY-OPEN-ENDED-GROWTH-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "growth_present_bounded"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Toy competence-growth measurement only; NOT specialness, intelligence emergence, self-awareness, subjectivity, consciousness, agency, emotion, EGO readiness, or mainline effect."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A",
+      "relative_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A/result.json",
+      "variant_id": "variant_d6ed067487",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "surface_flags",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g0_skill_bar1_acquisition_transfer_pass"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "764bc3ed8c91"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline Bar-1 evidence only: a generic prediction-feedback-correction motor learner may acquire hidden action-effect semantics and transfer that frozen skill to held-out marker/food targets in a toy world. Not Bar-2, Route-B, product readiness, EGO integration, agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay",
+      "relative_path": "artifacts/JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A-attempt_001_failed_replay/result.json",
+      "variant_id": "variant_44f7462895",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G0-SKILL-ACQUISITION-TRANSFER-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g0_skill_invalid_leakage_or_replay"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "a303440d3034"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline Bar-1 evidence only: a generic prediction-feedback-correction motor learner may acquire hidden action-effect semantics and transfer that frozen skill to held-out marker/food targets in a toy world. Not Bar-2, Route-B, product readiness, EGO integration, agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B",
+      "relative_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B/result.json",
+      "variant_id": "variant_d6ed067487",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "surface_flags",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g0_skill_robust_same_access_saturated_bar1_only"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "d9fc43a14123"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline Bar-1 evidence only: a generic prediction-feedback-correction motor learner may show sample-efficient held-out motor-context generalization and robustness under actuator remap/noise perturbations in a toy world. Not Bar-2, Route-B, product readiness, EGO integration, agency, emotion, subjectivity, consciousness, free will, or proof of any total theory."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment",
+      "relative_path": "artifacts/JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B-attempt_001_failed_generalization_increment/result.json",
+      "variant_id": "variant_d6ed067487",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "surface_flags",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G0-SKILL-GENERALIZATION-ROBUSTNESS-001B"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g0_skill_robust_fail_no_generalization_increment"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "2712848aee09"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline Bar-1 evidence only: a generic prediction-feedback-correction motor learner may show sample-efficient held-out motor-context generalization and robustness under actuator remap/noise perturbations in a toy world. Not Bar-2, Route-B, product readiness, EGO integration, agency, emotion, subjectivity, consciousness, free will, or proof of any total theory."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE",
+      "relative_path": "artifacts/JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE/result.json",
+      "variant_id": "variant_69f7807332",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "positive_control_pass",
+        "provenance",
+        "targeted_leak_hit",
+        "task_id",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G1-REPLAY-CONSOLIDATION-001A-SPIKE"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g1_spike_positive_control_headroom_pass"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "7c1d96e1ef37"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Spike-only headroom check for blind replay with battery.agent_b.Creature. Not a G1 Bar-1 pass, not full-task scoring, not product memory, not EGO integration, not agency, subjectivity, or consciousness."
+        },
+        "config_sha": {
+          "path": "provenance.config_sha256",
+          "value": "d1862312884e44dfcf7f789e869cdde704e284cfa892c0bf34f9a5849ab8b781"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G4-USER-MODEL-001A",
+      "relative_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A/result.json",
+      "variant_id": "variant_44f7462895",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G4-USER-MODEL-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g4_bar1_pass"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "a454cd97f5b4"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded toy-scale Bar-1 evidence for offline hidden user-latent inference only. This does not prove Bar-2 specialness, theory of mind, empathy, product-scale user modeling, EGO integration, agency, emotion, subjectivity, or consciousness."
+        },
+        "config_sha": {
+          "path": "provenance.pre_run_config_sha256",
+          "value": "a8951f740460458ac56182d1fa1d18ba2fdda2f1ef6fee9582005c739fa7c7d7"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls",
+      "relative_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001A-attempt_001_failed_negative_controls/result.json",
+      "variant_id": "variant_44f7462895",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G4-USER-MODEL-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g4_bar1_pass"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "f3c6a9df829e"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded toy-scale Bar-1 evidence for offline hidden user-latent inference only. This does not prove Bar-2 specialness, theory of mind, empathy, product-scale user modeling, EGO integration, agency, emotion, subjectivity, or consciousness."
+        },
+        "config_sha": {
+          "path": "provenance.pre_run_config_sha256",
+          "value": "a8951f740460458ac56182d1fa1d18ba2fdda2f1ef6fee9582005c739fa7c7d7"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G4-USER-MODEL-001B",
+      "relative_path": "artifacts/JOI-DEMO-G4-USER-MODEL-001B/result.json",
+      "variant_id": "variant_44f7462895",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G4-USER-MODEL-001B"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g4b_bar1_pass"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "4c7af0d391d9"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded toy-scale Bar-1 evidence that the unmodified battery.agent_b.Creature, driven read-only, infers a hidden drifting/flipping user preference from noisy behavior. Not Bar-2, theory of mind, empathy, product-scale user modeling, EGO integration, agency, emotion, subjectivity, or consciousness."
+        },
+        "config_sha": {
+          "path": "provenance.pre_run_config_sha256",
+          "value": "c7ac6426e20653af85caad36a5ef6a0259d1c948a03c4cae935dd9d570afc5b2"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-G4G0-COUPLING-SPIKE-001A",
+      "relative_path": "artifacts/JOI-DEMO-G4G0-COUPLING-SPIKE-001A/result.json",
+      "variant_id": "variant_635f863291",
+      "top_level_fields": [
+        "brier",
+        "claim_ceiling",
+        "gates",
+        "provenance",
+        "reason",
+        "run_id",
+        "schema",
+        "task_id",
+        "thresholds",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-G4G0-COUPLING-SPIKE-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "coupling_bar1_pass_same_access_saturated"
+        },
+        "run_id": {
+          "path": "run_id",
+          "value": "5f5ea3b0864c"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "bounded toy Bar-1 on ONE G4->G0 coupling; NOT integration/product/EGO/specialness/Bar-3"
+        },
+        "candidate_brier": {
+          "path": "brier.candidate",
+          "value": 0.1071578320428436
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-GENERALITY-EXTENSIBILITY-001A",
+      "relative_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A/result.json",
+      "variant_id": "variant_b6a48a83ac",
+      "top_level_fields": [
+        "claim_ceiling",
+        "observed_collapse",
+        "reason",
+        "schema",
+        "scope_tag",
+        "task_id",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-GENERALITY-EXTENSIBILITY-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "generality_present_separable"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bar-1 non-hardcoded cross-task generality (presence + separability). NOT Bar-2 specialness, NOT accuracy superiority, NOT product/EGO readiness, NOT agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY",
+      "relative_path": "artifacts/JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY/result.json",
+      "variant_id": "variant_b6a48a83ac",
+      "top_level_fields": [
+        "claim_ceiling",
+        "observed_collapse",
+        "reason",
+        "schema",
+        "scope_tag",
+        "task_id",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-GENERALITY-EXTENSIBILITY-001A-RC-MINENERGY"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "generality_present_separable"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bar-1 non-hardcoded cross-task generality (presence + separability). NOT Bar-2 specialness, NOT accuracy superiority, NOT product/EGO readiness, NOT agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A",
+      "relative_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A/result.json",
+      "variant_id": "variant_93711c5a0c",
+      "top_level_fields": [
+        "baselines",
+        "canonical",
+        "checks_pass",
+        "claim_ceiling",
+        "consumer_definition",
+        "is_evidence",
+        "provenance",
+        "reports",
+        "run_context",
+        "task_id",
+        "theta_g_hash",
+        "unbanked",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-GRAD-CREATURESTATE-CONSUMER-WIRING-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "creaturestate_consumer_wiring_pass_unbanked"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "ec6b1c3900e8"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Frozen deterministic local CreatureState v0.2 consumer surface only. This does not prove product attribution, G-ABLATION pass, EGO integration, closed-loop behavior, mechanism validity, companion readiness, agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-GRAD-CREATURESTATE-EMITTER-CONFORMANCE-001A",
+      "relative_path": "artifacts/JOI-DEMO-GRAD-CREATURESTATE-EMITTER-CONFORMANCE-001A/result.json",
+      "variant_id": "variant_04f7c28e0b",
+      "top_level_fields": [
+        "canonical",
+        "claim_ceiling",
+        "dependency_hash_post",
+        "dependency_hash_pre",
+        "hash_method",
+        "host_native_evidence",
+        "is_evidence",
+        "negative_controls",
+        "per_creature",
+        "provenance",
+        "ran_conformance",
+        "run_context",
+        "schema_version",
+        "task_id",
+        "unbanked",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-GRAD-CREATURESTATE-EMITTER-CONFORMANCE-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "host_native_emitter_conformance_pass_uncommitted"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "2557fa0d76ba"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Host-native CreatureState v0.2 read-only emitter-conformance engineering evidence only. This can support a local bank after exact-match reproduction and commit. It does not prove EGO integration, closed-loop behavior, mechanism validity, Stage-1 pass, companion readiness, agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK",
+      "relative_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK/result.json",
+      "variant_id": "variant_d63c5a6a77",
+      "top_level_fields": [
+        "candidate",
+        "claim_ceiling",
+        "metrics",
+        "provenance",
+        "strongest_baseline",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-GRAD-G-ABLATION-001C-INTERACTIVE-FOOD-TASK"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "interactive_food_static_replay_failed_but_controller_saturated"
+        },
+        "run_id": {
+          "path": "metrics.run_id",
+          "value": "52c61efa0feb"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded interactive product-attribution redesign evidence only. This does not prove product attribution pass, EGO integration, closed-loop behavior, mechanism validity, agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B",
+      "relative_path": "artifacts/JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B/result.json",
+      "variant_id": "variant_15a5588b1c",
+      "top_level_fields": [
+        "aggregate",
+        "claim_ceiling",
+        "metrics",
+        "prerequisites",
+        "provenance",
+        "strongest_baseline",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-GRAD-G-ABLATION-CLOSURE-001B"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "g_ablation_closure_baseline_saturated"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "e5e8801fd10e"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded local ProductTrace attribution test only. This does not prove EGO integration, closed-loop, mechanism validity, Stage-1 pass, companion readiness, agency, emotion, subjectivity, or consciousness."
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A",
+      "relative_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A/result.json",
+      "variant_id": "variant_fea9256b80",
+      "top_level_fields": [
+        "G0",
+        "G1_G7",
+        "ablation_deltas",
+        "allocation_by_type_over_time",
+        "arms",
+        "claim_ceiling",
+        "config_lp_sha",
+        "forbidden_scan",
+        "lp_window",
+        "noise_share_postwarmup",
+        "oracle_bracket_ok",
+        "provenance",
+        "reason",
+        "replay_max_err",
+        "schema",
+        "seeds",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "LP_DEGENERATE"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "f92d266aac93"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline toy evidence about learning-progress as an autotelic goal-selection signal only; NOT intrinsic motivation, agency, autonomy, life, Joi-readiness, EGO readiness, subjectivity, emotion, or consciousness."
+        },
+        "config_sha": {
+          "path": "config_lp_sha",
+          "value": "b132e0b597b81c8413049d4373ecf881d5921dfdd55812ee158b6bc8bf6c935f"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak",
+      "relative_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A-attempt_001_failed_true_competence_selector_leak/result.json",
+      "variant_id": "variant_fea9256b80",
+      "top_level_fields": [
+        "G0",
+        "G1_G7",
+        "ablation_deltas",
+        "allocation_by_type_over_time",
+        "arms",
+        "claim_ceiling",
+        "config_lp_sha",
+        "forbidden_scan",
+        "lp_window",
+        "noise_share_postwarmup",
+        "oracle_bracket_ok",
+        "provenance",
+        "reason",
+        "replay_max_err",
+        "schema",
+        "seeds",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "LP_DEGENERATE"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "76ec5599584c"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline toy evidence about learning-progress as an autotelic goal-selection signal only; NOT intrinsic motivation, agency, autonomy, life, Joi-readiness, EGO readiness, subjectivity, emotion, or consciousness."
+        },
+        "config_sha": {
+          "path": "config_lp_sha",
+          "value": "b132e0b597b81c8413049d4373ecf881d5921dfdd55812ee158b6bc8bf6c935f"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A",
+      "relative_path": "artifacts/JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A/result.json",
+      "variant_id": "variant_95b40e48e5",
+      "top_level_fields": [
+        "A3_naive_reproduces_noise_chasing",
+        "G0",
+        "K_SNR",
+        "P1",
+        "P2",
+        "P3",
+        "S1_competence_auc_ci_vs_strongest_weak",
+        "W",
+        "ablation_deltas",
+        "allocation_by_type_over_time",
+        "allocation_postwarmup",
+        "calibration_grid",
+        "calibration_selected",
+        "claim_ceiling",
+        "competence_auc",
+        "config_sha",
+        "forbidden_scan",
+        "oracle_allocation",
+        "provenance",
+        "reason",
+        "replay_max_err",
+        "schema",
+        "seeds",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-LP-AUTOTELIC-COMPETENCE-002A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "LP_DEGENERATE"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "d862897625f6"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "Bounded offline toy evidence about noise-robust learning-progress as an autotelic goal-selection signal only; NOT intrinsic motivation, agency, autonomy, life, Joi readiness, EGO readiness, emotion, subjectivity, or consciousness."
+        },
+        "config_sha": {
+          "path": "config_sha",
+          "value": "e678d595cf9dc6f82a828fe37d247475da66d1f93978242ae7a9af01d9454f03"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-OPERATION-LEARNING-GATE-001A",
+      "relative_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001A/result.json",
+      "variant_id": "variant_1c24c71684",
+      "top_level_fields": [
+        "claim_ceiling",
+        "metrics",
+        "prediction_improvement",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-OPERATION-LEARNING-GATE-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "operation_learning_gate_001_same_access_saturated_bar1_only"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "JOI-DEMO-OPERATION-LEARNING-GATE-001A-deterministic-local"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "bounded offline Bar-1 operation-learning evidence only; not product, EGO, Route-B, agency, emotion, subjectivity, or consciousness evidence"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-OPERATION-LEARNING-GATE-001B",
+      "relative_path": "artifacts/JOI-DEMO-OPERATION-LEARNING-GATE-001B/result.json",
+      "variant_id": "variant_4ae9a01868",
+      "top_level_fields": [
+        "claim_ceiling",
+        "comparisons",
+        "metrics",
+        "provenance",
+        "summary",
+        "task_id",
+        "verdict",
+        "what_this_does_not_prove"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-OPERATION-LEARNING-GATE-001B"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "operation_learning_gate_001b_same_access_model_saturated_bar1_only"
+        },
+        "run_id": {
+          "path": "provenance.run_id",
+          "value": "JOI-DEMO-OPERATION-LEARNING-GATE-001B-deterministic-local"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "bounded offline Bar-1 reversal/delayed-feedback operation-learning evidence only; not product, EGO, Godot, Route-B, agency, emotion, subjectivity, or consciousness evidence"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-S2-LOADBEARING-SELFMODEL-001A",
+      "relative_path": "artifacts/JOI-DEMO-S2-LOADBEARING-SELFMODEL-001A/result.json",
+      "variant_id": "variant_df28150da9",
+      "top_level_fields": [
+        "A_delta",
+        "A_pass",
+        "B_delta",
+        "B_pass",
+        "O_only_policy",
+        "agent_b_sha",
+        "arms",
+        "candidate_defer_rate",
+        "claim_ceiling",
+        "code_path_hash",
+        "conf_ece",
+        "config_s2_sha",
+        "ema_delta",
+        "forbidden_scan_clean",
+        "forbidden_scan_positive_control",
+        "git_head",
+        "leak_probe",
+        "leak_probe_auc",
+        "learn_off",
+        "leq_oracle",
+        "positive_control",
+        "postflip_stratified_A",
+        "provenance",
+        "regime_balance",
+        "replay_max_err",
+        "run_id",
+        "schema",
+        "seeds",
+        "source_hashes",
+        "task_id",
+        "ties_accuracy_EMA",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-S2-LOADBEARING-SELFMODEL-001A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "s2_self_model_not_load_bearing"
+        },
+        "run_id": {
+          "path": "run_id",
+          "value": "e6ebf5e36338"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "bounded offline Bar-1 functional self-representation wired to control only; not subjectivity, agency, autonomy, product readiness, or consciousness"
+        },
+        "config_sha": {
+          "path": "config_s2_sha",
+          "value": "39ba09377f45bb70b1c3167e21ee0e0e4ec49a51767dc6131b87d49b6bbd0cc8"
+        }
+      }
+    },
+    {
+      "artifact_dir": "JOI-DEMO-S2-LOADBEARING-SELFMODEL-002A",
+      "relative_path": "artifacts/JOI-DEMO-S2-LOADBEARING-SELFMODEL-002A/result.json",
+      "variant_id": "variant_a8d4e7c43e",
+      "top_level_fields": [
+        "A_delta",
+        "A_pass",
+        "B_delta",
+        "B_pass",
+        "O_only_policy",
+        "accuracy_EMA_defer",
+        "agent_b_sha",
+        "arms",
+        "calibration_grid",
+        "calibration_selected",
+        "candidate_defer_rate",
+        "claim_ceiling",
+        "code_path_hash",
+        "config_b_sha",
+        "config_s2_002a_sha",
+        "ema_delta",
+        "forbidden_scan_clean",
+        "forbidden_scan_positive_control",
+        "git_head",
+        "invalid_degenerate_gate",
+        "leak_probe",
+        "leak_probe_auc",
+        "leq_oracle",
+        "native_conf_defer",
+        "positive_control",
+        "postflip_stratified_A",
+        "provenance",
+        "replay_max_err",
+        "run_id",
+        "s_rel_lam",
+        "schema",
+        "source_hashes",
+        "straddle_frac",
+        "task_id",
+        "ties_accuracy_EMA",
+        "var_s_rel",
+        "verdict"
+      ],
+      "canonical_fields": {
+        "task_id": {
+          "path": "task_id",
+          "value": "JOI-DEMO-S2-LOADBEARING-SELFMODEL-002A"
+        },
+        "verdict": {
+          "path": "verdict",
+          "value": "s2_self_model_not_load_bearing"
+        },
+        "run_id": {
+          "path": "run_id",
+          "value": "3c35ef544b92"
+        },
+        "claim_ceiling": {
+          "path": "claim_ceiling",
+          "value": "bounded offline Bar-1 creature-belief-derived self-reliability signal wired to control only; not native-conf validation, subjectivity, agency, autonomy, product readiness, or consciousness"
+        },
+        "config_sha": {
+          "path": "config_b_sha",
+          "value": "17587332b23299f2ae3fc5c5c83adf9650a5c60ad175596ba207f2d388234439"
+        }
+      }
+    }
+  ]
+}
