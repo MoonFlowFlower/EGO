@@ -1,0 +1,23 @@
+{
+  "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
+  "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+  "delta_count": 300,
+  "gate": "G-R0-LLMSWAP-HARNESS",
+  "input_artifacts": [],
+  "producer_function": "_llm_swap_gate",
+  "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+  "seed_context": {
+    "episode_ids": [
+      "llm_swap_left",
+      "llm_swap_right"
+    ],
+    "seeds": [
+      11,
+      23
+    ]
+  },
+  "state_action_deltas_identical": true,
+  "status": "pass",
+  "surface_renderer_identity_recoverable": true,
+  "trace_renderer_identity_leak_count": 0
+}

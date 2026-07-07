@@ -1,0 +1,19 @@
+{
+  "checkpoint_ticks": [
+    0,
+    100,
+    200,
+    300
+  ],
+  "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+  "config_hash": "0a572326455bc4364a31ce198c4d7f38c52cf7f0ad0d8ff9f2e69692bca242b1",
+  "episodes_per_seed": 3,
+  "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+  "seeds": [
+    11,
+    23
+  ],
+  "task_id": "EGO-R0-KERNEL-STATE-SUBSTRATE-001A",
+  "ticks_per_episode": 300,
+  "trace_schema": "kernel_trace_v0"
+}

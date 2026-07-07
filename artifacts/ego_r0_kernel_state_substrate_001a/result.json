@@ -1,0 +1,131 @@
+{
+  "claim_ceiling": "kernel_substrate_engineering_only",
+  "config_hash": "0a572326455bc4364a31ce198c4d7f38c52cf7f0ad0d8ff9f2e69692bca242b1",
+  "gate_results": {
+    "G-R0-CAUSALITY": {
+      "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
+      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "gate": "G-R0-CAUSALITY",
+      "input_artifacts": [],
+      "left_direction_agreement": 1.0,
+      "min_direction_agreement": 1.0,
+      "pairwise_difference_rate": 1.0,
+      "producer_function": "_causality_gate",
+      "right_direction_agreement": 1.0,
+      "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "causal_left",
+          "causal_right",
+          "causal_zeroed"
+        ],
+        "seeds": [
+          11,
+          23
+        ]
+      },
+      "status": "pass",
+      "zeroed_agreement_with_original": 0.23
+    },
+    "G-R0-LLMSWAP-HARNESS": {
+      "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
+      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "delta_count": 300,
+      "gate": "G-R0-LLMSWAP-HARNESS",
+      "input_artifacts": [],
+      "producer_function": "_llm_swap_gate",
+      "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "llm_swap_left",
+          "llm_swap_right"
+        ],
+        "seeds": [
+          11,
+          23
+        ]
+      },
+      "state_action_deltas_identical": true,
+      "status": "pass",
+      "surface_renderer_identity_recoverable": true,
+      "trace_renderer_identity_leak_count": 0
+    },
+    "G-R0-REPLAY": {
+      "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
+      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "fresh_subprocess_runs_per_episode": 2,
+      "gate": "G-R0-REPLAY",
+      "input_artifacts": [
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_11_episode_0.json",
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_11_episode_1.json",
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_11_episode_2.json",
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_23_episode_0.json",
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_23_episode_1.json",
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_23_episode_2.json"
+      ],
+      "mismatches": [],
+      "mismatches_total": 0,
+      "producer_function": "_replay_gate",
+      "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_11_episode_0",
+          "seed_11_episode_1",
+          "seed_11_episode_2",
+          "seed_23_episode_0",
+          "seed_23_episode_1",
+          "seed_23_episode_2"
+        ],
+        "seeds": [
+          11,
+          23
+        ]
+      },
+      "status": "pass"
+    },
+    "G-R0-SEED-NEGCTRL": {
+      "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
+      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "gate": "G-R0-SEED-NEGCTRL",
+      "input_artifacts": [
+        "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_11_episode_0.json"
+      ],
+      "missing_registry_mismatch_count": 300,
+      "missing_registry_nondeterminism_detected": true,
+      "perturbed_seed_detected": true,
+      "perturbed_seed_mismatch_count": 300,
+      "producer_function": "_seed_negctrl_gate",
+      "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [
+          "seed_11_episode_0"
+        ],
+        "seeds": [
+          11,
+          23
+        ]
+      },
+      "status": "pass"
+    },
+    "HYGIENE": {
+      "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
+      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "ego_operator_imports_in_kernel": [],
+      "egodesktop_egooperator_reference_count": 0,
+      "egodesktop_egooperator_references": [],
+      "gate": "HYGIENE",
+      "input_artifacts": [],
+      "producer_function": "_hygiene_gate",
+      "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+      "seed_context": {
+        "episode_ids": [],
+        "seeds": [
+          11,
+          23
+        ]
+      },
+      "status": "pass"
+    }
+  },
+  "verdict": "r0_substrate_pass"
+}

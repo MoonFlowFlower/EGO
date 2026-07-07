@@ -1,0 +1,35 @@
+{
+  "ablations": {
+    "counter": "live",
+    "noise_user": "live",
+    "pref_ema": "live"
+  },
+  "episode_id": "seed_23_episode_1",
+  "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+  "schema_version": "kernel_state_v0",
+  "seed_registry": {
+    "noise_user": {
+      "draws": 300,
+      "seed": 23
+    }
+  },
+  "step_id": 300,
+  "substates": {
+    "counter": {
+      "tick": 300
+    },
+    "noise_user": {
+      "last_draw_index": 299,
+      "last_noise": 0.561097689686
+    },
+    "pref_ema": {
+      "values": [
+        0.74403412229,
+        0.018038546669,
+        0.018751420312,
+        0.017290013222
+      ]
+    }
+  },
+  "task_id": "EGO-R0-KERNEL-STATE-SUBSTRATE-001A"
+}
