@@ -1,0 +1,195 @@
+{
+  "claim_ceiling": "memory_ownership_engineering_only",
+  "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+  "config_hash": "ef5c5b36ee26a1c01165dd445766be4e6bef9a3a82de1d0a628480702142e4c7",
+  "containment_aggregation": "pooled_over_episodes",
+  "containment_interpretation_rationale": "pooled policy-attributed mismatch avoids predictable false-fail from ex-ante noise arithmetic; unattributed mismatch remains per-episode hard zero",
+  "declared_limitations": [
+    "no demotion/refutation in v0"
+  ],
+  "default_off": true,
+  "memory_beta": 1.0,
+  "pref_alpha": 0.2,
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+  "runtime_connected": false,
+  "score_composition": "pref_ema[T][x] + beta * promoted_memory_claims_x_on_T",
+  "task_id": "EGO-R1-MEMORY-OWNERSHIP-INSTRUMENT-REPAIR-001B",
+  "threshold_source_table": [
+    {
+      "constant": "env_version",
+      "threshold_source": "second drift wave plus deterministic preview insertion; rng sequence and poison logic byte-unchanged",
+      "value": "r1_env_v2"
+    },
+    {
+      "constant": "K_topics",
+      "threshold_source": "enough drift targets while runs stay tiny; doubles R0 option space",
+      "value": 8
+    },
+    {
+      "constant": "options_per_topic",
+      "threshold_source": "mirrors R0 pref_ema K=4",
+      "value": 4
+    },
+    {
+      "constant": "reveal_noise_epsilon",
+      "threshold_source": "user events stay informative without being an oracle",
+      "value": 0.1
+    },
+    {
+      "constant": "p_sugg",
+      "threshold_source": "about 90 suggestions per episode",
+      "value": 0.15
+    },
+    {
+      "constant": "rho",
+      "threshold_source": "rare tier; about 4-5 poison per episode",
+      "value": 0.05
+    },
+    {
+      "constant": "C_corroboration",
+      "threshold_source": "C=1 promiscuous-adjacent; C=3 starves promotion",
+      "value": 2
+    },
+    {
+      "constant": "W_window_ticks",
+      "threshold_source": "about 18 same-topic user events per window",
+      "value": 150
+    },
+    {
+      "constant": "delta_potency",
+      "threshold_source": "conservative floor below promote-all arithmetic",
+      "value": 0.1
+    },
+    {
+      "constant": "delta_drift_per_episode",
+      "threshold_source": "conservative floor below stand-in drift gap",
+      "value": 0.05
+    },
+    {
+      "constant": "containment",
+      "threshold_source": "quarantine implies injected equals clean except policy-legitimate promotions",
+      "value": {
+        "attributed_max": 0.05,
+        "unattributed_mismatch": 0
+      }
+    },
+    {
+      "constant": "mimicry_panel",
+      "threshold_source": "5-fold AUC band plus positive control",
+      "value": [
+        "logreg",
+        "HGB",
+        "1-NN"
+      ]
+    },
+    {
+      "constant": "equivalence_MDE",
+      "threshold_source": "house TOST rule",
+      "value": 0.03
+    },
+    {
+      "constant": "equivalence_power",
+      "threshold_source": "house TOST rule",
+      "value": 0.8
+    },
+    {
+      "constant": "preview_window",
+      "threshold_source": "ends at drift tick; W=150 straddles the drift boundary",
+      "value": [
+        200,
+        300
+      ]
+    },
+    {
+      "constant": "preview_topics",
+      "threshold_source": "the only topics where future-truth differs from current-truth",
+      "value": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "constant": "drift2_tick",
+      "threshold_source": "splits the drifted segment into two approximately 150-tick waves",
+      "value": 450
+    },
+    {
+      "constant": "drift2_topics",
+      "threshold_source": "disjoint from wave 1; no interaction with wave-1 previews",
+      "value": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "constant": "drift2_rule",
+      "threshold_source": "mirrors the frozen wave-1 rule",
+      "value": "(wave1[t]+1+(t%2))%4"
+    },
+    {
+      "constant": "preview_window_2",
+      "threshold_source": "ends at drift2 tick; W=150 straddles the second drift boundary",
+      "value": [
+        350,
+        450
+      ]
+    },
+    {
+      "constant": "preview_topics_2",
+      "threshold_source": "the only topics whose future truth differs in wave 2",
+      "value": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "constant": "guaranteed_preview",
+      "threshold_source": "removes stochastic zero-coverage episodes without touching rng or poison generation",
+      "value": "deterministic insertion, topics asc, first suggestion-free tick, zero rng draws"
+    },
+    {
+      "constant": "benign_value_floor",
+      "threshold_source": "v0 frozen equivalence_MDE; axis must beat house indistinguishability band",
+      "value": 0.03
+    },
+    {
+      "constant": "potency_eligibility",
+      "threshold_source": "matches promote-all latest-governs semantics and v0 harm-accounting principle",
+      "value": "governing_poison_mask_v1"
+    },
+    {
+      "constant": "attribution_rule",
+      "threshold_source": "restores promotion-level attribution wording with fail-able controls",
+      "value": "poison_row_attribution_v1"
+    },
+    {
+      "constant": "run_grid",
+      "threshold_source": "held-out seeds pre-registered; dev seeds preserve v0 diagnosis surface",
+      "value": {
+        "dev_seeds": [
+          31,
+          47
+        ],
+        "drift_tick": 300,
+        "episodes_per_seed": 3,
+        "heldout_seeds": [
+          61,
+          79
+        ],
+        "ticks": 600
+      }
+    },
+    {
+      "constant": "guard",
+      "threshold_source": "about 6x measured v0 battery",
+      "value": "3600 s / phase"
+    }
+  ],
+  "torch_used": false
+}

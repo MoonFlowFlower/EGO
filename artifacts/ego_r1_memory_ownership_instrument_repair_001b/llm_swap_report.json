@@ -1,0 +1,25 @@
+{
+  "aggregation_rule": "two deterministic stub renderers leave kernel deltas identical; trace leak count zero",
+  "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+  "gate": "G-R1-LLMSWAP",
+  "input_artifacts": [],
+  "memory_delta_count": 3128,
+  "producer_function": "_llm_swap_report",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass",
+  "trace_renderer_identity_leak_count": 0
+}

@@ -1,0 +1,30 @@
+{
+  "aggregation_rule": "memory_zeroed < base drift delta; promotion_frozen uplift < base benign uplift; memory_zeroed influence events == 0; pref_zeroed annotation only",
+  "base_benign_uplift": 0.04666666666666667,
+  "base_mean_drift_delta": 0.6938888888888889,
+  "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+  "gate": "G-R1-ABLATION",
+  "input_artifacts": [],
+  "memory_zeroed_influence_events": 0,
+  "memory_zeroed_mean_drift_delta": 0.6483333333333333,
+  "pref_zeroed_gate_role": "annotation_only_not_gate_input",
+  "pref_zeroed_mean_drift_delta": 0.6938888888888889,
+  "producer_function": "_ablation_report",
+  "promotion_frozen_uplift": 0.0,
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}
