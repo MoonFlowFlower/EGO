@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 221 |
+| `reference_only` | 222 |
 
 ## Active Default
 
@@ -173,6 +173,7 @@
 | Ego Handmade Operator Runtime Contract V1 | `codex_task` | n/a | `docs/codex/tasks/ego-handmade-operator-runtime-contract-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Handmade Real Use Memory Gate V1 | `codex_task` | n/a | `docs/codex/tasks/ego-handmade-real-use-memory-gate-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Joi Companion Roadmap V1 | `codex_task` | n/a | `docs/codex/tasks/ego-joi-companion-roadmap-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego Mechanism Rewrite Decision 001A | `codex_task` | n/a | `docs/codex/tasks/ego-mechanism-rewrite-decision-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Outcomepredictor V0 Planner Input | `codex_task` | n/a | `docs/codex/tasks/ego-outcomepredictor-v0-planner-input/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Policy Default Enablement Post Proof Review V0 | `codex_task` | n/a | `docs/codex/tasks/ego-policy-default-enablement-post-proof-review-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Policy Default Enablement Proof V0 | `codex_task` | n/a | `docs/codex/tasks/ego-policy-default-enablement-proof-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
