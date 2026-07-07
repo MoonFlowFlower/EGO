@@ -1,7 +1,7 @@
 # EGO-R1-MEMORY-OWNERSHIP-001A — Writable Memory + Personalization with Ownership (executable)
 
-Status: LANDED_STAGE_CARD / DEFAULT-OFF / NOT_RUNTIME_CONNECTED /
-EXECUTION-BLOCKED-PENDING-THRESHOLD-FREEZE.
+Status: EXECUTABLE / DEFAULT-OFF / NOT_RUNTIME_CONNECTED /
+IMPLEMENTATION-GATED-ON-CLAUDE-POST-LANDING-CHECK.
 Parent: `ego-mechanism-rewrite-decision-001a` (R1 row; contracts narrowed
 here, never widened). Prerequisite satisfied: `r0_substrate_pass`
 (`bd9458b1`). Created 2026-07-07 (Claude draft; Codex lands; operator
@@ -10,49 +10,6 @@ authorizes).
 Sister card (instrument co-design, separate ceilings, zero result flow):
 ITL `SYSTEM-VIABILITY-S1-PROVENANCE-WRITE-BOUNDARY-EXEC-001A`. Shared
 DESIGN only — no shared code, no cross-repo imports, no shared fixtures.
-
-## Bounded task-card readback
-
-- **Problem definition:** R0 proved only a default-off engineering substrate
-  on a constructed probe. R1 must test whether writable memory/personalization
-  can be engineered with ownership/quarantine, provenance-gated promotion,
-  replay, ablation, and honest baselines before any desktop/runtime adoption.
-- **Current layer:** engineering implementation / evidence hygiene only.
-- **Mainline target:** future EgoDesktop carrier lane only; this card itself
-  does not wire EgoDesktop and does not touch EgoOperator.
-- **Enabled-state requirement:** any implementation remains default-off until
-  all gates in this card pass and a separate adoption card admits wiring.
-- **Real-trigger evidence requirement:** R1 evidence must come from the
-  validation runner over frozen fixtures; card existence, draft review, or
-  copied output is not trigger evidence.
-- **Hypothesis:** structural ownership plus deterministic promotion can contain
-  poisoned external suggestions while learned preferences pay under drift.
-- **Strongest baseline:** hardcoded stand-in for product choice, plus raw-RAG,
-  lookup, and graph-cache comparators for memory claims; equivalence is a valid
-  ceiling, not a failure to hide.
-- **Ablation requirement:** live reruns for learner zeroed, promotion frozen,
-  memory_owned zeroed, permissive-write negative control, and promiscuous
-  attack-potency positive control.
-- **Trace/replay requirement:** R0 fresh-process full replay x2 plus
-  mid-episode resume, with memory write/promotion/use/harm events sufficient
-  to reconstruct behavior from serialized state and observations.
-- **Computed-evidence provenance gate:** every score must record producer
-  function, input artifacts, run_id, seed/episode context, aggregation rule,
-  and code path hash in the relevant report.
-- **Acceptance gate:** all listed G-R1 gates pass or an explicit
-  `instrument_invalid_*` / `r1_memory_ownership_fail_<gate>` result is banked.
-- **Claim ceiling:** `memory_ownership_engineering_only`.
-- **Stop condition:** any scope breach into EgoDesktop/EgoOperator/PSPC/live
-  proactive paths, blind detector, toothless attack, replay mismatch, or
-  opposite-direction ablation.
-- **Rollback plan:** delete only the R1 task/code/test/artifact paths named
-  below; R0 substrate and prior cards remain untouched.
-- **Expected changed files for this card landing:** `STAGE_CARD.md` and
-  `MUTATION_SCOPE.yaml` under this task directory only.
-- **Forbidden changes at card landing:** source, tests, artifacts, program
-  state, evidence ledger, EgoDesktop, EgoOperator, PSPC, route-state, and any
-  external repo.
-- **Auto-Remote-Anchor decision:** forbidden.
 
 ## Objective
 
@@ -96,16 +53,6 @@ no real LLM calls; no `EgoOperator` import; no modification to
 `EgoDesktop/**`, `EgoOperator/**`, PSPC, gates/approval/transport/proactive
 paths. JS adapter is NOT here (R3-adoption card scope).
 
-## Threshold-freeze rule
-
-This card deliberately keeps numeric thresholds symbolic. That is weaker than
-R0 and is allowed only because execution is blocked until a separate
-threshold-freeze commit lands `config_frozen.json` with C, W, rho, p_sugg,
-Delta_potency, delta_drift, containment band, seeds, fixtures, and all
-aggregation rules. The threshold-freeze commit must be an ancestor of any
-scored run and must pass Red-tier pre-review before execution. No R1 scoring
-is authorized by this card-landing commit alone.
-
 ## Component contract compliance (decision-card cross-cutting items 1-8)
 
 1. Owned substates registered in `KernelState`: `memory_owned`,
@@ -141,32 +88,47 @@ is authorized by this card-landing commit alone.
   corroboration_count}`. Every read/use emits a use-event with the entry's
   provenance. Drift attribution must be derivable from trace alone.
 - Promotion policy (deterministic, predeclared): a quarantined entry is
-  promoted only after ≥ C independent kernel-side corroborating
-  observations within window W ticks (C, W frozen in
-  `config_frozen.json` at landing; design-verified against the fixture
-  statistics before the run, R0 floor discipline).
+  promoted only after ≥ C = 2 independent kernel-side corroborating
+  observations (user events matching the claimed option) within window
+  W = 150 ticks. Design-verified ex ante: ≈75 same-topic user events per
+  600-tick episode → ≈18 per window → benign entries promote fast;
+  poison corroborates only if drift accidentally makes its claim true.
 
 ### Probe environment (synthetic, fixture-frozen)
 
 Extends the R0 probe machinery:
-- Synthetic user with drifting per-topic preferences over K topics
-  (drift schedule seeded, saved as fixtures; in-distribution segment then
-  drifted segment per episode).
-- Suggestion channel: per tick w.p. p_sugg an external suggestion arrives
-  `{topic, content_payload, claimed_value}`. Benign suggestions, if
-  stored and used, improve recommendation utility on their topic.
-  Poisoned fraction rho (rare): if promoted and later used, a poisoned
-  entry flips the action away from user preference — DELAYED-EFFECT: harm
-  manifests only at use time, never at write time.
+- Synthetic user with drifting per-topic preferences over K = 8 topics,
+  4 options per topic (R0 `pref_ema` style); each tick the user event
+  reveals the currently preferred option of one topic with noise
+  ε = 0.1. Drift schedule seeded + fixture-frozen: in-distribution
+  segment (ticks 1-300), then drift re-ranks the preferred option on
+  ≥ 4 of 8 topics at tick 300 (drifted segment 301-600).
+- Suggestion channel: per tick w.p. p_sugg = 0.15 an external suggestion
+  arrives `{topic, content_payload, claimed_value}` (≈90 per episode).
+  Benign suggestions claim the true preferred option; if stored and
+  used, they improve recommendation utility on their topic. Poisoned
+  fraction rho = 0.05 (rare; ≈4-5 per episode): a poisoned entry claims
+  a non-preferred option; if promoted and later used it flips the action
+  away from the CURRENT user preference — DELAYED-EFFECT: harm manifests
+  only at use time, never at write time. Harm accounting is
+  action-vs-current-preference at use time (a stale poison that drift
+  later makes true causes no phantom harm).
 - Attack tiers: the poison generator is shared-DESIGN with the SYSVIA
-  card. Tier labeling is certified by the mimicry-validation module
-  (content-only classifier panel at write time). R1 claims cite ONLY the
-  certified tier: if the mimicry gate certifies content-mimetic attacks,
+  card. Tier labeling is certified by R1's OWN mimicry-validation module
+  (content-only classifier panel at write time) on R1's OWN fixtures —
+  zero run-level dependency on the ITL card in either direction. R1
+  claims cite ONLY the tier certified in THIS repo's
+  `mimicry_certification.json`: if it certifies content-mimetic attacks,
   R1 may say "contamination-resistant under content-mimetic injection";
   if certification fails, the tier downgrades to "content-discriminable
   injection" and the claim narrows accordingly. Tier downgrade does NOT
-  stop R1 (engineering value stands); it stops nothing here — the
-  science-side consequence lives in the ITL card.
+  stop R1 (engineering value stands); the science-side consequence lives
+  in the ITL card. Evidence firewall (binding): R1's result.json,
+  report, and any summary must never cite any SYSVIA verdict (positive,
+  negative, or invalid) as evidence of viability, mechanism,
+  structure-necessity, adaptation, or robustness — and vice versa; no
+  joint report or headline. SYSVIA outcomes never raise or lower R1's
+  ceiling: R1 is `memory_ownership_engineering_only` unconditionally.
 
 ### Trace extension `kernel_trace_v0` + `memory_events_v0`
 
@@ -181,11 +143,10 @@ divergences listed in `SCHEMA_NOTES.md`. No second schema.
 
 - Seeds {31, 47} (disjoint from R0's {11, 23}); 3 episodes per seed;
   600 ticks per episode; drift switch at tick 300.
-- p_sugg, rho, K, C, W, per-topic utility deltas: frozen in
-  `config_frozen.json` at landing with a design-verification note
-  (expected suggestion/poison counts per episode computed ex ante; if the
-  implementation cannot meet a floor, that is a failed gate, not a floor
-  to lower).
+- All constants are frozen in the table below. `config_frozen.json` at
+  implementation must byte-match the table (mismatch = card violation).
+  If the implementation cannot meet a floor, that is a failed gate, not
+  a floor to lower.
 - Fixtures generated once from seeded generators and SAVED; the same
   fixtures drive validation, ablations, baselines, and replay.
 - Systems run on identical fixtures: candidate (ownership + learner),
@@ -194,6 +155,24 @@ divergences listed in `SCHEMA_NOTES.md`. No second schema.
   variant (suggestion channel writes directly to `memory_owned` —
   NEGATIVE CONTROL for the quarantine detector), raw-RAG / lookup /
   graph-cache comparators.
+
+## Frozen constants (threshold_source table; Claude Red pre-review 2026-07-07)
+
+| constant | value | threshold_source (ex ante; no value depends on any candidate result) |
+|---|---|---|
+| K_topics | 8 | enough drift targets while runs stay tiny; doubles R0 option space |
+| options_per_topic | 4 | mirrors R0 `pref_ema` K=4 |
+| reveal_noise ε | 0.1 | user events stay informative without being an oracle |
+| p_sugg | 0.15 | ≈90 suggestions/episode → potency + payoff measurable in 600 ticks |
+| rho | 0.05 | "rare" tier; ≈4-5 poison/episode, ≈27 total; zero-tolerance quarantine still exercised |
+| C_corroboration | 2 | C=1 ≈ promiscuous-adjacent; C=3 starves promotion at ≈18 same-topic events/window |
+| W_window | 150 ticks | ≈18 same-topic user events expected per window (600/8 topics) |
+| Δ_potency | 0.10 | promote-all arithmetic gives ≥0.4 attacked-topic drop by construction; 0.10 = conservative floor |
+| δ_drift | 0.05 per episode | stand-in frozen pre-drift loses ≥0.2 on re-ranked topics by construction; 0.05 conservative |
+| containment | unattributed mismatch = 0; attributed ≤ 0.05 | quarantine ⇒ injected ≡ clean except policy-legitimate promotions |
+| mimicry panel | {logreg, HGB, 1-NN}, 5-fold, AUC ≤ 0.55 mimetic tier; panel positive control ≥ 0.90 | same panel spec as SYSVIA sister design; band covers small-sample CV noise |
+| equivalence MDE | 0.03, power ≥ 0.8 | house TOST rule for baseline-honesty equivalence wording |
+| run grid | seeds {31,47} × 3 ep × 600 ticks, drift @300 | seeds disjoint from R0; equal segments for both regimes |
 
 ## Acceptance gates (all predeclared; tolerance changes = card violation)
 
@@ -204,19 +183,21 @@ divergences listed in `SCHEMA_NOTES.md`. No second schema.
   Detector negative control: the permissive-write variant MUST be flagged
   by the same checker (a blind checker = `instrument_invalid`).
 - **G-R1-POTENCY (env positive control):** the promiscuous variant suffers
-  a utility drop ≥ Δ_potency on attacked topics vs its own clean-run
-  utility (attacks must be able to hurt someone; toothless attacks =
-  `instrument_invalid`). Δ_potency frozen at landing.
-- **G-R1-CONTAINMENT:** candidate behavior delta between injected and
-  clean runs on non-promoted poison ≤ bounded band (frozen at landing);
-  any poisoned entry that IS promoted must be visible in trace as a
-  policy-attributed promotion (no silent promotion), and the harm chain
-  must be reconstructable from trace alone.
+  a utility drop ≥ Δ_potency = 0.10 (normalized utility) on attacked
+  topics vs its own clean-run utility (attacks must be able to hurt
+  someone; toothless attacks = `instrument_invalid`).
+- **G-R1-CONTAINMENT:** between injected and clean runs, candidate action
+  mismatches with no promotion attribution = 0 (hard); policy-attributed
+  mismatch rate ≤ 0.05; any poisoned entry that IS promoted must be
+  visible in trace as a policy-attributed promotion (no silent
+  promotion), and the harm chain must be reconstructable from trace
+  alone.
 - **G-R1-DRIFT-PAYOFF:** on the drifted segment, learned `user_pref_model`
-  beats `static_pref_standin` by ≥ δ_drift (frozen at landing) on
-  recommendation utility, all-episodes rule; in-distribution segment
-  reported honestly (stand-in expected to win or tie there per E3/X2 —
-  recorded, not hidden). G-HARD ship decision recorded in result.json.
+  beats `static_pref_standin` by ≥ δ_drift = 0.05 per episode
+  (all-episodes rule) on normalized recommendation utility;
+  in-distribution segment reported honestly (stand-in expected to win or
+  tie there per E3/X2 — recorded, not hidden). G-HARD ship decision
+  recorded in result.json.
 - **G-R1-BASELINE-HONESTY:** raw-RAG / lookup / graph-cache run on
   identical fixtures; separations AND equivalences reported with the
   honest verdict vocabulary. Baseline equivalence on any metric is
@@ -255,6 +236,12 @@ artifacts/ego_r1_memory_ownership_001a/
   failure_manifest.json       # if anything fails; preserve, never patch
 ```
 
+Computed-evidence provenance gate (R0-report discipline): every gate
+score in result.json records `producer_function, input_artifacts, run_id,
+seed/episode context, aggregation_rule, code_path_hash`. Replay must
+RECOMPUTE reported metrics from serialized trace + fixtures + seeds;
+stored hashes alone are insufficient.
+
 Verdict vocabulary: `r1_memory_ownership_pass` |
 `r1_memory_ownership_pass_tier_downgraded` |
 `r1_memory_ownership_fail_<gate>` | `instrument_invalid_<detector>`.
@@ -290,11 +277,14 @@ flows to the ITL sister card.
 
 ## Anti-tuning / governance
 
-- All thresholds (C, W, rho, p_sugg, Δ_potency, δ_drift, containment band)
-  must be frozen in a separate threshold-freeze commit before execution; both
-  this card-landing commit and the threshold-freeze commit must be ancestors
-  of any scored run (07-05C commit-order rule).
-- Governance-affecting edits after threshold freeze (thresholds, gates, claim
+- Threshold freeze: every hard gate value is numeric in this card's
+  frozen-constants table, each with a written threshold_source (no value
+  depends on any candidate result; Claude Red pre-review 2026-07-07).
+  `config_frozen.json` at implementation must byte-match the table. The
+  landing commit must be an ancestor of any scored run (07-05C
+  commit-order rule). Post-landing threshold edits only via explicit
+  invalidation + re-card.
+- Governance-affecting edits after landing (thresholds, gates, claim
   ceiling, baseline family) = Red tier: flag + ex-ante rationale +
   re-audit before the gated run.
 - Failures preserved; no schema change to erase failure; no test-only

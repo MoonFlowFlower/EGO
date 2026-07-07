@@ -1,12 +1,25 @@
 schema_version: codex.mutation_scope.v1
 task: ego-r1-memory-ownership-001a
 expected_mutation_surface:
-  - card-first anchor for R1 writable memory ownership and contamination-resistance gates
-  - card landing plus regenerated task-lane index only; no implementation, scoring, artifact, program-state, or evidence-ledger change in this commit
-  - future implementation remains default-off and must freeze thresholds in config_frozen.json before any scored run
-  - no EgoDesktop/src or EgoOperator modification at card landing
-  - no runtime registration, gate/approval/transport/proactive path, network call, API key, or real LLM call
+  - adjudicated v2 card landing for R1 writable memory ownership, contamination probe, frozen constants, evidence firewall, and provenance gate
+  - landing commit may touch only this task package plus the generated task-lane index entry; no implementation, scoring, artifact, program-state, or evidence-ledger change in the landing commit
+  - execution phase remains default-off and must byte-match the frozen constants table in config_frozen.json before any scored run
+  - implementation scope is limited to the v2 card's Scope / layout paths below
+  - no EgoDesktop, EgoOperator, PSPC, gate/approval/transport/proactive path, live-proactive behavior, network call, API key, or real LLM call
 allowed_mutation_paths:
   - docs/codex/tasks/ego-r1-memory-ownership-001a/
+  - scripts/ego_kernel/memory_substate.py
+  - scripts/ego_kernel/pref_learner.py
+  - scripts/ego_kernel/suggestion_env.py
+  - scripts/ego_kernel/memory_baselines.py
+  - scripts/run_ego_r1_memory_validation.py
+  - tests/test_ego_r1_memory_ownership.py
+  - artifacts/ego_r1_memory_ownership_001a/
   - docs/codex/tasks/TASK_LANE_INDEX.md
-claim_ceiling: "memory_ownership_engineering_only; card landing only; no mechanism validity, structure-necessity, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion claim"
+forbidden_mutation_paths:
+  - EgoDesktop/
+  - EgoOperator/
+  - PSPC
+  - gate/approval/transport/proactive paths
+  - live-proactive behavior
+claim_ceiling: "memory_ownership_engineering_only; default-off; no mechanism validity, structure-necessity, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion claim"
