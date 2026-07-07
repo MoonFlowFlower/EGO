@@ -257,3 +257,34 @@ test("battery regression executor uses configured timeout and preserves spawn_er
   assert.match(timeout.error.message, /timed out|ETIMEDOUT|timeout/i);
   assert.match(timeout.command_line, /setTimeout/);
 });
+
+test("TraceRunner no-fork detector rejects any removed body line", () => {
+  const runner = require("../scripts/run-joi-g-ablation-kernel-adoption.js");
+
+  const pureAdditive = [
+    "diff --git a/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js b/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+    "index 86a7c4e0..ec64d973 100644",
+    "--- a/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+    "+++ b/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+    "@@ -1,3 +1,4 @@",
+    " const existing = true;",
+    "+const kernelAdoptionHook = options.kernelAdoptionHook || null;",
+    " module.exports = {};",
+  ].join("\n");
+  const withDeletion = [
+    "diff --git a/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js b/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+    "index 86a7c4e0..ec64d973 100644",
+    "--- a/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+    "+++ b/EgoDesktop/src/joiRealLoopGAblationTraceRunner.js",
+    "@@ -1,3 +1,4 @@",
+    "-const existing = true;",
+    "+const kernelAdoptionHook = options.kernelAdoptionHook || null;",
+    " module.exports = {};",
+  ].join("\n");
+
+  assert.equal(runner.analyzeTraceRunnerDiff(pureAdditive).pure_additive, true);
+  const deletionAnalysis = runner.analyzeTraceRunnerDiff(withDeletion);
+  assert.equal(deletionAnalysis.pure_additive, false);
+  assert.equal(deletionAnalysis.removed_body_line_count, 1);
+  assert.deepEqual(deletionAnalysis.removed_body_lines, ["-const existing = true;"]);
+});

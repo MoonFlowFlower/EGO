@@ -314,10 +314,25 @@ function buildRegressionCommandSpecs() {
   ];
 }
 
+function analyzeTraceRunnerDiff(unifiedDiff) {
+  const lines = String(unifiedDiff || "").split(/\r?\n/);
+  const removedBodyLines = lines.filter((line) => line.startsWith("-") && !line.startsWith("--- "));
+  const addedBodyLines = lines.filter((line) => line.startsWith("+") && !line.startsWith("+++ "));
+  const hookAdded = addedBodyLines.some((line) => line.includes("kernelAdoptionHook"));
+  return {
+    added_body_line_count: addedBodyLines.length,
+    removed_body_line_count: removedBodyLines.length,
+    removed_body_lines: removedBodyLines,
+    hook_added: hookAdded,
+    pure_additive: removedBodyLines.length === 0 && hookAdded,
+  };
+}
+
 function runNoForkAndRegressionGate(runId, baseCommit, artifactDir) {
   const base = baseCommit || findLandingCommit();
   const frozenDiffStat = base ? git(["diff", "--stat", `${base}..HEAD`, "--", ...frozenModules]) : { exit_code: 1, stdout: "", stderr: "landing commit not found" };
   const traceRunnerDiff = base ? git(["diff", `${base}..HEAD`, "--", "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js"]) : { exit_code: 1, stdout: "", stderr: "landing commit not found" };
+  const traceRunnerDiffAnalysis = analyzeTraceRunnerDiff(traceRunnerDiff.stdout);
   const forbiddenDiff = base ? git(["diff", "--name-only", `${base}..HEAD`, "--", ...forbiddenRuntimePaths]) : { exit_code: 1, stdout: "", stderr: "landing commit not found" };
   const regressionCommands = buildRegressionCommandSpecs().map((spec) => runCommand(
     spec.label,
@@ -327,9 +342,7 @@ function runNoForkAndRegressionGate(runId, baseCommit, artifactDir) {
   ));
   writeJson(path.join(artifactDir, "regression_commands.json"), regressionCommands);
   const regressionPass = regressionCommands.every((item) => item.exit_code === 0);
-  const traceHookOnly = traceRunnerDiff.exit_code === 0
-    && traceRunnerDiff.stdout.includes("kernelAdoptionHook")
-    && !traceRunnerDiff.stdout.includes("JOI_REAL_LOOP_G_ABLATION = \"1\"");
+  const traceHookOnly = traceRunnerDiff.exit_code === 0 && traceRunnerDiffAnalysis.pure_additive;
   const frozenClean = frozenDiffStat.exit_code === 0 && frozenDiffStat.stdout.trim() === "";
   const forbiddenClean = forbiddenDiff.exit_code === 0 && forbiddenDiff.stdout.trim() === "";
   return {
@@ -337,6 +350,8 @@ function runNoForkAndRegressionGate(runId, baseCommit, artifactDir) {
     base_commit: base,
     frozen_modules_diffstat: frozenDiffStat.stdout,
     trace_runner_hook_only: traceHookOnly,
+    trace_runner_diff: traceRunnerDiff.stdout,
+    trace_runner_diff_analysis: traceRunnerDiffAnalysis,
     forbidden_runtime_diff: forbiddenDiff.stdout,
     regression_pass: regressionPass,
     regression_commands: regressionCommands.map((item) => ({
@@ -519,6 +534,7 @@ function main() {
 
 module.exports = {
   REGRESSION_COMMAND_TIMEOUT_MS,
+  analyzeTraceRunnerDiff,
   buildRegressionCommandSpecs,
   commandLine,
   resolveSpawnCommand,
