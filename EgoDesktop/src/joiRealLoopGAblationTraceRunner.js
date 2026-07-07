@@ -7,6 +7,7 @@ const {
   buildJoiRealLoopGAblationContract,
   buildJoiRealLoopTraceRow,
   hashValue,
+  validateNoAuthorityFields,
 } = require("./joiRealLoopGAblationHarness");
 
 const CLAIM_CEILING = "egodesktop_real_loop_g_ablation_trace_runner_contract_only";
@@ -204,6 +205,7 @@ function createJoiRealLoopTraceRunner(env, options = {}) {
   const traceDir = contract.trace_dir ? path.resolve(contract.trace_dir) : "";
   const blockedStatus = contractBlockStatus(contract);
   const sourceHashes = sourceHashesFor(options.repoRoot, options.sourceHashes);
+  const kernelAdoptionHook = typeof options.kernelAdoptionHook === "function" ? options.kernelAdoptionHook : null;
   let traceRowCount = 0;
   let eventCounter = 0;
 
@@ -329,6 +331,15 @@ function createJoiRealLoopTraceRunner(env, options = {}) {
       },
       replayInputs,
     });
+    if (kernelAdoptionHook) {
+      const kernelAdoptionBlock = kernelAdoptionHook({ contract, eventCounter, payload, row });
+      if (kernelAdoptionBlock && typeof kernelAdoptionBlock === "object") {
+        row.kernel_adoption_v0 = validateNoAuthorityFields(
+          kernelAdoptionBlock,
+          "kernel_adoption_v0",
+        );
+      }
+    }
     appendJsonLine(path.join(traceDir, "trace_rows.jsonl"), row);
     traceRowCount += 1;
     const hasIpcEntrypoint = entrypointProvenance.status === "ipc_event_observed";
