@@ -1,0 +1,30 @@
+schema_version: codex.mutation_scope.v1
+task: ego-r1-memory-ownership-instrument-repair-001a
+version_probe: "R1-INSTRUMENT-REPAIR-001A rev-A 2026-07-07"
+expected_mutation_surface:
+  - instrument repair only; the candidate mechanism (memory_substate policy semantics, pref_learner, score composition, C/W constants) is frozen and must not change behavior
+  - landing commit touches only this task package plus the generated task-lane index entry; no implementation, scoring, artifact, program-state, or evidence-ledger change in the landing commit
+  - repair scope = potency harm-eligibility mask (governing_poison_mask_v1), displacement-inclusive containment attribution (poison_row_attribution_v1) with fail-able controls, drift-preview benign suggestions (r1_env_v1, poison generation logic unchanged), ablation uplift segment fix, runner verdict hygiene (failing_gates, enumerating failure_manifest, new instrument_invalid labels, out_dir, exit-code capture)
+  - banked v0 evidence and the v0 card package are read-only inputs
+  - execution must byte-match the card's frozen constants delta table in the new config_frozen.json before any scored run; held-out seeds {61,79} first executed at R-BATTERY
+  - no EgoDesktop, EgoOperator, PSPC, gate/approval/transport/proactive path, live-proactive behavior, network call, API key, or real LLM call
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-r1-memory-ownership-instrument-repair-001a/
+  - scripts/diag_ego_r1_v0_containment.py
+  - scripts/ego_kernel/suggestion_env.py
+  - scripts/ego_kernel/memory_baselines.py
+  - scripts/run_ego_r1_memory_validation.py
+  - tests/test_ego_r1_memory_ownership.py
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001a/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+forbidden_mutation_paths:
+  - artifacts/ego_r1_memory_ownership_001a/
+  - docs/codex/tasks/ego-r1-memory-ownership-001a/
+  - scripts/ego_kernel/memory_substate.py
+  - scripts/ego_kernel/pref_learner.py
+  - EgoDesktop/
+  - EgoOperator/
+  - PSPC
+  - gate/approval/transport/proactive paths
+  - live-proactive behavior
+claim_ceiling: "memory_ownership_engineering_only; instrument repair; default-off; a pass validates the v1 instrument and the engineering battery at the certified tier in synthetic offline env r1_env_v1 only; no mechanism validity, structure-necessity, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion claim; no result flow to or from ITL SYSVIA"
