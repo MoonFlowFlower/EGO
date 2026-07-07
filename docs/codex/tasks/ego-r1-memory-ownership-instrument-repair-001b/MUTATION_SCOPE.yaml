@@ -1,0 +1,34 @@
+schema_version: codex.mutation_scope.v1
+task: ego-r1-memory-ownership-instrument-repair-001b
+version_probe: "R1-INSTRUMENT-REPAIR-001B rev-B 2026-07-07"
+expected_mutation_surface:
+  - benign-value env revision (r1_env_v2 = drift2@450 disjoint topics + second preview window + guaranteed deterministic preview coverage; rng sequence and poison generation logic byte-unchanged) with fixture invariance pin
+  - ablation gate re-scope per dominance theorem (drop ill-posed pref_zeroed leg; keep memory_zeroed/promotion_frozen/wiring legs; pref_zeroed becomes annotation)
+  - failing_gates full enumeration fix; claim-language change to ownership-gated cache-class wording (no arithmetic change)
+  - candidate mechanism frozen: no change to memory_substate policy semantics, pref_learner, score composition, C/W constants
+  - one-round pre-commitment: second benign-value floor miss closes the benign axis; no third env attempt
+  - floors unchanged (benign 0.03 = equivalence_MDE; potency 0.10; containment 0 & 0.05; drift 0.05); held-out seeds {61,79} first executed at R-BATTERY
+  - landing commit touches only this task package plus the task-lane index entry
+  - no EgoDesktop, EgoOperator, PSPC, gate/approval/transport/proactive path, live-proactive behavior, network call, API key, or real LLM call
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-r1-memory-ownership-instrument-repair-001b/
+  - scripts/ego_kernel/suggestion_env.py
+  - scripts/ego_kernel/memory_baselines.py
+  - scripts/run_ego_r1_memory_validation.py
+  - tests/test_ego_r1_memory_ownership.py
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001b/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+forbidden_mutation_paths:
+  - artifacts/ego_r1_memory_ownership_001a/
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001a/
+  - docs/codex/tasks/ego-r1-memory-ownership-001a/
+  - docs/codex/tasks/ego-r1-memory-ownership-instrument-repair-001a/
+  - scripts/diag_ego_r1_v0_containment.py
+  - scripts/ego_kernel/memory_substate.py
+  - scripts/ego_kernel/pref_learner.py
+  - EgoDesktop/
+  - EgoOperator/
+  - PSPC
+  - gate/approval/transport/proactive paths
+  - live-proactive behavior
+claim_ceiling: "memory_ownership_engineering_only; instrument repair rev-B; default-off; max claim on full pass = engineered ownership-gated memory (cache-class) with provenance-gated promotion, ablation-sensitive on the memory channel, replay-valid, contamination-resistant at certified tier, benign-value axis >= house MDE in synthetic offline env r1_env_v2; no learned-component claim; no mechanism validity, structure-necessity, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion claim; no result flow to or from ITL SYSVIA"
