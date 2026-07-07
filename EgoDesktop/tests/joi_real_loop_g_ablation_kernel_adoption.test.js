@@ -226,3 +226,34 @@ test("config_frozen is byte-stable and runner prints matching config", () => {
   assert.equal(printed.status, 0, printed.stderr);
   assert.equal(printed.stdout, expected);
 });
+
+test("battery regression executor uses configured timeout and preserves spawn_error detail", () => {
+  const runner = require("../scripts/run-joi-g-ablation-kernel-adoption.js");
+
+  assert.equal(runner.REGRESSION_COMMAND_TIMEOUT_MS, 900000);
+  for (const spec of runner.buildRegressionCommandSpecs()) {
+    assert.equal(spec.timeoutMs, runner.REGRESSION_COMMAND_TIMEOUT_MS, spec.label);
+  }
+
+  const spawnFailure = runner.runCommand(
+    "spawn_failure_probe",
+    "definitely-not-a-command-for-ego-r3-runner",
+    [],
+    { timeoutMs: 1000 },
+  );
+  assert.equal(spawnFailure.result_kind, "spawn_error");
+  assert.notEqual(spawnFailure.exit_code, 124);
+  assert.match(spawnFailure.error.message, /definitely-not-a-command-for-ego-r3-runner|ENOENT|not found|not recognized/i);
+  assert.match(spawnFailure.command_line, /definitely-not-a-command-for-ego-r3-runner/);
+
+  const timeout = runner.runCommand(
+    "timeout_probe",
+    process.execPath,
+    ["-e", "setTimeout(() => {}, 2000)"],
+    { timeoutMs: 100 },
+  );
+  assert.equal(timeout.result_kind, "timeout");
+  assert.equal(timeout.exit_code, 124);
+  assert.match(timeout.error.message, /timed out|ETIMEDOUT|timeout/i);
+  assert.match(timeout.command_line, /setTimeout/);
+});

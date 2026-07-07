@@ -7,6 +7,8 @@ const adapter = require("../src/joiRealLoopGAblationKernelStateAdapter");
 
 const repoRoot = path.resolve(__dirname, "..", "..");
 const defaultArtifactDir = path.join(repoRoot, "artifacts", "ego_r3_adoption_slice_001a");
+const DEFAULT_COMMAND_TIMEOUT_MS = 120000;
+const REGRESSION_COMMAND_TIMEOUT_MS = 900000;
 const frozenModules = [
   "EgoDesktop/src/joiRealLoopGAblationHarness.js",
   "EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js",
@@ -64,24 +66,80 @@ function writeJson(filePath, value) {
   writeText(filePath, `${adapter.stablePrettyJson(value)}\n`);
 }
 
+function quoteCommandPart(part) {
+  const text = String(part);
+  if (/^[A-Za-z0-9_./:=@+-]+$/.test(text)) {
+    return text;
+  }
+  return JSON.stringify(text);
+}
+
+function commandLine(command, args = []) {
+  return [command, ...args].map(quoteCommandPart).join(" ");
+}
+
+function resolveSpawnCommand(command, platform = process.platform) {
+  if (platform === "win32" && String(command).toLowerCase() === "npm") {
+    return {
+      command: "npm.cmd",
+      shell: true,
+      resolution_note: "windows_npm_cmd_shell_resolution",
+    };
+  }
+  return {
+    command,
+    shell: false,
+    resolution_note: "direct_spawn",
+  };
+}
+
+function classifySpawnResult(result) {
+  if (result.error) {
+    if (result.error.code === "ETIMEDOUT") {
+      return "timeout";
+    }
+    return "spawn_error";
+  }
+  if (result.status === null && result.signal) {
+    return "timeout";
+  }
+  return "exit";
+}
+
 function runCommand(label, command, args, options = {}) {
   const started = Date.now();
-  const result = spawnSync(command, args, {
+  const timeoutMs = options.timeoutMs || DEFAULT_COMMAND_TIMEOUT_MS;
+  const resolved = resolveSpawnCommand(command, options.platform || process.platform);
+  const result = spawnSync(resolved.command, args, {
     cwd: options.cwd || repoRoot,
     encoding: "utf8",
-    timeout: options.timeoutMs || 120000,
+    timeout: timeoutMs,
     input: options.input,
     env: { ...process.env, ...(options.env || {}) },
+    shell: resolved.shell,
   });
+  const resultKind = classifySpawnResult(result);
+  const error = {
+    name: result.error?.name || "",
+    code: result.error?.code || "",
+    message: result.error?.message || (resultKind === "timeout" ? `command timed out after ${timeoutMs} ms` : ""),
+  };
   return {
     label,
     command: [command, ...args],
+    resolved_command: [resolved.command, ...args],
+    command_line: commandLine(resolved.command, args),
     cwd: options.cwd || repoRoot,
-    exit_code: result.status === null ? 124 : result.status,
+    timeout_ms: timeoutMs,
+    shell: resolved.shell,
+    resolution_note: resolved.resolution_note,
+    result_kind: resultKind,
+    exit_code: resultKind === "timeout" ? 124 : (resultKind === "spawn_error" ? 127 : result.status),
     signal: result.signal || "",
     duration_ms: Date.now() - started,
     stdout: result.stdout || "",
     stderr: result.stderr || "",
+    error,
   };
 }
 
@@ -208,20 +266,65 @@ function runStateHashGate(runId) {
   };
 }
 
+function buildRegressionCommandSpecs() {
+  return [
+    {
+      label: "kernel_adoption_node_test",
+      command: "node",
+      args: ["--test", "EgoDesktop/tests/joi_real_loop_g_ablation_kernel_adoption.test.js"],
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+    {
+      label: "egodesktop_npm_test",
+      command: "npm",
+      args: ["test"],
+      cwd: path.join(repoRoot, "EgoDesktop"),
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+    {
+      label: "python_parity_test",
+      command: "python",
+      args: ["-m", "pytest", "-q", "tests/test_ego_r3_adoption_parity.py"],
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+    {
+      label: "joi_corpus_admission",
+      command: "python",
+      args: ["-m", "pytest", "-q", "tests/test_joi_corpus_admission.py"],
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+    {
+      label: "py_compile_parity_test",
+      command: "python",
+      args: ["-m", "py_compile", "tests/test_ego_r3_adoption_parity.py"],
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+    {
+      label: "lint_repo",
+      command: "python",
+      args: ["scripts/codex/lint_repo.py"],
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+    {
+      label: "verify_repo_fast",
+      command: "python",
+      args: ["scripts/codex/verify_repo.py", "--mode", "fast"],
+      timeoutMs: REGRESSION_COMMAND_TIMEOUT_MS,
+    },
+  ];
+}
+
 function runNoForkAndRegressionGate(runId, baseCommit, artifactDir) {
   const base = baseCommit || findLandingCommit();
   const frozenDiffStat = base ? git(["diff", "--stat", `${base}..HEAD`, "--", ...frozenModules]) : { exit_code: 1, stdout: "", stderr: "landing commit not found" };
   const traceRunnerDiff = base ? git(["diff", `${base}..HEAD`, "--", "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js"]) : { exit_code: 1, stdout: "", stderr: "landing commit not found" };
   const forbiddenDiff = base ? git(["diff", "--name-only", `${base}..HEAD`, "--", ...forbiddenRuntimePaths]) : { exit_code: 1, stdout: "", stderr: "landing commit not found" };
-  const regressionCommands = [
-    runCommand("kernel_adoption_node_test", "node", ["--test", "EgoDesktop/tests/joi_real_loop_g_ablation_kernel_adoption.test.js"], { timeoutMs: 120000 }),
-    runCommand("egodesktop_npm_test", "npm", ["test"], { cwd: path.join(repoRoot, "EgoDesktop"), timeoutMs: 180000 }),
-    runCommand("python_parity_test", "python", ["-m", "pytest", "-q", "tests/test_ego_r3_adoption_parity.py"], { timeoutMs: 120000 }),
-    runCommand("joi_corpus_admission", "python", ["-m", "pytest", "-q", "tests/test_joi_corpus_admission.py"], { timeoutMs: 120000 }),
-    runCommand("py_compile_parity_test", "python", ["-m", "py_compile", "tests/test_ego_r3_adoption_parity.py"], { timeoutMs: 120000 }),
-    runCommand("lint_repo", "python", ["scripts/codex/lint_repo.py"], { timeoutMs: 180000 }),
-    runCommand("verify_repo_fast", "python", ["scripts/codex/verify_repo.py", "--mode", "fast"], { timeoutMs: 180000 }),
-  ];
+  const regressionCommands = buildRegressionCommandSpecs().map((spec) => runCommand(
+    spec.label,
+    spec.command,
+    spec.args,
+    { cwd: spec.cwd, timeoutMs: spec.timeoutMs },
+  ));
   writeJson(path.join(artifactDir, "regression_commands.json"), regressionCommands);
   const regressionPass = regressionCommands.every((item) => item.exit_code === 0);
   const traceHookOnly = traceRunnerDiff.exit_code === 0
@@ -238,10 +341,19 @@ function runNoForkAndRegressionGate(runId, baseCommit, artifactDir) {
     regression_pass: regressionPass,
     regression_commands: regressionCommands.map((item) => ({
       label: item.label,
+      command: item.command,
+      resolved_command: item.resolved_command,
+      command_line: item.command_line,
+      cwd: item.cwd,
+      timeout_ms: item.timeout_ms,
+      shell: item.shell,
+      result_kind: item.result_kind,
       exit_code: item.exit_code,
+      signal: item.signal,
       duration_ms: item.duration_ms,
       stdout_tail: item.stdout.slice(-2000),
       stderr_tail: item.stderr.slice(-2000),
+      error: item.error,
     })),
     provenance: provenance(
       "runNoForkAndRegressionGate",
@@ -404,6 +516,14 @@ function main() {
   process.stdout.write(`${result.verdict}\n`);
   return result.failing_gates.length === 0 ? 0 : 1;
 }
+
+module.exports = {
+  REGRESSION_COMMAND_TIMEOUT_MS,
+  buildRegressionCommandSpecs,
+  commandLine,
+  resolveSpawnCommand,
+  runCommand,
+};
 
 if (require.main === module) {
   process.exitCode = main();
