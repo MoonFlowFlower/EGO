@@ -1,7 +1,7 @@
 {
-  "duration_seconds": 242.31168,
+  "duration_seconds": 482.185711,
   "guard_seconds": 3600,
-  "phase": "precheck",
+  "phase": "battery",
   "process_exit_code": 0,
   "result_path": "artifacts/ego_r1_memory_ownership_instrument_repair_001b/result.json"
 }

@@ -52,6 +52,54 @@
       "episode_id": "seed_47_episode_2",
       "static_in_distribution_utility": 1.0,
       "static_standin_drift_utility": 0.25333333333333335
+    },
+    {
+      "candidate_drift_utility": 0.9333333333333333,
+      "candidate_in_distribution_utility": 0.98,
+      "delta": 0.6799999999999999,
+      "episode_id": "seed_61_episode_0",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.25333333333333335
+    },
+    {
+      "candidate_drift_utility": 0.95,
+      "candidate_in_distribution_utility": 0.9833333333333333,
+      "delta": 0.6966666666666665,
+      "episode_id": "seed_61_episode_1",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.25333333333333335
+    },
+    {
+      "candidate_drift_utility": 0.96,
+      "candidate_in_distribution_utility": 0.96,
+      "delta": 0.7066666666666666,
+      "episode_id": "seed_61_episode_2",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.25333333333333335
+    },
+    {
+      "candidate_drift_utility": 0.9433333333333334,
+      "candidate_in_distribution_utility": 0.9766666666666667,
+      "delta": 0.69,
+      "episode_id": "seed_79_episode_0",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.25333333333333335
+    },
+    {
+      "candidate_drift_utility": 0.95,
+      "candidate_in_distribution_utility": 0.98,
+      "delta": 0.6966666666666665,
+      "episode_id": "seed_79_episode_1",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.25333333333333335
+    },
+    {
+      "candidate_drift_utility": 0.9366666666666666,
+      "candidate_in_distribution_utility": 0.9766666666666667,
+      "delta": 0.6833333333333333,
+      "episode_id": "seed_79_episode_2",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.25333333333333335
     }
   ],
   "producer_function": "_drift_payoff_report",
@@ -63,11 +111,19 @@
       "seed_31_episode_2",
       "seed_47_episode_0",
       "seed_47_episode_1",
-      "seed_47_episode_2"
+      "seed_47_episode_2",
+      "seed_61_episode_0",
+      "seed_61_episode_1",
+      "seed_61_episode_2",
+      "seed_79_episode_0",
+      "seed_79_episode_1",
+      "seed_79_episode_2"
     ],
     "seeds": [
       31,
-      47
+      47,
+      61,
+      79
     ]
   },
   "status": "pass"

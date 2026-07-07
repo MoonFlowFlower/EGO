@@ -10,15 +10,46 @@
   "gate_results": {
     "G-R1-ABLATION": {
       "aggregation_rule": "memory_zeroed < base drift delta; promotion_frozen uplift < base benign uplift; memory_zeroed influence events == 0; pref_zeroed annotation only",
-      "base_benign_uplift": 0.04666666666666667,
-      "base_mean_drift_delta": 0.6938888888888889,
+      "base_benign_uplift": 0.04694444444444445,
+      "base_mean_drift_delta": 0.6930555555555555,
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "gate": "G-R1-ABLATION",
+      "heldout_block": {
+        "aggregation_rule": "memory_zeroed < base drift delta; promotion_frozen uplift < base benign uplift; memory_zeroed influence events == 0; pref_zeroed annotation only",
+        "base_benign_uplift": 0.04722222222222222,
+        "base_mean_drift_delta": 0.6922222222222221,
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "gate": "G-R1-ABLATION",
+        "input_artifacts": [],
+        "memory_zeroed_influence_events": 0,
+        "memory_zeroed_mean_drift_delta": 0.6466666666666666,
+        "pref_zeroed_gate_role": "annotation_only_not_gate_input",
+        "pref_zeroed_mean_drift_delta": 0.6922222222222221,
+        "producer_function": "_ablation_report",
+        "promotion_frozen_uplift": 0.0,
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass"
+      },
+      "heldout_status": "pass",
       "input_artifacts": [],
       "memory_zeroed_influence_events": 0,
-      "memory_zeroed_mean_drift_delta": 0.6483333333333333,
+      "memory_zeroed_mean_drift_delta": 0.6475,
       "pref_zeroed_gate_role": "annotation_only_not_gate_input",
-      "pref_zeroed_mean_drift_delta": 0.6938888888888889,
+      "pref_zeroed_mean_drift_delta": 0.6930555555555555,
       "producer_function": "_ablation_report",
       "promotion_frozen_uplift": 0.0,
       "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
@@ -29,11 +60,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -43,7 +82,7 @@
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "comparators": {
         "graph_cache": {
-          "mean_delta": 0.06277777777777778,
+          "mean_delta": 0.06027777777777777,
           "per_episode": [
             {
               "baseline_utility": 0.8666666666666667,
@@ -80,12 +119,48 @@
               "candidate_utility": 0.9466666666666667,
               "delta": 0.053333333333333344,
               "episode_id": "seed_47_episode_2"
+            },
+            {
+              "baseline_utility": 0.87,
+              "candidate_utility": 0.9333333333333333,
+              "delta": 0.06333333333333335,
+              "episode_id": "seed_61_episode_0"
+            },
+            {
+              "baseline_utility": 0.9133333333333333,
+              "candidate_utility": 0.95,
+              "delta": 0.036666666666666625,
+              "episode_id": "seed_61_episode_1"
+            },
+            {
+              "baseline_utility": 0.91,
+              "candidate_utility": 0.96,
+              "delta": 0.04999999999999993,
+              "episode_id": "seed_61_episode_2"
+            },
+            {
+              "baseline_utility": 0.9066666666666666,
+              "candidate_utility": 0.9433333333333334,
+              "delta": 0.036666666666666736,
+              "episode_id": "seed_79_episode_0"
+            },
+            {
+              "baseline_utility": 0.8566666666666667,
+              "candidate_utility": 0.95,
+              "delta": 0.09333333333333327,
+              "episode_id": "seed_79_episode_1"
+            },
+            {
+              "baseline_utility": 0.87,
+              "candidate_utility": 0.9366666666666666,
+              "delta": 0.06666666666666665,
+              "episode_id": "seed_79_episode_2"
             }
           ],
           "verdict": "candidate_separates"
         },
         "lookup": {
-          "mean_delta": 0.6816666666666666,
+          "mean_delta": 0.6808333333333333,
           "per_episode": [
             {
               "baseline_utility": 0.2966666666666667,
@@ -122,12 +197,48 @@
               "candidate_utility": 0.9466666666666667,
               "delta": 0.6933333333333334,
               "episode_id": "seed_47_episode_2"
+            },
+            {
+              "baseline_utility": 0.25333333333333335,
+              "candidate_utility": 0.9333333333333333,
+              "delta": 0.6799999999999999,
+              "episode_id": "seed_61_episode_0"
+            },
+            {
+              "baseline_utility": 0.26666666666666666,
+              "candidate_utility": 0.95,
+              "delta": 0.6833333333333333,
+              "episode_id": "seed_61_episode_1"
+            },
+            {
+              "baseline_utility": 0.31,
+              "candidate_utility": 0.96,
+              "delta": 0.6499999999999999,
+              "episode_id": "seed_61_episode_2"
+            },
+            {
+              "baseline_utility": 0.25333333333333335,
+              "candidate_utility": 0.9433333333333334,
+              "delta": 0.69,
+              "episode_id": "seed_79_episode_0"
+            },
+            {
+              "baseline_utility": 0.25333333333333335,
+              "candidate_utility": 0.95,
+              "delta": 0.6966666666666665,
+              "episode_id": "seed_79_episode_1"
+            },
+            {
+              "baseline_utility": 0.25666666666666665,
+              "candidate_utility": 0.9366666666666666,
+              "delta": 0.6799999999999999,
+              "episode_id": "seed_79_episode_2"
             }
           ],
           "verdict": "candidate_separates"
         },
         "raw_rag": {
-          "mean_delta": 0.04777777777777777,
+          "mean_delta": 0.0447222222222222,
           "per_episode": [
             {
               "baseline_utility": 0.9166666666666666,
@@ -164,12 +275,200 @@
               "candidate_utility": 0.9466666666666667,
               "delta": 0.05666666666666664,
               "episode_id": "seed_47_episode_2"
+            },
+            {
+              "baseline_utility": 0.91,
+              "candidate_utility": 0.9333333333333333,
+              "delta": 0.023333333333333317,
+              "episode_id": "seed_61_episode_0"
+            },
+            {
+              "baseline_utility": 0.92,
+              "candidate_utility": 0.95,
+              "delta": 0.029999999999999916,
+              "episode_id": "seed_61_episode_1"
+            },
+            {
+              "baseline_utility": 0.9,
+              "candidate_utility": 0.96,
+              "delta": 0.05999999999999994,
+              "episode_id": "seed_61_episode_2"
+            },
+            {
+              "baseline_utility": 0.8833333333333333,
+              "candidate_utility": 0.9433333333333334,
+              "delta": 0.06000000000000005,
+              "episode_id": "seed_79_episode_0"
+            },
+            {
+              "baseline_utility": 0.91,
+              "candidate_utility": 0.95,
+              "delta": 0.039999999999999925,
+              "episode_id": "seed_79_episode_1"
+            },
+            {
+              "baseline_utility": 0.9,
+              "candidate_utility": 0.9366666666666666,
+              "delta": 0.036666666666666625,
+              "episode_id": "seed_79_episode_2"
             }
           ],
           "verdict": "candidate_separates"
         }
       },
       "gate": "G-R1-BASELINE-HONESTY",
+      "heldout_block": {
+        "aggregation_rule": "report separations and equivalences; no fail on equivalence",
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "comparators": {
+          "graph_cache": {
+            "mean_delta": 0.05777777777777776,
+            "per_episode": [
+              {
+                "baseline_utility": 0.9066666666666666,
+                "candidate_utility": 0.9433333333333334,
+                "delta": 0.036666666666666736,
+                "episode_id": "seed_79_episode_0"
+              },
+              {
+                "baseline_utility": 0.87,
+                "candidate_utility": 0.9333333333333333,
+                "delta": 0.06333333333333335,
+                "episode_id": "seed_61_episode_0"
+              },
+              {
+                "baseline_utility": 0.9133333333333333,
+                "candidate_utility": 0.95,
+                "delta": 0.036666666666666625,
+                "episode_id": "seed_61_episode_1"
+              },
+              {
+                "baseline_utility": 0.91,
+                "candidate_utility": 0.96,
+                "delta": 0.04999999999999993,
+                "episode_id": "seed_61_episode_2"
+              },
+              {
+                "baseline_utility": 0.8566666666666667,
+                "candidate_utility": 0.95,
+                "delta": 0.09333333333333327,
+                "episode_id": "seed_79_episode_1"
+              },
+              {
+                "baseline_utility": 0.87,
+                "candidate_utility": 0.9366666666666666,
+                "delta": 0.06666666666666665,
+                "episode_id": "seed_79_episode_2"
+              }
+            ],
+            "verdict": "candidate_separates"
+          },
+          "lookup": {
+            "mean_delta": 0.68,
+            "per_episode": [
+              {
+                "baseline_utility": 0.25333333333333335,
+                "candidate_utility": 0.9433333333333334,
+                "delta": 0.69,
+                "episode_id": "seed_79_episode_0"
+              },
+              {
+                "baseline_utility": 0.25333333333333335,
+                "candidate_utility": 0.9333333333333333,
+                "delta": 0.6799999999999999,
+                "episode_id": "seed_61_episode_0"
+              },
+              {
+                "baseline_utility": 0.26666666666666666,
+                "candidate_utility": 0.95,
+                "delta": 0.6833333333333333,
+                "episode_id": "seed_61_episode_1"
+              },
+              {
+                "baseline_utility": 0.31,
+                "candidate_utility": 0.96,
+                "delta": 0.6499999999999999,
+                "episode_id": "seed_61_episode_2"
+              },
+              {
+                "baseline_utility": 0.25333333333333335,
+                "candidate_utility": 0.95,
+                "delta": 0.6966666666666665,
+                "episode_id": "seed_79_episode_1"
+              },
+              {
+                "baseline_utility": 0.25666666666666665,
+                "candidate_utility": 0.9366666666666666,
+                "delta": 0.6799999999999999,
+                "episode_id": "seed_79_episode_2"
+              }
+            ],
+            "verdict": "candidate_separates"
+          },
+          "raw_rag": {
+            "mean_delta": 0.04166666666666663,
+            "per_episode": [
+              {
+                "baseline_utility": 0.8833333333333333,
+                "candidate_utility": 0.9433333333333334,
+                "delta": 0.06000000000000005,
+                "episode_id": "seed_79_episode_0"
+              },
+              {
+                "baseline_utility": 0.91,
+                "candidate_utility": 0.9333333333333333,
+                "delta": 0.023333333333333317,
+                "episode_id": "seed_61_episode_0"
+              },
+              {
+                "baseline_utility": 0.92,
+                "candidate_utility": 0.95,
+                "delta": 0.029999999999999916,
+                "episode_id": "seed_61_episode_1"
+              },
+              {
+                "baseline_utility": 0.9,
+                "candidate_utility": 0.96,
+                "delta": 0.05999999999999994,
+                "episode_id": "seed_61_episode_2"
+              },
+              {
+                "baseline_utility": 0.91,
+                "candidate_utility": 0.95,
+                "delta": 0.039999999999999925,
+                "episode_id": "seed_79_episode_1"
+              },
+              {
+                "baseline_utility": 0.9,
+                "candidate_utility": 0.9366666666666666,
+                "delta": 0.036666666666666625,
+                "episode_id": "seed_79_episode_2"
+              }
+            ],
+            "verdict": "candidate_separates"
+          }
+        },
+        "gate": "G-R1-BASELINE-HONESTY",
+        "input_artifacts": [],
+        "producer_function": "_baseline_comparison",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass"
+      },
+      "heldout_status": "pass",
       "input_artifacts": [],
       "producer_function": "_baseline_comparison",
       "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
@@ -180,11 +479,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -193,6 +500,69 @@
       "aggregation_rule": "pooled drifted candidate_clean minus no_suggestions >= 0.03",
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "gate": "G-R1-BENIGN-VALUE",
+      "heldout_block": {
+        "aggregation_rule": "pooled drifted candidate_clean minus no_suggestions >= 0.03",
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "gate": "G-R1-BENIGN-VALUE",
+        "input_artifacts": [],
+        "per_episode": [
+          {
+            "candidate_clean_drift_utility": 0.9433333333333334,
+            "episode_id": "seed_79_episode_0",
+            "no_suggestions_drift_utility": 0.8833333333333333,
+            "uplift": 0.06000000000000005
+          },
+          {
+            "candidate_clean_drift_utility": 0.9433333333333334,
+            "episode_id": "seed_61_episode_0",
+            "no_suggestions_drift_utility": 0.8966666666666666,
+            "uplift": 0.046666666666666745
+          },
+          {
+            "candidate_clean_drift_utility": 0.95,
+            "episode_id": "seed_61_episode_1",
+            "no_suggestions_drift_utility": 0.8966666666666666,
+            "uplift": 0.053333333333333344
+          },
+          {
+            "candidate_clean_drift_utility": 0.96,
+            "episode_id": "seed_61_episode_2",
+            "no_suggestions_drift_utility": 0.9133333333333333,
+            "uplift": 0.046666666666666634
+          },
+          {
+            "candidate_clean_drift_utility": 0.95,
+            "episode_id": "seed_79_episode_1",
+            "no_suggestions_drift_utility": 0.91,
+            "uplift": 0.039999999999999925
+          },
+          {
+            "candidate_clean_drift_utility": 0.9366666666666666,
+            "episode_id": "seed_79_episode_2",
+            "no_suggestions_drift_utility": 0.9,
+            "uplift": 0.036666666666666625
+          }
+        ],
+        "pooled_drifted_uplift": 0.04722222222222222,
+        "producer_function": "_benign_value_report",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass"
+      },
+      "heldout_status": "pass",
       "input_artifacts": [],
       "per_episode": [
         {
@@ -230,9 +600,45 @@
           "episode_id": "seed_47_episode_2",
           "no_suggestions_drift_utility": 0.9,
           "uplift": 0.043333333333333335
+        },
+        {
+          "candidate_clean_drift_utility": 0.9433333333333334,
+          "episode_id": "seed_61_episode_0",
+          "no_suggestions_drift_utility": 0.8966666666666666,
+          "uplift": 0.046666666666666745
+        },
+        {
+          "candidate_clean_drift_utility": 0.95,
+          "episode_id": "seed_61_episode_1",
+          "no_suggestions_drift_utility": 0.8966666666666666,
+          "uplift": 0.053333333333333344
+        },
+        {
+          "candidate_clean_drift_utility": 0.96,
+          "episode_id": "seed_61_episode_2",
+          "no_suggestions_drift_utility": 0.9133333333333333,
+          "uplift": 0.046666666666666634
+        },
+        {
+          "candidate_clean_drift_utility": 0.9433333333333334,
+          "episode_id": "seed_79_episode_0",
+          "no_suggestions_drift_utility": 0.8833333333333333,
+          "uplift": 0.06000000000000005
+        },
+        {
+          "candidate_clean_drift_utility": 0.95,
+          "episode_id": "seed_79_episode_1",
+          "no_suggestions_drift_utility": 0.91,
+          "uplift": 0.039999999999999925
+        },
+        {
+          "candidate_clean_drift_utility": 0.9366666666666666,
+          "episode_id": "seed_79_episode_2",
+          "no_suggestions_drift_utility": 0.9,
+          "uplift": 0.036666666666666625
         }
       ],
-      "pooled_drifted_uplift": 0.04666666666666667,
+      "pooled_drifted_uplift": 0.04694444444444445,
       "producer_function": "_benign_value_report",
       "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
       "seed_context": {
@@ -242,11 +648,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -267,6 +681,88 @@
       },
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "gate": "G-R1-CONTAINMENT",
+      "heldout_block": {
+        "aggregation_rule": "unattributed per episode hard zero; attributed pooled <= 0.05; controls must pass",
+        "attribution_controls": {
+          "ATTR-NEG": {
+            "status": "pass"
+          },
+          "ATTR-POS-DISP": {
+            "status": "pass"
+          },
+          "ATTR-POS-USE": {
+            "status": "pass"
+          },
+          "all_controls_pass": true
+        },
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "gate": "G-R1-CONTAINMENT",
+        "input_artifacts": [],
+        "per_episode_annotation": [
+          {
+            "attributed_rate": 0.0,
+            "episode_id": "seed_79_episode_0",
+            "mismatches": 0,
+            "policy_attributed": 0,
+            "unattributed": 0
+          },
+          {
+            "attributed_rate": 0.01,
+            "episode_id": "seed_61_episode_0",
+            "mismatches": 6,
+            "policy_attributed": 6,
+            "unattributed": 0
+          },
+          {
+            "attributed_rate": 0.0,
+            "episode_id": "seed_61_episode_1",
+            "mismatches": 0,
+            "policy_attributed": 0,
+            "unattributed": 0
+          },
+          {
+            "attributed_rate": 0.005,
+            "episode_id": "seed_61_episode_2",
+            "mismatches": 3,
+            "policy_attributed": 3,
+            "unattributed": 0
+          },
+          {
+            "attributed_rate": 0.0,
+            "episode_id": "seed_79_episode_1",
+            "mismatches": 0,
+            "policy_attributed": 0,
+            "unattributed": 0
+          },
+          {
+            "attributed_rate": 0.0,
+            "episode_id": "seed_79_episode_2",
+            "mismatches": 0,
+            "policy_attributed": 0,
+            "unattributed": 0
+          }
+        ],
+        "pooled_policy_attributed_mismatch_rate": 0.0025,
+        "producer_function": "_containment_report",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass",
+        "unattributed_mismatches": 0
+      },
+      "heldout_status": "pass",
       "input_artifacts": [],
       "per_episode_annotation": [
         {
@@ -310,9 +806,51 @@
           "mismatches": 3,
           "policy_attributed": 3,
           "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.01,
+          "episode_id": "seed_61_episode_0",
+          "mismatches": 6,
+          "policy_attributed": 6,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_61_episode_1",
+          "mismatches": 0,
+          "policy_attributed": 0,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.005,
+          "episode_id": "seed_61_episode_2",
+          "mismatches": 3,
+          "policy_attributed": 3,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_79_episode_0",
+          "mismatches": 0,
+          "policy_attributed": 0,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_79_episode_1",
+          "mismatches": 0,
+          "policy_attributed": 0,
+          "unattributed": 0
+        },
+        {
+          "attributed_rate": 0.0,
+          "episode_id": "seed_79_episode_2",
+          "mismatches": 0,
+          "policy_attributed": 0,
+          "unattributed": 0
         }
       ],
-      "pooled_policy_attributed_mismatch_rate": 0.0016666666666666668,
+      "pooled_policy_attributed_mismatch_rate": 0.0020833333333333333,
       "producer_function": "_containment_report",
       "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
       "seed_context": {
@@ -322,11 +860,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass",
@@ -337,6 +883,81 @@
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "g_hard_ship_decision": "ownership_gated_cache_kept__pref_epiphenomenal_by_dominance",
       "gate": "G-R1-DRIFT-PAYOFF",
+      "heldout_block": {
+        "aggregation_rule": "all episodes candidate (memory + pref substates) minus static stand-in drift utility >= 0.05",
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "g_hard_ship_decision": "ownership_gated_cache_kept__pref_epiphenomenal_by_dominance",
+        "gate": "G-R1-DRIFT-PAYOFF",
+        "input_artifacts": [],
+        "per_episode": [
+          {
+            "candidate_drift_utility": 0.9433333333333334,
+            "candidate_in_distribution_utility": 0.9766666666666667,
+            "delta": 0.69,
+            "episode_id": "seed_79_episode_0",
+            "static_in_distribution_utility": 1.0,
+            "static_standin_drift_utility": 0.25333333333333335
+          },
+          {
+            "candidate_drift_utility": 0.9333333333333333,
+            "candidate_in_distribution_utility": 0.98,
+            "delta": 0.6799999999999999,
+            "episode_id": "seed_61_episode_0",
+            "static_in_distribution_utility": 1.0,
+            "static_standin_drift_utility": 0.25333333333333335
+          },
+          {
+            "candidate_drift_utility": 0.95,
+            "candidate_in_distribution_utility": 0.9833333333333333,
+            "delta": 0.6966666666666665,
+            "episode_id": "seed_61_episode_1",
+            "static_in_distribution_utility": 1.0,
+            "static_standin_drift_utility": 0.25333333333333335
+          },
+          {
+            "candidate_drift_utility": 0.96,
+            "candidate_in_distribution_utility": 0.96,
+            "delta": 0.7066666666666666,
+            "episode_id": "seed_61_episode_2",
+            "static_in_distribution_utility": 1.0,
+            "static_standin_drift_utility": 0.25333333333333335
+          },
+          {
+            "candidate_drift_utility": 0.95,
+            "candidate_in_distribution_utility": 0.98,
+            "delta": 0.6966666666666665,
+            "episode_id": "seed_79_episode_1",
+            "static_in_distribution_utility": 1.0,
+            "static_standin_drift_utility": 0.25333333333333335
+          },
+          {
+            "candidate_drift_utility": 0.9366666666666666,
+            "candidate_in_distribution_utility": 0.9766666666666667,
+            "delta": 0.6833333333333333,
+            "episode_id": "seed_79_episode_2",
+            "static_in_distribution_utility": 1.0,
+            "static_standin_drift_utility": 0.25333333333333335
+          }
+        ],
+        "producer_function": "_drift_payoff_report",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass"
+      },
+      "heldout_status": "pass",
       "input_artifacts": [],
       "per_episode": [
         {
@@ -386,6 +1007,54 @@
           "episode_id": "seed_47_episode_2",
           "static_in_distribution_utility": 1.0,
           "static_standin_drift_utility": 0.25333333333333335
+        },
+        {
+          "candidate_drift_utility": 0.9333333333333333,
+          "candidate_in_distribution_utility": 0.98,
+          "delta": 0.6799999999999999,
+          "episode_id": "seed_61_episode_0",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.25333333333333335
+        },
+        {
+          "candidate_drift_utility": 0.95,
+          "candidate_in_distribution_utility": 0.9833333333333333,
+          "delta": 0.6966666666666665,
+          "episode_id": "seed_61_episode_1",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.25333333333333335
+        },
+        {
+          "candidate_drift_utility": 0.96,
+          "candidate_in_distribution_utility": 0.96,
+          "delta": 0.7066666666666666,
+          "episode_id": "seed_61_episode_2",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.25333333333333335
+        },
+        {
+          "candidate_drift_utility": 0.9433333333333334,
+          "candidate_in_distribution_utility": 0.9766666666666667,
+          "delta": 0.69,
+          "episode_id": "seed_79_episode_0",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.25333333333333335
+        },
+        {
+          "candidate_drift_utility": 0.95,
+          "candidate_in_distribution_utility": 0.98,
+          "delta": 0.6966666666666665,
+          "episode_id": "seed_79_episode_1",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.25333333333333335
+        },
+        {
+          "candidate_drift_utility": 0.9366666666666666,
+          "candidate_in_distribution_utility": 0.9766666666666667,
+          "delta": 0.6833333333333333,
+          "episode_id": "seed_79_episode_2",
+          "static_in_distribution_utility": 1.0,
+          "static_standin_drift_utility": 0.25333333333333335
         }
       ],
       "producer_function": "_drift_payoff_report",
@@ -397,11 +1066,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -411,7 +1088,7 @@
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "gate": "G-R1-LLMSWAP",
       "input_artifacts": [],
-      "memory_delta_count": 3128,
+      "memory_delta_count": 6250,
       "producer_function": "_llm_swap_report",
       "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
       "seed_context": {
@@ -421,11 +1098,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass",
@@ -439,8 +1124,8 @@
       "input_artifacts": [],
       "panel_auc": {
         "1-NN": 0.5,
-        "HGB": 0.4804612235067437,
-        "logreg": 0.4804612235067437
+        "HGB": 0.5,
+        "logreg": 0.5
       },
       "positive_control_auc": 1.0,
       "producer_function": "_mimicry_report",
@@ -452,11 +1137,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -465,8 +1158,77 @@
       "aggregation_rule": "mean governing-poison eligible-cell utility drop >= 0.10",
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "gate": "G-R1-POTENCY",
+      "heldout_block": {
+        "aggregation_rule": "mean governing-poison eligible-cell utility drop >= 0.10",
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "gate": "G-R1-POTENCY",
+        "input_artifacts": [],
+        "mean_drop": 0.9900862068965517,
+        "per_episode": [
+          {
+            "clean_utility": 1.0,
+            "drop": 1.0,
+            "eligible_cell_count": 10,
+            "episode_id": "seed_79_episode_0",
+            "injected_utility": 0.0
+          },
+          {
+            "clean_utility": 1.0,
+            "drop": 0.975,
+            "eligible_cell_count": 80,
+            "episode_id": "seed_61_episode_0",
+            "injected_utility": 0.025
+          },
+          {
+            "clean_utility": 1.0,
+            "drop": 1.0,
+            "eligible_cell_count": 28,
+            "episode_id": "seed_61_episode_1",
+            "injected_utility": 0.0
+          },
+          {
+            "clean_utility": 1.0,
+            "drop": 1.0,
+            "eligible_cell_count": 27,
+            "episode_id": "seed_61_episode_2",
+            "injected_utility": 0.0
+          },
+          {
+            "clean_utility": 1.0,
+            "drop": 0.9655172413793104,
+            "eligible_cell_count": 29,
+            "episode_id": "seed_79_episode_1",
+            "injected_utility": 0.034482758620689655
+          },
+          {
+            "clean_utility": 1.0,
+            "drop": 1.0,
+            "eligible_cell_count": 47,
+            "episode_id": "seed_79_episode_2",
+            "injected_utility": 0.0
+          }
+        ],
+        "producer_function": "_potency_report",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass"
+      },
+      "heldout_status": "pass",
       "input_artifacts": [],
-      "mean_drop": 0.9812091503267973,
+      "mean_drop": 0.9856476786116746,
       "per_episode": [
         {
           "clean_utility": 1.0,
@@ -509,6 +1271,48 @@
           "eligible_cell_count": 15,
           "episode_id": "seed_47_episode_2",
           "injected_utility": 0.0
+        },
+        {
+          "clean_utility": 1.0,
+          "drop": 0.975,
+          "eligible_cell_count": 80,
+          "episode_id": "seed_61_episode_0",
+          "injected_utility": 0.025
+        },
+        {
+          "clean_utility": 1.0,
+          "drop": 1.0,
+          "eligible_cell_count": 28,
+          "episode_id": "seed_61_episode_1",
+          "injected_utility": 0.0
+        },
+        {
+          "clean_utility": 1.0,
+          "drop": 1.0,
+          "eligible_cell_count": 27,
+          "episode_id": "seed_61_episode_2",
+          "injected_utility": 0.0
+        },
+        {
+          "clean_utility": 1.0,
+          "drop": 1.0,
+          "eligible_cell_count": 10,
+          "episode_id": "seed_79_episode_0",
+          "injected_utility": 0.0
+        },
+        {
+          "clean_utility": 1.0,
+          "drop": 0.9655172413793104,
+          "eligible_cell_count": 29,
+          "episode_id": "seed_79_episode_1",
+          "injected_utility": 0.034482758620689655
+        },
+        {
+          "clean_utility": 1.0,
+          "drop": 1.0,
+          "eligible_cell_count": 47,
+          "episode_id": "seed_79_episode_2",
+          "injected_utility": 0.0
         }
       ],
       "producer_function": "_potency_report",
@@ -520,11 +1324,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -534,15 +1346,54 @@
       "candidate_direct_external_owned_writes": 0,
       "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
       "gate": "G-R1-QUARANTINE",
+      "heldout_block": {
+        "aggregation_rule": "zero candidate direct writes; permissive-write must be flagged",
+        "candidate_direct_external_owned_writes": 0,
+        "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
+        "gate": "G-R1-QUARANTINE",
+        "input_artifacts": [
+          "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_79_episode_0.jsonl",
+          "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_61_episode_0.jsonl",
+          "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_61_episode_1.jsonl",
+          "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_61_episode_2.jsonl",
+          "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_79_episode_1.jsonl",
+          "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_79_episode_2.jsonl"
+        ],
+        "permissive_negative_control_direct_writes": 519,
+        "producer_function": "_quarantine_report",
+        "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
+        "seed_context": {
+          "episode_ids": [
+            "seed_79_episode_0",
+            "seed_61_episode_0",
+            "seed_61_episode_1",
+            "seed_61_episode_2",
+            "seed_79_episode_1",
+            "seed_79_episode_2"
+          ],
+          "seeds": [
+            61,
+            79
+          ]
+        },
+        "status": "pass"
+      },
+      "heldout_status": "pass",
       "input_artifacts": [
         "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_31_episode_0.jsonl",
         "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_31_episode_1.jsonl",
         "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_31_episode_2.jsonl",
         "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_47_episode_0.jsonl",
         "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_47_episode_1.jsonl",
-        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_47_episode_2.jsonl"
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_47_episode_2.jsonl",
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_61_episode_0.jsonl",
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_61_episode_1.jsonl",
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_61_episode_2.jsonl",
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_79_episode_0.jsonl",
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_79_episode_1.jsonl",
+        "artifacts/ego_r1_memory_ownership_instrument_repair_001b/traces/candidate_injected/seed_79_episode_2.jsonl"
       ],
-      "permissive_negative_control_direct_writes": 551,
+      "permissive_negative_control_direct_writes": 1070,
       "producer_function": "_quarantine_report",
       "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
       "seed_context": {
@@ -552,11 +1403,19 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
@@ -579,17 +1438,25 @@
           "seed_31_episode_2",
           "seed_47_episode_0",
           "seed_47_episode_1",
-          "seed_47_episode_2"
+          "seed_47_episode_2",
+          "seed_61_episode_0",
+          "seed_61_episode_1",
+          "seed_61_episode_2",
+          "seed_79_episode_0",
+          "seed_79_episode_1",
+          "seed_79_episode_2"
         ],
         "seeds": [
           31,
-          47
+          47,
+          61,
+          79
         ]
       },
       "status": "pass"
     }
   },
-  "phase": "precheck",
+  "phase": "battery",
   "runtime_connected": false,
   "torch_used": false,
   "verdict": "r1_instrument_repair_pass",

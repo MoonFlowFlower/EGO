@@ -3,7 +3,7 @@
   "code_path_hash": "ad91efdb3f98f0183da96f8ad28dc3f864c8b3c0c54d7c40ca84e6cdc6d4008c",
   "comparators": {
     "graph_cache": {
-      "mean_delta": 0.06277777777777778,
+      "mean_delta": 0.06027777777777777,
       "per_episode": [
         {
           "baseline_utility": 0.8666666666666667,
@@ -40,12 +40,48 @@
           "candidate_utility": 0.9466666666666667,
           "delta": 0.053333333333333344,
           "episode_id": "seed_47_episode_2"
+        },
+        {
+          "baseline_utility": 0.87,
+          "candidate_utility": 0.9333333333333333,
+          "delta": 0.06333333333333335,
+          "episode_id": "seed_61_episode_0"
+        },
+        {
+          "baseline_utility": 0.9133333333333333,
+          "candidate_utility": 0.95,
+          "delta": 0.036666666666666625,
+          "episode_id": "seed_61_episode_1"
+        },
+        {
+          "baseline_utility": 0.91,
+          "candidate_utility": 0.96,
+          "delta": 0.04999999999999993,
+          "episode_id": "seed_61_episode_2"
+        },
+        {
+          "baseline_utility": 0.9066666666666666,
+          "candidate_utility": 0.9433333333333334,
+          "delta": 0.036666666666666736,
+          "episode_id": "seed_79_episode_0"
+        },
+        {
+          "baseline_utility": 0.8566666666666667,
+          "candidate_utility": 0.95,
+          "delta": 0.09333333333333327,
+          "episode_id": "seed_79_episode_1"
+        },
+        {
+          "baseline_utility": 0.87,
+          "candidate_utility": 0.9366666666666666,
+          "delta": 0.06666666666666665,
+          "episode_id": "seed_79_episode_2"
         }
       ],
       "verdict": "candidate_separates"
     },
     "lookup": {
-      "mean_delta": 0.6816666666666666,
+      "mean_delta": 0.6808333333333333,
       "per_episode": [
         {
           "baseline_utility": 0.2966666666666667,
@@ -82,12 +118,48 @@
           "candidate_utility": 0.9466666666666667,
           "delta": 0.6933333333333334,
           "episode_id": "seed_47_episode_2"
+        },
+        {
+          "baseline_utility": 0.25333333333333335,
+          "candidate_utility": 0.9333333333333333,
+          "delta": 0.6799999999999999,
+          "episode_id": "seed_61_episode_0"
+        },
+        {
+          "baseline_utility": 0.26666666666666666,
+          "candidate_utility": 0.95,
+          "delta": 0.6833333333333333,
+          "episode_id": "seed_61_episode_1"
+        },
+        {
+          "baseline_utility": 0.31,
+          "candidate_utility": 0.96,
+          "delta": 0.6499999999999999,
+          "episode_id": "seed_61_episode_2"
+        },
+        {
+          "baseline_utility": 0.25333333333333335,
+          "candidate_utility": 0.9433333333333334,
+          "delta": 0.69,
+          "episode_id": "seed_79_episode_0"
+        },
+        {
+          "baseline_utility": 0.25333333333333335,
+          "candidate_utility": 0.95,
+          "delta": 0.6966666666666665,
+          "episode_id": "seed_79_episode_1"
+        },
+        {
+          "baseline_utility": 0.25666666666666665,
+          "candidate_utility": 0.9366666666666666,
+          "delta": 0.6799999999999999,
+          "episode_id": "seed_79_episode_2"
         }
       ],
       "verdict": "candidate_separates"
     },
     "raw_rag": {
-      "mean_delta": 0.04777777777777777,
+      "mean_delta": 0.0447222222222222,
       "per_episode": [
         {
           "baseline_utility": 0.9166666666666666,
@@ -124,6 +196,42 @@
           "candidate_utility": 0.9466666666666667,
           "delta": 0.05666666666666664,
           "episode_id": "seed_47_episode_2"
+        },
+        {
+          "baseline_utility": 0.91,
+          "candidate_utility": 0.9333333333333333,
+          "delta": 0.023333333333333317,
+          "episode_id": "seed_61_episode_0"
+        },
+        {
+          "baseline_utility": 0.92,
+          "candidate_utility": 0.95,
+          "delta": 0.029999999999999916,
+          "episode_id": "seed_61_episode_1"
+        },
+        {
+          "baseline_utility": 0.9,
+          "candidate_utility": 0.96,
+          "delta": 0.05999999999999994,
+          "episode_id": "seed_61_episode_2"
+        },
+        {
+          "baseline_utility": 0.8833333333333333,
+          "candidate_utility": 0.9433333333333334,
+          "delta": 0.06000000000000005,
+          "episode_id": "seed_79_episode_0"
+        },
+        {
+          "baseline_utility": 0.91,
+          "candidate_utility": 0.95,
+          "delta": 0.039999999999999925,
+          "episode_id": "seed_79_episode_1"
+        },
+        {
+          "baseline_utility": 0.9,
+          "candidate_utility": 0.9366666666666666,
+          "delta": 0.036666666666666625,
+          "episode_id": "seed_79_episode_2"
         }
       ],
       "verdict": "candidate_separates"
@@ -140,11 +248,19 @@
       "seed_31_episode_2",
       "seed_47_episode_0",
       "seed_47_episode_1",
-      "seed_47_episode_2"
+      "seed_47_episode_2",
+      "seed_61_episode_0",
+      "seed_61_episode_1",
+      "seed_61_episode_2",
+      "seed_79_episode_0",
+      "seed_79_episode_1",
+      "seed_79_episode_2"
     ],
     "seeds": [
       31,
-      47
+      47,
+      61,
+      79
     ]
   },
   "status": "pass"

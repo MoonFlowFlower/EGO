@@ -57,9 +57,51 @@
       "mismatches": 3,
       "policy_attributed": 3,
       "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.01,
+      "episode_id": "seed_61_episode_0",
+      "mismatches": 6,
+      "policy_attributed": 6,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_61_episode_1",
+      "mismatches": 0,
+      "policy_attributed": 0,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.005,
+      "episode_id": "seed_61_episode_2",
+      "mismatches": 3,
+      "policy_attributed": 3,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_79_episode_0",
+      "mismatches": 0,
+      "policy_attributed": 0,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_79_episode_1",
+      "mismatches": 0,
+      "policy_attributed": 0,
+      "unattributed": 0
+    },
+    {
+      "attributed_rate": 0.0,
+      "episode_id": "seed_79_episode_2",
+      "mismatches": 0,
+      "policy_attributed": 0,
+      "unattributed": 0
     }
   ],
-  "pooled_policy_attributed_mismatch_rate": 0.0016666666666666668,
+  "pooled_policy_attributed_mismatch_rate": 0.0020833333333333333,
   "producer_function": "_containment_report",
   "run_id": "ego_r1_memory_ownership_instrument_repair_001b_validation_v1",
   "seed_context": {
@@ -69,11 +111,19 @@
       "seed_31_episode_2",
       "seed_47_episode_0",
       "seed_47_episode_1",
-      "seed_47_episode_2"
+      "seed_47_episode_2",
+      "seed_61_episode_0",
+      "seed_61_episode_1",
+      "seed_61_episode_2",
+      "seed_79_episode_0",
+      "seed_79_episode_1",
+      "seed_79_episode_2"
     ],
     "seeds": [
       31,
-      47
+      47,
+      61,
+      79
     ]
   },
   "status": "pass",

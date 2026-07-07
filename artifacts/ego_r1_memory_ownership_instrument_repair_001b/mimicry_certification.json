@@ -6,8 +6,8 @@
   "input_artifacts": [],
   "panel_auc": {
     "1-NN": 0.5,
-    "HGB": 0.4804612235067437,
-    "logreg": 0.4804612235067437
+    "HGB": 0.5,
+    "logreg": 0.5
   },
   "positive_control_auc": 1.0,
   "producer_function": "_mimicry_report",
@@ -19,11 +19,19 @@
       "seed_31_episode_2",
       "seed_47_episode_0",
       "seed_47_episode_1",
-      "seed_47_episode_2"
+      "seed_47_episode_2",
+      "seed_61_episode_0",
+      "seed_61_episode_1",
+      "seed_61_episode_2",
+      "seed_79_episode_0",
+      "seed_79_episode_1",
+      "seed_79_episode_2"
     ],
     "seeds": [
       31,
-      47
+      47,
+      61,
+      79
     ]
   },
   "status": "pass"
